@@ -15,7 +15,7 @@ Tornar o processo auditável. Quando uma decisão for questionada futuramente ("
 
 Registrar **obrigatoriamente** quando:
 
-- Uma decisão de `handling_rule` no glossário não é óbvia (ex: por que este alimento é tratado como nome próprio?)
+- Uma decisão de `handling_rule` no glossário não é óbvia
 - Uma tradução se afasta do `base_translation` do plano por razão específica
 - Uma regra geral tem exceção em contexto específico
 - Uma linha de alto risco recebe tratamento especial
@@ -33,11 +33,11 @@ Registrar **obrigatoriamente** quando:
 
 ---
 
-## [TERM ou OFFSET] — [título curto da decisão]
+## [TERM ou ID] — [título curto da decisão]
 
 **Data:** YYYY-MM-DD
 **Passo do SDD:** [04 / 05 / 06 / 07]
-**Tipo:** [handling_rule / tone / spoiler / formatting / revision]
+**Tipo:** [handling_rule / tone / spoiler / formatting / revision / external]
 
 **Decisão tomada:**
 [O que foi decidido. 1-2 frases objetivas.]
@@ -63,28 +63,27 @@ Registrar **obrigatoriamente** quando:
 ## EXEMPLO PREENCHIDO
 
 ```markdown
-## Amamunii / Amam — forma abreviada em diálogo casual
+## [Termo] — forma abreviada em diálogo casual
 
-**Data:** 2025-06-07
+**Data:** YYYY-MM-DD
 **Passo do SDD:** 04
 **Tipo:** handling_rule
 
 **Decisão tomada:**
-"Amam" é aceita como forma abreviada informal de "Amamunii" em diálogo casual entre 
-personagens familiarizados. "Amamunii" é a forma completa padrão em todos os outros contextos.
+A forma abreviada informal de um termo é aceita em diálogo casual entre personagens
+familiarizados. A forma completa padrão é usada em todos os outros contextos.
 
 **Alternativas consideradas:**
-- Usar sempre "Amamunii" — rejeitada porque elimina a variação de registro que o original tem
-- Usar sempre "Amam" — rejeitada porque perde a forma completa que aparece em contextos formais
+- Usar sempre a forma completa — rejeitada porque elimina a variação de registro do original
+- Usar sempre a forma abreviada — rejeitada porque perde a forma completa de contextos formais
 
 **Razão da decisão final:**
-O original japonês usa variação de forma dependendo do contexto social da fala. 
-Replicar isso em pt-BR com Amamunii (formal/narrativa) vs. Amam (casual/diálogo) 
-preserva a intenção de caracterização.
+O idioma-fonte usa variação de forma dependendo do contexto social da fala. Replicar isso no
+idioma-alvo (forma completa em narrativa/formal vs. abreviada em diálogo casual) preserva a
+intenção de caracterização.
 
 **Impacto:**
-Afeta qualquer linha de diálogo casual entre Haku e Kuon ou outros personagens 
-familiarizados que mencionem o alimento.
+Afeta linhas de diálogo casual entre personagens familiarizados que mencionem o termo.
 
 **Revisão necessária:** não
 ```
@@ -108,7 +107,7 @@ familiarizados que mencionem o alimento.
 
 O arquivo `decision_log.md` no projeto começa com o cabeçalho e uma seção vazia. É preenchido ao longo de todo o projeto.
 
-**Localização:** `decision_log.md` na raiz do projeto (mesmo nível do `glossary.csv`).
+**Localização:** raiz do projeto (mesmo nível do `glossary.csv`).
 
 ---
 
