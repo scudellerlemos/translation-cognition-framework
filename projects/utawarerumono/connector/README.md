@@ -7,7 +7,7 @@ Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.m
 
 ## O que falta para o Passo 00 rodar
 
-- [ ] Humano coloca o binário de texto em `artifacts/` e atualiza `project.json → connector.source_binary`
+- [ ] Usuário coloca o binário de texto em `artifacts/` e atualiza `project.json → connector.source_binary`
 - [ ] Mapear a tabela de caracteres (byte→glifo) em `table_schema.md`
 - [ ] Mapear os control codes para os bytes reais (`{W75}`, `{W80}`, `{W10}`, `{COLOR}`, `{END}`)
 - [ ] Localizar a tabela de ponteiros (`pointer_table.location` / `format`)

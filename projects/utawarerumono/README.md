@@ -5,6 +5,29 @@ Este é o projeto de localização que originou o framework. Serve como **refer�
 
 ---
 
+## Estado: POC executada ✅ (20 primeiras linhas)
+
+O framework foi rodado de ponta a ponta no jogo real (Steam):
+
+| Etapa | Resultado |
+|-------|-----------|
+| **Passo 00 — extração** | `connector/extract.py` extraiu 20 linhas de `ScriptEvent.sdat` → `artifacts/dialogs.csv` (com `byte_budget`) |
+| **Gate de round-trip** | ✅ PASSOU — extract→reinsert sem mudanças reproduz o `.sdat` byte-a-byte |
+| **Gate de charset** | `likely` — `õ`/`À` renderizados; demais acentos no mesmo bloco Latin-1; confirmar in-game |
+| **Passos 05–06 — plano + tradução** | `poc_pipeline.py` → `translation_plan.json` (proposta) + `approved_translations.csv` (aprovado); tokens preservados 100% |
+| **Passo 08 — reinserção** | `connector/reinsert.py` aplica `approved_translations.csv` → **`output/ScriptEvent.sdat`** (mesmo nome/extensão; 12/20 cabem in_place; 8 no resíduo) |
+
+**Aprendizados** registrados em [`artifacts/decision_log.md`](artifacts/decision_log.md) e [`artifacts/extraction_log.md`](artifacts/extraction_log.md).
+Principais: `space_strategy` → `repoint` (in_place só cabe em 60%); tradução aplicada por **arquivo aprovado** + script (a IA não edita dados à mão).
+
+**Saída final:** [`output/ScriptEvent.sdat`](output/) — mesmo nome e extensão do input, pronto para repatch.
+
+> **Governança de scripts:** os scripts do conector (`extract.py`, `reinsert.py`, `charset_check.py`,
+> `poc_pipeline.py`) são determinísticos e **executados** — não refeitos pela IA. Criar um script novo
+> só com permissão; uma vez existindo, apenas rodar.
+
+---
+
 ## Configuração
 
 Toda a config deste título vive em [`project.json`](project.json):

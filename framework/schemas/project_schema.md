@@ -43,16 +43,17 @@ legendas), pode ser omitido ou simplificado.
 | Campo | Tipo | Obrigatório | Descrição |
 |-------|------|-------------|-----------|
 | `type` | string | ✅ | Tipo de conector (ex: `hex_binary`) — corresponde a `framework/connectors/<type>.md` |
-| `source_binary` | string | ✅ p/ `hex_binary` | Caminho do binário fornecido pelo humano |
+| `source_binary` | string | ✅ p/ `hex_binary` | Caminho do binário fornecido pelo usuário (CLI ou este campo; nunca hardcoded no script) |
 | `table_schema` | string | ✅ p/ `hex_binary` | Caminho do schema de tabela compartilhado |
 | `extract_script` | string | ✅ p/ `hex_binary` | Caminho do `extract.py` da instância |
 | `reinsert_script` | string | ✅ p/ `hex_binary` | Caminho do `reinsert.py` da instância |
 | `encoding` | string | — | `custom` / `ascii` / `shift-jis` / ... |
 | `control_codes` | object | — | Mapa token → bytes (deve cobrir os `formatting_tokens`) |
 | `pointer_table` | object | — | `{ location, format }` da tabela de ponteiros |
-| `space_strategy` | enum | ✅ p/ `hex_binary` | `in_place` (cabe em bytes) / `repoint` (recalcula ponteiros) |
+| `space_strategy` | enum | ✅ p/ `hex_binary` | `in_place` (cabe em bytes) / `repoint` (recalcula ponteiros). **Prefira `repoint` p/ alvo mais longo/multibyte** (ex: pt-BR). |
 | `patch_format` | enum | ✅ p/ `hex_binary` | `ips` / `bps` / `xdelta` |
-| `target_charset_supported` | bool | — | A fonte do jogo representa o charset do alvo? (gate de charset) |
+| `target_charset_supported` | enum | — | `true` / `false` / `likely` / `unknown` — veredito do gate de charset (ver `00_extraction.md`) |
+| `charset_note` | string | — | Observação do gate de charset (glifos confirmados, ação pendente) |
 
 ### `length_constraints` (object)
 
@@ -122,6 +123,8 @@ referência/semente.
 - `connector.control_codes` deve cobrir todos os `formatting_tokens`.
 - Quando `connector.space_strategy: in_place`, `length_constraints.mode` deve ser `byte_space`.
 - `extract.py` e `reinsert.py` devem compartilhar o mesmo `table_schema` (garantia de round-trip).
+- A saída do Passo 08 vai para `projects/<título>/output/<nome-original>` (mesmo nome e extensão do `source_binary`).
+- A tradução é aplicada de `approved_translations.csv` pelo script — a IA não escreve a tradução à mão nos dados.
 
 ---
 

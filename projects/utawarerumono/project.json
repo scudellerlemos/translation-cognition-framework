@@ -20,7 +20,8 @@
   "batch_size": 200,
   "connector": {
     "type": "hex_binary",
-    "source_binary": "artifacts/TODO_game_text.bin",
+    "source_binary": "artifacts/TODO_aponte_para_seu_ScriptEvent.sdat",
+    "source_binary_note": "O USUÁRIO fornece o binário a traduzir. Aponte este campo para o seu ScriptEvent.sdat (na POC, o arquivo da Steam em Data/ENG/ScriptEvent.sdat) — caminho absoluto ou relativo à raiz do projeto. Alternativa: passar o caminho como argumento de CLI (`python extract.py <caminho>`). Os scripts NUNCA têm o caminho hardcoded.",
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
     "reinsert_script": "connector/reinsert.py",
@@ -36,9 +37,11 @@
       "location": "TODO",
       "format": "TODO"
     },
-    "space_strategy": "in_place",
+    "space_strategy": "repoint",
     "patch_format": "ips",
-    "target_charset_supported": false
+    "target_charset_supported": "likely",
+    "charset_note": "Gate (POC): só inglês na fonte, que quase não usa acentos. 'õ'(U+00F5) e 'À'(U+00C0) já renderizados em texto real; demais acentos pt-BR no mesmo bloco Latin-1 Supplement → suporte provável. Confirmar in-game com pangrama pt-BR antes de produção.",
+    "space_note": "in_place inviável p/ pt-BR: só 12/20 (60%) cabem no byte_budget (pt-BR mais longo + acentos = 2 bytes UTF-8). repoint é o default correto."
   },
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",

@@ -1,13 +1,13 @@
 # SKILL 03 — KNOWLEDGE BUILDING
 ## Pesquisar o universo e construir a base de conhecimento de localização
 
-> **Quando usar:** Após o ENTITY RESOLUTION. Este passo tem duas fases: primeiro pesquisa ativa (IA + humano em paralelo), depois síntese do conhecimento. Nenhuma tradução acontece aqui.
+> **Quando usar:** Após o ENTITY RESOLUTION. Este passo tem duas fases: primeiro pesquisa ativa (IA + usuário em paralelo), depois síntese do conhecimento. Nenhuma tradução acontece aqui.
 
 ---
 
 ## OBJETIVO
 
-Construir um mapa estrutural do domínio narrativo baseado em fontes verificadas. O processo é colaborativo: a IA conduz sua própria pesquisa, o humano conduz a dele, e os dois conjuntos são reconciliados antes da síntese. O resultado alimenta diretamente o glossário e as regras de tradução.
+Construir um mapa estrutural do domínio narrativo baseado em fontes verificadas. O processo é colaborativo: a IA conduz sua própria pesquisa, o usuário conduz a dele, e os dois conjuntos são reconciliados antes da síntese. O resultado alimenta diretamente o glossário e as regras de tradução.
 
 ---
 
@@ -23,9 +23,28 @@ Construir um mapa estrutural do domínio narrativo baseado em fontes verificadas
 
 ---
 
+## 🔵 GATE DE COBRANÇA AO USUÁRIO (obrigatório, antes de tudo)
+
+Esta é a etapa que **mais enriquece** a tradução — a colaboração humana é obrigatória, não opcional.
+**Antes de iniciar a pesquisa**, a IA **DEVE** solicitar ativamente a contribuição do usuário:
+
+> "Para construir a base de conhecimento desta obra, preciso da sua parte da pesquisa.
+> Envie o que tiver: links de wiki/fandom, guias, artbooks, material oficial, threads de comunidade,
+> traduções em outros idiomas — qualquer fonte que você considere relevante.
+> Posso pesquisar em paralelo, mas **não vou reconciliar nem sintetizar sem a sua contribuição.**"
+
+**Bloqueio:** a IA **não avança** para a Fase 1B (reconciliação) nem Fase 2 (síntese) sem:
+- (a) o usuário **entregar** sua parte da pesquisa, **ou**
+- (b) o usuário **declinar/adiar explicitamente** — registrado no `research_log.md` (`human_input: declined`).
+
+❌ **Nunca pesquisar sozinha e seguir como se a contribuição humana não existisse.** A IA pode
+adiantar a sua própria pesquisa (Fase 1A), mas a reconciliação depende da entrada do usuário.
+
+---
+
 ## FASE 1A — PESQUISA PARALELA
 
-A IA e o humano pesquisam simultaneamente, cada um com suas ferramentas. Documentar todos os achados — mesmo os que parecem óbvios.
+A IA e o usuário pesquisam simultaneamente, cada um com suas ferramentas. Documentar todos os achados — mesmo os que parecem óbvios.
 
 ---
 
@@ -74,16 +93,20 @@ Para cada fonte encontrada:
 
 ---
 
-### HUMANO EXECUTA (em paralelo)
+### USUÁRIO EXECUTA (em paralelo) — a IA cobra e aguarda
 
-Mesmas categorias, com acesso a fontes que o agente pode não conseguir:
+A IA **solicita explicitamente** (ver gate acima) e **aguarda** a entrega do usuário. O usuário tem
+acesso a fontes que o agente pode não conseguir:
 - Contas em fandom (conteúdo behind-the-wall)
 - Discord de comunidades de fãs
 - Guias físicos, artbooks, material de imprensa
 - Versões localizadas em outros idiomas (físico ou digital)
 - Entrevistas com desenvolvedores/autores em fontes fechadas
 
-Documentar achados no mesmo formato: fonte, tier, cobertura de spoiler, URL/caminho.
+Documentar os achados do usuário no mesmo formato: fonte, tier, cobertura de spoiler, URL/caminho.
+
+> Se o usuário ainda não respondeu, a IA **lembra** a pendência e **não força** a reconciliação.
+> A entrada humana é registrada no `research_log.md` (`Encontrada por: Usuário`).
 
 ---
 
@@ -99,26 +122,26 @@ Documentar achados no mesmo formato: fonte, tier, cobertura de spoiler, URL/cami
 
 ## FASE 1B — RECONCILIAÇÃO
 
-Após ambos (IA e humano) concluírem a pesquisa, comparar os conjuntos:
+Após ambos (IA e usuário) concluírem a pesquisa, comparar os conjuntos:
 
 ### 1. Concordâncias
 Mesmas fontes encontradas por ambos → Tier confirmado, confiança aumentada.
 
-### 2. Fontes exclusivas do humano
+### 2. Fontes exclusivas do usuário
 Avaliar e adicionar ao log. Se Tier 1 ou 2: incorporar. Se Tier 3: verificar se a IA também encontrou algo parecido.
 
 ### 3. Fontes exclusivas da IA
-Humano valida: a fonte é confiável? O conteúdo está correto?
+Usuário valida: a fonte é confiável? O conteúdo está correto?
 
 ### 4. Divergências de conteúdo
-Quando IA e humano encontraram informação conflitante sobre o mesmo termo:
+Quando IA e usuário encontraram informação conflitante sobre o mesmo termo:
 
 | Critério de resolução | Ordem |
 |----------------------|-------|
 | Tier mais alto prevalece | 1º |
 | Fonte mais recente prevalece (quando mesmo tier) | 2º |
 | Múltiplas corroborações prevalecem | 3º |
-| Humano decide quando critérios empatam | 4º |
+| Usuário decide quando critérios empatam | 4º |
 
 Documentar cada conflito resolvido no `research_log.md`.
 
@@ -136,7 +159,7 @@ Termos sem cobertura em nenhuma fonte por nenhum dos dois → marcar como UNSOUR
 |----------------------|---------|
 | ≥1 fonte Tier 1 ou 2 no `research_log.md` com `status: reconciled` | ✅ Avançar para Fase 2 |
 | Apenas fontes Tier 3 | ⚠️ AVISO — prosseguir com `confidence: low` em todas as entradas; registrar no decision_log |
-| Nenhuma fonte encontrada (Tier 1, 2 ou 3) | ❌ BLOQUEADO — não inferir. Perguntar ao humano se há material adicional |
+| Nenhuma fonte encontrada (Tier 1, 2 ou 3) | ❌ BLOQUEADO — não inferir. Perguntar ao usuário se há material adicional |
 
 **Se bloqueado, perguntar:**
 
@@ -230,17 +253,17 @@ high / medium / low / UNSOURCED
 
 | ID | Fonte | Tipo | Tier | Cobertura de Spoiler | URL/Caminho | Encontrada por | Usada | Notas |
 |----|-------|------|------|----------------------|-------------|----------------|-------|-------|
-| SRC-001 | [Nome] Fandom Wiki | Wiki | 2 | Caps. 1–10 (parcial) | [URL] | IA + Humano | Sim | Seções de arco final não lidas |
+| SRC-001 | [Nome] Fandom Wiki | Wiki | 2 | Caps. 1–10 (parcial) | [URL] | IA + Usuário | Sim | Seções de arco final não lidas |
 | SRC-002 | corpus-fonte | Corpus | 1 | Corpus completo | local | IA | Sim | Fonte primária |
-| SRC-003 | [Guia/FAQ] | Guia | 2 | Caps. 1–15 | [URL] | Humano | Sim | Detalha mecânicas |
+| SRC-003 | [Guia/FAQ] | Guia | 2 | Caps. 1–15 | [URL] | Usuário | Sim | Detalha mecânicas |
 
 ---
 
 ## Conflitos Resolvidos
 
-| Termo | Versão IA | Versão Humano | Decisão | Razão |
+| Termo | Versão IA | Versão Usuário | Decisão | Razão |
 |-------|-----------|---------------|---------|-------|
-| [termo] | "[versão A]" | "[versão B]" | Humano | SRC-003 cita guia oficial |
+| [termo] | "[versão A]" | "[versão B]" | Usuário | SRC-003 cita guia oficial |
 
 ---
 

@@ -64,20 +64,34 @@
 
 ---
 
-### `translated.csv`
+### `approved_translations.csv` (fonte de verdade da tradução aplicada)
+
+A tradução **não** é escrita à mão pela IA dentro de um arquivo que também contém o source. Ela vive
+separada e só é aplicada após aprovação. Este é o arquivo que o script de reinserção (Passo 08) consome.
 
 | Campo | Tipo | Obrigatório | Valores aceitos |
 |-------|------|-------------|-----------------|
-| `<id_column>` | string | ✅ | Identificador da linha (`project.json → source.id_column`); único no arquivo |
-| `text_source` | string | ✅ | Texto no idioma-fonte |
-| `text_target` | string | — | Tradução no idioma-alvo; vazio = pendente |
-| `byte_budget` | int | — | Herdado do `dialogs.csv`; usado pelo Passo 08 (reinserção) |
+| `<id_column>` | string | ✅ | Identificador da linha (`project.json → source.id_column`); único; casa com o `dialogs.csv` |
+| `text_target` | string | ✅ | Tradução **aprovada** no idioma-alvo |
+
+**Fluxo (cognição → aprovação → aplicação):**
+1. A IA **propõe** as traduções no `translation_plan.json` (`base_translation`). Reviewável.
+2. Após **aprovação humana**, o conjunto aprovado é consolidado em `approved_translations.csv`.
+3. O script do conector (Passo 08) lê `dialogs.csv` (source) + `approved_translations.csv` (alvo aprovado) → grava a saída.
 
 **Invariantes:**
-- Cada ID aparece exatamente uma vez (mesma contagem do corpus-fonte)
-- Tokens de `project.json → formatting_tokens` preservados exatamente
-- Contagem de quebras de linha igual entre fonte e alvo nas linhas traduzidas
-- Linhas de sistema (`system_line_convention`) mantêm a convenção na tradução
+- Cada `id_column` casa com uma linha do `dialogs.csv` (mesmo identificador).
+- Tokens de `project.json → formatting_tokens` preservados exatamente; contagem de quebras de linha igual ao source.
+- Linhas de sistema (`system_line_convention`) mantêm a convenção.
+- **A IA nunca edita o binário/dados à mão** — só o script aplica este arquivo.
+
+---
+
+### `translated.csv` (DEPRECIADO como artefato escrito pela IA)
+
+> ⚠️ **Não é mais escrito pela IA.** A tradução vive em `approved_translations.csv`. Se um arquivo
+> source+target lado a lado for útil para revisão, ele é **gerado por script** (read-only) — nunca
+> preenchido à mão. Mantido aqui apenas para compatibilidade de leitura.
 
 ---
 
@@ -121,6 +135,7 @@ Arquivo markdown com seções obrigatórias. Campos de cabeçalho:
 | Campo | Obrigatório | Valores aceitos |
 |-------|-------------|-----------------|
 | `Status` | ✅ | `pending` / `reconciled` |
+| `human_input` | ✅ | `provided` / `declined` — a IA **deve cobrar** o usuário e registrar aqui; sem `provided` ou `declined`, não reconciliar |
 | `Data de reconciliação` | ✅ se `reconciled` | `YYYY-MM-DD` |
 | `Fronteira de spoiler` | ✅ | Descrição textual (ex: "Caps. 1–5, pré-reveal de <persona>") |
 | `Seções ignoradas intencionalmente` | ✅ | Lista de seções não lidas ou "nenhuma" |
@@ -135,7 +150,7 @@ Tabela **Fontes Avaliadas** — colunas obrigatórias:
 | `Tier` | ✅ | 1 / 2 / 3 |
 | `Cobertura de Spoiler` | ✅ | Descrição textual |
 | `URL/Caminho` | ✅ | URL ou caminho local |
-| `Encontrada por` | ✅ | IA / Humano / IA + Humano |
+| `Encontrada por` | ✅ | IA / Usuário / IA + Usuário |
 | `Usada` | ✅ | Sim / Não |
 | `Notas` | — | Texto livre |
 
@@ -145,14 +160,14 @@ Tabela **Conflitos Resolvidos** — presente sempre (vazia se não houve conflit
 |--------|-------------|
 | `Termo` | ✅ |
 | `Versão IA` | ✅ |
-| `Versão Humano` | ✅ |
+| `Versão Usuário` | ✅ |
 | `Decisão` | ✅ |
 | `Razão` | ✅ |
 
 Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
 
 **Invariantes:**
-- `status: reconciled` só pode ser definido após comparação entre achados da IA e do humano
+- `status: reconciled` só pode ser definido após comparação entre achados da IA e do usuário
 - Cada fonte com `Usada: Sim` deve ter ao menos uma citação em `universe_knowledge_base.md`
 - IDs de fonte (`SRC-NNN`) devem ser únicos no arquivo e sequenciais
 
