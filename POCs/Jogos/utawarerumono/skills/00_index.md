@@ -37,7 +37,7 @@
 |---------|-------|-----------|
 | `01_discovery.md` | 1 | Identificar entidades, tom, aliases, spoilers |
 | `02_entity_resolution.md` | 2 | Classificar e unificar entidades |
-| `03_knowledge_building.md` | 3 | Base de conhecimento do universo |
+| `03_knowledge_building.md` | 3 | Pesquisa colaborativa (IA + humano) + base de conhecimento do universo |
 | `04_glossary_creation.md` | 4 | Glossário + regras de tradução |
 | `04b_decision_log.md` | 4b | Registro de decisões — auditoria do processo |
 | `05_translation_planning.md` | 5 | Plano de tradução por linha |
@@ -57,7 +57,8 @@
 | `terminology_clusters.json` | Passo 1 | Agrupamento por tipo de termo |
 | `tone_analysis.md` | Passo 1 | Análise de tom, registros, perfis de voz |
 | `entities.csv` | Passo 2 | Entidades resolvidas e classificadas |
-| `universe_knowledge_base.md` | Passo 3 | Wiki de localização do universo |
+| `research_log.md` | Passo 3 | Fontes pesquisadas, conflitos resolvidos, fronteira de spoiler |
+| `universe_knowledge_base.md` | Passo 3 | Base de conhecimento por entidade, com citações de fonte |
 | `glossary.csv` | Passo 4 | Fonte de verdade operacional dos termos |
 | `translation_rules.md` | Passo 4 | Documento normativo com justificativas |
 | `decision_log.md` | Passo 4b | Registro acumulativo de decisões |
@@ -117,6 +118,7 @@ Estas condições devem ser verdadeiras em qualquer ponto do projeto:
 | `micro_qa_log.json` contém todas as entradas desde o início | A qualquer momento |
 | `decision_log.md` nunca perde entradas | A qualquer momento |
 | Nenhuma tradução final usa alias de spoiler major/critical antes do reveal | QA Final |
+| `research_log.md` tem `status: reconciled` antes do Passo 4 iniciar | Input Gate do Passo 4 |
 | Schemas de todos os artefatos respeitam `schemas/artifacts_schema.md` | A cada passo |
 
 ---
