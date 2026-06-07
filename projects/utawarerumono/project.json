@@ -1,0 +1,50 @@
+{
+  "title": "Utawarerumono: Mask of Deception",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": ["{W75}", "{W80}", "{W10}", "{COLOR}", "{END}"],
+  "system_line_convention": "all_caps",
+  "length_constraints": {
+    "mode": "byte_space",
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110
+  },
+  "batch_size": 200,
+  "connector": {
+    "type": "hex_binary",
+    "source_binary": "artifacts/TODO_game_text.bin",
+    "table_schema": "connector/table_schema.md",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "encoding": "custom",
+    "control_codes": {
+      "{W75}": "TODO",
+      "{W80}": "TODO",
+      "{W10}": "TODO",
+      "{COLOR}": "TODO",
+      "{END}": "TODO"
+    },
+    "pointer_table": {
+      "location": "TODO",
+      "format": "TODO"
+    },
+    "space_strategy": "in_place",
+    "patch_format": "ips",
+    "target_charset_supported": false
+  },
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "Primeira instância de referência do framework SDD. Corpus estimado ~33.000 linhas. Visual novel com múltiplos pares de identidade dupla e gestão crítica de spoilers."
+}
