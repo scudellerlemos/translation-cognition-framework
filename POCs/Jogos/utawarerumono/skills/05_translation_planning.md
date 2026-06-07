@@ -21,6 +21,20 @@ Para cada linha do corpus, definir intenção, identificar entidades presentes, 
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `glossary.csv` | Existe; verificação de cobertura do Passo 4 aprovada |
+| `translation_rules.md` | Existe; 13 seções obrigatórias presentes |
+| `entities.csv` | Existe |
+| `tone_analysis.md` | Existe; perfis de voz dos personagens principais documentados |
+| `dialogs.csv` | Existe; não-vazio |
+
+❌ **Se qualquer verificação falhar: PARAR. O plano sem glossário ou regras completas é inútil como contrato.**
+
+---
+
 ## OUTPUTS OBRIGATÓRIOS
 
 ### `translation_plan.json`
@@ -113,9 +127,30 @@ O corpus sintético deve ser traduzido e revisado **antes** de traduzir os segme
 
 ---
 
+## REVISÃO HUMANA DE LINHAS CRÍTICAS
+
+Linhas com `risk_level: critical` no plano **não entram no corpus final sem aprovação explícita**.
+
+Checklist obrigatório para cada linha crítica:
+
+| # | Verificação | Critério de aprovação |
+|---|------------|----------------------|
+| 1 | Identidade correta | A persona usada na tradução é a correta para este momento narrativo (não o alias de spoiler)? |
+| 2 | Sem vazamento | Nenhuma informação do alias de spoiler vaza no tom, vocabulário ou phrasing? |
+| 3 | Back-translation | PT-BR → EN preserva sentido e tom do original sem distorção? |
+| 4 | Leitura sem spoiler | A linha funciona para um leitor que ainda não sabe o spoiler? |
+| 5 | Registro no decision_log | A decisão está documentada com tipo, razão e impacto? |
+
+**Aprovação:** todas as 5 verificações devem passar.
+
+**Se reprovada:** bloquear inclusão no corpus + registrar no `decision_log.md` com tipo `revision` + marcar no `translation_status.json` com `needs_human_review`.
+
+---
+
 ## REGRAS CRÍTICAS
 
 - **Este passo é obrigatório.** Ir direto do passo 4 para o passo 6 sem o plano é o erro estrutural mais comum do processo.
 - O `base_translation` no plano não é a tradução final — é o ponto de partida. O passo 6 pode melhorar, mas não deve contradizer a intenção documentada.
-- Linhas com `risk_level: critical` devem ser revisadas por humano antes de entrar no corpus final, independente da qualidade da tradução automática.
+- Linhas com `risk_level: critical` devem passar pelo checklist de revisão humana acima antes de entrar no corpus final.
 - O corpus de teste sintético deve cobrir **todos** os pares de identidade dupla (Ukon/Oshtor, Sakon/Mikazuchi, Mito/Mikado) antes de traduzir os segmentos reais dessas personas.
+- O `translation_plan.json` deve incluir o campo `total_lines` igual ao total de linhas no `dialogs.csv`. Um plano incompleto não é um contrato válido.

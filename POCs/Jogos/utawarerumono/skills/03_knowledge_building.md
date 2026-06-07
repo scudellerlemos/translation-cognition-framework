@@ -89,6 +89,18 @@ Onde e como aparece nas fontes.
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `entities_candidates.json` | Existe (Passo 1 concluído) |
+| `tone_analysis.md` | Existe (Passo 1 concluído) |
+| Fonte explícita | Definida no prompt (veja gate abaixo) |
+
+❌ **Se qualquer verificação falhar: PARAR.**
+
+---
+
 ## FORMATO POR ENTIDADE
 
 ```md
@@ -112,3 +124,23 @@ Onde e como aparece nas fontes.
 
 **Status de confiança:**
 high / medium / low / UNSOURCED
+```
+
+---
+
+## CRITÉRIOS DE COMPLETUDE
+
+O `universe_knowledge_base.md` está pronto para avançar ao Passo 4 quando:
+
+| Critério | Mínimo |
+|----------|--------|
+| Entidades `importance: main` com entrada | 100% |
+| Entidades `importance: secondary` com entrada | 80% |
+| Entradas com status `UNSOURCED` em entidades `importance: main` | 0 exceções |
+| Fontes citadas por entidade | ≥1 por entidade com status high/medium |
+
+**Bloquear prosseguimento se:** qualquer entidade `importance: main` estiver ausente ou marcada como `UNSOURCED`.
+
+**Para entidades `confidence: low`:** documentar explicitamente que a fonte é inferida/especulativa. Não omitir — marcar com status `UNSOURCED` e nota explicando o que se sabe.
+
+**O arquivo de knowledge base não é uma wiki completa** — é uma referência de localização. O critério é cobertura das entidades narrativamente relevantes, não exaustividade enciclopédica.

@@ -19,6 +19,17 @@ Transformar a lista bruta de entidades candidatas em um registro canônico estru
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `entities_candidates.json` | Existe; campo `name` presente em todas as entradas; ≥1 entidade |
+| `aliases_map.json` | Existe; campos `alias` e `canonical_name` presentes em todas as entradas |
+
+❌ **Se qualquer verificação falhar: PARAR. Executar o Passo 1 (Discovery) antes de continuar.**
+
+---
+
 ## TAREFAS
 
 ### 1. Classificar cada entidade
@@ -72,6 +83,20 @@ Colunas obrigatórias:
 | `importance` | main / secondary / background |
 | `confidence` | high / medium / low |
 | `notes` | Observações de tradução, ambiguidades, regras específicas |
+
+---
+
+## CRITÉRIOS DE COMPLETUDE DO ENTITIES.CSV
+
+O `entities.csv` está pronto para avançar ao Passo 3/4 quando:
+
+| Critério | Mínimo |
+|----------|--------|
+| Entidades de `entities_candidates.json` processadas | 100% (resolvidas ou explicitamente descartadas com nota) |
+| Entradas com `confidence: low` sem nota explicativa | 0 |
+| Ambiguidades sem registro em `notes` | 0 |
+
+**Entidades descartadas** devem ter uma linha com `notes: "descartado — [razão]"`, não podem ser simplesmente omitidas.
 
 ---
 
