@@ -60,6 +60,52 @@
 
 ---
 
+## SCHEMAS DE ARQUIVOS MARKDOWN ESTRUTURADO
+
+### `research_log.md`
+
+Arquivo markdown com seções obrigatórias. Campos de cabeçalho:
+
+| Campo | Obrigatório | Valores aceitos |
+|-------|-------------|-----------------|
+| `Status` | ✅ | `pending` / `reconciled` |
+| `Data de reconciliação` | ✅ se `reconciled` | `YYYY-MM-DD` |
+| `Fronteira de spoiler` | ✅ | Descrição textual (ex: "Caps. 1–5, pré-reveal de Ukon") |
+| `Seções ignoradas intencionalmente` | ✅ | Lista de seções não lidas ou "nenhuma" |
+
+Tabela **Fontes Avaliadas** — colunas obrigatórias:
+
+| Coluna | Obrigatório | Valores aceitos |
+|--------|-------------|-----------------|
+| `ID` | ✅ | `SRC-NNN` único no arquivo |
+| `Fonte` | ✅ | Nome da fonte |
+| `Tipo` | ✅ | Wiki / Corpus / Guia / Site oficial / Outro |
+| `Tier` | ✅ | 1 / 2 / 3 |
+| `Cobertura de Spoiler` | ✅ | Descrição textual |
+| `URL/Caminho` | ✅ | URL ou caminho local |
+| `Encontrada por` | ✅ | IA / Humano / IA + Humano |
+| `Usada` | ✅ | Sim / Não |
+| `Notas` | — | Texto livre |
+
+Tabela **Conflitos Resolvidos** — presente sempre (vazia se não houve conflito):
+
+| Coluna | Obrigatório |
+|--------|-------------|
+| `Termo` | ✅ |
+| `Versão IA` | ✅ |
+| `Versão Humano` | ✅ |
+| `Decisão` | ✅ |
+| `Razão` | ✅ |
+
+Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
+
+**Invariantes:**
+- `status: reconciled` só pode ser definido após comparação entre achados da IA e do humano
+- Cada fonte com `Usada: Sim` deve ter ao menos uma citação em `universe_knowledge_base.md`
+- IDs de fonte (`SRC-NNN`) devem ser únicos no arquivo e sequenciais
+
+---
+
 ## SCHEMAS DE ARQUIVOS JSON
 
 ### `entities_candidates.json`

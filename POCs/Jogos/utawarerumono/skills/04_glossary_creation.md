@@ -15,6 +15,7 @@ Definir de forma definitiva como cada termo deve ser tratado na tradução, e do
 
 - `entities.csv`
 - `universe_knowledge_base.md`
+- `research_log.md`
 - `tone_analysis.md`
 - `aliases_map.json`
 
@@ -26,6 +27,7 @@ Definir de forma definitiva como cada termo deve ser tratado na tradução, e do
 |----------|---------|
 | `entities.csv` | Existe; campos obrigatórios presentes; nenhum `canonical_name` vazio |
 | `universe_knowledge_base.md` | Existe; critérios de completude do Passo 3 atendidos |
+| `research_log.md` | Existe; campo `status: reconciled` presente |
 | `tone_analysis.md` | Existe |
 | `aliases_map.json` | Existe |
 
