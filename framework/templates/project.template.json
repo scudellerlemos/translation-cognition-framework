@@ -1,0 +1,27 @@
+{
+  "title": "<título da obra>",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "<código BCP-47, ex: en>",
+  "target_language": "<código BCP-47, ex: pt-BR>",
+  "source": {
+    "file": "artifacts/<corpus>.csv",
+    "format": "csv_offset",
+    "id_column": "<nome da coluna de id, ex: offset>",
+    "text_column": "<nome da coluna de texto-fonte, ex: text_en>"
+  },
+  "formatting_tokens": ["<token1>", "<token2>"],
+  "system_line_convention": "all_caps",
+  "length_constraints": {
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110
+  },
+  "batch_size": 200,
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "<observações sobre o título>"
+}
