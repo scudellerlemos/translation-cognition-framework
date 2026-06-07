@@ -20,6 +20,19 @@ Definir de forma definitiva como cada termo deve ser tratado na tradução, e do
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `entities.csv` | Existe; campos obrigatórios presentes; nenhum `canonical_name` vazio |
+| `universe_knowledge_base.md` | Existe; critérios de completude do Passo 3 atendidos |
+| `tone_analysis.md` | Existe |
+| `aliases_map.json` | Existe |
+
+❌ **Se qualquer verificação falhar: PARAR. Resolver o passo anterior antes de continuar.**
+
+---
+
 ## GLOSSARY.CSV — ESTRUTURA
 
 Colunas obrigatórias:
@@ -98,6 +111,60 @@ Para cada decisão de localização não-óbvia, registrar:
 ```
 
 O decision log é o mecanismo de auditoria do processo. Quando uma decisão for questionada futuramente, a razão está documentada.
+
+---
+
+## VERIFICAÇÃO DE COBERTURA DO GLOSSÁRIO
+
+Após criar o `glossary.csv`, executar esta verificação antes de avançar:
+
+### 1. Cobertura de entidades (entities.csv → glossary.csv)
+
+- Verificar que cada `canonical_name` do `entities.csv` com `importance: main` ou `secondary` tem entrada correspondente em `glossary.csv`
+- Entidades `importance: background` (UI): verificar presença, mas não bloquear se ausentes
+- Gerar lista de lacunas: entidades sem entrada no glossário
+
+### 2. Integridade de regras
+
+| Verificação | Critério de bloqueio |
+|------------|---------------------|
+| Entradas com `handling_rule` vazio | 0 — bloquear se > 0 |
+| Entradas com `pt_br_translation` vazio onde `handling_rule: traduzir` | 0 — bloquear se > 0 |
+| Entidades `importance: main` sem entrada no glossário | 0 — bloquear se > 0 |
+
+### 3. Resultado esperado antes de avançar
+
+- 100% das entidades main/secondary têm entrada no glossário
+- 0% de entradas com `handling_rule` vazio
+- 0% de entradas com `pt_br_translation` vazio para `handling_rule: traduzir`
+
+---
+
+## ATUALIZAÇÃO DE GLOSSÁRIO MID-PROJECT
+
+Quando uma entrada existente do `glossary.csv` for modificada após o início do Passo 6:
+
+**1. Identificar impacto:**
+- Buscar em `translated.csv` todas as ocorrências da forma ANTERIOR do termo
+- Listar os offsets afetados
+
+**2. Classificar urgência:**
+
+| Tipo de mudança | Urgência |
+|----------------|---------|
+| `manter_original` → `traduzir` (ou vice-versa) | Crítica — toda ocorrência anterior está errada |
+| Mudança de forma em `pt_br_translation` | Alta — inconsistência entre lotes |
+| Adição de nota/instrução sem mudança de forma | Baixa |
+
+**3. Registrar no decision_log.md** com tipo `revision`:
+```
+Tipo: revision
+Razão: [por que a regra mudou]
+Impacto: [lista de offsets afetados e estimativa de linhas]
+Ação: re-QA dos segmentos afetados no próximo ciclo 06c
+```
+
+**4. Agendar correção:** adicionar offsets afetados ao próximo ciclo de correção (Passo 06c).
 
 ---
 

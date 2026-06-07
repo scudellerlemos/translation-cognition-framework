@@ -18,6 +18,16 @@ Transformar strings brutas em conhecimento estruturado do universo do jogo. Nenh
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `dialogs.csv` (ou equivalente) | Arquivo presente, não-vazio, offset único por linha |
+
+❌ **Se o arquivo de strings não existir ou estiver vazio: PARAR. Não há análise possível sem corpus.**
+
+---
+
 ## TAREFAS
 
 ### 1. Identificar entidades nomeadas

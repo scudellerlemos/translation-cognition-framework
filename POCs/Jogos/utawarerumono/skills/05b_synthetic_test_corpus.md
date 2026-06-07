@@ -266,9 +266,23 @@ Testa que a transição de alias para nome real funciona narrativamente.
 
 ---
 
+## CRITÉRIO DE APROVAÇÃO DAS SUITES
+
+| Condição | Resultado |
+|---------|----------|
+| 0 casos com `status: failed` | Suite aprovada — avançar |
+| 1+ casos `failed` com `suggested_fix` aceito e re-testado | Suite aprovada condicionalmente — documentar no decision_log |
+| 1+ casos `failed` por causa raiz sistêmica (instrução de prompt) | **Suite bloqueada** — toda a suite reprovada, não só o caso |
+| 1+ casos `failed` sem fix identificado | **Suite bloqueada** — escalar para revisão humana |
+
+**O número mínimo de casos por suite é 3.** Suites com menos de 3 casos não têm cobertura estatística suficiente para validar a distinção.
+
+---
+
 ## REGRAS CRÍTICAS
 
 - **Nenhum segmento real de persona de identidade dupla deve ser traduzido antes da suite correspondente ser aprovada.** Isso é inegociável.
 - Aprovação da suite não é automática — cada caso deve ser revisado explicitamente.
 - Casos que falham por causa raiz sistêmica (instrução de prompt) bloqueiam **toda a suite**, não só o caso individual.
 - Os resultados do corpus sintético alimentam o `decision_log.md` quando revelam necessidade de ajuste de regra.
+- Re-execução de suite após ajuste de regra: re-testar **todos** os casos, não apenas os que falharam — uma correção pode quebrar casos que passavam antes.

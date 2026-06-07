@@ -44,7 +44,9 @@
 | `05b_synthetic_test_corpus.md` | 5b | Corpus de teste para pontos críticos |
 | `06_translation.md` | 6 | Execução da tradução com controle de progresso |
 | `06b_micro_qa.md` | 6b | QA por lote após cada 200 linhas |
+| `06c_correction_cycle.md` | 6c | Correções cirúrgicas pós-QA com re-validação |
 | `07_qa.md` | 7 | QA final de consistência global |
+| `schemas/artifacts_schema.md` | — | Schemas formais de todos os artefatos JSON e CSV |
 
 ### Artifacts (outputs do processo)
 
@@ -64,10 +66,10 @@
 | `synthetic_test_results.json` | Passo 5b | Resultados das execuções de teste |
 | `dialogs.csv` | — | Corpus source (todas as linhas, imutável) |
 | `translated.csv` | Passo 6 | Corpus com todas as linhas; pt vazio = pendente |
-| `translation_status.json` | Passo 6 | Progresso atual + next_offset para retomada |
-| `micro_qa_log.json` | Passo 6b | Log acumulativo de issues por lote |
+| `translation_status.json` | Passo 6 | Progresso atual + next_offset + length_warnings + needs_human_review |
+| `micro_qa_log.json` | Passo 6b/6c | Log acumulativo de issues e correções por lote |
 | `qa_report.md` | Passo 7 | Relatório de QA final |
-| `fix_suggestions.json` | Passo 7 | Issues com sugestões de correção |
+| `fix_suggestions.json` | Passo 7 | Issues com sugestões de correção (input do Passo 6c) |
 
 ---
 
@@ -98,3 +100,34 @@ Estas mudanças foram adicionadas após análise crítica do processo v1.0:
 5. **Micro-QA bloqueia o próximo lote** se houver issues críticos não resolvidos.
 6. **Issues críticos no QA final bloqueiam entrega** — sem exceção.
 7. **Em caso de conflito** entre `translation_rules.md` e `glossary.csv`, o CSV prevalece na forma final.
+8. **Cada passo tem um Input Gate.** Não executar sem verificar os artefatos do passo anterior.
+9. **Correções passam pelo Passo 06c.** Não editar `translated.csv` diretamente fora do protocolo 06c.
+10. **Atualização de glossário mid-project** exige identificação de impacto + agendamento de re-QA via 06c.
+
+---
+
+## INVARIANTES DO PROCESSO
+
+Estas condições devem ser verdadeiras em qualquer ponto do projeto:
+
+| Invariante | Verificável em |
+|-----------|---------------|
+| `dialogs.csv` é somente leitura — nunca modificado | A qualquer momento |
+| `translated.csv` tem o mesmo número de linhas que `dialogs.csv` | Após criação do arquivo |
+| `micro_qa_log.json` contém todas as entradas desde o início | A qualquer momento |
+| `decision_log.md` nunca perde entradas | A qualquer momento |
+| Nenhuma tradução final usa alias de spoiler major/critical antes do reveal | QA Final |
+| Schemas de todos os artefatos respeitam `schemas/artifacts_schema.md` | A cada passo |
+
+---
+
+## CRITÉRIOS DE ACEITAÇÃO DO PROJETO
+
+O projeto está completo quando:
+
+- [ ] `translation_status.json` com `completion_pct: 1.00`
+- [ ] `qa_report.md` com status: **aprovado** (0 issues críticos, ≤ aceitável de altos)
+- [ ] `fix_suggestions.json` com todos os issues críticos com `status: applied`
+- [ ] `needs_human_review` no `translation_status.json` está vazio ou todos revisados
+- [ ] Nenhum `length_warning` sem revisão documentada
+- [ ] `decision_log.md` atualizado com todas as decisões não-óbvias do projeto

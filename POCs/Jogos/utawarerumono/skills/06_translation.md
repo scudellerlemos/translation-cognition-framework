@@ -22,6 +22,24 @@ Traduzir o corpus em lotes controláveis, aplicando o plano do passo 5, com auto
 
 ---
 
+## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
+
+| Artefato | Critério |
+|----------|---------|
+| `translation_plan.json` | Existe; `total_lines` bate com o número de linhas em `dialogs.csv` |
+| `glossary.csv` | Existe; nenhuma entrada com `handling_rule` vazio |
+| `translation_rules.md` | Existe |
+| `tone_analysis.md` | Existe |
+
+**Verificação de cobertura do plano:**
+- Contar linhas em `dialogs.csv`
+- Contar entradas em `translation_plan.json`
+- Se contagens diferem: o plano não cobre todo o corpus — **PARAR**
+
+❌ **Se qualquer verificação falhar: PARAR. Traduzir sem plano completo viola o contrato do processo.**
+
+---
+
 ## ESTRUTURA DO TRANSLATED.CSV
 
 **A partir desta versão: o `translated.csv` contém TODAS as linhas do `dialogs.csv`.**
@@ -80,7 +98,17 @@ CHECKLIST DE VOZ (executar mentalmente antes de aceitar cada linha):
 □ Se for linha de comédia: a piada funciona? O ritmo está certo?
 □ Se contém entidade do glossário: a entidade está tratada corretamente?
 □ Se tem risk_level ≥ medium no plano: o risco foi endereçado?
+□ COMPRIMENTO: cada segmento entre \n não excede 140% do EN? (UI/CAPS: ≤ 110%)
 ```
+
+**Sobre a verificação de comprimento:**
+PT-BR é ~20-30% mais longo que EN em média. Caixas de diálogo têm tamanho fixo.
+
+- Medir cada segmento entre marcadores `\n` separadamente
+- Se comprimento PT-BR > 140% do EN: tentar reformulação que preserve tom + sentido
+- Se não for possível reformular sem perder qualidade: marcar `length_warning: true` no `translation_status.json` para revisão posterior
+- Para UI (linhas em CAPS): limite mais estrito de 110% — boxes de UI são menores
+- **Prioridade:** tom > comprimento > literalidade. Nunca sacrificar voz para encurtar.
 
 **Personagens de atenção máxima** (verificação obrigatória em cada linha):
 - **Haku:** casual, seco, nunca melodramático. Comédia por subreação.
