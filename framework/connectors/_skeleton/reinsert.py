@@ -2,14 +2,15 @@
 """
 ESQUELETO — reinsert.py  (conector hex_binary)
 
-Reinseridor DETERMINÍSTICO: translated.csv -> binário traduzido + patch
+Reinseridor DETERMINÍSTICO: approved_translations.csv -> output/<nome-original> + patch
 
 A IA adapta este esqueleto ao formato do binário específico de cada projeto e o salva em
     projects/<título>/connector/reinsert.py
+Criar SÓ com permissão (governança de scripts); se já existir, apenas EXECUTAR.
 
 Contrato (ver framework/connectors/hex_binary.md):
-    entrada : translated.csv + table_schema + source_binary
-    saída   : binário traduzido + patch (ips/bps/xdelta) + reinsertion_report.md
+    entrada : approved_translations.csv + dialogs.csv + table_schema + source_binary
+    saída   : output/<nome-original> (mesma extensão do input) + patch + reinsertion_report.md
 
 Regras:
 - 100% determinístico no caminho mecânico. LLM NUNCA escreve bytes nem recalcula ponteiros.
@@ -87,13 +88,17 @@ def main(project_json: Path):
     residue = []   # strings T4 — vão para reescrita LLM em lote (Passo 08)
     report = []
 
-    with (root / "artifacts" / "translated.csv").open(encoding="utf-8") as f:
+    # byte_budget vem do dialogs.csv (source); a tradução aprovada vem do approved_translations.csv
+    budgets = {r[id_col]: int(r["byte_budget"])
+               for r in csv.DictReader((root / "artifacts" / "dialogs.csv").open(encoding="utf-8"))}
+
+    with (root / "artifacts" / "approved_translations.csv").open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
             target = row.get("text_target", "")
             if not target:
                 continue                                   # pendente — pula
             offset = int(row[id_col], 16)
-            budget = int(row["byte_budget"])
+            budget = budgets[row[id_col]]
             encoded = encode_string(target, table)
             to_write, tier = fit_string(encoded, budget, conn)
             if to_write is None:
@@ -103,13 +108,16 @@ def main(project_json: Path):
             buf[offset:offset + len(to_write)] = to_write  # sobrescreve fonte->alvo
             report.append((row[id_col], tier, len(to_write), budget))
 
-    # binário traduzido (cópia, nunca sobre o original)
-    out_bin = root / "artifacts" / "translated_build.bin"
+    # saída em output/ com o MESMO nome e extensão do input (nunca sobre o original)
+    src_name = Path(conn["source_binary"]).name
+    out_bin = root / "output" / src_name
+    out_bin.parent.mkdir(parents=True, exist_ok=True)
     out_bin.write_bytes(buf)
+    print(f"Saída gravada em: {out_bin}")            # informar o usuário o diretório de saída
 
     # patch padrão
     emit_patch(original, bytes(buf), conn.get("patch_format", "ips"),
-               root / "artifacts" / f"patch.{conn.get('patch_format', 'ips')}")
+               root / "output" / f"patch.{conn.get('patch_format', 'ips')}")
 
     # reinsertion_report.md — overflows/repoints/falhas viram issues p/ 06c/07
     lines = "\n".join(f"- {i} [{t}] {n}/{b} bytes" for i, t, n, b in report)

@@ -7,14 +7,14 @@
 
 ## OBJETIVO
 
-Aplicar correções identificadas pelo Micro-QA ou pelo QA Final ao `translated.csv`, com escopo cirúrgico (apenas os IDs identificados), verificação inline de cada correção, e registro auditável do que foi alterado.
+Aplicar correções identificadas pelo Micro-QA ou pelo QA Final ao `approved_translations.csv` (a tradução aprovada), com escopo cirúrgico (apenas os IDs identificados), verificação inline de cada correção, e registro auditável do que foi alterado.
 
 ---
 
 ## INPUTS
 
 - `micro_qa_log.json` (se vindo do passo 06b) **ou** `fix_suggestions.json` (se vindo do passo 07)
-- `translated.csv` (estado atual do corpus)
+- `approved_translations.csv` (traduções aprovadas — alvo das correções)
 - `project.json` (tokens, length_constraints)
 - `glossary.csv`
 - `translation_rules.md`
@@ -40,7 +40,7 @@ Montar a lista de IDs (`id_column`) a corrigir. **Esta lista é o único escopo 
 ### Passo 3 — Aplicar correções
 
 Para cada ID na lista:
-1. Localizar a linha em `translated.csv`
+1. Localizar a linha em `approved_translations.csv`
 2. Aplicar a `suggested` do log, ou uma nova tradução fundamentada na análise
 3. Antes de aceitar, verificar checklist obrigatório:
 
@@ -105,7 +105,7 @@ Se uma linha falhar no mini-QA:
 
 | Arquivo | Modificação |
 |---------|-------------|
-| `translated.csv` | Linhas corrigidas atualizadas (somente os IDs do escopo) |
+| `approved_translations.csv` | Linhas corrigidas atualizadas (somente os IDs do escopo) |
 | `micro_qa_log.json` | Nova entrada de correção adicionada (append) |
 | `fix_suggestions.json` | Issues resolvidos marcados com `"status": "applied"` |
 
@@ -116,5 +116,5 @@ Se uma linha falhar no mini-QA:
 - **Escopo cirúrgico é inviolável.** Nunca modificar linhas fora da lista de IDs do ciclo.
 - **Nunca aceitar uma correção sem passar pelo checklist.** A correção pode introduzir um novo issue.
 - Após o ciclo: se `micro_qa_log.json` ainda contém issues críticos não resolvidos → **o bloqueio de avanço para o próximo lote permanece ativo**.
-- Issues escalados (`escalated: true`) devem ser resolvidos por humano antes da entrega.
+- Issues escalados (`escalated: true`) devem ser resolvidos pelo usuário antes da entrega.
 - Este passo é **sempre sequencial** — não aplicar correções em paralelo no mesmo arquivo.
