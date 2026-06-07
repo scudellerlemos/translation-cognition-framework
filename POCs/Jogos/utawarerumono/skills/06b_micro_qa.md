@@ -119,6 +119,8 @@ Append a cada lote (não sobrescrever — acumular):
 
 ## REGRAS CRÍTICAS
 
-- **O micro-QA é executado antes do próximo lote, não depois.** A ordem é: traduzir lote → micro-QA → corrigir → aprovar → traduzir próximo lote.
+- **O micro-QA é executado antes do próximo lote, não depois.** A ordem é: traduzir lote → micro-QA → **06c se reprovado** → aprovar → traduzir próximo lote.
+- Quando `batch_approved: false`: executar o Passo 06c (Correction Cycle) antes de avançar. Não tentar corrigir inline no mesmo passo — o 06c tem o protocolo de escopo cirúrgico.
 - Issues de tom que aparecem em ≥ 3 linhas do mesmo personagem no mesmo lote são **problemas sistêmicos**, não pontuais. Revisar o perfil de voz no prompt do passo 6 antes de continuar.
 - O `micro_qa_log.json` é a memória do processo — não apagar entre lotes.
+- Issues com `escalated: true` no log (segundo failure no mesmo offset) devem ser resolvidos por humano antes da entrega — não podem ser fechados automaticamente.
