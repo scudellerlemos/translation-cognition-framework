@@ -13,7 +13,7 @@ Detectar drift de tom, erros de entidade e quebras de registro enquanto o corpus
 
 ## INPUTS
 
-- O lote recém-traduzido (do `translated.csv`)
+- O lote recém-proposto (`translation_plan.json → base_translation`, consolidado em `approved_translations.csv`) confrontado com o `dialogs.csv` (source)
 - `project.json` (tokens, convenção de sistema)
 - `glossary.csv`
 - `translation_rules.md`
@@ -121,4 +121,4 @@ Append a cada lote (não sobrescrever — acumular):
 - Quando `batch_approved: false`: executar o Passo 06c (Correction Cycle) antes de avançar. Não corrigir inline no mesmo passo — o 06c tem o protocolo de escopo cirúrgico.
 - Issues de tom que aparecem em ≥ 3 linhas do mesmo personagem no mesmo lote são **problemas sistêmicos**, não pontuais. Revisar o perfil de voz no prompt do passo 6 antes de continuar.
 - O `micro_qa_log.json` é a memória do processo — não apagar entre lotes.
-- Issues com `escalated: true` (segundo failure no mesmo id) devem ser resolvidos por humano antes da entrega.
+- Issues com `escalated: true` (segundo failure no mesmo id) devem ser resolvidos pelo usuário antes da entrega.

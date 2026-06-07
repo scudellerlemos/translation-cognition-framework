@@ -36,7 +36,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 02_entity_resolution
     ↓
-03_knowledge_building  (pesquisa colaborativa IA+humano → research_log.md)
+03_knowledge_building  (pesquisa colaborativa IA+usuário → research_log.md)
     ↓
 04_glossary_creation  +  04b_decision_log (inicia aqui, acumulativo)
     ↓
@@ -50,7 +50,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 07_qa  (após cada arco/segmento maior e ao final do corpus)
     ↓
-08_reinsertion  (conector: translated.csv → binário traduzido + patch; cascata det., LLM só no resíduo)
+08_reinsertion  (conector: approved_translations.csv → binário traduzido em output/; cascata det., LLM só no resíduo)
 ```
 
 ---
@@ -64,7 +64,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `00_extraction.md` | 0 | Extrair o corpus do meio via conector (determinístico) + byte budgets + round-trip |
 | `01_discovery.md` | 1 | Identificar entidades, tom, aliases, spoilers |
 | `02_entity_resolution.md` | 2 | Classificar e unificar entidades |
-| `03_knowledge_building.md` | 3 | Pesquisa colaborativa (IA + humano) + base de conhecimento |
+| `03_knowledge_building.md` | 3 | Pesquisa colaborativa (IA + usuário) + base de conhecimento |
 | `04_glossary_creation.md` | 4 | Glossário + regras de tradução |
 | `04b_decision_log.md` | 4b | Registro de decisões — auditoria do processo |
 | `05_translation_planning.md` | 5 | Plano de tradução por linha |
@@ -109,7 +109,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `synthetic_test_corpus.json` | Passo 5b | Casos de teste sintéticos por suite |
 | `synthetic_test_results.json` | Passo 5b | Resultados das execuções de teste |
 | `<corpus-fonte>` | — | Corpus source (todas as linhas, imutável) — caminho em `project.json` |
-| `translated.csv` | Passo 6 | Corpus com todas as linhas; alvo vazio = pendente |
+| `approved_translations.csv` | Passo 6 | Traduções aprovadas (`id_column`, `text_target`) — fonte de verdade aplicada no Passo 8 |
 | `translation_status.json` | Passo 6 | Progresso + next_offset + length_warnings + needs_human_review |
 | `micro_qa_log.json` | Passo 6b/6c | Log acumulativo de issues e correções por lote |
 | `qa_report.md` | Passo 7 | Relatório de QA final |
@@ -129,7 +129,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 6. **Issues críticos no QA final bloqueiam entrega** — sem exceção.
 7. **Em caso de conflito** entre `translation_rules.md` e `glossary.csv`, o CSV prevalece na forma final.
 8. **Cada passo tem um Input Gate.** Não executar sem verificar os artefatos do passo anterior.
-9. **Correções passam pelo Passo 06c.** Não editar `translated.csv` diretamente fora do protocolo 06c.
+9. **Correções passam pelo Passo 06c.** Não editar `approved_translations.csv` diretamente fora do protocolo 06c.
 10. **Atualização de glossário mid-project** exige identificação de impacto + agendamento de re-QA via 06c.
 11. **Nenhum dado de obra específica vive nas skills.** Tudo específico vem de `project.json` + artefatos.
 12. **O corpus é output do Passo 00 (extração); a tradução é devolvida no Passo 08 (reinserção).** O ciclo meio→corpus→meio é fechado.
@@ -144,7 +144,8 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | Corpus-fonte é somente leitura — nunca modificado | A qualquer momento |
 | `dialogs.csv` é output do Passo 00; round-trip (extract→reinsert idêntico === original) passa | Gate do Passo 00 |
 | `extract.py` e `reinsert.py` compartilham o mesmo `table_schema` | Passos 00 / 08 |
-| `translated.csv` tem o mesmo número de linhas que o corpus-fonte | Após criação do arquivo |
+| `approved_translations.csv` casa cada `id_column` com uma linha do `dialogs.csv` | Antes do Passo 8 |
+| A IA nunca escreve a tradução à mão nos dados/binário — só o script aplica o arquivo aprovado | Passos 6/8 |
 | `micro_qa_log.json` contém todas as entradas desde o início | A qualquer momento |
 | `decision_log.md` nunca perde entradas | A qualquer momento |
 | Nenhuma tradução final usa alias de spoiler major/critical antes do reveal | QA Final |

@@ -42,20 +42,19 @@ Traduzir o corpus em lotes controláveis, aplicando o plano do passo 5, com auto
 
 ---
 
-## ESTRUTURA DO TRANSLATED.CSV
+## ONDE FICAM AS TRADUÇÕES PROPOSTAS
 
-**O `translated.csv` contém TODAS as linhas do corpus-fonte.**
+As traduções propostas vivem no `translation_plan.json` (campo `base_translation`), uma por linha.
+O progresso e a retomada são rastreados pelo `translation_status.json` (`next_offset`).
 
-Linhas não traduzidas têm `text_target` vazio. Isso torna o progresso visível e permite retomada sem perda.
-
-```csv
-[id_column],text_source,text_target
-[id1],...calls... to me...?,...chama... para mim...?
-[id2],but this thing... defies all reason. And...,
+```
+translation_plan.json → base_translation (proposta)   →  approved_translations.csv (aprovado)
 ```
 
-> Os nomes de coluna seguem o `project.json`: a coluna de ID usa `source.id_column`; a coluna-fonte
-> espelha `source.text_column`; a coluna-alvo recebe a tradução no `target_language`.
+Após aprovação, o conjunto vai para `approved_translations.csv` (`id_column`, `text_target`). A IA
+**não** mantém um CSV de dados com source+target preenchido à mão (ver `schemas/artifacts_schema.md`).
+
+> Os nomes de coluna seguem o `project.json`: o ID usa `source.id_column`; o alvo recebe a tradução no `target_language`.
 
 ---
 
@@ -174,11 +173,28 @@ o media-profile. O mecanismo (orçamento como restrição + check determinístic
 
 ---
 
+## ONDE A TRADUÇÃO É ESCRITA (proposta → aprovação → aplicação)
+
+A IA **propõe** a tradução; ela **não** edita o binário nem um CSV de dados à mão. Fluxo:
+
+1. **Propor (este passo, cognitivo):** a tradução de cada linha é registrada no
+   `translation_plan.json`, campo `base_translation`. Reviewável e auditável.
+2. **Aprovar (usuário):** após revisão (incluindo Micro-QA 06b), o conjunto aprovado é consolidado em
+   **`approved_translations.csv`** (`id_column`, `text_target`) — a fonte de verdade da tradução.
+3. **Aplicar (Passo 08, determinístico):** o script do conector lê `dialogs.csv` + `approved_translations.csv`
+   e grava a saída. Nenhuma escrita à mão da IA nos dados/binário.
+
+> ⚠️ A IA **não preenche `text_target` à mão** num arquivo que contém o source. Isso evita
+> contaminar o source e mantém a separação cognição/mecânica. Ver `schemas/artifacts_schema.md`.
+
+---
+
 ## OUTPUTS OBRIGATÓRIOS
 
 | Arquivo | Conteúdo |
 |---------|----------|
-| `translated.csv` | Todas as linhas do corpus; `text_target` preenchido para as traduzidas, vazio para as pendentes |
+| `translation_plan.json` | Traduções **propostas** (`base_translation`) + metadados por linha |
+| `approved_translations.csv` | Traduções **aprovadas** (`id_column`, `text_target`) — consolidado após aprovação |
 | `translation_status.json` | Estado atual do progresso, `next_offset` para retomada |
 
 ---
@@ -186,6 +202,7 @@ o media-profile. O mecanismo (orçamento como restrição + check determinístic
 ## REGRAS CRÍTICAS
 
 - **Nunca reiniciar do zero.** Sempre ler `translation_status.json` primeiro e continuar do `next_offset`.
-- **Nunca sobrescrever traduções já existentes** ao retomar — só preencher linhas com `text_target` vazio.
+- **A IA propõe; não edita dados à mão.** A tradução aprovada vive em `approved_translations.csv`; a aplicação é do script (Passo 08).
+- **Nunca sobrescrever traduções já aprovadas** ao retomar — só completar as pendentes.
 - Se o `translation_plan.json` existir para o lote atual, usar os `base_translation` como ponto de partida, não ignorar o plano.
 - Linhas com `risk_level: critical` no plano → adicionar a `needs_human_review` no status antes de prosseguir.
