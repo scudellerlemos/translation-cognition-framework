@@ -132,7 +132,7 @@ Após criar o `glossary.csv`, executar esta verificação antes de avançar:
 Quando uma entrada existente do `glossary.csv` for modificada após o início do Passo 6:
 
 **1. Identificar impacto:**
-- Buscar em `translated.csv` todas as ocorrências da forma ANTERIOR do termo
+- Buscar em `approved_translations.csv` todas as ocorrências da forma ANTERIOR do termo
 - Listar os IDs de linha afetados
 
 **2. Classificar urgência:**

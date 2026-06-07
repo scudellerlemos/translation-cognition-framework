@@ -2,7 +2,7 @@
 ## Extrair o corpus do meio de armazenamento (via conector)
 
 > **Quando usar:** No começo absoluto do projeto, **antes do Discovery**. Transforma o binário da
-> obra (fornecido pelo humano) no corpus canônico (`dialogs.csv`) que todo o resto do pipeline consome.
+> obra (fornecido pelo usuário) no corpus canônico (`dialogs.csv`) que todo o resto do pipeline consome.
 
 ---
 
@@ -13,14 +13,15 @@ usando o conector declarado em `project.json → connector`. Nenhuma tradução 
 acontece aqui — é extração mecânica.
 
 > A IA **escreve o `extract.py`** do projeto (a partir de `framework/connectors/_skeleton/extract.py`),
-> guiada pelo contrato em `framework/connectors/<connector.type>.md`. O humano fornece o binário.
+> guiada pelo contrato em `framework/connectors/<connector.type>.md`. O usuário fornece o binário —
+> o caminho vem de `connector.source_binary` (ou de um argumento de CLI); nunca hardcoded no script.
 
 ---
 
 ## INPUTS
 
 - `project.json` (com bloco `connector` válido)
-- O binário-fonte (`connector.source_binary`) — fornecido pelo humano
+- O binário-fonte (`connector.source_binary`) — fornecido pelo usuário
 - O schema de tabela (`connector.table_schema`)
 
 ---
@@ -39,23 +40,33 @@ acontece aqui — é extração mecânica.
 
 ## TAREFAS
 
-### 1. Escrever / adaptar o `extract.py`
+### 1. Escrever / adaptar o `extract.py` (uma vez)
 A partir do esqueleto, implementar para o formato real do binário: parser da tabela, decodificação
 de string, localização por ponteiro/varredura. Determinístico — nunca LLM.
 
+> **Os scripts são executados, não refeitos.** Depois de escrito, `extract.py` é **rodado como
+> ferramenta** a cada extração — a IA não re-extrai bytes manualmente (determinismo + economia de
+> tokens). Só reescrever o script se o formato do binário mudar.
+
 ### 2. Extrair o corpus
 Rodar `extract.py`. Para cada string: decodificar via tabela, mapear control codes → tokens, registrar
-o offset como `id_column`.
+o offset como `id_column`. **Sinalizar anomalias** (idiomas misturados, truncamento, bytes inesperados)
+no `extraction_log.md` em vez de tratá-las como texto normal.
 
 ### 3. Registrar o byte budget (SHIFT-LEFT)
 Para cada string, gravar `byte_budget` = nº de bytes que ela ocupa no binário. **Este campo é o que
 permite a tradução caber na 1ª passada (Passo 06) e evita custo de LLM na reinserção.** Não omitir.
 
 ### 4. Gate de charset do idioma-alvo
-Verificar se a fonte/tabela do jogo representa os caracteres do `target_language` (ex: ã, ç, õ).
-- Todos representáveis → seguir.
-- Faltam glifos → registrar `target_charset_supported: false` e decidir (expandir fonte vs transliterar)
-  no `decision_log.md`. **Bloquear** tradução fiel até resolver.
+Verificar se a fonte do jogo representa os caracteres do `target_language` (ex: ã, ç, õ) — **antes** de traduzir.
+Ordem de confiabilidade do método:
+1. **Inspecionar a fonte/atlas** (primário) — listar os code points do alvo ausentes da charmap.
+2. **Teste in-game** com pangrama do alvo.
+3. **Presença no texto-fonte** (sinal **fraco**) — ⚠️ se o fonte não usa os acentos do alvo (ex: inglês),
+   a ausência no texto **não** prova ausência na fonte.
+
+Veredito → `target_charset_supported`: `true` / `false` / `likely` / `unknown`.
+- Faltam glifos → decidir (expandir fonte vs transliterar) no `decision_log.md`; **bloquear** tradução fiel até resolver.
 
 ### 5. Gate de round-trip (prova de correção)
 Rodar `extract.py` → `reinsert.py` (sem traduzir nada) → comparar com o binário original.
@@ -75,7 +86,7 @@ binário' === binário  (byte-a-byte)
 |---------|----------|
 | `connector/extract.py` (na instância) | Extrator determinístico do projeto |
 | `dialogs.csv` | Corpus canônico: `id_column`, `text_source`, `byte_budget` |
-| `extraction_log.md` | Tabela usada, encoding, mapa de control codes, total de strings, offsets cobertos |
+| `extraction_log.md` | Tabela, encoding, control codes, total, offsets, gates (round-trip/charset), anomalias, **taxa de fit do byte-budget** |
 
 ---
 
@@ -86,3 +97,5 @@ binário' === binário  (byte-a-byte)
 - **Round-trip é gate**: sem round-trip byte-idêntico, o pipeline não avança.
 - O binário-fonte é **somente leitura** — nunca modificado por este passo.
 - `dialogs.csv` é um **output deste passo**, não um dado pré-existente. O Discovery (Passo 01) o consome.
+- **Reporte a taxa de fit do byte-budget** (quantas linhas-alvo caberiam in_place) para escolher
+  `space_strategy` com dados: fit baixo → `repoint`. (POC EN→pt-BR: ~60% → `repoint`.)

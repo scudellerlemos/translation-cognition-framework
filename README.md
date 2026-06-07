@@ -43,7 +43,7 @@ As skills resolvem tudo que é específico de uma obra lendo o `project.json` e 
 00 extração      → conector: binário → corpus canônico (+ orçamento de bytes); gate de round-trip
 01 discovery     → entidades, tom, aliases, spoilers
 02 entidades     → registro canônico
-03 conhecimento  → pesquisa colaborativa (IA + humano) → base de conhecimento
+03 conhecimento  → pesquisa colaborativa (IA + usuário) → base de conhecimento
 04 glossário     → regras normativas de tradução (+ decision log)
 05 planejamento  → plano linha a linha (+ corpus de teste sintético)
 06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)

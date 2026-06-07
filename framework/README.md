@@ -31,9 +31,9 @@ ou idioma vive dentro de `framework/`.
 
 **Conector (camada de I/O):** para jogos antigos, o texto está dentro de um binário e precisa ser
 extraído com hex editor + tabela de caracteres. O conector modela isso como **código Python
-determinístico**: o humano fornece o binário, a IA escreve `extract.py` (binário → `dialogs.csv`) e
-`reinsert.py` (`translated.csv` → binário traduzido + patch). Propriedade-chave: **round-trip** —
-extrair e reinserir sem mudanças regenera o binário byte-a-byte. Ver `framework/connectors/`.
+determinístico**: o usuário fornece o binário, a IA escreve `extract.py` (binário → `dialogs.csv`) e
+`reinsert.py` (`approved_translations.csv` → binário traduzido em `output/`). Propriedade-chave:
+**round-trip** — extrair e reinserir sem mudanças regenera o binário byte-a-byte. Ver `framework/connectors/`.
 
 ---
 
@@ -77,7 +77,7 @@ preencher. Campos essenciais (schema completo em `framework/schemas/project_sche
 - `system_line_convention`, `length_constraints`, `batch_size`
 
 ### 3. Fornecer o binário e escrever o conector (jogos antigos)
-O humano coloca o binário em `artifacts/` e declara o `connector` no manifesto. A IA escreve
+O usuário coloca o binário em `artifacts/` e declara o `connector` no manifesto. A IA escreve
 `connector/extract.py` e `reinsert.py` a partir de `framework/connectors/_skeleton/`, guiada por
 `framework/connectors/hex_binary.md`. **O Passo 00 só avança se o round-trip passar** (extrair →
 reinserir sem mudanças === binário original).
