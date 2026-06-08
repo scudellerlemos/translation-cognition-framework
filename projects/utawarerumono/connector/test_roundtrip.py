@@ -213,6 +213,28 @@ def test_ips_applies(applied, original):
     assert bytes(buf) == applied["out"], "IPS aplicado ao original != output"
 
 
+# --------------------------------------------------------------------------- T4 (resíduo em lote)
+def test_collect_t4_residue_synthetic():
+    """A coleta do lote T4 extrai só as linhas tier T4_residuo, com over_by/budget corretos."""
+    report = [("0x1", "T1_in_place", 5, 5, "oi"),
+              ("0x2", "T4_residuo", 30, 20, "alvo muito longo")]
+    res = R.collect_t4_residue(report, {"0x2": "long source line"})
+    assert len(res) == 1
+    r = res[0]
+    assert r["offset"] == "0x2" and r["byte_budget"] == 20 and r["over_by"] == 10
+    assert r["text_source"] == "long source line" and r["current_target"] == "alvo muito longo"
+
+
+@requires_bin
+def test_t4_residue_empty_on_corpus(original):
+    """Com o Plano B (relocação intra-arquivo) o resíduo irredutível é 0 → lote T4 vazio."""
+    approved = {r["offset"]: r["text_target"]
+                for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    _buf, _rep, report = R.build_output(original, R.load_budgets(), approved)
+    res = R.collect_t4_residue(report, {o: s for o, s, _ in R.load_budgets()})
+    assert res == [], f"resíduo T4 deveria ser 0 com Plano B: {res[:3]}"
+
+
 # --------------------------------------------------------------------------- governança
 import unicodedata  # noqa: E402
 

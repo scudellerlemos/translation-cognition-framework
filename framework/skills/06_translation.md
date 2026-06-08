@@ -171,6 +171,22 @@ o media-profile. O mecanismo (orçamento como restrição + check determinístic
 - Muitas linhas terminam com quebra e continuam no próximo ID
 - Verificar sempre se a junção da linha atual + próxima soa natural no idioma-alvo
 
+### Interjeições, onomatopeias e exclamações de emoção
+Sons de **susto, dor, surpresa, esforço, riso, choro, hesitação** (ex.: `Ngh...`, `Nn...`, `Hm?`,
+`Gah!`, `Ghh!`) **são tradução, não pontuação** — devem ser **LOCALIZADOS** às convenções do
+idioma-alvo, nunca copiados do source. Copiar a interjeição do source é um erro de naturalidade tão
+grave quanto deixar uma palavra sem traduzir.
+
+- Traduzir pela **emoção/situação**, não pela letra: o som certo é o que um falante nativo emitiria
+  *naquela* situação dramática (ver o `intent`/`tone_register` da linha no plano).
+- Sinal de detecção: `tone_register` ~ `interjeicao_*` **ou** linha curta cujo conteúdo é só
+  onomatopeia. **Atenção:** muitas interjeições ficam marcadas como `dialogo` genérico — detectar
+  também por conteúdo (linha curta, sem palavras do idioma-alvo).
+- **Coerência:** se o projeto adota uma convenção (ex.: gemido = `Nnh...`, dúvida = `Hein?`),
+  aplicá-la a TODAS as ocorrências. Curar as formas num artefato de referência do projeto.
+- **Restrição do conector:** se o conector transflitera na gravação (ex.: fonte sem acentos), escolher
+  formas que sobrevivam à transliteração — ex.: `Hã?`→`Ha?` lê como riso; preferir `Hein?`/`Ai!`.
+
 ---
 
 ## ONDE A TRADUÇÃO É ESCRITA (proposta → aprovação → aplicação)

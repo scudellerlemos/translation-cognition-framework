@@ -245,6 +245,42 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     return buf, repoints, report
 
 
+# ----------------------------------------------------------------------------- T4: resíduo em lote
+def collect_t4_residue(report, src_by):
+    """Linhas que NEM in_place NEM relocação resolveram (tier T4_residuo) — overflow irredutível.
+    Vira um LOTE para a IA reescrever mais curto numa ÚNICA passada (princípio 'LLM só no resíduo').
+    Retorna lista de dicts (offset, text_source, current_target, byte_budget, target_bytes, over_by)."""
+    out = []
+    for off_hex, tier, nbytes, budget, txt in report:
+        if tier == "T4_residuo":
+            out.append({
+                "offset": off_hex,
+                "text_source": src_by.get(off_hex, ""),
+                "current_target": txt,
+                "byte_budget": budget,
+                "target_bytes": nbytes,
+                "over_by": nbytes - budget,
+                "reason": "overflow sem head relocável (sem ponteiro 50 00) — encurtar para caber in_place",
+            })
+    return out
+
+
+def write_t4_batch(path, src_name, residue):
+    """Grava artifacts/t4_residue.json: o LOTE a reescrever (vazio = nada a fazer).
+    A IA reescreve cada `current_target` para caber em `byte_budget`, devolve no translation_plan.json
+    (base_translation), e o fluxo normal (poc_pipeline -> approved -> reinsert) reaplica. Governança:
+    a IA PROPÕE no plano; o usuário aprova. Nenhuma escrita de bytes à mão."""
+    payload = {
+        "generated_for": src_name,
+        "count": len(residue),
+        "instruction": ("Reescreva cada 'current_target' para caber em 'byte_budget' bytes (UTF-8, já "
+                        "transliterado p/ ASCII na gravação), preservando tom, tokens e entidades. "
+                        "Devolva as versões curtas no translation_plan.json (base_translation)."),
+        "lines": residue,
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 # ----------------------------------------------------------------------------- IPS patch
 def make_ips(original: bytes, modified: bytes) -> bytes:
     """Gera um patch IPS (original -> modified). Cobre também o crescimento no fim do arquivo.
@@ -301,6 +337,12 @@ def main():
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
     residuo = tiers.get("T4_residuo", 0)
+
+    # T4 — exporta o LOTE de resíduo irredutível (vazio hoje: Plano B reloca tudo)
+    src_by = {o: s for o, s, _ in budgets}
+    t4 = collect_t4_residue(report, src_by)
+    write_t4_batch(ART / "t4_residue.json", OUT.name, t4)
+
     files = S.parse_pack(original)
     by_index = {f.index: f for f in files}
     grown = {idx for _, idx, *_ in repoints}
@@ -349,6 +391,8 @@ def main():
 
     print(f"Tiers: {tiers}")
     print(f"Relocações: {len(repoints)}  |  Arquivos crescidos: {len(grown)}  |  Resíduo T4: {residuo}")
+    if residuo:
+        print(f"T4 LOTE -> {ART / 't4_residue.json'}  ({residuo} linha(s) p/ reescrita LLM em lote)")
     print(f"Tamanho: {len(original)} -> {len(buf)} (+{len(buf) - len(original)})")
     print(f"SAÍDA  -> {OUT}")
     print(f"PATCH  -> {IPS}")

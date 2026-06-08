@@ -52,11 +52,21 @@ Se o lote contém alguma linha com `spoiler_flags` no plano:
 - Verificar que aliases de spoiler não foram usados antes do reveal
 - Verificar que os dois nomes de um par de identidade dupla não aparecem no mesmo segmento
 
-### 5. Verificação de naturalidade (amostra)
-Selecionar aleatoriamente 10% das linhas do lote e verificar:
-- A linha soa como o idioma-alvo nativo ou como tradução?
-- Há calques do idioma-fonte?
-- A pontuação e as reticências estão sendo usadas corretamente?
+### 5. Verificação de naturalidade CONTEXTUAL (não-amostral)
+Ler as falas **agrupadas por personagem × situação dramática** (não linha isolada): pegar a sequência
+de falas do personagem naquele momento da história e perguntar, sobre o conjunto:
+- **"Isso lê natural no idioma-alvo? Uma pessoa entende com facilidade?"** Se não → revisar.
+- A fala soa como falante nativo *naquela situação*, ou como tradução literal?
+- Há calques do idioma-fonte? Pontuação/reticências corretas?
+
+### 5b. Localização de interjeições (OBRIGATÓRIO — não amostral)
+Interjeições/onomatopeias/exclamações de emoção (susto, dor, surpresa, esforço, riso, choro) **não
+podem ser cópia do source.** Verificar **todas** as linhas curtas / `tone_register: interjeicao_*`:
+- A interjeição foi **localizada** à convenção do alvo? (`Hm?`→`Hein?`, `Ngh...`→`Nnh...`, `Gah!`→`Ai!`)
+- É **coerente** com as outras ocorrências (mesma convenção em todo o corpus)?
+- Sobrevive à transliteração do conector, se houver (não vira outra coisa sem o acento)?
+- Qualquer interjeição idêntica ao source (`base_translation == text_source`) é um **issue**, salvo
+  justificativa (ex.: grito puro de vogais `Aaaah!`, ou nome próprio sendo soletrado).
 
 ---
 
