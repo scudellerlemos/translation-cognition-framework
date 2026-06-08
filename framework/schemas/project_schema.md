@@ -43,7 +43,9 @@ legendas), pode ser omitido ou simplificado.
 | Campo | Tipo | Obrigatório | Descrição |
 |-------|------|-------------|-----------|
 | `type` | string | ✅ | Tipo de conector (ex: `hex_binary`) — corresponde a `framework/connectors/<type>.md` |
-| `source_binary` | string | ✅ p/ `hex_binary` | Caminho do binário fornecido pelo usuário (CLI ou este campo; nunca hardcoded no script) |
+| `source_binary` | string | ✅ p/ `hex_binary` | Caminho do binário que **o usuário entrega** — **relativo à raiz do projeto** (arquivo copiado para `artifacts/`) **ou** fornecido como **argumento de CLI** no runtime. **Nunca** um caminho absoluto/externo persistido na config (governança: o usuário fornece o binário; nunca hardcoded no script) |
+| `container_format` | string | — | Formato do pacote quando a fonte está **empacotada** (ex: `sdat`). Omitir ou `none` se for binário direto. Para pacote editável em hex no lugar, é metadado informativo (proveniência). |
+| `inner_path` | string | — | Arquivo de diálogo **dentro** do pacote (quando `container_format` ≠ `none`). |
 | `table_schema` | string | ✅ p/ `hex_binary` | Caminho do schema de tabela compartilhado |
 | `extract_script` | string | ✅ p/ `hex_binary` | Caminho do `extract.py` da instância |
 | `reinsert_script` | string | ✅ p/ `hex_binary` | Caminho do `reinsert.py` da instância |
@@ -95,16 +97,17 @@ referência/semente.
   "batch_size": 200,
   "connector": {
     "type": "hex_binary",
-    "source_binary": "artifacts/game_text.bin",
+    "source_binary": "artifacts/ScriptEvent.sdat",
+    "container_format": "sdat",
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
     "reinsert_script": "connector/reinsert.py",
     "encoding": "custom",
     "control_codes": { "{W75}": "0x..", "{END}": "0x.." },
     "pointer_table": { "location": "0x..", "format": "le-16" },
-    "space_strategy": "in_place",
+    "space_strategy": "repoint",
     "patch_format": "ips",
-    "target_charset_supported": false
+    "target_charset_supported": "likely"
   }
 }
 ```
@@ -120,6 +123,8 @@ referência/semente.
 - `source_language` ≠ `target_language`.
 - Para `media_type: game`, `formatting_tokens` deve estar presente (pode ser lista vazia se o engine não usa tokens).
 - `connector.type` deve corresponder a um arquivo em `framework/connectors/`.
+- A **localização real da fonte** (ex: pasta de instalação da Steam) é **orientação ao humano e proveniência** — registrada no `extraction_log.md` — e **nunca** um caminho de input. `connector.source_binary` é **relativo à raiz** (arquivo entregue em `artifacts/`) ou vem por **CLI**; jamais um caminho absoluto/externo persistido na config.
+- Quando `connector.container_format` ≠ `none`, `connector.inner_path` deve estar declarado.
 - `connector.control_codes` deve cobrir todos os `formatting_tokens`.
 - Quando `connector.space_strategy: in_place`, `length_constraints.mode` deve ser `byte_space`.
 - `extract.py` e `reinsert.py` devem compartilhar o mesmo `table_schema` (garantia de round-trip).

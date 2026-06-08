@@ -91,12 +91,32 @@ def iter_string_offsets(data: bytes, project_cfg: dict):
 # ---------------------------------------------------------------------------
 # 4. MAIN
 # ---------------------------------------------------------------------------
-def main(project_json: Path):
+def resolve_source(root: Path, conn: dict, cli_override: str | None) -> tuple[Path, str]:
+    """
+    Resolve o binário-fonte ENTREGUE pelo usuário e devolve (caminho, proveniência).
+    - cli_override (arg de CLI no runtime) tem prioridade — é uma das formas de entrega.
+    - Senão, usa conn['source_binary'], resolvido RELATIVO à raiz do projeto.
+    Governança: o caminho da config nunca deve ser absoluto/externo persistido.
+    """
+    if cli_override:
+        src = Path(cli_override)
+        return src, f"CLI: {cli_override}"
+    declared = conn["source_binary"]
+    if Path(declared).is_absolute():
+        raise SystemExit(
+            f"source_binary não pode ser absoluto na config ({declared}). "
+            f"Copie o arquivo para artifacts/ (caminho relativo) ou passe por CLI."
+        )
+    return (root / declared), f"config: {declared}"
+
+
+def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     conn = cfg["connector"]
     root = project_json.parent
 
-    data = (root / conn["source_binary"]).read_bytes()
+    src_path, provenance = resolve_source(root, conn, source_override)
+    data = src_path.read_bytes()
     table = load_table(root / conn["table_schema"])
 
     id_col = cfg["source"]["id_column"]
@@ -116,7 +136,10 @@ def main(project_json: Path):
     log = root / "artifacts" / "extraction_log.md"
     log.write_text(
         f"# Extraction Log\n\n"
-        f"- Binário: {conn['source_binary']}\n"
+        f"- Binário (entregue): {src_path.name}\n"
+        f"- Proveniência: {provenance}\n"
+        f"- Container: {conn.get('container_format', 'none')}"
+        f"{(' / inner: ' + conn['inner_path']) if conn.get('inner_path') else ''}\n"
         f"- Tabela: {conn['table_schema']}\n"
         f"- Encoding: {conn.get('encoding')}\n"
         f"- Total de strings: {len(rows)}\n",
@@ -126,4 +149,7 @@ def main(project_json: Path):
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1] if len(sys.argv) > 1 else "project.json"))
+    # Uso: python extract.py [project.json] [<caminho-do-binário-entregue>]
+    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    override = sys.argv[2] if len(sys.argv) > 2 else None
+    main(proj, override)

@@ -21,7 +21,7 @@ acontece aqui — é extração mecânica.
 ## INPUTS
 
 - `project.json` (com bloco `connector` válido)
-- O binário-fonte (`connector.source_binary`) — fornecido pelo usuário
+- O binário-fonte **entregue pelo usuário** — em `artifacts/` (via `connector.source_binary` relativo) **ou** passado por **CLI**. Se a fonte for um **pacote**, `connector.container_format` + `inner_path` declarados.
 - O schema de tabela (`connector.table_schema`)
 
 ---
@@ -31,7 +31,8 @@ acontece aqui — é extração mecânica.
 | Artefato | Critério |
 |----------|---------|
 | `project.json` | Existe; bloco `connector` presente e válido (ver `schemas/project_schema.md`) |
-| Binário-fonte | Arquivo presente em `connector.source_binary` |
+| Binário-fonte | Arquivo **entregue pelo usuário** presente (em `artifacts/` via `source_binary` relativo, **ou** caminho passado por CLI). **Não** aceitar caminho absoluto/externo persistido na config. |
+| Pacote (se houver) | Quando `connector.container_format` ≠ `none`, `connector.inner_path` declarado |
 | `table_schema` | Existe; mapa de caracteres + control codes definidos |
 
 ❌ **Se faltar binário ou tabela: PARAR. Sem o meio e a tabela não há extração.**
@@ -39,6 +40,23 @@ acontece aqui — é extração mecânica.
 ---
 
 ## TAREFAS
+
+### 0. Localização e entrega da fonte
+**Antes de qualquer extração**, resolver *de onde* vem o texto:
+
+1. **A IA orienta** o humano sobre **onde** os diálogos vivem — ex: a pasta de instalação da
+   Steam (`...\Data\ENG\ScriptEvent.sdat`). Isso é **instrução**, não input.
+2. **O humano entrega** a fonte de uma destas formas (regra de governança: *o usuário fornece o
+   binário* — ver `framework/connectors/00_index.md`):
+   - **(preferido)** copia o arquivo para `artifacts/` e aponta `connector.source_binary`
+     **relativo à raiz**; ou
+   - passa o caminho como **argumento de CLI** no runtime (`python extract.py <caminho>`).
+   - **Nunca** persistir um caminho absoluto/externo na config.
+3. Se a fonte for um **pacote** (ex: `.sdat`), declarar `connector.container_format` e
+   `connector.inner_path` (qual arquivo interno tem os diálogos). Para pacote editável em hex no
+   lugar, são metadados de proveniência — não exigem unpack (ver `connectors/hex_binary.md`).
+4. Registrar a **proveniência** (localização de origem informada pelo humano) no
+   `extraction_log.md` — para auditoria, jamais como caminho de input.
 
 ### 1. Escrever / adaptar o `extract.py` (uma vez)
 A partir do esqueleto, implementar para o formato real do binário: parser da tabela, decodificação
