@@ -124,3 +124,66 @@ A ordem real de exibição é controlada pelo script (ponteiros). Interpretar o 
 fica como próximo passo; para a cena de abertura, a ordem por offset coincide com a narrativa.
 
 **Impacto:** sequência das linhas. **Revisão necessária:** sim, se a continuidade/contexto exigir ordem exata.
+
+---
+
+## Repoint real implementado — relocação por run
+
+**Data:** 2026-06-07
+**Passo do SDD:** 08
+**Tipo:** revision (resolve o "Revisão necessária" de `space_strategy — in_place → repoint`)
+
+**Decisão tomada:**
+Implementar repoint no `reinsert.py` por **relocação de run**. Formato descoberto (ver
+`connector/table_schema.md`): não há tabela central de ponteiros; cada fala ("head") é referenciada
+inline pelo opcode `50 00` + ponteiro absoluto uint32 LE. Strings sem ponteiro próprio
+("continuações") são lidas em sequência após o head. Um **run** = head + continuações.
+
+Quando qualquer membro de um run estoura o `byte_budget`, o run inteiro é **anexado ao fim do
+arquivo** e **todos** os ponteiros `50 00`+ptr do head são reescritos para o novo endereço. As
+continuações viajam contíguas → a semântica sequencial é preservada.
+
+**Alternativas consideradas:**
+- Reescrever ponteiros pelo valor uint32 cru — rejeitada: gera falsos-positivos (4 bytes que casam
+  por acaso). O filtro `50 00`+ptr elimina isso.
+- Relocar string isolada (não o run) — rejeitada: quebraria continuações sem ponteiro próprio
+  (ex.: `0x35bf`, continuação de `0x35ad`).
+
+**Razão da decisão final:**
+Determinístico, sem LLM, e robusto contra falsos-positivos e continuações. Validado na POC.
+
+**Impacto / resultado (POC 20 linhas, pós-transliteração):**
+T1 in_place = 12; repoint = 8 strings (7 runs); **resíduo T4 = 0**. Round-trip self-test
+byte-idêntico. Patch IPS gerado (arquivo cresce ~280 bytes). Verificação independente: todos os
+ponteiros reescritos leem a string esperada; continuação `0x35bf` segue o head `0x35ad` no novo
+endereço.
+
+**Revisão necessária:** não para o mecanismo. Confirmar in-game que strings relocadas (apêndice ao
+fim do arquivo) exibem corretamente, antes da run completa das 33k.
+
+---
+
+## Charset — transliteração na gravação (gate FALHOU)
+
+**Data:** 2026-06-07
+**Passo do SDD:** 00 / 08
+**Tipo:** external (supersede a decisão "Gate de charset pt-BR — método e veredito")
+
+**Decisão tomada:**
+Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário.
+A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos**
+(correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCII
+(NFKD + descarte de combining marks; `ç→c`), implementado em `reinsert.py`.
+
+**Razão da decisão final:**
+O teste in-game com pangrama pt-BR (`áéíóú âêô ãõ ç ÁÉÍ ÃÕ`) renderizou os acentos como `@`
+(evidência: `artifacts/char1.png`, `artifacts/char2.png`). A fonte do jogo não possui os glifos.
+
+**Alternativas consideradas:**
+- Expandir a fonte (atlas + mapa de chars) — rejeitada nesta fase: esforço alto (asset não está no
+  repo); fica como melhoria futura de qualidade.
+- Remapear glifos não usados — rejeitada: depende de slots livres; mais frágil.
+
+**Impacto:** ortografia degradada (sem acentos) no texto exibido, porém 100% legível e funcional.
+**Efeito colateral positivo:** acento (2 bytes UTF-8) → ASCII (1 byte) reduz o estouro de byte_budget.
+**Revisão necessária:** não (decisão do usuário). Reavaliar se um dia a fonte for expandida.
