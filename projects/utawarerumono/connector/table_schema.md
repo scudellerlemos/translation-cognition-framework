@@ -29,33 +29,48 @@ Os control codes são armazenados como **tokens ASCII literais** dentro da próp
 ## SEÇÃO 3 — TERMINADORES E ESTRUTURA
 
 - **Terminador de string:** `0x00` (null). Strings são **contíguas** no bloco de texto.
-- **Cabeçalho do container:** `"Filename    "` (12 bytes) + índice de arquivos de script
-  (`NN_NN_NNNS.BIN`, registros de 15 bytes). Esse índice **não** referencia falas de diálogo.
-- **Bloco de texto:** inicia em `0x3398` (primeira fala da cena de abertura).
+- **Cabeçalho do container:** `"Filename    "` (12 bytes) + u32 (ptr p/ seção Pack) + array de u32
+  (offsets dos nomes) + tabela de **nomes** (registros de 15 bytes `CC_SS_NNNT.BIN`).
+- **Seção Pack:** `"Pack        "` (12 bytes) + u32 (tamanho) + u32 `count` + `count`×(u32 offset,
+  u32 size) **interleaved**. Offsets contíguos do início ao fim do arquivo. **353 scripts** (caps. 11–39).
+- **Layout por script:** `[bytecode 'STSC' + opcodes][bloco de texto: strings null-terminated]`. O
+  bloco de texto de cada script está em **ordem de armazenamento = ordem narrativa** (verificado na abertura).
+- **Pool de texto reusado:** a mesma string pode ser referenciada por vários scripts (ponteiros `50 00`).
 - **Base de offset:** absoluta (offset do arquivo). O `id_column` (`offset` hex) é o endereço real.
+- **Parsing canônico:** ver `connector/sdat_format.py` (`parse_pack`, `extract_text_block`) — módulo
+  único compartilhado por `extract.py` e `reinsert.py`.
 
 ## SEÇÃO 4 — PONTEIROS
 
 - **Modelo:** **não há tabela central de ponteiros.** As falas são referenciadas inline no bytecode
-  de script pelo **opcode de texto `50 00`** (uint16 LE = 0x0050) **seguido de um ponteiro absoluto
-  uint32 LE** para o início da string.
-  - Ex.: `50 00 | 98 33 00 00` → exibe a string em `0x3398`.
-- **Localização:** espalhada por todo o arquivo (múltiplos script files referenciam a mesma string).
-- **Formato:** `uint32 LE`, offset **absoluto** no arquivo, precedido por `50 00`.
+  pelo **opcode de texto `50 00`** (uint16 LE = 0x0050) **seguido de um uint32 LE que é um offset
+  RELATIVO ao início do ARQUIVO (Pack) que contém o ponteiro.**
+  - Endereço absoluto da string = `file_start_do_site + uint32`.
+  - Ex. (file0 começa em `0x2568`): `50 00 | 30 0e 00 00` → `0x2568 + 0xe30 = 0x3398` ("Ngh... ghh...").
+- ⚠️ **NÃO é absoluto.** Verificado empiricamente: dos ~47k sites `50 00`, **~42.101** só apontam para
+  uma string quando lidos como file-relativos vs **~63** como absolutos (coincidência). Tratar como
+  absoluto faz o jogo ler o endereço errado. (Travado pelo teste `test_pointer_model_is_file_relative`.)
+- **Strings não cruzam arquivos:** um ponteiro file-relativo só endereça dentro do próprio script.
+- **Entrada de bloco:** o 1º `50 00`+rel32 de um script aponta a 1ª string do seu bloco de texto.
 - **Heads vs. continuações:**
-  - *Head* = string com ≥1 referência `50 00`+ptr.
-  - *Continuação* = string sem ponteiro próprio, lida em sequência logo após o head (mesma "página"
-    de texto). Um **run** = head + suas continuações, até o próximo head.
-- **Filtro anti-falso-positivo:** localizar ponteiros como `50 00`+`uint32(offset)` (não o uint32
-  cru), o que descarta sequências de 4 bytes que casam o valor por acaso.
+  - *Head* = string com ≥1 referência `50 00`+rel32. (No corpus testado, quase toda linha é head.)
+  - *Continuação* = string sem ponteiro próprio, lida em sequência após o head. **run** = head +
+    continuações, até o próximo head.
+- **Filtro anti-falso-positivo:** indexar `target_abs = file_start + uint32` e validar que aponta para
+  um início de string real (descarta `50 00` aleatórios no bytecode).
 
 ### Estratégia de reinserção (cascata determinística)
 
 - **T1 in_place:** `len(bytes) ≤ byte_budget` → grava no slot original.
 - **Repoint (run):** se qualquer membro de um run estoura → **reloca o run inteiro** (head +
-  continuações) para o **fim do arquivo** e reescreve **todos** os ponteiros `50 00`+ptr do head para
-  o novo endereço. As continuações viajam contíguas → a leitura sequencial é preservada.
-- **T4 resíduo:** caso irredutível (sem ponteiro e sem como caber) → issue para o Passo 06c.
+  continuações) para o **fim do arquivo** e reescreve cada ponteiro `50 00`+rel32 do head com o valor
+  **`novo_offset − file_start_do_site`** (mantém a semântica file-relativa). Continuações viajam contíguas.
+- **T4 resíduo:** caso irredutível → issue para o Passo 06c. (Com o modelo file-relativo, tudo é
+  repointável → resíduo = 0 no corpus testado.)
+
+> ⚠️ **Pendente de validação in-game:** a relocação grava no fim do arquivo (offset file-relativo grande).
+> Se o engine limitar a leitura ao `size` declarado do arquivo no Pack, strings relocadas além desse
+> tamanho podem não exibir. Confirmar com um patch de 1 linha relocada antes de produção.
 
 ## SEÇÃO 5 — COBERTURA DE CHARSET DO ALVO (pt-BR)
 

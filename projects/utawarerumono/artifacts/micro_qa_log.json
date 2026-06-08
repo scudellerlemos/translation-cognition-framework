@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "batch": "1",
+      "offsets": "0x3398–0x3c01 (arco 11_01_000S, 75 linhas)",
+      "lines_reviewed": 75,
+      "issues_found": [
+        {
+          "offset": "0x350f",
+          "type": "token_error",
+          "issue": "Token {W10} é decorativo por-caractere; a contagem difere do source por design (frase pt tem outro nº de letras). Verificado: um {W10} após cada caractere, efeito de espaçamento preservado.",
+          "current_pt": "T{W10}E{W10}N{W10}H{W10}A{W10} {W10}U{W10}M{W10} {W10}B{W10}O{W10}M{W10} {W10}D{W10}E{W10}S{W10}P{W10}E{W10}R{W10}T{W10}A{W10}R{W10}--",
+          "suggested_pt": "(sem mudança — comportamento esperado)",
+          "severity": "low"
+        },
+        {
+          "offset": "0x3b3b",
+          "type": "naturalness",
+          "speaker": "Homem (memória)",
+          "issue": "'make it' é ambíguo (fazer/conseguir/preparar). Mantida a ambiguidade com 'fazer isso' — coerente com o tom enigmático.",
+          "current_pt": "Eu não vou mais fazer isso por você.",
+          "suggested_pt": "(mantido — ambiguidade proposital)",
+          "severity": "low"
+        }
+      ],
+      "corrections_applied": [],
+      "token_errors": [],
+      "spoiler_flags": ["0x38b1/0x3a9f: rótulos 'Mulher'/'Homem' mantidos genéricos (identidades UNSOURCED); falas do Homem preservam ambiguidade de foreshadowing"],
+      "back_translation_flags": [],
+      "batch_approved": true,
+      "notes": "Tokens {W75}/{W80} e contagem de \\n conferem em todas as linhas (validação determinística poc_pipeline). CAPS de sistema preservado. Lacuna de 6 espaços em 0x3937 preservada. Vozes conferidas contra tone_analysis.md."
+    },
+    {
+      "batch": "2-6 (escala: 11_01_100C + 11_02_000S, 950 linhas)",
+      "offsets": "0x7da5–0xaf5d, 0xe192–0x12a32",
+      "lines_reviewed": 950,
+      "issues_found": [
+        {
+          "offset": "0xe1da",
+          "type": "naturalness",
+          "issue": "Rótulo 'Girl' órfão (sem ponteiro 50 00, budget 4). 'Garota'(6) não cabe e não há ponteiro p/ repointar. Ajustado p/ 'Moça'(4) caber in_place — inconsistência forçada pela restrição de espaço.",
+          "current_pt": "Moça",
+          "suggested_pt": "Garota (quando o opcode de início de bloco for mapeado e repointável)",
+          "severity": "low"
+        }
+      ],
+      "corrections_applied": [
+        {"offset": "0x7da5", "original_issue": "overflow in_place (início de bloco, não repointável)", "previous_pt": "Ela está esperando... por...", "corrected_pt": "Ela espera... por...", "mini_qa_passed": true},
+        {"offset": "0xe1c0", "original_issue": "overflow in_place", "previous_pt": "a remexer nas bolsas dela.", "corrected_pt": "a mexer nas bolsas dela.", "mini_qa_passed": true},
+        {"offset": "0xe1df", "original_issue": "overflow in_place", "previous_pt": "Hmm, tenho certeza de que guardei em algum lugar aqui...", "corrected_pt": "Hmm, devo ter guardado em algum lugar aqui...", "mini_qa_passed": true},
+        {"offset": "0xe21f", "original_issue": "overflow in_place", "previous_pt": "Eu estava sem saber o que fazer com isto...", "corrected_pt": "Sem saber o que fazer com isto...", "mini_qa_passed": true},
+        {"offset": "0xe2b1", "original_issue": "overflow in_place", "previous_pt": "tecidos dobrados.", "corrected_pt": "panos dobrados.", "mini_qa_passed": true},
+        {"offset": "0xe2f2", "original_issue": "overflow in_place", "previous_pt": "por aí desse jeito, vai pegar um resfriado.", "corrected_pt": "assim, você vai pegar um resfriado.", "mini_qa_passed": true},
+        {"offset": "0xe351", "original_issue": "overflow in_place", "previous_pt": "que eu tinha, mas...", "corrected_pt": "que eu tinha...", "mini_qa_passed": true},
+        {"offset": "0xe38f", "original_issue": "overflow in_place (budget 8)", "previous_pt": "masculinas.", "corrected_pt": "homem. (com 'de' movido p/ 0xe362)", "mini_qa_passed": true}
+      ],
+      "token_errors": [],
+      "spoiler_flags": ["Reveal de 'Haku' tratado no ponto correto (11_02, 0x12668); 'Kuon' revelada (0x108db). Figuras de memória seguem genéricas."],
+      "back_translation_flags": [],
+      "batch_approved": true,
+      "notes": "Validação determinística: 0 erros de token nas 1025; resíduo T4=0 após correção das 9 linhas órfãs de início de bloco. Revisão de voz/entidade em escala é amostral (exemplar curado = 11_01_000S)."
+    }
+  ]
+}
