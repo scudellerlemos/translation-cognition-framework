@@ -154,12 +154,13 @@ contextual, já incorporada ao processo).
 - [ ] **Stammers/hesitações residuais.** Ex.: `0x3640` `"U... Urgh... Everything's... distorted..."` →
   `"U... Argh... Está tudo... distorcido..."` — o `"U..."` solto não foi localizado (deveria virar
   `"Ugh..."`/`"Nh..."` ou fundir). Estender a localização de interjeições para **stammers iniciais**.
-- [ ] **Rótulo de falante "Girl" aparece em inglês in-game** apesar de `approved="Garota"`
-  (`0x36a0`/`0xa98e`/`0xe1da` estão extraídos e traduzidos). Hipótese: o **rótulo é referenciado por um
-  opcode ≠ `50 00`**, então o repoint (que só reescreve `50 00`) deixa o label apontando para os bytes
-  originais. **Investigar** o opcode de rótulo de falante e incluí-lo no repoint. (Bug técnico do conector.)
-- [ ] **Atribuição de speaker vs. rótulo do jogo:** a linha do casamento (`0x395f`/`0x398f`) está como
-  `speaker: "Mulher (memória)"` no plano, mas o jogo rotula "Girl/Garota" — reconciliar a metadata.
+- [x] **Rótulo de falante "Girl" em inglês in-game.** ✅ RE: o nome do falante usa o opcode **`53 00`**
+  (file-relativo, ignorado pelo conector). `sdat_format.POINTER_OPCODES` agora indexa/repointa `50 00`
+  **e** `53 00` → rótulos relocam como heads próprios (17/17 sites do "Girl" leem "Garota"). Travado por
+  `test_label_pointers_53`. **Pendente: gate in-game** (`--validate-one 0x36a0` → exibir "Garota").
+- [x] **Atribuição de speaker vs. rótulo do jogo.** ✅ Reconcile data-driven (rótulo do `53 00` mais
+  próximo): 10 linhas "Mulher/Homem (memória)" eram rotuladas "Girl" → "Garota (memória)" (faithful;
+  identidade segue gap de pesquisa). Ver `decision_log.md`.
 
 ---
 
