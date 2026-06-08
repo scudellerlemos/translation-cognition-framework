@@ -136,6 +136,36 @@ def test_planob_within_file(original):
 
 
 @requires_bin
+def test_label_pointers_53(original):
+    """Opcode de RÓTULO DE FALANTE `53 00` é indexado e repointado junto do `50 00`: um rótulo relocado
+    (ex.: 'Girl'→'Garota') tem TODOS os seus sites resolvendo dentro do arquivo para a string traduzida.
+    (Regressão do bug: o rótulo aparecia em inglês porque o `53 00` era ignorado.)"""
+    approved = {r["offset"]: r["text_target"]
+                for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    LABEL = "0x36a0"                                   # rótulo 'Girl' (referenciado só por 53 00)
+    files = S.parse_pack(original)
+    idx = S.index_pointers(original, files)
+    assert int(LABEL, 16) in idx, "rótulo não indexado — opcode 53 00 ignorado?"
+    sites = idx[int(LABEL, 16)]
+    assert any(original[site - 2:site] == S.LABEL_OPCODE for site, _ in sites), \
+        "nenhum site 53 00 para o rótulo — modelo não cobre o opcode de rótulo"
+
+    buf, _repoints, _ = R.build_output(original, R.load_budgets(), approved)
+    out = bytes(buf)
+    fO = S.file_of(int(LABEL, 16), files)
+    fN = {f.index: f for f in S.parse_pack(out)}[fO.index]
+    exp = R.transliterate(approved[LABEL]).encode("utf-8")
+    bad = []
+    for site, _fs in sites:
+        ns = fN.offset + (site - fO.offset)
+        val = struct.unpack_from("<I", out, ns)[0]
+        tgt = fN.offset + val
+        if not (fN.offset <= tgt < fN.end) or S.read_cstr(out, tgt) != exp:
+            bad.append(hex(site))
+    assert not bad, f"{len(bad)} site(s) do rótulo não resolvem para a tradução: {bad[:5]}"
+
+
+@requires_bin
 def test_pack_rebuild_integrity(original):
     """O container reconstruído mantém o Pack íntegro: mesmo nº/ordem/nomes de arquivos, contíguos,
     alinhados a 16 bytes; arquivos NÃO alterados ficam byte-idênticos; footer preservado."""
