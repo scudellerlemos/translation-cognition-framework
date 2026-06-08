@@ -9,9 +9,14 @@ Formato (engenharia reversa — ver connector/table_schema.md):
   Tabela de NOMES: registros de 15 bytes (nome de 14 chars `CC_SS_NNNT.BIN` + \\0), em ordem.
   [Pack        ] (12 bytes) + u32 (tam) + u32 count + count*(u32 offset, u32 size)
   Dados: cada arquivo = [cabeçalho/bytecode 'STSC' ...][bloco de texto: strings UTF-8
-         null-terminated e contíguas]. Os ponteiros de exibição são `50 00`+u32 (offset
-         ABSOLUTO no arquivo), espalhados pelo bytecode (uma string pode ser referenciada
-         de vários scripts — pool de texto reusado).
+         null-terminated e contíguas]. Os ponteiros de exibição são `50 00`+u32 onde o u32 é um
+         offset RELATIVO ao início do ARQUIVO (Pack) que contém o ponteiro (alvo_abs = file_start
+         + u32). Uma string pode ser referenciada de vários sites do MESMO arquivo, mas os ponteiros
+         NÃO cruzam arquivos. Ver a seção "ponteiros" abaixo.
+
+  Layout físico: os arquivos são CONTÍGUOS (f.end == próximo f.offset) e ALINHADOS a 16 bytes
+  (todo offset começa em ≡8 mod 16; todo size é múltiplo de 16). A seção Pack vem ANTES dos dados,
+  então crescer um arquivo só muda os VALORES (offset/size) da tabela Pack — ver rebuild_container.
 
 Convenções:
 - offset (hex) = id_column (endereço absoluto da string no arquivo).
@@ -70,6 +75,57 @@ def parse_pack(data: bytes) -> list[ScriptFile]:
 def files_for_scenes(files: list[ScriptFile], prefixes: tuple[str, ...]) -> list[ScriptFile]:
     """Arquivos cujo nome começa por algum prefixo (ex.: ('11_01','11_02','11_03'))."""
     return [f for f in files if any(f.name.startswith(p) for p in prefixes)]
+
+
+ALIGN = 16   # arquivos começam em ≡8 mod 16 e têm size múltiplo de 16 → manter ao reconstruir
+
+
+def file_of(off: int, files: list[ScriptFile]) -> ScriptFile | None:
+    """ScriptFile que contém o offset absoluto `off` (busca binária). None se fora de qualquer arquivo."""
+    import bisect
+    fs = sorted(files, key=lambda f: f.offset)
+    starts = [f.offset for f in fs]
+    j = bisect.bisect_right(starts, off) - 1
+    if 0 <= j < len(fs) and fs[j].offset <= off < fs[j].end:
+        return fs[j]
+    return None
+
+
+def rebuild_container(original: bytes, files: list[ScriptFile],
+                      new_file_bytes: dict[int, bytes]) -> bytes:
+    """Reconstrói o container com dados de arquivo possivelmente CRESCIDOS, reescrevendo a tabela
+    Pack (offset/size de cada arquivo). `new_file_bytes`: index -> novos bytes do arquivo (quando
+    ausente, usa a fatia original `f.offset:f.end`).
+
+    Cada arquivo é re-emitido em ordem de offset e PADDED a múltiplo de 16 (ALIGN) — preserva o
+    alinhamento que o engine exige. Os offsets são recalculados sequencialmente; a região fixa
+    (header + nomes + Pack) e o footer final (bytes após o último arquivo) são preservados.
+    Não toca em bytecode nem ponteiros: são file-relativos e já vêm corretos em `new_file_bytes`.
+
+    Pré-condições (verdadeiras neste container): arquivos contíguos e a seção Pack vem antes dos dados.
+    """
+    pack = original.find(PACK_MAGIC)
+    if pack < 0:
+        raise ValueError("seção 'Pack' não encontrada — container inesperado")
+    base = pack + len(PACK_MAGIC) + 8          # início do array (u32 offset, u32 size) por arquivo
+    fs = sorted(files, key=lambda f: f.offset)
+    first_off = fs[0].offset
+    last_end = fs[-1].end
+    out = bytearray(original[:first_off])      # header + tabela de nomes + Pack (valores reescritos abaixo)
+    new_meta: dict[int, tuple[int, int]] = {}
+    cur = first_off
+    for f in fs:
+        fb = new_file_bytes.get(f.index, original[f.offset:f.end])
+        pad = (-len(fb)) % ALIGN
+        fb = bytes(fb) + b"\x00" * pad
+        out += fb
+        new_meta[f.index] = (cur, len(fb))
+        cur += len(fb)
+    out += original[last_end:]                 # footer/padding final do container
+    for f in files:
+        off, size = new_meta[f.index]
+        struct.pack_into("<II", out, base + 8 * f.index, off, size)
+    return bytes(out)
 
 
 # --------------------------------------------------------------------------- leitura de strings

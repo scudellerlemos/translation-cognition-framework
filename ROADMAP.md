@@ -12,14 +12,16 @@
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Perfil de jogos | 🟢 validado |
-| Instância Utawarerumono | 🟡 pipeline 00→08 rodado em **2 cenas / 1025 linhas**; **resíduo T4=0**; pendente **gate in-game** |
-| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS** (corrigido); repoint por run + **teste de regressão pytest** |
+| Instância Utawarerumono | 🟡 pipeline 00→08 em **2 cenas / 1025 linhas**; **resíduo T4=0**; pt-BR **renderiza in-game ✅**; pendente o **gate do Plano B** (1 linha) |
+| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **pytest** (9 testes) |
 | Perfis filme/série + conector subtitle_file | 🟠/🔴 stub / não iniciado |
 
-**Resumo:** o *processo* está maduro (~92). A *validação de produção* está ~70: pipeline fecha ponta a
-ponta em 1025 linhas com gate de regressão automatizado, mas o **único bloqueador de correção** é o
-gate in-game (relocação ao fim do arquivo). O risco deixou de ser "será que funciona?" e virou
-"funciona *no jogo*?" + "escala/genericidade".
+**Resumo:** o *processo* está maduro (~92). A *validação de produção* deu um salto: o **pt-BR do
+framework já renderizou no jogo real** (prova de ponta a ponta — `artifacts/Fasea*.png`). O mesmo teste
+**reprovou o EOF-append** (relocar ao fim do container → `@@@@`/trava porque o engine respeita o `size`
+do Pack), o que motivou o **Plano B** (relocação dentro do arquivo + reescrita da tabela Pack), já
+implementado e travado por pytest. O bloqueador restante é estreito: confirmar in-game **1 linha**
+relocada pelo Plano B antes da run completa.
 
 ---
 
@@ -27,12 +29,13 @@ gate in-game (relocação ao fim do arquivo). O risco deixou de ser "será que f
 
 ### Fase A — Fechar o caminho até produção (Utawarerumono)
 
-- [ ] **A1. Gate in-game das strings relocadas (repoint file-relativo).** ⏳ *pendente — só o usuário faz.*
-  **BLOQUEIA tudo abaixo.** Aplicar `output/ScriptEvent.sdat.ips` e confirmar no jogo que uma linha
-  **relocada ao fim do arquivo** (offset file-relativo grande) exibe corretamente. Maior retorno por
-  minuto da sessão (~2 min → ±15 pts de maturidade).
-  *Risco:* o engine pode limitar a leitura ao `size` do arquivo no Pack → strings relocadas além disso
-  não exibem. **Plano B:** relocar dentro da região do arquivo + reescrever a tabela Pack (offsets/sizes).
+- [x] **A1. Gate in-game.** ✅ **VALIDADO.**
+  - ✅ **pt-BR renderiza no jogo real** (in_place) — objetivo de ponta a ponta atingido (`Fasea2/3/8/9/10`).
+  - ❌ **EOF-append reprovado**: linhas relocadas ao fim do CONTAINER viram `@@@@` e travam (`Fasea11`).
+    Causa: o engine carrega cada arquivo num buffer do tamanho do `size` no Pack. Ver `decision_log.md`.
+  - ✅ **Plano B validado in-game** (`--validate-one 0x3442`): "ERRO DE SISTEMA." (que antes era `@@@@`)
+    exibiu e o jogo seguiu para a cena seguinte sem travar (`testeplanob.png`, `testeplanob_avanco.png`).
+    Relocação intra-arquivo + reescrita do Pack é a estratégia correta. **Run completa liberada.**
 - [x] **A2. Ordem offset × ordem narrativa.** *(resolvido p/ a abertura)* A extração agora segue a
   **ordem de armazenamento por script** (= narrativa, verificado nas cenas iniciais). Para cenas
   distantes, validar; se divergir, caminhar o bytecode por ordem de comando. Ver `decision_log.md`.
@@ -116,8 +119,10 @@ gate in-game (relocação ao fim do arquivo). O risco deixou de ser "será que f
   contíguo por script).
 - ✅ **Modelo de ponteiro corrigido para FILE-RELATIVO** (`50 00` + uint32 relativo ao início do
   arquivo) — descoberta que invalidou o modelo absoluto anterior. Ver `decision_log.md`.
-- ✅ Repoint por **run** file-relativo (head + continuações relocados; ponteiros reescritos como
-  `novo_offset − file_start`); **resíduo T4=0** em 1025 linhas.
+- ✅ **Primeiro pt-BR do framework renderizado no jogo real** (Steam) — prova de ponta a ponta. `Fasea*.png`.
+- ✅ **Plano B no conector:** relocação **intra-arquivo** + `rebuild_container` (reescreve a tabela Pack,
+  padding a 16 bytes) — substitui o EOF-append reprovado in-game. 1025 linhas: T1=595, RELOC=430,
+  resíduo 0; 425/425 ponteiros relocados resolvem dentro do arquivo; 9 testes pytest verdes.
 - ✅ Charset: gate FALHOU (fonte sem diacríticos → `@`); resolvido por **transliteração na gravação**.
 - ✅ Round-trip byte-idêntico + patch IPS + **teste de regressão `pytest` (6 testes, valida o valor do
   ponteiro file-relativo, não-circular)**.
