@@ -115,6 +115,21 @@ contextual, já incorporada ao processo).
 
 > Não quebram o jogo, mas "não fazem sentido" na leitura. Coletados de spot-checks in-game.
 
+- [ ] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** Formalizar num doc do framework
+  (ex.: `framework/skills/translation_governance.md`) o contrato de qualidade — a IA traduz **conforme
+  a carta**, não improvisa fora dela. Estrutura por contexto:
+  - **Personagem (voz):** toda linha respeita o perfil de voz do falante (`tone_analysis.md`: registro,
+    léxico, comprimento, tiques); `voice_criticality: high` → checagem por linha; identidade dupla nunca
+    vaza a identidade revelada antes do `reveal_timing`; o personagem soa igual em todo o corpus.
+  - **Mundo (lore):** glossário/`handling_rule` respeitados; formas exatas sem variação; spoilers só
+    após `reveal_timing`; honoríficos e registro formal/informal conforme a relação no mundo.
+  - **Situação (cena/emoção):** traduzir pela **intenção/emoção** da cena (susto, dor, comédia,
+    solenidade), não pela letra; interjeições localizadas; junção de linhas quebradas soa natural;
+    âncora obrigatória — *"uma pessoa lê isto nesta situação e entende com naturalidade?"*.
+  - **Processo:** metadados por linha **reais** (speaker, situação/`tone_register`, risco) — não
+    auto-default, pois são o que dirige a QA contextual; risco calibrado (identidade dupla, comédia,
+    1ª menção de lore, spoiler = alto → **back-translation obrigatória**); IA **propõe** → humano
+    **aprova** → script **aplica**; decisões não-óbvias no `decision_log.md`.
 - [ ] **Governança de tradução — linter determinístico (genérico, sem LLM).** A ideia: um passe
   automático que **sinaliza** linhas suspeitas antes da aprovação, pegando o que a amostragem não pega:
   - interjeição/linha curta **idêntica ao source** (`base==source`) fora da whitelist (gritos de vogais, nomes);
