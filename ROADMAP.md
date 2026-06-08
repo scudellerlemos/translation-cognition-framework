@@ -111,6 +111,30 @@ contextual, já incorporada ao processo).
 
 ---
 
+### Backlog de qualidade de tradução (casos reais vistos in-game)
+
+> Não quebram o jogo, mas "não fazem sentido" na leitura. Coletados de spot-checks in-game.
+
+- [ ] **Governança de tradução — linter determinístico (genérico, sem LLM).** A ideia: um passe
+  automático que **sinaliza** linhas suspeitas antes da aprovação, pegando o que a amostragem não pega:
+  - interjeição/linha curta **idêntica ao source** (`base==source`) fora da whitelist (gritos de vogais, nomes);
+  - **fragmentos do idioma-fonte** que sobraram (ex.: `U...`, `Wh-`, `Hm`, `-ing`) no alvo;
+  - **rótulos de falante** (UI) ainda no idioma-fonte;
+  - alvo == source em linha não-trivial.
+  Sai um relatório (`naturalness_lint.json`) que vira input do 06c. Barato, roda sempre, complementa a
+  revisão contextual humana/LLM do 06b/07.
+- [ ] **Stammers/hesitações residuais.** Ex.: `0x3640` `"U... Urgh... Everything's... distorted..."` →
+  `"U... Argh... Está tudo... distorcido..."` — o `"U..."` solto não foi localizado (deveria virar
+  `"Ugh..."`/`"Nh..."` ou fundir). Estender a localização de interjeições para **stammers iniciais**.
+- [ ] **Rótulo de falante "Girl" aparece em inglês in-game** apesar de `approved="Garota"`
+  (`0x36a0`/`0xa98e`/`0xe1da` estão extraídos e traduzidos). Hipótese: o **rótulo é referenciado por um
+  opcode ≠ `50 00`**, então o repoint (que só reescreve `50 00`) deixa o label apontando para os bytes
+  originais. **Investigar** o opcode de rótulo de falante e incluí-lo no repoint. (Bug técnico do conector.)
+- [ ] **Atribuição de speaker vs. rótulo do jogo:** a linha do casamento (`0x395f`/`0x398f`) está como
+  `speaker: "Mulher (memória)"` no plano, mas o jogo rotula "Girl/Garota" — reconciliar a metadata.
+
+---
+
 ## Já concluído (para referência)
 
 - ✅ Framework SDD genérico (camadas: processo / perfil / conector / instância).
