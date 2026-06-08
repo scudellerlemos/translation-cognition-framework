@@ -146,14 +146,11 @@ contextual, já incorporada ao processo).
     auto-default, pois são o que dirige a QA contextual; risco calibrado (identidade dupla, comédia,
     1ª menção de lore, spoiler = alto → **back-translation obrigatória**); IA **propõe** → humano
     **aprova** → script **aplica**; decisões não-óbvias no `decision_log.md`.
-- [ ] **Governança de tradução — linter determinístico (genérico, sem LLM).** A ideia: um passe
-  automático que **sinaliza** linhas suspeitas antes da aprovação, pegando o que a amostragem não pega:
-  - interjeição/linha curta **idêntica ao source** (`base==source`) fora da whitelist (gritos de vogais, nomes);
-  - **fragmentos do idioma-fonte** que sobraram (ex.: `U...`, `Wh-`, `Hm`, `-ing`) no alvo;
-  - **rótulos de falante** (UI) ainda no idioma-fonte;
-  - alvo == source em linha não-trivial.
-  Sai um relatório (`naturalness_lint.json`) que vira input do 06c. Barato, roda sempre, complementa a
-  revisão contextual humana/LLM do 06b/07.
+- [x] **Governança de tradução — linter determinístico (genérico, sem LLM).** ✅
+  `framework/validation/naturalness_lint.py`: `copia_crua` (alvo==source fora da whitelist de
+  nomes/gritos/numérico), `fragmento_residual` (hesitação `X...` copiada), `rotulo_cru` → grava
+  `artifacts/naturalness_lint.json` (input do 06c). **7 testes pytest**. Na instância real sinalizou os
+  2 stammers "U..." (0x3640/0x124b1) sem falso-positivo.
 - [ ] **Stammers/hesitações residuais.** Ex.: `0x3640` `"U... Urgh... Everything's... distorted..."` →
   `"U... Argh... Está tudo... distorcido..."` — o `"U..."` solto não foi localizado (deveria virar
   `"Ugh..."`/`"Nh..."` ou fundir). Estender a localização de interjeições para **stammers iniciais**.
