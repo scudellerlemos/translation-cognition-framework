@@ -103,8 +103,10 @@ contextual, já incorporada ao processo).
 
 ### Adiado (baixa prioridade agora — fazer no momento certo)
 
-- [ ] **T4 em lote (LLM):** reescrita do resíduo irredutível. Com o modelo file-relativo o resíduo é 0
-  → só necessário se algum corpus futuro gerar overflow não-repointável.
+- [x] **T4 em lote (LLM) — plumbing pronto.** `reinsert.py` exporta o resíduo irredutível para
+  `artifacts/t4_residue.json` (lote pronto p/ reescrita LLM em 1 passada → volta pelo plano → reaplica).
+  Hoje **inerte** (resíduo=0 com a relocação intra-arquivo); ativa sozinho se um corpus futuro gerar
+  overflow não-relocável. 2 testes pytest (lote vazio no corpus + caso sintético).
 - [~] **Metadados cognitivos por linha em escala (F2):** `speaker`/`tone_register`/`intent` existem
   para as 1025 linhas; **risco calibrado** (data-driven: spoiler/glossário/entidade → 9 high / 9 medium,
   saindo do achatamento 0-high) com `risk_notes`. *Resta:* o **`tone_register` fino por situação/emoção**
