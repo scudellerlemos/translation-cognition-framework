@@ -1,11 +1,11 @@
 # Reinsertion Report — Utawarerumono
 
 - Round-trip self-test: OK
-- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290144 bytes (original 3274096; +16048)
+- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290096 bytes (original 3274096; +16000)
 - Patch: output/ScriptEvent.sdat.ips
 - Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)
 - Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.
-- Distribuição por tier: RELOC_cont=5, RELOC_head=438, T1_in_place=582
+- Distribuição por tier: RELOC_head=441, T1_in_place=584
 - Overflows não resolvidos (T4): 0
 
 ## Relocações (head -> offset local no arquivo crescido)
@@ -27,25 +27,26 @@
 | 0x35bf | 11_01_000S.BIN | 0x17e5 | 0x2a43 | 0x35bf |
 | 0x35ed | 11_01_000S.BIN | 0x1818 | 0x2a5b | 0x35ed |
 | 0x366a | 11_01_000S.BIN | 0x184e | 0x2ac3 | 0x366a |
-| 0x3697 | 11_01_000S.BIN | 0x1860 | 0x2ba3 | 0x3697, 0x36a0 |
+| 0x3697 | 11_01_000S.BIN | 0x1860 | 0x2ba3 | 0x3697 |
+| 0x36a0 | 11_01_000S.BIN | 0x186a | 0x2bad, 0x2bcd, 0x2bfd, 0x2c15, 0x2c4d, 0x2d09, 0x2d21, 0x2d81, 0x2dfb, 0x2eb8, 0x2ed0, 0x2f3d, 0x3199, 0x31b1, 0x31c9, 0x31e1, 0x3201 | 0x36a0 |
 | 0x36fa | 11_01_000S.BIN | 0x1871 | 0x2bdb | 0x36fa |
 | 0x37a2 | 11_01_000S.BIN | 0x18a1 | 0x2c5b | 0x37a2 |
 | 0x37d3 | 11_01_000S.BIN | 0x18d3 | 0x2c63 | 0x37d3 |
 | 0x37f8 | 11_01_000S.BIN | 0x18ed | 0x2d17 | 0x37f8 |
 | 0x3897 | 11_01_000S.BIN | 0x1909 | 0x2da7 | 0x3897 |
-| 0x38a3 | 11_01_000S.BIN | 0x1916 | 0x2e09 | 0x38a3, 0x38b1 |
-| 0x38b7 | 11_01_000S.BIN | 0x192a | 0x2eae | 0x38b7 |
-| 0x398f | 11_01_000S.BIN | 0x1959 | 0x2f53 | 0x398f |
-| 0x39bc | 11_01_000S.BIN | 0x1989 | 0x2fca | 0x39bc |
-| 0x39f0 | 11_01_000S.BIN | 0x19c0 | 0x2fd2 | 0x39f0 |
-| 0x3a29 | 11_01_000S.BIN | 0x19d4 | 0x3061 | 0x3a29 |
-| 0x3a80 | 11_01_000S.BIN | 0x19fa | 0x3081 | 0x3a80, 0x3a9f |
-| 0x3af3 | 11_01_000S.BIN | 0x1a1d | 0x3118 | 0x3af3 |
-| 0x3b69 | 11_01_000S.BIN | 0x1a3c | 0x31d7 | 0x3b69 |
-| 0x3ba7 | 11_01_000S.BIN | 0x1a4a | 0x31f7 | 0x3ba7 |
-| 0x3bc8 | 11_01_000S.BIN | 0x1a61 | 0x32b9 | 0x3bc8 |
-| 0x3bf0 | 11_01_000S.BIN | 0x1a68 | 0x3301 | 0x3bf0 |
-| 0x3c01 | 11_01_000S.BIN | 0x1a7b | 0x3319 | 0x3c01 |
+| 0x38b1 | 11_01_000S.BIN | 0x1916 | 0x2ea0, 0x2fbc, 0x2fdc, 0x3053, 0x306b | 0x38b1 |
+| 0x38b7 | 11_01_000S.BIN | 0x191d | 0x2eae | 0x38b7 |
+| 0x398f | 11_01_000S.BIN | 0x194c | 0x2f53 | 0x398f |
+| 0x39bc | 11_01_000S.BIN | 0x197c | 0x2fca | 0x39bc |
+| 0x39f0 | 11_01_000S.BIN | 0x19b3 | 0x2fd2 | 0x39f0 |
+| 0x3a29 | 11_01_000S.BIN | 0x19c7 | 0x3061 | 0x3a29 |
+| 0x3a9f | 11_01_000S.BIN | 0x19ed | 0x30ea, 0x3102, 0x3122 | 0x3a9f |
+| 0x3af3 | 11_01_000S.BIN | 0x19f3 | 0x3118 | 0x3af3 |
+| 0x3b69 | 11_01_000S.BIN | 0x1a12 | 0x31d7 | 0x3b69 |
+| 0x3ba7 | 11_01_000S.BIN | 0x1a20 | 0x31f7 | 0x3ba7 |
+| 0x3bc8 | 11_01_000S.BIN | 0x1a37 | 0x32b9 | 0x3bc8 |
+| 0x3bf0 | 11_01_000S.BIN | 0x1a3e | 0x3301 | 0x3bf0 |
+| 0x3c01 | 11_01_000S.BIN | 0x1a51 | 0x3319 | 0x3c01 |
 | 0x7da5 | 11_01_100C.BIN | 0x7380 | 0x3e20 | 0x7da5 |
 | 0x7dd5 | 11_01_100C.BIN | 0x739d | 0x404a | 0x7dd5 |
 | 0x7df6 | 11_01_100C.BIN | 0x73b3 | 0x40d1 | 0x7df6 |
@@ -187,7 +188,8 @@
 | 0xa856 | 11_01_100C.BIN | 0x8700 | 0x7492 | 0xa856 |
 | 0xa8f7 | 11_01_100C.BIN | 0x8728 | 0x7598 | 0xa8f7 |
 | 0xa951 | 11_01_100C.BIN | 0x8754 | 0x75b1 | 0xa951 |
-| 0xa97d | 11_01_100C.BIN | 0x8783 | 0x75b9 | 0xa97d, 0xa98e |
+| 0xa97d | 11_01_100C.BIN | 0x8783 | 0x75b9 | 0xa97d |
+| 0xa98e | 11_01_100C.BIN | 0x879b | 0x75d5, 0x7617, 0x7659, 0x7693, 0x77b0, 0x780c, 0x78e1, 0x7923, 0x79e1, 0x7abb, 0x7b86 | 0xa98e |
 | 0xaaaf | 11_01_100C.BIN | 0x87a2 | 0x76b1 | 0xaaaf |
 | 0xaab9 | 11_01_100C.BIN | 0x87ad | 0x76c9 | 0xaab9 |
 | 0xaacc | 11_01_100C.BIN | 0x87c2 | 0x7721 | 0xaacc |
@@ -209,7 +211,8 @@
 | 0xaeaa | 11_01_100C.BIN | 0x89e9 | 0x7ae2 | 0xaeaa |
 | 0xaf09 | 11_01_100C.BIN | 0x8a04 | 0x7be1 | 0xaf09 |
 | 0xaf2c | 11_01_100C.BIN | 0x8a30 | 0x7bf2 | 0xaf2c |
-| 0xe1c0 | 11_02_000S.BIN | 0x7a50 | 0xb127 | 0xe1c0, 0xe1da |
+| 0xe1c0 | 11_02_000S.BIN | 0x7a50 | 0xb127 | 0xe1c0 |
+| 0xe1da | 11_02_000S.BIN | 0x7a6b | 0xb143, 0xb160, 0xb178, 0xb1e2, 0xb245, 0xb28f, 0xb755, 0xb78e, 0xb81e, 0xb85e, 0xb8a6, 0xb9ef, 0xba3f, 0xbb07, 0xbbd9, 0xbca4, 0xbd05, 0xbd2e, 0xbd5e, 0xbd76, 0xbdae, 0xbdde, 0xbecb, 0xbf03, 0xbf3e, 0xbfd0, 0xc0ab, 0xc197, 0xc1da, 0xc27b, 0xc308, 0xc36a, 0xc39a, 0xc3f2, 0xc40a, 0xc442, 0xc473, 0xc545, 0xc57e, 0xc62d, 0xc68b, 0xc8ab, 0xca1e, 0xca3e, 0xca90, 0xcac0 | 0xe1da |
 | 0xe1df | 11_02_000S.BIN | 0x7a72 | 0xb151 | 0xe1df |
 | 0xe21f | 11_02_000S.BIN | 0x7aab | 0xb186 | 0xe21f |
 | 0xe2b1 | 11_02_000S.BIN | 0x7ad9 | 0xb1af | 0xe2b1 |
@@ -455,7 +458,7 @@
 
 | arquivo | size original | size novo (pad 16) |
 |---|---|---|
-| 11_01_000S.BIN | 0x16b0 | 0x1aa0 |
+| 11_01_000S.BIN | 0x16b0 | 0x1a70 |
 | 11_01_100C.BIN | 0x7380 | 0x8a70 |
 | 11_02_000S.BIN | 0x7a50 | 0x9e20 |
 
@@ -490,7 +493,7 @@
 | 0x367a | T1_in_place | 13 | 14 | Voce acordou? |
 | 0x3689 | T1_in_place | 13 | 13 | Nnh... hn...? |
 | 0x3697 | RELOC_head | 9 | 8 | O que...? |
-| 0x36a0 | RELOC_cont | 6 | 4 | Garota |
+| 0x36a0 | RELOC_head | 6 | 4 | Garota |
 | 0x36a5 | T1_in_place | 48 | 49 | Como voce esta se sentindo? Nao vi ferimentos,\n |
 | 0x36d7 | T1_in_place | 29 | 34 | mas sente dor em algum lugar? |
 | 0x36fa | RELOC_head | 47 | 45 | ...Acho que voce ainda pode estar delirando...? |
@@ -508,8 +511,8 @@
 | 0x3855 | T1_in_place | 32 | 33 | Isso e... tudo so... um sonho... |
 | 0x3877 | T1_in_place | 30 | 31 | Por ora, relaxe... e descanse. |
 | 0x3897 | RELOC_head | 12 | 11 | Nnh... hn... |
-| 0x38a3 | RELOC_head | 12 | 13 | Boa noite... |
-| 0x38b1 | RELOC_cont | 6 | 5 | Mulher |
+| 0x38a3 | T1_in_place | 12 | 13 | Boa noite... |
+| 0x38b1 | RELOC_head | 6 | 5 | Mulher |
 | 0x38b7 | RELOC_head | 46 | 37 | Ai, ai, seu quarto esta uma bagunca de novo... |
 | 0x38dd | T1_in_place | 28 | 35 | Ei, ei, Tio! Vim te visitar! |
 | 0x3901 | T1_in_place | 50 | 53 | Hehe... E bom voce ficar bem feliz! Porque hoje,\n |
@@ -521,8 +524,8 @@
 | 0x3a02 | T1_in_place | 38 | 38 | ...Sabe que pode voltar quando quiser. |
 | 0x3a29 | RELOC_head | 37 | 35 | ...Voce anda tao distante esses dias. |
 | 0x3a4d | T1_in_place | 37 | 50 | Antes, parecia que voce vivia atras\n |
-| 0x3a80 | RELOC_head | 28 | 30 | de nos dois o tempo todo...  |
-| 0x3a9f | RELOC_cont | 5 | 3 | Homem |
+| 0x3a80 | T1_in_place | 28 | 30 | de nos dois o tempo todo...  |
+| 0x3a9f | RELOC_head | 5 | 3 | Homem |
 | 0x3aa3 | T1_in_place | 30 | 31 | ...Entao voce tomou o remedio? |
 | 0x3ac3 | T1_in_place | 41 | 47 | Um mundo totalmente novo vai te esperar\n |
 | 0x3af3 | RELOC_head | 30 | 27 | quando voce acordar... Hmhmhm. |
@@ -881,7 +884,7 @@
 | 0xa922 | T1_in_place | 30 | 46 | Tem mesmo algo de bonito nela. |
 | 0xa951 | RELOC_head | 46 | 43 | Aquela expressao um tanto confusa, tambem...\n |
 | 0xa97d | RELOC_head | 23 | 16 | Nossa, ela e uma graca. |
-| 0xa98e | RELOC_cont | 6 | 4 | Garota |
+| 0xa98e | RELOC_head | 6 | 4 | Garota |
 | 0xa993 | T1_in_place | 33 | 38 | Tem algo de errado com meu rosto? |
 | 0xa9ba | T1_in_place | 23 | 24 | A-Ah, nao, nada nao...  |
 | 0xa9d3 | T1_in_place | 12 | 14 | Mesmo assim. |
@@ -933,7 +936,7 @@
 | 0xaf5d | T1_in_place | 27 | 33 | Que aquilo era so o comeco. |
 | 0xe192 | T1_in_place | 44 | 45 | Ao voltarmos para a tenda, a garota comeca\n |
 | 0xe1c0 | RELOC_head | 26 | 25 | a remexer nas bolsas dela. |
-| 0xe1da | RELOC_cont | 6 | 4 | Garota |
+| 0xe1da | RELOC_head | 6 | 4 | Garota |
 | 0xe1df | RELOC_head | 56 | 45 | Hmm, tenho certeza de que guardei em algum lugar aqui... |
 | 0xe20d | T1_in_place | 11 | 17 | Aha! Achei. |
 | 0xe21f | RELOC_head | 45 | 42 | Eu estava sem saber o que fazer com isto...\n |

@@ -31,7 +31,9 @@ from dataclasses import dataclass
 FILENAME_MAGIC = b"Filename    "   # 12 bytes
 PACK_MAGIC = b"Pack        "       # 12 bytes
 NAME_STRIDE = 15                   # registro de nome: 14 chars + \0
-TEXT_OPCODE = b"\x50\x00"          # opcode de exibição de texto, precede o ponteiro absoluto
+TEXT_OPCODE = b"\x50\x00"          # opcode de exibição de DIÁLOGO, precede o ponteiro file-relativo
+LABEL_OPCODE = b"\x53\x00"         # opcode do RÓTULO DE FALANTE (nome exibido), mesmo formato de ptr
+POINTER_OPCODES = (TEXT_OPCODE, LABEL_OPCODE)   # ambos file-relativos; ambos indexados/repointados
 MAX_RUN = 100000                   # trava de segurança ao caminhar um run (alta: runs de narração
                                    # têm dezenas de continuações; truncar corromperia a relocação)
 
@@ -226,24 +228,27 @@ def _file_start_of(off: int, starts: list[int], files: list[ScriptFile]) -> int 
 
 
 def index_pointers(data: bytes, files: list[ScriptFile]) -> dict[int, list[tuple[int, int]]]:
-    """Uma varredura: mapeia target_abs -> [(site, file_start)] para todo `50 00`+uint32, tratando o
-    uint32 como FILE-RELATIVO (target_abs = file_start_do_site + uint32). `site` é a posição do uint32.
+    """Mapeia target_abs -> [(site, file_start)] para todo ponteiro file-relativo, considerando AMBOS
+    os opcodes: `50 00` (diálogo) e `53 00` (rótulo de falante). `site` é a posição do uint32. O byte
+    do opcode não importa para reescrever o ponteiro (o valor é o mesmo offset file-relativo); por isso
+    os rótulos viram heads de pleno direito e são relocados/repointados como qualquer fala.
     Passe o resultado (`idx`) para find_pointers/is_head/read_run."""
     starts = [f.offset for f in files]
     idx: dict[int, list[tuple[int, int]]] = {}
     n = len(data)
-    i = 0
-    while True:
-        i = data.find(TEXT_OPCODE, i)
-        if i == -1:
-            break
-        site = i + len(TEXT_OPCODE)
-        if site + 4 <= n:
-            fs = _file_start_of(i, starts, files)
-            if fs is not None:
-                tgt = fs + struct.unpack_from("<I", data, site)[0]
-                idx.setdefault(tgt, []).append((site, fs))
-        i += 1
+    for opc in POINTER_OPCODES:
+        i = 0
+        while True:
+            i = data.find(opc, i)
+            if i == -1:
+                break
+            site = i + 2
+            if site + 4 <= n:
+                fs = _file_start_of(i, starts, files)
+                if fs is not None:
+                    tgt = fs + struct.unpack_from("<I", data, site)[0]
+                    idx.setdefault(tgt, []).append((site, fs))
+            i += 1
     return idx
 
 

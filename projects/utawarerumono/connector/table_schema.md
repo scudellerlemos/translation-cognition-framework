@@ -50,10 +50,19 @@ Os control codes são armazenados como **tokens ASCII literais** dentro da próp
 - ⚠️ **NÃO é absoluto.** Verificado empiricamente: dos ~47k sites `50 00`, **~42.101** só apontam para
   uma string quando lidos como file-relativos vs **~63** como absolutos (coincidência). Tratar como
   absoluto faz o jogo ler o endereço errado. (Travado pelo teste `test_pointer_model_is_file_relative`.)
+- **DOIS opcodes de ponteiro (mesmo formato file-relativo):**
+  - **`50 00`** = exibição de **DIÁLOGO** (a fala).
+  - **`53 00`** = **RÓTULO DE FALANTE** (o nome exibido na caixa, ex.: `Girl`, `Woman`, `Man`). É
+    file-relativo igual ao `50 00`; um rótulo é referenciado por vários sites `53 00` (um por fala
+    daquele falante). Os rótulos são strings curtas e **só** têm ponteiros `53 00` (sem `50 00`).
+  - O conector indexa e **repointa AMBOS** (`POINTER_OPCODES` em `sdat_format.py`): senão um rótulo que
+    cresce na tradução (`Girl`→`Garota`) reloca mas o nome segue em inglês. (Travado por `test_label_pointers_53`.)
 - **Strings não cruzam arquivos:** um ponteiro file-relativo só endereça dentro do próprio script.
 - **Entrada de bloco:** o 1º `50 00`+rel32 de um script aponta a 1ª string do seu bloco de texto.
+- **Derivação de speaker:** o falante de cada fala = o rótulo do `53 00` mais próximo antes do seu
+  `50 00` (usado para reconciliar a metadata `speaker` com o que o jogo exibe).
 - **Heads vs. continuações:**
-  - *Head* = string com ≥1 referência `50 00`+rel32. (No corpus testado, quase toda linha é head.)
+  - *Head* = string com ≥1 referência `50 00` **ou** `53 00`. (No corpus testado, quase toda linha é head.)
   - *Continuação* = string sem ponteiro próprio, lida em sequência após o head. **run** = head +
     continuações, até o próximo head.
 - **Filtro anti-falso-positivo:** indexar `target_abs = file_start + uint32` e validar que aponta para
