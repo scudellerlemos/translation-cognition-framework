@@ -343,3 +343,49 @@ dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63**
 **Revisão necessária:** sim — **gate in-game**: confirmar que strings relocadas ao fim do arquivo
 (offset file-relativo grande) exibem; se o engine limitar ao `size` do Pack, usar Plano B (relocar
 dentro do arquivo + reescrever a tabela Pack).
+
+---
+
+## GATE IN-GAME — EOF-append REPROVADO; adotar relocação intra-arquivo (Plano B)
+
+**Data:** 2026-06-08
+**Passo do SDD:** 08
+**Tipo:** external (resolve o "Revisão necessária" da CORREÇÃO CRÍTICA file-relativo)
+
+**Decisão tomada:**
+Abandonar a relocação por **anexo ao fim do container** (EOF-append) e adotar **relocação
+intra-arquivo + reescrita da tabela Pack** (Plano B): o run que estoura é anexado ao **fim da região
+do próprio arquivo**, o arquivo **cresce**, e a tabela Pack (offset/size) é **reescrita**
+reconstruindo o container. Texto in_place permanece in_place.
+
+**Evidência (teste in-game do usuário — Steam, Mask of Deception, abertura `11_01_000S`):**
+Prints `artifacts/Fasea1..11.png`. Padrão, cruzado com `reinsertion_report.md`:
+
+| Linha | Tier no build | Resultado in-game |
+|---|---|---|
+| `0x33c3` "Q-Quem...", `0x33cd` "...me chama...?", `0x34ea` "5,4,3,2,1...", `0x350f` "TENHA UM BOM DESPERTAR", `0x359d` "On... Onde...?" | **T1_in_place** | **✅ exibe pt-BR** |
+| linhas REPOINT → fim do container (`0x31f5xx`) | **REPOINT (EOF-append)** | **❌ `@@@@`; jogo TRAVA (Fasea11)** |
+
+**Prova:** o `.sdat` original tem **`0x31f570` bytes** e os repoints apontam para `0x31f570`+ → o texto
+relocado ficou **fora da região declarada do arquivo no Pack**. O engine Aquaplus carrega **cada
+arquivo do `.sdat` num buffer próprio** (dimensionado pelo `size` do Pack); um ponteiro file-relativo
+só alcança dentro desse buffer. Logo, o problema **não é o modelo de ponteiro** (file-relativo está
+certo) nem charset — é o **endereço fora do arquivo**. As linhas que cabem no espaço original (in_place)
+exibem 100%.
+
+**Marco do projeto:** primeiro pt-BR do framework **renderizado no jogo real** — prova de ponta a ponta
+de que a pipeline SDD → conector → binário funciona em título comercial.
+
+**Alternativas consideradas:**
+- EOF-append (anterior) — **rejeitada**: comprovadamente quebra in-game.
+- in_place-only (encurtar tudo) — **rejeitada para produção**: em escala, **42% (431/1025)** das linhas
+  estouram; forçar in_place truncaria quase metade do texto.
+- **Relocação intra-arquivo + rebuild do Pack** — **escolhida**: preserva 100% da qualidade e mantém o
+  texto dentro do `size` declarado (o engine lê). Determinístico, sem LLM.
+
+**Validação gate-first:** primeiro um patch com **1 linha** relocada intra-arquivo (modo
+`--validate-one`), testado in-game, **antes** da run completa das 1025 linhas.
+
+**Impacto:** `reinsert.py` (remove EOF-append; adiciona relocação intra-arquivo) e `sdat_format.py`
+(novo `rebuild_container` que reescreve o Pack). `space_strategy` efetiva: `in_place + reloc_intra_arquivo`.
+**Revisão necessária:** sim — confirmar o gate de 1 linha in-game antes da run completa.
