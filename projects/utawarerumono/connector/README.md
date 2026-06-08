@@ -35,7 +35,18 @@ Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.m
 ```
 python connector/extract.py  artifacts/ScriptEvent.sdat   # -> artifacts/dialogs.csv
 python connector/reinsert.py artifacts/ScriptEvent.sdat   # -> output/ScriptEvent.sdat + .ips + reinsertion_report.md
+pytest  connector/                                        # gate de regressão (round-trip + ponteiros + IPS)
 ```
+
+O formato é parseado por `connector/sdat_format.py` (módulo único compartilhado por extract e
+reinsert — garante o round-trip). O escopo extraído é controlado por `SCENES` em `extract.py`
+(prefixos de nome de script; atual: `11_01` + `11_02`).
 
 O caminho do binário **nunca** é hardcoded: vem do argumento de CLI ou de
 `connector.source_binary` no `project.json` (relativo à raiz do projeto).
+
+## Testes (regressão)
+
+`connector/test_roundtrip.py` (pytest) trava os invariantes do conector:
+round-trip de identidade byte-a-byte, binário-fonte intacto, cada tradução lida pela posição final
+== transliteração do alvo, e patch IPS aplicável. Rodar antes de qualquer entrega.
