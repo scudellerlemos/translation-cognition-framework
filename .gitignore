@@ -1,3 +1,7 @@
 # Binários de jogo (assets com copyright) — nunca versionar
 # O usuário entrega o .sdat localmente (artifacts/ ou via CLI); ver project.json.
 *.sdat
+
+# Artefatos de build do Python
+__pycache__/
+*.pyc
