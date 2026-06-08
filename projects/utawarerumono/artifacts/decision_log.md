@@ -187,3 +187,159 @@ O teste in-game com pangrama pt-BR (`áéíóú âêô ãõ ç ÁÉÍ ÃÕ`) ren
 **Impacto:** ortografia degradada (sem acentos) no texto exibido, porém 100% legível e funcional.
 **Efeito colateral positivo:** acento (2 bytes UTF-8) → ASCII (1 byte) reduz o estouro de byte_budget.
 **Revisão necessária:** não (decisão do usuário). Reavaliar se um dia a fonte for expandida.
+
+---
+
+## Container ScriptEvent.sdat — formato totalmente mapeado + extração por script
+
+**Data:** 2026-06-08
+**Passo do SDD:** 00
+**Tipo:** revision
+
+**Decisão tomada:**
+Mapear o índice do container e extrair o corpus **por script** (não mais varredura sequencial cega de
+N linhas). Formato (ver `connector/sdat_format.py`):
+- Header `Filename    ` + tabela de nomes (registros de 15 bytes `CC_SS_NNNT.BIN`).
+- Seção `Pack        ` + `count` + `count`×(offset, size) — **par interleaved**, offsets contíguos do
+  início ao fim do arquivo. 353 scripts, capítulos 11–39.
+- Cada script = `[bytecode 'STSC' + opcodes][bloco de texto: strings UTF-8 null-terminated]`. O bloco
+  de texto de cada script está em **ordem de armazenamento = ordem narrativa** (verificado na abertura).
+
+**Razão:** permite escolher um **arco real** (ex.: cena `11_01_000S`) com fronteiras de verdade, em vez
+de "as N primeiras linhas". Resolve em parte o "Revisão necessária" de *Ordem de offset ≠ ordem de
+exibição*: a extração agora segue a ordem de armazenamento por script (≡ narrativa na abertura).
+
+**Impacto:** `extract.py` extrai por prefixo de nome de script (`SCENES`); `sdat_format.py` é o módulo
+único de formato (compartilhado por extract+reinsert → garante o round-trip).
+
+**Revisão necessária:** sim — para cenas longe da abertura, validar que ordem de armazenamento ainda
+acompanha a narrativa (senão, caminhar o bytecode por ordem de comando).
+
+---
+
+## Anomalia 0x33f9 — reclassificada (binário-fonte está íntegro)
+
+**Data:** 2026-06-08
+**Passo do SDD:** 00
+**Tipo:** revision (revisa "Anomalia 0x33f9 — texto PT/EN corrompido na fonte")
+
+**Decisão tomada:**
+Reclassificar: o binário-fonte **não está corrompido**. A extração limpa do arco mostra em `0x33f9`
+o texto inglês íntegro **"INITIALIZING AWAKENING PROCESS."** (31 bytes) e, separada, `0x3419`
+**"SYSTEMS YELLOW. RESTARTING IN 5 SECONDS."** (40 bytes).
+
+**Razão:** o "texto PT/EN misturado/truncado" registrado antes era artefato de uma extração anterior
+sobre um `.sdat` **já modificado** pela própria POC (uma linha de 72 bytes que abarcava as duas strings
+através do `\0`). Com a extração por bloco de texto do script, as duas strings aparecem corretas.
+
+**Impacto:** nenhuma linha precisa ser tratada como "lixo de sistema"; traduzir normalmente.
+**Revisão necessária:** não.
+
+---
+
+## Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)
+
+**Data:** 2026-06-08
+**Passo do SDD:** 00–07
+**Tipo:** revision
+
+**Decisão tomada:**
+Trocar o corpus de teste das "20 primeiras linhas" para o **1º script do 1º arco** (`11_01_000S`,
+75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa).
+
+**Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em linhas avulsas.
+Tamanhos reais medidos: cena 11_01 inteira ≈470 linhas; 11_02 ≈557; 11_03 ≈119 — grandes demais para
+um ciclo manual. `11_01_000S` (75 linhas, verificado limpo) equilibra realismo e esforço.
+
+**Impacto:** `dialogs.csv`, `translation_plan.json`, `entities.csv` etc. regenerados para este arco.
+**Revisão necessária:** não; estender para 11_01_100C/150S e 11_02/11_03 em rodadas futuras.
+
+---
+
+## Repoint em escala — bug do MAX_RUN + órfãos de início de bloco + otimização O(1)
+
+**Data:** 2026-06-08
+**Passo do SDD:** 08
+**Tipo:** revision (corrige o repoint para o corpus de 2 cenas, 1025 linhas)
+
+**Decisão tomada:**
+Ao rodar a reinserção em escala (1025 linhas), o repoint **falhou parcialmente** (127 resíduos T4).
+Correções:
+1. **Run completo:** `MAX_RUN=32` truncava runs longos de narração (1 head + dezenas de continuações),
+   orfanando linhas — e relocar um run truncado **corromperia** a exibição. Elevado para capturar o run
+   inteiro (term. por próximo head / fim de bloco). Resíduo caiu 127 → 9.
+2. **Head-finding pelo binário:** a busca do head passou a caminhar **pelas strings reais do binário**
+   (não só pelos offsets do `dialogs.csv`), pois o head de uma continuação pode não ser uma linha extraída.
+3. **Índice de ponteiros O(1)** (`sdat_format.index_pointers`): uma varredura mapeia `target→[sites]`;
+   `is_head`/`find_pointers`/`read_run` usam o índice. Tempo da reinserção caiu de **~80s → ~0.5s**.
+4. **Órfãos de início de bloco (9):** a 1ª string de cada bloco de texto **não tem ponteiro `50 00`**
+   (não repointável). Quando estouram, foram **encurtadas para caber in_place**. Resíduo final = **0**.
+
+**Alternativas consideradas:**
+- Deixar resíduo>0 e resolver via T4 (LLM em lote) — **adiado** pelo usuário; e o resíduo aqui é por
+  falta de ponteiro, não por overflow irredutível.
+
+**Impacto:** `sdat_format.py` (run completo, índice), `reinsert.py` (head-finding pelo binário, índice).
+**Revisão necessária:** sim — mapear o **opcode de exibição da 1ª string de bloco** (hoje sem `50 00`)
+para torná-las repointáveis em vez de exigir fit in_place.
+
+---
+
+## Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus
+
+**Data:** 2026-06-08
+**Passo do SDD:** 00–08
+**Tipo:** revision
+
+**Decisão tomada:**
+Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos:
+**Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal
+agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **Utawarerumono**
+(origem do nome; título), **Kujyuri**/**Província de Shishiri** (topônimos). Todos `manter_original`.
+
+**Governança:** as traduções foram autoradas via geradores transientes (`_build_plan*.py`) e então
+**removidas** — nenhum texto da obra permanece em `.py`; a fonte de verdade é `translation_plan.json`.
+Metadados por linha: curados em 11_01_000S; auto-defaultados (speaker heurístico, risk low) nas demais.
+
+**Impacto:** todos os artefatos regenerados; `test_roundtrip.py` (pytest) trava a regressão (4 verdes).
+**Revisão necessária:** não para este escopo. T4-LLM e mapeamento do opcode de início de bloco ficam pendentes.
+
+---
+
+## CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos
+
+**Data:** 2026-06-08
+**Passo do SDD:** 08
+**Tipo:** revision (corrige o modelo de ponteiro do conector — superseda a SEÇÃO 4 anterior)
+
+**Decisão tomada:**
+Ao investigar o "opcode de início de bloco", descobri que **`50 00`+uint32 é um offset RELATIVO ao
+início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova:
+dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** como absolutos.
+
+**O que estava errado:**
+- `find_pointers`/`index_pointers`/`reinsert` tratavam o uint32 como **absoluto**. O repoint gravava
+  valores absolutos → **o jogo leria `file_start + valor` e cairia no lugar errado** (texto relocado
+  quebraria in-game). Os testes passavam por **autoconsistência** (mesma lógica errada nos 2 lados).
+- As "9 órfãs de início de bloco" eram, na verdade, os **ponteiros de entrada** (`50 00`+rel32) que o
+  matcher absoluto não via. Com o modelo correto, viram heads normais → **repointáveis** (a gambiarra
+  in_place foi revertida; traduções completas restauradas).
+
+**Correção:**
+1. `sdat_format.index_pointers(data, files)` → `target_abs = file_start + uint32`; `find_pointers`
+   devolve `(site, file_start)`; `is_head`/`read_run` file-relativos.
+2. `reinsert` reescreve o ponteiro como `novo_offset − file_start_do_site`.
+3. `test_roundtrip.py`: `test_translated_pointers` agora valida o **valor gravado** (file_start+valor ==
+   novo head, não-circular); novo `test_pointer_model_is_file_relative` trava o modelo.
+
+**Resultado:** aplicação das 1025 linhas → T1=595, REPOINT_head=425, REPOINT_cont=5, **resíduo T4=0**
+(sem in_place forçado). `REPOINT_cont` despencou de 811→5: quase toda linha tem seu próprio ponteiro
+(o modelo absoluto as via como continuações órfãs). **6 testes verdes.**
+
+**Insight de processo:** verificação por ponteiro que reusa a mesma leitura dos dois lados é
+**circular** — passou com o modelo errado. O teste foi corrigido para validar contra o modelo do engine
+(file_start + valor), e um teste de modelo separado prova file-relativo vs absoluto.
+
+**Revisão necessária:** sim — **gate in-game**: confirmar que strings relocadas ao fim do arquivo
+(offset file-relativo grande) exibem; se o engine limitar ao `size` do Pack, usar Plano B (relocar
+dentro do arquivo + reescrever a tabela Pack).

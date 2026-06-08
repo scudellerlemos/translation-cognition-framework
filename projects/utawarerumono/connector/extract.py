@@ -2,34 +2,33 @@
 """
 extract.py — conector hex_binary para Utawarerumono: Mask of Deception (versão ENG/Steam)
 
-Formato do container ScriptEvent.sdat (descoberto na POC):
-- Cabeçalho "Filename    " + tabela de offsets (índice do script)
-- Bloco de texto: strings UTF-8 **null-terminated** e **contíguas**
-- Control codes embutidos como tokens legíveis: {W75}, {W80}, {W10}, {COLOR}, {END}
-- Linhas de sistema em CAPS
+Extrai o corpus de um ARCO (conjunto de scripts do container) para dialogs.csv, em
+ORDEM DE EXIBIÇÃO (= ordem de armazenamento dentro de cada script).
 
-Contrato (framework/connectors/hex_binary.md):
-  entrada : .sdat
-  saída   : dialogs.csv (offset, text_source, byte_budget)
+Formato do container ScriptEvent.sdat: ver connector/sdat_format.py e connector/table_schema.md.
+- Cabeçalho "Filename" + tabela de nomes + seção "Pack" (offset/size por script).
+- Cada script = [bytecode 'STSC' ...][bloco de texto: strings UTF-8 null-terminated contíguas].
 
 Determinístico. O offset (hex) é o id_column — âncora para reinserção.
-byte_budget = nº de bytes UTF-8 da string (sem o terminador \\0) — orçamento para reinserção in_place.
+byte_budget = nº de bytes UTF-8 da string (sem o terminador \\0).
 
-POC: extrai N strings de texto a partir da primeira fala (FIRST_DIALOGUE_OFFSET).
+ESCOPO (SCENES): por padrão extrai o 1º script do 1º arco (cena de abertura, 11_01_000S).
+Ajuste SCENES (prefixos de nome de script) para extrair mais cenas/arcos.
 
 Caminho do binário (NUNCA hardcoded): o usuário fornece o arquivo a traduzir.
 Resolução: (1) argumento de linha de comando; senão (2) connector.source_binary do project.json.
-Se nenhum resolver para um arquivo existente, falha com mensagem clara.
 """
-
 import csv
 import json
 import sys
 from pathlib import Path
 
-# --- config da POC ---
-FIRST_DIALOGUE_OFFSET = 0x3398   # "Ngh... ghh..." — início da cena de abertura
-N_LINES = 20
+import sdat_format as S
+
+# --- config do arco a extrair ---
+# Prefixos de nome de script (CC_SS_NNNT.BIN). 11_01 + 11_02 = 2 primeiras cenas do 1º arco.
+SCENES = ("11_01", "11_02")
+
 ROOT = Path(__file__).resolve().parent.parent          # raiz do projeto
 OUT = ROOT / "artifacts" / "dialogs.csv"
 
@@ -56,46 +55,34 @@ def resolve_source() -> Path:
     return p
 
 
-def is_displayable(text: str) -> bool:
-    """String de texto exibível: tem ao menos um caractere alfanumérico."""
-    return any(c.isalnum() for c in text)
-
-
-def extract(data: bytes, start: int, n: int):
-    rows = []
-    i = start
-    while len(rows) < n and i < len(data):
-        # lê até o próximo \0
-        end = data.find(b"\x00", i)
-        if end == -1:
-            break
-        raw = data[i:end]
-        try:
-            text = raw.decode("utf-8")
-        except UnicodeDecodeError:
-            text = raw.decode("utf-8", errors="replace")
-        if raw and is_displayable(text):
-            rows.append({
-                "offset": f"0x{i:x}",
-                "text_source": text,
-                "byte_budget": len(raw),   # bytes sem o \0
-            })
-        i = end + 1
-    return rows
-
-
 def main():
     src = resolve_source()
     data = src.read_bytes()
-    rows = extract(data, FIRST_DIALOGUE_OFFSET, N_LINES)
+
+    files = S.parse_pack(data)
+    targets = S.files_for_scenes(files, SCENES)
+    if not targets:
+        sys.exit(f"ERRO: nenhum script casa os prefixos {SCENES}. "
+                 f"Ex. de nomes: {[f.name for f in files[:5]]}")
+
+    rows = []
+    per_scene = []
+    for f in targets:
+        block = S.extract_text_block(data, f)
+        per_scene.append((f.name, len(block)))
+        for off, text, budget in block:
+            rows.append({"offset": f"0x{off:x}", "text_source": text, "byte_budget": budget})
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["offset", "text_source", "byte_budget"])
+    with OUT.open("w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=["offset", "text_source", "byte_budget"])
         w.writeheader()
         w.writerows(rows)
-    print(f"Extraídas {len(rows)} linhas -> {OUT}")
-    for r in rows:
-        print(f'  {r["offset"]:>8}  [{r["byte_budget"]:>3}b]  {r["text_source"]}')
+
+    print(f"Container: {len(files)} scripts. Arco extraído: {[f.name for f in targets]}")
+    for name, c in per_scene:
+        print(f"  {name}: {c} linhas")
+    print(f"TOTAL: {len(rows)} linhas -> {OUT}")
 
 
 if __name__ == "__main__":

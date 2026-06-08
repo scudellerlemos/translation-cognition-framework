@@ -1,0 +1,52 @@
+{
+  "entities": [
+    {
+      "name": "Protagonista (sujeito do despertar)",
+      "category": "Personagem",
+      "context": "0x3398 'Ngh... ghh...'; 0x359d 'Wh... Where...?'; chamado de 'Uncle' em 0x38dd",
+      "confidence": "high",
+      "spoiler_level": "moderate",
+      "notes": "Amnésico; nome próprio não aparece nesta cena."
+    },
+    {
+      "name": "Girl",
+      "category": "Personagem",
+      "context": "Rótulo de falante em 0x36a0; falas 0x36a5–0x3897 (cuida do protagonista)",
+      "confidence": "medium",
+      "spoiler_level": "moderate",
+      "notes": "Provável Kuon (cuidadora no bosque) — não nomeada aqui."
+    },
+    {
+      "name": "Woman",
+      "category": "Personagem",
+      "context": "Rótulo em 0x38b1; falas 0x38b7–0x3bb8 (memória; 'Tio', promessa de mindinho)",
+      "confidence": "low",
+      "spoiler_level": "major",
+      "notes": "Figura de memória/sonho. Identidade canônica desconhecida."
+    },
+    {
+      "name": "Man",
+      "category": "Personagem",
+      "context": "Rótulo em 0x3a9f; falas 0x3aa3–0x3b3b ('um mundo novo te espera', 'o primeiro e o último')",
+      "confidence": "low",
+      "spoiler_level": "major",
+      "notes": "Figura enigmática; provável ligação ao enquadramento sci-fi."
+    },
+    {
+      "name": "Awakening Process / SYSTEM",
+      "category": "Conceito",
+      "context": "0x33f9 'INITIALIZING AWAKENING PROCESS.'; 0x3442 'SYSTEM ERROR.'; 0x34d4 'COMMENCING COUNTDOWN.'",
+      "confidence": "medium",
+      "spoiler_level": "moderate",
+      "notes": "Voz de 'sistema' em CAPS; enquadramento sci-fi sob a fantasia."
+    },
+    {
+      "name": "Uncle",
+      "category": "Cultural",
+      "context": "0x38dd 'Hey, hey, Uncle! I'm here to visit!'",
+      "confidence": "medium",
+      "spoiler_level": "none",
+      "notes": "Honorífico afetivo usado pela 'Woman' para o protagonista."
+    }
+  ]
+}
