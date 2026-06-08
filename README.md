@@ -66,5 +66,11 @@ As skills resolvem tudo que é específico de uma obra lendo o `project.json` e 
 
 ## Status
 
-- **Jogos:** validado (Utawarerumono é a instância de referência).
+- **Processo (skills 00–08):** maduro.
+- **Jogos:** validado na instância de referência (Utawarerumono). Pipeline 00→08 rodado de ponta a
+  ponta em **2 cenas / 1025 linhas** (EN→pt-BR): extração por arco, tradução, repoint e patch IPS.
+  Conector `hex_binary` com **modelo de ponteiro file-relativo** e **gate de regressão automatizado**
+  (`pytest`, incl. um guard de governança que barra texto da obra hardcoded em `.py`).
+- **Pendente para produção:** validação in-game das strings relocadas; run do jogo inteiro
+  (estratégia incremental por capítulo em [`ROADMAP.md`](ROADMAP.md)).
 - **Filmes / séries:** pontos de extensão documentados (`framework/media-profiles/`), ainda não validados.
