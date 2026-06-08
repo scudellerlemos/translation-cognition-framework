@@ -29,13 +29,13 @@ relocada pelo Plano B antes da run completa.
 
 ### Fase A — Fechar o caminho até produção (Utawarerumono)
 
-- [~] **A1. Gate in-game.** **BLOQUEIA tudo abaixo.** *Parcial:*
+- [x] **A1. Gate in-game.** ✅ **VALIDADO.**
   - ✅ **pt-BR renderiza no jogo real** (in_place) — objetivo de ponta a ponta atingido (`Fasea2/3/8/9/10`).
   - ❌ **EOF-append reprovado**: linhas relocadas ao fim do CONTAINER viram `@@@@` e travam (`Fasea11`).
     Causa: o engine carrega cada arquivo num buffer do tamanho do `size` no Pack. Ver `decision_log.md`.
-  - ⏳ **Gate do Plano B (pendente — só o usuário faz):** aplicar o patch de **1 linha** gerado por
-    `python connector/reinsert.py --validate-one 0x3442` e confirmar que "ERRO DE SISTEMA." exibe e o
-    jogo segue. Verde aqui → libera a run completa (A3).
+  - ✅ **Plano B validado in-game** (`--validate-one 0x3442`): "ERRO DE SISTEMA." (que antes era `@@@@`)
+    exibiu e o jogo seguiu para a cena seguinte sem travar (`testeplanob.png`, `testeplanob_avanco.png`).
+    Relocação intra-arquivo + reescrita do Pack é a estratégia correta. **Run completa liberada.**
 - [x] **A2. Ordem offset × ordem narrativa.** *(resolvido p/ a abertura)* A extração agora segue a
   **ordem de armazenamento por script** (= narrativa, verificado nas cenas iniciais). Para cenas
   distantes, validar; se divergir, caminhar o bytecode por ordem de comando. Ver `decision_log.md`.
