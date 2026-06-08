@@ -388,4 +388,10 @@ de que a pipeline SDD → conector → binário funciona em título comercial.
 
 **Impacto:** `reinsert.py` (remove EOF-append; adiciona relocação intra-arquivo) e `sdat_format.py`
 (novo `rebuild_container` que reescreve o Pack). `space_strategy` efetiva: `in_place + reloc_intra_arquivo`.
-**Revisão necessária:** sim — confirmar o gate de 1 linha in-game antes da run completa.
+
+**✅ GATE APROVADO IN-GAME (2026-06-08):** patch `--validate-one 0x3442` testado no jogo —
+"ERRO DE SISTEMA." (a mesma linha que antes virava `@@@@`) **exibiu corretamente** e o jogo
+**avançou normalmente** para a cena seguinte (tenda, Kuon), sem travar. Evidência:
+`artifacts/testeplanob.png` (linha relocada) e `artifacts/testeplanob_avanco.png` (continuidade).
+Conclusão: a relocação INTRA-ARQUIVO + reescrita do Pack é a estratégia correta e está validada
+in-game. Liberada a run completa das 1025 linhas. **Revisão necessária:** não.
