@@ -131,9 +131,9 @@ contextual, já incorporada ao processo).
   Saída: relatório de métricas que recalibra A3/A4/A5 e a Carta. Ritmo: incremental e resumível
   (`translation_status.json`), 1–2 caps. por sessão. **Não fazer a 2ª metade até revisar essas métricas.**
 
-- [ ] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** Formalizar num doc do framework
-  (ex.: `framework/skills/translation_governance.md`) o contrato de qualidade — a IA traduz **conforme
-  a carta**, não improvisa fora dela. Estrutura por contexto:
+- [x] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** ✅
+  `framework/skills/translation_governance.md` — contrato de qualidade (voz/lore/situação/processo +
+  checklist), referenciado pelos Input Gates de 06/06b/07 e por `_index.md` (regra global 14). Estrutura:
   - **Personagem (voz):** toda linha respeita o perfil de voz do falante (`tone_analysis.md`: registro,
     léxico, comprimento, tiques); `voice_criticality: high` → checagem por linha; identidade dupla nunca
     vaza a identidade revelada antes do `reveal_timing`; o personagem soa igual em todo o corpus.
@@ -146,23 +146,21 @@ contextual, já incorporada ao processo).
     auto-default, pois são o que dirige a QA contextual; risco calibrado (identidade dupla, comédia,
     1ª menção de lore, spoiler = alto → **back-translation obrigatória**); IA **propõe** → humano
     **aprova** → script **aplica**; decisões não-óbvias no `decision_log.md`.
-- [ ] **Governança de tradução — linter determinístico (genérico, sem LLM).** A ideia: um passe
-  automático que **sinaliza** linhas suspeitas antes da aprovação, pegando o que a amostragem não pega:
-  - interjeição/linha curta **idêntica ao source** (`base==source`) fora da whitelist (gritos de vogais, nomes);
-  - **fragmentos do idioma-fonte** que sobraram (ex.: `U...`, `Wh-`, `Hm`, `-ing`) no alvo;
-  - **rótulos de falante** (UI) ainda no idioma-fonte;
-  - alvo == source em linha não-trivial.
-  Sai um relatório (`naturalness_lint.json`) que vira input do 06c. Barato, roda sempre, complementa a
-  revisão contextual humana/LLM do 06b/07.
+- [x] **Governança de tradução — linter determinístico (genérico, sem LLM).** ✅
+  `framework/validation/naturalness_lint.py`: `copia_crua` (alvo==source fora da whitelist de
+  nomes/gritos/numérico), `fragmento_residual` (hesitação `X...` copiada), `rotulo_cru` → grava
+  `artifacts/naturalness_lint.json` (input do 06c). **7 testes pytest**. Na instância real sinalizou os
+  2 stammers "U..." (0x3640/0x124b1) sem falso-positivo.
 - [ ] **Stammers/hesitações residuais.** Ex.: `0x3640` `"U... Urgh... Everything's... distorted..."` →
   `"U... Argh... Está tudo... distorcido..."` — o `"U..."` solto não foi localizado (deveria virar
   `"Ugh..."`/`"Nh..."` ou fundir). Estender a localização de interjeições para **stammers iniciais**.
-- [ ] **Rótulo de falante "Girl" aparece em inglês in-game** apesar de `approved="Garota"`
-  (`0x36a0`/`0xa98e`/`0xe1da` estão extraídos e traduzidos). Hipótese: o **rótulo é referenciado por um
-  opcode ≠ `50 00`**, então o repoint (que só reescreve `50 00`) deixa o label apontando para os bytes
-  originais. **Investigar** o opcode de rótulo de falante e incluí-lo no repoint. (Bug técnico do conector.)
-- [ ] **Atribuição de speaker vs. rótulo do jogo:** a linha do casamento (`0x395f`/`0x398f`) está como
-  `speaker: "Mulher (memória)"` no plano, mas o jogo rotula "Girl/Garota" — reconciliar a metadata.
+- [x] **Rótulo de falante "Girl" em inglês in-game.** ✅ RE: o nome do falante usa o opcode **`53 00`**
+  (file-relativo, ignorado pelo conector). `sdat_format.POINTER_OPCODES` agora indexa/repointa `50 00`
+  **e** `53 00` → rótulos relocam como heads próprios (17/17 sites do "Girl" leem "Garota"). Travado por
+  `test_label_pointers_53`. **Pendente: gate in-game** (`--validate-one 0x36a0` → exibir "Garota").
+- [x] **Atribuição de speaker vs. rótulo do jogo.** ✅ Reconcile data-driven (rótulo do `53 00` mais
+  próximo): 10 linhas "Mulher/Homem (memória)" eram rotuladas "Girl" → "Garota (memória)" (faithful;
+  identidade segue gap de pesquisa). Ver `decision_log.md`.
 
 ---
 
