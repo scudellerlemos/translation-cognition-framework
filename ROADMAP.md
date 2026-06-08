@@ -115,6 +115,18 @@ contextual, já incorporada ao processo).
 
 > Não quebram o jogo, mas "não fazem sentido" na leitura. Coletados de spot-checks in-game.
 
+- [ ] **⭐ PRIORIDADE — processar até METADE do jogo (coleta de métricas).** Antes de comprometer com a
+  run completa (~33k), traduzir/reinserir **incrementalmente até ~cap. 25** (metade dos 353 scripts /
+  caps. 11–39) para **medir em escala** e decidir o resto com dados, não com palpite. Métricas a coletar:
+  - **Custo real** ($/tokens/tempo por 1.000 linhas) — alimenta A4/A5.
+  - **Qualidade/contexto:** taxa de interjeições/calques pegos pelo linter; consistência de voz da Kuon
+    e dos demais em escala; quantas linhas exigem `risk` alto de verdade (hoje 0).
+  - **Conector em escala:** % in_place vs RELOC; resíduo; **rótulos de falante** (o bug do opcode ≠ `50 00`);
+    se a relocação intra-arquivo aguenta caps. inteiros.
+  - **Governança:** validar a Carta de Governança aplicada de ponta a ponta num volume real.
+  Saída: relatório de métricas que recalibra A3/A4/A5 e a Carta. Ritmo: incremental e resumível
+  (`translation_status.json`), 1–2 caps. por sessão. **Não fazer a 2ª metade até revisar essas métricas.**
+
 - [ ] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** Formalizar num doc do framework
   (ex.: `framework/skills/translation_governance.md`) o contrato de qualidade — a IA traduz **conforme
   a carta**, não improvisa fora dela. Estrutura por contexto:
