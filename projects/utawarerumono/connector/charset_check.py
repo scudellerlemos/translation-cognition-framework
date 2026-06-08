@@ -9,9 +9,11 @@ então a fonte tem o glifo. Para os que não aparecem no texto, reporta como "a 
 Code points definidos por valor (sem acentos no código → imune a problemas de encoding).
 """
 import os
+import sys
 
-# foco no script de evento (texto de diálogo); rápido e representativo
-SDAT = r"C:\Program Files (x86)\Steam\steamapps\common\Utawarerumono - Mask of Deception\Data\ENG\ScriptEvent.sdat"
+# O caminho do .sdat é ENTREGUE pelo usuário no runtime (governança: nunca hardcoded).
+# Uso: python charset_check.py <caminho-do-ScriptEvent.sdat>
+# A localização de origem (pasta da Steam, Data/ENG/ScriptEvent.sdat) é só ONDE achar.
 
 # acentos pt-BR por code point Unicode (Latin-1 Supplement)
 PTBR = {
@@ -32,7 +34,11 @@ def textual_count(blob, ch):
     return len(pat.findall(blob))
 
 def main():
-    blob = open(SDAT, "rb").read().decode("utf-8", errors="ignore")
+    if len(sys.argv) < 2:
+        sys.exit("Uso: python charset_check.py <caminho-do-ScriptEvent.sdat>  "
+                 "(o usuário entrega o arquivo; nunca hardcoded na config)")
+    sdat = sys.argv[1]
+    blob = open(sdat, "rb").read().decode("utf-8", errors="ignore")
     print("=== Gate de charset pt-BR (acento em palavra real; filtra ruido binario) ===")
     present, absent = [], []
     for name, cp in PTBR.items():
