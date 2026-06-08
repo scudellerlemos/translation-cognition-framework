@@ -26,23 +26,23 @@
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
     "reinsert_script": "connector/reinsert.py",
-    "encoding": "custom",
+    "encoding": "utf-8",
     "control_codes": {
-      "{W75}": "TODO",
-      "{W80}": "TODO",
-      "{W10}": "TODO",
-      "{COLOR}": "TODO",
-      "{END}": "TODO"
+      "{W75}": "literal ASCII (token na própria string)",
+      "{W80}": "literal ASCII (token na própria string)",
+      "{W10}": "literal ASCII (token na própria string)",
+      "{COLOR}": "literal ASCII (token na própria string)",
+      "{END}": "literal ASCII (token na própria string)"
     },
     "pointer_table": {
-      "location": "TODO",
-      "format": "TODO"
+      "location": "inline no bytecode de script (sem tabela central); referências espalhadas pelo arquivo",
+      "format": "opcode de texto '50 00' (uint16 LE 0x0050) + ponteiro absoluto uint32 LE para a string"
     },
     "space_strategy": "repoint",
     "patch_format": "ips",
-    "target_charset_supported": "likely",
-    "charset_note": "Gate (POC): só inglês na fonte, que quase não usa acentos. 'õ'(U+00F5) e 'À'(U+00C0) já renderizados em texto real; demais acentos pt-BR no mesmo bloco Latin-1 Supplement → suporte provável. Confirmar in-game com pangrama pt-BR antes de produção.",
-    "space_note": "in_place inviável p/ pt-BR: só 12/20 (60%) cabem no byte_budget (pt-BR mais longo + acentos = 2 bytes UTF-8). repoint é o default correto."
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_note": "in_place inviável p/ pt-BR: 8/20 estouram o byte_budget. repoint implementado por RUN (head+continuações relocados ao fim do arquivo; ponteiros '50 00'+ptr reescritos). POC: T1=12, repoint=8 (7 runs), resíduo T4=0; round-trip byte-idêntico."
   },
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",
