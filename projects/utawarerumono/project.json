@@ -36,13 +36,13 @@
     },
     "pointer_table": {
       "location": "inline no bytecode de script (sem tabela central); referências espalhadas pelo arquivo",
-      "format": "opcode de texto '50 00' (uint16 LE 0x0050) + ponteiro absoluto uint32 LE para a string"
+      "format": "opcode de texto '50 00' (uint16 LE 0x0050) + uint32 LE RELATIVO ao início do arquivo (Pack) que contém o ponteiro (alvo_abs = file_start + uint32). NÃO é absoluto."
     },
-    "space_strategy": "repoint",
+    "space_strategy": "in_place + reloc_intra_arquivo",
     "patch_format": "ips",
     "target_charset_supported": false,
     "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
-    "space_note": "in_place inviável p/ pt-BR: 8/20 estouram o byte_budget. repoint implementado por RUN (head+continuações relocados ao fim do arquivo; ponteiros '50 00'+ptr reescritos). POC: T1=12, repoint=8 (7 runs), resíduo T4=0; round-trip byte-idêntico."
+    "space_note": "Em escala (1025 linhas, cenas 11_01+11_02): T1 in_place=595, RELOC=430, resíduo T4=0. EOF-append (fim do CONTAINER) foi REPROVADO in-game (vira '@@@@' e trava — o engine respeita o 'size' do Pack). Estratégia: relocação INTRA-ARQUIVO (run anexado ao fim da região do próprio arquivo) + reescrita da tabela Pack (offset/size, padding a 16 bytes) via sdat_format.rebuild_container; ponteiro = offset local. Validar com patch de 1 linha (reinsert.py --validate-one) antes da produção. Ver decision_log.md."
   },
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",
