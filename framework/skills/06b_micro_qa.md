@@ -9,6 +9,10 @@
 
 Detectar drift de tom, erros de entidade e quebras de registro enquanto o corpus ainda é pequeno o suficiente para corrigir sem custo alto. O micro-QA não substitui o QA final do passo 7 — ele previne que problemas se acumulem.
 
+> **Referência normativa:** este QA verifica o cumprimento da **Carta de Governança**
+> (`translation_governance.md`) — voz, lore, situação e o checklist por linha/lote. Apoio executável:
+> `framework/validation/naturalness_lint.py` (smells de naturalidade) roda antes da revisão contextual.
+
 ---
 
 ## INPUTS

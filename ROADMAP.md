@@ -131,9 +131,9 @@ contextual, já incorporada ao processo).
   Saída: relatório de métricas que recalibra A3/A4/A5 e a Carta. Ritmo: incremental e resumível
   (`translation_status.json`), 1–2 caps. por sessão. **Não fazer a 2ª metade até revisar essas métricas.**
 
-- [ ] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** Formalizar num doc do framework
-  (ex.: `framework/skills/translation_governance.md`) o contrato de qualidade — a IA traduz **conforme
-  a carta**, não improvisa fora dela. Estrutura por contexto:
+- [x] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** ✅
+  `framework/skills/translation_governance.md` — contrato de qualidade (voz/lore/situação/processo +
+  checklist), referenciado pelos Input Gates de 06/06b/07 e por `_index.md` (regra global 14). Estrutura:
   - **Personagem (voz):** toda linha respeita o perfil de voz do falante (`tone_analysis.md`: registro,
     léxico, comprimento, tiques); `voice_criticality: high` → checagem por linha; identidade dupla nunca
     vaza a identidade revelada antes do `reveal_timing`; o personagem soa igual em todo o corpus.
