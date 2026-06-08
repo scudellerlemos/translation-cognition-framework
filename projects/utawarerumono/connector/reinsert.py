@@ -39,12 +39,12 @@ import sys
 import unicodedata
 from pathlib import Path
 
+import sdat_format as S
+from sdat_format import read_cstr, find_pointers, is_head, read_run
+
 ROOT = Path(__file__).resolve().parent.parent          # raiz do projeto
 ART = ROOT / "artifacts"
 REPORT = ART / "reinsertion_report.md"
-
-TEXT_OPCODE = b"\x50\x00"      # opcode de exibição de texto, precede o ponteiro absoluto
-MAX_RUN = 32                   # trava de segurança ao caminhar um run
 
 
 # ----------------------------------------------------------------------------- governança de caminho
@@ -77,46 +77,8 @@ def transliterate(s: str) -> str:
     return "".join(c for c in nfkd if not unicodedata.combining(c))
 
 
-# ----------------------------------------------------------------------------- leitura do binário
-def read_cstr(buf: bytes, off: int) -> bytes:
-    """String null-terminated a partir de off (sem o \\0)."""
-    end = buf.find(b"\x00", off)
-    if end == -1:
-        end = len(buf)
-    return buf[off:end]
-
-
-def find_pointers(data: bytes, off: int):
-    """Localizações dos ponteiros REAIS para 'off': bytes `50 00` + uint32(off) LE.
-    O prefixo do opcode filtra falsos-positivos (4 bytes aleatórios que casam o valor)."""
-    needle = TEXT_OPCODE + struct.pack("<I", off)
-    locs, s = [], 0
-    while True:
-        i = data.find(needle, s)
-        if i == -1:
-            break
-        locs.append(i + len(TEXT_OPCODE))   # posição do ponteiro (após o opcode)
-        s = i + 1
-    return locs
-
-
-def is_head(data: bytes, off: int) -> bool:
-    return len(find_pointers(data, off)) >= 1
-
-
-def read_run(data: bytes, head_off: int):
-    """Run = head + continuações (strings com 0 ponteiros) até o próximo head.
-    Lê direto do binário (robusto mesmo para continuações fora das 20 da POC)."""
-    members = [head_off]
-    nxt = head_off + len(read_cstr(data, head_off)) + 1
-    while len(members) < MAX_RUN and nxt < len(data):
-        if data[nxt] == 0x00:           # padding/fim de bloco
-            break
-        if is_head(data, nxt):          # próximo head -> fim do run
-            break
-        members.append(nxt)
-        nxt += len(read_cstr(data, nxt)) + 1
-    return members
+# Leitura do binário (read_cstr/find_pointers/is_head/read_run): vêm de sdat_format (módulo único
+# compartilhado com extract.py — garante o mesmo entendimento de formato dos dois lados do round-trip).
 
 
 # ----------------------------------------------------------------------------- carga de artefatos
@@ -144,6 +106,8 @@ def build_output(original: bytes, budgets, approved):
     buf = bytearray(original)
     sorted_items = budgets  # já em ordem de offset
     off_to_idx = {o: i for i, (o, _, _) in enumerate(sorted_items)}
+    files = S.parse_pack(original)
+    pidx = S.index_pointers(original, files)   # ponteiros FILE-RELATIVOS (target_abs=file_start+u32)
 
     # 1) classificar cada string conhecida e achar overflows
     encoded = {}
@@ -154,27 +118,33 @@ def build_output(original: bytes, budgets, approved):
         if len(enc) > budget:
             overflow.append(off_hex)
 
-    # 2) para cada overflow, achar o HEAD do seu run e ler o run completo do binário
+    # 2) para cada overflow, achar o HEAD do seu run e ler o run completo do binário.
+    #    O head pode NÃO estar no dialogs (ex.: narração longa com 1 só ponteiro): por isso
+    #    procuramos o head caminhando pelas strings reais do binário, não só pelos offsets conhecidos.
     relocated_runs = {}   # head_off(int) -> [member_off(int)]
     member_to_head = {}   # qualquer membro(int) -> head_off(int)
     for off_hex in overflow:
         off = int(off_hex, 16)
-        if is_head(original, off):
+        if is_head(original, off, pidx):
             head = off
         else:
-            # continuação: head = maior offset conhecido < off que seja head, sem head no meio
+            # continuação: caminhar PELO BINÁRIO para trás até achar o head do run
             head = None
-            idx = off_to_idx[off_hex]
-            for j in range(idx - 1, -1, -1):
-                cand = int(sorted_items[j][0], 16)
-                if is_head(original, cand):
-                    head = cand
+            cur = off
+            for _ in range(S.MAX_RUN):
+                prev = original.rfind(b"\x00", 0, cur - 1)
+                if prev < 0:
                     break
-            if head is None:
-                # sem head identificável -> não dá para repointar: T4 resíduo
-                continue
+                cur = prev + 1                  # início da string anterior
+                if original[cur] == 0x00:       # padding/fim de bloco -> sem head
+                    break
+                if is_head(original, cur, pidx):
+                    head = cur
+                    break
+        if head is None:
+            continue                            # sem head identificável -> resíduo T4
         if head not in relocated_runs:
-            run = read_run(original, head)
+            run = read_run(original, head, pidx)
             relocated_runs[head] = run
             for m in run:
                 member_to_head[m] = head
@@ -211,11 +181,11 @@ def build_output(original: bytes, budgets, approved):
                 # continuação fora das 20 -> mantém original (transliterado, no-op se ASCII)
                 enc = transliterate(read_cstr(original, m).decode("utf-8", "replace")).encode("utf-8")
             buf += enc + b"\x00"
-        # reescreve todos os ponteiros do head para o novo endereço
-        ptr_locs = find_pointers(original, head)
-        for loc in ptr_locs:
-            buf[loc:loc + 4] = struct.pack("<I", new_head_off)
-        repoints.append((f"0x{head:x}", new_head_off, [f"0x{l:x}" for l in ptr_locs], run))
+        # reescreve todos os ponteiros do head para o novo endereço (valor FILE-RELATIVO ao arquivo do site)
+        ptr_locs = find_pointers(original, head, pidx)   # lista de (site, file_start)
+        for site, fs in ptr_locs:
+            buf[site:site + 4] = struct.pack("<I", new_head_off - fs)
+        repoints.append((f"0x{head:x}", new_head_off, [f"0x{s:x}" for s, _ in ptr_locs], run))
         # marca tiers no relatório
         for m in run:
             m_hex = f"0x{m:x}"
