@@ -22,11 +22,10 @@
 - **PASSOU** — `extract.py` → `reinsert.py` (sem mudanças) reproduz o `.sdat` byte-a-byte idêntico.
 
 ## Gate de charset (pt-BR)
-- **Método empírico falhou em confirmar** (fonte é inglês, que quase não usa acentos).
-- Confirmados renderizados em texto real: `õ` (U+00F5), `À` (U+00C0).
-- Demais acentos pt-BR vivem no mesmo bloco Latin-1 Supplement → **suporte provável**.
-- **Ação:** confirmar in-game com pangrama pt-BR, ou parsear o `Font.fnt` (formato `"Table"`).
-- `target_charset_supported: likely`
+- **FALHOU (confirmado in-game).** Pangrama pt-BR (`áéíóú âêô ãõ ç ÁÉÍ ÃÕ`) renderiza os acentos
+  como `@` — evidência: `artifacts/char1.png`, `artifacts/char2.png`. A fonte do jogo não tem os glifos.
+- **Decisão:** `target_charset_supported: false` → **transliteração na gravação** (acento→ASCII no
+  `reinsert.py`); a tradução canônica mantém os acentos. Ver `decision_log.md`.
 
 ## Anomalias detectadas
 - `0x33f9`: "INICIANDO PROCESSO DE DESPERTAR. SISTEMAS AM . RESTARTING IN 5 SECONDS." — **texto já vem misturado PT/EN e corrompido no próprio jogo** (não é erro da extração). Marcar como anomalia de fonte.
