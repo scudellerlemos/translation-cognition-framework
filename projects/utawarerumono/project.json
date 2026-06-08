@@ -20,8 +20,9 @@
   "batch_size": 200,
   "connector": {
     "type": "hex_binary",
-    "source_binary": "artifacts/TODO_aponte_para_seu_ScriptEvent.sdat",
-    "source_binary_note": "O USUÁRIO fornece o binário a traduzir. Aponte este campo para o seu ScriptEvent.sdat (na POC, o arquivo da Steam em Data/ENG/ScriptEvent.sdat) — caminho absoluto ou relativo à raiz do projeto. Alternativa: passar o caminho como argumento de CLI (`python extract.py <caminho>`). Os scripts NUNCA têm o caminho hardcoded.",
+    "source_binary": "artifacts/ScriptEvent.sdat",
+    "container_format": "sdat",
+    "source_binary_note": "O USUÁRIO entrega o binário a traduzir. A localização de origem é a pasta da Steam (Data/ENG/ScriptEvent.sdat) — isso é só ONDE achar, não um caminho de input. Entregue assim: COPIE o arquivo para artifacts/ (este campo, relativo à raiz) OU passe o caminho como argumento de CLI no runtime (`python extract.py <caminho>`). NUNCA persista um caminho absoluto/externo aqui; os scripts nunca têm o caminho hardcoded.",
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
     "reinsert_script": "connector/reinsert.py",

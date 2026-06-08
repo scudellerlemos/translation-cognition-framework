@@ -16,6 +16,28 @@ referenciada por **ponteiros**. É o caso clássico de jogos de console antigos 
 
 ---
 
+## FONTE EM PACOTE (entregue pelo usuário)
+
+Vale também para jogos modernos cujo texto vive **dentro de um pacote** (ex: `.sdat`) e ainda
+assim é **editável em hex no lugar** (HxD mostra e edita o texto direto). Nesse caso:
+
+- O pacote é tratado como o **próprio binário-fonte**. `connector.container_format` (ex: `sdat`)
+  e `connector.inner_path` apenas **documentam o que foi entregue** (proveniência) — não exigem
+  desempacotamento.
+- **Governança da entrega:** o **usuário entrega** o arquivo — copiando para `artifacts/`
+  (`source_binary` relativo) ou passando por **CLI**. A localização real (ex: pasta da Steam) é
+  só **orientação ao humano**; o conector **nunca** guarda caminho absoluto de input.
+- **Por que editar na mão "às vezes estraga" — e como o conector resolve:** sobrescrever bytes
+  no HxD sem disciplina estoura o slot da string ou desalinha tamanhos/ponteiros. Os mecanismos
+  do conector eliminam isso deterministicamente: **`byte_budget`** (anti-overflow),
+  **`pointer_table` + `space_strategy: repoint`** (recalcula offsets quando o alvo cresce) e o
+  **gate de round-trip** (troca "a maioria abre" por "abre 100% ou trava antes de traduzir").
+- **Reserva (fora do escopo atual):** se um pacote for **opaco** (comprimido / com checksum que
+  quebra ao sobrescrever bytes), aí é preciso um passo de **unpack → editar → repack
+  byte-idêntico** — o conector `archive_script` (🚧 em `00_index.md`), ainda não definido.
+
+---
+
 ## O SCHEMA DE TABELA (coração do conector)
 
 Um único `table_schema` (ver `_skeleton/table_schema.md`) é compartilhado por extração e reinserção.

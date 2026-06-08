@@ -25,7 +25,7 @@ import json
 import sys
 from pathlib import Path
 
-from extract import load_table  # mesmo table_schema -> garante round-trip
+from extract import load_table, resolve_source  # mesmo table_schema -> garante round-trip
 
 
 # ---------------------------------------------------------------------------
@@ -75,12 +75,13 @@ def emit_patch(original: bytes, modified: bytes, fmt: str, out_path: Path):
 # ---------------------------------------------------------------------------
 # 4. MAIN
 # ---------------------------------------------------------------------------
-def main(project_json: Path):
+def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     conn = cfg["connector"]
     root = project_json.parent
 
-    original = (root / conn["source_binary"]).read_bytes()
+    src_path, _ = resolve_source(root, conn, source_override)  # mesma fonte entregue na extração
+    original = src_path.read_bytes()
     table = load_table(root / conn["table_schema"])
     buf = bytearray(original)
 
@@ -109,8 +110,7 @@ def main(project_json: Path):
             report.append((row[id_col], tier, len(to_write), budget))
 
     # saída em output/ com o MESMO nome e extensão do input (nunca sobre o original)
-    src_name = Path(conn["source_binary"]).name
-    out_bin = root / "output" / src_name
+    out_bin = root / "output" / src_path.name
     out_bin.parent.mkdir(parents=True, exist_ok=True)
     out_bin.write_bytes(buf)
     print(f"Saída gravada em: {out_bin}")            # informar o usuário o diretório de saída
@@ -133,4 +133,7 @@ def main(project_json: Path):
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1] if len(sys.argv) > 1 else "project.json"))
+    # Uso: python reinsert.py [project.json] [<caminho-do-binário-entregue>]
+    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    override = sys.argv[2] if len(sys.argv) > 2 else None
+    main(proj, override)
