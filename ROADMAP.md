@@ -12,16 +12,15 @@
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Perfil de jogos | 🟢 validado |
-| Instância Utawarerumono | 🟡 pipeline 00→08 em **2 cenas / 1025 linhas**; **resíduo T4=0**; pt-BR **renderiza in-game ✅**; pendente o **gate do Plano B** (1 linha) |
+| Instância Utawarerumono | 🟢 pipeline 00→08 em **2 cenas / 1025 linhas**, **validado in-game** (Plano B ✅); **resíduo T4=0**; QA de naturalidade/interjeições aplicada |
 | Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **pytest** (9 testes) |
 | Perfis filme/série + conector subtitle_file | 🟠/🔴 stub / não iniciado |
 
-**Resumo:** o *processo* está maduro (~92). A *validação de produção* deu um salto: o **pt-BR do
-framework já renderizou no jogo real** (prova de ponta a ponta — `artifacts/Fasea*.png`). O mesmo teste
-**reprovou o EOF-append** (relocar ao fim do container → `@@@@`/trava porque o engine respeita o `size`
-do Pack), o que motivou o **Plano B** (relocação dentro do arquivo + reescrita da tabela Pack), já
-implementado e travado por pytest. O bloqueador restante é estreito: confirmar in-game **1 linha**
-relocada pelo Plano B antes da run completa.
+**Resumo:** o *processo* está maduro (~92) e a *validação de produção* foi **fechada nas 2 cenas**: o
+**pt-BR renderiza no jogo real** e a relocação **intra-arquivo (Plano B)** foi validada in-game (o
+EOF-append fora reprovado — `@@@@`/trava). O bloqueador de correção ("funciona no jogo?") **acabou**;
+o que resta é **escala** (jogo inteiro, A3) + **economia** (A4/A5) + **qualidade contínua** (naturalidade
+contextual, já incorporada ao processo).
 
 ---
 
@@ -105,10 +104,10 @@ relocada pelo Plano B antes da run completa.
 
 - [ ] **T4 em lote (LLM):** reescrita do resíduo irredutível. Com o modelo file-relativo o resíduo é 0
   → só necessário se algum corpus futuro gerar overflow não-repointável.
-- [ ] **Metadados cognitivos por linha em escala:** hoje curados em `11_01_000S`, auto-defaultados no
-  resto (speaker heurístico, risk low). Refinar se/quando a qualidade exigir.
-- [ ] **CI + empacotamento de release:** baixo valor enquanto for 1 dev / 1 obra e pré-gate-in-game.
-  Faz sentido **depois** do gate in-game e de uma 2ª instância (aí CI protege 2 obras de verdade).
+- [ ] **Metadados cognitivos por linha em escala:** *parcialmente já presentes* — `speaker`/
+  `tone_register`/`intent` existem para as 1025 linhas (alimentaram a QA de naturalidade). Resta
+  formalizar/validar a cobertura e o auto-default em escala.
+- ~~CI + empacotamento de release~~ — **removido** (não há release planejada agora).
 
 ---
 
@@ -123,9 +122,13 @@ relocada pelo Plano B antes da run completa.
 - ✅ **Plano B no conector:** relocação **intra-arquivo** + `rebuild_container` (reescreve a tabela Pack,
   padding a 16 bytes) — substitui o EOF-append reprovado in-game. 1025 linhas: T1=595, RELOC=430,
   resíduo 0; 425/425 ponteiros relocados resolvem dentro do arquivo; 9 testes pytest verdes.
+- ✅ **Plano B validado in-game** (`--validate-one`): linha relocada intra-arquivo exibe e o jogo segue
+  (`testeplanob.png`/`testeplanob_avanco.png`) — bloqueador "funciona no jogo?" encerrado.
+- ✅ **QA de naturalidade contextual + interjeições:** regra genérica no framework (06/06b/07/games) +
+  referência curada do projeto; 19 interjeições localizadas (`Nh?→Hein?`, `Ngh...→Nnh...`, `Gah!→Ai!`).
 - ✅ Charset: gate FALHOU (fonte sem diacríticos → `@`); resolvido por **transliteração na gravação**.
-- ✅ Round-trip byte-idêntico + patch IPS + **teste de regressão `pytest` (6 testes, valida o valor do
-  ponteiro file-relativo, não-circular)**.
+- ✅ Round-trip byte-idêntico + patch IPS + **teste de regressão `pytest` (9 testes: modelo file-relativo
+  não-circular, relocação within-file, integridade do Pack, governança)**.
 - ✅ Extração **por arco/script** (`SCENES`) com limpeza de bordas; container totalmente parseado.
 - ✅ Pipeline cognitivo 00→08 rodado de verdade em **2 cenas / 1025 linhas** (entities, glossário,
   research_log com gate de cobrança, plano, micro-QA, QA, approved, reinsert).
