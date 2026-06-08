@@ -4,6 +4,37 @@ Registro acumulativo de decisões não-óbvias. Nunca apagar entradas (ver `fram
 
 ---
 
+## Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)
+
+**Data:** 2026-06-08
+**Passo do SDD:** 08 / 05
+**Tipo:** revision (corrige bug do conector + atribuição de speaker)
+
+**Problema:** in-game, o rótulo de falante aparecia em **inglês** ("Girl") mesmo com a tradução
+("Garota") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo
+formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: "Girl"→"Garota"
+(estoura 4→6 bytes) era varrida pra um run `50 00` na relocação, e os ~17 sites `53 00` do rótulo
+seguiam apontando pro "Girl" original. Há 5 rótulos no corpus (`Girl`×3, `Woman`, `Man`).
+
+**Decisão:**
+1. `sdat_format.POINTER_OPCODES = (50 00, 53 00)` — `index_pointers` indexa AMBOS; `is_head`/`read_run`
+   tratam rótulos como heads próprios; a relocação reescreve TODOS os sites do head (o valor é o mesmo
+   offset file-relativo; o byte do opcode não muda). Verificado: 17/17 sites do "Girl" passam a ler
+   "Garota" dentro do arquivo; round-trip segue byte-idêntico. (Travado por `test_label_pointers_53`.)
+2. **Reconcile de speaker (data-driven):** o falante de cada fala = rótulo do `53 00` mais próximo
+   antes do seu `50 00`. Derivando do binário, **10 linhas** taguadas como adultos da memória
+   ("Mulher/Homem (memória)") são na verdade rotuladas **"Girl"** pelo jogo → reconciliadas para
+   **"Garota (memória)"**. (As 7 "Woman" e 4 "Man" estavam corretas.)
+
+**Por que "Garota (memória)" e não "Kuon":** a identidade da figura da memória é **gap de pesquisa**
+(`research_log.md`) — a Carta de Governança proíbe afirmar lore incerto. Logo, taguamos pelo **rótulo
+do jogo** (faithful), sem reivindicar que a garota da memória é a Kuon.
+
+**Revisão necessária:** sim — **gate in-game**: confirmar que o rótulo exibe "Garota" (era "Girl").
+Se a identidade da memória for confirmada na pesquisa, reavaliar o canônico.
+
+---
+
 ## Calibração de risco/metadados (F2) — data-driven, sem achatamento
 
 **Data:** 2026-06-08

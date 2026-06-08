@@ -74,6 +74,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `06c_correction_cycle.md` | 6c | Correções cirúrgicas pós-QA com re-validação |
 | `07_qa.md` | 7 | QA final de consistência global |
 | `08_reinsertion.md` | 8 | Reinserir a tradução no meio via conector + patch (determinístico, LLM só no resíduo) |
+| `translation_governance.md` | — | **Carta de Governança** — contrato de qualidade (voz/lore/situação/processo) que rege os Passos 05–08 |
 
 ### Suporte do framework
 
@@ -134,6 +135,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 11. **Nenhum dado de obra específica vive nas skills.** Tudo específico vem de `project.json` + artefatos.
 12. **O corpus é output do Passo 00 (extração); a tradução é devolvida no Passo 08 (reinserção).** O ciclo meio→corpus→meio é fechado.
 13. **Reinserção é determinística.** LLM nunca escreve bytes nem recalcula ponteiros — só reescreve o resíduo de overflow, em lote.
+14. **Toda tradução segue a Carta de Governança** (`translation_governance.md`): voz/lore/situação/processo. A IA traduz conforme a Carta; quando não consegue satisfazê-la, **sinaliza** (não improvisa).
 
 ---
 
