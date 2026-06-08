@@ -35,6 +35,11 @@ determinístico**: o usuário fornece o binário, a IA escreve `extract.py` (bin
 `reinsert.py` (`approved_translations.csv` → binário traduzido em `output/`). Propriedade-chave:
 **round-trip** — extrair e reinserir sem mudanças regenera o binário byte-a-byte. Ver `framework/connectors/`.
 
+> **Convenções de conector (genéricas, travadas por teste):** os scripts **nunca contêm texto da obra**
+> (leem dos artefatos) e o **round-trip** é um gate de regressão automatizado (`connector/test_roundtrip.py`,
+> pytest) — incluindo um guard data-driven que falha se houver frase hardcoded em `.py`. Servem de
+> referência para qualquer instância nova.
+
 ---
 
 ## ESTRUTURA
