@@ -59,18 +59,22 @@ Os control codes são armazenados como **tokens ASCII literais** dentro da próp
 - **Filtro anti-falso-positivo:** indexar `target_abs = file_start + uint32` e validar que aponta para
   um início de string real (descarta `50 00` aleatórios no bytecode).
 
-### Estratégia de reinserção (cascata determinística)
+### Estratégia de reinserção (cascata determinística) — Plano B (relocação INTRA-ARQUIVO)
 
 - **T1 in_place:** `len(bytes) ≤ byte_budget` → grava no slot original.
-- **Repoint (run):** se qualquer membro de um run estoura → **reloca o run inteiro** (head +
-  continuações) para o **fim do arquivo** e reescreve cada ponteiro `50 00`+rel32 do head com o valor
-  **`novo_offset − file_start_do_site`** (mantém a semântica file-relativa). Continuações viajam contíguas.
-- **T4 resíduo:** caso irredutível → issue para o Passo 06c. (Com o modelo file-relativo, tudo é
-  repointável → resíduo = 0 no corpus testado.)
+- **RELOC intra-arquivo (run):** se qualquer membro de um run estoura → **reloca o run inteiro** (head +
+  continuações) para o **FIM da região do PRÓPRIO arquivo**; o arquivo **cresce** (e o `size` na tabela
+  Pack é reescrito por `sdat_format.rebuild_container`, com todos os offsets recalculados e padding a 16
+  bytes). Cada ponteiro `50 00`+rel32 do head é reescrito com o valor **`offset_local_no_arquivo`**
+  (= `novo_offset − file_start`). Continuações viajam contíguas → ordem preservada.
+- **T4 resíduo:** caso irredutível (overflow sem head) → issue para o Passo 06c. (Com o modelo
+  file-relativo, tudo é repointável → resíduo = 0 no corpus testado.)
 
-> ⚠️ **Pendente de validação in-game:** a relocação grava no fim do arquivo (offset file-relativo grande).
-> Se o engine limitar a leitura ao `size` declarado do arquivo no Pack, strings relocadas além desse
-> tamanho podem não exibir. Confirmar com um patch de 1 linha relocada antes de produção.
+> ⚠️ **EOF-append (fim do CONTAINER) foi REPROVADO in-game** (`artifacts/Fasea*.png`): o engine carrega
+> cada arquivo do `.sdat` num buffer próprio dimensionado pelo `size` do Pack, então texto além do `size`
+> vira `@@@@` e trava o jogo. Por isso a relocação é **dentro do arquivo** + **reescrita do Pack** (o
+> texto fica dentro do `size` declarado). Ver `decision_log.md` → "GATE IN-GAME". Travado pelos testes
+> `test_planob_within_file` e `test_pack_rebuild_integrity`.
 
 ## SEÇÃO 5 — COBERTURA DE CHARSET DO ALVO (pt-BR)
 
