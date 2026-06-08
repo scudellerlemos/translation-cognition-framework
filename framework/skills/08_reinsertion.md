@@ -65,9 +65,13 @@ Para cada string traduzida, `reinsert.py` aplica:
   strings que encolheram; tabela de abreviações seguras. Zero LLM.
 - **T3 — Trim mecânico:** colapsar espaços duplos, reticência tipográfica (…), abreviações do
   glossário do projeto. Zero LLM.
-- **T4 — Reescrita por LLM (resíduo):** as strings que ainda estouram são coletadas e enviadas em
-  **uma única chamada em lote** ("reescreva estas K strings para caber em seus `byte_budget`,
-  preservando tom e entidades"). O resultado **volta pelo Micro-QA (06b)** e é re-gravado por T1.
+- **T4 — Reescrita por LLM (resíduo):** as strings que ainda estouram são **exportadas em lote** pelo
+  `reinsert.py` para `artifacts/t4_residue.json` (`offset`, `text_source`, `current_target`,
+  `byte_budget`, `over_by`). A IA reescreve as K strings em **uma única passada** para caber, devolve
+  no `translation_plan.json` (`base_translation`), o conjunto é aprovado e **reaplicado pelo fluxo
+  normal** (`poc_pipeline → approved → reinsert`). O resultado **volta pelo Micro-QA (06b)**.
+  *(Quando a estratégia de espaço reloca o overflow — ex.: relocação intra-arquivo — o resíduo tende a
+  0 e o lote sai vazio.)*
 
 > Nunca uma chamada de LLM por string. Nunca LLM escrevendo bytes ou recalculando ponteiros.
 

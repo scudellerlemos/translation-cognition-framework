@@ -10,7 +10,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Gemido de despertar dolorido.",
       "risk_level": "low",
-      "base_translation": "Ngh... ghh...",
+      "base_translation": "Nnh... aagh...",
       "byte_budget": 13,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -25,7 +25,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Interjeição baixa.",
       "risk_level": "low",
-      "base_translation": "Nn...\\n",
+      "base_translation": "Nnh...\\n",
       "byte_budget": 7,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -55,7 +55,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Reação confusa.",
       "risk_level": "low",
-      "base_translation": "Nh?",
+      "base_translation": "Hein?",
       "byte_budget": 3,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -115,13 +115,14 @@
       ],
       "tone_register": "frio_tecnico",
       "intent": "Anúncio de sistema: inicia o processo.",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "INICIANDO PROCESSO DE DESPERTAR.",
       "byte_budget": 31,
       "glossary_flags": [
         "Awakening Process"
       ],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Calibrado: glossary_flags=Awakening Process, entidade sensível=Processo de Despertar"
     },
     {
       "offset": "0x3419",
@@ -163,13 +164,14 @@
       ],
       "tone_register": "frio_tecnico",
       "intent": "Diagnóstico de falha.",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "PROBLEMA DETECTADO NO PROCESSO DE DESPERTAR.\\n",
       "byte_budget": 40,
       "glossary_flags": [
         "Awakening Process"
       ],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Calibrado: glossary_flags=Awakening Process, entidade sensível=Processo de Despertar"
     },
     {
       "offset": "0x3479",
@@ -196,7 +198,7 @@
       ],
       "tone_register": "frio_tecnico",
       "intent": "Comando de abortar foi cancelado.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Ambiguidade proposital (quem/por que cancelou) — não explicitar. Manter espaço antes do \\n.",
       "base_translation": "COMANDO DE ABORTAR: CANCELADO. \\n",
       "byte_budget": 28,
@@ -215,11 +217,12 @@
       ],
       "tone_register": "frio_tecnico",
       "intent": "Processo não pode ser interrompido.",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "IMPOSSÍVEL ENCERRAR O PROCESSO.\\n",
       "byte_budget": 34,
       "glossary_flags": [],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Calibrado: entidade sensível=Processo de Despertar"
     },
     {
       "offset": "0x34d4",
@@ -398,7 +401,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Responde com gemido.",
       "risk_level": "low",
-      "base_translation": "Ngh... hh...?",
+      "base_translation": "Nnh... hn...?",
       "byte_budget": 13,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -427,7 +430,7 @@
       ],
       "tone_register": "rotulo",
       "intent": "Rótulo de falante exibido na caixa.",
-      "risk_level": "low",
+      "risk_level": "high",
       "base_translation": "Garota",
       "byte_budget": 4,
       "glossary_flags": [
@@ -435,7 +438,8 @@
       ],
       "spoiler_flags": [
         "nome Kuon não revelado — manter rótulo"
-      ]
+      ],
+      "risk_notes": "Calibrado: spoiler_flags=nome Kuon não revelado — manter rótulo"
     },
     {
       "offset": "0x36a5",
@@ -690,7 +694,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Adormece.",
       "risk_level": "low",
-      "base_translation": "Nn... hh...",
+      "base_translation": "Nnh... hn...",
       "byte_budget": 11,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -719,7 +723,7 @@
       ],
       "tone_register": "rotulo",
       "intent": "Rótulo de falante (figura de memória).",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Identidade UNSOURCED; manter rótulo genérico, sem nome.",
       "base_translation": "Mulher",
       "byte_budget": 5,
@@ -756,13 +760,14 @@
       ],
       "tone_register": "afetuoso_infantil",
       "intent": "Chega animada para visitar o 'Tio'.",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "Ei, ei, Tio! Vim te visitar!",
       "byte_budget": 35,
       "glossary_flags": [
         "Uncle"
       ],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Calibrado: glossary_flags=Uncle"
     },
     {
       "offset": "0x3901",
@@ -928,7 +933,7 @@
       ],
       "tone_register": "rotulo",
       "intent": "Rótulo de falante (figura de memória).",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Identidade UNSOURCED; manter rótulo genérico.",
       "base_translation": "Homem",
       "byte_budget": 3,
@@ -949,7 +954,7 @@
       ],
       "tone_register": "enigmatico_profetico",
       "intent": "Pergunta se tomou o remédio.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Tom ambíguo/dúbio; não suavizar nem explicar.",
       "base_translation": "...Então você tomou o remédio?",
       "byte_budget": 31,
@@ -968,7 +973,7 @@
       ],
       "tone_register": "enigmatico_profetico",
       "intent": "Profecia: um mundo novo o espera.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Duplo sentido proposital; preservar ambiguidade.",
       "base_translation": "Um mundo totalmente novo vai te esperar\\n",
       "byte_budget": 47,
@@ -986,7 +991,7 @@
       ],
       "tone_register": "enigmatico_profetico",
       "intent": "...quando você acordar; risinho dúbio.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Manter o riso 'Hmhmhm' e o tom ambíguo.",
       "base_translation": "quando você acordar... Hmhmhm.",
       "byte_budget": 27,
@@ -1005,7 +1010,7 @@
       ],
       "tone_register": "enigmatico_profetico",
       "intent": "Declaração enigmática sobre o protagonista.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "Frase-chave dúbia; traduzir literal preservando o peso.",
       "base_translation": "Sim... Você é o primeiro... e o último...",
       "byte_budget": 43,
@@ -1024,7 +1029,7 @@
       ],
       "tone_register": "enigmatico_profetico",
       "intent": "Diz que não fará mais 'isso' por ele.",
-      "risk_level": "medium",
+      "risk_level": "high",
       "risk_notes": "'make it' é ambíguo (fazer/conseguir/preparar). Manter 'fazer isso' (dúbio).",
       "base_translation": "Eu não vou mais fazer isso por você.",
       "byte_budget": 38,
@@ -1120,7 +1125,7 @@
       "tone_register": "interjeicao_dor",
       "intent": "Desperta do sonho.",
       "risk_level": "low",
-      "base_translation": "Nn...",
+      "base_translation": "Hum...",
       "byte_budget": 5,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -1412,10 +1417,10 @@
       "text_source": "Gah!",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Gah!",
+      "base_translation": "Ai!",
       "byte_budget": 4,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -2556,10 +2561,10 @@
       "text_source": "Hh... Ah... Aaah--",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Hh... Ah... Aaah--",
+      "base_translation": "Hn... Ah... Aaah--",
       "byte_budget": 18,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -2686,10 +2691,10 @@
       "text_source": "Guh--",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Guh--",
+      "base_translation": "Agh--",
       "byte_budget": 5,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -2738,10 +2743,10 @@
       "text_source": "Ghh!",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Ghh!",
+      "base_translation": "Agh!",
       "byte_budget": 4,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -3037,10 +3042,10 @@
       "text_source": "Ghh...",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Ghh...",
+      "base_translation": "Argh...",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -4389,10 +4394,10 @@
       "text_source": "Ngh...",
       "speaker": "Man",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Ngh...",
+      "base_translation": "Nnh...",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -5793,10 +5798,10 @@
       "text_source": "...Hm?",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "...Hm?",
+      "base_translation": "...Hum?",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -6456,10 +6461,10 @@
       "text_source": "Hm...?",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Hm...?",
+      "base_translation": "Hum...?",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -7834,10 +7839,10 @@
       "text_source": "H-Hgh!",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "H-Hgh!",
+      "base_translation": "Hngh!",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -7964,10 +7969,10 @@
       "text_source": "Hm?",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Hm?",
+      "base_translation": "Hum?",
       "byte_budget": 3,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -7977,10 +7982,10 @@
       "text_source": "Ngh... Ghh... Hngh!",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Ngh... Ghh... Hngh!",
+      "base_translation": "Nnh... Argh... Hngh!",
       "byte_budget": 19,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -8653,10 +8658,10 @@
       "text_source": "...Hm?",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "...Hm?",
+      "base_translation": "...Hum?",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": []
@@ -9654,10 +9659,10 @@
       "text_source": "Hk--",
       "speaker": "Kuon",
       "entities_present": [],
-      "tone_register": "dialogo",
+      "tone_register": "interjeicao",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
       "risk_level": "low",
-      "base_translation": "Hk--",
+      "base_translation": "Hgh--",
       "byte_budget": 4,
       "glossary_flags": [],
       "spoiler_flags": []

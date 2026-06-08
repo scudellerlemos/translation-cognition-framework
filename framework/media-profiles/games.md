@@ -116,6 +116,17 @@ a ordem das palavras pode precisar ser redistribuída entre os segmentos.
 
 ---
 
+## 8. INTERJEIÇÕES E TEXTO DE SFX (susto, dor, surpresa)
+
+Visual novels e RPGs são densos em **interjeições e onomatopeias** de emoção (`Ngh...`, `Hm?`, `Gah!`,
+`*Floof*`). Elas **são tradução**, não pontuação: localizar à convenção do idioma-alvo (um susto em
+pt-BR é `Hein?`/`Ãhn?`, dor é `Ai!`/`Aagh...`), nunca copiar do source — copiar quebra a imersão tanto
+quanto um termo não traduzido. Curar a convenção do projeto num artefato de referência e aplicá-la com
+coerência. Se o conector translitera na gravação, escolher formas que sobrevivam (sem depender de
+acento). Detalhes do processo: `skills/06_translation.md` (regra) e `skills/06b_micro_qa.md` (check).
+
+---
+
 ## RESUMO — o que o `project.json` deve declarar para um jogo
 
 | Campo | Função |
