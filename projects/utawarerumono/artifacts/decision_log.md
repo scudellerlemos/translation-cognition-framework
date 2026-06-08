@@ -4,6 +4,32 @@ Registro acumulativo de decisões não-óbvias. Nunca apagar entradas (ver `fram
 
 ---
 
+## Calibração de risco/metadados (F2) — data-driven, sem achatamento
+
+**Data:** 2026-06-08
+**Passo do SDD:** 05/06
+**Tipo:** revision
+
+**Decisão tomada:**
+Calibrar o `risk_level` do `translation_plan.json` por **sinais de dados** (não auto-default), só
+**subindo** o risco e exigindo `risk_notes`:
+- `spoiler_flags` não-vazio → **high**.
+- `glossary_flags` não-vazio **ou** `entities_present` ∩ (termos do glossário com `spoiler_level≠none`)
+  → **medium**.
+- `tone_register`: `dialogo`→`interjeicao` nos offsets de interjeição; sistema→`frio_tecnico`.
+
+**Resultado:** risco saiu de **0 high / 13 medium (achatado)** para **9 high / 9 medium**; 13 linhas
+re-tagueadas como interjeição. `base_translation` intacto (metadata-only). Invariante: toda linha
+`risk≥medium` tem `risk_notes`.
+
+**Limitação assumida (deferido):** o `tone_register` fino por **situação/emoção** das ~948 linhas
+`dialogo` **não** foi mapeado aqui — isso exige a leitura contextual por personagem (passe LLM da
+meia-maratona). A calibração atual é o piso determinístico que dispara a back-translation nas linhas
+certas; o refino situacional vem com a run de escala.
+
+**Impacto:** a QA (06b/07) agora tem alvos reais de alto risco; a Carta de Governança (backlog) usará
+esses campos. **Revisão necessária:** refino situacional no passe contextual de escala.
+
 ## space_strategy — in_place → repoint
 
 **Data:** POC
