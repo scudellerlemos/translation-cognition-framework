@@ -81,9 +81,10 @@ contextual, já incorporada ao processo).
 > Construí-los antes da run completa = abstração prematura. Sequência recomendada (cada um habilita
 > o próximo). Cada item vira uma rodada de planejamento própria quando chegar a vez.
 
-- [ ] **B1. Validation leve.** Validadores executáveis dos schemas + invariantes (hoje em prosa:
-  `framework/schemas/artifacts_schema.md`, `framework/skills/_index.md`). Maior valor / menor esforço /
-  menor risco. *Pode ser puxado para junto da produção* (reduz risco da run de 33k).
+- [x] **B1. Validation leve.** ✅ `framework/validation/validate.py` — validadores executáveis dos
+  schemas + invariantes (glossary/handling_rule, cobertura plan↔dialogs↔approved, preservação de
+  tokens, `risk_notes` quando `risk≥medium`, enums, `reveal_timing`). Genérico (lê `project.json`),
+  ERROR/WARN, **7 testes pytest** (passa na ref + pega violações injetadas). Roda como Input Gate.
 - [ ] **B2. Memory leve** (glossário + character state básico). Estado vivo e consultável entre os
   165 lotes, no lugar de re-ler CSV ad-hoc. Desenhar **informado pela run real** (A3).
 - [ ] **B3. Kernel simples.** Runtime que orquestra os passos usando Validation (gates) + Memory
@@ -104,9 +105,10 @@ contextual, já incorporada ao processo).
 
 - [ ] **T4 em lote (LLM):** reescrita do resíduo irredutível. Com o modelo file-relativo o resíduo é 0
   → só necessário se algum corpus futuro gerar overflow não-repointável.
-- [ ] **Metadados cognitivos por linha em escala:** *parcialmente já presentes* — `speaker`/
-  `tone_register`/`intent` existem para as 1025 linhas (alimentaram a QA de naturalidade). Resta
-  formalizar/validar a cobertura e o auto-default em escala.
+- [~] **Metadados cognitivos por linha em escala (F2):** `speaker`/`tone_register`/`intent` existem
+  para as 1025 linhas; **risco calibrado** (data-driven: spoiler/glossário/entidade → 9 high / 9 medium,
+  saindo do achatamento 0-high) com `risk_notes`. *Resta:* o **`tone_register` fino por situação/emoção**
+  das ~948 linhas `dialogo` — depende do passe contextual LLM (meia-maratona). Ver `decision_log.md`.
 - ~~CI + empacotamento de release~~ — **removido** (não há release planejada agora).
 
 ---
