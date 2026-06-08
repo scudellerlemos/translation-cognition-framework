@@ -1,11 +1,11 @@
 # Reinsertion Report — Utawarerumono
 
 - Round-trip self-test: OK
-- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290128 bytes (original 3274096; +16032)
+- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290144 bytes (original 3274096; +16048)
 - Patch: output/ScriptEvent.sdat.ips
 - Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)
 - Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.
-- Distribuição por tier: RELOC_cont=5, RELOC_head=437, T1_in_place=583
+- Distribuição por tier: RELOC_cont=5, RELOC_head=438, T1_in_place=582
 - Overflows não resolvidos (T4): 0
 
 ## Relocações (head -> offset local no arquivo crescido)
@@ -436,19 +436,20 @@
 | 0x123fa | 11_02_000S.BIN | 0x9b9b | 0xdca6 | 0x123fa |
 | 0x1244e | 11_02_000S.BIN | 0x9bd5 | 0xdcd8 | 0x1244e |
 | 0x12481 | 11_02_000S.BIN | 0x9c0d | 0xdce0 | 0x12481 |
-| 0x124ea | 11_02_000S.BIN | 0x9c46 | 0xdd11 | 0x124ea |
-| 0x12517 | 11_02_000S.BIN | 0x9c76 | 0xdd19 | 0x12517 |
-| 0x1251e | 11_02_000S.BIN | 0x9c7f | 0xdd43 | 0x1251e |
-| 0x1256a | 11_02_000S.BIN | 0x9c9d | 0xdd63 | 0x1256a |
-| 0x1261f | 11_02_000S.BIN | 0x9caa | 0xde2e | 0x1261f |
-| 0x126fa | 11_02_000S.BIN | 0x9cdd | 0xdf22 | 0x126fa |
-| 0x1274e | 11_02_000S.BIN | 0x9cee | 0xdf85 | 0x1274e |
-| 0x127a1 | 11_02_000S.BIN | 0x9d0a | 0xdfaf | 0x127a1 |
-| 0x127b5 | 11_02_000S.BIN | 0x9d24 | 0xdfda | 0x127b5 |
-| 0x12859 | 11_02_000S.BIN | 0x9d67 | 0xe013 | 0x12859 |
-| 0x129f2 | 11_02_000S.BIN | 0x9d8f | 0xe123 | 0x129f2 |
-| 0x12a11 | 11_02_000S.BIN | 0x9db6 | 0xe12b | 0x12a11 |
-| 0x12a32 | 11_02_000S.BIN | 0x9ddd | 0xe155 | 0x12a32 |
+| 0x124b1 | 11_02_000S.BIN | 0x9c46 | 0xdcf8 | 0x124b1 |
+| 0x124ea | 11_02_000S.BIN | 0x9c55 | 0xdd11 | 0x124ea |
+| 0x12517 | 11_02_000S.BIN | 0x9c85 | 0xdd19 | 0x12517 |
+| 0x1251e | 11_02_000S.BIN | 0x9c8e | 0xdd43 | 0x1251e |
+| 0x1256a | 11_02_000S.BIN | 0x9cac | 0xdd63 | 0x1256a |
+| 0x1261f | 11_02_000S.BIN | 0x9cb9 | 0xde2e | 0x1261f |
+| 0x126fa | 11_02_000S.BIN | 0x9cec | 0xdf22 | 0x126fa |
+| 0x1274e | 11_02_000S.BIN | 0x9cfd | 0xdf85 | 0x1274e |
+| 0x127a1 | 11_02_000S.BIN | 0x9d19 | 0xdfaf | 0x127a1 |
+| 0x127b5 | 11_02_000S.BIN | 0x9d33 | 0xdfda | 0x127b5 |
+| 0x12859 | 11_02_000S.BIN | 0x9d76 | 0xe013 | 0x12859 |
+| 0x129f2 | 11_02_000S.BIN | 0x9d9e | 0xe123 | 0x129f2 |
+| 0x12a11 | 11_02_000S.BIN | 0x9dc5 | 0xe12b | 0x12a11 |
+| 0x12a32 | 11_02_000S.BIN | 0x9dec | 0xe155 | 0x12a32 |
 
 ## Arquivos crescidos (Pack reescrito)
 
@@ -456,7 +457,7 @@
 |---|---|---|
 | 11_01_000S.BIN | 0x16b0 | 0x1aa0 |
 | 11_01_100C.BIN | 0x7380 | 0x8a70 |
-| 11_02_000S.BIN | 0x7a50 | 0x9e10 |
+| 11_02_000S.BIN | 0x7a50 | 0x9e20 |
 
 ## Strings
 
@@ -484,7 +485,7 @@
 | 0x35bf | RELOC_head | 50 | 45 | Acima de mim... uma especie de... teto de pano...? |
 | 0x35ed | RELOC_head | 53 | 49 | Quase nenhuma luz...... Ou so esta escuro la fora...? |
 | 0x361f | T1_in_place | 29 | 32 | ...Barulho... Parece... fogo? |
-| 0x3640 | T1_in_place | 39 | 41 | U... Argh... Esta tudo... distorcido... |
+| 0x3640 | T1_in_place | 41 | 41 | Nnh... Argh... Esta tudo... distorcido... |
 | 0x366a | RELOC_head | 17 | 15 | Por que... eu...? |
 | 0x367a | T1_in_place | 13 | 14 | Voce acordou? |
 | 0x3689 | T1_in_place | 13 | 13 | Nnh... hn...? |
@@ -1440,7 +1441,7 @@
 | 0x1242b | T1_in_place | 19 | 34 | minha mae, pode...? |
 | 0x1244e | RELOC_head | 55 | 50 | Embora, se voce preferir seguir por conta propria sem\n |
 | 0x12481 | RELOC_head | 56 | 47 | mim, entao fique a vontade, tome suas proprias decisoes. |
-| 0x124b1 | T1_in_place | 12 | 12 | U... Argh... |
+| 0x124b1 | RELOC_head | 14 | 12 | Nnh... Argh... |
 | 0x124be | T1_in_place | 39 | 43 | Como discutir com isso...? Kuon sorri\n |
 | 0x124ea | RELOC_head | 47 | 44 | radiante enquanto eu desabo derrotado, e bate\n |
 | 0x12517 | RELOC_head | 8 | 6 | as maos. |
