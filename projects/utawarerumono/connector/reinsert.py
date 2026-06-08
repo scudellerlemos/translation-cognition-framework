@@ -10,8 +10,8 @@ Contrato (framework/connectors/hex_binary.md):
 
 Formato do .sdat (engenharia reversa — ver connector/table_schema.md):
 - Bloco de texto: strings UTF-8 null-terminated e contíguas.
-- Bytecode de script com o opcode de texto `50 00` (LE 0x0050) seguido de um PONTEIRO absoluto
-  uint32 LE para a string ("head"). Não há tabela central de ponteiros.
+- Bytecode de script com o opcode de texto `50 00` (LE 0x0050) seguido de um ponteiro uint32 LE
+  RELATIVO ao início do arquivo (alvo_abs = file_start + u32). Não há tabela central de ponteiros.
 - "Continuações": strings sem ponteiro próprio, lidas em sequência logo após o head. Um "run" =
   head + suas continuações, até o próximo head.
 
@@ -20,16 +20,22 @@ Estratégia de encaixe (cascata determinística, sem LLM):
   (á->a, ç->c, ...). A tradução canônica (approved_translations.csv) permanece com acento; só os
   BYTES gravados no jogo são dobrados para ASCII.
 - T1 in_place : len(transliterado) <= byte_budget -> grava no slot original.
-- REPOINT     : se algum membro de um run estoura, RELOCA o run inteiro (head + continuações) para o
-                fim do arquivo e reescreve o(s) ponteiro(s) `50 00`+ptr do head para o novo endereço.
-                Continuações viajam junto -> a leitura sequencial é preservada.
-- T4 resíduo  : caso irredutível (sem ponteiro e sem como caber) -> issue para o Passo 06c.
+- RELOC intra-arquivo : se algum membro de um run estoura, anexa o run inteiro (head + continuações)
+                ao FIM da região do PRÓPRIO arquivo, faz o arquivo crescer (size do Pack é reescrito
+                via sdat_format.rebuild_container) e reescreve o(s) ponteiro(s) `50 00`+u32 do head
+                com o valor FILE-RELATIVO = posição local no arquivo. Continuações viajam junto.
+                (O gate in-game REPROVOU anexar ao fim do CONTAINER — o engine carrega cada arquivo
+                num buffer próprio dimensionado pelo `size` do Pack; ver artifacts/decision_log.md.)
+- T4 resíduo  : caso irredutível (overflow sem head identificável) -> issue para o Passo 06c.
 
 Regras de governança:
 - NUNCA escreve no binário-fonte. Lê o original (read-only) e grava em output/ no projeto.
 - 100% determinístico. A IA não escreve a tradução à mão — este script aplica o arquivo APROVADO.
 - Gate de round-trip: reinserir o text_source (idêntico) reproduz o original byte-a-byte.
 
+Uso: python reinsert.py [<caminho-binário>] [--validate-one <offset_hex>]
+- --validate-one : modo gate — reloca SÓ o run que contém <offset>, deixando todo o resto do
+  container idêntico ao original (blast radius mínimo para um teste in-game isolado).
 Caminho do binário (NUNCA hardcoded): CLI > connector.source_binary do project.json.
 """
 import csv
@@ -48,10 +54,25 @@ REPORT = ART / "reinsertion_report.md"
 
 
 # ----------------------------------------------------------------------------- governança de caminho
-def resolve_source() -> Path:
+def parse_args():
+    """Retorna (path|None, only_offset|None). Suporta `--validate-one <offset>` + caminho posicional."""
+    args = sys.argv[1:]
+    path, only = None, None
+    i = 0
+    while i < len(args):
+        if args[i] == "--validate-one":
+            only = args[i + 1] if i + 1 < len(args) else sys.exit("ERRO: --validate-one exige <offset_hex>.")
+            i += 2
+        else:
+            path = args[i]
+            i += 1
+    return path, only
+
+
+def resolve_source(path: str | None = None) -> Path:
     """Caminho do binário-fonte: CLI > connector.source_binary do project.json. Sem hardcode."""
-    if len(sys.argv) > 1:
-        p = Path(sys.argv[1])
+    if path is not None:
+        p = Path(path)
     else:
         cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
         sb = cfg.get("connector", {}).get("source_binary", "")
@@ -100,100 +121,127 @@ def final_text_bytes(off_hex: str, source: str, approved: dict) -> bytes:
     return transliterate(text).encode("utf-8")
 
 
-def build_output(original: bytes, budgets, approved):
-    """Aplica in_place + repoint. Retorna (buf, repoints, report_rows).
-    repoints: lista de (head_hex, new_off, [ptr_locs]). report_rows: (off,tier,nbytes,budget,text)."""
-    buf = bytearray(original)
-    sorted_items = budgets  # já em ordem de offset
-    off_to_idx = {o: i for i, (o, _, _) in enumerate(sorted_items)}
+def _head_of(original: bytes, off: int, pidx) -> int | None:
+    """Head do run que contém `off`: o próprio off se for head; senão caminha PELO BINÁRIO para trás
+    (strings reais) até achar um head. None se não houver (resíduo)."""
+    if is_head(original, off, pidx):
+        return off
+    cur = off
+    for _ in range(S.MAX_RUN):
+        prev = original.rfind(b"\x00", 0, cur - 1)
+        if prev < 0:
+            return None
+        cur = prev + 1                      # início da string anterior
+        if original[cur] == 0x00:           # padding/fim de bloco -> sem head
+            return None
+        if is_head(original, cur, pidx):
+            return cur
+    return None
+
+
+def build_output(original: bytes, budgets, approved, only_offset=None):
+    """Aplica in_place + RELOCAÇÃO INTRA-ARQUIVO e reconstrói o container (Pack reescrito).
+    Retorna (buf, repoints, report_rows).
+    - repoints: lista de (head_hex, file_index, new_local_off, [ptr_sites_hex], run).
+    - report_rows: (off_hex, tier, nbytes, budget, text).
+    - only_offset (hex str|int): modo gate — reloca SÓ o run que contém esse offset; sem in_place;
+      todos os demais arquivos ficam idênticos ao original."""
     files = S.parse_pack(original)
+    by_index = {f.index: f for f in files}
     pidx = S.index_pointers(original, files)   # ponteiros FILE-RELATIVOS (target_abs=file_start+u32)
 
     # 1) classificar cada string conhecida e achar overflows
     encoded = {}
     overflow = []
-    for off_hex, source, budget in sorted_items:
+    for off_hex, source, budget in budgets:
         enc = final_text_bytes(off_hex, source, approved)
         encoded[off_hex] = (enc, budget)
         if len(enc) > budget:
             overflow.append(off_hex)
 
-    # 2) para cada overflow, achar o HEAD do seu run e ler o run completo do binário.
-    #    O head pode NÃO estar no dialogs (ex.: narração longa com 1 só ponteiro): por isso
-    #    procuramos o head caminhando pelas strings reais do binário, não só pelos offsets conhecidos.
+    # 2) descobrir o head + run completo de cada overflow (head pode não estar no dialogs)
     relocated_runs = {}   # head_off(int) -> [member_off(int)]
-    member_to_head = {}   # qualquer membro(int) -> head_off(int)
+    member_to_head = {}
     for off_hex in overflow:
-        off = int(off_hex, 16)
-        if is_head(original, off, pidx):
-            head = off
-        else:
-            # continuação: caminhar PELO BINÁRIO para trás até achar o head do run
-            head = None
-            cur = off
-            for _ in range(S.MAX_RUN):
-                prev = original.rfind(b"\x00", 0, cur - 1)
-                if prev < 0:
-                    break
-                cur = prev + 1                  # início da string anterior
-                if original[cur] == 0x00:       # padding/fim de bloco -> sem head
-                    break
-                if is_head(original, cur, pidx):
-                    head = cur
-                    break
+        head = _head_of(original, int(off_hex, 16), pidx)
         if head is None:
-            continue                            # sem head identificável -> resíduo T4
+            continue
         if head not in relocated_runs:
             run = read_run(original, head, pidx)
             relocated_runs[head] = run
             for m in run:
                 member_to_head[m] = head
 
-    relocated_offsets = set(member_to_head.keys())
-
-    # 3) PASS in_place — grava as aprovadas que cabem e NÃO estão em run relocado
-    report = []
-    for off_hex, source, budget in sorted_items:
-        off = int(off_hex, 16)
-        enc, _ = encoded[off_hex]
-        if off in relocated_offsets:
-            continue  # será gravada na relocação
-        if len(enc) <= budget:
-            buf[off:off + len(enc)] = enc
-            for k in range(off + len(enc), off + budget + 1):
-                buf[k] = 0x00
-            report.append((off_hex, "T1_in_place", len(enc), budget, enc.decode("utf-8", "replace")))
+    # 2b) modo gate: manter só o run do offset pedido (relocando-o mesmo que não seja overflow)
+    if only_offset is not None:
+        tgt = int(only_offset, 16) if isinstance(only_offset, str) else only_offset
+        head = member_to_head.get(tgt) or _head_of(original, tgt, pidx)
+        if head is None:
+            relocated_runs, member_to_head = {}, {}
         else:
-            # overflow sem run relocável (ex.: continuação sem head conhecido) -> resíduo
-            report.append((off_hex, "T4_residuo", len(enc), budget, enc.decode("utf-8", "replace")))
+            run = relocated_runs.get(head) or read_run(original, head, pidx)
+            relocated_runs, member_to_head = {head: run}, {m: head for m in run}
 
-    # 4) PASS relocação — anexa cada run no fim do arquivo e repointa o head
-    repoints = []
-    for head in sorted(relocated_runs):
-        run = relocated_runs[head]
-        new_head_off = len(buf)
-        # grava membros do run (transliterados) contíguos e null-terminated
-        for m in run:
-            m_hex = f"0x{m:x}"
-            if m_hex in encoded:
-                enc = encoded[m_hex][0]
+    relocated_offsets = set(member_to_head.keys())
+    do_inplace = only_offset is None
+
+    # 3) agrupar edições por arquivo (coordenadas LOCAIS ao arquivo)
+    report = []
+    file_inplace = {}   # idx -> [(local_off, enc, budget, off_hex)]
+    if do_inplace:
+        for off_hex, source, budget in budgets:
+            off = int(off_hex, 16)
+            enc, _ = encoded[off_hex]
+            if off in relocated_offsets:
+                continue                        # será gravada na relocação
+            f = S.file_of(off, files)
+            if f is not None and len(enc) <= budget:
+                file_inplace.setdefault(f.index, []).append((off - f.offset, enc, budget, off_hex))
+                report.append((off_hex, "T1_in_place", len(enc), budget, enc.decode("utf-8", "replace")))
             else:
-                # continuação fora das 20 -> mantém original (transliterado, no-op se ASCII)
-                enc = transliterate(read_cstr(original, m).decode("utf-8", "replace")).encode("utf-8")
-            buf += enc + b"\x00"
-        # reescreve todos os ponteiros do head para o novo endereço (valor FILE-RELATIVO ao arquivo do site)
-        ptr_locs = find_pointers(original, head, pidx)   # lista de (site, file_start)
-        for site, fs in ptr_locs:
-            buf[site:site + 4] = struct.pack("<I", new_head_off - fs)
-        repoints.append((f"0x{head:x}", new_head_off, [f"0x{s:x}" for s, _ in ptr_locs], run))
-        # marca tiers no relatório
-        for m in run:
-            m_hex = f"0x{m:x}"
-            if m_hex in encoded:
-                enc, budget = encoded[m_hex]
-                tier = "REPOINT_head" if m == head else "REPOINT_cont"
-                report.append((m_hex, tier, len(enc), budget, enc.decode("utf-8", "replace")))
+                report.append((off_hex, "T4_residuo", len(enc), budget, enc.decode("utf-8", "replace")))
 
+    file_reloc = {}     # idx -> [(head, run, [ptr_sites])]
+    for head in sorted(relocated_runs):
+        f = S.file_of(head, files)
+        if f is None:
+            continue
+        file_reloc.setdefault(f.index, []).append(
+            (head, relocated_runs[head], find_pointers(original, head, pidx)))
+
+    # 4) construir os bytes novos de cada arquivo alterado (in_place + append do run no fim do arquivo)
+    repoints = []
+    new_file_bytes = {}
+    for idx in sorted(set(file_inplace) | set(file_reloc)):
+        f = by_index[idx]
+        nd = bytearray(original[f.offset:f.end])
+        # 4a) in_place: grava no slot local e zera a sobra (até o terminador do slot original)
+        for local_off, enc, budget, off_hex in file_inplace.get(idx, []):
+            nd[local_off:local_off + len(enc)] = enc
+            for k in range(local_off + len(enc), local_off + budget + 1):
+                nd[k] = 0x00
+        # 4b) relocação: anexa o run ao fim do arquivo; o ponteiro file-relativo = offset local novo
+        for head, run, sites in file_reloc.get(idx, []):
+            new_local = len(nd)
+            for m in run:
+                m_hex = f"0x{m:x}"
+                if m_hex in encoded:
+                    enc = encoded[m_hex][0]
+                else:                            # continuação fora do corpus -> mantém original (translit.)
+                    enc = transliterate(read_cstr(original, m).decode("utf-8", "replace")).encode("utf-8")
+                nd += enc + b"\x00"
+            for site, fs in sites:               # site é absoluto e está NESTE arquivo (ponteiros não cruzam)
+                nd[site - f.offset: site - f.offset + 4] = struct.pack("<I", new_local)
+            repoints.append((f"0x{head:x}", idx, new_local, [f"0x{s:x}" for s, _ in sites], run))
+            for m in run:
+                m_hex = f"0x{m:x}"
+                if m_hex in encoded:
+                    enc, budget = encoded[m_hex]
+                    tier = "RELOC_head" if m == head else "RELOC_cont"
+                    report.append((m_hex, tier, len(enc), budget, enc.decode("utf-8", "replace")))
+        new_file_bytes[idx] = bytes(nd)          # rebuild_container faz o padding a 16 bytes
+
+    buf = bytearray(S.rebuild_container(original, files, new_file_bytes))
     return buf, repoints, report
 
 
@@ -227,7 +275,8 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
 
 # ----------------------------------------------------------------------------- main
 def main():
-    src = resolve_source()
+    path, only = parse_args()
+    src = resolve_source(path)
     OUT = ROOT / "output" / src.name
     original = src.read_bytes()
     budgets = load_budgets()
@@ -238,8 +287,8 @@ def main():
     round_trip_ok = bytes(rt_buf) == original and not rt_repoints
     print(f"Round-trip self-test: {'OK (byte-identico)' if round_trip_ok else 'FALHOU'}")
 
-    # 2) aplicar o APROVADO (in_place + repoint)
-    buf, repoints, report = build_output(original, budgets, approved)
+    # 2) aplicar o APROVADO (in_place + relocação intra-arquivo). Modo gate: só 1 run.
+    buf, repoints, report = build_output(original, budgets, approved, only_offset=only)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_bytes(buf)
@@ -252,29 +301,46 @@ def main():
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
     residuo = tiers.get("T4_residuo", 0)
+    files = S.parse_pack(original)
+    by_index = {f.index: f for f in files}
+    grown = {idx for _, idx, *_ in repoints}
 
     # 4) relatório
     order = {o: i for i, (o, _, _) in enumerate(budgets)}
     report.sort(key=lambda r: order.get(r[0], 1 << 30))
+    title = "# Reinsertion Report — Utawarerumono"
+    if only:
+        title += f" (modo gate --validate-one {only})"
     lines = [
-        "# Reinsertion Report — Utawarerumono (POC 20 linhas)", "",
+        title, "",
         f"- Round-trip self-test: {'OK' if round_trip_ok else 'FALHOU'}",
-        f"- Saída: output/{OUT.name} (mesmo nome/extensão do input)",
+        f"- Saída: output/{OUT.name} (mesmo nome/extensão do input) — {len(buf)} bytes "
+        f"(original {len(original)}; +{len(buf) - len(original)})",
         f"- Patch: output/{IPS.name}",
-        f"- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)",
-        f"- Distribuição por tier: " + ", ".join(f"{k}={v}" for k, v in sorted(tiers.items())),
+        "- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)",
+        "- Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; "
+        "Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.",
+        "- Distribuição por tier: " + ", ".join(f"{k}={v}" for k, v in sorted(tiers.items())),
         f"- Overflows não resolvidos (T4): {residuo}",
         "",
-        "## Repoints (head -> novo offset)", "",
+        "## Relocações (head -> offset local no arquivo crescido)", "",
     ]
     if repoints:
-        lines += ["| head | novo offset | ponteiros reescritos | membros do run |",
-                  "|---|---|---|---|"]
-        for head, new_off, ptrs, run in repoints:
+        lines += ["| head (abs) | arquivo | offset local novo | ponteiros reescritos | membros do run |",
+                  "|---|---|---|---|---|"]
+        for head, idx, new_local, ptrs, run in repoints:
+            f = by_index[idx]
             run_s = ", ".join(f"0x{m:x}" for m in run)
-            lines.append(f"| {head} | 0x{new_off:x} | {', '.join(ptrs)} | {run_s} |")
+            lines.append(f"| {head} | {f.name} | 0x{new_local:x} | {', '.join(ptrs)} | {run_s} |")
     else:
-        lines.append("_nenhum_")
+        lines.append("_nenhuma_")
+    if grown:
+        new_by_name = {f.name: f.size for f in S.parse_pack(bytes(buf))}
+        lines += ["", "## Arquivos crescidos (Pack reescrito)", "",
+                  "| arquivo | size original | size novo (pad 16) |", "|---|---|---|"]
+        for idx in sorted(grown):
+            f = by_index[idx]
+            lines.append(f"| {f.name} | 0x{f.size:x} | 0x{new_by_name.get(f.name, f.size):x} |")
     lines += ["", "## Strings", "", "| offset | tier | bytes | budget | texto |", "|---|---|---|---|---|"]
     for off, tier, nb, budget, txt in report:
         safe = txt.replace("|", "\\|")
@@ -282,7 +348,8 @@ def main():
     REPORT.write_text("\n".join(lines), encoding="utf-8")
 
     print(f"Tiers: {tiers}")
-    print(f"Repoints: {len(repoints)}  |  Resíduo T4: {residuo}")
+    print(f"Relocações: {len(repoints)}  |  Arquivos crescidos: {len(grown)}  |  Resíduo T4: {residuo}")
+    print(f"Tamanho: {len(original)} -> {len(buf)} (+{len(buf) - len(original)})")
     print(f"SAÍDA  -> {OUT}")
     print(f"PATCH  -> {IPS}")
     print(f"Relatório -> {REPORT}")
