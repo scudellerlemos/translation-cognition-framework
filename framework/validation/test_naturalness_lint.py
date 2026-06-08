@@ -85,10 +85,9 @@ def test_no_false_positive_on_short_word(tmp_path):
 
 # ----------------------------------------------------------------- instância real
 @pytest.mark.skipif(not REF_PROJECT.is_dir(), reason="projeto de referência ausente")
-def test_reference_only_real_candidates():
+def test_reference_no_false_positives():
+    """Na instância real (já revisada), o linter não deve gerar falso-positivo: nenhum nome próprio,
+    grito puro ou linha numérica vira `copia_crua`. (Os stammers reais já foram localizados.)"""
     findings = N.lint_project(REF_PROJECT)
-    # nenhum nome próprio / grito deve ser flagado (sem copia_crua falsa)
-    assert all(f["check"] == "fragmento_residual" for f in findings), \
-        f"falso-positivo de copia_crua: {[f for f in findings if f['check'] != 'fragmento_residual'][:5]}"
-    # o stammer conhecido 0x3640 está na lista
-    assert any(f["offset"] == "0x3640" for f in findings)
+    offenders = [f for f in findings if f["check"] == "copia_crua"]
+    assert not offenders, f"copia_crua falsa na instância real: {offenders[:5]}"
