@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-poc_pipeline.py — Passos 05 (planejamento) + 06 (tradução), nas 20 linhas extraídas.
+poc_pipeline.py — Passos 05 (planejamento) + 06 (tradução), no arco extraído (dialogs.csv).
 
 DETERMINÍSTICO. Não contém nenhuma frase da obra:
 - A PROPOSTA de tradução é um artefato de DADOS autorado na etapa cognitiva:

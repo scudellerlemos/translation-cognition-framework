@@ -38,7 +38,13 @@ não trabalho refeito pela IA:
   `approved_translations.csv`, e o script aplica.
 - **Nenhum texto da obra dentro do `.py`.** Os scripts são determinísticos e **leem as frases de
   artefatos** (`dialogs.csv`, `translation_plan.json`, `approved_translations.csv`) — nunca contêm
-  diálogos nem traduções hardcoded no código.
+  diálogos nem traduções hardcoded no código. Inclui **helpers/geradores transientes**: para autorar
+  tradução em massa, escreva o **artefato de dados** (CSV/JSON) direto — nunca um `.py` com frases.
+  - **Enforcement automático:** um teste genérico (`connector/test_roundtrip.py →
+    test_no_work_text_in_scripts`) compara cada `.py` do conector contra os artefatos do projeto
+    (insensível a acento) e **falha** se achar texto da obra embutido. É data-driven — vale para
+    qualquer instância, sem conhecer a obra. (Opcional: replicar como hook `PreToolUse` para barrar já
+    na escrita.)
 - **Nenhum caminho de input hardcoded.** O **usuário fornece o binário**; o caminho vem de
   `connector.source_binary` no `project.json` (ou de um argumento de CLI). Sem arquivo válido, o
   script **falha com mensagem clara** pedindo o input.
@@ -56,6 +62,11 @@ INVARIANTE:  binário' === binário              (byte-a-byte idêntico)
 Antes de qualquer tradução, rodar extract → reinsert-sem-mudanças e comparar com o original.
 **Se não for byte-idêntico, o conector está perdendo informação — o pipeline é BLOQUEADO.**
 Esse teste prova que os scripts são corretos e que a tradução poderá ser devolvida com segurança.
+
+> **Convenção de teste:** toda instância `hex_binary` deve trazer um **teste de round-trip
+> automatizado** (`connector/test_roundtrip.py`, pytest) que trava o invariante de identidade +
+> verificação por ponteiro + aplicabilidade do patch — o self-test inline não basta como gate de
+> regressão. Ver `projects/utawarerumono/connector/test_roundtrip.py` como referência.
 
 ---
 
