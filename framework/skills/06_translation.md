@@ -40,6 +40,10 @@ Traduzir o corpus em lotes controláveis, aplicando o plano do passo 5, com auto
 
 ❌ **Se qualquer verificação falhar: PARAR. Traduzir sem plano completo viola o contrato do processo.**
 
+> **Carta de Governança:** toda linha é traduzida conforme `translation_governance.md` (voz / lore /
+> situação / processo). A IA traduz conforme a Carta; quando não consegue satisfazê-la, **sinaliza**
+> (em `risk_notes`/QA) em vez de improvisar.
+
 ---
 
 ## ONDE FICAM AS TRADUÇÕES PROPOSTAS
