@@ -4,12 +4,13 @@ test_roundtrip.py — gate de regressão do conector (pytest).
 
 Trava automaticamente os invariantes que antes só rodavam inline:
   1. Round-trip de IDENTIDADE: reinserir o source (sem traduzir) reproduz o binário byte-a-byte,
-     sem repoint e sem resíduo.
+     sem relocação e sem resíduo.
   2. Binário-fonte intacto (read-only) após a reinserção.
-  3. Cada tradução aprovada, lida pelo PONTEIRO / run relocado no binário gravado, é exatamente a
-     transliteração do alvo aprovado.
+  3. Cada head relocado (FILE-RELATIVO) aponta para DENTRO do próprio arquivo e a string lida ali
+     é a transliteração do alvo aprovado (validado nas coordenadas da saída, não circular).
   4. O patch IPS aplicado ao original reproduz o output byte-a-byte.
-  5. O modelo de ponteiro é FILE-RELATIVO (não absoluto) e o valor gravado é validado de verdade.
+  5. PLANO B: relocação INTRA-ARQUIVO — nenhum alvo cai fora do `size` do arquivo (o EOF-append foi
+     reprovado in-game); e o Pack reconstruído fica íntegro (contíguo, alinhado a 16, nomes/footer).
   6. GOVERNANÇA: nenhum texto da obra hardcoded nos `.py` do conector (data-driven, genérico).
 
 Rodar:  pytest projects/utawarerumono/connector/
@@ -85,44 +86,77 @@ def test_no_residue(original):
 
 @requires_bin
 def test_translated_pointers(original):
-    """Cada linha aprovada, lida na sua posição final, == transliterate(alvo) — E o ponteiro gravado
-    (FILE-RELATIVO: file_start + valor) aponta de fato para a posição relocada (não circular)."""
+    """Cada head relocado: o ponteiro gravado (FILE-RELATIVO: file_start + valor) aponta para DENTRO
+    do próprio arquivo, e a string lida ali == transliterate(alvo). Validado nas coordenadas da SAÍDA
+    (o arquivo desloca quando um arquivo anterior cresce) — não circular."""
     approved = {r["offset"]: r["text_target"]
                 for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
     assert approved, "approved_translations.csv vazio"
+    src_by = {o: s for o, s, _ in R.load_budgets()}
 
-    files = S.parse_pack(original)
-    starts = [f.offset for f in files]
     buf, repoints, _ = R.build_output(original, R.load_budgets(), approved)
+    out = bytes(buf)
+    fo = {f.index: f for f in S.parse_pack(original)}
+    fn = {f.index: f for f in S.parse_pack(out)}
 
-    # 1) o VALOR do ponteiro gravado, somado ao file_start do site, bate com o novo head?
-    import bisect
-    ptr_bad = []
-    for head_hex, new_off, ptr_sites, _run in repoints:
+    ptr_bad, str_bad = [], []
+    for head_hex, idx, new_local, ptr_sites, _run in repoints:
+        fO, fN = fo[idx], fn[idx]
+        exp = R.transliterate(approved.get(head_hex, src_by.get(head_hex, ""))).encode("utf-8")
         for s_hex in ptr_sites:
-            site = int(s_hex, 16)
-            j = bisect.bisect_right(starts, site) - 1
-            fs = files[j].offset
-            val = struct.unpack_from("<I", buf, site)[0]
-            if fs + val != new_off:
-                ptr_bad.append((head_hex, s_hex, hex(fs + val), hex(new_off)))
-    assert not ptr_bad, f"ponteiro file-relativo gravado errado: {ptr_bad[:5]}"
+            new_site = fN.offset + (int(s_hex, 16) - fO.offset)   # corrige o deslocamento do arquivo
+            val = struct.unpack_from("<I", out, new_site)[0]
+            tgt = fN.offset + val
+            if not (val == new_local and fN.offset <= tgt < fN.end):
+                ptr_bad.append((head_hex, s_hex, hex(val)))
+            elif S.read_cstr(out, tgt) != exp:
+                str_bad.append((head_hex, exp.decode("utf-8", "replace"),
+                                S.read_cstr(out, tgt).decode("utf-8", "replace")))
+    assert not ptr_bad, f"ponteiro file-relativo fora do arquivo / valor errado: {ptr_bad[:5]}"
+    assert not str_bad, f"string relocada != transliterate(alvo): {str_bad[:5]}"
 
-    # 2) a string lida na posição final == transliterate(alvo)
-    loc = {}
-    for _head_hex, new_off, _ptrs, run in repoints:
-        pos = new_off
-        for m in run:
-            loc[f"0x{m:x}"] = pos
-            pos += len(S.read_cstr(buf, pos)) + 1
-    mismatches = []
-    for off_hex, tgt in approved.items():
-        pos = loc.get(off_hex, int(off_hex, 16))
-        got = S.read_cstr(buf, pos).decode("utf-8", "replace")
-        exp = R.transliterate(tgt)
-        if got != exp:
-            mismatches.append((off_hex, exp, got))
-    assert not mismatches, f"{len(mismatches)} divergências: {mismatches[:5]}"
+
+@requires_bin
+def test_planob_within_file(original):
+    """PLANO B: todo alvo relocado cai DENTRO da região do seu arquivo (file_start ≤ alvo < file_end);
+    nunca além do `size` declarado. É o que diferencia do EOF-append (reprovado in-game)."""
+    approved = {r["offset"]: r["text_target"]
+                for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    buf, repoints, _ = R.build_output(original, R.load_budgets(), approved)
+    out = bytes(buf)
+    fn = {f.index: f for f in S.parse_pack(out)}
+    assert len(out) >= len(original), "output não deveria encolher"
+    outside = []
+    for head_hex, idx, new_local, _sites, _run in repoints:
+        fN = fn[idx]
+        tgt = fN.offset + new_local
+        if not (fN.offset <= tgt < fN.end):
+            outside.append((head_hex, fN.name, hex(new_local), hex(fN.size)))
+    assert not outside, f"alvo(s) relocado(s) FORA do arquivo (quebraria in-game): {outside[:5]}"
+
+
+@requires_bin
+def test_pack_rebuild_integrity(original):
+    """O container reconstruído mantém o Pack íntegro: mesmo nº/ordem/nomes de arquivos, contíguos,
+    alinhados a 16 bytes; arquivos NÃO alterados ficam byte-idênticos; footer preservado."""
+    approved = {r["offset"]: r["text_target"]
+                for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    buf, _repoints, _ = R.build_output(original, R.load_budgets(), approved)
+    out = bytes(buf)
+    fo = sorted(S.parse_pack(original), key=lambda f: f.offset)
+    fn = sorted(S.parse_pack(out), key=lambda f: f.offset)
+
+    assert [f.name for f in fo] == [f.name for f in fn], "conjunto/ordem de arquivos mudou"
+    assert all(a.end == b.offset for a, b in zip(fn, fn[1:])), "arquivos não contíguos na saída"
+    assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in fn), "alinhamento de 16 bytes quebrado"
+    # arquivos cujo conteúdo é idêntico (comparando por nome, ignorando deslocamento de posição)
+    oN = {f.name: f for f in fn}
+    changed = [f.name for f in fo
+               if original[f.offset:f.end] != out[oN[f.name].offset:oN[f.name].end]]
+    # só os arquivos das cenas traduzidas podem ter mudado
+    assert all(c.startswith(("11_01", "11_02")) for c in changed), \
+        f"arquivo fora das cenas traduzidas foi alterado: {changed}"
+    assert original[fo[-1].end:] == out[fn[-1].end:], "footer final do container não preservado"
 
 
 @requires_bin
