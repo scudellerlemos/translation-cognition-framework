@@ -975,7 +975,7 @@
       "intent": "Profecia: um mundo novo o espera.",
       "risk_level": "high",
       "risk_notes": "Duplo sentido proposital; preservar ambiguidade.",
-      "base_translation": "Um mundo totalmente novo vai te esperar\\n",
+      "base_translation": "Um mundo totalmente novo te aguarda\\n",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [
@@ -1031,7 +1031,7 @@
       "intent": "Diz que não fará mais 'isso' por ele.",
       "risk_level": "high",
       "risk_notes": "'make it' é ambíguo (fazer/conseguir/preparar). Manter 'fazer isso' (dúbio).",
-      "base_translation": "Eu não vou mais fazer isso por você.",
+      "base_translation": "Eu não vou mais poder fazer isso por você.",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [
@@ -10181,11 +10181,12 @@
       "entities_present": [],
       "tone_register": "dialogo",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "Kuon.",
       "byte_budget": 5,
       "glossary_flags": [],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Reveal do NOME da Kuon (1a vez dito). Identidade/spoiler: consistencia de reveal_timing."
     },
     {
       "offset": "0x108e1",
@@ -11156,11 +11157,12 @@
       "entities_present": [],
       "tone_register": "dialogo",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "Tatari...?",
       "byte_budget": 10,
       "glossary_flags": [],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "1a mencao do lore Tatari (criatura). Termo de mundo; manter e vigiar consistencia."
     },
     {
       "offset": "0x1122f",
@@ -13132,11 +13134,12 @@
       "entities_present": [],
       "tone_register": "dialogo",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "Haku...?",
       "byte_budget": 8,
       "glossary_flags": [],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Protagonista recebe o nome Haku (reveal). Identidade-chave; manter forma canonica."
     },
     {
       "offset": "0x12671",
@@ -13210,11 +13213,12 @@
       "entities_present": [],
       "tone_register": "dialogo",
       "intent": "(lote — cena 11_01_100C/11_02_000S)",
-      "risk_level": "low",
+      "risk_level": "medium",
       "base_translation": "Haku...",
       "byte_budget": 7,
       "glossary_flags": [],
-      "spoiler_flags": []
+      "spoiler_flags": [],
+      "risk_notes": "Reforco do nome Haku (reveal). Consistencia com 0x12668."
     },
     {
       "offset": "0x1270a",
