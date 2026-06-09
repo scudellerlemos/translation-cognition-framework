@@ -483,3 +483,35 @@ de que a pipeline SDD → conector → binário funciona em título comercial.
 `artifacts/testeplanob.png` (linha relocada) e `artifacts/testeplanob_avanco.png` (continuidade).
 Conclusão: a relocação INTRA-ARQUIVO + reescrita do Pack é a estratégia correta e está validada
 in-game. Liberada a run completa das 1025 linhas. **Revisão necessária:** não.
+
+
+---
+
+## Calibração: 1 capítulo do zero (11_03_000C, 118 linhas) — modo padrão (2026-06-08)
+
+**Objetivo:** de-riscar a meia-maratona rodando o pipeline completo num capítulo novo e medir ritmo+custo.
+
+**Decisões de tradução não-óbvias:**
+- **`toriuma`** (ave-montaria, 1ª menção) → glossário como termo de mundo `manter_original`. Em diálogo
+  o EN usa `steed`/`horse` → traduz `montaria`/`cavalo`; o termo de mundo aparece só no rótulo interno.
+- **Apelidos cômicos do Haku:** `Ostrich Prime` → `Avestruz Supremo` (mantém a pompa-comica; perde o eco
+  pop de "Prime", aceito). Gag do "avestruz" tratado como banal pela Kuon = contraste cômico preservado.
+- **Back-translation (catch real):** `common sense draining away` traduzido `indo embora` (achatou a
+  imagem) → revisado para **`evaporando`** numa tirada-assinatura do Haku.
+- **Interjeições localizadas:** `Geez`→`Aff`, `Huh`→`Hein`, `HOLY--`→`MEU DEU--` (corte seco),
+  gagueiras `Wh-/W-/H-/Y-`→`Q-/E-/E-/V-`. Gritos animais `GREHHHH`/`GRRRR` espelhados (universal).
+
+**Pendência sinalizada (não inventada):** rótulos internos `Head` (0x14a7b) e `Head_toriuma` (0x1538c)
+→ `needs_human_review`. Reinserem byte-OK verbatim, mas é incerto se o motor os EXIBE como falante;
+verificar in-game antes de traduzir. Comportamento conforme a Carta (sinalizar, não improvisar).
+
+**Verificação:** round-trip byte-idêntico; 118/118 linhas conferidas (dirigido por ponteiro, visão do
+motor); tiers T1=56/RELOC_head=61/RELOC_cont=1; resíduo T4=0; 0 ponteiro fora-do-arquivo; pytest 29/29.
+
+**Custo medido:** produção API ~**$1,14/1k linhas** (Opus+caching, modo padrão) → meia-maratona ~16k
+linhas ≈ **$18** uma vez. Caminho assinatura (o do usuário): sem conta de API; limite é ritmo
+(~15–25 janelas, incremental via `translation_status.json`). Ver `ch_11_03/calibration_report.md`.
+
+**Isolamento:** artefatos do 11_03 em `artifacts/ch_11_03/` — não tocam o build principal de 1025.
+Fold no build principal (merge approved + estender `SCENES`) fica opcional/quando desejado.
+**Revisão necessária:** não (rótulos pendentes de checagem in-game já sinalizados).
