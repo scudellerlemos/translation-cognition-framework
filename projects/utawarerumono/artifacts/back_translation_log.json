@@ -1,0 +1,82 @@
+{
+  "method": "Para cada linha risk>=high: traduzir o pt-BR de volta ao EN (mentalmente), comparar com o source e confirmar que SENTIDO, AMBIGUIDADE proposital e TOM foram preservados (Carta de Governança / skill 06b). Divergência -> revisar.",
+  "date": "2026-06-08",
+  "reviewed": 9,
+  "revised": 2,
+  "entries": [
+    {
+      "offset": "0x3494",
+      "speaker": "Sistema",
+      "source": "ABORT COMMAND: CANCELLED.",
+      "target": "COMANDO DE ABORTAR: CANCELADO.",
+      "verdict": "pass",
+      "note": "Back-tr.: 'ABORT COMMAND: CANCELLED.' Idêntico; voz passiva preserva a ambiguidade de quem cancelou; registro CAPS de máquina mantido."
+    },
+    {
+      "offset": "0x36a0",
+      "speaker": "rótulo",
+      "source": "Girl",
+      "target": "Garota",
+      "verdict": "pass",
+      "note": "Rótulo; back-tr. trivial."
+    },
+    {
+      "offset": "0x38b1",
+      "speaker": "rótulo",
+      "source": "Woman",
+      "target": "Mulher",
+      "verdict": "pass",
+      "note": "Rótulo; identidade genérica preservada."
+    },
+    {
+      "offset": "0x3a9f",
+      "speaker": "rótulo",
+      "source": "Man",
+      "target": "Homem",
+      "verdict": "pass",
+      "note": "Rótulo; identidade genérica preservada."
+    },
+    {
+      "offset": "0x3aa3",
+      "speaker": "Homem (memória)",
+      "source": "...You took the medicine, then?",
+      "target": "...Então você tomou o remédio?",
+      "verdict": "pass",
+      "note": "Back-tr.: 'So you took the medicine?' Sentido e tom sinistro/dúbio preservados; 'then?'->'Então...?' (dedução). Não suavizado."
+    },
+    {
+      "offset": "0x3ac3",
+      "speaker": "Homem (memória)",
+      "source": "There'll be a whole new world waiting for you",
+      "target_before": "Um mundo totalmente novo vai te esperar",
+      "target_after": "Um mundo totalmente novo te aguarda\\n",
+      "verdict": "revised",
+      "note": "Back-tr.: 'A whole new world will wait for you'. Sentido e duplo-sentido (renascer/outro mundo) OK, mas 'vai te esperar' soa casual; a voz do Homem é profética/solene (tone_analysis: red flag 'soar caloroso/casual'). 'te aguarda' restaura o peso ominoso."
+    },
+    {
+      "offset": "0x3af3",
+      "speaker": "Homem (memória)",
+      "source": "when you wake up... Hmhmhm.",
+      "target": "quando você acordar... Hmhmhm.",
+      "verdict": "pass",
+      "note": "Risinho dúbio 'Hmhmhm' mantido (decisão); ameaça implícita preservada; sobrevive à transliteração."
+    },
+    {
+      "offset": "0x3b0f",
+      "speaker": "Homem (memória)",
+      "source": "Yes... You are the first... and the last...",
+      "target": "Sim... Você é o primeiro... e o último...",
+      "verdict": "pass",
+      "note": "Back-tr. idêntico; o peso enigmático (Alfa/Ômega; primeiro e último sujeito) preservado; tradução literal como instruído."
+    },
+    {
+      "offset": "0x3b3b",
+      "speaker": "Garota (memória)",
+      "source": "I'm not gonna make it for you anymore.",
+      "target_before": "Eu não vou mais fazer isso por você.",
+      "target_after": "Eu não vou mais poder fazer isso por você.",
+      "verdict": "revised",
+      "note": "Back-tr.: 'I'm not going to DO this for you anymore' — o pt-BR resolveu para 'fazer/do', PERDENDO o duplo-sentido de 'make it' (=conseguir/dar conta/sobreviver). 'poder' restaura o tom de INABILIDADE/despedida sem perder a ação. Catch real da back-translation."
+    }
+  ]
+}
