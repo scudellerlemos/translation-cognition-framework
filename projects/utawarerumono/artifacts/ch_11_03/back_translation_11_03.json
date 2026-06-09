@@ -1,0 +1,90 @@
+{
+  "method": "Para cada linha risk=high de fala: traduzir o pt-BR de volta ao EN, comparar com o source e confirmar SENTIDO, HUMOR/timing e VOZ (Carta / skill 06b). Divergencia -> revisar. Rotulos internos (needs_human_review) nao entram em back-translation (verbatim, pendentes de verificacao in-game).",
+  "scene": "11_03_000C.BIN",
+  "date": "2026-06-08",
+  "reviewed": 10,
+  "revised": 1,
+  "entries": [
+    {
+      "offset": "0x1479c+0x147ca",
+      "speaker": "Kuon",
+      "source": "Oh, so I suppose I look like some backwoods hermit who lives up in the mountains? Is that it?",
+      "target": "Ah, entao voce acha que eu tenho cara de eremita do mato, vivendo la nas montanhas? E isso?",
+      "verdict": "pass",
+      "note": "Back-tr.: 'Oh, so you think I look like a backwoods hermit living in the mountains? Is that it?' Sarcasmo/provocacao da Kuon (fofa<->firme) preservado; 'look like'->'tenho cara de' natural. A passagem de 'I suppose'(1a) para 'voce acha'(2a) mantem a forca pragmatica (ela devolve a suposicao do Haku) e soa mais natural como alfinetada em pt-BR."
+    },
+    {
+      "offset": "0x14829+0x1485a+0x14889",
+      "speaker": "Kuon",
+      "source": "Well, don't let me stop you. If you want us to live in a tent, then by all means. How about it, Haku?",
+      "target": "Bom, nao vou te impedir. Se voce quer que a gente viva numa barraca, fique a vontade. O que acha disso, Haku?",
+      "verdict": "pass",
+      "note": "Back-tr.: 'Well, I won't stop you. If you want us to live in a tent, be my guest. What do you think, Haku?' Passivo-agressivo (sorriso que nao chega aos olhos) preservado; 'by all means'->'fique a vontade' devolve o tom de permissao ironica."
+    },
+    {
+      "offset": "0x14ae0",
+      "speaker": "Haku",
+      "source": "Wh-What the heck is this ostrich-looking thing!?",
+      "target": "Q-Que diabo e essa coisa que parece um avestruz!?",
+      "verdict": "pass",
+      "note": "Back-tr.: 'Wh-What the hell is this thing that looks like an ostrich!?' Panico comico + gagueira preservados. 'heck'(suave) -> 'que diabo' e 1 grau mais forte, mas em pt-BR 'que diabo' le como brando/idiomatico (nao vulgar); registro comico mantido. Aceito."
+    },
+    {
+      "offset": "0x14b11",
+      "speaker": "Haku",
+      "source": "I don't know if Ostrich Prime here thinks I'm its dinner...",
+      "target": "Nao sei se o Avestruz Supremo aqui acha que eu sou o jantar...",
+      "verdict": "pass",
+      "note": "Back-tr.: 'I don't know if Ostrich Supreme here thinks I'm dinner...' Cunhagem comica 'Ostrich Prime' (titulo grandiloquente, eco de Optimus Prime) -> 'Avestruz Supremo' mantem a pompa-comica. Perde o eco pop especifico de 'Prime', mas a graca (titulo pomposo pra um bicho) e preservada."
+    },
+    {
+      "offset": "0x14bb0",
+      "speaker": "Kuon",
+      "source": "my steed.",
+      "target": "minha montaria.",
+      "verdict": "pass",
+      "note": "Back-tr.: 'my mount.' 1a referencia de mundo a montaria (toriuma no rotulo). 'steed'->'montaria' estabelece o termo; contraste comico (bicho exotico tratado como banal) preservado."
+    },
+    {
+      "offset": "0x14c3d+0x14c6d",
+      "speaker": "Haku",
+      "source": "...God, I can feel common sense draining away with every minute I spend here...",
+      "target_before": "...Deus, da pra sentir o bom senso indo embora a cada minuto que passo aqui...",
+      "target_after": "...Deus, da pra sentir o bom senso evaporando a cada minuto que passo aqui...",
+      "verdict": "revised",
+      "note": "Back-tr.: 'God, I can feel common sense going away every minute I spend here.' Catch real: 'draining away' tem imagem vivida (escoar/esvair); 'indo embora' achatou para 'going away'. 'evaporando' devolve a imagem para uma das tiradas-assinatura do Haku (registro irônico-casual) e casa com o intent ('bom senso evaporar')."
+    },
+    {
+      "offset": "0x15322",
+      "speaker": "Haku",
+      "source": "Heh heh heh... Up til now, I've had it pretty rough.",
+      "target": "Hehehe... Ate agora, a coisa tava bem pesada pro meu lado.",
+      "verdict": "pass",
+      "note": "Back-tr.: 'Hehehe... Up till now, things have been pretty rough on my side.' Riso 'Heh heh heh'->'Hehehe' (convencao); bravata em construcao preservada; ironia (quem surtou agora se faz de valentao) intacta."
+    },
+    {
+      "offset": "0x15359",
+      "speaker": "Haku",
+      "source": "Sorry, guys, but it's time for some stress relief.",
+      "target": "Foi mal, rapazes, mas chegou a hora de aliviar o estresse.",
+      "verdict": "pass",
+      "note": "Back-tr.: 'Sorry, guys, but it's time to relieve some stress.' Deboche dirigido aos lobos preservado; 'guys'->'rapazes' mantem o tom casual-jocoso da bravata."
+    },
+    {
+      "offset": "0x14a7b",
+      "speaker": "rotulo",
+      "source": "Head",
+      "target": "Head (verbatim)",
+      "verdict": "needs_human_review",
+      "note": "Rotulo interno ambiguo; nao traduzido. Fora de back-translation: pendente de verificacao in-game (aparece como falante? se sim, qual forma?)."
+    },
+    {
+      "offset": "0x1538c",
+      "speaker": "rotulo",
+      "source": "Head_toriuma",
+      "target": "Head_toriuma (verbatim)",
+      "verdict": "needs_human_review",
+      "note": "Rotulo interno da entidade toriuma (ave-montaria); nao traduzido. Pendente de verificacao in-game."
+    }
+  ]
+}
