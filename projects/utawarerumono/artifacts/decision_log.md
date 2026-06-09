@@ -4,6 +4,37 @@ Registro acumulativo de decisões não-óbvias. Nunca apagar entradas (ver `fram
 
 ---
 
+## Deep pass do arco (Carta exercida) + custo de produção medido
+
+**Data:** 2026-06-08
+**Passo do SDD:** 05/06b/07
+**Tipo:** revision
+
+**Decisão tomada:**
+Exercer a Carta de Governança **de verdade** no arco (1025 linhas) e medir custo, para de-riscar a
+meia-maratona. Entregas: `back_translation_log.json`, `qa_report.md`, `cost_report.md` + `cost_model.py`.
+
+**Back-translation (a verificação que nunca rodara):** 9 linhas high revisadas → **2 fixes reais**:
+- `0x3b3b` "make it for you" (dúbio: fazer / conseguir) → "não vou mais **poder** fazer isso por você" (restaura inabilidade/despedida).
+- `0x3ac3` "waiting for you" → "te **aguarda**" (voz profética do Homem, não casual).
+As outras 7 preservavam ambiguidade/tom.
+
+**Voz:** spot-check de 3 vozes (Kuon fofa↔firme, Homem tenso, Protagonista fragmentado) → consistente,
+sem drift no sample. **Risco cognitivo:** +4 reveals de identidade/lore (Kuon/Haku/Tatari) elevados a
+medium (os sinais de dados não pegam, pois o nome é a forma canônica).
+
+**Processo funcionando:** o `validate.py` pegou um erro de token (`\n` dropado) numa revisão minha
+durante o deep pass — corrigido antes de gravar. É a camada de validação fazendo o trabalho dela.
+
+**Custo de produção (medido, não da sessão):** `cost_model.py` estima $/1k linhas **3.12 (forte) →
+1.75 (model-mix + caching)**; projeção ~33k: **$103 → $58 (−44%)**. Tokens ≈chars/3.8 (refinar com
+`count_tokens`); é ordem de grandeza + deltas de cenário, não centavos.
+
+**Limitação assumida:** o `tone_register` fino por situação das ~948 linhas `dialogo` segue defaultado —
+re-tag completo é o passe contextual da meia-maratona (este deep pass priorizou alto risco + voz).
+
+**Revisão necessária:** não para o método. O re-tag situacional completo entra na run de escala.
+
 ## Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)
 
 **Data:** 2026-06-08

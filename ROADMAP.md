@@ -56,10 +56,9 @@ contextual, já incorporada ao processo).
   - **Aceleração opcional:** tradução por cena é paralelizável (glossário/voz congelados) → candidata a
     **workflow multi-agente** (fan-out por cena + passe de consistência). Caminho caro; só sob demanda.
   - Esta é a **prova de produção** do framework. Casa com A4 (custo) e A5 (redução de custo).
-- [ ] **A4. Estimativa de custo real (em $/tokens/tempo)** da run de 33k.
-  Lacuna do diagnóstico: hoje só há análise arquitetural (shift-left, ~330 chamadas máx). Calcular
-  custo monetário e tempo de relógio. Cabe junto da A3. **Pré-requisito da A5** (sem baseline não há
-  o que reduzir).
+- [x] **A4. Estimativa de custo real** — ✅ baseline medido (`framework/validation/cost_model.py` +
+  `artifacts/cost_report.md`): **$/1k linhas 3.12 (forte) → 1.75 (model-mix + caching)**; projeção
+  ~33k **$103 → $58 (−44%)**. Tokens ≈chars/3.8 (refinar com `count_tokens` na run real). Desbloqueia A5.
 - [ ] **A5. Analisar o custo atual e reduzir — meta: −80%** *(agressiva, pode mudar).*
   Tomar o baseline da A4 como ponto de partida e atacar os maiores ofensores de custo. Linhas de
   investigação:
@@ -166,6 +165,10 @@ contextual, já incorporada ao processo).
 
 ## Já concluído (para referência)
 
+- ✅ **Deep pass do arco (Carta exercida) + custo medido:** back-translation real nas 9 high (2 fixes
+  de ambiguidade/voz), voz spot-checada (0 drift), risco cognitivo (+4 reveals), e **baseline de custo**
+  ($/1k 3.12→1.75; ~33k $103→$58). Artefatos: `qa_report.md`, `back_translation_log.json`, `cost_report.md`.
+  Carta de Governança, linter e Validation leve em uso. (De-risca a meia-maratona.)
 - ✅ Framework SDD genérico (camadas: processo / perfil / conector / instância).
 - ✅ Conector hex_binary: container `.sdat` mapeado (header `Filename`/`Pack`, 353 scripts; texto UTF-8
   contíguo por script).
