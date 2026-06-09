@@ -1,11 +1,11 @@
 # Reinsertion Report — Utawarerumono
 
 - Round-trip self-test: OK
-- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290096 bytes (original 3274096; +16000)
+- Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290144 bytes (original 3274096; +16048)
 - Patch: output/ScriptEvent.sdat.ips
 - Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)
 - Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.
-- Distribuição por tier: RELOC_head=441, T1_in_place=584
+- Distribuição por tier: RELOC_head=442, T1_in_place=583
 - Overflows não resolvidos (T4): 0
 
 ## Relocações (head -> offset local no arquivo crescido)
@@ -42,11 +42,12 @@
 | 0x3a29 | 11_01_000S.BIN | 0x19c7 | 0x3061 | 0x3a29 |
 | 0x3a9f | 11_01_000S.BIN | 0x19ed | 0x30ea, 0x3102, 0x3122 | 0x3a9f |
 | 0x3af3 | 11_01_000S.BIN | 0x19f3 | 0x3118 | 0x3af3 |
-| 0x3b69 | 11_01_000S.BIN | 0x1a12 | 0x31d7 | 0x3b69 |
-| 0x3ba7 | 11_01_000S.BIN | 0x1a20 | 0x31f7 | 0x3ba7 |
-| 0x3bc8 | 11_01_000S.BIN | 0x1a37 | 0x32b9 | 0x3bc8 |
-| 0x3bf0 | 11_01_000S.BIN | 0x1a3e | 0x3301 | 0x3bf0 |
-| 0x3c01 | 11_01_000S.BIN | 0x1a51 | 0x3319 | 0x3c01 |
+| 0x3b3b | 11_01_000S.BIN | 0x1a12 | 0x31a7 | 0x3b3b |
+| 0x3b69 | 11_01_000S.BIN | 0x1a3d | 0x31d7 | 0x3b69 |
+| 0x3ba7 | 11_01_000S.BIN | 0x1a4b | 0x31f7 | 0x3ba7 |
+| 0x3bc8 | 11_01_000S.BIN | 0x1a62 | 0x32b9 | 0x3bc8 |
+| 0x3bf0 | 11_01_000S.BIN | 0x1a69 | 0x3301 | 0x3bf0 |
+| 0x3c01 | 11_01_000S.BIN | 0x1a7c | 0x3319 | 0x3c01 |
 | 0x7da5 | 11_01_100C.BIN | 0x7380 | 0x3e20 | 0x7da5 |
 | 0x7dd5 | 11_01_100C.BIN | 0x739d | 0x404a | 0x7dd5 |
 | 0x7df6 | 11_01_100C.BIN | 0x73b3 | 0x40d1 | 0x7df6 |
@@ -458,7 +459,7 @@
 
 | arquivo | size original | size novo (pad 16) |
 |---|---|---|
-| 11_01_000S.BIN | 0x16b0 | 0x1a70 |
+| 11_01_000S.BIN | 0x16b0 | 0x1aa0 |
 | 11_01_100C.BIN | 0x7380 | 0x8a70 |
 | 11_02_000S.BIN | 0x7a50 | 0x9e20 |
 
@@ -527,10 +528,10 @@
 | 0x3a80 | T1_in_place | 28 | 30 | de nos dois o tempo todo...  |
 | 0x3a9f | RELOC_head | 5 | 3 | Homem |
 | 0x3aa3 | T1_in_place | 30 | 31 | ...Entao voce tomou o remedio? |
-| 0x3ac3 | T1_in_place | 41 | 47 | Um mundo totalmente novo vai te esperar\n |
+| 0x3ac3 | T1_in_place | 37 | 47 | Um mundo totalmente novo te aguarda\n |
 | 0x3af3 | RELOC_head | 30 | 27 | quando voce acordar... Hmhmhm. |
 | 0x3b0f | T1_in_place | 41 | 43 | Sim... Voce e o primeiro... e o ultimo... |
-| 0x3b3b | T1_in_place | 36 | 38 | Eu nao vou mais fazer isso por voce. |
+| 0x3b3b | RELOC_head | 42 | 38 | Eu nao vou mais poder fazer isso por voce. |
 | 0x3b62 | T1_in_place | 6 | 6 | Certo? |
 | 0x3b69 | RELOC_head | 13 | 12 | Hehe, ta bom. |
 | 0x3b76 | T1_in_place | 44 | 48 | E bom voce vir. Promessa de mindinho! Jura\n |
