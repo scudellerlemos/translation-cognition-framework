@@ -1,14 +1,23 @@
 {
   "project": "Utawarerumono: Mask of Deception",
-  "total_lines": 1025,
-  "translated_lines": 1025,
+  "scenes_done": ["11_01_000S", "11_01_100C", "11_01_150S", "11_02_000S", "11_03_000C"],
+  "total_lines": 1143,
+  "translated_lines": 1143,
   "completion_pct": 100.0,
-  "last_offset": "0x12a32",
-  "next_offset": "0x153a8 (cena 11_04 — fora do escopo atual)",
+  "last_offset": "0x1538c",
+  "next_offset": "0x153a8 (cena 11_04_010B — proximo incremento da meia-maratona)",
   "last_updated": "2026-06-08",
   "batch_size": 200,
-  "batches_completed": 6,
+  "batches_completed": 7,
   "length_warnings": [],
-  "needs_human_review": [],
-  "notes": "Escopo: cenas 11_01 + 11_02 (4 sub-scripts). Modelo de ponteiro FILE-RELATIVO (corrigido). Aplicado e verificado: round-trip OK, tiers T1=595/REPOINT_head=425/REPOINT_cont=5, resíduo T4=0. Metadados por linha do translation_plan são curados nas 75 de 11_01_000S e auto-defaultados (speaker heurístico, risk low) nas 950 demais. Pendente: validação in-game das strings relocadas."
+  "needs_human_review": ["0x14a7b (rotulo 'Head')", "0x1538c (rotulo 'Head_toriuma')"],
+  "notes": "Escopo: cenas 11_01+11_02 (1025 linhas, build principal) + 11_03_000C (118 linhas, CALIBRACAO modo padrao, artefatos isolados em ch_11_03/). Modelo de ponteiro FILE-RELATIVO. 11_03 verificado: round-trip byte-identico, 118/118 linhas, tiers T1=56/RELOC_head=61/RELOC_cont=1, resíduo T4=0, 0 ponteiro fora-do-arquivo. Carta exercida: back-translation 10 high -> 1 revisao real; risco cognitivo 12 high/29 med/77 low; 1 termo de mundo novo (toriuma -> glossary). Custo producao ~$1,14/1k linhas. Pendente: verificar in-game se rotulos Head/Head_toriuma exibem; fold opcional do 11_03 no build principal (merge approved + extend SCENES).",
+  "calibration": {
+    "chapter": "11_03_000C",
+    "lines": 118,
+    "mode": "padrao",
+    "cost_per_1k_usd": 1.14,
+    "half_marathon_est_usd": 18,
+    "half_marathon_est_windows": "15-25 (caminho assinatura, incremental)"
+  }
 }
