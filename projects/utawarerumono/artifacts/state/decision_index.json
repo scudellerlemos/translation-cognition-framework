@@ -1,5 +1,19 @@
 [
   {
+    "title": "Harness de runtime — cena = job stateless (mata o estouro de sessão)",
+    "tags": [
+      "harness",
+      "runtime",
+      "cena",
+      "stateless",
+      "mata",
+      "estouro",
+      "sessão"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Diagnóstico (com leitura do código): o estouro de sessão **não** vinha da tradução nem da governança, e sim do **modo de execução** — tradução inline numa sessão de vida-longa que acumulava todo o histórico. Conector + validadores já eram determinísticos; faltava tirar **orquestr"
+  },
+  {
     "title": "Deep pass do arco (Carta exercida) + custo de produção medido",
     "tags": [
       "deep",

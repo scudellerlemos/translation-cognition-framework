@@ -3,10 +3,18 @@
 **Status:** reconciled
 **human_input:** provided (usuário entregou a Fandom Wiki como fonte — SRC-002)
 **Data de reconciliação:** 2026-06-08
-**Fronteira de spoiler:** Cap. 11, cenas 11_01 + 11_02 (1025 linhas). Cobre: despertar, fuga na caverna
-(inseto gigante + Tatari), resgate por Kuon, e a **nomeação 'Haku'** (in-corpus). Pré-reveal de tudo além disso.
-**Seções ignoradas intencionalmente:** identidades das figuras de memória ('Woman'/'Man'), natureza do
-'awakening process'/enquadramento sci-fi, arcos políticos posteriores, finais — todos além da fronteira.
+**Fronteira de spoiler:** Cap. 12 (cenas 12_01–12_17). Estendida de 11_01–11_02 em 2026-06 (delta cap.12).
+Cobre, no nível de INTRODUÇÃO: vida na vila/estalagem, comédia do moinho, e a chegada do grupo do Ukon —
+**Ukon** (guerreiro que faz amizade com Haku), **Maroro** (mago erudito cômico), a **Coorte do Ukon**,
+os **Gigiri**/**Boro-Gigiri** (monstros venenosos), **Yamato** (nação) e o **Mikado** (soberano). Mais a
+cena-tutorial de sonho (figuras 'Woman'/'Man' como 'Mestre'). Pré-reveal de tudo além do cap.12.
+**Seções ignoradas intencionalmente (quarentena de spoiler — NÃO incorporar ao KB):**
+- **Identidade verdadeira de Ukon** (reveal de arco posterior) — no cap.12 ele é personagem por si só.
+- **Identidade pessoal do Mikado** (reveal de fim de jogo) — no cap.12 é só o soberano/título.
+- Identidades das figuras de memória ('Woman'/'Man'), natureza do 'awakening process'/enquadramento
+  sci-fi, arcos políticos posteriores, finais — todos além da fronteira.
+> A Fandom Wiki (SRC-002) é "sopa de spoiler": ao pesquisar o cap.12, os reveals acima APARECERAM nos
+> resultados e foram **deliberadamente descartados** do KB. Ver `spoiler_ledger` (filtro temporal).
 
 ---
 
