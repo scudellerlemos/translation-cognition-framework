@@ -1,14 +1,21 @@
 {
   "project": "Utawarerumono: Mask of Deception",
-  "total_lines": 1025,
-  "translated_lines": 1025,
+  "scenes_done": ["CAP. 11 COMPLETO (11_01..11_11, todos os sub-scripts)"],
+  "total_lines": 2129,
+  "translated_lines": 2129,
   "completion_pct": 100.0,
-  "last_offset": "0x12a32",
-  "next_offset": "0x153a8 (cena 11_04 — fora do escopo atual)",
+  "last_offset": "0x25bda",
+  "next_offset": "CAPITULO 12 (12_01_*) — proximo arco. ~2364 linhas no prefixo 12.",
   "last_updated": "2026-06-08",
   "batch_size": 200,
-  "batches_completed": 6,
+  "batches_completed": 15,
   "length_warnings": [],
-  "needs_human_review": [],
-  "notes": "Escopo: cenas 11_01 + 11_02 (4 sub-scripts). Modelo de ponteiro FILE-RELATIVO (corrigido). Aplicado e verificado: round-trip OK, tiers T1=595/REPOINT_head=425/REPOINT_cont=5, resíduo T4=0. Metadados por linha do translation_plan são curados nas 75 de 11_01_000S e auto-defaultados (speaker heurístico, risk low) nas 950 demais. Pendente: validação in-game das strings relocadas."
+  "needs_human_review": ["0x14a7b (rotulo 'Head', 11_03)", "0x1538c (rotulo 'Head_toriuma', 11_03)"],
+  "notes": "Escopo: 11_01+11_02 (1025, build principal) + 11_03_000C (118, calibracao, ch_11_03/) + 11_04_*B (45, batalha/tutorial, ch_11_04/). Capitulos 11_03/11_04 sao incrementos ISOLADOS (artefatos em ch_<cena>/, NAO foldados no build principal). Modelo de ponteiro FILE-RELATIVO. 11_04 verificado: round-trip byte-identico, 45/45 linhas, tiers T1=24/RELOC_head=21, resíduo T4=0, 0 ponteiro fora-do-arquivo. Carta exercida: back-translation 12 high (duplo-sentido confirmado) -> 0 revisao; risco 12 high/17 med/16 low. DESCOBERTAS 11_04: (1) tokens de cor {c5}/{c-1}/{c-} catalogados em project.json -> formatting_token_patterns (regex; realizam {COLOR}/{END}) — preservados verbatim, com teste de round-trip; (2) linha de UI/sistema 0x15d01 e HEAD-LESS (sem ponteiro 50/53 00) -> so cabe in_place, encurtada p/ caber (evita resíduo T4). Ferramentas genericas novas: build_plan_chapter.py + verify_chapter.py (reusaveis por capitulo na meia-maratona).",
+  "calibration": {
+    "chapter_11_03": {"lines": 118, "mode": "padrao", "cost_per_1k_usd": 1.14},
+    "chapter_11_04": {"lines": 45, "mode": "padrao", "high": 12, "t4_residue": 0, "findings": ["tokens {c5}/{c-1}", "UI head-less line -> in_place only"]},
+    "half_marathon_est_usd": 18,
+    "half_marathon_est_windows": "15-25 (caminho assinatura, incremental)"
+  }
 }
