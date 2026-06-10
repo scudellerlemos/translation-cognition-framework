@@ -40,7 +40,7 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | R2 | `api` como default de produção | 🔴 | ✅ **feito** — default `api` em translate/run_scene/run_chapter |
 | R3 | **Fase 0**: KB reconciliada + **gate de cobertura** | 🟠 | ✅ **feito** — `kb_gate.py`; Fase 0 do cap.12; `kb_frontier=12_17` |
 | R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** + regra de gênero | 🟠 | ✅ **feito** — ledger + filtro no `context_pack`; Carta atualizada |
-| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; falta dedup/slim/batch |
+| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; **dedup por TM ✅** (linhas com fonte já traduzida em outra cena não vão ao modelo — corta tokens de saída; medido 2,8% no cap.12 sobre TM cap.11+12, **cresce com o corpus**; guard de paridade + nunca reusa a própria cena; desligado no escalonamento). Falta **slim de schema** (maior alavanca: saída custa 5×) + **batch** (−50%, async). |
 
 **Validação Etapa 6 (cap.12 headless):** **16/16** cenas `verified` ponta-a-ponta (round-trip byte-idêntico,
 back-translation via API). Pipeline endurecido em ~2300 linhas reais (schema-array, custo, `\n`,
