@@ -277,6 +277,51 @@ def test_cost_report_aggregates_and_flags_waste(tmp_path):
     assert cost_report._fmt(rep, by_scene=True)   # nao quebra ao formatar
 
 
+# ------------------------------- dedup por TM (R5 custo) ----------------------
+# Reaproveita traducao de OUTRA cena (mesma fonte) -> nao re-gera (corta tokens de saida).
+
+def _pack_for_reuse(lines, tm_exact, sfx="12_09"):
+    return {"sfx": sfx, "lines": lines, "tm_exact": tm_exact}
+
+
+def test_reuse_picks_cross_scene_hit():
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}, {"offset": "0x2", "source": "Brand new line."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_03"}])
+    reuse = model._select_reuse(pack, enabled=True)
+    assert set(reuse) == {"0x1"}, "so a linha com hit de TM e reaproveitada"
+    assert reuse["0x1"]["t"] == "Sim." and reuse["0x1"]["risk_level"] == "low"
+
+
+def test_reuse_excludes_own_scene():
+    # a TM contem a PROPRIA cena (re-run) -> NAO reusar (sabotaria o escalonamento de fitting)
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_09"}],
+        sfx="12_09")
+    assert model._select_reuse(pack, enabled=True) == {}
+
+
+def test_reuse_parity_guard():
+    # chave de TM ignora \n; se a traducao tem nº de quebras != da fonte ATUAL, NAO reusa (build_plan reprova)
+    tok = context_pack.TOKEN
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": f"A{tok}B"}],                 # fonte tem 1 quebra
+        [{"source": "A B", "target": "A B sem quebra", "speaker": "X", "from_scene": "12_03"}])
+    assert model._select_reuse(pack, enabled=True) == {}, "paridade de quebra bloqueia reuso"
+    pack2 = _pack_for_reuse(
+        [{"offset": "0x1", "source": f"A{tok}B"}],
+        [{"source": "A B", "target": f"Ce{tok}De", "speaker": "X", "from_scene": "12_03"}])
+    assert set(model._select_reuse(pack2, enabled=True)) == {"0x1"}, "quebras casando -> reusa"
+
+
+def test_reuse_disabled_on_escalation():
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_03"}])
+    assert model._select_reuse(pack, enabled=False) == {}, "escalonamento re-traduz fresco (sem reuso)"
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():

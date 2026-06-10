@@ -30,6 +30,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
 MODEL_TRANSLATE = "claude-sonnet-4-6"
@@ -76,10 +77,10 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
-        data, usage = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
+        data, usage, meta = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "sfx": sfx, "n_lines": pack["n_lines"],
-                "model": m, "usage": usage}
+                "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
     raise ValueError(f"backend desconhecido: {backend}")
 
 
@@ -311,6 +312,37 @@ def _parity_fit(source, t):
     return t
 
 
+def _select_reuse(pack, *, enabled):
+    """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
+    em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
+    Guards: (1) nunca reusa a PROPRIA cena — a TM e reconstruida apos cada cena, entao re-rodar a poria
+    na TM e a dedup reusaria a saida velha, sabotando o escalonamento de fitting (que quer ENCURTAR);
+    (2) paridade de quebra: a chave de TM normaliza ignorando `\\n`, entao so reusa se a contagem do token
+    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade). Desligado (vazio) no
+    escalonamento (enabled=False) p/ re-traduzir fresco e mais curto. Determinista (testavel sem rede)."""
+    if not enabled:
+        return {}
+    tok = context_pack.TOKEN
+    sfx_here = pack.get("sfx", "")
+    by_key = {}
+    for e in pack.get("tm_exact", []):
+        if context_pack.sfx_of(str(e.get("from_scene", ""))) == sfx_here:
+            continue                                  # nunca reusar a propria cena
+        by_key.setdefault(state_index._key(e.get("source", "")), e)
+    reuse = {}
+    for r in pack.get("lines", []):
+        e = by_key.get(state_index._key(r.get("source", "")))
+        if not e:
+            continue
+        tgt = e.get("target", "")
+        if not tgt or tgt.count(tok) != (r.get("source", "") or "").count(tok):
+            continue                                  # paridade de quebra com a fonte ATUAL
+        reuse[r["offset"]] = {"speaker": e.get("speaker", ""), "tone_register": "",
+                              "intent": "reuso_tm", "risk_level": "low", "risk_notes": "",
+                              "t": _norm_t(tgt)}
+    return reuse
+
+
 def _to_map(data):
     """Converte a saida estruturada {lines:[{offset,...}]} no formato canonico {lines:{offset:{...}}}.
     Tolera ja vir em mapa (idempotente). Remove 'offset' do corpo da entrada e normaliza o `t`."""
@@ -334,16 +366,25 @@ def _to_map(data):
 
 def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE,
                    budget_tolerance=None):
-    client = _client()
     tol = budget_tolerance or BUDGET_TOLERANCE
-    # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena
-    system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
-    base_user = context_pack.render_prompt(pack, carta="") + _NL_RULE  # Carta ja no system
-    offsets = [r["offset"] for r in pack["lines"]]
-    offset_set = set(offsets)
-    budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
-    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
     tok = context_pack.TOKEN
+    # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
+    # linhas com fonte ja traduzida em OUTRA cena nao vao ao modelo (corta tokens de saida).
+    reuse = _select_reuse(pack, enabled=(budget_tolerance is None))
+    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
+    meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
+    if not novel:                                     # cena 100% reaproveitada -> zero chamada de API
+        return {"lines": dict(reuse)}, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}, meta
+
+    client = _client()
+    # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena (so as novas)
+    system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
+    red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)   # render so as linhas novas
+    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE  # Carta ja no system
+    offsets = [r["offset"] for r in novel]
+    offset_set = set(offsets)
+    budgets = {r["offset"]: r.get("byte_budget") for r in novel}
+    srcmap = {r["offset"]: r.get("source", "") for r in novel}
     note, last, usage = "", None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
     merged = {}        # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
@@ -390,7 +431,8 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         # HARD (bloqueia): cobertura + paridade de quebra (build_plan reprova). SOFT (best-effort):
         # byte_budget — o conector absorve via head-reloc; a VERIFY (round-trip) e o juiz de residuo.
         if not missing and not bad_par and (not over or attempt == _MAX_TRIES - 1):
-            return {"lines": merged}, usage
+            merged.update(reuse)                      # reanexa as linhas reaproveitadas da TM
+            return {"lines": merged}, usage, meta
         note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
         if missing:
             note += f"- Faltam estes offsets — INCLUA todos: {missing[:40]}\n"
