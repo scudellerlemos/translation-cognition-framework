@@ -515,3 +515,38 @@ linhas ≈ **$18** uma vez. Caminho assinatura (o do usuário): sem conta de API
 **Isolamento:** artefatos do 11_03 em `artifacts/ch_11_03/` — não tocam o build principal de 1025.
 Fold no build principal (merge approved + estender `SCENES`) fica opcional/quando desejado.
 **Revisão necessária:** não (rótulos pendentes de checagem in-game já sinalizados).
+
+
+---
+
+## Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)
+
+Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do "exemplo negativo"
+(bicho mole) com **duplo-sentido proposital**.
+
+**Decisões de tradução não-óbvias:**
+- **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2
+  sentidos: palhaçada + malícia). O mal-entendido (apresentador ecoa `...Sacanagem?` sem captar a
+  malícia) sobrevive 1:1. Cadeia da insinuação: `soft/hard`→`mole/duro`, `throbs`→`pulsa`,
+  `expands larger`→`incha cada vez mais` — deniável (descreve o bicho), como no EN.
+- **Trocadilho soft:** `Gooshy-soft`→`Mole-gelatina`, `WEAK-soft`→`mole-FRACO`, `wimpy`→`banana`.
+- **Chuuni:** `Ultimate justice slash!`→`Corte supremo da justiça!`, `fiend`→`verme`, `Taaake this!`→
+  `Tomaaa essa!` (alongamento preservado).
+- **Interjeições:** `H-Huh?`→`H-Hein?` (evita `Ha`=riso na transliteração), `Uh`→`Ahn`.
+
+**Descobertas técnicas (importantes pra escala):**
+1. **Tokens de cor `{c5}` / `{c-1}`** aparecem em texto de UI (tutorial) e **NÃO estão** no
+   `formatting_tokens` do `project.json` (lá só há `{COLOR}`/`{END}` abstratos). Preservados
+   **verbatim**. *Pendência de framework:* catalogar/abstrair esses tokens crus.
+2. **Linha HEAD-LESS:** a notificação de sistema `0x15d01` **não tem ponteiro `50 00`/`53 00`** — é
+   referenciada de outra forma. Logo **não é relocável**: só cabe **in_place**. A tradução estourou
+   62 bytes → caiu como **resíduo T4**; reescrita mais curta (drop "foi") p/ caber. Confirma que o
+   mecanismo T4 (encurtar o irredutível) é necessário mesmo com o Plano B.
+
+**Verificação:** round-trip byte-idêntico; 45/45 conferidas (file-aware, 6 sub-scripts); tiers
+T1=24/RELOC=21; resíduo T4=0; 0 ponteiro fora-do-arquivo; back-translation 12 high → 0 revisão
+(duplo-sentido confirmado); naturalness_lint limpo; pytest 29/29.
+
+**Ferramentas genéricas (reúso na meia-maratona):** `connector/build_plan_chapter.py` e
+`verify_chapter.py` — parametrizados por `ch_<cena>/`, file-aware, sem work-text. Substituem os
+scripts one-off por-capítulo. **Revisão necessária:** não.
