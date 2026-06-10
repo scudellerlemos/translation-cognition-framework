@@ -44,6 +44,12 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - **Continuidade:** a junção de linhas quebradas (`\n`) soa natural; ritmo de comédia preservado.
 - **Restrição do conector:** se há transliteração na gravação (fonte sem acentos), escolher formas que
   sobrevivam (não depender de acento/til).
+- **Preservar ambiguidade (anti-spoiler por construção):** quando o pacote da cena traz um *controle de
+  spoiler* (fato ainda não revelado), a tradução **não pode resolver** o que o original deixa em aberto.
+  Atenção especial ao **gênero em pt-BR**: o EN/JP esconde gênero/identidade que o pt-BR forçaria a
+  concordância (`cansad{o/a}`, `el{e/a}`, `um{/a}`). Se o falante/referente é de identidade oculta,
+  **escolher construção neutra** (reformular; evitar adjetivo/artigo de gênero) e marcar `risk ≥ high`.
+  Nunca antecipar nome, relação ou identidade futura.
 
 ### 4. PROCESSO (como a qualidade é garantida)
 - **Metadados reais por linha** (`speaker`, situação/`tone_register`, `risk_level`) — **não
