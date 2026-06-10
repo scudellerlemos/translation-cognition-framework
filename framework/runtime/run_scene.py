@@ -150,15 +150,50 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return {"status": "awaiting_translation", "scene": scene}
     print(f"[2/6] traducao presente ({tr['status']}).")
 
-    print(f"[3/6] build_plan_chapter {scene} ...")
+    # [3+5] build_plan + verify com ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a
+    # verify falha por fitting (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION)
+    # e repete. Cenas normais passam de primeira (sem custo extra); so as apertadas escalam.
     bp = _connector_script(root, cfg, "build_plan_script", "build_plan_chapter.py")
-    code, out = _run([sys.executable, str(bp), scene])
-    print(_indent(out))
-    if code != 0:
-        _checkpoint(root, scene, {"status": "build_plan_failed"})
-        return {"status": "build_plan_failed", "scene": scene}
-    _checkpoint(root, scene, {"status": "planned"})
+    vf = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
+    tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend == "api" else [])
+    verified = None
+    for ti, tol in enumerate(tolerances):
+        if ti > 0:
+            print(f"[retighten] verify falhou por fitting -> re-traduzindo budget_tolerance={tol} ...")
+            try:
+                tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
+            except Exception as e:
+                print(f"      ERRO na re-traducao ({backend}): {e}")
+                _checkpoint(root, scene, {"status": "api_translate_failed"})
+                return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
 
+        print(f"[3/6] build_plan_chapter {scene} ...")
+        code, out = _run([sys.executable, str(bp), scene])
+        print(_indent(out))
+        if code != 0:
+            _checkpoint(root, scene, {"status": "build_plan_failed"})
+            return {"status": "build_plan_failed", "scene": scene}
+        _checkpoint(root, scene, {"status": "planned"})
+
+        if not do_verify:
+            print("[5/6] verify pulado (--no-verify).")
+            break
+        print(f"[5/6] verify_chapter {scene} (round-trip) ...")
+        code, out = _run([sys.executable, str(vf), scene])
+        print(_indent(out))
+        if code == 0:
+            verified = True
+            _checkpoint(root, scene, {"status": "verified", "verified": True})
+            break
+        low = out.lower()
+        fitting = ("fora do arquivo" in low) or ("residuo t4" in low and "esperado 0" in low)
+        if fitting and ti < len(tolerances) - 1:
+            print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
+            continue
+        _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
+        return {"status": "verify_failed", "scene": scene}
+
+    # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
     highs = _high_lines(root, scene, sfx)
     print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
     try:
@@ -181,20 +216,6 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     else:
         print(f"      back-translation: {bt.get('reviewed',0)} revisada(s)")
     _checkpoint(root, scene, {"high": len(highs)})
-
-    verified = None
-    if do_verify:
-        print(f"[5/6] verify_chapter {scene} (round-trip) ...")
-        vf = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
-        code, out = _run([sys.executable, str(vf), scene])
-        print(_indent(out))
-        verified = (code == 0)
-        if not verified:
-            _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
-            return {"status": "verify_failed", "scene": scene}
-        _checkpoint(root, scene, {"status": "verified", "verified": True})
-    else:
-        print("[5/6] verify pulado (--no-verify).")
 
     print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
     si = state_index.build(root)

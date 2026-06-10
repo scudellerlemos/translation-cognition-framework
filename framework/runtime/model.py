@@ -50,9 +50,11 @@ THINK_TRANSLATE = False
 # Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) nao deve
 # estourar MUITO o byte_budget. E SOFT (best-effort): linhas acima de budget*tol recebem um nudge de
 # encurtamento nas retries, mas sao aceitas (o conector absorve crescimento; a VERIFY e o juiz real).
-# 1.15: medido — 1.40 deixava cenas de binario APERTADO (multi-BIN, pouco espaco de head-reloc) crescerem
-# demais -> ponteiros fora-do-arquivo; 1.10 era estrito demais p/ cenas grandes. 1.15 e o meio-termo.
-BUDGET_TOLERANCE = 1.15
+# 1.40 = DEFAULT (alinhado ao build_plan; traducoes naturais, menos retries = mais barato). Cenas de
+# binario APERTADO (multi-BIN) podem nao caber a 1.40 -> o run_scene ESCALA o aperto (1.40->1.15->1.0)
+# e re-traduz so quando a VERIFY falha por fitting (out-of-file/residuo). Ver BUDGET_ESCALATION.
+BUDGET_TOLERANCE = 1.40
+BUDGET_ESCALATION = (1.15, 1.0)   # tolerancias mais apertadas tentadas, em ordem, na falha de fitting
 
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
@@ -61,7 +63,7 @@ DONE = "done"           # chamada de IA concluida (backend api)
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def translate(root, scene, *, backend="api", model=None):
+def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     sfx = pack["sfx"]
@@ -74,7 +76,7 @@ def translate(root, scene, *, backend="api", model=None):
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
-        data, usage = _api_translate(root, scene, pack, m)
+        data, usage = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "sfx": sfx, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage}
@@ -295,8 +297,10 @@ def _to_map(data):
     return {"lines": out}
 
 
-def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE):
+def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE,
+                   budget_tolerance=None):
     client = _client()
+    tol = budget_tolerance or BUDGET_TOLERANCE
     # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     base_user = context_pack.render_prompt(pack, carta="") + _NL_RULE  # Carta ja no system
@@ -313,7 +317,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
 
     def _over(off, v):
         b = budgets.get(off)
-        return b and _translit_len((v or {}).get("t", "")) > b * BUDGET_TOLERANCE
+        return b and _translit_len((v or {}).get("t", "")) > b * tol
 
     for attempt in range(_MAX_TRIES):
         msg = _stream_final(
