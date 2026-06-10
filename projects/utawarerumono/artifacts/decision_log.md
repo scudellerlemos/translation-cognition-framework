@@ -535,9 +535,16 @@ Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do "ex
 - **Interjeições:** `H-Huh?`→`H-Hein?` (evita `Ha`=riso na transliteração), `Uh`→`Ahn`.
 
 **Descobertas técnicas (importantes pra escala):**
-1. **Tokens de cor `{c5}` / `{c-1}`** aparecem em texto de UI (tutorial) e **NÃO estão** no
-   `formatting_tokens` do `project.json` (lá só há `{COLOR}`/`{END}` abstratos). Preservados
-   **verbatim**. *Pendência de framework:* catalogar/abstrair esses tokens crus.
+1. **Tokens de cor `{c5}` / `{c-1}` / `{c-}`** aparecem em texto de UI (tutorial). Preservados
+   **verbatim**. *Pendência RESOLVIDA:* como o índice varia, NÃO cabem na lista literal — criado o
+   campo `project.json → formatting_token_patterns` (regex `\{c-?\d*\}`) que **realiza** os
+   placeholders abstratos `{COLOR}`/`{END}`. `validate.py` compara o multiset de ocorrências do
+   padrão source↔alvo (pega drop, troca de índice `{c5}`→`{c6}` e desbalanceamento); o
+   `strip_tokens` do `naturalness_lint.py` os remove pelo padrão; teste de regressão em
+   `connector/test_roundtrip.py` (`test_color_tokens_preserved_roundtrip`) trava o verbatim.
+   Varredura do binário: `{c5}`×11, `{c-1}`×10, `{c-}`×1 (só cor índice 5 em uso). *Pendência aberta:*
+   a família de timers `{W<N>}` é da mesma classe parametrizada (`{W12}`,`{W35}`,… no binário, só
+   `{W75}/{W80}/{W10}` catalogados como literais) — generalizar com o mesmo mecanismo na escala.
 2. **Linha HEAD-LESS:** a notificação de sistema `0x15d01` **não tem ponteiro `50 00`/`53 00`** — é
    referenciada de outra forma. Logo **não é relocável**: só cabe **in_place**. A tradução estourou
    62 bytes → caiu como **resíduo T4**; reescrita mais curta (drop "foi") p/ caber. Confirma que o
