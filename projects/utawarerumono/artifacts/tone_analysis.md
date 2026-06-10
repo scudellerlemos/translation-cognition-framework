@@ -51,6 +51,18 @@
 - **Registro de comédia:** subreação, constrangimento, ironia dramática (o protagonista não percebe
   o óbvio). Preservar o timing cômico, não "explicar" a piada.
 
+## Atualização — cap. 12 (chegada do grupo do Ukon)
+
+### Ukon — `voice_criticality: high`
+- **Registro:** guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.
+- **Características:** desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.
+- **Red flags:** soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só "Ukon".
+
+### Maroro — `voice_criticality: high`
+- **Registro:** erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.
+- **Características:** **fala arcaica/empolada** (equivalente a "vós/peço-vos/meus olhos não me enganam") + **gag de cicio** (s→sh, ex.: "SHEEKETH"/"shir"); melodramático; gruda no Haku como "benfeitor".
+- **Red flags:** perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem.
+
 ## Padrões estruturais / spoiler
 - A cena justapõe **fantasia** (garota num bosque) e **sci-fi** (processo de despertar, "sistema"). Esse contraste é um eixo de spoiler do arco maior — não "explicar" demais na tradução.
 - "Garota / Mulher / Homem" aparecem como **rótulos de falante** (não nomes). Decisão de tradução pendente (ver glossary / research_log).
