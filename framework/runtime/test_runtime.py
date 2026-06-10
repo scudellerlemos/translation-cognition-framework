@@ -23,6 +23,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack          # noqa: E402
 import state_index           # noqa: E402
+import run_chapter           # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -104,6 +105,43 @@ def test_scene_prompt_self_contained(built):
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
     assert f"translations_{context_pack.sfx_of(SCENE)}.json" in txt
+
+
+# ------------------------------- run_chapter ----------------------------------
+# Driver de capitulo: ordem das cenas, resume (skip de verified) e para-na-falha.
+# Sem rede — run_scene e mockado (a unica parte de IA fica isolada em model.py).
+
+def _fake_chapter(tmp_path, scenes):
+    art = tmp_path / "artifacts"
+    for s in scenes:
+        d = art / f"ch_{s}"
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x1,Hi,5\n", encoding="utf-8")
+    return tmp_path
+
+
+def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
+    root = _fake_chapter(tmp_path, ("99_02", "99_01", "99_03"))   # fora de ordem de proposito
+    (root / "artifacts" / "run_state.json").write_text(
+        json.dumps({"scenes": {"ch_99_01": {"status": "verified", "verified": True}}}),
+        encoding="utf-8")
+    calls = []
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: calls.append(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    r = run_chapter.run_chapter(root, "99", backend="api")
+    assert r["status"] == "complete"
+    assert calls == ["ch_99_02", "ch_99_03"], "ch_99_01 ja verified deve ser pulado; resto em ordem"
+
+
+def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
+    root = _fake_chapter(tmp_path, ("99_01", "99_02"))
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw:
+                        {"status": "verify_failed" if scene == "ch_99_01" else "verified",
+                         "scene": scene})
+    r = run_chapter.run_chapter(root, "99", backend="api")
+    assert r["status"] == "stopped" and r["stopped_at"] == "ch_99_01"
 
 
 # ------------------------------- governanca -----------------------------------

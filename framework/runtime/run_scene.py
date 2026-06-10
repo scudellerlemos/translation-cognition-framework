@@ -58,6 +58,48 @@ def _checkpoint(root: Path, scene: str, patch: dict):
     p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+# precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in
+_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
+          "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
+          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
+
+
+def _cost(model: str, u: dict) -> float:
+    p = _PRICE.get(model)
+    if not p or not u:
+        return 0.0
+    return (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
+            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
+
+
+def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verified):
+    """Anexa 1 linha a artifacts/metrics.jsonl: tokens/custo SEGMENTADOS (traducao vs back),
+    high-risk, back-translation pass-rate, retrabalho. So registra o que houve (api carrega usage)."""
+    tu = tr.get("usage") if isinstance(tr, dict) else None
+    bu = bt.get("usage") if isinstance(bt, dict) else None
+    tmodel = tr.get("model", "") if isinstance(tr, dict) else ""
+    bmodel = bt.get("model", "") if isinstance(bt, dict) else ""
+    # back-translation pass-rate (se houve saida)
+    bt_pass = None
+    bpath = root / "artifacts" / scene / f"back_translation_{sfx}.json"
+    if bpath.is_file():
+        try:
+            ents = json.loads(bpath.read_text(encoding="utf-8")).get("entries", [])
+            if ents:
+                bt_pass = sum(1 for e in ents if e.get("verdict") == "pass") / len(ents)
+        except Exception:
+            pass
+    rec = {"scene": scene, "n_lines": n_lines, "n_high": n_high, "verified": verified,
+           "translate": {"model": tmodel, "usage": tu, "cost_usd": round(_cost(tmodel, tu or {}), 5)},
+           "back": {"model": bmodel, "usage": bu, "cost_usd": round(_cost(bmodel, bu or {}), 5)},
+           "back_pass_rate": bt_pass}
+    rec["cost_usd"] = round(rec["translate"]["cost_usd"] + rec["back"]["cost_usd"], 5)
+    p = root / "artifacts" / "metrics.jsonl"
+    with p.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return rec
+
+
 def _high_lines(root: Path, scene: str, sfx: str):
     plan = root / "artifacts" / scene / f"translation_plan_{sfx}.json"
     if not plan.is_file():
@@ -77,7 +119,12 @@ def run_scene(root, scene, *, backend="in-session", require_back=False, do_verif
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     sfx = context_pack.sfx_of(scene)
     print(f"[1/6] context_pack {scene} ...")
-    tr = M.translate(root, scene, backend=backend)
+    try:
+        tr = M.translate(root, scene, backend=backend)
+    except Exception as e:                                  # backend api: erro de rede/saida invalida
+        print(f"      ERRO na traducao ({backend}): {e}")
+        _checkpoint(root, scene, {"sfx": sfx, "status": "api_translate_failed"})
+        return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     _checkpoint(root, scene, {"sfx": sfx, "n_lines": tr["n_lines"], "status": "packed"})
 
@@ -132,6 +179,9 @@ def run_scene(root, scene, *, backend="in-session", require_back=False, do_verif
     si = state_index.build(root)
     print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
+    mr = _metrics(root, scene, sfx, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
+                  n_high=len(highs), verified=bool(verified))
+    print(f"      metrics: custo ~${mr['cost_usd']:.4f} | back_pass_rate={mr['back_pass_rate']}")
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,
             "high": len(highs), "verified": verified}
