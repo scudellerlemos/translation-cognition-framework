@@ -35,11 +35,28 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 
 | # | Item | Severidade | Status |
 |---|---|---|---|
-| R1 | ligar e **comprovar** o caminho API (`.env` + benchmark) | 🔴 | ✅ **feito** — Sonnet aprovado; 4 bugs de produção corrigidos; custo real ~$36/jogo (ver `MODEL_INTERFACE`) |
-| R2 | `api` como default de produção (`run_chapter --backend api` é o entrypoint) | 🔴 | 🟡 `run_chapter` já default `api`; falta flip do default de `run_scene`/`translate` |
-| R3 | **Fase 0**: KB reconciliada (IA+humano) global + **gate de cobertura** no `context_pack`/`translate` | 🟠 | pendente (skills 01–04) |
-| R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** no `context_pack` + regra de gênero pt-BR na Carta | 🟠 | pendente (depende R3) |
-| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema low-risk, batch API) → jogo ~$36→~$15 | 🟡 | **parcial**: tuning de effort/thinking já cortou ~5× (o maior); falta dedup/slim/batch |
+| R1 | ligar e **comprovar** o caminho API (`.env` + benchmark) | 🔴 | ✅ **feito** — Sonnet aprovado; bugs de produção corrigidos; custo real ~$36/jogo |
+| R2 | `api` como default de produção | 🔴 | ✅ **feito** — default `api` em translate/run_scene/run_chapter |
+| R3 | **Fase 0**: KB reconciliada + **gate de cobertura** | 🟠 | ✅ **feito** — `kb_gate.py`; Fase 0 do cap.12; `kb_frontier=12_17` |
+| R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** + regra de gênero | 🟠 | ✅ **feito** — ledger + filtro no `context_pack`; Carta atualizada |
+| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; falta dedup/slim/batch |
+
+**Validação Etapa 6 (cap.12 headless):** 15/16 cenas `verified` ponta-a-ponta (round-trip byte-idêntico,
+back-translation via API). Pipeline endurecido em ~2300 linhas reais (schema-array, custo, `\n`,
+paridade, cobertura-merge, retry de conexão, budget best-effort).
+
+### P1.6 — robustez de conector p/ cenas de binário apertado (BACKLOG pós-produção)
+> Disparado pela ch_12_15: binário multi-BIN com pouco espaço de realocação → 2 linhas (+4/+5 bytes)
+> caem em RELOC_cont → ponteiros fora-do-arquivo. As traduções estão boas; o conector é que não cabe.
+> **Decisão: backlog pós-produção** (não overengineer; a Fase D / QA in-game cobre casos isolados).
+
+| Parte | Item | Esforço | Risco | Quando |
+|---|---|---|---|---|
+| **3A** | verify EXPÕE offsets out-of-file/RELOC_cont + `run_scene` re-traduz só essas linhas com `≤budget` forçado (self-heal direcionado) | ~1 dia | baixo (não toca escrita de bytes) | quando cenas apertadas recorrerem na 2ª metade |
+| **3B** | reinsert: realocação mais esperta (mais áreas livres/padding) p/ linhas genuinamente não-encurtáveis | ~2–4 dias | alto (byte-level; re-validar round-trip) | só se 3A não bastar |
+
+Gatilho: fazer **3A** se a 2ª metade mostrar várias cenas apertadas; senão, casos isolados (como 12_15)
+vão para a **Fase D** (ajuste humano de ~2–4 linhas). **3B** só com prova de linha impossível de encurtar.
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
