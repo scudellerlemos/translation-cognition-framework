@@ -1,0 +1,47 @@
+{
+  "_doc": "Ledger de reveal: cada fato de spoiler com o ponto narrativo em que vira conhecimento publico. O context_pack usa isto p/ FILTRO TEMPORAL — numa cena de posicao P, fatos com reveal > P sao FUTUROS: se a entidade aparece na cena, injeta-se um guard 'preserve a ambiguidade, NAO revele'. reveal='beyond_frontier' = revelado alem da fronteira pesquisada (sempre futuro p/ cenas dentro dela). reveal=<sfx> (ex.: '11_02') = ja revelado a partir daquela cena. Disparo: 'triggers' = palavras DISTINTIVAS casadas por limite de palavra (evite termos comuns tipo 'man'/'system'); 'scenes' = lista de sfx onde o guard se aplica (use p/ entidades sem trigger textual confiavel).",
+  "entries": [
+    {
+      "id": "ukon_identity",
+      "entity": "Ukon",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "A identidade verdadeira de Ukon (ele e mais do que um guerreiro espirituoso).",
+      "triggers": ["Ukon"],
+      "pre_reveal": "Traduza as falas de/sobre Ukon como o personagem 'Ukon' por si so. NAO insinue outra identidade, patente oculta ou disfarce. Mantenha qualquer ambiguidade do original.",
+      "post_reveal": "(definir ao pesquisar o arco do reveal)"
+    },
+    {
+      "id": "mikado_identity",
+      "entity": "Mikado",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "A identidade pessoal do Mikado por tras do titulo.",
+      "triggers": ["Mikado"],
+      "pre_reveal": "Trate o Mikado apenas como o soberano/titulo, a distancia. NAO antecipe vinculo pessoal com nenhum personagem.",
+      "post_reveal": "(definir ao pesquisar o arco do reveal)"
+    },
+    {
+      "id": "memory_figures",
+      "entity": "Figuras de memoria (Woman/Man)",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "As identidades das figuras de memoria/sonho ('Woman'/'Man', 'Mestre').",
+      "triggers": ["Woman"],
+      "scenes": ["12_14"],
+      "pre_reveal": "Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)",
+      "post_reveal": "(definir ao pesquisar o arco do reveal)"
+    },
+    {
+      "id": "awakening_process",
+      "entity": "Processo de Despertar",
+      "spoiler_level": "moderate",
+      "reveal": "beyond_frontier",
+      "fact": "A natureza completa do 'processo de despertar' / enquadramento sci-fi.",
+      "triggers": ["awakening"],
+      "scenes": ["12_14"],
+      "pre_reveal": "Mantenha o enquadramento ambiguo e tecnico (CAPS p/ Sistema). NAO explique a natureza sci-fi nem conecte ao enredo maior. (Obs.: 'system of gears'/engrenagens do moinho NAO e isto.)",
+      "post_reveal": "(definir ao pesquisar o arco do reveal)"
+    }
+  ]
+}

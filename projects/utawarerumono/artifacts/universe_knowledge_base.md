@@ -119,5 +119,62 @@ faixa (SRC-001, 0xee9b). Termo do mundo — manter original.
 
 ---
 
+# Delta cap. 12 (fronteira estendida 2026-06 — nível introdução; reveals pós-cap.12 em quarentena)
+
+## Ukon
+
+**Definição:** Guerreiro carismático e espirituoso que se aproxima de Haku após vê-lo consertar o moinho
+da vila; passa a guiá-lo como um irmão mais velho. Lidera a **Coorte do Ukon** (SRC-001 cap.12; SRC-002).
+
+**Fontes:** SRC-001 (corpus cap.12); SRC-002 (Fandom, nível premissa/elenco).
+
+**Papel narrativo:** porta de entrada de Haku para o grupo do Ukon e o enredo de Yamato.
+
+**Status de confiança:** high (introdução). ⚠️ **Quarentena de spoiler:** identidade verdadeira de Ukon
+é reveal de arco posterior — **não** incorporada aqui; ver `spoiler_ledger`.
+
+---
+
+## Maroro
+
+**Definição:** Erudito/escriba/mago cômico e franzino da Coorte do Ukon; magia de fogo que exige cântico
+e dança longos, de amplo efeito. Adota Haku como "benfeitor" após ser socorrido (SRC-002; SRC-001 cap.12).
+
+**Papel narrativo:** alívio cômico; aliado fiel de Haku.
+
+**Voz:** fala arcaica/empolada + gag de cicio (s→sh). Ver `tone_analysis.md`.
+
+**Status de confiança:** high.
+
+---
+
+## Yamato
+
+**Definição:** Nação/estado onde se passa o cap.12, composta de muitas províncias; sua capital é a sede
+do **Mikado** (SRC-001 cap.12; SRC-002).
+
+**Status de confiança:** high.
+
+---
+
+## Mikado
+
+**Definição:** Soberano de Yamato ("o grande Mikado"); presenteou a vila com o moinho (SRC-001 cap.12).
+No cap.12 aparece apenas como o soberano/título, à distância.
+
+**Status de confiança:** high (papel). ⚠️ **Quarentena de spoiler:** identidade pessoal do Mikado é reveal
+de fim de jogo — **não** incorporada aqui; ver `spoiler_ledger`.
+
+---
+
+## Gigiri / Boro-Gigiri
+
+**Definição:** Monstros altamente venenosos (SRC-001 cap.12). **Boro-Gigiri** = variante grande ("o
+enorme") — "Boro" é qualificador de tamanho, não personagem.
+
+**Status de confiança:** high (in-corpus).
+
+---
+
 ## Contexto de produção
 - **Desenvolvedora:** Aquaplus. **Publisher (EN):** Atlus/Sega (SRC-003). Sem localização pt-BR conhecida.
