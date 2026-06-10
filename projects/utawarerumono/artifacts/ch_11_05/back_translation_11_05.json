@@ -1,0 +1,14 @@
+{
+  "method": "Para cada linha risk=high: pt-BR -> EN, comparar com source, confirmar SENTIDO, HUMOR/voz e (callbacks) COERENCIA com cenas anteriores. Divergencia -> revisar.",
+  "scene_group": "11_05",
+  "date": "2026-06-08",
+  "reviewed": 5,
+  "revised": 0,
+  "entries": [
+    {"offset": "0x16f2a", "speaker": "Kuon", "source": "Er... well done...?", "target": "Ahn... mandou bem...?", "verdict": "pass", "note": "BT: 'Uh... good job...?' Elogio sem-jeito/hesitante preservado (o '?' indica que ela nao sabe se a atuacao patetica merece elogio). 'Er'->'Ahn' (sobrevive a translit)."},
+    {"offset": "0x16ffa", "speaker": "Haku", "source": "Just a second ago! All that \"oh, just wave a", "target": "Agora ha pouco! Aquele \"ah, e so balancar um", "verdict": "pass", "note": "BT: 'Just now! That \"oh, just wave a\". Abre a CITACAO da fala da Kuon. Coerencia com 11_03 (0x1525d): 'balancar um graveto'. Aspas preservadas."},
+    {"offset": "0x17029", "speaker": "Haku", "source": "stick around, they'll scatter.\"", "target": "graveto que eles se espalham.\"", "verdict": "pass", "note": "BT: 'stick and they'll scatter.\"' Fecho da citacao; 'scatter'->'espalham' ECOA exatamente o 11_03. Coerencia de callback confirmada."},
+    {"offset": "0x17049", "speaker": "Haku", "source": "So much for scattering! They tried to maul me!", "target": "Espalharam que nada! Eles tentaram me despedacar!", "verdict": "pass", "note": "BT: 'Scatter, my foot! They tried to tear me apart!' 'So much for X'->'X que nada' (idiomatico BR perfeito); 'maul'->'despedacar'. Indignacao comica no pico preservada."},
+    {"offset": "0x17170", "speaker": "Kuon", "source": "Haku, maybe you're a bit, ah...", "target": "Haku, talvez voce seja um pouquinho, ahn...", "verdict": "pass", "note": "BT: 'Haku, maybe you're a little bit, uh...' Alfinetada delicada (fofa<->firme): implica 'fraco' sem dizer. Hesitacao educada ('a bit, ah...') que suaviza preservada; 'ah'->'ahn'."}
+  ]
+}
