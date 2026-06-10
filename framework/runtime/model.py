@@ -48,11 +48,11 @@ EFFORT_TRANSLATE = "low"
 THINK_TRANSLATE = False
 
 # Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) nao deve
-# estourar MUITO o byte_budget. O conector ABSORVE crescimento moderado via head-reloc; so estouro
-# egregio cai em residuo (verify e o juiz real). Tolerancia alinhada ao build_plan (140% p/ dialogo):
-# o guard do translate so re-pede encurtamento de linhas absurdamente longas (medido: 1.10 era estrito
-# demais p/ cenas grandes — rejeitava expansao natural do pt-BR e sobrecarregava o modelo).
-BUDGET_TOLERANCE = 1.40
+# estourar MUITO o byte_budget. E SOFT (best-effort): linhas acima de budget*tol recebem um nudge de
+# encurtamento nas retries, mas sao aceitas (o conector absorve crescimento; a VERIFY e o juiz real).
+# 1.15: medido — 1.40 deixava cenas de binario APERTADO (multi-BIN, pouco espaco de head-reloc) crescerem
+# demais -> ponteiros fora-do-arquivo; 1.10 era estrito demais p/ cenas grandes. 1.15 e o meio-termo.
+BUDGET_TOLERANCE = 1.15
 
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
