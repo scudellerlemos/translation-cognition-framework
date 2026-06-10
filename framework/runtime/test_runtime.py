@@ -108,6 +108,29 @@ def test_scene_prompt_self_contained(built):
     assert f"translations_{context_pack.sfx_of(SCENE)}.json" in txt
 
 
+# ------------------------------- spoiler filter -------------------------------
+
+def test_spoiler_filter():
+    led = {"entries": [
+        {"entity": "Ukon", "spoiler_level": "major", "reveal": "beyond_frontier",
+         "triggers": ["Ukon"], "pre_reveal": "nao revelar"},
+        {"entity": "MemFig", "spoiler_level": "major", "reveal": "beyond_frontier",
+         "triggers": ["Woman"], "scenes": ["12_14"], "pre_reveal": "x"},
+        {"entity": "JaRevelado", "spoiler_level": "minor", "reveal": "11_02",
+         "triggers": ["Haku"], "pre_reveal": "y"},
+    ]}
+    # futuro + trigger por palavra inteira -> dispara
+    g = context_pack.select_spoiler_guards(led, "ukon chegou na vila", "12_04")
+    assert [x["entity"] for x in g] == ["Ukon"]
+    # trigger como SUBSTRING dentro de palavra NAO dispara (limite de palavra)
+    assert context_pack.select_spoiler_guards(led, "ele deu um comando ao humano", "12_04") == []
+    # disparo por cena explicita
+    g2 = context_pack.select_spoiler_guards(led, "sem trigger textual aqui", "12_14")
+    assert any(x["entity"] == "MemFig" for x in g2)
+    # reveal no passado (<= cena) -> nao e futuro -> nao dispara mesmo presente
+    assert context_pack.select_spoiler_guards(led, "Haku acordou", "12_04") == []
+
+
 # ------------------------------- kb_gate --------------------------------------
 # Gate de cobertura: research reconciliado + KB presente; fronteira bloqueia cena alem do pesquisado.
 
