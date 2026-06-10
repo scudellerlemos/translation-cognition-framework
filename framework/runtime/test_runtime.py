@@ -24,6 +24,7 @@ if str(_HERE) not in sys.path:
 import context_pack          # noqa: E402
 import state_index           # noqa: E402
 import run_chapter           # noqa: E402
+import kb_gate               # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -105,6 +106,50 @@ def test_scene_prompt_self_contained(built):
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
     assert f"translations_{context_pack.sfx_of(SCENE)}.json" in txt
+
+
+# ------------------------------- kb_gate --------------------------------------
+# Gate de cobertura: research reconciliado + KB presente; fronteira bloqueia cena alem do pesquisado.
+
+def _kb_project(tmp_path, *, reconciled=True, frontier=None, with_kb=True):
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    status = "**Status:** reconciled" if reconciled else "**Status:** in_progress"
+    (art / "research_log.md").write_text(
+        f"# Research\n{status}\n**Fronteira de spoiler:** Cap. 11\n", encoding="utf-8")
+    if with_kb:
+        (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+        (art / "universe_knowledge_base.md").write_text("# KB\n## Haku\n", encoding="utf-8")
+        (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
+    cfg = {"source": {"file": "x"}}
+    if frontier:
+        cfg["kb_frontier"] = frontier
+    (tmp_path / "project.json").write_text(json.dumps(cfg), encoding="utf-8")
+    return tmp_path
+
+
+def test_kb_gate_passes_when_reconciled_and_present(tmp_path):
+    root = _kb_project(tmp_path)
+    assert kb_gate.check(root, "ch_12_03")["problems"] == []
+
+
+def test_kb_gate_blocks_unreconciled(tmp_path):
+    root = _kb_project(tmp_path, reconciled=False)
+    probs = kb_gate.check(root, "ch_12_03")["problems"]
+    assert any("reconcil" in p.lower() for p in probs)
+
+
+def test_kb_gate_blocks_missing_artifacts(tmp_path):
+    root = _kb_project(tmp_path, with_kb=False)
+    assert kb_gate.check(root, "ch_12_03")["problems"], "KB ausente deve bloquear"
+
+
+def test_kb_gate_frontier_blocks_beyond(tmp_path):
+    root = _kb_project(tmp_path, frontier="12_05")
+    assert kb_gate.check(root, "ch_12_03")["problems"] == [], "cena dentro da fronteira passa"
+    beyond = kb_gate.check(root, "ch_12_09")["problems"]
+    assert any("fronteira" in p.lower() for p in beyond), "cena alem da fronteira deve bloquear"
+    assert kb_gate.check(root, "ch_13_01")["problems"], "capitulo seguinte deve bloquear"
 
 
 # ------------------------------- run_chapter ----------------------------------

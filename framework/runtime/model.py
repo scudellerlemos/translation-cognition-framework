@@ -53,7 +53,7 @@ DONE = "done"           # chamada de IA concluida (backend api)
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def translate(root, scene, *, backend="in-session", model=None):
+def translate(root, scene, *, backend="api", model=None):
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     sfx = pack["sfx"]
@@ -75,7 +75,7 @@ def translate(root, scene, *, backend="in-session", model=None):
 
 # ----------------------------- BACK-TRANSLATE ---------------------------------
 
-def back_translate(root, scene, high_lines, *, backend="in-session", model=None):
+def back_translate(root, scene, high_lines, *, backend="api", model=None):
     """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
     root = Path(root)
     sfx = context_pack.sfx_of(scene)
@@ -318,7 +318,7 @@ def main():
     ap = argparse.ArgumentParser(description="Interface de modelo do harness (translate).")
     ap.add_argument("project")
     ap.add_argument("scene")
-    ap.add_argument("--backend", default="in-session", choices=["in-session", "api"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--model", default=None)
     a = ap.parse_args()
     r = translate(a.project, a.scene, backend=a.backend, model=a.model)
