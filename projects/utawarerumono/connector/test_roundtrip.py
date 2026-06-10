@@ -19,6 +19,8 @@ Requer: artifacts/ScriptEvent.sdat (binário-fonte) e os artefatos gerados pelo 
 """
 import csv
 import hashlib
+import json
+import re
 import struct
 import sys
 from pathlib import Path
@@ -241,6 +243,52 @@ def test_ips_applies(applied, original):
                 buf.extend(b"\x00" * (off + ln - len(buf)))
             buf[off:off + ln] = patch[i:i + ln]; i += ln
     assert bytes(buf) == applied["out"], "IPS aplicado ao original != output"
+
+
+# --------------------------------------------------------------------------- tokens de cor (parametrizados)
+def _color_patterns_bytes():
+    """Padrões de token de cor catalogados em project.json, compilados para casar em BYTES."""
+    cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
+    return [re.compile(p.encode("ascii")) for p in cfg.get("formatting_token_patterns", [])]
+
+
+def test_color_tokens_catalogued():
+    """Os tokens de cor crus ({c5}/{c-1}/{c-}) estão catalogados em project.json
+    (formatting_token_patterns) — fecha a pendência do decision_log."""
+    cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
+    pats = [re.compile(p) for p in cfg.get("formatting_token_patterns", [])]
+    assert pats, "project.json não cataloga formatting_token_patterns (tokens de cor)"
+    for form in ("{c5}", "{c-1}", "{c-}"):
+        assert any(rx.fullmatch(form) for rx in pats), f"nenhum padrão cobre o token {form}"
+
+
+@requires_bin
+def test_color_tokens_present_in_binary(original):
+    """O binário-fonte realmente contém tokens de cor crus (fixture esperada — cap. 11_04 e cia.)."""
+    pats = _color_patterns_bytes()
+    assert pats, "sem padrões de cor catalogados"
+    hits = [m for rx in pats for m in rx.findall(original)]
+    assert hits, "binário não contém tokens de cor — varredura/fixture inesperada"
+
+
+@requires_bin
+def test_color_tokens_preserved_roundtrip(original):
+    """REGRESSÃO PRINCIPAL: tokens de cor preservados VERBATIM no round-trip do reinsert. O multiset
+    (com índice) de ocorrências no binário deve sobreviver byte-a-byte à reinserção (rebuild_container)."""
+    pats = _color_patterns_bytes()
+    before = sorted(m for rx in pats for m in rx.findall(original))
+    assert before, "sem tokens de cor no original"
+    buf, _repoints, _report = R.build_output(original, R.load_budgets(), approved={})
+    after = sorted(m for rx in pats for m in rx.findall(bytes(buf)))
+    assert after == before, f"tokens de cor não preservados verbatim: {before} -> {after}"
+
+
+def test_transliterate_keeps_color_tokens():
+    """A transliteração (acento->ASCII) NÃO toca nos tokens de cor (ASCII puro): um alvo acentuado
+    com {c5}...{c-1} mantém os tokens idênticos ao gravar, mesmo dobrando os diacríticos do texto."""
+    out = R.transliterate("{c5}Ação{c-1} e {c-}")          # "Ação"
+    assert "{c5}" in out and "{c-1}" in out and "{c-}" in out
+    assert "ç" not in out and "ã" not in out               # acento dobrado; token intacto
 
 
 # --------------------------------------------------------------------------- T4 (resíduo em lote)

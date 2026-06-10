@@ -21,13 +21,16 @@ REPO = HERE.parent.parent
 REF_PROJECT = REPO / "projects" / "utawarerumono"
 
 
-def _make_project(tmp: Path, lines, glossary_rows=None):
+def _make_project(tmp: Path, lines, glossary_rows=None, token_patterns=None):
     art = tmp / "artifacts"; art.mkdir(parents=True)
-    (tmp / "project.json").write_text(json.dumps({
+    manifest = {
         "title": "T", "source_language": "en", "target_language": "pt-BR",
         "source": {"id_column": "offset", "text_column": "text_source"},
         "formatting_tokens": ["{W75}", "{W80}"],
-    }), encoding="utf-8")
+    }
+    if token_patterns is not None:
+        manifest["formatting_token_patterns"] = token_patterns
+    (tmp / "project.json").write_text(json.dumps(manifest), encoding="utf-8")
     plan = {"lines": [{"offset": o, "text_source": s, "base_translation": t,
                        "speaker": "A", "entities_present": [], "tone_register": "dialogo",
                        "intent": "x", "risk_level": "low", "byte_budget": 1,
@@ -80,6 +83,15 @@ def test_skips_numeric_token_line(tmp_path):
 def test_no_false_positive_on_short_word(tmp_path):
     # "a short distance away." -> "a pouca distância." : "a" é palavra, não stammer
     p = _make_project(tmp_path, [("0x1", "a short distance away.", "a pouca distancia.")])
+    assert N.lint_project(p) == []
+
+
+# ----------------------------------------------------------------- tokens de cor reconhecidos
+def test_strips_color_tokens(tmp_path):
+    # linha só com tokens de cor (sem conteúdo alfabético real): strip_tokens via padrão deixa
+    # alpha vazio -> NÃO é copia_crua. Sem o padrão, "{c5}{c-1}" viraria alpha "cc" e seria flagrado.
+    p = _make_project(tmp_path, [("0x1", "{c5}{c-1}", "{c5}{c-1}")],
+                      token_patterns=[r"\{c-?\d*\}"])
     assert N.lint_project(p) == []
 
 
