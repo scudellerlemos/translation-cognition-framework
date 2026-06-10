@@ -55,17 +55,32 @@ tocar nas aprovadas.
 
 Trocar de modelo = trocar a string. Nenhuma outra parte do harness sabe qual modelo rodou.
 
-## Status do caminho API (endurecido — pronto p/ produção)
+## Status do caminho API (COMPROVADO em produção — 2026-06)
 
-Endurecido contra o SDK vivo `anthropic` 0.109.x (streaming, `output_config` json_schema, backoff,
-guard de `\n`/cobertura). Pendências de validação **em produção real** (requerem a chave):
-- **Benchmark Sonnet×Opus** nas cenas-gold (ch_12_01/02, feitas à mão a Opus) — veredito do modelo de
-  tradução default. _(pendente da chave; rodar `bench_translate.py … --model claude-sonnet-4-6`)._
-- Bater o custo real (`metrics.jsonl`) contra `validation/cost_model.py` (cenário `mix`/`mix_cache`).
+Endurecido contra o SDK vivo `anthropic` 0.109.x e **rodado de verdade**. A 1ª rodada expôs 4 problemas
+que só aparecem em produção (o motivo de "comprovar" ser uma etapa própria) — todos corrigidos:
 
-### Veredito do benchmark
-_(a preencher após a primeira rodada via API: Sonnet preserva voz/registro cômico? passa
-`build_plan_chapter` + `naturalness_lint`? Se não, `MODEL_TRANSLATE` → `claude-opus-4-8`.)_
+| # | Achado empírico | Correção |
+|---|---|---|
+| 1 | structured output ESTRITO exige `additionalProperties:false` em todo objeto → mapa `{offset:{}}` (chaves dinâmicas) é rejeitado | schema virou **array de entradas** com `offset` por item; conversão array→mapa pós-parse (`_to_map`) |
+| 2 | `effort:high` + adaptive thinking **estourou o custo ~5×** (thinking conta como saída a $15/M): 37 linhas → 20k tokens out | defaults **`EFFORT_TRANSLATE="low"` + `THINK_TRANSLATE=False`**; back-translation mantém thinking |
+| 3 | em cena nova, o modelo colapsa o token `\n` numa **quebra de linha REAL** (3 retries não corrigem) | normalização **determinística** (`_norm_t`): newline real → token literal `\n` (este jogo só quebra via token) |
+| 4 | o aviso de charset fazia o modelo **remover acentos** do `t` canônico | prompt clarificado: escreva `t` COM acentos; a transliteração ASCII é do `reinsert` |
+
+### Veredito do benchmark — **Sonnet APROVADO** como `MODEL_TRANSLATE`
+Teste limpo em cena de comédia fora da TM (ch_12_03, 408 linhas): registro/humor no nível da versão
+feita à mão a Opus — ex.: *"Cérebro, meu camarada, você tá arrasando hoje."*, escalada cômica
+*"Rejeito, renuncio, RECUSO esse 'trabalho'..."*. Em cena coberta por TM (ch_12_01): 37/37 `t`
+**idêntico** ao gold (reuso de TM perfeito). Cobertura 100%, 0 quebras reais residuais. **Mantém
+Sonnet**; Opus reservado à back-translation.
+
+### Custo real medido (Sonnet, effort:low, sem thinking)
+| cena | linhas | out tok | tempo | ~custo |
+|---|---|---|---|---|
+| ch_12_01 (TM) | 37 | 2.529 | 43s | ~$0.06 |
+| ch_12_03 (nova) | 408 | 27.000 | 432s | ~$0.45 |
+~**66 tok/linha** (bate o `cost_model`) → **~$1.1/1k linhas → jogo ~$36** (antes do bundle de custo R5).
+Compare: com effort:high+thinking seria ~5× (jogo ~$285). Ver `OBSERVABILITY.md`.
 
 ## Por que isto viabiliza Sonnet
 

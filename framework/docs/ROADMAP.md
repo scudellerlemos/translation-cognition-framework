@@ -33,13 +33,13 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 ### P1.5 — cabear cognição no runtime (gaps da Architecture Review #2)
 > Doutrina existe nas skills, mas o harness de escala não a aplica. Ver `ARCHITECTURE_REVIEW_2.md`.
 
-| # | Item | Severidade | Depende |
+| # | Item | Severidade | Status |
 |---|---|---|---|
-| R1 | ligar e **comprovar** o caminho API (`.env` + benchmark de centavos) | 🔴 | chave |
-| R2 | tornar `api` o default de produção (ou `run_chapter --backend api` como entrypoint único) | 🔴 | R1 |
-| R3 | **Fase 0**: KB reconciliada (IA+humano) global + **gate de cobertura** no `context_pack`/`translate` | 🟠 | skills 01–04 |
-| R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** no `context_pack` (gating por posição de cena) + regra de ambiguidade (gênero pt-BR) na Carta | 🟠 | R3 |
-| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema low-risk, batch API) → jogo ~$58→~$20 | 🟡 | R1 |
+| R1 | ligar e **comprovar** o caminho API (`.env` + benchmark) | 🔴 | ✅ **feito** — Sonnet aprovado; 4 bugs de produção corrigidos; custo real ~$36/jogo (ver `MODEL_INTERFACE`) |
+| R2 | `api` como default de produção (`run_chapter --backend api` é o entrypoint) | 🔴 | 🟡 `run_chapter` já default `api`; falta flip do default de `run_scene`/`translate` |
+| R3 | **Fase 0**: KB reconciliada (IA+humano) global + **gate de cobertura** no `context_pack`/`translate` | 🟠 | pendente (skills 01–04) |
+| R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** no `context_pack` + regra de gênero pt-BR na Carta | 🟠 | pendente (depende R3) |
+| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema low-risk, batch API) → jogo ~$36→~$15 | 🟡 | **parcial**: tuning de effort/thinking já cortou ~5× (o maior); falta dedup/slim/batch |
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
@@ -62,8 +62,10 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 
 ## Sonnet Readiness
 
-**4/10 (antes do harness) → arquitetura 9/10 (com P0+P1) → empírica N/A (não medida; fecha no benchmark R1/R9).**
-O que exigia Opus era segurar o contexto acumulado, não a tradução por linha. As 5 mudanças de maior impacto (todas em P0):
+**4/10 (antes do harness) → arquitetura 9/10 → empírica ✅ COMPROVADA (R1, 2026-06): Sonnet aprovado.**
+Teste limpo de comédia (ch_12_03, fora da TM) no nível da versão à mão a Opus; custo ~$36/jogo no
+setting econômico (effort:low, sem thinking). O que exigia Opus era segurar o contexto acumulado, não
+a tradução por linha — confirmado. As 5 mudanças de maior impacto (todas em P0):
 1. job stateless por cena (`run_scene`); 2. `context_pack` limitado; 3. caching da doutrina;
 4. memória externalizada (TM/voice cards/decisões); 5. saída por schema. Com (1)+(2)+(4) o contexto
 por execução para de crescer e cai bem abaixo de 30% do atual → Sonnet vira o default de tradução.

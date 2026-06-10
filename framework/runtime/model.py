@@ -40,6 +40,12 @@ MAX_OUTPUT_TOKENS = 64000
 _MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
 _MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
 
+# Tuning de custo da TRADUCAO (medido: effort:high + thinking estourou ~5x o cost_model — o thinking
+# conta como saida a $15/M). Traducao com contexto curado nao precisa de raciocinio profundo:
+# default sem thinking + effort baixo. back_translate (alto risco) mantem thinking (raciocinio importa).
+EFFORT_TRANSLATE = "low"
+THINK_TRANSLATE = False
+
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
 DONE = "done"           # chamada de IA concluida (backend api)
@@ -113,17 +119,23 @@ def _write_back_prompt(root, scene, sfx, high_lines):
 # Endurecido p/ producao: streaming (.get_final_message) p/ saidas longas, output_config json_schema,
 # backoff em erro transitorio, e guard do token de quebra + cobertura com retry (ver _api_translate).
 
+# Structured output ESTRITO exige additionalProperties:false em todo objeto -> nao da p/ usar mapa
+# {offset: {...}} (chaves dinamicas). Logo: ARRAY de entradas com 'offset' por item; convertido p/ o
+# mapa {offset: {...}} (formato canonico do translations_<sfx>.json) apos parsear (ver _api_translate).
+_LINE_PROPS = {
+    "offset": {"type": "string"}, "speaker": {"type": "string"},
+    "tone_register": {"type": "string"}, "intent": {"type": "string"},
+    "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+    "risk_notes": {"type": "string"}, "t": {"type": "string"},
+}
 _TRANSLATION_SCHEMA = {
-    "type": "object",
-    "properties": {"lines": {"type": "object", "additionalProperties": {
-        "type": "object",
-        "properties": {
-            "speaker": {"type": "string"}, "tone_register": {"type": "string"},
-            "intent": {"type": "string"},
-            "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
-            "risk_notes": {"type": "string"}, "t": {"type": "string"},
-        }, "required": ["speaker", "tone_register", "risk_level", "t"]}}},
-    "required": ["lines"],
+    "type": "object", "additionalProperties": False, "required": ["lines"],
+    "properties": {"lines": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False,
+        "properties": _LINE_PROPS,
+        "required": ["offset", "speaker", "tone_register", "intent",
+                     "risk_level", "risk_notes", "t"],
+    }}},
 }
 
 
@@ -164,10 +176,13 @@ def _carta_text() -> str:
 # Regra do token de quebra reforcada na borda da API: em JSON, o literal barra+n e escrito `\\n`.
 # O modelo as vezes colapsa isso numa quebra de linha REAL (o bug recorrente) — instruimos e validamos.
 _NL_RULE = (
-    "\n\n## REGRA CRITICA DE SAIDA (token de quebra)\n"
+    "\n\n## FORMATO DE SAIDA (sobrepoe a secao 8)\n"
+    "Responda um objeto JSON com a chave \"lines\" = ARRAY de entradas; cada entrada tem os campos "
+    "`offset, speaker, tone_register, intent, risk_level, risk_notes, t` (preencha todos; `risk_notes` "
+    "pode ser \"\" quando risco baixo). Uma entrada por offset da secao 7 — cubra TODOS, sem excecao.\n"
+    "## REGRA CRITICA (token de quebra)\n"
     "Onde o source contem o token literal de quebra de linha, o campo \"t\" deve conte-lo como os DOIS "
-    "caracteres literais barra-invertida + n (no JSON: escreva `\\\\n`), NUNCA uma quebra de linha real. "
-    "Cubra TODOS os offsets listados na secao 7 — uma entrada por offset, sem excecao."
+    "caracteres literais barra-invertida + n (no JSON: escreva `\\\\n`), NUNCA uma quebra de linha real."
 )
 
 
@@ -216,24 +231,59 @@ def _check_translation(data, offsets):
     return bad_nl, missing
 
 
-def _api_translate(root, scene, pack, model):
+def _norm_t(t):
+    """Normaliza o campo de traducao: neste tipo de jogo TODA quebra e o token literal `\\n` — um
+    newline REAL no `t` e sempre erro (o modelo, gerando do zero, colapsa o token numa quebra real).
+    Converte qualquer CR/LF real no token literal, deterministico e idempotente (`\\n` ja correto nao
+    tem newline real -> intocado). A paridade de tokens fonte/alvo segue validada no build_plan."""
+    if not isinstance(t, str):
+        return t
+    tok = context_pack.TOKEN
+    return t.replace("\r\n", tok).replace("\n", tok).replace("\r", tok)
+
+
+def _to_map(data):
+    """Converte a saida estruturada {lines:[{offset,...}]} no formato canonico {lines:{offset:{...}}}.
+    Tolera ja vir em mapa (idempotente). Remove 'offset' do corpo da entrada e normaliza o `t`."""
+    lines = (data or {}).get("lines")
+    if isinstance(lines, dict):
+        for v in lines.values():
+            if isinstance(v, dict) and "t" in v:
+                v["t"] = _norm_t(v["t"])
+        return data
+    out = {}
+    for e in (lines or []):
+        off = e.get("offset")
+        if not off:
+            continue
+        body = {k: v for k, v in e.items() if k != "offset"}
+        if "t" in body:
+            body["t"] = _norm_t(body["t"])
+        out[off] = body
+    return {"lines": out}
+
+
+def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE):
     client = _client()
     # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     base_user = context_pack.render_prompt(pack, carta="") + _NL_RULE  # Carta ja no system
     offsets = [r["offset"] for r in pack["lines"]]
     note, last, usage = "", None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+    # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
+    # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
+    thinking = {"type": "adaptive"} if think else {"type": "disabled"}
     for _ in range(_MAX_TRIES):
         msg = _stream_final(
             client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
             system=system,
             messages=[{"role": "user", "content": base_user + note}],
-            thinking={"type": "adaptive"},
-            output_config={"effort": "high",
+            thinking=thinking,
+            output_config={"effort": effort,
                            "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
         )
         _add_usage(usage, _usage_of(msg))
-        data = json.loads(_text_of(msg))
+        data = _to_map(json.loads(_text_of(msg)))   # array de entradas -> mapa {offset: {...}}
         bad_nl, missing = _check_translation(data, offsets)
         if not bad_nl and not missing:
             return data, usage

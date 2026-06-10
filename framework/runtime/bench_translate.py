@@ -28,13 +28,15 @@ def main():
     ap.add_argument("scene")
     ap.add_argument("--model", default=M.MODEL_TRANSLATE)
     ap.add_argument("--tag", default=None, help="sufixo do arquivo paralelo (default: derivado do modelo)")
+    ap.add_argument("--effort", default=M.EFFORT_TRANSLATE, choices=["low", "medium", "high", "xhigh", "max"])
+    ap.add_argument("--think", action="store_true", help="liga adaptive thinking (default: desligado)")
     a = ap.parse_args()
     root = Path(a.project)
     tag = a.tag or a.model.split("-")[1]      # 'sonnet' / 'opus'
     sfx = context_pack.sfx_of(a.scene)
     pack = context_pack.build_pack(root, a.scene)
     t0 = time.time()
-    data, usage = M._api_translate(root, a.scene, pack, a.model)
+    data, usage = M._api_translate(root, a.scene, pack, a.model, effort=a.effort, think=a.think)
     dt = time.time() - t0
     out = root / "artifacts" / a.scene / f"translations_{sfx}.{tag}.json"
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
