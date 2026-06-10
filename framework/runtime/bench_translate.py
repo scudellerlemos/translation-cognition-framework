@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+"""
+bench_translate.py — utilitario de BENCHMARK (dev). NAO faz parte do pipeline de producao.
+
+Roda o backend `api` (model._api_translate) numa cena com um modelo dado e grava a saida num
+arquivo PARALELO (`translations_<sfx>.<tag>.json`), SEM tocar no `translations_<sfx>.json` aprovado.
+Serve p/ comparar modelos (ex.: Sonnet vs Opus) e como smoke-test do caminho de rede/schema/streaming.
+
+Uso:  python bench_translate.py <projeto> <scene> [--model claude-sonnet-4-6] [--tag sonnet]
+"""
+from __future__ import annotations
+import argparse
+import json
+import sys
+import time
+from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+import context_pack  # noqa: E402
+import model as M     # noqa: E402
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Benchmark do backend api (saida paralela).")
+    ap.add_argument("project")
+    ap.add_argument("scene")
+    ap.add_argument("--model", default=M.MODEL_TRANSLATE)
+    ap.add_argument("--tag", default=None, help="sufixo do arquivo paralelo (default: derivado do modelo)")
+    a = ap.parse_args()
+    root = Path(a.project)
+    tag = a.tag or a.model.split("-")[1]      # 'sonnet' / 'opus'
+    sfx = context_pack.sfx_of(a.scene)
+    pack = context_pack.build_pack(root, a.scene)
+    t0 = time.time()
+    data, usage = M._api_translate(root, a.scene, pack, a.model)
+    dt = time.time() - t0
+    out = root / "artifacts" / a.scene / f"translations_{sfx}.{tag}.json"
+    out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    n = len(data.get("lines", {}))
+    print(f"OK {a.scene} via {a.model}: {n} linhas em {dt:.1f}s -> {out}")
+    print(f"   usage: in={usage['in']} out={usage['out']} "
+          f"cache_read={usage['cache_read']} cache_write={usage['cache_write']}")
+
+
+if __name__ == "__main__":
+    main()

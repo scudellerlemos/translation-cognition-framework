@@ -23,11 +23,23 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | 6 | `test_runtime.py` (determinismo, boundedness, idempotência, guard) | ✅ |
 
 ### P1 — antes de escalar (custo/observabilidade)
-| # | Item | Esforço | Impacto | Depende |
-|---|---|---|---|---|
-| 7 | métricas no runner (`metrics.jsonl`: tokens trad/gov/revisão, custo/cena, retrabalho) | M | alto | P0 |
-| 8 | plugar caminho `api` real (caching + model-mix) e bater com `cost_model` | M | alto | 7 |
-| 9 | benchmark de modelos (Opus/Sonnet/Haiku em cenas-gold) | M | médio | 7,8 |
+| # | Item | Status |
+|---|---|---|
+| 7 | métricas no runner (`metrics.jsonl`: tokens trad/revisão, custo/cena, back-pass-rate) | ✅ |
+| 8 | endurecer caminho `api` (streaming, schema, guard `\n`+retry, backoff) | ✅ codado, ⚠️ **não comprovado** (falta `.env`) |
+| 8b | `run_chapter.py` — driver de capítulo (loop de cenas, resumível) | ✅ |
+| 9 | benchmark de modelos (Sonnet vs Opus em cenas-gold) | ⏳ pendente da chave |
+
+### P1.5 — cabear cognição no runtime (gaps da Architecture Review #2)
+> Doutrina existe nas skills, mas o harness de escala não a aplica. Ver `ARCHITECTURE_REVIEW_2.md`.
+
+| # | Item | Severidade | Depende |
+|---|---|---|---|
+| R1 | ligar e **comprovar** o caminho API (`.env` + benchmark de centavos) | 🔴 | chave |
+| R2 | tornar `api` o default de produção (ou `run_chapter --backend api` como entrypoint único) | 🔴 | R1 |
+| R3 | **Fase 0**: KB reconciliada (IA+humano) global + **gate de cobertura** no `context_pack`/`translate` | 🟠 | skills 01–04 |
+| R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** no `context_pack` (gating por posição de cena) + regra de ambiguidade (gênero pt-BR) na Carta | 🟠 | R3 |
+| R5 | bundle de custo (dedup TM/intra-corpus, slim de schema low-risk, batch API) → jogo ~$58→~$20 | 🟡 | R1 |
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
@@ -42,13 +54,16 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 ## Fases
 
 - **Fase 1 — resolver estouro de sessão:** P0 (entregue). Cena stateless + contexto limitado.
-- **Fase 2 — reduzir custo operacional:** P1. Métricas + caminho API + model-mix + benchmark.
+- **Fase 2 — reduzir custo operacional:** P1 (entregue: métricas + API endurecida + `run_chapter`).
+  Falta **comprovar em produção** (benchmark/`metrics.jsonl` reais — pendente da chave).
+- **Fase 2.5 — cabear cognição no runtime:** P1.5 (R1–R5). Ligar/comprovar API, KB-gate, spoiler-filter,
+  bundle de custo. **É aqui que estamos.**
 - **Fase 3 — escalar p/ 40–100k linhas:** P2. Paralelização + (se preciso) RAG sobre lore/decisões.
 
 ## Sonnet Readiness
 
-**Nota atual: 4/10 (antes do harness) → projetada 8/10 (com P0).** O que exigia Opus era segurar o
-contexto acumulado, não a tradução por linha. As 5 mudanças de maior impacto (todas em P0):
+**4/10 (antes do harness) → arquitetura 9/10 (com P0+P1) → empírica N/A (não medida; fecha no benchmark R1/R9).**
+O que exigia Opus era segurar o contexto acumulado, não a tradução por linha. As 5 mudanças de maior impacto (todas em P0):
 1. job stateless por cena (`run_scene`); 2. `context_pack` limitado; 3. caching da doutrina;
 4. memória externalizada (TM/voice cards/decisões); 5. saída por schema. Com (1)+(2)+(4) o contexto
 por execução para de crescer e cai bem abaixo de 30% do atual → Sonnet vira o default de tradução.
