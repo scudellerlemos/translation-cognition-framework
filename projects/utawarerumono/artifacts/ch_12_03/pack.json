@@ -1,0 +1,2377 @@
+{
+  "scene": "ch_12_03",
+  "sfx": "12_03",
+  "n_lines": 408,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "amam",
+      "category": "Item",
+      "target_translation": "amam",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Grao do mundo (os sacos do 11_07; revelado 11_09). Moido vira farinha -> 'pele de amam' (folha tipo pao achatado). Manter nome proprio."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Innkeeper",
+      "category": "UI",
+      "target_translation": "Estalajadeira",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rotulo de falante (53 00) da dona da estalagem da vila (descoberto em 11_06, 0x18eb8). Feminino. Voz calorosa, trata por 'querida'. Como Garota/Mulher/Homem: rotulo exibido in-game."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "right?",
+      "target": "né?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*THUNK*",
+      "target": "*TUM*",
+      "speaker": "Haku",
+      "from_scene": "11_10"
+    },
+    {
+      "source": "Innkeeper",
+      "target": "Estalajadeira",
+      "speaker": "rotulo",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "There's help needed, hm... cutting stones at the\\n",
+      "target": "Precisa-se de ajuda, hm... corte de pedras na\\n",
+      "speaker": "Sistema",
+      "from_scene": "12_02"
+    },
+    {
+      "source": "quarry, and hauling fresh lumber. How's that sound?",
+      "target": "pedreira, e transporte de madeira. Que tal?",
+      "speaker": "Sistema",
+      "from_scene": "12_02"
+    },
+    {
+      "source": "Is something wrong?",
+      "target": "Algum problema?",
+      "speaker": "Kuon",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "Urgh...",
+      "target": "Argh...",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "Now...",
+      "target": "Agora...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Haku?",
+      "target": "Haku?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Ah, I see.",
+      "target": "Ah, saquei.",
+      "speaker": "Haku",
+      "from_scene": "11_10"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Haku",
+      "source": "Geez...! Too bright out here...",
+      "target": "Aff...! Claridade demais aqui fora..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Well, guess the sun still rises no matter where\\n",
+      "target": "Enfim, o sol nasce em qualquer lugar, pelo visto\\n"
+    },
+    {
+      "speaker": "Haku",
+      "source": "I am. Still... What am I supposed to do now...?",
+      "target": "Pois é. Mesmo assim... O que é que eu faço agora...?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Where... am I?",
+      "target": "Onde... estou?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "No one else around, or...?",
+      "target": "Não tem ninguém... ou...?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Unh... urgh...",
+      "target": "Nnh... argh..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "Inside your dream.",
+      "target": "No seu sonho."
+    },
+    {
+      "speaker": "Homem",
+      "source": "We have enchanted you with a spell that will help\\n",
+      "target": "Lançamos sobre você um feitiço que irá ajudá-lo\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "you become stronger in sleep, as requested, Master.",
+      "target": "a ficar mais forte enquanto dorme, como pedido, Mestre."
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0x2a495",
+      "source": "Hm. It really isn't moving... It must be broken\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2a4c7",
+      "source": "after all, then.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2a4d8",
+      "source": "Having given up trying to get the mill moving, Kuon\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2a50e",
+      "source": "mutters to herself, peering at the gears.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2a538",
+      "source": "Ah, so this thing's gotta be the buhrstone mill for\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2a56e",
+      "source": "grinding... And this must be the mortar.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2a597",
+      "source": "I think I get it. The waterwheel rotates the rod,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2a5cb",
+      "source": "which turns the gears, which move the mill.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2a5f7",
+      "source": "Seems like it's busted at the moment, though.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2a627",
+      "source": "How am I supposed to move this thing?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2a64d",
+      "source": "That's just how the pieces fall, I guess. Haku, I'm\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2a683",
+      "source": "going to have you turn the amam-grinding stone.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2a6b3",
+      "source": "Turn? Wait, you mean...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2a6cb",
+      "source": "I'll show you. First, take amam from the bag and\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2a6fe",
+      "source": "pour it into the mill...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2a717",
+      "source": "Kuon opens one of the sacks lying piled in the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2a748",
+      "source": "corner, pouring its contents out into the mortar.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2a77a",
+      "source": "And then... you turn the mill.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2a799",
+      "source": "She grabs ahold of a handle jutting from the round\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2a7ce",
+      "source": "millstone and gives a small, almost casual push...",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2a801",
+      "source": "*GRRRRNGGKK*",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2a80e",
+      "source": "The mill spins with unreasonable force for that tiny\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2a845",
+      "source": "push, grinding and crushing the amam into powder.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2a877",
+      "source": "Ah, maybe I put my back into that one a little much.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2a8ac",
+      "source": "A little much!? Wait, is something b--is that SMOKE?",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2a8e1",
+      "source": "Lo and behold, the friction of all that force\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2a911",
+      "source": "created smoke, gently rising from the mill.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2a93d",
+      "source": "Give it a try, in any case.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2a959",
+      "source": "Like hell I'll be able to do that! Where do you even\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2a990",
+      "source": "get the strength for something like this?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2a9ba",
+      "source": "But if I recall... You're supposed to walk in a\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2a9ec",
+      "source": "circle with the handle to get the mill going, right?",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2aa21",
+      "source": "I may not be able to do it like her, but getting it\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2aa57",
+      "source": "spinning should be an easy enough task.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2aa7f",
+      "source": "I'd prefer not to work, but I should show my\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2aaae",
+      "source": "gratitude. I take the handle and begin to push.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2aade",
+      "source": "Alley-oop.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2aae9",
+      "source": "*Grrrrrk*...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2aaf6",
+      "source": "Not exactly light, but... I think I can handle this.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2ab2b",
+      "source": "I mean--how useless would I be if I couldn't? She\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2ab5f",
+      "source": "can't be expecting me to screw this up, right?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2ab8e",
+      "source": "Excellent. You shouldn't have any problems, I think.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2abc3",
+      "source": "I have some errands to tend to, so you'll be all\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2abf6",
+      "source": "right if I leave you alone here, right, Haku?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2ac24",
+      "source": "Yeah. I just need to grind this stuff into powder,\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2ac59",
+      "source": "right?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2ac60",
+      "source": "Uh huh. I'll leave you to it, then.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2ac84",
+      "source": "Welp. Might as well get this over with.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2acac",
+      "source": "Push, push, puuuuuuuuush...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2acc8",
+      "source": "*Grrrrrrrrrrrrrk*...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2acdd",
+      "source": "Spin, spin, keep on spinning...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2acfd",
+      "source": "*Grrrrrrrrrrrrrrrrrk*...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2ad16",
+      "source": "Don't get me wrong; I'm glad it's not strenuous,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2ad49",
+      "source": "but man, I'm bored. This is monotonous work.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2ad76",
+      "source": "*Grrrrrrrrrrrrrrrrrrk*...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x2ad90",
+      "source": "Not to mention this thing is barely putting out any\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2adc6",
+      "source": "powder at all. It took no time at all for Kuon...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2adf8",
+      "source": "This is gonna take forever, at this rate. I should\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2ae2d",
+      "source": "pick up the pace.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2ae3f",
+      "source": "*Grrrrrrrrrrrrrrrrk...!*",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2ae58",
+      "source": "Phew, first bag down...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2ae74",
+      "source": "Well... Time to take a break.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2ae92",
+      "source": "Hup--whew...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2ae9f",
+      "source": "Geez. All that for ONE bag! All that work, and I've\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2aed5",
+      "source": "only finished the first little bit!? Come on!",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2af03",
+      "source": "Gah. There's no way I'm getting all this done.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2af34",
+      "source": "I was way too optimistic. What am I gonna do?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2af62",
+      "source": "My legs have turned to jelly, my feet are\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2af8e",
+      "source": "blistering, the boredom is killing me...",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2afb7",
+      "source": "Why the hell do I need to turn this thing all day\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2afeb",
+      "source": "like I'm livestock or something, anyway?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2b014",
+      "source": "I wouldn't even have to do this if they'd fixed\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2b046",
+      "source": "their damn mill in the first place.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2b06a",
+      "source": "Laying on the ground, I glance toward the system of\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b0a0",
+      "source": "gears connected to the mill.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2b0bd",
+      "source": "They said something like... the repairman hasn't\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2b0f0",
+      "source": "come yet, but it's not like mills are complicated.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2b123",
+      "source": "If someone had the mind to do it, I'm sure they\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2b155",
+      "source": "could--eh?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2b160",
+      "source": "That's it! All I've gotta do is fix this thing.\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2b192",
+      "source": "Why didn't I think of that? It's so obvious!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2b1bf",
+      "source": "I pick myself up and set about examining the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2b1ee",
+      "source": "structure of the mill.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2b205",
+      "source": "Carefully, I scrutinize each part in sequence,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2b236",
+      "source": "finally coming to a gear that feels... off.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2b262",
+      "source": "...Yeah, this is the one. The gear for the grinding\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b298",
+      "source": "stone cracked and got stuck. No wonder it won't move.",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b2ce",
+      "source": "Now, what to do? If the gear itself is broken, is\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2b302",
+      "source": "there anything I can... hm?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2b31e",
+      "source": "This is... Ah, now that I look closely, the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2b34c",
+      "source": "mechanism for the mortar is exactly the same.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2b37a",
+      "source": "If that's the case, can I just pull a gear that's\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2b3ae",
+      "source": "not in use from another part of the machine...?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2b3de",
+      "source": "*Crrk*...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2b3e8",
+      "source": "If I drop that right in here, it should spin...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2b41a",
+      "source": "Probably.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2b424",
+      "source": "*THUNK*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2b42c",
+      "source": "I slide off the broken gear and replace it with\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2b45e",
+      "source": "another one of the same size.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2b47c",
+      "source": "...I know this was my idea, but wow. I wasn't\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2b4ac",
+      "source": "expecting it to fit so perfectly.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2b4ce",
+      "source": "The gear from the other mechanism is just the right\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b504",
+      "source": "size. Did no one else really think of this?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2b530",
+      "source": "Whatever. No way to know until I test it out.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2b55e",
+      "source": "Moving over to the window, I find the rope holding\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2b593",
+      "source": "the waterwheel in place and untie it.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2b5b9",
+      "source": "*Grrrk*...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2b5c4",
+      "source": "*Grrk*...\\n",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2b5d0",
+      "source": "*CLANK*\\n",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2b5da",
+      "source": "*Groan*...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2b5e5",
+      "source": "With a loud sound, the axle in the center slowly\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2b618",
+      "source": "begins to rotate...",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2b62c",
+      "source": "The gears follow suit, and finally, the mill starts\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b662",
+      "source": "to move as well.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2b673",
+      "source": "*Gr-Grrrrrrrrrk*...",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2b687",
+      "source": "Oh... Hey, all right, we've got movement.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2b6b1",
+      "source": "The amam inside the mill falls out in a steady\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2b6e2",
+      "source": "stream of fine powder.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2b6f9",
+      "source": "Yes! Success! Now all I have to do is sit and reap\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2b72e",
+      "source": "the rewards.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2b73b",
+      "source": "I sit back down on the floor and kick my feet up\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2b76e",
+      "source": "for a nice, long, well-deserved break.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2b795",
+      "source": "*Grrrrrrrrk*...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2b7a5",
+      "source": "The mill continually spins before me, quickly\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2b7d5",
+      "source": "overtaking my efforts from before. It's amam\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2b804",
+      "source": "powder city.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2b811",
+      "source": "I figure if it keeps this pace up, I should be done\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b847",
+      "source": "by nightfall.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2b855",
+      "source": "Really, I should have done this from the st--",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2b883",
+      "source": "Footsteps from outside interrupt my thoughts.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2b8b4",
+      "source": "Acting on reflex and instinct, I quickly stand and\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2b8e9",
+      "source": "move to the mill.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2b8fb",
+      "source": "Haku, everything going all right in here?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2b925",
+      "source": "Just as I reach the mill, Kuon pokes her head in,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2b959",
+      "source": "holding a tray in her hands.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2b976",
+      "source": "Ungh!? O-Oh, yeah. Doing great.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2b996",
+      "source": "For some reason, I find myself with my hands around\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2b9cc",
+      "source": "the handle, \"pushing\" the freely rotating mill.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2b9fc",
+      "source": "Why am I acting like a kid trying to hide shirking\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2ba31",
+      "source": "his homework from his parents?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2ba50",
+      "source": "Ahaha, looks like it's going well, I guess.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2ba7c",
+      "source": "Well, this is--",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2ba8c",
+      "source": "...Wait. Hold up.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2ba9e",
+      "source": "I catch myself just as I'm about to explain to Kuon\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2bad4",
+      "source": "how I swapped in an auxiliary gear, pausing.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2bb01",
+      "source": "If the mill is repaired, there's no point to me\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2bb33",
+      "source": "spinning this stupid thing.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2bb4f",
+      "source": "Which means I wouldn't have to be here, and Kuon\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2bb82",
+      "source": "would just find another job for me to do, right?",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2bbb3",
+      "source": "Thinking back, I recall the conversation Kuon had\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2bbe7",
+      "source": "with the innkeeper...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2bbfd",
+      "source": "Innkeeper",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2bc07",
+      "source": "There's help needed, hm... cutting stones at the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2bc3a",
+      "source": "quarry, and hauling fresh lumber. How's that sound?",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2bc6e",
+      "source": "No, no, no. No more. I've had my fill. I reject,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2bca1",
+      "source": "I renounce, I REFUSE this \"work\"...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2bcc5",
+      "source": "Guess there's no choice. Kinda sucks lying to her,\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2bcfa",
+      "source": "but I'm gonna pretend I'm working for now.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2bd25",
+      "source": "Kuon doesn't seem to catch on, for she steps inside\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2bd5b",
+      "source": "and sits on a bench with her tray, tail curling.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2bd8c",
+      "source": "You're probably tired from all that work. I brought\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2bdc2",
+      "source": "some tea. C'mon, come take a break with me.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2bdee",
+      "source": "Wh--?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2bdf4",
+      "source": "Two cups sit perched on the tray, warm steam rising\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2be2a",
+      "source": "from their depths.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2be3d",
+      "source": "...Not good.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2be4a",
+      "source": "If I let go now, this thing is gonna keep moving on\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2be80",
+      "source": "its own, and it'll be a dead giveaway.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2bea7",
+      "source": "Is something wrong?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2bebb",
+      "source": "Uh, no, just... I'll be done with this bag in a bit,\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2bef2",
+      "source": "so I'll stop for a break then.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2bf11",
+      "source": "Your tea's going to get cold, th--\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2bf36",
+      "source": "...No, you shouldn't push yourself so hard. You've\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2bf6b",
+      "source": "only just recovered...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2bf82",
+      "source": "You really should take a small break for your\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2bfb2",
+      "source": "health, you know. I can switch with you for a bit.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2bfe5",
+      "source": "Huh? Uh... um. No thanks. This is my job, after all.\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2c01c",
+      "source": "Mhm. Yep.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2c026",
+      "source": "...She'll definitely figure me out if we switch off.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c05b",
+      "source": "You're sure you're not pushing yourself over your\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2c08f",
+      "source": "limit?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2c096",
+      "source": "O-Of course not.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2c0a7",
+      "source": "Well, if you say so. I suppose it was rude of me to\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2c0dd",
+      "source": "interrupt while you're working so hard.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2c105",
+      "source": "Kuon smiles, taking a delicate sip of her own tea.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2c138",
+      "source": "Hmhm. I have to say, I'm a little relieved.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2c164",
+      "source": "A-About what?",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2c172",
+      "source": "I was a little worried you were going to starve to\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c1a7",
+      "source": "death, the way you were carrying on.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2c1cc",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2c1d1",
+      "source": "You were so weak. I wasn't sure if you were going\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2c205",
+      "source": "to survive.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2c211",
+      "source": "...What? Was I really in that dire a situation?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2c241",
+      "source": "I didn't think it was THAT bad.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2c261",
+      "source": "You were struggling to carry loads even children\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2c294",
+      "source": "could handle. You could barely walk with them, even.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c2c9",
+      "source": "In a weakened state like that, I was worried you'd\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c2fe",
+      "source": "be no good for manual labor.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2c31b",
+      "source": "Your hands look very clean, too. I expect you've\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2c34e",
+      "source": "never held a hoe, let alone done any hunting.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2c37c",
+      "source": "Urgh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2c384",
+      "source": "Does she really think I'm that hopeless? Are my\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2c3b6",
+      "source": "circumstances really THAT bad?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2c3d5",
+      "source": "But judging by how you're doing with that mill,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2c407",
+      "source": "I guess your body was just recovering.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2c42e",
+      "source": "Seeing you back at full strength is really\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2c45b",
+      "source": "relieving.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2c466",
+      "source": "I-I see...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2c471",
+      "source": "W-Well now what do I do? I can't just ruin\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2c49e",
+      "source": "everything she just said and tell her the truth,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2c4d1",
+      "source": "now...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2c4d8",
+      "source": "*Grrrrrrrk*...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2c4e7",
+      "source": "Crap, I'm getting really tired. I actually DO want\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c51c",
+      "source": "to take a break, but I can't while Kuon's here.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2c54c",
+      "source": "I feel like I'm being ungrateful by deceiving her,\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c581",
+      "source": "but I'm really at my limit here.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2c5a2",
+      "source": "H-Hey, Kuon. I think I can handle this by myself, so\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2c5d9",
+      "source": "if you have other stuff to do, don't wait up.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2c607",
+      "source": "Hm. I... I suppose you're right, but I don't feel\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2c63b",
+      "source": "good leaving you all alone, I guess.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2c660",
+      "source": "You don't trust me much, do you?",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2c681",
+      "source": "Ngh. Did she figure out that I'm trying not to work?\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2c6b8",
+      "source": "Please, just take the out and go. Please.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2c6e2",
+      "source": "It's not that. I'm just worried that if I take my\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2c716",
+      "source": "eyes off you, you might just fall down and die.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2c746",
+      "source": "Come on, even I'm... h-hah... hah.\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2c76b",
+      "source": "I'm not that weak...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2c780",
+      "source": "...I think?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2c78c",
+      "source": "As the one who took you in, it's my duty\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2c7b7",
+      "source": "to see to your health.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2c7ce",
+      "source": "If I'm not capable of doing that, then it was wrong\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2c804",
+      "source": "of me to bring you along back there.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2c829",
+      "source": "Hah... h-hahh... It's... nice to hear you say that,\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2c85f",
+      "source": "but I'm not too comfortable with so much worrying.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2c892",
+      "source": "I'm sure you're busy. Don't let me keep you.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2c8bf",
+      "source": "Really? Well, if you insist, I'll be on my way.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2c8ef",
+      "source": "Kuon sets down her cup and gracefully stands.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2c91d",
+      "source": "Just remember, don't overdo it, OK? Take breaks\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2c94f",
+      "source": "every once in a while.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2c966",
+      "source": "All right, understood.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2c97d",
+      "source": "I get it, so would you please go so I actually CAN\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2c9b2",
+      "source": "take a break?",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2c9c0",
+      "source": "Good!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2c9c6",
+      "source": "Bhhaahhh...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2c9d2",
+      "source": "Once I'm sure Kuon is out of earshot, I crumple to\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2ca07",
+      "source": "the ground beneath the mill.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2ca24",
+      "source": "Phew. Somehow, I managed to play it off. I feel\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2ca56",
+      "source": "guilty, but I'll worry about that later.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2ca7f",
+      "source": "I guess I'll grab some tea before--",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2caa3",
+      "source": "Oh, Haku?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2caad",
+      "source": "Nghyaaah!?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2cab8",
+      "source": "I jump back on the mill in the nick of time.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2cae5",
+      "source": "It's probably a little cold now, but the tea...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2cb17",
+      "source": "Is... Is something wrong?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x2cb31",
+      "source": "N-Nope. Nothing. Nothing at all.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2cb52",
+      "source": "Really? Well, it's important to stay hydrated. Drink\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2cb89",
+      "source": "the tea when you can.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2cb9f",
+      "source": "Yeah, understood.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2cbb1",
+      "source": "OK, keep up the good work.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2cbcc",
+      "source": "This time, I keep my ears open for any unusual\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2cbfd",
+      "source": "sounds.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2cc05",
+      "source": "Kuon's footsteps slowly grow more and more distant\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2cc3a",
+      "source": "until--finally--I can't hear them any more.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2cc66",
+      "source": "Geez... thought my heart was gonna leap right out of\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2cc9d",
+      "source": "my chest.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2cca7",
+      "source": "I wipe the sweat from my brow and regard the mill.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2ccda",
+      "source": "What do I do now, though? I have no way of telling\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2cd0f",
+      "source": "when Kuon will be back, or when this will be done.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2cd42",
+      "source": "There's gotta be a way to wrap this up faster. Maybe\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2cd79",
+      "source": "if I get the mill to turn more quickly...?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2cda4",
+      "source": "Once again, I examine each part of the mechanism in\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2cdda",
+      "source": "sequence, trying to puzzle out my dilemma.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2ce05",
+      "source": "If I want to increase the grinding speed, I could\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2ce39",
+      "source": "change up the gear ratio. It'd work, in theory.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2ce69",
+      "source": "There's a bunch of gears that aren't moving right\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2ce9d",
+      "source": "now, anyway. If I just swap those in...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2cec5",
+      "source": "Brain, buddy, you are on point today.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2ceeb",
+      "source": "It took some trial and error, but sure enough, I got\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2cf22",
+      "source": "the gears rearranged successfully.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2cf45",
+      "source": "As the last gear slots into place, another loud\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2cf77",
+      "source": "THUNK heralds the mill groaning to life once more.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2cfaa",
+      "source": "*Grrrk*... *Rrr*... *Grrrrrrrk*...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2cfcd",
+      "source": "Woah... Nice, it's going at quite a clip.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2cff7",
+      "source": "The axle--and the gears, and the mill--turn the stone\\n",
+      "byte_budget": 55
+    },
+    {
+      "offset": "0x2d02f",
+      "source": "much faster than before.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2d048",
+      "source": "More amam turns to powder with each rhythmic\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2d077",
+      "source": "rotation of the mill.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2d08d",
+      "source": "All right, this should... double? No, triple my\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d0bf",
+      "source": "output.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2d0c7",
+      "source": "All I've gotta do is keep throwing amam into this\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2d0fb",
+      "source": "thing.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2d102",
+      "source": "Oh, right. The tea. Kuon went through the trouble,\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2d137",
+      "source": "so I should drink some. Probably cold now...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2d164",
+      "source": "Footsteps!?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2d170",
+      "source": "Footfalls sound closer and closer, so I quickly jump\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2d1a7",
+      "source": "back on the mill handle.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2d1c0",
+      "source": "*FWUP*",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2d1c7",
+      "source": "Nngh!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2d1ce",
+      "source": "As I get my grip on the handle, I can feel the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2d1ff",
+      "source": "sped-up mill pulling me along. I have to run to\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d231",
+      "source": "keep up.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2d23a",
+      "source": "Argh, too fast!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2d24a",
+      "source": "I try to slow myself down, but I can't with the\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d27c",
+      "source": "momentum. Trying to stop just ends in getting\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2d2ac",
+      "source": "dragged.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2d2b5",
+      "source": "I almost forgot. About dinner tonight, would y--",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2d2e6",
+      "source": "Kuon cuts herself off as the sight of me running at\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2d31c",
+      "source": "full tilt around the mill greets her.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2d342",
+      "source": "What exactly is going on, here?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2d362",
+      "source": "A-As you can see, I'm just--ACK--spin--nnning\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2d392",
+      "source": "the MILL, geez--",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2d3a3",
+      "source": "It looks more like the mill is spinning you.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2d3d0",
+      "source": "Ah--hahh, hah--W-well! I think I've gotten pretty--\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2d406",
+      "source": "hah--used to it. This speed is nnNO PROBLEM!?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2d434",
+      "source": "I nearly trip over my own feet in my struggle to\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2d467",
+      "source": "keep my balance.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2d478",
+      "source": "S-Something.. hah... the matter...?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2d49c",
+      "source": "Haku?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2d4a2",
+      "source": "Kuon looks at me with suspicious eyes.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2d4c9",
+      "source": "H-Hah. Hahh... Yeah?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2d4de",
+      "source": "C-Can't... breathe... I think this is my limit,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d510",
+      "source": "here...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2d518",
+      "source": "Is there anything you'd like to tell me?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2d541",
+      "source": "N-No, I--I'm not--h-hiding anything from y--",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2d56e",
+      "source": "L-L-Look, I'll be great! I'll be just fine here, so\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2d5a4",
+      "source": "you... hah... go and take care of... your... hah...",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2d5d8",
+      "source": "Oh, no need for that. I've already finished all my\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2d60d",
+      "source": "errands.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2d616",
+      "source": "I think I'll stay here and watch you work for a\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d648",
+      "source": "little while.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2d656",
+      "source": "What!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2d65d",
+      "source": "Kuon resumes her position on the bench, reclaiming\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2d692",
+      "source": "her tea and sipping elegantly.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2d6b1",
+      "source": "Hm. A bit lukewarm, now, I think...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2d6d5",
+      "source": "Kuon lets her long, sinuous tail swish back and\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2d707",
+      "source": "forth as she watches me struggle.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2d729",
+      "source": "Hah, hah, hah--",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2d739",
+      "source": "*Wheeze, wheeze--*",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2d74c",
+      "source": "You sound a little out of breath, Haku. Are you all\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2d782",
+      "source": "Nngh, wh-what... could you... possibly mean?\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2d7b1",
+      "source": "I-I'm not... out of breath...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2d7cf",
+      "source": "Then why is your face so red, Haku?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2d7f3",
+      "source": "I-It's pretty hot out today! Yep!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2d815",
+      "source": "And why are your arms and legs shaking like a\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2d845",
+      "source": "newborn animal's?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2d857",
+      "source": "I'm just trembling with excitement here! Work!\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2d888",
+      "source": "What a rush!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2d895",
+      "source": "Ah, I see.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2d8a0",
+      "source": "*Swish*...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2d8ab",
+      "source": "Suddenly, Kuon's tail whips out and snakes around my\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2d8e2",
+      "source": "legs, taking them out from under me.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2d907",
+      "source": "Nwaaaah!?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2d911",
+      "source": "*Thud!*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2d919",
+      "source": "Wh-What th--GAH!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2d92a",
+      "source": "The handle quickly comes full circle without me...",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2d95d",
+      "source": "*THWACK*",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2d966",
+      "source": "Bfaah!?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2d96e",
+      "source": "Taken in the back, the might of the waterwheel\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2d99f",
+      "source": "cares little for my body weight, pushing me along.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2d9d2",
+      "source": "Round and round and round--",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2d9ee",
+      "source": "NWAAAAAAAAH--!?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2d9fe",
+      "source": "Haku, take a seat.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2da11",
+      "source": "W-Well, you see...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2da24",
+      "source": "I said take a seat.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2da38",
+      "source": "Kuon forces me to sit on my knees.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2da5b",
+      "source": "So you managed to fix the water mill, but kept quiet\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2da92",
+      "source": "about it?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2da9c",
+      "source": "Well...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2daa4",
+      "source": "Whatever your methods, as long as you were grinding\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2dada",
+      "source": "grains here, I wouldn't have given you more work.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2db0c",
+      "source": "Wait, what?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2db18",
+      "source": "Then I went through all that for nothing?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2db42",
+      "source": "But when you do something like this, it makes me\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2db75",
+      "source": "feel like you don't trust me, not to mention sad.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2dba7",
+      "source": "Nngh... S-Sorry...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2dbba",
+      "source": "Anyway. I'll let the innkeeper know the mill is at\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2dbef",
+      "source": "least somewhat usable now.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2dc0a",
+      "source": "I'm sure she'll be thrilled by the news, since she\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2dc3f",
+      "source": "seemed pretty down about it being broken.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2dc69",
+      "source": "Wh--But if you tell them that, then I won't be able\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2dc9f",
+      "source": "to slack off!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2dcad",
+      "source": "And there aren't any problems with that, are there,\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2dce3",
+      "source": "Urk!? W-Well, you know... Maybe we could keep it a\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2dd18",
+      "source": "secret for a while longer? Just, y'know, an idea...",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2dd4c",
+      "source": "Ahaha...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2dd55",
+      "source": "*BADUMP*",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2dd5e",
+      "source": "Kuon smiles cheerfully.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2dd76",
+      "source": "It's a very kind, gentle, earnest smile, but a chill\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2ddad",
+      "source": "courses down my spine nonetheless.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2ddd0",
+      "source": "Hurk!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2ddd7",
+      "source": "And in the next instant, Kuon's whiplike tail wraps\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2de0d",
+      "source": "around my head tightly.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2de25",
+      "source": "Sorry, I couldn't catch what you said there. What\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2de59",
+      "source": "was that?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2de63",
+      "source": "*KRRRKKK... KRK-KRK*...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2de7b",
+      "source": "W-Wait! Guh...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2de8a",
+      "source": "An immense force presses inward on my skull, closing\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2dec1",
+      "source": "with the strength of a vise.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2dede",
+      "source": "Oh, right. I didn't finish what I was saying.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2df0c",
+      "source": "You did do something of use to the people living\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2df3f",
+      "source": "here, so you get a little reward~♪.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2df65",
+      "source": "And for your reward...\\n",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2df7e",
+      "source": "Your punishment will only be a small one.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2dfa8",
+      "source": "*KRRKKK*...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2dfb4",
+      "source": "GYAAAAAAAAAAAAARGH!!!",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2dfca",
+      "source": "But... You know, between the arithmetic and this...\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x2e000",
+      "source": "I'm starting to think you aren't a manual worker.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e032",
+      "source": "I think I had the wrong idea about you, after all...",
+      "byte_budget": 52
+    }
+  ]
+}

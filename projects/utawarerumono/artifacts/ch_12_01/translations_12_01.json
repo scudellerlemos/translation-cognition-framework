@@ -1,0 +1,276 @@
+{
+  "lines": {
+    "0x26228": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, dentro do pesadelo, semiconsciente",
+      "intent": "Haku perdido dentro do sonho, sem saber onde está",
+      "risk_level": "medium",
+      "risk_notes": "voz fraturada do Protagonista — preservar fragmentação e reticências; ritmo do pesadelo depende disso",
+      "t": "Onde... estou?"
+    },
+    "0x26237": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, explorando o vazio do sonho",
+      "intent": "verificar se há alguém no espaço do sonho, com sensação crescente de ameaça",
+      "risk_level": "medium",
+      "risk_notes": "manter reticências e a incerteza ao final; não resolver a ambiguidade",
+      "t": "Não tem ninguém... ou...?"
+    },
+    "0x26252": {
+      "speaker": "Garota",
+      "tone_register": "surpresa leve, cotidiano",
+      "intent": "Kuon avista alguém ao longe e reage com curiosidade",
+      "risk_level": "low",
+      "t": "Hein? Tem alguém ali..."
+    },
+    "0x2626f": {
+      "speaker": "Garota",
+      "tone_register": "gentil, direto, abordagem educada",
+      "intent": "Kuon tenta chamar a atenção de Haku para falar",
+      "risk_level": "low",
+      "t": "Ei, você aí! Pode me dar um momento?"
+    },
+    "0x2629d": {
+      "speaker": "Garota",
+      "tone_register": "gentil, desculpando-se levemente",
+      "intent": "Kuon pede licença para fazer uma pergunta; linha parte em duas com token \\n",
+      "risk_level": "low",
+      "t": "Ei, me desculpe, posso fazer\\n"
+    },
+    "0x262d1": {
+      "speaker": "Garota",
+      "tone_register": "gentil, continuação direta",
+      "intent": "completar a pergunta iniciada na linha anterior",
+      "risk_level": "low",
+      "t": "uma pergunta?"
+    },
+    "0x262e0": {
+      "speaker": "Garota",
+      "tone_register": "neutra, tentando obter resposta",
+      "intent": "Kuon chama de novo após Haku não reagir",
+      "risk_level": "low",
+      "t": "Olá?"
+    },
+    "0x262e7": {
+      "speaker": "Garota",
+      "tone_register": "confusa, levemente alarmada mas ainda contida",
+      "intent": "Kuon estranha a falta total de reação de Haku",
+      "risk_level": "low",
+      "t": "O que tem esse cara...? Com licença? Ei?"
+    },
+    "0x26312": {
+      "speaker": "Protagonista",
+      "tone_register": "inconsciente, gemendo no pesadelo",
+      "intent": "Haku geme dentro do sonho sem consciência do exterior",
+      "risk_level": "medium",
+      "risk_notes": "localizar gemido ao padrão pt-BR; consistente com TM (Nnh... aagh...); preservar tom de torpor",
+      "t": "Nnh... argh..."
+    },
+    "0x26321": {
+      "speaker": "Garota",
+      "tone_register": "curiosa, preocupada levemente",
+      "intent": "Kuon percebe que Haku está tentando falar algo",
+      "risk_level": "low",
+      "t": "Hm? Ele tá tentando falar algo?"
+    },
+    "0x26345": {
+      "speaker": "Protagonista",
+      "tone_register": "inconsciente, gemendo com mais intensidade",
+      "intent": "escalada do gemido dentro do pesadelo",
+      "risk_level": "medium",
+      "risk_notes": "escalar a intensidade em relação ao gemido anterior; sem palavras reais",
+      "t": "Uu-uugh..."
+    },
+    "0x26350": {
+      "speaker": "Garota",
+      "tone_register": "preocupada, avaliando",
+      "intent": "Kuon constata que algo está errado com Haku",
+      "risk_level": "low",
+      "t": "Ele não tá bem... Será que está doente?"
+    },
+    "0x26379": {
+      "speaker": "Protagonista",
+      "tone_register": "agonizante, no auge do pesadelo",
+      "intent": "Haku em sofrimento dentro do sonho, sons de dor",
+      "risk_level": "medium",
+      "risk_notes": "gemido de dor crescente — localizar ao padrão pt-BR; manter fragmentação de sílabas",
+      "t": "Ah... a-aah..."
+    },
+    "0x26388": {
+      "speaker": "Garota",
+      "tone_register": "hesitante, sem saber como ajudar",
+      "intent": "Kuon começa a tentar intervir mas trava, confusa",
+      "risk_level": "low",
+      "t": "E-Ei, ah..."
+    },
+    "0x26395": {
+      "speaker": "Protagonista",
+      "tone_register": "grito crescente, clímax iminente do pesadelo",
+      "intent": "Haku escalando para o pico de terror no sonho",
+      "risk_level": "medium",
+      "risk_notes": "progressão de intensidade — cada segmento mais alto que o anterior; manter maiúsculas no pico",
+      "t": "Argh... aarrgh... UURGH..."
+    },
+    "0x263b0": {
+      "speaker": "Garota",
+      "tone_register": "alarmada, confusa",
+      "intent": "Kuon reage com alarme ao comportamento incontrolável de Haku",
+      "risk_level": "low",
+      "t": "O que--Tá ficando louco?"
+    },
+    "0x263cb": {
+      "speaker": "Protagonista",
+      "tone_register": "grito puro, pesadelo no máximo",
+      "intent": "grito de terror absoluto no pico do pesadelo",
+      "risk_level": "medium",
+      "risk_notes": "onomatopeia de grito — localizar padrão pt-BR preservando crescendo de maiúsculas; budget 24",
+      "t": "AaaaAAAAH!! UUUOOOHHH!!"
+    },
+    "0x263e4": {
+      "speaker": "Protagonista",
+      "tone_register": "grito puro, pico absoluto",
+      "intent": "grito final antes de acordar",
+      "risk_level": "medium",
+      "risk_notes": "grito puro — manter maiúsculas e intensidade máxima; budget 11 exato",
+      "t": "AAAAAAAAH!!"
+    },
+    "0x263f0": {
+      "speaker": "Protagonista",
+      "tone_register": "ofegante, acordando em pânico",
+      "intent": "Haku acorda ofegante, coração acelerado, ainda em choque",
+      "risk_level": "medium",
+      "risk_notes": "som de respiração ofegante — marca a transição pesadelo→realidade; repetição de 'hah' é intencional",
+      "t": "H-Hah... hah... hah..."
+    },
+    "0x26408": {
+      "speaker": "Garota",
+      "tone_register": "preocupada, suave, cuidadosa",
+      "intent": "Kuon verifica se Haku está bem após vê-lo acordar em pânico; linha quebra com \\n",
+      "risk_level": "low",
+      "t": "Ei, tá tudo bem? Você estava gemendo no\\n"
+    },
+    "0x2643c": {
+      "speaker": "Garota",
+      "tone_register": "suave, continuação",
+      "intent": "completar: estava gemendo no sono",
+      "risk_level": "low",
+      "t": "sono..."
+    },
+    "0x26445": {
+      "speaker": "Haku",
+      "tone_register": "narração, observando Kuon",
+      "intent": "Haku narra a expressão de preocupação de Kuon",
+      "risk_level": "low",
+      "t": "Kuon me olha com o cenho franzido."
+    },
+    "0x26470": {
+      "speaker": "Protagonista",
+      "tone_register": "ainda atordoado, tentando processar",
+      "intent": "Haku semiconsciente perguntando a si mesmo se foi sonho",
+      "risk_level": "medium",
+      "risk_notes": "reticências essenciais antes e depois — marca o retorno gradual à consciência",
+      "t": "...sonho...?"
+    },
+    "0x2647f": {
+      "speaker": "Protagonista",
+      "tone_register": "em choque, negação instintiva",
+      "intent": "reação instintiva de negação ainda dentro do torpor pós-pesadelo",
+      "risk_level": "medium",
+      "risk_notes": "brevíssimo — gaguejo de choque; budget 7 apertado; dois pontos em vez de três por restrição de bytes",
+      "t": "N-Não.."
+    },
+    "0x26487": {
+      "speaker": "Haku",
+      "tone_register": "processando, voltando à lucidez",
+      "intent": "Haku se convence de que foi apenas um sonho, reassegurando-se",
+      "risk_level": "medium",
+      "risk_notes": "ritmo da frase é crítico: pausa-confirmação-reasseguração; manter reticências e o 'Sim.' isolado",
+      "t": "Sonho... Sim. Foi só um sonho."
+    },
+    "0x264a6": {
+      "speaker": "Haku",
+      "tone_register": "narração interna, frustrado e abalado",
+      "intent": "Haku constata que não vai conseguir dormir de volta; linha quebra com \\n",
+      "risk_level": "low",
+      "t": "Argh... Não tem como eu conseguir voltar ao\\n"
+    },
+    "0x264d8": {
+      "speaker": "Haku",
+      "tone_register": "narração interna, resignado",
+      "intent": "continuação — impossível dormir depois de pesadelo assim",
+      "risk_level": "low",
+      "t": "sono depois disso. Que pesadelo esse..."
+    },
+    "0x26507": {
+      "speaker": "Haku",
+      "tone_register": "narração interna, racionalizando a causa",
+      "intent": "Haku atribui o pesadelo ao ataque do monstro; linha quebra com \\n",
+      "risk_level": "low",
+      "t": "Droga. É por causa daquele monstro que me atacou,\\n"
+    },
+    "0x2653b": {
+      "speaker": "Haku",
+      "tone_register": "narração interna, conclusivo",
+      "intent": "Haku confirma a hipótese com convicção casual",
+      "risk_level": "low",
+      "t": "aposto."
+    },
+    "0x26545": {
+      "speaker": "Garota",
+      "tone_register": "questionante, preocupada, suave",
+      "intent": "Kuon chama Haku pelo nome, ainda preocupada",
+      "risk_level": "low",
+      "t": "Haku?"
+    },
+    "0x2654b": {
+      "speaker": "Haku",
+      "tone_register": "narração, observando Kuon",
+      "intent": "Haku descreve Kuon continuando a olhá-lo com expressão interrogativa",
+      "risk_level": "low",
+      "t": "Kuon continua me olhando, interrogativa."
+    },
+    "0x26576": {
+      "speaker": "Haku",
+      "tone_register": "casual, desviando, minimizando",
+      "intent": "Haku descarta a preocupação de Kuon para não alarmá-la, tom levemente forçado",
+      "risk_level": "medium",
+      "risk_notes": "equilíbrio difícil: casual mas não totalmente relaxado; não pode soar ansioso nem indiferente",
+      "t": "Desculpa, não é nada. Só tive um pesadelo."
+    },
+    "0x265a3": {
+      "speaker": "Garota",
+      "tone_register": "aliviada, prática, cuidadosa",
+      "intent": "Kuon reage com alívio e redireciona Haku para a rotina; linha quebra com \\n",
+      "risk_level": "low",
+      "t": "Que bom. Lava o rosto e\\n"
+    },
+    "0x265d6": {
+      "speaker": "Garota",
+      "tone_register": "encorajadora, continuação",
+      "intent": "completar o imperativo gentil: lava o rosto e acorda",
+      "risk_level": "low",
+      "t": "acorda."
+    },
+    "0x265de": {
+      "speaker": "Garota",
+      "tone_register": "animada, propondo rotina, acolhedora",
+      "intent": "Kuon propõe café da manhã como volta à normalidade; linha quebra com \\n",
+      "risk_level": "low",
+      "t": "E depois disso, a gente toma café da manhã,\\n"
+    },
+    "0x26611": {
+      "speaker": "Garota",
+      "tone_register": "leve, confirmando com afeto",
+      "intent": "encerramento suave da proposta",
+      "risk_level": "low",
+      "t": "tá?"
+    },
+    "0x26615": {
+      "speaker": "Haku",
+      "tone_register": "cansado mas aliviado, casual",
+      "intent": "Haku aceita a proposta de Kuon, ainda um pouco groggy",
+      "risk_level": "low",
+      "t": "É... tá bom..."
+    }
+  }
+}

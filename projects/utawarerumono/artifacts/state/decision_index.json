@@ -1,0 +1,277 @@
+[
+  {
+    "title": "Harness de runtime — cena = job stateless (mata o estouro de sessão)",
+    "tags": [
+      "harness",
+      "runtime",
+      "cena",
+      "stateless",
+      "mata",
+      "estouro",
+      "sessão"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Diagnóstico (com leitura do código): o estouro de sessão **não** vinha da tradução nem da governança, e sim do **modo de execução** — tradução inline numa sessão de vida-longa que acumulava todo o histórico. Conector + validadores já eram determinísticos; faltava tirar **orquestr"
+  },
+  {
+    "title": "Deep pass do arco (Carta exercida) + custo de produção medido",
+    "tags": [
+      "deep",
+      "pass",
+      "arco",
+      "carta",
+      "exercida",
+      "custo",
+      "produção"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Exercer a Carta de Governança **de verdade** no arco (1025 linhas) e medir custo, para de-riscar a meia-maratona. Entregas: `back_translation_log.json`, `qa_report.md`, `cost_report.md` + `cost_model.py`. **Back-translation (a verificação que nunca rodara):** 9 linhas high revisa"
+  },
+  {
+    "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+    "tags": [
+      "opcode",
+      "rótulo",
+      "falante",
+      "reconcile",
+      "speaker",
+      "driven"
+    ],
+    "universal": true,
+    "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+  },
+  {
+    "title": "Calibração de risco/metadados (F2) — data-driven, sem achatamento",
+    "tags": [
+      "calibração",
+      "risco",
+      "metadados",
+      "driven",
+      "achatamento"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Calibrar o `risk_level` do `translation_plan.json` por **sinais de dados** (não auto-default), só **subindo** o risco e exigindo `risk_notes`: - `spoiler_flags` não-vazio → **high**. - `glossary_flags` não-vazio **ou** `entities_present` ∩ (termos do glossário com `spoiler_level≠"
+  },
+  {
+    "title": "space_strategy — in_place → repoint",
+    "tags": [
+      "space_strategy",
+      "in_place",
+      "repoint"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Mudar `connector.space_strategy` de `in_place` para `repoint`. **Alternativas consideradas:** - Manter `in_place` — rejeitada: só 12/20 (60%) das traduções cabem no `byte_budget` original. - Abreviar tudo para caber in_place — rejeitada: degrada qualidade/tom de quase metade das "
+  },
+  {
+    "title": "Gate de charset pt-BR — método e veredito",
+    "tags": [
+      "gate",
+      "charset",
+      "método",
+      "veredito"
+    ],
+    "universal": true,
+    "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+  },
+  {
+    "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+    "tags": [
+      "anomalia",
+      "0x33f9",
+      "texto",
+      "corrompido",
+      "fonte"
+    ],
+    "universal": true,
+    "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+  },
+  {
+    "title": "Modelo de execução da tradução — arquivo aprovado + script",
+    "tags": [
+      "modelo",
+      "execução",
+      "tradução",
+      "arquivo",
+      "aprovado",
+      "script"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** A IA **não escreve a tradução à mão** nos dados. Ela propõe no `translation_plan.json` (`base_translation`); após aprovação, o conjunto vai para `approved_translations.csv` (`offset`, `text_target`); o script `reinsert.py` aplica esse arquivo ao binário."
+  },
+  {
+    "title": "Saída em output/ + governança de scripts",
+    "tags": [
+      "saída",
+      "output",
+      "governança",
+      "scripts"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** A saída final vai para `output/ScriptEvent.sdat` (mesmo nome e extensão do input), substituindo `artifacts/build/`. Os scripts do conector são **executados, não refeitos**; criar script novo só com permissão. **Impacto:** localização da entrega; fluxo de trabalho da IA."
+  },
+  {
+    "title": "Ordem de offset ≠ ordem de exibição",
+    "tags": [
+      "ordem",
+      "offset",
+      "exibição"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Usar ordem por offset como aproximação da ordem narrativa na POC. **Razão:** A ordem real de exibição é controlada pelo script (ponteiros). Interpretar o script é mais custoso e fica como próximo passo; para a cena de abertura, a ordem por offset coincide com a narrativa."
+  },
+  {
+    "title": "Repoint real implementado — relocação por run",
+    "tags": [
+      "repoint",
+      "implementado",
+      "relocação"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Implementar repoint no `reinsert.py` por **relocação de run**. Formato descoberto (ver `connector/table_schema.md`): não há tabela central de ponteiros; cada fala (\"head\") é referenciada inline pelo opcode `50 00` + ponteiro absoluto uint32 LE. Strings sem ponteiro próprio"
+  },
+  {
+    "title": "Charset — transliteração na gravação (gate FALHOU)",
+    "tags": [
+      "charset",
+      "transliteração",
+      "gravação",
+      "gate",
+      "falhou"
+    ],
+    "universal": true,
+    "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+  },
+  {
+    "title": "Container ScriptEvent.sdat — formato totalmente mapeado + extração por script",
+    "tags": [
+      "container",
+      "scriptevent",
+      "sdat",
+      "formato",
+      "totalmente",
+      "mapeado",
+      "extração",
+      "script"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Mapear o índice do container e extrair o corpus **por script** (não mais varredura sequencial cega de N linhas). Formato (ver `connector/sdat_format.py`): - Header `Filename ` + tabela de nomes (registros de 15 bytes `CC_SS_NNNT.BIN`). - Seção `Pack ` + `count` + `count`×(offset,"
+  },
+  {
+    "title": "Anomalia 0x33f9 — reclassificada (binário-fonte está íntegro)",
+    "tags": [
+      "anomalia",
+      "0x33f9",
+      "reclassificada",
+      "binário",
+      "fonte",
+      "está",
+      "íntegro"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Reclassificar: o binário-fonte **não está corrompido**. A extração limpa do arco mostra em `0x33f9` o texto inglês íntegro **\"INITIALIZING AWAKENING PROCESS.\"** (31 bytes) e, separada, `0x3419` **\"SYSTEMS YELLOW. RESTARTING IN 5 SECONDS.\"** (40 bytes)."
+  },
+  {
+    "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+    "tags": [
+      "escopo",
+      "teste",
+      "cognitivo",
+      "linhas",
+      "soltas",
+      "arco",
+      "11_01_000s"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+  },
+  {
+    "title": "Repoint em escala — bug do MAX_RUN + órfãos de início de bloco + otimização O(1)",
+    "tags": [
+      "repoint",
+      "escala",
+      "max_run",
+      "órfãos",
+      "início",
+      "bloco",
+      "otimização"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Ao rodar a reinserção em escala (1025 linhas), o repoint **falhou parcialmente** (127 resíduos T4). Correções: 1. **Run completo:** `MAX_RUN=32` truncava runs longos de narração (1 head + dezenas de continuações), orfanando linhas — e relocar um run truncado **corromperia** a exi"
+  },
+  {
+    "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+    "tags": [
+      "escopo",
+      "cognitivo",
+      "1025",
+      "linhas",
+      "cenas",
+      "11_01",
+      "11_02",
+      "reveal",
+      "haku",
+      "corpus"
+    ],
+    "universal": true,
+    "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+  },
+  {
+    "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+    "tags": [
+      "correção",
+      "crítica",
+      "ponteiros",
+      "file",
+      "relativos",
+      "absolutos"
+    ],
+    "universal": true,
+    "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+  },
+  {
+    "title": "GATE IN-GAME — EOF-append REPROVADO; adotar relocação intra-arquivo (Plano B)",
+    "tags": [
+      "gate",
+      "game",
+      "append",
+      "reprovado",
+      "adotar",
+      "relocação",
+      "intra",
+      "arquivo",
+      "plano"
+    ],
+    "universal": false,
+    "summary": "**Decisão tomada:** Abandonar a relocação por **anexo ao fim do container** (EOF-append) e adotar **relocação intra-arquivo + reescrita da tabela Pack** (Plano B): o run que estoura é anexado ao **fim da região do próprio arquivo**, o arquivo **cresce**, e a tabela Pack (offset/size) é **reescrita**"
+  },
+  {
+    "title": "Calibração: 1 capítulo do zero (11_03_000C, 118 linhas) — modo padrão (2026-06-08)",
+    "tags": [
+      "calibração",
+      "capítulo",
+      "zero",
+      "11_03_000c",
+      "linhas",
+      "modo",
+      "padrão",
+      "2026"
+    ],
+    "universal": false,
+    "summary": "**Objetivo:** de-riscar a meia-maratona rodando o pipeline completo num capítulo novo e medir ritmo+custo. **Decisões de tradução não-óbvias:** - **`toriuma`** (ave-montaria, 1ª menção) → glossário como termo de mundo `manter_original`. Em diálogo o EN usa `steed`/`horse` → traduz `montaria`/`cavalo"
+  },
+  {
+    "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+    "tags": [
+      "incremento",
+      "11_04",
+      "linhas",
+      "batalha",
+      "tutorial",
+      "modo",
+      "padrão",
+      "2026"
+    ],
+    "universal": false,
+    "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+  }
+]

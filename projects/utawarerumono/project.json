@@ -10,8 +10,16 @@
     "id_column": "offset",
     "text_column": "text_en"
   },
-  "formatting_tokens": ["{W75}", "{W80}", "{W10}", "{COLOR}", "{END}"],
-  "formatting_token_patterns": ["\\{c-?\\d*\\}"],
+  "formatting_tokens": [
+    "{W75}",
+    "{W80}",
+    "{W10}",
+    "{COLOR}",
+    "{END}"
+  ],
+  "formatting_token_patterns": [
+    "\\{c-?\\d*\\}"
+  ],
   "formatting_token_patterns_note": "Tokens PARAMETRIZADOS (índice variável), crus no binário (ScriptEvent.sdat) — não cabem na lista literal de formatting_tokens. Família de COR: abre `{c<N>}` (ex.: {c5}) e fecha/reset `{c-1}` ou `{c-}`. São a forma CONCRETA dos placeholders abstratos {COLOR}/{END}. Regex porque N varia. Contrato: validate.py compara o multiset de ocorrências do padrão entre source e alvo (pega drop, troca de índice e desbalanceamento); naturalness_lint.py faz strip por este padrão; reinsert.py os preserva VERBATIM (são ASCII puro — a transliteração não os toca). NOTA: a família de timers {W<N>} é da mesma classe parametrizada (só os literais {W75}/{W80}/{W10} estão catalogados; {W12},{W35},... aparecem no binário) — ver decision_log p/ a pendência de generalizar.",
   "system_line_convention": "all_caps",
   "length_constraints": {
@@ -54,5 +62,6 @@
     "terminology_seeds": "profile/terminology_seeds.md",
     "example_test_suites": "profile/example_test_suites.md"
   },
-  "notes": "Primeira instância de referência do framework SDD. Corpus estimado ~33.000 linhas. Visual novel com múltiplos pares de identidade dupla e gestão crítica de spoilers."
+  "notes": "Primeira instância de referência do framework SDD. Corpus estimado ~33.000 linhas. Visual novel com múltiplos pares de identidade dupla e gestão crítica de spoilers.",
+  "kb_frontier": "12_17"
 }

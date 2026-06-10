@@ -1,0 +1,548 @@
+{
+  "lines": {
+    "0x3dbbe": {
+      "speaker": "SISTEMA",
+      "tone_register": "sistema",
+      "intent": "label de luz/cena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lightA02"
+    },
+    "0x3dbc8": {
+      "speaker": "Ukon",
+      "tone_register": "informal, carismático",
+      "intent": "verificar posição antes do combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todo mundo em posição? Eles devem chegar logo."
+    },
+    "0x3dbfa": {
+      "speaker": "SISTEMA",
+      "tone_register": "sistema",
+      "intent": "nome da unidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Coorte do Ukon"
+    },
+    "0x3dc09": {
+      "speaker": "Maroro",
+      "tone_register": "solene arcaico",
+      "intent": "resposta respeitosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim!"
+    },
+    "0x3dc0e": {
+      "speaker": "Ukon",
+      "tone_register": "informal, brincalhão",
+      "intent": "checar se Maroro se recuperou da bebedeira",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Maroro, já passou a bebedeira?"
+    },
+    "0x3dc2a": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, melodramático",
+      "intent": "pedir desculpas com exagero cômico",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo + cicio devem sobreviver; back-translation necessária.",
+      "t": "Aha ha HA! Peço-vos perdão pela minha falha, Mestre Ukon.\\n"
+    },
+    "0x3dc5b": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico",
+      "intent": "proclamar que está renovado",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo; 'Witness thou/countenance' exige equivalente empolado pt-BR.",
+      "t": "Observai minha aparência e sabei que Maroro\\n"
+    },
+    "0x3dc89": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico",
+      "intent": "continuação — está renovado",
+      "risk_level": "high",
+      "risk_notes": "Continuação do arcaísmo pomposo.",
+      "t": "está renovado!"
+    },
+    "0x3dc9b": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, grandioso",
+      "intent": "exibir seu poder mágico",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo + vocabulário empolado; verificar budget.",
+      "t": "Contemplai agora meu poder! Meu domínio sobre os\\n"
+    },
+    "0x3dcca": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico",
+      "intent": "continuação — mistérios arcanos",
+      "risk_level": "high",
+      "risk_notes": "Continuação do arcaísmo.",
+      "t": "mistérios arcanos!"
+    },
+    "0x3dcdc": {
+      "speaker": "Haku",
+      "tone_register": "casual, preocupado",
+      "intent": "expressar dúvida antes do combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu acreditava antes, mas... A gente vai realmente ficar\\n"
+    },
+    "0x3dd11": {
+      "speaker": "Haku",
+      "tone_register": "casual, preocupado",
+      "intent": "continuação da dúvida sobre os gigiri",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bem contra um enxame de gigiri?"
+    },
+    "0x3dd3b": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, descontraído",
+      "intent": "distração afetiva antes do combate — pergunta sobre comida favorita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, Haku. Você se lembra... da sua comida favorita?"
+    },
+    "0x3dd6d": {
+      "speaker": "Haku",
+      "tone_register": "confuso, surpreso",
+      "intent": "reação à pergunta inesperada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hein?"
+    },
+    "0x3dd75": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, simples",
+      "intent": "repetir a pergunta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua comida favorita."
+    },
+    "0x3dd89": {
+      "speaker": "Haku",
+      "tone_register": "casual, confuso",
+      "intent": "questionar a pergunta fora de hora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que essa pergunta agora?"
+    },
+    "0x3dda2": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, generoso",
+      "intent": "prometer recompensa ao voltar — motivar Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando a gente voltar, te pago o que você quiser\\n"
+    },
+    "0x3ddd6": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, afirmativo",
+      "intent": "concluir a promessa — tudo vai ficar bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de comida. Tá bom?"
+    },
+    "0x3ddec": {
+      "speaker": "Ukon",
+      "tone_register": "confiante, caloroso",
+      "intent": "afirmar que tudo vai dar certo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então vai ficar tudo bem."
+    },
+    "0x3de0b": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, levemente irônico",
+      "intent": "narração interna — não entende a lógica mas reconhece o gesto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não entendo como isso resolve tudo,\\n"
+    },
+    "0x3de3e": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, gentil",
+      "intent": "continuação — reconhece a boa intenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mas... acho que ela está tentando ser gentil."
+    },
+    "0x3de6c": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, autocrítico",
+      "intent": "narração interna — se repreende por parecer patético",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Preciso parar de me deixar parecer tão patético..."
+    },
+    "0x3de9b": {
+      "speaker": "Ukon",
+      "tone_register": "alerta, direto",
+      "intent": "avisar que os inimigos chegaram",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, vocês dois. Eles estão chegando."
+    },
+    "0x3deb9": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, informal",
+      "intent": "reagir ao tamanho dos inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uau. São maiores do que eu esperava."
+    },
+    "0x3dedf": {
+      "speaker": "Kuon",
+      "tone_register": "curioso, breve",
+      "intent": "questionamento rápido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hum?"
+    },
+    "0x3dee3": {
+      "speaker": "Kuon",
+      "tone_register": "surpreso",
+      "intent": "questionar o tamanho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mai...ores?"
+    },
+    "0x3deee": {
+      "speaker": "Kuon",
+      "tone_register": "corretivo, animado",
+      "intent": "corrigir — na verdade são pequenos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "N-Não, esses são... pequenos? Tipo, bem pequenos."
+    },
+    "0x3df1d": {
+      "speaker": "SISTEMA",
+      "tone_register": "sistema",
+      "intent": "nome da unidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Coorte do Ukon"
+    },
+    "0x3df2b": {
+      "speaker": "Haku",
+      "tone_register": "informal, impressionado",
+      "intent": "comentar a quantidade de inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Puxa, são muitos mesmo."
+    },
+    "0x3df4f": {
+      "speaker": "Ukon",
+      "tone_register": "alerta, sério",
+      "intent": "avisar sobre o perigo do maior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cuidado com o maior. Quem for mordido por ele\\n"
+    },
+    "0x3df83": {
+      "speaker": "Ukon",
+      "tone_register": "alerta, sério",
+      "intent": "continuação — a mordida é perigosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não vai sair barato, pode ter certeza."
+    },
+    "0x3dfb4": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, irônico",
+      "intent": "narração interna — relativiza o 'grande' com experiência passada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, isso é considerado 'grande'? Mas nem chega\\n"
+    },
+    "0x3dfe9": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, irônico",
+      "intent": "continuação — referência ao monstro que encontrou antes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "perto do que eu já vi--"
+    },
+    "0x3e00b": {
+      "speaker": "Ukon",
+      "tone_register": "animado, comandante",
+      "intent": "sinalizar que a isca funcionou e acionar Maroro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estão caindo na armadilha! Agora, Maroro!"
+    },
+    "0x3e030": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, confiante",
+      "intent": "aceitar a missão com pose heroica",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo; 'Thou mayst place thy trust' exige equivalente formal pt-BR.",
+      "t": "Podeis depositar vossa confiança em mim!"
+    },
+    "0x3e052": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo descritivo",
+      "intent": "descrever Maroro se preparando com orgulho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Maroro dá um passo à frente, estufando o peito com orgulho,\\n"
+    },
+    "0x3e085": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo descritivo",
+      "intent": "continuação — Maroro começa o ritual estranho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e começa a remexer o corpo de forma estranha."
+    },
+    "0x3e0ae": {
+      "speaker": "Maroro",
+      "tone_register": "ritual, solene cômico",
+      "intent": "entoar encantamento/ritual",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia/encantamento inventado — manter sons como estão (são nonsense intencional).",
+      "t": "Onpokopoko, onkorokoro, potananpasaran,\\n"
+    },
+    "0x3e0d8": {
+      "speaker": "Maroro",
+      "tone_register": "ritual, solene cômico",
+      "intent": "continuação do encantamento",
+      "risk_level": "medium",
+      "risk_notes": "Manter terminação exata do encantamento nonsense.",
+      "t": "sanmyakusanpotaya, hoisassaaaa...!!"
+    },
+    "0x3e0fc": {
+      "speaker": "Haku",
+      "tone_register": "casual, desconcertado",
+      "intent": "interpelar Kuon sobre o que está vendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Ei, ahn, Kuon."
+    },
+    "0x3e10e": {
+      "speaker": "Kuon",
+      "tone_register": "neutro, atencioso",
+      "intent": "perguntar o que houve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aconteceu alguma coisa?"
+    },
+    "0x3e127": {
+      "speaker": "Haku",
+      "tone_register": "confuso, informal",
+      "intent": "perguntar o que Maroro está fazendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que ele está, ahn... fazendo? Essa dança estranha?"
+    },
+    "0x3e151": {
+      "speaker": "Kuon",
+      "tone_register": "informativo, levemente condescendente",
+      "intent": "corrigir — não é dança, é taumaturgia/magia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Dança...? Quer dizer taumaturgia? Ah, mas aqui\\n"
+    },
+    "0x3e183": {
+      "speaker": "Kuon",
+      "tone_register": "informativo",
+      "intent": "continuação — nome local é magia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "acho que é mais conhecida como magia mesmo."
+    },
+    "0x3e1b0": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, informal",
+      "intent": "repetir a palavra nova com espanto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Magia?"
+    },
+    "0x3e1bb": {
+      "speaker": "Kuon",
+      "tone_register": "explicativo, paciente",
+      "intent": "explicar o mecanismo da magia corporal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eles fazem gestos com o corpo e os dedos para\\n"
+    },
+    "0x3e1ee": {
+      "speaker": "Kuon",
+      "tone_register": "explicativo, levemente crítico",
+      "intent": "continuação — este tipo é mais eficaz em mentes fracas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "canalizar poder. Este tipo costuma ser mais eficaz\\n"
+    },
+    "0x3e220": {
+      "speaker": "Kuon",
+      "tone_register": "explicativo, levemente crítico",
+      "intent": "continuação — para os de vontade fraca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para os de mente fraca..."
+    },
+    "0x3e237": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, dramático",
+      "intent": "reclamar da crueldade das palavras de Kuon",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo dramático; 'as a blade between ribs' exige equivalente empolado.",
+      "t": "Ai de mim! Tuas palavras são como lâmina entre as\\n"
+    },
+    "0x3e26a": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, dramático",
+      "intent": "continuação do lamento",
+      "risk_level": "high",
+      "risk_notes": "Continuação do arcaísmo; verificar budget.",
+      "t": "costelas cruelmente cravada, bela dama."
+    },
+    "0x3e28b": {
+      "speaker": "Ukon",
+      "tone_register": "informal, divertido",
+      "intent": "concordar que foi duro mas com leveza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso foi bem duro, garota."
+    },
+    "0x3e2a9": {
+      "speaker": "Haku",
+      "tone_register": "casual, distraído",
+      "intent": "perguntar qual era a função de Maroro — não prestou atenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Falando nisso, o que era pra Maroro fazer\\n"
+    },
+    "0x3e2e0": {
+      "speaker": "Haku",
+      "tone_register": "casual, distraído",
+      "intent": "continuação — confessa que não prestou atenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mesmo? Eu não estava prestando atenção..."
+    },
+    "0x3e30b": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, informal",
+      "intent": "reagir ao conceito de magia com incredulidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, MAGIA?"
+    },
+    "0x3e31c": {
+      "speaker": "Haku",
+      "tone_register": "incrédulo, informal",
+      "intent": "questionar se magia existe de verdade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tipo, mágica de verdade? Não tem como ele simplesmente..."
+    },
+    "0x3e346": {
+      "speaker": "Maroro",
+      "tone_register": "exclamação cômica, triunfante",
+      "intent": "grito de sucesso do ritual",
+      "risk_level": "high",
+      "risk_notes": "Onomatopeia/exclamação cômica — localizar para pt-BR com energia equivalente; cicio de Maroro pode aparecer aqui.",
+      "t": "NyoHOOO!!"
+    },
+    "0x3e350": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, atordoado",
+      "intent": "reação de espanto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quê..."
+    },
+    "0x3e357": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, elogioso",
+      "intent": "elogiar Maroro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha! Bom trabalho!"
+    },
+    "0x3e366": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, exausto",
+      "intent": "passar o bastão dramaticamente após o esforço",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo + exaustão dramática; múltiplas construções arcaicas em linha curta.",
+      "t": "O-O resto, amigos, aliados, minha alma exausta\\n"
+    },
+    "0x3e39c": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, exausto",
+      "intent": "continuação — entrega o combate aos outros",
+      "risk_level": "high",
+      "risk_notes": "Continuação do arcaísmo; back-translation necessária.",
+      "t": "entrego a vós. Este esforço sugou meu espírito."
+    },
+    "0x3e3d0": {
+      "speaker": "Haku",
+      "tone_register": "atônito, devagar",
+      "intent": "assimilar que magia é real",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Magia... é de verdade...?"
+    },
+    "0x3e3e5": {
+      "speaker": "Ukon",
+      "tone_register": "enérgico, comandante",
+      "intent": "liderar o ataque final",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Às armas! Sigam-me! Vamos limpar o resto\\n"
+    },
+    "0x3e417": {
+      "speaker": "Ukon",
+      "tone_register": "enérgico, comandante",
+      "intent": "continuação do comando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "dessas pragas!"
+    },
+    "0x3e424": {
+      "speaker": "Ukon/Guerreiros",
+      "tone_register": "grito de batalha",
+      "intent": "grito de combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "HRRAAAAAHHHH!!"
+    },
+    "0x3e433": {
+      "speaker": "Kuon",
+      "tone_register": "prático, calmo",
+      "intent": "sugerir que sigam também",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente também devia ir."
+    },
+    "0x3e446": {
+      "speaker": "Haku",
+      "tone_register": "hesitante, relutante",
+      "intent": "concordar com hesitação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "T-Tá bem..."
+    },
+    "0x3e455": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, sobrecarregado",
+      "intent": "narração interna — muita informação para processar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ugh. Tem muita informação pra absorver aqui,\\n"
+    },
+    "0x3e489": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, pragmático",
+      "intent": "continuação — mas há prioridades mais urgentes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mas acho que tem coisas mais importantes agora."
+    }
+  }
+}

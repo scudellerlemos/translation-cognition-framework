@@ -1,0 +1,1529 @@
+{
+  "scene": "ch_11_11",
+  "sfx": "11_11",
+  "n_lines": 121,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Phew. I'm out of the bath.",
+      "target": "Ufa. Saí do banho.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I return to the room, relaxed and refreshed, to find\\n",
+      "target": "Volto pro quarto, relaxado e renovado, e encontro\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon sitting in the corner with her back turned.",
+      "target": "a Kuon sentada no canto, de costas.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon, I'm out...?",
+      "target": "Kuon, eu já saí...?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "What's going on?",
+      "target": "O que tá acontecendo?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "No reply. She doesn't seem to even notice me.",
+      "target": "Sem resposta. Ela nem parece me notar.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "When I approach, I can faintly hear her muttering to\\n",
+      "target": "Quando me aproximo, ouço fraquinho ela murmurando\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "herself, gaze vacant...",
+      "target": "pra si mesma, o olhar vazio...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "It sounds like she's saying \"thwap, thwap,\" but it's\\n",
+      "target": "Parece que ela tá dizendo \"pá, pá\", mas é\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "difficult to make out.",
+      "target": "difícil de entender.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "...Kuon?",
+      "target": "...Kuon?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I put my hand on her shoulder.",
+      "target": "Ponho a mão no ombro dela.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Eep!",
+      "target": "Iiep!",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Whoa!",
+      "target": "Uou!",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "G-Geez, don't surprise me like that.",
+      "target": "C-Caramba, não me assusta desse jeito.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I-I'm the one who's surprised, here. Did something\\n",
+      "target": "E-Eu é que me assustei, aqui. Aconteceu\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "happen?",
+      "target": "alguma coisa?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "You had a thousand-yard stare and you were mumbling\\n",
+      "target": "Você tava com o olhar perdido e murmurando\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "like you'd seen something awful. What happened?",
+      "target": "como se tivesse visto algo horrível. O que houve?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Why are you averting your eyes?",
+      "target": "Por que você tá desviando o olhar?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I-I'm not... averting them...",
+      "target": "N-Não tô... desviando...",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Despite her words, Kuon is, in fact, looking entirely\\n",
+      "target": "Apesar do que diz, a Kuon está, de fato, olhando\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "to one side of me.",
+      "target": "totalmente pro lado de mim.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "No, you definitely are.",
+      "target": "Não, você tá sim.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I round on her and place myself in front of her\\n",
+      "target": "Me viro pra ela e me ponho na frente dos\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "eyes, but she turns away again.",
+      "target": "olhos dela, mas ela desvia de novo.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "And your face is bright red. What's the deal?",
+      "target": "E sua cara tá vermelhíssima. Que que tá rolando?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I lean down and put my face right in front of hers. She still\\n",
+      "target": "Me abaixo e ponho meu rosto bem na frente do dela. Ela ainda\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "refuses to make eye contact.",
+      "target": "se recusa a fazer contato visual.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Instead, her cheeks turn even redder--and her eyes\\n",
+      "target": "Em vez disso, as bochechas dela ficam mais vermelhas--e os olhos\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "are bloodshot like she's been drinking.",
+      "target": "injetados como se ela tivesse bebido.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Your eyes are red, too. Are you feeling...?",
+      "target": "Seus olhos também estão vermelhos. Você tá se sentindo...?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "*WHUMF--*",
+      "target": "*BAM--*",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Wh--",
+      "target": "Q--",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Out of the blue, Kuon grabs me and tosses me away\\n",
+      "target": "Do nada, a Kuon me agarra e me arremessa\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "like a ragdoll with that casual strength of hers.",
+      "target": "como um boneco de pano, com aquela força casual dela.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "*FLUMP*",
+      "target": "*PUF*",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Urgh...",
+      "target": "Argh...",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "My body flies through the air, landing squarely\\n",
+      "target": "Meu corpo voa pelo ar e cai bem\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "on the bed.",
+      "target": "em cima da cama.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Wh-What are you d--",
+      "target": "Q-Que que você tá faz--",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "You needn't concern yourself with me. More\\n",
+      "target": "Você não precisa se preocupar comigo. Mais\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "importantly, why didn't you tell me about THIS?",
+      "target": "importante: por que você não me contou sobre ISSO?",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon pulls my feet upward and inspects the soles.",
+      "target": "A Kuon levanta meus pés e inspeciona as solas.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Tell you what?",
+      "target": "Te contar o quê?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Was there something I needed to tell her...?",
+      "target": "Tinha algo que eu precisava contar pra ela...?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon ignores the question, frowning deeply at the\\n",
+      "target": "A Kuon ignora a pergunta, franzindo a testa diante\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "sight of my ruined soles.",
+      "target": "das minhas solas arruinadas.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "If you'd said something, I wouldn't have made you\\n",
+      "target": "Se você tivesse falado algo, eu não teria te feito\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "strain yourself this much today.",
+      "target": "se esforçar tanto hoje.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "...What!? I did tell you. Repeatedly.",
+      "target": "...Quê!? Eu te contei. Várias vezes.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I run through the day's events in my mind...",
+      "target": "Repasso os acontecimentos do dia na cabeça...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I did gripe and complain, several times... I...",
+      "target": "Eu reclamei e resmunguei, várias vezes... Eu...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Actually, come to think of it, I never complained\\n",
+      "target": "Na verdade, pensando bem, eu nunca reclamei\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "aloud--I only ever muttered my gripes...",
+      "target": "em voz alta--só resmunguei as queixas...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Hold still for a moment.",
+      "target": "Fica parado um instante.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon takes several small pills from the pouch at\\n",
+      "target": "A Kuon pega várias pílulas pequenas da bolsa na\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "her waist and puts them into her mouth, chewing.",
+      "target": "cintura, põe na boca e mastiga.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "What's that?",
+      "target": "O que é isso?",
+      "speaker": "Haku",
+      "from_scene": "11_08"
+    },
+    {
+      "source": "Kuon only smiles, taking the chewed-up glob from her\\n",
+      "target": "A Kuon só sorri, tirando a pasta mastigada da\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "mouth and smearing it on my feet.",
+      "target": "boca e passando nos meus pés.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "This will sting a bit.",
+      "target": "Isso vai arder um pouquinho.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I can't quite figure out why, but a chill rolls down\\n",
+      "target": "Não sei bem por quê, mas um arrepio desce\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "my spine at the sight of that cheerful smile.",
+      "target": "pela minha espinha ao ver aquele sorriso alegre.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "*Rub, slip, slather--*",
+      "target": "*Esfrega, escorrega, lambuza--*",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon's fingers work the substance into my feet,\\n",
+      "target": "Os dedos da Kuon trabalham a substância nos meus pés,\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "paying special attention to where the skin peels.",
+      "target": "com atenção especial onde a pele descasca.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Is she applying a salve, or something? It's\\n",
+      "target": "Ela tá passando uma pomada, ou algo assim? Tá\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "definitely stinging...",
+      "target": "ardendo, com certeza...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Ow, hhhh--",
+      "target": "Ai, hhhh--",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Maybe stinging isn't quite the word. It itches and\\n",
+      "target": "Talvez arder não seja bem a palavra. Coça e\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "tingles more than it stings.",
+      "target": "formiga mais do que arde.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "It's probably the medicine, but suddenly, I can't\\n",
+      "target": "Deve ser o remédio, mas de repente não\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "contain the urge to scratch my itching feet--",
+      "target": "consigo conter a vontade de coçar os pés--",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "But when I reach for them, Kuon bats my hand away.",
+      "target": "Mas quando vou neles, a Kuon dá um tapa na minha mão.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Ah, ah, no touching. It'll be uncomfortable, but its\\n",
+      "target": "Ah, ah, sem tocar. Vai ser incômodo, mas a\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "effectiveness is second to none!",
+      "target": "eficácia é imbatível!",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Arrrgh, so THAT'S why she was smiling. God, it\\n",
+      "target": "Arrrgh, então é por ISSO que ela tava sorrindo. Deus, como\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "itches, it itches--",
+      "target": "coça, como coça--",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "That should just about do it. It'll settle down\\n",
+      "target": "Acho que é isso. Vai acalmar\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "after a while, so hang in there until then, OK?",
+      "target": "daqui a pouco, então aguenta firme até lá, tá?",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Still smiling, Kuon expertly wraps my feet in tight\\n",
+      "target": "Ainda sorrindo, a Kuon enfaixa meus pés com perícia,\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "bandages, sealing in the salve.",
+      "target": "apertado, selando a pomada.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "And for good measure...",
+      "target": "E só por garantia...",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Kuon sets an odd, legged jar next to my pillow.",
+      "target": "A Kuon põe um pote esquisito, com pés, ao lado do meu travesseiro.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Hmhm. Just watch.",
+      "target": "Hmhm. Só observa.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "She removes the jar's perforated lid. The inside\\n",
+      "target": "Ela tira a tampa furada do pote. O interior\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "looks to be packed with white ash.",
+      "target": "parece cheio de cinza branca.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Then, nestling a small piece of charcoal in the ash,\\n",
+      "target": "Então, acomodando um pedacinho de carvão na cinza,\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "she lights it and waits for a moment...",
+      "target": "ela o acende e espera um instante...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Finally, another small, black pill goes on top of\\n",
+      "target": "Por fim, outra pílula pequena e preta vai em cima\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "the lit charcoal.",
+      "target": "do carvão aceso.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "A moment passes, and sweet, fruity scents begin to\\n",
+      "target": "Passa um instante, e aromas doces e frutados começam a\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "waft from the jar, filling my nostrils.",
+      "target": "subir do pote, enchendo minhas narinas.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "An incense burner, huh...",
+      "target": "Um incensário, é...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Exactly.",
+      "target": "Exato.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "This particular incense is a blend of aromatic and\\n",
+      "target": "Esse incenso é uma mistura de ervas aromáticas e\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "pain-relieving herbs.",
+      "target": "analgésicas.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "It'll relieve your fatigue and pain, and it has\\n",
+      "target": "Vai aliviar sua fadiga e dor, e tem\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "ancillary properties that facilitate sleep, I think?",
+      "target": "propriedades secundárias que facilitam o sono, eu acho?",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Even as Kuon speaks, I can feel the fragrance\\n",
+      "target": "Enquanto a Kuon fala, já sinto a fragrância\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "soothing my mind and dulling my pain.\\n",
+      "target": "acalmando minha mente e amenizando a dor.\\n",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I feel... light.",
+      "target": "Me sinto... leve.",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Oh... oh, that's... blissful...",
+      "target": "Ah... ah, isso é... uma bênção...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I think the concentration might be a little high.\\n",
+      "target": "Acho que a concentração pode estar um pouco alta.\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Are you feeling OK? You don't feel ill?",
+      "target": "Você está bem? Não tá passando mal?",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "No, I'm... I'm good... I'm really, REALLY good...",
+      "target": "Não, eu... tô bem... Tô muito, MUITO bem...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Getting... sleepy... Eyelids... heavy...",
+      "target": "Ficando... com sono... Pálpebras... pesadas...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Now, are you feeling pain anywhere else? ...Haku?\\n",
+      "target": "E então, tá sentindo dor em mais algum lugar? ...Haku?\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Haku, that's my bed, you can't sl--",
+      "target": "Haku, essa é a minha cama, você não pode dor--",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I'm sinking...",
+      "target": "Tô afundando...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "My consciousness... swirling away into oblivion...",
+      "target": "Minha consciência... se esvaindo no esquecimento...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Hey, Haku. Hey--\\n",
+      "target": "Ei, Haku. Ei--\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "...Sheesh.",
+      "target": "...Aff.",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "I picked up quite a burden out there, didn't I...?",
+      "target": "Acabei pegando um belo de um fardo por aí, né...?",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "But I suppose that's... my...",
+      "target": "Mas suponho que isso seja... o meu...",
+      "speaker": "Kuon",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "What is... this music?",
+      "target": "Que... música é essa?",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "It's... soft. And a little nostalgic...",
+      "target": "É... suave. E um pouco nostálgica...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Where have I... heard it before? I feel like I've...",
+      "target": "Onde eu... já ouvi isso? Sinto que eu já...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    },
+    {
+      "source": "Some... where...",
+      "target": "Em algum... lugar...",
+      "speaker": "Haku",
+      "from_scene": "11_11"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Haku",
+      "source": "Geez...! Too bright out here...",
+      "target": "Aff...! Claridade demais aqui fora..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Well, guess the sun still rises no matter where\\n",
+      "target": "Enfim, o sol nasce em qualquer lugar, pelo visto\\n"
+    },
+    {
+      "speaker": "Haku",
+      "source": "I am. Still... What am I supposed to do now...?",
+      "target": "Pois é. Mesmo assim... O que é que eu faço agora...?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x24a8f",
+      "source": "Phew. I'm out of the bath.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x24aae",
+      "source": "I return to the room, relaxed and refreshed, to find\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x24ae5",
+      "source": "Kuon sitting in the corner with her back turned.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x24b16",
+      "source": "Kuon, I'm out...?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x24b28",
+      "source": "What's going on?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x24b39",
+      "source": "No reply. She doesn't seem to even notice me.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x24b67",
+      "source": "When I approach, I can faintly hear her muttering to\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x24b9e",
+      "source": "herself, gaze vacant...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x24bb6",
+      "source": "It sounds like she's saying \"thwap, thwap,\" but it's\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x24bed",
+      "source": "difficult to make out.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x24c04",
+      "source": "...Kuon?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x24c0d",
+      "source": "I put my hand on her shoulder.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x24c2c",
+      "source": "Eep!",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x24c31",
+      "source": "Whoa!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x24c37",
+      "source": "G-Geez, don't surprise me like that.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x24c5c",
+      "source": "I-I'm the one who's surprised, here. Did something\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x24c91",
+      "source": "happen?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x24c99",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x24c9e",
+      "source": "You had a thousand-yard stare and you were mumbling\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x24cd4",
+      "source": "like you'd seen something awful. What happened?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x24d04",
+      "source": "Why are you averting your eyes?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x24d24",
+      "source": "I-I'm not... averting them...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x24d42",
+      "source": "Despite her words, Kuon is, in fact, looking entirely\\n",
+      "byte_budget": 55
+    },
+    {
+      "offset": "0x24d7a",
+      "source": "to one side of me.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x24d8d",
+      "source": "No, you definitely are.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x24da5",
+      "source": "I round on her and place myself in front of her\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x24dd7",
+      "source": "eyes, but she turns away again.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x24df7",
+      "source": "And your face is bright red. What's the deal?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x24e25",
+      "source": "I lean down and put my face right in front of hers. She still\\n",
+      "byte_budget": 63
+    },
+    {
+      "offset": "0x24e65",
+      "source": "refuses to make eye contact.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x24e82",
+      "source": "Instead, her cheeks turn even redder--and her eyes\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x24eb7",
+      "source": "are bloodshot like she's been drinking.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x24edf",
+      "source": "Your eyes are red, too. Are you feeling...?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x24f0b",
+      "source": "*WHUMF--*",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x24f15",
+      "source": "Wh--",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x24f1a",
+      "source": "Out of the blue, Kuon grabs me and tosses me away\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x24f4e",
+      "source": "like a ragdoll with that casual strength of hers.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x24f80",
+      "source": "*FLUMP*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x24f88",
+      "source": "Urgh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x24f90",
+      "source": "My body flies through the air, landing squarely\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x24fc2",
+      "source": "on the bed.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x24fce",
+      "source": "Wh-What are you d--",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x24fe2",
+      "source": "You needn't concern yourself with me. More\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2500f",
+      "source": "importantly, why didn't you tell me about THIS?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2503f",
+      "source": "Kuon pulls my feet upward and inspects the soles.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x25071",
+      "source": "Tell you what?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x25080",
+      "source": "Was there something I needed to tell her...?",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x250ad",
+      "source": "Kuon ignores the question, frowning deeply at the\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x250e1",
+      "source": "sight of my ruined soles.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x250fb",
+      "source": "If you'd said something, I wouldn't have made you\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2512f",
+      "source": "strain yourself this much today.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x25150",
+      "source": "...What!? I did tell you. Repeatedly.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x25176",
+      "source": "I run through the day's events in my mind...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x251a3",
+      "source": "I did gripe and complain, several times... I...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x251d3",
+      "source": "Actually, come to think of it, I never complained\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x25207",
+      "source": "aloud--I only ever muttered my gripes...",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x25230",
+      "source": "Hold still for a moment.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x25249",
+      "source": "Kuon takes several small pills from the pouch at\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2527c",
+      "source": "her waist and puts them into her mouth, chewing.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x252ad",
+      "source": "What's that?",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x252ba",
+      "source": "Kuon only smiles, taking the chewed-up glob from her\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x252f1",
+      "source": "mouth and smearing it on my feet.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x25313",
+      "source": "This will sting a bit.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2532a",
+      "source": "I can't quite figure out why, but a chill rolls down\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x25361",
+      "source": "my spine at the sight of that cheerful smile.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2538f",
+      "source": "*Rub, slip, slather--*",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x253a6",
+      "source": "Kuon's fingers work the substance into my feet,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x253d8",
+      "source": "paying special attention to where the skin peels.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2540a",
+      "source": "Is she applying a salve, or something? It's\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x25438",
+      "source": "definitely stinging...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2544f",
+      "source": "Ow, hhhh--",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2545a",
+      "source": "Maybe stinging isn't quite the word. It itches and\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2548f",
+      "source": "tingles more than it stings.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x254ac",
+      "source": "It's probably the medicine, but suddenly, I can't\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x254e0",
+      "source": "contain the urge to scratch my itching feet--",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2550e",
+      "source": "But when I reach for them, Kuon bats my hand away.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x25541",
+      "source": "Ah, ah, no touching. It'll be uncomfortable, but its\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x25578",
+      "source": "effectiveness is second to none!",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x25599",
+      "source": "Arrrgh, so THAT'S why she was smiling. God, it\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x255ca",
+      "source": "itches, it itches--",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x255de",
+      "source": "That should just about do it. It'll settle down\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x25610",
+      "source": "after a while, so hang in there until then, OK?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x25640",
+      "source": "Still smiling, Kuon expertly wraps my feet in tight\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x25676",
+      "source": "bandages, sealing in the salve.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x25696",
+      "source": "And for good measure...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x256ae",
+      "source": "Kuon sets an odd, legged jar next to my pillow.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x256de",
+      "source": "Hmhm. Just watch.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x256f0",
+      "source": "She removes the jar's perforated lid. The inside\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x25723",
+      "source": "looks to be packed with white ash.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x25746",
+      "source": "Then, nestling a small piece of charcoal in the ash,\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x2577d",
+      "source": "she lights it and waits for a moment...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x257a5",
+      "source": "Finally, another small, black pill goes on top of\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x257d9",
+      "source": "the lit charcoal.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x257eb",
+      "source": "A moment passes, and sweet, fruity scents begin to\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x25820",
+      "source": "waft from the jar, filling my nostrils.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x25848",
+      "source": "An incense burner, huh...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x25862",
+      "source": "Exactly.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2586b",
+      "source": "This particular incense is a blend of aromatic and\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x258a0",
+      "source": "pain-relieving herbs.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x258b6",
+      "source": "It'll relieve your fatigue and pain, and it has\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x258e8",
+      "source": "ancillary properties that facilitate sleep, I think?",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x2591d",
+      "source": "Even as Kuon speaks, I can feel the fragrance\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2594d",
+      "source": "soothing my mind and dulling my pain.\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x25975",
+      "source": "I feel... light.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x25986",
+      "source": "Oh... oh, that's... blissful...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x259a6",
+      "source": "I think the concentration might be a little high.\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x259da",
+      "source": "Are you feeling OK? You don't feel ill?",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x25a02",
+      "source": "No, I'm... I'm good... I'm really, REALLY good...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x25a34",
+      "source": "Getting... sleepy... Eyelids... heavy...",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x25a5d",
+      "source": "Now, are you feeling pain anywhere else? ...Haku?\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x25a91",
+      "source": "Haku, that's my bed, you can't sl--",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x25ab5",
+      "source": "I'm sinking...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x25ac4",
+      "source": "My consciousness... swirling away into oblivion...",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x25af7",
+      "source": "Hey, Haku. Hey--\\n",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x25b0a",
+      "source": "...Sheesh.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x25b15",
+      "source": "I picked up quite a burden out there, didn't I...?",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x25b48",
+      "source": "But I suppose that's... my...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x25b66",
+      "source": "What is... this music?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x25b7d",
+      "source": "It's... soft. And a little nostalgic...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x25ba5",
+      "source": "Where have I... heard it before? I feel like I've...",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x25bda",
+      "source": "Some... where...",
+      "byte_budget": 16
+    }
+  ]
+}

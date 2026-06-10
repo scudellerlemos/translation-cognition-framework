@@ -1,0 +1,250 @@
+{
+  "scene_group": "12_14",
+  "lines": [
+    {
+      "offset": "0x49b6e",
+      "text_source": "gake_parts",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "system",
+      "intent": "label",
+      "risk_level": "low",
+      "base_translation": "gake_parts",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49c1f",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "system",
+      "intent": "glossary_notification",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49f5a",
+      "text_source": "...Where am I?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "desorientação",
+      "risk_level": "low",
+      "base_translation": "...Onde estou?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49f69",
+      "text_source": "Inside your dream.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio",
+      "intent": "resposta lacônica",
+      "risk_level": "low",
+      "base_translation": "No seu sonho.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49f7c",
+      "text_source": "We have enchanted you with a spell that will help\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético",
+      "intent": "explicar o feitiço",
+      "risk_level": "low",
+      "base_translation": "Lançamos sobre você um feitiço que irá ajudá-lo\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49fb0",
+      "text_source": "you become stronger in sleep, as requested, Master.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, formal",
+      "intent": "completar explicação",
+      "risk_level": "low",
+      "base_translation": "a ficar mais forte enquanto dorme, como pedido, Mestre.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49fe4",
+      "text_source": "First off.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, direto",
+      "intent": "introduzir próximo ponto",
+      "risk_level": "low",
+      "base_translation": "Primeiro.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x49fef",
+      "text_source": "They will be the ones to help you grow stronger,\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático",
+      "intent": "apresentar instrutores",
+      "risk_level": "low",
+      "base_translation": "Eles serão os responsáveis por torná-lo mais forte,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a022",
+      "text_source": "Master.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, reverente",
+      "intent": "tratamento",
+      "risk_level": "low",
+      "base_translation": "Mestre.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a02a",
+      "text_source": "We leave the rest to you, instructor.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, lacônico",
+      "intent": "encerrar instrução",
+      "risk_level": "low",
+      "base_translation": "O resto fica com você, instrutor.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a050",
+      "text_source": "Wait, what do you mean, instructor!? I thought\\n",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, alarmado",
+      "intent": "protestar contra surpresa",
+      "risk_level": "low",
+      "base_translation": "Espera, instrutor!? Eu pensei\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a081",
+      "text_source": "all I had to do was sleep!",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "indignado, desorientado",
+      "intent": "reclamar da enganação",
+      "risk_level": "low",
+      "base_translation": "que era só dormir!",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a09c",
+      "text_source": "Your body is asleep.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, literal",
+      "intent": "justificativa técnica",
+      "risk_level": "low",
+      "base_translation": "Seu corpo dorme.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a0b1",
+      "text_source": "So what we said would not be considered a lie.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, sofístico",
+      "intent": "justificar sem mentira formal",
+      "risk_level": "low",
+      "base_translation": "Logo o que dissemos não é mentira.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4a0e0",
+      "text_source": "This is fraud at its worst...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "indignado, exasperado",
+      "intent": "denunciar trapaça",
+      "risk_level": "low",
+      "base_translation": "Isso é uma fraude descarada...",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 15,
+  "high_lines": 0,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "chapter-12_14-v1"
+}

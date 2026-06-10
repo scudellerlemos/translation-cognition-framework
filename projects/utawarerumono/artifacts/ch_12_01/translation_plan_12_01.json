@@ -1,0 +1,578 @@
+{
+  "scene_group": "12_01",
+  "lines": [
+    {
+      "offset": "0x26228",
+      "text_source": "Where... am I?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, dentro do pesadelo, semiconsciente",
+      "intent": "Haku perdido dentro do sonho, sem saber onde está",
+      "risk_level": "medium",
+      "base_translation": "Onde... estou?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz fraturada do Protagonista — preservar fragmentação e reticências; ritmo do pesadelo depende disso"
+    },
+    {
+      "offset": "0x26237",
+      "text_source": "No one else around, or...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, explorando o vazio do sonho",
+      "intent": "verificar se há alguém no espaço do sonho, com sensação crescente de ameaça",
+      "risk_level": "medium",
+      "base_translation": "Não tem ninguém... ou...?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "manter reticências e a incerteza ao final; não resolver a ambiguidade"
+    },
+    {
+      "offset": "0x26252",
+      "text_source": "Huh? Someone's over there...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "surpresa leve, cotidiano",
+      "intent": "Kuon avista alguém ao longe e reage com curiosidade",
+      "risk_level": "low",
+      "base_translation": "Hein? Tem alguém ali...",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2626f",
+      "text_source": "Hey, you there! Could you spare a moment?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, direto, abordagem educada",
+      "intent": "Kuon tenta chamar a atenção de Haku para falar",
+      "risk_level": "low",
+      "base_translation": "Ei, você aí! Pode me dar um momento?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2629d",
+      "text_source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, desculpando-se levemente",
+      "intent": "Kuon pede licença para fazer uma pergunta; linha parte em duas com token \\n",
+      "risk_level": "low",
+      "base_translation": "Ei, me desculpe, posso fazer\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x262d1",
+      "text_source": "you something?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, continuação direta",
+      "intent": "completar a pergunta iniciada na linha anterior",
+      "risk_level": "low",
+      "base_translation": "uma pergunta?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x262e0",
+      "text_source": "Hello?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "neutra, tentando obter resposta",
+      "intent": "Kuon chama de novo após Haku não reagir",
+      "risk_level": "low",
+      "base_translation": "Olá?",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x262e7",
+      "text_source": "What's with this guy...? Excuse me? Hello?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "confusa, levemente alarmada mas ainda contida",
+      "intent": "Kuon estranha a falta total de reação de Haku",
+      "risk_level": "low",
+      "base_translation": "O que tem esse cara...? Com licença? Ei?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26312",
+      "text_source": "Unh... urgh...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "inconsciente, gemendo no pesadelo",
+      "intent": "Haku geme dentro do sonho sem consciência do exterior",
+      "risk_level": "medium",
+      "base_translation": "Nnh... argh...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "localizar gemido ao padrão pt-BR; consistente com TM (Nnh... aagh...); preservar tom de torpor"
+    },
+    {
+      "offset": "0x26321",
+      "text_source": "Huh? Is he trying to say something?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "curiosa, preocupada levemente",
+      "intent": "Kuon percebe que Haku está tentando falar algo",
+      "risk_level": "low",
+      "base_translation": "Hm? Ele tá tentando falar algo?",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26345",
+      "text_source": "U-Uurgh...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "inconsciente, gemendo com mais intensidade",
+      "intent": "escalada do gemido dentro do pesadelo",
+      "risk_level": "medium",
+      "base_translation": "Uu-uugh...",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "escalar a intensidade em relação ao gemido anterior; sem palavras reais"
+    },
+    {
+      "offset": "0x26350",
+      "text_source": "He's... not looking so good. Is he sick?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "preocupada, avaliando",
+      "intent": "Kuon constata que algo está errado com Haku",
+      "risk_level": "low",
+      "base_translation": "Ele não tá bem... Será que está doente?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26379",
+      "text_source": "Ah... a-agh...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "agonizante, no auge do pesadelo",
+      "intent": "Haku em sofrimento dentro do sonho, sons de dor",
+      "risk_level": "medium",
+      "base_translation": "Ah... a-aah...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "gemido de dor crescente — localizar ao padrão pt-BR; manter fragmentação de sílabas"
+    },
+    {
+      "offset": "0x26388",
+      "text_source": "H-Hey, uh...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "hesitante, sem saber como ajudar",
+      "intent": "Kuon começa a tentar intervir mas trava, confusa",
+      "risk_level": "low",
+      "base_translation": "E-Ei, ah...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26395",
+      "text_source": "Agh... aaagh... uuUURGH...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "grito crescente, clímax iminente do pesadelo",
+      "intent": "Haku escalando para o pico de terror no sonho",
+      "risk_level": "medium",
+      "base_translation": "Argh... aarrgh... UURGH...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "progressão de intensidade — cada segmento mais alto que o anterior; manter maiúsculas no pico"
+    },
+    {
+      "offset": "0x263b0",
+      "text_source": "What in--Is he just crazy?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "alarmada, confusa",
+      "intent": "Kuon reage com alarme ao comportamento incontrolável de Haku",
+      "risk_level": "low",
+      "base_translation": "O que--Tá ficando louco?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x263cb",
+      "text_source": "AaaaAAAGH!! UUUOOOHHHH!!",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "grito puro, pesadelo no máximo",
+      "intent": "grito de terror absoluto no pico do pesadelo",
+      "risk_level": "medium",
+      "base_translation": "AaaaAAAAH!! UUUOOOHHH!!",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de grito — localizar padrão pt-BR preservando crescendo de maiúsculas; budget 24"
+    },
+    {
+      "offset": "0x263e4",
+      "text_source": "AAAAAAAAH!!",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "grito puro, pico absoluto",
+      "intent": "grito final antes de acordar",
+      "risk_level": "medium",
+      "base_translation": "AAAAAAAAH!!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "grito puro — manter maiúsculas e intensidade máxima; budget 11 exato"
+    },
+    {
+      "offset": "0x263f0",
+      "text_source": "H-Huff... hah... hah...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "ofegante, acordando em pânico",
+      "intent": "Haku acorda ofegante, coração acelerado, ainda em choque",
+      "risk_level": "medium",
+      "base_translation": "H-Hah... hah... hah...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "som de respiração ofegante — marca a transição pesadelo→realidade; repetição de 'hah' é intencional"
+    },
+    {
+      "offset": "0x26408",
+      "text_source": "Hey, are you all right? You were groaning in your\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "preocupada, suave, cuidadosa",
+      "intent": "Kuon verifica se Haku está bem após vê-lo acordar em pânico; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Ei, tá tudo bem? Você estava gemendo no\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2643c",
+      "text_source": "sleep...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "suave, continuação",
+      "intent": "completar: estava gemendo no sono",
+      "risk_level": "low",
+      "base_translation": "sono...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26445",
+      "text_source": "Kuon looks at me, brow creased with worry.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, observando Kuon",
+      "intent": "Haku narra a expressão de preocupação de Kuon",
+      "risk_level": "low",
+      "base_translation": "Kuon me olha com o cenho franzido.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26470",
+      "text_source": "...a dream...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "ainda atordoado, tentando processar",
+      "intent": "Haku semiconsciente perguntando a si mesmo se foi sonho",
+      "risk_level": "medium",
+      "base_translation": "...sonho...?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "reticências essenciais antes e depois — marca o retorno gradual à consciência"
+    },
+    {
+      "offset": "0x2647f",
+      "text_source": "N-No...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "em choque, negação instintiva",
+      "intent": "reação instintiva de negação ainda dentro do torpor pós-pesadelo",
+      "risk_level": "medium",
+      "base_translation": "N-Não..",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "brevíssimo — gaguejo de choque; budget 7 apertado; dois pontos em vez de três por restrição de bytes"
+    },
+    {
+      "offset": "0x26487",
+      "text_source": "A dream... Yeah. Just a dream.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "processando, voltando à lucidez",
+      "intent": "Haku se convence de que foi apenas um sonho, reassegurando-se",
+      "risk_level": "medium",
+      "base_translation": "Sonho... Sim. Foi só um sonho.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "ritmo da frase é crítico: pausa-confirmação-reasseguração; manter reticências e o 'Sim.' isolado"
+    },
+    {
+      "offset": "0x264a6",
+      "text_source": "Urgh... No way I'm gonna be able to get back to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração interna, frustrado e abalado",
+      "intent": "Haku constata que não vai conseguir dormir de volta; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Argh... Não tem como eu conseguir voltar ao\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x264d8",
+      "text_source": "sleep after that one. Talk about nightmares...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração interna, resignado",
+      "intent": "continuação — impossível dormir depois de pesadelo assim",
+      "risk_level": "low",
+      "base_translation": "sono depois disso. Que pesadelo esse...",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26507",
+      "text_source": "God. It's because I got attacked by that monster,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração interna, racionalizando a causa",
+      "intent": "Haku atribui o pesadelo ao ataque do monstro; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Droga. É por causa daquele monstro que me atacou,\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2653b",
+      "text_source": "I'll bet.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração interna, conclusivo",
+      "intent": "Haku confirma a hipótese com convicção casual",
+      "risk_level": "low",
+      "base_translation": "aposto.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26545",
+      "text_source": "Haku?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "questionante, preocupada, suave",
+      "intent": "Kuon chama Haku pelo nome, ainda preocupada",
+      "risk_level": "low",
+      "base_translation": "Haku?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2654b",
+      "text_source": "Kuon continues to look at me, questioning.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, observando Kuon",
+      "intent": "Haku descreve Kuon continuando a olhá-lo com expressão interrogativa",
+      "risk_level": "low",
+      "base_translation": "Kuon continua me olhando, interrogativa.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26576",
+      "text_source": "Sorry, it's nothing. I just had a bad dream.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, desviando, minimizando",
+      "intent": "Haku descarta a preocupação de Kuon para não alarmá-la, tom levemente forçado",
+      "risk_level": "medium",
+      "base_translation": "Desculpa, não é nada. Só tive um pesadelo.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "equilíbrio difícil: casual mas não totalmente relaxado; não pode soar ansioso nem indiferente"
+    },
+    {
+      "offset": "0x265a3",
+      "text_source": "That's a relief. Go wash your face and wake up a\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "aliviada, prática, cuidadosa",
+      "intent": "Kuon reage com alívio e redireciona Haku para a rotina; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Que bom. Lava o rosto e\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x265d6",
+      "text_source": "little.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "encorajadora, continuação",
+      "intent": "completar o imperativo gentil: lava o rosto e acorda",
+      "risk_level": "low",
+      "base_translation": "acorda.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x265de",
+      "text_source": "And after you do that, we'll get some breakfast,\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "animada, propondo rotina, acolhedora",
+      "intent": "Kuon propõe café da manhã como volta à normalidade; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "E depois disso, a gente toma café da manhã,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26611",
+      "text_source": "OK?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "leve, confirmando com afeto",
+      "intent": "encerramento suave da proposta",
+      "risk_level": "low",
+      "base_translation": "tá?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26615",
+      "text_source": "Yeah. Sounds good...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cansado mas aliviado, casual",
+      "intent": "Haku aceita a proposta de Kuon, ainda um pouco groggy",
+      "risk_level": "low",
+      "base_translation": "É... tá bom...",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    }
+  ],
+  "total_lines": 37,
+  "high_lines": 0,
+  "medium_lines": 13,
+  "needs_review": [],
+  "plan_version": "chapter-12_01-v1"
+}

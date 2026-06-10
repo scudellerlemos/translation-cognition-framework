@@ -1,0 +1,506 @@
+{
+  "scene_group": "12_10",
+  "lines": [
+    {
+      "offset": "0x3e6bf",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "system",
+      "intent": "notificação de glossário",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3e972",
+      "text_source": "Yamatan Soldier",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "system",
+      "intent": "rótulo de unidade inimiga",
+      "risk_level": "low",
+      "base_translation": "Soldado de Yamato",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3e982",
+      "text_source": "Yee-haaww! Here comes the soldiers of Yamato!\\n",
+      "speaker": "Soldado de Yamato",
+      "entities_present": [
+        "Soldado de Yamato"
+      ],
+      "tone_register": "fanfarrão, agressivo",
+      "intent": "anúncio ameaçador cômico dos soldados",
+      "risk_level": "medium",
+      "base_translation": "Iuuu-huu! Chegaram os soldados de Yamato!\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "interjeição localizada; tom clichê proposital"
+    },
+    {
+      "offset": "0x3e9b2",
+      "text_source": "We want yer cash, yer food, and yer women!",
+      "speaker": "Soldado de Yamato",
+      "entities_present": [
+        "Soldado de Yamato"
+      ],
+      "tone_register": "fanfarrão, agressivo",
+      "intent": "exigência de saques",
+      "risk_level": "low",
+      "base_translation": "Queremos seu dinheiro, sua comida e suas mulheres!",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3e9dd",
+      "text_source": "What the hell? Yamatan soldiers rampaging and\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, indignado",
+      "intent": "comentário irônico sobre o comportamento dos soldados",
+      "risk_level": "medium",
+      "base_translation": "Que diabos? Soldados de Yamato saqueando e\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'cliche' deve soar natural em pt-BR"
+    },
+    {
+      "offset": "0x3ea0d",
+      "text_source": "pillaging... and they sound really cliche.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, irônico",
+      "intent": "complemento do comentário anterior",
+      "risk_level": "low",
+      "base_translation": "pillhando... e com cara de vilão barato.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ea38",
+      "text_source": "Too far from the capital, and some folks start\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "reflexivo, sábio informal",
+      "intent": "observação sobre abuso de poder longe da capital",
+      "risk_level": "low",
+      "base_translation": "Longe demais da capital, e alguns já abusam\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ea69",
+      "text_source": "abusin' their power. Nobody keepin' them in check,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "reflexivo, sábio informal",
+      "intent": "continuação — sem supervisão, o poder corrompe",
+      "risk_level": "low",
+      "base_translation": "do poder. Sem ninguém pra segurar, é o que dá,\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ea9e",
+      "text_source": "see.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "encerramento da observação",
+      "risk_level": "low",
+      "base_translation": "né.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eaa3",
+      "text_source": "Ukon?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, questionador",
+      "intent": "reação ao comportamento de Ukon",
+      "risk_level": "low",
+      "base_translation": "Ukon?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eaa9",
+      "text_source": "Just goes to show a fella can't only focus on\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "caloroso, didático",
+      "intent": "lição de honra ao Haku",
+      "risk_level": "low",
+      "base_translation": "Isso mostra que um cara não pode se focar só\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ead9",
+      "text_source": "combat skills. A real man's gotta have honor.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "caloroso, didático",
+      "intent": "conclusão da lição — homem de verdade tem honra",
+      "risk_level": "low",
+      "base_translation": "em combate. Homem de verdade precisa ter honra.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eb07",
+      "text_source": "And that's how it goes, kid. Now, time to show\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, incitante",
+      "intent": "encerrar discurso e motivar Haku para a luta",
+      "risk_level": "low",
+      "base_translation": "É assim que funciona, garoto. Agora, hora de\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eb38",
+      "text_source": "'em what you're made of!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, incitante",
+      "intent": "chamada para ação",
+      "risk_level": "low",
+      "base_translation": "mostrar do que você é feito!",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eb51",
+      "text_source": "...Oh. I see... So that's the scenario this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, irônico",
+      "intent": "Haku percebe que é um treino/cenário",
+      "risk_level": "low",
+      "base_translation": "...Ah. Entendi... Então é esse o cenário\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eb7f",
+      "text_source": "time, then.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, irônico",
+      "intent": "confirmação resignada",
+      "risk_level": "low",
+      "base_translation": "desta vez.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ed65",
+      "text_source": "Not bad, kid. Knew you had it in you, the moment\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "caloroso, elogioso",
+      "intent": "elogio após combate, confiança no Haku",
+      "risk_level": "low",
+      "base_translation": "Nada mal, garoto. Sabia que você tinha isso, desde\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ed98",
+      "text_source": "I laid eyes on you.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "caloroso",
+      "intent": "completa elogio com confianca desde o inicio",
+      "risk_level": "medium",
+      "base_translation": "que te vi.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 19 bytes sem acentos; encurtado ao máximo"
+    },
+    {
+      "offset": "0x3edac",
+      "text_source": "Ah, crap, a bunch of rampaging steeds! There's\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "alarmado, cômico",
+      "intent": "novo perigo surge — cavalos à solta",
+      "risk_level": "medium",
+      "base_translation": "Droga, uma boiada de cavalos em disparada! Tem\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "interjeição localizada de espanto"
+    },
+    {
+      "offset": "0x3eddd",
+      "text_source": "a whole herd of 'em charging right for us!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "alarmado, cômico",
+      "intent": "complemento — manada vindo em direção a eles",
+      "risk_level": "low",
+      "base_translation": "uma manada inteira vindo direto pra cima da gente!",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ee08",
+      "text_source": "Y-You've gotta be kidding! At least give me\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exausto, cômico",
+      "intent": "protesto de Haku por descanso",
+      "risk_level": "low",
+      "base_translation": "V-Você tá de brincadeira! Pelo menos me dá\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ee36",
+      "text_source": "a five minute break or something!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exausto, cômico",
+      "intent": "pedido de pausa",
+      "risk_level": "low",
+      "base_translation": "cinco minutos de descanso!",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ee58",
+      "text_source": "Come on, kid, you know problems like this ain't\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pragmático, bem-humorado",
+      "intent": "lição — problemas não esperam você estar pronto",
+      "risk_level": "low",
+      "base_translation": "Vamos lá, garoto, problemas assim não vão\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ee8a",
+      "text_source": "gonna wait around 'til you're ready.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pragmático, bem-humorado",
+      "intent": "complemento da lição",
+      "risk_level": "low",
+      "base_translation": "esperar você estar pronto.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3eeaf",
+      "text_source": "Whoops! 'Bout thirty or so innocent senior citizens\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "cômico, absurdo",
+      "intent": "narração absurda — idosos atropelados como fake-penalty",
+      "risk_level": "medium",
+      "base_translation": "Ops! Umas trinta pessoas idosas e inocentes\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "humor absurdo; 'senior citizens' localizado como 'idosos inocentes'"
+    },
+    {
+      "offset": "0x3eee5",
+      "text_source": "were just run down by 'em. Too late.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "cômico, absurdo",
+      "intent": "desfecho cômico — tarde demais",
+      "risk_level": "low",
+      "base_translation": "acabaram de ser atropeladas. Tarde demais.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ef0a",
+      "text_source": "The hell!? That's horrible! And what are\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, cômico",
+      "intent": "reação de Haku ao absurdo",
+      "risk_level": "low",
+      "base_translation": "Que isso!? Que horror! E o que\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ef35",
+      "text_source": "\"innocent senior citizens\" doing here in the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, cômico",
+      "intent": "questionamento absurdo sobre os idosos",
+      "risk_level": "low",
+      "base_translation": "\"idosos inocentes\" estão fazendo aqui no\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ef64",
+      "text_source": "first place?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, cômico",
+      "intent": "encerramento da pergunta",
+      "risk_level": "low",
+      "base_translation": "meio disso tudo?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ef71",
+      "text_source": "Would you please stop making my dreams even\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, cômico",
+      "intent": "pedido para parar de complicar os sonhos",
+      "risk_level": "low",
+      "base_translation": "Você podia parar de deixar meus sonhos ainda\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x3ef9f",
+      "text_source": "MORE chaotic?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, cômico",
+      "intent": "ênfase cômica no caos",
+      "risk_level": "low",
+      "base_translation": "MAIS caóticos?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 31,
+  "high_lines": 0,
+  "medium_lines": 5,
+  "needs_review": [],
+  "plan_version": "chapter-12_10-v1"
+}
