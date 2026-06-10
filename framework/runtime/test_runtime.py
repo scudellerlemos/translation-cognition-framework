@@ -25,6 +25,7 @@ import context_pack          # noqa: E402
 import state_index           # noqa: E402
 import run_chapter           # noqa: E402
 import kb_gate               # noqa: E402
+import model                 # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -106,6 +107,15 @@ def test_scene_prompt_self_contained(built):
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
     assert f"translations_{context_pack.sfx_of(SCENE)}.json" in txt
+
+
+# ------------------------------- budget (translit) ----------------------------
+
+def test_translit_len_drops_accents():
+    # comprimento medido na forma transliterada (o que vai p/ os bytes): acentos/cedilha somem
+    assert model._translit_len("Glossário") == len("Glossario")
+    assert model._translit_len("coração") == len("coracao")
+    assert model._translit_len("abc") == 3
 
 
 # ------------------------------- spoiler filter -------------------------------

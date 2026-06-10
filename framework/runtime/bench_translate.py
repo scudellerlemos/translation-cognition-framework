@@ -38,7 +38,8 @@ def main():
     t0 = time.time()
     data, usage = M._api_translate(root, a.scene, pack, a.model, effort=a.effort, think=a.think)
     dt = time.time() - t0
-    out = root / "artifacts" / a.scene / f"translations_{sfx}.{tag}.json"
+    # NAO usar prefixo 'translations_' (colide com o glob do build_plan_chapter, que exige exatamente 1)
+    out = root / "artifacts" / a.scene / f"bench_{sfx}.{tag}.json"
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     n = len(data.get("lines", {}))
     print(f"OK {a.scene} via {a.model}: {n} linhas em {dt:.1f}s -> {out}")

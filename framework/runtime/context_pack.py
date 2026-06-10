@@ -311,6 +311,11 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("_(sem memoria previa para esta cena)_")
     L.append("")
     L.append("## 7. Linhas a traduzir")
+    L.append("> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao TRANSLITERADA (sem acentos — o `c`")
+    L.append("> de cedilha e os acentos somem na gravacao) deve **CABER** no byte_budget da linha. pt-BR")
+    L.append("> costuma ser ~15-20% mais longo que EN: em linhas curtas/UI (budget baixo) **seja conciso**")
+    L.append("> (ex.: 'adicionado ao' -> 'no'; corte redundancia), preservando sentido. Estourar muito o")
+    L.append("> orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.")
     L.append("| offset | byte_budget | source |")
     L.append("|---|---|---|")
     for r in pack["lines"]:
