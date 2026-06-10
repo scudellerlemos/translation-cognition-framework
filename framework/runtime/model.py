@@ -365,20 +365,38 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                        f"faltam={last['missing']} paridade={last['bad_parity']}")
 
 
+# Schema ESTRITO p/ a back-translation (garante JSON parseavel — sem ele o Opus as vezes devolvia
+# texto vazio/markdown e o parse quebrava DEPOIS de ja cobrar a chamada: vazamento de Opus).
+_BACK_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["entries"],
+    "properties": {"entries": {"type": "array", "items": {
+        "type": "object", "additionalProperties": False,
+        "required": ["offset", "back_en", "verdict", "note"],
+        "properties": {
+            "offset": {"type": "string"}, "back_en": {"type": "string"},
+            "verdict": {"type": "string", "enum": ["pass", "revise"]},
+            "note": {"type": "string"},
+        }}}},
+}
+
+
 def _api_back_translate(high_lines, model):
     client = _client()
     payload = [{"offset": h["offset"], "source": h["source"], "target": h["target"],
                 "speaker": h.get("speaker", "")} for h in high_lines]
-    instr = ("Para cada item, traduza o 'target' (pt-BR) de volta p/ EN, compare com 'source' e "
-             "responda JSON {\"reviewed\":N,\"entries\":[{offset,back_en,verdict:pass|revise,note}]}. "
-             "verdict=revise se sentido/ambiguidade/voz divergirem.\n\n")
+    instr = ("Para cada item, traduza o 'target' (pt-BR) de volta p/ EN ('back_en'), compare com "
+             "'source', e de um 'verdict' (pass|revise) + 'note' curta. verdict=revise se "
+             "sentido/ambiguidade/voz divergirem. Inclua o 'offset' de cada item.\n\n")
     msg = _stream_final(
         client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
         messages=[{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
         thinking={"type": "adaptive"},
-        output_config={"effort": "high"},
+        output_config={"effort": "high",
+                       "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
     )
-    return json.loads(_text_of(msg)), _usage_of(msg)
+    data = json.loads(_text_of(msg))
+    data["reviewed"] = len(data.get("entries", []))
+    return data, _usage_of(msg)
 
 
 def main():
