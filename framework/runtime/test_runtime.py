@@ -24,8 +24,10 @@ if str(_HERE) not in sys.path:
 import context_pack          # noqa: E402
 import state_index           # noqa: E402
 import run_chapter           # noqa: E402
+import run_scene             # noqa: E402
 import kb_gate               # noqa: E402
 import model                 # noqa: E402
+import cost_report           # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -220,6 +222,59 @@ def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
                          "scene": scene})
     r = run_chapter.run_chapter(root, "99", backend="api")
     assert r["status"] == "stopped" and r["stopped_at"] == "ch_99_01"
+
+
+# ------------------------------- telemetria de custo --------------------------
+# O ledger (api_ledger.jsonl) registra TODA chamada cobrada — inclusive cenas que falham/escalam,
+# que o metrics.jsonl (resumo so-de-sucesso) perdia. cost_report agrega + cruza com run_state.
+
+def test_cost_of_known_pricing():
+    # Sonnet: in $3/M, out $15/M; cache_read = 0.1x in, cache_write = 1.25x in
+    c = model.cost_of("claude-sonnet-4-6",
+                      {"in": 1_000_000, "out": 1_000_000, "cache_read": 0, "cache_write": 0})
+    assert round(c, 4) == round(3.0 + 15.0, 4)
+    assert model.cost_of("modelo-inexistente", {"in": 9}) == 0.0
+    assert model.cost_of("claude-opus-4-8", {}) == 0.0
+
+
+def test_log_api_call_appends_ledger(tmp_path):
+    (tmp_path / "artifacts").mkdir()
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6",
+                       {"in": 100, "out": 50, "cache_read": 0, "cache_write": 0})
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6",
+                       {"in": 200, "out": 80, "cache_read": 0, "cache_write": 0})   # retry: 2a chamada
+    model.log_api_call(tmp_path, "ch_99_01", "back", "claude-opus-4-8",
+                       {"in": 10, "out": 10, "cache_read": 0, "cache_write": 0})
+    rows = [json.loads(l) for l in
+            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 3, "cada chamada cobrada = 1 linha (retries inclusos)"
+    assert all(r["cost_usd"] > 0 for r in rows)
+    # custo-verdade da cena soma TODAS as chamadas (run_scene._ledger_scene_cost)
+    assert run_scene._ledger_scene_cost(tmp_path, "ch_99_01") == round(sum(r["cost_usd"] for r in rows), 5)
+    # usage vazio nao registra (nao polui o ledger)
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6", None)
+    rows2 = (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(rows2) == 3
+
+
+def test_cost_report_aggregates_and_flags_waste(tmp_path):
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    # cena boa (fechou verified) + cena ruim (so gastou, nao fechou) -> o gasto da ruim e DESPERDICIO
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    model.log_api_call(tmp_path, "ch_99_02", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    model.log_api_call(tmp_path, "ch_99_02", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    (art / "run_state.json").write_text(json.dumps(
+        {"scenes": {"ch_99_01": {"status": "verified", "verified": True},
+                    "ch_99_02": {"status": "verify_failed", "verified": False}}}), encoding="utf-8")
+    rep = cost_report.report(tmp_path)
+    assert rep["n_calls"] == 3
+    assert rep["verified_scenes"] == 1
+    # desperdicio = so o gasto da 99_02 (2 chamadas), nao da 99_01
+    assert rep["wasted_usd"] == rep["by_scene"]["ch_99_02"]["cost_usd"]
+    assert rep["wasted_usd"] < rep["total_usd"]
+    assert rep["by_kind"]["translate"] == rep["total_usd"]
+    assert cost_report._fmt(rep, by_scene=True)   # nao quebra ao formatar
 
 
 # ------------------------------- governanca -----------------------------------

@@ -26,9 +26,10 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | # | Item | Status |
 |---|---|---|
 | 7 | métricas no runner (`metrics.jsonl`: tokens trad/revisão, custo/cena, back-pass-rate) | ✅ |
-| 8 | endurecer caminho `api` (streaming, schema, guard `\n`+retry, backoff) | ✅ codado, ⚠️ **não comprovado** (falta `.env`) |
+| 8 | endurecer caminho `api` (streaming, schema, guard `\n`+retry, backoff) | ✅ **comprovado em produção** (cap.12 16/16) |
 | 8b | `run_chapter.py` — driver de capítulo (loop de cenas, resumível) | ✅ |
-| 9 | benchmark de modelos (Sonnet vs Opus em cenas-gold) | ⏳ pendente da chave |
+| 9 | benchmark de modelos (Sonnet vs Opus em cenas-gold) | ✅ **Sonnet aprovado** (ch_12_03, nível Opus-à-mão) |
+| 9b | **telemetria de gasto REAL** (`api_ledger.jsonl` por chamada + `cost_report.py`) | ✅ **feito** — toda chamada cobrada conta, inclusive cenas que falham/escalam |
 
 ### P1.5 — cabear cognição no runtime (gaps da Architecture Review #2)
 > Doutrina existe nas skills, mas o harness de escala não a aplica. Ver `ARCHITECTURE_REVIEW_2.md`.
@@ -41,9 +42,20 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | R4 | **spoiler**: `spoiler_ledger.json` + **filtro temporal** + regra de gênero | 🟠 | ✅ **feito** — ledger + filtro no `context_pack`; Carta atualizada |
 | R5 | bundle de custo (dedup TM/intra-corpus, slim de schema, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; falta dedup/slim/batch |
 
-**Validação Etapa 6 (cap.12 headless):** 15/16 cenas `verified` ponta-a-ponta (round-trip byte-idêntico,
+**Validação Etapa 6 (cap.12 headless):** **16/16** cenas `verified` ponta-a-ponta (round-trip byte-idêntico,
 back-translation via API). Pipeline endurecido em ~2300 linhas reais (schema-array, custo, `\n`,
 paridade, cobertura-merge, retry de conexão, budget best-effort).
+
+**Telemetria de gasto (gap revelado pela produção — RESOLVIDO):** o `metrics.jsonl` era resumo
+SO-DE-SUCESSO (1 linha por cena que fechou no verify) → perdia o que **falhou depois de já cobrar a API**
+(cobertura estourou → exceção; verify reprovou), cada **re-tradução do escalonamento** (1.40→1.15→1.0) e
+**back-translations que quebraram no parse**. Por isso a estimativa (~$9–10) ficou abaixo do real (~$15).
+**Conserto:** `model.log_api_call` grava `api_ledger.jsonl` (1 linha por chamada CONCLUÍDA, **antes** de
+qualquer parse/gate) → captura TODA chamada cobrada. `cost_report.py` agrega (total, por modelo/tipo/cena)
+e cruza com `run_state.json` p/ marcar gasto **desperdiçado** (cenas que não fecharam `verified`).
+`run_chapter` imprime o resumo de gasto ao fim **e na parada por falha**. O `cost_usd` do `metrics.jsonl`
+agora vem do ledger (soma retries+escalonamento). _O ledger começa do zero nesta instrumentação — runs
+anteriores do cap.12 não estão nele (não há como recuperar honestamente do resumo subcontado)._
 
 ### P1.6 — robustez de conector p/ cenas de binário apertado (BACKLOG pós-produção)
 > Disparado pela ch_12_15: binário multi-BIN com pouco espaço de realocação → 2 linhas (+4/+5 bytes)
@@ -75,8 +87,8 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 ## Fases
 
 - **Fase 1 — resolver estouro de sessão:** P0 (entregue). Cena stateless + contexto limitado.
-- **Fase 2 — reduzir custo operacional:** P1 (entregue: métricas + API endurecida + `run_chapter`).
-  Falta **comprovar em produção** (benchmark/`metrics.jsonl` reais — pendente da chave).
+- **Fase 2 — reduzir custo operacional:** P1 (entregue e **comprovado em produção**: métricas + API
+  endurecida + `run_chapter` + benchmark Sonnet aprovado + telemetria de gasto real via `api_ledger.jsonl`).
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (R1–R5). Ligar/comprovar API, KB-gate, spoiler-filter,
   bundle de custo. **É aqui que estamos.**
 - **Fase 3 — escalar p/ 40–100k linhas:** P2. Paralelização + (se preciso) RAG sobre lore/decisões.
