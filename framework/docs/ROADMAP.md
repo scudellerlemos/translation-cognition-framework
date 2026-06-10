@@ -50,13 +50,17 @@ paridade, cobertura-merge, retry de conexão, budget best-effort).
 > caem em RELOC_cont → ponteiros fora-do-arquivo. As traduções estão boas; o conector é que não cabe.
 > **Decisão: backlog pós-produção** (não overengineer; a Fase D / QA in-game cobre casos isolados).
 
-| Parte | Item | Esforço | Risco | Quando |
+| Parte | Item | Esforço | Risco | Status |
 |---|---|---|---|---|
-| **3A** | verify EXPÕE offsets out-of-file/RELOC_cont + `run_scene` re-traduz só essas linhas com `≤budget` forçado (self-heal direcionado) | ~1 dia | baixo (não toca escrita de bytes) | quando cenas apertadas recorrerem na 2ª metade |
-| **3B** | reinsert: realocação mais esperta (mais áreas livres/padding) p/ linhas genuinamente não-encurtáveis | ~2–4 dias | alto (byte-level; re-validar round-trip) | só se 3A não bastar |
+| **3A** | self-heal por aperto de budget: `run_scene` escala `BUDGET_TOLERANCE` 1.40→1.15→1.0 e re-traduz só na falha de fitting | ~1 dia | baixo | ✅ **feito** (escalonamento de fitting) |
+| **3B** | reinsert/verify: ponteiros em cena MULTI-BIN (out-of-file persiste mesmo com crescimento ~0) | ~2–4 dias | alto (byte-level) | pendente — **só 12_15 ate agora** |
 
-Gatilho: fazer **3A** se a 2ª metade mostrar várias cenas apertadas; senão, casos isolados (como 12_15)
-vão para a **Fase D** (ajuste humano de ~2–4 linhas). **3B** só com prova de linha impossível de encurtar.
+**Diagnóstico 12_15 (medido):** com tolerância 1.0 → crescimento +32 bytes (≈0), 94/95 in-place, **mas 2
+ponteiros AINDA fora-do-arquivo**. Logo NÃO é tradução/budget — é o conector em cena de 3 BINs. O 3A
+(escalonamento) **provou** isso e parou no piso. **3B** = investigar reinsert/verify multi-BIN (possível
+**falso-positivo** da checagem out-of-file p/ ponteiros entre BINs do mesmo cenário, OU bug real de
+realocação). Até lá, 12_15 fica flagueada (não aplicada) → **Fase D**. Gatilho do 3B: se 2ª metade
+mostrar mais cenas multi-BIN com o mesmo sintoma.
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
