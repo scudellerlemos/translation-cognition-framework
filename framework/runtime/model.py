@@ -23,6 +23,7 @@ import json
 import os
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -45,6 +46,12 @@ _MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
 # default sem thinking + effort baixo. back_translate (alto risco) mantem thinking (raciocinio importa).
 EFFORT_TRANSLATE = "low"
 THINK_TRANSLATE = False
+
+# Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) deve caber no
+# byte_budget. pt-BR expande; cenas de UI/curtas estouram e caem em residuo (verify reprova). Linhas
+# acima de budget*tolerancia disparam um retry de ENCURTAMENTO (medido: modelo nao encurta so com nudge
+# no prompt; precisa de retry direcionado). 1.10 = permite leve crescimento (absorvido por head-reloc).
+BUDGET_TOLERANCE = 1.10
 
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
@@ -231,6 +238,12 @@ def _check_translation(data, offsets):
     return bad_nl, missing
 
 
+def _translit_len(t) -> int:
+    """Comprimento em bytes da forma TRANSLITERADA (NFKD + drop combining) — o que o reinsert grava."""
+    s = unicodedata.normalize("NFKD", t or "")
+    return len("".join(c for c in s if not unicodedata.combining(c)))
+
+
 def _norm_t(t):
     """Normaliza o campo de traducao: neste tipo de jogo TODA quebra e o token literal `\\n` — um
     newline REAL no `t` e sempre erro (o modelo, gerando do zero, colapsa o token numa quebra real).
@@ -269,6 +282,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     base_user = context_pack.render_prompt(pack, carta="") + _NL_RULE  # Carta ja no system
     offsets = [r["offset"] for r in pack["lines"]]
+    budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
     note, last, usage = "", None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
     # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
@@ -285,15 +299,27 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         _add_usage(usage, _usage_of(msg))
         data = _to_map(json.loads(_text_of(msg)))   # array de entradas -> mapa {offset: {...}}
         bad_nl, missing = _check_translation(data, offsets)
-        if not bad_nl and not missing:
+        over = []                                   # linhas que estouram o byte_budget (transliterado)
+        for off, v in data.get("lines", {}).items():
+            b = budgets.get(off)
+            cur = _translit_len((v or {}).get("t", ""))
+            if b and cur > b * BUDGET_TOLERANCE:
+                over.append((off, b, cur))
+        if not bad_nl and not missing and not over:
             return data, usage
-        last = {"bad_nl": bad_nl, "missing": missing}
+        last = {"bad_nl": bad_nl, "missing": missing, "over_budget": over}
         note = "\n\n## CORRECAO NECESSARIA (regere a saida COMPLETA)\n"
         if bad_nl:
             note += (f"- Estes offsets tem QUEBRA DE LINHA REAL no campo t; use `\\\\n` literal: "
                      f"{bad_nl[:25]}\n")
         if missing:
             note += f"- Faltam estes offsets (cubra TODOS): {missing[:25]}\n"
+        if over:
+            note += ("- Estes offsets PASSAM do byte_budget (medido TRANSLITERADO, sem acentos); ENCURTE "
+                     "p/ CABER <= budget preservando o sentido (corte redundancia; ex.: 'adicionado ao' "
+                     "-> 'no'; 'realmente' -> ''):\n")
+            for off, b, cur in over[:25]:
+                note += f"  - {off}: budget {b}, atual {cur}\n"
     raise RuntimeError(f"_api_translate: saida invalida apos {_MAX_TRIES} tentativas: {last}")
 
 
