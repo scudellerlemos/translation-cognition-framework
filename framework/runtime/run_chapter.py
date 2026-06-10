@@ -45,7 +45,8 @@ def _verified(root: Path, scene: str) -> bool:
     return st.get("status") in _DONE and st.get("verified") is True
 
 
-def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True):
+def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
+                skip_kb_gate=False):
     root = Path(root)
     scenes = _scenes_of(root, chap)
     if not scenes:
@@ -59,7 +60,8 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             results.append({"scene": scene, "status": "skipped"})
             continue
         print(f"\n=== {scene} ({backend}) ===")
-        r = RS.run_scene(root, scene, backend=backend, require_back=require_back, do_verify=do_verify)
+        r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
+                         do_verify=do_verify, skip_kb_gate=skip_kb_gate)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
@@ -78,9 +80,10 @@ def main():
     ap.add_argument("--require-back", action="store_true")
     ap.add_argument("--redo", action="store_true", help="reprocessa mesmo cenas ja verified")
     ap.add_argument("--no-verify", action="store_true")
+    ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
-                    redo=a.redo, do_verify=not a.no_verify)
+                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

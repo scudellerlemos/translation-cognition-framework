@@ -33,6 +33,7 @@ if str(_HERE) not in sys.path:
 import context_pack   # noqa: E402
 import model as M      # noqa: E402
 import state_index     # noqa: E402
+import kb_gate         # noqa: E402
 
 
 def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
@@ -114,10 +115,23 @@ def _high_lines(root: Path, scene: str, sfx: str):
     return out
 
 
-def run_scene(root, scene, *, backend="in-session", require_back=False, do_verify=True):
+def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False):
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     sfx = context_pack.sfx_of(scene)
+
+    # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
+    kb = kb_gate.check(root, scene)
+    for w in kb["warnings"]:
+        print(f"[kb] aviso: {w}")
+    if kb["problems"] and not skip_kb_gate:
+        print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
+        for p in kb["problems"]:
+            print(f"      - {p}")
+        print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
+        _checkpoint(root, scene, {"sfx": sfx, "status": "kb_coverage_failed"})
+        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+
     print(f"[1/6] context_pack {scene} ...")
     try:
         tr = M.translate(root, scene, backend=backend)
@@ -195,13 +209,15 @@ def main():
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene")
-    ap.add_argument("--backend", default="in-session", choices=["in-session", "api"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--require-back", action="store_true",
                     help="bloqueia se a back-translation de alto risco faltar")
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")
+    ap.add_argument("--skip-kb-gate", action="store_true",
+                    help="ignora o gate de cobertura de KB (nao recomendado)")
     a = ap.parse_args()
-    r = run_scene(a.project, a.scene, backend=a.backend,
-                  require_back=a.require_back, do_verify=not a.no_verify)
+    r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
+                  do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate)
     sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",
                                   "awaiting_back_translation") else 1)
 
