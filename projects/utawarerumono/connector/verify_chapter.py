@@ -125,17 +125,22 @@ def main():
         else:
             fails.append(f"{off_hex}: lido {got!r} != aprovado(translit) {want!r}")
 
-    # ponteiros de cada arquivo tocado resolvem dentro do proprio arquivo
+    # ponteiros de TEXTO de cada arquivo tocado resolvem dentro do proprio arquivo.
+    # Ignora falsos-positivos do bytecode: bytes 50/53 00 dentro do STSC cujo uint32 seguinte
+    # vira um alvo implausivel (>= tamanho do container). So contam alvos plausiveis (dentro do buffer).
     new_pidx = S.index_pointers(new_buf, new_files)
+    n = len(new_buf)
     out_of_file = 0
-    touched_new = [by_name_new[n] for n in touched]
+    touched_new = [by_name_new[nm] for nm in touched]
     for target, sites in new_pidx.items():
+        if target >= n:
+            continue                     # alvo implausivel -> ponteiro falso do bytecode
         for site, _fs in sites:
             for f in touched_new:
                 if f.offset <= site < f.end and not (f.offset <= target < f.end):
                     out_of_file += 1
     if out_of_file:
-        fails.append(f"{out_of_file} ponteiro(s) de arquivo tocado apontam pra fora do arquivo")
+        fails.append(f"{out_of_file} ponteiro(s) de texto de arquivo tocado apontam pra fora do arquivo")
 
     grown = sum(by_name_new[n].size - by_name_orig[n].size for n in touched)
     print(f"Capitulo {sys.argv[1]}: {len(budgets)} linhas em {len(touched)} arquivo(s) {touched}")

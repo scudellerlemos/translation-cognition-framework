@@ -13,6 +13,7 @@ Uso:  python validate.py <dir-do-projeto>     (default: diretório atual)
 from __future__ import annotations
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -51,6 +52,8 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
     tokens = cfg.get("formatting_tokens", []) or []
+    # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
+    rx_tokens = [re.compile(p) for p in (cfg.get("formatting_token_patterns", []) or [])]
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
@@ -103,6 +106,13 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                 for tk in tokens:
                     if s.count(tk) != tgt.count(tk):
                         E("approved_translations.csv", f"{i}: token {tk} {s.count(tk)}→{tgt.count(tk)}")
+                # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
+                # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
+                for rx in rx_tokens:
+                    ms, mt = sorted(rx.findall(s)), sorted(rx.findall(tgt))
+                    if ms != mt:
+                        E("approved_translations.csv",
+                          f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}")
                 if s.count("\\n") != tgt.count("\\n"):
                     W("approved_translations.csv", f"{i}: nº de quebras '\\n' difere do source")
 
