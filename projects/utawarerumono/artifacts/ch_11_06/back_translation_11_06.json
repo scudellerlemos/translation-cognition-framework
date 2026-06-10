@@ -1,0 +1,16 @@
+{
+  "method": "Para cada linha risk=high: pt-BR -> EN, comparar com source, confirmar SENTIDO, VOZ/humor, tom delicado e tokens. Divergencia -> revisar.",
+  "scene_group": "11_06",
+  "date": "2026-06-08",
+  "reviewed": 7,
+  "revised": 1,
+  "entries": [
+    {"offset": "0x188c3", "speaker": "Haku", "source": "I made it. You go, me. You done good.", "target_before": "Consegui. Isso ai, eu. Voce foi bem.", "target_after": "Consegui. Isso ai, eu. Mandou bem.", "verdict": "revised", "note": "BT antes: 'I made it. That's it, me. You did well.' O 'You done good' do source e folksy/gramatica-relaxada de proposito (auto-elogio); 'Voce foi bem' ficou correto demais. 'Mandou bem' devolve a coloquialidade do tapinha-nas-costas. Auto-papo em 2a pessoa preservado ('Isso ai, eu')."},
+    {"offset": "0x18eb8", "speaker": "rotulo", "source": "Innkeeper", "target": "Estalajadeira", "verdict": "pass", "note": "Rotulo 53 00 da dona da estalagem (feminino). BT trivial. Como Garota/Mulher/Homem: exibido in-game; relocavel se estourar o slot."},
+    {"offset": "0x194cb", "speaker": "Haku", "source": "you'll be watched while changing, or molested, or...", "target": "de ser vigiada enquanto se troca, ou molestada, ou...", "verdict": "pass", "note": "BT: 'of being watched while changing, or molested, or...' Registro preservado: Haku preocupado com a HONRA/seguranca dela (nao vulgar). Tom de pudor mantido."},
+    {"offset": "0x19500", "speaker": "Kuon", "source": "Planning to molest me, Haku?", "target": "Pensando em me molestar, Haku?", "verdict": "pass", "note": "BT: 'Planning to molest me, Haku?' Pivot deadpan letal da Kuon (vira a preocupacao contra ele com naturalidade total). Nao acusatorio-serio - e provocacao seca. Preservado."},
+    {"offset": "0x1951d", "speaker": "Haku", "source": "N-No, I didn't mean--Damn it, you know exactly what", "target": "N-Nao, eu nao quis--Droga, voce sabe exatamente o que", "verdict": "pass", "note": "BT: 'N-No, I didn't mean--Damn it, you know exactly what' Panico envergonhado + 'Damn it'->'Droga' (palavrao-leve). Frustracao comica preservada."},
+    {"offset": "0x1965d", "speaker": "Kuon", "source": "Or is it that you just don't want to stay with me?", "target": "Ou e que voce simplesmente nao quer ficar comigo?", "verdict": "pass", "note": "BT: 'Or is it that you just don't want to stay with me?' Alfinetada charmosa que o pega desprevenido (vira a mesa). Provocacao leve preservada, nao romantica-explicita."},
+    {"offset": "0x19850", "speaker": "Kuon", "source": "We will! {W110}Before we do, though, do you have any chores", "target": "Vamos sim! {W110}Mas antes, voce tem alguma tarefa", "verdict": "pass", "note": "BT: 'We will! Before, though, do you have any chore' TOKEN {W110} (pausa/timing) preservado verbatim na posicao. Sentido + transicao pro gag das tarefas mantidos."}
+  ]
+}

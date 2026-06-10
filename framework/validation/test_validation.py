@@ -36,14 +36,18 @@ def test_reference_project_has_no_errors():
 
 
 # --------------------------------------------------------------- helper p/ projeto mínimo sintético
-def _make_project(tmp: Path, *, glossary_rows=None, plan=None, approved=None, dialogs=None):
+def _make_project(tmp: Path, *, glossary_rows=None, plan=None, approved=None, dialogs=None,
+                  token_patterns=None):
     art = tmp / "artifacts"
     art.mkdir(parents=True)
-    (tmp / "project.json").write_text(json.dumps({
+    manifest = {
         "title": "T", "source_language": "en", "target_language": "pt-BR",
         "source": {"file": "artifacts/dialogs.csv", "id_column": "offset", "text_column": "text_source"},
         "formatting_tokens": ["{W75}", "{END}"],
-    }, ensure_ascii=False), encoding="utf-8")
+    }
+    if token_patterns is not None:
+        manifest["formatting_token_patterns"] = token_patterns
+    (tmp / "project.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
 
     def wcsv(name, rows, cols):
         with (art / name).open("w", newline="", encoding="utf-8") as f:
@@ -103,6 +107,33 @@ def test_catches_token_drop_in_approved(tmp_path):
         dialogs=[{"offset": "0x1", "text_source": "Wait{W75}", "byte_budget": "9"}],
         approved=[{"offset": "0x1", "text_target": "Espere"}])  # perdeu {W75}
     assert any("token {W75}" in m for _, _, m in _errors(V.validate_project(p)))
+
+
+def test_catches_color_token_drop(tmp_path):
+    # alvo perdeu o {c-1} de fechamento -> multiset do padrão difere
+    p = _make_project(
+        tmp_path, token_patterns=[r"\{c-?\d*\}"],
+        dialogs=[{"offset": "0x1", "text_source": "{c5}Foo{c-1}", "byte_budget": "9"}],
+        approved=[{"offset": "0x1", "text_target": "{c5}Foo"}])
+    assert any("padrão" in m and "/\\{c-?\\d*\\}/" in m for _, _, m in _errors(V.validate_project(p)))
+
+
+def test_catches_color_index_swap(tmp_path):
+    # {c5} virou {c6}: a contagem literal não veria, mas o multiset do padrão pega
+    p = _make_project(
+        tmp_path, token_patterns=[r"\{c-?\d*\}"],
+        dialogs=[{"offset": "0x1", "text_source": "{c5}Foo{c-1}", "byte_budget": "9"}],
+        approved=[{"offset": "0x1", "text_target": "{c6}Foo{c-1}"}])
+    assert any("padrão" in m for _, _, m in _errors(V.validate_project(p)))
+
+
+def test_color_tokens_verbatim_pass(tmp_path):
+    # tokens de cor idênticos (verbatim) -> sem erro
+    p = _make_project(
+        tmp_path, token_patterns=[r"\{c-?\d*\}"],
+        dialogs=[{"offset": "0x1", "text_source": "{c5}Foo{c-1}", "byte_budget": "9"}],
+        approved=[{"offset": "0x1", "text_target": "{c5}Bar{c-1}"}])
+    assert not _errors(V.validate_project(p))
 
 
 def test_clean_synthetic_project_passes(tmp_path):

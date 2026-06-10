@@ -483,3 +483,77 @@ de que a pipeline SDD → conector → binário funciona em título comercial.
 `artifacts/testeplanob.png` (linha relocada) e `artifacts/testeplanob_avanco.png` (continuidade).
 Conclusão: a relocação INTRA-ARQUIVO + reescrita do Pack é a estratégia correta e está validada
 in-game. Liberada a run completa das 1025 linhas. **Revisão necessária:** não.
+
+
+---
+
+## Calibração: 1 capítulo do zero (11_03_000C, 118 linhas) — modo padrão (2026-06-08)
+
+**Objetivo:** de-riscar a meia-maratona rodando o pipeline completo num capítulo novo e medir ritmo+custo.
+
+**Decisões de tradução não-óbvias:**
+- **`toriuma`** (ave-montaria, 1ª menção) → glossário como termo de mundo `manter_original`. Em diálogo
+  o EN usa `steed`/`horse` → traduz `montaria`/`cavalo`; o termo de mundo aparece só no rótulo interno.
+- **Apelidos cômicos do Haku:** `Ostrich Prime` → `Avestruz Supremo` (mantém a pompa-comica; perde o eco
+  pop de "Prime", aceito). Gag do "avestruz" tratado como banal pela Kuon = contraste cômico preservado.
+- **Back-translation (catch real):** `common sense draining away` traduzido `indo embora` (achatou a
+  imagem) → revisado para **`evaporando`** numa tirada-assinatura do Haku.
+- **Interjeições localizadas:** `Geez`→`Aff`, `Huh`→`Hein`, `HOLY--`→`MEU DEU--` (corte seco),
+  gagueiras `Wh-/W-/H-/Y-`→`Q-/E-/E-/V-`. Gritos animais `GREHHHH`/`GRRRR` espelhados (universal).
+
+**Pendência sinalizada (não inventada):** rótulos internos `Head` (0x14a7b) e `Head_toriuma` (0x1538c)
+→ `needs_human_review`. Reinserem byte-OK verbatim, mas é incerto se o motor os EXIBE como falante;
+verificar in-game antes de traduzir. Comportamento conforme a Carta (sinalizar, não improvisar).
+
+**Verificação:** round-trip byte-idêntico; 118/118 linhas conferidas (dirigido por ponteiro, visão do
+motor); tiers T1=56/RELOC_head=61/RELOC_cont=1; resíduo T4=0; 0 ponteiro fora-do-arquivo; pytest 29/29.
+
+**Custo medido:** produção API ~**$1,14/1k linhas** (Opus+caching, modo padrão) → meia-maratona ~16k
+linhas ≈ **$18** uma vez. Caminho assinatura (o do usuário): sem conta de API; limite é ritmo
+(~15–25 janelas, incremental via `translation_status.json`). Ver `ch_11_03/calibration_report.md`.
+
+**Isolamento:** artefatos do 11_03 em `artifacts/ch_11_03/` — não tocam o build principal de 1025.
+Fold no build principal (merge approved + estender `SCENES`) fica opcional/quando desejado.
+**Revisão necessária:** não (rótulos pendentes de checagem in-game já sinalizados).
+
+
+---
+
+## Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)
+
+Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do "exemplo negativo"
+(bicho mole) com **duplo-sentido proposital**.
+
+**Decisões de tradução não-óbvias:**
+- **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2
+  sentidos: palhaçada + malícia). O mal-entendido (apresentador ecoa `...Sacanagem?` sem captar a
+  malícia) sobrevive 1:1. Cadeia da insinuação: `soft/hard`→`mole/duro`, `throbs`→`pulsa`,
+  `expands larger`→`incha cada vez mais` — deniável (descreve o bicho), como no EN.
+- **Trocadilho soft:** `Gooshy-soft`→`Mole-gelatina`, `WEAK-soft`→`mole-FRACO`, `wimpy`→`banana`.
+- **Chuuni:** `Ultimate justice slash!`→`Corte supremo da justiça!`, `fiend`→`verme`, `Taaake this!`→
+  `Tomaaa essa!` (alongamento preservado).
+- **Interjeições:** `H-Huh?`→`H-Hein?` (evita `Ha`=riso na transliteração), `Uh`→`Ahn`.
+
+**Descobertas técnicas (importantes pra escala):**
+1. **Tokens de cor `{c5}` / `{c-1}` / `{c-}`** aparecem em texto de UI (tutorial). Preservados
+   **verbatim**. *Pendência RESOLVIDA:* como o índice varia, NÃO cabem na lista literal — criado o
+   campo `project.json → formatting_token_patterns` (regex `\{c-?\d*\}`) que **realiza** os
+   placeholders abstratos `{COLOR}`/`{END}`. `validate.py` compara o multiset de ocorrências do
+   padrão source↔alvo (pega drop, troca de índice `{c5}`→`{c6}` e desbalanceamento); o
+   `strip_tokens` do `naturalness_lint.py` os remove pelo padrão; teste de regressão em
+   `connector/test_roundtrip.py` (`test_color_tokens_preserved_roundtrip`) trava o verbatim.
+   Varredura do binário: `{c5}`×11, `{c-1}`×10, `{c-}`×1 (só cor índice 5 em uso). *Pendência aberta:*
+   a família de timers `{W<N>}` é da mesma classe parametrizada (`{W12}`,`{W35}`,… no binário, só
+   `{W75}/{W80}/{W10}` catalogados como literais) — generalizar com o mesmo mecanismo na escala.
+2. **Linha HEAD-LESS:** a notificação de sistema `0x15d01` **não tem ponteiro `50 00`/`53 00`** — é
+   referenciada de outra forma. Logo **não é relocável**: só cabe **in_place**. A tradução estourou
+   62 bytes → caiu como **resíduo T4**; reescrita mais curta (drop "foi") p/ caber. Confirma que o
+   mecanismo T4 (encurtar o irredutível) é necessário mesmo com o Plano B.
+
+**Verificação:** round-trip byte-idêntico; 45/45 conferidas (file-aware, 6 sub-scripts); tiers
+T1=24/RELOC=21; resíduo T4=0; 0 ponteiro fora-do-arquivo; back-translation 12 high → 0 revisão
+(duplo-sentido confirmado); naturalness_lint limpo; pytest 29/29.
+
+**Ferramentas genéricas (reúso na meia-maratona):** `connector/build_plan_chapter.py` e
+`verify_chapter.py` — parametrizados por `ch_<cena>/`, file-aware, sem work-text. Substituem os
+scripts one-off por-capítulo. **Revisão necessária:** não.

@@ -21,10 +21,15 @@ Os control codes são armazenados como **tokens ASCII literais** dentro da próp
 {W75}  -> literal "{W75}"   (5 bytes ASCII)
 {W80}  -> literal "{W80}"
 {W10}  -> literal "{W10}"
-{COLOR}-> literal "{COLOR}"
-{END}  -> literal "{END}"
+{c<N>} -> literal "{c5}", ...   (abre cor; N varia — token PARAMETRIZADO)
+{c-1}  -> literal "{c-1}"        (fecha/reset cor)
+{c-}   -> literal "{c-}"         (fecha/reset cor, forma curta)
 \n     -> literal "\n"       (2 bytes ASCII: 0x5C 0x6E)
 ```
+
+Os tokens de cor são PARAMETRIZADOS (índice variável) → não cabem na lista literal `formatting_tokens`;
+catalogados via `project.json → formatting_token_patterns` (regex `\{c-?\d*\}`). Realizam os
+placeholders abstratos `{COLOR}` (abre) / `{END}` (fecha). `{W<N>}` (timers) é da mesma classe.
 
 ## SEÇÃO 3 — TERMINADORES E ESTRUTURA
 
