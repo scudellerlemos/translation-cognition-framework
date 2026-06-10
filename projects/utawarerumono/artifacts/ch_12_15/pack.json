@@ -1,0 +1,1188 @@
+{
+  "scene": "ch_12_15",
+  "sfx": "12_15",
+  "n_lines": 95,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Maroro",
+      "category": "Personagem",
+      "target_translation": "Maroro",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Erudito/escriba/mago comico e franzino do grupo do Ukon (cap.12); magia de fogo com cantico+danca longos. Fala em registro ARCAICO e comico (pleaseth/mine own; gag de cicio s->sh). Gruda no Haku como 'benfeitor'."
+    },
+    {
+      "term": "Master",
+      "category": "Cultural",
+      "target_translation": "Mestre",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorifico (Maroro -> 'Master Ukon' = 'Mestre Ukon'). Traduzir."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Hah... hah... phew...",
+      "target": "Hah... hah... ufa...",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I thought this whole thing was supposed to make me\\n",
+      "target": "Achei que essa coisa toda era pra me deixar\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "stronger while I sleep. So why am I so tired?",
+      "target": "mais forte enquanto dormia. Por que estou tão cansado?",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Not to mention how realistic that was. I thought\\n",
+      "target": "Sem falar como aquilo foi real. Achei que\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I was going to die there.",
+      "target": "ia morrer lá dentro.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Amplified. Double the trouble.",
+      "target": "Amplificado. O dobro do problema.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "The amount of exertion required is increased.\\n",
+      "target": "O esforço exigido é aumentado.\\n",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Your fatigue should feel about three times more\\n",
+      "target": "Sua fadiga deve parecer cerca de três vezes maior\\n",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "than normal.",
+      "target": "que o normal.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "What!?",
+      "target": "O quê!?",
+      "speaker": "Haku",
+      "from_scene": "12_03"
+    },
+    {
+      "source": "You will feel as fresh as a pile of mud.",
+      "target": "Você vai se sentir fresco como um monte de lama.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "...When you awaken, I am sure you will feel equal\\n",
+      "target": "...Ao despertar, tenho certeza que sentirá\\n",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "parts fatigue and intense accomplishment.",
+      "target": "partes iguais de fadiga e intensa realização.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Wh--Hold on, what's that even supposed to mean?\\n",
+      "target": "Es-- Calma, o que isso quer dizer afinal?\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I'm calling it here. Abort! Abort!",
+      "target": "Eu cancelo isso. Aborta! Aborta!",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Not possible.",
+      "target": "Impossível.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I am afraid you will have to overcome all the\\n",
+      "target": "Receio que você tenha que superar todos os\\n",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "trials before you can awaken.",
+      "target": "desafios antes de poder despertar.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "We forgot to mention, but the line between dream\\n",
+      "target": "Esquecemos de mencionar, mas a linha entre sonho\\n",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "and reality can often blur. Please use caution.",
+      "target": "e realidade pode se confundir. Por favor, tome cuidado.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Wh-What exactly do you mean by that?",
+      "target": "O-O que exatamente quer dizer com isso?",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "If you believe that you die within your dream.",
+      "target": "Se acreditar que morreu dentro do seu sonho.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "You will kick the bucket in reality, as well.",
+      "target": "Você vai bater as botas na realidade também.",
+      "speaker": "Homem",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "The HELL!?",
+      "target": "Que MERDA!?",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "gake_parts",
+      "target": "gake_parts",
+      "speaker": "SYSTEM",
+      "from_scene": "12_14"
+    },
+    {
+      "source": "All right! Now we just wait for Kuon to get back,\\n",
+      "target": "Certo! Agora é só esperar a Kuon voltar,\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "and... {W230}Huh?",
+      "target": "e... {W230}Hein?",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Here's my grand entrance!\\n",
+      "target": "Minha entrada triunfal!\\n",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Did I keep you waiting, Haku?",
+      "target": "Te fiz esperar, Haku?",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "...Well, how do I put it...",
+      "target": "...Bom, como eu poderia dizer...",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "We can talk later. Looks like naptime's over.",
+      "target": "Conversa depois. Parece que o cochilo acabou.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Damn, it's persistent. Maroro, it's up to you!",
+      "target": "Droga, ele insiste. Maroro, depende de você!",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Drop it straight down. Your guest is just\\n",
+      "target": "Joga reto pra baixo. Seu convidado está\\n",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "nearby.",
+      "target": "perto.",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "W-We shall not fail!",
+      "target": "N-Não falharemos!",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "NOW, Maroro!",
+      "target": "AGORA, Maroro!",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "We did it...",
+      "target": "Conseguimos...",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Leg_2_B_L",
+      "target": "Leg_2_B_L",
+      "speaker": "SYSTEM",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Leg_2_B_R",
+      "target": "Leg_2_B_R",
+      "speaker": "SYSTEM",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "The game is over, I think. Are you hurt, Haku?",
+      "target": "Acabou, acho. Está machucado, Haku?",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "No, but never mind me. Are you OK?",
+      "target": "Não, mas deixa eu de lado. Você está bem?",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I'm fine. I did say I was good at running,\\n",
+      "target": "Estou bem. Eu disse que era boa em correr,\\n",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "didn't I?",
+      "target": "não disse?",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Good grief, missy. Teasing a beastie like that\\n",
+      "target": "Puxa vida, moça. Provocar uma fera desse jeito\\n",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "all the way out here... You really are somethin'.",
+      "target": "aqui fora... Você é demais mesmo.",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "It's over...",
+      "target": "Acabou...",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Yeah, it's over all right.",
+      "target": "É, acabou de vez.",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "...Gah, I need a nap.",
+      "target": "...Ah, preciso dormir.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I sag to the ground in sheer relief.",
+      "target": "Afundo no chão de puro alívio.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "M-Master Haku, have we won the day?\\n",
+      "target": "M-Mestre Haku, triunfamos neste dia?\\n",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "O-Our lives are yet our own!?",
+      "target": "N-Nossas vidas ainda são nossas!?",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Yeah, it's over now. So you can quit clinging\\n",
+      "target": "É, acabou. Então para de ficar se\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "to me so much!",
+      "target": "agarrando em mim!",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "The day is ours! Oh, the day is OURS, Master Haku!",
+      "target": "A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "All right, I got it, so just... get off me...",
+      "target": "Tá bom, entendi, então... sai de cima de mim...",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Let's head back, Haku. There'll be a feast\\n",
+      "target": "Vamos voltar, Haku. Vai ter uma festa\\n",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "waiting... Fine drink, fine delicacies, and\\n",
+      "target": "esperando... Boa bebida, boas iguarias e\\n",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "a hot bath.",
+      "target": "banho quente.",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Even with us all injured and battered, something\\n",
+      "target": "Mesmo todos feridos e exaustos, algo\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "joyful surges inside all of us at Kuon's words.",
+      "target": "jubiloso surge em nós todos com as palavras de Kuon.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Joyous shouts fill the air, and resolve into\\n",
+      "target": "Gritos de alegria enchem o ar e se transformam em\\n",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "roars of triumph.",
+      "target": "rugidos de triunfo.",
+      "speaker": "Haku",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Eyes up, kid! We're not done yet!",
+      "target": "Atenção, garoto! Ainda não acabou!",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "O, what unhappy tenacity! ",
+      "target": "Ó, que infeliz tenacidade!",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "Sorry, but this is the end!",
+      "target": "Desculpe, mas é aqui que acaba!",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "...She's here!",
+      "target": "...Ela chegou!",
+      "speaker": "Ukon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "I'm back. Haku, are you hurt or anything?",
+      "target": "Voltei. Haku, está machucado?",
+      "speaker": "Kuon",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "M-Master Haku, have we won the day? O-Our lives\\n",
+      "target": "M-Mestre Haku, triunfamos neste dia? N-Nossas vidas\\n",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    },
+    {
+      "source": "are yet our own!?",
+      "target": "ainda são nossas!?",
+      "speaker": "Maroro",
+      "from_scene": "12_15"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Haku",
+      "source": "Geez...! Too bright out here...",
+      "target": "Aff...! Claridade demais aqui fora..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Well, guess the sun still rises no matter where\\n",
+      "target": "Enfim, o sol nasce em qualquer lugar, pelo visto\\n"
+    },
+    {
+      "speaker": "Haku",
+      "source": "I am. Still... What am I supposed to do now...?",
+      "target": "Pois é. Mesmo assim... O que é que eu faço agora...?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Where... am I?",
+      "target": "Onde... estou?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "No one else around, or...?",
+      "target": "Não tem ninguém... ou...?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Unh... urgh...",
+      "target": "Nnh... argh..."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0x4a4f3",
+      "source": "Hah... hah... phew...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x4a509",
+      "source": "I thought this whole thing was supposed to make me\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x4a53e",
+      "source": "stronger while I sleep. So why am I so tired?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4a56c",
+      "source": "Not to mention how realistic that was. I thought\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4a59f",
+      "source": "I was going to die there.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x4a5b9",
+      "source": "Amplified. Double the trouble.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x4a5d8",
+      "source": "The amount of exertion required is increased.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4a608",
+      "source": "Your fatigue should feel about three times more\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4a63a",
+      "source": "than normal.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4a647",
+      "source": "What!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x4a64e",
+      "source": "You will feel as fresh as a pile of mud.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x4a677",
+      "source": "...When you awaken, I am sure you will feel equal\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x4a6ab",
+      "source": "parts fatigue and intense accomplishment.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x4a6d5",
+      "source": "Wh--Hold on, what's that even supposed to mean?\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4a707",
+      "source": "I'm calling it here. Abort! Abort!",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x4a72a",
+      "source": "Not possible.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x4a738",
+      "source": "I am afraid you will have to overcome all the\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4a768",
+      "source": "trials before you can awaken.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x4a786",
+      "source": "We forgot to mention, but the line between dream\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4a7b9",
+      "source": "and reality can often blur. Please use caution.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4a7e9",
+      "source": "Wh-What exactly do you mean by that?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x4a80e",
+      "source": "If you believe that you die within your dream.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x4a83d",
+      "source": "You will kick the bucket in reality, as well.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4a86b",
+      "source": "The HELL!?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x4bef3",
+      "source": "gake_parts",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x4beff",
+      "source": "All right! Now we just wait for Kuon to get back,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x4bf33",
+      "source": "and... {W230}Huh?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x4bf45",
+      "source": "Here's my grand entrance!\\n",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x4bf61",
+      "source": "Did I keep you waiting, Haku?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x4bf7f",
+      "source": "...Well, how do I put it...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x4bf9b",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x4bfa3",
+      "source": "We can talk later. Looks like naptime's over.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4bfd1",
+      "source": "Damn, it's persistent. Maroro, it's up to you!",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x4c000",
+      "source": "Drop it straight down. Your guest is just\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x4c02c",
+      "source": "nearby.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x4c034",
+      "source": "W-We shall not fail!",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x4c049",
+      "source": "NOW, Maroro!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4c056",
+      "source": "We did it...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4c063",
+      "source": "Leg_2_B_L",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4c06d",
+      "source": "Leg_2_B_R",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4c077",
+      "source": "The game is over, I think. Are you hurt, Haku?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x4c0a6",
+      "source": "No, but never mind me. Are you OK?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x4c0c9",
+      "source": "I'm fine. I did say I was good at running,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x4c0f6",
+      "source": "didn't I?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4c100",
+      "source": "Good grief, missy. Teasing a beastie like that\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x4c131",
+      "source": "all the way out here... You really are somethin'.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4c167",
+      "source": "It's over...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4c174",
+      "source": "Yeah, it's over all right.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x4c18f",
+      "source": "...Gah, I need a nap.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x4c1a5",
+      "source": "I sag to the ground in sheer relief.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x4c1ca",
+      "source": "M-Master Haku, have we won the day?\\n",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x4c1f0",
+      "source": "O-Our lives are yet our own!?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x4c20e",
+      "source": "Yeah, it's over now. So you can quit clinging\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4c23e",
+      "source": "to me so much!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x4c24d",
+      "source": "The day is ours! Oh, the day is OURS, Master Haku!",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4c280",
+      "source": "All right, I got it, so just... get off me...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4c2ae",
+      "source": "Let's head back, Haku. There'll be a feast\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x4c2db",
+      "source": "waiting... Fine drink, fine delicacies, and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4c309",
+      "source": "a hot bath.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x4c315",
+      "source": "Even with us all injured and battered, something\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4c348",
+      "source": "joyful surges inside all of us at Kuon's words.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4c378",
+      "source": "Joyous shouts fill the air, and resolve into\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x4c3a7",
+      "source": "roars of triumph.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x4da0e",
+      "source": "gake_parts",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x4da1a",
+      "source": "NOW, Maroro!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4da27",
+      "source": "We did it...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4da34",
+      "source": "Eyes up, kid! We're not done yet!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x4da56",
+      "source": "O, what unhappy tenacity! ",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x4da71",
+      "source": "Sorry, but this is the end!",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x4da8d",
+      "source": "...She's here!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x4da9c",
+      "source": "Leg_2_B_L",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4daa6",
+      "source": "Leg_2_B_R",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4dab0",
+      "source": "I'm back. Haku, are you hurt or anything?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x4dada",
+      "source": "No, but never mind me. Are you OK?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x4dafd",
+      "source": "I'm fine. I did say I was good at running,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x4db2a",
+      "source": "didn't I?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x4db34",
+      "source": "Good grief, missy. Teasing a beastie like that\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x4db65",
+      "source": "all the way out here... You really are somethin'.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4db9b",
+      "source": "It's over...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x4dba8",
+      "source": "Yeah, it's over all right.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x4dbc3",
+      "source": "...Gah, I need a nap.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x4dbd9",
+      "source": "I sag to the ground in sheer relief.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x4dbfe",
+      "source": "M-Master Haku, have we won the day? O-Our lives\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4dc30",
+      "source": "are yet our own!?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x4dc42",
+      "source": "Yeah, it's over now. So you can quit clinging\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4dc72",
+      "source": "to me so much!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x4dc81",
+      "source": "The day is ours! Oh, the day is OURS, Master Haku!",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4dcb4",
+      "source": "All right, I got it, so just... get off me...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4dce2",
+      "source": "Let's head back, Haku. There'll be a feast\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x4dd0f",
+      "source": "waiting... Fine drink, fine delicacies, and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x4dd3d",
+      "source": "a hot bath.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x4dd49",
+      "source": "Even with us all injured and battered, something\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x4dd7c",
+      "source": "joyful surges inside all of us at Kuon's words.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x4ddac",
+      "source": "Joyous shouts fill the air, and resolve into\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x4dddb",
+      "source": "roars of triumph.",
+      "byte_budget": 17
+    }
+  ]
+}

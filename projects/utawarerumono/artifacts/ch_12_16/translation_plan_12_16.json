@@ -1,0 +1,2842 @@
+{
+  "scene_group": "12_16",
+  "lines": [
+    {
+      "offset": "0x4f047",
+      "text_source": "Here's to our victory, men! Cheers!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, festivo",
+      "intent": "brinde à vitória",
+      "risk_level": "low",
+      "base_translation": "Pela nossa vitória, rapazes! Saúde!",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f06b",
+      "text_source": "Ukon's Cohort",
+      "speaker": "SISTEMA",
+      "entities_present": [
+        "SISTEMA"
+      ],
+      "tone_register": "UI",
+      "intent": "rótulo de grupo",
+      "risk_level": "low",
+      "base_translation": "Coorte do Ukon",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f079",
+      "text_source": "Cheeeeers!",
+      "speaker": "Grupo",
+      "entities_present": [
+        "Grupo"
+      ],
+      "tone_register": "festivo",
+      "intent": "resposta ao brinde",
+      "risk_level": "low",
+      "base_translation": "Saúúúúde!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f084",
+      "text_source": "The inn's dining hall fills with laughter and\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "descritivo",
+      "intent": "descrever o ambiente da sala de jantar",
+      "risk_level": "low",
+      "base_translation": "A sala de jantar da estalagem se enche de risos e\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f0b4",
+      "text_source": "jovial chatter, giving it a pleasant ambience.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "descritivo",
+      "intent": "continuar descrição do ambiente",
+      "risk_level": "low",
+      "base_translation": "conversa animada, criando um ambiente agradável.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f0e3",
+      "text_source": "After the Tatari arrived...",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "mencionar chegada do Tatari",
+      "risk_level": "low",
+      "base_translation": "Depois que o Tatari chegou...",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f0ff",
+      "text_source": "Once it digested the body of the Boro-Gigiri, it\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever o que o Tatari fez ao corpo do Boro-Gigiri",
+      "risk_level": "low",
+      "base_translation": "Depois de digerir o corpo do Boro-Gigiri, ele\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f132",
+      "text_source": "quietly slunk away back into its cave.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Tatari recuou para a caverna",
+      "risk_level": "low",
+      "base_translation": "recuou silenciosamente para a sua caverna.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f159",
+      "text_source": "From what I've been told, they're loath to come out\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "explicar comportamento do Tatari",
+      "risk_level": "low",
+      "base_translation": "Pelo que me disseram, eles não gostam de sair\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f18f",
+      "text_source": "of their pits, so we shouldn't have to worry.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "concluir que não há mais perigo",
+      "risk_level": "low",
+      "base_translation": "das tocas, então não precisamos nos preocupar.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f1bd",
+      "text_source": "And Ukon's company cleaned up the rest of the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Coorte limpou o restante dos gigiri",
+      "risk_level": "low",
+      "base_translation": "E a companhia do Ukon eliminou o restante dos\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f1ed",
+      "text_source": "gigiri, so...",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "concluir o relato",
+      "risk_level": "low",
+      "base_translation": "gigiri, então...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f1fb",
+      "text_source": "Travelers can use that mountain pass without any\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "passo livre para viajantes",
+      "risk_level": "low",
+      "base_translation": "Agora os viajantes podem usar a passagem da\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f22e",
+      "text_source": "danger, now.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo",
+      "intent": "conclusão: sem perigo",
+      "risk_level": "medium",
+      "base_translation": "sem perigo.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 12 bytes sem acento; encurtado."
+    },
+    {
+      "offset": "0x4f23b",
+      "text_source": "Innkeeper",
+      "speaker": "SISTEMA",
+      "entities_present": [
+        "SISTEMA"
+      ],
+      "tone_register": "UI",
+      "intent": "rótulo de falante",
+      "risk_level": "medium",
+      "base_translation": "Estalaj.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 9: 'Estalajadeira' transliterado = 13 bytes; encurtado para 'Estalaj.'"
+    },
+    {
+      "offset": "0x4f245",
+      "text_source": "Come now, drink up.",
+      "speaker": "Estalajadeira",
+      "entities_present": [
+        "Estalajadeira"
+      ],
+      "tone_register": "informal, acolhedor",
+      "intent": "incentivar a beber",
+      "risk_level": "low",
+      "base_translation": "Vai, vai, beba mais.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f259",
+      "text_source": "Phew...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, relaxado",
+      "intent": "exalar satisfação",
+      "risk_level": "low",
+      "base_translation": "Ufa...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f261",
+      "text_source": "It's nice to drink and relax like this.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "apreciar o momento de descanso",
+      "risk_level": "low",
+      "base_translation": "É bom beber e relaxar assim.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f289",
+      "text_source": "Upon hearing of our victory, the innkeeper broke\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever generosidade da estalajadeira",
+      "risk_level": "low",
+      "base_translation": "Ao saber da nossa vitória, a estalajadeira abriu\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f2bc",
+      "text_source": "out some of her best sake to share with everyone.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "continuar descrição do sake compartilhado",
+      "risk_level": "low",
+      "base_translation": "o melhor saquê dela para compartilhar com todos.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f2ee",
+      "text_source": "I had to water it down to be able to drink it.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, casual",
+      "intent": "explicar que diluiu o sake",
+      "risk_level": "low",
+      "base_translation": "Tive que diluir para conseguir beber.\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f31f",
+      "text_source": "It's good straight, yeah, but I shouldn't get\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "comentar sobre beber puro",
+      "risk_level": "low",
+      "base_translation": "Puro é bom, claro, mas não quero\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f34f",
+      "text_source": "wasted.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal",
+      "intent": "conclusão: evitar ficar bêbado",
+      "risk_level": "medium",
+      "base_translation": "abusar.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 7 bytes; encurtado ao máximo."
+    },
+    {
+      "offset": "0x4f357",
+      "text_source": "It's got a peculiar flavor, but it's not bad.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, reflexivo",
+      "intent": "comentar sabor peculiar do sake",
+      "risk_level": "low",
+      "base_translation": "Tem um gosto peculiar, mas não é ruim.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f387",
+      "text_source": "Just... distinct.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "concluir impressão sobre o sake",
+      "risk_level": "low",
+      "base_translation": "Só... diferente.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f399",
+      "text_source": "I wash down a bite of amamunii with the sake as\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, casual",
+      "intent": "descrever comer e observar a multidão",
+      "risk_level": "low",
+      "base_translation": "Tomo um gole de saquê com um pedaço de amamunii\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f3cb",
+      "text_source": "I watch the crowd.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo",
+      "intent": "observar a multidão",
+      "risk_level": "medium",
+      "base_translation": "enquanto vejo a festa.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 18: 'enquanto observo a multidao.' = 28 bytes; encurtado"
+    },
+    {
+      "offset": "0x4f3e2",
+      "text_source": "Meanwhile, Kuon has been sitting next to me staring\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "apresentar Kuon calada ao lado",
+      "risk_level": "low",
+      "base_translation": "Enquanto isso, Kuon está sentada ao meu lado encarando\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f418",
+      "text_source": "into her cup, not saying a word.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "detalhe de Kuon sem falar nada",
+      "risk_level": "low",
+      "base_translation": "o copo sem dizer uma palavra.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f439",
+      "text_source": "What's wrong? Not to your liking?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, curioso",
+      "intent": "perguntar se algo está errado com a bebida",
+      "risk_level": "low",
+      "base_translation": "O que foi? Não está do seu gosto?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f45b",
+      "text_source": "It's not that it's bad--a little strong, maybe,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual, levemente desapontado",
+      "intent": "dizer que não é ruim, só forte",
+      "risk_level": "low",
+      "base_translation": "Não é que seja ruim — é um pouco forte, talvez,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f48d",
+      "text_source": "but...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual",
+      "intent": "hesitar antes de completar",
+      "risk_level": "low",
+      "base_translation": "mas...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f494",
+      "text_source": "At a time like this, it'd be nice to have some\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "nostálgico, casual",
+      "intent": "preferir hidromel",
+      "risk_level": "low",
+      "base_translation": "Numa hora dessas, seria bom ter um\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f4c5",
+      "text_source": "mead around.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "nostálgico",
+      "intent": "mencionar hidromel",
+      "risk_level": "medium",
+      "base_translation": "hidromel.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 12: 'hidromel aqui.' = 13 sem acento; encurtado para 'hidromel.'"
+    },
+    {
+      "offset": "0x4f4d2",
+      "text_source": "Despite her disappointed tone, Kuon goes on eating\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, levemente cômico",
+      "intent": "mostrar que Kuon come e bebe bem mesmo assim",
+      "risk_level": "low",
+      "base_translation": "Apesar do tom desapontado, Kuon continua comendo\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f507",
+      "text_source": "and drinking heartily all the same.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "continuar descrição de Kuon",
+      "risk_level": "low",
+      "base_translation": "e bebendo com apetite mesmo assim.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f52b",
+      "text_source": "Hey, you kids drinkin' up?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, animado",
+      "intent": "checar se os jovens estão bebendo",
+      "risk_level": "low",
+      "base_translation": "E aí, molecada, tão bebendo?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f546",
+      "text_source": "Ukon makes his way over with a particularly...\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever Ukon se aproximando com copo enorme e rosto vermelho",
+      "risk_level": "low",
+      "base_translation": "Ukon se aproxima com um copo particularmente...\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f577",
+      "text_source": "intimidatingly sized cup, his face already red.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "detalhe do copo e do rosto vermelho",
+      "risk_level": "low",
+      "base_translation": "intimidadoramente grande, o rosto já vermelho.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f5a7",
+      "text_source": "C'mon, why don't you join us instead of lurking in\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, festivo",
+      "intent": "chamar os jovens para se juntar ao grupo",
+      "risk_level": "low",
+      "base_translation": "Vamos, por que não se juntam a nós em vez de ficar\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f5dc",
+      "text_source": "the corner over here?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "continuar o convite",
+      "risk_level": "low",
+      "base_translation": "encostados nesse canto?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f5f2",
+      "text_source": "You're the stars of this party, after all. Nothing\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, animado",
+      "intent": "ressaltar que são os heróis da festa",
+      "risk_level": "low",
+      "base_translation": "Vocês são as estrelas da festa, afinal. Nada\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f627",
+      "text_source": "wrong with soaking in the attention a little, huh?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "encorajar a aproveitar a atenção",
+      "risk_level": "low",
+      "base_translation": "demais em curtir um pouco a atenção, né?",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f65a",
+      "text_source": "I'll pass. I'm not too eager to sit in the middle\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "direto, descontraído",
+      "intent": "recusar ficar no meio da multidão",
+      "risk_level": "low",
+      "base_translation": "Vou passar. Não estou muito afim de ficar no meio\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f68e",
+      "text_source": "of a crowd of sweaty guys.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "direto",
+      "intent": "completar a recusa",
+      "risk_level": "low",
+      "base_translation": "de um bando de caras suados.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f6a9",
+      "text_source": "Same here. I'm... not really a crowd person.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "concordar com Kuon",
+      "risk_level": "low",
+      "base_translation": "Mesma coisa. Não sou muito de multidão.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f6d6",
+      "text_source": "Ahahaha! You really are something, y'know that,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, divertido",
+      "intent": "rir e elogiar Haku pelo plano",
+      "risk_level": "low",
+      "base_translation": "Ahahaha! Você é demais, sabia,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f708",
+      "text_source": "kid? Your plan went off without a hitch!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, elogioso",
+      "intent": "elogiar execução do plano",
+      "risk_level": "low",
+      "base_translation": "garoto? Seu plano saiu redondo!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f731",
+      "text_source": "That... really wasn't enough to call a \"plan.\"\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "modesto, casual",
+      "intent": "minimizar o próprio plano",
+      "risk_level": "medium",
+      "base_translation": "Aquilo... não foi bem o que se chama de um \"plano\".\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Haku modest — preservar tom sem soar falso."
+    },
+    {
+      "offset": "0x4f762",
+      "text_source": "I was playing things pretty off-the-cuff.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, modesto",
+      "intent": "dizer que improvisou",
+      "risk_level": "low",
+      "base_translation": "Estava improvisando bastante.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f78c",
+      "text_source": "That's just fine.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, encorajador",
+      "intent": "dizer que está tudo bem assim mesmo",
+      "risk_level": "low",
+      "base_translation": "Não tem problema.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f79e",
+      "text_source": "You came up with it under pressure and executed,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, elogioso",
+      "intent": "elogiar capacidade de agir sob pressão",
+      "risk_level": "low",
+      "base_translation": "Você pensou sob pressão e executou,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f7d1",
+      "text_source": "and got results. It's impressive, staying cool\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, elogioso",
+      "intent": "continuar elogio sobre manter a calma",
+      "risk_level": "low",
+      "base_translation": "e teve resultado. É impressionante manter a calma\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f802",
+      "text_source": "like that.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "concluir elogio",
+      "risk_level": "low",
+      "base_translation": "assim.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f80d",
+      "text_source": "Most guys in your situation would've buckled or\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "dizer que maioria quebraria sob pressão",
+      "risk_level": "low",
+      "base_translation": "A maioria na sua situação teria travado ou\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f83f",
+      "text_source": "panicked, not scheme a way out.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "elogioso",
+      "intent": "não teria saído da situação",
+      "risk_level": "medium",
+      "base_translation": "em vez de tramar uma saída.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 31 bytes sem acento; encurtado."
+    },
+    {
+      "offset": "0x4f85f",
+      "text_source": "You're overpraising me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "modesto",
+      "intent": "achar que está sendo elogiado demais",
+      "risk_level": "medium",
+      "base_translation": "Você me elogia demais.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 23: 'Você me elogia demais.' = 22 bytes sem acento, ok"
+    },
+    {
+      "offset": "0x4f877",
+      "text_source": "I don't know if you're being modest or this is just\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, caloroso",
+      "intent": "dizer que está gostando mais de Haku",
+      "risk_level": "low",
+      "base_translation": "Não sei se você é modesto ou é assim mesmo, mas\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f8ad",
+      "text_source": "how you are, but I'm liking you more an' more.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, caloroso",
+      "intent": "continuar expressão de apreço",
+      "risk_level": "low",
+      "base_translation": "tô gostando cada vez mais de você.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f8dc",
+      "text_source": "Though, hey, full disclosure--I admit I was pretty\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, direto",
+      "intent": "admitir preocupação com o cansaço de Haku na subida",
+      "risk_level": "low",
+      "base_translation": "Mas, bom, sendo honesto — admito que fiquei bem\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f911",
+      "text_source": "worried by how much the hike wore you out.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar admissão de preocupação",
+      "risk_level": "low",
+      "base_translation": "preocupado com o quanto a subida te esgotou.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f93c",
+      "text_source": "Guh... Not like I have a leg to stand on with that.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "auto-depreciativo, cômico",
+      "intent": "admitir que não tem argumento contra isso",
+      "risk_level": "low",
+      "base_translation": "Guh... Não tenho nem como rebater isso.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f970",
+      "text_source": "And you shone back there, too, missy.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, elogioso",
+      "intent": "elogiar Kuon também",
+      "risk_level": "low",
+      "base_translation": "E você também arrasou lá, mocinha.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f996",
+      "text_source": "Me?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpreso, breve",
+      "intent": "reação de surpresa",
+      "risk_level": "low",
+      "base_translation": "Eu?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f99a",
+      "text_source": "Yeah. If you hadn't lured that Tatari out of its\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, elogioso",
+      "intent": "reconhecer mérito de Kuon em atrair o Tatari",
+      "risk_level": "low",
+      "base_translation": "É. Se você não tivesse atraído o Tatari para fora\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f9cd",
+      "text_source": "lair, it all would've been for nothing.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar o elogio",
+      "risk_level": "low",
+      "base_translation": "da toca, teria sido tudo de graça.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4f9f5",
+      "text_source": "I didn't think you'd actually pull it off!\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, surpreso",
+      "intent": "admitir que não achava que ela faria",
+      "risk_level": "low",
+      "base_translation": "Não achei que você fosse realmente conseguir!\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fa22",
+      "text_source": "Color me surprised you did something so\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, impressionado",
+      "intent": "expressar surpresa com a ousadia",
+      "risk_level": "low",
+      "base_translation": "Me surpreendeu você ter feito algo tão\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fa4c",
+      "text_source": "reckless.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "concluir o comentário",
+      "risk_level": "low",
+      "base_translation": "arriscado.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fa56",
+      "text_source": "Honestly, when you came up with that plan, I thought\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, cômico",
+      "intent": "revelar que achou que era piada",
+      "risk_level": "low",
+      "base_translation": "Honestamente, quando você propôs esse plano, pensei\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fa8d",
+      "text_source": "you were joking to lighten the mood.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "bem-humorado",
+      "intent": "continuar — achava que era brincadeira",
+      "risk_level": "medium",
+      "base_translation": "que estava brincando pra aliviar o clima.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 36: encurtado 'que estava brincando para aliviar o clima.'"
+    },
+    {
+      "offset": "0x4fab2",
+      "text_source": "Was it that reckless?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual, curioso",
+      "intent": "questionar se era tão arriscado assim",
+      "risk_level": "low",
+      "base_translation": "Era tão arriscado assim?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fac8",
+      "text_source": "C'mon, now. If I'd told you to do what she did,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, retórico",
+      "intent": "perguntar a Haku se ele conseguiria fazer o mesmo",
+      "risk_level": "low",
+      "base_translation": "Vamos lá. Se eu tivesse te pedido para fazer o que\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fafa",
+      "text_source": "would you be able to carry out that order?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar a pergunta retórica",
+      "risk_level": "low",
+      "base_translation": "ela fez, você conseguiria cumprir a ordem?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fb25",
+      "text_source": "No, I'd tell you it's impossible...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "honesto, casual",
+      "intent": "admitir que diria ser impossível",
+      "risk_level": "low",
+      "base_translation": "Não, eu diria que é impossível...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fb49",
+      "text_source": "Kuon having to pull me along the first time we ran\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, cômico",
+      "intent": "lembrar de Kuon o puxando na corrida",
+      "risk_level": "low",
+      "base_translation": "Kuon tendo que me puxar na primeira vez que\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fb7e",
+      "text_source": "rises in my mind.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo",
+      "intent": "continuar memória",
+      "risk_level": "medium",
+      "base_translation": "vez me vem à mente.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 17: encurtado para 'vez me vem à mente.'"
+    },
+    {
+      "offset": "0x4fb90",
+      "text_source": "I sure as hell couldn't run like that, that's for\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "auto-depreciativo",
+      "intent": "admitir que não conseguiria correr assim",
+      "risk_level": "low",
+      "base_translation": "Com certeza não conseguiria correr daquele jeito,\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fbc4",
+      "text_source": "sure.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "conclusivo",
+      "intent": "confirmação",
+      "risk_level": "medium",
+      "base_translation": "não.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 5 bytes; encurtado ao máximo."
+    },
+    {
+      "offset": "0x4fbca",
+      "text_source": "Ahaha, I'm just a little nimble, that's all.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "modesto, casual",
+      "intent": "minimizar sua agilidade",
+      "risk_level": "low",
+      "base_translation": "Ahaha, sou só um pouco ágil, nada mais.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fbf7",
+      "text_source": "I see. We'll leave it at that, I guess.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, encerrando",
+      "intent": "aceitar e encerrar o assunto",
+      "risk_level": "low",
+      "base_translation": "Entendo. Vamos deixar assim, então.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fc1f",
+      "text_source": "Anyway! The gigiri extermination was a success\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, animado",
+      "intent": "concluir que a missão foi um sucesso graças aos dois",
+      "risk_level": "low",
+      "base_translation": "Enfim! A extermina de gigiri foi um sucesso\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fc50",
+      "text_source": "thanks to you two joining us.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "grato",
+      "intent": "agradecer pela participação dos dois",
+      "risk_level": "medium",
+      "base_translation": "graças a vocês dois.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 29: encurtado 'graças a vocês dois.' = 18 bytes ok"
+    },
+    {
+      "offset": "0x4fc6e",
+      "text_source": "Please accept my gratitude.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "formal momentâneo, sincero",
+      "intent": "agradecer formalmente",
+      "risk_level": "low",
+      "base_translation": "Aceitem minha gratidão.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fc8a",
+      "text_source": "Ukon bows deeply.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "descritivo",
+      "intent": "Ukon faz uma reverência profunda",
+      "risk_level": "medium",
+      "base_translation": "Ukon se curva fundo.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 17: 'Ukon se curva fundo.' = 17 bytes ok"
+    },
+    {
+      "offset": "0x4fc9c",
+      "text_source": "C'mon, you're giving us too much credit...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "desconfortável, modesto",
+      "intent": "dizer que estão dando crédito demais",
+      "risk_level": "low",
+      "base_translation": "Ah, tá exagerando no crédito...",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fcc7",
+      "text_source": "Friendsh, Yamatansh, COUNTRYmen! Exschlude your\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado, cômico",
+      "intent": "início do discurso bêbado de Maroro",
+      "risk_level": "high",
+      "base_translation": "Amigosh, Yamatansh, CONTERRANEOsh! Exsclúas vossas\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio (s→sh) + arcaísmo empolado. Preservar fonética e pompa."
+    },
+    {
+      "offset": "0x4fcf9",
+      "text_source": "DEARESHT Maroro nnnot from your rrrevelsh...\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado, arcaico",
+      "intent": "pedir para não ser excluído das celebrações",
+      "risk_level": "high",
+      "base_translation": "o vosso QUERIDO Maroro de vossas FESHTASH...\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 46: arcaísmo + cicio + corte. Encurtado."
+    },
+    {
+      "offset": "0x4fd28",
+      "text_source": "What SHAY ye?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado",
+      "intent": "pergunta dramática de inclusão",
+      "risk_level": "high",
+      "base_translation": "O que DISHEIS?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio e arcaísmo essenciais."
+    },
+    {
+      "offset": "0x4fd36",
+      "text_source": "Ha! And here's our other conquering hero.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, divertido",
+      "intent": "saudar Maroro como outro herói",
+      "risk_level": "low",
+      "base_translation": "Ha! E aqui está nosso outro herói conquistador.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fd60",
+      "text_source": "A white shadow, its face fast becoming a fearful\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, cômico",
+      "intent": "descrever Maroro bêbado se arrastando",
+      "risk_level": "low",
+      "base_translation": "Uma sombra branca, o rosto já ficando vermelho de\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fd93",
+      "text_source": "red, comes wriggling across toward us.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "continuar descrição de Maroro",
+      "risk_level": "low",
+      "base_translation": "medo, vem se arrastando em nossa direção.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fdba",
+      "text_source": "Oh ho HO! Dosht thou partake of mmmosht SHWEET\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado, eufórico",
+      "intent": "oferecer sake de forma empolada e bêbada",
+      "risk_level": "high",
+      "base_translation": "Oh ho HÓ! Participash tu da mmmaish DULCE\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio e arcaísmo. Preservar gag."
+    },
+    {
+      "offset": "0x4fdeb",
+      "text_source": "libations? Come, wet thy shpirit with SHMOOTHESHT\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado, arcaico",
+      "intent": "continuar oferta pomposa de bebida",
+      "risk_level": "high",
+      "base_translation": "libações? Vinde, molhai o sheu shpírito com o SHAQUÊ\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 51: encurtado mantendo cicio e arcaísmo."
+    },
+    {
+      "offset": "0x4fe1f",
+      "text_source": "sake.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado",
+      "intent": "mencionar o saquê",
+      "risk_level": "medium",
+      "base_translation": "sake.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 5: 'shaquê.' = 6 bytes transliterado — 'sake.' = 5"
+    },
+    {
+      "offset": "0x4fe25",
+      "text_source": "Urk. He reeks of booze...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, nojento",
+      "intent": "comentar o mau cheiro de bebida de Maroro",
+      "risk_level": "low",
+      "base_translation": "Urg. Ele fede a bebida...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fe3f",
+      "text_source": "Since he killed the bulk of the gigiri with his\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "explicar por que Maroro é tratado como herói",
+      "risk_level": "low",
+      "base_translation": "Como matou a maioria dos gigiri com sua\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fe71",
+      "text_source": "magic, Maroro's being hailed as a hero, too.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "confirmar status de herói de Maroro",
+      "risk_level": "low",
+      "base_translation": "magia, Maroro também é celebrado como herói.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fe9e",
+      "text_source": "He's being poured drink after drink, and keeps\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, cômico",
+      "intent": "descrever Maroro recebendo drinques sem parar",
+      "risk_level": "low",
+      "base_translation": "Ficam enchendo o copo dele sem parar, e ele\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4fecf",
+      "text_source": "accepting. Guy's already drunk as a fish.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, cômico",
+      "intent": "Maroro já bêbado como um gambá",
+      "risk_level": "medium",
+      "base_translation": "aceitando. Já está bêbado pra cachorro.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 41: 'aceitando. O cara ja esta bêbado pra cachorro.' = 43 sem acentos; encurtado"
+    },
+    {
+      "offset": "0x4fef9",
+      "text_source": "Accoladesh and bonush pay alike FLING themshelves\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado, arcaico",
+      "intent": "dizer que elogios e bônus caem no seu colo graças a Haku",
+      "risk_level": "high",
+      "base_translation": "Accolades e bônush CHOVEM sobre mim graças\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 51, fonte tem 1 \\n: manter exatamente 1 \\n. Arcaísmo+cicio. Encurtado."
+    },
+    {
+      "offset": "0x4ff2d",
+      "text_source": "upon my person thanksh to your aid! Nyoho HO!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado",
+      "intent": "agradecer mas minimizar contribuição própria",
+      "risk_level": "high",
+      "base_translation": "Grashaish, mash eu não fis bem... nada que",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio essencial."
+    },
+    {
+      "offset": "0x4ff5b",
+      "text_source": "Thanks, but I didn't really... do anything that\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "modesto, desconfortável",
+      "intent": "agradecer mas minimizar contribuição própria",
+      "risk_level": "low",
+      "base_translation": "Obrigado, mas eu não fiz bem... nada que\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4ff8d",
+      "text_source": "warrants a whole lot of praise.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "modesto",
+      "intent": "completar a minimização",
+      "risk_level": "low",
+      "base_translation": "mereça tanto elogio assim.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x4ffad",
+      "text_source": "Ah, ah, pray silence thy proteshts! Th'art SHUCH\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado, efusivo",
+      "intent": "mandar Haku calar os protestos",
+      "risk_level": "high",
+      "base_translation": "Ah, ah, shilênshio em tua proteshtash! Ésh TAO\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio + arcaísmo. Preservar pompa e fonética bêbada."
+    },
+    {
+      "offset": "0x4ffe0",
+      "text_source": "a hhhumble man, Mashter Haku, truuuuly.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado, arcaico",
+      "intent": "chamar Haku de humilde de forma pomposa",
+      "risk_level": "high",
+      "base_translation": "hhhhumilde, Mashtre Haku, de verrridade.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 39: encurtado mantendo cicio."
+    },
+    {
+      "offset": "0x50008",
+      "text_source": "Maroro prods my cheek with his finger. Please,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, cômico",
+      "intent": "Maroro cutucando o rosto de Haku com o dedo",
+      "risk_level": "low",
+      "base_translation": "Maroro cutucar minha bochecha com o dedo. Por favor,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50039",
+      "text_source": "please leave me alone.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Haku pedindo para ser deixado em paz",
+      "risk_level": "low",
+      "base_translation": "me deixa em paz.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50050",
+      "text_source": "ForSHOOTH, thou nnnnurshed me to health through\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado, melodramático",
+      "intent": "declarar amizade e cuidados de Haku",
+      "risk_level": "high",
+      "base_translation": "De FATO, tu mme cuidashte e me devolveshte à shaúde\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio + arcaísmo. Foneticamente bêbado."
+    },
+    {
+      "offset": "0x50082",
+      "text_source": "our journey'sh perils, and protected me from the\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado",
+      "intent": "continuar declaração de amizade",
+      "risk_level": "high",
+      "base_translation": "nos perigoish da jornada, e me protegehste doish\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio + arcaísmo."
+    },
+    {
+      "offset": "0x500b5",
+      "text_source": "loathshome gigiri.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "cômico, bêbado, arcaico",
+      "intent": "mencionar os gigiri repugnantes",
+      "risk_level": "high",
+      "base_translation": "nojoshos gigiri.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 18: encurtado mantendo cicio."
+    },
+    {
+      "offset": "0x500c8",
+      "text_source": "Thou art my BOSHOM friend, Mashter Haku.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico, bêbado, sentimental",
+      "intent": "declarar Haku como melhor amigo",
+      "risk_level": "high",
+      "base_translation": "Tu ésh meu ÍNTIMO amigo, Meshtre Haku.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Cicio + arcaísmo empolado."
+    },
+    {
+      "offset": "0x500f1",
+      "text_source": "Now I'm his \"bosom friend.\" Great. I've ascended\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, resignado",
+      "intent": "comentar sarcasticamente sobre ser 'íntimo amigo'",
+      "risk_level": "low",
+      "base_translation": "Agora sou seu \"íntimo amigo\". Ótimo. Subi\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50124",
+      "text_source": "the ranks in his eyes.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "continuar comentário sarcástico",
+      "risk_level": "low",
+      "base_translation": "de posto aos olhos dele.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5013b",
+      "text_source": "And now he's totally attached to me. Cripes.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, exasperado",
+      "intent": "Maroro grudou nele",
+      "risk_level": "medium",
+      "base_translation": "E agora ele grudou em mim. Que bom.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 44: encurtado. 'E agora ele grudou em mim. Que bom.' = 35 bytes sem acento"
+    },
+    {
+      "offset": "0x50168",
+      "text_source": "Hey, missy. Weren't you saying something about\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, casual",
+      "intent": "perguntar sobre planos de ir para a capital",
+      "risk_level": "low",
+      "base_translation": "Ei, mocinha. Você não estava falando em\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50199",
+      "text_source": "heading for the capital?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar a pergunta",
+      "risk_level": "low",
+      "base_translation": "ir para a capital?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x501b2",
+      "text_source": "Mm. We're planning to leave first thing tomorrow.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual, direto",
+      "intent": "confirmar plano de partir amanhã cedo",
+      "risk_level": "low",
+      "base_translation": "Sim. Planejamos partir logo cedo amanhã.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x501e4",
+      "text_source": "Meanwhile, Kuon and Ukon have moved on to a\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Kuon e Ukon mudam de assunto",
+      "risk_level": "low",
+      "base_translation": "Enquanto isso, Kuon e Ukon passaram a um\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50212",
+      "text_source": "completely different subject.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "continuar narração",
+      "risk_level": "low",
+      "base_translation": "assunto completamente diferente.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50230",
+      "text_source": "Hey. You two. Help me out, here.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "frustrado, casual",
+      "intent": "pedir ajuda por estar sendo ignorado",
+      "risk_level": "low",
+      "base_translation": "Ei. Vocês dois. Me ajudem aqui.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50251",
+      "text_source": "Gonna do more sightseeing while you're there?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, curioso",
+      "intent": "perguntar sobre turismo na capital",
+      "risk_level": "low",
+      "base_translation": "Vão fazer turismo também enquanto estiverem lá?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5027f",
+      "text_source": "There's that, but... it's more to find a job for\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual, explicativo",
+      "intent": "mencionar busca de emprego para Haku",
+      "risk_level": "low",
+      "base_translation": "Tem isso, mas... é mais para achar um emprego\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x502b2",
+      "text_source": "Haku, I think.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual",
+      "intent": "para Haku",
+      "risk_level": "medium",
+      "base_translation": "para Haku.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 14: 'para Haku.' = 10 bytes ok"
+    },
+    {
+      "offset": "0x502c1",
+      "text_source": "The kid, huh? So he's not your attendant after all?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, curioso",
+      "intent": "questionar se Haku não é o assistente de Kuon",
+      "risk_level": "low",
+      "base_translation": "O garoto, hein? Então ele não é seu assistente?",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x502f5",
+      "text_source": "Wh--Who's an attendant? She's taking care of me\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, casual",
+      "intent": "negar ser assistente e explicar a situação",
+      "risk_level": "low",
+      "base_translation": "Co-- Quem é assistente? Ela está cuidando de mim\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50327",
+      "text_source": "because I was an AMNESIAC LOST IN THE MOUNTAINS.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado",
+      "intent": "explicar que tinha amnésia perdido nas montanhas",
+      "risk_level": "low",
+      "base_translation": "porque eu estava AMNÉSICO PERDIDO NAS MONTANHAS.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50358",
+      "text_source": "Ha! Wouldn't it be better for appearances' sake,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, divertido",
+      "intent": "sugerir que seria melhor para as aparências",
+      "risk_level": "low",
+      "base_translation": "Ha! Não seria melhor para as aparências assim,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5038b",
+      "text_source": "though? And what's this about having amnesia?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, curioso",
+      "intent": "perguntar sobre a amnésia",
+      "risk_level": "low",
+      "base_translation": "então? E o que é isso de amnésia?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x503b9",
+      "text_source": "I don't even remember my own name. \"Haku\" is an\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, explicativo",
+      "intent": "explicar que não lembra nem o próprio nome",
+      "risk_level": "low",
+      "base_translation": "Não me lembro nem do meu nome. \"Haku\" é um\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x503eb",
+      "text_source": "alias Kuon gave me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "continuar — apelido dado por Kuon",
+      "risk_level": "medium",
+      "base_translation": "apelido da Kuon.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 19: 'apelido da Kuon.' = 14 bytes ok"
+    },
+    {
+      "offset": "0x503ff",
+      "text_source": "Since I've accepted looking after him, it's my duty\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sério, responsável",
+      "intent": "explicar dever de cuidar de Haku",
+      "risk_level": "low",
+      "base_translation": "Como assumi o cuidado dele, é minha obrigação\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50435",
+      "text_source": "to see him become safely independent.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "responsável",
+      "intent": "ver Haku se tornar independente com segurança",
+      "risk_level": "medium",
+      "base_translation": "vê-lo se tornar independente.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 37: encurtado. 'vê-lo se tornar independente.' = 26 bytes sem acento ok"
+    },
+    {
+      "offset": "0x5045b",
+      "text_source": "And because he's not really suited to physical labor,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático, explicativo",
+      "intent": "dizer que Haku não serve para trabalho físico",
+      "risk_level": "low",
+      "base_translation": "E como ele não é muito apto para trabalho físico,\\n",
+      "byte_budget": 55,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50493",
+      "text_source": "I thought we'd try our luck in the capital.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático",
+      "intent": "explicar plano de tentar sorte na capital",
+      "risk_level": "low",
+      "base_translation": "pensamos em tentar a sorte na capital.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x504bf",
+      "text_source": "Fortunately, he's quite a wise person.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "casual, elogioso",
+      "intent": "mencionar que Haku é inteligente",
+      "risk_level": "low",
+      "base_translation": "Felizmente, ele é bem inteligente.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x504e6",
+      "text_source": "I see...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual, reflexivo",
+      "intent": "absorver a informação",
+      "risk_level": "low",
+      "base_translation": "Entendo...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x504ef",
+      "text_source": "Ukon takes a gulp from his cup, downing its contents\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever Ukon bebendo o copo de uma vez",
+      "risk_level": "low",
+      "base_translation": "Ukon toma um gole do seu copo, esvaziando-o\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50526",
+      "text_source": "in one go. He places the empty cup on the table.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "completar descrição de Ukon",
+      "risk_level": "low",
+      "base_translation": "de uma vez. Ele coloca o copo vazio sobre a mesa.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50557",
+      "text_source": "Aahh. Well, if that's the case, why don't you come\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, propositivo",
+      "intent": "convidar os dois a viajar junto",
+      "risk_level": "low",
+      "base_translation": "Aahh. Bom, se é assim, por que não vêm\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5058c",
+      "text_source": "along with us?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual",
+      "intent": "continuar convite",
+      "risk_level": "low",
+      "base_translation": "junto conosco?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5059b",
+      "text_source": "To the capital, you mean?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "curioso",
+      "intent": "confirmar se é para a capital",
+      "risk_level": "medium",
+      "base_translation": "Para a capital?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 25 bytes sem acento; encurtado."
+    },
+    {
+      "offset": "0x505b5",
+      "text_source": "Yeah. We originally came out here to pick up some\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, explicativo",
+      "intent": "explicar a missão original de buscar carga",
+      "risk_level": "low",
+      "base_translation": "É. Viemos aqui originalmente buscar uma\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x505e9",
+      "text_source": "cargo and escort it back to the capital.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "continuar explicação da missão",
+      "risk_level": "low",
+      "base_translation": "carga e escoltá-la de volta para a capital.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50612",
+      "text_source": "Since the cargo got delayed, I decided to take up\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "explicar por que aceitou o trabalho dos gigiri",
+      "risk_level": "low",
+      "base_translation": "Como a carga atrasou, resolvi pegar o trabalho\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50646",
+      "text_source": "the gigiri job, and then...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "continuar explicação",
+      "risk_level": "low",
+      "base_translation": "dos gigiri, e aí...",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50662",
+      "text_source": "Well, we know how that turned out.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, bem-humorado",
+      "intent": "resumir o que aconteceu",
+      "risk_level": "low",
+      "base_translation": "Bem, sabemos como terminou.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50685",
+      "text_source": "Ukon's expression grows slightly distant.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever expressão distante de Ukon",
+      "risk_level": "low",
+      "base_translation": "A expressão de Ukon fica levemente distante.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x506af",
+      "text_source": "I've got no choice but to leave the incapacitated\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, sério",
+      "intent": "mencionar que precisa deixar incapacitados na vila",
+      "risk_level": "low",
+      "base_translation": "Não tenho escolha a não ser deixar os\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x506e3",
+      "text_source": "here in the village, so we're down a few men.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério",
+      "intent": "ficaram com menos homens",
+      "risk_level": "low",
+      "base_translation": "aqui na aldeia, então estamos com menos homens.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50711",
+      "text_source": "And if you join up with us, you'll be paid, 'course.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, propositivo",
+      "intent": "oferecer pagamento caso se juntem",
+      "risk_level": "low",
+      "base_translation": "E se vocês se juntarem a nós, receberão pagamento, claro.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50746",
+      "text_source": "Kuon would be coming onboard as an apothecary, and\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, explicativo",
+      "intent": "definir papéis: Kuon como boticária",
+      "risk_level": "low",
+      "base_translation": "Kuon viria como boticária, e\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5077b",
+      "text_source": "the kid... Well, I guess \"consultant\" works for you.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "definir papel de Haku como consultor",
+      "risk_level": "low",
+      "base_translation": "o garoto... Acho que \"consultor\" serve para você.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x507b0",
+      "text_source": "It's good money. We've got plenty of funds from the\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, persuasivo",
+      "intent": "destacar boa remuneração",
+      "risk_level": "low",
+      "base_translation": "É bom dinheiro. Temos bastante verba da\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x507e6",
+      "text_source": "reward for the gigiri hunt, after all.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar sobre os fundos",
+      "risk_level": "low",
+      "base_translation": "recompensa pela caça dos gigiri, afinal.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5080d",
+      "text_source": "Aren't you worried, kid? Traveling alone with a\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, provocador",
+      "intent": "provocar Haku sobre viajar sozinho com jovem mulher",
+      "risk_level": "low",
+      "base_translation": "Não está preocupado, garoto? Viajar sozinho com\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5083f",
+      "text_source": "delic--fragi--vuln--...alone with a young lady?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual, irônico",
+      "intent": "Ukon tropeça nas palavras tentando descrever Kuon",
+      "risk_level": "medium",
+      "base_translation": "uma delic-- fragi-- vuln--... uma jovem senhora?",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Humor de Ukon tropeçando nas palavras preservado."
+    },
+    {
+      "offset": "0x5086f",
+      "text_source": "Why did you keep correcting yourself just now,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "seco, cômico",
+      "intent": "questionar as autocorreções de Ukon",
+      "risk_level": "low",
+      "base_translation": "Por que você ficou se corrigindo agora,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x508a0",
+      "text_source": "I wonder?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "conclusão da pergunta",
+      "risk_level": "medium",
+      "base_translation": "me pergunto?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 9 bytes sem acento; encurtado."
+    },
+    {
+      "offset": "0x508aa",
+      "text_source": "Didn't mean anything by it, promise. Two people\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, inocente",
+      "intent": "negar intenção e argumentar segurança em grupo",
+      "risk_level": "low",
+      "base_translation": "Não quis dizer nada com isso, prometo. Dois\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x508dc",
+      "text_source": "could get outnumbered easily, that's all.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar argumento de segurança",
+      "risk_level": "low",
+      "base_translation": "em desvantagem numérica facilmente, só isso.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50906",
+      "text_source": "It's safer to travel with more companions. More\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, persuasivo",
+      "intent": "argumentar segurança e diversão em grupo maior",
+      "risk_level": "low",
+      "base_translation": "É mais seguro viajar com mais companheiros. Mais\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50938",
+      "text_source": "fun, too. What d'you say?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual",
+      "intent": "e mais divertido — o que acham?",
+      "risk_level": "low",
+      "base_translation": "divertido. O que acham?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50952",
+      "text_source": "Mm...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "pensativo",
+      "intent": "hesitar antes de responder",
+      "risk_level": "low",
+      "base_translation": "Mm...",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50958",
+      "text_source": "Thanks for the offer, but I think we'll have to\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "educado, firme",
+      "intent": "recusar o convite respeitosamente",
+      "risk_level": "low",
+      "base_translation": "Obrigada pela oferta, mas acho que teremos\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x5098a",
+      "text_source": "respectfully decline.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "educado",
+      "intent": "recusa respeitosa",
+      "risk_level": "medium",
+      "base_translation": "que recusar.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 21 bytes sem acento; encurtado."
+    },
+    {
+      "offset": "0x509a0",
+      "text_source": "Aw, come on. How come?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, desapontado",
+      "intent": "expressar desapontamento com a recusa",
+      "risk_level": "low",
+      "base_translation": "Ah, vamos. Por quê?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x509b7",
+      "text_source": "With the number of men you brought with you, that\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "analítico, sério",
+      "intent": "justificar recusa pelo risco de ataque à carga",
+      "risk_level": "low",
+      "base_translation": "Com o número de homens que trouxeram, essa\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x509eb",
+      "text_source": "cargo must be something pretty valuable.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "analítico",
+      "intent": "completar análise sobre a carga",
+      "risk_level": "low",
+      "base_translation": "carga deve ser muito valiosa.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50a14",
+      "text_source": "Hm. Yeah, I guess you could say that.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, confirmando",
+      "intent": "confirmar de certa forma",
+      "risk_level": "low",
+      "base_translation": "Hm. É, acho que se pode dizer isso.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50a3a",
+      "text_source": "With that in mind, the risk of a bandit attack on\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "analítico",
+      "intent": "explicar risco de ataque de bandidos",
+      "risk_level": "low",
+      "base_translation": "Com isso em mente, o risco de um ataque de\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50a6e",
+      "text_source": "your company to get to the cargo is too high.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "analítico",
+      "intent": "completar o raciocínio",
+      "risk_level": "low",
+      "base_translation": "bandidos para chegar à carga é alto demais.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50a9c",
+      "text_source": "Oh, no, the cargo's guards'll be augmenting our\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, tranquilizador",
+      "intent": "explicar que haverá reforço dos guardas da carga",
+      "risk_level": "low",
+      "base_translation": "Ah, não, os guardas da carga vão reforçar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50ace",
+      "text_source": "numbers. No bandit would be dumb enough to try it.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar argumento de segurança",
+      "risk_level": "low",
+      "base_translation": "nosso número. Nenhum bandido seria tolo o suficiente.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50b01",
+      "text_source": "But I won't make a pest of myself asking you about\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, respeitoso",
+      "intent": "não insistir e pedir para pensarem",
+      "risk_level": "low",
+      "base_translation": "Mas não vou ficar insistindo em perguntar sobre\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50b36",
+      "text_source": "it. Just think it over, yeah?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "pedir para considerarem a oferta",
+      "risk_level": "low",
+      "base_translation": "isso. Só pensem, tá?",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x50b54",
+      "text_source": "With that, Ukon returns to the throng of the party.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Ukon retorna à festa",
+      "risk_level": "low",
+      "base_translation": "Com isso, Ukon volta para o meio da festa.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 177,
+  "high_lines": 13,
+  "medium_lines": 23,
+  "needs_review": [],
+  "plan_version": "chapter-12_16-v1"
+}

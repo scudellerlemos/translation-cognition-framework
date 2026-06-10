@@ -1,4 +1,4 @@
-# Cena ch_12_01 — pacote de traducao (37 linhas)
+# Cena ch_12_16 — pacote de traducao (177 linhas)
 
 > Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR
 > seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.
@@ -113,8 +113,17 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## 3. Glossario relevante (subconjunto desta cena)
 | termo | categoria | traducao | regra | spoiler |
 |---|---|---|---|---|
+| amamunii | Comida | amamunii | manter_original | none |
+| Boro-Gigiri | Criatura | Boro-Gigiri | manter_original | none |
+| Cohort | Organizacao | Coorte | traduzir | none |
+| Gigiri | Criatura | Gigiri | manter_original | none |
 | Haku | Personagem | Haku | manter_original | moderate |
+| Innkeeper | UI | Estalajadeira | traduzir | none |
 | Kuon | Personagem | Kuon | manter_original | none |
+| Man | UI | Homem | traduzir | none |
+| Maroro | Personagem | Maroro | manter_original | none |
+| Tatari | Criatura | Tatari | manter_original | none |
+| Ukon | Personagem | Ukon | manter_original | major |
 
 ## 4. Vozes presentes
 ### Garota — criticality: high
@@ -148,45 +157,18 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - **Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus** [universal]: **Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **
 - **CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos** [universal]: **Decisão tomada:** Ao investigar o "opcode de início de bloco", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** 
 
+## 5b. CONTROLE DE SPOILER — fatos AINDA NAO revelados nesta cena
+> Estes fatos so se revelam DEPOIS desta cena. Preserve a ambiguidade do original; a
+> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).
+- **Ukon** (major): Traduza as falas de/sobre Ukon como o personagem 'Ukon' por si so. NAO insinue outra identidade, patente oculta ou disfarce. Mantenha qualquer ambiguidade do original.
+
 ## 6. Memoria de traducao (consistencia — nao reinventar)
 **Falas identicas ja traduzidas (reusar):**
-- `Where... am I?` -> `Onde... estou?` (Protagonista, 12_01)
-- `No one else around, or...?` -> `Não tem ninguém... ou...?` (Protagonista, 12_01)
-- `Huh? Someone's over there...` -> `Hein? Tem alguém ali...` (Garota, 12_01)
-- `Hey, you there! Could you spare a moment?` -> `Ei, você aí! Pode me dar um momento?` (Garota, 12_01)
-- `Hey, I'm sorry for bothering you, but could I ask\n` -> `Ei, me desculpe, posso fazer\n` (Garota, 12_01)
-- `you something?` -> `uma pergunta?` (Garota, 12_01)
-- `Hello?` -> `Olá?` (Garota, 12_01)
-- `What's with this guy...? Excuse me? Hello?` -> `O que tem esse cara...? Com licença? Ei?` (Garota, 12_01)
-- `Unh... urgh...` -> `Nnh... argh...` (Protagonista, 12_01)
-- `Huh? Is he trying to say something?` -> `Hm? Ele tá tentando falar algo?` (Garota, 12_01)
-- `U-Uurgh...` -> `Uu-uugh...` (Protagonista, 12_01)
-- `He's... not looking so good. Is he sick?` -> `Ele não tá bem... Será que está doente?` (Garota, 12_01)
-- `Ah... a-agh...` -> `Ah... a-aah...` (Protagonista, 12_01)
-- `H-Hey, uh...` -> `E-Ei, ah...` (Garota, 12_01)
-- `Agh... aaagh... uuUURGH...` -> `Argh... aarrgh... UURGH...` (Protagonista, 12_01)
-- `What in--Is he just crazy?` -> `O que--Tá ficando louco?` (Garota, 12_01)
-- `AaaaAAAGH!! UUUOOOHHHH!!` -> `AaaaAAAAH!! UUUOOOHHH!!` (Protagonista, 12_01)
-- `AAAAAAAAH!!` -> `AAAAAAAAH!!` (Protagonista, 12_01)
-- `H-Huff... hah... hah...` -> `H-Hah... hah... hah...` (Protagonista, 12_01)
-- `Hey, are you all right? You were groaning in your\n` -> `Ei, tá tudo bem? Você estava gemendo no\n` (Garota, 12_01)
-- `sleep...` -> `sono...` (Garota, 12_01)
-- `Kuon looks at me, brow creased with worry.` -> `Kuon me olha com o cenho franzido.` (Haku, 12_01)
-- `...a dream...?` -> `...sonho...?` (Protagonista, 12_01)
-- `N-No...` -> `N-Não..` (Protagonista, 12_01)
-- `A dream... Yeah. Just a dream.` -> `Sonho... Sim. Foi só um sonho.` (Haku, 12_01)
-- `Urgh... No way I'm gonna be able to get back to\n` -> `Argh... Não tem como eu conseguir voltar ao\n` (Haku, 12_01)
-- `sleep after that one. Talk about nightmares...` -> `sono depois disso. Que pesadelo esse...` (Haku, 12_01)
-- `God. It's because I got attacked by that monster,\n` -> `Droga. É por causa daquele monstro que me atacou,\n` (Haku, 12_01)
-- `I'll bet.` -> `aposto.` (Haku, 12_01)
-- `Haku?` -> `Haku?` (Kuon, 11_07)
-- `Kuon continues to look at me, questioning.` -> `Kuon continua me olhando, interrogativa.` (Haku, 12_01)
-- `Sorry, it's nothing. I just had a bad dream.` -> `Desculpa, não é nada. Só tive um pesadelo.` (Haku, 12_01)
-- `That's a relief. Go wash your face and wake up a\n` -> `Que bom. Lava o rosto e\n` (Garota, 12_01)
-- `little.` -> `acorda.` (Garota, 12_01)
-- `And after you do that, we'll get some breakfast,\n` -> `E depois disso, a gente toma café da manhã,\n` (Garota, 12_01)
-- `OK?` -> `tá?` (Garota, 12_01)
-- `Yeah. Sounds good...` -> `É... tá bom...` (Haku, 12_01)
+- `Ukon's Cohort` -> `Coorte do Ukon` (SISTEMA, 12_04)
+- `Innkeeper` -> `Estalajadeira` (rotulo, 11_06)
+- `But...` -> `Mas...` (Man, root)
+- `me?` -> `mim?` (Maroro, 12_13)
+- `I see...` -> `Entendo...` (Haku, 12_04)
 **Voz estabelecida dos falantes (amostra):**
 - Haku: `Geez...! Too bright out here...` -> `Aff...! Claridade demais aqui fora...`
 - Haku: `Well, guess the sun still rises no matter where\n` -> `Enfim, o sol nasce em qualquer lugar, pelo visto\n`
@@ -215,46 +197,186 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 > orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.
 | offset | byte_budget | source |
 |---|---|---|
-| 0x26228 | 14 | Where... am I? |
-| 0x26237 | 26 | No one else around, or...? |
-| 0x26252 | 28 | Huh? Someone's over there... |
-| 0x2626f | 41 | Hey, you there! Could you spare a moment? |
-| 0x2629d | 51 | Hey, I'm sorry for bothering you, but could I ask\n |
-| 0x262d1 | 14 | you something? |
-| 0x262e0 | 6 | Hello? |
-| 0x262e7 | 42 | What's with this guy...? Excuse me? Hello? |
-| 0x26312 | 14 | Unh... urgh... |
-| 0x26321 | 35 | Huh? Is he trying to say something? |
-| 0x26345 | 10 | U-Uurgh... |
-| 0x26350 | 40 | He's... not looking so good. Is he sick? |
-| 0x26379 | 14 | Ah... a-agh... |
-| 0x26388 | 12 | H-Hey, uh... |
-| 0x26395 | 26 | Agh... aaagh... uuUURGH... |
-| 0x263b0 | 26 | What in--Is he just crazy? |
-| 0x263cb | 24 | AaaaAAAGH!! UUUOOOHHHH!! |
-| 0x263e4 | 11 | AAAAAAAAH!! |
-| 0x263f0 | 23 | H-Huff... hah... hah... |
-| 0x26408 | 51 | Hey, are you all right? You were groaning in your\n |
-| 0x2643c | 8 | sleep... |
-| 0x26445 | 42 | Kuon looks at me, brow creased with worry. |
-| 0x26470 | 14 | ...a dream...? |
-| 0x2647f | 7 | N-No... |
-| 0x26487 | 30 | A dream... Yeah. Just a dream. |
-| 0x264a6 | 49 | Urgh... No way I'm gonna be able to get back to\n |
-| 0x264d8 | 46 | sleep after that one. Talk about nightmares... |
-| 0x26507 | 51 | God. It's because I got attacked by that monster,\n |
-| 0x2653b | 9 | I'll bet. |
-| 0x26545 | 5 | Haku? |
-| 0x2654b | 42 | Kuon continues to look at me, questioning. |
-| 0x26576 | 44 | Sorry, it's nothing. I just had a bad dream. |
-| 0x265a3 | 50 | That's a relief. Go wash your face and wake up a\n |
-| 0x265d6 | 7 | little. |
-| 0x265de | 50 | And after you do that, we'll get some breakfast,\n |
-| 0x26611 | 3 | OK? |
-| 0x26615 | 20 | Yeah. Sounds good... |
+| 0x4f047 | 35 | Here's to our victory, men! Cheers! |
+| 0x4f06b | 13 | Ukon's Cohort |
+| 0x4f079 | 10 | Cheeeeers! |
+| 0x4f084 | 47 | The inn's dining hall fills with laughter and\n |
+| 0x4f0b4 | 46 | jovial chatter, giving it a pleasant ambience. |
+| 0x4f0e3 | 27 | After the Tatari arrived... |
+| 0x4f0ff | 50 | Once it digested the body of the Boro-Gigiri, it\n |
+| 0x4f132 | 38 | quietly slunk away back into its cave. |
+| 0x4f159 | 53 | From what I've been told, they're loath to come out\n |
+| 0x4f18f | 45 | of their pits, so we shouldn't have to worry. |
+| 0x4f1bd | 47 | And Ukon's company cleaned up the rest of the\n |
+| 0x4f1ed | 13 | gigiri, so... |
+| 0x4f1fb | 50 | Travelers can use that mountain pass without any\n |
+| 0x4f22e | 12 | danger, now. |
+| 0x4f23b | 9 | Innkeeper |
+| 0x4f245 | 19 | Come now, drink up. |
+| 0x4f259 | 7 | Phew... |
+| 0x4f261 | 39 | It's nice to drink and relax like this. |
+| 0x4f289 | 50 | Upon hearing of our victory, the innkeeper broke\n |
+| 0x4f2bc | 49 | out some of her best sake to share with everyone. |
+| 0x4f2ee | 48 | I had to water it down to be able to drink it.\n |
+| 0x4f31f | 47 | It's good straight, yeah, but I shouldn't get\n |
+| 0x4f34f | 7 | wasted. |
+| 0x4f357 | 47 | It's got a peculiar flavor, but it's not bad.\n |
+| 0x4f387 | 17 | Just... distinct. |
+| 0x4f399 | 49 | I wash down a bite of amamunii with the sake as\n |
+| 0x4f3cb | 18 | I watch the crowd. |
+| 0x4f3e2 | 53 | Meanwhile, Kuon has been sitting next to me staring\n |
+| 0x4f418 | 32 | into her cup, not saying a word. |
+| 0x4f439 | 33 | What's wrong? Not to your liking? |
+| 0x4f45b | 49 | It's not that it's bad--a little strong, maybe,\n |
+| 0x4f48d | 6 | but... |
+| 0x4f494 | 48 | At a time like this, it'd be nice to have some\n |
+| 0x4f4c5 | 12 | mead around. |
+| 0x4f4d2 | 52 | Despite her disappointed tone, Kuon goes on eating\n |
+| 0x4f507 | 35 | and drinking heartily all the same. |
+| 0x4f52b | 26 | Hey, you kids drinkin' up? |
+| 0x4f546 | 48 | Ukon makes his way over with a particularly...\n |
+| 0x4f577 | 47 | intimidatingly sized cup, his face already red. |
+| 0x4f5a7 | 52 | C'mon, why don't you join us instead of lurking in\n |
+| 0x4f5dc | 21 | the corner over here? |
+| 0x4f5f2 | 52 | You're the stars of this party, after all. Nothing\n |
+| 0x4f627 | 50 | wrong with soaking in the attention a little, huh? |
+| 0x4f65a | 51 | I'll pass. I'm not too eager to sit in the middle\n |
+| 0x4f68e | 26 | of a crowd of sweaty guys. |
+| 0x4f6a9 | 44 | Same here. I'm... not really a crowd person. |
+| 0x4f6d6 | 49 | Ahahaha! You really are something, y'know that,\n |
+| 0x4f708 | 40 | kid? Your plan went off without a hitch! |
+| 0x4f731 | 48 | That... really wasn't enough to call a "plan."\n |
+| 0x4f762 | 41 | I was playing things pretty off-the-cuff. |
+| 0x4f78c | 17 | That's just fine. |
+| 0x4f79e | 50 | You came up with it under pressure and executed,\n |
+| 0x4f7d1 | 48 | and got results. It's impressive, staying cool\n |
+| 0x4f802 | 10 | like that. |
+| 0x4f80d | 49 | Most guys in your situation would've buckled or\n |
+| 0x4f83f | 31 | panicked, not scheme a way out. |
+| 0x4f85f | 23 | You're overpraising me. |
+| 0x4f877 | 53 | I don't know if you're being modest or this is just\n |
+| 0x4f8ad | 46 | how you are, but I'm liking you more an' more. |
+| 0x4f8dc | 52 | Though, hey, full disclosure--I admit I was pretty\n |
+| 0x4f911 | 42 | worried by how much the hike wore you out. |
+| 0x4f93c | 51 | Guh... Not like I have a leg to stand on with that. |
+| 0x4f970 | 37 | And you shone back there, too, missy. |
+| 0x4f996 | 3 | Me? |
+| 0x4f99a | 50 | Yeah. If you hadn't lured that Tatari out of its\n |
+| 0x4f9cd | 39 | lair, it all would've been for nothing. |
+| 0x4f9f5 | 44 | I didn't think you'd actually pull it off!\n |
+| 0x4fa22 | 41 | Color me surprised you did something so\n |
+| 0x4fa4c | 9 | reckless. |
+| 0x4fa56 | 54 | Honestly, when you came up with that plan, I thought\n |
+| 0x4fa8d | 36 | you were joking to lighten the mood. |
+| 0x4fab2 | 21 | Was it that reckless? |
+| 0x4fac8 | 49 | C'mon, now. If I'd told you to do what she did,\n |
+| 0x4fafa | 42 | would you be able to carry out that order? |
+| 0x4fb25 | 35 | No, I'd tell you it's impossible... |
+| 0x4fb49 | 52 | Kuon having to pull me along the first time we ran\n |
+| 0x4fb7e | 17 | rises in my mind. |
+| 0x4fb90 | 51 | I sure as hell couldn't run like that, that's for\n |
+| 0x4fbc4 | 5 | sure. |
+| 0x4fbca | 44 | Ahaha, I'm just a little nimble, that's all. |
+| 0x4fbf7 | 39 | I see. We'll leave it at that, I guess. |
+| 0x4fc1f | 48 | Anyway! The gigiri extermination was a success\n |
+| 0x4fc50 | 29 | thanks to you two joining us. |
+| 0x4fc6e | 27 | Please accept my gratitude. |
+| 0x4fc8a | 17 | Ukon bows deeply. |
+| 0x4fc9c | 42 | C'mon, you're giving us too much credit... |
+| 0x4fcc7 | 49 | Friendsh, Yamatansh, COUNTRYmen! Exschlude your\n |
+| 0x4fcf9 | 46 | DEARESHT Maroro nnnot from your rrrevelsh...\n |
+| 0x4fd28 | 13 | What SHAY ye? |
+| 0x4fd36 | 41 | Ha! And here's our other conquering hero. |
+| 0x4fd60 | 50 | A white shadow, its face fast becoming a fearful\n |
+| 0x4fd93 | 38 | red, comes wriggling across toward us. |
+| 0x4fdba | 48 | Oh ho HO! Dosht thou partake of mmmosht SHWEET\n |
+| 0x4fdeb | 51 | libations? Come, wet thy shpirit with SHMOOTHESHT\n |
+| 0x4fe1f | 5 | sake. |
+| 0x4fe25 | 25 | Urk. He reeks of booze... |
+| 0x4fe3f | 49 | Since he killed the bulk of the gigiri with his\n |
+| 0x4fe71 | 44 | magic, Maroro's being hailed as a hero, too. |
+| 0x4fe9e | 48 | He's being poured drink after drink, and keeps\n |
+| 0x4fecf | 41 | accepting. Guy's already drunk as a fish. |
+| 0x4fef9 | 51 | Accoladesh and bonush pay alike FLING themshelves\n |
+| 0x4ff2d | 45 | upon my person thanksh to your aid! Nyoho HO! |
+| 0x4ff5b | 49 | Thanks, but I didn't really... do anything that\n |
+| 0x4ff8d | 31 | warrants a whole lot of praise. |
+| 0x4ffad | 50 | Ah, ah, pray silence thy proteshts! Th'art SHUCH\n |
+| 0x4ffe0 | 39 | a hhhumble man, Mashter Haku, truuuuly. |
+| 0x50008 | 48 | Maroro prods my cheek with his finger. Please,\n |
+| 0x50039 | 22 | please leave me alone. |
+| 0x50050 | 49 | ForSHOOTH, thou nnnnurshed me to health through\n |
+| 0x50082 | 50 | our journey'sh perils, and protected me from the\n |
+| 0x500b5 | 18 | loathshome gigiri. |
+| 0x500c8 | 40 | Thou art my BOSHOM friend, Mashter Haku. |
+| 0x500f1 | 50 | Now I'm his "bosom friend." Great. I've ascended\n |
+| 0x50124 | 22 | the ranks in his eyes. |
+| 0x5013b | 44 | And now he's totally attached to me. Cripes. |
+| 0x50168 | 48 | Hey, missy. Weren't you saying something about\n |
+| 0x50199 | 24 | heading for the capital? |
+| 0x501b2 | 49 | Mm. We're planning to leave first thing tomorrow. |
+| 0x501e4 | 45 | Meanwhile, Kuon and Ukon have moved on to a\n |
+| 0x50212 | 29 | completely different subject. |
+| 0x50230 | 32 | Hey. You two. Help me out, here. |
+| 0x50251 | 45 | Gonna do more sightseeing while you're there? |
+| 0x5027f | 50 | There's that, but... it's more to find a job for\n |
+| 0x502b2 | 14 | Haku, I think. |
+| 0x502c1 | 51 | The kid, huh? So he's not your attendant after all? |
+| 0x502f5 | 49 | Wh--Who's an attendant? She's taking care of me\n |
+| 0x50327 | 48 | because I was an AMNESIAC LOST IN THE MOUNTAINS. |
+| 0x50358 | 50 | Ha! Wouldn't it be better for appearances' sake,\n |
+| 0x5038b | 45 | though? And what's this about having amnesia? |
+| 0x503b9 | 49 | I don't even remember my own name. "Haku" is an\n |
+| 0x503eb | 19 | alias Kuon gave me. |
+| 0x503ff | 53 | Since I've accepted looking after him, it's my duty\n |
+| 0x50435 | 37 | to see him become safely independent. |
+| 0x5045b | 55 | And because he's not really suited to physical labor,\n |
+| 0x50493 | 43 | I thought we'd try our luck in the capital. |
+| 0x504bf | 38 | Fortunately, he's quite a wise person. |
+| 0x504e6 | 8 | I see... |
+| 0x504ef | 54 | Ukon takes a gulp from his cup, downing its contents\n |
+| 0x50526 | 48 | in one go. He places the empty cup on the table. |
+| 0x50557 | 52 | Aahh. Well, if that's the case, why don't you come\n |
+| 0x5058c | 14 | along with us? |
+| 0x5059b | 25 | To the capital, you mean? |
+| 0x505b5 | 51 | Yeah. We originally came out here to pick up some\n |
+| 0x505e9 | 40 | cargo and escort it back to the capital. |
+| 0x50612 | 51 | Since the cargo got delayed, I decided to take up\n |
+| 0x50646 | 27 | the gigiri job, and then... |
+| 0x50662 | 34 | Well, we know how that turned out. |
+| 0x50685 | 41 | Ukon's expression grows slightly distant. |
+| 0x506af | 51 | I've got no choice but to leave the incapacitated\n |
+| 0x506e3 | 45 | here in the village, so we're down a few men. |
+| 0x50711 | 52 | And if you join up with us, you'll be paid, 'course. |
+| 0x50746 | 52 | Kuon would be coming onboard as an apothecary, and\n |
+| 0x5077b | 52 | the kid... Well, I guess "consultant" works for you. |
+| 0x507b0 | 53 | It's good money. We've got plenty of funds from the\n |
+| 0x507e6 | 38 | reward for the gigiri hunt, after all. |
+| 0x5080d | 49 | Aren't you worried, kid? Traveling alone with a\n |
+| 0x5083f | 47 | delic--fragi--vuln--...alone with a young lady? |
+| 0x5086f | 48 | Why did you keep correcting yourself just now,\n |
+| 0x508a0 | 9 | I wonder? |
+| 0x508aa | 49 | Didn't mean anything by it, promise. Two people\n |
+| 0x508dc | 41 | could get outnumbered easily, that's all. |
+| 0x50906 | 49 | It's safer to travel with more companions. More\n |
+| 0x50938 | 25 | fun, too. What d'you say? |
+| 0x50952 | 5 | Mm... |
+| 0x50958 | 49 | Thanks for the offer, but I think we'll have to\n |
+| 0x5098a | 21 | respectfully decline. |
+| 0x509a0 | 22 | Aw, come on. How come? |
+| 0x509b7 | 51 | With the number of men you brought with you, that\n |
+| 0x509eb | 40 | cargo must be something pretty valuable. |
+| 0x50a14 | 37 | Hm. Yeah, I guess you could say that. |
+| 0x50a3a | 51 | With that in mind, the risk of a bandit attack on\n |
+| 0x50a6e | 45 | your company to get to the cargo is too high. |
+| 0x50a9c | 49 | Oh, no, the cargo's guards'll be augmenting our\n |
+| 0x50ace | 50 | numbers. No bandit would be dumb enough to try it. |
+| 0x50b01 | 52 | But I won't make a pest of myself asking you about\n |
+| 0x50b36 | 29 | it. Just think it over, yeah? |
+| 0x50b54 | 51 | With that, Ukon returns to the throng of the party. |
 
 ## 8. Formato de saida EXIGIDO
-Escreva `translations_12_01.json` com a forma:
+Escreva `translations_12_16.json` com a forma:
 ```json
 { "lines": {
   "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",

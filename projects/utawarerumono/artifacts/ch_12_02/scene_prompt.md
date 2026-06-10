@@ -1,4 +1,4 @@
-# Cena ch_12_01 — pacote de traducao (37 linhas)
+# Cena ch_12_02 — pacote de traducao (67 linhas)
 
 > Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR
 > seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.
@@ -53,12 +53,6 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - **Continuidade:** a junção de linhas quebradas (`\n`) soa natural; ritmo de comédia preservado.
 - **Restrição do conector:** se há transliteração na gravação (fonte sem acentos), escolher formas que
   sobrevivam (não depender de acento/til).
-- **Preservar ambiguidade (anti-spoiler por construção):** quando o pacote da cena traz um *controle de
-  spoiler* (fato ainda não revelado), a tradução **não pode resolver** o que o original deixa em aberto.
-  Atenção especial ao **gênero em pt-BR**: o EN/JP esconde gênero/identidade que o pt-BR forçaria a
-  concordância (`cansad{o/a}`, `el{e/a}`, `um{/a}`). Se o falante/referente é de identidade oculta,
-  **escolher construção neutra** (reformular; evitar adjetivo/artigo de gênero) e marcar `risk ≥ high`.
-  Nunca antecipar nome, relação ou identidade futura.
 
 ### 4. PROCESSO (como a qualidade é garantida)
 - **Metadados reais por linha** (`speaker`, situação/`tone_register`, `risk_level`) — **não
@@ -108,12 +102,13 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - Convencao de linha de sistema: all_caps.
 - Restricao de comprimento: {'mode': 'byte_space', 'dialogue_max_pct': 140, 'ui_max_pct': 110} (orcamento em bytes por linha — ver coluna byte_budget).
 - ATENCAO charset: Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) 
-  -> ESCREVA o campo `t` na forma canonica COM acentos/til normais (ex.: "você", "coração"). A transliteracao p/ ASCII e feita DEPOIS pelo script de reinsercao — nao remova acentos voce mesmo. Apenas nao dependa do acento para DISTINGUIR sentido (ex.: evite pares que so diferem por acento), pois ele some no jogo.
+  -> escolha formas que sobrevivam a transliteracao (nao dependa de acento/til p/ sentido).
 
 ## 3. Glossario relevante (subconjunto desta cena)
 | termo | categoria | traducao | regra | spoiler |
 |---|---|---|---|---|
-| Haku | Personagem | Haku | manter_original | moderate |
+| amam | Item | amam | manter_original | none |
+| Innkeeper | UI | Estalajadeira | traduzir | none |
 | Kuon | Personagem | Kuon | manter_original | none |
 
 ## 4. Vozes presentes
@@ -127,18 +122,10 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - Registro: enigmático, profético, frio.
 - Características: sentenças curtas e definitivas; duplo sentido ("um mundo totalmente novo te espera"); ambiguidade ameaçadora.
 - Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia).
-### Maroro — criticality: high
-- Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.
-- Características: fala arcaica/empolada (equivalente a "vós/peço-vos/meus olhos não me enganam") + gag de cicio (s→sh, ex.: "SHEEKETH"/"shir"); melodramático; gruda no Haku como "benfeitor".
-- Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem.
 ### Protagonista — criticality: high
 - Registro: confuso, desorientado, semi-consciente.
 - Características: frases quebradas por reticências; perguntas curtas ("Quem... é você...?"); pouca pontuação forte.
 - Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação "limpa" que apaga a fragmentação.
-### Ukon — criticality: high
-- Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.
-- Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.
-- Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só "Ukon".
 
 ## 5. Decisoes relevantes (do decision_log)
 - **Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)** [universal]: **Problema:** in-game, o rótulo de falante aparecia em **inglês** ("Girl") mesmo com a tradução ("Garota") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: "Girl"→"Garota"
@@ -150,43 +137,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 
 ## 6. Memoria de traducao (consistencia — nao reinventar)
 **Falas identicas ja traduzidas (reusar):**
-- `Where... am I?` -> `Onde... estou?` (Protagonista, 12_01)
-- `No one else around, or...?` -> `Não tem ninguém... ou...?` (Protagonista, 12_01)
-- `Huh? Someone's over there...` -> `Hein? Tem alguém ali...` (Garota, 12_01)
-- `Hey, you there! Could you spare a moment?` -> `Ei, você aí! Pode me dar um momento?` (Garota, 12_01)
-- `Hey, I'm sorry for bothering you, but could I ask\n` -> `Ei, me desculpe, posso fazer\n` (Garota, 12_01)
-- `you something?` -> `uma pergunta?` (Garota, 12_01)
-- `Hello?` -> `Olá?` (Garota, 12_01)
-- `What's with this guy...? Excuse me? Hello?` -> `O que tem esse cara...? Com licença? Ei?` (Garota, 12_01)
-- `Unh... urgh...` -> `Nnh... argh...` (Protagonista, 12_01)
-- `Huh? Is he trying to say something?` -> `Hm? Ele tá tentando falar algo?` (Garota, 12_01)
-- `U-Uurgh...` -> `Uu-uugh...` (Protagonista, 12_01)
-- `He's... not looking so good. Is he sick?` -> `Ele não tá bem... Será que está doente?` (Garota, 12_01)
-- `Ah... a-agh...` -> `Ah... a-aah...` (Protagonista, 12_01)
-- `H-Hey, uh...` -> `E-Ei, ah...` (Garota, 12_01)
-- `Agh... aaagh... uuUURGH...` -> `Argh... aarrgh... UURGH...` (Protagonista, 12_01)
-- `What in--Is he just crazy?` -> `O que--Tá ficando louco?` (Garota, 12_01)
-- `AaaaAAAGH!! UUUOOOHHHH!!` -> `AaaaAAAAH!! UUUOOOHHH!!` (Protagonista, 12_01)
-- `AAAAAAAAH!!` -> `AAAAAAAAH!!` (Protagonista, 12_01)
-- `H-Huff... hah... hah...` -> `H-Hah... hah... hah...` (Protagonista, 12_01)
-- `Hey, are you all right? You were groaning in your\n` -> `Ei, tá tudo bem? Você estava gemendo no\n` (Garota, 12_01)
-- `sleep...` -> `sono...` (Garota, 12_01)
-- `Kuon looks at me, brow creased with worry.` -> `Kuon me olha com o cenho franzido.` (Haku, 12_01)
-- `...a dream...?` -> `...sonho...?` (Protagonista, 12_01)
-- `N-No...` -> `N-Não..` (Protagonista, 12_01)
-- `A dream... Yeah. Just a dream.` -> `Sonho... Sim. Foi só um sonho.` (Haku, 12_01)
-- `Urgh... No way I'm gonna be able to get back to\n` -> `Argh... Não tem como eu conseguir voltar ao\n` (Haku, 12_01)
-- `sleep after that one. Talk about nightmares...` -> `sono depois disso. Que pesadelo esse...` (Haku, 12_01)
-- `God. It's because I got attacked by that monster,\n` -> `Droga. É por causa daquele monstro que me atacou,\n` (Haku, 12_01)
-- `I'll bet.` -> `aposto.` (Haku, 12_01)
-- `Haku?` -> `Haku?` (Kuon, 11_07)
-- `Kuon continues to look at me, questioning.` -> `Kuon continua me olhando, interrogativa.` (Haku, 12_01)
-- `Sorry, it's nothing. I just had a bad dream.` -> `Desculpa, não é nada. Só tive um pesadelo.` (Haku, 12_01)
-- `That's a relief. Go wash your face and wake up a\n` -> `Que bom. Lava o rosto e\n` (Garota, 12_01)
-- `little.` -> `acorda.` (Garota, 12_01)
-- `And after you do that, we'll get some breakfast,\n` -> `E depois disso, a gente toma café da manhã,\n` (Garota, 12_01)
-- `OK?` -> `tá?` (Garota, 12_01)
-- `Yeah. Sounds good...` -> `É... tá bom...` (Haku, 12_01)
+- `Innkeeper` -> `Estalajadeira` (rotulo, 11_06)
 **Voz estabelecida dos falantes (amostra):**
 - Haku: `Geez...! Too bright out here...` -> `Aff...! Claridade demais aqui fora...`
 - Haku: `Well, guess the sun still rises no matter where\n` -> `Enfim, o sol nasce em qualquer lugar, pelo visto\n`
@@ -197,64 +148,80 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - Garota: `Hey, you there! Could you spare a moment?` -> `Ei, você aí! Pode me dar um momento?`
 - Garota: `Hey, I'm sorry for bothering you, but could I ask\n` -> `Ei, me desculpe, posso fazer\n`
 - Protagonista: `Unh... urgh...` -> `Nnh... argh...`
-- Maroro: `Master Ukon! It pleaseth my heart to report my\n` -> `Mestre Ukon! É com grande satisfação que reporto que meus\n`
-- Maroro: `belongings lay duly unpack'd, and await porters.` -> `meus pertences estão desfeitos e aguardam os carregadores.`
-- Ukon: `Ah. Well done.` -> `Ah. Bom trabalho.`
-- Maroro: `I am VERY tired, sir. Naught more now do I desire\n` -> `Estou MUITO cansado, senhor. Nada mais desejo agora\n`
-- Ukon: `Really, Maroro? Seems like you get tired quicker\n` -> `É sério, Maroro? Parece que você se cansa mais rápido\n`
-- Ukon: `and quicker these days...` -> `a cada dia que passa...`
-- Homem: `The way you were carrying on, you got us all\n` -> `Do jeito que você estava, nos deixou todos\n`
-- Homem: `anxious, too!` -> `ansiosos também!`
-- Homem: `Wahahahaha!!` -> `Wahahahaha!!`
 
 ## 7. Linhas a traduzir
-> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao TRANSLITERADA (sem acentos — o `c`
-> de cedilha e os acentos somem na gravacao) deve **CABER** no byte_budget da linha. pt-BR
-> costuma ser ~15-20% mais longo que EN: em linhas curtas/UI (budget baixo) **seja conciso**
-> (ex.: 'adicionado ao' -> 'no'; corte redundancia), preservando sentido. Estourar muito o
-> orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.
 | offset | byte_budget | source |
 |---|---|---|
-| 0x26228 | 14 | Where... am I? |
-| 0x26237 | 26 | No one else around, or...? |
-| 0x26252 | 28 | Huh? Someone's over there... |
-| 0x2626f | 41 | Hey, you there! Could you spare a moment? |
-| 0x2629d | 51 | Hey, I'm sorry for bothering you, but could I ask\n |
-| 0x262d1 | 14 | you something? |
-| 0x262e0 | 6 | Hello? |
-| 0x262e7 | 42 | What's with this guy...? Excuse me? Hello? |
-| 0x26312 | 14 | Unh... urgh... |
-| 0x26321 | 35 | Huh? Is he trying to say something? |
-| 0x26345 | 10 | U-Uurgh... |
-| 0x26350 | 40 | He's... not looking so good. Is he sick? |
-| 0x26379 | 14 | Ah... a-agh... |
-| 0x26388 | 12 | H-Hey, uh... |
-| 0x26395 | 26 | Agh... aaagh... uuUURGH... |
-| 0x263b0 | 26 | What in--Is he just crazy? |
-| 0x263cb | 24 | AaaaAAAGH!! UUUOOOHHHH!! |
-| 0x263e4 | 11 | AAAAAAAAH!! |
-| 0x263f0 | 23 | H-Huff... hah... hah... |
-| 0x26408 | 51 | Hey, are you all right? You were groaning in your\n |
-| 0x2643c | 8 | sleep... |
-| 0x26445 | 42 | Kuon looks at me, brow creased with worry. |
-| 0x26470 | 14 | ...a dream...? |
-| 0x2647f | 7 | N-No... |
-| 0x26487 | 30 | A dream... Yeah. Just a dream. |
-| 0x264a6 | 49 | Urgh... No way I'm gonna be able to get back to\n |
-| 0x264d8 | 46 | sleep after that one. Talk about nightmares... |
-| 0x26507 | 51 | God. It's because I got attacked by that monster,\n |
-| 0x2653b | 9 | I'll bet. |
-| 0x26545 | 5 | Haku? |
-| 0x2654b | 42 | Kuon continues to look at me, questioning. |
-| 0x26576 | 44 | Sorry, it's nothing. I just had a bad dream. |
-| 0x265a3 | 50 | That's a relief. Go wash your face and wake up a\n |
-| 0x265d6 | 7 | little. |
-| 0x265de | 50 | And after you do that, we'll get some breakfast,\n |
-| 0x26611 | 3 | OK? |
-| 0x26615 | 20 | Yeah. Sounds good... |
+| 0x26ddb | 53 | After I wash up and groom myself, I head downstairs\n |
+| 0x26e11 | 14 | for breakfast. |
+| 0x26e20 | 52 | Kuon and I spot each other, and she smiles, waving\n |
+| 0x26e55 | 41 | me over. I raise my hand as I approach... |
+| 0x26e7f | 20 | Oh, boy. This again. |
+| 0x26e94 | 23 | This is... breakfast... |
+| 0x26eac | 52 | Not nearly as much food is laid out as last night,\n |
+| 0x26ee1 | 46 | but the amount is still ludicrously excessive. |
+| 0x26f10 | 17 | Is it not enough? |
+| 0x26f22 | 49 | You didn't seem like you had a big appetite, so\n |
+| 0x26f54 | 24 | I went a little light... |
+| 0x26f6d | 21 | N-No, this is plenty. |
+| 0x26f83 | 51 | In fact, by no stretch of the imagination is this\n |
+| 0x26fb7 | 13 | "not enough." |
+| 0x26fc5 | 27 | All right, then! Let's eat. |
+| 0x26fe1 | 50 | I hold the soup bowl in front of myself and take\n |
+| 0x27014 | 22 | an experimental sip... |
+| 0x2702b | 54 | Stewed vegetables and fish...? Seasoned pretty well,\n |
+| 0x27062 | 20 | too. Not bad at all. |
+| 0x27077 | 49 | And I'm starting to warm up the more I drink...\n |
+| 0x270a9 | 45 | Huh, and I can feel my appetite growing, too? |
+| 0x270d7 | 20 | Here, this is yours. |
+| 0x270ec | 49 | Kuon stacks up more of those amam rolls, busily\n |
+| 0x2711e | 31 | wrapping the food on her plate. |
+| 0x2713e | 51 | I appreciate her thoughtfulness, but even with an\n |
+| 0x27172 | 50 | appetite, I can only eat so much in the morning... |
+| 0x271a5 | 24 | *Hromf, munch, munch*... |
+| 0x271be | 54 | ...not that the time of day seems to have any impact\n |
+| 0x271f5 | 19 | on Kuon's appetite. |
+| 0x27209 | 37 | Ah, Ma'am, could I ask you something? |
+| 0x2722f | 9 | Innkeeper |
+| 0x27239 | 15 | Hm? You called? |
+| 0x27249 | 54 | Yes. I was wondering if you have any work available?\n |
+| 0x27280 | 28 | Whatever's simplest will do. |
+| 0x2729d | 18 | Let me see, now... |
+| 0x272b0 | 50 | The innkeeper sets down her tray and pulls out a\n |
+| 0x272e3 | 47 | dog-eared notebook, flipping through its pages. |
+| 0x27313 | 50 | There's help needed, hm... cutting stones at the\n |
+| 0x27346 | 51 | quarry, and hauling fresh lumber. How's that sound? |
+| 0x2737a | 30 | Kuon gives me a sidelong look. |
+| 0x27399 | 5 | What? |
+| 0x2739f | 50 | Uhm... If you have any work that doesn't require\n |
+| 0x273d2 | 38 | physical strength, that would be best. |
+| 0x273f9 | 50 | No hard labor, nothing requiring strength... Hm.\n |
+| 0x2742c | 25 | What about milling flour? |
+| 0x27446 | 50 | The amam you carried to the mill the other night\n |
+| 0x27479 | 50 | needs grinding. That doesn't really require brawn. |
+| 0x274ac | 20 | That sounds perfect. |
+| 0x274c1 | 31 | Kuon claps her hands excitedly. |
+| 0x274e1 | 23 | So you'll take the job? |
+| 0x274f9 | 36 | Yes, that should be fine... I think? |
+| 0x2751e | 28 | Kuon looks over at me again. |
+| 0x2753b | 25 | Urgh. Not more of this... |
+| 0x27555 | 52 | *Sigh*... It's quite troublesome. We usually would\n |
+| 0x2758a | 51 | just use the waterwheel, but it's broken right now. |
+| 0x275be | 17 | Can't you fix it? |
+| 0x275d0 | 53 | I'd love to, but it's impossible. Hardly anyone out\n |
+| 0x27606 | 53 | here can tinker with machinery like that who really\n |
+| 0x2763c | 25 | knows what they're doing. |
+| 0x27656 | 53 | We've sent for an engineer from the capital to have\n |
+| 0x2768c | 52 | a look, but no one will agree to come out this far\n |
+| 0x276c1 | 26 | for one measly waterwheel. |
+| 0x276e0 | 53 | Seems like she's just forging ahead and negotiating\n |
+| 0x27716 | 22 | the work without me... |
+| 0x2772d | 51 | From the sound of things, she's probably going to\n |
+| 0x27761 | 25 | make me do this one, too. |
+| 0x2777b | 50 | Agh. I reject, I renounce, I REFUSE this "work"... |
 
 ## 8. Formato de saida EXIGIDO
-Escreva `translations_12_01.json` com a forma:
+Escreva `translations_12_02.json` com a forma:
 ```json
 { "lines": {
   "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",

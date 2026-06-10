@@ -1,0 +1,1024 @@
+{
+  "scene_group": "12_02",
+  "lines": [
+    {
+      "offset": "0x26ddb",
+      "text_source": "After I wash up and groom myself, I head downstairs\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração casual, manhã tranquila",
+      "intent": "Haku descreve a rotina de se arrumar e descer para o café",
+      "risk_level": "low",
+      "base_translation": "Depois de me lavar e me arrumar, desço para o\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26e11",
+      "text_source": "for breakfast.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação",
+      "intent": "completar: desço para o café da manhã",
+      "risk_level": "low",
+      "base_translation": "café da manhã.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26e20",
+      "text_source": "Kuon and I spot each other, and she smiles, waving\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração calorosa, vendo Kuon",
+      "intent": "Haku avista Kuon que sorri e o chama com gesto",
+      "risk_level": "low",
+      "base_translation": "Kuon e eu nos avistamos; ela sorri e me acena\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26e55",
+      "text_source": "me over. I raise my hand as I approach...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação",
+      "intent": "Haku levanta a mão de volta enquanto se aproxima",
+      "risk_level": "low",
+      "base_translation": "para perto. Levanto a mão ao me aproximar...",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26e7f",
+      "text_source": "Oh, boy. This again.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômica, resignada",
+      "intent": "Haku vê a mesa de café e reage com resignação cômica",
+      "risk_level": "medium",
+      "base_translation": "Ah não. De novo não.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "linha de comédia — timing e tom casual são essenciais; Haku vendo o excesso de comida"
+    },
+    {
+      "offset": "0x26e94",
+      "text_source": "This is... breakfast...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "incrédulo, cômica",
+      "intent": "Haku contempla o café absurdamente excessivo",
+      "risk_level": "medium",
+      "base_translation": "Isso é... o café...?",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia de reação — reticências marcam incrédulidade; não soar fluente demais"
+    },
+    {
+      "offset": "0x26eac",
+      "text_source": "Not nearly as much food is laid out as last night,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração irônica",
+      "intent": "Haku constata que tem menos comida que ontem — mas ainda absurda",
+      "risk_level": "low",
+      "base_translation": "Não está nem perto de tanta comida quanto ontem,\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26ee1",
+      "text_source": "but the amount is still ludicrously excessive.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração irônica, continuação",
+      "intent": "a quantidade ainda é ridiculamente excessiva",
+      "risk_level": "low",
+      "base_translation": "mas a quantidade ainda é absurda demais.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26f10",
+      "text_source": "Is it not enough?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, inocente, genuinamente curiosa",
+      "intent": "Kuon pergunta inocentemente se a porção não é suficiente",
+      "risk_level": "medium",
+      "base_translation": "Não é bastante?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia — Kuon totalmente sem noção do excesso; voz gentil sem malícia"
+    },
+    {
+      "offset": "0x26f22",
+      "text_source": "You didn't seem like you had a big appetite, so\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, considerada",
+      "intent": "Kuon explica que serviu menos porque Haku parecia sem apetite",
+      "risk_level": "low",
+      "base_translation": "Você não parecia ter muito apetite, então\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26f54",
+      "text_source": "I went a little light...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, continuação",
+      "intent": "completar: reduzi um pouquinho",
+      "risk_level": "low",
+      "base_translation": "servi um pouquinho menos...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26f6d",
+      "text_source": "N-No, this is plenty.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, cômica",
+      "intent": "Haku nega que seja pouco — é muito mais que suficiente",
+      "risk_level": "medium",
+      "base_translation": "N-Não, tá bom assim.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia — gaguejo inicial N-N; Haku em choque com a inocência de Kuon"
+    },
+    {
+      "offset": "0x26f83",
+      "text_source": "In fact, by no stretch of the imagination is this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração cômica, ênfase",
+      "intent": "Haku reforça internamente que 'insuficiente' não é nem de perto o problema",
+      "risk_level": "low",
+      "base_translation": "Pelo contrário, isso não é nem de longe\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26fb7",
+      "text_source": "\"not enough.\"",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração cômica, continuação com aspas",
+      "intent": "completar: não é nem de longe 'insuficiente'",
+      "risk_level": "low",
+      "base_translation": "\"insuficiente.\"",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26fc5",
+      "text_source": "All right, then! Let's eat.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "animada, prática",
+      "intent": "Kuon propõe começar a comer",
+      "risk_level": "low",
+      "base_translation": "Ótimo, então! Vamos comer.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x26fe1",
+      "text_source": "I hold the soup bowl in front of myself and take\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, curiosa",
+      "intent": "Haku pega a tigela de sopa e experimenta",
+      "risk_level": "low",
+      "base_translation": "Pego a tigela de sopa e dou um gole\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27014",
+      "text_source": "an experimental sip...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação",
+      "intent": "completar: um gole experimental/de prova",
+      "risk_level": "low",
+      "base_translation": "de prova...",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2702b",
+      "text_source": "Stewed vegetables and fish...? Seasoned pretty well,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, avaliando",
+      "intent": "Haku identifica os ingredientes e aprecia o tempero",
+      "risk_level": "low",
+      "base_translation": "Legumes e peixe cozidos...? Bem temperado,\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27062",
+      "text_source": "too. Not bad at all.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, aprovando",
+      "intent": "completar: e por sinal, nada mal",
+      "risk_level": "low",
+      "base_translation": "por sinal. Nada mal.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27077",
+      "text_source": "And I'm starting to warm up the more I drink...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração calorosa, agradada",
+      "intent": "Haku percebe que está esquentando conforme bebe a sopa",
+      "risk_level": "low",
+      "base_translation": "E estou esquentando conforme bebo...\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x270a9",
+      "text_source": "Huh, and I can feel my appetite growing, too?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração surpresa, agradada",
+      "intent": "Haku percebe que seu apetite está crescendo",
+      "risk_level": "low",
+      "base_translation": "Hm, e meu apetite até começou a crescer?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x270d7",
+      "text_source": "Here, this is yours.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, prática",
+      "intent": "Kuon passa a porção de Haku para ele",
+      "risk_level": "low",
+      "base_translation": "Aqui, é para você.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x270ec",
+      "text_source": "Kuon stacks up more of those amam rolls, busily\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observadora",
+      "intent": "Haku descreve Kuon empilhando amam e embrulhando comida",
+      "risk_level": "low",
+      "base_translation": "Kuon empilha mais uns amam, ocupada\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2711e",
+      "text_source": "wrapping the food on her plate.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação",
+      "intent": "completar: embrulhando comida no prato dela",
+      "risk_level": "low",
+      "base_translation": "embrulhando a comida no prato.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2713e",
+      "text_source": "I appreciate her thoughtfulness, but even with an\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, afetuosa mas resignada",
+      "intent": "Haku aprecia a gentileza de Kuon mas constata limite do próprio apetite",
+      "risk_level": "low",
+      "base_translation": "Aprecio a gentileza dela, mas mesmo com\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27172",
+      "text_source": "appetite, I can only eat so much in the morning...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, resignada cômica",
+      "intent": "completar: mesmo com apetite, só dá conta de tanto de manhã",
+      "risk_level": "low",
+      "base_translation": "apetite, só dou conta de tanto de manhã...",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x271a5",
+      "text_source": "*Hromf, munch, munch*...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, som de mastigação de Kuon",
+      "intent": "Haku narra o som de Kuon comendo com entusiasmo",
+      "risk_level": "medium",
+      "base_translation": "*Nham, nham, nham*...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de mastigação — localizar ao padrão pt-BR; deve soar cômica e exuberante"
+    },
+    {
+      "offset": "0x271be",
+      "text_source": "...not that the time of day seems to have any impact\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração irônica",
+      "intent": "Haku observa que o horário não afeta o apetite de Kuon",
+      "risk_level": "low",
+      "base_translation": "...não que o horário do dia importe muito\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x271f5",
+      "text_source": "on Kuon's appetite.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração irônica, continuação",
+      "intent": "completar: não importa muito no apetite de Kuon",
+      "risk_level": "low",
+      "base_translation": "no apetite de Kuon.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27209",
+      "text_source": "Ah, Ma'am, could I ask you something?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educada, prática",
+      "intent": "Kuon aborda a estalajadeira para perguntar sobre trabalho",
+      "risk_level": "low",
+      "base_translation": "Ah, senhora, posso perguntar algo?",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2722f",
+      "text_source": "Innkeeper",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "rótulo de falante",
+      "intent": "rótulo da estalajadeira; TM: Innkeeper→Estalajadeira (11_06)",
+      "risk_level": "medium",
+      "base_translation": "Estalajadeira",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "rótulo de speaker — 'Estalajadeira' (13 chars) acima do budget 9; aprovado em TM 11_06; verificar round-trip"
+    },
+    {
+      "offset": "0x27239",
+      "text_source": "Hm? You called?",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, direta",
+      "intent": "estalajadeira responde ao chamado",
+      "risk_level": "low",
+      "base_translation": "Hm? Me chamou?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27249",
+      "text_source": "Yes. I was wondering if you have any work available?\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educada, direta",
+      "intent": "Kuon pergunta se há trabalho disponível; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Sim. Queria saber se há algum trabalho disponível?\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27280",
+      "text_source": "Whatever's simplest will do.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "flexível, prática",
+      "intent": "qualquer coisa simples serve",
+      "risk_level": "low",
+      "base_translation": "Qualquer coisa básica serve.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2729d",
+      "text_source": "Let me see, now...",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pensativa",
+      "intent": "estalajadeira para pensar",
+      "risk_level": "low",
+      "base_translation": "Deixa eu ver...",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x272b0",
+      "text_source": "The innkeeper sets down her tray and pulls out a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observadora",
+      "intent": "Haku descreve a estalajadeira abaixando a bandeja e tirando um caderno",
+      "risk_level": "low",
+      "base_translation": "A estalajadeira abaixa a bandeja e tira\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x272e3",
+      "text_source": "dog-eared notebook, flipping through its pages.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação",
+      "intent": "completar: tira um caderno surrado e folheia as páginas",
+      "risk_level": "low",
+      "base_translation": "um caderno surrado, folheando as páginas.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27313",
+      "text_source": "There's help needed, hm... cutting stones at the\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, consultando lista",
+      "intent": "estalajadeira lista trabalhos disponíveis; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Precisa-se de ajuda, hm... corte de pedras na\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27346",
+      "text_source": "quarry, and hauling fresh lumber. How's that sound?",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, continuação",
+      "intent": "completar: pedreira e transporte de madeira; pergunta se interessa",
+      "risk_level": "low",
+      "base_translation": "pedreira, e transporte de madeira. Que tal?",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2737a",
+      "text_source": "Kuon gives me a sidelong look.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, pressentindo problema",
+      "intent": "Kuon olha para Haku de lado — sinal de que ele vai ser arrastado",
+      "risk_level": "low",
+      "base_translation": "Kuon me olha de soslaio.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27399",
+      "text_source": "What?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, curto",
+      "intent": "Haku reage ao olhar de Kuon",
+      "risk_level": "low",
+      "base_translation": "Que?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2739f",
+      "text_source": "Uhm... If you have any work that doesn't require\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educada, estratégica",
+      "intent": "Kuon pede algo que não exija força física — pensando em Haku",
+      "risk_level": "low",
+      "base_translation": "Ahn... Se tiver algo que não precise de\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x273d2",
+      "text_source": "physical strength, that would be best.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educada, continuação",
+      "intent": "completar: força física, seria o ideal",
+      "risk_level": "low",
+      "base_translation": "força física, seria o ideal.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x273f9",
+      "text_source": "No hard labor, nothing requiring strength... Hm.\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pensativa, processando",
+      "intent": "estalajadeira descarta as opções pesadas; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Sem trabalho braçal, nada que exija força... Hm.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2742c",
+      "text_source": "What about milling flour?",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, sugerindo",
+      "intent": "completar: e moer farinha, que tal?",
+      "risk_level": "low",
+      "base_translation": "E moer farinha, que tal?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27446",
+      "text_source": "The amam you carried to the mill the other night\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, explicando",
+      "intent": "estalajadeira explica o amam que trouxeram e precisa ser moído; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "O amam que vocês trouxeram ao moinho noite passada\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27479",
+      "text_source": "needs grinding. That doesn't really require brawn.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, continuação",
+      "intent": "completar: precisa ser moído, não exige força bruta",
+      "risk_level": "low",
+      "base_translation": "precisa ser moído. Não exige força bruta.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x274ac",
+      "text_source": "That sounds perfect.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "animada, satisfeita",
+      "intent": "Kuon aceita o trabalho com entusiasmo",
+      "risk_level": "low",
+      "base_translation": "Isso é perfeito!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x274c1",
+      "text_source": "Kuon claps her hands excitedly.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, observando Kuon",
+      "intent": "Haku descreve Kuon batendo palminhas animada",
+      "risk_level": "low",
+      "base_translation": "Kuon bate palminhas animada.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x274e1",
+      "text_source": "So you'll take the job?",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "confirmando",
+      "intent": "estalajadeira confirma se eles aceitam o trabalho",
+      "risk_level": "low",
+      "base_translation": "Então vão aceitar?",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x274f9",
+      "text_source": "Yes, that should be fine... I think?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "confiante com hesitação cômica",
+      "intent": "Kuon aceita mas com uma leve dúvida (pensando em Haku)",
+      "risk_level": "medium",
+      "base_translation": "Sim, deve estar certo... acho?",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia — o 'acho?' final é humor suave; Kuon sabendo que Haku vai reclamar"
+    },
+    {
+      "offset": "0x2751e",
+      "text_source": "Kuon looks over at me again.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, resignada",
+      "intent": "Kuon olha de novo para Haku — confirmando que ele vai ter que participar",
+      "risk_level": "low",
+      "base_translation": "Kuon me olha de novo.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2753b",
+      "text_source": "Urgh. Not more of this...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperada cômica",
+      "intent": "Haku já prevê que vai ser forçado a trabalhar de novo",
+      "risk_level": "medium",
+      "base_translation": "Argh. Não de novo...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia de resignação — tom de 'não de novo'; breve mas importante para o ritmo"
+    },
+    {
+      "offset": "0x27555",
+      "text_source": "*Sigh*... It's quite troublesome. We usually would\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "suspirando, explicando o problema",
+      "intent": "estalajadeira explica o problema da roda d'água; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "*Suspiro*... É bem chatinho. Geralmente\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2758a",
+      "text_source": "just use the waterwheel, but it's broken right now.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "prática, continuação",
+      "intent": "completar: usaríamos a roda d'água mas está quebrada",
+      "risk_level": "low",
+      "base_translation": "usaríamos a roda d'água, mas está quebrada agora.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x275be",
+      "text_source": "Can't you fix it?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "prática, direta",
+      "intent": "Kuon pergunta por que não consertam a roda d'água",
+      "risk_level": "low",
+      "base_translation": "Não dá para consertar?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x275d0",
+      "text_source": "I'd love to, but it's impossible. Hardly anyone out\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pragmática, explicando dificuldade",
+      "intent": "estalajadeira explica que é impossível — falta de técnicos; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Eu queria, mas é impossível. Quase ninguém aqui\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27606",
+      "text_source": "here can tinker with machinery like that who really\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pragmática, continuação",
+      "intent": "completar: quase ninguém entende de mecanismos assim; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "entende de mecanismos desse tipo e sabe\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2763c",
+      "text_source": "knows what they're doing.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pragmática, conclusão",
+      "intent": "completar: e sabe o que está fazendo",
+      "risk_level": "low",
+      "base_translation": "o que está fazendo.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27656",
+      "text_source": "We've sent for an engineer from the capital to have\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pragmática, relatando",
+      "intent": "estalajadeira explica que mandaram buscar engenheiro da capital; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Mandamos buscar um engenheiro da capital para\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2768c",
+      "text_source": "a look, but no one will agree to come out this far\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "pragmática, continuação",
+      "intent": "completar: dar uma olhada, mas ninguém topou vir; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "dar uma olhada, mas ninguém topou vir\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x276c1",
+      "text_source": "for one measly waterwheel.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "resignada cômica",
+      "intent": "completar: por causa de uma roda d'água só",
+      "risk_level": "low",
+      "base_translation": "por causa de uma rodinha só.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x276e0",
+      "text_source": "Seems like she's just forging ahead and negotiating\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observadora, resignada",
+      "intent": "Haku percebe que Kuon já está negociando por conta própria sem consultá-lo",
+      "risk_level": "low",
+      "base_translation": "Parece que ela já foi em frente e ficou negociando\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27716",
+      "text_source": "the work without me...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração, continuação resignada",
+      "intent": "completar: negociando o serviço sem mim",
+      "risk_level": "low",
+      "base_translation": "o serviço sem mim...",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2772d",
+      "text_source": "From the sound of things, she's probably going to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração resignada",
+      "intent": "Haku conclui que vai ser forçado nisso também; linha quebra com \\n",
+      "risk_level": "low",
+      "base_translation": "Pelo jeito ela provavelmente vai\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x27761",
+      "text_source": "make me do this one, too.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração resignada, conclusiva",
+      "intent": "completar: me forçar nesse também",
+      "risk_level": "low",
+      "base_translation": "me forçar nesse também.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2777b",
+      "text_source": "Agh. I reject, I renounce, I REFUSE this \"work\"...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômica dramática, clímax de indignação",
+      "intent": "Haku rejeita dramaticamente o trabalho em clímax cômico",
+      "risk_level": "high",
+      "base_translation": "Ugh. Recuso, rejeito, REPUDIO esse 'serviço'...",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia de clímax — escalada verbal cômica; REPUDIO em maiúsculas é intencional; preservar ritmo tripartite"
+    }
+  ],
+  "total_lines": 67,
+  "high_lines": 1,
+  "medium_lines": 8,
+  "needs_review": [],
+  "plan_version": "chapter-12_02-v1"
+}

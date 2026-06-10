@@ -1,4 +1,4 @@
-# Cena ch_12_01 — pacote de traducao (37 linhas)
+# Cena ch_12_15 — pacote de traducao (95 linhas)
 
 > Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR
 > seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.
@@ -115,6 +115,8 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 |---|---|---|---|---|
 | Haku | Personagem | Haku | manter_original | moderate |
 | Kuon | Personagem | Kuon | manter_original | none |
+| Maroro | Personagem | Maroro | manter_original | none |
+| Master | Cultural | Mestre | traduzir | none |
 
 ## 4. Vozes presentes
 ### Garota — criticality: high
@@ -150,43 +152,76 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 
 ## 6. Memoria de traducao (consistencia — nao reinventar)
 **Falas identicas ja traduzidas (reusar):**
-- `Where... am I?` -> `Onde... estou?` (Protagonista, 12_01)
-- `No one else around, or...?` -> `Não tem ninguém... ou...?` (Protagonista, 12_01)
-- `Huh? Someone's over there...` -> `Hein? Tem alguém ali...` (Garota, 12_01)
-- `Hey, you there! Could you spare a moment?` -> `Ei, você aí! Pode me dar um momento?` (Garota, 12_01)
-- `Hey, I'm sorry for bothering you, but could I ask\n` -> `Ei, me desculpe, posso fazer\n` (Garota, 12_01)
-- `you something?` -> `uma pergunta?` (Garota, 12_01)
-- `Hello?` -> `Olá?` (Garota, 12_01)
-- `What's with this guy...? Excuse me? Hello?` -> `O que tem esse cara...? Com licença? Ei?` (Garota, 12_01)
-- `Unh... urgh...` -> `Nnh... argh...` (Protagonista, 12_01)
-- `Huh? Is he trying to say something?` -> `Hm? Ele tá tentando falar algo?` (Garota, 12_01)
-- `U-Uurgh...` -> `Uu-uugh...` (Protagonista, 12_01)
-- `He's... not looking so good. Is he sick?` -> `Ele não tá bem... Será que está doente?` (Garota, 12_01)
-- `Ah... a-agh...` -> `Ah... a-aah...` (Protagonista, 12_01)
-- `H-Hey, uh...` -> `E-Ei, ah...` (Garota, 12_01)
-- `Agh... aaagh... uuUURGH...` -> `Argh... aarrgh... UURGH...` (Protagonista, 12_01)
-- `What in--Is he just crazy?` -> `O que--Tá ficando louco?` (Garota, 12_01)
-- `AaaaAAAGH!! UUUOOOHHHH!!` -> `AaaaAAAAH!! UUUOOOHHH!!` (Protagonista, 12_01)
-- `AAAAAAAAH!!` -> `AAAAAAAAH!!` (Protagonista, 12_01)
-- `H-Huff... hah... hah...` -> `H-Hah... hah... hah...` (Protagonista, 12_01)
-- `Hey, are you all right? You were groaning in your\n` -> `Ei, tá tudo bem? Você estava gemendo no\n` (Garota, 12_01)
-- `sleep...` -> `sono...` (Garota, 12_01)
-- `Kuon looks at me, brow creased with worry.` -> `Kuon me olha com o cenho franzido.` (Haku, 12_01)
-- `...a dream...?` -> `...sonho...?` (Protagonista, 12_01)
-- `N-No...` -> `N-Não..` (Protagonista, 12_01)
-- `A dream... Yeah. Just a dream.` -> `Sonho... Sim. Foi só um sonho.` (Haku, 12_01)
-- `Urgh... No way I'm gonna be able to get back to\n` -> `Argh... Não tem como eu conseguir voltar ao\n` (Haku, 12_01)
-- `sleep after that one. Talk about nightmares...` -> `sono depois disso. Que pesadelo esse...` (Haku, 12_01)
-- `God. It's because I got attacked by that monster,\n` -> `Droga. É por causa daquele monstro que me atacou,\n` (Haku, 12_01)
-- `I'll bet.` -> `aposto.` (Haku, 12_01)
-- `Haku?` -> `Haku?` (Kuon, 11_07)
-- `Kuon continues to look at me, questioning.` -> `Kuon continua me olhando, interrogativa.` (Haku, 12_01)
-- `Sorry, it's nothing. I just had a bad dream.` -> `Desculpa, não é nada. Só tive um pesadelo.` (Haku, 12_01)
-- `That's a relief. Go wash your face and wake up a\n` -> `Que bom. Lava o rosto e\n` (Garota, 12_01)
-- `little.` -> `acorda.` (Garota, 12_01)
-- `And after you do that, we'll get some breakfast,\n` -> `E depois disso, a gente toma café da manhã,\n` (Garota, 12_01)
-- `OK?` -> `tá?` (Garota, 12_01)
-- `Yeah. Sounds good...` -> `É... tá bom...` (Haku, 12_01)
+- `Hah... hah... phew...` -> `Hah... hah... ufa...` (Haku, 12_15)
+- `I thought this whole thing was supposed to make me\n` -> `Achei que essa coisa toda era pra me deixar\n` (Haku, 12_15)
+- `stronger while I sleep. So why am I so tired?` -> `mais forte enquanto dormia. Por que estou tão cansado?` (Haku, 12_15)
+- `Not to mention how realistic that was. I thought\n` -> `Sem falar como aquilo foi real. Achei que\n` (Haku, 12_15)
+- `I was going to die there.` -> `ia morrer lá dentro.` (Haku, 12_15)
+- `Amplified. Double the trouble.` -> `Amplificado. O dobro do problema.` (Homem, 12_15)
+- `The amount of exertion required is increased.\n` -> `O esforço exigido é aumentado.\n` (Homem, 12_15)
+- `Your fatigue should feel about three times more\n` -> `Sua fadiga deve parecer cerca de três vezes maior\n` (Homem, 12_15)
+- `than normal.` -> `que o normal.` (Homem, 12_15)
+- `What!?` -> `O quê!?` (Haku, 12_03)
+- `You will feel as fresh as a pile of mud.` -> `Você vai se sentir fresco como um monte de lama.` (Homem, 12_15)
+- `...When you awaken, I am sure you will feel equal\n` -> `...Ao despertar, tenho certeza que sentirá\n` (Homem, 12_15)
+- `parts fatigue and intense accomplishment.` -> `partes iguais de fadiga e intensa realização.` (Homem, 12_15)
+- `Wh--Hold on, what's that even supposed to mean?\n` -> `Es-- Calma, o que isso quer dizer afinal?\n` (Haku, 12_15)
+- `I'm calling it here. Abort! Abort!` -> `Eu cancelo isso. Aborta! Aborta!` (Haku, 12_15)
+- `Not possible.` -> `Impossível.` (Homem, 12_15)
+- `I am afraid you will have to overcome all the\n` -> `Receio que você tenha que superar todos os\n` (Homem, 12_15)
+- `trials before you can awaken.` -> `desafios antes de poder despertar.` (Homem, 12_15)
+- `We forgot to mention, but the line between dream\n` -> `Esquecemos de mencionar, mas a linha entre sonho\n` (Homem, 12_15)
+- `and reality can often blur. Please use caution.` -> `e realidade pode se confundir. Por favor, tome cuidado.` (Homem, 12_15)
+- `Wh-What exactly do you mean by that?` -> `O-O que exatamente quer dizer com isso?` (Haku, 12_15)
+- `If you believe that you die within your dream.` -> `Se acreditar que morreu dentro do seu sonho.` (Homem, 12_15)
+- `You will kick the bucket in reality, as well.` -> `Você vai bater as botas na realidade também.` (Homem, 12_15)
+- `The HELL!?` -> `Que MERDA!?` (Haku, 12_15)
+- `gake_parts` -> `gake_parts` (SYSTEM, 12_14)
+- `All right! Now we just wait for Kuon to get back,\n` -> `Certo! Agora é só esperar a Kuon voltar,\n` (Haku, 12_15)
+- `and... {W230}Huh?` -> `e... {W230}Hein?` (Haku, 12_15)
+- `Here's my grand entrance!\n` -> `Minha entrada triunfal!\n` (Kuon, 12_15)
+- `Did I keep you waiting, Haku?` -> `Te fiz esperar, Haku?` (Kuon, 12_15)
+- `...Well, how do I put it...` -> `...Bom, como eu poderia dizer...` (Haku, 12_15)
+- `...Huh?` -> `...Hein?` (Kuon, 11_07)
+- `We can talk later. Looks like naptime's over.` -> `Conversa depois. Parece que o cochilo acabou.` (Haku, 12_15)
+- `Damn, it's persistent. Maroro, it's up to you!` -> `Droga, ele insiste. Maroro, depende de você!` (Ukon, 12_15)
+- `Drop it straight down. Your guest is just\n` -> `Joga reto pra baixo. Seu convidado está\n` (Ukon, 12_15)
+- `nearby.` -> `perto.` (Ukon, 12_15)
+- `W-We shall not fail!` -> `N-Não falharemos!` (Maroro, 12_15)
+- `NOW, Maroro!` -> `AGORA, Maroro!` (Ukon, 12_15)
+- `We did it...` -> `Conseguimos...` (Ukon, 12_15)
+- `Leg_2_B_L` -> `Leg_2_B_L` (SYSTEM, 12_15)
+- `Leg_2_B_R` -> `Leg_2_B_R` (SYSTEM, 12_15)
+- `The game is over, I think. Are you hurt, Haku?` -> `Acabou, acho. Está machucado, Haku?` (Ukon, 12_15)
+- `No, but never mind me. Are you OK?` -> `Não, mas deixa eu de lado. Você está bem?` (Haku, 12_15)
+- `I'm fine. I did say I was good at running,\n` -> `Estou bem. Eu disse que era boa em correr,\n` (Kuon, 12_15)
+- `didn't I?` -> `não disse?` (Kuon, 12_15)
+- `Good grief, missy. Teasing a beastie like that\n` -> `Puxa vida, moça. Provocar uma fera desse jeito\n` (Ukon, 12_15)
+- `all the way out here... You really are somethin'.` -> `aqui fora... Você é demais mesmo.` (Ukon, 12_15)
+- `It's over...` -> `Acabou...` (Haku, 12_15)
+- `Yeah, it's over all right.` -> `É, acabou de vez.` (Ukon, 12_15)
+- `...Gah, I need a nap.` -> `...Ah, preciso dormir.` (Haku, 12_15)
+- `I sag to the ground in sheer relief.` -> `Afundo no chão de puro alívio.` (Haku, 12_15)
+- `M-Master Haku, have we won the day?\n` -> `M-Mestre Haku, triunfamos neste dia?\n` (Maroro, 12_15)
+- `O-Our lives are yet our own!?` -> `N-Nossas vidas ainda são nossas!?` (Maroro, 12_15)
+- `Yeah, it's over now. So you can quit clinging\n` -> `É, acabou. Então para de ficar se\n` (Haku, 12_15)
+- `to me so much!` -> `agarrando em mim!` (Haku, 12_15)
+- `The day is ours! Oh, the day is OURS, Master Haku!` -> `A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!` (Maroro, 12_15)
+- `All right, I got it, so just... get off me...` -> `Tá bom, entendi, então... sai de cima de mim...` (Haku, 12_15)
+- `Let's head back, Haku. There'll be a feast\n` -> `Vamos voltar, Haku. Vai ter uma festa\n` (Ukon, 12_15)
+- `waiting... Fine drink, fine delicacies, and\n` -> `esperando... Boa bebida, boas iguarias e\n` (Ukon, 12_15)
+- `a hot bath.` -> `banho quente.` (Kuon, 12_15)
+- `Even with us all injured and battered, something\n` -> `Mesmo todos feridos e exaustos, algo\n` (Haku, 12_15)
+- `joyful surges inside all of us at Kuon's words.` -> `jubiloso surge em nós todos com as palavras de Kuon.` (Haku, 12_15)
+- `Joyous shouts fill the air, and resolve into\n` -> `Gritos de alegria enchem o ar e se transformam em\n` (Haku, 12_15)
+- `roars of triumph.` -> `rugidos de triunfo.` (Haku, 12_15)
+- `Eyes up, kid! We're not done yet!` -> `Atenção, garoto! Ainda não acabou!` (Ukon, 12_15)
+- `O, what unhappy tenacity! ` -> `Ó, que infeliz tenacidade!` (Maroro, 12_15)
+- `Sorry, but this is the end!` -> `Desculpe, mas é aqui que acaba!` (Kuon, 12_15)
+- `...She's here!` -> `...Ela chegou!` (Ukon, 12_15)
+- `I'm back. Haku, are you hurt or anything?` -> `Voltei. Haku, está machucado?` (Kuon, 12_15)
+- `M-Master Haku, have we won the day? O-Our lives\n` -> `M-Mestre Haku, triunfamos neste dia? N-Nossas vidas\n` (Maroro, 12_15)
+- `are yet our own!?` -> `ainda são nossas!?` (Maroro, 12_15)
 **Voz estabelecida dos falantes (amostra):**
 - Haku: `Geez...! Too bright out here...` -> `Aff...! Claridade demais aqui fora...`
 - Haku: `Well, guess the sun still rises no matter where\n` -> `Enfim, o sol nasce em qualquer lugar, pelo visto\n`
@@ -215,46 +250,104 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 > orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.
 | offset | byte_budget | source |
 |---|---|---|
-| 0x26228 | 14 | Where... am I? |
-| 0x26237 | 26 | No one else around, or...? |
-| 0x26252 | 28 | Huh? Someone's over there... |
-| 0x2626f | 41 | Hey, you there! Could you spare a moment? |
-| 0x2629d | 51 | Hey, I'm sorry for bothering you, but could I ask\n |
-| 0x262d1 | 14 | you something? |
-| 0x262e0 | 6 | Hello? |
-| 0x262e7 | 42 | What's with this guy...? Excuse me? Hello? |
-| 0x26312 | 14 | Unh... urgh... |
-| 0x26321 | 35 | Huh? Is he trying to say something? |
-| 0x26345 | 10 | U-Uurgh... |
-| 0x26350 | 40 | He's... not looking so good. Is he sick? |
-| 0x26379 | 14 | Ah... a-agh... |
-| 0x26388 | 12 | H-Hey, uh... |
-| 0x26395 | 26 | Agh... aaagh... uuUURGH... |
-| 0x263b0 | 26 | What in--Is he just crazy? |
-| 0x263cb | 24 | AaaaAAAGH!! UUUOOOHHHH!! |
-| 0x263e4 | 11 | AAAAAAAAH!! |
-| 0x263f0 | 23 | H-Huff... hah... hah... |
-| 0x26408 | 51 | Hey, are you all right? You were groaning in your\n |
-| 0x2643c | 8 | sleep... |
-| 0x26445 | 42 | Kuon looks at me, brow creased with worry. |
-| 0x26470 | 14 | ...a dream...? |
-| 0x2647f | 7 | N-No... |
-| 0x26487 | 30 | A dream... Yeah. Just a dream. |
-| 0x264a6 | 49 | Urgh... No way I'm gonna be able to get back to\n |
-| 0x264d8 | 46 | sleep after that one. Talk about nightmares... |
-| 0x26507 | 51 | God. It's because I got attacked by that monster,\n |
-| 0x2653b | 9 | I'll bet. |
-| 0x26545 | 5 | Haku? |
-| 0x2654b | 42 | Kuon continues to look at me, questioning. |
-| 0x26576 | 44 | Sorry, it's nothing. I just had a bad dream. |
-| 0x265a3 | 50 | That's a relief. Go wash your face and wake up a\n |
-| 0x265d6 | 7 | little. |
-| 0x265de | 50 | And after you do that, we'll get some breakfast,\n |
-| 0x26611 | 3 | OK? |
-| 0x26615 | 20 | Yeah. Sounds good... |
+| 0x4a4f3 | 21 | Hah... hah... phew... |
+| 0x4a509 | 52 | I thought this whole thing was supposed to make me\n |
+| 0x4a53e | 45 | stronger while I sleep. So why am I so tired? |
+| 0x4a56c | 50 | Not to mention how realistic that was. I thought\n |
+| 0x4a59f | 25 | I was going to die there. |
+| 0x4a5b9 | 30 | Amplified. Double the trouble. |
+| 0x4a5d8 | 47 | The amount of exertion required is increased.\n |
+| 0x4a608 | 49 | Your fatigue should feel about three times more\n |
+| 0x4a63a | 12 | than normal. |
+| 0x4a647 | 6 | What!? |
+| 0x4a64e | 40 | You will feel as fresh as a pile of mud. |
+| 0x4a677 | 51 | ...When you awaken, I am sure you will feel equal\n |
+| 0x4a6ab | 41 | parts fatigue and intense accomplishment. |
+| 0x4a6d5 | 49 | Wh--Hold on, what's that even supposed to mean?\n |
+| 0x4a707 | 34 | I'm calling it here. Abort! Abort! |
+| 0x4a72a | 13 | Not possible. |
+| 0x4a738 | 47 | I am afraid you will have to overcome all the\n |
+| 0x4a768 | 29 | trials before you can awaken. |
+| 0x4a786 | 50 | We forgot to mention, but the line between dream\n |
+| 0x4a7b9 | 47 | and reality can often blur. Please use caution. |
+| 0x4a7e9 | 36 | Wh-What exactly do you mean by that? |
+| 0x4a80e | 46 | If you believe that you die within your dream. |
+| 0x4a83d | 45 | You will kick the bucket in reality, as well. |
+| 0x4a86b | 10 | The HELL!? |
+| 0x4bef3 | 10 | gake_parts |
+| 0x4beff | 51 | All right! Now we just wait for Kuon to get back,\n |
+| 0x4bf33 | 17 | and... {W230}Huh? |
+| 0x4bf45 | 27 | Here's my grand entrance!\n |
+| 0x4bf61 | 29 | Did I keep you waiting, Haku? |
+| 0x4bf7f | 27 | ...Well, how do I put it... |
+| 0x4bf9b | 7 | ...Huh? |
+| 0x4bfa3 | 45 | We can talk later. Looks like naptime's over. |
+| 0x4bfd1 | 46 | Damn, it's persistent. Maroro, it's up to you! |
+| 0x4c000 | 43 | Drop it straight down. Your guest is just\n |
+| 0x4c02c | 7 | nearby. |
+| 0x4c034 | 20 | W-We shall not fail! |
+| 0x4c049 | 12 | NOW, Maroro! |
+| 0x4c056 | 12 | We did it... |
+| 0x4c063 | 9 | Leg_2_B_L |
+| 0x4c06d | 9 | Leg_2_B_R |
+| 0x4c077 | 46 | The game is over, I think. Are you hurt, Haku? |
+| 0x4c0a6 | 34 | No, but never mind me. Are you OK? |
+| 0x4c0c9 | 44 | I'm fine. I did say I was good at running,\n |
+| 0x4c0f6 | 9 | didn't I? |
+| 0x4c100 | 48 | Good grief, missy. Teasing a beastie like that\n |
+| 0x4c131 | 49 | all the way out here... You really are somethin'. |
+| 0x4c167 | 12 | It's over... |
+| 0x4c174 | 26 | Yeah, it's over all right. |
+| 0x4c18f | 21 | ...Gah, I need a nap. |
+| 0x4c1a5 | 36 | I sag to the ground in sheer relief. |
+| 0x4c1ca | 37 | M-Master Haku, have we won the day?\n |
+| 0x4c1f0 | 29 | O-Our lives are yet our own!? |
+| 0x4c20e | 47 | Yeah, it's over now. So you can quit clinging\n |
+| 0x4c23e | 14 | to me so much! |
+| 0x4c24d | 50 | The day is ours! Oh, the day is OURS, Master Haku! |
+| 0x4c280 | 45 | All right, I got it, so just... get off me... |
+| 0x4c2ae | 44 | Let's head back, Haku. There'll be a feast\n |
+| 0x4c2db | 45 | waiting... Fine drink, fine delicacies, and\n |
+| 0x4c309 | 11 | a hot bath. |
+| 0x4c315 | 50 | Even with us all injured and battered, something\n |
+| 0x4c348 | 47 | joyful surges inside all of us at Kuon's words. |
+| 0x4c378 | 46 | Joyous shouts fill the air, and resolve into\n |
+| 0x4c3a7 | 17 | roars of triumph. |
+| 0x4da0e | 10 | gake_parts |
+| 0x4da1a | 12 | NOW, Maroro! |
+| 0x4da27 | 12 | We did it... |
+| 0x4da34 | 33 | Eyes up, kid! We're not done yet! |
+| 0x4da56 | 26 | O, what unhappy tenacity!  |
+| 0x4da71 | 27 | Sorry, but this is the end! |
+| 0x4da8d | 14 | ...She's here! |
+| 0x4da9c | 9 | Leg_2_B_L |
+| 0x4daa6 | 9 | Leg_2_B_R |
+| 0x4dab0 | 41 | I'm back. Haku, are you hurt or anything? |
+| 0x4dada | 34 | No, but never mind me. Are you OK? |
+| 0x4dafd | 44 | I'm fine. I did say I was good at running,\n |
+| 0x4db2a | 9 | didn't I? |
+| 0x4db34 | 48 | Good grief, missy. Teasing a beastie like that\n |
+| 0x4db65 | 49 | all the way out here... You really are somethin'. |
+| 0x4db9b | 12 | It's over... |
+| 0x4dba8 | 26 | Yeah, it's over all right. |
+| 0x4dbc3 | 21 | ...Gah, I need a nap. |
+| 0x4dbd9 | 36 | I sag to the ground in sheer relief. |
+| 0x4dbfe | 49 | M-Master Haku, have we won the day? O-Our lives\n |
+| 0x4dc30 | 17 | are yet our own!? |
+| 0x4dc42 | 47 | Yeah, it's over now. So you can quit clinging\n |
+| 0x4dc72 | 14 | to me so much! |
+| 0x4dc81 | 50 | The day is ours! Oh, the day is OURS, Master Haku! |
+| 0x4dcb4 | 45 | All right, I got it, so just... get off me... |
+| 0x4dce2 | 44 | Let's head back, Haku. There'll be a feast\n |
+| 0x4dd0f | 45 | waiting... Fine drink, fine delicacies, and\n |
+| 0x4dd3d | 11 | a hot bath. |
+| 0x4dd49 | 50 | Even with us all injured and battered, something\n |
+| 0x4dd7c | 47 | joyful surges inside all of us at Kuon's words. |
+| 0x4ddac | 46 | Joyous shouts fill the air, and resolve into\n |
+| 0x4dddb | 17 | roars of triumph. |
 
 ## 8. Formato de saida EXIGIDO
-Escreva `translations_12_01.json` com a forma:
+Escreva `translations_12_15.json` com a forma:
 ```json
 { "lines": {
   "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",

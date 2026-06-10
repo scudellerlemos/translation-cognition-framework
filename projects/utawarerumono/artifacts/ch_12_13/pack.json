@@ -1,7 +1,7 @@
 {
-  "scene": "ch_12_01",
-  "sfx": "12_01",
-  "n_lines": 37,
+  "scene": "ch_12_13",
+  "sfx": "12_13",
+  "n_lines": 49,
   "doctrine": "framework/skills/translation_governance.md",
   "project_constraints": {
     "formatting_tokens": [
@@ -27,6 +27,22 @@
   },
   "glossary_subset": [
     {
+      "term": "Boro-Gigiri",
+      "category": "Criatura",
+      "target_translation": "Boro-Gigiri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Variante GRANDE do Gigiri ('o enorme'). NAO e personagem (Boro = qualificador de tamanho). Manter o composto."
+    },
+    {
+      "term": "Gigiri",
+      "category": "Criatura",
+      "target_translation": "Gigiri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Criaturas/monstros altamente venenosos (cap.12). Nome de mundo — manter."
+    },
+    {
       "term": "Haku",
       "category": "Personagem",
       "target_translation": "Haku",
@@ -35,12 +51,36 @@
       "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
     },
     {
-      "term": "Kuon",
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Maroro",
       "category": "Personagem",
-      "target_translation": "Kuon",
+      "target_translation": "Maroro",
       "handling_rule": "manter_original",
       "spoiler_level": "none",
-      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+      "notes": "Erudito/escriba/mago comico e franzino do grupo do Ukon (cap.12); magia de fogo com cantico+danca longos. Fala em registro ARCAICO e comico (pleaseth/mine own; gag de cicio s->sh). Gruda no Haku como 'benfeitor'."
+    },
+    {
+      "term": "Master",
+      "category": "Cultural",
+      "target_translation": "Mestre",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorifico (Maroro -> 'Master Ukon' = 'Mestre Ukon'). Traduzir."
+    },
+    {
+      "term": "Ukon",
+      "category": "Personagem",
+      "target_translation": "Ukon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "Guerreiro espirituoso e cativante que faz amizade com Haku ao ve-lo consertar o moinho (cap.12); lidera a 'Coorte do Ukon'. Maroro o trata por 'Mestre Ukon'. SPOILER: identidade verdadeira e reveal de arco posterior — NAO antecipar; no cap.12 e um personagem por si so. reveal_timing: alem do cap.12."
     }
   ],
   "voice_cards": {
@@ -179,226 +219,16 @@
   ],
   "tm_exact": [
     {
-      "source": "Where... am I?",
-      "target": "Onde... estou?",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "No one else around, or...?",
-      "target": "Não tem ninguém... ou...?",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Huh? Someone's over there...",
-      "target": "Hein? Tem alguém ali...",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Hey, you there! Could you spare a moment?",
-      "target": "Ei, você aí! Pode me dar um momento?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
-      "target": "Ei, me desculpe, posso fazer\\n",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "you something?",
-      "target": "uma pergunta?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Hello?",
-      "target": "Olá?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "What's with this guy...? Excuse me? Hello?",
-      "target": "O que tem esse cara...? Com licença? Ei?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Unh... urgh...",
-      "target": "Nnh... argh...",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Huh? Is he trying to say something?",
-      "target": "Hm? Ele tá tentando falar algo?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "U-Uurgh...",
-      "target": "Uu-uugh...",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "He's... not looking so good. Is he sick?",
-      "target": "Ele não tá bem... Será que está doente?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Ah... a-agh...",
-      "target": "Ah... a-aah...",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "H-Hey, uh...",
-      "target": "E-Ei, ah...",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Agh... aaagh... uuUURGH...",
-      "target": "Argh... aarrgh... UURGH...",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "What in--Is he just crazy?",
-      "target": "O que--Tá ficando louco?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "AaaaAAAGH!! UUUOOOHHHH!!",
-      "target": "AaaaAAAAH!! UUUOOOHHH!!",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "AAAAAAAAH!!",
-      "target": "AAAAAAAAH!!",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "H-Huff... hah... hah...",
-      "target": "H-Hah... hah... hah...",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Hey, are you all right? You were groaning in your\\n",
-      "target": "Ei, tá tudo bem? Você estava gemendo no\\n",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "sleep...",
-      "target": "sono...",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Kuon looks at me, brow creased with worry.",
-      "target": "Kuon me olha com o cenho franzido.",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "...a dream...?",
-      "target": "...sonho...?",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "N-No...",
-      "target": "N-Não..",
-      "speaker": "Protagonista",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "A dream... Yeah. Just a dream.",
-      "target": "Sonho... Sim. Foi só um sonho.",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Urgh... No way I'm gonna be able to get back to\\n",
-      "target": "Argh... Não tem como eu conseguir voltar ao\\n",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "sleep after that one. Talk about nightmares...",
-      "target": "sono depois disso. Que pesadelo esse...",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "God. It's because I got attacked by that monster,\\n",
-      "target": "Droga. É por causa daquele monstro que me atacou,\\n",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "I'll bet.",
-      "target": "aposto.",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Haku?",
-      "target": "Haku?",
+      "source": "it here.",
+      "target": "até aqui.",
       "speaker": "Kuon",
-      "from_scene": "11_07"
+      "from_scene": "12_12"
     },
     {
-      "source": "Kuon continues to look at me, questioning.",
-      "target": "Kuon continua me olhando, interrogativa.",
+      "source": "...\\n",
+      "target": "...\\n",
       "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Sorry, it's nothing. I just had a bad dream.",
-      "target": "Desculpa, não é nada. Só tive um pesadelo.",
-      "speaker": "Haku",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "That's a relief. Go wash your face and wake up a\\n",
-      "target": "Que bom. Lava o rosto e\\n",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "little.",
-      "target": "acorda.",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "And after you do that, we'll get some breakfast,\\n",
-      "target": "E depois disso, a gente toma café da manhã,\\n",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "OK?",
-      "target": "tá?",
-      "speaker": "Garota",
-      "from_scene": "12_01"
-    },
-    {
-      "source": "Yeah. Sounds good...",
-      "target": "É... tá bom...",
-      "speaker": "Haku",
-      "from_scene": "12_01"
+      "from_scene": "11_08"
     }
   ],
   "tm_voice": [
@@ -493,192 +323,259 @@
       "target": "Wahahahaha!!"
     }
   ],
-  "spoiler_guards": [],
+  "spoiler_guards": [
+    {
+      "entity": "Ukon",
+      "fact": "A identidade verdadeira de Ukon (ele e mais do que um guerreiro espirituoso).",
+      "spoiler_level": "major",
+      "guard": "Traduza as falas de/sobre Ukon como o personagem 'Ukon' por si so. NAO insinue outra identidade, patente oculta ou disfarce. Mantenha qualquer ambiguidade do original."
+    }
+  ],
   "lines": [
     {
-      "offset": "0x26228",
-      "source": "Where... am I?",
-      "byte_budget": 14
+      "offset": "0x49268",
+      "source": "Lured by the last of the rotting meat, the gigiri\\n",
+      "byte_budget": 51
     },
     {
-      "offset": "0x26237",
-      "source": "No one else around, or...?",
-      "byte_budget": 26
-    },
-    {
-      "offset": "0x26252",
-      "source": "Huh? Someone's over there...",
+      "offset": "0x4929c",
+      "source": "horde swarms and scatters...",
       "byte_budget": 28
     },
     {
-      "offset": "0x2626f",
-      "source": "Hey, you there! Could you spare a moment?",
-      "byte_budget": 41
+      "offset": "0x492b9",
+      "source": "Ah! Look now to yon host of fiends; see the burning\\n",
+      "byte_budget": 53
     },
     {
-      "offset": "0x2629d",
-      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
-      "byte_budget": 51
-    },
-    {
-      "offset": "0x262d1",
-      "source": "you something?",
-      "byte_budget": 14
-    },
-    {
-      "offset": "0x262e0",
-      "source": "Hello?",
-      "byte_budget": 6
-    },
-    {
-      "offset": "0x262e7",
-      "source": "What's with this guy...? Excuse me? Hello?",
-      "byte_budget": 42
-    },
-    {
-      "offset": "0x26312",
-      "source": "Unh... urgh...",
-      "byte_budget": 14
-    },
-    {
-      "offset": "0x26321",
-      "source": "Huh? Is he trying to say something?",
+      "offset": "0x492ef",
+      "source": "purpose that doth drive them forth!",
       "byte_budget": 35
     },
     {
-      "offset": "0x26345",
-      "source": "U-Uurgh...",
-      "byte_budget": 10
+      "offset": "0x49313",
+      "source": "They took the bait...",
+      "byte_budget": 21
     },
     {
-      "offset": "0x26350",
-      "source": "He's... not looking so good. Is he sick?",
-      "byte_budget": 40
-    },
-    {
-      "offset": "0x26379",
-      "source": "Ah... a-agh...",
-      "byte_budget": 14
-    },
-    {
-      "offset": "0x26388",
-      "source": "H-Hey, uh...",
-      "byte_budget": 12
-    },
-    {
-      "offset": "0x26395",
-      "source": "Agh... aaagh... uuUURGH...",
-      "byte_budget": 26
-    },
-    {
-      "offset": "0x263b0",
-      "source": "What in--Is he just crazy?",
-      "byte_budget": 26
-    },
-    {
-      "offset": "0x263cb",
-      "source": "AaaaAAAGH!! UUUOOOHHHH!!",
-      "byte_budget": 24
-    },
-    {
-      "offset": "0x263e4",
-      "source": "AAAAAAAAH!!",
-      "byte_budget": 11
-    },
-    {
-      "offset": "0x263f0",
-      "source": "H-Huff... hah... hah...",
-      "byte_budget": 23
-    },
-    {
-      "offset": "0x26408",
-      "source": "Hey, are you all right? You were groaning in your\\n",
-      "byte_budget": 51
-    },
-    {
-      "offset": "0x2643c",
-      "source": "sleep...",
-      "byte_budget": 8
-    },
-    {
-      "offset": "0x26445",
-      "source": "Kuon looks at me, brow creased with worry.",
-      "byte_budget": 42
-    },
-    {
-      "offset": "0x26470",
-      "source": "...a dream...?",
-      "byte_budget": 14
-    },
-    {
-      "offset": "0x2647f",
-      "source": "N-No...",
-      "byte_budget": 7
-    },
-    {
-      "offset": "0x26487",
-      "source": "A dream... Yeah. Just a dream.",
-      "byte_budget": 30
-    },
-    {
-      "offset": "0x264a6",
-      "source": "Urgh... No way I'm gonna be able to get back to\\n",
-      "byte_budget": 49
-    },
-    {
-      "offset": "0x264d8",
-      "source": "sleep after that one. Talk about nightmares...",
+      "offset": "0x49329",
+      "source": "I squint into the chittering mass, trying to\\n",
       "byte_budget": 46
     },
     {
-      "offset": "0x26507",
-      "source": "God. It's because I got attacked by that monster,\\n",
-      "byte_budget": 51
-    },
-    {
-      "offset": "0x2653b",
-      "source": "I'll bet.",
-      "byte_budget": 9
-    },
-    {
-      "offset": "0x26545",
-      "source": "Haku?",
-      "byte_budget": 5
-    },
-    {
-      "offset": "0x2654b",
-      "source": "Kuon continues to look at me, questioning.",
-      "byte_budget": 42
-    },
-    {
-      "offset": "0x26576",
-      "source": "Sorry, it's nothing. I just had a bad dream.",
+      "offset": "0x49358",
+      "source": "distinguish the Boro-Gigiri from the rest...",
       "byte_budget": 44
     },
     {
-      "offset": "0x265a3",
-      "source": "That's a relief. Go wash your face and wake up a\\n",
+      "offset": "0x49385",
+      "source": "There it is. It's keeping its distance from the\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x493b7",
+      "source": "small fry.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x493c2",
+      "source": "Pray tell, by what machination intendest thou to\\n",
       "byte_budget": 50
     },
     {
-      "offset": "0x265d6",
-      "source": "little.",
-      "byte_budget": 7
+      "offset": "0x493f5",
+      "source": "lure the beast as a moth to the siren flame?",
+      "byte_budget": 44
     },
     {
-      "offset": "0x265de",
-      "source": "And after you do that, we'll get some breakfast,\\n",
-      "byte_budget": 50
+      "offset": "0x49422",
+      "source": "You're gonna hit it REALLY hard.",
+      "byte_budget": 32
     },
     {
-      "offset": "0x26611",
-      "source": "OK?",
+      "offset": "0x49443",
+      "source": "Nyeh?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x49449",
+      "source": "Your magecraft stuff. I need you to hit it with\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x4947b",
+      "source": "the biggest, flashiest spell you have.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x494a2",
+      "source": "If it goes just right, you'll distract it and lure\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x494d7",
+      "source": "it here.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x494e0",
+      "source": "Me? H-Humble Maroro?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x494f5",
+      "source": "Who else? Now, come on and hurry, or else the guys\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x4952a",
+      "source": "acting as decoys are gonna end up eaten!",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x49553",
+      "source": "H-H-Hold! If I weave the ley-thread so ensorcelled--\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x4958a",
+      "source": "Would such a spell not... lure it directly toward\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x495be",
+      "source": "me?",
       "byte_budget": 3
     },
     {
-      "offset": "0x26615",
-      "source": "Yeah. Sounds good...",
-      "byte_budget": 20
+      "offset": "0x495c2",
+      "source": "...\\n",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x495c8",
+      "source": "...Don't worry. We'll be here.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x495e7",
+      "source": "Methinks thou didst pause a touch long before giving\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x4961e",
+      "source": "thine answer! Speak truth--is there no d-danger?",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x4964f",
+      "source": "Yeah. Have a little faith, will you?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x49674",
+      "source": "Master Haku...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x49683",
+      "source": "Yes... Yes, i'faith! For what can a man place his\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x496b7",
+      "source": "unwavering belief in, if not his bosom friends?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x496e7",
+      "source": "Prithee, look not to another, for loyal Maroro\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x49718",
+      "source": "shall see the fateful task done! Excelsior!",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x49744",
+      "source": "Though really, I'm just gonna... Kinda just gonna\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x49778",
+      "source": "be standing here.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x4978a",
+      "source": "If something does happen, it's gonna fall to Ukon\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x497be",
+      "source": "and the others to take care of it.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x497e1",
+      "source": "Nyoooooo...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x497ed",
+      "source": "Hhnnghh... HO! Stand and deliver, thou intemperate\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x49822",
+      "source": "jackaknave! NYO-HOOOOOOOOOO!",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x4983f",
+      "source": "...Can't anything be done about what he shouts\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x49870",
+      "source": "while he's doing his magic?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x4988c",
+      "source": "...Well? Is it gonna come this w--",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x498af",
+      "source": "...A few of the smaller ones are coming with it,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x498e2",
+      "source": "too... Looks like that did the trick.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x49908",
+      "source": "But... OK. OK, that's not a disaster. We can\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x49937",
+      "source": "manage this.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x49944",
+      "source": "Everyone! Keep pulling them, just like we planned--\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x4997a",
+      "source": "Just don't overextend yourselves!",
+      "byte_budget": 33
     }
   ]
 }

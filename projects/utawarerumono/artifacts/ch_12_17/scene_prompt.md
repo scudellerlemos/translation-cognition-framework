@@ -1,4 +1,4 @@
-# Cena ch_12_01 — pacote de traducao (37 linhas)
+# Cena ch_12_17 — pacote de traducao (123 linhas)
 
 > Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR
 > seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.
@@ -113,8 +113,14 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## 3. Glossario relevante (subconjunto desta cena)
 | termo | categoria | traducao | regra | spoiler |
 |---|---|---|---|---|
-| Haku | Personagem | Haku | manter_original | moderate |
+| amamunii | Comida | amamunii | manter_original | none |
+| Cohort | Organizacao | Coorte | traduzir | none |
 | Kuon | Personagem | Kuon | manter_original | none |
+| Man | UI | Homem | traduzir | none |
+| Maroro | Personagem | Maroro | manter_original | none |
+| Master | Cultural | Mestre | traduzir | none |
+| Ukon | Personagem | Ukon | manter_original | major |
+| Woman | UI | Mulher | traduzir | none |
 
 ## 4. Vozes presentes
 ### Garota — criticality: high
@@ -148,45 +154,23 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - **Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus** [universal]: **Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **
 - **CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos** [universal]: **Decisão tomada:** Ao investigar o "opcode de início de bloco", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** 
 
+## 5b. CONTROLE DE SPOILER — fatos AINDA NAO revelados nesta cena
+> Estes fatos so se revelam DEPOIS desta cena. Preserve a ambiguidade do original; a
+> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).
+- **Ukon** (major): Traduza as falas de/sobre Ukon como o personagem 'Ukon' por si so. NAO insinue outra identidade, patente oculta ou disfarce. Mantenha qualquer ambiguidade do original.
+- **Figuras de memoria (Woman/Man)** (major): Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)
+
 ## 6. Memoria de traducao (consistencia — nao reinventar)
 **Falas identicas ja traduzidas (reusar):**
-- `Where... am I?` -> `Onde... estou?` (Protagonista, 12_01)
-- `No one else around, or...?` -> `Não tem ninguém... ou...?` (Protagonista, 12_01)
-- `Huh? Someone's over there...` -> `Hein? Tem alguém ali...` (Garota, 12_01)
-- `Hey, you there! Could you spare a moment?` -> `Ei, você aí! Pode me dar um momento?` (Garota, 12_01)
-- `Hey, I'm sorry for bothering you, but could I ask\n` -> `Ei, me desculpe, posso fazer\n` (Garota, 12_01)
-- `you something?` -> `uma pergunta?` (Garota, 12_01)
-- `Hello?` -> `Olá?` (Garota, 12_01)
-- `What's with this guy...? Excuse me? Hello?` -> `O que tem esse cara...? Com licença? Ei?` (Garota, 12_01)
-- `Unh... urgh...` -> `Nnh... argh...` (Protagonista, 12_01)
-- `Huh? Is he trying to say something?` -> `Hm? Ele tá tentando falar algo?` (Garota, 12_01)
-- `U-Uurgh...` -> `Uu-uugh...` (Protagonista, 12_01)
-- `He's... not looking so good. Is he sick?` -> `Ele não tá bem... Será que está doente?` (Garota, 12_01)
-- `Ah... a-agh...` -> `Ah... a-aah...` (Protagonista, 12_01)
-- `H-Hey, uh...` -> `E-Ei, ah...` (Garota, 12_01)
-- `Agh... aaagh... uuUURGH...` -> `Argh... aarrgh... UURGH...` (Protagonista, 12_01)
-- `What in--Is he just crazy?` -> `O que--Tá ficando louco?` (Garota, 12_01)
-- `AaaaAAAGH!! UUUOOOHHHH!!` -> `AaaaAAAAH!! UUUOOOHHH!!` (Protagonista, 12_01)
-- `AAAAAAAAH!!` -> `AAAAAAAAH!!` (Protagonista, 12_01)
-- `H-Huff... hah... hah...` -> `H-Hah... hah... hah...` (Protagonista, 12_01)
-- `Hey, are you all right? You were groaning in your\n` -> `Ei, tá tudo bem? Você estava gemendo no\n` (Garota, 12_01)
-- `sleep...` -> `sono...` (Garota, 12_01)
-- `Kuon looks at me, brow creased with worry.` -> `Kuon me olha com o cenho franzido.` (Haku, 12_01)
-- `...a dream...?` -> `...sonho...?` (Protagonista, 12_01)
-- `N-No...` -> `N-Não..` (Protagonista, 12_01)
-- `A dream... Yeah. Just a dream.` -> `Sonho... Sim. Foi só um sonho.` (Haku, 12_01)
-- `Urgh... No way I'm gonna be able to get back to\n` -> `Argh... Não tem como eu conseguir voltar ao\n` (Haku, 12_01)
-- `sleep after that one. Talk about nightmares...` -> `sono depois disso. Que pesadelo esse...` (Haku, 12_01)
-- `God. It's because I got attacked by that monster,\n` -> `Droga. É por causa daquele monstro que me atacou,\n` (Haku, 12_01)
-- `I'll bet.` -> `aposto.` (Haku, 12_01)
-- `Haku?` -> `Haku?` (Kuon, 11_07)
-- `Kuon continues to look at me, questioning.` -> `Kuon continua me olhando, interrogativa.` (Haku, 12_01)
-- `Sorry, it's nothing. I just had a bad dream.` -> `Desculpa, não é nada. Só tive um pesadelo.` (Haku, 12_01)
-- `That's a relief. Go wash your face and wake up a\n` -> `Que bom. Lava o rosto e\n` (Garota, 12_01)
-- `little.` -> `acorda.` (Garota, 12_01)
-- `And after you do that, we'll get some breakfast,\n` -> `E depois disso, a gente toma café da manhã,\n` (Garota, 12_01)
-- `OK?` -> `tá?` (Garota, 12_01)
-- `Yeah. Sounds good...` -> `É... tá bom...` (Haku, 12_01)
+- `Phew...` -> `Ufa...` (Haku, 12_16)
+- `Ukon's Cohort` -> `Coorte do Ukon` (SISTEMA, 12_04)
+- `Hey, kid, that cutie's gonna be disappointed with\n` -> `Ei, garoto, essa mocinha vai se decepcionar com\n` (Ukon, 12_07)
+- `you if you talk like that.` -> `você se falar assim.` (Ukon, 12_07)
+- `That's right! A real man sucks it up and goes for\n` -> `É isso! Um homem de verdade aguentaa firme e vai até\n` (Ukon, 12_07)
+- `broke!` -> `o fim!` (Ukon, 12_07)
+- `but...` -> `mas...` (Kuon, 12_16)
+- `I see.` -> `Entendo.` (Kuon, root)
+- `All right.` -> `Tudo bem.` (Haku, 12_08)
 **Voz estabelecida dos falantes (amostra):**
 - Haku: `Geez...! Too bright out here...` -> `Aff...! Claridade demais aqui fora...`
 - Haku: `Well, guess the sun still rises no matter where\n` -> `Enfim, o sol nasce em qualquer lugar, pelo visto\n`
@@ -215,46 +199,132 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 > orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.
 | offset | byte_budget | source |
 |---|---|---|
-| 0x26228 | 14 | Where... am I? |
-| 0x26237 | 26 | No one else around, or...? |
-| 0x26252 | 28 | Huh? Someone's over there... |
-| 0x2626f | 41 | Hey, you there! Could you spare a moment? |
-| 0x2629d | 51 | Hey, I'm sorry for bothering you, but could I ask\n |
-| 0x262d1 | 14 | you something? |
-| 0x262e0 | 6 | Hello? |
-| 0x262e7 | 42 | What's with this guy...? Excuse me? Hello? |
-| 0x26312 | 14 | Unh... urgh... |
-| 0x26321 | 35 | Huh? Is he trying to say something? |
-| 0x26345 | 10 | U-Uurgh... |
-| 0x26350 | 40 | He's... not looking so good. Is he sick? |
-| 0x26379 | 14 | Ah... a-agh... |
-| 0x26388 | 12 | H-Hey, uh... |
-| 0x26395 | 26 | Agh... aaagh... uuUURGH... |
-| 0x263b0 | 26 | What in--Is he just crazy? |
-| 0x263cb | 24 | AaaaAAAGH!! UUUOOOHHHH!! |
-| 0x263e4 | 11 | AAAAAAAAH!! |
-| 0x263f0 | 23 | H-Huff... hah... hah... |
-| 0x26408 | 51 | Hey, are you all right? You were groaning in your\n |
-| 0x2643c | 8 | sleep... |
-| 0x26445 | 42 | Kuon looks at me, brow creased with worry. |
-| 0x26470 | 14 | ...a dream...? |
-| 0x2647f | 7 | N-No... |
-| 0x26487 | 30 | A dream... Yeah. Just a dream. |
-| 0x264a6 | 49 | Urgh... No way I'm gonna be able to get back to\n |
-| 0x264d8 | 46 | sleep after that one. Talk about nightmares... |
-| 0x26507 | 51 | God. It's because I got attacked by that monster,\n |
-| 0x2653b | 9 | I'll bet. |
-| 0x26545 | 5 | Haku? |
-| 0x2654b | 42 | Kuon continues to look at me, questioning. |
-| 0x26576 | 44 | Sorry, it's nothing. I just had a bad dream. |
-| 0x265a3 | 50 | That's a relief. Go wash your face and wake up a\n |
-| 0x265d6 | 7 | little. |
-| 0x265de | 50 | And after you do that, we'll get some breakfast,\n |
-| 0x26611 | 3 | OK? |
-| 0x26615 | 20 | Yeah. Sounds good... |
+| 0x51932 | 50 | The party carries on well past midnight, showing\n |
+| 0x51965 | 28 | few signs of slowing down... |
+| 0x51982 | 50 | I came outside to cool off a bit in the night air. |
+| 0x519b5 | 41 | A breeze kicks up, caressing my cheeks... |
+| 0x519df | 7 | Phew... |
+| 0x519e7 | 53 | The cool air against my body feels nice after being\n |
+| 0x51a1d | 31 | inside the hot inn for so long. |
+| 0x51a3d | 50 | Behind me, warm light and cheerful voices filter\n |
+| 0x51a70 | 21 | out from the party... |
+| 0x51a86 | 47 | Pray lend me your ears, friends! Marvel as I,\n |
+| 0x51ab6 | 52 | master of impressions, do impersonate our dear Ukon! |
+| 0x51aeb | 24 | A raucous cheer goes up. |
+| 0x51b04 | 50 | Seems Maroro is giving a performance of some kind. |
+| 0x51b37 | 52 | A relaxed atmosphere is finally taking hold, after\n |
+| 0x51b6c | 29 | everything that's happened... |
+| 0x51b8a | 24 | Everyone seems cheerful. |
+| 0x51ba3 | 17 | ...Cheerful, huh. |
+| 0x51bb5 | 54 | The faces of those two men who'd spoken to me during\n |
+| 0x51bec | 38 | the trip rise unbidden in my thoughts. |
+| 0x51c13 | 13 | Ukon's Cohort |
+| 0x51c21 | 51 | Hey, kid, that cutie's gonna be disappointed with\n |
+| 0x51c55 | 26 | you if you talk like that. |
+| 0x51c70 | 51 | That's right! A real man sucks it up and goes for\n |
+| 0x51ca4 | 6 | broke! |
+| 0x51cab | 44 | And then they'd laughed merrily with their\n |
+| 0x51cd8 | 9 | comrades. |
+| 0x51ce2 | 6 | But... |
+| 0x51ce9 | 49 | Those two were nowhere to be seen in the dining\n |
+| 0x51d1b | 15 | hall, just now. |
+| 0x51d2b | 53 | They'll never be able to laugh or share drinks with\n |
+| 0x51d61 | 23 | their comrades again... |
+| 0x51d79 | 52 | And yet everyone inside is able to laugh and cheer\n |
+| 0x51dae | 37 | without a care in the world, somehow. |
+| 0x51dd4 | 49 | Nobody seems to give any thought toward mourning. |
+| 0x51e06 | 38 | Even Kuon doesn't seem too bothered... |
+| 0x51e2d | 6 | And... |
+| 0x51e34 | 50 | Even after that entire harrowing ordeal, I don't\n |
+| 0x51e67 | 46 | feel like I've been terribly affected, either. |
+| 0x51e96 | 36 | Hm? What're you doing out here, kid? |
+| 0x51ebb | 49 | I turn to the source of the voice and find Ukon\n |
+| 0x51eed | 49 | approaching me with a bottle of sake in one hand. |
+| 0x51f1f | 40 | Came out to get a bit of fresh air, huh? |
+| 0x51f48 | 26 | Something like that, yeah. |
+| 0x51f63 | 43 | I see. Hey, care to walk with me for a bit? |
+| 0x51f8f | 42 | I accompany Ukon down the darkened path... |
+| 0x51fba | 53 | We walk by moonlight, casting long shadows into the\n |
+| 0x51ff0 | 25 | already dusky blue night. |
+| 0x5200a | 52 | Hey, kid. Something I've been meaning to ask you--\n |
+| 0x5203f | 45 | That missy you're traveling with. Who is she? |
+| 0x5206d | 14 | You mean Kuon? |
+| 0x5207c | 41 | Yeah. I figured you might know something. |
+| 0x520a6 | 29 | Why're you interested in her? |
+| 0x520c4 | 50 | I wonder myself, honestly. I s'pose I'm just the\n |
+| 0x520f7 | 13 | curious type. |
+| 0x52105 | 36 | You're not falling for her, are you? |
+| 0x5212a | 48 | She's certainly a beautiful woman, but I'm not\n |
+| 0x5215b | 45 | attracted to her in the way you're probably\n |
+| 0x52189 | 9 | thinking. |
+| 0x52193 | 41 | Besides, hitting on her would be a bit... |
+| 0x521bd | 6 | A bit? |
+| 0x521c4 | 52 | Eh, it's nothing. She certainly is an amazing woman. |
+| 0x521f9 | 30 | Her APPETITE'S amazing, maybe. |
+| 0x52218 | 50 | Ha! No, I don't mean that, but you're not wrong.\n |
+| 0x5224b | 51 | I meant more her aura. The way she carries herself. |
+| 0x5227f | 50 | That fearlessness, the lack of hesitation in the\n |
+| 0x522b2 | 36 | face of a life-or-death situation... |
+| 0x522d7 | 45 | Makes you wonder what kind of life she's led. |
+| 0x52305 | 34 | At that, Ukon's voice grows quiet. |
+| 0x5232c | 51 | Now that he mentions it, I really don't know much\n |
+| 0x52360 | 11 | about Kuon. |
+| 0x5236c | 51 | I owe her for saving my life, and I don't want to\n |
+| 0x523a0 | 46 | pry, so I haven't really asked about her past. |
+| 0x523cf | 53 | ...You dunno anything, huh. Well, you haven't known\n |
+| 0x52405 | 40 | her very long. Guess it can't be helped. |
+| 0x5242e | 38 | She calls herself a mere apothecary... |
+| 0x52455 | 53 | When she said that, I was about to blurt out "where\n |
+| 0x5248b | 46 | in the world are there apothecaries like YOU?" |
+| 0x524ba | 34 | Before long, Ukon comes to a stop. |
+| 0x524dd | 16 | ...Where are we? |
+| 0x524ee | 52 | We're a small distance outside the village. Large,\n |
+| 0x52523 | 44 | standing stones sit arranged in even rows... |
+| 0x52550 | 23 | Is this... a graveyard? |
+| 0x52568 | 49 | Sorry for making you come to such a grim place.\n |
+| 0x5259a | 50 | Couldn't rest easy without bringing 'em some sake. |
+| 0x525cd | 47 | Ukon stands in front of one particular stone,\n |
+| 0x525fd | 38 | decorated with multicolored ornaments. |
+| 0x52624 | 53 | Offerings of flowers, food, and liquor sit arranged\n |
+| 0x5265a | 10 | around it. |
+| 0x52665 | 52 | ...Sorry for being so late. Guess I ended up being\n |
+| 0x5269a | 15 | the last one... |
+| 0x526aa | 51 | Ukon mumbles under his breath, as though speaking\n |
+| 0x526de | 34 | to the gravestone in front of him. |
+| 0x52701 | 49 | So these offerings were left by the rest of the\n |
+| 0x52733 | 11 | company...? |
+| 0x5273f | 52 | Seems the others came to pay their respects before\n |
+| 0x52774 | 9 | Ukon did. |
+| 0x5277e | 47 | Not everyone's so good with this macabre stuff. |
+| 0x527ae | 51 | When we see people off, we do it with a smile and\n |
+| 0x527e2 | 48 | a cheer. That's what we all decided... together. |
+| 0x52813 | 6 | I see. |
+| 0x5281a | 49 | ...Yeah. There's no way it wasn't difficult for\n |
+| 0x5284c | 31 | him, losing so many comrades... |
+| 0x5286c | 49 | Nobody knows when or how death can come for us.\n |
+| 0x5289e | 47 | If we die in battle, our bodies might be left\n |
+| 0x528ce | 9 | behind... |
+| 0x528d8 | 45 | But I'm glad we can at least offer the dead\n |
+| 0x52906 | 17 | proper memorials. |
+| 0x52918 | 42 | Ukon sinks to a knee, muttering in prayer. |
+| 0x52943 | 52 | Following his lead, I kneel beside him and offer a\n |
+| 0x52978 | 14 | silent prayer. |
+| 0x52987 | 53 | I witness this end to your time in our world. Rest,\n |
+| 0x529bd | 47 | now, that we may drink together in Kotuahamuru. |
+| 0x529ed | 8 | ...Ukon? |
+| 0x529f6 | 10 | All right. |
+| 0x52a01 | 43 | Let's head back and get plastered, eh, kid? |
+| 0x52a2d | 12 | Huh? Yeah... |
+| 0x52a3a | 51 | Puzzled, I follow after Ukon as he takes off down\n |
+| 0x52a6e | 15 | the path again. |
+| 0x52a7e | 45 | ...What was that strange feeling just now...? |
+| 0x52aac | 36 | As I turn away from the graveyard... |
+| 0x52ad1 | 48 | ...I can't help but notice an amamunii amongst\n |
+| 0x52b02 | 48 | the offerings, stuffed too full to be eaten in\n |
+| 0x52b33 | 9 | one bite. |
 
 ## 8. Formato de saida EXIGIDO
-Escreva `translations_12_01.json` com a forma:
+Escreva `translations_12_17.json` com a forma:
 ```json
 { "lines": {
   "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",
