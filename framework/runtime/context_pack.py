@@ -234,7 +234,10 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append(f"- Restricao de comprimento: {lc} (orcamento em bytes por linha — ver coluna byte_budget).")
     if not pc.get("target_charset_supported", True):
         L.append(f"- ATENCAO charset: {pc['charset_note'][:200]}")
-        L.append("  -> escolha formas que sobrevivam a transliteracao (nao dependa de acento/til p/ sentido).")
+        L.append("  -> ESCREVA o campo `t` na forma canonica COM acentos/til normais (ex.: \"você\", "
+                 "\"coração\"). A transliteracao p/ ASCII e feita DEPOIS pelo script de reinsercao — "
+                 "nao remova acentos voce mesmo. Apenas nao dependa do acento para DISTINGUIR sentido "
+                 "(ex.: evite pares que so diferem por acento), pois ele some no jogo.")
     L.append("")
     L.append("## 3. Glossario relevante (subconjunto desta cena)")
     if pack["glossary_subset"]:
