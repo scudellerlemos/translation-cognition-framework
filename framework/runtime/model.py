@@ -47,11 +47,12 @@ _MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
 EFFORT_TRANSLATE = "low"
 THINK_TRANSLATE = False
 
-# Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) deve caber no
-# byte_budget. pt-BR expande; cenas de UI/curtas estouram e caem em residuo (verify reprova). Linhas
-# acima de budget*tolerancia disparam um retry de ENCURTAMENTO (medido: modelo nao encurta so com nudge
-# no prompt; precisa de retry direcionado). 1.10 = permite leve crescimento (absorvido por head-reloc).
-BUDGET_TOLERANCE = 1.10
+# Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) nao deve
+# estourar MUITO o byte_budget. O conector ABSORVE crescimento moderado via head-reloc; so estouro
+# egregio cai em residuo (verify e o juiz real). Tolerancia alinhada ao build_plan (140% p/ dialogo):
+# o guard do translate so re-pede encurtamento de linhas absurdamente longas (medido: 1.10 era estrito
+# demais p/ cenas grandes — rejeitava expansao natural do pt-BR e sobrecarregava o modelo).
+BUDGET_TOLERANCE = 1.40
 
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
@@ -214,10 +215,15 @@ def _add_usage(acc: dict, u: dict) -> dict:
 
 
 def _stream_final(client, **kwargs):
-    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout."""
+    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
+    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
+    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
     import anthropic
+    import httpx
     transient = (anthropic.RateLimitError, anthropic.InternalServerError,
-                 anthropic.APITimeoutError, anthropic.APIConnectionError)
+                 anthropic.APITimeoutError, anthropic.APIConnectionError,
+                 httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
+                 httpx.ConnectError, httpx.ConnectTimeout)
     delay = 2.0
     for i in range(_MAX_BACKOFF):
         try:
@@ -245,14 +251,27 @@ def _translit_len(t) -> int:
 
 
 def _norm_t(t):
-    """Normaliza o campo de traducao: neste tipo de jogo TODA quebra e o token literal `\\n` — um
-    newline REAL no `t` e sempre erro (o modelo, gerando do zero, colapsa o token numa quebra real).
-    Converte qualquer CR/LF real no token literal, deterministico e idempotente (`\\n` ja correto nao
-    tem newline real -> intocado). A paridade de tokens fonte/alvo segue validada no build_plan."""
+    """Normaliza o campo: CR/LF real -> token literal `\\n` (o modelo as vezes colapsa o token numa
+    quebra real). Deterministico/idempotente. A PARIDADE com a fonte e ajustada em _parity_fit."""
     if not isinstance(t, str):
         return t
     tok = context_pack.TOKEN
     return t.replace("\r\n", tok).replace("\n", tok).replace("\r", tok)
+
+
+def _parity_fit(source, t):
+    """Ciente da fonte: se a FONTE nao tem token de quebra, o ALVO tambem nao pode ter (o modelo as
+    vezes adiciona uma quebra espuria -> build_plan reprova por paridade). Troca token por espaco e
+    colapsa. Se a fonte TEM quebra(s), mantem (o modelo costuma casar; mismatch multi-token -> retry)."""
+    if not isinstance(t, str):
+        return t
+    tok = context_pack.TOKEN
+    if tok not in (source or ""):
+        out = t.replace(tok, " ")
+        while "  " in out:
+            out = out.replace("  ", " ")
+        return out.strip()
+    return t
 
 
 def _to_map(data):
@@ -282,12 +301,21 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     base_user = context_pack.render_prompt(pack, carta="") + _NL_RULE  # Carta ja no system
     offsets = [r["offset"] for r in pack["lines"]]
+    offset_set = set(offsets)
     budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
+    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
+    tok = context_pack.TOKEN
     note, last, usage = "", None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+    merged = {}        # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
     # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
     thinking = {"type": "adaptive"} if think else {"type": "disabled"}
-    for _ in range(_MAX_TRIES):
+
+    def _over(off, v):
+        b = budgets.get(off)
+        return b and _translit_len((v or {}).get("t", "")) > b * BUDGET_TOLERANCE
+
+    for attempt in range(_MAX_TRIES):
         msg = _stream_final(
             client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
             system=system,
@@ -297,30 +325,44 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                            "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
         )
         _add_usage(usage, _usage_of(msg))
-        data = _to_map(json.loads(_text_of(msg)))   # array de entradas -> mapa {offset: {...}}
-        bad_nl, missing = _check_translation(data, offsets)
-        over = []                                   # linhas que estouram o byte_budget (transliterado)
+        data = _to_map(json.loads(_text_of(msg)))   # array -> mapa {offset:{...}}; CR/LF real -> token
         for off, v in data.get("lines", {}).items():
-            b = budgets.get(off)
-            cur = _translit_len((v or {}).get("t", ""))
-            if b and cur > b * BUDGET_TOLERANCE:
-                over.append((off, b, cur))
-        if not bad_nl and not missing and not over:
-            return data, usage
-        last = {"bad_nl": bad_nl, "missing": missing, "over_budget": over}
-        note = "\n\n## CORRECAO NECESSARIA (regere a saida COMPLETA)\n"
-        if bad_nl:
-            note += (f"- Estes offsets tem QUEBRA DE LINHA REAL no campo t; use `\\\\n` literal: "
-                     f"{bad_nl[:25]}\n")
+            if off not in offset_set or not isinstance(v, dict):
+                continue
+            v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
+            good_parity = (v["t"].count(tok) == srcmap.get(off, "").count(tok))
+            if off not in merged:
+                merged[off] = v                      # preenche lacuna
+            else:
+                old = merged[off]
+                old_parity = (old.get("t", "").count(tok) == srcmap.get(off, "").count(tok))
+                if good_parity and not old_parity:
+                    merged[off] = v                  # prioriza paridade correta
+                elif good_parity == old_parity and _over(off, old) and \
+                        _translit_len(v.get("t", "")) < _translit_len(old.get("t", "")):
+                    merged[off] = v                  # mesma paridade: prefere a mais curta (budget)
+        missing = [o for o in offsets if o not in merged]
+        bad_par = [o for o in merged if merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
+        over = [(o, budgets[o], _translit_len(merged[o].get("t", "")))
+                for o in merged if _over(o, merged[o])]
+        last = {"missing": missing, "bad_parity": bad_par, "over_budget": over}
+        # HARD (bloqueia): cobertura + paridade de quebra (build_plan reprova). SOFT (best-effort):
+        # byte_budget — o conector absorve via head-reloc; a VERIFY (round-trip) e o juiz de residuo.
+        if not missing and not bad_par and (not over or attempt == _MAX_TRIES - 1):
+            return {"lines": merged}, usage
+        note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
         if missing:
-            note += f"- Faltam estes offsets (cubra TODOS): {missing[:25]}\n"
+            note += f"- Faltam estes offsets — INCLUA todos: {missing[:40]}\n"
+        if bad_par:
+            note += (f"- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
+                     f"quantidade e posicao do token): {bad_par[:30]}\n")
         if over:
-            note += ("- Estes offsets PASSAM do byte_budget (medido TRANSLITERADO, sem acentos); ENCURTE "
-                     "p/ CABER <= budget preservando o sentido (corte redundancia; ex.: 'adicionado ao' "
-                     "-> 'no'; 'realmente' -> ''):\n")
+            note += ("- Estes offsets passam do byte_budget (TRANSLITERADO, sem acentos); ENCURTE "
+                     "preservando o sentido (corte redundancia; ex.: 'adicionado ao'->'no'):\n")
             for off, b, cur in over[:25]:
                 note += f"  - {off}: budget {b}, atual {cur}\n"
-    raise RuntimeError(f"_api_translate: saida invalida apos {_MAX_TRIES} tentativas: {last}")
+    raise RuntimeError(f"_api_translate: cobertura/paridade incompletas apos {_MAX_TRIES} tentativas: "
+                       f"faltam={last['missing']} paridade={last['bad_parity']}")
 
 
 def _api_back_translate(high_lines, model):
