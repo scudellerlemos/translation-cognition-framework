@@ -53,14 +53,14 @@ paridade, cobertura-merge, retry de conexão, budget best-effort).
 | Parte | Item | Esforço | Risco | Status |
 |---|---|---|---|---|
 | **3A** | self-heal por aperto de budget: `run_scene` escala `BUDGET_TOLERANCE` 1.40→1.15→1.0 e re-traduz só na falha de fitting | ~1 dia | baixo | ✅ **feito** (escalonamento de fitting) |
-| **3B** | reinsert/verify: ponteiros em cena MULTI-BIN (out-of-file persiste mesmo com crescimento ~0) | ~2–4 dias | alto (byte-level) | pendente — **só 12_15 ate agora** |
+| **3B-fix** | verify: out-of-file era **FALSO-POSITIVO** (coincidências `50 00` no bytecode apontando cross-file, ex.: p/ 31_02_000S.BIN) — agora compara com baseline do ORIGINAL (só conta o que o reinsert INTRODUZIU) | ~2h | baixo | ✅ **feito** (`verify_chapter.py`) |
 
-**Diagnóstico 12_15 (medido):** com tolerância 1.0 → crescimento +32 bytes (≈0), 94/95 in-place, **mas 2
-ponteiros AINDA fora-do-arquivo**. Logo NÃO é tradução/budget — é o conector em cena de 3 BINs. O 3A
-(escalonamento) **provou** isso e parou no piso. **3B** = investigar reinsert/verify multi-BIN (possível
-**falso-positivo** da checagem out-of-file p/ ponteiros entre BINs do mesmo cenário, OU bug real de
-realocação). Até lá, 12_15 fica flagueada (não aplicada) → **Fase D**. Gatilho do 3B: se 2ª metade
-mostrar mais cenas multi-BIN com o mesmo sintoma.
+**Resolução 12_15 (CONFIRMADO):** o reinsert sempre esteve correto (95/95 linhas, round-trip idêntico,
++32 bytes). Os 2 "ponteiros fora-do-arquivo" **existem no binário ORIGINAL intocado** e apontam p/ um
+arquivo de OUTRO capítulo (cap.31) — coincidências de bytes `50 00` no bytecode, não ponteiros de texto.
+A verify agora subtrai o baseline → **12_15 verified (16/16 do cap.12)**. Não foi preciso 3B real
+(realocação de conector). Caveat: a tradução da 12_15 ficou na tolerância 1.0 (mais justa que o normal)
+porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera naturalidade, opcional.
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
