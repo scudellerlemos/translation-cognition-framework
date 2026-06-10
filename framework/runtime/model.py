@@ -101,7 +101,7 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None):
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_BACK
-        data, usage = _api_back_translate(high_lines, m)
+        data, usage = _api_back_translate(root, scene, high_lines, m)
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "reviewed": len(high_lines),
                 "model": m, "usage": usage}
@@ -216,6 +216,41 @@ def _add_usage(acc: dict, u: dict) -> dict:
     return acc
 
 
+# precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
+# Fonte unica de verdade de custo (run_scene/cost_report importam daqui — sem drift de preco).
+_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
+          "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
+          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
+
+
+def cost_of(model: str, u: dict) -> float:
+    """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write)."""
+    p = _PRICE.get(model)
+    if not p or not u:
+        return 0.0
+    return (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
+            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
+
+
+def log_api_call(root, scene, kind, model, usage):
+    """Anexa 1 linha a artifacts/api_ledger.jsonl por chamada de API CONCLUIDA (cada tentativa de
+    cobertura e cada escalonamento de fitting). E a VERDADE de gasto: registra TODA chamada cobrada,
+    INCLUSIVE as de cenas que depois falham (cobertura/verify) ou retries — exatamente o que o
+    metrics.jsonl (resumo so-de-sucesso) perde. Sem isso o saldo surpreende (estimado << real).
+    Best-effort (nunca derruba a traducao por falha de log). Ver cost_report.py p/ o agregado."""
+    if not usage:
+        return None
+    rec = {"t": round(time.time(), 3), "scene": scene, "kind": kind, "model": model,
+           "usage": dict(usage), "cost_usd": round(cost_of(model, usage), 5)}
+    try:
+        p = Path(root) / "artifacts" / "api_ledger.jsonl"
+        with p.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+    return rec
+
+
 def _stream_final(client, **kwargs):
     """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
     quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
@@ -328,7 +363,9 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             output_config={"effort": effort,
                            "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
         )
-        _add_usage(usage, _usage_of(msg))
+        u_attempt = _usage_of(msg)
+        _add_usage(usage, u_attempt)
+        log_api_call(root, scene, "translate", model, u_attempt)   # registra ANTES de qualquer parse/gate
         data = _to_map(json.loads(_text_of(msg)))   # array -> mapa {offset:{...}}; CR/LF real -> token
         for off, v in data.get("lines", {}).items():
             if off not in offset_set or not isinstance(v, dict):
@@ -384,7 +421,7 @@ _BACK_SCHEMA = {
 }
 
 
-def _api_back_translate(high_lines, model):
+def _api_back_translate(root, scene, high_lines, model):
     client = _client()
     payload = [{"offset": h["offset"], "source": h["source"], "target": h["target"],
                 "speaker": h.get("speaker", "")} for h in high_lines]
@@ -398,9 +435,11 @@ def _api_back_translate(high_lines, model):
         output_config={"effort": "high",
                        "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
     )
+    usage = _usage_of(msg)
+    log_api_call(root, scene, "back", model, usage)   # registra antes do parse (Opus cobra mesmo se quebrar)
     data = json.loads(_text_of(msg))
     data["reviewed"] = len(data.get("entries", []))
-    return data, _usage_of(msg)
+    return data, usage
 
 
 def main():
