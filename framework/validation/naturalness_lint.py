@@ -58,11 +58,15 @@ def lint_project(root: Path) -> list[dict]:
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     idc = (cfg.get("source", {}) or {}).get("id_column", "offset")
     tokens = cfg.get("formatting_tokens", []) or []
+    # tokens parametrizados (cor {c<N>}/{c-1}/{c-}, etc.): regex, não literais
+    rx_tokens = [re.compile(p) for p in (cfg.get("formatting_token_patterns", []) or [])]
     art = root / "artifacts"
 
     def strip_tokens(s: str) -> str:
         for tk in tokens:
             s = s.replace(tk, " ")
+        for rx in rx_tokens:
+            s = rx.sub(" ", s)
         return s
 
     # pares (offset, source, target, speaker) — do plano se houver; senão dialogs + approved

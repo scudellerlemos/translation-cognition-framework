@@ -1,5 +1,5 @@
 {
-  "_note": "Dados curados de traducao do cap. 11_04 (scripts de batalha/tutorial). Autorado pela IA conforme a Carta. Sem work-text em .py. 't' = base_translation canonico (com acentos; reinsert translitera). '\\n' = token de quebra. TOKENS DE COR {c5}/{c-1} preservados verbatim (nao catalogados no project.json — ver decision_log). Indentacao apos \\n preservada.",
+  "_note": "Dados curados de traducao do cap. 11_04 (scripts de batalha/tutorial). Autorado pela IA conforme a Carta. Sem work-text em .py. 't' = base_translation canonico (com acentos; reinsert translitera). '\\n' = token de quebra. TOKENS DE COR {c5}/{c-1} preservados verbatim (catalogados em project.json -> formatting_token_patterns; ver decision_log). Indentacao apos \\n preservada.",
   "lines": {
     "0x15a1f": {"speaker": "Haku", "tone_register": "comedia_chuuni", "intent": "Haku posa de heroi e desafia o inimigo fraco com grandiloquencia.", "risk_level": "high", "risk_notes": "Comedia (high): pose chuuni do Haku. 'fiend'->'verme' (insulto chuuni). Preservar o exagero heroico ironico. Back-translation.", "t": "Agora, verme... Prove o golpe da justiça!\\n"},
     "0x15a4c": {"speaker": "Haku", "tone_register": "onomatopeia_grito", "intent": "Grito de batalha do Haku.", "risk_level": "low", "risk_notes": "Grito (vogais repetidas) - espelhar.", "t": "Rryaaah!"},
