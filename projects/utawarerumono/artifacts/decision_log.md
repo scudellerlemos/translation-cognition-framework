@@ -4,6 +4,36 @@ Registro acumulativo de decisões não-óbvias. Nunca apagar entradas (ver `fram
 
 ---
 
+## Harness de runtime — cena = job stateless (mata o estouro de sessão)
+
+**Data:** 2026-06-10
+**Passo do SDD:** runtime (orquestração) / arquitetura
+**Tipo:** architecture
+
+**Decisão tomada:**
+Diagnóstico (com leitura do código): o estouro de sessão **não** vinha da tradução nem da governança, e
+sim do **modo de execução** — tradução inline numa sessão de vida-longa que acumulava todo o histórico.
+Conector + validadores já eram determinísticos; faltava tirar **orquestração** e **memória** da janela.
+
+Construído `framework/runtime/` (genérico): `context_pack.py` (contexto **O(cena)**: glossário-subset +
+voice cards dos falantes + decisões relevantes + hits de TM + linhas), `state_index.py` (memória externa
+materializada: `translation_memory.jsonl` + `voice_cards.json` + `decision_index.json`, idempotente),
+`model.py` (interface de IA: Sonnet traduz / Opus back-translation; backends `in-session` e `api`),
+`run_scene.py` (orquestrador determinístico + checkpoint `run_state.json`). Gates: `test_runtime.py`
+(determinismo, boundedness, idempotência, guard de no-work-text). Docs: `framework/docs/` + ADRs 0001–0004.
+
+**Provado (dogfood):** `run_scene ch_11_11` (já traduzido) roda pack→build_plan→back-translation→verify
+com **round-trip byte-idêntico 121/121, T4=0, 0 ponteiro fora-do-arquivo**, com o chat **fora** da
+orquestração. `run_scene ch_12_01` (congelado) para limpo no checkpoint `packed`, emitindo o
+`scene_prompt.md` limitado e auto-contido (a próxima unidade de trabalho).
+
+**Consequência operacional:** as próximas cenas rodam pelo harness, **uma sessão limpa por cena** — o
+contexto nunca acumula. Sonnet vira o default de tradução (contexto pequeno e curado). Tradução
+**CONGELADA** por decisão do usuário até o harness estar provado; este ciclo entregou as fundações.
+
+**Revisão necessária:** P1 — instrumentar métricas (`metrics.jsonl`) + endurecer o caminho `api` contra
+o SDK vivo + benchmark de modelos. Ver `framework/docs/ROADMAP.md`.
+
 ## Deep pass do arco (Carta exercida) + custo de produção medido
 
 **Data:** 2026-06-08
