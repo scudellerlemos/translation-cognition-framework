@@ -1,0 +1,3256 @@
+{
+  "scene_group": "11_09",
+  "lines": [
+    {
+      "offset": "0x1f560",
+      "text_source": "Let's eat! Ah...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Vamos comer! Ah...",
+      "risk_level": "low",
+      "base_translation": "Vamos comer! Ah...",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f571",
+      "text_source": "*Hromf, munch--*",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Som de comer.",
+      "risk_level": "medium",
+      "base_translation": "*Hrom, nhac--*",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX de mastigar 'Hromf, munch--' -> 'Hrom, nhac--' (munch->nhac; muffled 'Hrom' mantido). Asteriscos preservados."
+    },
+    {
+      "offset": "0x1f586",
+      "text_source": "*--gulp* Mmf, that's good...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Engole, gosta.",
+      "risk_level": "medium",
+      "base_translation": "*--glup* Mmf, que delícia...",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX 'gulp'->'glup'; 'that's good'->'que delicia'. Asteriscos."
+    },
+    {
+      "offset": "0x1f5a3",
+      "text_source": "Spacing out over there? Come on, this is delicious.\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Viajando ai? Vai, ta delicioso.",
+      "risk_level": "low",
+      "base_translation": "Viajando aí? Vai, isso aqui tá uma delícia.\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f5d9",
+      "text_source": "You're not gonna eat?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Voce nao vai comer?",
+      "risk_level": "low",
+      "base_translation": "Você não vai comer?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f5ef",
+      "text_source": "R-Right...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "C-Certo...",
+      "risk_level": "low",
+      "base_translation": "C-Certo...",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f5fa",
+      "text_source": "It got dark outside while we were busy organizing\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Escureceu enquanto organizavam as coisas.",
+      "risk_level": "low",
+      "base_translation": "Escureceu lá fora enquanto a gente organizava\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f62e",
+      "text_source": "our belongings...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...nossas coisas.",
+      "risk_level": "low",
+      "base_translation": "nossas coisas...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f640",
+      "text_source": "At some point, a tantalizing aroma wafted into the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Um aroma convidativo entrou no quarto.",
+      "risk_level": "low",
+      "base_translation": "Em algum momento, um aroma convidativo entrou no\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f675",
+      "text_source": "room from somewhere else in the inn.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...vindo de algum canto da estalagem.",
+      "risk_level": "low",
+      "base_translation": "quarto, vindo de algum canto da estalagem.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f69a",
+      "text_source": "The scent tickled my nose and made my stomach growl\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "O cheiro fez o estomago roncar de fome.",
+      "risk_level": "low",
+      "base_translation": "O cheiro fez cócegas no meu nariz e meu estômago roncar\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f6d0",
+      "text_source": "with hunger...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...de fome.",
+      "risk_level": "low",
+      "base_translation": "de fome...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f6df",
+      "text_source": "Chuckling, Kuon led me downstairs, where we\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Rindo, a Kuon o levou la pra baixo.",
+      "risk_level": "low",
+      "base_translation": "Rindo, a Kuon me levou lá pra baixo, onde\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f70d",
+      "text_source": "found a group of locals drinking and dining merrily.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...acharam locais bebendo e jantando alegres.",
+      "risk_level": "low",
+      "base_translation": "achamos um grupo de locais bebendo e jantando alegres.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f742",
+      "text_source": "Now, a staggering number of dishes are lined up on\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Um numero absurdo de pratos na mesa.",
+      "risk_level": "low",
+      "base_translation": "E agora, um número absurdo de pratos está disposto na\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f777",
+      "text_source": "the table before us.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...mesa a nossa frente.",
+      "risk_level": "low",
+      "base_translation": "mesa à nossa frente.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f78c",
+      "text_source": "Geez. What's with these portions, though?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Cruzes. Que porcoes sao essas?",
+      "risk_level": "medium",
+      "base_translation": "Cruzes. Mas que porções são essas?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Geez'->'Cruzes' (espanto BR). Inicio do gag das porcoes gigantes."
+    },
+    {
+      "offset": "0x1f7b6",
+      "text_source": "The plates are all stacked so high with food they\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Pratos tao cheios que ameacam desabar; demais pra dois.",
+      "risk_level": "low",
+      "base_translation": "Os pratos estão tão cheios de comida que\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f7ea",
+      "text_source": "threaten to topple. This is way too much for two...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...ameacam desabar. Demais pra dois.",
+      "risk_level": "low",
+      "base_translation": "ameaçam desabar. Isso é demais pra dois...",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f81e",
+      "text_source": "Hell, there's enough food crowding the table for\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Tem comida pra pelo menos DEZ pessoas.",
+      "risk_level": "medium",
+      "base_translation": "Caramba, tem comida na mesa pra pelo menos\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Hell'->'Caramba' (enfase comica); 'TEN' (caixa-alta) -> 'DEZ'. Exagero comico."
+    },
+    {
+      "offset": "0x1f851",
+      "text_source": "at least TEN people.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...DEZ pessoas.",
+      "risk_level": "low",
+      "base_translation": "DEZ pessoas.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f866",
+      "text_source": "Oblivious to my dumbfounded state, Kuon reaches for\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Alheia ao espanto dele, a Kuon pega um prato cantarolando.",
+      "risk_level": "low",
+      "base_translation": "Alheia ao meu espanto, a Kuon pega um\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f89c",
+      "text_source": "a plate and hums happily to herself.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...prato e cantarola feliz.",
+      "risk_level": "low",
+      "base_translation": "prato e cantarola feliz.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f8c1",
+      "text_source": "Mm, and I'll try... this one, and this one next!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Vou provar este, e depois este!",
+      "risk_level": "low",
+      "base_translation": "Hum, e eu vou provar... este, e depois este!",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f8f2",
+      "text_source": "She piles heaps of meat and vegetables onto some\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Ela empilha carne e legumes numa massa fina.",
+      "risk_level": "low",
+      "base_translation": "Ela empilha montes de carne e legumes em alguma\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f925",
+      "text_source": "kind of thin dough, wrapping it all up neatly.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...especie de massa fina, embrulhando tudo.",
+      "risk_level": "low",
+      "base_translation": "espécie de massa fina, embrulhando tudo com capricho.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f954",
+      "text_source": "*Grmf, hrmf, munch--*",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Som de comer.",
+      "risk_level": "medium",
+      "base_translation": "*Grmf, hrmf, nhac--*",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX 'Grmf, hrmf, munch--' -> 'Grmf, hrmf, nhac--' (munch->nhac). Asteriscos."
+    },
+    {
+      "offset": "0x1f96a",
+      "text_source": "The wrap, bursting at the seams with ingredients,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "O embrulho cheio some em poucas mordidas.",
+      "risk_level": "low",
+      "base_translation": "O embrulho, estourando de tanto recheio,\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f99e",
+      "text_source": "disappears in just a few bites...!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...some em poucas mordidas!",
+      "risk_level": "low",
+      "base_translation": "some em poucas mordidas...!",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1f9c1",
+      "text_source": "Kuon opens her mouth wide and stuffs her face, but\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "A Kuon enfia tudo mas faz parecer refinado.",
+      "risk_level": "medium",
+      "base_translation": "A Kuon abre a boca enorme e enfia tudo, mas\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Contraste comico: ela come muito mas com elegancia. Manter a graca."
+    },
+    {
+      "offset": "0x1f9f6",
+      "text_source": "somehow, she makes it look refined.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...de algum jeito, faz parecer refinado.",
+      "risk_level": "low",
+      "base_translation": "de algum jeito, ela faz parecer refinado.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fa1a",
+      "text_source": "Don't hold back, OK? We're celebrating you making\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Nao se segura; comemorando ele voltar em seguranca.",
+      "risk_level": "low",
+      "base_translation": "Não se segura, tá? A gente tá comemorando você ter\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fa4e",
+      "text_source": "it back here safely.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...voltado sao e salvo.",
+      "risk_level": "low",
+      "base_translation": "voltado são e salvo.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fa63",
+      "text_source": "While I'm happy to hear you say that...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Apesar de gostar de ouvir isso...",
+      "risk_level": "low",
+      "base_translation": "Apesar de eu gostar de ouvir isso...",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fa8b",
+      "text_source": "This all looks like quite a feast. I hope she didn't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Parece banquete; espera que ela nao tenha gastado a toa por ele.",
+      "risk_level": "low",
+      "base_translation": "Isso tudo parece um banquetão. Espero que ela não\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fac2",
+      "text_source": "splurge for my sake...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...tenha gastado a toa por minha causa.",
+      "risk_level": "low",
+      "base_translation": "tenha gastado à toa por minha causa...",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fad9",
+      "text_source": "Well, if you aren't eating, I'll just help myself\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_naturalidade",
+      "intent": "Se voce nao come, eu me sirvo do resto.",
+      "risk_level": "medium",
+      "base_translation": "Bom, se você não vai comer, eu mesma me sirvo\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ameaca comica casual (ela comeria tudo). Arma o susto do Haku."
+    },
+    {
+      "offset": "0x1fb0d",
+      "text_source": "to the rest.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_naturalidade",
+      "intent": "...do resto.",
+      "risk_level": "low",
+      "base_translation": "do resto.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fb1a",
+      "text_source": "...Huh?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interjeicao_surpresa",
+      "intent": "...Hein?",
+      "risk_level": "low",
+      "base_translation": "...Hein?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fb22",
+      "text_source": "Ahhh... *Grmf, hromf--munch, munch--*",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Som de comer.",
+      "risk_level": "medium",
+      "base_translation": "Ahhh... *Grmf, hrom--nhac, nhac--*",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX 'Grmf, hromf--munch, munch--' -> 'Grmf, hrom--nhac, nhac--'. Asteriscos."
+    },
+    {
+      "offset": "0x1fb48",
+      "text_source": "D-Did she say \"the rest\"?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "E-Ela disse 'o resto'?",
+      "risk_level": "medium",
+      "base_translation": "E-Ela disse \"o resto\"?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gagueira 'D-Did'->'E-Ela'; eco comico de 'the rest'. Aspas preservadas."
+    },
+    {
+      "offset": "0x1fb62",
+      "text_source": "Oh, right. Do you not know how to eat this, Haku?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Ah, e mesmo. Voce nao sabe comer isso, Haku?",
+      "risk_level": "low",
+      "base_translation": "Ah, é mesmo. Você não sabe como comer isso, Haku?",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fb94",
+      "text_source": "Um, well. Not... really.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Ã, bom. Nao... muito.",
+      "risk_level": "medium",
+      "base_translation": "Ahn, bom. Não... muito.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Hesitacao 'Um'->'Ahn'. Manter o titubeio constrangido."
+    },
+    {
+      "offset": "0x1fbad",
+      "text_source": "I nod unconsciously, not quite able to tell her I'm\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Acena sem pensar, sem dizer que o que o espanta e a quantidade.",
+      "risk_level": "low",
+      "base_translation": "Aceno sem pensar, sem conseguir dizer que o que\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fbe3",
+      "text_source": "more taken aback by the sheer quantity.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...mais me espanta e a quantidade.",
+      "risk_level": "low",
+      "base_translation": "mais me espanta é a quantidade.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fc0b",
+      "text_source": "Well, then! Allow me to teach you.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Pois entao! Deixa eu te ensinar.",
+      "risk_level": "low",
+      "base_translation": "Pois então! Deixa eu te ensinar.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fc2e",
+      "text_source": "From the plate in front of her, Kuon grabs another\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "A Kuon pega outra folha fina de pao achatado.",
+      "risk_level": "low",
+      "base_translation": "Do prato à frente dela, a Kuon pega outra\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fc63",
+      "text_source": "one of those thin sheets of flatbread...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...daquelas folhas finas de pao achatado.",
+      "risk_level": "low",
+      "base_translation": "daquelas folhas finas de pão achatado...",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fc8c",
+      "text_source": "First, we get the amam skin ready.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Primeiro, prepara a pele de amam.",
+      "risk_level": "medium",
+      "base_translation": "Primeiro, a gente prepara a pele de amam.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo de mundo: 'amam skin'->'pele de amam' (glossary). 1a mencao do termo; manter o trocadilho 'pele'."
+    },
+    {
+      "offset": "0x1fcaf",
+      "text_source": "This?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Esta?",
+      "risk_level": "low",
+      "base_translation": "Esta?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fcb5",
+      "text_source": "I pick up another of the flimsy, doughy sheets,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Pega outra folha fina e macia.",
+      "risk_level": "low",
+      "base_translation": "Pego outra das folhas finas e macias,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fce7",
+      "text_source": "watching it pillow pliantly around my fingers...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...vendo ela se moldar fofa nos dedos.",
+      "risk_level": "low",
+      "base_translation": "vendo ela se moldar fofa nos meus dedos...",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fd18",
+      "text_source": "She called it a \"skin,\" but it looks like it's\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Ela chamou de 'pele', mas parece grao assado, nao couro.",
+      "risk_level": "medium",
+      "base_translation": "Ela chamou de \"pele\", mas parece ser\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho 'skin'->'pele' (glossary): Haku nota que e grao assado tipo pao, nao couro de animal. Manter a observacao seca."
+    },
+    {
+      "offset": "0x1fd49",
+      "text_source": "grain pounded and baked like flatbread, not actual\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...grao moido e assado como pao achatado, nao...",
+      "risk_level": "low",
+      "base_translation": "grão moído e assado como pão achatado, não\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fd7e",
+      "text_source": "animal hide.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...couro de animal de verdade.",
+      "risk_level": "low",
+      "base_translation": "couro de animal de verdade.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fd8b",
+      "text_source": "That grain we carried earlier was amam. It turns\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Aquele grao que carregaram era amam; vira isto moido e assado.",
+      "risk_level": "medium",
+      "base_translation": "Aquele grão que a gente carregou era amam. Vira\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo de mundo + CALLBACK (sacos do 11_07): 'amam' (glossary). Tom didatico-gentil."
+    },
+    {
+      "offset": "0x1fdbe",
+      "text_source": "into this after you grind it into flour and bake it.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...isto depois de moer em farinha e assar.",
+      "risk_level": "low",
+      "base_translation": "isto depois de moer em farinha e assar.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fdf3",
+      "text_source": "You put ingredients like cooked meats, vegetables,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Poe carnes cozidas, legumes ou peixe no meio e embrulha.",
+      "risk_level": "low",
+      "base_translation": "Você põe ingredientes tipo carnes cozidas, legumes\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fe28",
+      "text_source": "or fish in the middle, then wrap it all up!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...ou peixe no meio, e embrulha tudo!",
+      "risk_level": "low",
+      "base_translation": "ou peixe no meio, e embrulha tudo!",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fe54",
+      "text_source": "One finished amamunii. Dip in your favorite sauce\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Um amamunii pronto. Molha no molho favorito e aproveita!",
+      "risk_level": "high",
+      "base_translation": "Um amamunii pronto. Molha no seu molho favorito\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo de mundo (high): 1a mencao completa do prato 'amamunii' (glossary, manter). 'Dip in your favorite sauce' -> 'molha no seu molho favorito'. Back-translation."
+    },
+    {
+      "offset": "0x1fe88",
+      "text_source": "and enjoy!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...e aproveita!",
+      "risk_level": "low",
+      "base_translation": "e aproveita!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fe93",
+      "text_source": "Kuon hands me the amam-wrapped bundle of food.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "A Kuon passa o embrulho enrolado na pele de amam.",
+      "risk_level": "low",
+      "base_translation": "A Kuon me passa o embrulho de comida enrolado na pele de amam.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1fec2",
+      "text_source": "Talk about extra large...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Isso que e tamanho familia...",
+      "risk_level": "medium",
+      "base_translation": "Isso que é tamanho família...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'extra large' -> 'tamanho familia' (idiomatico BR comico). Manter o exagero."
+    },
+    {
+      "offset": "0x1fedc",
+      "text_source": "The skin looks like it's fit to burst. She\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "A pele parece prestes a estourar; ela exagerou no recheio.",
+      "risk_level": "low",
+      "base_translation": "A pele parece prestes a estourar. Ela\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ff09",
+      "text_source": "definitely overstuffed this.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...definitivamente exagerou no recheio.",
+      "risk_level": "low",
+      "base_translation": "definitivamente exagerou no recheio.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ff26",
+      "text_source": "As I stare in disbelief at mine, Kuon makes another\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Enquanto ele encara o seu, a Kuon faz outro e ataca.",
+      "risk_level": "low",
+      "base_translation": "Enquanto eu encaro o meu sem acreditar, a Kuon faz outro\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ff5c",
+      "text_source": "just like it and digs in.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...igualzinho e ataca.",
+      "risk_level": "low",
+      "base_translation": "igualzinho e ataca.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ff76",
+      "text_source": "Persuaded, I take a careful bite, cautious not to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Convencido, da uma mordida cuidadosa.",
+      "risk_level": "low",
+      "base_translation": "Convencido, dou uma mordida cuidadosa, tomando cuidado pra não\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ffaa",
+      "text_source": "let any of the filling spill...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...pra nao deixar o recheio cair.",
+      "risk_level": "low",
+      "base_translation": "deixar o recheio cair...",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1ffca",
+      "text_source": "*Munch, munch*... Mm.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Som de mastigar; gosta.",
+      "risk_level": "medium",
+      "base_translation": "*Nhac, nhac*... Hum.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX 'Munch, munch'->'Nhac, nhac'; 'Mm'->'Hum'. Asteriscos."
+    },
+    {
+      "offset": "0x1ffe0",
+      "text_source": "OK, yeah. That's pretty good. A little heavy on\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Ta, e bom mesmo. Um pouco pesado no tempero.",
+      "risk_level": "low",
+      "base_translation": "Tá, é. Bem bom mesmo. Um pouco pesado no\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20012",
+      "text_source": "the seasoning, but still good.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "...tempero, mas mesmo assim bom.",
+      "risk_level": "low",
+      "base_translation": "tempero, mas mesmo assim bom.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20031",
+      "text_source": "And it tastes even better since it's a free meal.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "E fica melhor por ser de graca.",
+      "risk_level": "low",
+      "base_translation": "E fica ainda melhor porque é refeição de graça.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20063",
+      "text_source": "Eh heh heh. I may not look it, but I'm a pretty good\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_orgulho",
+      "intent": "Eheheh. Posso nao parecer, mas sou boa cozinheira.",
+      "risk_level": "medium",
+      "base_translation": "Eheheh. Posso não parecer, mas sou uma cozinheira\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Padrao de orgulho da Kuon ('may not look it, but...', eco do 11_08). Riso 'Eh heh heh'->'Eheheh'."
+    },
+    {
+      "offset": "0x2009a",
+      "text_source": "cook.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_orgulho",
+      "intent": "...e tanto.",
+      "risk_level": "low",
+      "base_translation": "e tanto.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x200a0",
+      "text_source": "Kuon smiles proudly.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "A Kuon sorri orgulhosa.",
+      "risk_level": "low",
+      "base_translation": "A Kuon sorri orgulhosa.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x200b5",
+      "text_source": "...I don't think being able to wrap things up in a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Nao acho que embrulhar coisas numa pele faca de voce cozinheira.",
+      "risk_level": "medium",
+      "base_translation": "...Não acho que saber embrulhar as coisas numa\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tirada deadpan do Haku (ele engole). Manter a ironia contida."
+    },
+    {
+      "offset": "0x200ea",
+      "text_source": "skin makes you a cook, but whatever you say.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "...pele faca de voce cozinheira, mas ta bom.",
+      "risk_level": "low",
+      "base_translation": "pele faça de você cozinheira, mas tá bom.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20117",
+      "text_source": "I manage to bite my tongue before the quip actually\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Consegue segurar a lingua antes da piada escapar.",
+      "risk_level": "low",
+      "base_translation": "Consigo segurar a língua antes que a piada\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2014d",
+      "text_source": "escapes my throat.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...escape de fato da garganta.",
+      "risk_level": "low",
+      "base_translation": "escape de fato da minha garganta.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20160",
+      "text_source": "*Mmf, gromf--*",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Som de comer.",
+      "risk_level": "low",
+      "base_translation": "*Mmf, gromf--*",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SFX muffled '*Mmf, gromf--*' mantido (universal)."
+    },
+    {
+      "offset": "0x2016f",
+      "text_source": "It's certainly delicious, but I'm getting parched.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Deliciosa, mas ele fica com sede (tempero).",
+      "risk_level": "low",
+      "base_translation": "É deliciosa mesmo, mas estou ficando com sede.\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x201a4",
+      "text_source": "Probably the seasoning.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Provavelmente o tempero.",
+      "risk_level": "low",
+      "base_translation": "Provavelmente o tempero.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x201bc",
+      "text_source": "Is there anything to drink...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Tem algo pra beber?",
+      "risk_level": "low",
+      "base_translation": "Tem algo pra beber...?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x201db",
+      "text_source": "Here.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Aqui.",
+      "risk_level": "low",
+      "base_translation": "Aqui.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x201e1",
+      "text_source": "As though reading my mind, Kuon slides a bowl of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Como se lesse a mente, a Kuon empurra uma tigela de liquido ambar.",
+      "risk_level": "low",
+      "base_translation": "Como se lesse minha mente, a Kuon empurra uma tigela de\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20214",
+      "text_source": "amber-colored liquid towards me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...liquido ambar na direcao dele.",
+      "risk_level": "low",
+      "base_translation": "líquido âmbar na minha direção.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20235",
+      "text_source": "Oh, thanks.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Ah, obrigado.",
+      "risk_level": "low",
+      "base_translation": "Ah, obrigado.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20241",
+      "text_source": "I take an experimental sip, tasting the beverage...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Da um gole experimental, provando a bebida.",
+      "risk_level": "low",
+      "base_translation": "Dou um gole experimental, provando a bebida...",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20275",
+      "text_source": "It has an odd, citrusy flavor, but it's not\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Sabor citrico esquisito, mas nao intenso demais.",
+      "risk_level": "low",
+      "base_translation": "Tem um sabor cítrico esquisito, mas não é\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x202a3",
+      "text_source": "overpowering--in fact, it cleanses my palate pretty\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...na verdade, limpa o paladar bem.",
+      "risk_level": "low",
+      "base_translation": "intenso demais--na verdade, ele limpa meu paladar\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x202d9",
+      "text_source": "nicely.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...direitinho.",
+      "risk_level": "low",
+      "base_translation": "direitinho.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x202e1",
+      "text_source": "Is this... alcohol?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Isso e... alcool?",
+      "risk_level": "low",
+      "base_translation": "Isso é... álcool?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x202f5",
+      "text_source": "Uh huh. It's a drink you'll find a lot in this\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Aham. Bebida comum nesta regiao.",
+      "risk_level": "low",
+      "base_translation": "Aham. É uma bebida bem comum nesta\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20326",
+      "text_source": "region. It's not too strong, so it's drunk with\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...regiao. Nao e forte, bebem com as refeicoes.",
+      "risk_level": "low",
+      "base_translation": "região. Não é muito forte, então costumam beber com\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20358",
+      "text_source": "meals, usually.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...as refeicoes.",
+      "risk_level": "low",
+      "base_translation": "as refeições.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20368",
+      "text_source": "Interesting...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Interessante...",
+      "risk_level": "low",
+      "base_translation": "Interessante...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20377",
+      "text_source": "It almost seems like beer, but that citrus taste\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "Quase parece cerveja, mas o citrico a diferencia de uma lager.",
+      "risk_level": "low",
+      "base_translation": "Quase parece cerveja, mas aquele toque cítrico\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x203aa",
+      "text_source": "distinguishes it from standard lager.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "...a diferencia de uma lager comum.",
+      "risk_level": "low",
+      "base_translation": "a diferencia de uma lager comum.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x203d0",
+      "text_source": "I like it. The bubbles and the sourness go nicely\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Gostei. As bolhas e a acidez combinam com o tempero forte.",
+      "risk_level": "low",
+      "base_translation": "Gostei. As bolhas e a acidez combinam bem\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20404",
+      "text_source": "with the heavy seasoning on these dishes.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "...com o tempero forte desses pratos.",
+      "risk_level": "low",
+      "base_translation": "com o tempero forte desses pratos.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2042e",
+      "text_source": "And we don't really have it in my homeland! So it's\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "E quase nao tem isso na terra dela; ainda e novidade.",
+      "risk_level": "medium",
+      "base_translation": "E a gente quase não tem isso na minha terra! Então\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow leve da origem da Kuon ('my homeland'). Manter vago, prepara o assunto. 'homeland'->'minha terra'."
+    },
+    {
+      "offset": "0x20464",
+      "text_source": "still a novelty to me.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...ainda e novidade pra mim.",
+      "risk_level": "low",
+      "base_translation": "ainda é novidade pra mim.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2047b",
+      "text_source": "Homeland?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Terra natal?",
+      "risk_level": "low",
+      "base_translation": "Terra natal?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20485",
+      "text_source": "You're not from around here, then?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Entao voce nao e daqui?",
+      "risk_level": "low",
+      "base_translation": "Então você não é daqui?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x204a8",
+      "text_source": "Hm? Yeah, I'm from across the sea. It was a rough\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Kuon: sou de alem-mar; foi uma travessia dificil.",
+      "risk_level": "high",
+      "base_translation": "Hum? É, sou de além-mar. Foi uma travessia\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore/origem (high): a Kuon e de 'alem-mar' (across the sea) - eixo de mundo/identidade dela. Manter o tom casual que esconde a importancia. Back-translation."
+    },
+    {
+      "offset": "0x204dc",
+      "text_source": "voyage getting here, though.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...dificil chegar aqui.",
+      "risk_level": "low",
+      "base_translation": "difícil chegar aqui, no entanto.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x204f9",
+      "text_source": "I see. I don't know what part of the world you're\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Saquei. Nao sei de que parte do mundo voce e, mas parece longe.",
+      "risk_level": "low",
+      "base_translation": "Saquei. Não sei de que parte do mundo você\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2052d",
+      "text_source": "from, but that... sounds like it's far away.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "...mas isso parece bem longe.",
+      "risk_level": "low",
+      "base_translation": "é, mas isso... parece ser bem longe.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2055a",
+      "text_source": "Uh huh. I've traveled a lot since I was a child,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Viajo desde crianca, mas e a 1a vez tao longe sozinha.",
+      "risk_level": "medium",
+      "base_translation": "Aham. Eu viajo muito desde criança,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow: a Kuon viaja desde crianca (vida incomum). Manter casual."
+    },
+    {
+      "offset": "0x2058d",
+      "text_source": "but this is the first time I've been out this far\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...mas e a 1a vez que vou tao longe...",
+      "risk_level": "low",
+      "base_translation": "mas é a primeira vez que vou tão longe\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x205c1",
+      "text_source": "on my own.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...sozinha.",
+      "risk_level": "low",
+      "base_translation": "sozinha.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x205cc",
+      "text_source": "It was also my first time traveling by ship, so\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "1a vez de navio; foi divertido no fim.",
+      "risk_level": "low",
+      "base_translation": "Também foi minha primeira vez viajando de navio, então\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x205fe",
+      "text_source": "getting that new experience was fun in the end.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...no fim foi divertido ter essa experiencia nova.",
+      "risk_level": "low",
+      "base_translation": "no fim foi divertido ter essa experiência nova.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2062e",
+      "text_source": "We did have a few close calls, though...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia",
+      "intent": "Mas passaram por uns perrengues.",
+      "risk_level": "medium",
+      "base_translation": "Mas a gente passou por uns perrengues...",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'close calls'->'perrengues' (BR coloquial). Arma a historia do monstro marinho."
+    },
+    {
+      "offset": "0x20657",
+      "text_source": "What, like you got caught in a storm or something?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Que, tipo pegar uma tempestade?",
+      "risk_level": "low",
+      "base_translation": "Quê, tipo pegar uma tempestade ou algo assim?",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2068a",
+      "text_source": "Kuon puts a finger to her lips, smiling proudly.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "A Kuon poe o dedo nos labios, sorrindo orgulhosa.",
+      "risk_level": "low",
+      "base_translation": "A Kuon põe o dedo nos lábios, sorrindo orgulhosa.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x206bb",
+      "text_source": "It wasn't a storm, but we ran into something just\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia",
+      "intent": "Nao foi tempestade, mas algo quase tao assustador. Adivinha?",
+      "risk_level": "low",
+      "base_translation": "Não foi tempestade, mas a gente topou com algo quase\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x206ef",
+      "text_source": "about as scary. Can you guess?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia",
+      "intent": "...tao assustador. Adivinha?",
+      "risk_level": "low",
+      "base_translation": "tão assustador. Adivinha?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2070e",
+      "text_source": "Something close to a storm... Like a tsunami, or\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Algo parecido com tempestade... tsunami ou redemoinho?",
+      "risk_level": "low",
+      "base_translation": "Algo parecido com tempestade... Tipo um tsunami, ou\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20741",
+      "text_source": "a giant whirlpool?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "...um redemoinho gigante?",
+      "risk_level": "low",
+      "base_translation": "um redemoinho gigante?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20754",
+      "text_source": "Too bad! Both wrong. The correct answer is \"giant\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "Que pena! Os dois errados. A resposta certa e 'ataque de monstro marinho gigante'.",
+      "risk_level": "high",
+      "base_translation": "Que pena! Os dois errados. A resposta certa é \"ataque de\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Reveal comico-sombrio (high) + lore (monstros marinhos existem). 'giant sea monster attack' -> 'ataque de monstro marinho gigante'. Aspas preservadas; tom alegre da Kuon contrasta com o horror. Back-translation."
+    },
+    {
+      "offset": "0x20788",
+      "text_source": "sea monster attack.\"",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "...monstro marinho gigante.",
+      "risk_level": "low",
+      "base_translation": "monstro marinho gigante.\"",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2079d",
+      "text_source": "Um.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interjeicao_surpresa",
+      "intent": "Ã.",
+      "risk_level": "low",
+      "base_translation": "Ahn.",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x207a1",
+      "text_source": "It happened on a calm, sunny day, and the ship had\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "Foi num dia calmo, navio cheio de gente no porao.",
+      "risk_level": "low",
+      "base_translation": "Foi num dia calmo e ensolarado, e o navio tinha\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x207d6",
+      "text_source": "a lot of people packed belowdecks.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "...muita gente amontoada no porao.",
+      "risk_level": "low",
+      "base_translation": "muita gente amontoada no porão.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x207f9",
+      "text_source": "The water was peaceful, so I thought I'd go above\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "A agua tranquila, pensei em subir...",
+      "risk_level": "low",
+      "base_translation": "A água estava tranquila, então pensei em subir\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2082d",
+      "text_source": "and watch the waves, but...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "...pra ver as ondas, mas...",
+      "risk_level": "low",
+      "base_translation": "pra ver as ondas, mas...",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20849",
+      "text_source": "When I got up there, I was just in time to see giant\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "Vi a tempo bracos gigantes--mais pra pernas--agarrarem o navio!",
+      "risk_level": "high",
+      "base_translation": "Quando cheguei lá em cima, foi bem a tempo de ver braços\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Clímax da historia (high): 'giant arms--more like legs--emerge and seize the ship'. Manter o detalhe grotesco ('bracos--mais pra pernas') e a empolgacao incongruente da Kuon. Back-translation."
+    },
+    {
+      "offset": "0x20880",
+      "text_source": "arms--more like legs--emerge and seize the ship!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "...gigantes--mais pra pernas--surgirem e agarrarem o navio!",
+      "risk_level": "low",
+      "base_translation": "gigantes--mais pra pernas--surgirem e agarrarem o navio!",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x208b1",
+      "text_source": "It tried to pull us beneath the surface, drowning\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "Tentou puxar pra debaixo d'agua, afogando quem caia.",
+      "risk_level": "low",
+      "base_translation": "Tentou nos puxar pra debaixo d'água, afogando\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x208e5",
+      "text_source": "anyone who fell off--it was awful, really.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_dark",
+      "intent": "...quem caia--foi horrivel.",
+      "risk_level": "low",
+      "base_translation": "quem caía--foi horrível, de verdade.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20910",
+      "text_source": "That's... nowhere near \"like\" a storm.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Isso nao chega nem perto de ser 'tipo' tempestade.",
+      "risk_level": "medium",
+      "base_translation": "Isso... não chega nem perto de ser \"tipo\" tempestade.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Deadpan do Haku reagindo ao absurdo. Aspas em 'tipo'. Timing comico."
+    },
+    {
+      "offset": "0x20937",
+      "text_source": "Hold on. You're just pulling my leg, aren't you?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Calma. Voce so ta me zoando, ne? Algum tipo de piada.",
+      "risk_level": "low",
+      "base_translation": "Calma. Você só tá me zoando, né?\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2096a",
+      "text_source": "This is some kind of joke.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "...Isso e algum tipo de piada.",
+      "risk_level": "low",
+      "base_translation": "Isso é algum tipo de piada.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20985",
+      "text_source": "A joke?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_naturalidade",
+      "intent": "Piada?",
+      "risk_level": "low",
+      "base_translation": "Piada?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2098d",
+      "text_source": "Kuon tilts her head quizzically.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao",
+      "intent": "A Kuon inclina a cabeca sem entender.",
+      "risk_level": "low",
+      "base_translation": "A Kuon inclina a cabeça, sem entender.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x209ae",
+      "text_source": "...Never mind.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "...Deixa pra la.",
+      "risk_level": "low",
+      "base_translation": "...Deixa pra lá.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x209bd",
+      "text_source": "I'm starting to get a headache trying to wrap my\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Comecando a ter dor de cabeca; hora de mudar de assunto.",
+      "risk_level": "low",
+      "base_translation": "Tô começando a ter dor de cabeça tentando\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x209f0",
+      "text_source": "head around this. Time to change the subject.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...entender isso. Hora de mudar de assunto.",
+      "risk_level": "low",
+      "base_translation": "entender isso. Hora de mudar de assunto.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20a1e",
+      "text_source": "So, I'm curious. Why are you traveling? Do you have\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Fiquei curioso. Por que voce viaja? Tem algum objetivo?",
+      "risk_level": "low",
+      "base_translation": "Então, fiquei curioso. Por que você viaja? Tem algum\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20a54",
+      "text_source": "some goal way out here--some objective?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "...objetivo aqui longe--alguma meta?",
+      "risk_level": "low",
+      "base_translation": "objetivo aqui longe--alguma meta?",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20a7c",
+      "text_source": "Objective...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "introspeccao_suave",
+      "intent": "Objetivo...",
+      "risk_level": "low",
+      "base_translation": "Objetivo...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20a89",
+      "text_source": "If it's hard to talk about, you don't have to...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Se for dificil falar, nao precisa.",
+      "risk_level": "low",
+      "base_translation": "Se for difícil falar, não precisa...",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20aba",
+      "text_source": "Oh, no, nothing like that. I just haven't had to...\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "introspeccao_suave",
+      "intent": "Nada disso; e que ela nunca precisou pôr em palavras.",
+      "risk_level": "low",
+      "base_translation": "Ah, não, nada disso. É que eu nunca precisei...\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20af0",
+      "text_source": "Well, put it into words before.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "introspeccao_suave",
+      "intent": "...pôr isso em palavras antes.",
+      "risk_level": "low",
+      "base_translation": "Bom, pôr isso em palavras antes.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20b10",
+      "text_source": "I just want to take myself to as many new places as\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "introspeccao_suave",
+      "intent": "So quer se levar a quantos lugares novos puder.",
+      "risk_level": "low",
+      "base_translation": "Eu só quero me levar a quantos lugares novos\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20b46",
+      "text_source": "I can, I think.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "introspeccao_suave",
+      "intent": "...eu puder, acho.",
+      "risk_level": "low",
+      "base_translation": "eu puder, acho.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20b56",
+      "text_source": "Like there's a wanderlust deep inside me, whispering\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Como uma sede de viajar no fundo dela, sussurrando ao coracao.",
+      "risk_level": "high",
+      "base_translation": "Como se tivesse uma sede de viajar bem no fundo de mim, sussurrando\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Registro lirico (high): 'wanderlust deep inside me, whispering to my heart'. Manter a poesia/voz suave da Kuon sem deixar piegas. 'wanderlust'->'sede de viajar'. Back-translation."
+    },
+    {
+      "offset": "0x20b8d",
+      "text_source": "to my heart, you know?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...pro meu coracao, sabe?",
+      "risk_level": "low",
+      "base_translation": "pro meu coração, sabe?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20ba4",
+      "text_source": "It wants to go places it's never been, have\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Ela quer ir a lugares novos, ter experiencias novas.",
+      "risk_level": "low",
+      "base_translation": "Ela quer ir a lugares onde nunca esteve, ter\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20bd2",
+      "text_source": "experiences it's never had, try new things...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...experiencias que nunca teve, provar coisas novas.",
+      "risk_level": "low",
+      "base_translation": "experiências que nunca teve, provar coisas novas...",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20c00",
+      "text_source": "So as long as there are new places for me to take in\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Enquanto houver lugares novos, ela continua viajando.",
+      "risk_level": "low",
+      "base_translation": "Então enquanto houver lugares novos pra eu conhecer\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20c37",
+      "text_source": "like that, I'll continue my travels, I suppose.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...assim, vou continuar viajando, eu acho.",
+      "risk_level": "low",
+      "base_translation": "assim, vou continuar viajando, eu acho.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20c67",
+      "text_source": "Kuon smiles sweetly, and I have to admit, the beauty\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "sincero",
+      "intent": "A Kuon sorri doce, e ele admite que a beleza disso o encanta.",
+      "risk_level": "medium",
+      "base_translation": "A Kuon sorri doce, e admito, a beleza\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Beat sincero: o Haku se encanta um pouco (sem romance explicito). Manter a confissao discreta."
+    },
+    {
+      "offset": "0x20c9e",
+      "text_source": "of it charms me a little.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "sincero",
+      "intent": "...disso me encanta um pouco.",
+      "risk_level": "low",
+      "base_translation": "disso me encanta um pouco.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20cb8",
+      "text_source": "Drinks that can only be found here, food that's only\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Bebidas so daqui, comida so de la, ver as paisagens.",
+      "risk_level": "low",
+      "base_translation": "Bebidas que só se acham aqui, comida que só se\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20cef",
+      "text_source": "cooked there, seeing the sights...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...cozinha la, ver as paisagens.",
+      "risk_level": "low",
+      "base_translation": "cozinha lá, ver as paisagens...",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20d12",
+      "text_source": "Traveling the open road, wandering a free world with\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Percorrer a estrada, vagar num mundo livre sem ninguem mandando.",
+      "risk_level": "medium",
+      "base_translation": "Percorrer a estrada aberta, vagar por um mundo livre sem\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow: 'no one to lecture me or force me to study' insinua uma criacao controlada/nobre. Manter o contraste liberdade vs imposicao."
+    },
+    {
+      "offset": "0x20d49",
+      "text_source": "no one to lecture me or force me to study...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...ninguem pra me dar sermao ou me obrigar a estudar.",
+      "risk_level": "high",
+      "base_translation": "ninguém pra me dar sermão ou me obrigar a estudar...",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow-chave (high): 'no one to lecture me or force me to study' - sugere a criacao formal/restrita da Kuon (identidade nobre, a revelar). Manter implicito, NAO explicitar. Back-translation."
+    },
+    {
+      "offset": "0x20d76",
+      "text_source": "Really, I have to wonder if this lifestyle is what\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "Se pergunta se esse estilo de vida e o tal 'paraiso na Terra'.",
+      "risk_level": "low",
+      "base_translation": "Sério, fico me perguntando se esse estilo de vida é o\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20dab",
+      "text_source": "they mean when they talk about an earthly paradise.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "lirico",
+      "intent": "...que chamam de paraiso na Terra.",
+      "risk_level": "low",
+      "base_translation": "que chamam de paraíso na Terra.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20ddf",
+      "text_source": "...I feel like that last part somehow spoils the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Sente que essa ultima parte estraga o resto.",
+      "risk_level": "medium",
+      "base_translation": "...Sinto que essa última parte meio que estraga o\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tirada deadpan do Haku quebrando o lirismo (autoconsciente). Timing comico."
+    },
+    {
+      "offset": "0x20e12",
+      "text_source": "rest of it.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "...resto.",
+      "risk_level": "low",
+      "base_translation": "resto.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20e1e",
+      "text_source": "Doesn't your family worry, th--?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "Sua familia nao fica preocupada, en--?",
+      "risk_level": "high",
+      "base_translation": "Sua família não fica preocupada, en--?",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Pergunta-gatilho (high): toca a familia da Kuon - o que escurece a expressao dela (foreshadow). Corte '--'. Manter a inocencia da pergunta. Back-translation."
+    },
+    {
+      "offset": "0x20e3f",
+      "text_source": "At that, Kuon's expression turns dark and\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao_tensao",
+      "intent": "A expressao da Kuon fica sombria e distante.",
+      "risk_level": "high",
+      "base_translation": "Com isso, a expressão da Kuon fica sombria e\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow (high): a mudanca subita de tom da Kuon ('dark and distant') - peso emocional sobre a familia/passado dela. Manter o contraste com a leveza anterior. Back-translation."
+    },
+    {
+      "offset": "0x20e6b",
+      "text_source": "distant.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narracao_tensao",
+      "intent": "...distante.",
+      "risk_level": "low",
+      "base_translation": "distante.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20e74",
+      "text_source": "Urk. Wrong thing to say?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Ops. Falei besteira?",
+      "risk_level": "medium",
+      "base_translation": "Ops. Falei besteira?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Urk'->'Ops' (constrangimento BR). Manter o arrependimento comico."
+    },
+    {
+      "offset": "0x20e8d",
+      "text_source": "A normal parent probably wouldn't let their\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "Um pai normal nao deixaria a filha viajar sozinha, muito menos pro outro lado do mar.",
+      "risk_level": "low",
+      "base_translation": "Um pai normal provavelmente não deixaria a\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20ebb",
+      "text_source": "young daughter travel alone, much less\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...filha jovem viajar sozinha, muito menos...",
+      "risk_level": "low",
+      "base_translation": "filha jovem viajar sozinha, muito menos\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20ee4",
+      "text_source": "overseas, so...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...pro outro lado do mar, entao...",
+      "risk_level": "low",
+      "base_translation": "pro outro lado do mar, então...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20ef4",
+      "text_source": "...Sorry. I didn't mean...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano",
+      "intent": "...Desculpa. Eu nao quis...",
+      "risk_level": "low",
+      "base_translation": "...Desculpa. Eu não quis...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20f0f",
+      "text_source": "Oh, no, it's all right.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Ah, nao, ta tudo bem.",
+      "risk_level": "low",
+      "base_translation": "Ah, não, tá tudo bem.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20f27",
+      "text_source": "I ran off without telling anyone, is all. I'm...\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero",
+      "intent": "Ela fugiu sem avisar; nao ta ansiosa pela bronca que a espera.",
+      "risk_level": "high",
+      "base_translation": "Eu fugi sem avisar ninguém, só isso. Eu...\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Reveal (high): a Kuon FUGIU de casa sem avisar. Eixo de personagem/foreshadow. 'scolding waiting for me'->'bronca que me espera'. Manter o tom leve que disfarca o peso. Back-translation."
+    },
+    {
+      "offset": "0x20f5a",
+      "text_source": "not exactly looking forward to the scolding waiting\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero",
+      "intent": "...nao to ansiosa pela bronca que me espera.",
+      "risk_level": "low",
+      "base_translation": "não tô exatamente ansiosa pela bronca que me\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20f90",
+      "text_source": "for me.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero",
+      "intent": "...espera.",
+      "risk_level": "low",
+      "base_translation": "espera.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20f98",
+      "text_source": "What, that's all!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Que, so isso?!",
+      "risk_level": "low",
+      "base_translation": "Quê, só isso!?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20fab",
+      "text_source": "Huh? What do you mean?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Hein? Como assim?",
+      "risk_level": "low",
+      "base_translation": "Hein? Como assim?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x20fc2",
+      "text_source": "That sullen face just now made me think you don't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Aquela cara fechada me fez achar que voce nao tinha familia.",
+      "risk_level": "medium",
+      "base_translation": "Aquela cara fechada agora me fez achar que você não\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Haku explica o mal-entendido (a cara sombria dela). Manter o jeito atrapalhado."
+    },
+    {
+      "offset": "0x20ff6",
+      "text_source": "have a family. And since I said, y'know--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "...tinha familia. E como eu falei, sabe--",
+      "risk_level": "low",
+      "base_translation": "tinha família. E como eu falei, sabe--",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21020",
+      "text_source": "Family?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Familia?",
+      "risk_level": "low",
+      "base_translation": "Família?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21028",
+      "text_source": "Oooh, I see. No, no, I come from a pretty big\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Aaah, saquei. Nao, ela vem de uma familia bem grande.",
+      "risk_level": "high",
+      "base_translation": "Aaah, saquei. Não, não, eu venho de uma família bem\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow-chave (high): 'a pretty big household' - insinua origem nobre/numerosa da Kuon (identidade a revelar). Manter casual, NAO explicitar. Back-translation."
+    },
+    {
+      "offset": "0x21058",
+      "text_source": "household.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...grande.",
+      "risk_level": "low",
+      "base_translation": "grande.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21063",
+      "text_source": "If that's the case, then it's f-- Actually, no, it's\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Se e assim, entao ta tu-- Na verdade nao! Eles nao vao se preocupar?",
+      "risk_level": "low",
+      "base_translation": "Se é assim, então tá tu-- Na verdade, não, não tá\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2109a",
+      "text_source": "not fine! Won't they be worried about you?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "...tudo bem! Eles nao vao se preocupar com voce?",
+      "risk_level": "low",
+      "base_translation": "tudo bem! Eles não vão ficar preocupados com você?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x210c5",
+      "text_source": "Nngh...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Nnh...",
+      "risk_level": "medium",
+      "base_translation": "Nnh...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gemido de desconforto 'Nngh'->'Nnh' (a pergunta a incomoda)."
+    },
+    {
+      "offset": "0x210cd",
+      "text_source": "My family is, ah... I suppose you could call them...\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Minha familia e, ã... acho que da pra chamar de... tolerante?",
+      "risk_level": "high",
+      "base_translation": "Minha família é, ã... acho que dá pra chamar de...\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow (high): a Kuon descreve a familia como 'lenient'/'tolerante' com hesitacao (eufemismo de uma criacao incomum/nobre). 'Um'->'ã'. Manter a hesitacao reveladora. Back-translation."
+    },
+    {
+      "offset": "0x21104",
+      "text_source": "Lenient?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...Tolerante?",
+      "risk_level": "low",
+      "base_translation": "Tolerante?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2110d",
+      "text_source": "Liar. If they were, you wouldn't be dreading the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Mentirosa. Se fossem, voce nao temeria a bronca.",
+      "risk_level": "medium",
+      "base_translation": "Mentirosa. Se fossem, você não estaria temendo a\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Haku a desmascara de leve ('Liar'->'Mentirosa'). Tom provocador-amigavel."
+    },
+    {
+      "offset": "0x21140",
+      "text_source": "scolding they're gonna give you.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "...bronca que vao te dar.",
+      "risk_level": "low",
+      "base_translation": "bronca que vão te dar.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21161",
+      "text_source": "I-It's true! They told me I should go where I like,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "E verdade! Me disseram pra ir aonde quiser e fazer o que quiser.",
+      "risk_level": "medium",
+      "base_translation": "É-É verdade! Me disseram pra eu ir aonde quiser\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow: a 'liberdade' concedida pela familia (filosofia incomum). Manter sincero."
+    },
+    {
+      "offset": "0x21197",
+      "text_source": "and do what I want.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...e fazer o que eu quiser.",
+      "risk_level": "low",
+      "base_translation": "e fazer o que eu quiser.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x211ab",
+      "text_source": "One can only live free of responsibilities while one\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "So da pra viver livre de responsabilidades enquanto se e jovem; ela aproveita.",
+      "risk_level": "high",
+      "base_translation": "Só dá pra viver livre de responsabilidades enquanto se\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Filosofia da familia (high foreshadow): citacao do que 'lhe disseram' sobre liberdade/juventude. Registro quase decorado (ela repete um ensinamento). Manter o tom de maxima. Back-translation."
+    },
+    {
+      "offset": "0x211e2",
+      "text_source": "is still young, so I'm seizing the day!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...e jovem, entao estou aproveitando o dia!",
+      "risk_level": "low",
+      "base_translation": "é jovem, então estou aproveitando o dia!",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2120a",
+      "text_source": "It comes with dangers, of course--you can be left to\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Vem com perigos--pode morrer desamparada, desonrada, longe de casa.",
+      "risk_level": "medium",
+      "base_translation": "Vem com perigos, claro--você pode acabar\\n",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continua a maxima da familia (tom sombrio sob a leveza). 'disgraced'->'desonrada' (peso de honra - foreshadow nobre)."
+    },
+    {
+      "offset": "0x21241",
+      "text_source": "die helpless, disgraced, far away from home...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...morrendo desamparada, desonrada, longe de casa.",
+      "risk_level": "low",
+      "base_translation": "morrendo desamparada, desonrada, longe de casa...",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21270",
+      "text_source": "But that's the trade-off that comes with freedom...\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Mas esse e o preco da liberdade... ou foi o que disseram.",
+      "risk_level": "medium",
+      "base_translation": "Mas esse é o preço que vem com a liberdade...\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fecho da maxima ('Or so they said' -> 'Ou foi o que disseram') - revela que ela repete o ensinamento de outrem. Manter o distanciamento."
+    },
+    {
+      "offset": "0x212a6",
+      "text_source": "Or so they said.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...Ou foi o que disseram.",
+      "risk_level": "low",
+      "base_translation": "Ou foi o que disseram.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x212b7",
+      "text_source": "How should I put it? My family... values autonomy.\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "Como diria? Minha familia valoriza a autonomia. Independencia.",
+      "risk_level": "high",
+      "base_translation": "Como eu diria? Minha família... valoriza a autonomia.\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Foreshadow-tema (high): 'My family values autonomy. Independence.' - principio central da criacao da Kuon (chave da identidade dela). Manter solene/sincero, sem ironia. Back-translation."
+    },
+    {
+      "offset": "0x212ec",
+      "text_source": "Independence.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sincero_origem",
+      "intent": "...Independencia.",
+      "risk_level": "low",
+      "base_translation": "Independência.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x212fa",
+      "text_source": "You'd think there'd be a rational limit to what\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Voce pensaria que tem um limite racional pro que conta como 'independencia'.",
+      "risk_level": "medium",
+      "base_translation": "Você pensaria que tem um limite racional pro que\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tirada deadpan do Haku (a 'independencia' dela e extrema). Aspas em 'independencia'. Quebra comica do momento solene."
+    },
+    {
+      "offset": "0x2132c",
+      "text_source": "counts as \"independence\"...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "...conta como 'independencia'.",
+      "risk_level": "low",
+      "base_translation": "conta como \"independência\"...",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21348",
+      "text_source": "But enough of all that! Eat up. You'll need your\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "Mas chega disso! Come; vai precisar de energia pro trabalho amanha.",
+      "risk_level": "medium",
+      "base_translation": "Mas chega disso! Come. Você vai precisar de\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "A Kuon corta o assunto pesado e volta a leveza (defesa). Setup do gag do trabalho amanha."
+    },
+    {
+      "offset": "0x2137b",
+      "text_source": "strength for work tomorrow.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_gentil",
+      "intent": "...energia pro trabalho amanha.",
+      "risk_level": "low",
+      "base_translation": "energia pro trabalho amanhã.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21397",
+      "text_source": "Wh-What?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "Q-Que?",
+      "risk_level": "low",
+      "base_translation": "Q-Quê?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x213a0",
+      "text_source": "We're working... tomorrow, too...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "A gente vai trabalhar amanha tambem?",
+      "risk_level": "medium",
+      "base_translation": "A gente vai trabalhar... amanhã também...?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Desespero comico do Haku (mais trabalho). Manter o tom de quem ja ta acabado."
+    },
+    {
+      "offset": "0x213c3",
+      "text_source": "Ah, let's see. Next I'll try... this, then this,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia",
+      "intent": "Ah, deixa ver. Agora eu provo este, depois este...",
+      "risk_level": "low",
+      "base_translation": "Ah, deixa ver. Agora eu provo... este, depois este,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x213f6",
+      "text_source": "and then...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia",
+      "intent": "...e depois...",
+      "risk_level": "low",
+      "base_translation": "e depois...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21402",
+      "text_source": "You're STILL eating!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Voce AINDA ta comendo?!",
+      "risk_level": "medium",
+      "base_translation": "Você AINDA tá comendo!?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gag do apetite (caixa-alta 'STILL'->'AINDA'). Incredulidade comica."
+    },
+    {
+      "offset": "0x21418",
+      "text_source": "Somehow, Kuon managed to put a whole new amamunii\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "A Kuon montou um amamunii inteiro novo enquanto ele se distraia.",
+      "risk_level": "medium",
+      "base_translation": "De algum jeito, a Kuon montou um amamunii inteiro novo\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo de mundo 'amamunii' (glossary). Gag do apetite inesgotavel da Kuon."
+    },
+    {
+      "offset": "0x2144c",
+      "text_source": "together while I was distracted. She eats eagerly.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_narracao",
+      "intent": "...enquanto eu me distraia. Ela come com gosto.",
+      "risk_level": "low",
+      "base_translation": "enquanto eu me distraía. Ela come com gosto.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x2147f",
+      "text_source": "Mmf!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "onomatopeia_sfx",
+      "intent": "Mmf!",
+      "risk_level": "low",
+      "base_translation": "Mmf!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x21484",
+      "text_source": "I'll give her this--the girl really likes her food.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia",
+      "intent": "Tenho que admitir: a garota gosta mesmo de comer.",
+      "risk_level": "medium",
+      "base_translation": "Tenho que admitir uma coisa--a garota gosta mesmo de comer.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Remate carinhoso-ironico do Haku ('I'll give her this'->'Tenho que admitir'). Manter o afeto disfarcado."
+    }
+  ],
+  "total_lines": 213,
+  "high_lines": 13,
+  "medium_lines": 37,
+  "needs_review": [],
+  "plan_version": "chapter-11_09-v1"
+}
