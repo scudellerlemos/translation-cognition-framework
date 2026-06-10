@@ -161,7 +161,14 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
 
     highs = _high_lines(root, scene, sfx)
     print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
-    bt = M.back_translate(root, scene, highs, backend=backend)
+    try:
+        bt = M.back_translate(root, scene, highs, backend=backend)
+    except Exception as e:                                  # nao-bloqueante: reporta e segue
+        print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")
+        bt = {"status": M.DONE, "reviewed": 0, "path": None}
+        if require_back:                                    # so bloqueia se exigida explicitamente
+            _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
+            return {"status": "back_translation_failed", "scene": scene, "error": str(e)}
     if bt["status"] == M.AWAITING:
         msg = f"      AGUARDANDO back-translation: {bt['prompt']}"
         if require_back:
