@@ -99,6 +99,7 @@ def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verif
         except Exception:
             pass
     rec = {"scene": scene, "n_lines": n_lines, "n_high": n_high, "verified": verified,
+           "reused": tr.get("reused", 0) if isinstance(tr, dict) else 0,
            "translate": {"model": tmodel, "usage": tu, "cost_usd": round(M.cost_of(tmodel, tu or {}), 5)},
            "back": {"model": bmodel, "usage": bu, "cost_usd": round(M.cost_of(bmodel, bu or {}), 5)},
            "back_pass_rate": bt_pass,
@@ -149,6 +150,9 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         _checkpoint(root, scene, {"sfx": sfx, "status": "api_translate_failed"})
         return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
+    if isinstance(tr, dict) and tr.get("reused"):
+        print(f"      dedup: {tr['reused']}/{tr['n_lines']} linha(s) reaproveitadas da TM "
+              f"(nao re-traduzidas; {tr.get('novel', 0)} novas ao modelo)")
     _checkpoint(root, scene, {"sfx": sfx, "n_lines": tr["n_lines"], "status": "packed"})
 
     if tr["status"] == M.AWAITING:
