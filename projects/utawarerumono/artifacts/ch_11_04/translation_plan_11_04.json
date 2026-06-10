@@ -1,0 +1,717 @@
+{
+  "scene_group": "11_04",
+  "lines": [
+    {
+      "offset": "0x15a1f",
+      "text_source": "Now, fiend... Taste the strike of justice!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_chuuni",
+      "intent": "Haku posa de heroi e desafia o inimigo fraco com grandiloquencia.",
+      "risk_level": "high",
+      "base_translation": "Agora, verme... Prove o golpe da justiça!\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Comedia (high): pose chuuni do Haku. 'fiend'->'verme' (insulto chuuni). Preservar o exagero heroico ironico. Back-translation."
+    },
+    {
+      "offset": "0x15a4c",
+      "text_source": "Rryaaah!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "onomatopeia_grito",
+      "intent": "Grito de batalha do Haku.",
+      "risk_level": "low",
+      "base_translation": "Rryaaah!",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Grito (vogais repetidas) - espelhar."
+    },
+    {
+      "offset": "0x15a56",
+      "text_source": "...What.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Kuon reage sem se impressionar com a palhacada.",
+      "risk_level": "medium",
+      "base_translation": "...Que isso.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz da Kuon (high): deadpan nao-impressionado ao ver o Haku se exibir. '...What.' (seco) -> '...Que isso.' (BR, desdem contido). Nao virar pergunta genuina."
+    },
+    {
+      "offset": "0x15a5f",
+      "text_source": "Taaake this!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_chuuni",
+      "intent": "Haku continua a pose, golpeando.",
+      "risk_level": "high",
+      "base_translation": "Tomaaa essa!\\n",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Comedia (high): grito de golpe alongado 'Taaake this!' -> 'Tomaaa essa!' (mantem o alongamento ridiculo). Back-translation."
+    },
+    {
+      "offset": "0x15a6e",
+      "text_source": "Ultimate justice slash!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_chuuni",
+      "intent": "Haku grita o nome do golpe especial.",
+      "risk_level": "high",
+      "base_translation": "Corte supremo da justiça!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Comedia/criatividade (high): nome de golpe chuuni 'Ultimate justice slash!' -> 'Corte supremo da justica!'. Manter a pompa. Back-translation."
+    },
+    {
+      "offset": "0x15a86",
+      "text_source": "...Haku... I think that's enough playing around.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_firme",
+      "intent": "Kuon corta a brincadeira, firme.",
+      "risk_level": "medium",
+      "base_translation": "...Haku... acho que já chega de brincadeira.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz da Kuon (high): lado firme - encerra a palhacada. Tom paciente-mas-direto, nao raivoso."
+    },
+    {
+      "offset": "0x15ab7",
+      "text_source": "Uh, n-no, I'm not--I mean... Miss Kuon?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku, pego no flagra, se atrapalha.",
+      "risk_level": "medium",
+      "base_translation": "Ahn, n-não, eu não tô--quer dizer... Senhorita Kuon?",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gagueira 'n-no'->'n-nao'; hesitacao 'Uh'->'Ahn' (sobrevive a translit; 'A' isolado ficaria estranho). Honorifico 'Miss Kuon'->'Senhorita Kuon' (constrangimento formal)."
+    },
+    {
+      "offset": "0x15adf",
+      "text_source": "Hm?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "interjeicao_duvida",
+      "intent": "Kuon, reflexiva.",
+      "risk_level": "low",
+      "base_translation": "Hum?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15ae3",
+      "text_source": "My attacks don't seem to be... You know.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku admite, sem graca, que os ataques nao surtem efeito.",
+      "risk_level": "low",
+      "base_translation": "Meus golpes parece que não tão... Sabe como é.\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15b0e",
+      "text_source": "Doing anything.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "...fazendo nada (remate seco).",
+      "risk_level": "low",
+      "base_translation": "Fazendo nada.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15b1e",
+      "text_source": "Haku, I know they're weak, but we should really\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_firme",
+      "intent": "Kuon admite que sao fracos, mas cobra seriedade.",
+      "risk_level": "medium",
+      "base_translation": "Haku, eu sei que eles são fracos, mas a gente devia mesmo\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz da Kuon (high): firme/pragmatica - cobra que leve a serio."
+    },
+    {
+      "offset": "0x15b50",
+      "text_source": "take this seriously. It doesn't pay to be\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_firme",
+      "intent": "...levar a serio; nao compensa ser...",
+      "risk_level": "medium",
+      "base_translation": "levar isso a sério. Não compensa ser\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuacao da bronca firme da Kuon."
+    },
+    {
+      "offset": "0x15b7c",
+      "text_source": "overconfident!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_firme",
+      "intent": "...confiante demais!",
+      "risk_level": "low",
+      "base_translation": "confiante demais!",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15b8b",
+      "text_source": "B-But I'm trying my best, here...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku se defende: esta dando o melhor.",
+      "risk_level": "medium",
+      "base_translation": "M-Mas eu tô me esforçando o máximo, tá...",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gagueira 'B-But'->'M-Mas'; manha defensiva comica."
+    },
+    {
+      "offset": "0x15bad",
+      "text_source": "Raaaaahhh!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "onomatopeia_grito",
+      "intent": "Grito de esforco.",
+      "risk_level": "low",
+      "base_translation": "Raaaaahhh!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Grito (vogais repetidas) - espelhar."
+    },
+    {
+      "offset": "0x15bb8",
+      "text_source": "Hraaaaahhh!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "onomatopeia_grito",
+      "intent": "Grito de esforco.",
+      "risk_level": "low",
+      "base_translation": "Hraaaaahhh!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Grito - espelhar."
+    },
+    {
+      "offset": "0x15bc4",
+      "text_source": "...Haku...?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Kuon chama, desconfiada do esforco exagerado.",
+      "risk_level": "low",
+      "base_translation": "...Haku...?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15bd0",
+      "text_source": "H-Hey, w-w-wait a sec--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "Haku entra em panico, gaguejando.",
+      "risk_level": "medium",
+      "base_translation": "E-Ei, p-p-pera um segundo--",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gagueira dupla 'w-w-wait' -> 'p-p-pera'; corte seco '--'. Panico comico."
+    },
+    {
+      "offset": "0x15be8",
+      "text_source": "What's the deal? I thought these guys were supposed\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "Haku reclama: achou que esses caras eram fracos.",
+      "risk_level": "medium",
+      "base_translation": "Que que tá rolando? Eu achei que esses caras eram pra\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Indignacao comica; ironia dramatica (ele que se exibiu)."
+    },
+    {
+      "offset": "0x15c1e",
+      "text_source": "to be weak!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_panico",
+      "intent": "...ser fracos!",
+      "risk_level": "low",
+      "base_translation": "ser fracos!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15d01",
+      "text_source": "{c5}Combat Tutorial{c-1} has been added to\\n  the System menu.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "ui_tutorial",
+      "intent": "Notificacao de sistema: tutorial de combate adicionado ao menu.",
+      "risk_level": "medium",
+      "base_translation": "{c5}Tutorial de Combate{c-1} adicionado ao\\n  menu do Sistema.",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "TOKENS DE COR {c5}/{c-1} preservados verbatim. Indentacao de 2 espacos apos \\n preservada. UI/sistema, neutro. Linha HEAD-LESS (sem ponteiro 50/53 00) -> so cabe in_place: encurtado p/ <=62 bytes (drop 'foi') p/ evitar resíduo T4."
+    },
+    {
+      "offset": "0x15d40",
+      "text_source": "You can find information on the basic mechanics\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "ui_tutorial",
+      "intent": "Onde achar as mecanicas basicas.",
+      "risk_level": "low",
+      "base_translation": "Você encontra informações sobre as mecânicas básicas\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15d72",
+      "text_source": "of fighting in the Combat Tutorial.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "ui_tutorial",
+      "intent": "...de combate no Tutorial de Combate.",
+      "risk_level": "low",
+      "base_translation": "de combate no Tutorial de Combate.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15d96",
+      "text_source": "If you ever feel unsure about the flow of\\n",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "ui_tutorial",
+      "intent": "Se ficar em duvida sobre o fluxo de combate...",
+      "risk_level": "low",
+      "base_translation": "Se você ficar em dúvida sobre o fluxo do\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15dc2",
+      "text_source": "combat, please be sure to take a look.",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "ui_tutorial",
+      "intent": "...nao deixe de dar uma olhada.",
+      "risk_level": "low",
+      "base_translation": "combate, não deixe de dar uma olhada.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x15fdf",
+      "text_source": "Negative example...",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_formal",
+      "intent": "Apresentador anuncia, com formalidade comica, um 'exemplo negativo'.",
+      "risk_level": "medium",
+      "base_translation": "Exemplo negativo...",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz dos apresentadores (papel descritivo - identidade nao confirmada): formal/esquisita, deadpan. Arma o gag do bicho mole."
+    },
+    {
+      "offset": "0x15ff3",
+      "text_source": "We have brought a negative example, so you can\\n",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_formal",
+      "intent": "Trouxeram um exemplo negativo pra ele aprender...",
+      "risk_level": "medium",
+      "base_translation": "Trouxemos um exemplo negativo, para que você possa\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Registro formal-comico dos apresentadores."
+    },
+    {
+      "offset": "0x16024",
+      "text_source": "learn not to be a soft and \"wimpy\" being such as\\n",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_trocadilho",
+      "intent": "...aprender a nao ser um ser mole e 'banana' como ele.",
+      "risk_level": "high",
+      "base_translation": "aprender a não ser um ser mole e \"banana\" como\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho (high): 'soft and wimpy' -> 'mole e banana' ('banana' BR = fraco/covarde; arma o gag soft/fraco que o Haku contesta). Aspas preservadas. Back-translation."
+    },
+    {
+      "offset": "0x16057",
+      "text_source": "he.",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_trocadilho",
+      "intent": "...ele.",
+      "risk_level": "low",
+      "base_translation": "ele.",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x1605b",
+      "text_source": "Hold it, HOLD IT! Gooshy-soft doesn't mean\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_trocadilho",
+      "intent": "Haku interrompe: mole-gelatina nao quer dizer fraco.",
+      "risk_level": "high",
+      "base_translation": "Peraí, PERAÍ! Mole-gelatina não quer dizer\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho (high): Haku separa os sentidos de 'soft'. 'Gooshy-soft' -> 'Mole-gelatina'. Preservar a distincao mole(textura) vs fraco. Back-translation."
+    },
+    {
+      "offset": "0x16088",
+      "text_source": "WEAK-soft! Not to mention it's a deadly\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_trocadilho",
+      "intent": "...mole-FRACO! E ainda e um predador mortal.",
+      "risk_level": "high",
+      "base_translation": "mole-FRACO! Sem contar que é um predador\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho (high): contraste 'WEAK-soft' -> 'mole-FRACO' (caixa-alta enfatica). Manter a logica do Haku defendendo o bicho. Back-translation."
+    },
+    {
+      "offset": "0x160b2",
+      "text_source": "predator!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_trocadilho",
+      "intent": "...mortal!",
+      "risk_level": "low",
+      "base_translation": "mortal!",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    },
+    {
+      "offset": "0x160bc",
+      "text_source": "...Then learn from its flexibility.",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "Apresentador, deadpan, pivota: entao aprenda com a flexibilidade dele.",
+      "risk_level": "high",
+      "base_translation": "...Então aprenda com a flexibilidade dele.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido (high): 'flexibility' - inicio do gag de insinuacao. Manter o deadpan que ignora o constrangimento. Back-translation."
+    },
+    {
+      "offset": "0x160e0",
+      "text_source": "Yes. You should learn flexible thinking from it.",
+      "speaker": "Apresentador 2",
+      "entities_present": [
+        "Apresentador 2"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "Segundo apresentador concorda: aprenda o pensamento flexivel.",
+      "risk_level": "medium",
+      "base_translation": "Sim. Você devia aprender o pensamento flexível com ele.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Reforco deadpan do 2o apresentador; mantem o eco formal."
+    },
+    {
+      "offset": "0x16111",
+      "text_source": "So I can be... soft... like one of THEM? That's\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku, incredulo: pra eu ser mole feito um deles?",
+      "risk_level": "medium",
+      "base_translation": "Pra eu poder ser... mole... feito um DELES? É\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Callback de 'mole'; indignacao comica do Haku."
+    },
+    {
+      "offset": "0x16143",
+      "text_source": "the day I stop being human!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "...o dia em que eu deixo de ser humano!",
+      "risk_level": "medium",
+      "base_translation": "o dia em que eu deixo de ser humano!",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Punchline da indignacao; manter o timing."
+    },
+    {
+      "offset": "0x162e2",
+      "text_source": "Your teacher was soft. Now he is hard.",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "Apresentador descreve o bicho em termos de duplo-sentido (mole/duro).",
+      "risk_level": "high",
+      "base_translation": "Seu professor era mole. Agora ele está duro.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido (high): 'soft'/'hard' -> 'mole'/'duro' carregam a insinuacao deniavel (descreve o bicho/professor). Manter ambos os sentidos. Back-translation."
+    },
+    {
+      "offset": "0x16309",
+      "text_source": "You should learn from how he throbs. And look\\n",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "...aprenda como ele pulsa; e olhe...",
+      "risk_level": "high",
+      "base_translation": "Você devia aprender como ele pulsa. E olhe\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido (high): 'throbs' -> 'pulsa' mantem a insinuacao oblivia. Back-translation."
+    },
+    {
+      "offset": "0x16339",
+      "text_source": "how he expands larger and larger, master.",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "...como ele incha cada vez mais, mestre.",
+      "risk_level": "high",
+      "base_translation": "como ele incha cada vez mais, mestre.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido (high): 'expands larger and larger' -> 'incha cada vez mais'; 'master'->'mestre'. Pico do gag de insinuacao. Back-translation."
+    },
+    {
+      "offset": "0x16363",
+      "text_source": "Look, stop... screwing around, you two.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "Haku, constrangido, manda os dois pararem com a sacanagem.",
+      "risk_level": "high",
+      "base_translation": "Olha, parem... com a sacanagem, vocês dois.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Pivot do gag (high): 'screwing around' -> 'sacanagem' = palavra BR que carrega AMBOS os sentidos (palhacada + malicia) que o Haku reage. Escolha-chave. Back-translation."
+    },
+    {
+      "offset": "0x1638b",
+      "text_source": "...Screwing around?",
+      "speaker": "Apresentador",
+      "entities_present": [
+        "Apresentador"
+      ],
+      "tone_register": "comedia_duplo_sentido",
+      "intent": "Apresentador ecoa, inocente, sem entender a malicia.",
+      "risk_level": "high",
+      "base_translation": "...Sacanagem?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Remate (high): eco oblivio de 'sacanagem' - o apresentador nao capta o duplo-sentido. Mantem a piada do mal-entendido. Back-translation."
+    },
+    {
+      "offset": "0x165e1",
+      "text_source": "Guess I'll never know... what any of this means...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_deadpan",
+      "intent": "Haku, resignado, desiste de entender.",
+      "risk_level": "medium",
+      "base_translation": "Acho que nunca vou saber... o que nada disso significa...",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz do Haku: resignacao deadpan (assinatura). Manter o desalento comico."
+    },
+    {
+      "offset": "0x16614",
+      "text_source": "Haku, pull yourself together! Haku!!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cotidiano_firme",
+      "intent": "Kuon sacode o Haku: se recompoe!",
+      "risk_level": "medium",
+      "base_translation": "Haku, se recompõe! Haku!!",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz da Kuon (high): urgencia/firmeza preocupada."
+    },
+    {
+      "offset": "0x166df",
+      "text_source": "H-Huh? N-No, this has to be... some mistake,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku, atordoado: isso tem que ser algum engano.",
+      "risk_level": "medium",
+      "base_translation": "H-Hein? N-Não, isso tem que ser... algum engano,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gagueira 'H-Huh'->'H-Hein' ('Hein' sobrevive a translit; 'Ha' viraria riso). 'N-No'->'N-Nao'."
+    },
+    {
+      "offset": "0x1670e",
+      "text_source": "right...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "comedia_constrangimento",
+      "intent": "...ne?",
+      "risk_level": "low",
+      "base_translation": "né...?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": []
+    }
+  ],
+  "total_lines": 45,
+  "high_lines": 12,
+  "medium_lines": 17,
+  "needs_review": [],
+  "plan_version": "chapter-11_04-v1"
+}
