@@ -151,6 +151,31 @@ def select_tm(tm, scene_rows, present_speakers):
     return exact, voice
 
 
+def _pos(sfx: str):
+    """sfx '12_03' -> (12, 3) p/ comparacao numerica de posicao narrativa."""
+    return tuple(int(p) for p in str(sfx).split("_") if p.isdigit())
+
+
+def select_spoiler_guards(ledger: dict, blob_low: str, scene_sfx: str) -> list:
+    """FILTRO TEMPORAL: para os fatos cujo reveal e FUTURO em relacao a esta cena, retorna o guard de
+    ambiguidade se a entidade aparece nesta cena. Disparo por (a) `scenes` explicitas (sfx) ou (b)
+    `triggers` casados por LIMITE DE PALAVRA (_present, evita 'system' em 'system of gears').
+    reveal='beyond_frontier' = sempre futuro p/ cenas na fronteira; reveal=<sfx> = futuro se > a cena."""
+    out = []
+    here = _pos(scene_sfx)
+    for e in (ledger or {}).get("entries", []):
+        rev = e.get("reveal", "beyond_frontier")
+        future = True if rev == "beyond_frontier" else (_pos(rev) > here)
+        if not future:
+            continue
+        in_scenes = scene_sfx in {sfx_of(s) for s in e.get("scenes", [])}
+        by_trigger = any(_present(t, blob_low) for t in e.get("triggers", []))
+        if in_scenes or by_trigger:
+            out.append({"entity": e.get("entity", ""), "fact": e.get("fact", ""),
+                        "spoiler_level": e.get("spoiler_level", ""), "guard": e.get("pre_reveal", "")})
+    return out
+
+
 def project_constraints(cfg: dict) -> dict:
     conn = cfg.get("connector", {})
     return {
@@ -191,6 +216,9 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
 
+    ledger = json.loads(_read(art / "spoiler_ledger.json") or "{}")
+    spoiler_guards = select_spoiler_guards(ledger, blob_low, sfx_of(scene))
+
     return {
         "scene": scene, "sfx": sfx_of(scene), "n_lines": len(rows),
         "doctrine": "framework/skills/translation_governance.md",
@@ -200,6 +228,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "decisions": dsel,
         "tm_exact": tm_exact,
         "tm_voice": tm_voice,
+        "spoiler_guards": spoiler_guards,
         "lines": rows,
     }
 
@@ -261,6 +290,14 @@ def render_prompt(pack: dict, carta: str) -> str:
         flag = " [universal]" if d.get("universal") else ""
         L.append(f"- **{d['title']}**{flag}: {d['summary']}")
     L.append("")
+    guards = pack.get("spoiler_guards", [])
+    if guards:
+        L.append("## 5b. CONTROLE DE SPOILER — fatos AINDA NAO revelados nesta cena")
+        L.append("> Estes fatos so se revelam DEPOIS desta cena. Preserve a ambiguidade do original; a")
+        L.append("> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).")
+        for g in guards:
+            L.append(f"- **{g['entity']}** ({g['spoiler_level']}): {g['guard']}")
+        L.append("")
     L.append("## 6. Memoria de traducao (consistencia — nao reinventar)")
     if pack["tm_exact"]:
         L.append("**Falas identicas ja traduzidas (reusar):**")
