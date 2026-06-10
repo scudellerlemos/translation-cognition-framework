@@ -59,23 +59,31 @@ def _checkpoint(root: Path, scene: str, patch: dict):
     p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-# precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in
-_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
-          "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
-          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
-
-
-def _cost(model: str, u: dict) -> float:
-    p = _PRICE.get(model)
-    if not p or not u:
+def _ledger_scene_cost(root: Path, scene: str) -> float:
+    """Custo-VERDADE da cena = soma de TODAS as chamadas no api_ledger.jsonl (cada retry de cobertura e
+    cada escalonamento de fitting), nao so a ultima translate/back. E o numero que casa com o saldo."""
+    p = root / "artifacts" / "api_ledger.jsonl"
+    if not p.is_file():
         return 0.0
-    return (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
-            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
+    tot = 0.0
+    for line in p.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            r = json.loads(line)
+        except Exception:
+            continue
+        if r.get("scene") == scene:
+            tot += r.get("cost_usd", 0.0)
+    return round(tot, 5)
 
 
 def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verified):
-    """Anexa 1 linha a artifacts/metrics.jsonl: tokens/custo SEGMENTADOS (traducao vs back),
-    high-risk, back-translation pass-rate, retrabalho. So registra o que houve (api carrega usage)."""
+    """Anexa 1 linha a artifacts/metrics.jsonl: RESUMO por cena (tokens/custo segmentados da ultima
+    translate/back, pass-rate). O custo-verdade (`cost_usd`) vem do api_ledger.jsonl — soma TODAS as
+    chamadas cobradas da cena (retries + escalonamento), nao so a ultima. O metrics.jsonl segue sendo
+    resumo so-de-sucesso; a contabilidade completa (inclusive cenas que falharam) e o ledger."""
     tu = tr.get("usage") if isinstance(tr, dict) else None
     bu = bt.get("usage") if isinstance(bt, dict) else None
     tmodel = tr.get("model", "") if isinstance(tr, dict) else ""
@@ -91,10 +99,11 @@ def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verif
         except Exception:
             pass
     rec = {"scene": scene, "n_lines": n_lines, "n_high": n_high, "verified": verified,
-           "translate": {"model": tmodel, "usage": tu, "cost_usd": round(_cost(tmodel, tu or {}), 5)},
-           "back": {"model": bmodel, "usage": bu, "cost_usd": round(_cost(bmodel, bu or {}), 5)},
-           "back_pass_rate": bt_pass}
-    rec["cost_usd"] = round(rec["translate"]["cost_usd"] + rec["back"]["cost_usd"], 5)
+           "translate": {"model": tmodel, "usage": tu, "cost_usd": round(M.cost_of(tmodel, tu or {}), 5)},
+           "back": {"model": bmodel, "usage": bu, "cost_usd": round(M.cost_of(bmodel, bu or {}), 5)},
+           "back_pass_rate": bt_pass,
+           "cost_usd_last": round(M.cost_of(tmodel, tu or {}) + M.cost_of(bmodel, bu or {}), 5)}
+    rec["cost_usd"] = _ledger_scene_cost(root, scene)   # VERDADE: soma o ledger (retries + escalonamento)
     p = root / "artifacts" / "metrics.jsonl"
     with p.open("a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")

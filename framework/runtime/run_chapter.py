@@ -26,6 +26,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
 import run_scene as RS  # noqa: E402
+import cost_report     # noqa: E402
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
@@ -66,10 +67,23 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
+            _print_cost(root)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
+    _print_cost(root)
     return {"chapter": chap, "scenes": results, "status": "complete"}
+
+
+def _print_cost(root: Path):
+    """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
+    cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou)."""
+    try:
+        rep = cost_report.report(root)
+        if rep["n_calls"]:
+            print(f"\n{cost_report._fmt(rep, by_scene=False)}")
+    except Exception:
+        pass
 
 
 def main():
