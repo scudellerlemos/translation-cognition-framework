@@ -20,6 +20,9 @@ identidade, tom e consistência ao longo de corpora grandes.
 │  framework/connectors/     A I/O (código determinístico)      │
 │  Extração (meio→corpus) e reinserção (corpus→meio).           │
 ├─────────────────────────────────────────────────────────────┤
+│  framework/runtime/        O HARNESS (orquestração det.)      │
+│  Cena = job stateless e limitado; interface de modelo.        │
+├─────────────────────────────────────────────────────────────┤
 │  projects/<título>/        A INSTÂNCIA (o quê)                │
 │  project.json + profile/ + artifacts/ + connector/. Os dados. │
 └─────────────────────────────────────────────────────────────┘
@@ -50,6 +53,9 @@ framework/
   schemas/          ← artifacts_schema.md (outputs) + project_schema.md (manifesto)
   media-profiles/   ← games.md (validado), films.md / series.md (stubs)
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
+  runtime/          ← context_pack, state_index, model, run_scene (harness; cena = job stateless)
+  validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
+  docs/             ← ARCHITECTURE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
 

@@ -5,3 +5,7 @@
 # Artefatos de build do Python
 __pycache__/
 *.pyc
+
+# Segredos — chave de API NUNCA versionada (use .env local; ver .env.example, esse SIM versionado)
+.env
+.env.local
