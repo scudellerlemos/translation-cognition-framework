@@ -71,15 +71,28 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   (`^[a-zA-Z0-9_-]{1,64}$`) → o batch dava **400** e caía 100% pro interativo **full-price**. Os unit
   tests não pegavam (o fake aceitava qualquer id). Fix: `@@`→`__`; o fake agora **valida o padrão**.
 - ✅ **back-batch −50% Opus comprovado VIVO** (cap.14, 9 cenas, 5 revisadas num batch). Funciona.
-- ⚠️→✅ **batch −50% no translate era frágil:** cena grande de narração (14_10, 373 linhas) dava
-  `coverage_failed` porque a re-rodada do batch re-submetia **sem o feedback corretivo** do interativo →
-  repetia o erro de paridade `\n` e queimava as rodadas. Fix: `_coverage_note` cabeia a nota
-  (missing/paridade) nas re-rodadas do batch, como o `_api_translate`. **Falta a run viva do próximo cap.
-  p/ confirmar a convergência** (o fake não prova convergência, só que a nota é injetada).
-- ⚠️ **tiering ainda SEM medição:** cap.14 = narração (quase tudo multi-linha → Sonnet); o Haiku ficou
-  inalterado. Precisa de um cap. de **diálogo** (single-line → Haiku) p/ medir o ganho.
-- 💰 **custo real medido:** cap.14 ≈ **$8,5 full-price** (~2400 linhas) → ~$117/33k **sem** o desconto do
-  batch. O **$36/jogo era otimista** e depende do batch −50% efetivamente convergir (agora corrigido).
+- 🐛🐛 **batch −50% no translate NÃO convergia (causa-raiz achada no cap.15, corrigida):** as **9/9
+  cenas** do cap.15 deram `coverage_failed` no batch → 100% caiu pro interativo **full-price** ($22 de
+  Sonnet). Investigação (ledger por timestamp + repro offline instrumentada): a re-rodada do batch
+  re-submetia **só o fragmento** de linhas ruins **mas a nota dizia "gere a cena COMPLETA, vamos MESCLAR"**
+  → prompt contraditório → o modelo devolvia resposta degenerada (medido: rodada 1 ao vivo voltava
+  ~vazia, out=82 tok) → nunca convergia. Segundo defeito: `dict.update` cego sobrescrevia uma linha de
+  paridade BOA por uma RUIM numa re-rodada que regredia. **Fix** (`model.py`): a re-rodada **re-manda a
+  cena INTEIRA** (espelha o `_api_translate`, que converge nas mesmas cenas) + **merge best-of-paridade**
+  (`_merge_best_parity`, nunca troca boa por ruim). **Validado OFFLINE**: teste de regressão
+  `test_batch_reround_resends_full_scene_and_converges` **falha no código antigo** (`coverage_failed`) e
+  **passa no novo** (`written`); 44 testes verdes. ⚠️ **Falta a run viva do cap.16** p/ confirmar que o
+  −50% finalmente aparece no ledger (o fake prova a mecânica, não o comportamento real da Batch API em
+  escala — ex.: por que 8/9 requests de re-rodada não voltaram ao vivo só se confirma pago).
+- ⚠️ **tiering ainda SEM medição:** caps.14 **e 15** = quase tudo multi-linha (`\n` de quebra de caixa de
+  texto → Sonnet); o Haiku ficou inalterado ($0,71) nos dois. O jogo pode simplesmente **não ter
+  single-line suficiente** p/ o tiering pagar — a confirmar; se for o caso, **desligar `MODEL_TRANSLATE_CHEAP`**
+  e parar de fingir ganho.
+- 🐛 **falso-positivo no KB-gate (corrigido):** "Like/Hold/Papa" (palavras comuns no início de frase)
+  bloqueavam a Fase 0 do cap.15 por escaparem da stoplist do `kb_phase`. Adicionadas ao `_STOP`.
+- 💰 **custo real medido (2 caps):** cap.14 ≈ $8,5; cap.15 ≈ **$23** (2525 linhas, **full-price** pelo bug
+  acima) → ~$117/33k **sem** o desconto. O **$36/jogo era otimista**; só o fix do batch (a validar vivo)
+  reaproxima disso.
 
 ### P1.6 — robustez de conector p/ cenas de binário apertado (BACKLOG pós-produção)
 > Disparado pela ch_12_15: binário multi-BIN com pouco espaço de realocação → 2 linhas (+4/+5 bytes)

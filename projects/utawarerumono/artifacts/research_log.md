@@ -74,3 +74,14 @@ de tudo além do cap.13. **Twist final de Oshtor (fim de jogo) permanece em quar
 
 ## Delta cap.14 (2026-06, reconciliado wiki+corpus)
 Fronteira estendida a **14_10**. Novos: Nekone (irma de Oshtor/Ukon), Mikazuchi (Gen. Imperial da Esquerda; disfarce Sakon NAO no corpus 11-14 -> sem ambiguidade no cap.14), Imperial Guard, Twin Shields (Oshtor+Mikazuchi), Mausoleum, Akuruka, + topinimos (Imperial Capital, Omuchakko, Hakurokaku, Onvitaikayan/Great Fathers). Twist Mask of Truth (Nekone encobre Haku) = beyond_frontier, quarentenado. 'Hoo' = risada (interjeicao), nao nome.
+
+## cap.15 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus do jogo (dialogs cap.15). Reconciliacao autonoma (fonte ja autorizada).
+- **Kiwru** (var. Kiuru): principe de Ennakamuy, arqueiro, irmao juramentado de Oshtor/Ukon; MASCULINO; voz nervosa/gentil. Arco romantico (Shinonon) e timeline +10 anos = beyond_frontier → quarentena.
+- **Ennakamuy**: nacao dependente de Yamato; terra natal de Kiwru. manter_original.
+- **Atuy**: princesa de Shyahoro; FEMININO; lutadora de lanca, busca namorado; informal ('love').
+- **Anju**: jovem princesa de Yamato, sucessora do Mikado (a "Descendente Divina"); FEMININO. Origem (template genetico/Chii) = spoiler maior beyond_frontier → quarentena.
+- **Divine Scion** → "Descendente Divino/Divina" (concordar com Anju = feminino). Titulo do herdeiro divino do Mikado.
+- **Shyahoro**: reino de Atuy. manter_original.
+- **Maro**: apelido de Maroro (NAO entidade nova) — `thee call me "Maro!"`; manter consistente com a fala arcaica de Maroro.
+- Declinados (ruido/comum, nao-entidade): Papa (=pai, "Papai"), Like, Hold, Help, Yargh, Ahahahaha, e demais interjeicoes/capitalizacao-de-frase.

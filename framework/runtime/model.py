@@ -595,6 +595,25 @@ def _parse_batch_lines(pack, text):
     return out
 
 
+def _merge_best_parity(dest, new, srcmap):
+    """Mescla `new` em `dest` ACUMULANDO entre rodadas, preferindo paridade de `\\n` correta — igual ao
+    _api_translate (interativo). NUNCA troca uma linha de paridade BOA por uma RUIM: assim uma re-rodada
+    que regride uma linha ja boa nao desfaz o ganho (o `dict.update` cego perdia isso e a cena nao
+    convergia). Mesma paridade -> usa a mais nova (consistente com o comportamento anterior)."""
+    tok = context_pack.TOKEN
+    for off, v in new.items():
+        src = srcmap.get(off, "")
+        good = v.get("t", "").count(tok) == src.count(tok)
+        old = dest.get(off)
+        if old is None:
+            dest[off] = v
+            continue
+        old_good = old.get("t", "").count(tok) == src.count(tok)
+        if good or not old_good:        # melhora a paridade, ou ambas ruins -> aceita a nova
+            dest[off] = v
+    return dest
+
+
 def _batch_coverage(pack, merged):
     """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
     tok = context_pack.TOKEN
@@ -670,7 +689,12 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         reqs, req_model = [], {}                          # req_model[custom_id] = modelo (p/ custo no ledger)
         for scene in pending:
             miss, badpar = _batch_coverage(packs[scene], merged[scene])
-            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd 0: cena toda; depois: so o que falta
+            # ESPELHA O INTERATIVO (_api_translate, que CONVERGE nas mesmas cenas): re-manda a cena
+            # INTEIRA do tier e MESCLA best-of-paridade — NAO so o fragmento. A nota corretiva (rnd>0)
+            # diz "gere a cena COMPLETA, vamos MESCLAR"; mandar so o fragmento contradizia o prompt e o
+            # modelo devolvia resposta degenerada (medido: rodada 1 ao vivo voltava ~vazia). want=None
+            # sempre -> request casa a nota; o merge best-parity protege as linhas ja boas da rodada 0.
+            want = None
             for tier, tmodel in tiers:                    # split por COMPLEXIDADE (cheap=Haiku / main=Sonnet)
                 sub = dict(packs[scene])
                 sub["lines"] = [r for r in packs[scene]["lines"]
@@ -707,7 +731,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                 continue                                  # tier falho -> cobertura decide (re-batch/fallback)
             msg = result.result.message
             log_api_call(root, scene, "translate", req_model.get(cid, m), _usage_of(msg), batch=True)
-            merged[scene].update(_parse_batch_lines(packs[scene], _text_of(msg)))    # ACUMULA
+            srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
+            _merge_best_parity(merged[scene], _parse_batch_lines(packs[scene], _text_of(msg)), srcmap)
         still = []
         for scene in pending:
             if str(status.get(scene, "")).startswith("errored"):
