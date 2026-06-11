@@ -612,7 +612,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     apenas os offsets faltantes/de paridade ruim) e mescla — convergindo a -50%.
 
     TIERING (tiered=True, default): por cena/rodada, as linhas SEM token de quebra vao num request Haiku
-    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene@@tier'.
+    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene__tier'
+    (separador `__` — a Batch API rejeita custom_id fora de ^[a-zA-Z0-9_-]{1,64}$, ex.: '@' dá 400).
 
     Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
     {all_reused, written, coverage_failed, errored:<tipo>, timeout}. Cenas != (written|all_reused) ainda
@@ -664,7 +665,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                 params, _reuse, _novel = _translate_params(sub, tmodel)
                 if params is None:                        # tudo reuso nesse tier -> sem request
                     continue
-                cid = f"{scene}@@{tier}"
+                cid = f"{scene}__{tier}"                  # separador `__`: a Batch API exige custom_id ^[a-zA-Z0-9_-]{1,64}$ (sem @)
                 req_model[cid] = tmodel
                 reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
@@ -676,7 +677,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
             return status
         for result in client.messages.batches.results(batch.id):
             cid = result.custom_id
-            scene = cid.split("@@", 1)[0]
+            scene = cid.split("__", 1)[0]
             if getattr(result.result, "type", None) != "succeeded":
                 continue                                  # tier falho -> cobertura decide (re-batch/fallback)
             msg = result.result.message
