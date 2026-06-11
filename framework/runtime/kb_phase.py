@@ -70,7 +70,7 @@ hand hands eye eyes face heart head room door water fire light dark good great
 mister miss missus sir lord lady master mom dad mother father brother sister son daughter missy
 don't won't can't cant didn't doesn't isn't aren't wasn't weren't haven't hasn't hadn't wouldn't couldn't
 shouldn't mustn't ain't y'all let's that's there's here's what's who's how's gah heh hah hmph tch ugh argh
-grr ow ouch yikes whoa woah oops phew aww hmm err umm hush shh psst ahem ha haha hehe nngh hngh tsk
+grr ow ouch yikes whoa woah oops phew aww hmm err umm hush shh psst ahem ha haha hehe nngh hngh tsk hoo
 whatever whenever wherever however whoever whomever everyone everything everywhere everybody someone
 something somewhere somebody anyone anything anywhere anybody
 despite god gods mysterious gonna wanna gotta gimme lemme dunno kinda sorta cause cuz
