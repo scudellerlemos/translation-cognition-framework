@@ -714,25 +714,102 @@ _BACK_SCHEMA = {
 }
 
 
-def _api_back_translate(root, scene, high_lines, model):
-    client = _client()
+def _back_params(high_lines, model):
+    """Params de UMA requisicao de back-translation (compartilhado pelo caminho streaming e pelo BATCH).
+    Determinista (sem rede) -> montagem do request testavel sem SDK."""
     payload = [{"offset": h["offset"], "source": h["source"], "target": h["target"],
                 "speaker": h.get("speaker", "")} for h in high_lines]
     instr = ("Para cada item, traduza o 'target' (pt-BR) de volta p/ EN ('back_en'), compare com "
              "'source', e de um 'verdict' (pass|revise) + 'note' curta. verdict=revise se "
              "sentido/ambiguidade/voz divergirem. Inclua o 'offset' de cada item.\n\n")
-    msg = _stream_final(
-        client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
-        messages=[{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
-        thinking={"type": "adaptive"},
-        output_config={"effort": "high",
-                       "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
-    )
+    return {
+        "model": model, "max_tokens": MAX_OUTPUT_TOKENS,
+        "messages": [{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
+        "thinking": {"type": "adaptive"},
+        "output_config": {"effort": "high",
+                          "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
+    }
+
+
+def _api_back_translate(root, scene, high_lines, model):
+    client = _client()
+    msg = _stream_final(client, **_back_params(high_lines, model))
     usage = _usage_of(msg)
     log_api_call(root, scene, "back", model, usage)   # registra antes do parse (Opus cobra mesmo se quebrar)
     data = json.loads(_text_of(msg))
     data["reviewed"] = len(data.get("entries", []))
     return data, usage
+
+
+def high_risk_lines(root, scene):
+    """Linhas risco>=high/critical do translation_plan_<sfx>.json (candidatas a back-translation).
+    Le o plano do conector (existe apos build_plan). Fonte unica — run_scene e o batch leem daqui."""
+    sfx = context_pack.sfx_of(scene)
+    plan = Path(root) / "artifacts" / scene / f"translation_plan_{sfx}.json"
+    if not plan.is_file():
+        return []
+    lines = json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
+    out = []
+    for ln in lines:
+        if ln.get("risk_level") in ("high", "critical"):
+            out.append({"offset": ln.get("offset", ""), "source": ln.get("text_source", ""),
+                        "target": ln.get("base_translation", ""), "speaker": ln.get("speaker", ""),
+                        "risk_notes": ln.get("risk_notes", "")})
+    return out
+
+
+def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600):
+    """Back-translation de VARIAS cenas num UNICO batch (-50% sobre o Opus, o passo mais caro/linha).
+    A back-translation e report-only e roda DEPOIS do verify (precisa do translation_plan) -> e um
+    POS-PASSE natural: coleta as linhas high/critical de cada cena, monta 1 request por cena e submete
+    em batch. Grava back_translation_<sfx>.json por cena. custom_id = scene.
+
+    Resume idempotente: cena que ja tem back_translation_<sfx>.json e pulada (nao re-cobra). Cena sem
+    linha de alto risco -> 'no_high' (sem request). Retorna {scene: status} em
+    {reviewed, no_high, errored, parse_failed, timeout}. NAO bloqueia o pipeline (o run_scene ja seguiu)."""
+    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
+    from anthropic.types.messages.batch_create_params import Request
+    root = Path(root)
+    m = model or MODEL_BACK
+    status, highs, reqs = {}, {}, []
+    for scene in scenes:
+        sfx = context_pack.sfx_of(scene)
+        out = root / "artifacts" / scene / f"back_translation_{sfx}.json"
+        hl = high_risk_lines(root, scene)
+        if not hl:
+            status[scene] = "no_high"
+            continue
+        if out.is_file():                                # ja revisada (run anterior) -> nao re-cobra
+            status[scene] = "reviewed"
+            continue
+        highs[scene] = hl
+        reqs.append(Request(custom_id=scene,
+                            params=MessageCreateParamsNonStreaming(**_back_params(hl, m))))
+    if not reqs:
+        return status
+    client = _client()
+    batch = client.messages.batches.create(requests=reqs)
+    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
+        for scene in highs:
+            status.setdefault(scene, "timeout")
+        return status
+    for result in client.messages.batches.results(batch.id):
+        scene = result.custom_id
+        if getattr(result.result, "type", None) != "succeeded":
+            status[scene] = "errored"
+            continue
+        msg = result.result.message
+        log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
+        try:
+            data = json.loads(_text_of(msg))
+            data["reviewed"] = len(data.get("entries", []))
+            sfx = context_pack.sfx_of(scene)
+            (root / "artifacts" / scene / f"back_translation_{sfx}.json").write_text(
+                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            status[scene] = "reviewed"
+        except Exception:
+            status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
+    return status
 
 
 def main():
