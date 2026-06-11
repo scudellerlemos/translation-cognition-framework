@@ -124,14 +124,27 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado (Utawarerumono é a instância de referência). Ver `media-profiles/games.md`.
+- **Jogos** — ✅ validado **em produção** (Utawarerumono): harness de escala rodando, caps 11–13
+  traduzidos e verificados, pt-BR renderizando in-game. Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
 
 ---
 
+## RUNTIME (harness de escala)
+
+Além das skills (o *processo*), `framework/runtime/` é o *harness* que torna a execução sustentável:
+cada cena é um **job stateless e limitado** (contexto O(cena), não O(histórico)), o que elimina o
+estouro de sessão e viabiliza Sonnet a custo previsível. A LLM faz só cognição (traduzir / verificar
+alto risco); orquestração, estado, contexto e validação são determinísticos. Ver
+[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) e a convenção
+de nomes em [`docs/NAMING.md`](docs/NAMING.md).
+
+---
+
 ## INSTÂNCIA DE REFERÊNCIA
 
-`projects/utawarerumono/` é a prova de que o processo funciona em um título real: visual novel,
-EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. Use-a como exemplo
-de como preencher manifesto e perfil.
+`projects/utawarerumono/` é a prova viva de que o processo funciona em um título real e em escala:
+visual novel, EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. **Caps
+11–13 traduzidos e verificados ponta-a-ponta** pelo harness, com saída renderizando no jogo. Use-a como
+exemplo de como preencher manifesto e perfil.
