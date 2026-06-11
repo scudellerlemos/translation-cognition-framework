@@ -9,7 +9,7 @@ entao o footprint de sessao e constante, independente do nº de cenas/capitulos.
 Propriedades:
   - RESUMIVEL: pula cenas ja `verified` em run_state.json (a menos de --redo).
   - PARA NA 1ª FALHA: build_plan/verify/api falhou -> interrompe e reporta (nao mascara erro).
-  - Determinista: descobre as cenas por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por sfx).
+  - Determinista: descobre as cenas por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id).
   - Reusa run_scene + state_index; nada de logica de IA aqui.
 
 Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--require-back] [--redo] [--no-verify]
@@ -37,7 +37,7 @@ _DONE = ("verified",)                  # estados que contam como "ja feito" (ski
 def _scenes_of(root: Path, chap: str) -> list[str]:
     art = root / "artifacts"
     names = [p.parent.name for p in art.glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=context_pack.sfx_of)
+    return sorted(set(names), key=context_pack.scene_id_of)
 
 
 def _verified(root: Path, scene: str) -> bool:
@@ -73,6 +73,24 @@ def _batch_phase(root, pending, *, skip_kb_gate):
     return st
 
 
+def _back_batch_phase(root, scenes):
+    """POS-PASSE do modo batch: back-translation de todas as cenas verificadas num UNICO batch (-50%
+    Opus). Roda DEPOIS do loop (cada cena ja produziu seu translation_plan); report-only (nao bloqueia).
+    Resume idempotente dentro do batch_back_translate (cena ja revisada nao re-cobra)."""
+    if not scenes:
+        return
+    print(f"\n[back-batch] back-translation de {len(scenes)} cena(s) em 1 batch (50% off, Opus) ...")
+    try:
+        st = M.batch_back_translate(root, scenes)
+    except Exception as e:
+        print(f"[back-batch] falhou ({e}) — back-translation segue pendente (report-only, nao bloqueia).")
+        return
+    rev = sum(1 for v in st.values() if v == "reviewed")
+    noh = sum(1 for v in st.values() if v == "no_high")
+    print(f"[back-batch] {rev} revisada(s), {noh} sem alto risco; detalhe: "
+          f"{ {s: v for s, v in st.items() if v not in ('no_high',)} }")
+
+
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
                 skip_kb_gate=False, batch=False):
     root = Path(root)
@@ -96,15 +114,21 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             results.append({"scene": scene, "status": "skipped"})
             continue
         pre = batch_status.get(scene) in ("written", "all_reused")
+        # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo).
+        defer_back = bool(batch and backend == "api")
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
-                         do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre)
+                         do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
+                         defer_back=defer_back)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
             _print_cost(root)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
+    # POS-PASSE: back-translation em batch (-50% Opus) das cenas verificadas, se modo batch.
+    if batch and backend == "api":
+        _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
     _print_cost(root)

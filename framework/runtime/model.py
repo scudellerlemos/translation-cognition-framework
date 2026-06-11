@@ -8,7 +8,7 @@ Desacopla o run_scene do "como" a IA e chamada. Dois papeis de IA (so o que exig
 
 Dois backends, mesmo contrato:
   (a) "in-session" (ASSINATURA): NAO chama rede. Garante o scene_prompt.md (auto-contido e limitado)
-      e checa se o modelo do chat ja produziu o translations_<sfx>.json. Como o prompt e limitado,
+      e checa se o modelo do chat ja produziu o translations_<scene_id>.json. Como o prompt e limitado,
       da p/ responder UMA cena por sessao limpa -> o contexto nunca acumula (mata o estouro), sem
       conta de API. Resumivel: rode de novo apos o arquivo aparecer.
   (b) "api" (ESCALA HEADLESS): Anthropic SDK. Model-mix do cost_model — Sonnet traduz, Opus faz a
@@ -79,19 +79,19 @@ def _no_effort_model(model: str) -> bool:
 def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
-    sfx = pack["sfx"]
-    out = root / "artifacts" / scene / f"translations_{sfx}.json"
+    scene_id = pack["scene_id"]
+    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
     if backend == "in-session":
         if out.is_file():
-            return {"status": READY, "path": str(out), "sfx": sfx, "n_lines": pack["n_lines"]}
-        return {"status": AWAITING, "sfx": sfx, "n_lines": pack["n_lines"],
+            return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
+        return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "prompt": str(root / "artifacts" / scene / "scene_prompt.md"),
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
         data, usage, meta = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        return {"status": DONE, "path": str(out), "sfx": sfx, "n_lines": pack["n_lines"],
+        return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
     raise ValueError(f"backend desconhecido: {backend}")
 
@@ -101,16 +101,16 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
 def back_translate(root, scene, high_lines, *, backend="api", model=None):
     """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
     root = Path(root)
-    sfx = context_pack.sfx_of(scene)
-    out = root / "artifacts" / scene / f"back_translation_{sfx}.json"
+    scene_id = context_pack.scene_id_of(scene)
+    out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
     if not high_lines:
         return {"status": DONE, "reviewed": 0, "path": None}
     if backend == "in-session":
-        _write_back_prompt(root, scene, sfx, high_lines)
+        _write_back_prompt(root, scene, scene_id, high_lines)
         if out.is_file():
             return {"status": READY, "path": str(out), "reviewed": len(high_lines)}
         return {"status": AWAITING, "reviewed": len(high_lines),
-                "prompt": str(root / "artifacts" / scene / f"back_prompt_{sfx}.md"),
+                "prompt": str(root / "artifacts" / scene / f"back_prompt_{scene_id}.md"),
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_BACK
@@ -121,11 +121,11 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None):
     raise ValueError(f"backend desconhecido: {backend}")
 
 
-def _write_back_prompt(root, scene, sfx, high_lines):
+def _write_back_prompt(root, scene, scene_id, high_lines):
     L = [f"# Back-translation — cena {scene} ({len(high_lines)} linhas de alto risco)", "",
          "> Para cada linha: traduza o pt-BR de volta p/ EN, compare com o source, e confirme que",
          "> SENTIDO, ambiguidade, voz e timing foram preservados. Divergencia -> revisar a traducao.",
-         f"> Saida: `back_translation_{sfx}.json` = {{\"reviewed\": N, \"entries\": [",
+         f"> Saida: `back_translation_{scene_id}.json` = {{\"reviewed\": N, \"entries\": [",
          ">   {{offset, source, target, back_en, verdict: pass|revise, note}} ]}}.", ""]
     for h in high_lines:
         L.append(f"## {h['offset']} ({h.get('speaker','')})")
@@ -134,7 +134,7 @@ def _write_back_prompt(root, scene, sfx, high_lines):
         if h.get("risk_notes"):
             L.append(f"- notas  : {h['risk_notes']}")
         L.append("")
-    (root / "artifacts" / scene / f"back_prompt_{sfx}.md").write_text("\n".join(L), encoding="utf-8")
+    (root / "artifacts" / scene / f"back_prompt_{scene_id}.md").write_text("\n".join(L), encoding="utf-8")
 
 
 # ------------------------------- API backend ----------------------------------
@@ -144,7 +144,7 @@ def _write_back_prompt(root, scene, sfx, high_lines):
 
 # Structured output ESTRITO exige additionalProperties:false em todo objeto -> nao da p/ usar mapa
 # {offset: {...}} (chaves dinamicas). Logo: ARRAY de entradas com 'offset' por item; convertido p/ o
-# mapa {offset: {...}} (formato canonico do translations_<sfx>.json) apos parsear (ver _api_translate).
+# mapa {offset: {...}} (formato canonico do translations_<scene_id>.json) apos parsear (ver _api_translate).
 _LINE_PROPS = {
     "offset": {"type": "string"}, "speaker": {"type": "string"},
     "tone_register": {"type": "string"}, "intent": {"type": "string"},
@@ -338,10 +338,10 @@ def _select_reuse(pack, *, enabled):
     if not enabled:
         return {}
     tok = context_pack.TOKEN
-    sfx_here = pack.get("sfx", "")
+    scene_id_here = pack.get("scene_id", "")
     by_key = {}
     for e in pack.get("tm_exact", []):
-        if context_pack.sfx_of(str(e.get("from_scene", ""))) == sfx_here:
+        if context_pack.scene_id_of(str(e.get("from_scene", ""))) == scene_id_here:
             continue                                  # nunca reusar a propria cena
         by_key.setdefault(state_index._key(e.get("source", "")), e)
     reuse = {}
@@ -486,10 +486,10 @@ def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0) -> list:
 
 
 def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
-    """Le o translations_<sfx>.json atual e devolve os offsets acima do budget (candidatos a estouro)."""
+    """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a estouro)."""
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
-    out = root / "artifacts" / scene / f"translations_{pack['sfx']}.json"
+    out = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
     if not out.is_file():
         return []
     data = json.loads(out.read_text(encoding="utf-8"))
@@ -498,14 +498,14 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
 
 
 def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
-    """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<sfx>.json,
+    """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<scene_id>.json,
     preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting. Reusa
     _api_translate sobre um pack reduzido (dedup ja vem OFF com budget_tolerance != None -> traduz fresco
     e mais curto)."""
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
-    sfx = pack["sfx"]
-    out = root / "artifacts" / scene / f"translations_{sfx}.json"
+    scene_id = pack["scene_id"]
+    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
     full = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
     offset_set = set(offsets)
     sub = dict(pack)
@@ -550,7 +550,7 @@ def _translate_params(pack, model):
 
 
 def _write_translations(root, scene, data):
-    out = Path(root) / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
+    out = Path(root) / "artifacts" / scene / f"translations_{context_pack.scene_id_of(scene)}.json"
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
@@ -614,7 +614,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     TIERING (tiered=True, default): por cena/rodada, as linhas SEM token de quebra vao num request Haiku
     (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene@@tier'.
 
-    Grava translations_<sfx>.json das cenas completas; retorna {scene: status} em
+    Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
     {all_reused, written, coverage_failed, errored:<tipo>, timeout}. Cenas != (written|all_reused) ainda
     caem p/ o caminho interativo (run_scene). NAO roda build_plan/verify (isso e por-cena)."""
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
@@ -631,9 +631,9 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         packs[scene] = pack
         reuse = _select_reuse(pack, enabled=True)
         merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
-        # RESUME (idempotente): se ja existe translations_<sfx>.json, aproveita -> nao re-batcha o que ja
+        # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
-        existing = root / "artifacts" / scene / f"translations_{pack['sfx']}.json"
+        existing = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
         if existing.is_file():
             try:
                 ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
@@ -714,25 +714,102 @@ _BACK_SCHEMA = {
 }
 
 
-def _api_back_translate(root, scene, high_lines, model):
-    client = _client()
+def _back_params(high_lines, model):
+    """Params de UMA requisicao de back-translation (compartilhado pelo caminho streaming e pelo BATCH).
+    Determinista (sem rede) -> montagem do request testavel sem SDK."""
     payload = [{"offset": h["offset"], "source": h["source"], "target": h["target"],
                 "speaker": h.get("speaker", "")} for h in high_lines]
     instr = ("Para cada item, traduza o 'target' (pt-BR) de volta p/ EN ('back_en'), compare com "
              "'source', e de um 'verdict' (pass|revise) + 'note' curta. verdict=revise se "
              "sentido/ambiguidade/voz divergirem. Inclua o 'offset' de cada item.\n\n")
-    msg = _stream_final(
-        client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
-        messages=[{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
-        thinking={"type": "adaptive"},
-        output_config={"effort": "high",
-                       "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
-    )
+    return {
+        "model": model, "max_tokens": MAX_OUTPUT_TOKENS,
+        "messages": [{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
+        "thinking": {"type": "adaptive"},
+        "output_config": {"effort": "high",
+                          "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
+    }
+
+
+def _api_back_translate(root, scene, high_lines, model):
+    client = _client()
+    msg = _stream_final(client, **_back_params(high_lines, model))
     usage = _usage_of(msg)
     log_api_call(root, scene, "back", model, usage)   # registra antes do parse (Opus cobra mesmo se quebrar)
     data = json.loads(_text_of(msg))
     data["reviewed"] = len(data.get("entries", []))
     return data, usage
+
+
+def high_risk_lines(root, scene):
+    """Linhas risco>=high/critical do translation_plan_<scene_id>.json (candidatas a back-translation).
+    Le o plano do conector (existe apos build_plan). Fonte unica — run_scene e o batch leem daqui."""
+    scene_id = context_pack.scene_id_of(scene)
+    plan = Path(root) / "artifacts" / scene / f"translation_plan_{scene_id}.json"
+    if not plan.is_file():
+        return []
+    lines = json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
+    out = []
+    for ln in lines:
+        if ln.get("risk_level") in ("high", "critical"):
+            out.append({"offset": ln.get("offset", ""), "source": ln.get("text_source", ""),
+                        "target": ln.get("base_translation", ""), "speaker": ln.get("speaker", ""),
+                        "risk_notes": ln.get("risk_notes", "")})
+    return out
+
+
+def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600):
+    """Back-translation de VARIAS cenas num UNICO batch (-50% sobre o Opus, o passo mais caro/linha).
+    A back-translation e report-only e roda DEPOIS do verify (precisa do translation_plan) -> e um
+    POS-PASSE natural: coleta as linhas high/critical de cada cena, monta 1 request por cena e submete
+    em batch. Grava back_translation_<scene_id>.json por cena. custom_id = scene.
+
+    Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra). Cena sem
+    linha de alto risco -> 'no_high' (sem request). Retorna {scene: status} em
+    {reviewed, no_high, errored, parse_failed, timeout}. NAO bloqueia o pipeline (o run_scene ja seguiu)."""
+    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
+    from anthropic.types.messages.batch_create_params import Request
+    root = Path(root)
+    m = model or MODEL_BACK
+    status, highs, reqs = {}, {}, []
+    for scene in scenes:
+        scene_id = context_pack.scene_id_of(scene)
+        out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
+        hl = high_risk_lines(root, scene)
+        if not hl:
+            status[scene] = "no_high"
+            continue
+        if out.is_file():                                # ja revisada (run anterior) -> nao re-cobra
+            status[scene] = "reviewed"
+            continue
+        highs[scene] = hl
+        reqs.append(Request(custom_id=scene,
+                            params=MessageCreateParamsNonStreaming(**_back_params(hl, m))))
+    if not reqs:
+        return status
+    client = _client()
+    batch = client.messages.batches.create(requests=reqs)
+    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
+        for scene in highs:
+            status.setdefault(scene, "timeout")
+        return status
+    for result in client.messages.batches.results(batch.id):
+        scene = result.custom_id
+        if getattr(result.result, "type", None) != "succeeded":
+            status[scene] = "errored"
+            continue
+        msg = result.result.message
+        log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
+        try:
+            data = json.loads(_text_of(msg))
+            data["reviewed"] = len(data.get("entries", []))
+            scene_id = context_pack.scene_id_of(scene)
+            (root / "artifacts" / scene / f"back_translation_{scene_id}.json").write_text(
+                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            status[scene] = "reviewed"
+        except Exception:
+            status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
+    return status
 
 
 def main():
