@@ -71,3 +71,6 @@ de tudo além do cap.13. **Twist final de Oshtor (fim de jogo) permanece em quar
 - **Localização oficial pt-BR:** não consta (franquia tem EN oficial Atlus/Sega; sem pt-BR conhecido).
 - **Identidades de 'Woman'/'Man':** UNSOURCED por escolha (spoiler além da fronteira). confidence low.
 - **Natureza profunda do Tatari / enquadramento sci-fi:** UNSOURCED (spoiler). Só o que o corpus diz.
+
+## Delta cap.14 (2026-06, reconciliado wiki+corpus)
+Fronteira estendida a **14_10**. Novos: Nekone (irma de Oshtor/Ukon), Mikazuchi (Gen. Imperial da Esquerda; disfarce Sakon NAO no corpus 11-14 -> sem ambiguidade no cap.14), Imperial Guard, Twin Shields (Oshtor+Mikazuchi), Mausoleum, Akuruka, + topinimos (Imperial Capital, Omuchakko, Hakurokaku, Onvitaikayan/Great Fathers). Twist Mask of Truth (Nekone encobre Haku) = beyond_frontier, quarentenado. 'Hoo' = risada (interjeicao), nao nome.
