@@ -36,7 +36,7 @@ def main():
     sfx = context_pack.sfx_of(a.scene)
     pack = context_pack.build_pack(root, a.scene)
     t0 = time.time()
-    data, usage = M._api_translate(root, a.scene, pack, a.model, effort=a.effort, think=a.think)
+    data, usage, meta = M._api_translate(root, a.scene, pack, a.model, effort=a.effort, think=a.think)
     dt = time.time() - t0
     # NAO usar prefixo 'translations_' (colide com o glob do build_plan_chapter, que exige exatamente 1)
     out = root / "artifacts" / a.scene / f"bench_{sfx}.{tag}.json"
