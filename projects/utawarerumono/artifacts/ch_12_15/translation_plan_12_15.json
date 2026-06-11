@@ -8,8 +8,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, exausto",
-      "intent": "expressar cansaço após treino",
+      "tone_register": "cotidiano, cansado",
+      "intent": "Haku exausto após o treinamento no sonho",
       "risk_level": "low",
       "base_translation": "Hah... hah... ufa...",
       "byte_budget": 21,
@@ -24,8 +24,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso, reclamando",
-      "intent": "questionar o propósito do treino",
+      "tone_register": "confuso, cansado",
+      "intent": "Haku questiona por que está tão cansado",
       "risk_level": "low",
       "base_translation": "Achei que essa coisa toda era pra me deixar\\n",
       "byte_budget": 52,
@@ -40,14 +40,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso, reclamando",
-      "intent": "questionar por que está cansado",
+      "tone_register": "confuso, cansado",
+      "intent": "continuar a queixa sobre o cansaço",
       "risk_level": "medium",
-      "base_translation": "mais forte dormindo. Por que estou tão cansado?",
+      "base_translation": "mais forte. Por que estou tão cansado?",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'mais forte dormindo. Por que to tao cansado?' = 43 bytes"
+      "risk_notes": "budget apertado; cortado 'dormindo' para encaixar"
     },
     {
       "offset": "0x4a56c",
@@ -56,8 +56,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "perturbado, reflexivo",
-      "intent": "comentar o realismo do sonho",
+      "tone_register": "perturbado, aliviado",
+      "intent": "comenta o realismo do sonho",
       "risk_level": "low",
       "base_translation": "Sem falar como aquilo foi real. Achei que\\n",
       "byte_budget": 50,
@@ -73,7 +73,7 @@
         "Haku"
       ],
       "tone_register": "perturbado",
-      "intent": "concluir pensamento sobre quase morrer",
+      "intent": "pensou que ia morrer no sonho",
       "risk_level": "low",
       "base_translation": "ia morrer lá dentro.",
       "byte_budget": 25,
@@ -89,13 +89,13 @@
         "Homem"
       ],
       "tone_register": "frio, enigmático",
-      "intent": "confirmar a amplificação do esforço",
-      "risk_level": "low",
-      "base_translation": "Amplificado. O dobro do problema.",
+      "intent": "confirmar que o efeito foi amplificado",
+      "risk_level": "medium",
+      "base_translation": "Amplificado. Dobro do problema.",
       "byte_budget": 30,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 30; corte para caber: 'Amplificado. Dobro do problema.' = 29 bytes sem acentos"
     },
     {
       "offset": "0x4a5d8",
@@ -104,8 +104,8 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, explicativo",
-      "intent": "explicar o aumento do esforço",
+      "tone_register": "frio, técnico",
+      "intent": "explica o aumento de esforço",
       "risk_level": "low",
       "base_translation": "O esforço exigido é aumentado.\\n",
       "byte_budget": 47,
@@ -120,14 +120,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, explicativo",
-      "intent": "detalhar o aumento da fadiga",
-      "risk_level": "low",
-      "base_translation": "Sua fadiga deve parecer cerca de três vezes maior\\n",
+      "tone_register": "frio, técnico",
+      "intent": "informar que a fadiga é triplicada",
+      "risk_level": "medium",
+      "base_translation": "Sua fadiga deve parecer três vezes maior\\n",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget apertado; removido 'cerca de' para encaixar"
     },
     {
       "offset": "0x4a63a",
@@ -137,13 +137,13 @@
         "Homem"
       ],
       "tone_register": "frio",
-      "intent": "concluir explicação",
-      "risk_level": "low",
-      "base_translation": "que o normal.",
+      "intent": "concluir a explicação da fadiga",
+      "risk_level": "medium",
+      "base_translation": "do normal.",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 12; 'que o normal.' = 12 bytes sem acentos (q-u-e- -o- -n-o-r-m-a-l-. = 13 com ponto; corte: 'do normal.' = 10 bytes)"
     },
     {
       "offset": "0x4a647",
@@ -153,13 +153,13 @@
         "Haku"
       ],
       "tone_register": "chocado",
-      "intent": "reagir com espanto",
-      "risk_level": "low",
-      "base_translation": "O quê!?",
+      "intent": "reação de incredulidade",
+      "risk_level": "medium",
+      "base_translation": "Hein!?",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 6; 'O que!?' = 7 sem acento (O-space-q-u-e-!-? = 7); usar 'Hein!?' = 6 bytes"
     },
     {
       "offset": "0x4a64e",
@@ -168,14 +168,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "irônico, seco",
-      "intent": "comparação sarcástica com lama",
+      "tone_register": "frio, irônico",
+      "intent": "descrever o estado miserável com humor seco",
       "risk_level": "medium",
-      "base_translation": "Vai se sentir fresco como um monte de lama.",
+      "base_translation": "Vai se sentir fresco como lama.",
       "byte_budget": 40,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'Vai se sentir fresco como lama.' = 33 bytes"
+      "risk_notes": "budget 40; versão curta: 'Vai se sentir fresco como lama.' = 30 bytes sem acentos"
     },
     {
       "offset": "0x4a677",
@@ -184,14 +184,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "enigmático, ambíguo",
-      "intent": "prometer sensação mista ao despertar",
-      "risk_level": "low",
+      "tone_register": "frio, profético",
+      "intent": "promessa ambígua sobre o despertar",
+      "risk_level": "medium",
       "base_translation": "...Ao despertar, tenho certeza que sentirá\\n",
       "byte_budget": 51,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "Ambiguidade intencional — não resolver o tom ameaçador"
     },
     {
       "offset": "0x4a6ab",
@@ -200,14 +200,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "enigmático",
-      "intent": "concluir a promessa ambígua",
-      "risk_level": "low",
-      "base_translation": "partes iguais de fadiga e intensa realização.",
+      "tone_register": "frio, quase solene",
+      "intent": "completar: fadiga e realização em partes iguais",
+      "risk_level": "medium",
+      "base_translation": "partes iguais de fadiga e realização.",
       "byte_budget": 41,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 41; removido 'intensa' para encaixar"
     },
     {
       "offset": "0x4a6d5",
@@ -216,8 +216,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "indignado, confuso",
-      "intent": "questionar o sentido da fala do Homem",
+      "tone_register": "confuso, indignado",
+      "intent": "Haku tenta entender e quer cancelar",
       "risk_level": "low",
       "base_translation": "Es-- Calma, o que isso quer dizer afinal?\\n",
       "byte_budget": 49,
@@ -233,7 +233,7 @@
         "Haku"
       ],
       "tone_register": "desesperado, cômico",
-      "intent": "tentar cancelar o treino",
+      "intent": "Haku quer abortar o treinamento",
       "risk_level": "low",
       "base_translation": "Eu cancelo isso. Aborta! Aborta!",
       "byte_budget": 34,
@@ -249,7 +249,7 @@
         "Homem"
       ],
       "tone_register": "frio, definitivo",
-      "intent": "negar a possibilidade de cancelamento",
+      "intent": "nega a possibilidade de sair",
       "risk_level": "low",
       "base_translation": "Impossível.",
       "byte_budget": 13,
@@ -264,8 +264,8 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, explicativo",
-      "intent": "informar que deve superar os desafios",
+      "tone_register": "frio, implacável",
+      "intent": "informa que Haku deve superar os desafios",
       "risk_level": "low",
       "base_translation": "Receio que você tenha que superar todos os\\n",
       "byte_budget": 47,
@@ -280,14 +280,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, definitivo",
-      "intent": "completar condição para despertar",
+      "tone_register": "frio",
+      "intent": "concluir a condição para despertar",
       "risk_level": "medium",
-      "base_translation": "desafios para poder despertar.",
+      "base_translation": "desafios para despertar.",
       "byte_budget": 29,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'desafios para poder despertar.' = 29 bytes"
+      "risk_notes": "budget 29; 'desafios para poder despertar.' = 30 bytes sem acentos; corte: 'desafios para despertar.' = 23 bytes"
     },
     {
       "offset": "0x4a786",
@@ -296,14 +296,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, ameaçador",
-      "intent": "alertar sobre confusão entre sonho e realidade",
-      "risk_level": "low",
+      "tone_register": "ameaçador, ambíguo",
+      "intent": "alerta sobre confusão entre sonho e realidade",
+      "risk_level": "medium",
       "base_translation": "Esquecemos de mencionar, mas a linha entre sonho\\n",
       "byte_budget": 50,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "Ambiguidade ameaçadora — não resolver"
     },
     {
       "offset": "0x4a7b9",
@@ -312,14 +312,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, ameaçador",
-      "intent": "alertar sobre perigo real no sonho",
-      "risk_level": "medium",
+      "tone_register": "ameaçador",
+      "intent": "continuação do aviso",
+      "risk_level": "low",
       "base_translation": "e realidade pode se misturar. Tome cuidado.",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'e realidade pode se misturar. Tome cuidado.' = 47 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x4a7e9",
@@ -328,14 +328,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "alarmado",
+      "tone_register": "alarmado, confuso",
       "intent": "pedir esclarecimento sobre o aviso",
-      "risk_level": "low",
-      "base_translation": "O-O que exatamente quer dizer com isso?",
+      "risk_level": "medium",
+      "base_translation": "O-O que quer dizer com isso?",
       "byte_budget": 36,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 36; encurtado removendo 'exatamente'"
     },
     {
       "offset": "0x4a80e",
@@ -345,13 +345,13 @@
         "Homem"
       ],
       "tone_register": "frio, ameaçador",
-      "intent": "introduzir consequência letal do sonho",
-      "risk_level": "low",
+      "intent": "revela consequência de acreditar na própria morte no sonho",
+      "risk_level": "medium",
       "base_translation": "Se acreditar que morreu dentro do seu sonho.",
       "byte_budget": 46,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "Fala dúbia e ameaçadora — manter ambiguidade"
     },
     {
       "offset": "0x4a83d",
@@ -361,7 +361,7 @@
         "Homem"
       ],
       "tone_register": "frio, definitivo",
-      "intent": "confirmar morte real como consequência",
+      "intent": "consequência fatal na realidade",
       "risk_level": "low",
       "base_translation": "Você vai bater as botas na realidade também.",
       "byte_budget": 45,
@@ -376,14 +376,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "chocado, indignado",
-      "intent": "reagir com horror à revelação",
-      "risk_level": "low",
-      "base_translation": "Que MERDA!?",
+      "tone_register": "informal, furioso",
+      "intent": "explosão de raiva e incredulidade",
+      "risk_level": "medium",
+      "base_translation": "MERDA!?",
       "byte_budget": 10,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 10; 'Que MERDA!?' = 10 bytes sem acentos (Q-u-e-space-M-E-R-D-A-!-? = 11); corte: 'MERDA!?' = 7 bytes"
     },
     {
       "offset": "0x4bef3",
@@ -392,8 +392,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "gake_parts",
       "byte_budget": 10,
@@ -408,8 +408,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, aliviado",
-      "intent": "aguardar Kuon e ser surpreendido",
+      "tone_register": "aliviado, casual",
+      "intent": "Haku aliviado, espera Kuon voltar",
       "risk_level": "low",
       "base_translation": "Certo! Agora é só esperar a Kuon voltar,\\n",
       "byte_budget": 51,
@@ -424,8 +424,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal",
-      "intent": "continuar e reagir com surpresa",
+      "tone_register": "casual, surpreso",
+      "intent": "Haku percebe algo/alguém chegando",
       "risk_level": "low",
       "base_translation": "e... {W230}Hein?",
       "byte_budget": 17,
@@ -440,8 +440,8 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "animado, teatral",
-      "intent": "anunciar chegada com dramatismo",
+      "tone_register": "animado, confiante",
+      "intent": "Kuon faz sua entrada dramática",
       "risk_level": "low",
       "base_translation": "Minha entrada triunfal!\\n",
       "byte_budget": 27,
@@ -456,8 +456,8 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "informal, gentil",
-      "intent": "perguntar se fez Haku esperar",
+      "tone_register": "casual, levemente provocador",
+      "intent": "Kuon pergunta se Haku esperou",
       "risk_level": "low",
       "base_translation": "Te fiz esperar, Haku?",
       "byte_budget": 29,
@@ -472,14 +472,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "hesitante, buscando palavras",
-      "intent": "tentar descrever situação",
-      "risk_level": "medium",
+      "tone_register": "hesitante",
+      "intent": "Haku tenta formular uma resposta",
+      "risk_level": "low",
       "base_translation": "...Bom, como eu diria...",
       "byte_budget": 27,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: '...Bom, como eu diria...' = 22 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x4bf9b",
@@ -488,14 +488,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "curioso, breve",
-      "intent": "reagir com surpresa à hesitação de Haku",
-      "risk_level": "low",
-      "base_translation": "...Hein?",
+      "tone_register": "curioso",
+      "intent": "reagir com surpresa/curiosidade",
+      "risk_level": "medium",
+      "base_translation": "..Hein?",
       "byte_budget": 7,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 7; '...Hein?' = 7 bytes (.-.-.-H-e-i-n-? = 8); corte: '..Hein?' = 7"
     },
     {
       "offset": "0x4bfa3",
@@ -504,8 +504,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, prático",
-      "intent": "encerrar conversa e focar na situação",
+      "tone_register": "prático, urgente",
+      "intent": "Haku muda o assunto — situação urgente",
       "risk_level": "low",
       "base_translation": "Conversa depois. Parece que o cochilo acabou.",
       "byte_budget": 45,
@@ -520,8 +520,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "urgente, informal",
-      "intent": "delegar ação a Maroro",
+      "tone_register": "informal, urgente",
+      "intent": "Ukon passa responsabilidade para Maroro",
       "risk_level": "low",
       "base_translation": "Droga, ele insiste. Maroro, depende de você!",
       "byte_budget": 46,
@@ -536,8 +536,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "direto, tático",
-      "intent": "dar instrução precisa a Maroro",
+      "tone_register": "direto, urgente",
+      "intent": "instrução tática a Maroro",
       "risk_level": "low",
       "base_translation": "Joga reto pra baixo. Seu convidado está\\n",
       "byte_budget": 43,
@@ -553,7 +553,7 @@
         "Ukon"
       ],
       "tone_register": "direto",
-      "intent": "concluir instrução",
+      "intent": "conclusão da instrução",
       "risk_level": "low",
       "base_translation": "perto.",
       "byte_budget": 7,
@@ -569,13 +569,13 @@
         "Maroro"
       ],
       "tone_register": "arcaico, determinado",
-      "intent": "responder com determinação empolada",
+      "intent": "Maroro aceita a missão com pompa",
       "risk_level": "medium",
       "base_translation": "N-Não falharemos!",
       "byte_budget": 20,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro; verificar que contraste pomposo está preservado."
+      "risk_notes": "Voz arcaica de Maroro — verificar registro"
     },
     {
       "offset": "0x4c049",
@@ -584,14 +584,14 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "urgente, imperativo",
-      "intent": "ordenar ação imediata",
-      "risk_level": "low",
-      "base_translation": "AGORA, Maroro!",
+      "tone_register": "informal, urgente",
+      "intent": "dar ordem imediata a Maroro",
+      "risk_level": "medium",
+      "base_translation": "VAI, Maroro!",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 12; 'AGORA, Maroro!' = 13 bytes (A-G-O-R-A-,-space-M-a-r-o-r-o-! = 14); corte: 'AGORA Maroro!' = 13; usar 'VAI, Maroro!' = 12"
     },
     {
       "offset": "0x4c056",
@@ -601,13 +601,13 @@
         "Ukon"
       ],
       "tone_register": "aliviado",
-      "intent": "celebrar sucesso",
-      "risk_level": "low",
-      "base_translation": "Conseguimos...",
+      "intent": "comemorar o sucesso",
+      "risk_level": "medium",
+      "base_translation": "Deu certo...",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 12; 'Conseguimos...' = 13 bytes. Encurtado: 'Deu certo...' = 12"
     },
     {
       "offset": "0x4c063",
@@ -616,8 +616,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "Leg_2_B_L",
       "byte_budget": 9,
@@ -632,8 +632,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "Leg_2_B_R",
       "byte_budget": 9,
@@ -648,8 +648,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "aliviado, carinhoso",
-      "intent": "verificar estado de Haku após confronto",
+      "tone_register": "casual, preocupado",
+      "intent": "Ukon verifica se Haku está bem",
       "risk_level": "low",
       "base_translation": "Acabou, acho. Está machucado, Haku?",
       "byte_budget": 46,
@@ -664,14 +664,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, preocupado",
-      "intent": "negar ferimento e perguntar sobre outro",
-      "risk_level": "medium",
+      "tone_register": "casual, preocupado com os outros",
+      "intent": "Haku pergunta sobre os outros",
+      "risk_level": "low",
       "base_translation": "Não, mas me deixa. Você está bem?",
       "byte_budget": 34,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'Nao, mas me deixa. Voce esta bem?' = 34 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x4c0c9",
@@ -680,8 +680,8 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "informal, confiante",
-      "intent": "tranquilizar e se gabar levemente",
+      "tone_register": "descontraído, orgulhoso",
+      "intent": "Kuon confirma que está bem",
       "risk_level": "low",
       "base_translation": "Estou bem. Eu disse que era boa em correr,\\n",
       "byte_budget": 44,
@@ -697,13 +697,13 @@
         "Kuon"
       ],
       "tone_register": "informal",
-      "intent": "concluir afirmação",
-      "risk_level": "low",
-      "base_translation": "não disse?",
+      "intent": "concluir com confirmação retórica",
+      "risk_level": "medium",
+      "base_translation": "lembra?",
       "byte_budget": 9,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 9; 'não disse?' = 10 bytes sem acentos (n-a-o-space-d-i-s-s-e-? = 10); corte: 'lembra?' = 7"
     },
     {
       "offset": "0x4c100",
@@ -712,8 +712,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "caloroso, espirituoso",
-      "intent": "elogiar Kuon com leve repreensão cômica",
+      "tone_register": "caloroso, admirado",
+      "intent": "Ukon elogia Kuon com leve repreensão",
       "risk_level": "low",
       "base_translation": "Puxa vida, moça. Provocar uma fera desse jeito\\n",
       "byte_budget": 48,
@@ -729,7 +729,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, admirado",
-      "intent": "concluir elogio",
+      "intent": "continuação do elogio",
       "risk_level": "low",
       "base_translation": "aqui fora... Você é demais mesmo.",
       "byte_budget": 49,
@@ -745,7 +745,7 @@
         "Haku"
       ],
       "tone_register": "aliviado, exausto",
-      "intent": "constatar o fim",
+      "intent": "Haku constata que acabou",
       "risk_level": "low",
       "base_translation": "Acabou...",
       "byte_budget": 12,
@@ -760,8 +760,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "informal, confirmando",
-      "intent": "confirmar o encerramento",
+      "tone_register": "casual, confirmando",
+      "intent": "Ukon confirma que acabou de vez",
       "risk_level": "low",
       "base_translation": "É, acabou de vez.",
       "byte_budget": 26,
@@ -776,14 +776,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "exausto, informal",
+      "tone_register": "informal, exausto",
       "intent": "expressar necessidade de descanso",
-      "risk_level": "low",
-      "base_translation": "...Ah, preciso dormir.",
+      "risk_level": "medium",
+      "base_translation": "...Preciso dormir.",
       "byte_budget": 21,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 21; '...Ah, preciso dormir.' = 22 bytes sem acentos; corte: '...Preciso dormir.' = 18"
     },
     {
       "offset": "0x4c1a5",
@@ -793,7 +793,7 @@
         "Haku"
       ],
       "tone_register": "narrativa, aliviado",
-      "intent": "descrever colapso de alívio",
+      "intent": "narração — Haku afunda no chão aliviado",
       "risk_level": "low",
       "base_translation": "Afundo no chão de puro alívio.",
       "byte_budget": 36,
@@ -808,14 +808,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "perguntar sobre vitória de forma empolada",
+      "tone_register": "arcaico, melodramático",
+      "intent": "perguntar dramaticamente se venceram",
       "risk_level": "medium",
-      "base_translation": "M-Mestre Haku, triunfamos neste dia?\\n",
+      "base_translation": "M-Mestre Haku, triunfamos hoje?\\n",
       "byte_budget": 37,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro preservada."
+      "risk_notes": "budget 37; versão anterior estoura; corte: 'M-Mestre Haku, triunfamos hoje?\n' = 33"
     },
     {
       "offset": "0x4c1f0",
@@ -824,14 +824,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "espanto com a sobrevivência",
+      "tone_register": "arcaico, aliviado",
+      "intent": "confirmar alívio por estarem vivos",
       "risk_level": "medium",
-      "base_translation": "N-Nossas vidas ainda são nossas!?",
+      "base_translation": "N-Ainda estamos vivos!?",
       "byte_budget": 29,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro preservada."
+      "risk_notes": "budget 29; 'N-Nossas vidas ainda são nossas!?' sem acentos = 33; corte: 'N-Ainda estamos vivos!?' = 22"
     },
     {
       "offset": "0x4c20e",
@@ -840,8 +840,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, levemente irritado",
-      "intent": "confirmar vitória e pedir que Maroro largue",
+      "tone_register": "casual, levemente irritado",
+      "intent": "Haku confirma e pede que Maroro pare de se agarrar",
       "risk_level": "low",
       "base_translation": "É, acabou. Então para de ficar se\\n",
       "byte_budget": 47,
@@ -857,13 +857,13 @@
         "Haku"
       ],
       "tone_register": "informal, irritado",
-      "intent": "concluir pedido",
-      "risk_level": "low",
-      "base_translation": "agarrando em mim!",
+      "intent": "concluir pedido para Maroro soltar",
+      "risk_level": "medium",
+      "base_translation": "me solta já!",
       "byte_budget": 14,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 14; 'agarrando em mim!' = 17 bytes sem acentos; corte: 'grudando em mim!' = 16; melhor: 'me solta ja!' = 12"
     },
     {
       "offset": "0x4c24d",
@@ -873,13 +873,13 @@
         "Maroro"
       ],
       "tone_register": "arcaico, eufórico",
-      "intent": "celebrar a vitória de forma exagerada",
+      "intent": "celebrar a vitória com entusiasmo exagerado",
       "risk_level": "medium",
-      "base_translation": "A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!",
+      "base_translation": "A vitória é nossa! A vitória é NOSSA, Mestre Haku!",
       "byte_budget": 50,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica e exagero dramático de Maroro preservados."
+      "risk_notes": "budget 50; versão longa estourava; encurtado"
     },
     {
       "offset": "0x4c280",
@@ -888,14 +888,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, exasperado",
-      "intent": "pedir que Maroro saia de cima",
-      "risk_level": "low",
-      "base_translation": "Tá bom, entendi, então... sai de cima de mim...",
+      "tone_register": "informal, cansado",
+      "intent": "pedir para Maroro sair de cima",
+      "risk_level": "medium",
+      "base_translation": "Tá bom, entendi, então... sai de mim...",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 45; versão anterior 47 bytes; corte: 'Ta bom, entendi, entao... sai de mim...' = 38"
     },
     {
       "offset": "0x4c2ae",
@@ -905,7 +905,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, animado",
-      "intent": "convidar para retornar e celebrar",
+      "intent": "Ukon convida todos para voltar e celebrar",
       "risk_level": "low",
       "base_translation": "Vamos voltar, Haku. Vai ter uma festa\\n",
       "byte_budget": 44,
@@ -921,7 +921,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, animado",
-      "intent": "listar as recompensas que os aguardam",
+      "intent": "lista as recompensas da festa",
       "risk_level": "low",
       "base_translation": "esperando... Boa bebida, boas iguarias e\\n",
       "byte_budget": 45,
@@ -936,14 +936,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "suave, antecipador",
-      "intent": "completar a lista com o banho quente",
-      "risk_level": "low",
-      "base_translation": "banho quente.",
+      "tone_register": "informal, sonhador",
+      "intent": "completar a lista com banho quente",
+      "risk_level": "medium",
+      "base_translation": "banho bom.",
       "byte_budget": 11,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 11; 'banho quente.' = 13 bytes sem acentos; corte: 'um bom banho.' = 13; melhor: 'banho bom.' = 9"
     },
     {
       "offset": "0x4c315",
@@ -952,8 +952,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, emotivo",
-      "intent": "descrever a alegria coletiva",
+      "tone_register": "narrativa, jubiloso",
+      "intent": "narração — todos se animam com as palavras de Kuon",
       "risk_level": "low",
       "base_translation": "Mesmo todos feridos e exaustos, algo\\n",
       "byte_budget": 50,
@@ -968,14 +968,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, emotivo",
-      "intent": "concluir descrição da alegria coletiva",
-      "risk_level": "low",
-      "base_translation": "jubiloso surge em nós todos com as palavras de Kuon.",
+      "tone_register": "narrativo, caloroso",
+      "intent": "completar: o júbilo vem com as palavras de Kuon",
+      "risk_level": "medium",
+      "base_translation": "jubiloso surge em nós com as palavras de Kuon.",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 47; encurtado para caber"
     },
     {
       "offset": "0x4c378",
@@ -984,14 +984,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, triunfal",
-      "intent": "descrever celebração coletiva",
-      "risk_level": "low",
-      "base_translation": "Gritos de alegria enchem o ar e se transformam em\\n",
+      "tone_register": "narrativo, eufórico",
+      "intent": "narrar os gritos de alegria",
+      "risk_level": "medium",
+      "base_translation": "Gritos de alegria enchem o ar e viram\\n",
       "byte_budget": 46,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 46; encurtado para caber"
     },
     {
       "offset": "0x4c3a7",
@@ -1000,14 +1000,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, triunfal",
-      "intent": "concluir descrição do triunfo",
-      "risk_level": "low",
-      "base_translation": "rugidos de triunfo.",
+      "tone_register": "narrativa, épico",
+      "intent": "concluir com rugidos de triunfo",
+      "risk_level": "medium",
+      "base_translation": "uivos de triunfo.",
       "byte_budget": 17,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 17; 'rugidos de triunfo.' = 19 bytes sem acentos; corte: 'gritos de triunfo.' = 18; melhor: 'uivos de triunfo.' = 17"
     },
     {
       "offset": "0x4da0e",
@@ -1016,8 +1016,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "gake_parts",
       "byte_budget": 10,
@@ -1032,14 +1032,14 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "urgente, imperativo",
-      "intent": "ordenar ação imediata",
-      "risk_level": "low",
-      "base_translation": "AGORA, Maroro!",
+      "tone_register": "informal, urgente",
+      "intent": "dar ordem imediata a Maroro",
+      "risk_level": "medium",
+      "base_translation": "VAI, Maroro!",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 12; mesmo ajuste do 0x4c049"
     },
     {
       "offset": "0x4da27",
@@ -1049,9 +1049,9 @@
         "Ukon"
       ],
       "tone_register": "aliviado",
-      "intent": "celebrar sucesso",
+      "intent": "comemorar sucesso",
       "risk_level": "low",
-      "base_translation": "Conseguimos...",
+      "base_translation": "Deu certo...",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
@@ -1064,14 +1064,14 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "urgente, alerta",
-      "intent": "alertar que a luta não acabou",
-      "risk_level": "low",
-      "base_translation": "Atenção, garoto! Ainda não acabou!",
+      "tone_register": "informal, urgente",
+      "intent": "alertar que ainda não acabou",
+      "risk_level": "medium",
+      "base_translation": "Atenção garoto! Ainda não acabou!",
       "byte_budget": 33,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 33; 'Atenção, garoto! Ainda não acabou!' sem acentos = 34; corte: 'Atencao garoto! Ainda nao acabou!' = 33"
     },
     {
       "offset": "0x4da56",
@@ -1080,14 +1080,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "lamentar a persistência do inimigo",
+      "tone_register": "arcaico, lamentoso",
+      "intent": "Maroro lamenta a persistência do inimigo",
       "risk_level": "medium",
       "base_translation": "Ó, que infeliz tenacidade!",
       "byte_budget": 26,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro; tom melodramático preservado."
+      "risk_notes": "Arcaísmo de Maroro — manter registro empolado"
     },
     {
       "offset": "0x4da71",
@@ -1096,14 +1096,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "determinado, confiante",
+      "tone_register": "informal, determinado",
       "intent": "anunciar o golpe final",
-      "risk_level": "low",
-      "base_translation": "Desculpe, mas é aqui que acaba!",
+      "risk_level": "medium",
+      "base_translation": "Mas acaba aqui!",
       "byte_budget": 27,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 27; 'Desculpe, mas e aqui que acaba!' = 31 bytes sem acentos; corte: 'Mas acaba aqui!' = 15"
     },
     {
       "offset": "0x4da8d",
@@ -1112,8 +1112,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "aliviado, animado",
-      "intent": "anunciar chegada de Kuon",
+      "tone_register": "aliviado, exclamativo",
+      "intent": "Ukon constata que Kuon chegou",
       "risk_level": "low",
       "base_translation": "...Ela chegou!",
       "byte_budget": 14,
@@ -1128,8 +1128,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "Leg_2_B_L",
       "byte_budget": 9,
@@ -1144,8 +1144,8 @@
       "entities_present": [
         "SYSTEM"
       ],
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "base_translation": "Leg_2_B_R",
       "byte_budget": 9,
@@ -1160,8 +1160,8 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "informal, preocupado",
-      "intent": "confirmar retorno e verificar Haku",
+      "tone_register": "casual, preocupada",
+      "intent": "Kuon volta e verifica Haku",
       "risk_level": "low",
       "base_translation": "Voltei. Haku, está machucado?",
       "byte_budget": 41,
@@ -1176,14 +1176,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, preocupado",
-      "intent": "negar ferimento e perguntar sobre outro",
-      "risk_level": "medium",
+      "tone_register": "casual, preocupado com os outros",
+      "intent": "Haku pergunta sobre os outros",
+      "risk_level": "low",
       "base_translation": "Não, mas me deixa. Você está bem?",
       "byte_budget": 34,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Transliterado: 'Nao, mas me deixa. Voce esta bem?' = 34 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x4dafd",
@@ -1192,8 +1192,8 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "informal, confiante",
-      "intent": "tranquilizar e se gabar levemente",
+      "tone_register": "descontraído, orgulhoso",
+      "intent": "Kuon confirma que está bem",
       "risk_level": "low",
       "base_translation": "Estou bem. Eu disse que era boa em correr,\\n",
       "byte_budget": 44,
@@ -1209,13 +1209,13 @@
         "Kuon"
       ],
       "tone_register": "informal",
-      "intent": "concluir afirmação",
-      "risk_level": "low",
-      "base_translation": "não disse?",
+      "intent": "concluir com confirmação retórica",
+      "risk_level": "medium",
+      "base_translation": "lembra?",
       "byte_budget": 9,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 9; mesmo ajuste do 0x4c0f6"
     },
     {
       "offset": "0x4db34",
@@ -1224,8 +1224,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "caloroso, espirituoso",
-      "intent": "elogiar Kuon com leve repreensão cômica",
+      "tone_register": "caloroso, admirado",
+      "intent": "Ukon elogia Kuon",
       "risk_level": "low",
       "base_translation": "Puxa vida, moça. Provocar uma fera desse jeito\\n",
       "byte_budget": 48,
@@ -1241,7 +1241,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, admirado",
-      "intent": "concluir elogio",
+      "intent": "continuação do elogio",
       "risk_level": "low",
       "base_translation": "aqui fora... Você é demais mesmo.",
       "byte_budget": 49,
@@ -1257,7 +1257,7 @@
         "Haku"
       ],
       "tone_register": "aliviado, exausto",
-      "intent": "constatar o fim",
+      "intent": "Haku constata que acabou",
       "risk_level": "low",
       "base_translation": "Acabou...",
       "byte_budget": 12,
@@ -1272,8 +1272,8 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "informal, confirmando",
-      "intent": "confirmar o encerramento",
+      "tone_register": "casual, confirmando",
+      "intent": "Ukon confirma",
       "risk_level": "low",
       "base_translation": "É, acabou de vez.",
       "byte_budget": 26,
@@ -1288,14 +1288,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "exausto, informal",
+      "tone_register": "informal, exausto",
       "intent": "expressar necessidade de descanso",
-      "risk_level": "low",
-      "base_translation": "...Ah, preciso dormir.",
+      "risk_level": "medium",
+      "base_translation": "...Preciso dormir.",
       "byte_budget": 21,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 21; mesmo ajuste do 0x4c18f"
     },
     {
       "offset": "0x4dbd9",
@@ -1305,7 +1305,7 @@
         "Haku"
       ],
       "tone_register": "narrativa, aliviado",
-      "intent": "descrever colapso de alívio",
+      "intent": "narração — Haku afunda no chão",
       "risk_level": "low",
       "base_translation": "Afundo no chão de puro alívio.",
       "byte_budget": 36,
@@ -1320,14 +1320,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "perguntar sobre vitória e espanto com sobrevivência",
+      "tone_register": "arcaico, melodramático",
+      "intent": "perguntar dramaticamente se venceram e se estão vivos",
       "risk_level": "medium",
-      "base_translation": "M-Mestre Haku, triunfamos neste dia? N-Nossas vidas\\n",
+      "base_translation": "M-Mestre Haku, triunfamos hoje? N-Nossas vidas\\n",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro preservada; duas perguntas empoladas em sequência."
+      "risk_notes": "budget 49; versão longa estoura; corte: 'M-Mestre Haku, triunfamos hoje? N-Nossas vidas\n' = 48"
     },
     {
       "offset": "0x4dc30",
@@ -1336,14 +1336,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "concluir espanto com a sobrevivência",
+      "tone_register": "arcaico, aliviado",
+      "intent": "concluir pergunta sobre estar vivos",
       "risk_level": "medium",
-      "base_translation": "ainda são nossas!?",
+      "base_translation": "ainda são nossas?",
       "byte_budget": 17,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica de Maroro preservada."
+      "risk_notes": "budget 17; 'ainda sao nossas!?' = 18 bytes sem acentos; corte: 'sao ainda nossas!?' = 18; melhor: 'ainda sao nossas?' = 17"
     },
     {
       "offset": "0x4dc42",
@@ -1352,8 +1352,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, levemente irritado",
-      "intent": "confirmar vitória e pedir que Maroro largue",
+      "tone_register": "casual, levemente irritado",
+      "intent": "Haku confirma e pede que Maroro pare",
       "risk_level": "low",
       "base_translation": "É, acabou. Então para de ficar se\\n",
       "byte_budget": 47,
@@ -1369,13 +1369,13 @@
         "Haku"
       ],
       "tone_register": "informal, irritado",
-      "intent": "concluir pedido",
-      "risk_level": "low",
-      "base_translation": "agarrando em mim!",
+      "intent": "concluir pedido para Maroro soltar",
+      "risk_level": "medium",
+      "base_translation": "me solta já!",
       "byte_budget": 14,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 14; mesmo ajuste do 0x4c23e"
     },
     {
       "offset": "0x4dc81",
@@ -1385,13 +1385,13 @@
         "Maroro"
       ],
       "tone_register": "arcaico, eufórico",
-      "intent": "celebrar a vitória de forma exagerada",
-      "risk_level": "medium",
-      "base_translation": "A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!",
+      "intent": "celebrar a vitória com entusiasmo exagerado",
+      "risk_level": "low",
+      "base_translation": "A vitória é nossa! A vitória é NOSSA, Mestre Haku!",
       "byte_budget": 50,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica e exagero dramático de Maroro preservados."
+      "risk_notes": ""
     },
     {
       "offset": "0x4dcb4",
@@ -1400,14 +1400,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, exasperado",
-      "intent": "pedir que Maroro saia de cima",
-      "risk_level": "low",
-      "base_translation": "Tá bom, entendi, então... sai de cima de mim...",
+      "tone_register": "informal, cansado",
+      "intent": "pedir para Maroro sair de cima",
+      "risk_level": "medium",
+      "base_translation": "Tá bom, entendi, então... sai de mim...",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 45; mesmo ajuste do 0x4c280"
     },
     {
       "offset": "0x4dce2",
@@ -1417,7 +1417,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, animado",
-      "intent": "convidar para retornar e celebrar",
+      "intent": "convite para voltar e celebrar",
       "risk_level": "low",
       "base_translation": "Vamos voltar, Haku. Vai ter uma festa\\n",
       "byte_budget": 44,
@@ -1433,7 +1433,7 @@
         "Ukon"
       ],
       "tone_register": "caloroso, animado",
-      "intent": "listar as recompensas que os aguardam",
+      "intent": "lista as recompensas",
       "risk_level": "low",
       "base_translation": "esperando... Boa bebida, boas iguarias e\\n",
       "byte_budget": 45,
@@ -1448,14 +1448,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "suave, antecipador",
-      "intent": "completar a lista com o banho quente",
-      "risk_level": "low",
-      "base_translation": "banho quente.",
+      "tone_register": "informal, sonhador",
+      "intent": "completar a lista com banho quente",
+      "risk_level": "medium",
+      "base_translation": "banho bom.",
       "byte_budget": 11,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 11; mesmo ajuste do 0x4c309"
     },
     {
       "offset": "0x4dd49",
@@ -1464,8 +1464,8 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, emotivo",
-      "intent": "descrever a alegria coletiva",
+      "tone_register": "narrativa, jubiloso",
+      "intent": "narração — todos se animam",
       "risk_level": "low",
       "base_translation": "Mesmo todos feridos e exaustos, algo\\n",
       "byte_budget": 50,
@@ -1480,10 +1480,10 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, emotivo",
-      "intent": "concluir descrição da alegria coletiva",
+      "tone_register": "narrativo, caloroso",
+      "intent": "completar: o júbilo vem com as palavras de Kuon",
       "risk_level": "low",
-      "base_translation": "jubiloso surge em nós todos com as palavras de Kuon.",
+      "base_translation": "jubiloso surge em nós com as palavras de Kuon.",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [],
@@ -1496,10 +1496,10 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, triunfal",
-      "intent": "descrever celebração coletiva",
+      "tone_register": "narrativo, eufórico",
+      "intent": "narrar os gritos de alegria",
       "risk_level": "low",
-      "base_translation": "Gritos de alegria enchem o ar e se transformam em\\n",
+      "base_translation": "Gritos de alegria enchem o ar e viram\\n",
       "byte_budget": 46,
       "glossary_flags": [],
       "spoiler_flags": [],
@@ -1512,19 +1512,19 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa, triunfal",
-      "intent": "concluir descrição do triunfo",
-      "risk_level": "low",
-      "base_translation": "rugidos de triunfo.",
+      "tone_register": "narrativa, épico",
+      "intent": "concluir com rugidos de triunfo",
+      "risk_level": "medium",
+      "base_translation": "uivos de triunfo.",
       "byte_budget": 17,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "budget 17; mesmo ajuste do 0x4c3a7"
     }
   ],
   "total_lines": 95,
   "high_lines": 0,
-  "medium_lines": 15,
+  "medium_lines": 40,
   "needs_review": [],
   "plan_version": "chapter-12_15-v1"
 }

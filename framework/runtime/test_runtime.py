@@ -24,8 +24,10 @@ if str(_HERE) not in sys.path:
 import context_pack          # noqa: E402
 import state_index           # noqa: E402
 import run_chapter           # noqa: E402
+import run_scene             # noqa: E402
 import kb_gate               # noqa: E402
 import model                 # noqa: E402
+import cost_report           # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -220,6 +222,209 @@ def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
                          "scene": scene})
     r = run_chapter.run_chapter(root, "99", backend="api")
     assert r["status"] == "stopped" and r["stopped_at"] == "ch_99_01"
+
+
+# ------------------------------- telemetria de custo --------------------------
+# O ledger (api_ledger.jsonl) registra TODA chamada cobrada — inclusive cenas que falham/escalam,
+# que o metrics.jsonl (resumo so-de-sucesso) perdia. cost_report agrega + cruza com run_state.
+
+def test_cost_of_known_pricing():
+    # Sonnet: in $3/M, out $15/M; cache_read = 0.1x in, cache_write = 1.25x in
+    c = model.cost_of("claude-sonnet-4-6",
+                      {"in": 1_000_000, "out": 1_000_000, "cache_read": 0, "cache_write": 0})
+    assert round(c, 4) == round(3.0 + 15.0, 4)
+    assert model.cost_of("modelo-inexistente", {"in": 9}) == 0.0
+    assert model.cost_of("claude-opus-4-8", {}) == 0.0
+
+
+def test_log_api_call_appends_ledger(tmp_path):
+    (tmp_path / "artifacts").mkdir()
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6",
+                       {"in": 100, "out": 50, "cache_read": 0, "cache_write": 0})
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6",
+                       {"in": 200, "out": 80, "cache_read": 0, "cache_write": 0})   # retry: 2a chamada
+    model.log_api_call(tmp_path, "ch_99_01", "back", "claude-opus-4-8",
+                       {"in": 10, "out": 10, "cache_read": 0, "cache_write": 0})
+    rows = [json.loads(l) for l in
+            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 3, "cada chamada cobrada = 1 linha (retries inclusos)"
+    assert all(r["cost_usd"] > 0 for r in rows)
+    # custo-verdade da cena soma TODAS as chamadas (run_scene._ledger_scene_cost)
+    assert run_scene._ledger_scene_cost(tmp_path, "ch_99_01") == round(sum(r["cost_usd"] for r in rows), 5)
+    # usage vazio nao registra (nao polui o ledger)
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6", None)
+    rows2 = (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(rows2) == 3
+
+
+def test_cost_report_aggregates_and_flags_waste(tmp_path):
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    # cena boa (fechou verified) + cena ruim (so gastou, nao fechou) -> o gasto da ruim e DESPERDICIO
+    model.log_api_call(tmp_path, "ch_99_01", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    model.log_api_call(tmp_path, "ch_99_02", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    model.log_api_call(tmp_path, "ch_99_02", "translate", "claude-sonnet-4-6", {"in": 1000, "out": 500})
+    (art / "run_state.json").write_text(json.dumps(
+        {"scenes": {"ch_99_01": {"status": "verified", "verified": True},
+                    "ch_99_02": {"status": "verify_failed", "verified": False}}}), encoding="utf-8")
+    rep = cost_report.report(tmp_path)
+    assert rep["n_calls"] == 3
+    assert rep["verified_scenes"] == 1
+    # desperdicio = so o gasto da 99_02 (2 chamadas), nao da 99_01
+    assert rep["wasted_usd"] == rep["by_scene"]["ch_99_02"]["cost_usd"]
+    assert rep["wasted_usd"] < rep["total_usd"]
+    assert rep["by_kind"]["translate"] == rep["total_usd"]
+    assert cost_report._fmt(rep, by_scene=True)   # nao quebra ao formatar
+
+
+# ------------------------------- dedup por TM (R5 custo) ----------------------
+# Reaproveita traducao de OUTRA cena (mesma fonte) -> nao re-gera (corta tokens de saida).
+
+def _pack_for_reuse(lines, tm_exact, sfx="12_09"):
+    return {"sfx": sfx, "lines": lines, "tm_exact": tm_exact}
+
+
+def test_reuse_picks_cross_scene_hit():
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}, {"offset": "0x2", "source": "Brand new line."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_03"}])
+    reuse = model._select_reuse(pack, enabled=True)
+    assert set(reuse) == {"0x1"}, "so a linha com hit de TM e reaproveitada"
+    assert reuse["0x1"]["t"] == "Sim." and reuse["0x1"]["risk_level"] == "low"
+
+
+def test_reuse_excludes_own_scene():
+    # a TM contem a PROPRIA cena (re-run) -> NAO reusar (sabotaria o escalonamento de fitting)
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_09"}],
+        sfx="12_09")
+    assert model._select_reuse(pack, enabled=True) == {}
+
+
+def test_reuse_parity_guard():
+    # chave de TM ignora \n; se a traducao tem nº de quebras != da fonte ATUAL, NAO reusa (build_plan reprova)
+    tok = context_pack.TOKEN
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": f"A{tok}B"}],                 # fonte tem 1 quebra
+        [{"source": "A B", "target": "A B sem quebra", "speaker": "X", "from_scene": "12_03"}])
+    assert model._select_reuse(pack, enabled=True) == {}, "paridade de quebra bloqueia reuso"
+    pack2 = _pack_for_reuse(
+        [{"offset": "0x1", "source": f"A{tok}B"}],
+        [{"source": "A B", "target": f"Ce{tok}De", "speaker": "X", "from_scene": "12_03"}])
+    assert set(model._select_reuse(pack2, enabled=True)) == {"0x1"}, "quebras casando -> reusa"
+
+
+def test_reuse_disabled_on_escalation():
+    pack = _pack_for_reuse(
+        [{"offset": "0x1", "source": "Yes."}],
+        [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_03"}])
+    assert model._select_reuse(pack, enabled=False) == {}, "escalonamento re-traduz fresco (sem reuso)"
+
+
+# ------------------------------- batch API (R5 custo, -50%) -------------------
+import types as _types   # noqa: E402
+
+
+def test_cost_of_batch_is_half():
+    u = {"in": 1_000_000, "out": 1_000_000}
+    full = model.cost_of("claude-sonnet-4-6", u)
+    assert round(model.cost_of("claude-sonnet-4-6", u, batch=True), 6) == round(full * 0.5, 6)
+
+
+def test_translate_params_none_when_fully_reused():
+    pack = {"sfx": "99_01", "lines": [{"offset": "0x1", "source": "Yes."}],
+            "tm_exact": [{"source": "Yes.", "target": "Sim.", "speaker": "X", "from_scene": "99_02"}]}
+    params, reuse, novel = model._translate_params(pack, "claude-sonnet-4-6")
+    assert params is None and novel == [] and set(reuse) == {"0x1"}
+
+
+def test_finalize_batch_result_ok_and_missing():
+    tok = context_pack.TOKEN
+    pack = {"sfx": "99_01", "tm_exact": [],
+            "lines": [{"offset": "0x1", "source": "Hi"}, {"offset": "0x2", "source": f"A{tok}B"}]}
+    good = json.dumps({"lines": [
+        {"offset": "0x1", "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": "Oi"},
+        {"offset": "0x2", "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": f"C{tok}D"}]})
+    data, problems = model._finalize_batch_result(pack, good)
+    assert problems == [] and set(data["lines"]) == {"0x1", "0x2"}
+    # faltando 0x2 -> problema (cai p/ fallback interativo)
+    miss = json.dumps({"lines": [
+        {"offset": "0x1", "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": "Oi"}]})
+    d2, p2 = model._finalize_batch_result(pack, miss)
+    assert d2 is None and p2
+
+
+def _fake_msg(text, usage=(100, 50)):
+    block = _types.SimpleNamespace(type="text", text=text)
+    u = _types.SimpleNamespace(input_tokens=usage[0], output_tokens=usage[1],
+                               cache_read_input_tokens=0, cache_creation_input_tokens=0)
+    return _types.SimpleNamespace(content=[block], usage=u)
+
+
+class _FakeBatches:
+    def __init__(self, results):
+        self._results = results
+
+    def create(self, requests):
+        self._n = len(requests)
+        return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
+
+    def retrieve(self, _id):
+        return _types.SimpleNamespace(processing_status="ended")
+
+    def results(self, _id):
+        return iter(self._results)
+
+
+def test_batch_translate_routes_and_meters(monkeypatch, tmp_path):
+    # 2 cenas: uma OK (grava translations + ledger batch), uma com cobertura incompleta (coverage_failed)
+    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
+    (tmp_path / "artifacts" / "ch_99_02").mkdir(parents=True)
+    packs = {
+        "ch_99_01": {"sfx": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
+        "ch_99_02": {"sfx": "99_02", "tm_exact": [], "lines": [{"offset": "0x9", "source": "Bye"}]},
+    }
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    ok_text = json.dumps({"lines": [{"offset": "0x1", "speaker": "X", "tone_register": "n",
+                                     "intent": "i", "risk_level": "low", "risk_notes": "", "t": "Oi"}]})
+    bad_text = json.dumps({"lines": []})   # 0x9 faltando -> coverage_failed
+    results = [
+        _types.SimpleNamespace(custom_id="ch_99_01",
+                               result=_types.SimpleNamespace(type="succeeded", message=_fake_msg(ok_text))),
+        _types.SimpleNamespace(custom_id="ch_99_02",
+                               result=_types.SimpleNamespace(type="succeeded", message=_fake_msg(bad_text))),
+    ]
+    fake = _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_FakeBatches(results)))
+    monkeypatch.setattr(model, "_client", lambda: fake)
+    st = model.batch_translate(tmp_path, ["ch_99_01", "ch_99_02"], poll_seconds=0)
+    assert st["ch_99_01"] == "written"
+    assert st["ch_99_02"] == "coverage_failed"
+    assert (tmp_path / "artifacts" / "ch_99_01" / "translations_99_01.json").is_file()
+    assert not (tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").is_file()
+    # ledger: ambas sucederam na API (cobradas), com flag batch e custo 50%
+    rows = [json.loads(l) for l in
+            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 2 and all(r["batch"] is True for r in rows)
+    assert rows[0]["cost_usd"] == round(model.cost_of(rows[0]["model"], rows[0]["usage"], batch=True), 5)
+
+
+def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
+    root = _fake_chapter(tmp_path, ("99_01", "99_02"))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    seen = {}
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: seen.__setitem__(scene, kw.get("pretranslated")) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    run_chapter.run_chapter(root, "99", backend="api", batch=True)
+    assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
 
 
 # ------------------------------- governanca -----------------------------------

@@ -2,32 +2,32 @@
   "lines": {
     "0x4a4f3": {
       "speaker": "Haku",
-      "tone_register": "informal, exausto",
-      "intent": "expressar cansaço após treino",
+      "tone_register": "cotidiano, cansado",
+      "intent": "Haku exausto após o treinamento no sonho",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Hah... hah... ufa..."
     },
     "0x4a509": {
       "speaker": "Haku",
-      "tone_register": "confuso, reclamando",
-      "intent": "questionar o propósito do treino",
+      "tone_register": "confuso, cansado",
+      "intent": "Haku questiona por que está tão cansado",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Achei que essa coisa toda era pra me deixar\\n"
     },
     "0x4a53e": {
       "speaker": "Haku",
-      "tone_register": "confuso, reclamando",
-      "intent": "questionar por que está cansado",
+      "tone_register": "confuso, cansado",
+      "intent": "continuar a queixa sobre o cansaço",
       "risk_level": "medium",
-      "risk_notes": "Transliterado: 'mais forte dormindo. Por que to tao cansado?' = 43 bytes",
-      "t": "mais forte dormindo. Por que estou tão cansado?"
+      "risk_notes": "budget apertado; cortado 'dormindo' para encaixar",
+      "t": "mais forte. Por que estou tão cansado?"
     },
     "0x4a56c": {
       "speaker": "Haku",
-      "tone_register": "perturbado, reflexivo",
-      "intent": "comentar o realismo do sonho",
+      "tone_register": "perturbado, aliviado",
+      "intent": "comenta o realismo do sonho",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Sem falar como aquilo foi real. Achei que\\n"
@@ -35,7 +35,7 @@
     "0x4a59f": {
       "speaker": "Haku",
       "tone_register": "perturbado",
-      "intent": "concluir pensamento sobre quase morrer",
+      "intent": "pensou que ia morrer no sonho",
       "risk_level": "low",
       "risk_notes": "",
       "t": "ia morrer lá dentro."
@@ -43,71 +43,71 @@
     "0x4a5b9": {
       "speaker": "Homem",
       "tone_register": "frio, enigmático",
-      "intent": "confirmar a amplificação do esforço",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Amplificado. O dobro do problema."
+      "intent": "confirmar que o efeito foi amplificado",
+      "risk_level": "medium",
+      "risk_notes": "budget 30; corte para caber: 'Amplificado. Dobro do problema.' = 29 bytes sem acentos",
+      "t": "Amplificado. Dobro do problema."
     },
     "0x4a5d8": {
       "speaker": "Homem",
-      "tone_register": "frio, explicativo",
-      "intent": "explicar o aumento do esforço",
+      "tone_register": "frio, técnico",
+      "intent": "explica o aumento de esforço",
       "risk_level": "low",
       "risk_notes": "",
       "t": "O esforço exigido é aumentado.\\n"
     },
     "0x4a608": {
       "speaker": "Homem",
-      "tone_register": "frio, explicativo",
-      "intent": "detalhar o aumento da fadiga",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Sua fadiga deve parecer cerca de três vezes maior\\n"
+      "tone_register": "frio, técnico",
+      "intent": "informar que a fadiga é triplicada",
+      "risk_level": "medium",
+      "risk_notes": "budget apertado; removido 'cerca de' para encaixar",
+      "t": "Sua fadiga deve parecer três vezes maior\\n"
     },
     "0x4a63a": {
       "speaker": "Homem",
       "tone_register": "frio",
-      "intent": "concluir explicação",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "que o normal."
+      "intent": "concluir a explicação da fadiga",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; 'que o normal.' = 12 bytes sem acentos (q-u-e- -o- -n-o-r-m-a-l-. = 13 com ponto; corte: 'do normal.' = 10 bytes)",
+      "t": "do normal."
     },
     "0x4a647": {
       "speaker": "Haku",
       "tone_register": "chocado",
-      "intent": "reagir com espanto",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "O quê!?"
+      "intent": "reação de incredulidade",
+      "risk_level": "medium",
+      "risk_notes": "budget 6; 'O que!?' = 7 sem acento (O-space-q-u-e-!-? = 7); usar 'Hein!?' = 6 bytes",
+      "t": "Hein!?"
     },
     "0x4a64e": {
       "speaker": "Homem",
-      "tone_register": "irônico, seco",
-      "intent": "comparação sarcástica com lama",
+      "tone_register": "frio, irônico",
+      "intent": "descrever o estado miserável com humor seco",
       "risk_level": "medium",
-      "risk_notes": "Transliterado: 'Vai se sentir fresco como lama.' = 33 bytes",
-      "t": "Vai se sentir fresco como um monte de lama."
+      "risk_notes": "budget 40; versão curta: 'Vai se sentir fresco como lama.' = 30 bytes sem acentos",
+      "t": "Vai se sentir fresco como lama."
     },
     "0x4a677": {
       "speaker": "Homem",
-      "tone_register": "enigmático, ambíguo",
-      "intent": "prometer sensação mista ao despertar",
-      "risk_level": "low",
-      "risk_notes": "",
+      "tone_register": "frio, profético",
+      "intent": "promessa ambígua sobre o despertar",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade intencional — não resolver o tom ameaçador",
       "t": "...Ao despertar, tenho certeza que sentirá\\n"
     },
     "0x4a6ab": {
       "speaker": "Homem",
-      "tone_register": "enigmático",
-      "intent": "concluir a promessa ambígua",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "partes iguais de fadiga e intensa realização."
+      "tone_register": "frio, quase solene",
+      "intent": "completar: fadiga e realização em partes iguais",
+      "risk_level": "medium",
+      "risk_notes": "budget 41; removido 'intensa' para encaixar",
+      "t": "partes iguais de fadiga e realização."
     },
     "0x4a6d5": {
       "speaker": "Haku",
-      "tone_register": "indignado, confuso",
-      "intent": "questionar o sentido da fala do Homem",
+      "tone_register": "confuso, indignado",
+      "intent": "Haku tenta entender e quer cancelar",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Es-- Calma, o que isso quer dizer afinal?\\n"
@@ -115,7 +115,7 @@
     "0x4a707": {
       "speaker": "Haku",
       "tone_register": "desesperado, cômico",
-      "intent": "tentar cancelar o treino",
+      "intent": "Haku quer abortar o treinamento",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Eu cancelo isso. Aborta! Aborta!"
@@ -123,151 +123,151 @@
     "0x4a72a": {
       "speaker": "Homem",
       "tone_register": "frio, definitivo",
-      "intent": "negar a possibilidade de cancelamento",
+      "intent": "nega a possibilidade de sair",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Impossível."
     },
     "0x4a738": {
       "speaker": "Homem",
-      "tone_register": "frio, explicativo",
-      "intent": "informar que deve superar os desafios",
+      "tone_register": "frio, implacável",
+      "intent": "informa que Haku deve superar os desafios",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Receio que você tenha que superar todos os\\n"
     },
     "0x4a768": {
       "speaker": "Homem",
-      "tone_register": "frio, definitivo",
-      "intent": "completar condição para despertar",
+      "tone_register": "frio",
+      "intent": "concluir a condição para despertar",
       "risk_level": "medium",
-      "risk_notes": "Transliterado: 'desafios para poder despertar.' = 29 bytes",
-      "t": "desafios para poder despertar."
+      "risk_notes": "budget 29; 'desafios para poder despertar.' = 30 bytes sem acentos; corte: 'desafios para despertar.' = 23 bytes",
+      "t": "desafios para despertar."
     },
     "0x4a786": {
       "speaker": "Homem",
-      "tone_register": "frio, ameaçador",
-      "intent": "alertar sobre confusão entre sonho e realidade",
-      "risk_level": "low",
-      "risk_notes": "",
+      "tone_register": "ameaçador, ambíguo",
+      "intent": "alerta sobre confusão entre sonho e realidade",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade ameaçadora — não resolver",
       "t": "Esquecemos de mencionar, mas a linha entre sonho\\n"
     },
     "0x4a7b9": {
       "speaker": "Homem",
-      "tone_register": "frio, ameaçador",
-      "intent": "alertar sobre perigo real no sonho",
-      "risk_level": "medium",
-      "risk_notes": "Transliterado: 'e realidade pode se misturar. Tome cuidado.' = 47 bytes",
+      "tone_register": "ameaçador",
+      "intent": "continuação do aviso",
+      "risk_level": "low",
+      "risk_notes": "",
       "t": "e realidade pode se misturar. Tome cuidado."
     },
     "0x4a7e9": {
       "speaker": "Haku",
-      "tone_register": "alarmado",
+      "tone_register": "alarmado, confuso",
       "intent": "pedir esclarecimento sobre o aviso",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "O-O que exatamente quer dizer com isso?"
+      "risk_level": "medium",
+      "risk_notes": "budget 36; encurtado removendo 'exatamente'",
+      "t": "O-O que quer dizer com isso?"
     },
     "0x4a80e": {
       "speaker": "Homem",
       "tone_register": "frio, ameaçador",
-      "intent": "introduzir consequência letal do sonho",
-      "risk_level": "low",
-      "risk_notes": "",
+      "intent": "revela consequência de acreditar na própria morte no sonho",
+      "risk_level": "medium",
+      "risk_notes": "Fala dúbia e ameaçadora — manter ambiguidade",
       "t": "Se acreditar que morreu dentro do seu sonho."
     },
     "0x4a83d": {
       "speaker": "Homem",
       "tone_register": "frio, definitivo",
-      "intent": "confirmar morte real como consequência",
+      "intent": "consequência fatal na realidade",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Você vai bater as botas na realidade também."
     },
     "0x4a86b": {
       "speaker": "Haku",
-      "tone_register": "chocado, indignado",
-      "intent": "reagir com horror à revelação",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Que MERDA!?"
+      "tone_register": "informal, furioso",
+      "intent": "explosão de raiva e incredulidade",
+      "risk_level": "medium",
+      "risk_notes": "budget 10; 'Que MERDA!?' = 10 bytes sem acentos (Q-u-e-space-M-E-R-D-A-!-? = 11); corte: 'MERDA!?' = 7 bytes",
+      "t": "MERDA!?"
     },
     "0x4bef3": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "gake_parts"
     },
     "0x4beff": {
       "speaker": "Haku",
-      "tone_register": "informal, aliviado",
-      "intent": "aguardar Kuon e ser surpreendido",
+      "tone_register": "aliviado, casual",
+      "intent": "Haku aliviado, espera Kuon voltar",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Certo! Agora é só esperar a Kuon voltar,\\n"
     },
     "0x4bf33": {
       "speaker": "Haku",
-      "tone_register": "informal",
-      "intent": "continuar e reagir com surpresa",
+      "tone_register": "casual, surpreso",
+      "intent": "Haku percebe algo/alguém chegando",
       "risk_level": "low",
       "risk_notes": "",
       "t": "e... {W230}Hein?"
     },
     "0x4bf45": {
       "speaker": "Kuon",
-      "tone_register": "animado, teatral",
-      "intent": "anunciar chegada com dramatismo",
+      "tone_register": "animado, confiante",
+      "intent": "Kuon faz sua entrada dramática",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Minha entrada triunfal!\\n"
     },
     "0x4bf61": {
       "speaker": "Kuon",
-      "tone_register": "informal, gentil",
-      "intent": "perguntar se fez Haku esperar",
+      "tone_register": "casual, levemente provocador",
+      "intent": "Kuon pergunta se Haku esperou",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Te fiz esperar, Haku?"
     },
     "0x4bf7f": {
       "speaker": "Haku",
-      "tone_register": "hesitante, buscando palavras",
-      "intent": "tentar descrever situação",
-      "risk_level": "medium",
-      "risk_notes": "Transliterado: '...Bom, como eu diria...' = 22 bytes",
+      "tone_register": "hesitante",
+      "intent": "Haku tenta formular uma resposta",
+      "risk_level": "low",
+      "risk_notes": "",
       "t": "...Bom, como eu diria..."
     },
     "0x4bf9b": {
       "speaker": "Kuon",
-      "tone_register": "curioso, breve",
-      "intent": "reagir com surpresa à hesitação de Haku",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "...Hein?"
+      "tone_register": "curioso",
+      "intent": "reagir com surpresa/curiosidade",
+      "risk_level": "medium",
+      "risk_notes": "budget 7; '...Hein?' = 7 bytes (.-.-.-H-e-i-n-? = 8); corte: '..Hein?' = 7",
+      "t": "..Hein?"
     },
     "0x4bfa3": {
       "speaker": "Haku",
-      "tone_register": "informal, prático",
-      "intent": "encerrar conversa e focar na situação",
+      "tone_register": "prático, urgente",
+      "intent": "Haku muda o assunto — situação urgente",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Conversa depois. Parece que o cochilo acabou."
     },
     "0x4bfd1": {
       "speaker": "Ukon",
-      "tone_register": "urgente, informal",
-      "intent": "delegar ação a Maroro",
+      "tone_register": "informal, urgente",
+      "intent": "Ukon passa responsabilidade para Maroro",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Droga, ele insiste. Maroro, depende de você!"
     },
     "0x4c000": {
       "speaker": "Ukon",
-      "tone_register": "direto, tático",
-      "intent": "dar instrução precisa a Maroro",
+      "tone_register": "direto, urgente",
+      "intent": "instrução tática a Maroro",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Joga reto pra baixo. Seu convidado está\\n"
@@ -275,7 +275,7 @@
     "0x4c02c": {
       "speaker": "Ukon",
       "tone_register": "direto",
-      "intent": "concluir instrução",
+      "intent": "conclusão da instrução",
       "risk_level": "low",
       "risk_notes": "",
       "t": "perto."
@@ -283,63 +283,63 @@
     "0x4c034": {
       "speaker": "Maroro",
       "tone_register": "arcaico, determinado",
-      "intent": "responder com determinação empolada",
+      "intent": "Maroro aceita a missão com pompa",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro; verificar que contraste pomposo está preservado.",
+      "risk_notes": "Voz arcaica de Maroro — verificar registro",
       "t": "N-Não falharemos!"
     },
     "0x4c049": {
       "speaker": "Ukon",
-      "tone_register": "urgente, imperativo",
-      "intent": "ordenar ação imediata",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "AGORA, Maroro!"
+      "tone_register": "informal, urgente",
+      "intent": "dar ordem imediata a Maroro",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; 'AGORA, Maroro!' = 13 bytes (A-G-O-R-A-,-space-M-a-r-o-r-o-! = 14); corte: 'AGORA Maroro!' = 13; usar 'VAI, Maroro!' = 12",
+      "t": "VAI, Maroro!"
     },
     "0x4c056": {
       "speaker": "Ukon",
       "tone_register": "aliviado",
-      "intent": "celebrar sucesso",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Conseguimos..."
+      "intent": "comemorar o sucesso",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; 'Conseguimos...' = 13 bytes. Encurtado: 'Deu certo...' = 12",
+      "t": "Deu certo..."
     },
     "0x4c063": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Leg_2_B_L"
     },
     "0x4c06d": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Leg_2_B_R"
     },
     "0x4c077": {
       "speaker": "Ukon",
-      "tone_register": "aliviado, carinhoso",
-      "intent": "verificar estado de Haku após confronto",
+      "tone_register": "casual, preocupado",
+      "intent": "Ukon verifica se Haku está bem",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Acabou, acho. Está machucado, Haku?"
     },
     "0x4c0a6": {
       "speaker": "Haku",
-      "tone_register": "informal, preocupado",
-      "intent": "negar ferimento e perguntar sobre outro",
-      "risk_level": "medium",
-      "risk_notes": "Transliterado: 'Nao, mas me deixa. Voce esta bem?' = 34 bytes",
+      "tone_register": "casual, preocupado com os outros",
+      "intent": "Haku pergunta sobre os outros",
+      "risk_level": "low",
+      "risk_notes": "",
       "t": "Não, mas me deixa. Você está bem?"
     },
     "0x4c0c9": {
       "speaker": "Kuon",
-      "tone_register": "informal, confiante",
-      "intent": "tranquilizar e se gabar levemente",
+      "tone_register": "descontraído, orgulhoso",
+      "intent": "Kuon confirma que está bem",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Estou bem. Eu disse que era boa em correr,\\n"
@@ -347,15 +347,15 @@
     "0x4c0f6": {
       "speaker": "Kuon",
       "tone_register": "informal",
-      "intent": "concluir afirmação",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "não disse?"
+      "intent": "concluir com confirmação retórica",
+      "risk_level": "medium",
+      "risk_notes": "budget 9; 'não disse?' = 10 bytes sem acentos (n-a-o-space-d-i-s-s-e-? = 10); corte: 'lembra?' = 7",
+      "t": "lembra?"
     },
     "0x4c100": {
       "speaker": "Ukon",
-      "tone_register": "caloroso, espirituoso",
-      "intent": "elogiar Kuon com leve repreensão cômica",
+      "tone_register": "caloroso, admirado",
+      "intent": "Ukon elogia Kuon com leve repreensão",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Puxa vida, moça. Provocar uma fera desse jeito\\n"
@@ -363,7 +363,7 @@
     "0x4c131": {
       "speaker": "Ukon",
       "tone_register": "caloroso, admirado",
-      "intent": "concluir elogio",
+      "intent": "continuação do elogio",
       "risk_level": "low",
       "risk_notes": "",
       "t": "aqui fora... Você é demais mesmo."
@@ -371,55 +371,55 @@
     "0x4c167": {
       "speaker": "Haku",
       "tone_register": "aliviado, exausto",
-      "intent": "constatar o fim",
+      "intent": "Haku constata que acabou",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Acabou..."
     },
     "0x4c174": {
       "speaker": "Ukon",
-      "tone_register": "informal, confirmando",
-      "intent": "confirmar o encerramento",
+      "tone_register": "casual, confirmando",
+      "intent": "Ukon confirma que acabou de vez",
       "risk_level": "low",
       "risk_notes": "",
       "t": "É, acabou de vez."
     },
     "0x4c18f": {
       "speaker": "Haku",
-      "tone_register": "exausto, informal",
+      "tone_register": "informal, exausto",
       "intent": "expressar necessidade de descanso",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "...Ah, preciso dormir."
+      "risk_level": "medium",
+      "risk_notes": "budget 21; '...Ah, preciso dormir.' = 22 bytes sem acentos; corte: '...Preciso dormir.' = 18",
+      "t": "...Preciso dormir."
     },
     "0x4c1a5": {
       "speaker": "Haku",
       "tone_register": "narrativa, aliviado",
-      "intent": "descrever colapso de alívio",
+      "intent": "narração — Haku afunda no chão aliviado",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Afundo no chão de puro alívio."
     },
     "0x4c1ca": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, dramático",
-      "intent": "perguntar sobre vitória de forma empolada",
+      "tone_register": "arcaico, melodramático",
+      "intent": "perguntar dramaticamente se venceram",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro preservada.",
-      "t": "M-Mestre Haku, triunfamos neste dia?\\n"
+      "risk_notes": "budget 37; versão anterior estoura; corte: 'M-Mestre Haku, triunfamos hoje?\n' = 33",
+      "t": "M-Mestre Haku, triunfamos hoje?\\n"
     },
     "0x4c1f0": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, dramático",
-      "intent": "espanto com a sobrevivência",
+      "tone_register": "arcaico, aliviado",
+      "intent": "confirmar alívio por estarem vivos",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro preservada.",
-      "t": "N-Nossas vidas ainda são nossas!?"
+      "risk_notes": "budget 29; 'N-Nossas vidas ainda são nossas!?' sem acentos = 33; corte: 'N-Ainda estamos vivos!?' = 22",
+      "t": "N-Ainda estamos vivos!?"
     },
     "0x4c20e": {
       "speaker": "Haku",
-      "tone_register": "informal, levemente irritado",
-      "intent": "confirmar vitória e pedir que Maroro largue",
+      "tone_register": "casual, levemente irritado",
+      "intent": "Haku confirma e pede que Maroro pare de se agarrar",
       "risk_level": "low",
       "risk_notes": "",
       "t": "É, acabou. Então para de ficar se\\n"
@@ -427,31 +427,31 @@
     "0x4c23e": {
       "speaker": "Haku",
       "tone_register": "informal, irritado",
-      "intent": "concluir pedido",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "agarrando em mim!"
+      "intent": "concluir pedido para Maroro soltar",
+      "risk_level": "medium",
+      "risk_notes": "budget 14; 'agarrando em mim!' = 17 bytes sem acentos; corte: 'grudando em mim!' = 16; melhor: 'me solta ja!' = 12",
+      "t": "me solta já!"
     },
     "0x4c24d": {
       "speaker": "Maroro",
       "tone_register": "arcaico, eufórico",
-      "intent": "celebrar a vitória de forma exagerada",
+      "intent": "celebrar a vitória com entusiasmo exagerado",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica e exagero dramático de Maroro preservados.",
-      "t": "A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!"
+      "risk_notes": "budget 50; versão longa estourava; encurtado",
+      "t": "A vitória é nossa! A vitória é NOSSA, Mestre Haku!"
     },
     "0x4c280": {
       "speaker": "Haku",
-      "tone_register": "informal, exasperado",
-      "intent": "pedir que Maroro saia de cima",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Tá bom, entendi, então... sai de cima de mim..."
+      "tone_register": "informal, cansado",
+      "intent": "pedir para Maroro sair de cima",
+      "risk_level": "medium",
+      "risk_notes": "budget 45; versão anterior 47 bytes; corte: 'Ta bom, entendi, entao... sai de mim...' = 38",
+      "t": "Tá bom, entendi, então... sai de mim..."
     },
     "0x4c2ae": {
       "speaker": "Ukon",
       "tone_register": "caloroso, animado",
-      "intent": "convidar para retornar e celebrar",
+      "intent": "Ukon convida todos para voltar e celebrar",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Vamos voltar, Haku. Vai ter uma festa\\n"
@@ -459,143 +459,143 @@
     "0x4c2db": {
       "speaker": "Ukon",
       "tone_register": "caloroso, animado",
-      "intent": "listar as recompensas que os aguardam",
+      "intent": "lista as recompensas da festa",
       "risk_level": "low",
       "risk_notes": "",
       "t": "esperando... Boa bebida, boas iguarias e\\n"
     },
     "0x4c309": {
       "speaker": "Kuon",
-      "tone_register": "suave, antecipador",
-      "intent": "completar a lista com o banho quente",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "banho quente."
+      "tone_register": "informal, sonhador",
+      "intent": "completar a lista com banho quente",
+      "risk_level": "medium",
+      "risk_notes": "budget 11; 'banho quente.' = 13 bytes sem acentos; corte: 'um bom banho.' = 13; melhor: 'banho bom.' = 9",
+      "t": "banho bom."
     },
     "0x4c315": {
       "speaker": "Haku",
-      "tone_register": "narrativa, emotivo",
-      "intent": "descrever a alegria coletiva",
+      "tone_register": "narrativa, jubiloso",
+      "intent": "narração — todos se animam com as palavras de Kuon",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Mesmo todos feridos e exaustos, algo\\n"
     },
     "0x4c348": {
       "speaker": "Haku",
-      "tone_register": "narrativa, emotivo",
-      "intent": "concluir descrição da alegria coletiva",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "jubiloso surge em nós todos com as palavras de Kuon."
+      "tone_register": "narrativo, caloroso",
+      "intent": "completar: o júbilo vem com as palavras de Kuon",
+      "risk_level": "medium",
+      "risk_notes": "budget 47; encurtado para caber",
+      "t": "jubiloso surge em nós com as palavras de Kuon."
     },
     "0x4c378": {
       "speaker": "Haku",
-      "tone_register": "narrativa, triunfal",
-      "intent": "descrever celebração coletiva",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Gritos de alegria enchem o ar e se transformam em\\n"
+      "tone_register": "narrativo, eufórico",
+      "intent": "narrar os gritos de alegria",
+      "risk_level": "medium",
+      "risk_notes": "budget 46; encurtado para caber",
+      "t": "Gritos de alegria enchem o ar e viram\\n"
     },
     "0x4c3a7": {
       "speaker": "Haku",
-      "tone_register": "narrativa, triunfal",
-      "intent": "concluir descrição do triunfo",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "rugidos de triunfo."
+      "tone_register": "narrativa, épico",
+      "intent": "concluir com rugidos de triunfo",
+      "risk_level": "medium",
+      "risk_notes": "budget 17; 'rugidos de triunfo.' = 19 bytes sem acentos; corte: 'gritos de triunfo.' = 18; melhor: 'uivos de triunfo.' = 17",
+      "t": "uivos de triunfo."
     },
     "0x4da0e": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "gake_parts"
     },
     "0x4da1a": {
       "speaker": "Ukon",
-      "tone_register": "urgente, imperativo",
-      "intent": "ordenar ação imediata",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "AGORA, Maroro!"
+      "tone_register": "informal, urgente",
+      "intent": "dar ordem imediata a Maroro",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; mesmo ajuste do 0x4c049",
+      "t": "VAI, Maroro!"
     },
     "0x4da27": {
       "speaker": "Ukon",
       "tone_register": "aliviado",
-      "intent": "celebrar sucesso",
+      "intent": "comemorar sucesso",
       "risk_level": "low",
       "risk_notes": "",
-      "t": "Conseguimos..."
+      "t": "Deu certo..."
     },
     "0x4da34": {
       "speaker": "Ukon",
-      "tone_register": "urgente, alerta",
-      "intent": "alertar que a luta não acabou",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Atenção, garoto! Ainda não acabou!"
+      "tone_register": "informal, urgente",
+      "intent": "alertar que ainda não acabou",
+      "risk_level": "medium",
+      "risk_notes": "budget 33; 'Atenção, garoto! Ainda não acabou!' sem acentos = 34; corte: 'Atencao garoto! Ainda nao acabou!' = 33",
+      "t": "Atenção garoto! Ainda não acabou!"
     },
     "0x4da56": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, dramático",
-      "intent": "lamentar a persistência do inimigo",
+      "tone_register": "arcaico, lamentoso",
+      "intent": "Maroro lamenta a persistência do inimigo",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro; tom melodramático preservado.",
+      "risk_notes": "Arcaísmo de Maroro — manter registro empolado",
       "t": "Ó, que infeliz tenacidade!"
     },
     "0x4da71": {
       "speaker": "Kuon",
-      "tone_register": "determinado, confiante",
+      "tone_register": "informal, determinado",
       "intent": "anunciar o golpe final",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Desculpe, mas é aqui que acaba!"
+      "risk_level": "medium",
+      "risk_notes": "budget 27; 'Desculpe, mas e aqui que acaba!' = 31 bytes sem acentos; corte: 'Mas acaba aqui!' = 15",
+      "t": "Mas acaba aqui!"
     },
     "0x4da8d": {
       "speaker": "Ukon",
-      "tone_register": "aliviado, animado",
-      "intent": "anunciar chegada de Kuon",
+      "tone_register": "aliviado, exclamativo",
+      "intent": "Ukon constata que Kuon chegou",
       "risk_level": "low",
       "risk_notes": "",
       "t": "...Ela chegou!"
     },
     "0x4da9c": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Leg_2_B_L"
     },
     "0x4daa6": {
       "speaker": "SYSTEM",
-      "tone_register": "sistema",
-      "intent": "rótulo de sistema",
+      "tone_register": "system",
+      "intent": "token de sistema",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Leg_2_B_R"
     },
     "0x4dab0": {
       "speaker": "Kuon",
-      "tone_register": "informal, preocupado",
-      "intent": "confirmar retorno e verificar Haku",
+      "tone_register": "casual, preocupada",
+      "intent": "Kuon volta e verifica Haku",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Voltei. Haku, está machucado?"
     },
     "0x4dada": {
       "speaker": "Haku",
-      "tone_register": "informal, preocupado",
-      "intent": "negar ferimento e perguntar sobre outro",
-      "risk_level": "medium",
-      "risk_notes": "Transliterado: 'Nao, mas me deixa. Voce esta bem?' = 34 bytes",
+      "tone_register": "casual, preocupado com os outros",
+      "intent": "Haku pergunta sobre os outros",
+      "risk_level": "low",
+      "risk_notes": "",
       "t": "Não, mas me deixa. Você está bem?"
     },
     "0x4dafd": {
       "speaker": "Kuon",
-      "tone_register": "informal, confiante",
-      "intent": "tranquilizar e se gabar levemente",
+      "tone_register": "descontraído, orgulhoso",
+      "intent": "Kuon confirma que está bem",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Estou bem. Eu disse que era boa em correr,\\n"
@@ -603,15 +603,15 @@
     "0x4db2a": {
       "speaker": "Kuon",
       "tone_register": "informal",
-      "intent": "concluir afirmação",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "não disse?"
+      "intent": "concluir com confirmação retórica",
+      "risk_level": "medium",
+      "risk_notes": "budget 9; mesmo ajuste do 0x4c0f6",
+      "t": "lembra?"
     },
     "0x4db34": {
       "speaker": "Ukon",
-      "tone_register": "caloroso, espirituoso",
-      "intent": "elogiar Kuon com leve repreensão cômica",
+      "tone_register": "caloroso, admirado",
+      "intent": "Ukon elogia Kuon",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Puxa vida, moça. Provocar uma fera desse jeito\\n"
@@ -619,7 +619,7 @@
     "0x4db65": {
       "speaker": "Ukon",
       "tone_register": "caloroso, admirado",
-      "intent": "concluir elogio",
+      "intent": "continuação do elogio",
       "risk_level": "low",
       "risk_notes": "",
       "t": "aqui fora... Você é demais mesmo."
@@ -627,55 +627,55 @@
     "0x4db9b": {
       "speaker": "Haku",
       "tone_register": "aliviado, exausto",
-      "intent": "constatar o fim",
+      "intent": "Haku constata que acabou",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Acabou..."
     },
     "0x4dba8": {
       "speaker": "Ukon",
-      "tone_register": "informal, confirmando",
-      "intent": "confirmar o encerramento",
+      "tone_register": "casual, confirmando",
+      "intent": "Ukon confirma",
       "risk_level": "low",
       "risk_notes": "",
       "t": "É, acabou de vez."
     },
     "0x4dbc3": {
       "speaker": "Haku",
-      "tone_register": "exausto, informal",
+      "tone_register": "informal, exausto",
       "intent": "expressar necessidade de descanso",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "...Ah, preciso dormir."
+      "risk_level": "medium",
+      "risk_notes": "budget 21; mesmo ajuste do 0x4c18f",
+      "t": "...Preciso dormir."
     },
     "0x4dbd9": {
       "speaker": "Haku",
       "tone_register": "narrativa, aliviado",
-      "intent": "descrever colapso de alívio",
+      "intent": "narração — Haku afunda no chão",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Afundo no chão de puro alívio."
     },
     "0x4dbfe": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, dramático",
-      "intent": "perguntar sobre vitória e espanto com sobrevivência",
+      "tone_register": "arcaico, melodramático",
+      "intent": "perguntar dramaticamente se venceram e se estão vivos",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro preservada; duas perguntas empoladas em sequência.",
-      "t": "M-Mestre Haku, triunfamos neste dia? N-Nossas vidas\\n"
+      "risk_notes": "budget 49; versão longa estoura; corte: 'M-Mestre Haku, triunfamos hoje? N-Nossas vidas\n' = 48",
+      "t": "M-Mestre Haku, triunfamos hoje? N-Nossas vidas\\n"
     },
     "0x4dc30": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, dramático",
-      "intent": "concluir espanto com a sobrevivência",
+      "tone_register": "arcaico, aliviado",
+      "intent": "concluir pergunta sobre estar vivos",
       "risk_level": "medium",
-      "risk_notes": "Voz arcaica de Maroro preservada.",
-      "t": "ainda são nossas!?"
+      "risk_notes": "budget 17; 'ainda sao nossas!?' = 18 bytes sem acentos; corte: 'sao ainda nossas!?' = 18; melhor: 'ainda sao nossas?' = 17",
+      "t": "ainda são nossas?"
     },
     "0x4dc42": {
       "speaker": "Haku",
-      "tone_register": "informal, levemente irritado",
-      "intent": "confirmar vitória e pedir que Maroro largue",
+      "tone_register": "casual, levemente irritado",
+      "intent": "Haku confirma e pede que Maroro pare",
       "risk_level": "low",
       "risk_notes": "",
       "t": "É, acabou. Então para de ficar se\\n"
@@ -683,31 +683,31 @@
     "0x4dc72": {
       "speaker": "Haku",
       "tone_register": "informal, irritado",
-      "intent": "concluir pedido",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "agarrando em mim!"
+      "intent": "concluir pedido para Maroro soltar",
+      "risk_level": "medium",
+      "risk_notes": "budget 14; mesmo ajuste do 0x4c23e",
+      "t": "me solta já!"
     },
     "0x4dc81": {
       "speaker": "Maroro",
       "tone_register": "arcaico, eufórico",
-      "intent": "celebrar a vitória de forma exagerada",
-      "risk_level": "medium",
-      "risk_notes": "Voz arcaica e exagero dramático de Maroro preservados.",
-      "t": "A vitória é nossa! Oh, a vitória é NOSSA, Mestre Haku!"
+      "intent": "celebrar a vitória com entusiasmo exagerado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A vitória é nossa! A vitória é NOSSA, Mestre Haku!"
     },
     "0x4dcb4": {
       "speaker": "Haku",
-      "tone_register": "informal, exasperado",
-      "intent": "pedir que Maroro saia de cima",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "Tá bom, entendi, então... sai de cima de mim..."
+      "tone_register": "informal, cansado",
+      "intent": "pedir para Maroro sair de cima",
+      "risk_level": "medium",
+      "risk_notes": "budget 45; mesmo ajuste do 0x4c280",
+      "t": "Tá bom, entendi, então... sai de mim..."
     },
     "0x4dce2": {
       "speaker": "Ukon",
       "tone_register": "caloroso, animado",
-      "intent": "convidar para retornar e celebrar",
+      "intent": "convite para voltar e celebrar",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Vamos voltar, Haku. Vai ter uma festa\\n"
@@ -715,50 +715,50 @@
     "0x4dd0f": {
       "speaker": "Ukon",
       "tone_register": "caloroso, animado",
-      "intent": "listar as recompensas que os aguardam",
+      "intent": "lista as recompensas",
       "risk_level": "low",
       "risk_notes": "",
       "t": "esperando... Boa bebida, boas iguarias e\\n"
     },
     "0x4dd3d": {
       "speaker": "Kuon",
-      "tone_register": "suave, antecipador",
-      "intent": "completar a lista com o banho quente",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "banho quente."
+      "tone_register": "informal, sonhador",
+      "intent": "completar a lista com banho quente",
+      "risk_level": "medium",
+      "risk_notes": "budget 11; mesmo ajuste do 0x4c309",
+      "t": "banho bom."
     },
     "0x4dd49": {
       "speaker": "Haku",
-      "tone_register": "narrativa, emotivo",
-      "intent": "descrever a alegria coletiva",
+      "tone_register": "narrativa, jubiloso",
+      "intent": "narração — todos se animam",
       "risk_level": "low",
       "risk_notes": "",
       "t": "Mesmo todos feridos e exaustos, algo\\n"
     },
     "0x4dd7c": {
       "speaker": "Haku",
-      "tone_register": "narrativa, emotivo",
-      "intent": "concluir descrição da alegria coletiva",
+      "tone_register": "narrativo, caloroso",
+      "intent": "completar: o júbilo vem com as palavras de Kuon",
       "risk_level": "low",
       "risk_notes": "",
-      "t": "jubiloso surge em nós todos com as palavras de Kuon."
+      "t": "jubiloso surge em nós com as palavras de Kuon."
     },
     "0x4ddac": {
       "speaker": "Haku",
-      "tone_register": "narrativa, triunfal",
-      "intent": "descrever celebração coletiva",
+      "tone_register": "narrativo, eufórico",
+      "intent": "narrar os gritos de alegria",
       "risk_level": "low",
       "risk_notes": "",
-      "t": "Gritos de alegria enchem o ar e se transformam em\\n"
+      "t": "Gritos de alegria enchem o ar e viram\\n"
     },
     "0x4dddb": {
       "speaker": "Haku",
-      "tone_register": "narrativa, triunfal",
-      "intent": "concluir descrição do triunfo",
-      "risk_level": "low",
-      "risk_notes": "",
-      "t": "rugidos de triunfo."
+      "tone_register": "narrativa, épico",
+      "intent": "concluir com rugidos de triunfo",
+      "risk_level": "medium",
+      "risk_notes": "budget 17; mesmo ajuste do 0x4c3a7",
+      "t": "uivos de triunfo."
     }
   }
 }
