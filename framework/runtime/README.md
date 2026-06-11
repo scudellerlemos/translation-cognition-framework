@@ -9,9 +9,16 @@ Torna **cada cena um job stateless e limitado**: o contexto por execução é O(
 |---|---|---|
 | `state_index.py` | determinístico | Materializa o estado externo: `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`. Idempotente, reconstruível. |
 | `context_pack.py` | determinístico | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. |
-| `model.py` | interface (única parte de IA) | `translate` / `back_translate`; backends `in-session` (assinatura) e `api` (model-mix). |
+| `model.py` | interface (única parte de IA) | `translate` / `back_translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix). |
 | `run_scene.py` | orquestrador (det.) | Encadeia pack → translate → build_plan → back-translate → verify → checkpoint. Resumível. |
+| `run_chapter.py` | driver (det.) | Loop de cenas de um capítulo via `run_scene`; modo `--batch` (−50%); resumível. |
+| `kb_gate.py` | gate (det.) | Cobertura de KB por cena (research reconciliada + `kb_frontier`) ANTES de traduzir. |
+| `kb_phase.py` | driver de Fase 0 (det.) | Descobre o gap de KB de um capítulo (cobrança) e valida/avança a fronteira. |
+| `cost_report.py` | observabilidade (det.) | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
 | `test_runtime.py` | pytest | Determinismo, boundedness, idempotência, guard de no-work-text. |
+
+> Convenção de nomes (identificadores em inglês, glossário de abreviações aceitas — KB/TM/scene_id… — e o
+> **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`../docs/NAMING.md`](../docs/NAMING.md).
 
 ## Uso
 
