@@ -415,16 +415,26 @@ def _fake_msg(text, usage=(100, 50)):
     return _types.SimpleNamespace(content=[block], usage=u)
 
 
+# a Batch API real rejeita custom_id fora deste padrao (400) — o fake VALIDA isso p/ pegar regressao
+# (ex.: o separador '@@' do tiering quebrava ao vivo mas passava com fake permissivo). Ver _FakeBatches.
+_CUSTOM_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
+
+
 class _FakeBatches:
     """Fake da Batch API ciente de RODADAS e de TIER: scene_rounds[scene] = [texto_r0, texto_r1, ...];
-    custom_id e 'scene@@tier' -> a fila e por CENA. results() devolve o proximo texto da cena (vazio se
-    acabar). models[] registra os modelos submetidos (p/ checar roteamento de tier)."""
+    custom_id e 'scene__tier' -> a fila e por CENA. results() devolve o proximo texto da cena (vazio se
+    acabar). models[] registra os modelos submetidos (p/ checar roteamento de tier). VALIDA o padrao do
+    custom_id como a API real (raise se invalido)."""
     def __init__(self, scene_rounds):
         self.scene_rounds = {k: list(v) for k, v in scene_rounds.items()}
         self._submitted = []
         self.models = []
 
     def create(self, requests):
+        for r in requests:
+            if not _CUSTOM_ID_RE.match(r["custom_id"]):
+                raise ValueError(f"custom_id invalido p/ Batch API: {r['custom_id']!r} "
+                                 f"(deve casar ^[a-zA-Z0-9_-]{{1,64}}$)")
         self._submitted = [r["custom_id"] for r in requests]
         self.models += [r["params"]["model"] for r in requests]
         return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
@@ -435,7 +445,7 @@ class _FakeBatches:
     def results(self, _id):
         out = []
         for cid in self._submitted:
-            scene = cid.split("@@", 1)[0]
+            scene = cid.split("__", 1)[0]
             q = self.scene_rounds.get(scene, [])
             text = q.pop(0) if q else _btext([])
             out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
