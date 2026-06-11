@@ -4,7 +4,7 @@ run_scene.py — ORQUESTRADOR DETERMINISTA de UMA cena (tira a orquestracao do c
 
 Encadeia o pipeline de 1 cena como um job limitado e resumivel:
   1. context_pack  -> scene_prompt.md + pack.json (contexto O(cena), nao O(historico))
-  2. translate     -> model.translate (in-session: espera o translations_<sfx>.json; api: gera)
+  2. translate     -> model.translate (in-session: espera o translations_<scene_id>.json; api: gera)
   3. build_plan    -> connector/build_plan_chapter.py (valida cobertura/tokens/risk_notes; gera approved)
   4. back-translate-> linhas risco>=high (model.back_translate; REPORTA por padrao, --require-back exige)
   5. verify        -> connector/verify_chapter.py (round-trip byte-identico + ponteiros within-file)
@@ -89,7 +89,7 @@ def _ledger_scene_cost(root: Path, scene: str) -> float:
     return round(tot, 5)
 
 
-def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verified):
+def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, verified):
     """Anexa 1 linha a artifacts/metrics.jsonl: RESUMO por cena (tokens/custo segmentados da ultima
     translate/back, pass-rate). O custo-verdade (`cost_usd`) vem do api_ledger.jsonl — soma TODAS as
     chamadas cobradas da cena (retries + escalonamento), nao so a ultima. O metrics.jsonl segue sendo
@@ -100,7 +100,7 @@ def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verif
     bmodel = bt.get("model", "") if isinstance(bt, dict) else ""
     # back-translation pass-rate (se houve saida)
     bt_pass = None
-    bpath = root / "artifacts" / scene / f"back_translation_{sfx}.json"
+    bpath = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
     if bpath.is_file():
         try:
             ents = json.loads(bpath.read_text(encoding="utf-8")).get("entries", [])
@@ -121,7 +121,7 @@ def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verif
     return rec
 
 
-def _high_lines(root: Path, scene: str, sfx: str):
+def _high_lines(root: Path, scene: str, scene_id: str):
     return M.high_risk_lines(root, scene)               # fonte unica (model.high_risk_lines)
 
 
@@ -129,7 +129,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
               pretranslated=False, defer_back=False):
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    sfx = context_pack.sfx_of(scene)
+    scene_id = context_pack.scene_id_of(scene)
 
     # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
     kb = kb_gate.check(root, scene)
@@ -140,14 +140,14 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         for p in kb["problems"]:
             print(f"      - {p}")
         print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
-        _checkpoint(root, scene, {"sfx": sfx, "status": "kb_coverage_failed"})
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
         return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
 
     print(f"[1/6] context_pack {scene} ...")
     tr = None
-    if pretranslated:                                       # batch ja produziu o translations_<sfx>.json
+    if pretranslated:                                       # batch ja produziu o translations_<scene_id>.json
         pack = context_pack.write_pack(root, scene)
-        outp = root / "artifacts" / scene / f"translations_{sfx}.json"
+        outp = root / "artifacts" / scene / f"translations_{scene_id}.json"
         if outp.is_file():
             tr = {"status": M.DONE, "n_lines": pack["n_lines"], "model": M.MODEL_TRANSLATE,
                   "usage": None, "reused": None, "novel": None}
@@ -159,13 +159,13 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             tr = M.translate(root, scene, backend=backend)
         except Exception as e:                              # backend api: erro de rede/saida invalida
             print(f"      ERRO na traducao ({backend}): {e}")
-            _checkpoint(root, scene, {"sfx": sfx, "status": "api_translate_failed"})
+            _checkpoint(root, scene, {"scene_id": scene_id, "status": "api_translate_failed"})
             return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     if isinstance(tr, dict) and tr.get("reused"):
         print(f"      dedup: {tr['reused']}/{tr['n_lines']} linha(s) reaproveitadas da TM "
               f"(nao re-traduzidas; {tr.get('novel', 0)} novas ao modelo)")
-    _checkpoint(root, scene, {"sfx": sfx, "n_lines": tr["n_lines"], "status": "packed"})
+    _checkpoint(root, scene, {"scene_id": scene_id, "n_lines": tr["n_lines"], "status": "packed"})
 
     if tr["status"] == M.AWAITING:
         print(f"[2/6] AGUARDANDO traducao (caminho assinatura): responda o prompt limitado")
@@ -178,8 +178,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     # [3+5] build_plan + verify com ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a
     # verify falha por fitting (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION)
     # e repete. Cenas normais passam de primeira (sem custo extra); so as apertadas escalam.
-    bp = _connector_script(root, cfg, "build_plan_script", "build_plan_chapter.py")
-    vf = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
+    build_plan_script = _connector_script(root, cfg, "build_plan_script", "build_plan_chapter.py")
+    verify_script = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
     tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend == "api" else [])
     verified = None
     for ti, tol in enumerate(tolerances):
@@ -203,7 +203,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
                 return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
 
         print(f"[3/6] build_plan_chapter {scene} ...")
-        code, out = _run([sys.executable, str(bp), scene])
+        code, out = _run([sys.executable, str(build_plan_script), scene])
         print(_indent(out))
         if code != 0:
             _checkpoint(root, scene, {"status": "build_plan_failed"})
@@ -214,7 +214,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             print("[5/6] verify pulado (--no-verify).")
             break
         print(f"[5/6] verify_chapter {scene} (round-trip) ...")
-        code, out = _run([sys.executable, str(vf), scene])
+        code, out = _run([sys.executable, str(verify_script), scene])
         print(_indent(out))
         if code == 0:
             verified = True
@@ -229,7 +229,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return {"status": "verify_failed", "scene": scene}
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
-    highs = _high_lines(root, scene, sfx)
+    highs = _high_lines(root, scene, scene_id)
     if defer_back:
         # MODO BATCH: a back-translation vira POS-PASSE do capitulo (1 batch -50% Opus). Aqui so contamos
         # as linhas de alto risco; o run_chapter coleta os planos e batcheia ao fim (ver _back_batch_phase).
@@ -240,7 +240,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         si = state_index.build(root)
         print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
         _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
-        mr = _metrics(root, scene, sfx, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
+        mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                       n_high=len(highs), verified=bool(verified))
         print(f"      metrics: custo ~${mr['cost_usd']:.4f} (back-translation deferida p/ batch)")
         print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
@@ -272,7 +272,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     si = state_index.build(root)
     print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
-    mr = _metrics(root, scene, sfx, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
+    mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
     print(f"      metrics: custo ~${mr['cost_usd']:.4f} | back_pass_rate={mr['back_pass_rate']}")
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")

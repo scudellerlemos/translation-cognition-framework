@@ -9,7 +9,7 @@ entao o footprint de sessao e constante, independente do nº de cenas/capitulos.
 Propriedades:
   - RESUMIVEL: pula cenas ja `verified` em run_state.json (a menos de --redo).
   - PARA NA 1ª FALHA: build_plan/verify/api falhou -> interrompe e reporta (nao mascara erro).
-  - Determinista: descobre as cenas por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por sfx).
+  - Determinista: descobre as cenas por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id).
   - Reusa run_scene + state_index; nada de logica de IA aqui.
 
 Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--require-back] [--redo] [--no-verify]
@@ -37,7 +37,7 @@ _DONE = ("verified",)                  # estados que contam como "ja feito" (ski
 def _scenes_of(root: Path, chap: str) -> list[str]:
     art = root / "artifacts"
     names = [p.parent.name for p in art.glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=context_pack.sfx_of)
+    return sorted(set(names), key=context_pack.scene_id_of)
 
 
 def _verified(root: Path, scene: str) -> bool:

@@ -108,7 +108,7 @@ def test_scene_prompt_self_contained(built):
     # contem a doutrina (Carta), as linhas e o formato de saida exigido
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
-    assert f"translations_{context_pack.sfx_of(SCENE)}.json" in txt
+    assert f"translations_{context_pack.scene_id_of(SCENE)}.json" in txt
 
 
 # ------------------------------- budget (translit) ----------------------------
@@ -314,8 +314,8 @@ def test_cost_report_aggregates_and_flags_waste(tmp_path):
 # ------------------------------- dedup por TM (R5 custo) ----------------------
 # Reaproveita traducao de OUTRA cena (mesma fonte) -> nao re-gera (corta tokens de saida).
 
-def _pack_for_reuse(lines, tm_exact, sfx="12_09"):
-    return {"sfx": sfx, "lines": lines, "tm_exact": tm_exact}
+def _pack_for_reuse(lines, tm_exact, scene_id="12_09"):
+    return {"scene_id": scene_id, "lines": lines, "tm_exact": tm_exact}
 
 
 def test_reuse_picks_cross_scene_hit():
@@ -332,7 +332,7 @@ def test_reuse_excludes_own_scene():
     pack = _pack_for_reuse(
         [{"offset": "0x1", "source": "Yes."}],
         [{"source": "Yes.", "target": "Sim.", "speaker": "Haku", "from_scene": "12_09"}],
-        sfx="12_09")
+        scene_id="12_09")
     assert model._select_reuse(pack, enabled=True) == {}
 
 
@@ -382,7 +382,7 @@ def test_cost_of_batch_is_half():
 
 
 def test_translate_params_none_when_fully_reused():
-    pack = {"sfx": "99_01", "lines": [{"offset": "0x1", "source": "Yes."}],
+    pack = {"scene_id": "99_01", "lines": [{"offset": "0x1", "source": "Yes."}],
             "tm_exact": [{"source": "Yes.", "target": "Sim.", "speaker": "X", "from_scene": "99_02"}]}
     params, reuse, novel = model._translate_params(pack, "claude-sonnet-4-6")
     assert params is None and novel == [] and set(reuse) == {"0x1"}
@@ -396,7 +396,7 @@ def _btext(offsets):
 
 def test_parse_batch_lines_and_coverage():
     tok = context_pack.TOKEN
-    pack = {"sfx": "99_01", "tm_exact": [],
+    pack = {"scene_id": "99_01", "tm_exact": [],
             "lines": [{"offset": "0x1", "source": "Hi"}, {"offset": "0x2", "source": f"A{tok}B"}]}
     lines = model._parse_batch_lines(pack, _btext(["0x1"]))   # so 0x1
     assert set(lines) == {"0x1"}
@@ -449,10 +449,10 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
     for s in ("ch_99_01", "ch_99_02", "ch_99_03"):
         (tmp_path / "artifacts" / s).mkdir(parents=True)
     packs = {
-        "ch_99_01": {"sfx": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
-        "ch_99_02": {"sfx": "99_02", "tm_exact": [],
+        "ch_99_01": {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
+        "ch_99_02": {"scene_id": "99_02", "tm_exact": [],
                      "lines": [{"offset": "0x9", "source": "A"}, {"offset": "0xa", "source": "B"}]},
-        "ch_99_03": {"sfx": "99_03", "tm_exact": [], "lines": [{"offset": "0xb", "source": "C"}]},
+        "ch_99_03": {"scene_id": "99_03", "tm_exact": [], "lines": [{"offset": "0xb", "source": "C"}]},
     }
     monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
     monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
@@ -492,7 +492,7 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path):
     # cena com 1 linha single-line (-> Haiku) e 1 multi-linha (-> Sonnet): 2 requests, 2 modelos
     tok = context_pack.TOKEN
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
-    packs = {"ch_99_01": {"sfx": "99_01", "tm_exact": [],
+    packs = {"ch_99_01": {"scene_id": "99_01", "tm_exact": [],
                           "lines": [{"offset": "0x1", "source": "simples"},
                                     {"offset": "0x2", "source": f"tem{tok}quebra"}]}}
     monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
@@ -524,7 +524,7 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path):
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
-    packs = {"ch_99_01": {"sfx": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
+    packs = {"ch_99_01": {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
     monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
     monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
     monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
@@ -593,7 +593,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
                     ("ch_77_03", _plan([("0xb", "low")]))):
         d = tmp_path / "artifacts" / s
         d.mkdir(parents=True)
-        (d / f"translation_plan_{context_pack.sfx_of(s)}.json").write_text(json.dumps(plan), encoding="utf-8")
+        (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(json.dumps(plan), encoding="utf-8")
     fb = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
@@ -615,10 +615,10 @@ def test_batch_back_translate(monkeypatch, tmp_path):
 
 
 # ----------------------------- driver de Fase 0 ------------------------------
-import fase0  # noqa: E402
+import kb_phase  # noqa: E402
 
 
-def _fase0_proj(tmp_path, scenes, glossary_terms=(), entities=(), *, reconciled=True, frontier="00_00"):
+def _kb_phase_proj(tmp_path, scenes, glossary_terms=(), entities=(), *, reconciled=True, frontier="00_00"):
     art = tmp_path / "artifacts"
     import csv as _csv
     import io as _io
@@ -644,29 +644,29 @@ def _fase0_proj(tmp_path, scenes, glossary_terms=(), entities=(), *, reconciled=
     return tmp_path
 
 
-def test_fase0_clean_cand_strips_noise():
-    assert fase0._clean_cand("CARRY") == ""                  # ALL-CAPS grito
-    assert fase0._clean_cand("AARGH OW") == ""
-    assert fase0._clean_cand("M-Master Haku") == "Haku"      # gagueira + titulo de borda
-    assert fase0._clean_cand("The Mystery Twins") == "Mystery Twins"  # stopword de borda aparada
-    assert fase0._clean_cand("Sword of Truth") == "Sword of Truth"    # stopword INTERIOR mantida
+def test_kb_phase_clean_cand_strips_noise():
+    assert kb_phase._clean_cand("CARRY") == ""                  # ALL-CAPS grito
+    assert kb_phase._clean_cand("AARGH OW") == ""
+    assert kb_phase._clean_cand("M-Master Haku") == "Haku"      # gagueira + titulo de borda
+    assert kb_phase._clean_cand("The Mystery Twins") == "Mystery Twins"  # stopword de borda aparada
+    assert kb_phase._clean_cand("Sword of Truth") == "Sword of Truth"    # stopword INTERIOR mantida
 
 
-def test_fase0_covered_titles_and_plural():
-    kb = fase0._kb_blob_from(["Haku", "Ukon", "Cohort", "Oshtor"], [])
-    assert fase0._covered("Master Haku", kb)                 # titulo + nome coberto
-    assert fase0._covered("Ukon Cohorts", kb)                # plural casa singular 'Cohort'
-    assert fase0._covered("Oshtor", kb)
-    assert not fase0._covered("Mystery Twins", kb)
+def test_kb_phase_covered_titles_and_plural():
+    kb = kb_phase._kb_blob_from(["Haku", "Ukon", "Cohort", "Oshtor"], [])
+    assert kb_phase._covered("Master Haku", kb)                 # titulo + nome coberto
+    assert kb_phase._covered("Ukon Cohorts", kb)                # plural casa singular 'Cohort'
+    assert kb_phase._covered("Oshtor", kb)
+    assert not kb_phase._covered("Mystery Twins", kb)
 
 
-def test_fase0_discover_classifies(tmp_path):
-    root = _fase0_proj(
+def test_kb_phase_discover_classifies(tmp_path):
+    root = _kb_phase_proj(
         tmp_path,
         {"ch_77_01": ["Oshtor met the Mystery Twins.", "The Ukon Cohorts marched. CARRY on."],
          "ch_77_02": ["Look, the Mystery Twins again!", "The Imperial Guard stood firm."]},
         glossary_terms=["Oshtor", "Ukon", "Cohort"])
-    d = fase0.discover(root, "77")
+    d = kb_phase.discover(root, "77")
     cov = {r["cand"] for r in d["covered"]}
     blk = {r["cand"] for r in d["block"]}
     assert "Ukon Cohorts" in cov and "Oshtor" in cov         # cobertos (plural/nome)
@@ -675,29 +675,29 @@ def test_fase0_discover_classifies(tmp_path):
     assert "CARRY" not in (blk | {r["cand"] for r in d["gap"]})  # grito filtrado
 
 
-def test_fase0_coverage_blocks_then_passes(tmp_path):
+def test_kb_phase_coverage_blocks_then_passes(tmp_path):
     base = {"ch_77_01": ["Oshtor met the Mystery Twins."],
             "ch_77_02": ["The Mystery Twins fled."]}
-    root = _fase0_proj(tmp_path, base, glossary_terms=["Oshtor"])
-    cov = fase0.coverage(root, "77")
+    root = _kb_phase_proj(tmp_path, base, glossary_terms=["Oshtor"])
+    cov = kb_phase.coverage(root, "77")
     assert any("Mystery Twins" in p for p in cov["problems"])  # bloqueia: termo recorrente fora da KB
 
-    root2 = _fase0_proj(tmp_path / "ok", base, glossary_terms=["Oshtor", "Mystery Twins"])
-    assert fase0.coverage(root2, "77")["problems"] == []      # agora coberto -> passa
+    root2 = _kb_phase_proj(tmp_path / "ok", base, glossary_terms=["Oshtor", "Mystery Twins"])
+    assert kb_phase.coverage(root2, "77")["problems"] == []      # agora coberto -> passa
 
-    root3 = _fase0_proj(tmp_path / "unrec", base, glossary_terms=["Oshtor", "Mystery Twins"],
+    root3 = _kb_phase_proj(tmp_path / "unrec", base, glossary_terms=["Oshtor", "Mystery Twins"],
                         reconciled=False)
-    assert any("reconciled" in p for p in fase0.coverage(root3, "77")["problems"])
+    assert any("reconciled" in p for p in kb_phase.coverage(root3, "77")["problems"])
 
 
-def test_fase0_apply_frontier_advances_only(tmp_path):
-    root = _fase0_proj(tmp_path, {"ch_77_01": ["Hi."], "ch_77_03": ["Bye."]}, frontier="77_01")
-    assert fase0.apply_frontier(root, "77") == "77_03"        # avanca p/ ultimo sfx
+def test_kb_phase_apply_frontier_advances_only(tmp_path):
+    root = _kb_phase_proj(tmp_path, {"ch_77_01": ["Hi."], "ch_77_03": ["Bye."]}, frontier="77_01")
+    assert kb_phase.apply_frontier(root, "77") == "77_03"        # avanca p/ ultimo scene_id
     assert '"kb_frontier": "77_03"' in (root / "project.json").read_text("utf-8")
-    assert fase0.apply_frontier(root, "77") == "77_03"        # idempotente, nao regride
+    assert kb_phase.apply_frontier(root, "77") == "77_03"        # idempotente, nao regride
     # nunca regride: fronteira ja adiante
-    root2 = _fase0_proj(tmp_path / "ahead", {"ch_77_01": ["Hi."]}, frontier="99_00")
-    assert fase0.apply_frontier(root2, "77") == "99_00"
+    root2 = _kb_phase_proj(tmp_path / "ahead", {"ch_77_01": ["Hi."]}, frontier="99_00")
+    assert kb_phase.apply_frontier(root2, "77") == "99_00"
 
 
 # ------------------------------- governanca -----------------------------------

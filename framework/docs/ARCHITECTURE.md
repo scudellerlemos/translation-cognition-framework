@@ -37,7 +37,7 @@ run_scene(cena)
   1. context_pack  → pacote LIMITADO (doutrina cacheável + glossário-subset + voice cards dos
                      falantes + decisões relevantes + hits de TM + linhas+budgets) → scene_prompt.md
   2. translate ............................► [IA: Sonnet]   (única parte não-determinística)
-  3. build_plan_chapter (valida cobertura/tokens/risk_notes) → approved_<sfx>.csv
+  3. build_plan_chapter (valida cobertura/tokens/risk_notes) → approved_<scene_id>.csv
   4. high? back_translate .................► [IA: Opus]     (verificação de alto risco)
   5. verify_chapter (round-trip byte-idêntico + ponteiros within-file)
   6. checkpoint (run_state.json) + state_index (TM cresce)

@@ -6,7 +6,7 @@ chamada" do "o que o pipeline faz", para que o mesmo `run_scene` rode com qualqu
 ## Contrato
 
 ```
-translate(root, scene, *, backend, model)        -> {status, path|prompt, sfx, n_lines}
+translate(root, scene, *, backend, model)        -> {status, path|prompt, scene_id, n_lines}
 back_translate(root, scene, high_lines, *, backend, model) -> {status, path|prompt, reviewed}
 ```
 
@@ -18,7 +18,7 @@ Dois papéis de IA, e **apenas** estes:
 
 ### (a) `in-session` — caminho ASSINATURA (default)
 Não chama rede. Garante o `scene_prompt.md` (auto-contido e **limitado**) e checa se o modelo do chat
-já produziu `translations_<sfx>.json`:
+já produziu `translations_<scene_id>.json`:
 - ausente → `status: awaiting` (o operador responde o prompt numa **sessão limpa**; como o prompt é
   pequeno, o contexto nunca acumula → sem estouro, sem conta de API).
 - presente → `status: ready` (segue para as gates determinísticas).
@@ -42,7 +42,7 @@ Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic`/`ANTHROPIC_A
 framework (carregado por `model._load_dotenv`; `.env` está no `.gitignore`, ver `.env.example`).
 Driver de capítulo: `run_chapter.py <projeto> <cap> --backend api` (loop de cenas fora do chat,
 resumível, para na 1ª falha). Métricas por cena em `artifacts/metrics.jsonl` (ver `OBSERVABILITY.md`).
-Benchmark de modelo: `bench_translate.py` grava saída paralela `translations_<sfx>.<tag>.json` sem
+Benchmark de modelo: `bench_translate.py` grava saída paralela `translations_<scene_id>.<tag>.json` sem
 tocar nas aprovadas.
 
 ## Matriz de modelos (defaults; ver skill `claude-api`)
