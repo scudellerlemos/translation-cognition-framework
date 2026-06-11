@@ -29,7 +29,7 @@ A proporção a mirar é **tradução : governança ≈ 70:30 ou melhor** (gover
 | preservação de tokens/tags | `validate.py` | regressão de formatação |
 | consistência terminológica | TM/glossário hits vs divergências no pack | drift de termo |
 | **taxa de retrabalho** | linhas reprovadas no QA / total | qualidade do 1º passe |
-| back-translation pass-rate | `back_translation_<sfx>.json` (pass/revise) | risco real pego |
+| back-translation pass-rate | `back_translation_<scene_id>.json` (pass/revise) | risco real pego |
 | resíduo T4 | `verify_chapter` | overflow não resolvido (deve ser 0) |
 
 ## Sinais de saúde da arquitetura (o que validar)

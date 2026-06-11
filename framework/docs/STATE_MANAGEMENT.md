@@ -20,8 +20,8 @@ O harness opera sem usar a janela da LLM como memória. Esta é a separação de
 | Estado | Arquivo | Vida |
 |---|---|---|
 | Pacote de contexto | `artifacts/<cena>/pack.json` + `scene_prompt.md` | recomputável de `state/` + dialogs |
-| Plano da cena | `artifacts/<cena>/translation_plan_<sfx>.json` | derivado de translations + dialogs |
-| Logs de QA | `micro_qa_log.json`, `back_translation_<sfx>.json` | por lote/cena |
+| Plano da cena | `artifacts/<cena>/translation_plan_<scene_id>.json` | derivado de translations + dialogs |
+| Logs de QA | `micro_qa_log.json`, `back_translation_<scene_id>.json` | por lote/cena |
 
 Regra: se um estado é **derivável** de outros, ele é temporário (regenerar > guardar). A TM, os voice
 cards e o decision_index são derivados (de `translation_plan*`, `tone_analysis.md`, `decision_log.md`),

@@ -55,7 +55,7 @@ framework/
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
   runtime/          ← context_pack, state_index, model, run_scene (harness; cena = job stateless)
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  docs/             ← ARCHITECTURE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, ROADMAP, adr/
+  docs/             ← ARCHITECTURE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
 
