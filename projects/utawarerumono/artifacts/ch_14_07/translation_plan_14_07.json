@@ -1,0 +1,298 @@
+{
+  "scene_group": "14_07",
+  "lines": [
+    {
+      "offset": "0x900d2",
+      "text_source": "Who... Who is...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Haku tenta identificar uma presença vaga, mal consegue formular a pergunta",
+      "risk_level": "medium",
+      "base_translation": "Quem... Quem é...?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação obrigatória; não articular demais"
+    },
+    {
+      "offset": "0x900e4",
+      "text_source": "Someone... Somebody's calling me...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Percebe alguém o chamando, confuso",
+      "risk_level": "medium",
+      "base_translation": "Alguém... Alguém me chamando...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter tom sonâmbulo/fragmentado"
+    },
+    {
+      "offset": "0x90108",
+      "text_source": "...certain?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, definitivo",
+      "intent": "Questiona se a certeza é absoluta — tom ameaçador/profético",
+      "risk_level": "high",
+      "base_translation": "...tem certeza?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha curta e dúbia; não resolver quem fala nem contexto; preservar ambiguidade"
+    },
+    {
+      "offset": "0x90114",
+      "text_source": "You're absolutely certain of this?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio",
+      "intent": "Reforça a pergunta sobre certeza absoluta",
+      "risk_level": "high",
+      "base_translation": "Você tem absoluta certeza disso?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Deve soar frio/definitivo; não caloroso; preservar dubiedade"
+    },
+    {
+      "offset": "0x90137",
+      "text_source": "I see. I'd hoped it wasn't true, but this...\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, contido, levemente pesaroso",
+      "intent": "Aceita a informação com relutância velada — tom dúbio",
+      "risk_level": "high",
+      "base_translation": "Entendo. Esperava que não fosse verdade, mas isso...\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preservar ambiguidade; não revelar identidade/vínculo; token \\n obrigatório"
+    },
+    {
+      "offset": "0x90166",
+      "text_source": "If this is true, we're in a dangerous situation.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, analítico, ameaçador",
+      "intent": "Conclui que a situação é perigosa",
+      "risk_level": "high",
+      "base_translation": "Se for verdade, estamos em uma situação perigosa.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Soar definitivo sem calor; não resolver contexto"
+    },
+    {
+      "offset": "0x90197",
+      "text_source": "Try... do... -thing risky.\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, imperativo velado",
+      "intent": "Avisa/ordena que não tome riscos — linha parcialmente corrompida no source",
+      "risk_level": "high",
+      "base_translation": "Não... faça... nada arriscado.\\n",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Source corrompido ('Try... do... -thing risky'); reconstruir sentido mais provável ('não faça nada arriscado'); token \\n obrigatório; sinalizar origem corrompida"
+    },
+    {
+      "offset": "0x901b4",
+      "text_source": "...is worried about you, too.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, levemente velado",
+      "intent": "Revela que alguém também está preocupado com Haku",
+      "risk_level": "high",
+      "base_translation": "...também está preocupado com você.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Não resolver quem é 'alguém' — preservar ambiguidade de identidade/vínculo (controle de spoiler)"
+    },
+    {
+      "offset": "0x901d2",
+      "text_source": "Yeah, I know.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "resignado, semi-consciente",
+      "intent": "Acusa recebimento de forma apagada",
+      "risk_level": "low",
+      "base_translation": "Sim, eu sei.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x901e0",
+      "text_source": "Woman",
+      "speaker": "sistema",
+      "entities_present": [
+        "sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Mulher",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x901e6",
+      "text_source": "It'll be all right. I don't plan on doing\\n",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "fragmentado, tentando tranquilizar",
+      "intent": "Tenta afirmar que ficará bem, que não fará nada imprudente — frase quebrada",
+      "risk_level": "medium",
+      "base_translation": "Vai ficar tudo bem. Não pretendo fazer\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter fragmentação natural; token \\n obrigatório"
+    },
+    {
+      "offset": "0x90212",
+      "text_source": "anything stupid.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "fragmentado, conclusivo",
+      "intent": "Conclui a promessa de não fazer nada estúpido",
+      "risk_level": "low",
+      "base_translation": "nada de estúpido.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x90223",
+      "text_source": "Girl",
+      "speaker": "sistema",
+      "entities_present": [
+        "sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Garota",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x90228",
+      "text_source": "That's none of your business! Who--",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, levemente irritado",
+      "intent": "Reage defensivamente a quem está interferindo — pergunta quem é",
+      "risk_level": "medium",
+      "base_translation": "Não é da sua conta! Quem--",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter tom cortado/abrupto; traço de torpor"
+    },
+    {
+      "offset": "0x9024c",
+      "text_source": "Ah... it's strange, but...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "sonhador, confuso",
+      "intent": "Nota algo estranho no que sente",
+      "risk_level": "low",
+      "base_translation": "Ah... é estranho, mas...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x90267",
+      "text_source": "This feels really... nostalgic?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "sonhador, melancólico",
+      "intent": "Sensação de nostalgia inexplicável",
+      "risk_level": "low",
+      "base_translation": "Isso parece muito... nostálgico?",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x90287",
+      "text_source": "Ah... Who are... Who are you...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Tenta identificar a figura diante de si",
+      "risk_level": "high",
+      "base_translation": "Ah... Quem é... Quem é você...?",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Não revelar identidade da figura (controle de spoiler — Mulher/Homem genérico); preservar fragmentação"
+    },
+    {
+      "offset": "0x902a8",
+      "text_source": "Who... are... these people...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Tenta identificar as figuras ao redor",
+      "risk_level": "high",
+      "base_translation": "Quem... são... essas pessoas...?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Não resolver identidade das figuras; usar rótulo genérico implícito; preservar fragmentação"
+    }
+  ],
+  "total_lines": 18,
+  "high_lines": 8,
+  "medium_lines": 4,
+  "needs_review": [],
+  "plan_version": "chapter-14_07-v1"
+}
