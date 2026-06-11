@@ -529,16 +529,32 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
 # caminho interativo (streaming, com retry/escalonamento). Quem faz fitting (verify) continua sendo cada
 # cena no run_scene. Determinismo da montagem do request isolado em _translate_params (testavel sem rede).
 
-def _translate_params(pack, model):
+def _coverage_note(missing, bad_par) -> str:
+    """Nota CORRETIVA p/ a re-rodada: quais offsets faltam (incluir TODOS) e quais tem paridade de `\\n`
+    errada (casar EXATO). Vazia se nada a corrigir. Mesma redacao da retry interativa (_api_translate) —
+    e o que faz a cena de narracao CONVERGIR no batch em vez de cair pro interativo full-price."""
+    if not missing and not bad_par:
+        return ""
+    note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
+    if missing:
+        note += f"- Faltam estes offsets — INCLUA todos: {sorted(missing)[:40]}\n"
+    if bad_par:
+        note += ("- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
+                 f"quantidade e posicao do token): {sorted(bad_par)[:30]}\n")
+    return note
+
+
+def _translate_params(pack, model, note=""):
     """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
-    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada)."""
+    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
+    `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
     reuse = _select_reuse(pack, enabled=True)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)
-    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE
+    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE + note
     params = {
         "model": model, "max_tokens": MAX_OUTPUT_TOKENS, "system": system,
         "messages": [{"role": "user", "content": base_user}],
@@ -662,7 +678,16 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                                 and (want is None or r["offset"] in want)]
                 if not sub["lines"]:
                     continue
-                params, _reuse, _novel = _translate_params(sub, tmodel)
+                # FEEDBACK CORRETIVO na re-rodada (rnd>0): sem ele, o batch re-submetia o MESMO prompt e
+                # repetia o erro de paridade `\n` (cenas de narracao nunca convergiam -> coverage_failed ->
+                # interativo full-price). Com a nota dos offsets faltando/paridade-errada DESTE tier, a
+                # re-rodada do batch corrige como o interativo faz.
+                note = ""
+                if rnd > 0:
+                    sub_offs = {r["offset"] for r in sub["lines"]}
+                    note = _coverage_note([o for o in miss if o in sub_offs],
+                                          [o for o in badpar if o in sub_offs])
+                params, _reuse, _novel = _translate_params(sub, tmodel, note=note)
                 if params is None:                        # tudo reuso nesse tier -> sem request
                     continue
                 cid = f"{scene}__{tier}"                  # separador `__`: a Batch API exige custom_id ^[a-zA-Z0-9_-]{1,64}$ (sem @)

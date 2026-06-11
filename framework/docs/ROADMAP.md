@@ -66,6 +66,21 @@ e cruza com `run_state.json` p/ marcar gasto **desperdiçado** (cenas que não f
 agora vem do ledger (soma retries+escalonamento). _O ledger começa do zero nesta instrumentação — runs
 anteriores do cap.12 não estão nele (não há como recuperar honestamente do resumo subcontado)._
 
+**Run viva do cap.14 (1ª medição real de batch/tiering/back-batch — "codado ≠ medido"):**
+- 🐛 **bug do tiering (corrigido):** `custom_id = scene@@tier` é inválido na Batch API
+  (`^[a-zA-Z0-9_-]{1,64}$`) → o batch dava **400** e caía 100% pro interativo **full-price**. Os unit
+  tests não pegavam (o fake aceitava qualquer id). Fix: `@@`→`__`; o fake agora **valida o padrão**.
+- ✅ **back-batch −50% Opus comprovado VIVO** (cap.14, 9 cenas, 5 revisadas num batch). Funciona.
+- ⚠️→✅ **batch −50% no translate era frágil:** cena grande de narração (14_10, 373 linhas) dava
+  `coverage_failed` porque a re-rodada do batch re-submetia **sem o feedback corretivo** do interativo →
+  repetia o erro de paridade `\n` e queimava as rodadas. Fix: `_coverage_note` cabeia a nota
+  (missing/paridade) nas re-rodadas do batch, como o `_api_translate`. **Falta a run viva do próximo cap.
+  p/ confirmar a convergência** (o fake não prova convergência, só que a nota é injetada).
+- ⚠️ **tiering ainda SEM medição:** cap.14 = narração (quase tudo multi-linha → Sonnet); o Haiku ficou
+  inalterado. Precisa de um cap. de **diálogo** (single-line → Haiku) p/ medir o ganho.
+- 💰 **custo real medido:** cap.14 ≈ **$8,5 full-price** (~2400 linhas) → ~$117/33k **sem** o desconto do
+  batch. O **$36/jogo era otimista** e depende do batch −50% efetivamente convergir (agora corrigido).
+
 ### P1.6 — robustez de conector p/ cenas de binário apertado (BACKLOG pós-produção)
 > Disparado pela ch_12_15: binário multi-BIN com pouco espaço de realocação → 2 linhas (+4/+5 bytes)
 > caem em RELOC_cont → ponteiros fora-do-arquivo. As traduções estão boas; o conector é que não cabe.
