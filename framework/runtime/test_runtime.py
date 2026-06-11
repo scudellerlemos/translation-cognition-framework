@@ -540,6 +540,84 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path):
     assert model.MODEL_TRANSLATE_CHEAP not in fb2.models
 
 
+class _FakeParityByFullness:
+    """Fake que imita a FALHA REAL: o modelo so acerta a paridade de `\\n` quando recebe a cena
+    INTEIRA (e a 2a vez, apos a nota); se recebe um FRAGMENTO (subconjunto de offsets), devolve
+    resposta degenerada (paridade ruim) — como o Sonnet fazia ao vivo quando a re-rodada mandava
+    so as linhas ruins mas pedia 'gere a cena COMPLETA'. render_prompt embute os offsets pedidos
+    p/ o fake saber se o request e cheio ou fragmento. So importam as linhas MULTI (com token)."""
+    def __init__(self, scene_lines, easy):
+        self.scene_lines = scene_lines      # {scene: [offsets multi-linha da cena]}
+        self.easy = easy                    # offsets que ja saem BONS na rodada 0 (-> want vira subconjunto)
+        self._reqs = []
+        self.create_count = 0
+    def create(self, requests):
+        self.create_count += 1
+        self._reqs = [(r["custom_id"], r["params"]["messages"][0]["content"]) for r in requests]
+        return _types.SimpleNamespace(id="b", processing_status="x")
+    def retrieve(self, _id):
+        return _types.SimpleNamespace(processing_status="ended")
+    def results(self, _id):
+        tok = context_pack.TOKEN
+        out = []
+        for cid, content in self._reqs:
+            scene = cid.split("__", 1)[0]
+            asked = [o for o in self.scene_lines.get(scene, []) if o in content]
+            full = set(asked) == set(self.scene_lines.get(scene, []))
+            lines = []
+            for o in asked:
+                # offset 'easy' sai bom logo na rodada 0 (entao a re-rodada antiga manda so os 'hard' =
+                # FRAGMENTO estrito). offset 'hard' so vira bom numa RE-rodada com request CHEIO (full) —
+                # e o que o fix garante. Re-rodada com fragmento -> 'hard' continua ruim -> nunca converge.
+                good = (o in self.easy) or (self.create_count >= 2 and full)
+                lines.append({"offset": o, "speaker": "X", "tone_register": "n", "intent": "i",
+                              "risk_level": "low", "risk_notes": "",
+                              "t": (f"a{tok}b" if good else "sem quebra")})
+            msg = _fake_msg(json.dumps({"lines": lines}))
+            out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
+                type="succeeded", message=msg)))
+        return iter(out)
+
+
+def test_batch_reround_resends_full_scene_and_converges(monkeypatch, tmp_path):
+    # REGRESSAO (cap.15 ao vivo): a re-rodada do batch mandava so o FRAGMENTO ruim mas a nota pedia
+    # 'gere a cena COMPLETA' -> o modelo degenerava -> coverage_failed -> interativo full-price (so
+    # ~20% do gasto saiu em batch). O fix: re-rodada re-manda a cena INTEIRA (casa a nota) + merge
+    # best-parity. Este fake so devolve paridade boa p/ request CHEIO; com o fix a cena CONVERGE.
+    tok = context_pack.TOKEN
+    (tmp_path / "artifacts" / "ch_95_01").mkdir(parents=True)
+    packs = {"ch_95_01": {"scene_id": "95_01", "tm_exact": [],
+                          "lines": [{"offset": "0xa", "source": f"L1{tok}a"},
+                                    {"offset": "0xb", "source": f"L2{tok}b"},
+                                    {"offset": "0xc", "source": f"L3{tok}c"}]}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    # render_prompt EMBUTE os offsets pedidos -> o fake distingue cheio de fragmento
+    monkeypatch.setattr(context_pack, "render_prompt",
+                        lambda pack, carta="": "PROMPT " + " ".join(r["offset"] for r in pack["lines"]))
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    # 0xa ja sai bom na rodada 0 -> a re-rodada (codigo antigo) mandava so {0xb,0xc} = FRAGMENTO estrito
+    fb = _FakeParityByFullness({"ch_95_01": ["0xa", "0xb", "0xc"]}, easy={"0xa"})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    st = model.batch_translate(tmp_path, ["ch_95_01"], poll_seconds=0, max_rounds=3)
+    assert st["ch_95_01"] == "written", "com o fix (re-manda cena inteira) o batch CONVERGE (-50% capturado)"
+    d = json.loads((tmp_path / "artifacts" / "ch_95_01" / "translations_95_01.json").read_text("utf-8"))
+    bad = [o for o, v in d["lines"].items() if v["t"].count(tok) != packs["ch_95_01"]["lines"]
+           [["0xa", "0xb", "0xc"].index(o)]["source"].count(tok)]
+    assert bad == [], "paridade final correta em todas as linhas"
+
+
+def test_merge_best_parity_keeps_good_line(monkeypatch):
+    # uma re-rodada que REGRIDE uma linha ja boa nao pode desfazer o ganho (o dict.update cego perdia)
+    tok = context_pack.TOKEN
+    srcmap = {"0x1": f"a{tok}b"}
+    dest = {"0x1": {"t": f"x{tok}y"}}                         # ja BOA (1 token, como a fonte)
+    model._merge_best_parity(dest, {"0x1": {"t": "sem quebra"}}, srcmap)   # nova RUIM (0 token)
+    assert dest["0x1"]["t"] == f"x{tok}y", "linha boa preservada contra regressao"
+    model._merge_best_parity(dest, {"0x1": {"t": f"p{tok}q"}}, srcmap)     # nova tb boa -> usa a nova
+    assert dest["0x1"]["t"] == f"p{tok}q"
+
+
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
