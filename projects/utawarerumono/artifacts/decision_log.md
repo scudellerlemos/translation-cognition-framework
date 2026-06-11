@@ -295,7 +295,7 @@ A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **
 
 **Razão da decisão final:**
 O teste in-game com pangrama pt-BR (`áéíóú âêô ãõ ç ÁÉÍ ÃÕ`) renderizou os acentos como `@`
-(evidência: `artifacts/char1.png`, `artifacts/char2.png`). A fonte do jogo não possui os glifos.
+(evidência: `artifacts/evidence/char1.png`, `artifacts/evidence/char2.png`). A fonte do jogo não possui os glifos.
 
 **Alternativas consideradas:**
 - Expandir a fonte (atlas + mapa de chars) — rejeitada nesta fase: esforço alto (asset não está no
@@ -477,7 +477,7 @@ do próprio arquivo**, o arquivo **cresce**, e a tabela Pack (offset/size) é **
 reconstruindo o container. Texto in_place permanece in_place.
 
 **Evidência (teste in-game do usuário — Steam, Mask of Deception, abertura `11_01_000S`):**
-Prints `artifacts/Fasea1..11.png`. Padrão, cruzado com `reinsertion_report.md`:
+Prints `artifacts/evidence/Fasea1..11.png`. Padrão, cruzado com `reinsertion_report.md`:
 
 | Linha | Tier no build | Resultado in-game |
 |---|---|---|
@@ -510,7 +510,7 @@ de que a pipeline SDD → conector → binário funciona em título comercial.
 **✅ GATE APROVADO IN-GAME (2026-06-08):** patch `--validate-one 0x3442` testado no jogo —
 "ERRO DE SISTEMA." (a mesma linha que antes virava `@@@@`) **exibiu corretamente** e o jogo
 **avançou normalmente** para a cena seguinte (tenda, Kuon), sem travar. Evidência:
-`artifacts/testeplanob.png` (linha relocada) e `artifacts/testeplanob_avanco.png` (continuidade).
+`artifacts/evidence/testeplanob.png` (linha relocada) e `artifacts/evidence/testeplanob_avanco.png` (continuidade).
 Conclusão: a relocação INTRA-ARQUIVO + reescrita do Pack é a estratégia correta e está validada
 in-game. Liberada a run completa das 1025 linhas. **Revisão necessária:** não.
 

@@ -3,7 +3,7 @@
 - Round-trip self-test: OK
 - Saída: output/ScriptEvent.sdat (mesmo nome/extensão do input) — 3290144 bytes (original 3274096; +16048)
 - Patch: output/ScriptEvent.sdat.ips
-- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)
+- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência artifacts/evidence/char1.png e char2.png)
 - Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.
 - Distribuição por tier: RELOC_head=442, T1_in_place=583
 - Overflows não resolvidos (T4): 0

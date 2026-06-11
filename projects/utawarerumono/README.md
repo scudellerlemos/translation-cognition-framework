@@ -17,7 +17,7 @@ O framework foi rodado de ponta a ponta no jogo real (Steam), nas **2 primeiras 
 | **Gate de charset** | ❌ `false` (confirmado in-game: acentos viram `@`) → **transliteração na gravação** (acento→ASCII); tradução canônica mantém os acentos |
 | **Passos 01–07 — cognitivo** | artefatos reais gerados: `entities.csv`, `glossary.csv`, `research_log.md` (com gate de cobrança ao usuário), `universe_knowledge_base.md`, `translation_plan.json`, `micro_qa_log.json`, `qa_report.md` |
 | **Passo 08 — reinserção** | `reinsert.py` → **`output/ScriptEvent.sdat`** + `.ips`. Tiers: T1=595, RELOC=430, **resíduo T4=0**; 3 arquivos crescidos; **425/425 ponteiros relocados resolvem dentro do arquivo** |
-| **Gate in-game** | ✅ **validado** — pt-BR exibe no jogo (`artifacts/Fasea*.png`); a linha relocada pelo Plano B exibe e o jogo avança sem travar (`testeplanob.png`, `testeplanob_avanco.png`) |
+| **Gate in-game** | ✅ **validado** — pt-BR exibe no jogo (`artifacts/evidence/Fasea*.png`); a linha relocada pelo Plano B exibe e o jogo avança sem travar (`artifacts/evidence/testeplanob.png`, `artifacts/evidence/testeplanob_avanco.png`) |
 
 **Aprendizados** em [`artifacts/decision_log.md`](artifacts/decision_log.md) e [`artifacts/extraction_log.md`](artifacts/extraction_log.md).
 Destaques: **modelo de ponteiro é FILE-RELATIVO** (não absoluto — correção crítica); **EOF-append
