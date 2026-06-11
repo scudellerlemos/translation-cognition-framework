@@ -214,6 +214,16 @@ def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     assert calls == ["ch_99_02", "ch_99_03"], "ch_99_01 ja verified deve ser pulado; resto em ordem"
 
 
+def test_run_survives_non_utf8_subprocess_output():
+    # REGRESSAO: um filho que emite byte nao-utf-8 (acento cp1252 no console Windows) NAO pode quebrar
+    # a thread leitora do subprocess — era isso que derrubava o run_chapter no meio da run e deixava o
+    # chip da UI preso (sem saida limpa). _run usa errors='replace' -> nunca quebra; ASCII fica intacto.
+    code = r"import sys; sys.stdout.buffer.write(b'fora do arquivo \xed\n')"
+    rc, out = run_scene._run([sys.executable, "-c", code])
+    assert rc == 0
+    assert "fora do arquivo" in out.lower(), "match ASCII deve sobreviver; byte ruim vira replacement"
+
+
 def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
     root = _fake_chapter(tmp_path, ("99_01", "99_02"))
     monkeypatch.setattr(run_chapter.RS, "run_scene",
