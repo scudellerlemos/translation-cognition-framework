@@ -3,13 +3,15 @@
 **Status:** reconciled
 **human_input:** provided (usuário entregou a Fandom Wiki como fonte — SRC-002)
 **Data de reconciliação:** 2026-06-08
-**Fronteira de spoiler:** Cap. 12 (cenas 12_01–12_17). Estendida de 11_01–11_02 em 2026-06 (delta cap.12).
-Cobre, no nível de INTRODUÇÃO: vida na vila/estalagem, comédia do moinho, e a chegada do grupo do Ukon —
-**Ukon** (guerreiro que faz amizade com Haku), **Maroro** (mago erudito cômico), a **Coorte do Ukon**,
-os **Gigiri**/**Boro-Gigiri** (monstros venenosos), **Yamato** (nação) e o **Mikado** (soberano). Mais a
-cena-tutorial de sonho (figuras 'Woman'/'Man' como 'Mestre'). Pré-reveal de tudo além do cap.12.
+**Fronteira de spoiler:** Cap. 13 (cenas 13_01–13_09). Estendida do cap.12 em 2026-06 (delta cap.13;
+reconciliação corpus cap.13 + Fandom SRC-002). Cobre, no nível de INTRODUÇÃO: tudo do cap.12 + o arco do
+cap.13 — **Rulutieh** (princesa de Kujyuri, filha de **Ozen** dos Oito Generais-Pilar; tímida, gosta de
+BL), sua ave **Cocopo** (Hororon gigante), os foras-da-lei **Nosuri**/**Ougi**, o criminoso **Moznu**, e —
+**reveal ratificado em ch_13_08** — que **Ukon = Oshtor**, o General da Direita / Imperial Guard. Pré-reveal
+de tudo além do cap.13. **Twist final de Oshtor (fim de jogo) permanece em quarentena (CRÍTICO).**
 **Seções ignoradas intencionalmente (quarentena de spoiler — NÃO incorporar ao KB):**
-- **Identidade verdadeira de Ukon** (reveal de arco posterior) — no cap.12 ele é personagem por si só.
+- **Destino de Oshtor / transferência de máscara** (twist de fim de jogo) — quarentenado (ratificado).
+- ~~Identidade verdadeira de Ukon~~ → **revelada em ch_13_08 (Ukon = Oshtor)**; agora dentro da fronteira.
 - **Identidade pessoal do Mikado** (reveal de fim de jogo) — no cap.12 é só o soberano/título.
 - Identidades das figuras de memória ('Woman'/'Man'), natureza do 'awakening process'/enquadramento
   sci-fi, arcos políticos posteriores, finais — todos além da fronteira.
