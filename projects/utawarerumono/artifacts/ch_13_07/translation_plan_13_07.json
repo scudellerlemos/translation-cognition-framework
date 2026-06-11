@@ -1,0 +1,346 @@
+{
+  "scene_group": "13_07",
+  "lines": [
+    {
+      "offset": "0x7486f",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74d66",
+      "text_source": "Well looky here. Looks like we've got a fresh\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "fanfarrão, provocador",
+      "intent": "anunciar que um otário entrou na armadilha deles",
+      "risk_level": "medium",
+      "base_translation": "Olha só. Parece que temos um novato\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom fanfarrão; linha quebrada deve fluir para a próxima"
+    },
+    {
+      "offset": "0x74d96",
+      "text_source": "idiot, waltzing right in.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "escarnecedor",
+      "intent": "completar a provocação — idiota entrando de bobeira",
+      "risk_level": "low",
+      "base_translation": "idiota, entrando sem pensar.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74db0",
+      "text_source": "Huh. These next guys seem pretty sure of\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, avaliando",
+      "intent": "notar que os próximos inimigos estão cheios de si",
+      "risk_level": "low",
+      "base_translation": "Hm. Esses próximos parecem bem seguros de\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74ddb",
+      "text_source": "themselves, but they don't look so tough...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, avaliando",
+      "intent": "avaliar os inimigos como confiantes mas não intimidadores",
+      "risk_level": "low",
+      "base_translation": "mas não parecem tão difíceis...",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74e07",
+      "text_source": "Hah! Talk big all you want. We've got a trump card\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "ameaçador, fanfarrão",
+      "intent": "revelar que têm uma carta na manga",
+      "risk_level": "low",
+      "base_translation": "Hah! Fale o que quiser. Temos um trunfo\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74e3c",
+      "text_source": "up our sleeve, see?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "provocador",
+      "intent": "completar — a carta está na manga",
+      "risk_level": "low",
+      "base_translation": "na manga, tá bom?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74e50",
+      "text_source": "A trump card...? Gah!? You've trained gigiri to\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "alarmado, incredulo",
+      "intent": "reconhecer o Gigiri treinado como arma — choque",
+      "risk_level": "medium",
+      "base_translation": "Um trunfo...? Putz!? Treinaram Gigiri pra\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "primeira menção de Gigiri em combate; manter termo exato do glossário"
+    },
+    {
+      "offset": "0x74e82",
+      "text_source": "fight for you...!? Are you insane!?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, incrédulo",
+      "intent": "questionar a sanidade de usar Gigiri como soldado",
+      "risk_level": "low",
+      "base_translation": "lutar por vocês...!? Estão loucos!?",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74ea6",
+      "text_source": "Hahaha! What do you think? Who's \"not so tough\"\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "triunfante, zombeteiro",
+      "intent": "virar a provocação de volta — quem não é tão durão agora?",
+      "risk_level": "low",
+      "base_translation": "Hahaha! O que acha? Quem é que \"não é tão durão\"\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74ed8",
+      "text_source": "now!? There's no way we're going to los--\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "triunfante, frase cortada abruptamente",
+      "intent": "declarar vitória certa — interrompido antes de terminar",
+      "risk_level": "medium",
+      "base_translation": "agora!? Não tem como a gente per--\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase cortada mid-word (los--) — preservar o corte abrupto"
+    },
+    {
+      "offset": "0x74f04",
+      "text_source": "GYAARGH!!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "grito de dor/agonia",
+      "intent": "grito de agonia ao ser atingido/derrotado",
+      "risk_level": "medium",
+      "base_translation": "AAAARGH!!",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia localizada para pt-BR: grito de dor aguda"
+    },
+    {
+      "offset": "0x74f0f",
+      "text_source": "...Y'know, for a dream, this is weirdly realistic.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, sonhador, meta",
+      "intent": "comentário resignado — o sonho é estranhamente realista",
+      "risk_level": "low",
+      "base_translation": "...Sabe, pra ser um sonho, isso é estranhamente realista.\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x74f44",
+      "text_source": "Whatever... I doubt I can get around this one.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, pragmático",
+      "intent": "aceitar que não tem como escapar desta situação",
+      "risk_level": "low",
+      "base_translation": "Deixa pra lá... Acho que não tem como fugir disso.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x7506d",
+      "text_source": "Rrrgh, how!? My plan was flawless...",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frustrado, incrédulo",
+      "intent": "lamentar que o plano perfeito falhou",
+      "risk_level": "low",
+      "base_translation": "Grr, como!? Meu plano era perfeito...",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x75092",
+      "text_source": "Don't think you've won just yet!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "ameaçador, desafiador",
+      "intent": "avisar que a batalha não acabou",
+      "risk_level": "low",
+      "base_translation": "Não pense que já ganhou!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x750b3",
+      "text_source": "You may have defeated me, but after this, there\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "ameaçador, profético",
+      "intent": "ameaçar com mais Gigiri por vir",
+      "risk_level": "medium",
+      "base_translation": "Pode ter me derrotado, mas depois disso virá\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "primeira ameaça de reforço com Gigiri; manter nome exato"
+    },
+    {
+      "offset": "0x750e5",
+      "text_source": "will surely be a second gigiri! And a third!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "ameaçador, escalando",
+      "intent": "continuar a ameaça — segundo e terceiro Gigiri",
+      "risk_level": "low",
+      "base_translation": "com certeza um segundo Gigiri! E um terceiro!\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x75114",
+      "text_source": "And a fourth!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "ameaçador",
+      "intent": "e um quarto Gigiri",
+      "risk_level": "low",
+      "base_translation": "E um quarto!",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x75122",
+      "text_source": "Holy shit, how many of these are gonna show up!?\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "exasperado, humor",
+      "intent": "reação cômica ao volume absurdo de inimigos",
+      "risk_level": "medium",
+      "base_translation": "Que inferno, quantos desses vão aparecer!?\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Holy shit' — adaptar para expressão de choque informal em pt-BR sem perder a força"
+    },
+    {
+      "offset": "0x75155",
+      "text_source": "Don't jinx it... No more nasty surprises, please...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exausto, nervoso, humor",
+      "intent": "pedir para não invocar mais problemas",
+      "risk_level": "low",
+      "base_translation": "Não chame o azar... Chega de surpresas ruins, por favor...",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 21,
+  "high_lines": 0,
+  "medium_lines": 6,
+  "needs_review": [],
+  "plan_version": "chapter-13_07-v1"
+}
