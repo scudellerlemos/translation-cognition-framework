@@ -5,11 +5,21 @@
       "id": "ukon_identity",
       "entity": "Ukon",
       "spoiler_level": "major",
-      "reveal": "beyond_frontier",
-      "fact": "A identidade verdadeira de Ukon (ele e mais do que um guerreiro espirituoso).",
+      "reveal": "13_08",
+      "fact": "Ukon e na verdade Oshtor, o General da Direita / Imperial Guard do Mikado. Reconhecido publicamente em ch_13_08 (0x77ef9, 'Could that be... Sir Oshtor?').",
       "triggers": ["Ukon"],
-      "pre_reveal": "Traduza as falas de/sobre Ukon como o personagem 'Ukon' por si so. NAO insinue outra identidade, patente oculta ou disfarce. Mantenha qualquer ambiguidade do original.",
-      "post_reveal": "(definir ao pesquisar o arco do reveal)"
+      "pre_reveal": "ANTES de 13_08: trate Ukon como mercenario espirituoso por si so. NAO insinue patente, nobreza, vinculo imperial nem o nome 'Oshtor'. Preserve a ambiguidade do original (que usa 'Ukon').",
+      "post_reveal": "A PARTIR de 13_08: a fonte passa a chama-lo 'Oshtor' (General da Direita); use o nome canonico Oshtor quando a fonte usar. Falas que ainda dizem 'Ukon' apos o reveal sao seguras (mesma pessoa, ja conhecida)."
+    },
+    {
+      "id": "oshtor_mask_twist",
+      "entity": "Oshtor (twist final)",
+      "spoiler_level": "critical",
+      "reveal": "beyond_frontier",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "triggers": ["Oshtor"],
+      "pre_reveal": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho.",
+      "post_reveal": "(reveal no fim do jogo — alem da fronteira; nao traduzido aqui)"
     },
     {
       "id": "mikado_identity",

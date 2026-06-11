@@ -23,6 +23,7 @@ Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [-
 from __future__ import annotations
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -43,7 +44,16 @@ def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
 
 
 def _run(cmd) -> tuple[int, str]:
-    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
+    # ROBUSTEZ (Windows): o filho (build_plan/verify) pode imprimir bytes nao-utf-8 (acentos cp1252 no
+    # console). Sem protecao, a thread leitora do subprocess quebrava com UnicodeDecodeError e derrubava
+    # o run_chapter NO MEIO da run (em background isso deixava o chip da UI preso, sem saida limpa).
+    # Dupla defesa: (1) PYTHONIOENCODING/PYTHONUTF8 forcam o filho a EMITIR utf-8; (2) errors='replace'
+    # como rede de seguranca -> nunca quebra. Os matches do run_scene ('fora do arquivo' etc.) sao ASCII.
+    env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
+    # stdin=DEVNULL: os connectors nao leem stdin; evita herdar o stdin do pai (sob captura de
+    # pytest/headless o stdin nao tem handle de OS -> DuplicateHandle falharia no Windows).
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
+                       errors="replace", env=env, stdin=subprocess.DEVNULL)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
@@ -184,9 +194,19 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     verified = None
     for ti, tol in enumerate(tolerances):
         if ti > 0:
-            print(f"[retighten] verify falhou por fitting -> re-traduzindo budget_tolerance={tol} ...")
+            # CIRURGICO: re-traduzir SO as linhas acima do budget (nao a cena inteira). Numa cena grande
+            # com poucos estouros isso troca centenas de re-traducoes por umas poucas (medido: ~$3,4
+            # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
             try:
-                tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
+                over = M.over_budget_offsets(root, scene, tolerance=1.0)
+                if over:
+                    print(f"[retighten] verify falhou por fitting -> re-traduzindo SO {len(over)} "
+                          f"linha(s) acima do budget (tol={tol}) ...")
+                    tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol)
+                else:
+                    print(f"[retighten] verify falhou por fitting (nenhuma linha acima do budget) -> "
+                          f"re-traduzindo a cena (tol={tol}) ...")
+                    tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
             except Exception as e:
                 print(f"      ERRO na re-traducao ({backend}): {e}")
                 _checkpoint(root, scene, {"status": "api_translate_failed"})
