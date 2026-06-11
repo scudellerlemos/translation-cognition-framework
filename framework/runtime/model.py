@@ -35,6 +35,12 @@ import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
 MODEL_TRANSLATE = "claude-sonnet-4-6"
 MODEL_BACK = "claude-opus-4-8"
+# TIERING por complexidade (so no caminho BATCH): linhas SEM token de quebra (single-line, maioria) vao
+# p/ o Haiku (-67%/linha; benchmark: voz no nivel do Sonnet, inclusive registro arcaico); linhas COM `\n`
+# (multi-linha) ficam no Sonnet (Haiku derrapa na disciplina de \n em escala — paridade so falha onde HA
+# \n, entao o split DRIBLA a fraqueza). O caminho interativo (fallback/escalonamento) fica Sonnet (casos
+# dificeis = confiabilidade). MODEL_TRANSLATE_CHEAP=None desliga o tiering (tudo Sonnet no batch).
+MODEL_TRANSLATE_CHEAP = "claude-haiku-4-5"
 
 # Saida pode ser grande (ate ~500 linhas x speaker/tone/intent/risk/t). Streaming evita timeout;
 # este teto cobre a maior cena do corpus com folga (Sonnet/Opus 4.x suportam ate 64k de saida).
@@ -60,6 +66,12 @@ BUDGET_ESCALATION = (1.15, 1.0)   # tolerancias mais apertadas tentadas, em orde
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
 DONE = "done"           # chamada de IA concluida (backend api)
+
+
+def _no_effort_model(model: str) -> bool:
+    """Modelos que NAO aceitam output_config.effort nem adaptive thinking (400): Haiku 4.5 e Sonnet 4.5.
+    Opus 4.x e Sonnet 4.6 aceitam. Usado p/ montar params validos por modelo (tiering de custo)."""
+    return model.startswith("claude-haiku") or model == "claude-sonnet-4-5"
 
 
 # ------------------------------- TRANSLATE ------------------------------------
@@ -392,7 +404,12 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     merged = {}        # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
     # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
-    thinking = {"type": "adaptive"} if think else {"type": "disabled"}
+    # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort nem adaptive thinking (400) -> omitir.
+    no_effort = _no_effort_model(model)
+    thinking = {"type": "adaptive"} if (think and not no_effort) else {"type": "disabled"}
+    out_cfg = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
+    if not no_effort:
+        out_cfg["effort"] = effort
 
     def _over(off, v):
         b = budgets.get(off)
@@ -404,8 +421,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             system=system,
             messages=[{"role": "user", "content": base_user + note}],
             thinking=thinking,
-            output_config={"effort": effort,
-                           "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
+            output_config=out_cfg,
         )
         u_attempt = _usage_of(msg)
         _add_usage(usage, u_attempt)
@@ -451,6 +467,61 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                        f"faltam={last['missing']} paridade={last['bad_parity']}")
 
 
+# --------------------------- escalonamento CIRURGICO --------------------------
+# Quando a verify falha por fitting, NAO re-traduzir a cena inteira: so as linhas que ESTOURAM o budget.
+# Numa cena de 500 linhas com 2 estouros, re-traduz 2 (nao 500) -> corte de custo grande no caminho caro
+# (medido na run viva do cap.13: o re-translate full custou ~$3,4 em 2 cenas).
+
+def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0) -> list:
+    """Offsets cuja traducao TRANSLITERADA (sem acentos — o que vai p/ os bytes) excede
+    byte_budget*tolerance. Puro/deterministico (testavel sem rede)."""
+    over = []
+    for off, b in budgets.items():
+        if not b:
+            continue
+        v = lines.get(off)
+        if v and _translit_len((v or {}).get("t", "")) > b * tolerance:
+            over.append(off)
+    return sorted(over)
+
+
+def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
+    """Le o translations_<sfx>.json atual e devolve os offsets acima do budget (candidatos a estouro)."""
+    root = Path(root)
+    pack = context_pack.build_pack(root, scene)
+    out = root / "artifacts" / scene / f"translations_{pack['sfx']}.json"
+    if not out.is_file():
+        return []
+    data = json.loads(out.read_text(encoding="utf-8"))
+    budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
+    return _over_offsets(budgets, data.get("lines", {}), tolerance)
+
+
+def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
+    """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<sfx>.json,
+    preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting. Reusa
+    _api_translate sobre um pack reduzido (dedup ja vem OFF com budget_tolerance != None -> traduz fresco
+    e mais curto)."""
+    root = Path(root)
+    pack = context_pack.build_pack(root, scene)
+    sfx = pack["sfx"]
+    out = root / "artifacts" / scene / f"translations_{sfx}.json"
+    full = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
+    offset_set = set(offsets)
+    sub = dict(pack)
+    sub["lines"] = [r for r in pack["lines"] if r["offset"] in offset_set]
+    sub["n_lines"] = len(sub["lines"])
+    if not sub["lines"]:
+        return {"status": DONE, "model": model or MODEL_TRANSLATE, "usage": None,
+                "n_lines": 0, "reused": 0, "novel": 0}
+    m = model or MODEL_TRANSLATE
+    data, usage, meta = _api_translate(root, scene, sub, m, budget_tolerance=budget_tolerance)
+    full.setdefault("lines", {}).update(data.get("lines", {}))   # merge: so os offsets re-traduzidos
+    out.write_text(json.dumps(full, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"status": DONE, "model": m, "usage": usage, "n_lines": sub["n_lines"],
+            "reused": meta["reused"], "novel": meta["novel"]}
+
+
 # ------------------------------- BATCH backend --------------------------------
 # Batch API: 50% de desconto, assincrono (1 requisicao por cena num unico batch). Usa o MESMO system
 # cacheado (Carta) -> cache compartilhado entre todas as cenas do batch, alem do desconto. Pre-passe de
@@ -478,84 +549,153 @@ def _translate_params(pack, model):
     return params, reuse, novel
 
 
-def _finalize_batch_result(pack, text):
-    """Processa UMA resposta de batch (1 tiro, sem retry): parse -> mapa -> parity_fit -> checa
-    cobertura/paridade (HARD). Budget e SOFT (best-effort, como a ultima tentativa do single) -> nao
-    reprova aqui; a verify/escalonamento cuida do fitting. Retorna (data|None, problems).
-    problems vazio = pronto p/ gravar; senao a cena cai p/ fallback interativo."""
+def _write_translations(root, scene, data):
+    out = Path(root) / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
+    out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _tier_of(source: str) -> str:
+    """Tier de modelo por COMPLEXIDADE: 'main' (Sonnet) p/ linha com token de quebra (multi-linha);
+    'cheap' (Haiku) p/ single-line. Driblar a fraqueza medida do Haiku (paridade de \\n so falha onde
+    HA \\n)."""
+    return "main" if context_pack.TOKEN in (source or "") else "cheap"
+
+
+def _parse_batch_lines(pack, text):
+    """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
+    Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
+    reuse = _select_reuse(pack, enabled=True)
+    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
+    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
+    try:
+        parsed = _to_map(json.loads(text))
+    except Exception:
+        return {}
+    out = {}
+    for off, v in parsed.get("lines", {}).items():
+        if off in novel_offsets and isinstance(v, dict):
+            v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
+            out[off] = v
+    return out
+
+
+def _batch_coverage(pack, merged):
+    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
+    tok = context_pack.TOKEN
     reuse = _select_reuse(pack, enabled=True)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
-    offset_set = {r["offset"] for r in novel}
-    tok = context_pack.TOKEN
-    try:
-        parsed = _to_map(json.loads(text))
-    except Exception as e:
-        return None, [f"json invalido: {e}"]
-    merged = {}
-    for off, v in parsed.get("lines", {}).items():
-        if off not in offset_set or not isinstance(v, dict):
-            continue
-        v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
-        merged[off] = v
     missing = [r["offset"] for r in novel if r["offset"] not in merged]
-    bad_par = [o for o in merged if merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
-    if missing or bad_par:
-        return None, [f"cobertura/paridade: missing={len(missing)} bad_parity={len(bad_par)}"]
-    merged.update(reuse)
-    return {"lines": merged}, []
+    bad_par = [o for o in srcmap if o in merged
+               and merged[o].get("t", "").count(tok) != srcmap[o].count(tok)]
+    return missing, bad_par
 
 
-def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600):
-    """Traduz VARIAS cenas num unico batch (50% off). Grava translations_<sfx>.json das cenas que
-    passam cobertura/paridade; retorna {scene: status} com status em
-    {all_reused, written, coverage_failed, errored:<tipo>, timeout}. As != (written|all_reused) devem
-    cair p/ o caminho interativo (run_scene normal). NAO roda build_plan/verify (isso e por-cena)."""
+def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
+    """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
+    waited = 0
+    while True:
+        b = client.messages.batches.retrieve(batch_id)
+        if getattr(b, "processing_status", None) == "ended":
+            return True
+        if waited >= max_wait_seconds:
+            return False
+        time.sleep(poll_seconds)
+        waited += poll_seconds
+
+
+def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
+                    max_rounds=3, tiered=True):
+    """Traduz VARIAS cenas em batches (50% off), ACUMULANDO cobertura entre RODADAS. O batch e 1-tiro
+    por requisicao (sem retry interno) -> cenas grandes as vezes dropam linhas. Em vez de cair pro
+    caminho interativo a preco CHEIO, cada rodada re-batcha SO o que falta (cena inteira na 1a; depois
+    apenas os offsets faltantes/de paridade ruim) e mescla — convergindo a -50%.
+
+    TIERING (tiered=True, default): por cena/rodada, as linhas SEM token de quebra vao num request Haiku
+    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene@@tier'.
+
+    Grava translations_<sfx>.json das cenas completas; retorna {scene: status} em
+    {all_reused, written, coverage_failed, errored:<tipo>, timeout}. Cenas != (written|all_reused) ainda
+    caem p/ o caminho interativo (run_scene). NAO roda build_plan/verify (isso e por-cena)."""
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
     root = Path(root)
     m = model or MODEL_TRANSLATE
+    cheap = MODEL_TRANSLATE_CHEAP if (tiered and MODEL_TRANSLATE_CHEAP) else m
+    tiers = (("cheap", cheap), ("main", m))            # roteamento por complexidade
     client = _client()
-    packs, reqs, status = {}, [], {}
+    packs, merged, status = {}, {}, {}
+    pending = []
     for scene in scenes:
         pack = context_pack.write_pack(root, scene)
         packs[scene] = pack
-        params, reuse, _novel = _translate_params(pack, m)
-        out = root / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
-        if params is None:                              # 100% reuso -> grava local, sem requisicao
-            out.write_text(json.dumps({"lines": dict(reuse)}, ensure_ascii=False, indent=2),
-                           encoding="utf-8")
-            status[scene] = "all_reused"
-            continue
-        reqs.append(Request(custom_id=scene, params=MessageCreateParamsNonStreaming(**params)))
-    if not reqs:
-        return status
-    batch = client.messages.batches.create(requests=reqs)
-    waited = 0
-    while True:
-        b = client.messages.batches.retrieve(batch.id)
-        if getattr(b, "processing_status", None) == "ended":
+        reuse = _select_reuse(pack, enabled=True)
+        merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
+        # RESUME (idempotente): se ja existe translations_<sfx>.json, aproveita -> nao re-batcha o que ja
+        # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
+        existing = root / "artifacts" / scene / f"translations_{pack['sfx']}.json"
+        if existing.is_file():
+            try:
+                ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
+                merged[scene].update({o: v for o, v in ex.items() if isinstance(v, dict)})
+            except Exception:
+                pass
+        miss, badpar = _batch_coverage(pack, merged[scene])
+        if not miss and not badpar:
+            _write_translations(root, scene, {"lines": merged[scene]})
+            status[scene] = "all_reused" if all(r["offset"] in reuse for r in pack["lines"]) else "written"
+        else:
+            pending.append(scene)
+
+    for rnd in range(max_rounds):
+        if not pending:
             break
-        if waited >= max_wait_seconds:
-            for scene in scenes:
+        reqs, req_model = [], {}                          # req_model[custom_id] = modelo (p/ custo no ledger)
+        for scene in pending:
+            miss, badpar = _batch_coverage(packs[scene], merged[scene])
+            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd 0: cena toda; depois: so o que falta
+            for tier, tmodel in tiers:                    # split por COMPLEXIDADE (cheap=Haiku / main=Sonnet)
+                sub = dict(packs[scene])
+                sub["lines"] = [r for r in packs[scene]["lines"]
+                                if _tier_of(r.get("source", "")) == tier
+                                and (want is None or r["offset"] in want)]
+                if not sub["lines"]:
+                    continue
+                params, _reuse, _novel = _translate_params(sub, tmodel)
+                if params is None:                        # tudo reuso nesse tier -> sem request
+                    continue
+                cid = f"{scene}@@{tier}"
+                req_model[cid] = tmodel
+                reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
+        if not reqs:
+            break
+        batch = client.messages.batches.create(requests=reqs)
+        if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
+            for scene in pending:
                 status.setdefault(scene, "timeout")
             return status
-        time.sleep(poll_seconds)
-        waited += poll_seconds
-    for result in client.messages.batches.results(batch.id):
-        scene = result.custom_id
-        if getattr(result.result, "type", None) != "succeeded":
-            status[scene] = f"errored:{getattr(result.result, 'type', '?')}"
-            continue
-        msg = result.result.message
-        log_api_call(root, scene, "translate", m, _usage_of(msg), batch=True)   # 50% no ledger
-        data, problems = _finalize_batch_result(packs[scene], _text_of(msg))
-        if problems:
-            status[scene] = "coverage_failed"           # -> fallback interativo
-            continue
-        out = root / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
-        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        status[scene] = "written"
+        for result in client.messages.batches.results(batch.id):
+            cid = result.custom_id
+            scene = cid.split("@@", 1)[0]
+            if getattr(result.result, "type", None) != "succeeded":
+                continue                                  # tier falho -> cobertura decide (re-batch/fallback)
+            msg = result.result.message
+            log_api_call(root, scene, "translate", req_model.get(cid, m), _usage_of(msg), batch=True)
+            merged[scene].update(_parse_batch_lines(packs[scene], _text_of(msg)))    # ACUMULA
+        still = []
+        for scene in pending:
+            if str(status.get(scene, "")).startswith("errored"):
+                continue                                 # erro duro -> nao re-tenta; cai p/ interativo
+            miss, badpar = _batch_coverage(packs[scene], merged[scene])
+            if not miss and not badpar:
+                _write_translations(root, scene, {"lines": merged[scene]})
+                status[scene] = "written"
+            else:
+                still.append(scene)
+        pending = still
+
+    for scene in pending:
+        status.setdefault(scene, "coverage_failed")      # nao convergiu apos as rodadas -> interativo
     return status
 
 

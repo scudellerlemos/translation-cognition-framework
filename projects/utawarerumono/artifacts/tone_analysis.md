@@ -67,3 +67,12 @@
 - A cena justapõe **fantasia** (garota num bosque) e **sci-fi** (processo de despertar, "sistema"). Esse contraste é um eixo de spoiler do arco maior — não "explicar" demais na tradução.
 - "Garota / Mulher / Homem" aparecem como **rótulos de falante** (não nomes). Decisão de tradução pendente (ver glossary / research_log).
 - A **promessa de mindinho** é uma âncora emocional/recorrente — manter fraseado memorável e consistente quando reaparecer.
+
+## Cap. 13 — vozes novas (Fase 0, reconciliado corpus+wiki)
+- **Oshtor** — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário "Ukon" (espirituoso, informal) — NÃO antecipar a pompa de general.
+- **Rulutieh** — `voice_criticality: medium`. Princesa tímida e gentil; hesitante (gagueja quando nervosa: "P-Princesa..."), educada, se anima ao falar de arte/BL. Não soar arrogante apesar de princesa.
+- **Nosuri** — `voice_criticality: medium`. Fora-da-lei atrevida e malandra; "aliada da justiça" irônica; oportunista. Registro coloquial/esperto.
+- **Ougi** — `voice_criticality: low`. Irmão da Nosuri; pragmático, parceria com a irmã.
+- **Moznu** — `voice_criticality: low`. Criminoso (antagonista menor); registro grosseiro.
+- **Ozen** — `voice_criticality: low`. General-Pilar, pai da Rulutieh; registro grave/nobre.
+- Onomatopeias de minigame (**Cocopo**: Poke/Squish/Tug) = localizar (cutucar/apertar/puxar), não copiar do inglês.
