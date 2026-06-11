@@ -36,7 +36,7 @@
 
 ## Gate de charset (pt-BR)
 - **FALHOU (confirmado in-game).** Pangrama pt-BR (`áéíóú âêô ãõ ç ÁÉÍ ÃÕ`) renderiza os acentos como
-  `@` — evidência: `artifacts/char1.png`, `artifacts/char2.png`. A fonte do jogo não tem os glifos.
+  `@` — evidência: `artifacts/evidence/char1.png`, `artifacts/evidence/char2.png`. A fonte do jogo não tem os glifos.
 - **Decisão:** `target_charset_supported: false` → **transliteração na gravação** (acento→ASCII no
   `reinsert.py`); a tradução canônica mantém os acentos. Ver `decision_log.md`.
 
