@@ -54,6 +54,29 @@ As skills resolvem tudo que é específico de uma obra lendo o `project.json` e 
 
 ---
 
+## Arquitetura em um olhar
+
+**Princípio central:** a LLM faz **só** o que exige IA — **traduzir** e **verificar alto risco**. Todo o
+resto (estado, memória, governança, checkpoints, montagem de contexto, validação) é **determinístico e
+externo** à janela. Cada cena é um **job stateless** cujo contexto é O(cena), não O(histórico) — foi isso
+que matou o estouro de sessão e destravou rodar a obra inteira em Sonnet a custo previsível.
+
+```mermaid
+flowchart LR
+  pack["context_pack<br/>det."] --> tr{{"translate<br/>IA · Sonnet"}}
+  tr --> plan["build_plan<br/>det."]
+  plan --> bt{{"back_translate<br/>IA · Opus (alto risco)"}}
+  bt --> vf["verify round-trip<br/>det."]
+  vf --> cp["checkpoint + TM<br/>det."]
+  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
+  class tr,bt ia;
+```
+
+> As **duas únicas** caixas de IA (rosa) são `translate` e `back_translate`. O desenho completo das
+> camadas e o "porquê" medido estão em [`framework/docs/ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md).
+
+---
+
 ## Começar
 
 1. Leia [`framework/README.md`](framework/README.md) — modelo de camadas e como instanciar um projeto.
@@ -64,16 +87,40 @@ As skills resolvem tudo que é específico de uma obra lendo o `project.json` e 
 
 ---
 
-## Status
+## Status — junho 2026
+
+O framework saiu do "valida em 2 cenas" e entrou em **produção real**: o harness stateless traduz e
+verifica capítulos inteiros de forma sustentável, em Sonnet, a custo medido.
 
 - **Processo (skills 00–08):** maduro.
-- **Jogos:** validado na instância de referência (Utawarerumono), **incluindo no jogo real**. Pipeline
-  00→08 rodado de ponta a ponta em **2 cenas / 1025 linhas** (EN→pt-BR) e o pt-BR **renderiza in-game**
-  (prova de ponta a ponta: `projects/utawarerumono/artifacts/*.png`). Conector `hex_binary` com **modelo
-  de ponteiro file-relativo** e encaixe por **relocação intra-arquivo + reescrita da tabela Pack** (o
-  anexo ao fim do container foi reprovado in-game). **Gate de regressão automatizado** (`pytest`, 9
-  testes, incl. within-file, integridade do Pack, e um guard de governança que barra texto da obra
-  hardcoded em `.py`).
-- **Pendente para produção:** run do jogo inteiro (estratégia incremental por capítulo em
-  [`ROADMAP.md`](ROADMAP.md)) — o bloqueador de correção (funcionar no jogo) já está resolvido.
+- **Harness de escala (`framework/runtime/`):** ✅ em produção. Cena = job stateless O(cena) → **estouro
+  de sessão eliminado**. **Caps 11, 12 e 13 traduzidos e verificados ponta-a-ponta** (round-trip
+  byte-idêntico + back-translation) — cap.12 **16/16** cenas, cap.13 **9/9 via Batch API**.
+- **Custo sob controle:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
+  **~$36/jogo** no setting econômico. Batch API **−50%** comprovado vivo; tiering Haiku/Sonnet, dedup por
+  TM e escalonamento cirúrgico codados. Telemetria de gasto-verdade (`api_ledger.jsonl` + `cost_report.py`).
+- **Cognição cabeada:** gate de KB + **driver de Fase 0** (`kb_phase.py`); **controle de spoiler** por
+  ledger + filtro temporal (comprovado no reveal Ukon=Oshtor em `ch_13_08`).
+- **Jogo real (conector `hex_binary`):** ✅ validado **in-game** — ponteiro file-relativo, relocação
+  intra-arquivo + reescrita da tabela Pack, transliteração de charset; pt-BR renderiza na tela do jogo.
+- **Qualidade travada:** 58 testes (42 runtime + 16 conector), determinismo/idempotência e um guard que
+  barra texto da obra hardcoded em `.py`.
+- **Pendente:** completar a 2ª metade do jogo (estratégia incremental por capítulo no
+  [`ROADMAP.md`](ROADMAP.md)) + pós-produção (build jogável, QA in-game, release).
 - **Filmes / séries:** pontos de extensão documentados (`framework/media-profiles/`), ainda não validados.
+
+## Conquistas & design — por que isto é diferente
+
+Não é um "tradutor por linha". É um **framework de execução cognitiva para localização narrativa**, e o
+mérito está em escolhas de engenharia que se sustentam:
+
+- **LLM só para cognição.** Isolar a IA em duas funções (traduzir / verificar) e deixar TODO o resto
+  determinístico dá **custo previsível, resultado reprodutível e escala** que não depende da memória do chat.
+- **Estado externalizado.** Consistência vem de TM + glossário + voice cards + decision log versionados —
+  não da janela. Sem banco, sem embeddings, sem 2º serviço pago (só a API Anthropic).
+- **Governança explícita.** IA **propõe** → gates **aprovam** (round-trip + back-translation + lint) →
+  script **aplica**. Binário read-only; nenhuma tradução escrita à mão dentro dos dados.
+- **Anti-overengineering deliberado.** Orquestrador determinístico + 2 papéis de IA é a granularidade
+  certa — sem multiagentes, sem indireção que não paga o próprio custo (ver ADRs).
+- **Honestidade operacional.** O ledger conta cada centavo cobrado (mesmo em falha); os gates barram
+  avançar sobre base incompleta; o controle de spoiler é decisão **por linha**, não só fronteira de wiki.
