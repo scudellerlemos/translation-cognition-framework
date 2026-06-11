@@ -28,3 +28,21 @@ Usar **arquivos estruturados** (CSV/JSONL/JSON) versionados em git + um **índic
 - (+) Zero infra, portável, diff-ável, reconstruível (travado por `test_state_index_idempotent`).
 - (+) Migração futura é localizada: só `state_index.py` + `context_pack.py` consomem o estado.
 - (−) Busca semântica não existe até o gatilho de RAG ser atingido (aceitável agora).
+
+## Atualização 2026-06 — RAG-parcial de graça (keyword reforçado)
+
+Medido (cap.13): RAG **não baixaria custo** (dominado por output ~$5,53 vs ~$0,77 de TODO o input;
+retrieval é fração disso) e **quebraria "só API Anthropic"** (embeddings = Voyage AI, 2º serviço pago) +
+infra de vetor. Logo, capturamos **parte** do ganho semântico melhorando o keyword do `context_pack` —
+**sem serviço novo**:
+- `_present`: tolerância de plural/inflexão inglesa (`\b<termo>(?:e?s)?\b`) — pega "Cohorts"/"generals"
+  que o match estrito perdia (medido: 7 "Cohorts" no corpus antes invisíveis).
+- `select_decisions`: também casa pelo **conteúdo do `summary`**, não só pela tag do título.
+- aliases distintivos no glossário: revisados — mas as formas alternativas seguras (war fan, Eight
+  Pillars, Emperor…) **não aparecem no corpus**, então nada a adicionar (honestidade > recall; não
+  inventar). Confirma o **teto**: sinônimos DESCRITIVOS de palavra comum ("o general mascarado")
+  over-matcheiam no keyword — **isso** é o que exige RAG.
+
+**Gatilho de RAG (inalterado, agora mais preciso):** adotar vetorial só quando o keyword reforçado
+**ainda** errar — i.e., precisar de sinônimo descritivo/semântico ou a busca degradar em escala. Não é
+custo; é qualidade/escala de retrieval.

@@ -120,6 +120,30 @@ def test_translit_len_drops_accents():
     assert model._translit_len("abc") == 3
 
 
+# ------------------------------- retrieval keyword (RAG-parcial) --------------
+# Match mais inteligente no context_pack: plural/inflexao + decisoes por conteudo do summary.
+
+def test_present_plural_tolerance():
+    assert context_pack._present("Cohort", "the ukon's cohorts arrive")      # plural -> casa (era perdido)
+    assert context_pack._present("gigiri", "venomous gigiris everywhere")
+    assert context_pack._present("general", "the generals gathered")
+    assert context_pack._present("Eight Pillar Generals", "the eight pillar generals met")  # multi-palavra
+    assert not context_pack._present("cohort", "a cohabitation pact")        # nao vira substring solta
+    assert not context_pack._present("man", "command the troops")            # \b protege dentro de palavra
+
+
+def test_select_decisions_matches_by_summary():
+    decisions = [
+        {"title": "Regra de cor", "tags": ["cor"], "universal": False,
+         "summary": "como tratar o token de Oshtor na renderizacao"},
+        {"title": "Outra", "tags": ["xyz"], "universal": False, "summary": "nada a ver"},
+    ]
+    # 'Oshtor' nao esta nas TAGS, mas esta no SUMMARY -> surfa por conteudo
+    assert [d["title"] for d in context_pack.select_decisions(decisions, ["Oshtor"], [])] == ["Regra de cor"]
+    # sem match em tag nem summary -> nada
+    assert context_pack.select_decisions(decisions, ["Rulutieh"], []) == []
+
+
 # ------------------------------- spoiler filter -------------------------------
 
 def test_spoiler_filter():
