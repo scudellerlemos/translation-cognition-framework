@@ -131,6 +131,8 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 - Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.
 - Características: fala arcaica/empolada (equivalente a "vós/peço-vos/meus olhos não me enganam") + gag de cicio (s→sh, ex.: "SHEEKETH"/"shir"); melodramático; gruda no Haku como "benfeitor".
 - Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem.
+### Oshtor — criticality: high
+- Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário "Ukon" (espirituoso, informal) — NÃO antecipar a pompa de general
 ### Protagonista — criticality: high
 - Registro: confuso, desorientado, semi-consciente.
 - Características: frases quebradas por reticências; perguntas curtas ("Quem... é você...?"); pouca pontuação forte.
