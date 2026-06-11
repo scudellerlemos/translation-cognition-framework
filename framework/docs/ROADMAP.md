@@ -93,6 +93,40 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 Banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços". O orquestrador
 determinístico + 2 papéis de IA já é a granularidade certa.
 
+### P4 — Pós-produção & hardening (PRIORIDADE, **depois** de entregar o jogo)
+> Decisão: **entregar primeiro** (traduzir tudo → build → QA → release); só então o hardening. A maioria
+> destas dívidas só "morde" quando algo **muda** (conector novo, rename) — por isso ficam após produção.
+> **Exceção:** o item de spoiler (H6) tem risco **durante** a produção (a mitigação por-linha segue ativa;
+> o que fica pra cá é o teste sistemático de não-vazamento).
+
+**Entrega do jogo (fases C–F):**
+| Fase | Item |
+|---|---|
+| C | **build jogável** — reinserir o jogo INTEIRO traduzido + patch final (não só caps isolados) |
+| D | **QA in-game** humano — overflow / quebra / spoiler vazado |
+| E | **revisão holística de consistência** — cross-capítulo (voz/lore/termos) sobre o corpus inteiro |
+| F | **release** — patch + docs de instalação |
+
+**Hardening arquitetural (dívidas conhecidas — ordem de ataque sugerida):**
+| # | Dívida | Fix | Quando morde |
+|---|---|---|---|
+| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ao mudar/entrar conector — **endurecer 1º** |
+| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** (`NAMING.md` já documenta) | typo silencioso / rename |
+| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | crescimento |
+| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | — (fix barato) |
+| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | KB rasa passa o gate |
+| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | **risco DURANTE produção** |
+
+**Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
+- **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
+  de I/O escolhe o conector certo. Extrair quando houver **2–3 conectores**. Conectores agrupam por
+  **família de engine**, não por título (`sdat_format` = adaptador Aquaplus-era; o por-título é só `project.json`).
+- **Síntese:** inspecionar a pasta do jogo/mídia e **gerar** um conector novo — viável porque o
+  **round-trip byte-idêntico é um oráculo automático** (loop IA-propõe→round-trip→refina; único ponto onde
+  um approach agêntico se justifica). Mesmo paradigma de governança um nível acima: IA propõe conector →
+  round-trip verifica → humano ratifica a estratégia. **Evidência-primeiro** (não construir com 1 conector).
+  Teste barato de reuso-por-família: a sequência **Mask of Truth** (mesma engine, delta ~zero).
+
 ## Fases
 
 - **Fase 1 — resolver estouro de sessão:** P0 (entregue). Cena stateless + contexto limitado.
@@ -101,6 +135,8 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (R1–R5). Ligar/comprovar API, KB-gate, spoiler-filter,
   bundle de custo. **É aqui que estamos.**
 - **Fase 3 — escalar p/ 40–100k linhas:** P2. Paralelização + (se preciso) RAG sobre lore/decisões.
+- **Fase 4 — pós-produção & plataforma:** P4. Entregar o jogo (build → QA in-game → consistência →
+  release), depois hardening (H1–H6) e a evolução da camada de conector (detecção + síntese governada).
 
 ## Sonnet Readiness
 
