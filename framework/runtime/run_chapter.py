@@ -26,6 +26,9 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
 import run_scene as RS  # noqa: E402
+import cost_report     # noqa: E402
+import model as M      # noqa: E402
+import kb_gate         # noqa: E402
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
@@ -45,31 +48,78 @@ def _verified(root: Path, scene: str) -> bool:
     return st.get("status") in _DONE and st.get("verified") is True
 
 
+def _batch_phase(root, pending, *, skip_kb_gate):
+    """FASE 1 do modo batch: submete as cenas pendentes (que passam o KB-gate) num unico batch (50% off,
+    Carta cacheada compartilhada). Retorna {scene: status} do batch_translate. Cenas KB-bloqueadas ou
+    que falham cobertura caem p/ o caminho interativo na fase 2 (run_scene normal). Best-effort: se o
+    batch em si falhar (rede), retorna {} e tudo vira caminho interativo."""
+    submit = []
+    for s in pending:
+        kb = kb_gate.check(root, s)
+        if kb["problems"] and not skip_kb_gate:
+            print(f"[batch] {s} pulado do batch (KB-gate): {kb['problems'][0]}")
+            continue
+        submit.append(s)
+    if not submit:
+        return {}
+    print(f"[batch] submetendo {len(submit)} cena(s) em 1 batch (50% off; pode levar minutos) ...")
+    try:
+        st = M.batch_translate(root, submit)
+    except Exception as e:
+        print(f"[batch] falhou ({e}) -> caindo p/ caminho interativo em todas as cenas.")
+        return {}
+    for s in submit:
+        print(f"[batch] {s}: {st.get(s, '?')}")
+    return st
+
+
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False):
+                skip_kb_gate=False, batch=False):
     root = Path(root)
     scenes = _scenes_of(root, chap)
     if not scenes:
         print(f"nenhuma cena encontrada p/ cap {chap} (esperado artifacts/ch_{chap}_*/dialogs.csv)")
         return {"chapter": chap, "scenes": [], "status": "empty"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}")
+
+    # MODO BATCH: traduz todas as pendentes num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
+    batch_status = {}
+    if batch and backend == "api":
+        pending = [s for s in scenes if redo or not _verified(root, s)]
+        if pending:
+            batch_status = _batch_phase(root, pending, skip_kb_gate=skip_kb_gate)
+
     results = []
     for scene in scenes:
         if not redo and _verified(root, scene):
             print(f"[skip] {scene} ja verified")
             results.append({"scene": scene, "status": "skipped"})
             continue
-        print(f"\n=== {scene} ({backend}) ===")
+        pre = batch_status.get(scene) in ("written", "all_reused")
+        print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
-                         do_verify=do_verify, skip_kb_gate=skip_kb_gate)
+                         do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
+            _print_cost(root)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
+    _print_cost(root)
     return {"chapter": chap, "scenes": results, "status": "complete"}
+
+
+def _print_cost(root: Path):
+    """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
+    cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou)."""
+    try:
+        rep = cost_report.report(root)
+        if rep["n_calls"]:
+            print(f"\n{cost_report._fmt(rep, by_scene=False)}")
+    except Exception:
+        pass
 
 
 def main():
@@ -81,9 +131,11 @@ def main():
     ap.add_argument("--redo", action="store_true", help="reprocessa mesmo cenas ja verified")
     ap.add_argument("--no-verify", action="store_true")
     ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
+    ap.add_argument("--batch", action="store_true",
+                    help="traduz todas as cenas pendentes num unico batch (50%% off, assincrono)")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
-                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate)
+                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

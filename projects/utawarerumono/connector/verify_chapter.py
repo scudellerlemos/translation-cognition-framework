@@ -125,29 +125,39 @@ def main():
         else:
             fails.append(f"{off_hex}: lido {got!r} != aprovado(translit) {want!r}")
 
-    # ponteiros de TEXTO de cada arquivo tocado resolvem dentro do proprio arquivo.
-    # Ignora falsos-positivos do bytecode: bytes 50/53 00 dentro do STSC cujo uint32 seguinte
-    # vira um alvo implausivel (>= tamanho do container). So contam alvos plausiveis (dentro do buffer).
-    new_pidx = S.index_pointers(new_buf, new_files)
-    n = len(new_buf)
-    out_of_file = 0
-    touched_new = [by_name_new[nm] for nm in touched]
-    for target, sites in new_pidx.items():
-        if target >= n:
-            continue                     # alvo implausivel -> ponteiro falso do bytecode
-        for site, _fs in sites:
-            for f in touched_new:
-                if f.offset <= site < f.end and not (f.offset <= target < f.end):
-                    out_of_file += 1
+    # ponteiros de TEXTO de arquivo tocado resolvem dentro do proprio arquivo.
+    # CUIDADO com falsos-positivos do bytecode: ocorrencias coincidentes de 50/53 00 cujo uint32 vira um
+    # alvo cross-file (ex.: cena do cap.12 "apontando" p/ 31_02_000S.BIN). Esses JA existem no binario
+    # ORIGINAL intocado -> sao baseline, nao regressao. So e bug do reinsert se o buffer NOVO tiver MAIS
+    # ponteiros fora-do-arquivo que o original (delta > 0). (Cena multi-BIN 12_15 tinha 2 em ambos.)
+    def _count_oof(buf, fls):
+        pidx = S.index_pointers(buf, fls)
+        nn = len(buf)
+        bn = {f.name: f for f in fls}
+        tfs = [bn[nm] for nm in touched if nm in bn]
+        c = 0
+        for target, sites in pidx.items():
+            if target >= nn:
+                continue                 # alvo implausivel -> ponteiro falso do bytecode
+            for site, _fs in sites:
+                for f in tfs:
+                    if f.offset <= site < f.end and not (f.offset <= target < f.end):
+                        c += 1
+        return c
+    oof_base = _count_oof(original, files)        # falsos-positivos pre-existentes (bytecode)
+    oof_new = _count_oof(new_buf, new_files)
+    out_of_file = max(0, oof_new - oof_base)      # so o que o reinsert INTRODUZIU
     if out_of_file:
-        fails.append(f"{out_of_file} ponteiro(s) de texto de arquivo tocado apontam pra fora do arquivo")
+        fails.append(f"{out_of_file} ponteiro(s) de texto NOVOS fora-do-arquivo (regressao do reinsert; "
+                     f"base={oof_base} falsos-positivos pre-existentes no original)")
 
     grown = sum(by_name_new[n].size - by_name_orig[n].size for n in touched)
     print(f"Capitulo {sys.argv[1]}: {len(budgets)} linhas em {len(touched)} arquivo(s) {touched}")
     print(f"  round-trip identico: {bytes(rt_buf) == original and not rt_repoints}")
     print(f"  tiers={tiers} | repoints={len(repoints)}")
     print(f"  linhas conferidas (lido == approved translit): {checked}/{len(approved)}")
-    print(f"  resíduo T4: {residuo} | ponteiros fora-do-arquivo: {out_of_file} | crescimento total: +{grown}")
+    print(f"  resíduo T4: {residuo} | ponteiros fora-do-arquivo (novos): {out_of_file} "
+          f"[{oof_new} total, {oof_base} falsos-positivos pre-existentes] | crescimento total: +{grown}")
     if label_notes:
         print("  NOTAS (verificar in-game):")
         for n in label_notes:
