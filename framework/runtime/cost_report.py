@@ -95,6 +95,13 @@ def _fmt(rep: dict, by_scene: bool) -> str:
     t = rep["tokens"]
     L.append(f"  tokens      : in={t['in']:,} out={t['out']:,} "
              f"cache_read={t['cache_read']:,} cache_write={t['cache_write']:,}")
+    cr, cw = t["cache_read"], t["cache_write"]
+    if cr or cw:
+        hit = cr / (cr + cw) if (cr + cw) else 0.0
+        # cache LIDO (0.1x) vs ESCRITO (1.25x): alto = Carta reaproveitada entre cenas; baixo = re-escrita
+        # a cada cena (o gap "cache morto" — cenas espacadas > TTL de 5min, ou 1a cena de cada run).
+        ct = "bom" if hit >= 0.6 else ("baixo" if hit >= 0.2 else "MORTO (re-escreve a cada cena)")
+        L.append(f"  cache       : {100*hit:.0f}% lido (read/{cr+cw:,}) [{ct}]")
     L.append("  por modelo  : " + ", ".join(f"{k} ${v:.4f}" for k, v in rep["by_model"].items()))
     L.append("  por tipo    : " + ", ".join(f"{k} ${v:.4f}" for k, v in rep["by_kind"].items()))
     if by_scene:

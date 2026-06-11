@@ -125,7 +125,8 @@ def _high_lines(root: Path, scene: str, sfx: str):
     return out
 
 
-def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False):
+def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
+              pretranslated=False):
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     sfx = context_pack.sfx_of(scene)
@@ -143,12 +144,23 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
 
     print(f"[1/6] context_pack {scene} ...")
-    try:
-        tr = M.translate(root, scene, backend=backend)
-    except Exception as e:                                  # backend api: erro de rede/saida invalida
-        print(f"      ERRO na traducao ({backend}): {e}")
-        _checkpoint(root, scene, {"sfx": sfx, "status": "api_translate_failed"})
-        return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+    tr = None
+    if pretranslated:                                       # batch ja produziu o translations_<sfx>.json
+        pack = context_pack.write_pack(root, scene)
+        outp = root / "artifacts" / scene / f"translations_{sfx}.json"
+        if outp.is_file():
+            tr = {"status": M.DONE, "n_lines": pack["n_lines"], "model": M.MODEL_TRANSLATE,
+                  "usage": None, "reused": None, "novel": None}
+            print("      traducao do batch reaproveitada (sem nova chamada).")
+        else:
+            print("      batch nao produziu a traducao; traduzindo agora (fallback).")
+    if tr is None:
+        try:
+            tr = M.translate(root, scene, backend=backend)
+        except Exception as e:                              # backend api: erro de rede/saida invalida
+            print(f"      ERRO na traducao ({backend}): {e}")
+            _checkpoint(root, scene, {"sfx": sfx, "status": "api_translate_failed"})
+            return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     if isinstance(tr, dict) and tr.get("reused"):
         print(f"      dedup: {tr['reused']}/{tr['n_lines']} linha(s) reaproveitadas da TM "
