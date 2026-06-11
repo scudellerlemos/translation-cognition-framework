@@ -39,7 +39,7 @@ MAX_DECISIONS = 12          # universal + matched, teto p/ manter o pacote limit
 MAX_TM_VOICE_PER_SPEAKER = 3  # exemplos de "voz estabelecida" por falante presente
 
 
-def sfx_of(scene: str) -> str:
+def scene_id_of(scene: str) -> str:
     return scene[3:] if scene.startswith("ch_") else scene
 
 
@@ -159,24 +159,24 @@ def select_tm(tm, scene_rows, present_speakers):
     return exact, voice
 
 
-def _pos(sfx: str):
-    """sfx '12_03' -> (12, 3) p/ comparacao numerica de posicao narrativa."""
-    return tuple(int(p) for p in str(sfx).split("_") if p.isdigit())
+def _pos(scene_id: str):
+    """scene_id '12_03' -> (12, 3) p/ comparacao numerica de posicao narrativa."""
+    return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
 
 
-def select_spoiler_guards(ledger: dict, blob_low: str, scene_sfx: str) -> list:
+def select_spoiler_guards(ledger: dict, blob_low: str, scene_id: str) -> list:
     """FILTRO TEMPORAL: para os fatos cujo reveal e FUTURO em relacao a esta cena, retorna o guard de
-    ambiguidade se a entidade aparece nesta cena. Disparo por (a) `scenes` explicitas (sfx) ou (b)
+    ambiguidade se a entidade aparece nesta cena. Disparo por (a) `scenes` explicitas (scene_id) ou (b)
     `triggers` casados por LIMITE DE PALAVRA (_present, evita 'system' em 'system of gears').
-    reveal='beyond_frontier' = sempre futuro p/ cenas na fronteira; reveal=<sfx> = futuro se > a cena."""
+    reveal='beyond_frontier' = sempre futuro p/ cenas na fronteira; reveal=<scene_id> = futuro se > a cena."""
     out = []
-    here = _pos(scene_sfx)
+    here = _pos(scene_id)
     for e in (ledger or {}).get("entries", []):
         rev = e.get("reveal", "beyond_frontier")
         future = True if rev == "beyond_frontier" else (_pos(rev) > here)
         if not future:
             continue
-        in_scenes = scene_sfx in {sfx_of(s) for s in e.get("scenes", [])}
+        in_scenes = scene_id in {scene_id_of(s) for s in e.get("scenes", [])}
         by_trigger = any(_present(t, blob_low) for t in e.get("triggers", []))
         if in_scenes or by_trigger:
             out.append({"entity": e.get("entity", ""), "fact": e.get("fact", ""),
@@ -225,10 +225,10 @@ def build_pack(root: Path, scene: str) -> dict:
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
 
     ledger = json.loads(_read(art / "spoiler_ledger.json") or "{}")
-    spoiler_guards = select_spoiler_guards(ledger, blob_low, sfx_of(scene))
+    spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
     return {
-        "scene": scene, "sfx": sfx_of(scene), "n_lines": len(rows),
+        "scene": scene, "scene_id": scene_id_of(scene), "n_lines": len(rows),
         "doctrine": "framework/skills/translation_governance.md",
         "project_constraints": project_constraints(cfg),
         "glossary_subset": gsub,
@@ -331,7 +331,7 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append(f"| {r['offset']} | {r['byte_budget']} | {src} |")
     L.append("")
     L.append("## 8. Formato de saida EXIGIDO")
-    L.append(f"Escreva `translations_{pack['sfx']}.json` com a forma:")
+    L.append(f"Escreva `translations_{pack['scene_id']}.json` com a forma:")
     L.append("```json")
     L.append('{ "lines": {')
     L.append('  "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",')

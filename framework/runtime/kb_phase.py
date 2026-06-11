@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fase0.py — DRIVER de Fase 0 (cabeia a pesquisa reconciliada como pre-requisito de escala).
+kb_phase.py — DRIVER de Fase 0 (cabeia a pesquisa reconciliada como pre-requisito de escala).
 
 A doutrina (skill 03) exige KB RECONCILIADA antes de traduzir um arco novo. O `kb_gate` ja BLOQUEIA
 cenas alem da fronteira (`kb_frontier`); o que faltava era automatizar a parte DETERMINISTA da Fase 0 —
@@ -20,9 +20,9 @@ reportada so como aviso). Multi-word capitalizado = sinal forte (sempre). Nao e 
 COBRANCA de candidatos pro humano, nao um classificador.
 
 Modos (CLI):
-  python fase0.py <projeto> <cap>                  # discover: escreve artifacts/fase0_worklist_<cap>.md
-  python fase0.py <projeto> <cap> --check          # valida cobertura: exit 0 se pronto p/ avancar
-  python fase0.py <projeto> <cap> --check --apply-frontier   # se OK, avanca project.json kb_frontier
+  python kb_phase.py <projeto> <cap>                  # discover: escreve artifacts/kb_phase_worklist_<cap>.md
+  python kb_phase.py <projeto> <cap> --check          # valida cobertura: exit 0 se pronto p/ avancar
+  python kb_phase.py <projeto> <cap> --check --apply-frontier   # se OK, avanca project.json kb_frontier
 """
 from __future__ import annotations
 import argparse
@@ -36,7 +36,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-from context_pack import sfx_of, _present, _pos  # noqa: E402
+from context_pack import scene_id_of, _present, _pos  # noqa: E402
 
 # sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").
 _CAP_RUN = re.compile(r"[A-Z][A-Za-z'’\-]+(?:\s+[A-Z][A-Za-z'’\-]+)*")
@@ -81,9 +81,9 @@ sirs madam madams milord milady yessir yep yup nope
 
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
-    """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por sfx)."""
+    """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id)."""
     names = [p.parent.name for p in (root / "artifacts").glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=sfx_of)
+    return sorted(set(names), key=scene_id_of)
 
 
 def _kb_blob_from(glossary_terms, entity_names) -> str:
@@ -154,14 +154,14 @@ def _excerpt(text: str, pos: int, span: int = 32) -> str:
 
 
 def _scan(root: Path, scenes: list[str]):
-    """[(sfx, source_text)] por cena (concatena as linhas-fonte do dialogs.csv)."""
+    """[(scene_id, source_text)] por cena (concatena as linhas-fonte do dialogs.csv)."""
     per = []
     for scene in scenes:
         f = root / "artifacts" / scene / "dialogs.csv"
         if not f.is_file():
             continue
         rows = context_pack.load_dialogs(f)
-        per.append((sfx_of(scene), "\n".join(r["source"] for r in rows)))
+        per.append((scene_id_of(scene), "\n".join(r["source"] for r in rows)))
     return per
 
 
@@ -220,7 +220,7 @@ def discover(root, chap) -> dict:
     per = _scan(root, scenes)
     corpus = "\n".join(t for _, t in per)
     agg = {}
-    for sfx, text in per:
+    for scene_id, text in per:
         for m in _CAP_RUN.finditer(text):
             cand = _clean_cand(m.group(0))             # limpa ALL-CAPS/gagueira/stopword de borda
             low = cand.lower()
@@ -230,9 +230,9 @@ def discover(root, chap) -> dict:
             rec = agg.get(low)
             if rec is None:
                 rec = agg[low] = {"cand": cand, "count": 0, "scenes": set(),
-                                  "first": sfx, "multi": (" " in cand), "example": ""}
+                                  "first": scene_id, "multi": (" " in cand), "example": ""}
             rec["count"] += 1
-            rec["scenes"].add(sfx)
+            rec["scenes"].add(scene_id)
             if not rec["example"]:
                 rec["example"] = _excerpt(text, m.start())
     gap, weak, covered = [], [], []
@@ -250,7 +250,7 @@ def discover(root, chap) -> dict:
     # nome proprio/lore real (ruido de frase raramente recorre fundido identico). One-off entra no gap
     # (worklist) mas so AVISA — nome citado 1x e baixa confianca; o humano revisa sem travar a fronteira.
     block = [r for r in gap if len(r["scenes"]) >= 2 or r["count"] >= 3]
-    return {"chapter": chap, "scenes": [sfx_of(s) for s in scenes],
+    return {"chapter": chap, "scenes": [scene_id_of(s) for s in scenes],
             "gap": gap, "block": block, "weak": weak, "covered": covered}
 
 
@@ -282,14 +282,14 @@ def coverage(root, chap) -> dict:
 
 
 def apply_frontier(root, chap):
-    """Avanca project.json `kb_frontier` p/ o ultimo sfx do capitulo (NUNCA regride). Edita so o valor
+    """Avanca project.json `kb_frontier` p/ o ultimo scene_id do capitulo (NUNCA regride). Edita so o valor
     (preserva o resto do arquivo). Retorna o novo valor, ou o atual se ja >=. So deve ser chamado apos
     coverage() passar (gate)."""
     root = Path(root)
     scenes = _scenes_of(root, chap)
     if not scenes:
         return None
-    last = sfx_of(scenes[-1])
+    last = scene_id_of(scenes[-1])
     cfgp = root / "project.json"
     txt = cfgp.read_text(encoding="utf-8")
     m = re.search(r'("kb_frontier"\s*:\s*")([^"]*)(")', txt)
@@ -304,15 +304,15 @@ def apply_frontier(root, chap):
 
 
 def write_worklist(root, chap) -> Path:
-    """Escreve artifacts/fase0_worklist_<cap>.md — a COBRANCA: o que a IA pede ao humano pesquisar."""
+    """Escreve artifacts/kb_phase_worklist_<cap>.md — a COBRANCA: o que a IA pede ao humano pesquisar."""
     root = Path(root)
     d = discover(root, chap)
     reconc = _reconciled(root)
     L = [f"# Fase 0 — capitulo {chap} — worklist de cobertura de KB", "",
-         "> Gerado por `fase0.py` (deterministico). A IA descobriu candidatos de lore/nome que aparecem",
+         "> Gerado por `kb_phase.py` (deterministico). A IA descobriu candidatos de lore/nome que aparecem",
          "> no capitulo e que a KB reconciliada (glossary + entities) NAO cobre. **Governanca:** pesquise",
          "> + reconcilie cada item (skill 03 — IA+humano, por tier de fonte); se NAO for fornecer pesquisa",
-         "> p/ um item, registre o declinio explicito. Depois rode `fase0.py <projeto> {0} --check`.".format(chap),
+         "> p/ um item, registre o declinio explicito. Depois rode `kb_phase.py <projeto> {0} --check`.".format(chap),
          "",
          f"- cenas do capitulo: {', '.join(d['scenes']) or '(nenhuma)'}",
          f"- research_log reconciliado: {'sim' if reconc else 'NAO — bloqueia o avanco'}",
@@ -347,7 +347,7 @@ def write_worklist(root, chap) -> Path:
     L.append("## Ja cobertos pela KB (conferencia)")
     L.append(", ".join(r["cand"] for r in d["covered"]) or "_(nenhum)_")
     L.append("")
-    out = root / "artifacts" / f"fase0_worklist_{chap}.md"
+    out = root / "artifacts" / f"kb_phase_worklist_{chap}.md"
     out.write_text("\n".join(L), encoding="utf-8")
     return out
 
@@ -359,7 +359,7 @@ def main():
     ap.add_argument("--check", action="store_true",
                     help="valida cobertura (gap fechado + reconciled); exit 1 se faltar")
     ap.add_argument("--apply-frontier", action="store_true",
-                    help="com --check OK, avanca project.json kb_frontier p/ o ultimo sfx do capitulo")
+                    help="com --check OK, avanca project.json kb_frontier p/ o ultimo scene_id do capitulo")
     a = ap.parse_args()
     root = Path(a.project)
 
@@ -381,7 +381,7 @@ def main():
 
     out = write_worklist(root, a.chapter)
     d = discover(root, a.chapter)
-    print(f"OK fase0 discover cap {a.chapter}: {len(d['gap'])} candidato(s) nao cobertos (fortes), "
+    print(f"OK kb_phase discover cap {a.chapter}: {len(d['gap'])} candidato(s) nao cobertos (fortes), "
           f"{len(d['weak'])} fraco(s), {len(d['covered'])} coberto(s).")
     print(f"  -> {out}")
     if d["gap"]:
