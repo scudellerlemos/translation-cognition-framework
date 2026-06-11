@@ -224,16 +224,18 @@ _PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
           "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
 
 
-def cost_of(model: str, u: dict) -> float:
-    """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write)."""
+def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
+    """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write). A Batch API tem
+    desconto de 50% sobre TODO o uso (batch=True -> 0.5x)."""
     p = _PRICE.get(model)
     if not p or not u:
         return 0.0
-    return (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
+    base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
             + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
+    return base * (0.5 if batch else 1.0)
 
 
-def log_api_call(root, scene, kind, model, usage):
+def log_api_call(root, scene, kind, model, usage, *, batch=False):
     """Anexa 1 linha a artifacts/api_ledger.jsonl por chamada de API CONCLUIDA (cada tentativa de
     cobertura e cada escalonamento de fitting). E a VERDADE de gasto: registra TODA chamada cobrada,
     INCLUSIVE as de cenas que depois falham (cobertura/verify) ou retries — exatamente o que o
@@ -242,7 +244,8 @@ def log_api_call(root, scene, kind, model, usage):
     if not usage:
         return None
     rec = {"t": round(time.time(), 3), "scene": scene, "kind": kind, "model": model,
-           "usage": dict(usage), "cost_usd": round(cost_of(model, usage), 5)}
+           "batch": bool(batch), "usage": dict(usage),
+           "cost_usd": round(cost_of(model, usage, batch=batch), 5)}
     try:
         p = Path(root) / "artifacts" / "api_ledger.jsonl"
         with p.open("a", encoding="utf-8") as f:
@@ -446,6 +449,114 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                 note += f"  - {off}: budget {b}, atual {cur}\n"
     raise RuntimeError(f"_api_translate: cobertura/paridade incompletas apos {_MAX_TRIES} tentativas: "
                        f"faltam={last['missing']} paridade={last['bad_parity']}")
+
+
+# ------------------------------- BATCH backend --------------------------------
+# Batch API: 50% de desconto, assincrono (1 requisicao por cena num unico batch). Usa o MESMO system
+# cacheado (Carta) -> cache compartilhado entre todas as cenas do batch, alem do desconto. Pre-passe de
+# baixo custo: cenas que passam cobertura/paridade na 1a (sem retry) seguem; as que falham caem p/ o
+# caminho interativo (streaming, com retry/escalonamento). Quem faz fitting (verify) continua sendo cada
+# cena no run_scene. Determinismo da montagem do request isolado em _translate_params (testavel sem rede).
+
+def _translate_params(pack, model):
+    """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
+    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada)."""
+    reuse = _select_reuse(pack, enabled=True)
+    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
+    if not novel:
+        return None, reuse, novel
+    system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
+    red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)
+    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE
+    params = {
+        "model": model, "max_tokens": MAX_OUTPUT_TOKENS, "system": system,
+        "messages": [{"role": "user", "content": base_user}],
+        "thinking": {"type": "disabled"},
+        "output_config": {"effort": EFFORT_TRANSLATE,
+                          "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
+    }
+    return params, reuse, novel
+
+
+def _finalize_batch_result(pack, text):
+    """Processa UMA resposta de batch (1 tiro, sem retry): parse -> mapa -> parity_fit -> checa
+    cobertura/paridade (HARD). Budget e SOFT (best-effort, como a ultima tentativa do single) -> nao
+    reprova aqui; a verify/escalonamento cuida do fitting. Retorna (data|None, problems).
+    problems vazio = pronto p/ gravar; senao a cena cai p/ fallback interativo."""
+    reuse = _select_reuse(pack, enabled=True)
+    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
+    srcmap = {r["offset"]: r.get("source", "") for r in novel}
+    offset_set = {r["offset"] for r in novel}
+    tok = context_pack.TOKEN
+    try:
+        parsed = _to_map(json.loads(text))
+    except Exception as e:
+        return None, [f"json invalido: {e}"]
+    merged = {}
+    for off, v in parsed.get("lines", {}).items():
+        if off not in offset_set or not isinstance(v, dict):
+            continue
+        v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
+        merged[off] = v
+    missing = [r["offset"] for r in novel if r["offset"] not in merged]
+    bad_par = [o for o in merged if merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
+    if missing or bad_par:
+        return None, [f"cobertura/paridade: missing={len(missing)} bad_parity={len(bad_par)}"]
+    merged.update(reuse)
+    return {"lines": merged}, []
+
+
+def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600):
+    """Traduz VARIAS cenas num unico batch (50% off). Grava translations_<sfx>.json das cenas que
+    passam cobertura/paridade; retorna {scene: status} com status em
+    {all_reused, written, coverage_failed, errored:<tipo>, timeout}. As != (written|all_reused) devem
+    cair p/ o caminho interativo (run_scene normal). NAO roda build_plan/verify (isso e por-cena)."""
+    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
+    from anthropic.types.messages.batch_create_params import Request
+    root = Path(root)
+    m = model or MODEL_TRANSLATE
+    client = _client()
+    packs, reqs, status = {}, [], {}
+    for scene in scenes:
+        pack = context_pack.write_pack(root, scene)
+        packs[scene] = pack
+        params, reuse, _novel = _translate_params(pack, m)
+        out = root / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
+        if params is None:                              # 100% reuso -> grava local, sem requisicao
+            out.write_text(json.dumps({"lines": dict(reuse)}, ensure_ascii=False, indent=2),
+                           encoding="utf-8")
+            status[scene] = "all_reused"
+            continue
+        reqs.append(Request(custom_id=scene, params=MessageCreateParamsNonStreaming(**params)))
+    if not reqs:
+        return status
+    batch = client.messages.batches.create(requests=reqs)
+    waited = 0
+    while True:
+        b = client.messages.batches.retrieve(batch.id)
+        if getattr(b, "processing_status", None) == "ended":
+            break
+        if waited >= max_wait_seconds:
+            for scene in scenes:
+                status.setdefault(scene, "timeout")
+            return status
+        time.sleep(poll_seconds)
+        waited += poll_seconds
+    for result in client.messages.batches.results(batch.id):
+        scene = result.custom_id
+        if getattr(result.result, "type", None) != "succeeded":
+            status[scene] = f"errored:{getattr(result.result, 'type', '?')}"
+            continue
+        msg = result.result.message
+        log_api_call(root, scene, "translate", m, _usage_of(msg), batch=True)   # 50% no ledger
+        data, problems = _finalize_batch_result(packs[scene], _text_of(msg))
+        if problems:
+            status[scene] = "coverage_failed"           # -> fallback interativo
+            continue
+        out = root / "artifacts" / scene / f"translations_{context_pack.sfx_of(scene)}.json"
+        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        status[scene] = "written"
+    return status
 
 
 # Schema ESTRITO p/ a back-translation (garante JSON parseavel — sem ele o Opus as vezes devolvia
