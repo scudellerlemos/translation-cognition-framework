@@ -73,7 +73,11 @@ def _present(needle: str, blob_low: str) -> bool:
     if not n:
         return False
     if n.isalnum():
-        return re.search(r"\b" + re.escape(n) + r"\b", blob_low) is not None
+        # tolera plural/inflexao inglesa (termo + s/es opcional): 'gigiri' casa 'gigiris', 'cohort' casa
+        # 'cohorts', 'general' casa 'generals'. Possessivo ("ukon's") ja casa pelo \b no apostrofo.
+        # Conservador (so sufixo plural) -> mais recall sem virar substring solta. Primitiva unica de
+        # match: vale p/ glossario, vozes e gatilhos de spoiler de uma vez.
+        return re.search(r"\b" + re.escape(n) + r"(?:e?s)?\b", blob_low) is not None
     return n in blob_low
 
 
@@ -107,10 +111,14 @@ def select_decisions(decisions, present_terms, present_speakers):
     for d in decisions:                       # universais primeiro (regras do conector)
         if d.get("universal") and d["title"] not in seen:
             chosen.append(d); seen.add(d["title"])
-    for d in decisions:                       # depois, casadas por tag
+    for d in decisions:                       # depois: casadas por TAG (titulo) OU pelo SUMMARY (conteudo)
         if d["title"] in seen:
             continue
-        if toks & {t.lower() for t in d.get("tags", [])}:
+        tags = {t.lower() for t in d.get("tags", [])}
+        summ = (d.get("summary", "") or "").lower()
+        # match por conteudo do summary aumenta o recall de decisoes relevantes que o tag de titulo nao
+        # pega (ex.: decisao sobre um termo citado so no corpo). Continua bounded por MAX_DECISIONS.
+        if (toks & tags) or any(_present(t, summ) for t in toks):
             chosen.append(d); seen.add(d["title"])
     return chosen[:MAX_DECISIONS]
 
