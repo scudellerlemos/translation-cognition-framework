@@ -122,21 +122,11 @@ def _metrics(root: Path, scene: str, sfx: str, *, n_lines, tr, bt, n_high, verif
 
 
 def _high_lines(root: Path, scene: str, sfx: str):
-    plan = root / "artifacts" / scene / f"translation_plan_{sfx}.json"
-    if not plan.is_file():
-        return []
-    lines = json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
-    out = []
-    for ln in lines:
-        if ln.get("risk_level") in ("high", "critical"):
-            out.append({"offset": ln.get("offset", ""), "source": ln.get("text_source", ""),
-                        "target": ln.get("base_translation", ""), "speaker": ln.get("speaker", ""),
-                        "risk_notes": ln.get("risk_notes", "")})
-    return out
+    return M.high_risk_lines(root, scene)               # fonte unica (model.high_risk_lines)
 
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
-              pretranslated=False):
+              pretranslated=False, defer_back=False):
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     sfx = context_pack.sfx_of(scene)
@@ -240,6 +230,22 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
     highs = _high_lines(root, scene, sfx)
+    if defer_back:
+        # MODO BATCH: a back-translation vira POS-PASSE do capitulo (1 batch -50% Opus). Aqui so contamos
+        # as linhas de alto risco; o run_chapter coleta os planos e batcheia ao fim (ver _back_batch_phase).
+        print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
+        bt = {"status": M.DONE, "reviewed": 0, "path": None}
+        _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
+        print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
+        si = state_index.build(root)
+        print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+        _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
+        mr = _metrics(root, scene, sfx, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
+                      n_high=len(highs), verified=bool(verified))
+        print(f"      metrics: custo ~${mr['cost_usd']:.4f} (back-translation deferida p/ batch)")
+        print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
+        return {"status": "verified" if verified else "planned", "scene": scene,
+                "high": len(highs), "verified": verified}
     print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
     try:
         bt = M.back_translate(root, scene, highs, backend=backend)
