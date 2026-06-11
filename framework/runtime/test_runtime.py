@@ -332,6 +332,21 @@ def test_reuse_disabled_on_escalation():
     assert model._select_reuse(pack, enabled=False) == {}, "escalonamento re-traduz fresco (sem reuso)"
 
 
+# ------------------------------- escalonamento cirurgico ----------------------
+# Re-traduz SO as linhas acima do budget (nao a cena inteira) -> corte de custo no caminho apertado.
+
+def test_over_offsets_selects_only_overflowing():
+    budgets = {"0x1": 10, "0x2": 5, "0x3": None, "0x4": 8}
+    lines = {
+        "0x1": {"t": "ok"},                       # 2 bytes <= 10 -> nao
+        "0x2": {"t": "muito longo demais"},       # > 5 -> SIM
+        "0x3": {"t": "qualquer"},                 # budget None -> ignora
+        "0x4": {"t": "coração"},                  # translit 'coracao' = 7 <= 8 -> nao (acentos somem)
+    }
+    assert model._over_offsets(budgets, lines, 1.0) == ["0x2"]
+    assert model._over_offsets({"0x2": 5}, {"0x2": {"t": "seis66"}}, 2.0) == []   # tolerancia folgada
+
+
 # ------------------------------- batch API (R5 custo, -50%) -------------------
 import types as _types   # noqa: E402
 
@@ -349,23 +364,24 @@ def test_translate_params_none_when_fully_reused():
     assert params is None and novel == [] and set(reuse) == {"0x1"}
 
 
-def test_finalize_batch_result_ok_and_missing():
+def _btext(offsets):
+    return json.dumps({"lines": [
+        {"offset": o, "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": "Oi"} for o in offsets]})
+
+
+def test_parse_batch_lines_and_coverage():
     tok = context_pack.TOKEN
     pack = {"sfx": "99_01", "tm_exact": [],
             "lines": [{"offset": "0x1", "source": "Hi"}, {"offset": "0x2", "source": f"A{tok}B"}]}
-    good = json.dumps({"lines": [
-        {"offset": "0x1", "speaker": "X", "tone_register": "n", "intent": "i",
-         "risk_level": "low", "risk_notes": "", "t": "Oi"},
-        {"offset": "0x2", "speaker": "X", "tone_register": "n", "intent": "i",
-         "risk_level": "low", "risk_notes": "", "t": f"C{tok}D"}]})
-    data, problems = model._finalize_batch_result(pack, good)
-    assert problems == [] and set(data["lines"]) == {"0x1", "0x2"}
-    # faltando 0x2 -> problema (cai p/ fallback interativo)
-    miss = json.dumps({"lines": [
-        {"offset": "0x1", "speaker": "X", "tone_register": "n", "intent": "i",
-         "risk_level": "low", "risk_notes": "", "t": "Oi"}]})
-    d2, p2 = model._finalize_batch_result(pack, miss)
-    assert d2 is None and p2
+    lines = model._parse_batch_lines(pack, _btext(["0x1"]))   # so 0x1
+    assert set(lines) == {"0x1"}
+    miss, badpar = model._batch_coverage(pack, lines)
+    assert miss == ["0x2"] and badpar == []
+    lines["0x2"] = {"t": f"C{tok}D"}                          # mescla 0x2 com paridade certa
+    assert model._batch_coverage(pack, lines) == ([], [])
+    lines["0x2"] = {"t": "CD sem quebra"}                     # paridade errada -> badpar
+    assert model._batch_coverage(pack, lines)[1] == ["0x2"]
 
 
 def _fake_msg(text, usage=(100, 50)):
@@ -376,52 +392,84 @@ def _fake_msg(text, usage=(100, 50)):
 
 
 class _FakeBatches:
-    def __init__(self, results):
-        self._results = results
+    """Fake da Batch API ciente de RODADAS: scene_rounds[cid] = [texto_rodada0, texto_rodada1, ...];
+    results() devolve, por cid submetido, o proximo texto da fila (vazio se acabar)."""
+    def __init__(self, scene_rounds):
+        self.scene_rounds = {k: list(v) for k, v in scene_rounds.items()}
+        self._submitted = []
 
     def create(self, requests):
-        self._n = len(requests)
+        self._submitted = [r["custom_id"] for r in requests]
         return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
 
     def retrieve(self, _id):
         return _types.SimpleNamespace(processing_status="ended")
 
     def results(self, _id):
-        return iter(self._results)
+        out = []
+        for cid in self._submitted:
+            q = self.scene_rounds.get(cid, [])
+            text = q.pop(0) if q else _btext([])
+            out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
+                type="succeeded", message=_fake_msg(text))))
+        return iter(out)
 
 
-def test_batch_translate_routes_and_meters(monkeypatch, tmp_path):
-    # 2 cenas: uma OK (grava translations + ledger batch), uma com cobertura incompleta (coverage_failed)
-    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
-    (tmp_path / "artifacts" / "ch_99_02").mkdir(parents=True)
+def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
+    # 3 cenas: 99_01 cobre na 1a; 99_02 DROPA 1 linha na 1a e cobre na 2a (ACUMULA -> nao cai p/
+    # interativo); 99_03 nunca cobre -> coverage_failed apos as rodadas.
+    for s in ("ch_99_01", "ch_99_02", "ch_99_03"):
+        (tmp_path / "artifacts" / s).mkdir(parents=True)
     packs = {
         "ch_99_01": {"sfx": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
-        "ch_99_02": {"sfx": "99_02", "tm_exact": [], "lines": [{"offset": "0x9", "source": "Bye"}]},
+        "ch_99_02": {"sfx": "99_02", "tm_exact": [],
+                     "lines": [{"offset": "0x9", "source": "A"}, {"offset": "0xa", "source": "B"}]},
+        "ch_99_03": {"sfx": "99_03", "tm_exact": [], "lines": [{"offset": "0xb", "source": "C"}]},
     }
     monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
     monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
     monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
-    ok_text = json.dumps({"lines": [{"offset": "0x1", "speaker": "X", "tone_register": "n",
-                                     "intent": "i", "risk_level": "low", "risk_notes": "", "t": "Oi"}]})
-    bad_text = json.dumps({"lines": []})   # 0x9 faltando -> coverage_failed
-    results = [
-        _types.SimpleNamespace(custom_id="ch_99_01",
-                               result=_types.SimpleNamespace(type="succeeded", message=_fake_msg(ok_text))),
-        _types.SimpleNamespace(custom_id="ch_99_02",
-                               result=_types.SimpleNamespace(type="succeeded", message=_fake_msg(bad_text))),
-    ]
-    fake = _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_FakeBatches(results)))
+    fake = _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_FakeBatches({
+        "ch_99_01": [_btext(["0x1"])],                       # cobre na rodada 0
+        "ch_99_02": [_btext(["0x9"]), _btext(["0xa"])],      # rodada 0 dropa 0xa; rodada 1 completa
+        "ch_99_03": [_btext([]), _btext([])],                # nunca cobre
+    })))
     monkeypatch.setattr(model, "_client", lambda: fake)
-    st = model.batch_translate(tmp_path, ["ch_99_01", "ch_99_02"], poll_seconds=0)
-    assert st["ch_99_01"] == "written"
-    assert st["ch_99_02"] == "coverage_failed"
-    assert (tmp_path / "artifacts" / "ch_99_01" / "translations_99_01.json").is_file()
-    assert not (tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").is_file()
-    # ledger: ambas sucederam na API (cobradas), com flag batch e custo 50%
+    st = model.batch_translate(tmp_path, ["ch_99_01", "ch_99_02", "ch_99_03"],
+                               poll_seconds=0, max_rounds=2)
+    assert st == {"ch_99_01": "written", "ch_99_02": "written", "ch_99_03": "coverage_failed"}
+    # 99_02 ACUMULOU as duas linhas (re-batch so do que faltou)
+    d = json.loads((tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").read_text("utf-8"))
+    assert set(d["lines"]) == {"0x9", "0xa"}
+    assert not (tmp_path / "artifacts" / "ch_99_03" / "translations_99_03.json").is_file()
+    # ledger: 99_01 x1, 99_02 x2 (2 rodadas), 99_03 x2; tudo batch=True, custo 50%
     rows = [json.loads(l) for l in
-            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text(encoding="utf-8").splitlines()]
-    assert len(rows) == 2 and all(r["batch"] is True for r in rows)
-    assert rows[0]["cost_usd"] == round(model.cost_of(rows[0]["model"], rows[0]["usage"], batch=True), 5)
+            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text("utf-8").splitlines()]
+    n = {}
+    for r in rows:
+        n[r["scene"]] = n.get(r["scene"], 0) + 1
+        assert r["batch"] is True
+    assert n == {"ch_99_01": 1, "ch_99_02": 2, "ch_99_03": 2}
+
+
+def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
+    # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
+    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
+    packs = {"ch_99_01": {"sfx": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    model._write_translations(tmp_path, "ch_99_01", {"lines": {"0x1": {"t": "Oi"}}})   # traducao previa
+
+    class _Exploding:                                    # qualquer submissao = falha o teste
+        def create(self, requests): raise AssertionError("nao deveria submeter batch (cena ja traduzida)")
+        def retrieve(self, _id): raise AssertionError("nao deveria")
+        def results(self, _id): raise AssertionError("nao deveria")
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_Exploding())))
+    st = model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0)
+    assert st["ch_99_01"] == "written"
+    assert not (tmp_path / "artifacts" / "api_ledger.jsonl").is_file(), "zero chamada -> zero ledger"
 
 
 def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):

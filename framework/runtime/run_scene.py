@@ -194,9 +194,19 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     verified = None
     for ti, tol in enumerate(tolerances):
         if ti > 0:
-            print(f"[retighten] verify falhou por fitting -> re-traduzindo budget_tolerance={tol} ...")
+            # CIRURGICO: re-traduzir SO as linhas acima do budget (nao a cena inteira). Numa cena grande
+            # com poucos estouros isso troca centenas de re-traducoes por umas poucas (medido: ~$3,4
+            # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
             try:
-                tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
+                over = M.over_budget_offsets(root, scene, tolerance=1.0)
+                if over:
+                    print(f"[retighten] verify falhou por fitting -> re-traduzindo SO {len(over)} "
+                          f"linha(s) acima do budget (tol={tol}) ...")
+                    tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol)
+                else:
+                    print(f"[retighten] verify falhou por fitting (nenhuma linha acima do budget) -> "
+                          f"re-traduzindo a cena (tol={tol}) ...")
+                    tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
             except Exception as e:
                 print(f"      ERRO na re-traducao ({backend}): {e}")
                 _checkpoint(root, scene, {"status": "api_translate_failed"})
