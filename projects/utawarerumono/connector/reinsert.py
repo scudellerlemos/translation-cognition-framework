@@ -359,7 +359,7 @@ def main():
         f"- Saída: output/{OUT.name} (mesmo nome/extensão do input) — {len(buf)} bytes "
         f"(original {len(original)}; +{len(buf) - len(original)})",
         f"- Patch: output/{IPS.name}",
-        "- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência char1/char2.png)",
+        "- Charset: TRANSLITERAÇÃO na gravação (fonte sem diacríticos — evidência evidence/char1.png e char2.png)",
         "- Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; "
         "Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.",
         "- Distribuição por tier: " + ", ".join(f"{k}={v}" for k, v in sorted(tiers.items())),
