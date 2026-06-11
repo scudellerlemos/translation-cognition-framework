@@ -10,7 +10,7 @@ Checagens (deterministas, sem rede):
   HARD (bloqueiam):
     - research_log.md existe e tem `status: reconciled` (pesquisa IA+humano conciliada).
     - artefatos de KB presentes e nao-vazios: glossary.csv, universe_knowledge_base.md, voice_cards.json.
-  FRONTEIRA (bloqueia se declarada): project.json `kb_frontier` = sfx max coberto pela pesquisa
+  FRONTEIRA (bloqueia se declarada): project.json `kb_frontier` = scene_id max coberto pela pesquisa
     (ex.: "12_17"). Cena alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui.
     Se `kb_frontier` nao for declarado, a fronteira do research_log e so REPORTADA (warning), nao bloqueia.
 
@@ -30,9 +30,9 @@ import context_pack  # noqa: E402
 _KB_ARTIFACTS = ("glossary.csv", "universe_knowledge_base.md")
 
 
-def _pos(sfx: str):
-    """sfx '12_03' -> (12, 3) p/ comparacao numerica robusta (evita pegadinha lexicografica 9 vs 12)."""
-    return tuple(int(p) for p in str(sfx).split("_") if p.isdigit())
+def _pos(scene_id: str):
+    """scene_id '12_03' -> (12, 3) p/ comparacao numerica robusta (evita pegadinha lexicografica 9 vs 12)."""
+    return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
 
 
 def check(root, scene) -> dict:
@@ -61,10 +61,10 @@ def check(root, scene) -> dict:
     # fronteira: declarada em project.json (machine-readable) tem prioridade; senao, so reporta a do log
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     frontier = cfg.get("kb_frontier")
-    sfx = context_pack.sfx_of(scene)
+    scene_id = context_pack.scene_id_of(scene)
     if frontier:
-        if _pos(sfx) > _pos(frontier):
-            problems.append(f"cena {sfx} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
+        if _pos(scene_id) > _pos(frontier):
+            problems.append(f"cena {scene_id} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
     elif rl.is_file():
         m = re.search(r"Fronteira de spoiler:\s*(.+)", rl.read_text(encoding="utf-8"))

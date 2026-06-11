@@ -84,7 +84,7 @@ placeholders abstratos `{COLOR}` (abre) / `{END}` (fecha). `{W<N>}` (timers) é 
 - **T4 resíduo:** caso irredutível (overflow sem head) → issue para o Passo 06c. (Com o modelo
   file-relativo, tudo é repointável → resíduo = 0 no corpus testado.)
 
-> ⚠️ **EOF-append (fim do CONTAINER) foi REPROVADO in-game** (`artifacts/Fasea*.png`): o engine carrega
+> ⚠️ **EOF-append (fim do CONTAINER) foi REPROVADO in-game** (`artifacts/evidence/Fasea*.png`): o engine carrega
 > cada arquivo do `.sdat` num buffer próprio dimensionado pelo `size` do Pack, então texto além do `size`
 > vira `@@@@` e trava o jogo. Por isso a relocação é **dentro do arquivo** + **reescrita do Pack** (o
 > texto fica dentro do `size` declarado). Ver `decision_log.md` → "GATE IN-GAME". Travado pelos testes
@@ -92,7 +92,7 @@ placeholders abstratos `{COLOR}` (abre) / `{END}` (fecha). `{W<N>}` (timers) é 
 
 ## SEÇÃO 5 — COBERTURA DE CHARSET DO ALVO (pt-BR)
 
-**Veredito: a fonte do jogo NÃO renderiza diacríticos** (evidência in-game: `artifacts/char1.png`,
+**Veredito: a fonte do jogo NÃO renderiza diacríticos** (evidência in-game: `artifacts/evidence/char1.png`,
 `char2.png` — pangrama pt-BR sai como `@`).
 
 ```
