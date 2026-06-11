@@ -392,14 +392,17 @@ def _fake_msg(text, usage=(100, 50)):
 
 
 class _FakeBatches:
-    """Fake da Batch API ciente de RODADAS: scene_rounds[cid] = [texto_rodada0, texto_rodada1, ...];
-    results() devolve, por cid submetido, o proximo texto da fila (vazio se acabar)."""
+    """Fake da Batch API ciente de RODADAS e de TIER: scene_rounds[scene] = [texto_r0, texto_r1, ...];
+    custom_id e 'scene@@tier' -> a fila e por CENA. results() devolve o proximo texto da cena (vazio se
+    acabar). models[] registra os modelos submetidos (p/ checar roteamento de tier)."""
     def __init__(self, scene_rounds):
         self.scene_rounds = {k: list(v) for k, v in scene_rounds.items()}
         self._submitted = []
+        self.models = []
 
     def create(self, requests):
         self._submitted = [r["custom_id"] for r in requests]
+        self.models += [r["params"]["model"] for r in requests]
         return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
 
     def retrieve(self, _id):
@@ -408,7 +411,8 @@ class _FakeBatches:
     def results(self, _id):
         out = []
         for cid in self._submitted:
-            q = self.scene_rounds.get(cid, [])
+            scene = cid.split("@@", 1)[0]
+            q = self.scene_rounds.get(scene, [])
             text = q.pop(0) if q else _btext([])
             out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
                 type="succeeded", message=_fake_msg(text))))
@@ -449,7 +453,48 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
     for r in rows:
         n[r["scene"]] = n.get(r["scene"], 0) + 1
         assert r["batch"] is True
+        assert r["model"] == model.MODEL_TRANSLATE_CHEAP, "linhas single-line -> tier cheap (Haiku)"
     assert n == {"ch_99_01": 1, "ch_99_02": 2, "ch_99_03": 2}
+
+
+def test_tier_of_routes_by_break_token():
+    tok = context_pack.TOKEN
+    assert model._tier_of("linha simples") == "cheap"        # sem \n -> Haiku
+    assert model._tier_of(f"linha{tok}com quebra") == "main"  # com \n -> Sonnet
+    assert model._tier_of("") == "cheap"
+
+
+def test_batch_tiering_routes_models(monkeypatch, tmp_path):
+    # cena com 1 linha single-line (-> Haiku) e 1 multi-linha (-> Sonnet): 2 requests, 2 modelos
+    tok = context_pack.TOKEN
+    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
+    packs = {"ch_99_01": {"sfx": "99_01", "tm_exact": [],
+                          "lines": [{"offset": "0x1", "source": "simples"},
+                                    {"offset": "0x2", "source": f"tem{tok}quebra"}]}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    fb = _FakeBatches({"ch_99_01": [_btext(["0x1"]) ]})      # rodada 0 nao importa o conteudo exato aqui
+    # texto que cobre cada offset com paridade certa
+    good = json.dumps({"lines": [
+        {"offset": "0x1", "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": "ok"},
+        {"offset": "0x2", "speaker": "X", "tone_register": "n", "intent": "i",
+         "risk_level": "low", "risk_notes": "", "t": f"a{tok}b"}]})
+    fb.scene_rounds["ch_99_01"] = [good]
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    st = model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
+    # os DOIS modelos foram submetidos (Haiku p/ single-line, Sonnet p/ multi-linha)
+    assert model.MODEL_TRANSLATE_CHEAP in fb.models and model.MODEL_TRANSLATE in fb.models
+    # tiering desligado -> tudo no modelo principal
+    fb2 = _FakeBatches({"ch_99_01": [good]})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
+    model._write_translations(tmp_path, "ch_99_01", {"lines": {}})   # limpa p/ re-rodar
+    (tmp_path / "artifacts" / "ch_99_01" / "translations_99_01.json").unlink()
+    model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1, tiered=False)
+    assert model.MODEL_TRANSLATE_CHEAP not in fb2.models
 
 
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
