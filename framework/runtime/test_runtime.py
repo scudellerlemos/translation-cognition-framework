@@ -429,6 +429,7 @@ class _FakeBatches:
         self.scene_rounds = {k: list(v) for k, v in scene_rounds.items()}
         self._submitted = []
         self.models = []
+        self.contents = []        # (custom_id, user_content) de cada request submetido (p/ checar a nota)
 
     def create(self, requests):
         for r in requests:
@@ -437,6 +438,7 @@ class _FakeBatches:
                                  f"(deve casar ^[a-zA-Z0-9_-]{{1,64}}$)")
         self._submitted = [r["custom_id"] for r in requests]
         self.models += [r["params"]["model"] for r in requests]
+        self.contents += [(r["custom_id"], r["params"]["messages"][0]["content"]) for r in requests]
         return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
 
     def retrieve(self, _id):
@@ -480,6 +482,13 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
     d = json.loads((tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").read_text("utf-8"))
     assert set(d["lines"]) == {"0x9", "0xa"}
     assert not (tmp_path / "artifacts" / "ch_99_03" / "translations_99_03.json").is_file()
+    # FEEDBACK CORRETIVO: a re-rodada (rnd>0) de 99_02 leva a nota com o offset que faltou (0xa) — sem
+    # isso o batch repetia o erro e cenas de narracao caiam pro interativo full-price (coverage_failed).
+    fb = fake.messages.batches
+    c_9902 = [c for cid, c in fb.contents if cid.startswith("ch_99_02")]
+    assert "CORRECAO NECESSARIA" not in c_9902[0], "rodada 0 nao leva nota (cena inteira, sem feedback)"
+    assert any("CORRECAO NECESSARIA" in c and "0xa" in c for c in c_9902[1:]), \
+        "re-rodada deve anexar a nota corretiva com os offsets faltantes/paridade-errada"
     # ledger: 99_01 x1, 99_02 x2 (2 rodadas), 99_03 x2; tudo batch=True, custo 50%
     rows = [json.loads(l) for l in
             (tmp_path / "artifacts" / "api_ledger.jsonl").read_text("utf-8").splitlines()]
