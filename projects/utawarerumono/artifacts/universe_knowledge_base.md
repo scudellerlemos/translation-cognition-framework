@@ -176,5 +176,58 @@ enorme") — "Boro" é qualificador de tamanho, não personagem.
 
 ---
 
+# Delta cap. 13 (fronteira estendida 2026-06 — nível introdução; twist final de Oshtor em quarentena)
+
+## Oshtor (= Ukon; reveal ch_13_08)
+
+**Definição:** **General da Direita / Imperial Guard** do Mikado de Yamato. Durante o cap.13 viaja
+incógnito como o mercenário **Ukon**; sua identidade como Oshtor é **reconhecida publicamente em ch_13_08**
+(0x77ef9). Voz formal, nobre e comedida quando como Oshtor; espirituosa/informal quando como Ukon
+(SRC-001 cap.13; SRC-002).
+
+**Status de confiança:** high (introdução + reveal in-corpus). ⚠️ **Quarentena:** o **twist de fim de jogo**
+sobre o destino de Oshtor e sua máscara **não** é incorporado (ratificado pelo usuário); ver `spoiler_ledger`.
+
+---
+
+## Rulutieh
+
+**Definição:** Princesa mais nova de **Kujyuri**, filha de **Ozen** (um dos Oito Generais-Pilar). Tímida e
+gentil; viaja como mensageira e permanece com o grupo de Haku para vencer a timidez. Gosta de BL, desenha
+e cozinha bem. Sempre acompanhada da ave **Cocopo** (SRC-002; SRC-001 cap.13).
+
+**Voz:** insegura, educada, gagueja quando nervosa; anima-se com arte/BL. Ver `tone_analysis.md`.
+
+**Status de confiança:** high.
+
+---
+
+## Cocopo
+
+**Definição:** Ave **Hororon** anormalmente grande, montaria/pet da Rulutieh. Sem fala (onomatopeias de
+minigame: Poke/Squish/Tug → localizar) (SRC-002; SRC-001 cap.13).
+
+**Status de confiança:** high.
+
+---
+
+## Nosuri / Ougi
+
+**Definição:** Irmãos foras-da-lei; **Nosuri** se diz "aliada da justiça" (atrevida, oportunista) e **Ougi**
+é o irmão pragmático. Atuaram como informantes do submundo a serviço de Oshtor e ajudaram na captura de
+**Moznu**; passam a trabalhar com Haku (SRC-002; SRC-001 cap.13).
+
+**Status de confiança:** high.
+
+---
+
+## Ozen
+
+**Definição:** Um dos **Oito Generais-Pilar** de Yamato; pai da Rulutieh (SRC-002).
+
+**Status de confiança:** high.
+
+---
+
 ## Contexto de produção
 - **Desenvolvedora:** Aquaplus. **Publisher (EN):** Atlus/Sega (SRC-003). Sem localização pt-BR conhecida.
