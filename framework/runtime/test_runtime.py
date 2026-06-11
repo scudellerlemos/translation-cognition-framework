@@ -554,6 +554,152 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
     assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
 
 
+# ----------------------- back-translation em BATCH (Tier 1 de custo) ----------------------
+
+def _plan(offsets_risk):
+    """translation_plan minimo: [{offset, risk_level, text_source, base_translation, speaker}]."""
+    return {"lines": [{"offset": o, "risk_level": rk, "text_source": f"src{o}",
+                       "base_translation": f"alvo{o}", "speaker": "X", "risk_notes": ""}
+                      for o, rk in offsets_risk]}
+
+
+def _backtext(offsets):
+    return json.dumps({"entries": [{"offset": o, "back_en": "back", "verdict": "pass", "note": ""}
+                                   for o in offsets]})
+
+
+def test_high_risk_lines_reads_plan(tmp_path):
+    d = tmp_path / "artifacts" / "ch_77_01"
+    d.mkdir(parents=True)
+    (d / "translation_plan_77_01.json").write_text(
+        json.dumps(_plan([("0x1", "low"), ("0x2", "high"), ("0x3", "critical")])), encoding="utf-8")
+    hl = model.high_risk_lines(tmp_path, "ch_77_01")
+    assert [h["offset"] for h in hl] == ["0x2", "0x3"]        # so high/critical
+    assert hl[0]["source"] == "src0x2" and hl[0]["target"] == "alvo0x2"
+    assert model.high_risk_lines(tmp_path, "ch_77_99") == []  # sem plano -> vazio
+
+
+def test_back_params_deterministic_shape():
+    p1 = model._back_params([{"offset": "0x1", "source": "a", "target": "b", "speaker": "X"}], "claude-opus-4-8")
+    p2 = model._back_params([{"offset": "0x1", "source": "a", "target": "b", "speaker": "X"}], "claude-opus-4-8")
+    assert p1 == p2 and p1["model"] == "claude-opus-4-8"
+    assert p1["output_config"]["format"]["schema"] is model._BACK_SCHEMA
+
+
+def test_batch_back_translate(monkeypatch, tmp_path):
+    # 3 cenas: 77_01 e 77_02 com linhas high -> batch; 77_03 sem high -> no_high (sem request).
+    for s, plan in (("ch_77_01", _plan([("0x1", "high"), ("0x2", "low")])),
+                    ("ch_77_02", _plan([("0x9", "critical")])),
+                    ("ch_77_03", _plan([("0xb", "low")]))):
+        d = tmp_path / "artifacts" / s
+        d.mkdir(parents=True)
+        (d / f"translation_plan_{context_pack.sfx_of(s)}.json").write_text(json.dumps(plan), encoding="utf-8")
+    fb = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    st = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02", "ch_77_03"], poll_seconds=0)
+    assert st == {"ch_77_01": "reviewed", "ch_77_02": "reviewed", "ch_77_03": "no_high"}
+    assert fb.models == [model.MODEL_BACK, model.MODEL_BACK]   # so as 2 com high foram submetidas, Opus
+    bt = json.loads((tmp_path / "artifacts" / "ch_77_01" / "back_translation_77_01.json").read_text("utf-8"))
+    assert bt["reviewed"] == 1 and bt["entries"][0]["offset"] == "0x1"
+    rows = [json.loads(l) for l in
+            (tmp_path / "artifacts" / "api_ledger.jsonl").read_text("utf-8").splitlines()]
+    assert len(rows) == 2 and all(r["batch"] is True and r["kind"] == "back" for r in rows)
+
+    # RESUME idempotente: re-rodar nao re-cobra (back_translation ja existe)
+    fb2 = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
+    st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0)
+    assert st2 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb2.models == []
+
+
+# ----------------------------- driver de Fase 0 ------------------------------
+import fase0  # noqa: E402
+
+
+def _fase0_proj(tmp_path, scenes, glossary_terms=(), entities=(), *, reconciled=True, frontier="00_00"):
+    art = tmp_path / "artifacts"
+    import csv as _csv
+    import io as _io
+    for scene, lines in scenes.items():
+        d = art / scene
+        d.mkdir(parents=True)
+        buf = _io.StringIO()
+        w = _csv.writer(buf)
+        w.writerow(["offset", "text_source", "byte_budget"])
+        for i, t in enumerate(lines):
+            w.writerow([f"0x{i}", t, 80])
+        (d / "dialogs.csv").write_text(buf.getvalue(), encoding="utf-8")
+    g = "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n" + "".join(
+        f"{t},Cat,X,manter,none,,\n" for t in glossary_terms)
+    (art / "glossary.csv").write_text(g, encoding="utf-8")
+    e = "canonical_name,category,aliases,importance,confidence,notes\n" + "".join(
+        f"{n},Cat,{al},main,high,\n" for n, al in entities)
+    (art / "entities.csv").write_text(e, encoding="utf-8")
+    (art / "research_log.md").write_text(
+        "**Status:** reconciled\n" if reconciled else "**Status:** draft\n", encoding="utf-8")
+    (tmp_path / "project.json").write_text(
+        json.dumps({"connector": {}, "kb_frontier": frontier}, indent=2), encoding="utf-8")
+    return tmp_path
+
+
+def test_fase0_clean_cand_strips_noise():
+    assert fase0._clean_cand("CARRY") == ""                  # ALL-CAPS grito
+    assert fase0._clean_cand("AARGH OW") == ""
+    assert fase0._clean_cand("M-Master Haku") == "Haku"      # gagueira + titulo de borda
+    assert fase0._clean_cand("The Mystery Twins") == "Mystery Twins"  # stopword de borda aparada
+    assert fase0._clean_cand("Sword of Truth") == "Sword of Truth"    # stopword INTERIOR mantida
+
+
+def test_fase0_covered_titles_and_plural():
+    kb = fase0._kb_blob_from(["Haku", "Ukon", "Cohort", "Oshtor"], [])
+    assert fase0._covered("Master Haku", kb)                 # titulo + nome coberto
+    assert fase0._covered("Ukon Cohorts", kb)                # plural casa singular 'Cohort'
+    assert fase0._covered("Oshtor", kb)
+    assert not fase0._covered("Mystery Twins", kb)
+
+
+def test_fase0_discover_classifies(tmp_path):
+    root = _fase0_proj(
+        tmp_path,
+        {"ch_77_01": ["Oshtor met the Mystery Twins.", "The Ukon Cohorts marched. CARRY on."],
+         "ch_77_02": ["Look, the Mystery Twins again!", "The Imperial Guard stood firm."]},
+        glossary_terms=["Oshtor", "Ukon", "Cohort"])
+    d = fase0.discover(root, "77")
+    cov = {r["cand"] for r in d["covered"]}
+    blk = {r["cand"] for r in d["block"]}
+    assert "Ukon Cohorts" in cov and "Oshtor" in cov         # cobertos (plural/nome)
+    assert "Mystery Twins" in blk                            # recorre em 2 cenas -> bloqueia
+    assert "Imperial Guard" not in blk                       # 1 cena -> nao bloqueia
+    assert "CARRY" not in (blk | {r["cand"] for r in d["gap"]})  # grito filtrado
+
+
+def test_fase0_coverage_blocks_then_passes(tmp_path):
+    base = {"ch_77_01": ["Oshtor met the Mystery Twins."],
+            "ch_77_02": ["The Mystery Twins fled."]}
+    root = _fase0_proj(tmp_path, base, glossary_terms=["Oshtor"])
+    cov = fase0.coverage(root, "77")
+    assert any("Mystery Twins" in p for p in cov["problems"])  # bloqueia: termo recorrente fora da KB
+
+    root2 = _fase0_proj(tmp_path / "ok", base, glossary_terms=["Oshtor", "Mystery Twins"])
+    assert fase0.coverage(root2, "77")["problems"] == []      # agora coberto -> passa
+
+    root3 = _fase0_proj(tmp_path / "unrec", base, glossary_terms=["Oshtor", "Mystery Twins"],
+                        reconciled=False)
+    assert any("reconciled" in p for p in fase0.coverage(root3, "77")["problems"])
+
+
+def test_fase0_apply_frontier_advances_only(tmp_path):
+    root = _fase0_proj(tmp_path, {"ch_77_01": ["Hi."], "ch_77_03": ["Bye."]}, frontier="77_01")
+    assert fase0.apply_frontier(root, "77") == "77_03"        # avanca p/ ultimo sfx
+    assert '"kb_frontier": "77_03"' in (root / "project.json").read_text("utf-8")
+    assert fase0.apply_frontier(root, "77") == "77_03"        # idempotente, nao regride
+    # nunca regride: fronteira ja adiante
+    root2 = _fase0_proj(tmp_path / "ahead", {"ch_77_01": ["Hi."]}, frontier="99_00")
+    assert fase0.apply_frontier(root2, "77") == "99_00"
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
