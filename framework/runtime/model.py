@@ -195,7 +195,9 @@ def _client():
     if not key or "cole-sua-chave" in key:
         raise RuntimeError("backend 'api' requer ANTHROPIC_API_KEY: edite o `.env` na raiz do "
                            "framework e troque o placeholder pela sua chave real (veja .env.example).")
-    return anthropic.Anthropic()
+    # timeout generoso (fetch de resultados de batch grande) + retries do PROPRIO SDK (1a linha de
+    # defesa em 429/500/timeout/conexao); o _with_backoff por cima cobre o que escapar (2a linha).
+    return anthropic.Anthropic(timeout=900.0, max_retries=5)
 
 
 def _carta_text() -> str:
@@ -273,26 +275,41 @@ def log_api_call(root, scene, kind, model, usage, *, batch=False):
     return rec
 
 
-def _stream_final(client, **kwargs):
-    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
-    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
-    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
+def _transient_errors():
+    """Erros de rede TRANSITORIOS (curam com retry): 429/500/timeout + quedas de conexao httpx. NAO
+    inclui 400 BadRequest (esse nao 'cura'). Lazy import (anthropic/httpx so quando o backend api roda)."""
     import anthropic
     import httpx
-    transient = (anthropic.RateLimitError, anthropic.InternalServerError,
-                 anthropic.APITimeoutError, anthropic.APIConnectionError,
-                 httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
-                 httpx.ConnectError, httpx.ConnectTimeout)
+    return (anthropic.RateLimitError, anthropic.InternalServerError,
+            anthropic.APITimeoutError, anthropic.APIConnectionError,
+            httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
+            httpx.ConnectError, httpx.ConnectTimeout)
+
+
+def _with_backoff(fn):
+    """Executa fn() com backoff exponencial em erro transitorio de rede (mesma classe do _stream_final).
+    Para chamadas de BATCH (create/retrieve/results) que nao usam streaming — sem isso, um timeout de
+    rede num unico GET/POST derrubava todo o batch (ex.: back-batch do cap.18 morreu por timeout)."""
+    transient = _transient_errors()
     delay = 2.0
     for i in range(_MAX_BACKOFF):
         try:
-            with client.messages.stream(**kwargs) as s:
-                return s.get_final_message()
+            return fn()
         except transient:
             if i == _MAX_BACKOFF - 1:
                 raise
             time.sleep(delay)
             delay *= 2
+
+
+def _stream_final(client, **kwargs):
+    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
+    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
+    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
+    def _do():
+        with client.messages.stream(**kwargs) as s:
+            return s.get_final_message()
+    return _with_backoff(_do)
 
 
 def _check_translation(data, offsets):
@@ -641,7 +658,7 @@ def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
     """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
     waited = 0
     while True:
-        b = client.messages.batches.retrieve(batch_id)
+        b = _with_backoff(lambda: client.messages.batches.retrieve(batch_id))   # poll resiliente a timeout
         if getattr(b, "processing_status", None) == "ended":
             return True
         if waited >= max_wait_seconds:
@@ -727,12 +744,14 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                     reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
             break
-        batch = client.messages.batches.create(requests=reqs)
+        batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
         if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
             for scene in pending:
                 status.setdefault(scene, "timeout")
             return status
-        for result in client.messages.batches.results(batch.id):
+        # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
+        results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+        for result in results:
             cid = result.custom_id
             scene = cid.split("__", 1)[0]
             if getattr(result.result, "type", None) != "succeeded":
@@ -847,12 +866,14 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
     if not reqs:
         return status
     client = _client()
-    batch = client.messages.batches.create(requests=reqs)
+    batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
     if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
         for scene in highs:
             status.setdefault(scene, "timeout")
         return status
-    for result in client.messages.batches.results(batch.id):
+    # materializa os resultados DENTRO do backoff (igual ao batch_translate; foi aqui que o cap.18 morreu)
+    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+    for result in results:
         scene = result.custom_id
         if getattr(result.result, "type", None) != "succeeded":
             status[scene] = "errored"
