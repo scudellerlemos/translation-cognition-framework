@@ -185,14 +185,14 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | F | **release** — patch + docs de instalação |
 
 **Hardening arquitetural (dívidas conhecidas — ordem de ataque sugerida):**
-| # | Dívida | Fix | Quando morde |
+| # | Dívida | Fix | Status |
 |---|---|---|---|
-| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ao mudar/entrar conector — **endurecer 1º** |
-| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** (`NAMING.md` já documenta) | typo silencioso / rename |
-| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | crescimento |
-| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | — (fix barato) |
-| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | KB rasa passa o gate |
-| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | **risco DURANTE produção** |
+| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ✅ **feito** — `verify_chapter` emite exit 0/1/3 + linha `VERIFY_STATUS:{json}`; `run_scene` usa o exit-code (grep morto). Bug latente corrigido: o grep procurava `"fora do arquivo"` (espaços) vs `"fora-do-arquivo"` (hifens) → out-of-file nunca escalonava |
+| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** | ✅ **feito** — `paths.py` (módulo leaf, fonte única); 42 call sites migrados em 8 módulos; `test_paths_contract` fixa as strings; NAMING.md aponta |
+| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ⏸️ adiado (ainda legível; não mexer no que funciona) |
+| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
+| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ⏸️ adiado (difuso; risco de overengineering) |
+| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ vazamento de **gênero** pt-BR fica como extensão (exige marcar entidades de gênero-quarentenado no ledger + atribuir token ao referente) |
 
 **Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
 - **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
