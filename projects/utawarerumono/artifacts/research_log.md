@@ -85,3 +85,11 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus do jogo (dialogs cap.15). Reconcilia
 - **Shyahoro**: reino de Atuy. manter_original.
 - **Maro**: apelido de Maroro (NAO entidade nova) — `thee call me "Maro!"`; manter consistente com a fala arcaica de Maroro.
 - Declinados (ruido/comum, nao-entidade): Papa (=pai, "Papai"), Like, Hold, Help, Yargh, Ahahahaha, e demais interjeicoes/capitalizacao-de-frase.
+
+## cap.16 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.16). Reconciliacao autonoma (fonte autorizada).
+- **Yuuri**: personagem feminina, escoltada, timida; admira/imita Karulau; dona do pet Kurarin. manter_original.
+- **Kurarin**: pet da Yuuri, agua-viva voadora (pousa na cabeca). MASCULINO. manter_original.
+- **Karulau**: figura materna mais velha, forte, retorna da franquia. FEMININO. Lore profunda (idade/Kuon) = beyond_frontier -> quarentena.
+- **Rulie**: apelido de Rulutieh (NAO entidade nova).
+- Declinados (ruido/comum/interjeicao): Dear, Guess, Ahaha, Getting, Nice, We'd, Agh, Tenant Wheh, Yamatan Soldier Pweeaase, Combat Tutorial (UI), Ladykiller Kurarin (epiteto de Kurarin).
