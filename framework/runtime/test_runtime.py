@@ -278,6 +278,27 @@ def test_spoiler_no_leak_in_committed_translations():
     assert leaks == [], f"vazamento de spoiler nas traducoes: {leaks[:3]}"
 
 
+def test_batch_smoke_evaluate():
+    # O smoke vivo de batch (batch_smoke.py) toca a API real; aqui testamos OFFLINE a logica de
+    # avaliacao — que ela PEGA cada modo de divergencia que ja nos custou dinheiro.
+    import batch_smoke
+    sc = "ch_00_00"
+    healthy = [{"kind": "translate", "model": "claude-haiku-4-5", "batch": True, "cost_usd": 0.01},
+               {"kind": "translate", "model": "claude-sonnet-4-6", "batch": True, "cost_usd": 0.01}]
+    ok, probs = batch_smoke.evaluate({sc: "written"}, healthy, sc)
+    assert ok and probs == []
+    # (b) nao convergiu
+    ok, probs = batch_smoke.evaluate({sc: "coverage_failed"}, healthy, sc)
+    assert not ok and any("convergiu" in p for p in probs)
+    # (c) Haiku sumiu (regressao tipo 400-do-effort) — so Sonnet no ledger
+    ok, probs = batch_smoke.evaluate({sc: "written"}, [healthy[1]], sc)
+    assert not ok and any("Haiku" in p for p in probs)
+    # (d) caiu pro interativo full-price
+    fell = healthy + [{"kind": "translate", "model": "claude-sonnet-4-6", "batch": False, "cost_usd": 0.5}]
+    ok, probs = batch_smoke.evaluate({sc: "written"}, fell, sc)
+    assert not ok and any("INTERATIVA" in p for p in probs)
+
+
 def test_verify_status_parses_structured_line():
     # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
