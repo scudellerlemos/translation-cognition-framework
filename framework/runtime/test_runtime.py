@@ -224,6 +224,17 @@ def _fake_chapter(tmp_path, scenes):
     return tmp_path
 
 
+def test_verify_status_parses_structured_line():
+    # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
+    out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
+           'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo_t4": 2, "out_of_file": 0, "n_fails": 1}\n'
+           "\nFALHAS:\n  - resíduo T4 = 2 (esperado 0)\n")
+    st = run_scene._verify_status(out)
+    assert st["fitting_failure"] is True and st["residuo_t4"] == 2
+    assert run_scene._verify_status("sem status aqui") == {}          # conector legado -> {}
+    assert run_scene._verify_status("VERIFY_STATUS: {quebrado") == {}  # json invalido -> {} (nao explode)
+
+
 def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     root = _fake_chapter(tmp_path, ("99_02", "99_01", "99_03"))   # fora de ordem de proposito
     (root / "artifacts" / "run_state.json").write_text(
