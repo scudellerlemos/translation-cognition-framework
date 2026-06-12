@@ -124,6 +124,37 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 | 10 | generalizar `state_index` p/ múltiplos projetos; paralelizar cenas | escala horizontal |
 | 11 | RAG/vetor **só** sobre `decision_log` + `universe_knowledge_base` | só ao atingir o gatilho do `adr/0003` |
 
+### P2.5 — Maturidade de execução (paralelismo, orquestração, observabilidade)
+> Gap reconhecido: o roadmap tratava "paralelizar cenas" como uma linha vaga. Esta seção torna explícito
+> o que é maturidade de processo aqui — e, principalmente, o **constraint** que limita o paralelismo.
+
+**Nuance que muda a prioridade:** o paralelismo que custa **dinheiro** (chamadas de LLM) **já existe** —
+`run_chapter --batch` submete todas as cenas do capítulo num **batch único** (Batch API processa
+concorrente). O resto (`build_plan`, `verify`, rebuild de `state_index`) é Python local e barato.
+Logo "paralelizar execução" é alavanca de **latência/throughput e operabilidade**, NÃO de custo.
+
+**O constraint (a espinha sequencial):** a **consistência vem da TM acumulando em sequência** — cena N
+entra na TM, cena N+1 faz dedup e herda voz/termos. Paralelizar cegamente perde dedup + propagação de
+consistência. **Mas** o batch já abre mão disso DENTRO do capítulo (traduz com a TM do início do cap.; a
+consistência intra-cap. vem do glossário/KB da Fase 0 + Carta). Portanto a espinha sequencial é **por
+capítulo, não por cena** — a TM só importa cross-capítulo.
+
+| Dimensão | Estado | Gap | Quando |
+|---|---|---|---|
+| paralelismo de LLM | ✅ via batch | nenhum (é o que importa em $) | — |
+| **orquestração ponta-a-ponta** | ⚠️ **manual por capítulo** | **`run_game`**: roda 16→39 sozinho (Fase 0 gating + `--max-usd` + retomada) | **agora (barato)** |
+| observabilidade de progresso | ⚠️ só custo (delta por cap. ✅) | progresso/ETA/throughput (linhas/min, % do jogo, taxa de falha) | **agora (barato)** |
+| rebuild de `state_index` | ⚠️ por cena na FASE 2 | redundante no batch (tradução já feita) → **1 rebuild/capítulo** | **agora (barato)** |
+| fault-tolerance/resumo | ✅ decente (`run_state` + batch idempotente) | — (já maduro) | — |
+| pipelining (overlap do wait async) | ❌ | enquanto o batch do cap N processa (~min), fazer o local do cap N-1 / submeter cap N+1 | plataforma (P4) |
+| paralelismo cross-capítulo | ❌ | trade-off de TM documentado (perde dedup/consistência por throughput) | plataforma (P4) |
+| multi-projeto | ❌ | generalizar `state_index`/paths por projeto | plataforma (P4) |
+
+**Decisão (anti-overengineering):** p/ ESTE jogo (~33k linhas, ~3–4h wall-clock total), fila/pipelining é
+overengineering. **Vale agora:** `run_game` driver + observabilidade de progresso + rebuild 1×/capítulo —
+tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
+**Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo, multi-projeto.
+
 ### P3 — não fazer agora (overengineering)
 Banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços". O orquestrador
 determinístico + 2 papéis de IA já é a granularidade certa.
@@ -169,6 +200,9 @@ determinístico + 2 papéis de IA já é a granularidade certa.
   endurecida + `run_chapter` + benchmark Sonnet aprovado + telemetria de gasto real via `api_ledger.jsonl`).
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (R1–R5). Ligar/comprovar API, KB-gate, spoiler-filter,
   bundle de custo. **É aqui que estamos.**
+- **Fase 2.7 — maturidade de execução:** P2.5. Orquestração ponta-a-ponta (`run_game`) + observabilidade
+  de progresso + rebuild de state_index 1×/capítulo (barato, agora). Paralelismo de LLM já resolvido (batch);
+  pipelining/cross-capítulo ficam p/ plataforma.
 - **Fase 3 — escalar p/ 40–100k linhas:** P2. Paralelização + (se preciso) RAG sobre lore/decisões.
 - **Fase 4 — pós-produção & plataforma:** P4. Entregar o jogo (build → QA in-game → consistência →
   release), depois hardening (H1–H6) e a evolução da camada de conector (detecção + síntese governada).
