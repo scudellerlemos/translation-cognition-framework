@@ -93,3 +93,11 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.16). Reconciliacao auto
 - **Karulau**: figura materna mais velha, forte, retorna da franquia. FEMININO. Lore profunda (idade/Kuon) = beyond_frontier -> quarentena.
 - **Rulie**: apelido de Rulutieh (NAO entidade nova).
 - Declinados (ruido/comum/interjeicao): Dear, Guess, Ahaha, Getting, Nice, We'd, Agh, Tenant Wheh, Yamatan Soldier Pweeaase, Combat Tutorial (UI), Ladykiller Kurarin (epiteto de Kurarin).
+
+## cap.17 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.17). Reconciliacao autonoma (fonte autorizada).
+- **Dekopompo**: Oito Generais-Pilar por sucessao (pai Dikotoma); sem talento militar; MASCULINO; pomposo.
+- **Touka**: guarda-costas Evenkuruga (orelhas de falcao), devota mas atrapalhada; FEMININO; retorna da franquia. Lore profunda = beyond_frontier (quarentena).
+- **Chalafun**, **Bokoinante** (subordinado do Dekopompo): personagens menores; wiki nao cobre (corpus-only); genero a confirmar no contexto.
+- **Nugwisomkami**: termo = 'espiritos/deuses malignos' (lingua do jogo). manter_original + glosa.
+- Declinados (ruido/comum/interjeicao/arcaismo): Wait, Cheers, Ooh, Thou, Fate, Game, Perfect, Sisters, Mmmmm, Damn, e fragmentos (Barkeep Welcome, Chalafun Halt, Glad Kuon, etc.).
