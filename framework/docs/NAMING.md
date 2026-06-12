@@ -43,6 +43,12 @@ Estes nomes são **load-bearing**: há dados em disco, comandos que usuários di
 runtime lê. Renomear quebra os capítulos já traduzidos (11–13) e/ou scripts/documentação. Mudança aqui
 exige script de migração + revalidação de round-trip — não é um "rename de clareza".
 
+> **H2 — fonte única (`framework/runtime/paths.py`):** os nomes de artefato persistidos abaixo NÃO são
+> mais f-strings espalhadas — vivem como helpers em `paths.py` (ex.: `paths.translations(root, scene,
+> scene_id)`), e o `test_paths_contract` FIXA cada string. Código novo deve usar `paths.*`, nunca montar
+> `root / "artifacts" / ...` à mão. Mudar um nome aqui = mudar em `paths.py` + rodar o teste (que vai
+> falhar, lembrando da migração de dados em disco).
+
 **a) Nomes de artefato persistidos** (gerados/consumidos entre execuções):
 `dialogs.csv`, `glossary.csv`, `entities.csv`, `translations_<scene_id>.json`,
 `translation_plan_<scene_id>.json`, `back_translation_<scene_id>.json`, `approved_<scene_id>.csv`,
