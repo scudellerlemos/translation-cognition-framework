@@ -71,3 +71,42 @@ de tudo além do cap.13. **Twist final de Oshtor (fim de jogo) permanece em quar
 - **Localização oficial pt-BR:** não consta (franquia tem EN oficial Atlus/Sega; sem pt-BR conhecido).
 - **Identidades de 'Woman'/'Man':** UNSOURCED por escolha (spoiler além da fronteira). confidence low.
 - **Natureza profunda do Tatari / enquadramento sci-fi:** UNSOURCED (spoiler). Só o que o corpus diz.
+
+## Delta cap.14 (2026-06, reconciliado wiki+corpus)
+Fronteira estendida a **14_10**. Novos: Nekone (irma de Oshtor/Ukon), Mikazuchi (Gen. Imperial da Esquerda; disfarce Sakon NAO no corpus 11-14 -> sem ambiguidade no cap.14), Imperial Guard, Twin Shields (Oshtor+Mikazuchi), Mausoleum, Akuruka, + topinimos (Imperial Capital, Omuchakko, Hakurokaku, Onvitaikayan/Great Fathers). Twist Mask of Truth (Nekone encobre Haku) = beyond_frontier, quarentenado. 'Hoo' = risada (interjeicao), nao nome.
+
+## cap.15 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus do jogo (dialogs cap.15). Reconciliacao autonoma (fonte ja autorizada).
+- **Kiwru** (var. Kiuru): principe de Ennakamuy, arqueiro, irmao juramentado de Oshtor/Ukon; MASCULINO; voz nervosa/gentil. Arco romantico (Shinonon) e timeline +10 anos = beyond_frontier → quarentena.
+- **Ennakamuy**: nacao dependente de Yamato; terra natal de Kiwru. manter_original.
+- **Atuy**: princesa de Shyahoro; FEMININO; lutadora de lanca, busca namorado; informal ('love').
+- **Anju**: jovem princesa de Yamato, sucessora do Mikado (a "Descendente Divina"); FEMININO. Origem (template genetico/Chii) = spoiler maior beyond_frontier → quarentena.
+- **Divine Scion** → "Descendente Divino/Divina" (concordar com Anju = feminino). Titulo do herdeiro divino do Mikado.
+- **Shyahoro**: reino de Atuy. manter_original.
+- **Maro**: apelido de Maroro (NAO entidade nova) — `thee call me "Maro!"`; manter consistente com a fala arcaica de Maroro.
+- Declinados (ruido/comum, nao-entidade): Papa (=pai, "Papai"), Like, Hold, Help, Yargh, Ahahahaha, e demais interjeicoes/capitalizacao-de-frase.
+
+## cap.16 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.16). Reconciliacao autonoma (fonte autorizada).
+- **Yuuri**: personagem feminina, escoltada, timida; admira/imita Karulau; dona do pet Kurarin. manter_original.
+- **Kurarin**: pet da Yuuri, agua-viva voadora (pousa na cabeca). MASCULINO. manter_original.
+- **Karulau**: figura materna mais velha, forte, retorna da franquia. FEMININO. Lore profunda (idade/Kuon) = beyond_frontier -> quarentena.
+- **Rulie**: apelido de Rulutieh (NAO entidade nova).
+- Declinados (ruido/comum/interjeicao): Dear, Guess, Ahaha, Getting, Nice, We'd, Agh, Tenant Wheh, Yamatan Soldier Pweeaase, Combat Tutorial (UI), Ladykiller Kurarin (epiteto de Kurarin).
+
+## cap.17 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.17). Reconciliacao autonoma (fonte autorizada).
+- **Dekopompo**: Oito Generais-Pilar por sucessao (pai Dikotoma); sem talento militar; MASCULINO; pomposo.
+- **Touka**: guarda-costas Evenkuruga (orelhas de falcao), devota mas atrapalhada; FEMININO; retorna da franquia. Lore profunda = beyond_frontier (quarentena).
+- **Chalafun**, **Bokoinante** (subordinado do Dekopompo): personagens menores; wiki nao cobre (corpus-only); genero a confirmar no contexto.
+- **Nugwisomkami**: termo = 'espiritos/deuses malignos' (lingua do jogo). manter_original + glosa.
+- Declinados (ruido/comum/interjeicao/arcaismo): Wait, Cheers, Ooh, Thou, Fate, Game, Perfect, Sisters, Mmmmm, Damn, e fragmentos (Barkeep Welcome, Chalafun Halt, Glad Kuon, etc.).
+
+## cap.18 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.18).
+- **Munechika**: Oito Generais-Pilar, 'a Guardia' (escudo/defesa da capital), educadora da Anju; FEMININO; so guerra defensiva.
+- **Soyankekur**: Oito Generais-Pilar, owlo de Shyahoro (nacao da Atuy), 'o Marinheiro'; MASCULINO; conheceu Haku pre-mascara.
+- **Honoka/Miruhj/Raurau/Mito**: personagens menores (criados/aposentado); wiki nao cobre; corpus-only; genero a confirmar.
+- **Highness**->'Alteza' (Anju); **Guardian**->'a Guardia' (epiteto Munechika); **Rulu**->apelido de Rulutieh.
+- Os Oito Generais-Pilar (wiki): Raiko, Woshis, Dekopompo, Ozen, Soyankekur, Tokifusa, Munechika, Vurai (alguns aparecerao adiante).
+- Declinados (ruido/comum/interjeicao/contracao): Urgh, It'll, Unhand, What're, Nah, Regardless, Understood, Pardon, Oohh, Failure, Pay, Preposterous.

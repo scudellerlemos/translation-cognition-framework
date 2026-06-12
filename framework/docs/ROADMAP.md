@@ -66,6 +66,52 @@ e cruza com `run_state.json` p/ marcar gasto **desperdiçado** (cenas que não f
 agora vem do ledger (soma retries+escalonamento). _O ledger começa do zero nesta instrumentação — runs
 anteriores do cap.12 não estão nele (não há como recuperar honestamente do resumo subcontado)._
 
+**Run viva do cap.14 (1ª medição real de batch/tiering/back-batch — "codado ≠ medido"):**
+- 🐛 **bug do tiering (corrigido):** `custom_id = scene@@tier` é inválido na Batch API
+  (`^[a-zA-Z0-9_-]{1,64}$`) → o batch dava **400** e caía 100% pro interativo **full-price**. Os unit
+  tests não pegavam (o fake aceitava qualquer id). Fix: `@@`→`__`; o fake agora **valida o padrão**.
+- ✅ **back-batch −50% Opus comprovado VIVO** (cap.14, 9 cenas, 5 revisadas num batch). Funciona.
+- 🐛🐛🐛 **batch −50% no translate NÃO convergia — CAUSA-RAIZ REAL = 400 do Haiku no tier cheap (cap.15):**
+  as **9/9 cenas** deram `coverage_failed` → 100% interativo **full-price** ($22 Sonnet). Caça em camadas
+  (ledger por timestamp → repro offline → diagnóstico vivo de 1 cena → **composição do pack**): o
+  `_translate_params` (usado pelo batch) **sempre incluía `output_config.effort`** — mas **Haiku 4.5 dá 400
+  com `effort`** → **todo request do tier cheap (single-line → Haiku) falhava** (não logado) → as linhas
+  single-line nunca voltavam. Pista decisiva: no 15_06, `MISSING=120/221` = **exatamente as 120 linhas do
+  tier cheap** (o tier main/Sonnet cobriu suas 101 sem problema). O `_api_translate` (interativo) **checa
+  `_no_effort_model` e omite o effort** p/ Haiku; o batch não checava. **Fix** (`model.py`): `_translate_params`
+  omite `effort` p/ Haiku/Sonnet-4.5 (espelha o interativo). **Validado OFFLINE**: o fake do batch agora
+  **rejeita `effort` em request Haiku** (mimetiza o 400) — `test_batch_tiering_routes_models` **falha no
+  código antigo** e passa no novo; 45 testes verdes. **Defesa extra mantida** (`_BATCH_CHUNK`=60 + merge
+  best-parity): protege contra truncação real de resposta longa em cenas grandes. ✅ **CONFIRMADO VIVO
+  (15_06, run de 1 cena):** convergiu `written` com **5 requests batch=True** (3× Haiku tier cheap + 2×
+  Sonnet tier main), custo **$0,1484** — pela 1ª vez o translate fecha NO batch (−50%) **e o tiering Haiku
+  engata** (as 120 single-line que antes davam 400). Mesma cena no interativo full-price custava ~$0,40–0,64
+  → ~65% mais barato.
+- ✅✅ **CONFIRMADO EM ESCALA DE CAPÍTULO (cap.16, 1ª run de cap. com tudo consertado):** **5/5 cenas
+  `written` no batch → verified** (round-trip idêntico), **ZERO fallback interativo** (46/46 translate em
+  batch=True: 26 Haiku + 20 Sonnet), chunking segurou a cena de **1.334 linhas** (16_01). **Custo: $1,4154**
+  (delta do cap.; teto `--max-usd 3` não chegou perto) — vs ~$6,5 se rodasse com o bug (≈78% mais barato).
+  **Tiering MEDIDO:** Haiku $0,32 **ativo** (estava congelado $0,71 por 2 caps). Previsão ($0,0007/linha →
+  ~$1,46) cravada no real ($1,42). **R5 fechado: batch −50% + tiering + back-batch + guardrails de custo
+  todos vivos e medidos.** > **NB metodológico (3 diagnósticos até
+  acertar):** (1º) "faltava nota corretiva", (2º) "re-mandar fragmento vs cena inteira", (3º) "truncação" —
+  todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
+  (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
+  cena ANTES de pagar capítulo — e o fake deve VALIDAR as restrições reais da API (custom_id, effort-por-modelo).**
+- ✅ **tiering: causa do "$0,71 inalterado" ERA O BUG DO HAIKU, não falta de single-line.** A hipótese
+  antiga ("o jogo pode não ter single-line suficiente → desligar `MODEL_TRANSLATE_CHEAP`") estava **errada
+  e invertida**. Medição em **44.116 linhas** (`_tier_of` sobre todos os dialogs): **59% são single-line
+  (Haiku-elegíveis)** — 26.004 cheap vs 18.112 main, consistente em TODOS os caps (56–67%). O Haiku ficava
+  em $0,71 porque **todo request Haiku dava 400** (effort, corrigido hoje), não por falta de conteúdo.
+  **Confirmado vivo (15_06):** 132 linhas single-line foram pro Haiku (3 requests). **Disposição: MANTER o
+  tiering** (cobre 59% do jogo; Haiku = 1/3 da saída do Sonnet). ⚠️ **Falta só** o número AGREGADO de
+  economia num capítulo inteiro (o 15_06 prova o roteamento; o $ total sai na próxima run de capítulo).
+- 🐛 **falso-positivo no KB-gate (corrigido):** "Like/Hold/Papa" (palavras comuns no início de frase)
+  bloqueavam a Fase 0 do cap.15 por escaparem da stoplist do `kb_phase`. Adicionadas ao `_STOP`.
+- 💰 **custo real medido (2 caps):** cap.14 ≈ $8,5; cap.15 ≈ **$23** (2525 linhas, **full-price** pelo bug
+  acima) → ~$117/33k **sem** o desconto. O **$36/jogo era otimista**; só o fix do batch (a validar vivo)
+  reaproxima disso.
+
 ### P1.6 — robustez de conector p/ cenas de binário apertado (BACKLOG pós-produção)
 > Disparado pela ch_12_15: binário multi-BIN com pouco espaço de realocação → 2 linhas (+4/+5 bytes)
 > caem em RELOC_cont → ponteiros fora-do-arquivo. As traduções estão boas; o conector é que não cabe.
@@ -89,9 +135,74 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 | 10 | generalizar `state_index` p/ múltiplos projetos; paralelizar cenas | escala horizontal |
 | 11 | RAG/vetor **só** sobre `decision_log` + `universe_knowledge_base` | só ao atingir o gatilho do `adr/0003` |
 
+### P2.5 — Maturidade de execução (paralelismo, orquestração, observabilidade)
+> Gap reconhecido: o roadmap tratava "paralelizar cenas" como uma linha vaga. Esta seção torna explícito
+> o que é maturidade de processo aqui — e, principalmente, o **constraint** que limita o paralelismo.
+
+**Nuance que muda a prioridade:** o paralelismo que custa **dinheiro** (chamadas de LLM) **já existe** —
+`run_chapter --batch` submete todas as cenas do capítulo num **batch único** (Batch API processa
+concorrente). O resto (`build_plan`, `verify`, rebuild de `state_index`) é Python local e barato.
+Logo "paralelizar execução" é alavanca de **latência/throughput e operabilidade**, NÃO de custo.
+
+**O constraint (a espinha sequencial):** a **consistência vem da TM acumulando em sequência** — cena N
+entra na TM, cena N+1 faz dedup e herda voz/termos. Paralelizar cegamente perde dedup + propagação de
+consistência. **Mas** o batch já abre mão disso DENTRO do capítulo (traduz com a TM do início do cap.; a
+consistência intra-cap. vem do glossário/KB da Fase 0 + Carta). Portanto a espinha sequencial é **por
+capítulo, não por cena** — a TM só importa cross-capítulo.
+
+| Dimensão | Estado | Gap | Quando |
+|---|---|---|---|
+| paralelismo de LLM | ✅ via batch | nenhum (é o que importa em $) | — |
+| **orquestração ponta-a-ponta** | ⚠️ **manual por capítulo** | **`run_game`**: roda 16→39 sozinho (Fase 0 gating + `--max-usd` + retomada) | **agora (barato)** |
+| observabilidade de progresso | ⚠️ só custo (delta por cap. ✅) | progresso/ETA/throughput (linhas/min, % do jogo, taxa de falha) | **agora (barato)** |
+| rebuild de `state_index` | ⚠️ por cena na FASE 2 | redundante no batch (tradução já feita) → **1 rebuild/capítulo** | **agora (barato)** |
+| fault-tolerance/resumo | ✅ decente (`run_state` + batch idempotente) | — (já maduro) | — |
+| pipelining (overlap do wait async) | ❌ | enquanto o batch do cap N processa (~min), fazer o local do cap N-1 / submeter cap N+1 | plataforma (P4) |
+| paralelismo cross-capítulo | ❌ | trade-off de TM documentado (perde dedup/consistência por throughput) | plataforma (P4) |
+| multi-projeto | ❌ | generalizar `state_index`/paths por projeto | plataforma (P4) |
+
+**Decisão (anti-overengineering):** p/ ESTE jogo (~33k linhas, ~3–4h wall-clock total), fila/pipelining é
+overengineering. **Vale agora:** `run_game` driver + observabilidade de progresso + rebuild 1×/capítulo —
+tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
+**Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo, multi-projeto.
+
 ### P3 — não fazer agora (overengineering)
 Banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços". O orquestrador
 determinístico + 2 papéis de IA já é a granularidade certa.
+
+### P4 — Pós-produção & hardening (PRIORIDADE, **depois** de entregar o jogo)
+> Decisão: **entregar primeiro** (traduzir tudo → build → QA → release); só então o hardening. A maioria
+> destas dívidas só "morde" quando algo **muda** (conector novo, rename) — por isso ficam após produção.
+> **Exceção:** o item de spoiler (H6) tem risco **durante** a produção (a mitigação por-linha segue ativa;
+> o que fica pra cá é o teste sistemático de não-vazamento).
+
+**Entrega do jogo (fases C–F):**
+| Fase | Item |
+|---|---|
+| C | **build jogável** — reinserir o jogo INTEIRO traduzido + patch final (não só caps isolados) |
+| D | **QA in-game** humano — overflow / quebra / spoiler vazado |
+| E | **revisão holística de consistência** — cross-capítulo (voz/lore/termos) sobre o corpus inteiro |
+| F | **release** — patch + docs de instalação |
+
+**Hardening arquitetural (dívidas conhecidas — ordem de ataque sugerida):**
+| # | Dívida | Fix | Quando morde |
+|---|---|---|---|
+| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ao mudar/entrar conector — **endurecer 1º** |
+| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** (`NAMING.md` já documenta) | typo silencioso / rename |
+| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | crescimento |
+| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | — (fix barato) |
+| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | KB rasa passa o gate |
+| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | **risco DURANTE produção** |
+
+**Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
+- **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
+  de I/O escolhe o conector certo. Extrair quando houver **2–3 conectores**. Conectores agrupam por
+  **família de engine**, não por título (`sdat_format` = adaptador Aquaplus-era; o por-título é só `project.json`).
+- **Síntese:** inspecionar a pasta do jogo/mídia e **gerar** um conector novo — viável porque o
+  **round-trip byte-idêntico é um oráculo automático** (loop IA-propõe→round-trip→refina; único ponto onde
+  um approach agêntico se justifica). Mesmo paradigma de governança um nível acima: IA propõe conector →
+  round-trip verifica → humano ratifica a estratégia. **Evidência-primeiro** (não construir com 1 conector).
+  Teste barato de reuso-por-família: a sequência **Mask of Truth** (mesma engine, delta ~zero).
 
 ## Fases
 
@@ -100,7 +211,12 @@ determinístico + 2 papéis de IA já é a granularidade certa.
   endurecida + `run_chapter` + benchmark Sonnet aprovado + telemetria de gasto real via `api_ledger.jsonl`).
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (R1–R5). Ligar/comprovar API, KB-gate, spoiler-filter,
   bundle de custo. **É aqui que estamos.**
+- **Fase 2.7 — maturidade de execução:** P2.5. Orquestração ponta-a-ponta (`run_game`) + observabilidade
+  de progresso + rebuild de state_index 1×/capítulo (barato, agora). Paralelismo de LLM já resolvido (batch);
+  pipelining/cross-capítulo ficam p/ plataforma.
 - **Fase 3 — escalar p/ 40–100k linhas:** P2. Paralelização + (se preciso) RAG sobre lore/decisões.
+- **Fase 4 — pós-produção & plataforma:** P4. Entregar o jogo (build → QA in-game → consistência →
+  release), depois hardening (H1–H6) e a evolução da camada de conector (detecção + síntese governada).
 
 ## Sonnet Readiness
 

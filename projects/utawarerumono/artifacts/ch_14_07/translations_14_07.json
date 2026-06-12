@@ -1,0 +1,148 @@
+{
+  "lines": {
+    "0x900d2": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Haku tenta identificar uma presença vaga, mal consegue formular a pergunta",
+      "risk_level": "medium",
+      "risk_notes": "Fragmentação obrigatória; não articular demais",
+      "t": "Quem... Quem é...?"
+    },
+    "0x900e4": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Percebe alguém o chamando, confuso",
+      "risk_level": "medium",
+      "risk_notes": "Manter tom sonâmbulo/fragmentado",
+      "t": "Alguém... Alguém me chamando..."
+    },
+    "0x90108": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, definitivo",
+      "intent": "Questiona se a certeza é absoluta — tom ameaçador/profético",
+      "risk_level": "high",
+      "risk_notes": "Linha curta e dúbia; não resolver quem fala nem contexto; preservar ambiguidade",
+      "t": "...tem certeza?"
+    },
+    "0x90114": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio",
+      "intent": "Reforça a pergunta sobre certeza absoluta",
+      "risk_level": "high",
+      "risk_notes": "Deve soar frio/definitivo; não caloroso; preservar dubiedade",
+      "t": "Você tem absoluta certeza disso?"
+    },
+    "0x90137": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, contido, levemente pesaroso",
+      "intent": "Aceita a informação com relutância velada — tom dúbio",
+      "risk_level": "high",
+      "risk_notes": "Preservar ambiguidade; não revelar identidade/vínculo; token \\n obrigatório",
+      "t": "Entendo. Esperava que não fosse verdade, mas isso...\\n"
+    },
+    "0x90166": {
+      "speaker": "Homem",
+      "tone_register": "frio, analítico, ameaçador",
+      "intent": "Conclui que a situação é perigosa",
+      "risk_level": "high",
+      "risk_notes": "Soar definitivo sem calor; não resolver contexto",
+      "t": "Se for verdade, estamos em uma situação perigosa."
+    },
+    "0x90197": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, imperativo velado",
+      "intent": "Avisa/ordena que não tome riscos — linha parcialmente corrompida no source",
+      "risk_level": "high",
+      "risk_notes": "Source corrompido ('Try... do... -thing risky'); reconstruir sentido mais provável ('não faça nada arriscado'); token \\n obrigatório; sinalizar origem corrompida",
+      "t": "Não... faça... nada arriscado.\\n"
+    },
+    "0x901b4": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, levemente velado",
+      "intent": "Revela que alguém também está preocupado com Haku",
+      "risk_level": "high",
+      "risk_notes": "Não resolver quem é 'alguém' — preservar ambiguidade de identidade/vínculo (controle de spoiler)",
+      "t": "...também está preocupado com você."
+    },
+    "0x901d2": {
+      "speaker": "Protagonista",
+      "tone_register": "resignado, semi-consciente",
+      "intent": "Acusa recebimento de forma apagada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim, eu sei."
+    },
+    "0x901e6": {
+      "speaker": "Protagonista",
+      "tone_register": "fragmentado, tentando tranquilizar",
+      "intent": "Tenta afirmar que ficará bem, que não fará nada imprudente — frase quebrada",
+      "risk_level": "medium",
+      "risk_notes": "Manter fragmentação natural; token \\n obrigatório",
+      "t": "Vai ficar tudo bem. Não pretendo fazer\\n"
+    },
+    "0x90212": {
+      "speaker": "Protagonista",
+      "tone_register": "fragmentado, conclusivo",
+      "intent": "Conclui a promessa de não fazer nada estúpido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nada de estúpido."
+    },
+    "0x90228": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, levemente irritado",
+      "intent": "Reage defensivamente a quem está interferindo — pergunta quem é",
+      "risk_level": "medium",
+      "risk_notes": "Manter tom cortado/abrupto; traço de torpor",
+      "t": "Não é da sua conta! Quem--"
+    },
+    "0x9024c": {
+      "speaker": "Protagonista",
+      "tone_register": "sonhador, confuso",
+      "intent": "Nota algo estranho no que sente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah... é estranho, mas..."
+    },
+    "0x90267": {
+      "speaker": "Protagonista",
+      "tone_register": "sonhador, melancólico",
+      "intent": "Sensação de nostalgia inexplicável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso parece muito... nostálgico?"
+    },
+    "0x90287": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Tenta identificar a figura diante de si",
+      "risk_level": "high",
+      "risk_notes": "Não revelar identidade da figura (controle de spoiler — Mulher/Homem genérico); preservar fragmentação",
+      "t": "Ah... Quem é... Quem é você...?"
+    },
+    "0x902a8": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Tenta identificar as figuras ao redor",
+      "risk_level": "high",
+      "risk_notes": "Não resolver identidade das figuras; usar rótulo genérico implícito; preservar fragmentação",
+      "t": "Quem... são... essas pessoas...?"
+    },
+    "0x901e0": {
+      "speaker": "sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mulher"
+    },
+    "0x90223": {
+      "speaker": "sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Garota"
+    }
+  }
+}

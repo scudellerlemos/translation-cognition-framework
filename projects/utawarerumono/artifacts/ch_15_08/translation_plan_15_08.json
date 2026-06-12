@@ -1,0 +1,442 @@
+{
+  "scene_group": "15_08",
+  "lines": [
+    {
+      "offset": "0xc352f",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3858",
+      "text_source": "Come on. If we're really doing this, isn't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, reclamão",
+      "intent": "Haku questiona se há um jeito mais eficiente de treinar",
+      "risk_level": "low",
+      "base_translation": "Bom. Se vamos fazer isso, não tem\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3885",
+      "text_source": "there a more efficient way to do it?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, reclamão",
+      "intent": "conclusão da frase anterior",
+      "risk_level": "low",
+      "base_translation": "um jeito mais eficiente?",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc38aa",
+      "text_source": "You know, like something where I can just fight\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, preguiçoso",
+      "intent": "Haku quer algo onde briga pouco e ganha muita experiência",
+      "risk_level": "low",
+      "base_translation": "Tipo algo onde eu lute só um pouco\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc38dc",
+      "text_source": "a little bit and get a whole ton of experience.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, preguiçoso",
+      "intent": "conclusão — quer ganho fácil de experiência",
+      "risk_level": "low",
+      "base_translation": "e ganhe uma tonelada de experiência.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc390c",
+      "text_source": "Understood.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Entendido.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3918",
+      "text_source": "We had expected such a request from you, and\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, comedido",
+      "intent": "resposta preparada ao pedido previsto de Haku",
+      "risk_level": "low",
+      "base_translation": "Já esperávamos esse pedido de sua parte, e\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3947",
+      "text_source": "have readied an opponent to suit your desires.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, comedido",
+      "intent": "informa que prepararam um oponente adequado",
+      "risk_level": "low",
+      "base_translation": "preparamos um oponente ao seu gosto.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3976",
+      "text_source": "Gah!? Those guys are...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "chocado, alarme",
+      "intent": "Haku reconhece os oponentes com horror",
+      "risk_level": "medium",
+      "base_translation": "Gah!? Esses caras são...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de susto — localizar; 'Gah!?' mantido pois funciona em pt-BR como susto curto"
+    },
+    {
+      "offset": "0xc398e",
+      "text_source": "Ton of experience.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "seco, irônico",
+      "intent": "eco irônico do pedido de Haku — tonelada de experiência",
+      "risk_level": "low",
+      "base_translation": "Tonelada de experiência.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc39a1",
+      "text_source": "We have asked those that have surpassed human\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, neutro",
+      "intent": "explica que convocaram seres que superam a capacidade humana",
+      "risk_level": "low",
+      "base_translation": "Pedimos àqueles que superaram a capacidade\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc39d1",
+      "text_source": "capacity to make an appearance.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, neutro",
+      "intent": "conclusão — fizeram uma aparição",
+      "risk_level": "low",
+      "base_translation": "humana que fizessem uma aparição.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc39f1",
+      "text_source": "That's not \"surpassing human capacity\"!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, cômico",
+      "intent": "Haku corrige — isso não é superar o humano, é não ser humano",
+      "risk_level": "low",
+      "base_translation": "Isso não é \"superar a capacidade humana\"!\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3a1b",
+      "text_source": "That's called \"not being human anymore\"!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, cômico",
+      "intent": "conclusão da correção cômica",
+      "risk_level": "low",
+      "base_translation": "Isso se chama \"não ser mais humano\"!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3a44",
+      "text_source": "This is all wrong... I wanted training so easy\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "lamentoso, cômico",
+      "intent": "Haku lamenta que queria treino fácil o suficiente para dormir",
+      "risk_level": "low",
+      "base_translation": "Tudo errado... Queria um treino tão fácil\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3a75",
+      "text_source": "I could sleep through it. What happened...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "lamentoso, cômico",
+      "intent": "conclusão — o que aconteceu com o plano",
+      "risk_level": "low",
+      "base_translation": "que eu dormisse. O que aconteceu...?",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3c47",
+      "text_source": "I-I somehow managed it... Is this really going\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado, exausto",
+      "intent": "Haku mal conseguiu e questiona se acaba antes do amanhecer",
+      "risk_level": "low",
+      "base_translation": "D-de algum jeito consegui... Vai mesmo\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3c78",
+      "text_source": "to be over before morning?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado, exausto",
+      "intent": "conclusão — vai acabar antes do amanhecer?",
+      "risk_level": "low",
+      "base_translation": "acabar antes do amanhecer?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3c93",
+      "text_source": "It is designed without flaw.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, definitivo",
+      "intent": "afirma que o design é perfeito, sem falhas",
+      "risk_level": "low",
+      "base_translation": "Foi planejado sem falhas.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3cb0",
+      "text_source": "This is a dream. Time flows differently than\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético",
+      "intent": "explica que é um sonho onde o tempo flui diferente",
+      "risk_level": "medium",
+      "base_translation": "É um sonho. O tempo flui diferente aqui\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fala ambígua e ameaçadora do Homem — preservar dubiedade; sem calor"
+    },
+    {
+      "offset": "0xc3cdf",
+      "text_source": "in reality. A mere blink could take hours here.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético",
+      "intent": "um piscar de olhos pode durar horas no sonho",
+      "risk_level": "medium",
+      "base_translation": "da realidade. Um mero piscar pode durar horas.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade ameaçadora preservada; 'mero piscar' soa natural"
+    },
+    {
+      "offset": "0xc3d0f",
+      "text_source": "And thus the wheels of time turn back.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, solene",
+      "intent": "as rodas do tempo retrocedem",
+      "risk_level": "low",
+      "base_translation": "E assim as rodas do tempo retrocedem.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3d36",
+      "text_source": "This dream will repeat itself.\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, ominoso",
+      "intent": "anuncia que o sonho vai se repetir",
+      "risk_level": "medium",
+      "base_translation": "Este sonho vai se repetir.\\n",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom profético e ameaçador — manter frieza"
+    },
+    {
+      "offset": "0xc3d57",
+      "text_source": "Over and over and over.\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, ominoso",
+      "intent": "repetição sem fim",
+      "risk_level": "low",
+      "base_translation": "Vez após vez após vez.\\n",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3d71",
+      "text_source": "Everlasting and eternal...",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, ominoso",
+      "intent": "eterno e sem fim",
+      "risk_level": "low",
+      "base_translation": "Eterno e sem fim...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3d8c",
+      "text_source": "...If you're TRYING to freak me out, you're doing\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "nervoso, sarcástico",
+      "intent": "Haku comenta que o Homem está conseguindo assustá-lo",
+      "risk_level": "medium",
+      "base_translation": "...Se está TENTANDO me assustar, está indo\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de desconforto; 'freak me out' → 'me assustar' funciona; tom sarcástico preservado"
+    },
+    {
+      "offset": "0xc3dc0",
+      "text_source": "a damn good job.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "nervoso, sarcástico",
+      "intent": "conclusão — está fazendo um ótimo trabalho nisso",
+      "risk_level": "low",
+      "base_translation": "muito bem.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 27,
+  "high_lines": 0,
+  "medium_lines": 5,
+  "needs_review": [],
+  "plan_version": "chapter-15_08-v1"
+}

@@ -1,0 +1,740 @@
+{
+  "lines": {
+    "0x11bccd": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "incomodar..."
+    },
+    "0x11bd38": {
+      "speaker": "Ougi",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "vez."
+    },
+    "0x11bdae": {
+      "speaker": "Sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hom"
+    },
+    "0x11c042": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "superfície."
+    },
+    "0x11c145": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com você."
+    },
+    "0x11c329": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pronto."
+    },
+    "0x11c447": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Quê?"
+    },
+    "0x11c4ee": {
+      "speaker": "sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mulher"
+    },
+    "0x11c68a": {
+      "speaker": "sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Garota"
+    },
+    "0x11c6ac": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Argh..."
+    },
+    "0x11bb0c": {
+      "speaker": "SYSTEM",
+      "tone_register": "technical/UI",
+      "intent": "system_message",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "firewall robusto em funcionamento."
+    },
+    "0x11bb82": {
+      "speaker": "SYSTEM",
+      "tone_register": "technical/UI",
+      "intent": "system_message",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "necessário."
+    },
+    "0x11bb88": {
+      "speaker": "Haku",
+      "tone_register": "panicked/urgent",
+      "intent": "alarm_realization",
+      "risk_level": "high",
+      "risk_notes": "Haku 1ª pessoa confuso em risco; preservar torpor/fragmentação; 'traced' = rastreado; manter exclamação como interjeição localizada 'Porra!'",
+      "t": "Q-Quê?! Porra! Já me rastrearam?"
+    },
+    "0x11bbae": {
+      "speaker": "Haku",
+      "tone_register": "panicked/urgent",
+      "intent": "command_retreat",
+      "risk_level": "medium",
+      "risk_notes": "fragmentação mantida; comandos diretos; urgência máxima",
+      "t": "Recuar! Retirada tática!"
+    },
+    "0x11bbc9": {
+      "speaker": "Haku",
+      "tone_register": "panicked/urgent",
+      "intent": "action_immediate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Preciso sair, rápido!"
+    },
+    "0x11bc0e": {
+      "speaker": "Haku",
+      "tone_register": "analytical/worried",
+      "intent": "consequence_realization",
+      "risk_level": "medium",
+      "risk_notes": "Haku confuso mas pensando; ambiguidade mantida (quem é 'me'?); não resolver spoiler de identidade",
+      "t": "poderia chegar até... mim, mas..."
+    },
+    "0x11bc63": {
+      "speaker": "Haku",
+      "tone_register": "analytical/worried",
+      "intent": "pressure_increase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cada vez mais apertar."
+    },
+    "0x11bd6f": {
+      "speaker": "Haku",
+      "tone_register": "conditional/hoping",
+      "intent": "wait_and_see",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "passa a tempestade."
+    },
+    "0x11bd81": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/professional",
+      "intent": "phone_greeting",
+      "risk_level": "low",
+      "risk_notes": "UI; rótulo genérico de sistema",
+      "t": "Alô? Sim, quem cha--Ah, opa, e aí?"
+    },
+    "0x11bde4": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/professional",
+      "intent": "time_reference",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nos em dias."
+    },
+    "0x11be20": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/professional",
+      "intent": "apology_reason",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ligar, desculpe."
+    },
+    "0x11be61": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/familiar",
+      "intent": "suggestion_casual",
+      "risk_level": "low",
+      "risk_notes": "UI; tom descontraído",
+      "t": "um pouco--respirar ar fresco, aproveitar a natureza?"
+    },
+    "0x11bebf": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/familiar",
+      "intent": "request_gratitude",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "me visitar aquele experimento de cultivo, vlw."
+    },
+    "0x11beed": {
+      "speaker": "SYSTEM",
+      "tone_register": "curious/informal",
+      "intent": "inquiry_outcome",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como é que isso terminou, afinal?"
+    },
+    "0x11bf78": {
+      "speaker": "SYSTEM",
+      "tone_register": "professional/brief",
+      "intent": "work_reference",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o trabalho."
+    },
+    "0x11bfdb": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/curious",
+      "intent": "plant_name_question",
+      "risk_level": "low",
+      "risk_notes": "gloss: nepenthes = planta carnívora; manter transliteração",
+      "t": "nepenthes?"
+    },
+    "0x11c078": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/polite",
+      "intent": "alternative_proposal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "outra proposta, pelo menos?"
+    },
+    "0x11c0c3": {
+      "speaker": "SYSTEM",
+      "tone_register": "polite/apologetic",
+      "intent": "decline_polite",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "passar essa também, desculpe."
+    },
+    "0x11c17c": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/knowing",
+      "intent": "self_sufficiency_remind",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "você. Sabe disso, né?"
+    },
+    "0x11c1cd": {
+      "speaker": "SYSTEM",
+      "tone_register": "confident/formal",
+      "intent": "trust_expression",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "completamente confiante que consegue ajudar nesse projeto."
+    },
+    "0x11c22e": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/apologetic",
+      "intent": "past_concern_mention",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nepotismo pra conseguir trabalho."
+    },
+    "0x11c27a": {
+      "speaker": "SYSTEM",
+      "tone_register": "analytical/cautious",
+      "intent": "judgment_impairment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nublar meu julgamento nisso."
+    },
+    "0x11c2bc": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/transition",
+      "intent": "time_bracket",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas por enquanto..."
+    },
+    "0x11c330": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/confirmatory",
+      "intent": "eating_confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein? É, venho comendo."
+    },
+    "0x11c371": {
+      "speaker": "SYSTEM",
+      "tone_register": "caring/parental",
+      "intent": "chore_reminder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E tô contando que tá limpando depois de si."
+    },
+    "0x11c3cb": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/reassuring",
+      "intent": "self_care_assertion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cuidando de mim."
+    },
+    "0x11c440": {
+      "speaker": "SYSTEM",
+      "tone_register": "brief/formal",
+      "intent": "order_confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ordem?"
+    },
+    "0x11c480": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/reassuring",
+      "intent": "situation_okay",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sem problemas."
+    },
+    "0x11c48d": {
+      "speaker": "SYSTEM",
+      "tone_register": "confused/questioning",
+      "intent": "topic_confusion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que tá rolando aí?"
+    },
+    "0x11c4a4": {
+      "speaker": "SYSTEM",
+      "tone_register": "formal/impending",
+      "intent": "arrival_announcement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devem estar chegando em qualquer minuto, agora..."
+    },
+    "0x11c4cf": {
+      "speaker": "SYSTEM",
+      "tone_register": "surprised/urgent",
+      "intent": "clarification_demand",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chegando? Espera aí, quem--"
+    },
+    "0x11c4f4": {
+      "speaker": "SYSTEM",
+      "tone_register": "friendly/warm",
+      "intent": "greeting_How_Are_You",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Opa! Como tá indo?"
+    },
+    "0x11c514": {
+      "speaker": "SYSTEM",
+      "tone_register": "startled/confused",
+      "intent": "interruption_surprise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Quê, o que você--"
+    },
+    "0x11c587": {
+      "speaker": "SYSTEM",
+      "tone_register": "brief/questioning",
+      "intent": "dish_reference",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "prato?"
+    },
+    "0x11c5c0": {
+      "speaker": "SYSTEM",
+      "tone_register": "casual/vague",
+      "intent": "observation_unclear",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tudo isso... De algum jeito."
+    },
+    "0x11c60b": {
+      "speaker": "SYSTEM",
+      "tone_register": "diplomatic/hedging",
+      "intent": "compliment_with_caveat",
+      "risk_level": "medium",
+      "risk_notes": "'cooking' carrega gag cômico; manter o tom desconfortável/diplomático; 'uh' = hesitação localizada",
+      "t": "sério, mas... seu jeito de cozinhar, hã..."
+    },
+    "0x11c658": {
+      "speaker": "SYSTEM",
+      "tone_register": "proud/formal",
+      "intent": "introduction_honored_guest",
+      "risk_level": "high",
+      "risk_notes": "identidade não confirmada; 'master' = Mestre (honorífico em análise); não antecipar quem é; manter formalidade enigmática",
+      "t": "tenho o estimado mestre comigo hoje."
+    },
+    "0x11c682": {
+      "speaker": "SYSTEM",
+      "tone_register": "questioning/brief",
+      "intent": "identity_question",
+      "risk_level": "high",
+      "risk_notes": "spoiler potencial; 'Master' deixa vago quem é; não resolver; manter ambiguidade",
+      "t": "Mestre?"
+    },
+    "0x11c68f": {
+      "speaker": "SYSTEM",
+      "tone_register": "warm/casual",
+      "intent": "visit_announcement",
+      "risk_level": "low",
+      "risk_notes": "relação informal; tom caloroso mantido",
+      "t": "Opa, tio! Vim visitar!"
+    },
+    "0x11c6e5": {
+      "speaker": "SYSTEM",
+      "tone_register": "warm/inviting",
+      "intent": "encouragement_via_food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "uns curry só pra você. Anima aí um pouco!"
+    },
+    "0x11badf": {
+      "speaker": "Haku",
+      "tone_register": "informal, monólogo interno",
+      "intent": "constatar que a segurança da rede é robusta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Era de se esperar. Essa rede tem uma\\n"
+    },
+    "0x11bb25": {
+      "speaker": "Haku",
+      "tone_register": "informal, confiante",
+      "intent": "afirmar que um hacker de elite consegue passar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nada que um hacker de elite não resolva,\\n"
+    },
+    "0x11bb54": {
+      "speaker": "Haku",
+      "tone_register": "informal, focado",
+      "intent": "basta uma brecha para explorar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "claro. Só preciso de uma brecha pra alargar.\\n"
+    },
+    "0x11bbdf": {
+      "speaker": "Haku",
+      "tone_register": "informal, aliviado/tenso",
+      "intent": "escapou antes de ser rastreado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Argh. Acho que escapei antes do rastreio\\n"
+    },
+    "0x11bc37": {
+      "speaker": "Haku",
+      "tone_register": "informal, impressionado",
+      "intent": "comentar que os protocolos de segurança estão evoluindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caramba. Os protocolos de segurança deles estão\\n"
+    },
+    "0x11bc78": {
+      "speaker": "Haku",
+      "tone_register": "informal, curioso/suspeitoso",
+      "intent": "questionar o que estão escondendo com tanto empenho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que será que estão escondendo tão\\n"
+    },
+    "0x11bca2": {
+      "speaker": "Haku",
+      "tone_register": "informal, suspeitoso",
+      "intent": "continua a pergunta anterior — ao menor sinal de invasão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desesperadamente ao menor sinal de\\n"
+    },
+    "0x11bcd8": {
+      "speaker": "Haku",
+      "tone_register": "informal, especulativo",
+      "intent": "certamente algo suspeito; vale a pena, mas vai esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deve ser algo escuso, com certeza. Vale a pena,\\n"
+    },
+    "0x11bd06": {
+      "speaker": "Haku",
+      "tone_register": "informal, cauteloso",
+      "intent": "mas vai esperar antes de tentar de novo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mas é melhor esperar um pouco antes de tentar de novo.\\n"
+    },
+    "0x11bd3f": {
+      "speaker": "Haku",
+      "tone_register": "informal, relaxado",
+      "intent": "vai matar o tempo até a situação esfriar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, enfim. Vou matar o tempo até essa situação\\n"
+    },
+    "0x11bdb2": {
+      "speaker": "Garota",
+      "tone_register": "informal, levemente repreensivo",
+      "intent": "cobrar o sumiço do Haku",
+      "risk_level": "medium",
+      "risk_notes": "Voz da Garota — cuidadora; tom acolhedor mas levemente repreensivo. Verificar naturalidade.",
+      "t": "Não me venha com 'oi'. Você não entrou em contato\\n"
+    },
+    "0x11bdf0": {
+      "speaker": "Haku",
+      "tone_register": "informal, desculpando-se",
+      "intent": "esqueceu completamente de entrar em contato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein...? Ah. É mesmo. É, eu esqueci completamente\\n"
+    },
+    "0x11be30": {
+      "speaker": "Garota",
+      "tone_register": "informal, carinhosamente exasperada",
+      "intent": "diz que ele não muda e sugere sair para tomar ar",
+      "risk_level": "medium",
+      "risk_notes": "Tom cuidador gentil; não pode soar fria nem impaciente.",
+      "t": "Você nunca muda, muda? Por que não sai um pouco\\n"
+    },
+    "0x11be8e": {
+      "speaker": "Haku",
+      "tone_register": "informal, reclamando",
+      "intent": "já teve natureza suficiente quando ela o levou lá",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Já tive 'natureza' suficiente pra vida toda quando você me levou\\n"
+    },
+    "0x11bf16": {
+      "speaker": "Garota",
+      "tone_register": "informal, positivo",
+      "intent": "o líder do projeto falou bem dele e quer oferecer algo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O líder do projeto só falou bem de você. Parece que querem te\\n"
+    },
+    "0x11bf48": {
+      "speaker": "Garota",
+      "tone_register": "informal, animado",
+      "intent": "quer oferecer uma posição a ele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "oferecer uma vaga. Parece que querem muito você\\n"
+    },
+    "0x11bf81": {
+      "speaker": "Haku",
+      "tone_register": "informal, recusando",
+      "intent": "não quer — raízes que gritam ao arrancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não, obrigado. Raízes que gritam quando arranca\\n"
+    },
+    "0x11bfae": {
+      "speaker": "Haku",
+      "tone_register": "informal, horrorizado/cômico",
+      "intent": "daikon com PERNAS? e aquele gigante...",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "daikon com PERNAS? E aquele gigante\\n"
+    },
+    "0x11bfe6": {
+      "speaker": "Haku",
+      "tone_register": "informal, repulsado",
+      "intent": "não quer parte naquele mundo de filme de monstro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não quero nada com esse filme de monstros\\n"
+    },
+    "0x11c014": {
+      "speaker": "Haku",
+      "tone_register": "informal, repulsado",
+      "intent": "esse mundo que estão tentando cultivar lá em cima",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que eles tentam cultivar lá em cima na\\n"
+    },
+    "0x11c04b": {
+      "speaker": "Garota",
+      "tone_register": "informal, paciente",
+      "intent": "entendeu; pergunta se ele pensou na proposta dela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Entendo. Você pensou na minha\\n"
+    },
+    "0x11c092": {
+      "speaker": "Haku",
+      "tone_register": "informal, hesitante",
+      "intent": "ajudar com a pesquisa dela — vai ter que pensar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ajudar com sua pesquisa? Vou ter que\\n"
+    },
+    "0x11c0e3": {
+      "speaker": "Haku",
+      "tone_register": "informal, autodepreciativo",
+      "intent": "confia nas próprias habilidades mas duvida ser útil",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Confio bastante nas minhas habilidades, mas não acho\\n"
+    },
+    "0x11c114": {
+      "speaker": "Haku",
+      "tone_register": "informal, autodepreciativo",
+      "intent": "não acha que está num nível de servir de algo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que estou num nível em que posso ser de alguma utilidade\\n"
+    },
+    "0x11c14d": {
+      "speaker": "Garota",
+      "tone_register": "informal, levemente repreensivo",
+      "intent": "ele tem o hábito de se subestimar muito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você tem o hábito de se subestimar demais.\\n"
+    },
+    "0x11c19c": {
+      "speaker": "Garota",
+      "tone_register": "informal, confiante nele",
+      "intent": "depois de ver as habilidades dele de perto, ela está convicta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tendo visto suas habilidades de perto, estou\\n"
+    },
+    "0x11c1fd": {
+      "speaker": "Haku",
+      "tone_register": "informal, cético/irônico",
+      "intent": "rebate dizendo que ela está brincando de ser sentimental",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E EU tenho total certeza de que você está só fingindo\\n"
+    },
+    "0x11c248": {
+      "speaker": "Garota",
+      "tone_register": "informal, firme",
+      "intent": "não é sentimental a ponto de deixar sentimentos interferirem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não sou sentimental a ponto de deixar meus sentimentos\\n"
+    },
+    "0x11c296": {
+      "speaker": "Garota",
+      "tone_register": "informal, encerrando assunto",
+      "intent": "vão falar sobre isso outra hora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos falar sobre isso outra hora.\\n"
+    },
+    "0x11c2cb": {
+      "speaker": "Garota",
+      "tone_register": "informal, cuidador",
+      "intent": "pergunta se ele está comendo bem, sabe que se fecha em casa",
+      "risk_level": "medium",
+      "risk_notes": "Voz cuidadora — calor humano; não pode soar clínica.",
+      "t": "Você tem comido direito? Não pense que não sei\\n"
+    },
+    "0x11c2fc": {
+      "speaker": "Garota",
+      "tone_register": "informal, cuidador",
+      "intent": "sabe que ele fica se isolando em casa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que você fica se trancando aí dentro em\\n"
+    },
+    "0x11c34d": {
+      "speaker": "Garota",
+      "tone_register": "informal, cuidador",
+      "intent": "pergunta se está dormindo o suficiente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você está dormindo o suficiente também?\\n"
+    },
+    "0x11c39f": {
+      "speaker": "Haku",
+      "tone_register": "informal, irritado/defensivo",
+      "intent": "não é criança, dá conta de si mesmo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não sou criança! Sou perfeitamente capaz de\\n"
+    },
+    "0x11c3e2": {
+      "speaker": "Garota",
+      "tone_register": "informal, sondando",
+      "intent": "pergunta se, se fosse visitar agora, o quarto estaria apresentável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo. Então se alguém fosse te visitar\\n"
+    },
+    "0x11c411": {
+      "speaker": "Garota",
+      "tone_register": "informal, sondando",
+      "intent": "o quarto estaria em condições apresentáveis?",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "agora, seu quarto estaria em condições\\n"
+    },
+    "0x11c450": {
+      "speaker": "Garota",
+      "tone_register": "informal, irônico/carinhoso",
+      "intent": "ótimo, que alívio saber que não haverá bagunça",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ótimo. Fico aliviada em saber que não vai ter\\n"
+    },
+    "0x11c52c": {
+      "speaker": "Garota",
+      "tone_register": "informal, exasperado/carinhoso",
+      "intent": "foi lá e fez bagunça — constatação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, você foi e bagunçou tudo de novo.\\n"
+    },
+    "0x11c55c": {
+      "speaker": "Garota",
+      "tone_register": "informal, horrorizado",
+      "intent": "esses são rações militares? tem roupa limpa?",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso é ração militar...? Você tem ALGUMA roupa limpa\\n"
+    },
+    "0x11c58f": {
+      "speaker": "Garota",
+      "tone_register": "informal, cuidador, determinado",
+      "intent": "espera que ela prepare uma refeição do que tem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Só espera um segundo que eu faço uma refeição com o que\\n"
+    },
+    "0x11c5d8": {
+      "speaker": "Haku",
+      "tone_register": "informal, surpreso/desconfortável",
+      "intent": "agradecer mas tentar dissuadi-la",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma refeição...? O-Olha, eu agradeço a intenção,\\n"
+    },
+    "0x11c630": {
+      "speaker": "Garota",
+      "tone_register": "informal, afetado/carinhoso",
+      "intent": "que grosseria — mas não se preocupe, irmãozinho!",
+      "risk_level": "high",
+      "risk_notes": "'brother dear' indica relação de irmã — controle de spoiler: se a identidade/vínculo ainda não foi revelado, usar termo que não antecipe. Aqui 'irmão' parece ser relação já estabelecida; verificar spoiler_ledger. Usando 'irmãozinho' como tradução natural mas marcar para revisão.",
+      "t": "Que grosseria. Mas não se preocupe, irmãozinho!\\n"
+    },
+    "0x11c6b4": {
+      "speaker": "Garota",
+      "tone_register": "informal, animado/determinado",
+      "intent": "não esquente, ela vai preparar algo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, vai, não faz assim! Vou preparar\\n"
+    }
+  }
+}
