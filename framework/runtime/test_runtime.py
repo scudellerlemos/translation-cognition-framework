@@ -604,6 +604,40 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path):
     assert len(d["lines"]) == 20, "todas as 20 linhas cobertas via chunks"
 
 
+def test_batch_retries_transient_network(monkeypatch, tmp_path):
+    # REGRESSAO (cap.18): o back-batch morreu por TIMEOUT DE REDE — as chamadas de batch (create/results)
+    # nao tinham backoff (so o caminho interativo/_stream_final tinha). Agora _with_backoff cobre TODOS
+    # os pontos de rede do batch. Fake levanta erro transitorio 1x em create E em results -> deve re-tentar.
+    import httpx
+    monkeypatch.setattr(model.time, "sleep", lambda *a, **k: None)   # nao espera o backoff no teste
+    (tmp_path / "artifacts" / "ch_98_01").mkdir(parents=True)
+    packs = {"ch_98_01": {"scene_id": "98_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "P")
+    monkeypatch.setattr(model, "_carta_text", lambda: "C")
+    n = {"create": 0, "results": 0}
+
+    class _Flaky(_FakeBatches):
+        def create(self, requests):
+            n["create"] += 1
+            if n["create"] == 1:
+                raise httpx.ConnectError("blip de rede")     # cai na 1a, cura no retry
+            return super().create(requests)
+
+        def results(self, _id):
+            n["results"] += 1
+            if n["results"] == 1:
+                raise httpx.ReadTimeout("timeout no fetch dos resultados")
+            return super().results(_id)
+
+    fb = _Flaky({"ch_98_01": [_btext(["0x1"])]})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    st = model.batch_translate(tmp_path, ["ch_98_01"], poll_seconds=0, max_rounds=1)
+    assert st["ch_98_01"] == "written", "retry de rede -> o batch ainda converge (nao morre no timeout)"
+    assert n["create"] == 2 and n["results"] == 2, "create e results foram re-tentados 1x apos o erro transitorio"
+
+
 def test_merge_best_parity_keeps_good_line(monkeypatch):
     # uma re-rodada que REGRIDE uma linha ja boa nao pode desfazer o ganho (o dict.update cego perdia)
     tok = context_pack.TOKEN
