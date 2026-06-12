@@ -57,6 +57,19 @@ def _run(cmd) -> tuple[int, str]:
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
+def _verify_status(out: str) -> dict:
+    """Protocolo estruturado (H1): le a 1 linha 'VERIFY_STATUS: {json}' que o conector emite. Fallback do
+    exit-code — conector legado sem a linha -> {} (run_scene usa o exit-code 3 como sinal primario)."""
+    for line in out.splitlines():
+        line = line.strip()
+        if line.startswith("VERIFY_STATUS:"):
+            try:
+                return json.loads(line[len("VERIFY_STATUS:"):].strip())
+            except Exception:
+                return {}
+    return {}
+
+
 def _checkpoint(root: Path, scene: str, patch: dict):
     p = root / "artifacts" / "run_state.json"
     state = {}
@@ -220,8 +233,11 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True})
             break
-        low = out.lower()
-        fitting = ("fora do arquivo" in low) or ("residuo t4" in low and "esperado 0" in low)
+        # PROTOCOLO ESTRUTURADO (H1): exit-code do conector decide, NAO grep de prosa. exit 3 = falha
+        # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
+        # VERIFY_STATUS; se nem isso, conservadoramente NAO escala (falha dura). Acabou com o grep fragil
+        # que procurava "fora do arquivo" (espacos) — texto real e "fora-do-arquivo" (hifens) -> nunca casava.
+        fitting = (code == 3) or _verify_status(out).get("fitting_failure") is True
         if fitting and ti < len(tolerances) - 1:
             print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
             continue
