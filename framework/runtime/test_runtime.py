@@ -246,6 +246,38 @@ def test_paths_contract():
     assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/back_translation_16_01.json"
 
 
+def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
+    # H6: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
+    import spoiler_check, paths
+    (tmp_path / "artifacts" / "ch_50_01").mkdir(parents=True)
+    (tmp_path / "artifacts" / "ch_50_09").mkdir(parents=True)
+    led = {"entries": [{"id": "x", "entity": "Ukon", "reveal": "50_05",
+                        "forbidden_pre_reveal": ["Oshtor"]}]}
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
+    # cena 50_01 (ANTES do reveal 50_05) com 'Oshtor' -> VAZA
+    paths.translations(tmp_path, "ch_50_01", "50_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "Sim, Oshtor chegou."}}}), encoding="utf-8")
+    # cena 50_09 (APOS o reveal) com 'Oshtor' -> seguro (nome ja conhecido)
+    paths.translations(tmp_path, "ch_50_09", "50_09").write_text(
+        json.dumps({"lines": {"0x2": {"t": "Oshtor lidera."}}}), encoding="utf-8")
+    leaks = spoiler_check.check(tmp_path)
+    assert len(leaks) == 1 and leaks[0]["scene"] == "ch_50_01" and leaks[0]["forbidden"] == "Oshtor"
+    # sem o nome -> limpo (prova que nao e sempre-positivo)
+    paths.translations(tmp_path, "ch_50_01", "50_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "Sim, Ukon chegou."}}}), encoding="utf-8")
+    assert spoiler_check.check(tmp_path) == []
+
+
+def test_spoiler_no_leak_in_committed_translations():
+    # H6 (regressao sobre dados reais): nenhuma traducao commitada vaza spoiler de nome/titulo.
+    import spoiler_check
+    root = Path(__file__).resolve().parents[2] / "projects" / "utawarerumono"
+    if not (root / "artifacts" / "spoiler_ledger.json").is_file():
+        pytest.skip("projeto utawarerumono nao disponivel")
+    leaks = spoiler_check.check(root)
+    assert leaks == [], f"vazamento de spoiler nas traducoes: {leaks[:3]}"
+
+
 def test_verify_status_parses_structured_line():
     # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
