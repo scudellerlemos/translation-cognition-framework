@@ -1,0 +1,970 @@
+{
+  "scene_group": "15_07",
+  "lines": [
+    {
+      "offset": "0xc2c62",
+      "text_source": "Henchman",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Capanga",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2c6b",
+      "text_source": "Oh, boss, you're back already? Guess I'll go\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, descontraído",
+      "intent": "comentar que o chefe voltou cedo, propor ir se preparar para o banho",
+      "risk_level": "low",
+      "base_translation": "Ah, chefe, já voltou? Então vou me arrumar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2c9a",
+      "text_source": "and get ready for a bath, then...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, descontraído",
+      "intent": "completar a fala — preparar para o banho",
+      "risk_level": "low",
+      "base_translation": "para o banho então...",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2cbc",
+      "text_source": "Numbskull, we ain't got time for that!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, urgente",
+      "intent": "cortar a ideia do banho, avisar que não há tempo",
+      "risk_level": "low",
+      "base_translation": "Idiota, não temos tempo pra isso!\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2ce5",
+      "text_source": "We've been made!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, alarmado",
+      "intent": "avisar que foram descobertos",
+      "risk_level": "low",
+      "base_translation": "Nos descobriram!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2cf6",
+      "text_source": "Eh? Well, then! Let's beat 'em at their own\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, combativo",
+      "intent": "reagir com entusiasmo, propor enfrentar os inimigos",
+      "risk_level": "low",
+      "base_translation": "Eh? Então tá! Vamos pagar na mesma moeda,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2d24",
+      "text_source": "game, why don't we?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, combativo",
+      "intent": "completar — enfrentar os inimigos no próprio jogo",
+      "risk_level": "low",
+      "base_translation": "que tal?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2d38",
+      "text_source": "Wake up, moron! They got that damn BIRD with\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, exasperado",
+      "intent": "alertar que os inimigos têm o maldito pássaro, mandar fugir",
+      "risk_level": "low",
+      "base_translation": "Acorda, idiota! Eles trouxeram aquela MALDITA AVE\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2d67",
+      "text_source": "'em. Just forget it and let's book it!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, exasperado",
+      "intent": "completar — esquecer o confronto e fugir",
+      "risk_level": "low",
+      "base_translation": "junto. Esquece e vamos correr!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2d9b",
+      "text_source": "Geh!? Wh--Wh-wh-wh--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "chocado, gaguejando",
+      "intent": "reação de susto e hesitação",
+      "risk_level": "medium",
+      "base_translation": "Geh!? Qu--Qu-qu-qu--",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gaguejo cômico — localizar como reação de choque em pt-BR"
+    },
+    {
+      "offset": "0xc2db0",
+      "text_source": "That's what I'm sayin'! It's the damn\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, exasperado",
+      "intent": "confirmar o motivo do medo — o nugwisomkami",
+      "risk_level": "low",
+      "base_translation": "É exatamente isso! É o maldito\\n",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2dd8",
+      "text_source": "nugwisomkami!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "nomear a ameaça — nugwisomkami",
+      "risk_level": "low",
+      "base_translation": "nugwisomkami!",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2de6",
+      "text_source": "Nugwisomkami...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "apreensivo",
+      "intent": "repetir o nome com horror/reconhecimento",
+      "risk_level": "low",
+      "base_translation": "Nugwisomkami...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2df6",
+      "text_source": "Harsh. Not that I can blame the guy, after\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, resignado",
+      "intent": "comentar que dá pra entender o medo, dado o que o Cocopo fez",
+      "risk_level": "low",
+      "base_translation": "Duro. Mas dá pra entender o cara, depois\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2e23",
+      "text_source": "what Cocopo did to him.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, resignado",
+      "intent": "completar — depois do que Cocopo fez",
+      "risk_level": "low",
+      "base_translation": "do que o Cocopo fez.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2e3b",
+      "text_source": "A-Ah... This is all a big misunderstanding...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "nervoso, hesitante",
+      "intent": "tentar explicar que é um mal-entendido",
+      "risk_level": "medium",
+      "base_translation": "A-Ah... É tudo um grande mal-entendido...",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Rulutieh gagueja quando nervosa; preservar hesitação com travessão"
+    },
+    {
+      "offset": "0xc2e69",
+      "text_source": "Let's make like a tree and get the fuck outta\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, urgente, palavrão",
+      "intent": "mandar todo mundo fugir imediatamente",
+      "risk_level": "medium",
+      "base_translation": "Vamos pôr o pé na estrada e rachar o cu daqui\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Expressão idiomática com palavrão — localizar em pt-BR informal"
+    },
+    {
+      "offset": "0xc2e99",
+      "text_source": "here!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "urgente",
+      "intent": "completar — fugir já",
+      "risk_level": "low",
+      "base_translation": "fora!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2e9f",
+      "text_source": "Henchmen",
+      "speaker": "SISTEMA",
+      "entities_present": [
+        "SISTEMA"
+      ],
+      "tone_register": "rótulo de sistema",
+      "intent": "label de capanga",
+      "risk_level": "low",
+      "base_translation": "Capanga",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2ea8",
+      "text_source": "Y-Yes, boss!",
+      "speaker": "Henchmen",
+      "entities_present": [
+        "Henchmen"
+      ],
+      "tone_register": "obediente, apressado",
+      "intent": "confirmar a ordem do chefe",
+      "risk_level": "low",
+      "base_translation": "S-Sim, chefe!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2eb5",
+      "text_source": "Ah, p-please wait--",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "nervoso, suplicante",
+      "intent": "pedir que esperem, não a deixem para trás",
+      "risk_level": "low",
+      "base_translation": "Ah, p-por favor, esperem--",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2ec9",
+      "text_source": "Oh--",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "surpreso, assustado",
+      "intent": "exclamação de susto",
+      "risk_level": "medium",
+      "base_translation": "Ah--",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição localizada — 'Oh--' vira expressão de susto em pt-BR"
+    },
+    {
+      "offset": "0xc2ece",
+      "text_source": "Wait! Don't go on ahead by yourself!",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "surpreso, breve",
+      "intent": "exclamação de susto ao ver algo",
+      "risk_level": "low",
+      "base_translation": "Ah--",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2ef3",
+      "text_source": "Lady Rulutieh!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "urgente",
+      "intent": "chamar Rulutieh de volta",
+      "risk_level": "low",
+      "base_translation": "Senhora Rulutieh!",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2f02",
+      "text_source": "Haah. Haaahh...\\n",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "ofegante, exausto",
+      "intent": "respiração pesada após corrida",
+      "risk_level": "medium",
+      "base_translation": "Haah. Haaahh...\\n",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Onomatopeia de respiração — localizar em pt-BR"
+    },
+    {
+      "offset": "0xc2f14",
+      "text_source": "We oughta be safe out here.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado, cauteloso",
+      "intent": "constatar que estão a salvo por ora",
+      "risk_level": "low",
+      "base_translation": "Aqui devemos estar seguros.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2f30",
+      "text_source": "Wait, please...!",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "suplicante",
+      "intent": "pedir que esperem",
+      "risk_level": "low",
+      "base_translation": "Esperem, por favor...!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2f46",
+      "text_source": "NGEH!? It came after us!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "chocado, alarmado",
+      "intent": "perceber que o pássaro os seguiu",
+      "risk_level": "medium",
+      "base_translation": "NGEEH!? Ele nos seguiu!",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de susto — localizar"
+    },
+    {
+      "offset": "0xc2f5f",
+      "text_source": "Ah, p-please... I-I'm very sorry for what\\n",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "nervoso, pedindo desculpas",
+      "intent": "se desculpar pelo ocorrido com Cocopo anteriormente",
+      "risk_level": "low",
+      "base_translation": "Ah, p-por favor... Sinto muito pelo que\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2f8b",
+      "text_source": "Cocopo did last time...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "nervoso, pedindo desculpas",
+      "intent": "completar — o que o Cocopo fez da última vez",
+      "risk_level": "low",
+      "base_translation": "o Cocopo fez da última vez...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2fa3",
+      "text_source": "But... please don't talk that way about Cocopo.",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "suave, firme por amor à ave",
+      "intent": "pedir gentilmente que não falem mal do Cocopo",
+      "risk_level": "low",
+      "base_translation": "Mas... por favor, não fale assim do Cocopo.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2fd3",
+      "text_source": "Cocopo is a very good bird...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "afetuoso",
+      "intent": "defender o Cocopo como um bom pássaro",
+      "risk_level": "low",
+      "base_translation": "Cocopo é um ótimo pássaro...",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc2ff1",
+      "text_source": "A kind, gentle, fluffy hororon...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "afetuoso, carinhoso",
+      "intent": "descrever o Cocopo como hororon gentil e fofinho",
+      "risk_level": "low",
+      "base_translation": "Um Hororon gentil, meigo e fofo...",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3017",
+      "text_source": "...So...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "incrédulo, pausado",
+      "intent": "reação seca de descrença",
+      "risk_level": "low",
+      "base_translation": "...E daí...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3020",
+      "text_source": "Buh...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "incrédulo, engasgado",
+      "intent": "balbuciar de espanto antes de explodir",
+      "risk_level": "medium",
+      "base_translation": "Ma--...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de hesitação — localizar"
+    },
+    {
+      "offset": "0xc3027",
+      "text_source": "Bullshit!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "explosivo, indignado",
+      "intent": "desmentir veementemente",
+      "risk_level": "medium",
+      "base_translation": "Que nada!",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Palavrão/expressão forte — localizar em pt-BR informal"
+    },
+    {
+      "offset": "0xc3031",
+      "text_source": "Eep!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Iiep!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3036",
+      "text_source": "How's a monster like that a hororon!?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, exasperado",
+      "intent": "questionar como um monstro daqueles pode ser um hororon",
+      "risk_level": "low",
+      "base_translation": "Como um monstro daquele é um Hororon!?",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc305c",
+      "text_source": "It's possessed, I'm tellin' you!\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "convicto, informal",
+      "intent": "insistir que está possuído",
+      "risk_level": "low",
+      "base_translation": "Tá possuído, tô falando!\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc307f",
+      "text_source": "By a nugwisomkami!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "convicto",
+      "intent": "especificar — possuído por um nugwisomkami",
+      "risk_level": "low",
+      "base_translation": "Por um nugwisomkami!",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3092",
+      "text_source": "But...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "mas...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3099",
+      "text_source": "Such cruelty. Cocopo doesn't deserve that.",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "suave, magoado",
+      "intent": "defender Cocopo da crueldade das palavras",
+      "risk_level": "low",
+      "base_translation": "Que crueldade. O Cocopo não merece isso.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc30c4",
+      "text_source": "Quite. Cruel, boorish speech indeed.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, seco",
+      "intent": "concordar que o discurso foi grosseiro",
+      "risk_level": "low",
+      "base_translation": "De fato. Fala cruel e sem educação.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc30e9",
+      "text_source": "You sayin' that thing looks like a regular\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, incrédulo",
+      "intent": "perguntar se acham mesmo que parece um hororon normal",
+      "risk_level": "low",
+      "base_translation": "Você acha que aquilo parece um Hororon\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3116",
+      "text_source": "ol' hororon to you? You blind or somethin'?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, incrédulo",
+      "intent": "completar — são cegos?",
+      "risk_level": "low",
+      "base_translation": "normal? Você é cego ou quê?",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3142",
+      "text_source": "Hororon are tiny! Colorful an' dainty! Cuddly\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "saudoso, descritivo",
+      "intent": "descrever como hororons de verdade são pequenos, coloridos, fofos",
+      "risk_level": "low",
+      "base_translation": "Hororon são pequenos! Coloridos e delicados! Fofos\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3172",
+      "text_source": "lil' featherballs! Not BLOODTHIRSTY DEMONS.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado",
+      "intent": "completar — bolinhas de pena, não demônios sedentos de sangue",
+      "risk_level": "low",
+      "base_translation": "bolões de pena! Não DEMÔNIOS ASSASSINOS.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc319e",
+      "text_source": "...Is that true?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "curioso, inocente",
+      "intent": "perguntar se é verdade o que disseram sobre hororons",
+      "risk_level": "low",
+      "base_translation": "...É verdade isso?",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc31af",
+      "text_source": "Nekone?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso, suave",
+      "intent": "chamar Nekone pelo nome com surpresa",
+      "risk_level": "low",
+      "base_translation": "Nekone?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc31b7",
+      "text_source": "Why are they averting their eyes?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "curioso, ingênuo",
+      "intent": "perguntar por que todos estão desviando o olhar",
+      "risk_level": "low",
+      "base_translation": "Por que estão desviando o olhar?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc31d9",
+      "text_source": "And you're tellin' me that thing's a hororon?\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, exasperado",
+      "intent": "insistir que aquilo não é um hororon",
+      "risk_level": "low",
+      "base_translation": "E você ainda me diz que aquilo é um Hororon?\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3209",
+      "text_source": "That big oaf, all drab an' ugly, ready to\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "indignado, descritivo exagerado",
+      "intent": "descrever o Cocopo como enorme, feio e violento",
+      "risk_level": "low",
+      "base_translation": "Aquele grandalhão tosco e feio, pronto pra\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3235",
+      "text_source": "KILL a motherf--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "raivoso, palavrão cortado",
+      "intent": "palavrão interrompido — MATAR a porcaria--",
+      "risk_level": "medium",
+      "base_translation": "MATAR a porca--",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Palavrão cortado; localizar mantendo o corte abrupto"
+    },
+    {
+      "offset": "0xc3257",
+      "text_source": "Shut up, you shitty excuse for a bird!",
+      "speaker": "Cocopo",
+      "entities_present": [
+        "Cocopo"
+      ],
+      "tone_register": "agressivo (ave)",
+      "intent": "ave grita/ataca interrompendo a fala",
+      "risk_level": "medium",
+      "base_translation": "Cala a boca, sua ave inútil!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha de ave — interpretar como guincho/grito agressivo em pt-BR; sem fala humana real"
+    },
+    {
+      "offset": "0xc327e",
+      "text_source": "Cocopo... Cocopo is... {W420}NOT AN OAF!",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "emocional, explosão de defesa",
+      "intent": "defender o Cocopo com veemência inédita — Rulutieh grita pela primeira vez",
+      "risk_level": "high",
+      "base_translation": "Cocopo... Cocopo é... {W420}NÃO É TOSCO!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Rulutieh grita — momento excepcional; tom deve contrastar com sua timidez habitual; preservar token de formatação {W420}"
+    },
+    {
+      "offset": "0xc32a7",
+      "text_source": "AIIEEEE--",
+      "speaker": "Todos",
+      "entities_present": [
+        "Todos"
+      ],
+      "tone_register": "chocado, aterrorizado",
+      "intent": "grito coletivo de susto com o grito de Rulutieh",
+      "risk_level": "medium",
+      "base_translation": "AAAARGH--",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de terror coletivo — localizar"
+    },
+    {
+      "offset": "0xc32b1",
+      "text_source": "Did Rulutieh just... yell?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "incrédulo, atônito",
+      "intent": "comentar com espanto que Rulutieh acabou de gritar",
+      "risk_level": "low",
+      "base_translation": "A Rulutieh acabou de... gritar?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc32cc",
+      "text_source": "Wh-Wh--I-I was only tellin' the truth, why y--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "assustado, confuso, gaguejando",
+      "intent": "gaguejar assustado, reclamar que só estava dizendo a verdade",
+      "risk_level": "medium",
+      "base_translation": "Qu-Qu--E-Eu só disse a verdade, por que v--",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gaguejo de susto — preservar fragmentação"
+    },
+    {
+      "offset": "0xc32fb",
+      "text_source": "Guh. All right, that's it! Let 'em have it,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "decidido, informal",
+      "intent": "mandar os capangas atacarem — ponto de virada da cena",
+      "risk_level": "low",
+      "base_translation": "Tá bom, chega! Peguem eles,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc3329",
+      "text_source": "boys!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar ordem — atacar",
+      "risk_level": "low",
+      "base_translation": "vão!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 60,
+  "high_lines": 1,
+  "medium_lines": 12,
+  "needs_review": [],
+  "plan_version": "chapter-15_07-v1"
+}

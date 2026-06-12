@@ -1,0 +1,426 @@
+{
+  "scene_group": "16_04",
+  "lines": [
+    {
+      "offset": "0xe4f6f",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe52a2",
+      "text_source": "You're...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "expressão de torpor e fragmentação",
+      "risk_level": "low",
+      "base_translation": "Você está...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe52ac",
+      "text_source": "What the--YOU!? The fuck are YOU doin' in MY dream?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "chocado, raivoso, informal",
+      "intent": "Haku reconhece alguém no sonho e explode indignado",
+      "risk_level": "medium",
+      "base_translation": "O que--VOCÊ!? Que droga VOCÊ tá fazendo NO MEU sonho?\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "gíria 'the fuck' — localizar sem exagero; budget 53 bytes"
+    },
+    {
+      "offset": "0xe52e2",
+      "text_source": "You got some balls showin' up here!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, ameaçador",
+      "intent": "desafio duplo-sentido; ambiguidade proposital",
+      "risk_level": "high",
+      "base_translation": "Tem coragem mesmo aparecendo aqui!",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter enigma/ambiguidade; não resolver (spoiler); sentenças curtas e definitivas são marca de voz"
+    },
+    {
+      "offset": "0xe5306",
+      "text_source": "That's my line, asshole! Quit making all these\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "raivoso, informal, cortando o outro",
+      "intent": "retruca que a fala era dele, manda o outro parar",
+      "risk_level": "medium",
+      "base_translation": "Eu que ia falar, idiota! Para de aparecer assim\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'asshole' localizado; linha continua — corte no budget 48"
+    },
+    {
+      "offset": "0xe5337",
+      "text_source": "false accusations in MY dream.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, ameaçador",
+      "intent": "acusação ambígua em situação de sonho/ilusão",
+      "risk_level": "high",
+      "base_translation": "acusações falsas no MFEU sonho.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Contexto: acusações falsas / mundo onírico — preservar incerteza sem deixar óbvio"
+    },
+    {
+      "offset": "0xe5356",
+      "text_source": "Whatever! This looks like a golden opportunity for\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "oportunista, animado, informal",
+      "intent": "vê chance de agir / descontar no outro",
+      "risk_level": "low",
+      "base_translation": "Tanto faz! Isso parece uma ótima oportunidade pra\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe538b",
+      "text_source": "some sweet, sweet payback!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, ameaçador",
+      "intent": "promessa ameaçadora; retaliação",
+      "risk_level": "medium",
+      "base_translation": "uma doce, doce vingança!",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido ameaçador (retaliação literal vs. simbólica); tom must stay cold"
+    },
+    {
+      "offset": "0xe53a6",
+      "text_source": "Hokay, boys, beat that guy to a pulp!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "carismático, espirituoso, informal, caloroso",
+      "intent": "comando desembaraçado durante ação/combate",
+      "risk_level": "low",
+      "base_translation": "Bem, pessoal, quebrem esse cara!",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe53cc",
+      "text_source": "Wait, what!? How petty ARE you?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "incrédulo, irritado",
+      "intent": "reage à mesquinharia do outro com espanto",
+      "risk_level": "low",
+      "base_translation": "Espera, quê!? Você É mesmo miserável!\\n",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe53ee",
+      "text_source": "Why would you go for that guy instead of me!?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
+      "intent": "reclamação melodramática com empolação arcaica",
+      "risk_level": "high",
+      "base_translation": "Por que você foi atrás daquele sujeito e não de mimm!?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter cício/arcaísmo (piada crítica); 'esse cara em vez de mim' deve soar pomposo e frágil"
+    },
+    {
+      "offset": "0xe541c",
+      "text_source": "Sh-Shut up! I do whatever I want!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, titubeante, informal",
+      "intent": "nega a crítica e afirma fazer o que quer",
+      "risk_level": "low",
+      "base_translation": "Ca-Cala boca! Eu faço o que quiser!\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe5440",
+      "text_source": "Long as I win, that's all that matters!!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
+      "intent": "vaidade; desde que vença, o resto não importa",
+      "risk_level": "medium",
+      "base_translation": "Contanto que eu vença, é tudo que importa!!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preservar tom pomposo e auto-centrado; melodrama de comédia"
+    },
+    {
+      "offset": "0xe5469",
+      "text_source": "You get it, ya... ya shithead!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "carismático, espirituoso, informal, caloroso",
+      "intent": "repreensão calorosa mas direta; tom de irmão mais velho",
+      "risk_level": "medium",
+      "base_translation": "Você entende, seu... seu bobão!",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Xingamento leve (caloroso, não cruel); NO SPOILER: não insinuar identidade verdadeira — é só 'Ukon'"
+    },
+    {
+      "offset": "0xe5488",
+      "text_source": "Yamatan Soldier",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Soldado de Yamato",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe5498",
+      "text_source": "Pweeaase, hewp meee.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
+      "intent": "súplica fraca e dramática; onomatopeia de choro",
+      "risk_level": "high",
+      "base_translation": "Peçooo, ajudemmm.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Onomatopeia 'Pweeaase, hewp meee' = localizar em pt-BR (cício marcado em voz); manter fraqueza cômica"
+    },
+    {
+      "offset": "0xe54ad",
+      "text_source": "...I don't know why, but I don't really want to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, introspectivo, informal",
+      "intent": "admite sem entender que não quer algo",
+      "risk_level": "low",
+      "base_translation": "...Não sei por quê, mas não tô com vontade de\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe54df",
+      "text_source": "help this guy...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "pedido fragmentado; torpor",
+      "risk_level": "low",
+      "base_translation": "ajudar esse cara...",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe55f7",
+      "text_source": "Dammit! Don't think this is the end, awright!?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "raiva/frustração e negação; determinação apesar do caos",
+      "risk_level": "medium",
+      "base_translation": "Maldição! Não achem que é o final, tá claro!?",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ponte para revelação próxima (identidade); manter fragmentação de fala"
+    },
+    {
+      "offset": "0xe5626",
+      "text_source": "I'll be back, ya hear!? I'll make ya pay for\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "raivoso, fanfarrão, informal",
+      "intent": "ameaça voltar e cobrar do outro",
+      "risk_level": "low",
+      "base_translation": "Vou voltar, tá ouvindo!? Vou te cobrar isso\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe5655",
+      "text_source": "what you've done to me!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
+      "intent": "lamúria de vitimismo; drama cômico",
+      "risk_level": "low",
+      "base_translation": "o que você fez comigo!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe566d",
+      "text_source": "Please don't. Geez, I can only imagine what I\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, cansado, informal",
+      "intent": "comenta com si mesmo que preferia nem imaginar",
+      "risk_level": "low",
+      "base_translation": "Por favor, não. Cara, mal consigo imaginar o que\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xe569d",
+      "text_source": "still have to deal with up ahead...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "premonição de perigo; incerteza",
+      "risk_level": "high",
+      "base_translation": "ainda tenho que lidar com coisas adiante...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Presságio/sombra narrativa — manter ambiguidade; não resolver o que vem adiante"
+    },
+    {
+      "offset": "0xe57f7",
+      "text_source": "Oh, no... Did I... Did I take it too far?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
+      "intent": "remorso dramático; questionamento cômico se exagerou",
+      "risk_level": "medium",
+      "base_translation": "Ah, não... Será que... Será que exagerei?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Maroro: arrogância → remorsso → melodrama; manter tom pomposo até no remorso"
+    },
+    {
+      "offset": "0xe5911",
+      "text_source": "Nhalai... I'm... so sorry...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente; culpa / afeto",
+      "intent": "penitência semi-consciente; nome/empatia",
+      "risk_level": "critical",
+      "base_translation": "Nhalai... Estou... tão arrependido...",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER CRÍTICO: 'Nhalai' é nome revelado; Yuuri aparece antes do reveal_timing em 'aliases_map.json'? Verificar chronology. Se ainda oculto: manter como '...'. Ton misto (torpor+culpa); reparar ambiguidade gênero (Nhalai / Yuuri identidades futuras)"
+    },
+    {
+      "offset": "0xe592e",
+      "text_source": "No! I couldn't... protect Yuuri...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente; desespero",
+      "intent": "confissão de falha; negação desesperada",
+      "risk_level": "critical",
+      "base_translation": "Não! Não consegui... proteger Yuuri...?",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER CRÍTICO: 'Yuuri' — verificar reveal_timing em 'aliases_map.json'. Se nome ainda oculto no corpus: TRANSLITERAR ou REFORMULAR para evitar antecipar identidade. Fragmentação de fala (não pude / não consegui) deve sinar torpor + desespero simultâneos"
+    }
+  ],
+  "total_lines": 26,
+  "high_lines": 7,
+  "medium_lines": 7,
+  "needs_review": [],
+  "plan_version": "chapter-16_04-v1"
+}

@@ -1,0 +1,1308 @@
+{
+  "lines": {
+    "0x16bf66": {
+      "speaker": "Homem",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Suspiro*..."
+    },
+    "0x16c122": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê!?"
+    },
+    "0x16c47b": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hein?"
+    },
+    "0x16c762": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "dele."
+    },
+    "0x16c8a7": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Que...?"
+    },
+    "0x16c915": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hum?"
+    },
+    "0x16cbf9": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "você...?"
+    },
+    "0x16cea6": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "um bit."
+    },
+    "0x16d15c": {
+      "speaker": "rotulo",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Head"
+    },
+    "0x16d3b2": {
+      "speaker": "system",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "RightFoot"
+    },
+    "0x16d3bc": {
+      "speaker": "system",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "LeftFoot"
+    },
+    "0x16be66": {
+      "speaker": "Protagonista",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "expressão de pânico e mal-estar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Urk... Isso... isso não é bom..."
+    },
+    "0x16be88": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "reassegurar e orientar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Satisfeita? Vamos. A gente volta."
+    },
+    "0x16bedd": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "apelo de esperança",
+      "risk_level": "high",
+      "risk_notes": "Anju é a princesa; aqui ainda não revelado. Usar rótulo genérico (mantém spoiler). Marcar identidade dupla como alto risco para QA.",
+      "t": "vem me buscar!"
+    },
+    "0x16bf19": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "insistência apavorada",
+      "risk_level": "high",
+      "risk_notes": "Spoiler crítico (identidade Anju como princesa ainda oculta). Preservar ambiguidade; não resolver quem ela é.",
+      "t": "não sei nada disso tudo."
+    },
+    "0x16bf39": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "esperança/confiança em Oshtor",
+      "risk_level": "high",
+      "risk_notes": "Reveal iminente de Oshtor. Marcar alto risco; back-translation obrigatória. Preservar tom de confiança sem insinuar identidade.",
+      "t": "Ele vem! Oshtor vem! Ele me salva!"
+    },
+    "0x16bfa0": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "autoconsciência irônica/vulnerabilidade",
+      "risk_level": "high",
+      "risk_notes": "Identidade oculta. Tradução cabe no orçamento. Preservar a fragilidade sem antecipar posição social.",
+      "t": "só uma garota de cabeça quente..."
+    },
+    "0x16bfbf": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "julgamento/desdém",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade ameaçadora deve ser preservada; tom enigmático mantido. Não resolver identidade.",
+      "t": "Tudo isso está virando uma farsa entediante."
+    },
+    "0x16c01e": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "investigação ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "Referência a Oshtor (spoiler futuro). Preservar tom de ameaça sem revelar relação ou identidade verdadeira.",
+      "t": "agora. Esse Oshtor que você fica mencionando..."
+    },
+    "0x16c04c": {
+      "speaker": "Ougi",
+      "tone_register": "erudito, cômico, pomposo",
+      "intent": "relatório formal/cômico",
+      "risk_level": "low",
+      "risk_notes": "Ougi faz relatório ao retornar. Tom arcaico/pomposo (não exagerar para manter contraste com fragilidade).",
+      "t": "Retornei, minha irmã."
+    },
+    "0x16c068": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, malandro",
+      "intent": "reprovação carinhosa/curiosidade",
+      "risk_level": "low",
+      "risk_notes": "Fora-da-lei atrevida; tom familiar com irmão.",
+      "t": "Você demora, Ougi. O que te prendeu?"
+    },
+    "0x16c0e9": {
+      "speaker": "Ougi",
+      "tone_register": "erudito, cômico, pomposo",
+      "intent": "concordância cerimonial",
+      "risk_level": "low",
+      "risk_notes": "Ougi em modo formal/pomposo (contraste cômico).",
+      "t": "concorda?"
+    },
+    "0x16c0f0": {
+      "speaker": "Ougi",
+      "tone_register": "erudito, cômico, pomposo",
+      "intent": "relatório de plano em execução",
+      "risk_level": "medium",
+      "risk_notes": "'Presently on his way' refere-se a Oshtor (spoiler futuro). Marcar para QA. Tone pomposo preservado.",
+      "t": "Exatamente como planejado, ele está a caminho daqui."
+    },
+    "0x16c129": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, excitado",
+      "intent": "surpresa/esperança",
+      "risk_level": "high",
+      "risk_notes": "Oshtor é spoiler crítico (twist final). Alto risco. Preservar tom de esperança sem insinuar morte/revelação futura.",
+      "t": "Fala sério? Oshtor vem!?"
+    },
+    "0x16c1ad": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, esperançoso",
+      "intent": "jubilação",
+      "risk_level": "high",
+      "risk_notes": "Identidade oculta. Spoiler crítico. Marcar alto risco.",
+      "t": "chega!"
+    },
+    "0x16c1e8": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, esperançoso",
+      "intent": "confiança nas promessas",
+      "risk_level": "high",
+      "risk_notes": "Identidade oculta; preservar esperança sem antecipar status.",
+      "t": "as promessas dela!"
+    },
+    "0x16c253": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "confusão/pânico",
+      "risk_level": "medium",
+      "risk_notes": "Anju confusa sobre como o Homem sabe. Preservar ambiguidade.",
+      "t": "pensando!?"
+    },
+    "0x16c28d": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "negação com duplo sentido",
+      "risk_level": "high",
+      "risk_notes": "Homem frio/ameaçador. Alto risco por ambiguidade intencional (preservar enigma). Não resolver.",
+      "t": "que ele sabe?"
+    },
+    "0x16c29c": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto",
+      "intent": "honestidade descarada",
+      "risk_level": "low",
+      "risk_notes": "Nosuri admite ignorância de forma desembaraçada.",
+      "t": "Não tenho a menor ideia."
+    },
+    "0x16c2e7": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "confirmação ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "Alto risco: Homem preserva enigma/ameaça. Não explicar o que sabe.",
+      "t": "ele sabe."
+    },
+    "0x16c34e": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto",
+      "intent": "enumeração calorosa",
+      "risk_level": "low",
+      "risk_notes": "Nosuri menciona bandidos de forma casual.",
+      "t": "bandidos também."
+    },
+    "0x16c35b": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "observação casual com tom ameaçador",
+      "risk_level": "medium",
+      "risk_notes": "Homem nota chegada de Oshtor (spoiler futuro). Preservar tom frio sem antecipar identidade.",
+      "t": "Ah, parece que ele chegou."
+    },
+    "0x16c376": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desesperado",
+      "intent": "choque absoluto",
+      "risk_level": "high",
+      "risk_notes": "Identidade oculta. Spoiler crítico iminente (reveal de Oshtor). Marcar alto risco. Gagueira reflete o choque.",
+      "t": "O q-q-qu-qu...!?"
+    },
+    "0x16c3b3": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "apresentação de salvação/ameaça",
+      "risk_level": "high",
+      "risk_notes": "Alto risco: Homem apresenta Oshtor (spoiler final iminente). Preservar enigma frio.",
+      "t": "o espera bem aqui!"
+    },
+    "0x16c3ca": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, chocada",
+      "intent": "incredulidade/reconhecimento",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: momento de reveal iminente (Oshtor chega). Identidade de Anju ainda preservada nesta linha, mas alto risco de vazamento de contexto. Back-translation obrigatória. Fragmentação de fala preserva choque.",
+      "t": "Isso... não pode ser. Osh...tor..."
+    },
+    "0x16c411": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido (antes do reveal: não insinuar pompa de general)",
+      "intent": "apresentação formal",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: Oshtor se identifica. Antes de 13_08, ele é 'Ukon' (informal, espirituoso). Aqui já é General da Direita (pompa formal). NÃO insinuar morte/sacrifício futuro. Marcar crítico por identidade dupla.",
+      "t": "Guarda Imperial da Direita!"
+    },
+    "0x16c45b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "negação formal/nobre",
+      "risk_level": "high",
+      "risk_notes": "Oshtor nega ser retainer de outro (provavelmente Anju). Spoiler crítico: relação futura não deve ser insinuada.",
+      "t": "definitivamente não SUA retainer..."
+    },
+    "0x16c483": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "reconhecimento/lealdade",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: Oshtor menciona Anju (princesa). Identidade de Anju agora revelada no diálogo (spoiler major). Preservar tom formal sem insinuar morte/herança futura.",
+      "t": "Oshtor... retainer leal... Anju..."
+    },
+    "0x16c4a7": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, confuso/desesperado",
+      "intent": "confirmação/incompreensão",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: Anju é revelada como princesa neste momento. Identidade dupla em pico máximo. Back-translation obrigatória.",
+      "t": "Anju... a princesa?"
+    },
+    "0x16c4bd": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, chocada",
+      "intent": "negação de realidade",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: Anju nega a revelação (você não pode ser...). Identidade dupla. Preservar tom de choque sem insinuar futura relação/morte de Oshtor.",
+      "t": "N-Não pode--Você NÃO pode ser..."
+    },
+    "0x16c4d9": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "pergunta calmamente desafiadora",
+      "risk_level": "high",
+      "risk_notes": "Oshtor questiona calmamente a incompreensão de Anju. Preservar compostura formal sem revelar morte/twist.",
+      "t": "Não posso ser o quê?"
+    },
+    "0x16c51d": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, chocada",
+      "intent": "negação de título/realidade",
+      "risk_level": "high",
+      "risk_notes": "Anju nega a identidade de Oshtor como 'General da Direita' ou princesa verdadeira. Ambiguidade preservada.",
+      "t": "a princesa imperial?"
+    },
+    "0x16c58b": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, chocada",
+      "intent": "referência ao reino inteiro",
+      "risk_level": "medium",
+      "risk_notes": "Yamato é local (manter_original). Anju confirma escopo de autoridade. Preservar tom de choque.",
+      "t": "de todo Yamato."
+    },
+    "0x16c59a": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, desafiador",
+      "intent": "pergunta defensiva/irônica",
+      "risk_level": "medium",
+      "risk_notes": "Anju pergunta ironicamente se não mencionou (identidade de princesa). Preservar tom irônico sem explicar a piada.",
+      "t": "Não mencionei isso?"
+    },
+    "0x16c612": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, defensivo",
+      "intent": "interrupção/negação parcial",
+      "risk_level": "low",
+      "risk_notes": "Anju interrompe a si mesma (começa a negar, mas para). Fragmentação preserva incerteza.",
+      "t": "Posso ter--"
+    },
+    "0x16c648": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, caloroso",
+      "intent": "afirmação de amizade",
+      "risk_level": "high",
+      "risk_notes": "Anju afirma que são amigos (Haku e ela). Identidade dupla. Preservar caloroso sem insinuar morte/sacrifício futuro.",
+      "t": "A gente é amigos, não é?"
+    },
+    "0x16c693": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, humilde/defensivo",
+      "intent": "negação de dignidade",
+      "risk_level": "high",
+      "risk_notes": "Anju nega ser digna da companhia de alguém de alto status (provavelmente referindo-se a posição de princesa). Spoiler crítico: não insinuar morte ou sacrifício.",
+      "t": "gente como eu!"
+    },
+    "0x16c6ca": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, solene",
+      "intent": "pedido de lealdade",
+      "risk_level": "high",
+      "risk_notes": "Anju pede lealdade a Nosuri (referência a alianças futuras). Alto risco por contexto de revelação. Back-translation obrigatória.",
+      "t": "Conto com você, Nosuri."
+    },
+    "0x16c6ea": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, confuso",
+      "intent": "surpresa/incompreensão",
+      "risk_level": "medium",
+      "risk_notes": "Nosuri surpresa com o pedido. Preservar tom desembaraçado de malandra.",
+      "t": "Hein? Contando com... eu?"
+    },
+    "0x16c767": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, incerto",
+      "intent": "confirmação temerosa",
+      "risk_level": "high",
+      "risk_notes": "Nosuri confirma/questiona se vai lutar contra Oshtor (spoiler futuro: batalha). Alto risco. Preservar incerteza.",
+      "t": "Você quer dizer... lutar... contra Oshtor?"
+    },
+    "0x16c784": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, firme",
+      "intent": "confirmação resoluta",
+      "risk_level": "high",
+      "risk_notes": "Anju confirma o plano de lutar contra Oshtor. Spoiler crítico. Preservar tom resoluto sem insinuar resultado.",
+      "t": "Sim, exatamente!"
+    },
+    "0x16c7c4": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, firme",
+      "intent": "inclusão de aliados",
+      "risk_level": "high",
+      "risk_notes": "Anju menciona que todos lutarão contra Oshtor (aliados múltiplos). Spoiler futuro de batalha. Alto risco.",
+      "t": "com ele... Todos eles, na verdade..."
+    },
+    "0x16c7e8": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, encorajador",
+      "intent": "aprovação entusiasmada",
+      "risk_level": "medium",
+      "risk_notes": "Nosuri aprova que os números agora são iguais (combate justo). Tom malandro preservado.",
+      "t": "Ótimo! Agora vocês estão bem emparelhados."
+    },
+    "0x16c80f": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, inseguro",
+      "intent": "hesitação/incerteza",
+      "risk_level": "medium",
+      "risk_notes": "Nosuri titubeia/fica incerta com o plano. Preservar fragilidade da personagem.",
+      "t": "Ahn... mas... eu..."
+    },
+    "0x16c821": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, compaixão",
+      "intent": "lamento autêntico",
+      "risk_level": "medium",
+      "risk_notes": "Anju lamenta dificuldade de Nosuri. Tom compassivo preservado.",
+      "t": "Sinto muito por você..."
+    },
+    "0x16c862": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, prático",
+      "intent": "pressão pragmática para ação",
+      "risk_level": "low",
+      "risk_notes": "Nosuri pressiona para sair rápido e pegar Anju. Tom prático/malandro.",
+      "t": "pra pegar ela, é melhor a gente ir logo."
+    },
+    "0x16c88b": {
+      "speaker": "Ougi",
+      "tone_register": "erudito, cômico, pomposo",
+      "intent": "sugestão formal",
+      "risk_level": "low",
+      "risk_notes": "Ougi propõe sair (tom pomposo/cômico, não exagerar).",
+      "t": "A gente se vai, minha irmã?"
+    },
+    "0x16c94a": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, decisivo",
+      "intent": "urgência prática",
+      "risk_level": "low",
+      "risk_notes": "Nosuri quer sair do caminho rapidamente (ton pragmático).",
+      "t": "do caminho dela agora..."
+    },
+    "0x16c964": {
+      "speaker": "Ougi",
+      "tone_register": "erudito, cômico, pomposo",
+      "intent": "despedida formal/dramática",
+      "risk_level": "low",
+      "risk_notes": "Ougi faz despedida pomposa (tom cômico, mas não forçar a piada).",
+      "t": "A gente se vai já. Adeus!"
+    },
+    "0x16c9c5": {
+      "speaker": "Anju",
+      "tone_register": "formal, nobre, solene",
+      "intent": "referência à batalha pelo amor",
+      "risk_level": "high",
+      "risk_notes": "Anju refere-se ao duelo de Oshtor por sua mão (spoiler futuro: batalha romântica). Alto risco. Preservar tom solene sem insinuar morte/sacrifício.",
+      "t": "Oshtor num duelo fatídico pela minha mão!"
+    },
+    "0x16ca4f": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, lamuriento",
+      "intent": "lamento/preocupação",
+      "risk_level": "medium",
+      "risk_notes": "Haku lamenta Oshtor (após a batalha/partida). Preservar fragmentação de fala (reticências) por torpor mental.",
+      "t": "Oshtor..."
+    },
+    "0x16ca59": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, lamuriento",
+      "intent": "reverência confusa",
+      "risk_level": "high",
+      "risk_notes": "Haku refere-se à princesa Anju (identidade dupla agora revelada). Preservar confusão/torpor. Alto risco.",
+      "t": "Princesa Anju..."
+    },
+    "0x16ca9a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, solene",
+      "intent": "elogio de lealdade/devoção",
+      "risk_level": "high",
+      "risk_notes": "Oshtor elogia Haku como retainer mais devoto (identidade dupla de Oshtor, spoiler futuro). Alto risco. NÃO insinuar morte/sacrifício.",
+      "t": "Verdadeiramente, você é meu retainer mais devoto."
+    },
+    "0x16cac7": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, solene",
+      "intent": "pergunta compassiva",
+      "risk_level": "high",
+      "risk_notes": "Oshtor pergunta se algo está errado com Haku (silêncio dele). Preservar tom formal/compassivo sem insinuar revelação futura.",
+      "t": "Algo não vai bem? Por que tão quieto?"
+    },
+    "0x16cb27": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, lamuriento",
+      "intent": "reflexão sobre julgamento obscurecido",
+      "risk_level": "high",
+      "risk_notes": "Haku reflete sobre como seu julgamento ficou confuso (identidade dupla, spoiler futuro de revelações). Alto risco. Preservar fragmentação mental/torpor. Back-translation obrigatória para capturar a auto-reflexão corretamente.",
+      "t": "o meu julgamento nunca teria ficado tão ofuscado..."
+    },
+    "0x16d171": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, comedido",
+      "intent": "Interromper a conversa para atender a princesa",
+      "risk_level": "medium",
+      "risk_notes": "Budget 50 bytes; transliterado ~46 bytes OK. Manter formalidade sem antecipar twist.",
+      "t": "De fato. Com licença, ela parece ter\\n"
+    },
+    "0x16d1c1": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, levemente indignado",
+      "intent": "Barrar alguém que tenta ir embora sem permissão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E para onde você pensa que vai,\\n"
+    },
+    "0x16d1fc": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, firme",
+      "intent": "Lembrar que ela havia orientado a pessoa a não segui-la",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Me parece que avisei para não me seguir\\n"
+    },
+    "0x16d24a": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, com autoridade leve",
+      "intent": "Anunciar que há uma punição por causar confusão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que alguma punição se faz necessária por\\n"
+    },
+    "0x16d276": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, com autoridade leve",
+      "intent": "Continuar o anúncio de punição, buscando concordância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "causar tamanha confusão, não acha?\\n"
+    },
+    "0x16d37c": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "Narrar reação coletiva de espanto — tapam os ouvidos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Trocamos olhares, depois tampamos os ouvidos com\\n"
+    },
+    "0x16beae": {
+      "speaker": "Anju",
+      "tone_register": "emocional, teimosa",
+      "intent": "recusa sair sem Oshtor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não, não, NÃO! Vou ficar aqui até que meu Oshtor\\n"
+    },
+    "0x16beeb": {
+      "speaker": "Oshtor",
+      "tone_register": "firme, contido",
+      "intent": "corrigir Anju com autoridade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua pirralha. Já disse, Oshtor não\\n"
+    },
+    "0x16bf70": {
+      "speaker": "Ukon",
+      "tone_register": "coloquial, compreensivo",
+      "intent": "empatia pela situação da princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo como ela se sente. Essa princesa realmente é\\n"
+    },
+    "0x16bff0": {
+      "speaker": "Ukon",
+      "tone_register": "ponderativo, informal",
+      "intent": "revelar preocupação latente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Algo vem me incomodando faz algum\\n"
+    },
+    "0x16c08a": {
+      "speaker": "Nosuri",
+      "tone_register": "casual, esperto",
+      "intent": "justificar desvio de rota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dei uma volta. Toda essa confusão não valeria nada\\n"
+    },
+    "0x16c0bb": {
+      "speaker": "Nosuri",
+      "tone_register": "irônico, confiante",
+      "intent": "completar raciocínio — a estrela é necessária",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sem a estrela principal, não é mesmo?\\n"
+    },
+    "0x16c14c": {
+      "speaker": "Ukon",
+      "tone_register": "animado, liderança leve",
+      "intent": "motivar o grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendido. Cabeça erguida, pessoal! É só aguentar\\n"
+    },
+    "0x16c17b": {
+      "speaker": "Ukon",
+      "tone_register": "brincalhão, caloroso",
+      "intent": "completar frase de motivação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mais um pouco até o amor da princesa\\n"
+    },
+    "0x16c1b6": {
+      "speaker": "Ougi",
+      "tone_register": "leve, filosófico",
+      "intent": "comentário sobre mulheres que cumprem promessas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Heh, é isso mesmo. Uma boa mulher sempre cumpre\\n"
+    },
+    "0x16c1f6": {
+      "speaker": "Nosuri",
+      "tone_register": "indignada, explosiva",
+      "intent": "reação de choque ao saber que Oshtor foi informado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera um momento! Você-- O que quer dizer, você\\n"
+    },
+    "0x16c229": {
+      "speaker": "Nosuri",
+      "tone_register": "furiosa",
+      "intent": "confrontar sobre ter avisado Oshtor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "avisou Oshtor? Que diabos você estava\\n"
+    },
+    "0x16c25e": {
+      "speaker": "Nosuri",
+      "tone_register": "ameaçador, urgente",
+      "intent": "alertar sobre consequências",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você entende o que vai acontecer agora\\n"
+    },
+    "0x16c2ba": {
+      "speaker": "Ougi",
+      "tone_register": "seco, pragmático",
+      "intent": "comentar que o sujeito é louco",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esse cara perdeu o juízo. Claro que\\n"
+    },
+    "0x16c2f1": {
+      "speaker": "Ougi",
+      "tone_register": "preocupado, sério",
+      "intent": "ampliar o escopo do problema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se isso escalar mais, não vai ser só ruim\\n"
+    },
+    "0x16c31f": {
+      "speaker": "Ougi",
+      "tone_register": "grave",
+      "intent": "completar — o perigo se estende a outros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para nós, mas para essas\\n"
+    },
+    "0x16c388": {
+      "speaker": "Anju",
+      "tone_register": "eufórico, aliviado",
+      "intent": "chamar Oshtor ao ver que chegou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, Oshtor! Oshtor! Aqui! Sua Anju\\n"
+    },
+    "0x16c3e7": {
+      "speaker": "Anju",
+      "tone_register": "orgulhoso, solene",
+      "intent": "apresentar Oshtor como fiel escudeiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim! Meu mais leal escudeiro, Oshtor,\\n"
+    },
+    "0x16c42e": {
+      "speaker": "Nosuri",
+      "tone_register": "irônico, prático",
+      "intent": "cortar a empolgação — lealdade não muda a situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por mais leal que seja a você, ele\\n"
+    },
+    "0x16c4eb": {
+      "speaker": "Ukon",
+      "tone_register": "educado, curioso",
+      "intent": "confirmar identidade de Anju",
+      "risk_level": "medium",
+      "risk_notes": "Mikado spoiler: não antecipar vínculo pessoal; manter distância formal",
+      "t": "Com licença pela pergunta, mas... seria você Anju,\\n"
+    },
+    "0x16c534": {
+      "speaker": "Anju",
+      "tone_register": "formal, orgulhoso",
+      "intent": "apresentar-se com título completo",
+      "risk_level": "medium",
+      "risk_notes": "Mikado spoiler: título apenas, sem vínculo pessoal",
+      "t": "Hum? Ah, sim. Sou a Descendente Divino Anju,\\n"
+    },
+    "0x16c562": {
+      "speaker": "Anju",
+      "tone_register": "solene, pomposo",
+      "intent": "completar apresentação — herdeira do Mikado",
+      "risk_level": "medium",
+      "risk_notes": "Mikado spoiler: tratar só como título/soberano distante",
+      "t": "herdeira do Mikado e futura governante\\n"
+    },
+    "0x16c5b5": {
+      "speaker": "Ukon",
+      "tone_register": "surpreso, informal",
+      "intent": "reação de espanto — nunca tinha ouvido o título",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "N-Nunca tinha ouvido isso nem uma vez!\\n"
+    },
+    "0x16c5e0": {
+      "speaker": "Ukon",
+      "tone_register": "respeitoso, nervoso",
+      "intent": "pedir perdão por falta de respeito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, Vossa Alteza, p-perdoe qualquer desrespeito\\n"
+    },
+    "0x16c61d": {
+      "speaker": "Anju",
+      "tone_register": "magnânimo, casual",
+      "intent": "dispensar preocupações com etiqueta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bah, não se preocupe com coisas tão triviais.\\n"
+    },
+    "0x16c664": {
+      "speaker": "Ukon",
+      "tone_register": "embaraçado, grato",
+      "intent": "agradecer as palavras da princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ob-Obrigado... Palavras assim são demais para\\n"
+    },
+    "0x16c6a0": {
+      "speaker": "Oshtor",
+      "tone_register": "firme, redirecionando",
+      "intent": "chamar atenção para o que importa agora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Concentre-se no seu papel. Oshtor está aqui.\\n"
+    },
+    "0x16c702": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, estratégico",
+      "intent": "relembrar o plano — papel do vilão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro. Não se lembra? Você fará o papel\\n"
+    },
+    "0x16c733": {
+      "speaker": "Oshtor",
+      "tone_register": "direto, frio",
+      "intent": "completar — enfrenta o vilão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "do vilão e vai se confrontar com\\n"
+    },
+    "0x16c792": {
+      "speaker": "Ukon",
+      "tone_register": "surpreso, nervoso",
+      "intent": "notar que Oshtor trouxe subordinados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "P-Parece que ele trouxe seus subordinados\\n"
+    },
+    "0x16c82f": {
+      "speaker": "Nosuri",
+      "tone_register": "casual, esperto",
+      "intent": "declarar missão cumprida, hora de sair",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem. Agora que a escolta de Sua Alteza chegou\\n"
+    },
+    "0x16c8b3": {
+      "speaker": "Nosuri",
+      "tone_register": "prático, irônico",
+      "intent": "justificar retirada — o amado chegou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Garanti nossa fuga. Já que o homem que ela\\n"
+    },
+    "0x16c8e3": {
+      "speaker": "Nosuri",
+      "tone_register": "irônico, delicado",
+      "intent": "não interferir no momento romântico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ama chegou, não nos cabe interferir,\\n"
+    },
+    "0x16c919": {
+      "speaker": "Ougi",
+      "tone_register": "aliviado, concordando",
+      "intent": "concordar e ir embora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "S--Sim, claro. Tem razão. A gente devia ir\\n"
+    },
+    "0x16c993": {
+      "speaker": "Anju",
+      "tone_register": "indignado, confuso",
+      "intent": "impedir que saiam sem lutar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q--Pra onde vão!? Você tem que desafiar\\n"
+    },
+    "0x16c9eb": {
+      "speaker": "Oshtor",
+      "tone_register": "sereno, curioso",
+      "intent": "questionar a pressa deles em sair",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não consigo entender. Por que estavam tão desesperados\\n"
+    },
+    "0x16ca1e": {
+      "speaker": "Oshtor",
+      "tone_register": "leve, deixando passar",
+      "intent": "descartar o assunto e seguir em frente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para sair...? {W480}Ah, mas já não importa.\\n"
+    },
+    "0x16ca6a": {
+      "speaker": "Anju",
+      "tone_register": "aliviado, carinhoso",
+      "intent": "agradecer Oshtor por vir ao resgate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você voou ao meu resgate, Oshtor!\\n"
+    },
+    "0x16caf6": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, culpado",
+      "intent": "pedir desculpas pela negligência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lamento. Se não fosse minha própria negligência, sua\\n"
+    },
+    "0x16cb57": {
+      "speaker": "Anju",
+      "tone_register": "tranquilizador, animado",
+      "intent": "dispensar a culpa de Oshtor — está bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não seja tão sério. Viu? Nada aconteceu comigo\\n"
+    },
+    "0x16cb9c": {
+      "speaker": "Anju",
+      "tone_register": "grato, reconhecendo os outros",
+      "intent": "creditar o resgate a quem ajudou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se não fosse por essas pessoas que vieram ao seu\\n"
+    },
+    "0x16cbcc": {
+      "speaker": "Anju",
+      "tone_register": "grato",
+      "intent": "completar — o que poderia ter acontecido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lado, quem sabe o que teria acontecido\\n"
+    },
+    "0x16cc01": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, autocrítico",
+      "intent": "assumir responsabilidade pelo sequestro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A princesa ser sequestrada com tanta facilidade é\\n"
+    },
+    "0x16cc32": {
+      "speaker": "Oshtor",
+      "tone_register": "sério, punitivo",
+      "intent": "declarar que merece punição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "fruto da minha desatenção, punível por\\n"
+    },
+    "0x16cc87": {
+      "speaker": "Oshtor",
+      "tone_register": "solene, responsável",
+      "intent": "aceitar responsabilidade total",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aceito total responsabilidade por esta falha,\\n"
+    },
+    "0x16cd07": {
+      "speaker": "Anju",
+      "tone_register": "envergonhado, arrependido",
+      "intent": "assumir a culpa e prometer melhorar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta noite foi culpa minha. N-Não vou mais\\n"
+    },
+    "0x16cd5c": {
+      "speaker": "Anju",
+      "tone_register": "angustiado, preocupado com o pai",
+      "intent": "temer ter que dar satisfação ao pai",
+      "risk_level": "medium",
+      "risk_notes": "Mikado spoiler: tratar como referência distante ao soberano/pai, sem vínculo revelado",
+      "t": "O que digo ao pai, se eu perder nosso\\n"
+    },
+    "0x16cdb7": {
+      "speaker": "Anju",
+      "tone_register": "suplicante, desesperado",
+      "intent": "implorar que Oshtor fique",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, imploro. P-Por favor fique ao meu\\n"
+    },
+    "0x16cdf6": {
+      "speaker": "Ukon",
+      "tone_register": "casual, observador",
+      "intent": "comentar que ela está entendendo a gravidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que ela está começando a entender a\\n"
+    },
+    "0x16ce41": {
+      "speaker": "Ukon",
+      "tone_register": "tolerante, respeitoso",
+      "intent": "reconhecer o lado positivo de Anju",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela exagera demais, mas pelo menos\\n"
+    },
+    "0x16ce73": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, genuíno",
+      "intent": "admitir respeito por ela saber pedir desculpa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sabe quando pedir desculpa. Dá pra respeitar isso,\\n"
+    },
+    "0x16cead": {
+      "speaker": "Oshtor",
+      "tone_register": "gentil, firme",
+      "intent": "consolar Anju, pedir que pare de chorar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vossa Alteza... Por favor, chega de lágrimas.\\n"
+    },
+    "0x16cee8": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, grato",
+      "intent": "agradecer pela segunda chance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agradeço sua bondade em me conceder\\n"
+    },
+    "0x16cf17": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, contrito",
+      "intent": "completar agradecimento pelo perdão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "outra chance apesar deste grave erro\\n"
+    },
+    "0x16cf50": {
+      "speaker": "Oshtor",
+      "tone_register": "solene, juramento",
+      "intent": "jurar lealdade contínua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu, Oshtor, juro solenemente que continuarei\\n"
+    },
+    "0x16cfa7": {
+      "speaker": "Anju",
+      "tone_register": "aliviado, emocionado",
+      "intent": "reação feliz ao saber que Oshtor não vai se demitir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Então não vai se demitir? Ah, Oshtor, eu\\n"
+    },
+    "0x16cfef": {
+      "speaker": "Ukon",
+      "tone_register": "descontraído, aliviado",
+      "intent": "comentar que tudo se resolveu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caramba. Parece que tudo acabou bem\\n"
+    },
+    "0x16d057": {
+      "speaker": "Oshtor",
+      "tone_register": "surpreso, levemente irritado",
+      "intent": "questionar por que Ukon ainda está lá",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ué-- Você ainda está aqui!? Não deveria\\n"
+    },
+    "0x16d0b1": {
+      "speaker": "Ukon",
+      "tone_register": "casual, enigmático",
+      "intent": "explicar que ficou por ter algo a dizer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É, mas pensei em algo que sentia que\\n"
+    },
+    "0x16d0f3": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, informal",
+      "intent": "informar que avisou o guardião dos eventos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vossa Alteza, tomei a liberdade de informar\\n"
+    },
+    "0x16d124": {
+      "speaker": "Ukon",
+      "tone_register": "casual, prestativo",
+      "intent": "completar — avisou o guardião no caminho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "seu guardião dos eventos desta noite no\\n"
+    },
+    "0x16cb88": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "relatar leveza e falta de ferimentos",
+      "risk_level": "medium",
+      "risk_notes": "cício ('s' -> 'sh') + tom arcaico devem permanecer; evitar perda da piada na transliteração",
+      "t": "mim. Nenhum arranhão."
+    },
+    "0x16cc61": {
+      "speaker": "Oshtor",
+      "tone_register": "formal nobre comedido",
+      "intent": "sentença curta e definitiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "morte."
+    },
+    "0x16cc68": {
+      "speaker": "Oshtor",
+      "tone_register": "formal nobre comedido",
+      "intent": "confronto/reprimenda fria",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: não antecipar identidade verdadeira; manter tom enigmático de General. Ambiguidade ameaçadora preservada.",
+      "t": "Q-Que quer dizer?"
+    },
+    "0x16ccb6": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "oferta dramática de resignação (comédia)",
+      "risk_level": "high",
+      "risk_notes": "arcaísmo + cício críticos; 'hereby resign' -> forma pomposamente arcaica em pt-BR; naturalize a quebra.",
+      "t": "e por isso renuncio ao meu posto. Eu... peço desculpas."
+    },
+    "0x16cce6": {
+      "speaker": "Ougi",
+      "tone_register": "formal educado irônico",
+      "intent": "interrupção urgente; proteção do irmão",
+      "risk_level": "medium",
+      "risk_notes": "tom de 'basta' deve sair claro sem parecer abrupto; manter a formalidade irônica.",
+      "t": "E-Espere -- Não, não posso permitir!"
+    },
+    "0x16cd37": {
+      "speaker": "Ougi",
+      "tone_register": "formal educado irônico",
+      "intent": "aviso/repreensão elegante",
+      "risk_level": "medium",
+      "risk_notes": "frase longa; respeitar a pompa mas cabar no orçamento (32 bytes).",
+      "t": "de novo. Por favor!"
+    },
+    "0x16cd8c": {
+      "speaker": "Ougi",
+      "tone_register": "formal educado irônico",
+      "intent": "sarcasmo ofendido",
+      "risk_level": "high",
+      "risk_notes": "'devotado retainer to a childish prank' = sarcasmo; 'prank' é suave demais — 'brincadeira infantil' tem o tom certo. Preservar o contraste pompa/fragilidade.",
+      "t": "mais dedicado a uma brincadeira infantil?"
+    },
+    "0x16cde5": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "pedido dramático de ajuda (comédia)",
+      "risk_level": "medium",
+      "risk_notes": "cício + arcaísmo; 'side and aid me' brevemente em arcaísmo pt-BR sem ficar artificial.",
+      "t": "lado e me ajude."
+    },
+    "0x16ce27": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial atrevida malandra",
+      "intent": "reflexão sobre consequências da ação de outro",
+      "risk_level": "medium",
+      "risk_notes": "'gravity' = gravidade do ato; tom de 'você viu o estrago?'; manter coloquial e esperto.",
+      "t": "da ação dela..."
+    },
+    "0x16ced7": {
+      "speaker": "Nosuri ou Ougi",
+      "tone_register": "formal com autoridade",
+      "intent": "comando direto, levantamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Levante a cabeça."
+    },
+    "0x16cf43": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "confissão de responsabilidade (drama cômico)",
+      "risk_level": "medium",
+      "risk_notes": "contexto: Maroro confessa um erro ou decisão má; 'I have made' = suporte possível para 'decision/error' anterior. Tom de autodepreciação pomposa.",
+      "t": "fiz."
+    },
+    "0x16cf80": {
+      "speaker": "Maroro ou aliado",
+      "tone_register": "formal determinado",
+      "intent": "juramento/compromisso de lealdade",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: Yamato é tema neutro; 'for you' pode ser ambíguo (para quem?). Manter formal sem revelar relação pessoal. Frase inteira em bytes curtos.",
+      "t": "para manter a paz de Yamato."
+    },
+    "0x16cfd4": {
+      "speaker": "Garota ou Protagonista",
+      "tone_register": "alívio emocional",
+      "intent": "expressar alívio profundo após tensão",
+      "risk_level": "low",
+      "risk_notes": "'never been so relieved' = emoção pura; 'never been so' = superlativo; manter natural.",
+      "t": "nunca fiquei tão aliviado...!"
+    },
+    "0x16d01d": {
+      "speaker": "Homem (figura de memória)",
+      "tone_register": "enigmático frio profético",
+      "intent": "lamento/resignação enigmática",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: 'Woman/Man' são figuras de memória — NÃO resolver quem são. Preserve ambiguidade. Ton frio/ameaçador mantido; 'God' permanece como invocação, não pista.",
+      "t": "fim, mas Deus..."
+    },
+    "0x16d031": {
+      "speaker": "Nosuri ou Ougi",
+      "tone_register": "coloquial prático",
+      "intent": "lembrete de detalhe esquecido; tom leve (talvez negligência)",
+      "risk_level": "medium",
+      "risk_notes": "'neglected to mention' = negligência cálida (desculpa leve); 'one thing' marca importância. Cuidado com ênfase (pode vazar spoiler se ficar dramática).",
+      "t": "Ah, há uma coisa que esqueci de dizer."
+    },
+    "0x16d087": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial atrevida malandra",
+      "intent": "brincadeira cúmplice; reconhecer fuga oportuna",
+      "risk_level": "medium",
+      "risk_notes": "'y'know, be making your timely escape' = tom de cumplicidade irônica. 'timely' = oportuna/bem-vinda. Manter desembaraçado.",
+      "t": "tipo, estar fazendo sua fuga bem-vinda?"
+    },
+    "0x16d0dd": {
+      "speaker": "Nosuri ou Ougi",
+      "tone_register": "coloquial prático",
+      "intent": "marcar relevância antes de revelar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "importante de dizer."
+    },
+    "0x16d152": {
+      "speaker": "Protagonista ou Garota",
+      "tone_register": "tom neutro de frase ou rótulo",
+      "intent": "indicar uma rota alternativa (aspas: palavra específica)",
+      "risk_level": "low",
+      "risk_notes": "Aspas duplas + \"detour\"; preservar em pt-BR sem mudar semântica.",
+      "t": "\"desvio\"."
+    },
+    "0x16d161": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "confuso desorientado semi-consciente",
+      "intent": "pergunta incerta; buscar identificação de quem fala",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: protagonista é Haku, mas nome só revelado depois. Aqui é 'eu' vago. '...My guardian?' = fragmentação crítica + reticências. Não articular demais.",
+      "t": "...Meu guardião?"
+    },
+    "0x16d1a4": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil cuidador",
+      "intent": "informação factual sobre alguém que chegou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "chegou agora mesmo."
+    },
+    "0x16d1b7": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "exclamação de espanto/horror (onomatopeia)",
+      "risk_level": "high",
+      "risk_notes": "ONOMATOPEIA: 'AAAAACK!!' = som de alarme cômico. Localizar à onomatopeia pt-BR para espanto (não copiar EN). Cício não se aplica aqui (é grito, não fala). Transliterar como 'AAAAACK!!' → 'AAAACK!!' ou 'ARRÁÁÁ!!' conforme convenção do projeto.",
+      "t": "AAAACK!!"
+    },
+    "0x16d1ed": {
+      "speaker": "Garota ou Nosuri",
+      "tone_register": "formal respeitoso (se Garota); coloquial atrevido (se Nosuri)",
+      "intent": "endereço a autoridade / superior",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: 'Your Highness?' — não antecipe a filiação ou título secreto. Use 'Alteza' (formal genérico) sem expandir. Marca ponto de virada (respeitoso).",
+      "t": "Alteza?"
+    },
+    "0x16d22a": {
+      "speaker": "Maroro ou Ougi",
+      "tone_register": "arcaico pomposo cômico ou formal educado",
+      "intent": "rejeição dramática de uma ideia considerada tola",
+      "risk_level": "medium",
+      "risk_notes": "'through with this foolish idea' = 'acabar com essa ideia tola'; 'through' = basta/fim. Tom de exasperação comedida.",
+      "t": "com essa ideia infantil."
+    },
+    "0x16d2a1": {
+      "speaker": "Protagonista ou Garota",
+      "tone_register": "súplica urgente (Protagonista semiadormecido) ou gentil (Garota)",
+      "intent": "rejeição + barganha; pedir alternativa",
+      "risk_level": "medium",
+      "risk_notes": "'anything but--' = interrupção aberta. Risco: parecer muito formal se Garota, muito articulado se Protagonista. Calibrar à voz.",
+      "t": "Não, por favor, qualquer coisa menos --"
+    },
+    "0x16d2bc": {
+      "speaker": "Maroro ou personagem exaltado",
+      "tone_register": "grito de horror/exasperação",
+      "intent": "onomatopeia de desespero",
+      "risk_level": "high",
+      "risk_notes": "ONOMATOPEIA: 'NOOOOO!!' = desespero exagerado (cômico se Maroro). Localizar, não copiar.",
+      "t": "NÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃ||||NOOOOO!!"
+    },
+    "0x16d2c5": {
+      "speaker": "Maroro ou Ougi",
+      "tone_register": "alerta/comando urgente",
+      "intent": "ordem de proteção auditiva antes de algo ensurdecedor",
+      "risk_level": "medium",
+      "risk_notes": "'cover your ears' = ação imperativa; tom varia conforme falante. Se Maroro (cômico), pode ter tom dramático. Manter natural.",
+      "t": "Cubra seus ouvidos, todos."
+    },
+    "0x16d2e0": {
+      "speaker": "Protagonista ou personagem confuso",
+      "tone_register": "confuso pergunta fragmentada",
+      "intent": "questionar a ordem recebida; buscar razão",
+      "risk_level": "medium",
+      "risk_notes": "'why exactly do we need to cover...?' = pergunta inacabada. Fragmentação esperada; não articular demais. Respeitar o tom de confusão.",
+      "t": "E-Espere, por que exatamente precisamos...?"
+    },
+    "0x16d30e": {
+      "speaker": "Ougi",
+      "tone_register": "formal educado irônico mas urgente",
+      "intent": "tentativa de parar alguém (interrupção stammering)",
+      "risk_level": "high",
+      "risk_notes": "'S-Stop! Desist! I-I'll apologize' = gaguejo + urgência + oferta de barganha. Stammering crítico para voz de Ougi (educado mas assustado). Preservar fragmentação.",
+      "t": "P-Pare! Desista! Eu-eu vou pedir desculpas, então --"
+    },
+    "0x16d335": {
+      "speaker": "personagem em agonia",
+      "tone_register": "grito puro de dor/horror",
+      "intent": "onomatopeia de sofrimento extremo",
+      "risk_level": "high",
+      "risk_notes": "ONOMATOPEIA: 'AAAAAAAGH!!' = grito localizado. Não copiar EN; usar convenção pt-BR para grito de agonia extrema.",
+      "t": "AAAAAAAGH!!"
+    },
+    "0x16d341": {
+      "speaker": "Maroro ou personagem culpado",
+      "tone_register": "súplica desesperada repetida",
+      "intent": "peça de desculpas em cascata; arrependimento exagerado",
+      "risk_level": "medium",
+      "risk_notes": "'I am sorry! I'm sorry! I'M SORRY!' = repetição com escalada de ênfase. Preservar a progressão dramática (cômico se Maroro).",
+      "t": "Desculpe! Desculpe! DESCULPE!"
+    },
+    "0x16d363": {
+      "speaker": "Maroro",
+      "tone_register": "grito de dor físico",
+      "intent": "onomatopeia de dor de pancada/beliscão",
+      "risk_level": "high",
+      "risk_notes": "ONOMATOPEIA: 'Ow! Ow! OOOWWOWOW OW OW!' = sequência de gritos de dor (cômico em contexto). Localizar à pt-BR; padrão para pancadas/beliscões.",
+      "t": "Ai! Ai! AIAIAIAIAIAIA AI AI!"
+    },
+    "0x16d3aa": {
+      "speaker": "Maroro ou coro",
+      "tone_register": "formal poético",
+      "intent": "finalização em uníssono ou coro",
+      "risk_level": "low",
+      "risk_notes": "'unison' = em uníssono/harmonia. Palavra técnica; manter como rótulo ou contexto de cena (depende do uso em jogo).",
+      "t": "uníssono."
+    }
+  }
+}

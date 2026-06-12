@@ -1,0 +1,3738 @@
+{
+  "scene_group": "15_06",
+  "lines": [
+    {
+      "offset": "0xbf500",
+      "text_source": "Ah, good, everyone's here.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, animado",
+      "intent": "chamar atenção do grupo reunido",
+      "risk_level": "low",
+      "base_translation": "Ah, ótimo, estão todos aqui.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf51b",
+      "text_source": "Ukon plonks himself down in the middle of the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever ação de Ukon",
+      "risk_level": "low",
+      "base_translation": "Ukon se joga no meio do\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf54b",
+      "text_source": "hall, and everyone gathers to sit around him.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "continuar descrição",
+      "risk_level": "low",
+      "base_translation": "salão, e todos se reúnem ao redor dele.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf579",
+      "text_source": "What brings you here on such short notice,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, curioso",
+      "intent": "perguntar motivo do chamado",
+      "risk_level": "low",
+      "base_translation": "O que te traz aqui assim de repente,\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf5a6",
+      "text_source": "dear brother?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "caro irmão?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf5b4",
+      "text_source": "Well, I think I'm gonna have work for you guys\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, levemente misterioso",
+      "intent": "anunciar que terá trabalho para o grupo",
+      "risk_level": "low",
+      "base_translation": "Bom, acho que logo vou ter trabalho pra vocês\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf5e5",
+      "text_source": "soon. As undercover agents.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "revelar natureza do trabalho: agentes disfarçados",
+      "risk_level": "low",
+      "base_translation": "em breve. Como agentes infiltrados.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf601",
+      "text_source": "Undercover... agents.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso, repetindo",
+      "intent": "reagir com espanto à revelação",
+      "risk_level": "low",
+      "base_translation": "Agentes... infiltrados.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf617",
+      "text_source": "No one is quite sure how to react.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever reação geral de incerteza",
+      "risk_level": "low",
+      "base_translation": "Ninguém sabe bem como reagir.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf63a",
+      "text_source": "Ukon--Oshtor--can't really move in public\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, explicativo",
+      "intent": "explicar limitação de Ukon/Oshtor",
+      "risk_level": "high",
+      "base_translation": "Ukon--Oshtor--não pode se mover em público\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menciona Oshtor pelo nome e papel como Guarda Imperial da Direita — tratar como fato já conhecido sem antecipar twist. Verificar spoiler_ledger."
+    },
+    {
+      "offset": "0xbf666",
+      "text_source": "because of his position as Imperial Guard of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, explicativo",
+      "intent": "continuar explicação sobre posição de Oshtor",
+      "risk_level": "high",
+      "base_translation": "por causa do cargo de Guarda Imperial da\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência direta ao cargo de Oshtor como Guarda Imperial da Direita — sem foreshadowing de twist."
+    },
+    {
+      "offset": "0xbf695",
+      "text_source": "the Right...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo",
+      "intent": "concluir explicação",
+      "risk_level": "low",
+      "base_translation": "Direita...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf6a2",
+      "text_source": "...So it falls to us to work in his stead.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo",
+      "intent": "concluir que cabe ao grupo agir no lugar dele",
+      "risk_level": "low",
+      "base_translation": "...Então cabe a nós agir no lugar dele.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf6cd",
+      "text_source": "The only question is, what is he going to make\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso, levemente apreensivo",
+      "intent": "questionar o que Ukon vai pedir",
+      "risk_level": "low",
+      "base_translation": "A única questão é: o que ele vai nos mandar\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf6fe",
+      "text_source": "us do...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso, apreensivo",
+      "intent": "completar a pergunta",
+      "risk_level": "low",
+      "base_translation": "fazer...?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf708",
+      "text_source": "Hey, relax a little. It's your first job, so\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, encorajador",
+      "intent": "tranquilizar o grupo, é o primeiro trabalho",
+      "risk_level": "low",
+      "base_translation": "Ei, relaxem um pouco. É o primeiro serviço,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf737",
+      "text_source": "I've picked out a few nice and easy contracts.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído",
+      "intent": "garantir que escolheu contratos fáceis",
+      "risk_level": "low",
+      "base_translation": "então escolhi alguns contratos bem tranquilos.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf766",
+      "text_source": "Ukon produces a worn, dog-eared notebook,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever Ukon pegando caderneta",
+      "risk_level": "low",
+      "base_translation": "Ukon tira uma caderneta surrada e cheia de\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf792",
+      "text_source": "leafing through the pages carefully.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "continuar descrição",
+      "risk_level": "low",
+      "base_translation": "orelhas, folheando com cuidado.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf7b7",
+      "text_source": "I'll read these off in order, and you guys\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, animado",
+      "intent": "propor leitura em voz alta para o grupo escolher",
+      "risk_level": "low",
+      "base_translation": "Vou ler na ordem, e vocês me dizem\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf7e4",
+      "text_source": "tell me what sounds good. Starting with...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "continuar proposta",
+      "risk_level": "low",
+      "base_translation": "o que parece bom. Começando com...",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf80f",
+      "text_source": "First up, cleaning up the restroom area in the\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, despretensioso",
+      "intent": "anunciar primeiro contrato: limpar banheiros",
+      "risk_level": "low",
+      "base_translation": "Primeiro: limpar a área dos banheiros na\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf840",
+      "text_source": "plaza.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar local",
+      "risk_level": "low",
+      "base_translation": "praça.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf84b",
+      "text_source": "Second one's transporting the, ah, by-products\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, eufemístico",
+      "intent": "anunciar segundo contrato: transportar dejetos",
+      "risk_level": "low",
+      "base_translation": "O segundo é transportar os, ah, subprodutos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf87c",
+      "text_source": "of that process...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "eufemístico",
+      "intent": "completar descrição do segundo contrato",
+      "risk_level": "low",
+      "base_translation": "desse processo...",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf88f",
+      "text_source": "Third, stirring the contents of the cesspool\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "anunciar terceiro contrato: mexer fossa",
+      "risk_level": "low",
+      "base_translation": "Terceiro: mexer o conteúdo da fossa\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf8be",
+      "text_source": "so it doesn't stagnate...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar terceiro contrato",
+      "risk_level": "low",
+      "base_translation": "pra não deixar estagnar...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf8d8",
+      "text_source": "And then the fourth job is taking THAT stuff\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "iniciar quarto contrato relacionado ao mesmo tema",
+      "risk_level": "low",
+      "base_translation": "E o quarto serviço é pegar AQUILO tudo\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf907",
+      "text_source": "and--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "ser interrompido antes de terminar",
+      "risk_level": "low",
+      "base_translation": "e--",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf90d",
+      "text_source": "Wait. Wait a second.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "interromper Ukon",
+      "risk_level": "low",
+      "base_translation": "Espera. Espera um segundo.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf922",
+      "text_source": "What is it?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "O quê?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf92e",
+      "text_source": "You can talk around it all you like, but, uh.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, irônico",
+      "intent": "apontar tema comum suspeito nos contratos",
+      "risk_level": "low",
+      "base_translation": "Pode enrolar à vontade, mas, hm.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf95e",
+      "text_source": "There seems to be a... common theme to these\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "continuar observação",
+      "risk_level": "low",
+      "base_translation": "Parece haver um... tema em comum nesses\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf98d",
+      "text_source": "jobs.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "seco",
+      "intent": "concluir com uma palavra",
+      "risk_level": "low",
+      "base_translation": "serv.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf993",
+      "text_source": "Ah, not much I can do about that.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "desculpas falsas, informal",
+      "intent": "admitir sem se importar",
+      "risk_level": "low",
+      "base_translation": "Ah, não tem muito o que fazer.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf9b5",
+      "text_source": "What... else do you have?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, pedindo alternativa",
+      "intent": "pedir outra opção",
+      "risk_level": "low",
+      "base_translation": "Que... mais você tem?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbf9cf",
+      "text_source": "Well, uh. There's one concerning a peruko named\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, tentando ajudar",
+      "intent": "sugerir outro contrato com constipação de animal",
+      "risk_level": "medium",
+      "base_translation": "Bom, hm. Tem um sobre uma peruko chamada\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'peruko' é termo de lore — manter sem tradução; verificar glossário se houver entrada."
+    },
+    {
+      "offset": "0xbfa01",
+      "text_source": "Hanako suffering from constipation, wh--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar descrição do contrato",
+      "risk_level": "low",
+      "base_translation": "Hanako sofrendo de constipação, q--",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfa2a",
+      "text_source": "Like I said, why are they all like that?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "reclamar que todos os contratos têm o mesmo problema",
+      "risk_level": "low",
+      "base_translation": "Como já disse, por que são todos assim?\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfa55",
+      "text_source": "You've gotta have SOMEthing different.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "exigir algo diferente",
+      "risk_level": "low",
+      "base_translation": "Você tem que ter ALGUMA coisa diferente.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfa7c",
+      "text_source": "B-Brother...",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "constrangido, apelativo",
+      "intent": "irmã tentando interceder",
+      "risk_level": "low",
+      "base_translation": "I-Irmão...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfa89",
+      "text_source": "It may not seem it, but these are the easiest\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "defensivo, sincero",
+      "intent": "defender que esses são os mais fáceis",
+      "risk_level": "low",
+      "base_translation": "Pode não parecer, mas esses são os serviços\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfab9",
+      "text_source": "jobs I have for you.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "concluir que são os mais fáceis",
+      "risk_level": "low",
+      "base_translation": "mais fáceis que tenho.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbface",
+      "text_source": "Ukon. Stop fooling around and give us our\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "firme, direto",
+      "intent": "exigir que Ukon pare de brincar e dê opções reais",
+      "risk_level": "low",
+      "base_translation": "Ukon. Para de enrolar e nos dê nossas\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfafa",
+      "text_source": "choices.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "firme",
+      "intent": "completar exigência",
+      "risk_level": "low",
+      "base_translation": "opções.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfb03",
+      "text_source": "I'm not fooling around.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "defensivo, sério",
+      "intent": "negar que está enrolando",
+      "risk_level": "low",
+      "base_translation": "Não estou enrolando.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfb1b",
+      "text_source": "Yeah, you'll have to endure some...\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto, levemente apologético",
+      "intent": "admitir que haverá desgosto",
+      "risk_level": "low",
+      "base_translation": "É, vão ter que aguentar algumas...\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfb41",
+      "text_source": "unpleasantness. But these are safe, profitable\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto",
+      "intent": "completar aviso e defender os contratos",
+      "risk_level": "low",
+      "base_translation": "coisas ruins. Mas são seguros e lucrativos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfb72",
+      "text_source": "gigs apart from that.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto",
+      "intent": "concluir defesa",
+      "risk_level": "low",
+      "base_translation": "fora isso.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfb88",
+      "text_source": "All right, all right, don't give me that\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, cedendo",
+      "intent": "ceder ao olhar assassino e mudar de página",
+      "risk_level": "low",
+      "base_translation": "Tá bom, tá bom, para de me olhar assim\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfbb3",
+      "text_source": "murder-stare. Good grief. How about... this one?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído",
+      "intent": "completar cedência e apresentar nova opção",
+      "risk_level": "low",
+      "base_translation": "com essa cara. Nossa. Que tal... este aqui?",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfbe4",
+      "text_source": "Ukon flips to another page, then hands the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever Ukon virando página e passando caderneta",
+      "risk_level": "low",
+      "base_translation": "Ukon vira a página e passa a caderneta\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfc11",
+      "text_source": "notebook to Kuon.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "para Kuon.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfc23",
+      "text_source": "A kyorori hunt?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "curioso, lendo",
+      "intent": "ler e perguntar sobre caça ao kyorori",
+      "risk_level": "medium",
+      "base_translation": "Uma caça ao kyorori?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'kyorori' é termo de lore não listado no glossário desta cena — manter original."
+    },
+    {
+      "offset": "0xbfc33",
+      "text_source": "Yep. Job entails going out into the mountains\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, explicando",
+      "intent": "explicar o contrato de caça",
+      "risk_level": "low",
+      "base_translation": "Isso. O serviço é ir às montanhas\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfc63",
+      "text_source": "and capturing a wild animal called a kyorori.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado",
+      "intent": "completar explicação do contrato",
+      "risk_level": "medium",
+      "base_translation": "e capturar um animal selvagem chamado kyorori.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'kyorori' — termo de lore, manter."
+    },
+    {
+      "offset": "0xbfc91",
+      "text_source": "Huh. That sounds good, don't you think?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "animado, favorável",
+      "intent": "reagir positivamente e buscar aprovação do grupo",
+      "risk_level": "low",
+      "base_translation": "Hm. Parece bom, não acha?",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfcb9",
+      "text_source": "And what exactly is this... kyorori?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cauteloso, curioso",
+      "intent": "perguntar o que é um kyorori",
+      "risk_level": "medium",
+      "base_translation": "E o que exatamente é um... kyorori?",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'kyorori' — manter."
+    },
+    {
+      "offset": "0xbfcde",
+      "text_source": "They're birds that inhabit the frontier.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, informativo",
+      "intent": "descrever o kyorori como ave da fronteira",
+      "risk_level": "medium",
+      "base_translation": "São aves que habitam a fronteira.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'kyorori' — manter."
+    },
+    {
+      "offset": "0xbfd07",
+      "text_source": "Big suckers. Five times a person's height,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, crescendo em terror",
+      "intent": "detalhar tamanho intimidador do kyorori",
+      "risk_level": "low",
+      "base_translation": "Grandões. Cinco vezes a altura de uma pessoa,\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfd34",
+      "text_source": "feathers tough as stone, armor-shredding beak\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "crescendo em terror cômico",
+      "intent": "continuar descrição aterrorizante",
+      "risk_level": "low",
+      "base_translation": "penas duras que nem pedra, bico e garras\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfd64",
+      "text_source": "and talons...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "concluir com as garras",
+      "risk_level": "low",
+      "base_translation": "e garras...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfd72",
+      "text_source": "Ferociously carnivorous, 'course.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual, como se fosse obvio",
+      "intent": "adicionar detalhe de carnívoro feroz",
+      "risk_level": "low",
+      "base_translation": "Feroz e carnívoro, claro.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfd94",
+      "text_source": "Oh, and there's matarii fishing.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual, mudando assunto",
+      "intent": "apresentar outra opção: pesca de matarii",
+      "risk_level": "medium",
+      "base_translation": "Ah, e tem a pesca de matarii.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — termo de lore não listado, manter original."
+    },
+    {
+      "offset": "0xbfdb5",
+      "text_source": "...And how many times larger than a person is\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, exausto",
+      "intent": "perguntar sarcasticamente o tamanho do matarii",
+      "risk_level": "medium",
+      "base_translation": "...E quantas vezes maior que uma pessoa é\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — manter."
+    },
+    {
+      "offset": "0xbfde5",
+      "text_source": "this matarii, pray tell?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "completar pergunta sarcástica",
+      "risk_level": "medium",
+      "base_translation": "esse matarii, se me permite?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — manter."
+    },
+    {
+      "offset": "0xbfdfe",
+      "text_source": "Oh, not all that, y'know? Like... about yea\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, tranquilizador",
+      "intent": "indicar que o matarii é pequeno",
+      "risk_level": "low",
+      "base_translation": "Ah, nada disso, sabe? Tipo... assim\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfe2c",
+      "text_source": "big.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído",
+      "intent": "completar indicação de tamanho",
+      "risk_level": "low",
+      "base_translation": "ó.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfe31",
+      "text_source": "Ukon holds up his hands, perhaps shoulder-width\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever gesto de Ukon indicando tamanho",
+      "risk_level": "low",
+      "base_translation": "Ukon levanta as mãos, talvez à largura\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfe63",
+      "text_source": "apart.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "descritivo",
+      "intent": "afastadas (largura de ombros)",
+      "risk_level": "low",
+      "base_translation": "ombros.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfe6a",
+      "text_source": "Then is it very ferocious, or...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso, receoso",
+      "intent": "perguntar se mesmo assim é feroz",
+      "risk_level": "low",
+      "base_translation": "Então ele é muito feroz, ou...?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfe8c",
+      "text_source": "Nope. Regular old fish.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, negando",
+      "intent": "negar que é feroz",
+      "risk_level": "low",
+      "base_translation": "Que nada. Peixe normal e comum.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfea4",
+      "text_source": "It's pretty good grilled. Nice and tender.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "animado, apetitoso",
+      "intent": "elogiar o sabor do matarii",
+      "risk_level": "low",
+      "base_translation": "É ótimo grelhado. Macio e saboroso.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbfecf",
+      "text_source": "Um, ah--about matarii, though...?",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "tímido, hesitante",
+      "intent": "iniciar comentário sobre matarii",
+      "risk_level": "medium",
+      "base_translation": "Hm, ah--sobre o matarii...?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — manter."
+    },
+    {
+      "offset": "0xbfef1",
+      "text_source": "You know something about them, Kiwru?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso",
+      "intent": "encorajar Kiwru a falar",
+      "risk_level": "low",
+      "base_translation": "Você sabe algo sobre eles, Kiwru?",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbff17",
+      "text_source": "It's a... fairly famous delicacy, traded at\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "tímido, informativo",
+      "intent": "revelar que é iguaria famosa de alto valor",
+      "risk_level": "medium",
+      "base_translation": "É uma... iguaria bem famosa, negociada a\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — manter."
+    },
+    {
+      "offset": "0xbff45",
+      "text_source": "high prices. U-Usually you serve it at\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "tímido, informativo",
+      "intent": "continuar explicação sobre uso festivo",
+      "risk_level": "low",
+      "base_translation": "preços altos. G-Geralmente serve em\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbff6e",
+      "text_source": "celebrations...",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "tímido",
+      "intent": "completar explicação",
+      "risk_level": "low",
+      "base_translation": "celebrações...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbff7e",
+      "text_source": "Regular fish that fetch a high price, huh?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "animado, favorável",
+      "intent": "reagir positivamente ao custo-benefício",
+      "risk_level": "medium",
+      "base_translation": "Peixe comum que vale caro, hein?\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'matarii' — manter."
+    },
+    {
+      "offset": "0xbffab",
+      "text_source": "Sounds like a good deal to me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "animado",
+      "intent": "concluir que parece um bom negócio",
+      "risk_level": "low",
+      "base_translation": "Parece ótimo pra mim.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbffca",
+      "text_source": "Eh? But aren't those...",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "hesitante, preocupado",
+      "intent": "tentar alertar sobre algo negativo",
+      "risk_level": "low",
+      "base_translation": "Hein? Mas não são aqueles...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xbffe2",
+      "text_source": "Ukon watches in silence as we discuss, a smirk\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever Ukon observando em silêncio com um sorriso",
+      "risk_level": "low",
+      "base_translation": "Ukon observa em silêncio enquanto conversamos,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0013",
+      "text_source": "on his face.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "descritivo",
+      "intent": "conclusão — sorriso no rosto",
+      "risk_level": "low",
+      "base_translation": "sorrindo.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0020",
+      "text_source": "What's wrong?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "O que foi?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc002e",
+      "text_source": "Yes, i-if I recall, they only inhabit the\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "hesitante, informativo",
+      "intent": "revelar que só habitam mares gelados do norte",
+      "risk_level": "low",
+      "base_translation": "S-Se bem me lembro, eles só habitam os\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc005a",
+      "text_source": "frozen seas north of here.",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "hesitante",
+      "intent": "completar localização",
+      "risk_level": "low",
+      "base_translation": "mares gelados ao norte daqui.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0075",
+      "text_source": "A-And what's more, the waves are routinely\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "crescente preocupação",
+      "intent": "alertar sobre ondas e recifes perigosos",
+      "risk_level": "low",
+      "base_translation": "A-Além disso, as ondas são constantemente\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc00a2",
+      "text_source": "rough, and the reefs... Even seasoned sailors\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "crescente preocupação",
+      "intent": "continuar alerta sobre perigo das águas",
+      "risk_level": "low",
+      "base_translation": "violentas, e os recifes... Até marinheiros\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc00d2",
+      "text_source": "often die in those waters.",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "sério",
+      "intent": "concluir alerta: marinheiros experientes morrem lá",
+      "risk_level": "low",
+      "base_translation": "experientes morrem nessas águas.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc00ed",
+      "text_source": "Nope. Rejecting that one.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "seco, decisivo",
+      "intent": "rejeitar a opção do matarii",
+      "risk_level": "low",
+      "base_translation": "Não. Fora essa.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0107",
+      "text_source": "Come on, I went through all the trouble of\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "levemente indignado, brincalhão",
+      "intent": "reclamar que foi difícil achar esses contratos",
+      "risk_level": "low",
+      "base_translation": "Vamos lá, dei trabalho pra encontrar\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0134",
+      "text_source": "finding deals that work out for you. Don't be\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "levemente indignado",
+      "intent": "continuar reclamação",
+      "risk_level": "low",
+      "base_translation": "contratos que valham a pena pra vocês. Não\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0164",
+      "text_source": "a buzzkill.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "reclamando",
+      "intent": "completar reclamação",
+      "risk_level": "low",
+      "base_translation": "sejam chatos.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0170",
+      "text_source": "\"Work out for us?\" That one is straight-up\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, indignado",
+      "intent": "rebater que aquele contrato era perigoso de verdade",
+      "risk_level": "low",
+      "base_translation": "\"Valha a pena pra nós?\" Aquele era\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc019d",
+      "text_source": "life-threatening.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado",
+      "intent": "completar rebate",
+      "risk_level": "low",
+      "base_translation": "risco de vida puro.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc01af",
+      "text_source": "Cripes. Picky, picky. Here--there's another\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, tentando de novo",
+      "intent": "apresentar outro contrato: capturar furomun",
+      "risk_level": "medium",
+      "base_translation": "Nossa. Enjoados, enjoados. Aqui--tem outro\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'furomun' — termo de lore, manter original."
+    },
+    {
+      "offset": "0xc01dd",
+      "text_source": "contract for capturing a furomun.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "casual",
+      "intent": "completar apresentação do contrato",
+      "risk_level": "medium",
+      "base_translation": "contrato pra capturar um furomun.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'furomun' — manter."
+    },
+    {
+      "offset": "0xc01ff",
+      "text_source": "Dear brother, isn't that...?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "preocupado, apelativo",
+      "intent": "alertar irmão sobre o furomun",
+      "risk_level": "medium",
+      "base_translation": "Caro irmão, não é aquele...?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'furomun' — manter. Atenção: \"dear brother\" já traduzido como \"caro irmão\" em 15_01."
+    },
+    {
+      "offset": "0xc021c",
+      "text_source": "They're extremely venomous. In concentrate,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "informativo, sério",
+      "intent": "explicar que o furomun é extremamente venenoso",
+      "risk_level": "medium",
+      "base_translation": "São extremamente venenosos. Concentrado,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'furomun' — manter."
+    },
+    {
+      "offset": "0xc024a",
+      "text_source": "one animal's worth of venom is enough to kill\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "informativo, sério",
+      "intent": "detalhar quantidade de veneno letal",
+      "risk_level": "low",
+      "base_translation": "o veneno de um único animal é suficiente\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc027a",
+      "text_source": "hundreds.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sério",
+      "intent": "conclusão: mata centenas",
+      "risk_level": "low",
+      "base_translation": "centenas.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0284",
+      "text_source": "Extreme care is required to handle it, but if\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "informativo, técnico",
+      "intent": "explicar cuidado necessário e uso medicinal do fígado",
+      "risk_level": "low",
+      "base_translation": "Requer extremo cuidado no manuseio, mas\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc02b4",
+      "text_source": "prepared properly, its liver can treat heart\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "informativo, técnico",
+      "intent": "continuar explicação medicinal",
+      "risk_level": "low",
+      "base_translation": "se preparado corretamente, seu fígado trata\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc02e3",
+      "text_source": "diseases.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "sério",
+      "intent": "conclusão: doenças cardíacas",
+      "risk_level": "low",
+      "base_translation": "do coração.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc02ed",
+      "text_source": "Color me impressed, missy. Its venom can be\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "impressionado, brincalhão",
+      "intent": "elogiar conhecimento de Kuon e adicionar detalhe",
+      "risk_level": "medium",
+      "base_translation": "Boa, moça. O veneno também pode ser\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'missy' — traduzir como vocativo informal feminino sem revelar relação específica."
+    },
+    {
+      "offset": "0xc031b",
+      "text_source": "airborne, too--breathe any of it in, and it\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "crescendo em alarme cômico",
+      "intent": "revelar que o veneno pode ser inalado",
+      "risk_level": "low",
+      "base_translation": "transmitido pelo ar--respire qualquer parte,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0349",
+      "text_source": "can knock you out cold.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "crescendo em alarme cômico",
+      "intent": "concluir efeito do veneno inalado",
+      "risk_level": "low",
+      "base_translation": "e você apaga na hora.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0361",
+      "text_source": "...I thought so.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "seco, confirmando",
+      "intent": "confirmar que sabia disso",
+      "risk_level": "low",
+      "base_translation": "...Já desconfiava.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0372",
+      "text_source": "So you don't have anything, like... safer?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, esperançoso",
+      "intent": "perguntar se há algo mais seguro",
+      "risk_level": "low",
+      "base_translation": "Então não tem nada mais, tipo... seguro?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc039d",
+      "text_source": "Hey, listen. Safe, sweet deals that turn a\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sincero, levemente defensivo",
+      "intent": "explicar que bons contratos seguros são raros",
+      "risk_level": "low",
+      "base_translation": "Ei, escuta. Serviços seguros e lucrativos\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc03ca",
+      "text_source": "good profit are hard to come by.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sincero",
+      "intent": "continuar explicação",
+      "risk_level": "low",
+      "base_translation": "são difíceis de achar.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc03eb",
+      "text_source": "Urgh...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Argh...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc03f3",
+      "text_source": "And sanitation is important work.\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, didático",
+      "intent": "defender importância do saneamento",
+      "risk_level": "low",
+      "base_translation": "E saneamento é um trabalho importante.\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0417",
+      "text_source": "It prevents the spread of disease.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, didático",
+      "intent": "completar argumento sobre saúde pública",
+      "risk_level": "low",
+      "base_translation": "Previne a propagação de doenças.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc043a",
+      "text_source": "It's a dirty job, but someone's gotta do it.\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "filosófico, brincalhão",
+      "intent": "argumentar que alguém tem que fazer o trabalho sujo",
+      "risk_level": "low",
+      "base_translation": "É um serviço sujo, mas alguém tem que fazer.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0469",
+      "text_source": "You understand, don't you, kid?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "apelativo, paternal",
+      "intent": "apelar para que entendam a importância",
+      "risk_level": "low",
+      "base_translation": "Você entende, né, garoto?",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0489",
+      "text_source": "He's got us there.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, derrotado",
+      "intent": "admitir que Ukon tem razão",
+      "risk_level": "low",
+      "base_translation": "Ele tem razão.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc049c",
+      "text_source": "It's a stroke of luck this is even available!\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "entusiasta, exagerado",
+      "intent": "celebrar a sorte de ter esse contrato disponível",
+      "risk_level": "low",
+      "base_translation": "É uma sorte incrível isso estar disponível!\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc04cc",
+      "text_source": "It may be a shitty job, but I trust you'll\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "trocadilho/humor",
+      "intent": "fazer trocadilho com trabalho de esgoto",
+      "risk_level": "high",
+      "base_translation": "Pode ser um serviço de merda, mas confio\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho em EN: 'toil-it through' (toil + toilet). Localizar em pt-BR. Proposta: 'mas confio que vão dar um jeitinho' — trocadilho difícil de reproduzir; sinalizado."
+    },
+    {
+      "offset": "0xc04f9",
+      "text_source": "toil-it through.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, com trocadilho",
+      "intent": "trocadilho com 'shitty job / toil-it' (vaso sanitário)",
+      "risk_level": "high",
+      "base_translation": "topa o ralo.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Trocadilho escatológico 'toil-it through' (toilet). Localizar em pt-BR: 'dar conta do recado' com trocadilho de fossa/privada. Budget apertado (16 bytes sem acentos)."
+    },
+    {
+      "offset": "0xc050a",
+      "text_source": "...Ukon?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "...Ukon?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0513",
+      "text_source": "All right, all right. Relax. Let's move onto\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, resolvendo",
+      "intent": "mudar de assunto para o tema principal",
+      "risk_level": "low",
+      "base_translation": "Tá bom, tá bom. Relaxem. Vamos ao\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0542",
+      "text_source": "our main subject for now.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído",
+      "intent": "completar transição",
+      "risk_level": "low",
+      "base_translation": "assunto principal por agora.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc055c",
+      "text_source": "Ukon flashes his typical, fearless smile,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "descrever sorriso típico e relaxamento de Ukon",
+      "risk_level": "low",
+      "base_translation": "Ukon abre aquele sorriso típico e destemido,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0588",
+      "text_source": "posture relaxing slightly.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "relaxando levemente a postura.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc05a3",
+      "text_source": "Main subject?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso",
+      "intent": "perguntar qual é o assunto principal",
+      "risk_level": "low",
+      "base_translation": "Assunto principal?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc05b1",
+      "text_source": "Yeah. You remember the bandits we captured\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, recordando",
+      "intent": "evocar os bandidos capturados anteriormente",
+      "risk_level": "low",
+      "base_translation": "Isso. Lembram dos bandidos que capturamos\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc05de",
+      "text_source": "before?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "completar evocação",
+      "risk_level": "low",
+      "base_translation": "antes?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc05e6",
+      "text_source": "Bandits... You mean the ones that attacked us\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "recordando, confirmando",
+      "intent": "confirmar memória dos bandidos que atacaram",
+      "risk_level": "low",
+      "base_translation": "Bandidos... Os que nos atacaram\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0616",
+      "text_source": "on the way to the capital?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "recordando",
+      "intent": "completar confirmação",
+      "risk_level": "low",
+      "base_translation": "no caminho para a capital?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0631",
+      "text_source": "Is something up with them?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso",
+      "intent": "perguntar se há algum problema com eles",
+      "risk_level": "low",
+      "base_translation": "Aconteceu algo com eles?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc064c",
+      "text_source": "You could say that. Seems they escaped custody\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, informando",
+      "intent": "revelar que os bandidos escaparam após sentença",
+      "risk_level": "low",
+      "base_translation": "Pode-se dizer que sim. Parece que escaparam\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc067d",
+      "text_source": "after their court sentencing.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério",
+      "intent": "completar informação",
+      "risk_level": "low",
+      "base_translation": "após a sentença no tribunal.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc069b",
+      "text_source": "From what I've heard, they still had comrades\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, detalhando",
+      "intent": "revelar que cúmplices resgataram os bandidos",
+      "risk_level": "low",
+      "base_translation": "Pelo que soube, ainda tinham comparsas\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc06cb",
+      "text_source": "on the outside who hit their escort during\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério",
+      "intent": "continuar detalhes da fuga",
+      "risk_level": "low",
+      "base_translation": "lá fora que atacaram a escolta durante\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc06f8",
+      "text_source": "transit.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "conclusão — durante o transporte",
+      "risk_level": "low",
+      "base_translation": "o traslado.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0701",
+      "text_source": "So... th-those men...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "preocupado, processando",
+      "intent": "assimilar a notícia com preocupação",
+      "risk_level": "low",
+      "base_translation": "Então... e-esses homens...",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0717",
+      "text_source": "It can only be called carelessness.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "crítico, seco",
+      "intent": "classificar como descuido",
+      "risk_level": "low",
+      "base_translation": "Só pode ser chamado de descuido.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc073b",
+      "text_source": "A bit of luck, though. Eyewitness reports\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "levemente otimista",
+      "intent": "apresentar sorte: testemunhas os viram na capital",
+      "risk_level": "low",
+      "base_translation": "Uma sorte, porém. Testemunhas os viram\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0767",
+      "text_source": "place them here in the capital, hiding out in\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informativo",
+      "intent": "detalhar localização na capital",
+      "risk_level": "low",
+      "base_translation": "aqui na capital, se escondendo\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0797",
+      "text_source": "the city.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "da cidade.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc07a1",
+      "text_source": "And you want us to find and apprehend them.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "deduzindo, animado",
+      "intent": "deduzir que Ukon quer que encontrem e prendam os bandidos",
+      "risk_level": "low",
+      "base_translation": "E você quer que a gente os encontre e prenda.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc07cf",
+      "text_source": "Am I right?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confirmatório",
+      "intent": "confirmar dedução",
+      "risk_level": "low",
+      "base_translation": "Estou certo?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc07db",
+      "text_source": "Is that so...? I see. Is this my first test?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confiante, motivado",
+      "intent": "interpretar como primeiro teste e prometer superação",
+      "risk_level": "low",
+      "base_translation": "Então é isso...? Entendo. Este é meu primeiro teste?",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0808",
+      "text_source": "If that's the case, I'll be sure to exceed your\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confiante, motivado",
+      "intent": "prometer superar expectativas",
+      "risk_level": "low",
+      "base_translation": "Nesse caso, certifique-se de que vou superar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc083a",
+      "text_source": "expectations!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confiante",
+      "intent": "completar promessa",
+      "risk_level": "low",
+      "base_translation": "suas expectativas!",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0848",
+      "text_source": "Well, hold on. I do want you to find them,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "calmo, corrigindo",
+      "intent": "corrigir Haku: encontrar sim, capturar não",
+      "risk_level": "low",
+      "base_translation": "Calma. Quero que os encontrem,\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0875",
+      "text_source": "but when you do, don't try to capture them.\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "calmo, instruindo",
+      "intent": "instruir para não tentar capturá-los sozinhos",
+      "risk_level": "low",
+      "base_translation": "mas quando acharem, não tentem prendê-los.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc08a3",
+      "text_source": "Just call me.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "firme",
+      "intent": "instruir para chamá-lo",
+      "risk_level": "low",
+      "base_translation": "Me chamem.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc08b1",
+      "text_source": "Huh?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hein?",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc08b6",
+      "text_source": "I don't want you trying to take them on your\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "firme, paternal",
+      "intent": "proibir enfrentamento individual",
+      "risk_level": "low",
+      "base_translation": "Não quero vocês tentando enfrentá-los\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc08e5",
+      "text_source": "own.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal",
+      "intent": "conta própria",
+      "risk_level": "low",
+      "base_translation": "si.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc08ea",
+      "text_source": "In other words... Your honor takes a hit if you\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "deduzindo, levemente irônico",
+      "intent": "supor que Ukon quer manter a honra pessoal",
+      "risk_level": "low",
+      "base_translation": "Em outras palavras... Sua honra sai machucada\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc091c",
+      "text_source": "don't bring them back yourself. Your men, your\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "continuar suposição sobre honra",
+      "risk_level": "low",
+      "base_translation": "se não os trouxer você mesmo. Seus homens,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc094d",
+      "text_source": "problem.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "conclusão — seu problema",
+      "risk_level": "low",
+      "base_translation": "seu prob.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0956",
+      "text_source": "Cripes, at least let me get a word in edgewise,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "exasperado, mas paciente",
+      "intent": "pedir para Haku deixar falar antes de tirar conclusões",
+      "risk_level": "low",
+      "base_translation": "Nossa, pelo menos me deixa falar,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0988",
+      "text_source": "here. I shouldn't have to tell you this, but...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, advertindo",
+      "intent": "advertir sobre o perigo real: os bandidos os reconhecem",
+      "risk_level": "low",
+      "base_translation": "aqui. Nem precisaria dizer isso, mas...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc09b8",
+      "text_source": "They probably remember your faces. If you engage\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério",
+      "intent": "explicar que os bandidos provavelmente os reconhecerão",
+      "risk_level": "low",
+      "base_translation": "Eles provavelmente lembram das suas caras. Se\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc09eb",
+      "text_source": "them directly, chances are, they'll want blood.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "sério, advertindo",
+      "intent": "advertir sobre risco de confronto direto",
+      "risk_level": "low",
+      "base_translation": "confrontados diretamente, vão querer sangue.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0a1b",
+      "text_source": "Truth is, we don't have much more than\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto, admitindo limitação",
+      "intent": "admitir que têm poucas pistas concretas",
+      "risk_level": "low",
+      "base_translation": "A verdade é que não temos muito mais que\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0a44",
+      "text_source": "eyewitness accounts. No hard clues as to where\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto",
+      "intent": "continuar admissão de falta de pistas",
+      "risk_level": "low",
+      "base_translation": "relatos de testemunhas. Nenhuma pista concreta\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0a75",
+      "text_source": "they're hiding.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "honesto",
+      "intent": "completar sobre esconderijo desconhecido",
+      "risk_level": "low",
+      "base_translation": "do esconderijo.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0a85",
+      "text_source": "And they don't want to be found. Searching\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "estratégico",
+      "intent": "explicar o dilema: não podem fazer nada ao acaso",
+      "risk_level": "low",
+      "base_translation": "E eles não querem ser encontrados. Busca\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ab2",
+      "text_source": "randomly won't do us any good, but we can't\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "estratégico",
+      "intent": "continuar dilema",
+      "risk_level": "low",
+      "base_translation": "aleatória não vai adiantar, mas não podemos\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ae0",
+      "text_source": "just do nothing.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "estratégico",
+      "intent": "completar dilema",
+      "risk_level": "low",
+      "base_translation": "ficar parados.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0af1",
+      "text_source": "With all that in mind, I'd like to ask you guys\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pedindo ajuda, descontraído",
+      "intent": "pedir que patrulhem a capital com atenção",
+      "risk_level": "low",
+      "base_translation": "Com tudo isso em mente, gostaria que\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0b23",
+      "text_source": "to patrol the capital for me, and to just...\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pedindo ajuda",
+      "intent": "continuar pedido de patrulha",
+      "risk_level": "low",
+      "base_translation": "patrulhassem a capital pra mim, e só...\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0b52",
+      "text_source": "stay alert.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pedindo ajuda",
+      "intent": "completar pedido",
+      "risk_level": "low",
+      "base_translation": "fiquem atentos.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0b5e",
+      "text_source": "If that's all, I don't think we have any reason\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "razoável, favorável",
+      "intent": "aceitar a missão como razoável",
+      "risk_level": "low",
+      "base_translation": "Se é só isso, acho que não temos motivo\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0b90",
+      "text_source": "to turn you down.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "favorável",
+      "intent": "completar aceitação",
+      "risk_level": "low",
+      "base_translation": "para recusar.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ba2",
+      "text_source": "Next to the, uh... dirtier requests, this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado, comparando",
+      "intent": "comparar com os pedidos mais sujos",
+      "risk_level": "low",
+      "base_translation": "Comparado com os pedidos mais... sujos,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0bce",
+      "text_source": "sounds pretty manageable.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado",
+      "intent": "completar comparação",
+      "risk_level": "low",
+      "base_translation": "parece bem tranquilo.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0be8",
+      "text_source": "And all we have to do if we find anything is\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confirmando instrução",
+      "intent": "confirmar que avisarão Ukon se encontrarem algo",
+      "risk_level": "low",
+      "base_translation": "E tudo que precisamos fazer se acharmos algo\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c17",
+      "text_source": "contact Ukon. No problem.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confirmando",
+      "intent": "completar confirmação",
+      "risk_level": "low",
+      "base_translation": "é contatar Ukon. Sem problema.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c31",
+      "text_source": "All right. We're in.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "decidido",
+      "intent": "confirmar aceitação formal",
+      "risk_level": "low",
+      "base_translation": "Tá bom. Estamos dentro.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c46",
+      "text_source": "So, we took the request for the time being,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo neutro",
+      "intent": "narrar que aceitaram a missão",
+      "risk_level": "low",
+      "base_translation": "Então, aceitamos o pedido por enquanto,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c74",
+      "text_source": "but...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "mas...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c7b",
+      "text_source": "Um... What exactly do we... do now?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, prático",
+      "intent": "perguntar o que fazer agora",
+      "risk_level": "low",
+      "base_translation": "Hm... O que exatamente fazemos... agora?",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0c9f",
+      "text_source": "Well...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Bom...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ca7",
+      "text_source": "Searching for these bandits at random isn't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo",
+      "intent": "refletir que busca aleatória não é eficiente",
+      "risk_level": "low",
+      "base_translation": "Procurar esses bandidos aleatoriamente não\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0cd5",
+      "text_source": "going to be any kind of efficient.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo",
+      "intent": "completar reflexão",
+      "risk_level": "low",
+      "base_translation": "vai ser eficiente.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0cf8",
+      "text_source": "In this situation, it may be best to put\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "racional, estratégico",
+      "intent": "sugerir se colocar no lugar dos bandidos",
+      "risk_level": "low",
+      "base_translation": "Nessa situação, talvez seja melhor se colocar\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0d23",
+      "text_source": "ourselves in their shoes and act based on that.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "racional",
+      "intent": "completar sugestão estratégica",
+      "risk_level": "low",
+      "base_translation": "no lugar deles e agir com base nisso.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0d53",
+      "text_source": "Thinking of things from their perspective,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "racional",
+      "intent": "iniciar raciocínio pela perspectiva dos bandidos",
+      "risk_level": "low",
+      "base_translation": "Pensando pelas perspectivas deles,\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0d80",
+      "text_source": "huh...",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hum...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0d87",
+      "text_source": "To be honest, I can't say I have any clue WHAT\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "honesto, admitindo",
+      "intent": "admitir que não tem ideia do que eles pensariam",
+      "risk_level": "low",
+      "base_translation": "Sinceramente, não faço ideia do que\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0db8",
+      "text_source": "they're thinking.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "honesto",
+      "intent": "completar admissão",
+      "risk_level": "low",
+      "base_translation": "eles estão pensando.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0dca",
+      "text_source": "Logically, one would seek out a hiding place\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "racional",
+      "intent": "raciocinar que logicamente buscariam esconderijo",
+      "risk_level": "low",
+      "base_translation": "Logicamente, alguém buscaria um esconderijo\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0df9",
+      "text_source": "to lie low and wait out the storm, but...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "racional",
+      "intent": "completar raciocínio lógico",
+      "risk_level": "low",
+      "base_translation": "para se esconder e esperar a poeira baixar, mas...",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0e23",
+      "text_source": "If it were me, I'd probably go out and find a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, revelando caráter",
+      "intent": "revelar que se fosse ele aproveitaria a liberdade",
+      "risk_level": "low",
+      "base_translation": "Se fosse eu, provavelmente sairia pra achar\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0e53",
+      "text_source": "way to live it up. Celebrate my newfound\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual, animado",
+      "intent": "continuar revelação sobre aproveitar a liberdade",
+      "risk_level": "low",
+      "base_translation": "uma forma de curtir. Celebrar a liberdade\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0e7e",
+      "text_source": "freedom.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual",
+      "intent": "liberdade",
+      "risk_level": "low",
+      "base_translation": "liberdade.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0e87",
+      "text_source": "Of course your mind would go there. Please,\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "exasperado, irônico",
+      "intent": "rebater o pensamento irresponsável de Haku",
+      "risk_level": "low",
+      "base_translation": "Claro que sua cabeça ia por aí. Por favor,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0eb5",
+      "text_source": "try to treat this at least somewhat seriously.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "exasperado",
+      "intent": "pedir que leve a sério",
+      "risk_level": "low",
+      "base_translation": "trate isso com um mínimo de seriedade.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ee4",
+      "text_source": "I'm just saying. Knowing me, that's what I'd\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, casual",
+      "intent": "defender que é apenas como ele pensaria",
+      "risk_level": "low",
+      "base_translation": "Estou só dizendo. Conhecendo a mim, é o que\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0f13",
+      "text_source": "do.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo",
+      "intent": "conclusão — faria",
+      "risk_level": "low",
+      "base_translation": "faria.",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0f17",
+      "text_source": "What manner of imbecile would risk attracting\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "empolado, arcaico",
+      "intent": "criticar quem arriscaria se expor enquanto é procurado",
+      "risk_level": "high",
+      "base_translation": "Que tipo de imbecil arriscaria atrair\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz do Maroro: arcaísmo obrigatório + cicio (s→sh em certas palavras). Verificar naturalidade e preservar tiques de voz."
+    },
+    {
+      "offset": "0xc0f47",
+      "text_source": "such attention while the law seeks his head?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "empolado, arcaico",
+      "intent": "completar crítica sobre exposição com a lei atrás",
+      "risk_level": "high",
+      "base_translation": "tal atenção com a lei em shuas costas?",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Arcaísmo e cicio de Maroro devem aparecer — 'cabeça' pode virar 'cabeça shua' ou reformular. Sinalizado para revisão."
+    },
+    {
+      "offset": "0xc0f74",
+      "text_source": "Eep!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Iiep!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0f79",
+      "text_source": "Man",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hom",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0f7d",
+      "text_source": "Whup! Sorry, miss. Wasn't payin' attention.",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "casual, descuidado",
+      "intent": "pedir desculpas ao esbarrar em alguém",
+      "risk_level": "low",
+      "base_translation": "Opa! Desculpa, moça. Não tava prestando atenção.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0fa9",
+      "text_source": "N-No, that's all right... I-I'm sorry...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, desculpando",
+      "intent": "responder que está tudo bem de forma acanhada",
+      "risk_level": "low",
+      "base_translation": "N-Não, tá tudo bem... D-Desculpe...",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0fd2",
+      "text_source": "Don't worry 'bout it. See ya later, cutie.",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "casual, flertando",
+      "intent": "se despedir de forma flertante",
+      "risk_level": "low",
+      "base_translation": "Não se preocupa. Até mais, lindinha.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc0ffd",
+      "text_source": "Henchman",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "UI",
+      "intent": "rótulo de falante: capanga/capangas",
+      "risk_level": "low",
+      "base_translation": "Capanga",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1006",
+      "text_source": "Ah! Hey, boss, come check out this bath!\\n",
+      "speaker": "Capanga",
+      "entities_present": [
+        "Capanga"
+      ],
+      "tone_register": "animado, grosseiro",
+      "intent": "chamar o chefe para ver o banhão",
+      "risk_level": "low",
+      "base_translation": "Ah! Ei, chefe, vem ver esse banho!\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1031",
+      "text_source": "Thing's freakin' HUGE.",
+      "speaker": "Capanga",
+      "entities_present": [
+        "Capanga"
+      ],
+      "tone_register": "animado, grosseiro",
+      "intent": "enfatizar tamanho da banheira",
+      "risk_level": "low",
+      "base_translation": "Isso aqui é ENORME.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1048",
+      "text_source": "Not bad, not bad! Ain't nothin' like a nice\\n",
+      "speaker": "Bandido Chefe",
+      "entities_present": [
+        "Bandido Chefe"
+      ],
+      "tone_register": "animado, satisfeito",
+      "intent": "concordar e elogiar banho quente com bebida",
+      "risk_level": "low",
+      "base_translation": "Nada mau, nada mau! Não tem nada como uma\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1076",
+      "text_source": "drink in a hot bath!",
+      "speaker": "Bandido Chefe",
+      "entities_present": [
+        "Bandido Chefe"
+      ],
+      "tone_register": "animado",
+      "intent": "completar elogio",
+      "risk_level": "low",
+      "base_translation": "bebida num banho quente!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc108b",
+      "text_source": "It's been too long since we been on the outside!\\n",
+      "speaker": "Bandido Chefe",
+      "entities_present": [
+        "Bandido Chefe"
+      ],
+      "tone_register": "eufórico",
+      "intent": "celebrar estar solto há muito tempo",
+      "risk_level": "low",
+      "base_translation": "Faz tempo demais que não ficamos do lado de fora!\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc10be",
+      "text_source": "We gotta live it large. Large, damn it!",
+      "speaker": "Bandido Chefe",
+      "entities_present": [
+        "Bandido Chefe"
+      ],
+      "tone_register": "eufórico, determinado",
+      "intent": "incitar a viver na grande",
+      "risk_level": "low",
+      "base_translation": "Temos que viver no máximo. No MÁXIMO!",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc10e6",
+      "text_source": "Damn straight! Nothing better'n...\\n",
+      "speaker": "Capanga",
+      "entities_present": [
+        "Capanga"
+      ],
+      "tone_register": "concordando, animado",
+      "intent": "concordar entusiasticamente",
+      "risk_level": "low",
+      "base_translation": "Com certeza! Nada melhor que...\\n",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc110b",
+      "text_source": "Ah... Uhm...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "surpreso, gaguejante",
+      "intent": "reagir com susto ao ver os bandidos",
+      "risk_level": "low",
+      "base_translation": "Ah... Hm...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1118",
+      "text_source": "Wh--Y-Y-You guys!?",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "chocado, reconhecendo",
+      "intent": "reconhecer com choque os protagonistas",
+      "risk_level": "low",
+      "base_translation": "Q-Qu--V-Vocês!?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc112b",
+      "text_source": "A-Ah...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "assustado",
+      "intent": "reagir com susto",
+      "risk_level": "low",
+      "base_translation": "A-Ah...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1133",
+      "text_source": "YOU guys!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso, reconhecendo",
+      "intent": "reconhecer com choque os bandidos",
+      "risk_level": "low",
+      "base_translation": "VOCÊS!?",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc113e",
+      "text_source": "You--You're those--From that one time we--?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reconhecendo, espantado",
+      "intent": "reconhecer os bandidos daquela vez",
+      "risk_level": "low",
+      "base_translation": "Voc--Vocês são aqueles--Daquela vez que--?",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc116a",
+      "text_source": "N-No... No, no, no, not that damn bird!\\n",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "em pânico",
+      "intent": "fugir em pânico de um pássaro (Kuon)",
+      "risk_level": "high",
+      "base_translation": "N-Não... Não, não, não, não aquele pássaro!\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'nugwisomkami' — termo de lore, manter original; referência cômica ao pássaro associado a Kuon."
+    },
+    {
+      "offset": "0xc1194",
+      "text_source": "The nugwisomkami...!",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "em pânico",
+      "intent": "gritar nome do pássaro temido",
+      "risk_level": "high",
+      "base_translation": "O nugwisomkami...!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'nugwisomkami' — manter. Verificar consistência com outras cenas."
+    },
+    {
+      "offset": "0xc11a9",
+      "text_source": "Stay AWAAAAY!!",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "em pânico, fugindo",
+      "intent": "gritar para ficarem longe",
+      "risk_level": "low",
+      "base_translation": "Fique LOOOOONGE!!",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc11b8",
+      "text_source": "Th-They're making a break for it!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "alertar que os bandidos estão fugindo",
+      "risk_level": "low",
+      "base_translation": "E-Eles estão fugindo!\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc11dc",
+      "text_source": "Haku, what do we do!?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "urgente",
+      "intent": "perguntar a Haku o que fazer",
+      "risk_level": "low",
+      "base_translation": "Haku, o que fazemos!?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc11f2",
+      "text_source": "Nngh. We have no choice! After them!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "decisivo, determinado",
+      "intent": "decidir perseguir os bandidos",
+      "risk_level": "low",
+      "base_translation": "Nngh. Sem escolha! Atrás deles!",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1217",
+      "text_source": "Here, of all places--this was supposed to be\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, irônico",
+      "intent": "reclamar que era pra ser trabalho fácil",
+      "risk_level": "low",
+      "base_translation": "Aqui, de todos os lugares--era pra ser\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1246",
+      "text_source": "an easy job!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "conclusão: era um serviço fácil",
+      "risk_level": "low",
+      "base_translation": "serviço fácil!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1253",
+      "text_source": "They're supposed to be in hiding. Why the hell\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado, irônico",
+      "intent": "questionar por que bandidos em fuga andam à toa",
+      "risk_level": "low",
+      "base_translation": "Eram pra estar escondidos. Por que diabos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1284",
+      "text_source": "are they nonchalantly walking around like this!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado",
+      "intent": "completar indignação",
+      "risk_level": "low",
+      "base_translation": "andam por aí tão tranquilos assim!?",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc12b5",
+      "text_source": "So. Haku's thought process was identical to\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "irônico, seco",
+      "intent": "apontar que Haku e os bandidos pensaram igual",
+      "risk_level": "low",
+      "base_translation": "Então. O raciocínio do Haku era idêntico\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc12e3",
+      "text_source": "theirs, after all.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "irônico",
+      "intent": "completar ironia",
+      "risk_level": "low",
+      "base_translation": "ao deles, afinal.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc12f6",
+      "text_source": "Get off my case! We have more important things\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, urgente",
+      "intent": "pedir que deixem isso de lado por ora",
+      "risk_level": "low",
+      "base_translation": "Me deixa em paz! Temos coisas mais\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1327",
+      "text_source": "to be worrying about right now.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "completar urgência",
+      "risk_level": "low",
+      "base_translation": "importantes pra se preocupar agora.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1347",
+      "text_source": "If they slip through our fingers now, we might\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, determinado",
+      "intent": "alertar que não podem deixar os bandidos escaparem",
+      "risk_level": "low",
+      "base_translation": "Se eles escaparem agora, pode ser que\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc1378",
+      "text_source": "never find them again! We can't miss this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, determinado",
+      "intent": "continuar alerta sobre chance única",
+      "risk_level": "low",
+      "base_translation": "não os encontremos nunca mais! Não podemos\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0xc13a4",
+      "text_source": "chance! ",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "conclusão — essa chance",
+      "risk_level": "low",
+      "base_translation": "chance!",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 233,
+  "high_lines": 8,
+  "medium_lines": 16,
+  "needs_review": [],
+  "plan_version": "chapter-15_06-v1"
+}

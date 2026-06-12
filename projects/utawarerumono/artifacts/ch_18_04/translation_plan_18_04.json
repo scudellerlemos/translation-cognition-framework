@@ -1,0 +1,394 @@
+{
+  "scene_group": "18_04",
+  "lines": [
+    {
+      "offset": "0x168acc",
+      "text_source": "I see you have finally arrived.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético",
+      "intent": "cumprimento ambíguo com tom de certeza",
+      "risk_level": "medium",
+      "base_translation": "Vejo que finalmente chegou.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter a ambiguidade e tom frio; não resolver o sentido. Preservar a brevidade."
+    },
+    {
+      "offset": "0x168aec",
+      "text_source": "...Nekone? What're you doing in my dream...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado",
+      "intent": "perplexidade diante de figura onírica",
+      "risk_level": "high",
+      "base_translation": "...Nekone? O que você está fazendo no meu sonho...?",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Nekone oculta (reveal posterior). Manter fragmentação com reticências e tom semi-consciente. Nekone = nome original (manter)."
+    },
+    {
+      "offset": "0x168b19",
+      "text_source": "Well, Haku, I confess I did not take you for\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "Nekone revela surpresa com Haku, introduz tema de inteligência",
+      "risk_level": "medium",
+      "base_translation": "Bem, Haku, confesso que não te via como\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Atribuição de falante inferida por contexto; 'confess I did not take you for' requer naturalidade sem ser formal demais."
+    },
+    {
+      "offset": "0x168b48",
+      "text_source": "the type to train yourself so dedicatedly.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio",
+      "intent": "observação enigmática sobre dedicação",
+      "risk_level": "medium",
+      "base_translation": "o tipo que se treina com tanta dedicação.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo sentido ambíguo deve permanecer; tom profético sem resolver."
+    },
+    {
+      "offset": "0x168b73",
+      "text_source": "But true power requires more than simply honing\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "cotidiano gentil, didático",
+      "intent": "Explica que poder verdadeiro exige mais que força bruta",
+      "risk_level": "low",
+      "base_translation": "Mas o poder de verdade exige mais do que apenas aprimorar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168ba5",
+      "text_source": "your physical strength.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático",
+      "intent": "referência à força/capacidade",
+      "risk_level": "low",
+      "base_translation": "sua força física.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168bbd",
+      "text_source": "If you would match my dear brother, you need\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "cotidiano gentil, afetivo",
+      "intent": "Diz que para igualar o irmão, Haku precisa de algo específico",
+      "risk_level": "medium",
+      "base_translation": "Se quer se igualar ao meu querido irmão, você precisa\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'my dear brother' — referência afetiva ao irmão; manter calor sem exagero."
+    },
+    {
+      "offset": "0x168bec",
+      "text_source": "intelligence! Yes, a keen mind is the key to\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "entusiasta, enfático",
+      "intent": "Revela a resposta: inteligência, mente afiada",
+      "risk_level": "low",
+      "base_translation": "de inteligência! Sim, uma mente afiada é a chave para\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168c1b",
+      "text_source": "everything!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, enfático",
+      "intent": "exclamação de decisão ou aceitação",
+      "risk_level": "low",
+      "base_translation": "tudo!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168c27",
+      "text_source": "Therefore, I have summoned the prestigious\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "pomposo, animado",
+      "intent": "Anuncia que convocou algo/alguém prestigioso",
+      "risk_level": "low",
+      "base_translation": "Por isso, convoquei o prestigioso\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168c54",
+      "text_source": "ex-scholar masters here.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, inquisitivo",
+      "intent": "questionamento sobre mestres eruditos",
+      "risk_level": "low",
+      "base_translation": "mestres ex-estudiosos aqui.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168c6d",
+      "text_source": "For heeding my call, you have my thanks!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito, pomposo, arcaico com cício",
+      "intent": "gratidão teatral e dramática",
+      "risk_level": "high",
+      "base_translation": "Por atender meu chamado, tenho a honra de agradecer!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter o registro arcaico/empolado (equivalente a 'vós') + cício (s→sh) = piada. Não modernizar nem explicar a comédia."
+    },
+    {
+      "offset": "0x168c96",
+      "text_source": "Masters...? Dammit, not again!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, semi-consciente",
+      "intent": "frustração resignada com reincidência",
+      "risk_level": "medium",
+      "base_translation": "Mestres...? Droga, denovo não!",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter fragmentação emocional (reticências/exclamação); 'Mestres' = plural de Master (traduzido como plural). Orçamento apertado: conciso."
+    },
+    {
+      "offset": "0x168cb5",
+      "text_source": "Now, have at it! Go ahead and kill him in\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "animado, imperativo lúdico",
+      "intent": "Manda Haku começar e derrotar o adversário rapidamente",
+      "risk_level": "medium",
+      "base_translation": "Agora, mãos à obra! Vá em frente e derrote-o em\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'kill him in' — linha cortada; tom animado mas violento de brincadeira; preservar imperativo direto."
+    },
+    {
+      "offset": "0x168ce1",
+      "text_source": "whatever way you find most satisfying!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "caloroso, informal, espirituoso",
+      "intent": "encorajamento desembaraçado",
+      "risk_level": "medium",
+      "base_translation": "da forma mais satisfazente para você!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voce_criticality = high: manter tom desembaraçado, generoso, carismático. Não antecipar identidade verdadeira (Oshtor/General). Orçamento: 38 bytes."
+    },
+    {
+      "offset": "0x168d08",
+      "text_source": "Wh-What the--!?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, assustado",
+      "intent": "sobressalto/confusão desarticulada",
+      "risk_level": "high",
+      "base_translation": "O-O que—!?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade do Protagonista não revelada; manter torpor/desorientação extrema. Interjeição de susto = tradução (não copiar). Orçamento muito curto: 15 bytes."
+    },
+    {
+      "offset": "0x168e47",
+      "text_source": "...Hey... does this really have anything to do\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cético, informal, cansado",
+      "intent": "Haku questiona se aquilo tem relevância com o assunto",
+      "risk_level": "low",
+      "base_translation": "...Ei... isso realmente tem alguma coisa a ver com\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168e78",
+      "text_source": "with intelligence?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, questionador",
+      "intent": "pergunta retórica enigmática",
+      "risk_level": "medium",
+      "base_translation": "com inteligência?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter ambiguidade; tom profético. Não resolver o sentido oculto."
+    },
+    {
+      "offset": "0x168e8b",
+      "text_source": "What are you saying? This is PACKED with\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "indignado, enfático",
+      "intent": "Afirma convicta que está cheio de relevância",
+      "risk_level": "low",
+      "base_translation": "O que você está dizendo? Isso está CHEIO de\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168eb6",
+      "text_source": "intelligence.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, assertivo",
+      "intent": "declaração enigmática",
+      "risk_level": "medium",
+      "base_translation": "inteligência.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter frieza e dubiedade; não humanizar nem resolver."
+    },
+    {
+      "offset": "0x168ec4",
+      "text_source": "You really cannot see it? Tsk...\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "decepcionado, irônico",
+      "intent": "Expressa incredulidade que Haku não consegue ver o valor",
+      "risk_level": "low",
+      "base_translation": "Você realmente não consegue ver? Que pena...\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x168ee7",
+      "text_source": "Haku, you disappoint me.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio",
+      "intent": "crítica velada/ameaça ambígua",
+      "risk_level": "high",
+      "base_translation": "Haku, você me decepciona.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Haku ainda semi-oculta em contexto onírico. Manter tom dúbio e enigmático. Haku = nome original (manter)."
+    },
+    {
+      "offset": "0x168f00",
+      "text_source": "How could I get smarter by doing crap like this?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, frustrado, irônico",
+      "intent": "Haku questiona satiricamente como isso poderia deixá-lo mais inteligente",
+      "risk_level": "medium",
+      "base_translation": "Como diabos eu ficaria mais esperto fazendo uma merda dessas?\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'crap like this' — gíria; 'smarter' — manter tom frustrado/irônico sem perder a naturalidade pt-BR."
+    },
+    {
+      "offset": "0x168f33",
+      "text_source": "Ugh, I hope this doesn't go on for much longer...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "cansado, resignado, semi-consciente",
+      "intent": "lamento semiconsciente sobre duração",
+      "risk_level": "high",
+      "base_translation": "Ugh, espero que isso não dure muito mais...",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter fragmentação e torpor extremo (reticências, pontuação leve). Identidade do Protagonista obscura. Orçamento: 49 bytes."
+    }
+  ],
+  "total_lines": 24,
+  "high_lines": 5,
+  "medium_lines": 10,
+  "needs_review": [],
+  "plan_version": "chapter-18_04-v1"
+}
