@@ -224,6 +224,28 @@ def _fake_chapter(tmp_path, scenes):
     return tmp_path
 
 
+def test_paths_contract():
+    # H2: paths.py e a FONTE UNICA do contrato de paths de artefato. Este teste FIXA as strings exatas
+    # (congeladas — caps ja traduzidos dependem delas); qualquer rename acidental falha aqui.
+    import paths
+    r = Path("/proj")
+    rel = lambda p: p.relative_to(r).as_posix()
+    assert rel(paths.run_state(r)) == "artifacts/run_state.json"
+    assert rel(paths.ledger(r)) == "artifacts/api_ledger.jsonl"
+    assert rel(paths.metrics(r)) == "artifacts/metrics.jsonl"
+    assert rel(paths.glossary(r)) == "artifacts/glossary.csv"
+    assert rel(paths.entities(r)) == "artifacts/entities.csv"
+    assert rel(paths.kb_worklist(r, "16")) == "artifacts/kb_phase_worklist_16.md"
+    assert rel(paths.translation_memory(r)) == "artifacts/state/translation_memory.jsonl"
+    assert rel(paths.voice_cards(r)) == "artifacts/state/voice_cards.json"
+    assert rel(paths.decision_index(r)) == "artifacts/state/decision_index.json"
+    assert rel(paths.dialogs(r, "ch_16_01")) == "artifacts/ch_16_01/dialogs.csv"
+    assert rel(paths.pack(r, "ch_16_01")) == "artifacts/ch_16_01/pack.json"
+    assert rel(paths.translations(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translations_16_01.json"
+    assert rel(paths.translation_plan(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translation_plan_16_01.json"
+    assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/back_translation_16_01.json"
+
+
 def test_verify_status_parses_structured_line():
     # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"

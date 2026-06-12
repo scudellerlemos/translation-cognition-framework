@@ -21,10 +21,11 @@ import argparse
 import json
 import sys
 from pathlib import Path
+import paths          # noqa: E402  (H2: fonte unica de paths)
 
 
 def _read_ledger(root: Path) -> list[dict]:
-    p = root / "artifacts" / "api_ledger.jsonl"
+    p = paths.ledger(root)
     if not p.is_file():
         return []
     out = []
@@ -40,7 +41,7 @@ def _read_ledger(root: Path) -> list[dict]:
 
 
 def _verified_scenes(root: Path) -> set[str]:
-    p = root / "artifacts" / "run_state.json"
+    p = paths.run_state(root)
     if not p.is_file():
         return set()
     scenes = json.loads(p.read_text(encoding="utf-8")).get("scenes", {})
