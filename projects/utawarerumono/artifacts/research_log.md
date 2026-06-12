@@ -101,3 +101,12 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.17). Reconciliacao auto
 - **Chalafun**, **Bokoinante** (subordinado do Dekopompo): personagens menores; wiki nao cobre (corpus-only); genero a confirmar no contexto.
 - **Nugwisomkami**: termo = 'espiritos/deuses malignos' (lingua do jogo). manter_original + glosa.
 - Declinados (ruido/comum/interjeicao/arcaismo): Wait, Cheers, Ooh, Thou, Fate, Game, Perfect, Sisters, Mmmmm, Damn, e fragmentos (Barkeep Welcome, Chalafun Halt, Glad Kuon, etc.).
+
+## cap.18 — delta de KB (reconciliado IA+wiki, 2026-06-11)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.18).
+- **Munechika**: Oito Generais-Pilar, 'a Guardia' (escudo/defesa da capital), educadora da Anju; FEMININO; so guerra defensiva.
+- **Soyankekur**: Oito Generais-Pilar, owlo de Shyahoro (nacao da Atuy), 'o Marinheiro'; MASCULINO; conheceu Haku pre-mascara.
+- **Honoka/Miruhj/Raurau/Mito**: personagens menores (criados/aposentado); wiki nao cobre; corpus-only; genero a confirmar.
+- **Highness**->'Alteza' (Anju); **Guardian**->'a Guardia' (epiteto Munechika); **Rulu**->apelido de Rulutieh.
+- Os Oito Generais-Pilar (wiki): Raiko, Woshis, Dekopompo, Ozen, Soyankekur, Tokifusa, Munechika, Vurai (alguns aparecerao adiante).
+- Declinados (ruido/comum/interjeicao/contracao): Urgh, It'll, Unhand, What're, Nah, Regardless, Understood, Pardon, Oohh, Failure, Pay, Preposterous.
