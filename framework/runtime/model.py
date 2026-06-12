@@ -45,6 +45,12 @@ MODEL_TRANSLATE_CHEAP = "claude-haiku-4-5"
 # Saida pode ser grande (ate ~500 linhas x speaker/tone/intent/risk/t). Streaming evita timeout;
 # este teto cobre a maior cena do corpus com folga (Sonnet/Opus 4.x suportam ate 64k de saida).
 MAX_OUTPUT_TOKENS = 64000
+# CHUNKING do batch: o endpoint de batch TRUNCA a saida estruturada longa (~100 linhas/resposta,
+# DETERMINISTICO — medido no 15_06: 120/221 linhas sempre faltando, identico nas 3 rodadas; re-mandar
+# nao adianta, volta o mesmo prefixo). Quebrar a cena em pedacos pequenos faz cada request voltar
+# COMPLETO; a cobertura acumula entre os chunks. (O interativo/streaming escapa pq trunca em pontos
+# variaveis a cada retry -> a uniao das 3 cobre; o batch trunca igual -> a uniao nao cresce.)
+_BATCH_CHUNK = 60     # linhas por requisicao de batch (folga sob o teto ~100 medido)
 _MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
 _MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
 
@@ -189,7 +195,9 @@ def _client():
     if not key or "cole-sua-chave" in key:
         raise RuntimeError("backend 'api' requer ANTHROPIC_API_KEY: edite o `.env` na raiz do "
                            "framework e troque o placeholder pela sua chave real (veja .env.example).")
-    return anthropic.Anthropic()
+    # timeout generoso (fetch de resultados de batch grande) + retries do PROPRIO SDK (1a linha de
+    # defesa em 429/500/timeout/conexao); o _with_backoff por cima cobre o que escapar (2a linha).
+    return anthropic.Anthropic(timeout=900.0, max_retries=5)
 
 
 def _carta_text() -> str:
@@ -267,26 +275,41 @@ def log_api_call(root, scene, kind, model, usage, *, batch=False):
     return rec
 
 
-def _stream_final(client, **kwargs):
-    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
-    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
-    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
+def _transient_errors():
+    """Erros de rede TRANSITORIOS (curam com retry): 429/500/timeout + quedas de conexao httpx. NAO
+    inclui 400 BadRequest (esse nao 'cura'). Lazy import (anthropic/httpx so quando o backend api roda)."""
     import anthropic
     import httpx
-    transient = (anthropic.RateLimitError, anthropic.InternalServerError,
-                 anthropic.APITimeoutError, anthropic.APIConnectionError,
-                 httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
-                 httpx.ConnectError, httpx.ConnectTimeout)
+    return (anthropic.RateLimitError, anthropic.InternalServerError,
+            anthropic.APITimeoutError, anthropic.APIConnectionError,
+            httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
+            httpx.ConnectError, httpx.ConnectTimeout)
+
+
+def _with_backoff(fn):
+    """Executa fn() com backoff exponencial em erro transitorio de rede (mesma classe do _stream_final).
+    Para chamadas de BATCH (create/retrieve/results) que nao usam streaming — sem isso, um timeout de
+    rede num unico GET/POST derrubava todo o batch (ex.: back-batch do cap.18 morreu por timeout)."""
+    transient = _transient_errors()
     delay = 2.0
     for i in range(_MAX_BACKOFF):
         try:
-            with client.messages.stream(**kwargs) as s:
-                return s.get_final_message()
+            return fn()
         except transient:
             if i == _MAX_BACKOFF - 1:
                 raise
             time.sleep(delay)
             delay *= 2
+
+
+def _stream_final(client, **kwargs):
+    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
+    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
+    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
+    def _do():
+        with client.messages.stream(**kwargs) as s:
+            return s.get_final_message()
+    return _with_backoff(_do)
 
 
 def _check_translation(data, offsets):
@@ -529,22 +552,43 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
 # caminho interativo (streaming, com retry/escalonamento). Quem faz fitting (verify) continua sendo cada
 # cena no run_scene. Determinismo da montagem do request isolado em _translate_params (testavel sem rede).
 
-def _translate_params(pack, model):
+def _coverage_note(missing, bad_par) -> str:
+    """Nota CORRETIVA p/ a re-rodada: quais offsets faltam (incluir TODOS) e quais tem paridade de `\\n`
+    errada (casar EXATO). Vazia se nada a corrigir. Mesma redacao da retry interativa (_api_translate) —
+    e o que faz a cena de narracao CONVERGIR no batch em vez de cair pro interativo full-price."""
+    if not missing and not bad_par:
+        return ""
+    note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
+    if missing:
+        note += f"- Faltam estes offsets — INCLUA todos: {sorted(missing)[:40]}\n"
+    if bad_par:
+        note += ("- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
+                 f"quantidade e posicao do token): {sorted(bad_par)[:30]}\n")
+    return note
+
+
+def _translate_params(pack, model, note=""):
     """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
-    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada)."""
+    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
+    `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
     reuse = _select_reuse(pack, enabled=True)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)
-    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE
+    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE + note
+    # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort (400) — igual ao _api_translate, OMITE o
+    # effort nesses modelos. BUG MEDIDO (cap.15): o batch sempre mandava effort -> todo request do tier
+    # cheap (Haiku) dava 400 -> as linhas single-line nunca voltavam (MISSING) -> coverage_failed.
+    out_cfg = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
+    if not _no_effort_model(model):
+        out_cfg["effort"] = EFFORT_TRANSLATE
     params = {
         "model": model, "max_tokens": MAX_OUTPUT_TOKENS, "system": system,
         "messages": [{"role": "user", "content": base_user}],
         "thinking": {"type": "disabled"},
-        "output_config": {"effort": EFFORT_TRANSLATE,
-                          "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
+        "output_config": out_cfg,
     }
     return params, reuse, novel
 
@@ -579,6 +623,25 @@ def _parse_batch_lines(pack, text):
     return out
 
 
+def _merge_best_parity(dest, new, srcmap):
+    """Mescla `new` em `dest` ACUMULANDO entre rodadas, preferindo paridade de `\\n` correta — igual ao
+    _api_translate (interativo). NUNCA troca uma linha de paridade BOA por uma RUIM: assim uma re-rodada
+    que regride uma linha ja boa nao desfaz o ganho (o `dict.update` cego perdia isso e a cena nao
+    convergia). Mesma paridade -> usa a mais nova (consistente com o comportamento anterior)."""
+    tok = context_pack.TOKEN
+    for off, v in new.items():
+        src = srcmap.get(off, "")
+        good = v.get("t", "").count(tok) == src.count(tok)
+        old = dest.get(off)
+        if old is None:
+            dest[off] = v
+            continue
+        old_good = old.get("t", "").count(tok) == src.count(tok)
+        if good or not old_good:        # melhora a paridade, ou ambas ruins -> aceita a nova
+            dest[off] = v
+    return dest
+
+
 def _batch_coverage(pack, merged):
     """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
     tok = context_pack.TOKEN
@@ -595,7 +658,7 @@ def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
     """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
     waited = 0
     while True:
-        b = client.messages.batches.retrieve(batch_id)
+        b = _with_backoff(lambda: client.messages.batches.retrieve(batch_id))   # poll resiliente a timeout
         if getattr(b, "processing_status", None) == "ended":
             return True
         if waited >= max_wait_seconds:
@@ -612,7 +675,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     apenas os offsets faltantes/de paridade ruim) e mescla — convergindo a -50%.
 
     TIERING (tiered=True, default): por cena/rodada, as linhas SEM token de quebra vao num request Haiku
-    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene@@tier'.
+    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene__tier'
+    (separador `__` — a Batch API rejeita custom_id fora de ^[a-zA-Z0-9_-]{1,64}$, ex.: '@' dá 400).
 
     Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
     {all_reused, written, coverage_failed, errored:<tipo>, timeout}. Cenas != (written|all_reused) ainda
@@ -653,35 +717,49 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         reqs, req_model = [], {}                          # req_model[custom_id] = modelo (p/ custo no ledger)
         for scene in pending:
             miss, badpar = _batch_coverage(packs[scene], merged[scene])
-            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd 0: cena toda; depois: so o que falta
+            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd0: tudo; depois: so o que falta
             for tier, tmodel in tiers:                    # split por COMPLEXIDADE (cheap=Haiku / main=Sonnet)
-                sub = dict(packs[scene])
-                sub["lines"] = [r for r in packs[scene]["lines"]
-                                if _tier_of(r.get("source", "")) == tier
-                                and (want is None or r["offset"] in want)]
-                if not sub["lines"]:
-                    continue
-                params, _reuse, _novel = _translate_params(sub, tmodel)
-                if params is None:                        # tudo reuso nesse tier -> sem request
-                    continue
-                cid = f"{scene}@@{tier}"
-                req_model[cid] = tmodel
-                reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
+                tier_lines = [r for r in packs[scene]["lines"]
+                              if _tier_of(r.get("source", "")) == tier
+                              and (want is None or r["offset"] in want)]
+                # CHUNKING: cada request = ate _BATCH_CHUNK linhas (o batch trunca saidas longas). Cada
+                # chunk e auto-contido (render so das suas linhas) e volta completo; a cobertura acumula
+                # entre chunks E rodadas via _merge_best_parity.
+                for ci in range(0, len(tier_lines), _BATCH_CHUNK):
+                    chunk = tier_lines[ci:ci + _BATCH_CHUNK]
+                    sub = dict(packs[scene]); sub["lines"] = chunk
+                    # FEEDBACK CORRETIVO na re-rodada (rnd>0): nota com os offsets faltando/paridade-errada
+                    # DESTE chunk, como o _api_translate faz.
+                    note = ""
+                    if rnd > 0:
+                        coffs = {r["offset"] for r in chunk}
+                        note = _coverage_note([o for o in miss if o in coffs],
+                                              [o for o in badpar if o in coffs])
+                    params, _reuse, _novel = _translate_params(sub, tmodel, note=note)
+                    if params is None:                    # tudo reuso nesse chunk -> sem request
+                        continue
+                    # custom_id 'scene__tier__chunk' — ^[a-zA-Z0-9_-]{1,64}$; split('__',1)[0] = scene
+                    cid = f"{scene}__{tier}__{ci // _BATCH_CHUNK}"
+                    req_model[cid] = tmodel
+                    reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
             break
-        batch = client.messages.batches.create(requests=reqs)
+        batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
         if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
             for scene in pending:
                 status.setdefault(scene, "timeout")
             return status
-        for result in client.messages.batches.results(batch.id):
+        # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
+        results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+        for result in results:
             cid = result.custom_id
-            scene = cid.split("@@", 1)[0]
+            scene = cid.split("__", 1)[0]
             if getattr(result.result, "type", None) != "succeeded":
                 continue                                  # tier falho -> cobertura decide (re-batch/fallback)
             msg = result.result.message
             log_api_call(root, scene, "translate", req_model.get(cid, m), _usage_of(msg), batch=True)
-            merged[scene].update(_parse_batch_lines(packs[scene], _text_of(msg)))    # ACUMULA
+            srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
+            _merge_best_parity(merged[scene], _parse_batch_lines(packs[scene], _text_of(msg)), srcmap)
         still = []
         for scene in pending:
             if str(status.get(scene, "")).startswith("errored"):
@@ -788,12 +866,14 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
     if not reqs:
         return status
     client = _client()
-    batch = client.messages.batches.create(requests=reqs)
+    batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
     if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
         for scene in highs:
             status.setdefault(scene, "timeout")
         return status
-    for result in client.messages.batches.results(batch.id):
+    # materializa os resultados DENTRO do backoff (igual ao batch_translate; foi aqui que o cap.18 morreu)
+    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+    for result in results:
         scene = result.custom_id
         if getattr(result.result, "type", None) != "succeeded":
             status[scene] = "errored"
