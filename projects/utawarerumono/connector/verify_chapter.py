@@ -162,11 +162,26 @@ def main():
         print("  NOTAS (verificar in-game):")
         for n in label_notes:
             print("    *", n)
+
+    # PROTOCOLO ESTRUTURADO (H1) — o orquestrador (run_scene) NAO faz grep no stdout p/ decidir
+    # escalonamento de fitting. Em vez disso: exit-code distinto + 1 linha JSON machine-readable.
+    #   exit 0 = OK | exit 3 = falha SO de FITTING (residuo/out-of-file -> re-traduzir mais apertado
+    #   ajuda) | exit 1 = falha DURA (round-trip/leitura -> apertar nao cura). A linha VERIFY_STATUS
+    #   carrega os numeros (residuo, out_of_file) p/ observabilidade. JSON e additive (humano ignora).
+    n_fitting = (1 if residuo else 0) + (1 if out_of_file else 0)
+    fitting_only = bool(fails) and len(fails) == n_fitting     # todas as falhas sao de fitting
+    print("VERIFY_STATUS: " + json.dumps({
+        "ok": not fails,
+        "fitting_failure": fitting_only,
+        "residuo_t4": residuo,
+        "out_of_file": out_of_file,
+        "n_fails": len(fails),
+    }, ensure_ascii=False))
     if fails:
         print("\nFALHAS:")
         for x in fails:
             print("  -", x)
-        sys.exit(1)
+        sys.exit(3 if fitting_only else 1)
     print("\nOK: capitulo reinsere e round-trip integro (Plano B intra-arquivo).")
 
 
