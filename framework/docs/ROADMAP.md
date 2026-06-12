@@ -71,21 +71,23 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   (`^[a-zA-Z0-9_-]{1,64}$`) → o batch dava **400** e caía 100% pro interativo **full-price**. Os unit
   tests não pegavam (o fake aceitava qualquer id). Fix: `@@`→`__`; o fake agora **valida o padrão**.
 - ✅ **back-batch −50% Opus comprovado VIVO** (cap.14, 9 cenas, 5 revisadas num batch). Funciona.
-- 🐛🐛🐛 **batch −50% no translate NÃO convergia — CAUSA-RAIZ FINAL = truncamento (cap.15):** as **9/9
-  cenas** deram `coverage_failed` → 100% interativo **full-price** ($22 Sonnet). Investigação em camadas
-  (ledger por timestamp → repro offline → **diagnóstico vivo de 1 cena, ~$0,30**): o endpoint de **batch
-  TRUNCA a saída estruturada longa** (~100 linhas/resposta, **DETERMINÍSTICO**). Medido no 15_06:
-  `MISSING=120/221` **idêntico nas 3 rodadas** — re-mandar a cena pega o **mesmo prefixo truncado**, a
-  união nunca cresce. (O interativo/streaming escapa porque trunca em pontos **variáveis** a cada retry →
-  a união das 3 cobre.) **Fix** (`model.py`): **CHUNKING** — cada request = ≤`_BATCH_CHUNK` (60) linhas;
-  cada chunk volta completo e a cobertura acumula entre chunks/rodadas (`custom_id=scene__tier__N`). Mantido
-  o `_merge_best_parity` (higiene anti-regressão). **Validado OFFLINE**:
-  `test_batch_chunking_beats_truncation` (fake que trunca em 5 linhas: 1 request grande → `coverage_failed`;
-  chunks de 5 → `written`, 20/20 cobertas); 44 testes verdes. > **NB metodológico:** o 1º fix (re-mandar
-  cena inteira) era **necessário-não-suficiente** — passou no fake mas o run de 1 cena (~$0,30) reprovou ao
-  vivo; foi esse run barato que apontou o truncamento. **Lição: validar a mecânica de batch num run de 1
-  cena antes de pagar capítulo.** ⚠️ **Falta confirmar o chunking ao vivo em 1 cena** (15_06): deve fechar
-  `written` no batch (−50% no ledger) em vez de `coverage_failed`.
+- 🐛🐛🐛 **batch −50% no translate NÃO convergia — CAUSA-RAIZ REAL = 400 do Haiku no tier cheap (cap.15):**
+  as **9/9 cenas** deram `coverage_failed` → 100% interativo **full-price** ($22 Sonnet). Caça em camadas
+  (ledger por timestamp → repro offline → diagnóstico vivo de 1 cena → **composição do pack**): o
+  `_translate_params` (usado pelo batch) **sempre incluía `output_config.effort`** — mas **Haiku 4.5 dá 400
+  com `effort`** → **todo request do tier cheap (single-line → Haiku) falhava** (não logado) → as linhas
+  single-line nunca voltavam. Pista decisiva: no 15_06, `MISSING=120/221` = **exatamente as 120 linhas do
+  tier cheap** (o tier main/Sonnet cobriu suas 101 sem problema). O `_api_translate` (interativo) **checa
+  `_no_effort_model` e omite o effort** p/ Haiku; o batch não checava. **Fix** (`model.py`): `_translate_params`
+  omite `effort` p/ Haiku/Sonnet-4.5 (espelha o interativo). **Validado OFFLINE**: o fake do batch agora
+  **rejeita `effort` em request Haiku** (mimetiza o 400) — `test_batch_tiering_routes_models` **falha no
+  código antigo** e passa no novo; 45 testes verdes. **Defesa extra mantida** (`_BATCH_CHUNK`=60 + merge
+  best-parity): protege contra truncação real de resposta longa em cenas grandes. ⚠️ **Falta confirmar ao
+  vivo em 1 cena** (15_06) que fecha `written` (−50% no ledger). > **NB metodológico (3 diagnósticos até
+  acertar):** (1º) "faltava nota corretiva", (2º) "re-mandar fragmento vs cena inteira", (3º) "truncação" —
+  todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
+  (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
+  cena ANTES de pagar capítulo — e o fake deve VALIDAR as restrições reais da API (custom_id, effort-por-modelo).**
 - ⚠️ **tiering ainda SEM medição:** caps.14 **e 15** = quase tudo multi-linha (`\n` de quebra de caixa de
   texto → Sonnet); o Haiku ficou inalterado ($0,71) nos dois. O jogo pode simplesmente **não ter
   single-line suficiente** p/ o tiering pagar — a confirmar; se for o caso, **desligar `MODEL_TRANSLATE_CHEAP`**

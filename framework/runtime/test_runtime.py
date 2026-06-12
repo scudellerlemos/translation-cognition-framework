@@ -436,6 +436,12 @@ class _FakeBatches:
             if not _CUSTOM_ID_RE.match(r["custom_id"]):
                 raise ValueError(f"custom_id invalido p/ Batch API: {r['custom_id']!r} "
                                  f"(deve casar ^[a-zA-Z0-9_-]{{1,64}}$)")
+            # Haiku 4.5 / Sonnet 4.5 dao 400 com output_config.effort — o fake VALIDA (pega regressao:
+            # o batch mandava effort p/ TODO modelo -> os requests Haiku do tier cheap 400-avam ao vivo).
+            mdl = r["params"]["model"]
+            if (mdl.startswith("claude-haiku") or mdl == "claude-sonnet-4-5") \
+                    and "effort" in r["params"].get("output_config", {}):
+                raise ValueError(f"output_config.effort invalido p/ {mdl} (Batch API 400)")
         self._submitted = [r["custom_id"] for r in requests]
         self.models += [r["params"]["model"] for r in requests]
         self.contents += [(r["custom_id"], r["params"]["messages"][0]["content"]) for r in requests]
