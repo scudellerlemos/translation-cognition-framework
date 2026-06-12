@@ -45,6 +45,12 @@ MODEL_TRANSLATE_CHEAP = "claude-haiku-4-5"
 # Saida pode ser grande (ate ~500 linhas x speaker/tone/intent/risk/t). Streaming evita timeout;
 # este teto cobre a maior cena do corpus com folga (Sonnet/Opus 4.x suportam ate 64k de saida).
 MAX_OUTPUT_TOKENS = 64000
+# CHUNKING do batch: o endpoint de batch TRUNCA a saida estruturada longa (~100 linhas/resposta,
+# DETERMINISTICO — medido no 15_06: 120/221 linhas sempre faltando, identico nas 3 rodadas; re-mandar
+# nao adianta, volta o mesmo prefixo). Quebrar a cena em pedacos pequenos faz cada request voltar
+# COMPLETO; a cobertura acumula entre os chunks. (O interativo/streaming escapa pq trunca em pontos
+# variaveis a cada retry -> a uniao das 3 cobre; o batch trunca igual -> a uniao nao cresce.)
+_BATCH_CHUNK = 60     # linhas por requisicao de batch (folga sob o teto ~100 medido)
 _MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
 _MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
 
@@ -689,34 +695,31 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         reqs, req_model = [], {}                          # req_model[custom_id] = modelo (p/ custo no ledger)
         for scene in pending:
             miss, badpar = _batch_coverage(packs[scene], merged[scene])
-            # ESPELHA O INTERATIVO (_api_translate, que CONVERGE nas mesmas cenas): re-manda a cena
-            # INTEIRA do tier e MESCLA best-of-paridade — NAO so o fragmento. A nota corretiva (rnd>0)
-            # diz "gere a cena COMPLETA, vamos MESCLAR"; mandar so o fragmento contradizia o prompt e o
-            # modelo devolvia resposta degenerada (medido: rodada 1 ao vivo voltava ~vazia). want=None
-            # sempre -> request casa a nota; o merge best-parity protege as linhas ja boas da rodada 0.
-            want = None
+            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd0: tudo; depois: so o que falta
             for tier, tmodel in tiers:                    # split por COMPLEXIDADE (cheap=Haiku / main=Sonnet)
-                sub = dict(packs[scene])
-                sub["lines"] = [r for r in packs[scene]["lines"]
-                                if _tier_of(r.get("source", "")) == tier
-                                and (want is None or r["offset"] in want)]
-                if not sub["lines"]:
-                    continue
-                # FEEDBACK CORRETIVO na re-rodada (rnd>0): sem ele, o batch re-submetia o MESMO prompt e
-                # repetia o erro de paridade `\n` (cenas de narracao nunca convergiam -> coverage_failed ->
-                # interativo full-price). Com a nota dos offsets faltando/paridade-errada DESTE tier, a
-                # re-rodada do batch corrige como o interativo faz.
-                note = ""
-                if rnd > 0:
-                    sub_offs = {r["offset"] for r in sub["lines"]}
-                    note = _coverage_note([o for o in miss if o in sub_offs],
-                                          [o for o in badpar if o in sub_offs])
-                params, _reuse, _novel = _translate_params(sub, tmodel, note=note)
-                if params is None:                        # tudo reuso nesse tier -> sem request
-                    continue
-                cid = f"{scene}__{tier}"                  # separador `__`: a Batch API exige custom_id ^[a-zA-Z0-9_-]{1,64}$ (sem @)
-                req_model[cid] = tmodel
-                reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
+                tier_lines = [r for r in packs[scene]["lines"]
+                              if _tier_of(r.get("source", "")) == tier
+                              and (want is None or r["offset"] in want)]
+                # CHUNKING: cada request = ate _BATCH_CHUNK linhas (o batch trunca saidas longas). Cada
+                # chunk e auto-contido (render so das suas linhas) e volta completo; a cobertura acumula
+                # entre chunks E rodadas via _merge_best_parity.
+                for ci in range(0, len(tier_lines), _BATCH_CHUNK):
+                    chunk = tier_lines[ci:ci + _BATCH_CHUNK]
+                    sub = dict(packs[scene]); sub["lines"] = chunk
+                    # FEEDBACK CORRETIVO na re-rodada (rnd>0): nota com os offsets faltando/paridade-errada
+                    # DESTE chunk, como o _api_translate faz.
+                    note = ""
+                    if rnd > 0:
+                        coffs = {r["offset"] for r in chunk}
+                        note = _coverage_note([o for o in miss if o in coffs],
+                                              [o for o in badpar if o in coffs])
+                    params, _reuse, _novel = _translate_params(sub, tmodel, note=note)
+                    if params is None:                    # tudo reuso nesse chunk -> sem request
+                        continue
+                    # custom_id 'scene__tier__chunk' — ^[a-zA-Z0-9_-]{1,64}$; split('__',1)[0] = scene
+                    cid = f"{scene}__{tier}__{ci // _BATCH_CHUNK}"
+                    req_model[cid] = tmodel
+                    reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
             break
         batch = client.messages.batches.create(requests=reqs)
