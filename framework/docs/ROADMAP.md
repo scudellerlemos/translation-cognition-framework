@@ -98,6 +98,12 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
   (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
   cena ANTES de pagar capítulo — e o fake deve VALIDAR as restrições reais da API (custom_id, effort-por-modelo).**
+- ✅ **mitigação do risco "mock↔API diverge" (`batch_smoke.py`):** a lição acima virou ferramenta — smoke
+  vivo (~$0,02, ~min) de 1 cena de 2 linhas (1 Haiku + 1 Sonnet) pela API REAL; afirma os 4 invariantes
+  (submete sem 400, converge `written`, AMBOS os tiers ao vivo, zero fallback). **Rodar ANTES de cada
+  capítulo pago** (`python framework/runtime/batch_smoke.py`). A lógica de avaliação (`evaluate`) é testada
+  offline (pega os 4 modos de divergência que já custaram dinheiro). É o teste de contrato que faltava
+  entre o mock e a API real.
 - ✅ **tiering: causa do "$0,71 inalterado" ERA O BUG DO HAIKU, não falta de single-line.** A hipótese
   antiga ("o jogo pode não ter single-line suficiente → desligar `MODEL_TRANSLATE_CHEAP`") estava **errada
   e invertida**. Medição em **44.116 linhas** (`_tier_of` sobre todos os dialogs): **59% são single-line
