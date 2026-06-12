@@ -561,12 +561,17 @@ def _translate_params(pack, model, note=""):
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)
     base_user = context_pack.render_prompt(red, carta="") + _NL_RULE + note
+    # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort (400) — igual ao _api_translate, OMITE o
+    # effort nesses modelos. BUG MEDIDO (cap.15): o batch sempre mandava effort -> todo request do tier
+    # cheap (Haiku) dava 400 -> as linhas single-line nunca voltavam (MISSING) -> coverage_failed.
+    out_cfg = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
+    if not _no_effort_model(model):
+        out_cfg["effort"] = EFFORT_TRANSLATE
     params = {
         "model": model, "max_tokens": MAX_OUTPUT_TOKENS, "system": system,
         "messages": [{"role": "user", "content": base_user}],
         "thinking": {"type": "disabled"},
-        "output_config": {"effort": EFFORT_TRANSLATE,
-                          "format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}},
+        "output_config": out_cfg,
     }
     return params, reuse, novel
 
