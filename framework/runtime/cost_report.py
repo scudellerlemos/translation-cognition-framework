@@ -48,9 +48,14 @@ def _verified_scenes(root: Path) -> set[str]:
             if st.get("status") == "verified" and st.get("verified") is True}
 
 
-def report(root) -> dict:
+def report(root, chapter=None) -> dict:
+    """Agrega o ledger. `chapter` (ex.: "15") filtra so as cenas `ch_15_*` -> mostra o DELTA do capitulo
+    em vez do acumulado de todo o ledger (que confunde: o total cresce a cada capitulo)."""
     root = Path(root)
     rows = _read_ledger(root)
+    if chapter is not None:
+        pref = f"ch_{chapter}_"
+        rows = [r for r in rows if str(r.get("scene", "")).startswith(pref)]
     verified = _verified_scenes(root)
     total = round(sum(r.get("cost_usd", 0.0) for r in rows), 4)
     n_calls = len(rows)
@@ -82,12 +87,17 @@ def report(root) -> dict:
         "by_scene": dict(sorted(by_scene.items())),
         "tokens": {"in": tok_in, "out": tok_out, "cache_read": tok_cache_r, "cache_write": tok_cache_w},
         "verified_scenes": len(verified),
+        "chapter": chapter,
     }
 
 
 def _fmt(rep: dict, by_scene: bool) -> str:
     L = []
-    L.append(f"GASTO REAL DE API (api_ledger.jsonl) — {rep['n_calls']} chamada(s)")
+    if rep.get("chapter") is not None:
+        L.append(f"GASTO DO CAPITULO {rep['chapter']} (delta — so cenas ch_{rep['chapter']}_*) "
+                 f"— {rep['n_calls']} chamada(s)")
+    else:
+        L.append(f"GASTO REAL DE API (api_ledger.jsonl, ACUMULADO) — {rep['n_calls']} chamada(s)")
     L.append(f"  total       : ${rep['total_usd']:.4f}")
     w = rep["wasted_usd"]
     tag = "ok" if w == 0 else ("baixo" if rep["total_usd"] and w / rep["total_usd"] < 0.15 else "ALTO")
@@ -114,10 +124,11 @@ def _fmt(rep: dict, by_scene: bool) -> str:
 def main():
     ap = argparse.ArgumentParser(description="Contabilidade real de gasto de API (ledger).")
     ap.add_argument("project")
+    ap.add_argument("--chapter", help='delta de UM capitulo (ex.: "15" -> so cenas ch_15_*)')
     ap.add_argument("--by-scene", action="store_true", help="detalha custo por cena")
     ap.add_argument("--json", action="store_true", help="saida JSON crua")
     a = ap.parse_args()
-    rep = report(a.project)
+    rep = report(a.project, chapter=a.chapter)
     if a.json:
         print(json.dumps(rep, ensure_ascii=False, indent=2))
     else:
