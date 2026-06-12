@@ -91,10 +91,14 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
   (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
   cena ANTES de pagar capítulo — e o fake deve VALIDAR as restrições reais da API (custom_id, effort-por-modelo).**
-- ⚠️ **tiering ainda SEM medição:** caps.14 **e 15** = quase tudo multi-linha (`\n` de quebra de caixa de
-  texto → Sonnet); o Haiku ficou inalterado ($0,71) nos dois. O jogo pode simplesmente **não ter
-  single-line suficiente** p/ o tiering pagar — a confirmar; se for o caso, **desligar `MODEL_TRANSLATE_CHEAP`**
-  e parar de fingir ganho.
+- ✅ **tiering: causa do "$0,71 inalterado" ERA O BUG DO HAIKU, não falta de single-line.** A hipótese
+  antiga ("o jogo pode não ter single-line suficiente → desligar `MODEL_TRANSLATE_CHEAP`") estava **errada
+  e invertida**. Medição em **44.116 linhas** (`_tier_of` sobre todos os dialogs): **59% são single-line
+  (Haiku-elegíveis)** — 26.004 cheap vs 18.112 main, consistente em TODOS os caps (56–67%). O Haiku ficava
+  em $0,71 porque **todo request Haiku dava 400** (effort, corrigido hoje), não por falta de conteúdo.
+  **Confirmado vivo (15_06):** 132 linhas single-line foram pro Haiku (3 requests). **Disposição: MANTER o
+  tiering** (cobre 59% do jogo; Haiku = 1/3 da saída do Sonnet). ⚠️ **Falta só** o número AGREGADO de
+  economia num capítulo inteiro (o 15_06 prova o roteamento; o $ total sai na próxima run de capítulo).
 - 🐛 **falso-positivo no KB-gate (corrigido):** "Like/Hold/Papa" (palavras comuns no início de frase)
   bloqueavam a Fase 0 do cap.15 por escaparem da stoplist do `kb_phase`. Adicionadas ao `_STOP`.
 - 💰 **custo real medido (2 caps):** cap.14 ≈ $8,5; cap.15 ≈ **$23** (2525 linhas, **full-price** pelo bug
