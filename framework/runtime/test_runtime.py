@@ -648,6 +648,23 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
     assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
 
 
+def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
+    # TETO DE GASTO: aborta ANTES da proxima cena quando o custo do capitulo passa de --max-usd.
+    root = _fake_chapter(tmp_path, ("99_01", "99_02", "99_03"))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    ran = []
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: ran.append(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    # custo do capitulo cresce $2 por cena ja rodada (mock do ledger)
+    monkeypatch.setattr(run_chapter, "_chapter_cost", lambda r, c: 2.0 * len(ran))
+    res = run_chapter.run_chapter(root, "99", backend="api", max_usd=3.0)
+    # antes 99_01: $0<3 roda; antes 99_02: $2<3 roda; antes 99_03: $4>=3 ABORTA
+    assert res["status"] == "stopped_budget" and res["stopped_at"] == "ch_99_03"
+    assert ran == ["ch_99_01", "ch_99_02"], "para antes da 3a cena (teto estourado)"
+
+
 # ----------------------- back-translation em BATCH (Tier 1 de custo) ----------------------
 
 def _plan(offsets_risk):
