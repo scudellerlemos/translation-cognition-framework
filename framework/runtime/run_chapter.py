@@ -124,22 +124,23 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
-            _print_cost(root)
+            _print_cost(root, chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) das cenas verificadas, se modo batch.
     if batch and backend == "api":
         _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
-    _print_cost(root)
+    _print_cost(root, chap)
     return {"chapter": chap, "scenes": results, "status": "complete"}
 
 
-def _print_cost(root: Path):
+def _print_cost(root: Path, chap: str | None = None):
     """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
-    cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou)."""
+    cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou).
+    Mostra o DELTA do capitulo (so cenas ch_<chap>_*), nao o acumulado de todo o ledger."""
     try:
-        rep = cost_report.report(root)
+        rep = cost_report.report(root, chapter=chap)
         if rep["n_calls"]:
             print(f"\n{cost_report._fmt(rep, by_scene=False)}")
     except Exception:
