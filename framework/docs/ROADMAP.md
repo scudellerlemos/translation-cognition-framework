@@ -71,19 +71,21 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   (`^[a-zA-Z0-9_-]{1,64}$`) → o batch dava **400** e caía 100% pro interativo **full-price**. Os unit
   tests não pegavam (o fake aceitava qualquer id). Fix: `@@`→`__`; o fake agora **valida o padrão**.
 - ✅ **back-batch −50% Opus comprovado VIVO** (cap.14, 9 cenas, 5 revisadas num batch). Funciona.
-- 🐛🐛 **batch −50% no translate NÃO convergia (causa-raiz achada no cap.15, corrigida):** as **9/9
-  cenas** do cap.15 deram `coverage_failed` no batch → 100% caiu pro interativo **full-price** ($22 de
-  Sonnet). Investigação (ledger por timestamp + repro offline instrumentada): a re-rodada do batch
-  re-submetia **só o fragmento** de linhas ruins **mas a nota dizia "gere a cena COMPLETA, vamos MESCLAR"**
-  → prompt contraditório → o modelo devolvia resposta degenerada (medido: rodada 1 ao vivo voltava
-  ~vazia, out=82 tok) → nunca convergia. Segundo defeito: `dict.update` cego sobrescrevia uma linha de
-  paridade BOA por uma RUIM numa re-rodada que regredia. **Fix** (`model.py`): a re-rodada **re-manda a
-  cena INTEIRA** (espelha o `_api_translate`, que converge nas mesmas cenas) + **merge best-of-paridade**
-  (`_merge_best_parity`, nunca troca boa por ruim). **Validado OFFLINE**: teste de regressão
-  `test_batch_reround_resends_full_scene_and_converges` **falha no código antigo** (`coverage_failed`) e
-  **passa no novo** (`written`); 44 testes verdes. ⚠️ **Falta a run viva do cap.16** p/ confirmar que o
-  −50% finalmente aparece no ledger (o fake prova a mecânica, não o comportamento real da Batch API em
-  escala — ex.: por que 8/9 requests de re-rodada não voltaram ao vivo só se confirma pago).
+- 🐛🐛🐛 **batch −50% no translate NÃO convergia — CAUSA-RAIZ FINAL = truncamento (cap.15):** as **9/9
+  cenas** deram `coverage_failed` → 100% interativo **full-price** ($22 Sonnet). Investigação em camadas
+  (ledger por timestamp → repro offline → **diagnóstico vivo de 1 cena, ~$0,30**): o endpoint de **batch
+  TRUNCA a saída estruturada longa** (~100 linhas/resposta, **DETERMINÍSTICO**). Medido no 15_06:
+  `MISSING=120/221` **idêntico nas 3 rodadas** — re-mandar a cena pega o **mesmo prefixo truncado**, a
+  união nunca cresce. (O interativo/streaming escapa porque trunca em pontos **variáveis** a cada retry →
+  a união das 3 cobre.) **Fix** (`model.py`): **CHUNKING** — cada request = ≤`_BATCH_CHUNK` (60) linhas;
+  cada chunk volta completo e a cobertura acumula entre chunks/rodadas (`custom_id=scene__tier__N`). Mantido
+  o `_merge_best_parity` (higiene anti-regressão). **Validado OFFLINE**:
+  `test_batch_chunking_beats_truncation` (fake que trunca em 5 linhas: 1 request grande → `coverage_failed`;
+  chunks de 5 → `written`, 20/20 cobertas); 44 testes verdes. > **NB metodológico:** o 1º fix (re-mandar
+  cena inteira) era **necessário-não-suficiente** — passou no fake mas o run de 1 cena (~$0,30) reprovou ao
+  vivo; foi esse run barato que apontou o truncamento. **Lição: validar a mecânica de batch num run de 1
+  cena antes de pagar capítulo.** ⚠️ **Falta confirmar o chunking ao vivo em 1 cena** (15_06): deve fechar
+  `written` no batch (−50% no ledger) em vez de `coverage_failed`.
 - ⚠️ **tiering ainda SEM medição:** caps.14 **e 15** = quase tudo multi-linha (`\n` de quebra de caixa de
   texto → Sonnet); o Haiku ficou inalterado ($0,71) nos dois. O jogo pode simplesmente **não ter
   single-line suficiente** p/ o tiering pagar — a confirmar; se for o caso, **desligar `MODEL_TRANSLATE_CHEAP`**
