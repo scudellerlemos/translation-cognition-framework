@@ -68,6 +68,7 @@ last next good bad big small new old long short high low right left up down out 
 man woman men women people person child children boy girl friend friends home house world life death war
 like hold help leave love hold papa mama behind starting searching accompanying succeeding asking allow
 dear guess getting nice we'd ahaha agh wheh pweeaase
+wait cheers ooh thou fate game perfect sisters mmmmm damn mayhap methinks barkeep
 hand hands eye eyes face heart head room door water fire light dark good great
 mister miss missus sir lord lady master mom dad mother father brother sister son daughter missy
 don't won't can't cant didn't doesn't isn't aren't wasn't weren't haven't hasn't hadn't wouldn't couldn't
