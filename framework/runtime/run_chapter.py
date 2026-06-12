@@ -91,14 +91,23 @@ def _back_batch_phase(root, scenes):
           f"{ {s: v for s, v in st.items() if v not in ('no_high',)} }")
 
 
+def _chapter_cost(root, chap) -> float:
+    """Gasto REAL ja contabilizado neste capitulo (delta do ledger, so cenas ch_<chap>_*)."""
+    try:
+        return cost_report.report(root, chapter=chap).get("total_usd", 0.0)
+    except Exception:
+        return 0.0
+
+
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False, batch=False):
+                skip_kb_gate=False, batch=False, max_usd=None):
     root = Path(root)
     scenes = _scenes_of(root, chap)
     if not scenes:
         print(f"nenhuma cena encontrada p/ cap {chap} (esperado artifacts/ch_{chap}_*/dialogs.csv)")
         return {"chapter": chap, "scenes": [], "status": "empty"}
-    print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}")
+    print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
+          + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
 
     # MODO BATCH: traduz todas as pendentes num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
     batch_status = {}
@@ -113,6 +122,18 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"[skip] {scene} ja verified")
             results.append({"scene": scene, "status": "skipped"})
             continue
+        # TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
+        # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
+        # salvas; rode de novo p/ continuar de onde parou.
+        if max_usd is not None:
+            spent = _chapter_cost(root, chap)
+            if spent >= max_usd:
+                print(f"\nABORTADO por teto de gasto: cap.{chap} ja custou ${spent:.2f} >= "
+                      f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
+                      f"salvas — rode de novo p/ continuar).")
+                _print_cost(root, chap)
+                return {"chapter": chap, "scenes": results, "status": "stopped_budget",
+                        "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
         # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo).
         defer_back = bool(batch and backend == "api")
@@ -128,7 +149,11 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) das cenas verificadas, se modo batch.
     if batch and backend == "api":
-        _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
+        if max_usd is not None and _chapter_cost(root, chap) >= max_usd:
+            print(f"[back-batch] pulado: teto de gasto atingido "
+                  f"(${_chapter_cost(root, chap):.2f} >= ${max_usd:.2f}).")
+        else:
+            _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
     _print_cost(root, chap)
@@ -158,9 +183,13 @@ def main():
     ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
     ap.add_argument("--batch", action="store_true",
                     help="traduz todas as cenas pendentes num unico batch (50%% off, assincrono)")
+    ap.add_argument("--max-usd", type=float, default=None,
+                    help="teto de gasto: aborta antes da proxima cena se o custo do capitulo passar deste "
+                         "valor (cenas verified seguem salvas; rode de novo p/ continuar)")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
-                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch)
+                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch,
+                    max_usd=a.max_usd)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 
