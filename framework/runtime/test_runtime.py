@@ -415,18 +415,36 @@ def _fake_msg(text, usage=(100, 50)):
     return _types.SimpleNamespace(content=[block], usage=u)
 
 
+# a Batch API real rejeita custom_id fora deste padrao (400) — o fake VALIDA isso p/ pegar regressao
+# (ex.: o separador '@@' do tiering quebrava ao vivo mas passava com fake permissivo). Ver _FakeBatches.
+_CUSTOM_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
+
+
 class _FakeBatches:
     """Fake da Batch API ciente de RODADAS e de TIER: scene_rounds[scene] = [texto_r0, texto_r1, ...];
-    custom_id e 'scene@@tier' -> a fila e por CENA. results() devolve o proximo texto da cena (vazio se
-    acabar). models[] registra os modelos submetidos (p/ checar roteamento de tier)."""
+    custom_id e 'scene__tier' -> a fila e por CENA. results() devolve o proximo texto da cena (vazio se
+    acabar). models[] registra os modelos submetidos (p/ checar roteamento de tier). VALIDA o padrao do
+    custom_id como a API real (raise se invalido)."""
     def __init__(self, scene_rounds):
         self.scene_rounds = {k: list(v) for k, v in scene_rounds.items()}
         self._submitted = []
         self.models = []
+        self.contents = []        # (custom_id, user_content) de cada request submetido (p/ checar a nota)
 
     def create(self, requests):
+        for r in requests:
+            if not _CUSTOM_ID_RE.match(r["custom_id"]):
+                raise ValueError(f"custom_id invalido p/ Batch API: {r['custom_id']!r} "
+                                 f"(deve casar ^[a-zA-Z0-9_-]{{1,64}}$)")
+            # Haiku 4.5 / Sonnet 4.5 dao 400 com output_config.effort — o fake VALIDA (pega regressao:
+            # o batch mandava effort p/ TODO modelo -> os requests Haiku do tier cheap 400-avam ao vivo).
+            mdl = r["params"]["model"]
+            if (mdl.startswith("claude-haiku") or mdl == "claude-sonnet-4-5") \
+                    and "effort" in r["params"].get("output_config", {}):
+                raise ValueError(f"output_config.effort invalido p/ {mdl} (Batch API 400)")
         self._submitted = [r["custom_id"] for r in requests]
         self.models += [r["params"]["model"] for r in requests]
+        self.contents += [(r["custom_id"], r["params"]["messages"][0]["content"]) for r in requests]
         return _types.SimpleNamespace(id="batch_x", processing_status="in_progress")
 
     def retrieve(self, _id):
@@ -435,7 +453,7 @@ class _FakeBatches:
     def results(self, _id):
         out = []
         for cid in self._submitted:
-            scene = cid.split("@@", 1)[0]
+            scene = cid.split("__", 1)[0]
             q = self.scene_rounds.get(scene, [])
             text = q.pop(0) if q else _btext([])
             out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
@@ -470,6 +488,13 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
     d = json.loads((tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").read_text("utf-8"))
     assert set(d["lines"]) == {"0x9", "0xa"}
     assert not (tmp_path / "artifacts" / "ch_99_03" / "translations_99_03.json").is_file()
+    # FEEDBACK CORRETIVO: a re-rodada (rnd>0) de 99_02 leva a nota com o offset que faltou (0xa) — sem
+    # isso o batch repetia o erro e cenas de narracao caiam pro interativo full-price (coverage_failed).
+    fb = fake.messages.batches
+    c_9902 = [c for cid, c in fb.contents if cid.startswith("ch_99_02")]
+    assert "CORRECAO NECESSARIA" not in c_9902[0], "rodada 0 nao leva nota (cena inteira, sem feedback)"
+    assert any("CORRECAO NECESSARIA" in c and "0xa" in c for c in c_9902[1:]), \
+        "re-rodada deve anexar a nota corretiva com os offsets faltantes/paridade-errada"
     # ledger: 99_01 x1, 99_02 x2 (2 rodadas), 99_03 x2; tudo batch=True, custo 50%
     rows = [json.loads(l) for l in
             (tmp_path / "artifacts" / "api_ledger.jsonl").read_text("utf-8").splitlines()]
@@ -521,6 +546,109 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path):
     assert model.MODEL_TRANSLATE_CHEAP not in fb2.models
 
 
+class _FakeTruncating:
+    """Imita a FALHA REAL do endpoint de batch (medida no 15_06): TRUNCA a resposta nas primeiras
+    `limit` linhas pedidas (deterministico). render_prompt embute os offsets pedidos (em ordem) p/ o
+    fake saber o que foi pedido e devolver so o prefixo. So as linhas alem do `limit` ficam faltando."""
+    def __init__(self, limit):
+        self.limit = limit
+        self._reqs = []
+    def create(self, requests):
+        self._reqs = [(r["custom_id"], r["params"]["messages"][0]["content"]) for r in requests]
+        return _types.SimpleNamespace(id="b", processing_status="x")
+    def retrieve(self, _id):
+        return _types.SimpleNamespace(processing_status="ended")
+    def results(self, _id):
+        tok = context_pack.TOKEN
+        out = []
+        for cid, content in self._reqs:
+            asked = [w[2:] for w in content.split() if w.startswith("o:")]   # offsets embutidos, em ordem
+            keep = asked[:self.limit]                                        # TRUNCA no teto
+            lines = [{"offset": o, "speaker": "X", "tone_register": "n", "intent": "i",
+                      "risk_level": "low", "risk_notes": "", "t": f"a{tok}b"} for o in keep]
+            out.append(_types.SimpleNamespace(custom_id=cid, result=_types.SimpleNamespace(
+                type="succeeded", message=_fake_msg(json.dumps({"lines": lines})))))
+        return iter(out)
+
+
+def test_batch_chunking_beats_truncation(monkeypatch, tmp_path):
+    # REGRESSAO (causa-raiz cap.15, medida no 15_06): o endpoint de batch TRUNCA a saida estruturada
+    # longa (~100 linhas/resposta, deterministico -> 120/221 sempre faltando, re-mandar nao adianta).
+    # Fix: CHUNKING — quebrar a cena em requests <= _BATCH_CHUNK; cada um volta completo -> converge.
+    tok = context_pack.TOKEN
+    (tmp_path / "artifacts" / "ch_96_01").mkdir(parents=True)
+    lines = [{"offset": f"0x{i:02x}", "source": f"L{i}{tok}x"} for i in range(20)]   # 20 multi-linha
+    packs = {"ch_96_01": {"scene_id": "96_01", "tm_exact": [], "lines": lines}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt",
+                        lambda pack, carta="": "P " + " ".join("o:" + r["offset"] for r in pack["lines"]))
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    trunc = _FakeTruncating(5)        # o "modelo" so devolve 5 linhas por resposta
+
+    # SEM chunking (chunk grande): 1 request de 20 -> volta 5; em 2 rodadas nao alcança as 20 -> falha
+    monkeypatch.setattr(model, "_BATCH_CHUNK", 100)
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=trunc)))
+    st = model.batch_translate(tmp_path, ["ch_96_01"], poll_seconds=0, max_rounds=2)
+    assert st["ch_96_01"] == "coverage_failed", "sem chunking, a truncação impede a cobertura no orçamento de rodadas"
+
+    # COM chunking (5 linhas/chunk <= teto de truncação): cada chunk volta completo -> converge na rodada 0
+    (tmp_path / "artifacts" / "ch_96_01" / "translations_96_01.json").unlink(missing_ok=True)
+    trunc2 = _FakeTruncating(5)
+    monkeypatch.setattr(model, "_BATCH_CHUNK", 5)
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=trunc2)))
+    st = model.batch_translate(tmp_path, ["ch_96_01"], poll_seconds=0, max_rounds=2)
+    assert st["ch_96_01"] == "written", "com chunking (<= teto) a cena CONVERGE no batch (-50% capturado)"
+    d = json.loads((tmp_path / "artifacts" / "ch_96_01" / "translations_96_01.json").read_text("utf-8"))
+    assert len(d["lines"]) == 20, "todas as 20 linhas cobertas via chunks"
+
+
+def test_batch_retries_transient_network(monkeypatch, tmp_path):
+    # REGRESSAO (cap.18): o back-batch morreu por TIMEOUT DE REDE — as chamadas de batch (create/results)
+    # nao tinham backoff (so o caminho interativo/_stream_final tinha). Agora _with_backoff cobre TODOS
+    # os pontos de rede do batch. Fake levanta erro transitorio 1x em create E em results -> deve re-tentar.
+    import httpx
+    monkeypatch.setattr(model.time, "sleep", lambda *a, **k: None)   # nao espera o backoff no teste
+    (tmp_path / "artifacts" / "ch_98_01").mkdir(parents=True)
+    packs = {"ch_98_01": {"scene_id": "98_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
+    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "P")
+    monkeypatch.setattr(model, "_carta_text", lambda: "C")
+    n = {"create": 0, "results": 0}
+
+    class _Flaky(_FakeBatches):
+        def create(self, requests):
+            n["create"] += 1
+            if n["create"] == 1:
+                raise httpx.ConnectError("blip de rede")     # cai na 1a, cura no retry
+            return super().create(requests)
+
+        def results(self, _id):
+            n["results"] += 1
+            if n["results"] == 1:
+                raise httpx.ReadTimeout("timeout no fetch dos resultados")
+            return super().results(_id)
+
+    fb = _Flaky({"ch_98_01": [_btext(["0x1"])]})
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    st = model.batch_translate(tmp_path, ["ch_98_01"], poll_seconds=0, max_rounds=1)
+    assert st["ch_98_01"] == "written", "retry de rede -> o batch ainda converge (nao morre no timeout)"
+    assert n["create"] == 2 and n["results"] == 2, "create e results foram re-tentados 1x apos o erro transitorio"
+
+
+def test_merge_best_parity_keeps_good_line(monkeypatch):
+    # uma re-rodada que REGRIDE uma linha ja boa nao pode desfazer o ganho (o dict.update cego perdia)
+    tok = context_pack.TOKEN
+    srcmap = {"0x1": f"a{tok}b"}
+    dest = {"0x1": {"t": f"x{tok}y"}}                         # ja BOA (1 token, como a fonte)
+    model._merge_best_parity(dest, {"0x1": {"t": "sem quebra"}}, srcmap)   # nova RUIM (0 token)
+    assert dest["0x1"]["t"] == f"x{tok}y", "linha boa preservada contra regressao"
+    model._merge_best_parity(dest, {"0x1": {"t": f"p{tok}q"}}, srcmap)     # nova tb boa -> usa a nova
+    assert dest["0x1"]["t"] == f"p{tok}q"
+
+
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
@@ -552,6 +680,23 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
                         {"status": "verified", "scene": scene, "verified": True})
     run_chapter.run_chapter(root, "99", backend="api", batch=True)
     assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
+
+
+def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
+    # TETO DE GASTO: aborta ANTES da proxima cena quando o custo do capitulo passa de --max-usd.
+    root = _fake_chapter(tmp_path, ("99_01", "99_02", "99_03"))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    ran = []
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: ran.append(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    # custo do capitulo cresce $2 por cena ja rodada (mock do ledger)
+    monkeypatch.setattr(run_chapter, "_chapter_cost", lambda r, c: 2.0 * len(ran))
+    res = run_chapter.run_chapter(root, "99", backend="api", max_usd=3.0)
+    # antes 99_01: $0<3 roda; antes 99_02: $2<3 roda; antes 99_03: $4>=3 ABORTA
+    assert res["status"] == "stopped_budget" and res["stopped_at"] == "ch_99_03"
+    assert ran == ["ch_99_01", "ch_99_02"], "para antes da 3a cena (teto estourado)"
 
 
 # ----------------------- back-translation em BATCH (Tier 1 de custo) ----------------------
