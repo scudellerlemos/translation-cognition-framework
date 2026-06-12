@@ -30,6 +30,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
@@ -86,12 +87,12 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     scene_id = pack["scene_id"]
-    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
+    out = paths.translations(root, scene, scene_id)
     if backend == "in-session":
         if out.is_file():
             return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
         return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],
-                "prompt": str(root / "artifacts" / scene / "scene_prompt.md"),
+                "prompt": str(paths.scene_prompt(root, scene)),
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
@@ -108,7 +109,7 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None):
     """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
     root = Path(root)
     scene_id = context_pack.scene_id_of(scene)
-    out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
+    out = paths.back_translation(root, scene, scene_id)
     if not high_lines:
         return {"status": DONE, "reviewed": 0, "path": None}
     if backend == "in-session":
@@ -116,7 +117,7 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None):
         if out.is_file():
             return {"status": READY, "path": str(out), "reviewed": len(high_lines)}
         return {"status": AWAITING, "reviewed": len(high_lines),
-                "prompt": str(root / "artifacts" / scene / f"back_prompt_{scene_id}.md"),
+                "prompt": str(paths.back_prompt(root, scene, scene_id)),
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_BACK
@@ -140,7 +141,7 @@ def _write_back_prompt(root, scene, scene_id, high_lines):
         if h.get("risk_notes"):
             L.append(f"- notas  : {h['risk_notes']}")
         L.append("")
-    (root / "artifacts" / scene / f"back_prompt_{scene_id}.md").write_text("\n".join(L), encoding="utf-8")
+    (paths.back_prompt(root, scene, scene_id)).write_text("\n".join(L), encoding="utf-8")
 
 
 # ------------------------------- API backend ----------------------------------
@@ -267,7 +268,7 @@ def log_api_call(root, scene, kind, model, usage, *, batch=False):
            "batch": bool(batch), "usage": dict(usage),
            "cost_usd": round(cost_of(model, usage, batch=batch), 5)}
     try:
-        p = Path(root) / "artifacts" / "api_ledger.jsonl"
+        p = paths.ledger(root)
         with p.open("a", encoding="utf-8") as f:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     except Exception:
@@ -512,7 +513,7 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
     """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a estouro)."""
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
-    out = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
+    out = paths.translations(root, scene, pack['scene_id'])
     if not out.is_file():
         return []
     data = json.loads(out.read_text(encoding="utf-8"))
@@ -528,7 +529,7 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
     scene_id = pack["scene_id"]
-    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
+    out = paths.translations(root, scene, scene_id)
     full = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
     offset_set = set(offsets)
     sub = dict(pack)
@@ -594,7 +595,7 @@ def _translate_params(pack, model, note=""):
 
 
 def _write_translations(root, scene, data):
-    out = Path(root) / "artifacts" / scene / f"translations_{context_pack.scene_id_of(scene)}.json"
+    out = paths.translations(root, scene, context_pack.scene_id_of(scene))
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
@@ -697,7 +698,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
-        existing = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
+        existing = paths.translations(root, scene, pack['scene_id'])
         if existing.is_file():
             try:
                 ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
@@ -823,7 +824,7 @@ def high_risk_lines(root, scene):
     """Linhas risco>=high/critical do translation_plan_<scene_id>.json (candidatas a back-translation).
     Le o plano do conector (existe apos build_plan). Fonte unica — run_scene e o batch leem daqui."""
     scene_id = context_pack.scene_id_of(scene)
-    plan = Path(root) / "artifacts" / scene / f"translation_plan_{scene_id}.json"
+    plan = paths.translation_plan(root, scene, scene_id)
     if not plan.is_file():
         return []
     lines = json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
@@ -852,7 +853,7 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
     status, highs, reqs = {}, {}, []
     for scene in scenes:
         scene_id = context_pack.scene_id_of(scene)
-        out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
+        out = paths.back_translation(root, scene, scene_id)
         hl = high_risk_lines(root, scene)
         if not hl:
             status[scene] = "no_high"
@@ -884,7 +885,7 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
             data = json.loads(_text_of(msg))
             data["reviewed"] = len(data.get("entries", []))
             scene_id = context_pack.scene_id_of(scene)
-            (root / "artifacts" / scene / f"back_translation_{scene_id}.json").write_text(
+            (paths.back_translation(root, scene, scene_id)).write_text(
                 json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
             status[scene] = "reviewed"
         except Exception:

@@ -36,6 +36,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 from context_pack import scene_id_of, _present, _pos  # noqa: E402
 
 # sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").
@@ -87,7 +88,7 @@ sirs madam madams milord milady yessir yep yup nope
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
     """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id)."""
-    names = [p.parent.name for p in (root / "artifacts").glob(f"ch_{chap}_*/dialogs.csv")]
+    names = [p.parent.name for p in paths.artifacts(root).glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=scene_id_of)
 
 
@@ -101,13 +102,13 @@ def _kb_blob(root: Path) -> str:
     """Blob lowercased de TUDO que a KB conhece como nome/termo: glossary (term+aliases) + entities
     (canonical+aliases). E contra ISTO que perguntamos se um candidato esta coberto (via _present)."""
     g_parts, e_parts = [], []
-    g = root / "artifacts" / "glossary.csv"
+    g = paths.glossary(root)
     if g.is_file():
         with g.open(encoding="utf-8") as fh:
             for r in csv.DictReader(fh):
                 g_parts.append(r.get("term", "") or "")
                 g_parts.append(r.get("aliases", "") or "")
-    e = root / "artifacts" / "entities.csv"
+    e = paths.entities(root)
     if e.is_file():
         with e.open(encoding="utf-8") as fh:
             for r in csv.DictReader(fh):
@@ -162,7 +163,7 @@ def _scan(root: Path, scenes: list[str]):
     """[(scene_id, source_text)] por cena (concatena as linhas-fonte do dialogs.csv)."""
     per = []
     for scene in scenes:
-        f = root / "artifacts" / scene / "dialogs.csv"
+        f = paths.dialogs(root, scene)
         if not f.is_file():
             continue
         rows = context_pack.load_dialogs(f)
@@ -260,7 +261,7 @@ def discover(root, chap) -> dict:
 
 
 def _reconciled(root: Path) -> bool:
-    rl = root / "artifacts" / "research_log.md"
+    rl = paths.research_log(root)
     return rl.is_file() and bool(
         re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I))
 
@@ -352,7 +353,7 @@ def write_worklist(root, chap) -> Path:
     L.append("## Ja cobertos pela KB (conferencia)")
     L.append(", ".join(r["cand"] for r in d["covered"]) or "_(nenhum)_")
     L.append("")
-    out = root / "artifacts" / f"kb_phase_worklist_{chap}.md"
+    out = paths.kb_worklist(root, chap)
     out.write_text("\n".join(L), encoding="utf-8")
     return out
 
