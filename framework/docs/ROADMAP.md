@@ -82,8 +82,11 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   omite `effort` p/ Haiku/Sonnet-4.5 (espelha o interativo). **Validado OFFLINE**: o fake do batch agora
   **rejeita `effort` em request Haiku** (mimetiza o 400) — `test_batch_tiering_routes_models` **falha no
   código antigo** e passa no novo; 45 testes verdes. **Defesa extra mantida** (`_BATCH_CHUNK`=60 + merge
-  best-parity): protege contra truncação real de resposta longa em cenas grandes. ⚠️ **Falta confirmar ao
-  vivo em 1 cena** (15_06) que fecha `written` (−50% no ledger). > **NB metodológico (3 diagnósticos até
+  best-parity): protege contra truncação real de resposta longa em cenas grandes. ✅ **CONFIRMADO VIVO
+  (15_06, run de 1 cena):** convergiu `written` com **5 requests batch=True** (3× Haiku tier cheap + 2×
+  Sonnet tier main), custo **$0,1484** — pela 1ª vez o translate fecha NO batch (−50%) **e o tiering Haiku
+  engata** (as 120 single-line que antes davam 400). Mesma cena no interativo full-price custava ~$0,40–0,64
+  → ~65% mais barato. > **NB metodológico (3 diagnósticos até
   acertar):** (1º) "faltava nota corretiva", (2º) "re-mandar fragmento vs cena inteira", (3º) "truncação" —
   todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
   (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
