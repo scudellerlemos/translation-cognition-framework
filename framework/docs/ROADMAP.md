@@ -86,7 +86,14 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   (15_06, run de 1 cena):** convergiu `written` com **5 requests batch=True** (3× Haiku tier cheap + 2×
   Sonnet tier main), custo **$0,1484** — pela 1ª vez o translate fecha NO batch (−50%) **e o tiering Haiku
   engata** (as 120 single-line que antes davam 400). Mesma cena no interativo full-price custava ~$0,40–0,64
-  → ~65% mais barato. > **NB metodológico (3 diagnósticos até
+  → ~65% mais barato.
+- ✅✅ **CONFIRMADO EM ESCALA DE CAPÍTULO (cap.16, 1ª run de cap. com tudo consertado):** **5/5 cenas
+  `written` no batch → verified** (round-trip idêntico), **ZERO fallback interativo** (46/46 translate em
+  batch=True: 26 Haiku + 20 Sonnet), chunking segurou a cena de **1.334 linhas** (16_01). **Custo: $1,4154**
+  (delta do cap.; teto `--max-usd 3` não chegou perto) — vs ~$6,5 se rodasse com o bug (≈78% mais barato).
+  **Tiering MEDIDO:** Haiku $0,32 **ativo** (estava congelado $0,71 por 2 caps). Previsão ($0,0007/linha →
+  ~$1,46) cravada no real ($1,42). **R5 fechado: batch −50% + tiering + back-batch + guardrails de custo
+  todos vivos e medidos.** > **NB metodológico (3 diagnósticos até
   acertar):** (1º) "faltava nota corretiva", (2º) "re-mandar fragmento vs cena inteira", (3º) "truncação" —
   todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
   (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
