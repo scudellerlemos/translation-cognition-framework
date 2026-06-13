@@ -209,6 +209,16 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | R#2g | **vazamento de GÊNERO pt-BR** (ele/ela onde o EN é neutro) — o que o `spoiler_check` de nomes NÃO pegava | contraparte observável de gênero | ✅ **feito** — `spoiler_check.check_gender`: campo `gender_quarantine` no ledger + heurística de co-ocorrência (marcador de gênero pt-BR junto a entidade pré-reveal). Mecanismo ativo; marcação real aguarda caso confirmado por fonte (não fabricar spoiler = não recair no R#4) |
 | R#4 | **a IA reconcilia a própria KB** (sem segundo par de olhos no delta) | digest leve de ratificação | ✅ **feito (digest)** — `kb_review.py`: relance por capítulo das entidades/termos novos `(cap.N)` + fonte (research_log) + flags (`genero a confirmar`/`sem fonte`/`beyond_frontier`). Read-only, não-bloqueante (evita o overengineering do H5). cap.19: 11 novas, 4 flagadas (Shichirya `genero a confirmar`, Raiko `beyond_frontier`) |
 
+**Piso de qualidade HUMANO (supera a auto-avaliação por IA — `quality_review.py`):**
+A back-translation (Opus julgando Sonnet/Haiku) custa e não substitui um humano lendo o pt-BR. O fluxo
+human-in-the-loop fecha o nº 2 na raiz, governança *humano propõe → gate aprova → script aplica*:
+`export <cap>` gera **1 CSV com o capítulo inteiro**, cada linha **marcada deterministicamente** (sem IA)
+na coluna `revisar` — `risco:high/critical`, `amostra` (5% do Haiku), `identico-fonte` (provável
+não-traduzido), `tamanho` (outlier), `pt-PT?`. O humano preenche `correcao` (texto certo → aplicado
+**verbatim, 0 IA**: só charset/paridade/round-trip) ou `nota` (instrução → IA re-traduz **só aquela
+linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 691 marcadas (391 high +
+199 amostra + 77 idêntico-fonte + 37 critical). Custo de aplicar uma revisão verbatim = **$0**.
+
 **Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
 - **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
   de I/O escolhe o conector certo. Extrair quando houver **2–3 conectores**. Conectores agrupam por
