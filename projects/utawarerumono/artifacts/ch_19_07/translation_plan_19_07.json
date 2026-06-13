@@ -1620,18 +1620,18 @@
     {
       "offset": "0x18b173",
       "text_source": "you in full.",
-      "speaker": "Oshtor",
+      "speaker": "Miruhj",
       "entities_present": [
-        "Oshtor"
+        "Miruhj"
       ],
-      "tone_register": "formal, nobre, comedido; General da Direita (alias Ukon)",
-      "intent": "conforto formal com promessa de esclarecimento total",
-      "risk_level": "high",
-      "base_translation": "você em cheio.",
+      "tone_register": "formal, deferente",
+      "intent": "informar que Mikazuchi explicará tudo em detalhe",
+      "risk_level": "medium",
+      "base_translation": "por inteiro.",
       "byte_budget": 12,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "SPOILER: não antecipe identidade; manter tom formal Ukon até reveal"
+      "risk_notes": "budget 12 bytes transliterado: 'integralmente' = 13 bytes sem acento; usar 'por inteiro' = 10 bytes"
     },
     {
       "offset": "0x18b180",
@@ -3060,18 +3060,18 @@
     {
       "offset": "0x18bd56",
       "text_source": "support.",
-      "speaker": "Oshtor",
+      "speaker": "Raiko",
       "entities_present": [
-        "Oshtor"
+        "Raiko"
       ],
-      "tone_register": "formal, nobre",
-      "intent": "agradecimento formal por apoio",
-      "risk_level": "high",
-      "base_translation": "apoio.",
+      "tone_register": "frio, informativo",
+      "intent": "revelar que Haku realiza tarefas que Oshtor não pode apoiar publicamente",
+      "risk_level": "medium",
+      "base_translation": "apoiar.",
       "byte_budget": 8,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Pré-reveal Oshtor; tom formal/nobre mantido; 'support' = ajuda/apoio; sem antecipar morte ou sacrifício"
+      "risk_notes": "'support' aqui é verbo implícito 'apoiar'; budget 8 bytes — forma curta necessária"
     },
     {
       "offset": "0x18bd5f",
@@ -6228,18 +6228,18 @@
     {
       "offset": "0x18d78a",
       "text_source": "leer of a vicious predator toying with its prey.",
-      "speaker": "Narrator",
+      "speaker": "Haku",
       "entities_present": [
-        "Narrator"
+        "Haku"
       ],
-      "tone_register": "narrativo",
-      "intent": "descrever expressão predatória",
-      "risk_level": "high",
-      "base_translation": "riso de predador feroz brincando com sua presa.",
+      "tone_register": "narração casual, levemente apreensivo",
+      "intent": "descrever Mikazuchi como predador olhando a presa",
+      "risk_level": "medium",
+      "base_translation": "olhar de predador feroz mirando sua presa.",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Mikazuchi revela natureza predatória—tom deve ser sinistro; impacto narrativo crítico"
+      "risk_notes": "'leer' = olhar maldoso, não riso; budget 48 bytes transliterado: versão abaixo ~47 bytes sem acentos"
     },
     {
       "offset": "0x18d7bb",
@@ -7368,14 +7368,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "reflexivo, decidido",
-      "intent": "conclusão sobre intenção do Homem",
-      "risk_level": "high",
-      "base_translation": "Do jeito que vejo, ele está tramando algo ruim.",
+      "tone_register": "narração informal, resignado",
+      "intent": "concluir que Mikazuchi está tramando algo, de qualquer ângulo que se veja",
+      "risk_level": "medium",
+      "base_translation": "De qualquer jeito, ele está tramando algo ruim.",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "'no good' = vagueza intencional mantida; nunca especificar o 'quê' da má-intenção — preservar ameaça aberta"
+      "risk_notes": "'However you look at this' = qualquer perspectiva, não só a do narrador; encurtado para caber no budget"
     },
     {
       "offset": "0x18e0da",
@@ -10547,8 +10547,8 @@
     }
   ],
   "total_lines": 659,
-  "high_lines": 83,
-  "medium_lines": 87,
+  "high_lines": 79,
+  "medium_lines": 91,
   "needs_review": [],
   "plan_version": "chapter-19_07-v1"
 }

@@ -3641,12 +3641,12 @@
       "t": "*Puxão, puxão*..."
     },
     "0x149926": {
-      "speaker": "Rulutieh",
-      "tone_register": "grito, confuso",
-      "intent": "reação de choque",
+      "speaker": "Anju",
+      "tone_register": "indignado distorcido pela bochecha presa",
+      "intent": "Anju tenta protestar enquanto Kuon puxa sua bochecha, fala sai distorcida",
       "risk_level": "high",
-      "risk_notes": "Transformação cística/de identidade começa aqui. A fala com 'Vhat' (substituição de V por sonoridade especial) e distorção precisa soar assustadora sem resolver o quê está acontecendo. Manter ambiguidade de gênero/identidade.",
-      "t": "Brghah? Vhat are oo voing!?"
+      "risk_notes": "Fala distorcida deve ser localizada em pt-BR mantendo efeito cômico de bochecha presa; evitar deixar em inglês",
+      "t": "Bwah? O que você tá fazendo!?"
     },
     "0x149972": {
       "speaker": "Rulutieh",
@@ -3849,12 +3849,12 @@
       "t": "sabe que ela não é só uma babá glorificada."
     },
     "0x14a069": {
-      "speaker": "Haku",
-      "tone_register": "afirmativo, solene",
-      "intent": "declarar autoridade conferida ao Mikado",
-      "risk_level": "critical",
-      "risk_notes": "SPOILER CONTROL: 'Mikado' é título/distância; NÃO insinue vínculo pessoal. 'Guardian' = Guardiã (cargo). Preservar solenidade sem antecipar revelações futuras. Budget crítico (45 bytes).",
-      "t": "O Mikado a nomeou como Guardiã dele mesmo."
+      "speaker": "Personagem",
+      "tone_register": "informativo, respeitoso",
+      "intent": "Explica que o próprio Mikado nomeou Munechika como Guardiã",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Mikado em pessoa a nomeou como Guardiã."
     },
     "0x14a0c6": {
       "speaker": "Munechika",
@@ -11874,11 +11874,11 @@
     },
     "0x151fa3": {
       "speaker": "Haku",
-      "tone_register": "romantic, vulnerable",
-      "intent": "express falling for someone",
-      "risk_level": "high",
-      "risk_notes": "romantic declaration; context of physical closeness (touch next line); preserve intimacy and vulnerability; ambiguous referent (spoiler control: don't resolve who he's thinking of)",
-      "t": "Acho que taria caindo por você."
+      "tone_register": "cotidiano, levemente irônico",
+      "intent": "Haku diz que estaria se apaixonando por Rulutieh",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "acho que me apaixonaria por você."
     },
     "0x151ff9": {
       "speaker": "Haku",
@@ -12786,11 +12786,11 @@
     },
     "0x123eb5": {
       "speaker": "Mikazuchi",
-      "tone_register": "comando velado como pergunta, tom de autoridade",
-      "intent": "imposição de tarefa; coerção mascarada de cortesia",
-      "risk_level": "high",
-      "risk_notes": "Mikazuchi força Haku a aceitar tarefa através de 'pergunta'. Tom deve ser imperioso. Risco alto: spoiler de poder/posição.",
-      "t": "Você VA entretê-me, não é verdade, rapaz?"
+      "tone_register": "enigmático, autoritário",
+      "intent": "Mikazuchi afirma que Haku VAI entretê-lo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você VAI me entreter, não vai, rapaz?"
     },
     "0x123f3c": {
       "speaker": "Haku",
@@ -15690,11 +15690,11 @@
     },
     "0x12f913": {
       "speaker": "Homem",
-      "tone_register": "enigmático, frio, ligeiramente irônico",
-      "intent": "comentar que Kuon está muito abalada (pergunta retórica)",
-      "risk_level": "high",
-      "risk_notes": "Homem = figura de memória (spoiler major); manter tom enigmático/frio, não resolver quem é; preservar ironia da fala",
-      "t": "Ah, caro... ela está bem abalada, não é?"
+      "tone_register": "enigmático, frio",
+      "intent": "Observação dúbia sobre o estado emocional do grupo",
+      "risk_level": "medium",
+      "risk_notes": "'Oh, dear' é interjeição de lamento/surpresa; localizada como 'Puxa'. Ambiguidade preservada.",
+      "t": "Puxa... ela está bem abalada, não está?"
     },
     "0x12f940": {
       "speaker": "Ukon",
@@ -18402,11 +18402,11 @@
     },
     "0x12209d": {
       "speaker": "Haku",
-      "tone_register": "cotidiano/confuso",
-      "intent": "pensamento analítico",
-      "risk_level": "high",
-      "risk_notes": "CRÍTICO: Mikazuchi é agente da Guarda Imperial; Oshtor (SPOILER MAJOR: será revelado como Ukon/identidade dupla) é 'contraparte' dele. Tradução deve preservar o distanciamento profissional, não antecipar conexão. 'counterpart' = rival/oposto?",
-      "t": "da Guarda Imperial? O rival de Oshtor?"
+      "tone_register": "coloquial reflexivo",
+      "intent": "Haku questiona se a tensão de Nekone vem do destino: a mansão da Guarda Imperial, contraparte de Oshtor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "da Guarda Imperial? A contraparte de Oshtor?"
     },
     "0x1220fb": {
       "speaker": "Haku",
@@ -18426,11 +18426,11 @@
     },
     "0x122182": {
       "speaker": "Haku",
-      "tone_register": "cotidiano/confuso",
-      "intent": "teasing/questionamento",
-      "risk_level": "high",
-      "risk_notes": "CRÍTICO GÊNERO: Nekone é mulher; português forçaria 'nervosa' (feminino). Evitar - usar 'nervoso' ou reformular (ex.: 'você está com medo?'). Preservar ambiguidade.",
-      "t": "Não me diga que você está nervoso, Nekone?"
+      "tone_register": "coloquial, provocativo",
+      "intent": "Haku pergunta se Nekone está nervosa, usando tom levemente irônico",
+      "risk_level": "medium",
+      "risk_notes": "Nekone é feminina; adjetivo deve concordar: 'nervosa'",
+      "t": "Não me diga que está nervosa, Nekone?"
     },
     "0x1221a8": {
       "speaker": "Nekone",
@@ -23553,12 +23553,12 @@
       "t": "Oho...?"
     },
     "0x12315c": {
-      "speaker": "Haku",
-      "tone_register": "desperate, protective, stammering",
-      "intent": "shield Nekone from Mikazuchi, willing sacrifice",
-      "risk_level": "high",
-      "risk_notes": "CRITICAL: Haku volunteers to fight Mikazuchi to protect Nekone. 'get past him f-first' = stammer shows fear + determination. Tone = resigned to likely death but determined. Preserve stammer; preserve fragility.",
-      "t": "Bem, você vai ter que passar por mim p-primeiro."
+      "speaker": "Nekone",
+      "tone_register": "hesitante, com medo mas teimosa",
+      "intent": "Nekone diz que Mikazuchi terá que passar por ela primeiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, terá que passar por ele p-primeiro."
     },
     "0x1231b8": {
       "speaker": "Mikazuchi",
@@ -23609,12 +23609,12 @@
       "t": "nada?"
     },
     "0x123348": {
-      "speaker": "Mikazuchi",
-      "tone_register": "formal, grave, melancholic",
-      "intent": "promise of honor despite violence",
-      "risk_level": "high",
-      "risk_notes": "Mikazuchi promises proper burial for Nekone if she falls. Reveals code of honor beneath coldness. 'I'll see to it' = formal pledge. Tone = respect for the fallen, but certainty of death. Do NOT soften; preserve gravity.",
-      "t": "Vou me certificar de que ela receba um enterro adequado..."
+      "speaker": "Soldado",
+      "tone_register": "solene, resignado",
+      "intent": "Soldado jura garantir enterro digno ao 'nobre tolo'",
+      "risk_level": "medium",
+      "risk_notes": "Pronome 'he' refere ao Haku (masculino); tradução anterior trocou para 'ela'. Corrigido.",
+      "t": "Vou garantir que ele tenha um enterro adequado..."
     },
     "0x1233d0": {
       "speaker": "Haku",
@@ -28594,11 +28594,11 @@
     },
     "0x153970": {
       "speaker": "Haku",
-      "tone_register": "desperate struggle, fragmented speech",
-      "intent": "expressing inability to maintain grip through strain",
-      "risk_level": "high",
-      "risk_notes": "protagonist voice criticality; fragmented phrasing = torpor/panic consistency; preserve stuttering pattern",
-      "t": "Argh... Urk... C-Consigo... um... aperto... firme...!!"
+      "tone_register": "tenso, desesperado, fragmentado",
+      "intent": "Haku não consegue firmar um bom aperto enquanto está pendurado",
+      "risk_level": "medium",
+      "risk_notes": "Linha com negação 'Can't'; manter o caráter fragmentado e a negativa clara",
+      "t": "N-Não... consigo... um... aperto... firme...!!"
     },
     "0x1539fd": {
       "speaker": "Haku (narration)",
@@ -29378,11 +29378,11 @@
     },
     "0x15529a": {
       "speaker": "Haku",
-      "tone_register": "descriptive, amazed",
-      "intent": "describe Nosuri's self-disclosure",
-      "risk_level": "high",
-      "risk_notes": "Critical spoiler control: Nosuri's status as thief must not be pre-revealed in tone/phrasing. Translate as if narrating a surprise, not confirming known fact. Maintain ambiguity of her identity.",
-      "t": "acabou revelando o segredo dela mesma."
+      "tone_register": "cotidiano, aliviado/reflexivo",
+      "intent": "Haku percebe que o segredo foi revelado pela própria Nosuri, sozinha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ela mesma entregou o segredo sozinha."
     },
     "0x1552e9": {
       "speaker": "Haku",
@@ -29793,12 +29793,12 @@
       "t": "Quer tentar, meu bem?"
     },
     "0x14d7d6": {
-      "speaker": "Haku (narração 1ª pessoa)",
-      "tone_register": "confuso; semi-consciente (voz de Protagonista)",
-      "intent": "descrever ação de imitar outro personagem",
-      "risk_level": "high",
-      "risk_notes": "Protagonista tem voz fragmentada/torpor (criticality: high). Verificar se a imitação preserva tom desorientado. 'bringing it to my mouth' = ação clara, mas precedida de torpor — manter a naturalidade sem resolver a confusão.",
-      "t": "imitando Kuon e levando ao meu dedo à boca."
+      "speaker": "Haku",
+      "tone_register": "cotidiano, resignado",
+      "intent": "Haku aceita comer da mão estendida de Atuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "imitando Kuon e levando à minha boca."
     },
     "0x14d802": {
       "speaker": "Maroro (ou Rulutieh)",
@@ -31065,12 +31065,12 @@
       "t": "Bem-vindo."
     },
     "0x135b17": {
-      "speaker": "Maroro",
-      "tone_register": "arcaico pomposo; ofendido",
-      "intent": "protestar contra insulto",
-      "risk_level": "high",
-      "risk_notes": "Maroro = cício 'servant' soaria 'shervant' em JP; protestar com pompa empolada; gag de voz crítico",
-      "t": "Q-quem você está chamando de 'rapazote'!?"
+      "speaker": "Anju",
+      "tone_register": "imperioso indignado",
+      "intent": "Anju reage indignada ao ser chamada de 'servant boy' por Haku, questionando o termo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E hey, p-quem você está chamando de 'serviçal'!?"
     },
     "0x135b47": {
       "speaker": "Maroro",
@@ -33377,12 +33377,12 @@
       "t": "Sobre Oshtor."
     },
     "0x138943": {
-      "speaker": "Protagonista",
-      "tone_register": "confuso, desorientado, semi-consciente",
-      "intent": "expressar admiração pela atitude de Oshtor (contratação de forasteiro)",
-      "risk_level": "high",
-      "risk_notes": "Oshtor é twist final (spoiler critical) — não antecipar morte/sacrifício/herança de máscara; traduzir como ato presente de general vivo; tom de admiração por generosidade mercenária (pré-reveal)",
-      "t": "até alguém como eu para ajudá-lo."
+      "speaker": "Haku",
+      "tone_register": "cotidiano, autodepreciativo",
+      "intent": "Haku comenta que Oshtor contratou até um joão-ninguém como ele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "até me contratar, um joão-ninguém, pra ajudá-lo."
     },
     "0x1389cd": {
       "speaker": "Garota",

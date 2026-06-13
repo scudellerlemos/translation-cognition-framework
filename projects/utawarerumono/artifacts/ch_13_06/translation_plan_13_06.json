@@ -968,14 +968,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, dramático",
-      "intent": "Continuar: coração partido de preocupação; Ukon permitiu ficar",
-      "risk_level": "high",
-      "base_translation": "torturava meu coração. Ukon me permitiu ficar\\n",
+      "tone_register": "arcaico-pomposo",
+      "intent": "Maroro explica que Ukon o mandou ficar quando pediu a graça",
+      "risk_level": "medium",
+      "base_translation": "torturava meu coração. Ukon me mandou ficar,\\n",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo; referência a Ukon; manter pompa"
+      "risk_notes": "'bade me stay' = mandou/ordenou ficar; manter arcaísmo e precisão semântica; budget apertado"
     },
     {
       "offset": "0x73d86",
@@ -1400,14 +1400,14 @@
       "entities_present": [
         "Moznu"
       ],
-      "tone_register": "grosseiro, machista",
-      "intent": "Atacar credulidade do subordinado por causa dos seios de Nosuri",
-      "risk_level": "high",
-      "base_translation": "Só porque você tinha um par de peitos\\n",
+      "tone_register": "grosseiro, lascivo, debochado",
+      "intent": "Moznu insulta o comparsa por acreditar em Nosuri por causa do físico dela",
+      "risk_level": "medium",
+      "base_translation": "Só porque você tem um belo par de peitos\\n",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Conteúdo sexualmente ofensivo; manter registro grosseiro do original; localizar com naturalidade"
+      "risk_notes": "'great pair' deve ser mantido com adjetivo (ex.: 'belo par'); 'tinha' no passado estava errado — corrigido para presente 'tem'."
     },
     {
       "offset": "0x7413b",
@@ -2113,8 +2113,8 @@
     }
   ],
   "total_lines": 132,
-  "high_lines": 23,
-  "medium_lines": 33,
+  "high_lines": 21,
+  "medium_lines": 35,
   "needs_review": [],
   "plan_version": "chapter-13_06-v1"
 }

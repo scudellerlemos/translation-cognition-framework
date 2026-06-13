@@ -696,14 +696,14 @@
       "entities_present": [
         "Rulutieh"
       ],
-      "tone_register": "tímido, formal",
-      "intent": "oferta de serviço",
-      "risk_level": "high",
-      "base_translation": "Nos serviremos.",
+      "tone_register": "formal, submissa",
+      "intent": "Declarar dever de serviço ao Mestre",
+      "risk_level": "low",
+      "base_translation": "Iremos servir.",
       "byte_budget": 15,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Fala de subserviência temática; manter tom de acatamento sem reforçar exploração indevida; preserve ambiguidade."
+      "risk_notes": ""
     },
     {
       "offset": "0x1841a8",
@@ -792,14 +792,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso, desorientado",
-      "intent": "observação chocada sobre sinceridade",
-      "risk_level": "high",
-      "base_translation": "Elas... são sérias. Não é que sejam, né.",
+      "tone_register": "narração informal, surpreso",
+      "intent": "Haku constata que as gêmeas falam sério, com desconforto cômico",
+      "risk_level": "low",
+      "base_translation": "Elas... são sérias. Não estão, né.",
       "byte_budget": 32,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Tom fragmentado de choque; as gêmeas acabam de falar coisa grave; não resolver a dinâmica, apenas refletir estupor de Haku."
+      "risk_notes": ""
     },
     {
       "offset": "0x184260",
@@ -3060,18 +3060,18 @@
     {
       "offset": "0x185507",
       "text_source": "Th-Th-That wasn't what I was talking about!",
-      "speaker": "Protagonista (narração)",
+      "speaker": "Rulutieh",
       "entities_present": [
-        "Protagonista (narração)"
+        "Rulutieh"
       ],
-      "tone_register": "confuso, indignação máxima",
-      "intent": "negar violentamente a intenção sexual",
-      "risk_level": "high",
-      "base_translation": "E-E-E isso não era o que eu tava falando!",
+      "tone_register": "agitado, embaraçado",
+      "intent": "Rulutieh nega em pânico que era disso que falava",
+      "risk_level": "low",
+      "base_translation": "I-I-Isso não era o que eu tava falando!",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku nega com gagueira máxima e indignação. 'Th-Th-That wasn't what' = gagueira tripla. Comédia pura. Manter 'E-E-E isso não era o que eu tava falando!'"
+      "risk_notes": ""
     },
     {
       "offset": "0x185533",
@@ -3624,14 +3624,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso emotivo",
-      "intent": "evocar contato quente",
-      "risk_level": "high",
-      "base_translation": "o toque quente deles...",
+      "tone_register": "narração introspectiva, suave",
+      "intent": "Descrever o toque quente das gêmeas",
+      "risk_level": "low",
+      "base_translation": "o toque quente delas...",
       "byte_budget": 19,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "sensacao de contato - proteger neutralidade de genero; 'their warm touch' em EN é genero-neutro; pt-BR forcaria 'delas/dele/deles' - usar construcao passiva ou 'esse calor'"
+      "risk_notes": ""
     },
     {
       "offset": "0x185a3f",
@@ -5091,7 +5091,7 @@
     }
   ],
   "total_lines": 318,
-  "high_lines": 39,
+  "high_lines": 35,
   "medium_lines": 53,
   "needs_review": [],
   "plan_version": "chapter-19_06-v1"

@@ -6664,14 +6664,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "enigmático, profético",
-      "intent": "sugerir plano sedutor contra Atuy",
-      "risk_level": "high",
-      "base_translation": "no Hakurokaku, ela deve estar carregada, né?",
+      "tone_register": "informal, confiante, ganancioso",
+      "intent": "concluir que a vítima deve ser rica por se hospedar no Hakurokaku",
+      "risk_level": "medium",
+      "base_translation": "no Hakurokaku, ela deve ser bem rica, né?",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade do falante ambígua (spoiler major); preservar tom ameaçador/cúmplice sem resolver quem é; tradução não deve insinuar vinculação pessoal com personagens revelados depois"
+      "risk_notes": "'loaded' = gíria para rico; usar equivalente coloquial pt-BR"
     },
     {
       "offset": "0xed958",
@@ -6824,14 +6824,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "enigmático, profético",
-      "intent": "descrição do plano sedutor (casamento)",
-      "risk_level": "critical",
-      "base_translation": "vou me casar e viver de bom grado por anos.",
+      "tone_register": "informal, ganancioso, sonhador",
+      "intent": "planejar viver na abundância após o golpe",
+      "risk_level": "low",
+      "base_translation": "vou me casar e viver como rei por anos.",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Contexto malicioso (manipulação/abuso); preservar frieza predatória do original; não suavizar tom para parecer 'carismático'; identidade ambígua deve sobreviver; gênero/relação em pt-BR não devem antecipar spoiler"
+      "risk_notes": ""
     },
     {
       "offset": "0xedae7",
@@ -8228,18 +8228,18 @@
     {
       "offset": "0xf1dad",
       "text_source": "out of me.",
-      "speaker": "Haku",
+      "speaker": "Homem",
       "entities_present": [
-        "Haku"
+        "Homem"
       ],
-      "tone_register": "confuso, desorientado, narrativo",
-      "intent": "pensamento sobre extração de verdade",
-      "risk_level": "high",
-      "base_translation": "pra mim.",
+      "tone_register": "informal, agressivo",
+      "intent": "ameaça de espancar até não levantar",
+      "risk_level": "low",
+      "base_translation": "de você.",
       "byte_budget": 10,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku pensa em como 'extrair' verdade (interrogatório implícito?); tom ambíguo/dark; não resolver intenção exata"
+      "risk_notes": ""
     },
     {
       "offset": "0xf1db8",
@@ -30344,14 +30344,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, admirado",
-      "intent": "Admirar a forma elegante da garrafa",
-      "risk_level": "high",
-      "base_translation": "Que forma shutil e shimétrica!\\n",
+      "tone_register": "pomposo, arcaico, entusiasmado",
+      "intent": "admirar a forma esguia e simétrica do objeto",
+      "risk_level": "medium",
+      "base_translation": "Que forma esguia e shimetrica!\\n",
       "byte_budget": 34,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Cicio obrigatório (sh). Linha curta, budget 34."
+      "risk_notes": "Cicio de Maroro (s→sh) deve aparecer; 'esguia' preserva sentido de slender; budget apertado — versão curta com \\n."
     },
     {
       "offset": "0x10395e",
@@ -31832,14 +31832,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico pomposo",
-      "intent": "exclamação de pânico chocado",
-      "risk_level": "high",
-      "base_translation": "Q-Qual!?",
+      "tone_register": "chocado, apavorado",
+      "intent": "exclamação de susto/incredulidade ante a revelação",
+      "risk_level": "low",
+      "base_translation": "Q-O quê!?",
       "byte_budget": 9,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "preservar gagueira (Wh-What = Q-Qual); reação de puro terror"
+      "risk_notes": ""
     },
     {
       "offset": "0x104e35",
@@ -35796,18 +35796,18 @@
     {
       "offset": "0x10bf51",
       "text_source": "quite nicely. It's been some time, hasn't it?",
-      "speaker": "Haku",
+      "speaker": "Karulau",
       "entities_present": [
-        "Haku"
+        "Karulau"
       ],
-      "tone_register": "formal, afetuoso",
-      "intent": "saudação de reencontro",
-      "risk_level": "high",
-      "base_translation": "bem legítimo. Faz tempo, não faz?",
+      "tone_register": "enigmático, elegante, levemente irônico",
+      "intent": "elogiar o quanto o gosto de Kuon evoluiu bem ao longo do tempo",
+      "risk_level": "low",
+      "base_translation": "muito bem. Já faz algum tempo, não faz?",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Reencontro não-marcado na cena; identidade da 'Mulher' preservada - manter ambiguidade, tom enigmático"
+      "risk_notes": ""
     },
     {
       "offset": "0x10bf7f",
@@ -45203,8 +45203,8 @@
     }
   ],
   "total_lines": 2825,
-  "high_lines": 300,
-  "medium_lines": 287,
+  "high_lines": 294,
+  "medium_lines": 289,
   "needs_review": [],
   "plan_version": "chapter-17_01-v1"
 }

@@ -664,14 +664,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "awed, observador",
-      "intent": "notar qualidades de portador de autoridade",
-      "risk_level": "high",
-      "base_translation": "Esse porte nobre, essa aura calma e coletada...",
+      "tone_register": "narração interna, admiração relutante",
+      "intent": "Haku observa o porte nobre de Oshtor com espanto",
+      "risk_level": "low",
+      "base_translation": "Esse porte nobre, essa aura calma e serena...",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Risco CRÍTICO spoiler: 'nobreza e aura' apontam para status elevado de Oshtor; tradução não deve resolver isso nem antecipar identidade verdadeira; manter 'alguém competente e digno' sem hierarquia clara."
+      "risk_notes": ""
     },
     {
       "offset": "0x113998",
@@ -2632,14 +2632,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "elogio_frio",
-      "intent": "cumprimento_dúbio",
-      "risk_level": "high",
-      "base_translation": "Discriminador de verdade.",
+      "tone_register": "enigmático, seco, aprovador",
+      "intent": "Homem concorda com a avaliação de Kuon sobre o solar, de forma ambígua",
+      "risk_level": "medium",
+      "base_translation": "Refinada, de fato.",
       "byte_budget": 22,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Homem elogia de forma ambígua; manter tom enigmático sem resolver ameaça/intenção verdadeira"
+      "risk_notes": "'Discriminating' = refinado/exigente; evitar 'discriminador' (conotação negativa em pt-BR). Budget 22 bytes: transliterado 'Refinada, de fato.' = 18 bytes — OK."
     },
     {
       "offset": "0x1149d8",
@@ -3107,8 +3107,8 @@
     }
   ],
   "total_lines": 194,
-  "high_lines": 15,
-  "medium_lines": 17,
+  "high_lines": 13,
+  "medium_lines": 18,
   "needs_review": [],
   "plan_version": "chapter-17_03-v1"
 }

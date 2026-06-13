@@ -546,10 +546,10 @@
     },
     "0x43745": {
       "speaker": "Kuon",
-      "tone_register": "firme, gentil",
-      "intent": "conclusão",
-      "risk_level": "high",
-      "risk_notes": "Budget 11 bytes transliterado. 'por agora.' = 9 bytes. OK.",
+      "tone_register": "cotidiano gentil",
+      "intent": "encerrar o assunto com calor, enfatizando que o empréstimo é por necessidade",
+      "risk_level": "low",
+      "risk_notes": "",
       "t": "por agora."
     },
     "0x43751": {
@@ -586,11 +586,11 @@
     },
     "0x437d6": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, pomposo",
-      "intent": "elogiar Haku em linguagem empolada",
+      "tone_register": "erudito cômico, arcaico, pomposo",
+      "intent": "Maroro pergunta orgulhoso se Haku testemunhou sua magia",
       "risk_level": "high",
-      "risk_notes": "voz arcaica de Maroro; arcaísmo e pompa devem ser mantidos",
-      "t": "Nobilíssimo e valoroso Mestre! Mestre Haku! Acaso não\\n"
+      "risk_notes": "Arcaísmo + cicio (s→sh) são a piada central; budget 51 transliterado. 'Didst thou witness' = pergunta afirmativa, sem negação. Verificar byte count sem acentos.",
+      "t": "Nobilíssimo e valorosho Meshtre! Meshtre Haku! Vós\\n"
     },
     "0x4380a": {
       "speaker": "Maroro",
@@ -994,11 +994,11 @@
     },
     "0x43f02": {
       "speaker": "Maroro",
-      "tone_register": "surpreso",
-      "intent": "exclamação de surpresa",
-      "risk_level": "high",
-      "risk_notes": "Budget 8 bytes transliterado. 'O que e?' = 7 bytes sem acento. Manter curtíssimo.",
-      "t": "O que é?"
+      "tone_register": "surpresa cômica",
+      "intent": "exclamação de espanto ao ver o objeto voar — chamado/interjeição, não pergunta real",
+      "risk_level": "medium",
+      "risk_notes": "'What ho?' é interjeição de espanto; 8 bytes sem acentos. 'Que foi?' = 7 bytes ASCII: cabe.",
+      "t": "Que foi?"
     },
     "0x43f0b": {
       "speaker": "Narrador",
@@ -1121,12 +1121,12 @@
       "t": "Vários dos homens próximos pegam em armas ao\\n"
     },
     "0x44133": {
-      "speaker": "NARRADOR",
-      "tone_register": "narrativo",
-      "intent": "continuação",
-      "risk_level": "high",
-      "risk_notes": "Budget 10 bytes transliterado. 'enquanto...' = 9 bytes. OK.",
-      "t": "enquanto..."
+      "speaker": "Narrador",
+      "tone_register": "narrativo neutro",
+      "intent": "continuação da narração: os homens obedecem ao comando de Ukon",
+      "risk_level": "medium",
+      "risk_notes": "'command...' é substantivo continuando a frase anterior; 10 bytes sem acentos. 'ao comando...' = 11 — usar 'às ordens...' = 10 bytes ASCII.",
+      "t": "às ordens..."
     },
     "0x4413e": {
       "speaker": "Narrador",
@@ -1321,12 +1321,12 @@
       "t": "Com um nó no estômago, me movo para obedecer,\\n"
     },
     "0x4447b": {
-      "speaker": "NARRADOR",
-      "tone_register": "narrativo",
-      "intent": "tentando fugir",
-      "risk_level": "high",
-      "risk_notes": "Budget 23 bytes transliterado. 'tentando fugir.' = 14 bytes. OK.",
-      "t": "tentando fugir."
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso, ação",
+      "intent": "descrever Haku tentando ao máximo fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tentando fugir ao máximo."
     },
     "0x44493": {
       "speaker": "Haku",
@@ -1386,11 +1386,11 @@
     },
     "0x4456e": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, pânico cômico",
-      "intent": "protestar que é impossível se levantar com medo",
+      "tone_register": "erudito cômico, arcaico, cicio",
+      "intent": "Maroro diz que pedir a ele para andar é tão impossível quanto pedir às árvores que criem pernas — defende sua paralisia com pompa",
       "risk_level": "high",
-      "risk_notes": "voz arcaica de Maroro em pânico; arcaísmo + cicio s→sh deve ser representado",
-      "t": "Peço-vosh que peça ash próprias árvores que se arranquem e\\n"
+      "risk_notes": "'Thou mayst well ask the trees' = 'bem poderieis pedir às árvores' (impossibilidade hiperbólica). Cicio obrigatório. Budget 52 transliterado; cortar redundância para caber.",
+      "t": "Bem poderieis pedir ash árvoresh que crieshem pernas!\\n"
     },
     "0x445a3": {
       "speaker": "Maroro",
@@ -1746,11 +1746,11 @@
     },
     "0x44c35": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, assustado",
-      "intent": "perguntar assustado que tipo de arma é essa",
+      "tone_register": "erudito cômico, arcaico, cicio",
+      "intent": "Maroro pergunta assustado que tipo de arma Kuon está preparando",
       "risk_level": "high",
-      "risk_notes": "voz arcaica de Maroro; pergunta empolada e assustada",
-      "t": "Q-Que tipo de arma art thou preparando?"
+      "risk_notes": "'art thou' estava em inglês na versão anterior; arcaísmo + cicio obrigatórios; back-translation necessária",
+      "t": "Q-Que tipo de arma esh tu preparash?"
     },
     "0x44c65": {
       "speaker": "Kuon",

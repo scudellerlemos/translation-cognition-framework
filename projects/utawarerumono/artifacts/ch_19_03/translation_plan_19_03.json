@@ -232,14 +232,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "pompa arcaica, exaustão melodramática",
-      "intent": "reclamação cômica; queixa sobre degraus",
-      "risk_level": "high",
-      "base_translation": "Senhor... por que tantos degraus assim...?",
+      "tone_register": "erudito cômico, pomposo, exausto",
+      "intent": "reclamar dos degraus com dramatismo empolado",
+      "risk_level": "medium",
+      "base_translation": "Cara... por que tantos degraus assim...?",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "arcaísmo ('vós/peço') e tom pomposo são a piada do Maroro; cicio (s→sh) deve emergir em 'degraus' se leia-se 'deshgraus' internamente; risco: perder o contraste entre pompa/fraqueza"
+      "risk_notes": "'Man...' é interjeição de cansaço (='Cara...'), não vocativo 'Senhor'; tradução anterior usou 'Senhor' erroneamente. Byte budget 38: versão transliterada 'Cara... por que tantos degraus assim...?' = 38 bytes ok."
     },
     {
       "offset": "0x1782ce",
@@ -419,8 +419,8 @@
     }
   ],
   "total_lines": 26,
-  "high_lines": 12,
-  "medium_lines": 5,
+  "high_lines": 11,
+  "medium_lines": 6,
   "needs_review": [],
   "plan_version": "chapter-19_03-v1"
 }

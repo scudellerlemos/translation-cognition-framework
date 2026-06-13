@@ -360,14 +360,14 @@
       "entities_present": [
         "Mulher"
       ],
-      "tone_register": "formal, aliviado, solene",
-      "intent": "confirmar que a espera terminou",
-      "risk_level": "high",
-      "base_translation": "Sim, minha senhora. Finalmente...\\n",
+      "tone_register": "formal, reverente",
+      "intent": "confirmação solene ao liege masculino",
+      "risk_level": "medium",
+      "base_translation": "Sim, meu senhor. Enfim...\\n",
       "byte_budget": 27,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade não revelada; preservar ambiguidade"
+      "risk_notes": "Corrigido 'minha senhora' -> 'meu senhor'; encurtado para caber no budget (27 bytes translit)."
     },
     {
       "offset": "0x8faf9",
@@ -627,8 +627,8 @@
     }
   ],
   "total_lines": 39,
-  "high_lines": 14,
-  "medium_lines": 7,
+  "high_lines": 13,
+  "medium_lines": 8,
   "needs_review": [],
   "plan_version": "chapter-14_06-v1"
 }

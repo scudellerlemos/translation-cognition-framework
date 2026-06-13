@@ -520,14 +520,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso, desorientado",
-      "intent": "expressar choque de compreensão",
-      "risk_level": "high",
-      "base_translation": "Você quer dizer...?",
+      "tone_register": "confuso, incrédulo",
+      "intent": "expressar descrença ao perceber a identidade do visitante",
+      "risk_level": "medium",
+      "base_translation": "Não me diga...?",
       "byte_budget": 18,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku; tom de choque mantido; fragmentação de frase preservada"
+      "risk_notes": "tom de descrença deve ser preservado; 'Não me diga' captura melhor que neutro 'quer dizer'"
     },
     {
       "offset": "0x17e2a9",
@@ -600,14 +600,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso, desorientado",
-      "intent": "expressar choque de status",
-      "risk_level": "high",
-      "base_translation": "Só um povo comum mesmo...?",
+      "tone_register": "informal, autodepreciativo",
+      "intent": "questionar com espanto por ser um plebeu comum",
+      "risk_level": "medium",
+      "base_translation": "Só um plebeu comum...?",
       "byte_budget": 31,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku; reticência e tom de descrença mantidos; fragmentação preservada"
+      "risk_notes": "'plebeu comum' preserva registro individual e sentido de classe social"
     },
     {
       "offset": "0x17e34e",
@@ -1384,14 +1384,14 @@
       "entities_present": [
         "Rulutieh"
       ],
-      "tone_register": "tímido, gentil, hesitante",
-      "intent": "expressar choque indignado",
-      "risk_level": "high",
-      "base_translation": "E-Ei! V-Você não pode só falar isso tão desavergonhadamente!",
+      "tone_register": "exasperado, surpreso",
+      "intent": "Rulutieh reage à frieza casual de Oshtor ao dizer algo pesado",
+      "risk_level": "medium",
+      "base_translation": "E-Ei! V-Você não pode falar isso tão casualmente!",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Rulutieh gagueja (H-Hey, Y-You); tom de indignação e surpresa; preservar gaguejo como marca vocal; não soar arrogante"
+      "risk_notes": "Budget 49 bytes transliterado; 'desavergonhadamente' estoura e é semanticamente errado (QA); usar 'casualmente'. Versão encurtada."
     },
     {
       "offset": "0x17ea45",
@@ -4372,34 +4372,34 @@
     {
       "offset": "0x1802d5",
       "text_source": "with care, or toy with them to satisfy your\\n",
-      "speaker": "Homem",
+      "speaker": "Homem/Mikado",
       "entities_present": [
-        "Homem"
+        "Homem/Mikado"
       ],
-      "tone_register": "formal, frio, ambíguo",
-      "intent": "Continua instrução — cuidar ou brincar com elas",
+      "tone_register": "frio, enigmático",
+      "intent": "oferecer as kamunagi como recompensa, inclusive para 'brincar' com elas",
       "risk_level": "high",
-      "base_translation": "com cuidado, ou usá-las para satisfazer seus\\n",
+      "base_translation": "com cuidado, ou brincar com elas conforme\\n",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Ambiguidade ameaçadora deve ser mantida"
+      "risk_notes": "'toy with them' = brincar com elas (nuance lúdica/possessiva); budget apertado — versão enxuta sem perder o sentido."
     },
     {
       "offset": "0x180303",
       "text_source": "own desires. You will be denied nothing.",
-      "speaker": "Garota",
+      "speaker": "Homem",
       "entities_present": [
-        "Garota"
+        "Homem"
       ],
-      "tone_register": "cotidiano gentil",
-      "intent": "oferecimento de liberdade completa, promessa de satisfação",
-      "risk_level": "high",
-      "base_translation": "seus próprios desejos. Você não será negado nada.",
+      "tone_register": "enigmático, definitivo",
+      "intent": "declarar que nenhum desejo será negado — construção gramatical correta",
+      "risk_level": "medium",
+      "base_translation": "próprios desejos. Nada lhe será negado.",
       "byte_budget": 40,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "promessa absoluta; manter tom acolhedor mas submisso; evitar ambiguidade sobre identidade"
+      "risk_notes": "'Nada lhe será negado' é gramatical e formal, adequado ao tom do Homem"
     },
     {
       "offset": "0x18032c",
@@ -6068,18 +6068,18 @@
     {
       "offset": "0x1811ea",
       "text_source": "was a shock, but she has daughters this old too?",
-      "speaker": "Haku",
+      "speaker": "Narrador/Haku",
       "entities_present": [
-        "Haku"
+        "Narrador/Haku"
       ],
-      "tone_register": "incredulidade/confusão",
-      "intent": "expressar choque de que as filhas sejam tão velhas",
-      "risk_level": "high",
-      "base_translation": "foi um choque, mas ela tem filhas tão velhas?",
+      "tone_register": "monólogo interno, espanto",
+      "intent": "Haku se surpreende que Honoka tem filhas já crescidas",
+      "risk_level": "medium",
+      "base_translation": "foi um choque, mas ela tem filhas tão crescidas?",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "gênero e identidade das personagens não revelados; manter construção neutra ('ela tem filhas') sem expor relação futura"
+      "risk_notes": "Budget 48 bytes transliterado; 'tão velhas' soa estranho (QA); usar 'tão crescidas'. Encurtado."
     },
     {
       "offset": "0x18121b",
@@ -6472,14 +6472,14 @@
       "entities_present": [
         "Uruuru/Saraana"
       ],
-      "tone_register": "formal/ritual",
-      "intent": "Se apresentar como servas totais do Mestre",
-      "risk_level": "high",
-      "base_translation": "Acabamos de nos tornar servas de corpo e alma do nosso Mestre,\\n",
+      "tone_register": "formal, ritualístico",
+      "intent": "apresentar-se como recém-designadas ao serviço do Mestre",
+      "risk_level": "medium",
+      "base_translation": "Acabamos de nos tornar do nosso Mestre\\n",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "'flesh puppets' tem conotação forte — 'servos de corpo e alma' preserva a estranheza sem perder o impacto. Verificar naturalidade."
+      "risk_notes": "Budget 43 bytes transliterado; cortada redundância 'servas de corpo e alma' não presente no source; linha termina em 'Master's' com token de quebra preservado."
     },
     {
       "offset": "0x181546",
@@ -6963,8 +6963,8 @@
     }
   ],
   "total_lines": 435,
-  "high_lines": 95,
-  "medium_lines": 70,
+  "high_lines": 89,
+  "medium_lines": 76,
   "needs_review": [],
   "plan_version": "chapter-19_05-v1"
 }

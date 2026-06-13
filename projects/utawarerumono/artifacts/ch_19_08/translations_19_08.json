@@ -1882,11 +1882,11 @@
     },
     "0x1a27be": {
       "speaker": "Maroro",
-      "tone_register": "pomposo, arcaico, resignado",
-      "intent": "concordar relutantemente",
+      "tone_register": "arcaico, hesitante, pomposo",
+      "intent": "concordar provavelmente com o que foi dito, com hesitação",
       "risk_level": "high",
-      "risk_notes": "Maroro arcaico/pomposo em situação de derrota; manter cômico-arcaico",
-      "t": "P-Sem dúvida..."
+      "risk_notes": "Maroro: arcaísmo + cicio. 'Most likely' = muito provavelmente. 'P-' de gaguejo deve casar com a palavra seguinte.",
+      "t": "P-Provavelmente..."
     },
     "0x1a2801": {
       "speaker": "Garota",
@@ -4185,12 +4185,12 @@
       "t": "...Quê!?"
     },
     "0x192ebe": {
-      "speaker": "Haku",
-      "tone_register": "confuso, desorientado",
-      "intent": "confirmar relato de terceiro (Oshtor)",
-      "risk_level": "high",
-      "risk_notes": "SPOILER CRÍTICO: Oshtor é General da Direita (revelado depois). Aqui Haku apenas confirma o que foi dito; NÃO revelar identidade verdadeira ou sacrifício. Manter ambiguidade.",
-      "t": "Sim, foi o que nos disseram Oshtor."
+      "speaker": "Haku/Nosuri",
+      "tone_register": "direto, informativo",
+      "intent": "confirmar que Oshtor disse isso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim, foi o que nos disse Oshtor."
     },
     "0x192ee9": {
       "speaker": "Haku",
@@ -4650,11 +4650,11 @@
     },
     "0x19ed35": {
       "speaker": "Maroro",
-      "tone_register": "arcaico, lamentoso",
-      "intent": "Oh, quem dera pudesse, mestre, mas tais deveres excedem...",
+      "tone_register": "arcaico, pomposo, hesitante",
+      "intent": "explicar que reverência a Oshtor seria imprópria dado seu cargo atual",
       "risk_level": "high",
-      "risk_notes": "Arcaísmo + melodrama de Maroro; back-translation necessária.",
-      "t": "Oh, se eu pudesse, mestre, mas tal obediência\\n"
+      "risk_notes": "Maroro: arcaísmo + cicio. 'Obeisance' = reverência/mesura. Linha tem token \\n — preservar posição.",
+      "t": "Oh, she eu pudesse, meshtre, mash tal reverência\\n"
     },
     "0x19ed95": {
       "speaker": "Haku",
@@ -4986,11 +4986,11 @@
     },
     "0x19eba7": {
       "speaker": "Maroro",
-      "tone_register": "erudito cômico, pomposo, arcaico",
-      "intent": "subserviência melodramática",
+      "tone_register": "arcaico pomposo com cicio",
+      "intent": "dizer que está à disposição do Mestre Oshtor",
       "risk_level": "high",
-      "risk_notes": "preservar arcaísmo (vós/fala antiga); manter cício (s->sh); piada de pompa; não modernizar",
-      "t": "Fico feliz em esperar seu lazer!"
+      "risk_notes": "Voz de Maroro: arcaísmo + cicio (s→sh). 'Fain do I stay upon his leisure' = fico à dishposição quando lhe convier. Budget 32 bytes sem acento.",
+      "t": "Fico felish a sheu dishpor!"
     },
     "0x19ec1f": {
       "speaker": "Protagonista",
@@ -6545,12 +6545,12 @@
       "t": "pequena Nekone."
     },
     "0x1a00ec": {
-      "speaker": "Sakon",
-      "tone_register": "espirituoso, defensivo-cômico",
-      "intent": "rebater gozação; questionar a lógica (se Haku disse que Sakon só queria 'olhar', isso não é 'gazing')",
-      "risk_level": "high",
-      "risk_notes": "CRÍTICO: contexto de spoiler potencial (Sakon = Ukon disfarçado?); 'gazing' tem conotação de admiração passiva; 'doesn't sound like' questiona a coerência; tom: humorístico, auto-defensivo; preservar a insinuação sem resolver identidade; budget 40 bytes",
-      "t": "Há pouco? Isso não soa como \"admiração\"..."
+      "speaker": "Haku",
+      "tone_register": "cotidiano irônico",
+      "intent": "questionar a contradição entre 'não perturbar flores' e o que Sakon fez",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso não soa como só contemplar..."
     },
     "0x1a0145": {
       "speaker": "Haku",
@@ -6578,11 +6578,11 @@
     },
     "0x1a0267": {
       "speaker": "Haku",
-      "tone_register": "direto, questionador cético",
-      "intent": "confrontar Sakon sobre sua verdadeira natureza/ocupação (plot turn crucial)",
-      "risk_level": "critical",
-      "risk_notes": "CRÍTICO: Sakon = Ukon (spoiler MAJOR, mas aqui é o REVEAL desta cena ou indicador); 'you're not just a candy vendor' = você não é só vendedor de doces; questão testa se Sakon vai confessar/revelar; contexto: identidade dupla; preservar ambiguidade/insinuação SEM antecipar revelo; tom: cético-desafiador, não acusatório; budget 36 bytes",
-      "t": "você não é só vendedor, né verdade?"
+      "tone_register": "direto, curioso, informal",
+      "intent": "questionar se Sakon é mais do que um simples vendedor de doces",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "você não é só vendedor de doces, né?"
     },
     "0x1a028e": {
       "speaker": "Haku",
@@ -6665,12 +6665,12 @@
       "t": "Mas que--? Quando foi que ele--\\n"
     },
     "0x1a1e83": {
-      "speaker": "Narrador",
-      "tone_register": "narrativo/descritivo",
-      "intent": "Descreve Oshtor/Ukon entrando no cômodo com desenvoltura",
-      "risk_level": "high",
-      "risk_notes": "Spoiler de identidade dupla Oshtor/Ukon — manter ambiguidade; narrador descreve a troca de aparência sem revelar peso narrativo.",
-      "t": "Oshtor, agora como Ukon, entra no cômodo\\n"
+      "speaker": "Haku (narração)",
+      "tone_register": "narrativo neutro",
+      "intent": "descrever Ukon entrando com orgulho e atitude diferente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oshtor, agora Ukon, entra orgulhoso no cômodo\\n"
     },
     "0x1a1ee7": {
       "speaker": "Ukon",
@@ -7145,12 +7145,12 @@
       "t": "Então... só me veio à cabeça."
     },
     "0x1ad13c": {
-      "speaker": "Haku",
-      "tone_register": "vulnerável hesitante",
-      "intent": "confissão emocional com incerteza",
-      "risk_level": "high",
-      "risk_notes": "identidade de Haku em jogo; tom semi-consciente crítico; back-translation exigida",
-      "t": "estiver comigo, vou superar. De jeito nenhum."
+      "speaker": "Ukon",
+      "tone_register": "casual, otimista, informal",
+      "intent": "dizer que de algum jeito vai superar os obstáculos enquanto Haku estiver com ele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "estiver comigo, vou superar. De algum jeito."
     },
     "0x1ad196": {
       "speaker": "Kuon",
@@ -7257,12 +7257,12 @@
       "t": "afastá-la de mim... Não consigo olhar nos olhos dela."
     },
     "0x1ad8c4": {
-      "speaker": "Rulutieh",
-      "tone_register": "gentil desconfortável",
-      "intent": "confissão sobre companhia indesejada",
+      "speaker": "Haku",
+      "tone_register": "narração informal, nostálgico/melancólico",
+      "intent": "lembrar que a mulher da memória sempre o seguia, ficando atrás dos dois",
       "risk_level": "high",
-      "risk_notes": "referência a figura de memória (Mulher) sem nomear; preservar ambiguidade; identidade crítica; back-translation exigida",
-      "t": "atrás dos dois de nós..."
+      "risk_notes": "Figura de memória (spoiler major): não revelar identidade. Manter ambiguidade. Gênero da narradora/memória oculto — construção neutra preferível.",
+      "t": "atrás de nós dois..."
     },
     "0x1ad8ec": {
       "speaker": "Haku",
@@ -8034,11 +8034,11 @@
     },
     "0x195d8f": {
       "speaker": "Haku",
-      "tone_register": "desespero confuso",
-      "intent": "questionar como situação escalou",
-      "risk_level": "high",
-      "risk_notes": "Haku processando trauma/confusão emocional. Preserve reticências e tom de pânico contido.",
-      "t": "Maldição, como isso chegou a isso...?"
+      "tone_register": "narração informal, exasperado",
+      "intent": "lamentar como a situação chegou a tal ponto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Maldição, como foi parar nisso...?"
     },
     "0x197336": {
       "speaker": "Garota",
@@ -9289,12 +9289,12 @@
       "t": "A verdadeira voz do povo."
     },
     "0x1a0cdf": {
-      "speaker": "Mikazuchi",
-      "tone_register": "aterrorizante, sádico, profético",
-      "intent": "descrever o choque da revelação (verdade confrontando narrativa)",
-      "risk_level": "high",
-      "risk_notes": "Confrontação entre 'real you' e persona pública. Manter dúvida sobre qual é qual.",
-      "t": "sua mente à frente do você real..."
+      "speaker": "Haku",
+      "tone_register": "narração informal",
+      "intent": "observar que ninguém fala livremente diante do verdadeiro Mikazuchi",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "diante do verdadeiro você..."
     },
     "0x1a0d63": {
       "speaker": "Mikazuchi",
@@ -9345,12 +9345,12 @@
       "t": "Ssssssssss!!"
     },
     "0x1a0ed5": {
-      "speaker": "Mikazuchi",
-      "tone_register": "zombeteiro, casual, sarcástico",
-      "intent": "sarcasmo sobre aparência comum/ordinária",
-      "risk_level": "high",
-      "risk_notes": "SPOILER: contraste entre aparência ordinária e verdade. Manter dúvida.",
-      "t": "um colega comum, afinal."
+      "speaker": "Haku",
+      "tone_register": "narração informal, concluindo",
+      "intent": "reconhecer que Mikazuchi não era um sujeito comum afinal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "um sujeito comum, afinal."
     },
     "0x1a0f20": {
       "speaker": "Mikazuchi",
@@ -11242,11 +11242,11 @@
     },
     "0x1acf35": {
       "speaker": "Ukon",
-      "tone_register": "caloroso informal determinado",
-      "intent": "explicar objetivo de vida",
-      "risk_level": "high",
-      "risk_notes": "Contrasta Ukon vs. Oshtor. Não antecipar que são a mesma pessoa ou morte de um. Manter como ambição simples.",
-      "t": "de todos esses tempos. Não de Oshtor."
+      "tone_register": "confessional, introspectivo, informal",
+      "intent": "concluir que foi a vida de Ukon, não de Oshtor, que buscou todo esse tempo",
+      "risk_level": "medium",
+      "risk_notes": "Spoiler de identidade Ukon/Oshtor já revelado neste ponto da cena; sem risco adicional. 'all this time' = todo esse tempo.",
+      "t": "todo esse tempo. Não de Oshtor."
     },
     "0x1acf88": {
       "speaker": "Ukon",
@@ -11730,11 +11730,11 @@
     },
     "0x191612": {
       "speaker": "Haku",
-      "tone_register": "observacional, levemente irritado",
-      "intent": "descrever a cena de Nosuri e Ougi ociosos",
-      "risk_level": "high",
-      "risk_notes": "Haku: continuação natural de confusão/irritação; 'lounging' = ociosidade descontraída",
-      "t": "e Ougi ali metendo lenha feito se fossem donos do lugar."
+      "tone_register": "cotidiano irônico",
+      "intent": "descrever Nosuri e Ougi como se fossem donos do lugar, ociosos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e Ougi ali à toa feito se fossem donos do lugar."
     },
     "0x1916a9": {
       "speaker": "Nosuri",
@@ -12010,11 +12010,11 @@
     },
     "0x19221e": {
       "speaker": "Haku",
-      "tone_register": "cético, crítico",
-      "intent": "comentar que Rulutieh está ficando grandona/arrogante (comédia)",
-      "risk_level": "high",
-      "risk_notes": "Haku: comédia contextual; 'big head' = arrogância/grandiosidade; tom de brincadeira/crítica leve",
-      "t": "Parece que ela está ficando grandona."
+      "tone_register": "narração informal, resignado",
+      "intent": "comentar que Nosuri está ficando convencida/arrogante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que ela está ficando convencida."
     },
     "0x192274": {
       "speaker": "Ougi",
@@ -14601,12 +14601,12 @@
       "t": "estão vermelhos."
     },
     "0x19ab12": {
-      "speaker": "Protagonista",
-      "tone_register": "confuso, admirado",
-      "intent": "reconhecer competência com surpresa",
-      "risk_level": "high",
-      "risk_notes": "Identidade dupla em Haku (vive como humano mas é 1ª pessoa narradora aqui — verificar se o falante está claro no contexto de cena). Preservar naturalidade sem antecipar revelação.",
-      "t": "Haku... Não era esperado disso."
+      "speaker": "Kuon",
+      "tone_register": "informal, surpresa agradável",
+      "intent": "admitir que não esperava que Haku fosse bom em massagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku... Não esperava isso."
     },
     "0x19ab66": {
       "speaker": "Protagonista",

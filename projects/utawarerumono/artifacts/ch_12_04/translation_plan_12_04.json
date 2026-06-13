@@ -2184,14 +2184,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, cerimonioso",
-      "intent": "Se despedir formalmente de Kuon e Haku",
+      "tone_register": "arcaico formal",
+      "intent": "Maroro pede licença de forma pomposa para se retirar",
       "risk_level": "high",
-      "base_translation": "Peço licença, senhor e senhora.",
+      "base_translation": "Pedimos licença, senhor, senhora.",
       "byte_budget": 32,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo de Maroro — despedida formal."
+      "risk_notes": "Voz arcaica obrigatória; 'We beg' plural → manter plural em pt-BR; budget 32 bytes transliterado — contar sem acentos: 'Pedimos licenca, senhor e senhora.' = 34 chars sem acento, excede; encurtado para 'Pedimos licenca, senhor, senhora.'"
     },
     {
       "offset": "0x32b4b",
@@ -4248,14 +4248,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico bêbado",
-      "intent": "Pedir mais elogios de forma dramática",
+      "tone_register": "arcaico-empolado bêbado, cicio (s→sh)",
+      "intent": "elogiar Kuon efusivamente chamando-a de modelo da beleza terrena",
       "risk_level": "high",
-      "base_translation": "CORASSHHÃO do meu sher. Oh, continuai, doce paragon da\\n",
+      "base_translation": "CORASSHHÃO do meu sher. Oh, continuai, doce modelo da\\n",
       "byte_budget": 52,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Maroro bêbado com cicio — preservar."
+      "risk_notes": "'paragon' traduzido como 'modelo'; cicio preservado (sh); budget 52 bytes transliterado — contar sem acentos: 'CORASHAO do meu sher. Oh, continuai, doce modelo da\\n' = ~51"
     },
     {
       "offset": "0x33eb1",

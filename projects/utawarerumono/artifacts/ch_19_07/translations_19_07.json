@@ -721,12 +721,12 @@
       "t": "Raiko então se vira para mim."
     },
     "0x18bd56": {
-      "speaker": "Oshtor",
-      "tone_register": "formal, nobre",
-      "intent": "agradecimento formal por apoio",
-      "risk_level": "high",
-      "risk_notes": "Pré-reveal Oshtor; tom formal/nobre mantido; 'support' = ajuda/apoio; sem antecipar morte ou sacrifício",
-      "t": "apoio."
+      "speaker": "Raiko",
+      "tone_register": "frio, informativo",
+      "intent": "revelar que Haku realiza tarefas que Oshtor não pode apoiar publicamente",
+      "risk_level": "medium",
+      "risk_notes": "'support' aqui é verbo implícito 'apoiar'; budget 8 bytes — forma curta necessária",
+      "t": "apoiar."
     },
     "0x18bdf1": {
       "speaker": "Haku",
@@ -2409,12 +2409,12 @@
       "t": "Hehe hehe..."
     },
     "0x18d78a": {
-      "speaker": "Narrator",
-      "tone_register": "narrativo",
-      "intent": "descrever expressão predatória",
-      "risk_level": "high",
-      "risk_notes": "Mikazuchi revela natureza predatória—tom deve ser sinistro; impacto narrativo crítico",
-      "t": "riso de predador feroz brincando com sua presa."
+      "speaker": "Haku",
+      "tone_register": "narração casual, levemente apreensivo",
+      "intent": "descrever Mikazuchi como predador olhando a presa",
+      "risk_level": "medium",
+      "risk_notes": "'leer' = olhar maldoso, não riso; budget 48 bytes transliterado: versão abaixo ~47 bytes sem acentos",
+      "t": "olhar de predador feroz mirando sua presa."
     },
     "0x18d7f4": {
       "speaker": "Narrator",
@@ -2722,11 +2722,11 @@
     },
     "0x18e0ac": {
       "speaker": "Haku",
-      "tone_register": "reflexivo, decidido",
-      "intent": "conclusão sobre intenção do Homem",
-      "risk_level": "high",
-      "risk_notes": "'no good' = vagueza intencional mantida; nunca especificar o 'quê' da má-intenção — preservar ameaça aberta",
-      "t": "Do jeito que vejo, ele está tramando algo ruim."
+      "tone_register": "narração informal, resignado",
+      "intent": "concluir que Mikazuchi está tramando algo, de qualquer ângulo que se veja",
+      "risk_level": "medium",
+      "risk_notes": "'However you look at this' = qualquer perspectiva, não só a do narrador; encurtado para caber no budget",
+      "t": "De qualquer jeito, ele está tramando algo ruim."
     },
     "0x18e1a2": {
       "speaker": "Kuon",
@@ -3793,12 +3793,12 @@
       "t": "entregar..."
     },
     "0x18b173": {
-      "speaker": "Oshtor",
-      "tone_register": "formal, nobre, comedido; General da Direita (alias Ukon)",
-      "intent": "conforto formal com promessa de esclarecimento total",
-      "risk_level": "high",
-      "risk_notes": "SPOILER: não antecipe identidade; manter tom formal Ukon até reveal",
-      "t": "você em cheio."
+      "speaker": "Miruhj",
+      "tone_register": "formal, deferente",
+      "intent": "informar que Mikazuchi explicará tudo em detalhe",
+      "risk_level": "medium",
+      "risk_notes": "budget 12 bytes transliterado: 'integralmente' = 13 bytes sem acento; usar 'por inteiro' = 10 bytes",
+      "t": "por inteiro."
     },
     "0x18db12": {
       "speaker": "Haku",

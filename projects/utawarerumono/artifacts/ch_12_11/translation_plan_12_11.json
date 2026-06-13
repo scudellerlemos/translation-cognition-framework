@@ -1096,14 +1096,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "firme, gentil",
-      "intent": "conclusão",
-      "risk_level": "high",
+      "tone_register": "cotidiano gentil",
+      "intent": "encerrar o assunto com calor, enfatizando que o empréstimo é por necessidade",
+      "risk_level": "low",
       "base_translation": "por agora.",
       "byte_budget": 11,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 11 bytes transliterado. 'por agora.' = 9 bytes. OK."
+      "risk_notes": ""
     },
     {
       "offset": "0x43751",
@@ -1176,14 +1176,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, pomposo",
-      "intent": "elogiar Haku em linguagem empolada",
+      "tone_register": "erudito cômico, arcaico, pomposo",
+      "intent": "Maroro pergunta orgulhoso se Haku testemunhou sua magia",
       "risk_level": "high",
-      "base_translation": "Nobilíssimo e valoroso Mestre! Mestre Haku! Acaso não\\n",
+      "base_translation": "Nobilíssimo e valorosho Meshtre! Meshtre Haku! Vós\\n",
       "byte_budget": 51,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "voz arcaica de Maroro; arcaísmo e pompa devem ser mantidos"
+      "risk_notes": "Arcaísmo + cicio (s→sh) são a piada central; budget 51 transliterado. 'Didst thou witness' = pergunta afirmativa, sem negação. Verificar byte count sem acentos."
     },
     {
       "offset": "0x4380a",
@@ -1992,14 +1992,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "surpreso",
-      "intent": "exclamação de surpresa",
-      "risk_level": "high",
-      "base_translation": "O que é?",
+      "tone_register": "surpresa cômica",
+      "intent": "exclamação de espanto ao ver o objeto voar — chamado/interjeição, não pergunta real",
+      "risk_level": "medium",
+      "base_translation": "Que foi?",
       "byte_budget": 8,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 8 bytes transliterado. 'O que e?' = 7 bytes sem acento. Manter curtíssimo."
+      "risk_notes": "'What ho?' é interjeição de espanto; 8 bytes sem acentos. 'Que foi?' = 7 bytes ASCII: cabe."
     },
     {
       "offset": "0x43f0b",
@@ -2244,18 +2244,18 @@
     {
       "offset": "0x44133",
       "text_source": "command...",
-      "speaker": "NARRADOR",
+      "speaker": "Narrador",
       "entities_present": [
-        "NARRADOR"
+        "Narrador"
       ],
-      "tone_register": "narrativo",
-      "intent": "continuação",
-      "risk_level": "high",
-      "base_translation": "enquanto...",
+      "tone_register": "narrativo neutro",
+      "intent": "continuação da narração: os homens obedecem ao comando de Ukon",
+      "risk_level": "medium",
+      "base_translation": "às ordens...",
       "byte_budget": 10,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 10 bytes transliterado. 'enquanto...' = 9 bytes. OK."
+      "risk_notes": "'command...' é substantivo continuando a frase anterior; 10 bytes sem acentos. 'ao comando...' = 11 — usar 'às ordens...' = 10 bytes ASCII."
     },
     {
       "offset": "0x4413e",
@@ -2644,18 +2644,18 @@
     {
       "offset": "0x4447b",
       "text_source": "trying my best to flee.",
-      "speaker": "NARRADOR",
+      "speaker": "Narrador",
       "entities_present": [
-        "NARRADOR"
+        "Narrador"
       ],
-      "tone_register": "narrativo",
-      "intent": "tentando fugir",
-      "risk_level": "high",
-      "base_translation": "tentando fugir.",
+      "tone_register": "narrativo tenso, ação",
+      "intent": "descrever Haku tentando ao máximo fugir",
+      "risk_level": "low",
+      "base_translation": "tentando fugir ao máximo.",
       "byte_budget": 23,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 23 bytes transliterado. 'tentando fugir.' = 14 bytes. OK."
+      "risk_notes": ""
     },
     {
       "offset": "0x44493",
@@ -2776,14 +2776,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, pânico cômico",
-      "intent": "protestar que é impossível se levantar com medo",
+      "tone_register": "erudito cômico, arcaico, cicio",
+      "intent": "Maroro diz que pedir a ele para andar é tão impossível quanto pedir às árvores que criem pernas — defende sua paralisia com pompa",
       "risk_level": "high",
-      "base_translation": "Peço-vosh que peça ash próprias árvores que se arranquem e\\n",
+      "base_translation": "Bem poderieis pedir ash árvoresh que crieshem pernas!\\n",
       "byte_budget": 52,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "voz arcaica de Maroro em pânico; arcaísmo + cicio s→sh deve ser representado"
+      "risk_notes": "'Thou mayst well ask the trees' = 'bem poderieis pedir às árvores' (impossibilidade hiperbólica). Cicio obrigatório. Budget 52 transliterado; cortar redundância para caber."
     },
     {
       "offset": "0x445a3",
@@ -3496,14 +3496,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, assustado",
-      "intent": "perguntar assustado que tipo de arma é essa",
+      "tone_register": "erudito cômico, arcaico, cicio",
+      "intent": "Maroro pergunta assustado que tipo de arma Kuon está preparando",
       "risk_level": "high",
-      "base_translation": "Q-Que tipo de arma art thou preparando?",
+      "base_translation": "Q-Que tipo de arma esh tu preparash?",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "voz arcaica de Maroro; pergunta empolada e assustada"
+      "risk_notes": "'art thou' estava em inglês na versão anterior; arcaísmo + cicio obrigatórios; back-translation necessária"
     },
     {
       "offset": "0x44c65",
@@ -3635,8 +3635,8 @@
     }
   ],
   "total_lines": 227,
-  "high_lines": 20,
-  "medium_lines": 15,
+  "high_lines": 16,
+  "medium_lines": 17,
   "needs_review": [],
   "plan_version": "chapter-12_11-v1"
 }

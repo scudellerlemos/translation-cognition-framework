@@ -200,14 +200,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "observacional, levemente irritado",
-      "intent": "descrever a cena de Nosuri e Ougi ociosos",
-      "risk_level": "high",
-      "base_translation": "e Ougi ali metendo lenha feito se fossem donos do lugar.",
+      "tone_register": "cotidiano irônico",
+      "intent": "descrever Nosuri e Ougi como se fossem donos do lugar, ociosos",
+      "risk_level": "low",
+      "base_translation": "e Ougi ali à toa feito se fossem donos do lugar.",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku: continuação natural de confusão/irritação; 'lounging' = ociosidade descontraída"
+      "risk_notes": ""
     },
     {
       "offset": "0x191644",
@@ -1560,14 +1560,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "cético, crítico",
-      "intent": "comentar que Rulutieh está ficando grandona/arrogante (comédia)",
-      "risk_level": "high",
-      "base_translation": "Parece que ela está ficando grandona.",
+      "tone_register": "narração informal, resignado",
+      "intent": "comentar que Nosuri está ficando convencida/arrogante",
+      "risk_level": "low",
+      "base_translation": "Parece que ela está ficando convencida.",
       "byte_budget": 37,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku: comédia contextual; 'big head' = arrogância/grandiosidade; tom de brincadeira/crítica leve"
+      "risk_notes": ""
     },
     {
       "offset": "0x192244",
@@ -2996,18 +2996,18 @@
     {
       "offset": "0x192ebe",
       "text_source": "Yes, that was what we were told by Oshtor.",
-      "speaker": "Haku",
+      "speaker": "Haku/Nosuri",
       "entities_present": [
-        "Haku"
+        "Haku/Nosuri"
       ],
-      "tone_register": "confuso, desorientado",
-      "intent": "confirmar relato de terceiro (Oshtor)",
-      "risk_level": "high",
-      "base_translation": "Sim, foi o que nos disseram Oshtor.",
+      "tone_register": "direto, informativo",
+      "intent": "confirmar que Oshtor disse isso",
+      "risk_level": "low",
+      "base_translation": "Sim, foi o que nos disse Oshtor.",
       "byte_budget": 42,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "SPOILER CRÍTICO: Oshtor é General da Direita (revelado depois). Aqui Haku apenas confirma o que foi dito; NÃO revelar identidade verdadeira ou sacrifício. Manter ambiguidade."
+      "risk_notes": ""
     },
     {
       "offset": "0x192ee9",
@@ -6744,14 +6744,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "desespero confuso",
-      "intent": "questionar como situação escalou",
-      "risk_level": "high",
-      "base_translation": "Maldição, como isso chegou a isso...?",
+      "tone_register": "narração informal, exasperado",
+      "intent": "lamentar como a situação chegou a tal ponto",
+      "risk_level": "low",
+      "base_translation": "Maldição, como foi parar nisso...?",
       "byte_budget": 39,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Haku processando trauma/confusão emocional. Preserve reticências e tom de pânico contido."
+      "risk_notes": ""
     },
     {
       "offset": "0x197336",
@@ -11812,18 +11812,18 @@
     {
       "offset": "0x19ab12",
       "text_source": "Haku... I wasn't expecting that.",
-      "speaker": "Protagonista",
+      "speaker": "Kuon",
       "entities_present": [
-        "Protagonista"
+        "Kuon"
       ],
-      "tone_register": "confuso, admirado",
-      "intent": "reconhecer competência com surpresa",
-      "risk_level": "high",
-      "base_translation": "Haku... Não era esperado disso.",
+      "tone_register": "informal, surpresa agradável",
+      "intent": "admitir que não esperava que Haku fosse bom em massagem",
+      "risk_level": "low",
+      "base_translation": "Haku... Não esperava isso.",
       "byte_budget": 32,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade dupla em Haku (vive como humano mas é 1ª pessoa narradora aqui — verificar se o falante está claro no contexto de cena). Preservar naturalidade sem antecipar revelação."
+      "risk_notes": ""
     },
     {
       "offset": "0x19ab33",
@@ -13128,14 +13128,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "erudito cômico, pomposo, arcaico",
-      "intent": "subserviência melodramática",
+      "tone_register": "arcaico pomposo com cicio",
+      "intent": "dizer que está à disposição do Mestre Oshtor",
       "risk_level": "high",
-      "base_translation": "Fico feliz em esperar seu lazer!",
+      "base_translation": "Fico felish a sheu dishpor!",
       "byte_budget": 32,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "preservar arcaísmo (vós/fala antiga); manter cício (s->sh); piada de pompa; não modernizar"
+      "risk_notes": "Voz de Maroro: arcaísmo + cicio (s→sh). 'Fain do I stay upon his leisure' = fico à dishposição quando lhe convier. Budget 32 bytes sem acento."
     },
     {
       "offset": "0x19ebc8",
@@ -13320,14 +13320,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico, lamentoso",
-      "intent": "Oh, quem dera pudesse, mestre, mas tais deveres excedem...",
+      "tone_register": "arcaico, pomposo, hesitante",
+      "intent": "explicar que reverência a Oshtor seria imprópria dado seu cargo atual",
       "risk_level": "high",
-      "base_translation": "Oh, se eu pudesse, mestre, mas tal obediência\\n",
+      "base_translation": "Oh, she eu pudesse, meshtre, mash tal reverência\\n",
       "byte_budget": 51,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo + melodrama de Maroro; back-translation necessária."
+      "risk_notes": "Maroro: arcaísmo + cicio. 'Obeisance' = reverência/mesura. Linha tem token \\n — preservar posição."
     },
     {
       "offset": "0x19ed69",
@@ -15700,18 +15700,18 @@
     {
       "offset": "0x1a00ec",
       "text_source": "ago? That doesn't sound like \"gazing\"...",
-      "speaker": "Sakon",
+      "speaker": "Haku",
       "entities_present": [
-        "Sakon"
+        "Haku"
       ],
-      "tone_register": "espirituoso, defensivo-cômico",
-      "intent": "rebater gozação; questionar a lógica (se Haku disse que Sakon só queria 'olhar', isso não é 'gazing')",
-      "risk_level": "high",
-      "base_translation": "Há pouco? Isso não soa como \"admiração\"...",
+      "tone_register": "cotidiano irônico",
+      "intent": "questionar a contradição entre 'não perturbar flores' e o que Sakon fez",
+      "risk_level": "low",
+      "base_translation": "Isso não soa como só contemplar...",
       "byte_budget": 40,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "CRÍTICO: contexto de spoiler potencial (Sakon = Ukon disfarçado?); 'gazing' tem conotação de admiração passiva; 'doesn't sound like' questiona a coerência; tom: humorístico, auto-defensivo; preservar a insinuação sem resolver identidade; budget 40 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x1a0115",
@@ -15880,14 +15880,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "direto, questionador cético",
-      "intent": "confrontar Sakon sobre sua verdadeira natureza/ocupação (plot turn crucial)",
-      "risk_level": "critical",
-      "base_translation": "você não é só vendedor, né verdade?",
+      "tone_register": "direto, curioso, informal",
+      "intent": "questionar se Sakon é mais do que um simples vendedor de doces",
+      "risk_level": "low",
+      "base_translation": "você não é só vendedor de doces, né?",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "CRÍTICO: Sakon = Ukon (spoiler MAJOR, mas aqui é o REVEAL desta cena ou indicador); 'you're not just a candy vendor' = você não é só vendedor de doces; questão testa se Sakon vai confessar/revelar; contexto: identidade dupla; preservar ambiguidade/insinuação SEM antecipar revelo; tom: cético-desafiador, não acusatório; budget 36 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x1a028e",
@@ -17188,18 +17188,18 @@
     {
       "offset": "0x1a0cdf",
       "text_source": "their mind in front of the real you...",
-      "speaker": "Mikazuchi",
+      "speaker": "Haku",
       "entities_present": [
-        "Mikazuchi"
+        "Haku"
       ],
-      "tone_register": "aterrorizante, sádico, profético",
-      "intent": "descrever o choque da revelação (verdade confrontando narrativa)",
-      "risk_level": "high",
-      "base_translation": "sua mente à frente do você real...",
+      "tone_register": "narração informal",
+      "intent": "observar que ninguém fala livremente diante do verdadeiro Mikazuchi",
+      "risk_level": "low",
+      "base_translation": "diante do verdadeiro você...",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Confrontação entre 'real you' e persona pública. Manter dúvida sobre qual é qual."
+      "risk_notes": ""
     },
     {
       "offset": "0x1a0d06",
@@ -17412,18 +17412,18 @@
     {
       "offset": "0x1a0ed5",
       "text_source": "ordinary fellow after all.",
-      "speaker": "Mikazuchi",
+      "speaker": "Haku",
       "entities_present": [
-        "Mikazuchi"
+        "Haku"
       ],
-      "tone_register": "zombeteiro, casual, sarcástico",
-      "intent": "sarcasmo sobre aparência comum/ordinária",
-      "risk_level": "high",
-      "base_translation": "um colega comum, afinal.",
+      "tone_register": "narração informal, concluindo",
+      "intent": "reconhecer que Mikazuchi não era um sujeito comum afinal",
+      "risk_level": "low",
+      "base_translation": "um sujeito comum, afinal.",
       "byte_budget": 26,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "SPOILER: contraste entre aparência ordinária e verdade. Manter dúvida."
+      "risk_notes": ""
     },
     {
       "offset": "0x1a0ef0",
@@ -19140,18 +19140,18 @@
     {
       "offset": "0x1a1e83",
       "text_source": "Oshtor, now Ukon, proudly strides into the room\\n",
-      "speaker": "Narrador",
+      "speaker": "Haku (narração)",
       "entities_present": [
-        "Narrador"
+        "Haku (narração)"
       ],
-      "tone_register": "narrativo/descritivo",
-      "intent": "Descreve Oshtor/Ukon entrando no cômodo com desenvoltura",
-      "risk_level": "high",
-      "base_translation": "Oshtor, agora como Ukon, entra no cômodo\\n",
+      "tone_register": "narrativo neutro",
+      "intent": "descrever Ukon entrando com orgulho e atitude diferente",
+      "risk_level": "low",
+      "base_translation": "Oshtor, agora Ukon, entra orgulhoso no cômodo\\n",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Spoiler de identidade dupla Oshtor/Ukon — manter ambiguidade; narrador descreve a troca de aparência sem revelar peso narrativo."
+      "risk_notes": ""
     },
     {
       "offset": "0x1a1eb5",
@@ -20248,14 +20248,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "pomposo, arcaico, resignado",
-      "intent": "concordar relutantemente",
+      "tone_register": "arcaico, hesitante, pomposo",
+      "intent": "concordar provavelmente com o que foi dito, com hesitação",
       "risk_level": "high",
-      "base_translation": "P-Sem dúvida...",
+      "base_translation": "P-Provavelmente...",
       "byte_budget": 16,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Maroro arcaico/pomposo em situação de derrota; manter cômico-arcaico"
+      "risk_notes": "Maroro: arcaísmo + cicio. 'Most likely' = muito provavelmente. 'P-' de gaguejo deve casar com a palavra seguinte."
     },
     {
       "offset": "0x1a27cf",
@@ -31528,14 +31528,14 @@
       "entities_present": [
         "Ukon"
       ],
-      "tone_register": "caloroso informal determinado",
-      "intent": "explicar objetivo de vida",
-      "risk_level": "high",
-      "base_translation": "de todos esses tempos. Não de Oshtor.",
+      "tone_register": "confessional, introspectivo, informal",
+      "intent": "concluir que foi a vida de Ukon, não de Oshtor, que buscou todo esse tempo",
+      "risk_level": "medium",
+      "base_translation": "todo esse tempo. Não de Oshtor.",
       "byte_budget": 35,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Contrasta Ukon vs. Oshtor. Não antecipar que são a mesma pessoa ou morte de um. Manter como ambição simples."
+      "risk_notes": "Spoiler de identidade Ukon/Oshtor já revelado neste ponto da cena; sem risco adicional. 'all this time' = todo esse tempo."
     },
     {
       "offset": "0x1acf59",
@@ -31748,18 +31748,18 @@
     {
       "offset": "0x1ad13c",
       "text_source": "you're with me, I'll get over 'em. Somehow.",
-      "speaker": "Haku",
+      "speaker": "Ukon",
       "entities_present": [
-        "Haku"
+        "Ukon"
       ],
-      "tone_register": "vulnerável hesitante",
-      "intent": "confissão emocional com incerteza",
-      "risk_level": "high",
-      "base_translation": "estiver comigo, vou superar. De jeito nenhum.",
+      "tone_register": "casual, otimista, informal",
+      "intent": "dizer que de algum jeito vai superar os obstáculos enquanto Haku estiver com ele",
+      "risk_level": "low",
+      "base_translation": "estiver comigo, vou superar. De algum jeito.",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "identidade de Haku em jogo; tom semi-consciente crítico; back-translation exigida"
+      "risk_notes": ""
     },
     {
       "offset": "0x1ad168",
@@ -32228,18 +32228,18 @@
     {
       "offset": "0x1ad8c4",
       "text_source": "trailing around after the two of us... ",
-      "speaker": "Rulutieh",
+      "speaker": "Haku",
       "entities_present": [
-        "Rulutieh"
+        "Haku"
       ],
-      "tone_register": "gentil desconfortável",
-      "intent": "confissão sobre companhia indesejada",
+      "tone_register": "narração informal, nostálgico/melancólico",
+      "intent": "lembrar que a mulher da memória sempre o seguia, ficando atrás dos dois",
       "risk_level": "high",
-      "base_translation": "atrás dos dois de nós...",
+      "base_translation": "atrás de nós dois...",
       "byte_budget": 39,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "referência a figura de memória (Mulher) sem nomear; preservar ambiguidade; identidade crítica; back-translation exigida"
+      "risk_notes": "Figura de memória (spoiler major): não revelar identidade. Manter ambiguidade. Gênero da narradora/memória oculto — construção neutra preferível."
     },
     {
       "offset": "0x1ad8ec",
@@ -32291,8 +32291,8 @@
     }
   ],
   "total_lines": 2018,
-  "high_lines": 159,
-  "medium_lines": 239,
+  "high_lines": 147,
+  "medium_lines": 240,
   "needs_review": [],
   "plan_version": "chapter-19_08-v1"
 }

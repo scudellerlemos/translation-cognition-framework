@@ -201,12 +201,12 @@
       "t": "Que--!?"
     },
     "0x163dfb": {
-      "speaker": "Maroro",
-      "tone_register": "arcaico/pomposo",
-      "intent": "promessa teatral de resgate",
-      "risk_level": "high",
-      "risk_notes": "cício (s→sh em 'shall'); arcaísmo 'coração' preservado; preservar duplo tom pomposo+frágil",
-      "t": "coração--vou ajudá-lo em vosso apelo!"
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, entusiasmado, fora-da-lei generosa",
+      "intent": "oferecer ajuda na situação difícil da princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "coração--vou ajudá-la na sua situação!"
     },
     "0x163e23": {
       "speaker": "Nosuri",
@@ -610,11 +610,11 @@
     },
     "0x162175": {
       "speaker": "Nekone",
-      "tone_register": "enigmático, evasivo",
-      "intent": "revelação misteriosa de sentido aguçado",
-      "risk_level": "high",
-      "risk_notes": "'smell it' = capacidade oculta de Nekone; não antecipar natureza exata (youko); manter tom profético",
-      "t": "Consigo farejar em qualquer lugar."
+      "tone_register": "coloquial confiante",
+      "intent": "Nekone afirma sua habilidade de farejar amor em qualquer lugar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Consigo farejar onde quer que esteja."
     },
     "0x162197": {
       "speaker": "Rulutieh",
@@ -890,11 +890,11 @@
     },
     "0x162a84": {
       "speaker": "Nekone",
-      "tone_register": "negação apaixonada, corte de fala",
-      "intent": "defesa feroz interrompida",
-      "risk_level": "critical",
-      "risk_notes": "**CRITICAL**: 'My dear br--I-I mean' = slip-of-tongue; Nekone quase revela 'brother'; interrupção abrupta; preservar corte exato; gagueira em pt-BR = 'Meu quer--Q-Quer dizer'; back-translation OBRIGATÓRIA; não resolver relação familial",
-      "t": "Meu quer--Q-Quer dizer, Oshtor não tem tais preferências!"
+      "tone_register": "defensivo agitado",
+      "intent": "Nekone quase revela vínculo de irmão com Oshtor mas se corrige",
+      "risk_level": "high",
+      "risk_notes": "'br--' é truncamento de 'brother'; 'ir--' em pt-BR preserva a pista do vínculo sem revelar explicitamente antes do momento certo",
+      "t": "Meu ir--Q-Quer dizer, Oshtor não tem tais gostos!"
     },
     "0x162b0c": {
       "speaker": "Rulutieh",
@@ -2450,19 +2450,19 @@
     },
     "0x16424a": {
       "speaker": "Haku",
-      "tone_register": "informal, evasivo",
-      "intent": "Haku não pode revelar a identidade da princesa",
-      "risk_level": "high",
-      "risk_notes": "Spoiler de identidade: Haku não pode revelar quem é a princesa; construção deve preservar ambiguidade",
-      "t": "Não posso simplesmente contar a eles a verdadeira\\n"
+      "tone_register": "monólogo interno informal",
+      "intent": "Haku pondera que não pode revelar a identidade da princesa",
+      "risk_level": "medium",
+      "risk_notes": "Linha cortada no source; tradução deve espelhar o corte natural em pt-BR dentro do budget",
+      "t": "Não posso contar a verdadeira identidade\\n"
     },
     "0x16427a": {
       "speaker": "Haku",
-      "tone_register": "informal, interrompido",
-      "intent": "Haku é interrompido antes de completar 'identidade'",
-      "risk_level": "high",
-      "risk_notes": "Interrupção crítica — spoiler de identidade; não completar a palavra; manter corte abrupto",
-      "t": "identidade ve--\\n"
+      "tone_register": "monólogo interno informal",
+      "intent": "Haku interrompe o próprio pensamento ao perceber algo",
+      "risk_level": "medium",
+      "risk_notes": "Par com offset anterior; corte deve soar natural como auto-interrupção",
+      "t": "dela--\\n"
     },
     "0x1642f8": {
       "speaker": "Nosuri",

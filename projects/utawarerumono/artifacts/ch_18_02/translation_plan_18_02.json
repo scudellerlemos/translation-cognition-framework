@@ -344,14 +344,14 @@
       "entities_present": [
         "Nekone"
       ],
-      "tone_register": "enigmático, evasivo",
-      "intent": "revelação misteriosa de sentido aguçado",
-      "risk_level": "high",
-      "base_translation": "Consigo farejar em qualquer lugar.",
+      "tone_register": "coloquial confiante",
+      "intent": "Nekone afirma sua habilidade de farejar amor em qualquer lugar",
+      "risk_level": "low",
+      "base_translation": "Consigo farejar onde quer que esteja.",
       "byte_budget": 33,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "'smell it' = capacidade oculta de Nekone; não antecipar natureza exata (youko); manter tom profético"
+      "risk_notes": ""
     },
     {
       "offset": "0x162197",
@@ -1400,14 +1400,14 @@
       "entities_present": [
         "Nekone"
       ],
-      "tone_register": "negação apaixonada, corte de fala",
-      "intent": "defesa feroz interrompida",
-      "risk_level": "critical",
-      "base_translation": "Meu quer--Q-Quer dizer, Oshtor não tem tais preferências!",
+      "tone_register": "defensivo agitado",
+      "intent": "Nekone quase revela vínculo de irmão com Oshtor mas se corrige",
+      "risk_level": "high",
+      "base_translation": "Meu ir--Q-Quer dizer, Oshtor não tem tais gostos!",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "**CRITICAL**: 'My dear br--I-I mean' = slip-of-tongue; Nekone quase revela 'brother'; interrupção abrupta; preservar corte exato; gagueira em pt-BR = 'Meu quer--Q-Quer dizer'; back-translation OBRIGATÓRIA; não resolver relação familial"
+      "risk_notes": "'br--' é truncamento de 'brother'; 'ir--' em pt-BR preserva a pista do vínculo sem revelar explicitamente antes do momento certo"
     },
     {
       "offset": "0x162ab5",
@@ -3748,18 +3748,18 @@
     {
       "offset": "0x163dfb",
       "text_source": "heart--I shall help you in your plight!",
-      "speaker": "Maroro",
+      "speaker": "Nosuri",
       "entities_present": [
-        "Maroro"
+        "Nosuri"
       ],
-      "tone_register": "arcaico/pomposo",
-      "intent": "promessa teatral de resgate",
-      "risk_level": "high",
-      "base_translation": "coração--vou ajudá-lo em vosso apelo!",
+      "tone_register": "coloquial, entusiasmado, fora-da-lei generosa",
+      "intent": "oferecer ajuda na situação difícil da princesa",
+      "risk_level": "low",
+      "base_translation": "coração--vou ajudá-la na sua situação!",
       "byte_budget": 39,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "cício (s→sh em 'shall'); arcaísmo 'coração' preservado; preservar duplo tom pomposo+frágil"
+      "risk_notes": ""
     },
     {
       "offset": "0x163e23",
@@ -4248,14 +4248,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, evasivo",
-      "intent": "Haku não pode revelar a identidade da princesa",
-      "risk_level": "high",
-      "base_translation": "Não posso simplesmente contar a eles a verdadeira\\n",
+      "tone_register": "monólogo interno informal",
+      "intent": "Haku pondera que não pode revelar a identidade da princesa",
+      "risk_level": "medium",
+      "base_translation": "Não posso contar a verdadeira identidade\\n",
       "byte_budget": 47,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Spoiler de identidade: Haku não pode revelar quem é a princesa; construção deve preservar ambiguidade"
+      "risk_notes": "Linha cortada no source; tradução deve espelhar o corte natural em pt-BR dentro do budget"
     },
     {
       "offset": "0x16427a",
@@ -4264,14 +4264,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "informal, interrompido",
-      "intent": "Haku é interrompido antes de completar 'identidade'",
-      "risk_level": "high",
-      "base_translation": "identidade ve--\\n",
+      "tone_register": "monólogo interno informal",
+      "intent": "Haku interrompe o próprio pensamento ao perceber algo",
+      "risk_level": "medium",
+      "base_translation": "dela--\\n",
       "byte_budget": 15,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Interrupção crítica — spoiler de identidade; não completar a palavra; manter corte abrupto"
+      "risk_notes": "Par com offset anterior; corte deve soar natural como auto-interrupção"
     },
     {
       "offset": "0x16428a",
@@ -4979,8 +4979,8 @@
     }
   ],
   "total_lines": 311,
-  "high_lines": 36,
-  "medium_lines": 41,
+  "high_lines": 32,
+  "medium_lines": 43,
   "needs_review": [],
   "plan_version": "chapter-18_02-v1"
 }

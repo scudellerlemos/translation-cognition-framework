@@ -856,14 +856,14 @@
       "entities_present": [
         "Garota"
       ],
-      "tone_register": "cotidiano gentil cuidadora",
-      "intent": "ordenar pressa a Oshtor",
-      "risk_level": "high",
-      "base_translation": "Apresse-se agora, Oshtor. Seu Anju o espera.",
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "Incentivar Oshtor a se apressar, indicando que Anju o aguarda",
+      "risk_level": "medium",
+      "base_translation": "Apresse-se, Oshtor. Sua Anju o aguarda.",
       "byte_budget": 40,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "SPOILER CRÍTICO: Garota é Anju; a caricia 'Seu Anju a espera' revela relação. Não antecipar que Garota = Anju para quem não sabe ainda; tomar cuidado com tom íntimo demais que resolva a relação"
+      "risk_notes": "Anju é feminino; usar 'Sua Anju'. Budget apertado: transliterado deve caber em 40 bytes."
     },
     {
       "offset": "0x167812",
@@ -2689,8 +2689,8 @@
     }
   ],
   "total_lines": 168,
-  "high_lines": 29,
-  "medium_lines": 27,
+  "high_lines": 28,
+  "medium_lines": 28,
   "needs_review": [],
   "plan_version": "chapter-18_03-v1"
 }

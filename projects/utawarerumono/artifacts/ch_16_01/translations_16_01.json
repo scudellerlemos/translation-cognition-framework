@@ -1026,11 +1026,11 @@
     },
     "0xca7ab": {
       "speaker": "Maroro",
-      "tone_register": "arcaico pomposo, cício (s→sh)",
-      "intent": "negação exagerada, gag cômico",
+      "tone_register": "arcaico-cômico, bêbado",
+      "intent": "Maroro bêbado questiona algo com ceticismo arrastado",
       "risk_level": "high",
-      "risk_notes": "cício é essencial ('sho' em vez de 'só'); manter arcaísmo empolado; não soar moderno; o contraste pompa/fragilidade é a piada",
-      "t": "Vocês realmente pensham sho...?"
+      "risk_notes": "Cicio de Maroro (s→sh em 'sho'); 'Yooouuuu' é singular alongado, não plural; budget 29 bytes transliterado — versão sem acentos: 'Voooce realmente pensha sho...?' = 30 bytes, cortar para caber",
+      "t": "Voooce pensha sho mesmo...?"
     },
     "0xca7e9": {
       "speaker": "Protagonista",
@@ -1083,10 +1083,10 @@
     "0xca923": {
       "speaker": "Homem",
       "tone_register": "enigmático, profético",
-      "intent": "qualificação especial com reverência falsa",
-      "risk_level": "high",
-      "risk_notes": "'gift you hold' = dom/maldição (ambíguo); 'rare' = precioso ou ameaçador; não antecipar revelação de identidade/poder",
-      "t": "Aquele presente que você carrega é raro demais."
+      "intent": "Afirmar que o dom que Haku carrega é raro",
+      "risk_level": "medium",
+      "risk_notes": "'gift' = dom/talento (não presente material); budget 40 bytes transliterado — 'Aquele dom que voce carrega e raro demais.' = 41, encurtar",
+      "t": "O dom que voce tem e raro demais."
     },
     "0xca97a": {
       "speaker": "Homem",
@@ -1129,12 +1129,12 @@
       "t": "em turbulência enquanto você imprudentemente faz suas guerras?"
     },
     "0xcab09": {
-      "speaker": "Homem",
-      "tone_register": "enigmático, profético, sentencioso",
-      "intent": "prescrição moral/irônica",
-      "risk_level": "high",
-      "risk_notes": "'rule with kindness and love' = ironia velada (falso heroísmo?); não resolver se é conselho sincero ou maldição; manter tom ambíguo",
-      "t": "a muitos, e governa com bondade e amor."
+      "speaker": "Karulau",
+      "tone_register": "enigmático, profético",
+      "intent": "Alternativa ao conquistador: carregar fardos e governar com bondade",
+      "risk_level": "medium",
+      "risk_notes": "Manter subjuntivo 'governe' paralelo a 'carregue'; ambiguidade profética preservada",
+      "t": "a muitos, e governe com bondade e amor."
     },
     "0xcab34": {
       "speaker": "Protagonista",
@@ -4090,11 +4090,11 @@
     },
     "0xd0bcc": {
       "speaker": "Ukon",
-      "tone_register": "informal investigativo",
-      "intent": "inquirir sobre região",
-      "risk_level": "high",
-      "risk_notes": "Investigação crítica para trama; tom deve permanecer casual/disfarçado, não alertar. Preservar ambiguidade de propósito.",
-      "t": "porém... Vocês ouviram algo assim de leve?"
+      "tone_register": "informal, caloroso, investigativo discreto",
+      "intent": "Perguntar se os conhecidos ouviram algo de estranho recentemente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "porém... Vocês ouviram algo ultimamente?"
     },
     "0xd0c4d": {
       "speaker": "Morador",
@@ -8409,12 +8409,12 @@
       "t": "consegui fazer direito sozinha, ela ficou radiante."
     },
     "0xd6fef": {
-      "speaker": "Garota",
-      "tone_register": "nostalgia afetiva, irônica",
-      "intent": "recordação de zelo bem-intencionado",
-      "risk_level": "high",
-      "risk_notes": "Figura de memória (Master). Não revelar morte, sacrifício ou relação futura. Tom carinhoso mas protegido — a ironia preserva distância emocional.",
-      "t": "me fez tomar remédio amargo \"para a sua saúde\"."
+      "speaker": "Kuon",
+      "tone_register": "gentil, levemente irônico",
+      "intent": "Kuon menciona que a mãe a fazia tomar remédio amargo alegando ser para a saúde dela (de Kuon)",
+      "risk_level": "medium",
+      "risk_notes": "'for my health' = para minha saúde (de Kuon, 1ª pessoa), não 'sua saúde'; budget 45 bytes transliterado",
+      "t": "me fez tomar remedio amargo \"pela minha saude\"."
     },
     "0xd704a": {
       "speaker": "Garota",
@@ -10170,11 +10170,11 @@
     },
     "0xce58f": {
       "speaker": "Maroro",
-      "tone_register": "arcaico desesperado",
-      "intent": "Maroro implora para não ser levado — o dinheiro é uma bênção",
+      "tone_register": "arcaico-cômico, desesperado, cicio",
+      "intent": "Maroro protestando enquanto é arrastado, insistindo que o dinheiro é bênção",
       "risk_level": "high",
-      "risk_notes": "Arcaísmo + desespero cômico de Maroro; preservar cicio",
-      "t": "Qu--Esshpera! Eu disse, eshshe dinheiro é\\n"
+      "risk_notes": "Incluir 'eu te disse' (I told thee); cicio em palavras-chave; budget 48 com \\n; preservar arcaísmo",
+      "t": "Qu--Esshpera! Eu te dishse, eshshe dinheiro é\\n"
     },
     "0xce603": {
       "speaker": "Haku",

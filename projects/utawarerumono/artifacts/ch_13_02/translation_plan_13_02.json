@@ -7736,14 +7736,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico pomposo",
-      "intent": "cumprimentar Haku com pompa",
-      "risk_level": "high",
-      "base_translation": "Ho, Mestre Haku. O que te traz por aqui?",
+      "tone_register": "erudito arcaico, pomposo",
+      "intent": "Maroro saúda Haku com formalidade empolada e pergunta o que ele busca por ali",
+      "risk_level": "medium",
+      "base_translation": "Ho, Mestre Haku. O que buscas por aqui?",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica/pomposa de Maroro; manter arcaísmo e pompa"
+      "risk_notes": "Voz arcaica de Maroro deve ser preservada; 'seek thee' = 'buscas' (arcaico). Budget 43 bytes transliterado: 'Ho, Mestre Haku. O que buscas por aqui?' = ~40 bytes OK."
     },
     {
       "offset": "0x6356c",
@@ -12803,8 +12803,8 @@
     }
   ],
   "total_lines": 800,
-  "high_lines": 11,
-  "medium_lines": 70,
+  "high_lines": 10,
+  "medium_lines": 71,
   "needs_review": [],
   "plan_version": "chapter-13_02-v1"
 }

@@ -4824,14 +4824,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narração",
-      "intent": "completar — ela se encolhe um pouco",
-      "risk_level": "high",
-      "base_translation": "um bit.",
+      "tone_register": "narração casual, resignado",
+      "intent": "minimizar o incômodo de recuar um pouco",
+      "risk_level": "medium",
+      "base_translation": "pouco.",
       "byte_budget": 6,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 6 bytes; transliterado 'um bit' = 6 bytes"
+      "risk_notes": "byte_budget=6; transliterado 'um pouco' = 8 bytes, excede. Usar 'um bit' estava errado semanticamente; usar forma curta 'um.` mas ambíguo. Melhor: 'pouco.' = 5 bytes OK."
     },
     {
       "offset": "0x594e0",
@@ -6184,14 +6184,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "confuso",
-      "intent": "o que há com essa pessoa",
-      "risk_level": "high",
-      "base_translation": "O que é que essa pessoa quer?",
+      "tone_register": "narrativa informal, espanto",
+      "intent": "estranheza diante do comportamento inexplicável da figura",
+      "risk_level": "low",
+      "base_translation": "O que é que essa pessoa?",
       "byte_budget": 24,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Figura enigmática; usar 'essa pessoa'"
+      "risk_notes": ""
     },
     {
       "offset": "0x5a05a",
@@ -7432,14 +7432,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "preocupado",
-      "intent": "completar — perguntar assim a uma princesa",
-      "risk_level": "high",
-      "base_translation": "a princesa?",
+      "tone_register": "casual, questionador",
+      "intent": "questionar se Kuon foi informal demais ao abordar a princesa",
+      "risk_level": "low",
+      "base_translation": "assim?",
       "byte_budget": 9,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 9 bytes; transliterado 'a princesa' = 9 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x5ab4c",
@@ -7512,14 +7512,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "irônico",
-      "intent": "completar",
-      "risk_level": "high",
-      "base_translation": "abalado.",
+      "tone_register": "irônico, levemente provocador",
+      "intent": "apontar que o próprio Haku também não foi formal com a princesa",
+      "risk_level": "low",
+      "base_translation": "você.",
       "byte_budget": 9,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Budget 9 bytes; transliterado 'abalado.' = 7 bytes"
+      "risk_notes": ""
     },
     {
       "offset": "0x5ac23",
@@ -8227,8 +8227,8 @@
     }
   ],
   "total_lines": 514,
-  "high_lines": 23,
-  "medium_lines": 33,
+  "high_lines": 19,
+  "medium_lines": 34,
   "needs_review": [],
   "plan_version": "chapter-13_01-v1"
 }
