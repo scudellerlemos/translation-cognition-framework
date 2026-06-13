@@ -1156,6 +1156,19 @@ def test_kb_review_digest_flags(tmp_path):
     assert "genero a confirmar" in names["Shichirya"]["flags"]
 
 
+def test_blowup_guard_drops_pathological_line():
+    # uma linha curta vira lixo gigante (a corrupcao real do ch_19_04: ~17 chars -> 5872) -> descartada.
+    assert model._is_blowup("NOOO!!", "N" + "ã" * 4000 + "O!!")
+    assert not model._is_blowup("Ola, tudo bem com voce?", "Hi, all good with you?")   # legitima
+    assert not model._is_blowup("x", "y" * 150)        # curta mas sob o piso (200) -> nao pune
+    pack = {"lines": [{"offset": "0x1", "source": "Ow!", "byte_budget": 10},
+                      {"offset": "0x2", "source": "Tudo bem.", "byte_budget": 40}], "scene_id": "00_00"}
+    text = json.dumps({"lines": [{"offset": "0x1", "t": "A" * 5000},      # blow-up -> descartado
+                                 {"offset": "0x2", "t": "Tudo bem."}]})    # ok -> mantido
+    out = model._parse_batch_lines(pack, text)
+    assert "0x1" not in out and out["0x2"]["t"] == "Tudo bem."
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():

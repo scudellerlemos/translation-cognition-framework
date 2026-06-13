@@ -356,6 +356,22 @@ def _parity_fit(source, t):
     return t
 
 
+# Guarda contra BLOW-UP patologico de comprimento: o modelo (raro) emite centenas/milhares de chars de
+# lixo p/ uma linha curta (medido: um grito de ~17 chars virou 5872 chars de ruido num batch -> passou o
+# fitting so porque AQUELA linha tinha byte_budget; uma sem budget escaparia). Rejeitamos a traducao cuja
+# forma TRANSLITERADA passa de _BLOWUP_FACTOR x a fonte (piso _BLOWUP_FLOOR p/ nao punir linha curta
+# legitima) -> a linha conta como NAO retornada (re-roda / fica 'missing' -> coverage a pega), nunca aceita.
+_BLOWUP_FACTOR = 8
+_BLOWUP_FLOOR = 200
+
+
+def _is_blowup(source, t) -> bool:
+    """True se `t` e patologicamente mais longa que `source` (lixo provavel do modelo)."""
+    if not isinstance(t, str):
+        return False
+    return _translit_len(t) > max(_translit_len(source or "") * _BLOWUP_FACTOR, _BLOWUP_FLOOR)
+
+
 def _select_reuse(pack, *, enabled):
     """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
     em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
@@ -461,6 +477,8 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             if off not in offset_set or not isinstance(v, dict):
                 continue
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
+            if _is_blowup(srcmap.get(off, ""), v["t"]):
+                continue                                 # lixo patologico -> descarta (vira 'missing' -> retry)
             good_parity = (v["t"].count(tok) == srcmap.get(off, "").count(tok))
             if off not in merged:
                 merged[off] = v                      # preenche lacuna
@@ -627,6 +645,8 @@ def _parse_batch_lines(pack, text):
     for off, v in parsed.get("lines", {}).items():
         if off in novel_offsets and isinstance(v, dict):
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
+            if _is_blowup(srcmap.get(off, ""), v["t"]):
+                continue                                 # lixo patologico -> descarta (re-roda / missing)
             out[off] = v
     return out
 
