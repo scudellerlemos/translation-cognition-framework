@@ -200,6 +200,14 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ⏸️ adiado (difuso; risco de overengineering) |
 | H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ vazamento de **gênero** pt-BR fica como extensão (exige marcar entidades de gênero-quarentenado no ledger + atribuir token ao referente) |
 
+**Riscos de engenharia (avaliação crítica — mitigações offline):**
+| # | Risco | Mitigação | Status |
+|---|---|---|---|
+| R#1 | **mock↔API diverge** (3 bugs de batch passaram no fake e queimaram dinheiro) | smoke vivo de contrato | ✅ **feito** — `batch_smoke.py` (ver R5 acima) |
+| R#2 | **sem piso de qualidade** — o verdict `revise` da back-translation era REPORT-ONLY (ficava em disco, ninguém lia) | gate observável dos verdicts | ✅ **feito** — `quality_gate.py`: lê os `verdict: revise` das back-translation + flagra high/critical **sem cobertura**; exit 1. Contraparte de qualidade do `spoiler_check`. **1ª execução achou 97 linhas `revise`** já gravadas e ignoradas nos caps 11–18. Escopo honesto: cobre só high/critical (as back-translatadas); low/medium (incl. boa parte do tier Haiku) não têm piso aqui — amostragem das low fica como extensão |
+| R#3 | **TM append-only** — termo errado propagado por N capítulos sem ferramenta de correção (consistência só degrada) | correção governada cross-capítulo | ✅ **feito** — `tm_correct.py`: find→replace a partir de um CSV de **dados** (IA propõe → humano aprova → script aplica; sem work-text no .py), match por limite de palavra, corrige `translations_<id>.json` **e** `translation_plan_<id>.json` (coerência da TM), dry-run por padrão. Loop: `--apply` → `state_index --rebuild` → `verify_chapter` (revalida charset/round-trip). Dry-run real já achou "paragon" repetido em ch_12_04 **e** ch_14_10 |
+| R#4 | a IA reconcilia a própria KB (sem fonte externa obrigatória por termo) | gate de reconciliação por fonte | ⏸️ aberto (relacionado a H5; pós-produção) |
+
 **Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
 - **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
   de I/O escolhe o conector certo. Extrair quando houver **2–3 conectores**. Conectores agrupam por
