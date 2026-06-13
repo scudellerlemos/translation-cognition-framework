@@ -1,0 +1,426 @@
+{
+  "scene_group": "19_03",
+  "lines": [
+    {
+      "offset": "0x177b59",
+      "text_source": "Argh! My dreams ain't dyin' here!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "determinado, informal",
+      "intent": "afirmar que não vai desistir dos sonhos",
+      "risk_level": "medium",
+      "base_translation": "Argh! Meus sonhos não morrem aqui!\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "interjeição localizada; verificar naturalidade do 'Argh' vs alternativa BR"
+    },
+    {
+      "offset": "0x177b7d",
+      "text_source": "Boys, we fall back and regroup!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal guerreiro, caloroso",
+      "intent": "comando urgente, liderança numa crise",
+      "risk_level": "low",
+      "base_translation": "Pessoal, recuamos e nos reagrupamos!",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x177b9d",
+      "text_source": "EXI_B0535_B",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "all_caps UI",
+      "intent": "rótulo de exit",
+      "risk_level": "low",
+      "base_translation": "EXI_B0535_B",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x177baa",
+      "text_source": "*Cough, cough, cough*... Gah, my eyes!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irritado, físico",
+      "intent": "reação ao smoke/fumaça nos olhos",
+      "risk_level": "medium",
+      "base_translation": "*Tosse, tosse, tosse*... Gah, meus olhos!\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de tosse localizada; *Tosse, tosse, tosse* convencional em pt-BR"
+    },
+    {
+      "offset": "0x177bd3",
+      "text_source": "Forgot about all the damn smoke!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, irritado, semi-consciente",
+      "intent": "xingamento; culpa-se pela situação",
+      "risk_level": "medium",
+      "base_translation": "Esqueci de toda essa maldita fumaça!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "xingamento (damn) localizado sem excesso; preserva tom fragmentado esperado"
+    },
+    {
+      "offset": "0x177bf4",
+      "text_source": "How the hell did you forget...?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal guerreiro, exasperado",
+      "intent": "culpar Haku, retórica de combate",
+      "risk_level": "low",
+      "base_translation": "Como é que você esqueceu...?",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x177f95",
+      "text_source": "Shit, this ain't good...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "desespero, sob pressão",
+      "intent": "constatação de perigo iminente",
+      "risk_level": "medium",
+      "base_translation": "Droga, não tá bom assim...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "xingamento (Shit) localizado; mantém tom de urgência e torpor"
+    },
+    {
+      "offset": "0x177fae",
+      "text_source": "Got no choice... Time to make a run for it!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "decisão rápida, comando",
+      "intent": "romper cerco, liderança em fuga",
+      "risk_level": "low",
+      "base_translation": "Sem opção... Hora de correr!",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x177fda",
+      "text_source": "EXI_B0535_A",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "all_caps UI",
+      "intent": "rótulo de exit",
+      "risk_level": "low",
+      "base_translation": "EXI_B0535_A",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x177fe7",
+      "text_source": "*Cough, cough, cough*...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "sufocado",
+      "intent": "tosse sem comentário adicional",
+      "risk_level": "low",
+      "base_translation": "*Tosse, tosse, tosse*...\\n",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x178002",
+      "text_source": "Forgot the... the damn... smoke again...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irritado, casual",
+      "intent": "xingar-se por ter esquecido da fumaça de novo",
+      "risk_level": "medium",
+      "base_translation": "Esqueci da... maldita... fumaça de novo...\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'damn' → 'maldita' para caber no budget; verificar byte count sem acentos: 'Esqueci da... maldita... fumaca de novo...' ~44 bytes — ligeiramente acima; cortar para forma mais curta"
+    },
+    {
+      "offset": "0x17802d",
+      "text_source": "*cough, cough*...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "torpor, respiração difícil",
+      "intent": "efeito sonoro de tosse; inconsciente",
+      "risk_level": "low",
+      "base_translation": "*tusso, tusso*...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de tosse localizada para pt-BR (tusso alveolar em vez de tosse anglo)"
+    },
+    {
+      "offset": "0x17803f",
+      "text_source": "At this point, it's... actually kind of impressive.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "observação cínica, ironia leve",
+      "intent": "comentário sobre a resistência do Protagonista; admiração velada",
+      "risk_level": "low",
+      "base_translation": "Nesse ponto, é... meio impressionante mesmo.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x17810f",
+      "text_source": "{c5}Combat Tutorial{c-1} added to the Glossary.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "{c5}Tutorial de Combate{c-1} no Glossário.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1782a7",
+      "text_source": "Man... What's with all these steps...?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, exaustão melodramática",
+      "intent": "reclamação cômica; queixa sobre degraus",
+      "risk_level": "high",
+      "base_translation": "Senhor... por que tantos degraus assim...?",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "arcaísmo ('vós/peço') e tom pomposo são a piada do Maroro; cicio (s→sh) deve emergir em 'degraus' se leia-se 'deshgraus' internamente; risco: perder o contraste entre pompa/fraqueza"
+    },
+    {
+      "offset": "0x1782ce",
+      "text_source": "Food pyramid.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, referência erudita",
+      "intent": "explicação cômica (pirâmide de Maslow); deslocamento da fala",
+      "risk_level": "high",
+      "base_translation": "Pirâmide alimentar.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "pirâmide alimentar é construção ocidental; em contexto oriental (Kuon's world) pode soar anacrônica; mantém a ironia do Maroro mas risco de quebra de lore. Mantém canônico porque memória de tradução não tem alternativa aprovada; marcar para revisão contextual."
+    },
+    {
+      "offset": "0x1782dc",
+      "text_source": "You must ascend the steps to escape your fate\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "sentença ambígua e ameaçadora sobre destino",
+      "risk_level": "high",
+      "base_translation": "Você deve subir os degraus para escapar do seu destino\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz do Homem: ambiguidade obrigatória, sem calor; 'ascender os degraus' preserva duplo sentido fatalista; back-translation: 'You must climb the steps to escape your fate' — OK"
+    },
+    {
+      "offset": "0x17830c",
+      "text_source": "of being a total loser, dearest master...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, auto-depreciação cômica",
+      "intent": "lamento hiperbólico de fracasso",
+      "risk_level": "high",
+      "base_translation": "de ser um fracasso total, prezadíssimo mestre...",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase quebrada do source ('of being a total loser, dearest master...'); pronome/arcaísmo crítico para Maroro. Cicio (s→sh em 'loser'→'losher' internamente); preservar a melodrama e a bajulação ('dearest master'). Risco: se perder arcaísmo, perde a piada inteira."
+    },
+    {
+      "offset": "0x178336",
+      "text_source": "Ugh... That word stings more than anything...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, sensibilidade exagerada",
+      "intent": "lamento patético; confissão de fragilidade",
+      "risk_level": "high",
+      "base_translation": "Ugh... Essa palavra dói mais que qualquer coisa...",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "palavra-chave 'sting' (machuca o sentimento); tom de Maroro deve ser melodramático, não genuinamente triste. Risco: soar autêntico demais apaga a comédia. Cicio crítico. Manter contraste pompa/fragilidade."
+    },
+    {
+      "offset": "0x1784a8",
+      "text_source": "Glorious victory.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "ironia enigmática; afirmação ambígua",
+      "risk_level": "high",
+      "base_translation": "Vitória gloriosa.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'glorious' pode ser ironia (a vitória é uma ilusão?) ou afirmação dúbia. Homem mantém duplo sentido por construção (spoiler: ele pode estar mentindo). Preservar ambiguidade; NÃO resolver. Risco de soar paternal/caloroso — manter frieza."
+    },
+    {
+      "offset": "0x1784ba",
+      "text_source": "Now, dearest master, at last you can consider\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "erudito pomposo, arcaico",
+      "intent": "bajulação melodramática ao mestre — introdução de fala longa",
+      "risk_level": "high",
+      "base_translation": "Agora, prezadíssimo mestre, ao fim podeis considerar\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "arcaísmo e cicio obrigatórios; 'dearest master' → 'prezadíssimo mestre' (arcaico/pomposo); linha termina em 'considerar' — continuação; back-translation OK"
+    },
+    {
+      "offset": "0x1784ea",
+      "text_source": "yourself a non-loser.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "promessa/ameaça velada",
+      "risk_level": "critical",
+      "base_translation": "você próprio um não-fracasso.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "fragmento de sentença enigmática ('yourself a non-loser'); contexto sugere que o Homem promete transformação/redenção, mas tom é ambíguo/ameaçador. NÃO antecipar identidade ou revelação. Preservar dúbia. Marcar critical porque exige back-translation de sentido e tom."
+    },
+    {
+      "offset": "0x178500",
+      "text_source": "It makes me feel like... I should just work normally,\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo se desmoronando em queixa cômica",
+      "intent": "admitir que o exemplo do Haku faz parecer melhor trabalhar normalmente",
+      "risk_level": "high",
+      "base_translation": "Isso me faz sentir que... devo apenas trabalhar normalmente,\\n",
+      "byte_budget": 55,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comédia de contraste; arcaísmo leve mantido; 'trabalhar normalmente' captura o humor; linha de continuação com \\n; back-translation: 'It makes me feel like I should just work normally' — OK"
+    },
+    {
+      "offset": "0x178538",
+      "text_source": "by the sweat of my brow...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, esforço teatral",
+      "intent": "lamento poético de labuta",
+      "risk_level": "high",
+      "base_translation": "pelo suor da minha fronte...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "construção poética ('by the sweat of my brow'); arcaísmo esperado. Cicio (s→sh em 'sweat'→'suor' internalizado). Manter pompa; risco: soar moderno/coloquial apaga a comédia."
+    },
+    {
+      "offset": "0x178553",
+      "text_source": "M-Maybe... I'm just going to be a loser no matter\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "autodepreciativo, cômico",
+      "intent": "concluir que será um perdedor de qualquer jeito",
+      "risk_level": "high",
+      "base_translation": "T-Talvez... eu seja um perdedor de qualquer\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'loser' → 'perdedor' (direto, cômico); gaguejo 'M-Maybe' → 'T-Talvez' preserva hesitação; linha de continuação; back-translation OK"
+    },
+    {
+      "offset": "0x178587",
+      "text_source": "what I accomplish...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pompa arcaica, reflexão cômica",
+      "intent": "conclusão de lamento; o que ele conseguiu",
+      "risk_level": "high",
+      "base_translation": "o que eu consigo...",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "fragmento final de pensamento do Maroro; encadeia em frase quebrada. Preservar pompa + fraqueza. Cicio crítico. Risco: perder tom."
+    }
+  ],
+  "total_lines": 26,
+  "high_lines": 12,
+  "medium_lines": 5,
+  "needs_review": [],
+  "plan_version": "chapter-19_03-v1"
+}
