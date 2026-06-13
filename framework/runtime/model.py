@@ -545,6 +545,30 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
     return _over_offsets(budgets, data.get("lines", {}), tolerance)
 
 
+def invalidate_back_translation(root, scene, offsets) -> int:
+    """Marca como STALE as entries de back_translation dos `offsets` re-traduzidos: o verdict julgou o
+    TEXTO ANTIGO, entao nao vale mais como crivo de qualidade. NAO apaga (preserva historico + permite
+    re-julgar). O quality_gate trata entry stale como SEM cobertura. Retorna nº de entries marcadas."""
+    root = Path(root)
+    scene_id = context_pack.scene_id_of(scene)
+    bt = paths.back_translation(root, scene, scene_id)
+    if not bt.is_file():
+        return 0
+    try:
+        data = json.loads(bt.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return 0
+    offset_set = set(offsets)
+    n = 0
+    for e in data.get("entries", []):
+        if e.get("offset") in offset_set and not e.get("stale"):
+            e["stale"] = True
+            n += 1
+    if n:
+        bt.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return n
+
+
 def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
     """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<scene_id>.json,
     preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting (e do quality_fix).
@@ -567,6 +591,7 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, q
                                        quality_note=quality_note)
     full.setdefault("lines", {}).update(data.get("lines", {}))   # merge: so os offsets re-traduzidos
     out.write_text(json.dumps(full, ensure_ascii=False, indent=2), encoding="utf-8")
+    invalidate_back_translation(root, scene, offset_set)         # o verdict antigo nao vale mais
     return {"status": DONE, "model": m, "usage": usage, "n_lines": sub["n_lines"],
             "reused": meta["reused"], "novel": meta["novel"]}
 
