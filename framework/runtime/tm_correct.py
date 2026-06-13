@@ -40,6 +40,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
 import context_pack  # noqa: E402
 import paths          # noqa: E402
 
@@ -79,25 +80,14 @@ def _apply_text(text: str, rules) -> tuple[str, int]:
     return text, total
 
 
-def _scene_chapter(scene: str) -> str:
-    parts = scene.split("_")
-    return parts[1] if scene.startswith("ch_") and len(parts) >= 3 else ""
-
-
 def plan(root, corrections, chapter=None) -> list[dict]:
     """Calcula (sem gravar) todas as substituicoes. Retorna lista de hits:
     {scene, scene_id, artifact, offset, field, before, after, find, replace, note}."""
     root = Path(root)
-    chap = str(chapter) if chapter is not None else None
     # pre-compila por regra (uma vez)
     compiled = [(c, _compile(c["find"], c["mode"]), c["replace"]) for c in corrections]
     hits = []
-    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
-        if chap is not None and _scene_chapter(scene) != chap:
-            continue
+    for scene in artifact_io.scenes(root, chapter):
         sid = context_pack.scene_id_of(scene)
         # translations_<id>.json: lines = {offset: {... "t": ...}}
         tf = paths.translations(root, scene, sid)
@@ -150,16 +140,10 @@ def apply(root, corrections, chapter=None) -> dict:
     """Aplica as correcoes em disco. Retorna {files: N, replacements: M, hits: [...]}.
     Reescreve cada arquivo afetado UMA vez (idempotente: re-rodar sem novas regras nao muda nada)."""
     root = Path(root)
-    chap = str(chapter) if chapter is not None else None
     compiled = [(c, _compile(c["find"], c["mode"]), c["replace"]) for c in corrections]
     hits = plan(root, corrections, chapter)            # p/ relatorio (mesmo calculo)
     files_changed, repl_count = 0, 0
-    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
-        if chap is not None and _scene_chapter(scene) != chap:
-            continue
+    for scene in artifact_io.scenes(root, chapter):
         sid = context_pack.scene_id_of(scene)
         for path, field, iterator in (
                 (paths.translations(root, scene, sid), "t", _iter_translations),
