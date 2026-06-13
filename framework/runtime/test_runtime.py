@@ -931,6 +931,111 @@ def test_kb_phase_apply_frontier_advances_only(tmp_path):
     assert kb_phase.apply_frontier(root2, "77") == "99_00"
 
 
+# ----------------------- piso de qualidade (risco #2) ------------------------
+import quality_gate  # noqa: E402
+
+
+def _back(entries):
+    """back_translation_<id>.json: entries com offset/verdict/back_en/note."""
+    return json.dumps({"reviewed": len(entries),
+                       "entries": [{"offset": o, "back_en": "b", "verdict": v, "note": nt}
+                                   for o, v, nt in entries]})
+
+
+def test_quality_gate_flags_revise_and_uncovered(tmp_path):
+    import paths
+    # cap.19: 19_01 com back (0x1 pass, 0x2 revise); 19_02 com high SEM back (uncovered).
+    for s, pl in (("ch_19_01", _plan([("0x1", "high"), ("0x2", "critical"), ("0x3", "low")])),
+                  ("ch_19_02", _plan([("0x9", "high")]))):
+        d = tmp_path / "artifacts" / s
+        d.mkdir(parents=True)
+        (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(
+            json.dumps(pl), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(
+        _back([("0x1", "pass", ""), ("0x2", "revise", "voz divergiu")]), encoding="utf-8")
+    # cap.20: back presente mas SEM o offset da linha critical -> uncovered "offset ausente"
+    d = tmp_path / "artifacts" / "ch_20_01"
+    d.mkdir(parents=True)
+    (d / "translation_plan_20_01.json").write_text(
+        json.dumps(_plan([("0xa", "critical")])), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_20_01", "20_01").write_text(
+        _back([("0xz", "pass", "")]), encoding="utf-8")
+
+    r = quality_gate.check(tmp_path, "19")                 # filtro de capitulo
+    assert [x["offset"] for x in r["revise"]] == ["0x2"]
+    assert r["revise"][0]["note"] == "voz divergiu" and r["revise"][0]["target"] == "alvo0x2"
+    assert [x["offset"] for x in r["uncovered"]] == ["0x9"]   # 0x1/0x2 cobertos; low nao conta
+
+    allr = quality_gate.check(tmp_path)                    # sem filtro -> inclui o cap.20
+    assert {x["offset"] for x in allr["uncovered"]} == {"0x9", "0xa"}
+    assert any(x["offset"] == "0xa" and "ausente" in x["reason"] for x in allr["uncovered"])
+
+    # tudo coberto e pass -> gate limpo
+    paths.back_translation(tmp_path, "ch_19_02", "19_02").write_text(
+        _back([("0x9", "pass", "")]), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_20_01", "20_01").write_text(
+        _back([("0xa", "pass", "")]), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(
+        _back([("0x1", "pass", ""), ("0x2", "pass", "")]), encoding="utf-8")
+    clean = quality_gate.check(tmp_path)
+    assert clean["revise"] == [] and clean["uncovered"] == []
+
+
+# --------------------- correcao governada da TM (risco #3) -------------------
+import tm_correct  # noqa: E402
+
+
+def _trans(lines_map):
+    return json.dumps({"lines": lines_map})
+
+
+def test_tm_correct_dryrun_apply_and_word_boundary(tmp_path):
+    import paths
+    d = tmp_path / "artifacts" / "ch_30_01"
+    d.mkdir(parents=True)
+    # 0x1: 'Ukon' como palavra (deve casar). 0x2: 'Ukonometro' (substring -> NAO casa).
+    paths.translations(tmp_path, "ch_30_01", "30_01").write_text(
+        _trans({"0x1": {"t": "Ola, Ukon!"}, "0x2": {"t": "Um Ukonometro qualquer"}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_30_01", "30_01").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "base_translation": "Ola, Ukon!"},
+                              {"offset": "0x2", "base_translation": "Um Ukonometro qualquer"}]}),
+        encoding="utf-8")
+    csvp = tmp_path / "corr.csv"
+    csvp.write_text("find,replace,note\nUkon,Oshtor,corrige nome\n,,linha vazia ignorada\n",
+                    encoding="utf-8")
+    corr = tm_correct.load_corrections(csvp)
+    assert len(corr) == 1 and corr[0]["mode"] == "word"     # linha sem find ignorada
+
+    hits = tm_correct.plan(tmp_path, corr)                  # DRY-RUN: nada gravado
+    assert {(h["artifact"], h["offset"]) for h in hits} == {("translations", "0x1"), ("plan", "0x1")}
+    assert "Oshtor" not in paths.translations(tmp_path, "ch_30_01", "30_01").read_text("utf-8")
+
+    res = tm_correct.apply(tmp_path, corr)                  # APLICA
+    assert res["replacements"] == 2 and res["files"] == 2
+    tt = json.loads(paths.translations(tmp_path, "ch_30_01", "30_01").read_text("utf-8"))["lines"]
+    assert tt["0x1"]["t"] == "Ola, Oshtor!"                 # palavra trocada
+    assert tt["0x2"]["t"] == "Um Ukonometro qualquer"       # substring intacta (limite de palavra)
+    pl = json.loads(paths.translation_plan(tmp_path, "ch_30_01", "30_01").read_text("utf-8"))["lines"]
+    assert pl[0]["base_translation"] == "Ola, Oshtor!"      # plano coerente (TM rebuild refletira)
+
+    # IDEMPOTENTE: re-aplicar nao muda mais nada (termo ja corrigido)
+    assert tm_correct.apply(tmp_path, corr)["replacements"] == 0
+
+
+def test_tm_correct_literal_mode(tmp_path):
+    import paths
+    d = tmp_path / "artifacts" / "ch_31_01"
+    d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_31_01", "31_01").write_text(
+        _trans({"0x1": {"t": "ver 1.0 aqui"}}), encoding="utf-8")
+    csvp = tmp_path / "c2.csv"
+    csvp.write_text("find,replace,note,mode\n1.0,2.0,bump,literal\n", encoding="utf-8")
+    corr = tm_correct.load_corrections(csvp)
+    res = tm_correct.apply(tmp_path, corr)
+    assert res["replacements"] == 1
+    assert "ver 2.0 aqui" in paths.translations(tmp_path, "ch_31_01", "31_01").read_text("utf-8")
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
