@@ -110,3 +110,13 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.18).
 - **Highness**->'Alteza' (Anju); **Guardian**->'a Guardia' (epiteto Munechika); **Rulu**->apelido de Rulutieh.
 - Os Oito Generais-Pilar (wiki): Raiko, Woshis, Dekopompo, Ozen, Soyankekur, Tokifusa, Munechika, Vurai (alguns aparecerao adiante).
 - Declinados (ruido/comum/interjeicao/contracao): Urgh, It'll, Unhand, What're, Nah, Regardless, Understood, Pardon, Oohh, Failure, Pay, Preposterous.
+
+## cap.19 — delta de KB (reconciliado IA+wiki, 2026-06-13)
+Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.19). Reconciliacao autonoma (fonte autorizada).
+- **Raiko**: Oito Generais-Pilar, 'o Sabio'; frio e calculista. MASCULINO. Lore profunda (vinculo familiar/arco de antagonista) = beyond_frontier (quarentena; ver spoiler_ledger 'raiko_arc').
+- **Shichirya**: escudeiro/servo de Lord Raiko. corpus+wiki; MASCULINO a confirmar.
+- **Uruuru & Saraana**: sacerdotisas gemeas (Kamunagi), filhas de Honoka (ja coberta, cap.18; o proprio corpus diz 'daughters of High Priestess Lady Honoka' em 19_05). FEMININO. Uruuru = mais velha, fala curta/informal/girias, pele clara; Saraana = mais nova, fala longa/formal, pele morena. Dadas a Haku p/ servi-lo; magia de agua/fogo + danca.
+- **Kamunagi**: titulo de sacerdotisa ('Kamunagi of Chains' -> 'Kamunagi das Correntes'). manter_original + glosa.
+- **Magecraft / High Magecraft**: arte magica secreta -> 'Magia' / 'Alta Magia' (traduzir).
+- **Nosuri Bandits / Nosuri Thieves**: bando que usa o nome Nosuri (etnia coberta) -> 'Bandidos Nosuri' / 'Ladroes Nosuri' (traduzir o substantivo, manter Nosuri).
+- Declinados (ruido/comum/interjeicao/contracao/UI/pontual): Dammit, Sounds, Chains (parte de 'Kamunagi of Chains'), Hahahaha, Hip (hip hooray), It'd, Boys, Forgot, Hear, Kind, Brigand Zzz, Caretaker Ey, Combat Tutorial (UI), Dessert Mountain, Guests Huzzah, Ignoring/Killing Moznu (Moznu coberto), 'Priestess Lady Honoka--her' (Honoka coberta).
