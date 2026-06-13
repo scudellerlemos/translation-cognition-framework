@@ -1169,6 +1169,64 @@ def test_blowup_guard_drops_pathological_line():
     assert "0x1" not in out and out["0x2"]["t"] == "Tudo bem."
 
 
+# --------------------- revisao humana por capitulo (CSV) ----------------------
+import quality_review  # noqa: E402
+
+
+def test_quality_review_export_marks_lines(tmp_path):
+    import paths
+    d = tmp_path / "artifacts" / "ch_70_01"
+    d.mkdir(parents=True)
+    plan = {"lines": [
+        {"offset": "0x1", "risk_level": "high", "text_source": "Hello there.", "base_translation": "Ola.", "speaker": "X"},
+        {"offset": "0x2", "risk_level": "low", "text_source": "Yes.", "base_translation": "Yes.", "speaker": "X"},   # idêntico
+        {"offset": "0x3", "risk_level": "low", "text_source": "Ok.", "base_translation": "Tu tens razao.", "speaker": "X"}]}  # pt-PT
+    (d / "translation_plan_70_01.json").write_text(json.dumps(plan), encoding="utf-8")
+    paths.translations(tmp_path, "ch_70_01", "70_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "Ola."}, "0x2": {"t": "Yes."}, "0x3": {"t": "Tu tens razao."}}}),
+        encoding="utf-8")
+    rows = quality_review.export(tmp_path, "70")
+    by = {r["offset"]: r for r in rows}
+    assert len(rows) == 3                                   # capitulo INTEIRO entra
+    assert "risco:high" in by["0x1"]["revisar"]
+    assert "identico-fonte" in by["0x2"]["revisar"]
+    assert "pt-PT?" in by["0x3"]["revisar"]
+    assert by["0x1"]["source_en"] == "Hello there." and by["0x1"]["target_pt"] == "Ola."
+
+
+def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
+    import paths
+    d = tmp_path / "artifacts" / "ch_71_01"
+    d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_71_01", "71_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "ruim"}, "0x2": {"t": "longo demais"}}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_71_01", "71_01").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "text_source": "A", "base_translation": "ruim"},
+                              {"offset": "0x2", "text_source": "B", "base_translation": "longo demais"}]}),
+        encoding="utf-8")
+    csvp = tmp_path / "ret.csv"
+    csvp.write_text(
+        "scene,offset,speaker,risk,revisar,source_en,target_pt,correcao,nota\n"
+        "ch_71_01,0x1,X,high,risco:high,A,ruim,Corrigido pelo humano,\n"   # verbatim -> 0 IA
+        "ch_71_01,0x2,X,low,,B,longo demais,,encurtar\n"                    # nota -> IA cirurgica
+        "ch_71_01,0x9,X,low,,C,ok,,\n", encoding="utf-8")                   # vazio -> ignorado
+
+    called = {}
+
+    def fake_retranslate(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
+        called["offsets"] = list(offsets); called["note"] = quality_note
+        return {"usage": {"in": 5, "out": 2, "cache_read": 0, "cache_write": 0}}
+
+    monkeypatch.setattr(quality_review.model, "retranslate_offsets", fake_retranslate)
+    r = quality_review.apply(tmp_path, csvp)
+    assert r["verbatim"] == 1 and r["ai"] == 1
+    tt = json.loads(paths.translations(tmp_path, "ch_71_01", "71_01").read_text("utf-8"))["lines"]
+    assert tt["0x1"]["t"] == "Corrigido pelo humano"        # verbatim aplicado, sem IA
+    pl = json.loads(paths.translation_plan(tmp_path, "ch_71_01", "71_01").read_text("utf-8"))["lines"]
+    assert pl[0]["base_translation"] == "Corrigido pelo humano"   # plano espelha
+    assert called["offsets"] == ["0x2"] and "encurtar" in called["note"]   # só a nota foi p/ IA
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
