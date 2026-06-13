@@ -31,6 +31,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
 import model          # noqa: E402
 import paths          # noqa: E402
@@ -65,21 +66,12 @@ def _flags(source: str, target: str, risk: str, sampled: bool) -> str:
 def export(root, chapter) -> list[dict]:
     """CSV-rows do capitulo inteiro, cada linha marcada. Determinista (sem rede)."""
     root = Path(root)
-    chap = str(chapter)
     rows = []
-    for sc_dir in sorted(paths.artifacts(root).glob(f"ch_{chap}_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
+    for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)
         if not plan_lines:
             continue
-        sid = context_pack.scene_id_of(scene)
-        tf = paths.translations(root, scene, sid)
-        tmap = {}
-        if tf.is_file():
-            import json
-            tmap = json.loads(tf.read_text(encoding="utf-8")).get("lines", {})
+        tmap = artifact_io.translations_map(root, scene)
         sampled = {x["offset"] for x in model.sample_low_risk_lines(root, scene)}
         for ln in plan_lines:
             off = ln.get("offset", "")

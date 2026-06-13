@@ -34,15 +34,10 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (leitura compartilhada: scenes/plan_lines/back_entries)
 import context_pack  # noqa: E402
 import model          # noqa: E402
 import paths          # noqa: E402
-
-
-def _scene_chapter(scene: str) -> str:
-    """'ch_19_03' -> '19'; 'ch_20_10' -> '20'. Vazio se nao casar o padrao."""
-    parts = scene.split("_")
-    return parts[1] if scene.startswith("ch_") and len(parts) >= 3 else ""
 
 
 def check(root, chapter=None) -> dict:
@@ -54,15 +49,9 @@ def check(root, chapter=None) -> dict:
     'coverage': {lines, high, with_back, sampled_low, pct} — torna o ponto cego do tier barato MEDIDO.
     """
     root = Path(root)
-    chap = str(chapter) if chapter is not None else None
     revise, uncovered = [], []
     cov = {"lines": 0, "high": 0, "with_back": 0, "sampled_low": 0}
-    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
-        if chap is not None and _scene_chapter(scene) != chap:
-            continue
+    for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)       # le translation_plan; [] se sem plano
         if not plan_lines:
             continue
@@ -70,15 +59,8 @@ def check(root, chapter=None) -> dict:
         highs = [model._ln_entry(ln) for ln in plan_lines
                  if ln.get("risk_level") in ("high", "critical")]
         high_offsets = {h["offset"] for h in highs}
-        bt = paths.back_translation(root, scene, sid)
-        entries = {}
-        if bt.is_file():
-            try:
-                for e in json.loads(bt.read_text(encoding="utf-8")).get("entries", []):
-                    entries[e.get("offset", "")] = e
-            except (json.JSONDecodeError, OSError):
-                entries = {}                              # back ilegivel -> tudo conta como uncovered
-        bt_missing = not bt.is_file()
+        entries = artifact_io.back_entries(root, scene)
+        bt_missing = not paths.back_translation(root, scene, sid).is_file()
         valid = {off: e for off, e in entries.items() if not e.get("stale")}  # stale = julgou texto antigo
         cov["lines"] += len(plan_lines)
         cov["high"] += len(highs)

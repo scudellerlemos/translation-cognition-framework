@@ -1267,6 +1267,30 @@ def test_quality_fix_max_usd_stops(tmp_path, monkeypatch):
     assert r["stopped_budget"] is True and r["scenes"] == 1 and r["scenes_left"] == 2   # parou no teto
 
 
+# ----------------- camada compartilhada de leitura (#3) ----------------------
+import artifact_io  # noqa: E402
+
+
+def test_artifact_io_readers(tmp_path):
+    import paths
+    assert artifact_io.scene_chapter("ch_19_03") == "19" and artifact_io.scene_chapter("x") == ""
+    for s in ("ch_19_01", "ch_19_02", "ch_20_01"):
+        (tmp_path / "artifacts" / s).mkdir(parents=True)
+    assert artifact_io.scenes(tmp_path) == ["ch_19_01", "ch_19_02", "ch_20_01"]
+    assert artifact_io.scenes(tmp_path, "19") == ["ch_19_01", "ch_19_02"]   # filtro por cap.
+    paths.translation_plan(tmp_path, "ch_19_01", "19_01").write_text(
+        json.dumps(_plan([("0x1", "high")])), encoding="utf-8")
+    paths.translations(tmp_path, "ch_19_01", "19_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "oi"}}}), encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(
+        _back([("0x1", "pass", "")]), encoding="utf-8")
+    assert artifact_io.plan_lines(tmp_path, "ch_19_01")[0]["offset"] == "0x1"
+    assert artifact_io.translations_map(tmp_path, "ch_19_01")["0x1"]["t"] == "oi"
+    assert artifact_io.back_entries(tmp_path, "ch_19_01")["0x1"]["verdict"] == "pass"
+    assert artifact_io.plan_lines(tmp_path, "ch_99_99") == []               # ausente -> vazio
+    assert artifact_io.translations_map(tmp_path, "ch_99_99") == {}
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
