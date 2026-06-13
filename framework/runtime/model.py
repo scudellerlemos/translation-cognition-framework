@@ -34,6 +34,10 @@ import artifact_io   # noqa: E402  (camada de leitura compartilhada de artefatos
 import context_pack  # noqa: E402
 import paths          # noqa: E402  (H2: fonte unica de paths)
 import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
+# Plumbing de API extraido p/ llm_client.py (re-exportado aqui p/ compat: model._client/_stream_final/...).
+from llm_client import (  # noqa: E402,F401
+    _MAX_BACKOFF, _load_dotenv, _client, _carta_text, _transient_errors, _with_backoff,
+    _stream_final, _await_batch, _text_of, _usage_of, _add_usage)
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
 MODEL_TRANSLATE = "claude-sonnet-4-6"
@@ -59,7 +63,7 @@ MAX_OUTPUT_TOKENS = 64000
 # variaveis a cada retry -> a uniao das 3 cobre; o batch trunca igual -> a uniao nao cresce.)
 _BATCH_CHUNK = 60     # linhas por requisicao de batch (folga sob o teto ~100 medido)
 _MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
-_MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
+# _MAX_BACKOFF agora vem de llm_client (importado acima).
 
 # Tuning de custo da TRADUCAO (medido: effort:high + thinking estourou ~5x o cost_model — o thinking
 # conta como saida a $15/M). Traducao com contexto curado nao precisa de raciocinio profundo:
@@ -175,40 +179,7 @@ _TRANSLATION_SCHEMA = {
 }
 
 
-def _load_dotenv():
-    """Carrega um `.env` (KEY=VALUE) p/ os.environ SEM dependencia externa. Nao sobrescreve
-    variavel ja setada no ambiente (env real vence). Procura na raiz do framework e no CWD."""
-    roots = [_HERE.parent.parent, Path.cwd()]   # framework/ (raiz do repo) e diretorio de execucao
-    for base in roots:
-        f = base / ".env"
-        if not f.is_file():
-            continue
-        for line in f.read_text(encoding="utf-8").splitlines():
-            s = line.strip()
-            if not s or s.startswith("#") or "=" not in s:
-                continue
-            k, _, v = s.partition("=")
-            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-
-
-def _client():
-    try:
-        import anthropic
-    except ImportError as e:
-        raise RuntimeError("backend 'api' requer o pacote 'anthropic' (pip install anthropic). "
-                           "Use backend 'in-session' p/ o caminho assinatura.") from e
-    _load_dotenv()
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not key or "cole-sua-chave" in key:
-        raise RuntimeError("backend 'api' requer ANTHROPIC_API_KEY: edite o `.env` na raiz do "
-                           "framework e troque o placeholder pela sua chave real (veja .env.example).")
-    # timeout generoso (fetch de resultados de batch grande) + retries do PROPRIO SDK (1a linha de
-    # defesa em 429/500/timeout/conexao); o _with_backoff por cima cobre o que escapar (2a linha).
-    return anthropic.Anthropic(timeout=900.0, max_retries=5)
-
-
-def _carta_text() -> str:
-    return context_pack._read(context_pack.CARTA_PATH)
+# _load_dotenv / _client / _carta_text -> llm_client.py (importados acima).
 
 
 # Regra do token de quebra reforcada na borda da API: em JSON, o literal barra+n e escrito `\\n`.
@@ -224,99 +195,12 @@ _NL_RULE = (
 )
 
 
-def _text_of(msg) -> str:
-    return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+# _text_of / _usage_of / _add_usage -> llm_client.py (importados acima).
+# Preco/custo/ledger extraidos p/ cost.py (re-exportados aqui p/ compat: model.cost_of/log_api_call/_PRICE).
+from cost import _PRICE, cost_of, log_api_call  # noqa: E402,F401
 
 
-def _usage_of(msg) -> dict:
-    u = getattr(msg, "usage", None)
-    if not u:
-        return {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
-    return {"in": getattr(u, "input_tokens", 0) or 0,
-            "out": getattr(u, "output_tokens", 0) or 0,
-            "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0,
-            "cache_write": getattr(u, "cache_creation_input_tokens", 0) or 0}
-
-
-def _add_usage(acc: dict, u: dict) -> dict:
-    for k in ("in", "out", "cache_read", "cache_write"):
-        acc[k] = acc.get(k, 0) + u.get(k, 0)
-    return acc
-
-
-# precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
-# Fonte unica de verdade de custo (run_scene/cost_report importam daqui — sem drift de preco).
-_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
-          "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
-          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
-
-
-def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
-    """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write). A Batch API tem
-    desconto de 50% sobre TODO o uso (batch=True -> 0.5x)."""
-    p = _PRICE.get(model)
-    if not p or not u:
-        return 0.0
-    base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
-            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
-    return base * (0.5 if batch else 1.0)
-
-
-def log_api_call(root, scene, kind, model, usage, *, batch=False):
-    """Anexa 1 linha a artifacts/api_ledger.jsonl por chamada de API CONCLUIDA (cada tentativa de
-    cobertura e cada escalonamento de fitting). E a VERDADE de gasto: registra TODA chamada cobrada,
-    INCLUSIVE as de cenas que depois falham (cobertura/verify) ou retries — exatamente o que o
-    metrics.jsonl (resumo so-de-sucesso) perde. Sem isso o saldo surpreende (estimado << real).
-    Best-effort (nunca derruba a traducao por falha de log). Ver cost_report.py p/ o agregado."""
-    if not usage:
-        return None
-    rec = {"t": round(time.time(), 3), "scene": scene, "kind": kind, "model": model,
-           "batch": bool(batch), "usage": dict(usage),
-           "cost_usd": round(cost_of(model, usage, batch=batch), 5)}
-    try:
-        p = paths.ledger(root)
-        with p.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    except Exception:
-        pass
-    return rec
-
-
-def _transient_errors():
-    """Erros de rede TRANSITORIOS (curam com retry): 429/500/timeout + quedas de conexao httpx. NAO
-    inclui 400 BadRequest (esse nao 'cura'). Lazy import (anthropic/httpx so quando o backend api roda)."""
-    import anthropic
-    import httpx
-    return (anthropic.RateLimitError, anthropic.InternalServerError,
-            anthropic.APITimeoutError, anthropic.APIConnectionError,
-            httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
-            httpx.ConnectError, httpx.ConnectTimeout)
-
-
-def _with_backoff(fn):
-    """Executa fn() com backoff exponencial em erro transitorio de rede (mesma classe do _stream_final).
-    Para chamadas de BATCH (create/retrieve/results) que nao usam streaming — sem isso, um timeout de
-    rede num unico GET/POST derrubava todo o batch (ex.: back-batch do cap.18 morreu por timeout)."""
-    transient = _transient_errors()
-    delay = 2.0
-    for i in range(_MAX_BACKOFF):
-        try:
-            return fn()
-        except transient:
-            if i == _MAX_BACKOFF - 1:
-                raise
-            time.sleep(delay)
-            delay *= 2
-
-
-def _stream_final(client, **kwargs):
-    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
-    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
-    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
-    def _do():
-        with client.messages.stream(**kwargs) as s:
-            return s.get_final_message()
-    return _with_backoff(_do)
+# _transient_errors / _with_backoff / _stream_final -> llm_client.py (importados acima).
 
 
 def _check_translation(data, offsets):
@@ -708,17 +592,7 @@ def _batch_coverage(pack, merged):
     return missing, bad_par
 
 
-def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
-    """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
-    waited = 0
-    while True:
-        b = _with_backoff(lambda: client.messages.batches.retrieve(batch_id))   # poll resiliente a timeout
-        if getattr(b, "processing_status", None) == "ended":
-            return True
-        if waited >= max_wait_seconds:
-            return False
-        time.sleep(poll_seconds)
-        waited += poll_seconds
+# _await_batch -> llm_client.py (importado acima).
 
 
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
