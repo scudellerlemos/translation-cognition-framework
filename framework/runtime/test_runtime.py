@@ -27,6 +27,7 @@ import run_chapter           # noqa: E402
 import run_scene             # noqa: E402
 import kb_gate               # noqa: E402
 import model                 # noqa: E402
+import back_translate        # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
 import cost_report           # noqa: E402
 
 REPO = _HERE.parents[1]
@@ -826,7 +827,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
         d.mkdir(parents=True)
         (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(json.dumps(plan), encoding="utf-8")
     fb = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(back_translate, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
     st = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02", "ch_77_03"], poll_seconds=0,
                                     sample_rate=0)   # isola o caminho high/critical (sem amostra)
@@ -840,7 +841,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
 
     # RESUME idempotente: re-rodar nao re-cobra (back_translation ja existe)
     fb2 = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(back_translate, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
     st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0, sample_rate=0)
     assert st2 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb2.models == []
