@@ -1291,6 +1291,34 @@ def test_artifact_io_readers(tmp_path):
     assert artifact_io.translations_map(tmp_path, "ch_99_99") == {}
 
 
+# ------------------------- integracao ponta-a-ponta --------------------------
+
+def test_integration_roundtrip_real_scene():
+    """INTEGRACAO (nao-mock): exercita o CONECTOR REAL — build_plan_chapter + verify_chapter — numa cena
+    pequena ja traduzida (ch_11_04, 45 linhas) e confere o round-trip byte-identico via VERIFY_STATUS.
+    Cobre o que os testes unitarios nao pegam: o pipeline conector ponta-a-ponta + reinsert/reextract.
+    Roda OFFLINE (a traducao ja existe; sem API). Skip so se projeto/conector/cena/BIN ausentes."""
+    import json as _json
+    scene, sid = "ch_11_04", "11_04"
+    pj = PROJECT / "project.json"
+    if not pj.is_file():
+        pytest.skip("projeto utawarerumono nao disponivel")
+    cfg = _json.loads(pj.read_text(encoding="utf-8"))
+    bp = run_scene._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
+    vf = run_scene._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
+    trans = PROJECT / "artifacts" / scene / f"translations_{sid}.json"
+    if not (bp.is_file() and vf.is_file() and trans.is_file()):
+        pytest.skip("conector/cena/traducao nao disponiveis")
+    # reusa run_scene._run (stdin=DEVNULL + encoding robusto) — evita WinError 50 do subprocess sob captura
+    code1, out1 = run_scene._run([sys.executable, str(bp), scene])
+    assert code1 == 0, f"build_plan_chapter falhou:\n{out1[-700:]}"
+    code2, out2 = run_scene._run([sys.executable, str(vf), scene])
+    assert code2 == 0, f"verify_chapter falhou:\n{out2[-700:]}"
+    st = run_scene._verify_status(out2)               # protocolo estruturado (H1)
+    assert st.get("ok") is True, f"VERIFY_STATUS nao-ok: {st}"
+    assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
