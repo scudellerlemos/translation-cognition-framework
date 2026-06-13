@@ -46,25 +46,30 @@ def _scene_chapter(scene: str) -> str:
 
 
 def check(root, chapter=None) -> dict:
-    """Retorna {'revise': [...], 'uncovered': [...]} cruzando back_translation x high/critical do plano.
+    """Retorna {'revise', 'uncovered', 'coverage'} cruzando back_translation x high/critical do plano.
     So considera cenas com translation_plan em disco (ja planejadas). chapter=None varre tudo.
 
     Cada item de 'revise':   {scene, scene_id, offset, speaker, source, target, back_en, note}
     Cada item de 'uncovered': {scene, scene_id, offset, speaker, source, target, risk, reason}
+    'coverage': {lines, high, with_back, sampled_low, pct} — torna o ponto cego do tier barato MEDIDO.
     """
     root = Path(root)
     chap = str(chapter) if chapter is not None else None
     revise, uncovered = [], []
+    cov = {"lines": 0, "high": 0, "with_back": 0, "sampled_low": 0}
     for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
         if not sc_dir.is_dir():
             continue
         scene = sc_dir.name
         if chap is not None and _scene_chapter(scene) != chap:
             continue
-        highs = model.high_risk_lines(root, scene)        # le translation_plan; [] se sem plano
-        if not highs:
+        plan_lines = model._plan_lines(root, scene)       # le translation_plan; [] se sem plano
+        if not plan_lines:
             continue
         sid = context_pack.scene_id_of(scene)
+        highs = [model._ln_entry(ln) for ln in plan_lines
+                 if ln.get("risk_level") in ("high", "critical")]
+        high_offsets = {h["offset"] for h in highs}
         bt = paths.back_translation(root, scene, sid)
         entries = {}
         if bt.is_file():
@@ -74,6 +79,10 @@ def check(root, chapter=None) -> dict:
             except (json.JSONDecodeError, OSError):
                 entries = {}                              # back ilegivel -> tudo conta como uncovered
         bt_missing = not bt.is_file()
+        cov["lines"] += len(plan_lines)
+        cov["high"] += len(highs)
+        cov["with_back"] += len(entries)
+        cov["sampled_low"] += sum(1 for off in entries if off not in high_offsets)  # amostra das low/medium
         for h in highs:
             off = h["offset"]
             e = entries.get(off)
@@ -89,7 +98,20 @@ def check(root, chapter=None) -> dict:
                     "scene": scene, "scene_id": sid, "offset": off, "speaker": h.get("speaker", ""),
                     "source": h.get("source", ""), "target": h.get("target", ""),
                     "back_en": e.get("back_en", ""), "note": e.get("note", "")})
-    return {"revise": revise, "uncovered": uncovered}
+    cov["pct"] = round(100.0 * cov["with_back"] / cov["lines"], 1) if cov["lines"] else 0.0
+    return {"revise": revise, "uncovered": uncovered, "coverage": cov}
+
+
+def export_revise(revise, csv_path):
+    """Grava a worklist 'revise' como DADOS (entrada do quality_fix). Colunas estaveis."""
+    import csv
+    cols = ["scene", "scene_id", "offset", "speaker", "source", "target", "back_en", "note"]
+    with Path(csv_path).open("w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        for r in revise:
+            w.writerow({c: r.get(c, "") for c in cols})
+    return len(revise)
 
 
 def main():
@@ -97,12 +119,19 @@ def main():
     ap.add_argument("project")
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--export", metavar="CSV", default=None,
+                    help="grava a worklist 'revise' nesse CSV (entrada do quality_fix)")
     a = ap.parse_args()
     r = check(a.project, a.chapter)
-    rev, unc = r["revise"], r["uncovered"]
+    rev, unc, cov = r["revise"], r["uncovered"], r["coverage"]
+    if a.export:
+        n = export_revise(rev, a.export)
+        print(f"[export] {n} linha(s) 'revise' -> {a.export}")
     if a.json:
         print(json.dumps(r, ensure_ascii=False, indent=2))
         sys.exit(1 if (rev or unc) else 0)
+    print(f"[cobertura] {cov['with_back']}/{cov['lines']} linha(s) com crivo de qualidade "
+          f"({cov['pct']}%) | high/critical={cov['high']} + amostra low/medium={cov['sampled_low']}")
     if not rev and not unc:
         scope = f"cap.{a.chapter}" if a.chapter else "todos os capitulos"
         print(f"OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura ({scope}).")

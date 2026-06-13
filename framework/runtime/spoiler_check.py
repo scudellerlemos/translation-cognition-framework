@@ -82,22 +82,86 @@ def check(root) -> list[dict]:
     return leaks
 
 
+# Marcadores de GENERO pt-BR de alta precisao (palavra inteira). Conservador de proposito: pronomes
+# pessoais/possessivos/demonstrativos com genero + honorificos. Evita 'o/a/lo/la' (artigos/clise sao
+# ruido demais). O ingles nao forca genero -> se a fonte e neutra e a entidade tem genero EM SEGREDO,
+# qualquer um destes na MESMA linha que cita a entidade e um vazamento candidato.
+_GENDER_MARKERS = ["ele", "ela", "dele", "dela", "nele", "nela", "aquele", "aquela", "senhor", "senhora"]
+
+
+def check_gender(root) -> list[dict]:
+    """Contraparte OBSERVAVEL do vazamento de GENERO (o que o pt-BR forca e o ingles nao tem).
+    Para entries do ledger com `gender_quarantine: true`, em cenas ANTES do reveal, flagra linhas que
+    citam a entidade E contem um marcador de genero pt-BR. Retorna [{scene, scene_id, entity, marker,
+    offset, text}]. ESCOPO HONESTO: heuristica de CO-OCORRENCIA por linha (referente unico) — nao e
+    coreferencia; pode ter falso-positivo (por isso reporta o trecho p/ o humano decidir)."""
+    root = Path(root)
+    led = paths.spoiler_ledger(root)
+    if not led.is_file():
+        return []
+    entries = json.loads(led.read_text(encoding="utf-8")).get("entries", [])
+    guarded = [e for e in entries if e.get("gender_quarantine")]
+    if not guarded:
+        return []
+    flags = []
+    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
+        if not sc_dir.is_dir():
+            continue
+        scene = sc_dir.name
+        sid = context_pack.scene_id_of(scene)
+        tf = paths.translations(root, scene, sid)
+        if not tf.is_file():
+            continue
+        try:
+            lines = json.loads(tf.read_text(encoding="utf-8")).get("lines", {})
+        except Exception:
+            continue
+        for entry in guarded:
+            if not _future(entry.get("reveal", "beyond_frontier"), sid):
+                continue                                  # no/apos o reveal -> genero ja e publico
+            names = (entry.get("triggers") or []) + [entry.get("entity", "")]
+            names = [n for n in names if n]
+            for off, v in lines.items():
+                t = (v or {}).get("t", "") if isinstance(v, dict) else ""
+                if not t:
+                    continue
+                low = t.lower()
+                if not any(context_pack._present(n.lower(), low) for n in names):
+                    continue                              # entidade nao citada nesta linha
+                for mk in _GENDER_MARKERS:
+                    if context_pack._present(mk, low):
+                        flags.append({"scene": scene, "scene_id": sid,
+                                      "entity": entry.get("entity", ""), "marker": mk,
+                                      "offset": off, "text": t})
+                        break                             # 1 flag por linha basta
+    return flags
+
+
 def main():
     ap = argparse.ArgumentParser(description="Verificacao de nao-vazamento de spoiler (pos-traducao).")
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
     leaks = check(a.project)
+    gender = check_gender(a.project)
     if a.json:
-        print(json.dumps(leaks, ensure_ascii=False, indent=2))
-    elif not leaks:
+        print(json.dumps({"name_leaks": leaks, "gender_flags": gender}, ensure_ascii=False, indent=2))
+        sys.exit(1 if (leaks or gender) else 0)
+    if not leaks:
         print("OK: nenhum vazamento de spoiler (nome/titulo pos-reveal em cena anterior ao reveal).")
     else:
-        print(f"VAZAMENTO DE SPOILER — {len(leaks)} linha(s):")
+        print(f"VAZAMENTO DE SPOILER (nome/titulo) — {len(leaks)} linha(s):")
         for k in leaks:
             print(f"  {k['scene']} {k['offset']}: '{k['forbidden']}' ({k['entity']}) vazou ANTES do reveal")
             print(f"      -> {k['text'][:90]}")
-    sys.exit(1 if leaks else 0)
+    if not gender:
+        print("OK: nenhum marcador de genero junto a entidade gender_quarantine pre-reveal.")
+    else:
+        print(f"GENERO A REVISAR (heuristica, pode ter falso-positivo) — {len(gender)} linha(s):")
+        for k in gender:
+            print(f"  {k['scene']} {k['offset']}: '{k['marker']}' junto a {k['entity']} (genero em quarentena)")
+            print(f"      -> {k['text'][:90]}")
+    sys.exit(1 if (leaks or gender) else 0)
 
 
 if __name__ == "__main__":
