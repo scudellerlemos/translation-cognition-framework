@@ -1192,6 +1192,12 @@ def test_quality_review_export_marks_lines(tmp_path):
     assert "risco:high" in by["0x1"]["revisar"]
     assert "identico-fonte" in by["0x2"]["revisar"]
     assert "pt-PT?" in by["0x3"]["revisar"]
+    # flag de largura: segmento (entre tokens \n) acima do balao -> 'largura'
+    seg = "x" * (quality_review.WIDTH_MAX + 5)
+    assert "largura" in quality_review._flags("s", seg, "low", False)
+    assert "largura" not in quality_review._flags("s", "curta", "low", False)
+    assert "largura" not in quality_review._flags(           # 2 segmentos curtos (cada < max) -> ok
+        "s", f"ok{context_pack.TOKEN}tambem ok", "low", False)
     assert by["0x1"]["source_en"] == "Hello there." and by["0x1"]["target_pt"] == "Ola."
 
 

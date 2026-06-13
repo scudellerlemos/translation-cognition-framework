@@ -42,6 +42,13 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
   em um artefato de referência do projeto), nunca copiar do source. (Ver `06_translation.md` e a
   referência de interjeições do projeto.)
 - **Continuidade:** a junção de linhas quebradas (`\n`) soa natural; ritmo de comédia preservado.
+- **pt-BR MODERNO (registro do jogador de hoje):** preferir a forma que um jogador BR atual usaria, não
+  a "correta-mas-arcaica/truncada". Dois erros recorrentes pegos em QA in-game:
+  - **Resposta de NOME** (`I'm…`/`My name's…`/`I am…` quando responde "qual seu nome?") → **"Meu nome é…"
+    / "Eu me chamo…" / "Sou o(a)…"** conforme a voz. NUNCA "Eu sou" seco — refere-se a estado, soa
+    truncado para apresentação.
+  - **Léxico arcaico/erudito** (ex.: "ruminar"/"Rumino" por "pensar/refletir") só quando a VOZ do
+    personagem pede; senão, a palavra que o público entende **de imediato**.
 - **Restrição do conector:** se há transliteração na gravação (fonte sem acentos), escolher formas que
   sobrevivam (não depender de acento/til).
 - **Preservar ambiguidade (anti-spoiler por construção):** quando o pacote da cena traz um *controle de
@@ -72,6 +79,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 □ Lore: termos do glossário na forma certa?
 □ Situação: traduzida pela emoção/intenção da cena? interjeição localizada?
 □ Naturalidade: um nativo lê NESTA situação e entende fácil? (senão, revisa)
+□ pt-BR moderno: forma que um jogador de HOJE usaria? (nome → "Meu nome é/Eu me chamo", não "Eu sou"; sem arcaísmo gratuito)
 □ Conector: cabe/translitera sem virar outra coisa? tokens preservados?
 □ Risco: se ≥ high, passou por back-translation?
 □ Não satisfez algo acima? → sinalizar em QA/risk_notes (não entregar às cegas).

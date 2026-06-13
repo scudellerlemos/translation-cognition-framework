@@ -6,7 +6,8 @@ A back-translation (Opus julgando Sonnet/Haiku) custa e nao substitui um humano 
 humano E o juiz: o `export` gera UM CSV com o CAPITULO INTEIRO (todas as linhas, p/ leitura integral),
 mas cada linha vem MARCADA de forma 100% DETERMINISTICA (sem IA) com uma tag dizendo ONDE avaliar —
 risco alto, amostra do tier barato, ou flags baratas (identico-a-fonte=provavel nao-traduzido, outlier
-de tamanho, marcador pt-PT). Linha sem tag = passa o olho; tag preenchida = "avalie aqui".
+de tamanho, `largura`=segmento estoura o balao no jogo, marcador pt-PT). Linha sem tag = passa o olho;
+tag preenchida = "avalie aqui".
 
 O humano devolve o MESMO CSV preenchendo, por linha:
   - coluna `correcao` = o texto certo  -> aplico VERBATIM (zero IA: so gate de charset/round-trip + merge);
@@ -41,6 +42,13 @@ COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
 
+# Largura do BALAO: o byte_budget garante que cabe no ARQUIVO (reinsercao), NAO que cabe na largura
+# VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida; o pt-BR (~+25% vs
+# EN) estoura linhas que no EN estavam no limite. Calibrado por QA in-game: o maior segmento EN que
+# COUBE no corpus tem 62 chars transliterados -> usamos 60 (margem). Segmento pt-BR > isso = risco de
+# sair do balao (o round-trip de bytes NAO pega isto).
+WIDTH_MAX = 60
+
 
 def _norm_cmp(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace("\\n", " ")).strip().lower()
@@ -58,6 +66,8 @@ def _flags(source: str, target: str, risk: str, sampled: bool) -> str:
     slen, tlen = model._translit_len(source), model._translit_len(target)
     if slen and (tlen > slen * 3 or (slen > 8 and tlen < slen * 0.4)):
         fl.append("tamanho")                              # outlier de comprimento
+    if any(model._translit_len(seg) > WIDTH_MAX for seg in (target or "").split(context_pack.TOKEN)):
+        fl.append("largura")                              # segmento estoura a largura do balao (in-game)
     if _PTPT.search(target or ""):
         fl.append("pt-PT?")
     return ";".join(fl)
