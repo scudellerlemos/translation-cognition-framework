@@ -139,23 +139,28 @@ def _apply_verbatim(root, scene, pairs) -> int:
         n += 1
     tf.write_text(json.dumps(tdata, ensure_ascii=False, indent=2), encoding="utf-8")
     pf.write_text(json.dumps(pdata, ensure_ascii=False, indent=2), encoding="utf-8")
+    model.invalidate_back_translation(root, scene, [o for o, _ in pairs])  # crivo antigo nao vale mais
     return n
 
 
-def apply(root, csv_path, *, model_name=None) -> dict:
-    """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). Retorna
-    {verbatim, ai, scenes, cost_usd, scenes_touched[]}."""
+def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
+    """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). `max_usd` so
+    limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
+    scenes_touched[], stopped_budget}."""
     root = Path(root)
     returned = read_returned(csv_path)
     m = model_name or model.MODEL_TRANSLATE
     verbatim_n, ai_n, cost = 0, 0, 0.0
-    touched = []
+    touched, stopped = [], False
     for scene in sorted(returned):
         slot = returned[scene]
         touched.append(scene)
         if slot["verbatim"]:
-            verbatim_n += _apply_verbatim(root, scene, slot["verbatim"])
+            verbatim_n += _apply_verbatim(root, scene, slot["verbatim"])   # sempre $0
         if slot["nota"]:
+            if max_usd is not None and cost >= max_usd:
+                stopped = True
+                continue                                  # teto: pula o caminho PAGO (verbatim ja entrou)
             note = "\n\n## REVISAO DO HUMANO (reescreva SO estes offsets seguindo a instrucao)\n" + \
                    "\n".join(f"- {off}: {ins}" for off, ins in slot["nota"])
             res = model.retranslate_offsets(root, scene, [o for o, _ in slot["nota"]],
@@ -164,7 +169,7 @@ def apply(root, csv_path, *, model_name=None) -> dict:
                 cost += model.cost_of(m, res["usage"])
             ai_n += len(slot["nota"])
     return {"verbatim": verbatim_n, "ai": ai_n, "scenes": len(touched),
-            "cost_usd": round(cost, 4), "scenes_touched": touched}
+            "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped}
 
 
 def main():
@@ -176,6 +181,7 @@ def main():
     pa = sub.add_parser("apply", help="aplica o CSV devolvido (verbatim + notas)")
     pa.add_argument("project"); pa.add_argument("csv")
     pa.add_argument("--model", default=None)
+    pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
     a = ap.parse_args()
     if a.cmd == "export":
         rows = export(a.project, a.chapter)
@@ -187,9 +193,12 @@ def main():
               f"'correcao' (texto certo) ou 'nota' (instrucao) e devolva.")
         sys.exit(0)
     print(f"[apply] processando revisao devolvida: {a.csv}")
-    r = apply(a.project, a.csv, model_name=a.model)
+    r = apply(a.project, a.csv, model_name=a.model, max_usd=a.max_usd)
     print(f"[apply] verbatim={r['verbatim']} (0 IA) | nota+IA={r['ai']} (~${r['cost_usd']:.4f}) "
           f"| cenas tocadas={r['scenes']}")
+    if r.get("stopped_budget"):
+        print(f"[apply] teto de ${a.max_usd:.2f} atingido — algumas notas (IA) nao foram processadas; "
+              "verbatim entrou tudo. Re-rode com mais orcamento p/ as notas restantes.")
     print("Proximos passos: verify_chapter de cada cap. tocado (round-trip/charset) + state_index --rebuild.")
     print(f"  cenas: {', '.join(r['scenes_touched'])}")
     sys.exit(0)

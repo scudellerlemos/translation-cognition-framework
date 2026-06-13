@@ -1227,6 +1227,46 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
     assert called["offsets"] == ["0x2"] and "encurtar" in called["note"]   # só a nota foi p/ IA
 
 
+# --------- teto de custo (#1) + invalidacao de sinal stale (#2) --------------
+
+def test_invalidate_back_translation_marks_stale(tmp_path):
+    import paths
+    (tmp_path / "artifacts" / "ch_72_01").mkdir(parents=True)
+    paths.back_translation(tmp_path, "ch_72_01", "72_01").write_text(
+        _back([("0x1", "revise", "x"), ("0x2", "pass", "")]), encoding="utf-8")
+    n = model.invalidate_back_translation(tmp_path, "ch_72_01", ["0x1"])
+    assert n == 1
+    d = json.loads(paths.back_translation(tmp_path, "ch_72_01", "72_01").read_text("utf-8"))
+    by = {e["offset"]: e for e in d["entries"]}
+    assert by["0x1"].get("stale") is True and "stale" not in by["0x2"]
+    assert model.invalidate_back_translation(tmp_path, "ch_72_01", ["0x1"]) == 0   # idempotente
+
+
+def test_quality_gate_treats_stale_as_uncovered(tmp_path):
+    import quality_gate, paths
+    d = tmp_path / "artifacts" / "ch_73_01"
+    d.mkdir(parents=True)
+    (d / "translation_plan_73_01.json").write_text(json.dumps(_plan([("0x1", "high")])), encoding="utf-8")
+    bt = json.loads(_back([("0x1", "revise", "voz")]))
+    bt["entries"][0]["stale"] = True                       # verdict julgou texto antigo
+    paths.back_translation(tmp_path, "ch_73_01", "73_01").write_text(json.dumps(bt), encoding="utf-8")
+    r = quality_gate.check(tmp_path, "73")
+    assert r["revise"] == []                                # stale NAO conta como revise
+    assert len(r["uncovered"]) == 1 and "STALE" in r["uncovered"][0]["reason"]
+    assert r["coverage"]["with_back"] == 0                  # stale nao conta como cobertura
+
+
+def test_quality_fix_max_usd_stops(tmp_path, monkeypatch):
+    import quality_fix
+    def fake_retranslate(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
+        return {"usage": {"in": 0, "out": 100000, "cache_read": 0, "cache_write": 0}}  # ~$1.5/cena
+    monkeypatch.setattr(quality_fix.model, "retranslate_offsets", fake_retranslate)
+    wl = {"ch_a_01": [{"offset": "0x1", "note": ""}], "ch_a_02": [{"offset": "0x2", "note": ""}],
+          "ch_a_03": [{"offset": "0x3", "note": ""}]}
+    r = quality_fix.apply(tmp_path, wl, max_usd=1.0)
+    assert r["stopped_budget"] is True and r["scenes"] == 1 and r["scenes_left"] == 2   # parou no teto
+
+
 # ------------------------------- governanca -----------------------------------
 
 def test_no_work_text_in_runtime_scripts():
