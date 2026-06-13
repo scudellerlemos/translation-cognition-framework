@@ -62,6 +62,12 @@ def _build_pack(scene_id):
 
 
 def main():
+    # console Windows e cp1252 por padrao -> caractere fora dele (ex.: marca de OK) quebra o print com
+    # UnicodeEncodeError e mascara um smoke SAUDAVEL como exit 1. Forca UTF-8 na saida.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     scene, scene_id = "ch_00_00", "00_00"
     pack = _build_pack(scene_id)
     # stub do pack/prompt (o smoke nao precisa da KB real — testa a PLUMBING, nao a qualidade);
@@ -90,7 +96,7 @@ def main():
         by_model[r.get("model", "?")] = round(by_model.get(r.get("model", "?"), 0.0) + r.get("cost_usd", 0), 5)
     print(f"[smoke] status={status} | custo=${cost:.4f} | por modelo={by_model}")
     if ok:
-        print("[smoke] OK ✓ — batch submete, converge, AMBOS os tiers ao vivo, zero fallback. Pode rodar capitulo.")
+        print("[smoke] OK [v] - batch submete, converge, AMBOS os tiers ao vivo, zero fallback. Pode rodar capitulo.")
         sys.exit(0)
     print("[smoke] DIVERGENCIA mock↔API — NAO rode capitulo pago ate investigar:")
     for p in problems:
