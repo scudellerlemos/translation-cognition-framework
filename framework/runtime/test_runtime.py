@@ -828,7 +828,8 @@ def test_batch_back_translate(monkeypatch, tmp_path):
     fb = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
-    st = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02", "ch_77_03"], poll_seconds=0)
+    st = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02", "ch_77_03"], poll_seconds=0,
+                                    sample_rate=0)   # isola o caminho high/critical (sem amostra)
     assert st == {"ch_77_01": "reviewed", "ch_77_02": "reviewed", "ch_77_03": "no_high"}
     assert fb.models == [model.MODEL_BACK, model.MODEL_BACK]   # so as 2 com high foram submetidas, Opus
     bt = json.loads((tmp_path / "artifacts" / "ch_77_01" / "back_translation_77_01.json").read_text("utf-8"))
@@ -841,7 +842,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
     fb2 = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
-    st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0)
+    st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0, sample_rate=0)
     assert st2 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb2.models == []
 
 
@@ -1034,6 +1035,125 @@ def test_tm_correct_literal_mode(tmp_path):
     res = tm_correct.apply(tmp_path, corr)
     assert res["replacements"] == 1
     assert "ver 2.0 aqui" in paths.translations(tmp_path, "ch_31_01", "31_01").read_text("utf-8")
+
+
+# ----------------- piso de qualidade do tier barato (risco #1) ----------------
+
+def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
+    d = tmp_path / "artifacts" / "ch_88_01"
+    d.mkdir(parents=True)
+    offs = [(f"0x{i}", "low") for i in range(200)] + [("0xH", "high")]
+    (d / "translation_plan_88_01.json").write_text(json.dumps(_plan(offs)), encoding="utf-8")
+    s1 = model.sample_low_risk_lines(tmp_path, "ch_88_01", 0.05)
+    s2 = model.sample_low_risk_lines(tmp_path, "ch_88_01", 0.05)
+    assert [x["offset"] for x in s1] == [x["offset"] for x in s2]      # determinístico
+    assert "0xH" not in {x["offset"] for x in s1}                      # nunca high (já coberta)
+    assert 0 < len(s1) < 60                                            # ~5% de 200, não tudo nem nada
+    assert model.sample_low_risk_lines(tmp_path, "ch_88_01", 0) == []  # rate 0 -> vazio (protege testes)
+    # candidatos = high ∪ amostra, dedup
+    cands = {x["offset"] for x in model.back_translate_candidates(tmp_path, "ch_88_01", 0.05)}
+    assert "0xH" in cands and cands.issuperset({x["offset"] for x in s1})
+
+
+def test_quality_gate_coverage_and_export(tmp_path):
+    import quality_gate, paths, csv as _csv
+    d = tmp_path / "artifacts" / "ch_89_01"
+    d.mkdir(parents=True)
+    (d / "translation_plan_89_01.json").write_text(
+        json.dumps(_plan([("0x1", "high"), ("0x2", "critical"), ("0x3", "low"), ("0x4", "low")])),
+        encoding="utf-8")
+    paths.back_translation(tmp_path, "ch_89_01", "89_01").write_text(
+        _back([("0x1", "revise", "voz"), ("0x2", "pass", ""), ("0x4", "pass", "")]), encoding="utf-8")
+    r = quality_gate.check(tmp_path, "89")
+    assert r["coverage"]["lines"] == 4 and r["coverage"]["high"] == 2
+    assert r["coverage"]["with_back"] == 3 and r["coverage"]["sampled_low"] == 1   # 0x4 amostrada
+    assert r["coverage"]["pct"] == 75.0
+    out = tmp_path / "wl.csv"
+    n = quality_gate.export_revise(r["revise"], out)
+    assert n == 1
+    rows = list(_csv.DictReader(out.open(encoding="utf-8")))
+    assert rows[0]["offset"] == "0x1" and rows[0]["note"] == "voz" and rows[0]["scene"] == "ch_89_01"
+
+
+def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatch):
+    import quality_fix, paths
+    d = tmp_path / "artifacts" / "ch_90_01"
+    d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_90_01", "90_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "ruim"}, "0x2": {"t": "ok"}}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_90_01", "90_01").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "base_translation": "ruim"},
+                              {"offset": "0x2", "base_translation": "ok"}]}), encoding="utf-8")
+    wl = tmp_path / "wl.csv"
+    wl.write_text("scene,scene_id,offset,speaker,source,target,back_en,note\n"
+                  "ch_90_01,90_01,0x1,X,src,ruim,bad,sentido invertido\n", encoding="utf-8")
+
+    captured = {}
+
+    def fake_retranslate(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
+        captured["offsets"] = list(offsets)
+        captured["note"] = quality_note
+        tf = paths.translations(root, scene, "90_01")
+        data = json.loads(tf.read_text(encoding="utf-8"))
+        for o in offsets:
+            data["lines"][o] = {"t": "corrigido"}
+        tf.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        return {"status": "done", "usage": {"in": 10, "out": 5, "cache_read": 0, "cache_write": 0}}
+
+    monkeypatch.setattr(quality_fix.model, "retranslate_offsets", fake_retranslate)
+    work = quality_fix.load_worklist(wl)
+    assert quality_fix.plan(tmp_path, work)[0]["offsets"] == ["0x1"]   # dry-run só lista
+    res = quality_fix.apply(tmp_path, work)
+    assert res["offsets"] == 1 and res["cost_usd"] > 0
+    assert captured["offsets"] == ["0x1"] and "sentido invertido" in captured["note"]
+    tt = json.loads(paths.translations(tmp_path, "ch_90_01", "90_01").read_text("utf-8"))["lines"]
+    assert tt["0x1"]["t"] == "corrigido" and tt["0x2"]["t"] == "ok"    # só a flagrada mudou
+    pl = json.loads(paths.translation_plan(tmp_path, "ch_90_01", "90_01").read_text("utf-8"))["lines"]
+    assert pl[0]["base_translation"] == "corrigido"                   # plano espelha (coerência TM)
+
+
+# ------------------- vazamento de gênero pt-BR (risco #2) ---------------------
+
+def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
+    import spoiler_check, paths
+    led = {"entries": [
+        {"id": "g1", "entity": "Mizura", "reveal": "60_05", "triggers": ["Mizura"], "gender_quarantine": True},
+        {"id": "g2", "entity": "Bezno", "reveal": "60_01", "triggers": ["Bezno"]}]}   # sem quarentena
+    (tmp_path / "artifacts" / "ch_60_02").mkdir(parents=True)
+    (tmp_path / "artifacts" / "ch_60_09").mkdir(parents=True)
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
+    # 60_02 (pré-reveal de Mizura): linha cita Mizura + 'ela' -> flag
+    paths.translations(tmp_path, "ch_60_02", "60_02").write_text(
+        json.dumps({"lines": {"0x1": {"t": "Mizura chegou, ela sorriu."},
+                              "0x2": {"t": "Bezno e ele partiram."}}}), encoding="utf-8")
+    # 60_09 (pós-reveal): mesmo padrão NÃO flagra
+    paths.translations(tmp_path, "ch_60_09", "60_09").write_text(
+        json.dumps({"lines": {"0x1": {"t": "Mizura disse que ela viria."}}}), encoding="utf-8")
+    flags = spoiler_check.check_gender(tmp_path)
+    assert len(flags) == 1
+    assert flags[0]["entity"] == "Mizura" and flags[0]["marker"] == "ela" and flags[0]["scene"] == "ch_60_02"
+
+
+# --------------------- digest de revisão de KB (risco #3) ---------------------
+
+def test_kb_review_digest_flags(tmp_path):
+    import kb_review, paths
+    paths.artifacts(tmp_path).mkdir(parents=True)
+    paths.glossary(tmp_path).write_text(
+        "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n"
+        "Magecraft,Conceito,Magia,traduzir,none,,\"(cap.19) arte magica\"\n"
+        "Velho,Personagem,Velho,manter_original,none,,\"(cap.18) outro capitulo\"\n", encoding="utf-8")
+    paths.entities(tmp_path).write_text(
+        "canonical_name,category,aliases,importance,confidence,notes\n"
+        "Shichirya,Personagem,,minor,medium,\"(cap.19) escudeiro; MASCULINO a confirmar\"\n", encoding="utf-8")
+    paths.research_log(tmp_path).write_text(
+        "# Research Log\n\n## cap.19 — delta\n- **Magecraft**: arte magica.\n", encoding="utf-8")
+    items = kb_review.digest(tmp_path, "19")
+    names = {i["name"]: i for i in items}
+    assert "Velho" not in names                                  # outro capitulo, não entra
+    assert names["Magecraft"]["in_research"] and names["Magecraft"]["flags"] == []  # tem fonte
+    assert "sem fonte declarada" in names["Shichirya"]["flags"]  # não citado na seção
+    assert "genero a confirmar" in names["Shichirya"]["flags"]
 
 
 # ------------------------------- governanca -----------------------------------
