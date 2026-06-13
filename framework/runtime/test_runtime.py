@@ -1294,29 +1294,41 @@ def test_artifact_io_readers(tmp_path):
 
 # ------------------------- integracao ponta-a-ponta --------------------------
 
-def test_integration_roundtrip_real_scene():
-    """INTEGRACAO (nao-mock): exercita o CONECTOR REAL — build_plan_chapter + verify_chapter — numa cena
-    pequena ja traduzida (ch_11_04, 45 linhas) e confere o round-trip byte-identico via VERIFY_STATUS.
-    Cobre o que os testes unitarios nao pegam: o pipeline conector ponta-a-ponta + reinsert/reextract.
-    Roda OFFLINE (a traducao ja existe; sem API). Skip so se projeto/conector/cena/BIN ausentes."""
+def _first_translated_scenes(n=5):
+    """As n primeiras cenas (ordem por nome = scene_id) com translations em disco — alvo da integracao."""
+    art = PROJECT / "artifacts"
+    if not art.is_dir():
+        return []
+    out = [d.name for d in sorted(art.glob("ch_*"))
+           if (d / f"translations_{d.name[3:]}.json").is_file()]
+    return out[:n]
+
+
+_INTEG_SCENES = _first_translated_scenes(5)
+
+
+@pytest.mark.parametrize("scene", _INTEG_SCENES or ["<sem-projeto>"])
+def test_integration_roundtrip_real_scene(scene):
+    """INTEGRACAO (nao-mock): exercita o CONECTOR REAL — build_plan_chapter + verify_chapter — nas 5
+    PRIMEIRAS cenas ja traduzidas e confere o round-trip byte-identico via VERIFY_STATUS. Cobre o que os
+    testes unitarios nao pegam: o pipeline conector ponta-a-ponta + reinsert/reextract. Roda OFFLINE (a
+    traducao ja existe; sem API). Skip so se projeto/conector/cena/BIN ausentes."""
     import json as _json
-    scene, sid = "ch_11_04", "11_04"
     pj = PROJECT / "project.json"
-    if not pj.is_file():
+    if scene == "<sem-projeto>" or not pj.is_file():
         pytest.skip("projeto utawarerumono nao disponivel")
     cfg = _json.loads(pj.read_text(encoding="utf-8"))
     bp = run_scene._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
     vf = run_scene._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
-    trans = PROJECT / "artifacts" / scene / f"translations_{sid}.json"
-    if not (bp.is_file() and vf.is_file() and trans.is_file()):
-        pytest.skip("conector/cena/traducao nao disponiveis")
+    if not (bp.is_file() and vf.is_file()):
+        pytest.skip("conector nao disponivel")
     # reusa run_scene._run (stdin=DEVNULL + encoding robusto) — evita WinError 50 do subprocess sob captura
     code1, out1 = run_scene._run([sys.executable, str(bp), scene])
-    assert code1 == 0, f"build_plan_chapter falhou:\n{out1[-700:]}"
+    assert code1 == 0, f"{scene}: build_plan_chapter falhou:\n{out1[-700:]}"
     code2, out2 = run_scene._run([sys.executable, str(vf), scene])
-    assert code2 == 0, f"verify_chapter falhou:\n{out2[-700:]}"
+    assert code2 == 0, f"{scene}: verify_chapter falhou:\n{out2[-700:]}"
     st = run_scene._verify_status(out2)               # protocolo estruturado (H1)
-    assert st.get("ok") is True, f"VERIFY_STATUS nao-ok: {st}"
+    assert st.get("ok") is True, f"{scene}: VERIFY_STATUS nao-ok: {st}"
     assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
 
 
