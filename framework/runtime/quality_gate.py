@@ -79,20 +79,22 @@ def check(root, chapter=None) -> dict:
             except (json.JSONDecodeError, OSError):
                 entries = {}                              # back ilegivel -> tudo conta como uncovered
         bt_missing = not bt.is_file()
+        valid = {off: e for off, e in entries.items() if not e.get("stale")}  # stale = julgou texto antigo
         cov["lines"] += len(plan_lines)
         cov["high"] += len(highs)
-        cov["with_back"] += len(entries)
-        cov["sampled_low"] += sum(1 for off in entries if off not in high_offsets)  # amostra das low/medium
+        cov["with_back"] += len(valid)
+        cov["sampled_low"] += sum(1 for off in valid if off not in high_offsets)  # amostra das low/medium
         for h in highs:
             off = h["offset"]
             e = entries.get(off)
-            if e is None:
+            if e is None or e.get("stale"):
                 uncovered.append({
                     "scene": scene, "scene_id": sid, "offset": off, "speaker": h.get("speaker", ""),
                     "source": h.get("source", ""), "target": h.get("target", ""),
                     "risk": h.get("risk_notes", ""),
-                    "reason": "sem back_translation (back-batch pulou/parse_failed)" if bt_missing
-                    else "offset ausente nas entries do back_translation"})
+                    "reason": "back_translation STALE (cena re-traduzida; re-julgar)" if (e and e.get("stale"))
+                    else ("sem back_translation (back-batch pulou/parse_failed)" if bt_missing
+                          else "offset ausente nas entries do back_translation")})
             elif e.get("verdict") == "revise":
                 revise.append({
                     "scene": scene, "scene_id": sid, "offset": off, "speaker": h.get("speaker", ""),

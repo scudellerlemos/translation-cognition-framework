@@ -98,14 +98,22 @@ def _update_plan_base(root, scene, offsets):
     return n
 
 
-def apply(root, worklist, *, model_name=None) -> dict:
-    """Re-traduz dirigido cada cena da worklist (PAGO) e mescla. Retorna {scenes, offsets, cost_usd}."""
+def apply(root, worklist, *, model_name=None, max_usd=None) -> dict:
+    """Re-traduz dirigido cada cena da worklist (PAGO) e mescla. `max_usd` = teto de gasto: antes de cada
+    cena, se o custo acumulado ja atingiu o teto, PARA (stopped_budget=True). Retorna
+    {scenes, offsets, cost_usd, stopped_budget, scenes_left}."""
     root = Path(root)
     m = model_name or model.MODEL_TRANSLATE
     scenes_done, offs_done, cost = 0, 0, 0.0
-    for scene in sorted(worklist):
+    order = sorted(worklist)
+    stopped = False
+    for i, scene in enumerate(order):
+        if max_usd is not None and cost >= max_usd:
+            stopped = True
+            return {"scenes": scenes_done, "offsets": offs_done, "cost_usd": round(cost, 4),
+                    "stopped_budget": True, "scenes_left": len(order) - i}
         items = worklist[scene]
-        offsets = [i["offset"] for i in items]
+        offsets = [i2["offset"] for i2 in items]
         note = _quality_note(items)
         res = model.retranslate_offsets(root, scene, offsets, model=m,
                                         budget_tolerance=1.0, quality_note=note)
@@ -114,7 +122,8 @@ def apply(root, worklist, *, model_name=None) -> dict:
         _update_plan_base(root, scene, set(offsets))
         scenes_done += 1
         offs_done += len(offsets)
-    return {"scenes": scenes_done, "offsets": offs_done, "cost_usd": round(cost, 4)}
+    return {"scenes": scenes_done, "offsets": offs_done, "cost_usd": round(cost, 4),
+            "stopped_budget": stopped, "scenes_left": 0}
 
 
 def main():
@@ -123,6 +132,7 @@ def main():
     ap.add_argument("worklist", help="CSV do quality_gate --export")
     ap.add_argument("--apply", action="store_true", help="grava (PAGO; default: dry-run)")
     ap.add_argument("--model", default=None)
+    ap.add_argument("--max-usd", type=float, default=None, help="teto de gasto (PARA ao atingir)")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
     wl = load_worklist(a.worklist)
@@ -139,9 +149,13 @@ def main():
             for p in pl:
                 print(f"  {p['scene']}: {len(p['offsets'])} offset(s) -> {p['offsets']}")
         sys.exit(0)
-    print(f"[quality_fix] re-traduzindo {total} linha(s) em {len(wl)} cena(s) (PAGO) ...")
-    r = apply(a.project, wl, model_name=a.model)
+    cap = f" | teto ${a.max_usd:.2f}" if a.max_usd is not None else ""
+    print(f"[quality_fix] re-traduzindo {total} linha(s) em {len(wl)} cena(s) (PAGO){cap} ...")
+    r = apply(a.project, wl, model_name=a.model, max_usd=a.max_usd)
     print(f"[quality_fix] OK: {r['offsets']} offset(s) em {r['scenes']} cena(s) | custo ~${r['cost_usd']:.4f}")
+    if r.get("stopped_budget"):
+        print(f"[quality_fix] PAROU no teto de ${a.max_usd:.2f} — {r['scenes_left']} cena(s) nao processadas. "
+              "Re-rode (resume) com mais orcamento p/ continuar.")
     print("Proximos passos (loop governado):")
     print("  1) verify_chapter de cada cap. afetado  # round-trip/charset/fitting tem que seguir verde")
     print(f"  2) python {Path(__file__).with_name('state_index.py').name} {a.project} --rebuild  # TM reflete")
