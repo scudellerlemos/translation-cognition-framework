@@ -30,6 +30,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (camada de leitura compartilhada de artefatos)
 import context_pack  # noqa: E402
 import paths          # noqa: E402  (H2: fonte unica de paths)
 import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
@@ -873,12 +874,9 @@ def _api_back_translate(root, scene, high_lines, model):
 
 
 def _plan_lines(root, scene):
-    """Linhas brutas do translation_plan_<scene_id>.json (lista), ou [] se nao houver plano."""
-    scene_id = context_pack.scene_id_of(scene)
-    plan = paths.translation_plan(root, scene, scene_id)
-    if not plan.is_file():
-        return []
-    return json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
+    """Linhas brutas do translation_plan_<scene_id>.json (lista), ou [] se nao houver plano.
+    Delega ao artifact_io (fonte unica do parse de plano)."""
+    return artifact_io.plan_lines(root, scene)
 
 
 def _ln_entry(ln):

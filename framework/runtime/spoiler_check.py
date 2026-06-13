@@ -30,6 +30,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
 import paths          # noqa: E402
 
@@ -54,17 +55,10 @@ def check(root) -> list[dict]:
     if not guarded:
         return []
     leaks = []
-    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
+    for scene in artifact_io.scenes(root):
         sid = context_pack.scene_id_of(scene)
-        tf = paths.translations(root, scene, sid)
-        if not tf.is_file():
-            continue
-        try:
-            lines = json.loads(tf.read_text(encoding="utf-8")).get("lines", {})
-        except Exception:
+        lines = artifact_io.translations_map(root, scene)
+        if not lines:
             continue
         for entry, forbidden in guarded:
             if not _future(entry.get("reveal", "beyond_frontier"), sid):
@@ -104,17 +98,10 @@ def check_gender(root) -> list[dict]:
     if not guarded:
         return []
     flags = []
-    for sc_dir in sorted(paths.artifacts(root).glob("ch_*")):
-        if not sc_dir.is_dir():
-            continue
-        scene = sc_dir.name
+    for scene in artifact_io.scenes(root):
         sid = context_pack.scene_id_of(scene)
-        tf = paths.translations(root, scene, sid)
-        if not tf.is_file():
-            continue
-        try:
-            lines = json.loads(tf.read_text(encoding="utf-8")).get("lines", {})
-        except Exception:
+        lines = artifact_io.translations_map(root, scene)
+        if not lines:
             continue
         for entry in guarded:
             if not _future(entry.get("reveal", "beyond_frontier"), sid):
