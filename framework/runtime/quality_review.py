@@ -19,8 +19,8 @@ O `apply` processa EXATAMENTE o que foi marcado e re-verifica round-trip dos cap
 HUMANO propoe -> gate (charset/paridade/round-trip) aprova -> script aplica. Sem work-text no .py.
 
 Uso:
-  python quality_review.py export <projeto> <cap> [--out CSV]
-  python quality_review.py apply  <projeto> <CSV-devolvido> [--model M]
+  python quality_review.py export <projeto> [<cap>] [--csv]   # XLSX amigavel (default); omita cap = JOGO TODO
+  python quality_review.py apply  <projeto> <arquivo-devolvido>   # le XLSX ou CSV
 """
 from __future__ import annotations
 import argparse
@@ -103,21 +103,131 @@ def write_csv(rows, out_path):
             w.writerow({c: r.get(c, "") for c in COLS})
 
 
-def read_returned(csv_path) -> dict:
-    """Le o CSV devolvido -> {scene: {'verbatim': [(offset, texto)], 'nota': [(offset, instrucao)]}}.
+# rotulos amigaveis (PT) p/ o XLSX, na MESMA ordem de COLS (a leitura mapeia por posicao)
+_XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ingles (fonte)",
+              "Portugues (atual)", "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
+# severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
+_XLSX_SEV = [("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
+             ("identico-fonte", "E8E8E8"), ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
+_XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input (Correcao/Nota)
+
+
+def write_xlsx(rows, out_path):
+    """Relatorio AMIGAVEL p/ o revisor humano (Excel/LibreOffice): aba 'Leia-me' (instrucoes+legenda+
+    contagem) + aba 'Revisao' com cabecalho congelado, autofiltro, cor por tipo de erro, colunas de
+    input em amarelo e EN/PT com quebra de linha. O `apply` le este xlsx de volta (mapeado por posicao)."""
+    from collections import Counter
+    try:
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment
+    except ImportError as e:
+        raise RuntimeError("o relatorio XLSX amigavel requer 'openpyxl' (pip install openpyxl). "
+                           "Ou use --csv p/ o CSV cru.") from e
+
+    cnt = Counter(t for r in rows if r.get("revisar") for t in r["revisar"].split(";"))
+    marked = sum(1 for r in rows if r.get("revisar"))
+    wb = Workbook()
+
+    intro = wb.active
+    intro.title = "Leia-me"
+    intro.column_dimensions["A"].width = 26
+    intro.column_dimensions["B"].width = 60
+    L = [("COMO REVISAR", ""), ("", ""),
+         ("1.", "Va para a aba 'Revisao'."),
+         ("2.", "Filtre a coluna 'Revisar (onde olhar)' por NAO-vazias p/ ver so o que precisa de olho."),
+         ("3.", "Onde estiver errado, escreva na coluna AMARELA 'Correcao' o texto CERTO."),
+         ("4.", "OU, se quiser que a IA reescreva, deixe uma 'Nota' (ex.: 'encurtar', 'mais formal')."),
+         ("5.", "Linha boa = deixe em branco. Salve e devolva o arquivo."),
+         ("", ""), ("LEGENDA DAS CORES (coluna Revisar)", ""),
+         ("critical / high", "linha de alto risco (voz/sentido/spoiler) — leia com atencao"),
+         ("largura", "o texto pode SAIR do balao no jogo — encurte se preciso"),
+         ("identico-fonte", "igual ao ingles — provavel nao-traduzido (confira; SFX/rotulo pode ficar)"),
+         ("tamanho", "traducao muito mais longa/curta que o original"),
+         ("pt-PT", "marcador de portugues de Portugal — adaptar p/ pt-BR"),
+         ("", ""), ("RESUMO", ""),
+         ("Total de linhas", len(rows)), ("Marcadas p/ avaliar", marked)]
+    for tag, c in cnt.most_common():
+        L.append((f"  {tag}", c))
+    for a, b in L:
+        intro.append([a, b])
+    intro["A1"].font = Font(name="Arial", bold=True, size=14)
+    for row in intro.iter_rows():
+        for cell in row:
+            if cell.column == 1 and cell.value in ("COMO REVISAR", "LEGENDA DAS CORES (coluna Revisar)", "RESUMO"):
+                cell.font = Font(name="Arial", bold=True, size=12)
+            elif not cell.font or cell.font.name != "Arial":
+                cell.font = Font(name="Arial", size=10)
+
+    ws = wb.create_sheet("Revisao")
+    ws.append(_XLSX_HEAD)
+    hfill = PatternFill("solid", fgColor="2F5496")
+    hfont = Font(name="Arial", bold=True, color="FFFFFF", size=10)
+    for cell in ws[1]:
+        cell.fill = hfill
+        cell.font = hfont
+        cell.alignment = Alignment(vertical="center", horizontal="center", wrap_text=True)
+    wrap = Alignment(vertical="top", wrap_text=True)
+    top = Alignment(vertical="top")
+    inputfill = PatternFill("solid", fgColor=_XLSX_INPUT)
+    for r in rows:
+        ws.append([r.get(c, "") for c in COLS])
+        i = ws.max_row
+        rev = r.get("revisar", "")
+        fill = next((PatternFill("solid", fgColor=clr) for tag, clr in _XLSX_SEV if tag in rev), None)
+        for col in range(1, len(COLS) + 1):
+            cell = ws.cell(row=i, column=col)
+            cell.font = Font(name="Arial", size=10)
+            cell.alignment = wrap if col in (6, 7, 8, 9) else top
+            if col in (8, 9):                              # Correcao/Nota = input (amarelo)
+                cell.fill = inputfill
+            elif fill is not None:
+                cell.fill = fill
+    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 55, 7: 55, 8: 45, 9: 30}
+    for col, w in widths.items():
+        ws.column_dimensions[ws.cell(row=1, column=col).column_letter].width = w
+    ws.freeze_panes = "A2"                                 # cabecalho fixo ao rolar
+    ws.auto_filter.ref = f"A1:{ws.cell(row=1, column=len(COLS)).column_letter}{ws.max_row}"
+    wb.save(out_path)
+
+
+def _read_xlsx_rows(path):
+    """Le a aba 'Revisao' do xlsx devolvido -> lista de dicts {COLS: valor} (mapeado por POSICAO)."""
+    try:
+        from openpyxl import load_workbook
+    except ImportError as e:
+        raise RuntimeError("ler XLSX devolvido requer 'openpyxl' (pip install openpyxl).") from e
+    wb = load_workbook(path, read_only=True, data_only=True)
+    ws = wb["Revisao"] if "Revisao" in wb.sheetnames else wb[wb.sheetnames[-1]]
+    out, first = [], True
+    for row in ws.iter_rows(values_only=True):
+        if first:                                          # pula cabecalho
+            first = False
+            continue
+        out.append({COLS[i]: ("" if i >= len(row) or row[i] is None else str(row[i]))
+                    for i in range(len(COLS))})
+    return out
+
+
+def read_returned(path) -> dict:
+    """Le o CSV ou XLSX devolvido -> {scene: {'verbatim': [(offset, texto)], 'nota': [(offset, instrucao)]}}.
     So linhas com correcao OU nota preenchida entram."""
+    p = Path(path)
+    if p.suffix.lower() == ".xlsx":
+        records = _read_xlsx_rows(p)
+    else:
+        with p.open(encoding="utf-8-sig", newline="") as fh:
+            records = list(csv.DictReader(fh))
     by_scene = {}
-    with Path(csv_path).open(encoding="utf-8-sig", newline="") as fh:
-        for r in csv.DictReader(fh):
-            scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
-            cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
-            if not scene or not off or (not cor and not nota):
-                continue
-            slot = by_scene.setdefault(scene, {"verbatim": [], "nota": []})
-            if cor:
-                slot["verbatim"].append((off, cor))       # correcao verbatim vence a nota
-            else:
-                slot["nota"].append((off, nota))
+    for r in records:
+        scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
+        cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
+        if not scene or not off or (not cor and not nota):
+            continue
+        slot = by_scene.setdefault(scene, {"verbatim": [], "nota": []})
+        if cor:
+            slot["verbatim"].append((off, cor))           # correcao verbatim vence a nota
+        else:
+            slot["nota"].append((off, nota))
     return by_scene
 
 
@@ -181,6 +291,7 @@ def main():
     pe.add_argument("project")
     pe.add_argument("chapter", nargs="?", default=None, help="capitulo (ex.: 11); OMITA p/ o jogo INTEIRO")
     pe.add_argument("--out", default=None)
+    pe.add_argument("--csv", action="store_true", help="gera CSV cru (default: XLSX amigavel p/ o revisor)")
     pa = sub.add_parser("apply", help="aplica o CSV devolvido (verbatim + notas)")
     pa.add_argument("project"); pa.add_argument("csv")
     pa.add_argument("--model", default=None)
@@ -189,13 +300,14 @@ def main():
     if a.cmd == "export":
         rows = export(a.project, a.chapter)
         scope = f"cap_{a.chapter}" if a.chapter else "all"
-        out = a.out or str(paths.artifacts(Path(a.project)) / f"review_{scope}.csv")
-        write_csv(rows, out)
+        ext = "csv" if a.csv else "xlsx"
+        out = a.out or str(paths.artifacts(Path(a.project)) / f"review_{scope}.{ext}")
+        (write_csv if a.csv else write_xlsx)(rows, out)
         marked = sum(1 for r in rows if r["revisar"])
         label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
         print(f"[export] {label}: {len(rows)} linha(s) -> {out}")
-        print(f"         {marked} marcada(s) p/ avaliar (coluna 'revisar' preenchida); preencha "
-              f"'correcao' (texto certo) ou 'nota' (instrucao) e devolva.")
+        print(f"         {marked} marcada(s) p/ avaliar; abra no Excel/LibreOffice, filtre a coluna "
+              f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva.")
         sys.exit(0)
     print(f"[apply] processando revisao devolvida: {a.csv}")
     r = apply(a.project, a.csv, model_name=a.model, max_usd=a.max_usd)
