@@ -40,14 +40,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico pomposo, admiração dramática",
-      "intent": "Maroro exclama ao ver a horda de inimigos com olhar teatral",
+      "tone_register": "arcaico-pomposo, exclamativo",
+      "intent": "Maroro exalta dramaticamente a horda de gigiri com linguagem empolada",
       "risk_level": "high",
-      "base_translation": "Ah! Contemplai agora essa legião de feras; vede o ardor\\n",
+      "base_translation": "Ah! Contemplai essa legião de demônios; vede o ardor\\n",
       "byte_budget": 53,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Voz arcaica do Maroro deve ser preservada; cicio não aparece aqui mas pompa sim."
+      "risk_notes": "Voz arcaica com cicio deve ser preservada; budget apertado (53 bytes transliterado). Back-translation necessária."
     },
     {
       "offset": "0x492ef",
@@ -169,13 +169,13 @@
         "Maroro"
       ],
       "tone_register": "arcaico pomposo",
-      "intent": "Conclusão da pergunta — atrair a besta como mariposa à chama",
+      "intent": "Maroro pergunta com pompa como Ukon pretende atrair a besta, usando imagem poética da mariposa e da chama sedutora",
       "risk_level": "high",
-      "base_translation": "a besta como mariposa à chama?",
+      "base_translation": "a besta como mariposa à chama sedutora?",
       "byte_budget": 44,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Manter metáfora e registro arcaico."
+      "risk_notes": "'siren flame' requer chama sedutora/sirene para não perder a imagem; voz arcaica mantida"
     },
     {
       "offset": "0x49422",
@@ -424,14 +424,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico pomposo, apavorado",
-      "intent": "Conclusão — 'diz a verdade, há perigo?'",
+      "tone_register": "arcaico cômico com cicio",
+      "intent": "Maroro pressiona por reasseguração de que não há perigo, com negativa implícita esperando 'não'",
       "risk_level": "high",
-      "base_translation": "Fala a verdade -- há algun p-perigo?",
+      "base_translation": "Fala a verdade -- não há p-perigo nenhum?",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Cicio em 'd-danger' → gaguejo + cicio: 'p-perigo'."
+      "risk_notes": "Negativa 'não há perigo?' preservada (expectativa de reasseguração, não pergunta neutra); cicio ativo; typo 'algun' corrigido"
     },
     {
       "offset": "0x4964f",

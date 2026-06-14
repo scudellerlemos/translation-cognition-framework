@@ -28,6 +28,7 @@ import json
 import re
 import sys
 from pathlib import Path
+import paths          # noqa: E402  (H2: fonte unica de paths)
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -215,20 +216,20 @@ def build_decision_index(log_md: str) -> list[dict]:
 
 def build(root: Path) -> dict:
     root = Path(root)
-    art = root / "artifacts"
-    state = art / "state"
+    art = paths.artifacts(root)
+    state = paths.state_dir(root)
     state.mkdir(parents=True, exist_ok=True)
 
     tm = build_tm(art)
-    cards = build_voice_cards(_read(art / "tone_analysis.md"))
-    decisions = build_decision_index(_read(art / "decision_log.md"))
+    cards = build_voice_cards(_read(paths.tone_analysis(root)))
+    decisions = build_decision_index(_read(paths.decision_log(root)))
 
     # TM como JSONL ordenado e estavel
     tm_txt = "\n".join(json.dumps(e, ensure_ascii=False, sort_keys=True) for e in tm)
-    (state / "translation_memory.jsonl").write_text(tm_txt + ("\n" if tm else ""), encoding="utf-8")
-    (state / "voice_cards.json").write_text(
+    (paths.translation_memory(root)).write_text(tm_txt + ("\n" if tm else ""), encoding="utf-8")
+    (paths.voice_cards(root)).write_text(
         json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
-    (state / "decision_index.json").write_text(
+    (paths.decision_index(root)).write_text(
         json.dumps(decisions, ensure_ascii=False, indent=2), encoding="utf-8")
     return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions), "dir": state}
 

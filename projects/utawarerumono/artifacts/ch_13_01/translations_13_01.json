@@ -2314,11 +2314,11 @@
     },
     "0x594d9": {
       "speaker": "Haku",
-      "tone_register": "narração",
-      "intent": "completar — ela se encolhe um pouco",
-      "risk_level": "high",
-      "risk_notes": "Budget 6 bytes; transliterado 'um bit' = 6 bytes",
-      "t": "um bit."
+      "tone_register": "narração casual, resignado",
+      "intent": "minimizar o incômodo de recuar um pouco",
+      "risk_level": "medium",
+      "risk_notes": "byte_budget=6; transliterado 'um pouco' = 8 bytes, excede. Usar 'um bit' estava errado semanticamente; usar forma curta 'um.` mas ambíguo. Melhor: 'pouco.' = 5 bytes OK.",
+      "t": "pouco."
     },
     "0x594e0": {
       "speaker": "Haku",
@@ -2962,11 +2962,11 @@
     },
     "0x5a041": {
       "speaker": "Haku",
-      "tone_register": "confuso",
-      "intent": "o que há com essa pessoa",
-      "risk_level": "high",
-      "risk_notes": "Figura enigmática; usar 'essa pessoa'",
-      "t": "O que é que essa pessoa quer?"
+      "tone_register": "narrativa informal, espanto",
+      "intent": "estranheza diante do comportamento inexplicável da figura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que é que essa pessoa?"
     },
     "0x5a05a": {
       "speaker": "sistema",
@@ -3578,11 +3578,11 @@
     },
     "0x5ab42": {
       "speaker": "Haku",
-      "tone_register": "preocupado",
-      "intent": "completar — perguntar assim a uma princesa",
-      "risk_level": "high",
-      "risk_notes": "Budget 9 bytes; transliterado 'a princesa' = 9 bytes",
-      "t": "a princesa?"
+      "tone_register": "casual, questionador",
+      "intent": "questionar se Kuon foi informal demais ao abordar a princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "assim?"
     },
     "0x5ab4c": {
       "speaker": "Kuon",
@@ -3618,11 +3618,11 @@
     },
     "0x5ac19": {
       "speaker": "Kuon",
-      "tone_register": "irônico",
-      "intent": "completar",
-      "risk_level": "high",
-      "risk_notes": "Budget 9 bytes; transliterado 'abalado.' = 7 bytes",
-      "t": "abalado."
+      "tone_register": "irônico, levemente provocador",
+      "intent": "apontar que o próprio Haku também não foi formal com a princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "você."
     },
     "0x5ac23": {
       "speaker": "Haku",

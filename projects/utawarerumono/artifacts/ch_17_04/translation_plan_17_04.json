@@ -376,14 +376,14 @@
       "entities_present": [
         "Oshtor"
       ],
-      "tone_register": "formal, severo",
-      "intent": "Continua a advertência: não verão o dia seguinte",
-      "risk_level": "high",
-      "base_translation": "querido irmão, porém, vocês NÃO verão o\\n",
+      "tone_register": "formal, nobre, ameaçador",
+      "intent": "Oshtor avisa que indisciplina perto do irmão terá consequências fatais",
+      "risk_level": "medium",
+      "base_translation": "querido irmão, porém, você NÃO verá o\\n",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Continuação da ameaça de Oshtor; manter tom severo sem antecipar spoiler"
+      "risk_notes": "'you' singular; manter ameaça ambígua sem antecipar identidade; checar budget"
     },
     {
       "offset": "0x117d26",
@@ -4308,18 +4308,18 @@
     {
       "offset": "0x119d21",
       "text_source": "me whether Dekopompo deserves to be a general...",
-      "speaker": "Haku",
+      "speaker": "Oshtor",
       "entities_present": [
-        "Haku"
+        "Oshtor"
       ],
-      "tone_register": "reflexivo, questionador moral",
-      "intent": "dúvida sobre merecimento de posição",
-      "risk_level": "high",
-      "base_translation": "eu se Dekopompo merecia ser um general...",
+      "tone_register": "formal, comedido, levemente crítico",
+      "intent": "Oshtor pondera (em voz alta) se Dekopompo merece o posto de general",
+      "risk_level": "low",
+      "base_translation": "eu se Dekopompo merece ser um general...",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "questão moral sobre Dekopompo não deve antecipar desfecho de Oshtor; manter neutralidade"
+      "risk_notes": ""
     },
     {
       "offset": "0x119d52",
@@ -6771,8 +6771,8 @@
     }
   ],
   "total_lines": 423,
-  "high_lines": 27,
-  "medium_lines": 42,
+  "high_lines": 25,
+  "medium_lines": 43,
   "needs_review": [],
   "plan_version": "chapter-17_04-v1"
 }

@@ -26,6 +26,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 
 _KB_ARTIFACTS = ("glossary.csv", "universe_knowledge_base.md")
 
@@ -38,7 +39,7 @@ def _pos(scene_id: str):
 def check(root, scene) -> dict:
     """Retorna {problems: [...], warnings: [...]}. problems != [] => bloquear traducao."""
     root = Path(root)
-    art = root / "artifacts"
+    art = paths.artifacts(root)
     problems, warnings = [], []
 
     rl = art / "research_log.md"
@@ -54,7 +55,7 @@ def check(root, scene) -> dict:
         f = art / name
         if not f.is_file() or not f.read_text(encoding="utf-8").strip():
             problems.append(f"{name} ausente/vazio — KB incompleta (skills 03/04).")
-    vc = art / "state" / "voice_cards.json"
+    vc = paths.voice_cards(root)
     if not vc.is_file() or not vc.read_text(encoding="utf-8").strip():
         problems.append("voice_cards.json ausente — rode state_index (deriva do tone_analysis.md).")
 

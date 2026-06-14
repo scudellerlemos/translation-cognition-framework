@@ -148,18 +148,18 @@
     {
       "offset": "0x16bfa0",
       "text_source": "just a girl head-over-heels...",
-      "speaker": "Anju",
+      "speaker": "Ukon",
       "entities_present": [
-        "Anju"
+        "Ukon"
       ],
-      "tone_register": "formal, nobre, desesperado",
-      "intent": "autoconsciência irônica/vulnerabilidade",
-      "risk_level": "high",
-      "base_translation": "só uma garota de cabeça quente...",
+      "tone_register": "coloquial caloroso",
+      "intent": "comentar com carinho a paixão ingênua da princesa",
+      "risk_level": "medium",
+      "base_translation": "só uma garota apaixonada...",
       "byte_budget": 30,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade oculta. Tradução cabe no orçamento. Preservar a fragilidade sem antecipar posição social."
+      "risk_notes": "'head-over-heels' = perdidamente apaixonada; versão anterior usou 'cabeça quente' (errado) e estourou budget (40 > 30). Nova versão transliterada: 'so uma garota apaixonada...' = 29 bytes. OK."
     },
     {
       "offset": "0x16bfbf",
@@ -724,18 +724,18 @@
     {
       "offset": "0x16c45b",
       "text_source": "definitely not YOUR retainer...",
-      "speaker": "Oshtor",
+      "speaker": "Nosuri",
       "entities_present": [
-        "Oshtor"
+        "Nosuri"
       ],
-      "tone_register": "formal, nobre, comedido",
-      "intent": "negação formal/nobre",
-      "risk_level": "high",
-      "base_translation": "definitivamente não SUA retainer...",
+      "tone_register": "coloquial irônico",
+      "intent": "corrigir que Oshtor não é retainer da Anju",
+      "risk_level": "medium",
+      "base_translation": "não É SEU retainer...",
       "byte_budget": 31,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Oshtor nega ser retainer de outro (provavelmente Anju). Spoiler crítico: relação futura não deve ser insinuada."
+      "risk_notes": "'retainer' mantido sem tradução conforme memória; SUA em caps preservado; budget apertado (31 bytes transliterado)"
     },
     {
       "offset": "0x16c47b",
@@ -2036,18 +2036,18 @@
     {
       "offset": "0x16cf80",
       "text_source": "to uphold the peace of Yamato for you.",
-      "speaker": "Maroro ou aliado",
+      "speaker": "Oshtor",
       "entities_present": [
-        "Maroro ou aliado"
+        "Oshtor"
       ],
-      "tone_register": "formal determinado",
-      "intent": "juramento/compromisso de lealdade",
-      "risk_level": "high",
-      "base_translation": "para manter a paz de Yamato.",
+      "tone_register": "formal, solene, comprometido",
+      "intent": "jurar solenemente manter a paz de Yamato em nome de Anju",
+      "risk_level": "low",
+      "base_translation": "para manter a paz de Yamato por você.",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "SPOILER: Yamato é tema neutro; 'for you' pode ser ambíguo (para quem?). Manter formal sem revelar relação pessoal. Frase inteira em bytes curtos."
+      "risk_notes": ""
     },
     {
       "offset": "0x16cfa7",
@@ -2609,8 +2609,8 @@
     }
   ],
   "total_lines": 163,
-  "high_lines": 43,
-  "medium_lines": 29,
+  "high_lines": 40,
+  "medium_lines": 31,
   "needs_review": [],
   "plan_version": "chapter-18_05-v1"
 }

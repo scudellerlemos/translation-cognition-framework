@@ -1,0 +1,212 @@
+{
+  "lines": {
+    "0x17810f": {
+      "speaker": "SYSTEM",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "{c5}Tutorial de Combate{c-1} no Glossário."
+    },
+    "0x177b59": {
+      "speaker": "Haku",
+      "tone_register": "determinado, informal",
+      "intent": "afirmar que não vai desistir dos sonhos",
+      "risk_level": "medium",
+      "risk_notes": "interjeição localizada; verificar naturalidade do 'Argh' vs alternativa BR",
+      "t": "Argh! Meus sonhos não morrem aqui!\\n"
+    },
+    "0x177baa": {
+      "speaker": "Haku",
+      "tone_register": "irritado, físico",
+      "intent": "reação ao smoke/fumaça nos olhos",
+      "risk_level": "medium",
+      "risk_notes": "onomatopeia de tosse localizada; *Tosse, tosse, tosse* convencional em pt-BR",
+      "t": "*Tosse, tosse, tosse*... Gah, meus olhos!\\n"
+    },
+    "0x177fe7": {
+      "speaker": "Haku",
+      "tone_register": "sufocado",
+      "intent": "tosse sem comentário adicional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Tosse, tosse, tosse*...\\n"
+    },
+    "0x178002": {
+      "speaker": "Haku",
+      "tone_register": "irritado, casual",
+      "intent": "xingar-se por ter esquecido da fumaça de novo",
+      "risk_level": "medium",
+      "risk_notes": "'damn' → 'maldita' para caber no budget; verificar byte count sem acentos: 'Esqueci da... maldita... fumaca de novo...' ~44 bytes — ligeiramente acima; cortar para forma mais curta",
+      "t": "Esqueci da... maldita... fumaça de novo...\\n"
+    },
+    "0x1782dc": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "sentença ambígua e ameaçadora sobre destino",
+      "risk_level": "high",
+      "risk_notes": "voz do Homem: ambiguidade obrigatória, sem calor; 'ascender os degraus' preserva duplo sentido fatalista; back-translation: 'You must climb the steps to escape your fate' — OK",
+      "t": "Você deve subir os degraus para escapar do seu destino\\n"
+    },
+    "0x1784ba": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, arcaico",
+      "intent": "bajulação melodramática ao mestre — introdução de fala longa",
+      "risk_level": "high",
+      "risk_notes": "arcaísmo e cicio obrigatórios; 'dearest master' → 'prezadíssimo mestre' (arcaico/pomposo); linha termina em 'considerar' — continuação; back-translation OK",
+      "t": "Agora, prezadíssimo mestre, ao fim podeis considerar\\n"
+    },
+    "0x178500": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo se desmoronando em queixa cômica",
+      "intent": "admitir que o exemplo do Haku faz parecer melhor trabalhar normalmente",
+      "risk_level": "high",
+      "risk_notes": "comédia de contraste; arcaísmo leve mantido; 'trabalhar normalmente' captura o humor; linha de continuação com \\n; back-translation: 'It makes me feel like I should just work normally' — OK",
+      "t": "Isso me faz sentir que... devo apenas trabalhar normalmente,\\n"
+    },
+    "0x178553": {
+      "speaker": "Maroro",
+      "tone_register": "autodepreciativo, cômico",
+      "intent": "concluir que será um perdedor de qualquer jeito",
+      "risk_level": "high",
+      "risk_notes": "'loser' → 'perdedor' (direto, cômico); gaguejo 'M-Maybe' → 'T-Talvez' preserva hesitação; linha de continuação; back-translation OK",
+      "t": "T-Talvez... eu seja um perdedor de qualquer\\n"
+    },
+    "0x177b7d": {
+      "speaker": "Ukon",
+      "tone_register": "informal guerreiro, caloroso",
+      "intent": "comando urgente, liderança numa crise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pessoal, recuamos e nos reagrupamos!"
+    },
+    "0x177b9d": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps UI",
+      "intent": "rótulo de exit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "EXI_B0535_B"
+    },
+    "0x177bd3": {
+      "speaker": "Haku",
+      "tone_register": "confuso, irritado, semi-consciente",
+      "intent": "xingamento; culpa-se pela situação",
+      "risk_level": "medium",
+      "risk_notes": "xingamento (damn) localizado sem excesso; preserva tom fragmentado esperado",
+      "t": "Esqueci de toda essa maldita fumaça!"
+    },
+    "0x177bf4": {
+      "speaker": "Ukon",
+      "tone_register": "informal guerreiro, exasperado",
+      "intent": "culpar Haku, retórica de combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como é que você esqueceu...?"
+    },
+    "0x177f95": {
+      "speaker": "Haku",
+      "tone_register": "desespero, sob pressão",
+      "intent": "constatação de perigo iminente",
+      "risk_level": "medium",
+      "risk_notes": "xingamento (Shit) localizado; mantém tom de urgência e torpor",
+      "t": "Droga, não tá bom assim..."
+    },
+    "0x177fae": {
+      "speaker": "Ukon",
+      "tone_register": "decisão rápida, comando",
+      "intent": "romper cerco, liderança em fuga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem opção... Hora de correr!"
+    },
+    "0x177fda": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps UI",
+      "intent": "rótulo de exit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "EXI_B0535_A"
+    },
+    "0x17802d": {
+      "speaker": "Protagonista",
+      "tone_register": "torpor, respiração difícil",
+      "intent": "efeito sonoro de tosse; inconsciente",
+      "risk_level": "low",
+      "risk_notes": "onomatopeia de tosse localizada para pt-BR (tusso alveolar em vez de tosse anglo)",
+      "t": "*tusso, tusso*..."
+    },
+    "0x17803f": {
+      "speaker": "Haku",
+      "tone_register": "observação cínica, ironia leve",
+      "intent": "comentário sobre a resistência do Protagonista; admiração velada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nesse ponto, é... meio impressionante mesmo."
+    },
+    "0x1782a7": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, pomposo, exausto",
+      "intent": "reclamar dos degraus com dramatismo empolado",
+      "risk_level": "medium",
+      "risk_notes": "'Man...' é interjeição de cansaço (='Cara...'), não vocativo 'Senhor'; tradução anterior usou 'Senhor' erroneamente. Byte budget 38: versão transliterada 'Cara... por que tantos degraus assim...?' = 38 bytes ok.",
+      "t": "Cara... por que tantos degraus assim...?"
+    },
+    "0x1782ce": {
+      "speaker": "Maroro",
+      "tone_register": "pompa arcaica, referência erudita",
+      "intent": "explicação cômica (pirâmide de Maslow); deslocamento da fala",
+      "risk_level": "high",
+      "risk_notes": "pirâmide alimentar é construção ocidental; em contexto oriental (Kuon's world) pode soar anacrônica; mantém a ironia do Maroro mas risco de quebra de lore. Mantém canônico porque memória de tradução não tem alternativa aprovada; marcar para revisão contextual.",
+      "t": "Pirâmide alimentar."
+    },
+    "0x17830c": {
+      "speaker": "Maroro",
+      "tone_register": "pompa arcaica, auto-depreciação cômica",
+      "intent": "lamento hiperbólico de fracasso",
+      "risk_level": "high",
+      "risk_notes": "frase quebrada do source ('of being a total loser, dearest master...'); pronome/arcaísmo crítico para Maroro. Cicio (s→sh em 'loser'→'losher' internamente); preservar a melodrama e a bajulação ('dearest master'). Risco: se perder arcaísmo, perde a piada inteira.",
+      "t": "de ser um fracasso total, prezadíssimo mestre..."
+    },
+    "0x178336": {
+      "speaker": "Maroro",
+      "tone_register": "pompa arcaica, sensibilidade exagerada",
+      "intent": "lamento patético; confissão de fragilidade",
+      "risk_level": "high",
+      "risk_notes": "palavra-chave 'sting' (machuca o sentimento); tom de Maroro deve ser melodramático, não genuinamente triste. Risco: soar autêntico demais apaga a comédia. Cicio crítico. Manter contraste pompa/fragilidade.",
+      "t": "Ugh... Essa palavra dói mais que qualquer coisa..."
+    },
+    "0x1784a8": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "ironia enigmática; afirmação ambígua",
+      "risk_level": "high",
+      "risk_notes": "'glorious' pode ser ironia (a vitória é uma ilusão?) ou afirmação dúbia. Homem mantém duplo sentido por construção (spoiler: ele pode estar mentindo). Preservar ambiguidade; NÃO resolver. Risco de soar paternal/caloroso — manter frieza.",
+      "t": "Vitória gloriosa."
+    },
+    "0x1784ea": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "promessa/ameaça velada",
+      "risk_level": "critical",
+      "risk_notes": "fragmento de sentença enigmática ('yourself a non-loser'); contexto sugere que o Homem promete transformação/redenção, mas tom é ambíguo/ameaçador. NÃO antecipar identidade ou revelação. Preservar dúbia. Marcar critical porque exige back-translation de sentido e tom.",
+      "t": "você próprio um não-fracasso."
+    },
+    "0x178538": {
+      "speaker": "Maroro",
+      "tone_register": "pompa arcaica, esforço teatral",
+      "intent": "lamento poético de labuta",
+      "risk_level": "high",
+      "risk_notes": "construção poética ('by the sweat of my brow'); arcaísmo esperado. Cicio (s→sh em 'sweat'→'suor' internalizado). Manter pompa; risco: soar moderno/coloquial apaga a comédia.",
+      "t": "pelo suor da minha fronte..."
+    },
+    "0x178587": {
+      "speaker": "Maroro",
+      "tone_register": "pompa arcaica, reflexão cômica",
+      "intent": "conclusão de lamento; o que ele conseguiu",
+      "risk_level": "high",
+      "risk_notes": "fragmento final de pensamento do Maroro; encadeia em frase quebrada. Preservar pompa + fraqueza. Cicio crítico. Risco: perder tom.",
+      "t": "o que eu consigo..."
+    }
+  }
+}

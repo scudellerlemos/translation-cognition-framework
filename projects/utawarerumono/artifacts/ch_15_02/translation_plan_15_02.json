@@ -1592,14 +1592,14 @@
       "entities_present": [
         "Nekone"
       ],
-      "tone_register": "explicativo",
-      "intent": "mencionar favoritismo do Mikado e ressentimento",
-      "risk_level": "high",
-      "base_translation": "Além disso, ele é bem-quisto e confidente do Mikado.\\n",
+      "tone_register": "formal, factual",
+      "intent": "Explicar o ressentimento das famílias antigas contra o irmão",
+      "risk_level": "medium",
+      "base_translation": "Além disso, é bem-quisto e confidente do Mikado.\\n",
       "byte_budget": 50,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Menciona Mikado como confidente; spoiler: não antecipar vínculo pessoal além do político."
+      "risk_notes": "Mikado: spoiler moderate — manter só como título distante, sem vínculo pessoal. Budget apertado: 50 bytes transliterado."
     },
     {
       "offset": "0xad47c",
@@ -2600,14 +2600,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "pomposo",
-      "intent": "continuar",
-      "risk_level": "high",
-      "base_translation": "situação chegaram a meus ouvidos, em devida\\n",
+      "tone_register": "arcaico, empolado",
+      "intent": "Revelar que ouviu sobre a situação de Haku em sigilo",
+      "risk_level": "medium",
+      "base_translation": "chegaram a meus ouvidos, em shigilo.\\n",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo; preservar pompa."
+      "risk_notes": "Cicio e arcaísmo devem sobreviver. Budget 43 bytes transliterado — versão encurtada."
     },
     {
       "offset": "0xadc99",
@@ -2664,14 +2664,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "pomposo, arcaico",
-      "intent": "mencionar pedido de Oshtor/Ukon",
-      "risk_level": "high",
-      "base_translation": "Por certo, o pedido do Lorde Osht— ah, do Mestre Ukon!\\n",
+      "tone_register": "arcaico-pomposo, reverencial",
+      "intent": "Maroro quase diz 'Oshtor' mas se corrige para 'Mestre Ukon' — gag de slip verbal",
+      "risk_level": "critical",
+      "base_translation": "Por certo, Lord Osht— ah, Mestre Ukon!\\n",
       "byte_budget": 43,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Maroro quase diz 'Oshtor' — corrigido para Ukon; spoiler controlado. Arcaísmo preservado."
+      "risk_notes": "Spoiler crítico: quase revela identidade de Oshtor/Ukon — a correção 'ah, rather' é o gag central; budget 43 transliterado: cortar para caber; 'o pedido' removido para encurtar"
     },
     {
       "offset": "0xadd00",
@@ -3096,14 +3096,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "pomposo, arcaico",
-      "intent": "aceitar com entusiasmo",
-      "risk_level": "high",
-      "base_translation": "Q-Que escolha tenho, afinal?\\n",
+      "tone_register": "arcaico, empolado, cômico",
+      "intent": "Exclamação dramática sobre não ter escolha",
+      "risk_level": "medium",
+      "base_translation": "Q-Que escolha tenho, em verdade, afinal?\\n",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo e cicio de Maroro; forte aceitação."
+      "risk_notes": "'Forsooth' é arcaísmo característico de Maroro; encurtado para caber no budget de 49 bytes transliterado."
     },
     {
       "offset": "0xae05e",
@@ -6579,8 +6579,8 @@
     }
   ],
   "total_lines": 411,
-  "high_lines": 34,
-  "medium_lines": 39,
+  "high_lines": 31,
+  "medium_lines": 42,
   "needs_review": [],
   "plan_version": "chapter-15_02-v1"
 }

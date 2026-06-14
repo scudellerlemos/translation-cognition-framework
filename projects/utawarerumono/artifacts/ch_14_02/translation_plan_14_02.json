@@ -1000,14 +1000,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narrativa reflexiva",
-      "intent": "cortar a especulação para não fazer suposições",
-      "risk_level": "high",
-      "base_translation": "em...? Não, não devo tirar conclusões.\\n",
+      "tone_register": "narrativa interna, hesitante",
+      "intent": "Haku detém um pensamento precipitado sobre a cidade natal de Kuon",
+      "risk_level": "medium",
+      "base_translation": "em...? Não, não devo\\n",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Spoiler de origem de Kuon; encurtado para caber no budget 38."
+      "risk_notes": "Linha fragmentada proposital; 'make assumptions' cortado pelo \\n — manter fragmentação e ambiguidade. Budget apertado: transliterado deve caber em 38 bytes."
     },
     {
       "offset": "0x7efa3",
@@ -4835,8 +4835,8 @@
     }
   ],
   "total_lines": 302,
-  "high_lines": 4,
-  "medium_lines": 18,
+  "high_lines": 3,
+  "medium_lines": 19,
   "needs_review": [],
   "plan_version": "chapter-14_02-v1"
 }

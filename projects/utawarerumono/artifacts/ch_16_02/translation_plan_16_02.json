@@ -2040,14 +2040,14 @@
       "entities_present": [
         "Kuon"
       ],
-      "tone_register": "incrédulo, excitado",
-      "intent": "reconhecimento com espanto",
-      "risk_level": "high",
-      "base_translation": "Oshtor? Aquele dos Escudos Gemeos, Oshtor?",
+      "tone_register": "surpresa, informal",
+      "intent": "confirmar identidade — um dos Escudos Gêmeos",
+      "risk_level": "medium",
+      "base_translation": "Oshtor? O Oshtor dos Escudos Gêmeos?",
       "byte_budget": 40,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "'Twin Shields' = Escudos Gemeos (glossário: traduzir). Oshtor = major spoiler. Preservar admiração sem resolver identidade."
+      "risk_notes": "'Half of' = um dos dois Escudos; manter sentido de dupla; budget 40 bytes transliterado"
     },
     {
       "offset": "0xdb8b4",
@@ -2136,14 +2136,14 @@
       "entities_present": [
         "Haku"
       ],
-      "tone_register": "narração tensa, cautelosa",
-      "intent": "pensa que não deviam falar disso na frente de estranhos",
-      "risk_level": "high",
-      "base_translation": "Merda, provavelmente não devia falar disso\\n",
+      "tone_register": "pensamento interno, pragmático, levemente alarmado",
+      "intent": "lembrar que não devem discutir o trabalho secreto com estranhos presentes",
+      "risk_level": "medium",
+      "base_translation": "Merda, não devíamos falar disso\\n",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Tensão sobre identidade secreta de Oshtor/Ukon"
+      "risk_notes": "'we' plural deve estar explícito; budget 45 bytes"
     },
     {
       "offset": "0xdb98c",
@@ -2196,18 +2196,18 @@
     {
       "offset": "0xdb9ec",
       "text_source": "We're his undercover agents.",
-      "speaker": "Atuy",
+      "speaker": "Haku",
       "entities_present": [
-        "Atuy"
+        "Haku"
       ],
-      "tone_register": "grave, formal",
-      "intent": "revelação parcial controlada",
-      "risk_level": "critical",
-      "base_translation": "Somos agentes encobertor seus.",
+      "tone_register": "informal",
+      "intent": "revelar acidentalmente status de agentes",
+      "risk_level": "high",
+      "base_translation": "Somos agentes de encobertura.",
       "byte_budget": 28,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade de Ukon/Oshtor = major spoiler (reveal em 13_08). Aqui Atuy diz 'agentes encobertor'. SEM antecipar que Ukon = Oshtor. Antes do reveal, Ukon é 'mercenário informal'; após, 'General formal'. Traduzir como 'agentes encobertor' mantendo o tom misterioso."
+      "risk_notes": "budget 28 transliterado; 'encobertura' conciso e correto"
     },
     {
       "offset": "0xdba09",
@@ -2388,18 +2388,18 @@
     {
       "offset": "0xdbb27",
       "text_source": "I've seen great men, but only a handful of his\\n",
-      "speaker": "Haku",
+      "speaker": "Kuon",
       "entities_present": [
-        "Haku"
+        "Kuon"
       ],
-      "tone_register": "narração reflexiva, admirada",
-      "intent": "já viu homens notáveis, mas poucos como ele",
-      "risk_level": "high",
-      "base_translation": "Já vi grandes homens, mas só uma pequena parte\\n",
+      "tone_register": "admirado, avaliativo",
+      "intent": "elogiar Oshtor como homem raro entre os grandes",
+      "risk_level": "medium",
+      "base_translation": "Já vi grandes homens, mas poucos do calibre dele.\\n",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Reflexão sobre Oshtor; não antecipar revelação da identidade"
+      "risk_notes": "'a handful' = poucos; cortado para caber no budget 48"
     },
     {
       "offset": "0xdbb58",
@@ -2852,18 +2852,18 @@
     {
       "offset": "0xdbec2",
       "text_source": "our cover in the first place.",
-      "speaker": "Atuy",
+      "speaker": "Haku",
       "entities_present": [
-        "Atuy"
+        "Haku"
       ],
-      "tone_register": "desculpador, explicativo",
-      "intent": "justificativa de vazamento",
-      "risk_level": "high",
-      "base_translation": "cobrir nossa cobertura em primeiro lugar.",
+      "tone_register": "irritado, informal",
+      "intent": "repreender Atuy por revelar a cobertura",
+      "risk_level": "medium",
+      "base_translation": "revelar nossa cobertura assim.",
       "byte_budget": 29,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade de Ukon = major spoiler. Sem antecipar."
+      "risk_notes": "redundância anterior corrigida; budget 29 bytes"
     },
     {
       "offset": "0xdbee0",
@@ -3684,18 +3684,18 @@
     {
       "offset": "0xdc58d",
       "text_source": "So, what did you need to see us about?",
-      "speaker": "Oshtor",
+      "speaker": "Haku",
       "entities_present": [
-        "Oshtor"
+        "Haku"
       ],
-      "tone_register": "formal, nobre, comedido",
-      "intent": "questionar o motivo do encontro",
-      "risk_level": "high",
-      "base_translation": "Então, o que precisava ver a gente sobre?",
+      "tone_register": "direto, informal",
+      "intent": "perguntar o motivo da convocação de Oshtor",
+      "risk_level": "low",
+      "base_translation": "Então, o que precisava de nós?",
       "byte_budget": 38,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Oshtor ainda é 'Ukon' aqui (spoiler: verdadeira identidade como General). Não antecipe pompa ou reverência que revele identidade. Manter tom mercenário informal."
+      "risk_notes": ""
     },
     {
       "offset": "0xdc5b4",
@@ -4232,14 +4232,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "erudito cômico, pomposo, arcaico",
-      "intent": "expressar noção de destino",
+      "tone_register": "arcaico, pomposo, com cicio",
+      "intent": "declarar que o encontro é fatídico",
       "risk_level": "high",
-      "base_translation": "Isso deve shér o destino...",
+      "base_translation": "Ishto é o destino...",
       "byte_budget": 20,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "manter tom arcaico e pomposo (Maroro); incluir o sotaque-tique (s→sh) em pontos chave. Cômico sem explicar. High risk por causa do tom/identidade do Maroro."
+      "risk_notes": "cicio s→sh: 'ser' vira 'sher'; grafia corrigida; budget 20 bytes transliterado — forma curta necessária"
     },
     {
       "offset": "0xdc975",
@@ -5364,18 +5364,18 @@
     {
       "offset": "0xdd1b2",
       "text_source": "but to find HER of all people in your company...",
-      "speaker": "Ukon",
+      "speaker": "Oshtor",
       "entities_present": [
-        "Ukon"
+        "Oshtor"
       ],
-      "tone_register": "guerreiro espirituoso",
-      "intent": "observação perplexa",
-      "risk_level": "high",
-      "base_translation": "mas achá-la entre sua gente...",
+      "tone_register": "formal, levemente surpreso",
+      "intent": "enfatizar espanto de encontrar justamente Atuy na companhia de Haku",
+      "risk_level": "medium",
+      "base_translation": "mas encontrar justamente ELA entre sua gente...",
       "byte_budget": 48,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Atuy é personagem; primeira menção material; Ukon referencia a presença dela de forma enigmática—verificar que a tradução não antecipa relação/identidade revelada depois"
+      "risk_notes": "ênfase 'HER of all people' preservada com 'justamente ELA'; budget 48"
     },
     {
       "offset": "0xdd1e3",
@@ -5892,18 +5892,18 @@
     {
       "offset": "0xdd657",
       "text_source": "the scandal secret from the public?",
-      "speaker": "Ukon",
+      "speaker": "Haku",
       "entities_present": [
-        "Ukon"
+        "Haku"
       ],
-      "tone_register": "guerreiro espirituoso",
-      "intent": "pergunta tática",
-      "risk_level": "high",
-      "base_translation": "o segredo de escândalo do público?",
+      "tone_register": "pensamento interno, preocupado, informal",
+      "intent": "questionar se devem manter o escândalo longe do conhecimento público",
+      "risk_level": "low",
+      "base_translation": "o escândalo longe do público?",
       "byte_budget": 35,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "spoiler potencial: escancarar 'segredo' pode antecipar revela-ção de Atuy; preservar ambiguidade—a frase original é intencionalmente vaga; tradução deve manter suspensão"
+      "risk_notes": ""
     },
     {
       "offset": "0xdd67b",
@@ -6836,18 +6836,18 @@
     {
       "offset": "0xdde1e",
       "text_source": "enough young man.",
-      "speaker": "Maroro",
+      "speaker": "Oshtor",
       "entities_present": [
-        "Maroro"
+        "Oshtor"
       ],
-      "tone_register": "arcaico, pomposo, cômico",
-      "intent": "adulação arcaica ao Ukon",
-      "risk_level": "high",
-      "base_translation": "bastante, jovem rapaz.",
+      "tone_register": "formal, comedido",
+      "intent": "concluir avaliação positiva de Yuuri",
+      "risk_level": "medium",
+      "base_translation": "bom rapaz.",
       "byte_budget": 17,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Preservar arcaísmo ('moço' em vez de 'rapaz') e empolação cômica; manter contraste com fragilidade"
+      "risk_notes": "'enough'=já basta/suficiente; budget 17 bytes transliterado — muito curto; forma mínima"
     },
     {
       "offset": "0xdde30",
@@ -6932,18 +6932,18 @@
     {
       "offset": "0xddede",
       "text_source": "She ought to be fine, left under his care.",
-      "speaker": "Rulutieh",
+      "speaker": "Oshtor",
       "entities_present": [
-        "Rulutieh"
+        "Oshtor"
       ],
-      "tone_register": "tímido, reassegurador",
-      "intent": "confirmar segurança de alguém sob cuidado",
+      "tone_register": "formal confiante",
+      "intent": "afirmar que Yuuri ficará bem sob os cuidados do amado",
       "risk_level": "high",
-      "base_translation": "Deveria ficar bem, deixado em seu cuidado.",
+      "base_translation": "Deve ficar bem, sob os cuidados dele.",
       "byte_budget": 42,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Identidade da pessoa cuidada pode estar oculta; preservar generalidade (não revelar gênero via concordância português)"
+      "risk_notes": "Yuuri está disfarçada de homem neste ponto — 'deixada' anteciparia o reveal; usar construção neutra; budget 42 transliterado"
     },
     {
       "offset": "0xddf09",
@@ -7155,8 +7155,8 @@
     }
   ],
   "total_lines": 447,
-  "high_lines": 57,
-  "medium_lines": 62,
+  "high_lines": 49,
+  "medium_lines": 68,
   "needs_review": [],
   "plan_version": "chapter-16_02-v1"
 }

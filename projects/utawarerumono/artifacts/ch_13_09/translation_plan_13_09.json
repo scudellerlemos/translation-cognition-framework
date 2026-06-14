@@ -520,14 +520,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico/pomposo",
-      "intent": "Validar o nervosismo de Rulutieh — até o Mikado o louva",
-      "risk_level": "high",
-      "base_translation": "Por fé, o tremor de milady Rulutieh tem razão,\\n",
+      "tone_register": "erudito arcaico, solene",
+      "intent": "justificar o nervosismo de Rulutieh ante a presença de Oshtor",
+      "risk_level": "medium",
+      "base_translation": "Por fé, o tremor de milady Rulutieh à sua presença\\n",
       "byte_budget": 52,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Spoiler: Mikado mencionado apenas como soberano distante; arcaísmo mantido"
+      "risk_notes": "arcaísmo Maroro preservado; budget apertado (52 bytes transliterado); 'à sua presença' cobre 'at his presence'"
     },
     {
       "offset": "0x7a0ba",
@@ -2520,14 +2520,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "arcaico/desesperado",
-      "intent": "Negar — pedir que digam que é mentira",
+      "tone_register": "erudito-arcaico, melodramático, desesperado",
+      "intent": "Maroro em negação, implorando que os outros digam que é mentira — comédia de desespero",
       "risk_level": "high",
-      "base_translation": "N-Não! Não me digais isso. Digam que é mentira...",
+      "base_translation": "N-Não! Não me digais isso. Dizei que é mentira...",
       "byte_budget": 49,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Arcaísmo; desespero melodramático de Maroro"
+      "risk_notes": "Consistência de vós/vós: 'digais' e 'dizei' devem ambos usar forma arcaica de vós; sem mistura com 'vocês/digam'."
     },
     {
       "offset": "0x7b370",
@@ -3379,8 +3379,8 @@
     }
   ],
   "total_lines": 211,
-  "high_lines": 42,
-  "medium_lines": 10,
+  "high_lines": 41,
+  "medium_lines": 11,
   "needs_review": [],
   "plan_version": "chapter-13_09-v1"
 }

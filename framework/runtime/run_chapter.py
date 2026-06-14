@@ -25,6 +25,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 import run_scene as RS  # noqa: E402
 import cost_report     # noqa: E402
 import model as M      # noqa: E402
@@ -35,13 +36,13 @@ _DONE = ("verified",)                  # estados que contam como "ja feito" (ski
 
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
-    art = root / "artifacts"
+    art = paths.artifacts(root)
     names = [p.parent.name for p in art.glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=context_pack.scene_id_of)
 
 
 def _verified(root: Path, scene: str) -> bool:
-    p = root / "artifacts" / "run_state.json"
+    p = paths.run_state(root)
     if not p.is_file():
         return False
     st = json.loads(p.read_text(encoding="utf-8")).get("scenes", {}).get(scene, {})

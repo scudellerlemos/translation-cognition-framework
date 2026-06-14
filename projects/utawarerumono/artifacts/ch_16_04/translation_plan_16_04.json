@@ -88,14 +88,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "enigmático, frio, ameaçador",
-      "intent": "acusação ambígua em situação de sonho/ilusão",
-      "risk_level": "high",
-      "base_translation": "acusações falsas no MFEU sonho.",
+      "tone_register": "enigmático, ambíguo, frio",
+      "intent": "Acusar Haku de fazer falsas acusações, com ironia dúbia",
+      "risk_level": "medium",
+      "base_translation": "acusações falsas no MEU sonho.",
       "byte_budget": 30,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Contexto: acusações falsas / mundo onírico — preservar incerteza sem deixar óbvio"
+      "risk_notes": "Typo corrigido: 'MFEU' -> 'MEU'. Budget apertado (30 bytes transliterado)."
     },
     {
       "offset": "0xe5356",
@@ -168,14 +168,14 @@
       "entities_present": [
         "Maroro"
       ],
-      "tone_register": "erudito cômico, pomposo, arcaico; cício (s→sh)",
-      "intent": "reclamação melodramática com empolação arcaica",
-      "risk_level": "high",
-      "base_translation": "Por que você foi atrás daquele sujeito e não de mimm!?",
+      "tone_register": "erudito cômico, melodramático",
+      "intent": "indignação cômica por não ser o alvo",
+      "risk_level": "medium",
+      "base_translation": "Por que foi atrás dele e não de mim!?",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Manter cício/arcaísmo (piada crítica); 'esse cara em vez de mim' deve soar pomposo e frágil"
+      "risk_notes": "Encurtado para caber em 45 bytes transliterados. Erro de digitação 'mimm' corrigido."
     },
     {
       "offset": "0xe541c",
@@ -419,8 +419,8 @@
     }
   ],
   "total_lines": 26,
-  "high_lines": 7,
-  "medium_lines": 7,
+  "high_lines": 5,
+  "medium_lines": 9,
   "needs_review": [],
   "plan_version": "chapter-16_04-v1"
 }

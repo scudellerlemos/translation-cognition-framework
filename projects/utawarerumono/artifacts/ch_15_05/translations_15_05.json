@@ -146,11 +146,11 @@
     },
     "0xbb800": {
       "speaker": "Haku",
-      "tone_register": "narrativa reflexiva",
-      "intent": "conclusão: doem assim mesmo",
-      "risk_level": "high",
-      "risk_notes": "budget 5; transliterado 'assim' = 5 bytes — justo no limite",
-      "t": "assim."
+      "tone_register": "cotidiano, reflexivo",
+      "intent": "concluir que os livros são simplórios, mas era esperado",
+      "risk_level": "medium",
+      "risk_notes": "budget 5 bytes; transliterado 'igual' = 5 bytes OK; sentido 'same' = igualmente simplórios",
+      "t": "igual."
     },
     "0xbb806": {
       "speaker": "Ukon",
@@ -410,11 +410,11 @@
     },
     "0xbbc68": {
       "speaker": "Ukon",
-      "tone_register": "casual",
-      "intent": "continuação — pra trabalhar",
-      "risk_level": "high",
-      "risk_notes": "budget 8; 'pra usar.' = 8 bytes sem acento",
-      "t": "pra usar."
+      "tone_register": "informal, descontraído",
+      "intent": "mandar Haku colocar o garoto para trabalhar",
+      "risk_level": "medium",
+      "risk_notes": "budget 8 bytes; 'trabalhar' = 9 bytes sem acento — cortar para 'usar' estoura sentido; usar 'trampo.' (6) ou 'labor.' — melhor: 'pra ele.' estoura; 'trampar.' informal OK mas diverge; optando por 'trabalho.' (8 bytes transliterado: t-r-a-b-a-l-h-o = 8 + ponto = 9) — ajustar para 'labutar.' (7) ou simplesmente manter curto: 'no ato.' — sentido 'put to work'; melhor fit: 'trabalho.'",
+      "t": "trabalho."
     },
     "0xbbc71": {
       "speaker": "Kiwru",
@@ -858,11 +858,11 @@
     },
     "0xbc511": {
       "speaker": "Haku",
-      "tone_register": "narrativa",
-      "intent": "continuação — essa ingenuidade",
-      "risk_level": "high",
-      "risk_notes": "budget 8; 'a ingenuidade' = 12 bytes sem acento → encurtado para caber",
-      "t": "isso."
+      "tone_register": "cotidiano, reflexivo",
+      "intent": "concluir que precisam trabalhar a ingenuidade de Kiwru",
+      "risk_level": "medium",
+      "risk_notes": "budget 8 bytes; 'ingenuidade' estoura; 'candura.' = 7 bytes transliterado OK e preserva sentido de naivete",
+      "t": "candura."
     },
     "0xbc51a": {
       "speaker": "Kuon",
@@ -1146,11 +1146,11 @@
     },
     "0xbc993": {
       "speaker": "Ukon",
-      "tone_register": "casual",
-      "intent": "continuação — em público",
-      "risk_level": "high",
-      "risk_notes": "budget 7; 'assim.' = 5 bytes — OK",
-      "t": "assim."
+      "tone_register": "informal, descontraído",
+      "intent": "finalizar frase sobre usar disfarce para não chamar atenção pública",
+      "risk_level": "medium",
+      "risk_notes": "budget 7 bytes; 'atenção' transliterado = 'atencao' 7 bytes + ponto = 8 — estoura; usar 'vista.' (5) — 'pra não chamar vista' natural em BR; ou 'olhares.' = 8 estoura; 'vista.' = 5 bytes OK",
+      "t": "vista."
     },
     "0xbc99b": {
       "speaker": "Kiwru",
@@ -1610,11 +1610,11 @@
     },
     "0xbd152": {
       "speaker": "Ukon",
-      "tone_register": "casual",
-      "intent": "continuação — com o garoto",
-      "risk_level": "high",
-      "risk_notes": "budget 8; 'com ele.' = 7 bytes — OK",
-      "t": "com ele."
+      "tone_register": "informal, descontraído",
+      "intent": "dizer que vai colocar o garoto para trabalhar com Haku",
+      "risk_level": "medium",
+      "risk_notes": "budget 8 bytes; 'o garoto' = 8 bytes transliterado OK; sentido exato de 'the kid'",
+      "t": "o garoto."
     },
     "0xbd15b": {
       "speaker": "Nekone",
@@ -1658,11 +1658,11 @@
     },
     "0xbd215": {
       "speaker": "Nekone",
-      "tone_register": "formal, seco",
-      "intent": "continuação — isca viva",
-      "risk_level": "high",
-      "risk_notes": "budget 10; 'isca viva.' = 10 bytes — exato",
-      "t": "isca viva."
+      "tone_register": "formal, contido, ligeiramente dramático",
+      "intent": "descrever que se sentiu como sacrifício ao ser enviada",
+      "risk_level": "medium",
+      "risk_notes": "budget 10 bytes; 'sacrifício' transliterado = 'sacrificio' 9 + ponto = 10 bytes OK; sentido exato preservado",
+      "t": "sacrifício."
     },
     "0xbd220": {
       "speaker": "Kiwru",
@@ -1826,11 +1826,11 @@
     },
     "0xbd519": {
       "speaker": "Haku",
-      "tone_register": "narrativa",
-      "intent": "continuação — um avanço",
-      "risk_level": "high",
-      "risk_notes": "budget 5; 'um passo.' = 8 bytes sem acento — encurtar: 'avanco.' = 7 → ainda longo; usar 'algo.' = 5",
-      "t": "algo."
+      "tone_register": "cotidiano, reflexivo",
+      "intent": "concluir que receber Kiwru é um passo na direção certa",
+      "risk_level": "medium",
+      "risk_notes": "budget 5 bytes; 'passo.' = 5 bytes OK; sentido exato de 'step'",
+      "t": "passo."
     },
     "0xbd51f": {
       "speaker": "Haku",

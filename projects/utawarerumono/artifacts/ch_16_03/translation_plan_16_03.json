@@ -2454,14 +2454,14 @@
       "entities_present": [
         "Homem"
       ],
-      "tone_register": "frio, sórdido",
-      "intent": "Expressar intenção de aproveitar a situação",
-      "risk_level": "high",
-      "base_translation": "Mas não vou deixar passar um presente tão bom\\n",
+      "tone_register": "ameaçador, lascivo, coloquial",
+      "intent": "dizer que não vai desperdiçar uma oportunidade boa",
+      "risk_level": "medium",
+      "base_translation": "Mas não vou desperdiçar presente assim,\\n",
       "byte_budget": 45,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": "Manter ambiguidade ameaçadora"
+      "risk_notes": "idiom 'gift horse' localizado; manter tom lascivo sem perder a ambiguidade; budget justo"
     },
     {
       "offset": "0xe4065",
@@ -3025,8 +3025,8 @@
     }
   ],
   "total_lines": 189,
-  "high_lines": 20,
-  "medium_lines": 22,
+  "high_lines": 19,
+  "medium_lines": 23,
   "needs_review": [],
   "plan_version": "chapter-16_03-v1"
 }
