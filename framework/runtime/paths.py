@@ -43,6 +43,7 @@ def spoiler_ledger(root) -> Path:   return artifacts(root) / "spoiler_ledger.jso
 def tone_analysis(root) -> Path:    return artifacts(root) / "tone_analysis.md"
 def decision_log(root) -> Path:     return artifacts(root) / "decision_log.md"
 def kb_worklist(root, chap) -> Path:    return artifacts(root) / f"kb_phase_worklist_{chap}.md"
+def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.csv"
 
 
 # ---- estado duravel destilado (artifacts/state/) ----
