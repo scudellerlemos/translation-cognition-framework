@@ -13,10 +13,13 @@ Esta ferramenta aplica um lote de correcoes find->replace nos artefatos de tradu
     IA PROPOE (gera/edita o CSV) -> humano/gate APROVA -> este script APLICA. Sem work-text no .py.
   - Match por LIMITE DE PALAVRA por padrao (nao corrompe substring: 'Ukon' nao casa dentro de outra
     palavra). `mode=literal` no CSV desliga a borda p/ casos com pontuacao/espaco.
-  - Corrige OS DOIS artefatos coerentes: `translations_<id>.json` (campo `t`, o que o reinsert usa) E
-    `translation_plan_<id>.json` (campo `base_translation`, fonte da TM). Corrigir so um reintroduziria
-    o drift no proximo rebuild da TM.
+  - Corrige OS TRES artefatos coerentes: `translations_<id>.json` (campo `t`, fonte de verdade),
+    `translation_plan_<id>.json` (campo `base_translation`, fonte da TM) E `approved_<id>.csv` (coluna
+    `text_target`, o que o CONECTOR consome no reinsert). Corrigir so um reintroduziria drift — em
+    especial, esquecer o `approved` deixava a correcao invisivel pro jogo (R3).
   - DRY-RUN por padrao: lista cada (cena, offset, antes->depois) sem gravar. `--apply` grava.
+  - `--check-sync`: GATE de coerencia (sem correcoes) — falha se algum `approved_<id>.csv` divergir do
+    `translations_<id>.json` (qualquer fonte de drift, nao so este script). Use no CI/pre-commit.
 
 CSV de correcoes (cabecalho obrigatorio): colunas `find,replace,note[,mode]`.
   find    = texto pt-BR a substituir (ex.: nome/termo errado)   replace = texto correto
@@ -95,6 +98,8 @@ def plan(root, corrections, chapter=None) -> list[dict]:
         # translation_plan_<id>.json: lines = [{offset, base_translation, ...}]
         pf = paths.translation_plan(root, scene, sid)
         _collect(hits, pf, scene, sid, "plan", "base_translation", _iter_plan, compiled)
+        # approved_<id>.csv: linhas (offset,text_target) — o que o conector reinsere (R3)
+        _collect_approved(hits, paths.approved(root, scene, sid), scene, sid, compiled)
     return hits
 
 
@@ -110,6 +115,42 @@ def _iter_plan(data):
     for v in (data.get("lines", []) or []):
         if isinstance(v, dict):
             yield v.get("offset", ""), v
+
+
+def _read_approved(path: Path) -> list[dict]:
+    """Le approved_<id>.csv -> [{offset, text_target}] preservando ordem. [] se ausente/ilegivel."""
+    if not path.is_file():
+        return []
+    try:
+        with path.open(encoding="utf-8", newline="") as fh:
+            return list(csv.DictReader(fh))
+    except OSError:
+        return []
+
+
+def _write_approved(path: Path, rows: list[dict]) -> None:
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["offset", "text_target"])
+        w.writerows([(r.get("offset", ""), r.get("text_target", "")) for r in rows])
+
+
+def _collect_approved(hits, path, scene, sid, compiled):
+    """Coleta hits (dry-run) na coluna text_target do approved_<id>.csv."""
+    for r in _read_approved(path):
+        before = r.get("text_target", "")
+        if not before:
+            continue
+        after, applied = before, None
+        for c, rx, repl in compiled:
+            new, n = rx.subn(repl, after)
+            if n:
+                after, applied = new, c
+        if after != before and applied is not None:
+            hits.append({"scene": scene, "scene_id": sid, "artifact": "approved",
+                         "offset": r.get("offset", ""), "field": "text_target",
+                         "before": before, "after": after, "find": applied["find"],
+                         "replace": applied["replace"], "note": applied["note"]})
 
 
 def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
@@ -168,17 +209,78 @@ def apply(root, corrections, chapter=None) -> dict:
             if changed:
                 path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
                 files_changed += 1
+        # approved_<id>.csv (CSV, coluna text_target) — terceiro artefato coerente (R3)
+        ap = paths.approved(root, scene, sid)
+        rows = _read_approved(ap)
+        if rows:
+            changed = False
+            for r in rows:
+                before = r.get("text_target", "")
+                if not before:
+                    continue
+                after, n = _apply_text(before, [(rx, repl) for _, rx, repl in compiled])
+                if n:
+                    r["text_target"] = after
+                    repl_count += n
+                    changed = True
+            if changed:
+                _write_approved(ap, rows)
+                files_changed += 1
     return {"files": files_changed, "replacements": repl_count, "hits": hits}
+
+
+def sync_mismatches(root, chapter=None) -> list[dict]:
+    """GATE de coerencia (R3): para cada cena, compara approved_<id>.csv (text_target) com
+    translations_<id>.json (campo t) por offset. Retorna divergencias — qualquer fonte de drift,
+    nao so o tm_correct. Lista vazia = approved e projecao fiel de translations."""
+    root = Path(root)
+    out = []
+    for scene in artifact_io.scenes(root, chapter):
+        sid = context_pack.scene_id_of(scene)
+        tmap = {o: (v.get("t", "") if isinstance(v, dict) else "")
+                for o, v in artifact_io.translations_map(root, scene).items()}
+        rows = _read_approved(paths.approved(root, scene, sid))
+        if not rows:
+            continue
+        for r in rows:
+            off = r.get("offset", "")
+            appr = r.get("text_target", "")
+            if off not in tmap:
+                out.append({"scene": scene, "offset": off, "reason": "offset so no approved",
+                            "approved": appr, "translations": None})
+            elif tmap[off] != appr:
+                out.append({"scene": scene, "offset": off, "reason": "texto divergente",
+                            "approved": appr, "translations": tmap[off]})
+    return out
 
 
 def main():
     ap = argparse.ArgumentParser(description="Correcao governada cross-capitulo (dados propoem; script aplica).")
     ap.add_argument("project")
-    ap.add_argument("corrections", help="CSV de correcoes: find,replace,note[,mode]")
+    ap.add_argument("corrections", nargs="?", help="CSV de correcoes: find,replace,note[,mode]")
     ap.add_argument("--chapter", default=None, help="restringe a um capitulo (ex.: 19); default: todos")
     ap.add_argument("--apply", action="store_true", help="grava em disco (default: dry-run)")
+    ap.add_argument("--check-sync", action="store_true",
+                    help="GATE: falha (exit 1) se approved_<id>.csv divergir de translations_<id>.json")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
+
+    if a.check_sync:                                    # gate de coerencia (R3) — nao precisa de CSV
+        mm = sync_mismatches(a.project, a.chapter)
+        if a.json:
+            print(json.dumps(mm, ensure_ascii=False, indent=2))
+        elif not mm:
+            print("SYNC OK: approved_<id>.csv coerente com translations_<id>.json em todas as cenas.")
+        else:
+            print(f"SYNC FALHOU: {len(mm)} divergencia(s) approved x translations:")
+            for m in mm[:30]:
+                print(f"  {m['scene']} {m['offset']} [{m['reason']}]: "
+                      f"approved={m['approved']!r} translations={m['translations']!r}")
+        sys.exit(1 if mm else 0)
+
+    if not a.corrections:
+        print("Faltou o CSV de correcoes (ou use --check-sync).")
+        sys.exit(2)
     corr = load_corrections(a.corrections)
     if not corr:
         print("Nenhuma correcao valida no CSV (precisa de colunas find,replace).")
