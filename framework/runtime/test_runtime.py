@@ -245,6 +245,7 @@ def test_paths_contract():
     assert rel(paths.translations(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translations_16_01.json"
     assert rel(paths.translation_plan(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translation_plan_16_01.json"
     assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/back_translation_16_01.json"
+    assert rel(paths.approved(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/approved_16_01.csv"
 
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
@@ -1060,6 +1061,38 @@ def test_tm_correct_literal_mode(tmp_path):
     assert "ver 2.0 aqui" in paths.translations(tmp_path, "ch_31_01", "31_01").read_text("utf-8")
 
 
+def test_tm_correct_keeps_approved_coherent(tmp_path):
+    # R3: tm_correct corrige os TRES artefatos — translations, plan E approved_<id>.csv. Esquecer o
+    # approved deixava a correcao invisivel pro conector/jogo.
+    import paths
+    d = tmp_path / "artifacts" / "ch_30_02"; d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_30_02", "30_02").write_text(
+        _trans({"0x1": {"t": "Ola, Ukon!"}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_30_02", "30_02").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "base_translation": "Ola, Ukon!"}]}), encoding="utf-8")
+    paths.approved(tmp_path, "ch_30_02", "30_02").write_text(
+        'offset,text_target\n0x1,"Ola, Ukon!"\n', encoding="utf-8")
+    csvp = tmp_path / "c.csv"; csvp.write_text("find,replace,note\nUkon,Oshtor,nome\n", encoding="utf-8")
+    corr = tm_correct.load_corrections(csvp)
+    hits = tm_correct.plan(tmp_path, corr)
+    assert ("approved", "0x1") in {(h["artifact"], h["offset"]) for h in hits}   # dry-run ve o approved
+    tm_correct.apply(tmp_path, corr)
+    assert "Oshtor" in paths.approved(tmp_path, "ch_30_02", "30_02").read_text("utf-8")
+    assert tm_correct.sync_mismatches(tmp_path) == []                            # coerente apos aplicar
+
+
+def test_tm_correct_sync_gate_detects_drift(tmp_path):
+    # R3 gate: approved divergente de translations e detectado.
+    import paths
+    d = tmp_path / "artifacts" / "ch_30_03"; d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_30_03", "30_03").write_text(
+        _trans({"0x1": {"t": "novo texto"}}), encoding="utf-8")
+    paths.approved(tmp_path, "ch_30_03", "30_03").write_text(
+        "offset,text_target\n0x1,texto antigo\n", encoding="utf-8")          # STALE de proposito
+    mm = tm_correct.sync_mismatches(tmp_path)
+    assert len(mm) == 1 and mm[0]["offset"] == "0x1" and mm[0]["reason"] == "texto divergente"
+
+
 # ----------------- piso de qualidade do tier barato (risco #1) ----------------
 
 def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
@@ -1076,6 +1109,28 @@ def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
     # candidatos = high ∪ amostra, dedup
     cands = {x["offset"] for x in model.back_translate_candidates(tmp_path, "ch_88_01", 0.05)}
     assert "0xH" in cands and cands.issuperset({x["offset"] for x in s1})
+
+
+def test_label_passthrough_blocks_engine_labels_not_dialogue():
+    # R-CUSTO: rótulo de engine (rig/asset) vira passthrough (t=fonte), fora do lote do LLM -> não
+    # estoura budget -> sem retighten (a maior fonte de re-tradução = 58% do custo).
+    pack = {"lines": [
+        {"offset": "0x1", "source": "Eu vou te encontrar.", "byte_budget": 40},  # diálogo
+        {"offset": "0x2", "source": "ch120_01", "byte_budget": 10},              # id estrito
+        {"offset": "0x3", "source": "body", "byte_budget": 6},                   # rig (minúsculo, no bloco)
+        {"offset": "0x4", "source": "face", "byte_budget": 6},
+        {"offset": "0x5", "source": "mask", "byte_budget": 6},
+        {"offset": "0x6", "source": "Sim", "byte_budget": 6},                    # diálogo capitalizado -> FICA
+        {"offset": "0x7", "source": "Leg_2_B_L", "byte_budget": 12},             # id estrito (snake)
+    ]}
+    pt = model._label_passthrough(pack)
+    assert set(pt) == {"0x2", "0x3", "0x4", "0x5", "0x7"}      # bloco de rig
+    assert "0x1" not in pt and "0x6" not in pt                 # diálogo (frase e palavra capitalizada) intactos
+    assert pt["0x3"]["t"] == "body"                            # passthrough = fonte
+    # palavra única solta SEM vizinho identificador não é varrida
+    lone = {"lines": [{"offset": "0xA", "source": "Casa", "byte_budget": 6},
+                      {"offset": "0xB", "source": "Sim", "byte_budget": 6}]}
+    assert model._label_passthrough(lone) == {}
 
 
 def test_quality_gate_coverage_and_export(tmp_path):

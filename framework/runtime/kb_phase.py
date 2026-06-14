@@ -74,6 +74,9 @@ wait cheers ooh thou fate game perfect sisters mmmmm damn mayhap methinks barkee
 urgh unhand regardless understood pardon oohh failure preposterous highness guardian
 it'll what're nah remember puffs expecting inform
 dammit sounds hahahaha hip it'd boys
+hahaha hyahahahahaha ahhhh ahhh khakakakakakaka hurry combat tutorial glossary soldier soldiers
+leftleg rightleg leftfoot rightfoot reporting messenger adviser advisers commander vanguard
+young she'd c'mon hmmm pretty smells
 hand hands eye eyes face heart head room door water fire light dark good great
 mister miss missus sir lord lady master mom dad mother father brother sister son daughter missy
 don't won't can't cant didn't doesn't isn't aren't wasn't weren't haven't hasn't hadn't wouldn't couldn't
