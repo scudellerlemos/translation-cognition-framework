@@ -77,6 +77,29 @@ flowchart LR
 
 ---
 
+## Os três pilares (para quem chega hoje)
+
+Se você nunca viu este projeto, comece por aqui. Tudo se apoia em três ideias:
+
+| Pilar | A versão simples | A versão técnica |
+|---|---|---|
+| **Arquitetura** | Cada cena do jogo é traduzida sozinha, numa "caixa" que não cresce com o tamanho do jogo. | Cena = job *stateless* O(cena); estado externalizado em flat-files; a IA é uma fronteira fina e isolada. → [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) |
+| **Engenharia** | A IA só **traduz**. Todo o resto (ler o binário, montar contexto, verificar, somar custo) é código comum e previsível. | 2 papéis de IA (`translate`/`back_translate`); ~23 módulos determinísticos; Batch −50%, tiering, dedup por TM. → [`runtime/README.md`](framework/runtime/README.md) |
+| **Governança** | A IA **propõe**, gates **aprovam**, um script **aplica**. O humano tem a palavra final. | Round-trip byte-idêntico + back-translation + fonte de KB + spoiler; binário read-only; ledger de todo gasto. → [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) |
+
+```mermaid
+flowchart LR
+  ia{{"IA<br/>propõe"}} --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
+  human["humano<br/>(palavra final)"] -.->|revisa & ratifica| gate
+  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
+  class ia ia;
+```
+
+> A governança contada com desenhos (o laço propõe→aprova→aplica, a pilha de gates, o gate de fonte de
+> KB e o loop humano/TM) está em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
+
+---
+
 ## Começar
 
 1. Leia [`framework/README.md`](framework/README.md) — modelo de camadas e como instanciar um projeto.
@@ -94,19 +117,24 @@ verifica capítulos inteiros de forma sustentável, em Sonnet, a custo medido.
 
 - **Processo (skills 00–08):** maduro.
 - **Harness de escala (`framework/runtime/`):** ✅ em produção. Cena = job stateless O(cena) → **estouro
-  de sessão eliminado**. **Caps 11, 12 e 13 traduzidos e verificados ponta-a-ponta** (round-trip
-  byte-idêntico + back-translation) — cap.12 **16/16** cenas, cap.13 **9/9 via Batch API**.
-- **Custo sob controle:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
-  **~$36/jogo** no setting econômico. Batch API **−50%** comprovado vivo; tiering Haiku/Sonnet, dedup por
-  TM e escalonamento cirúrgico codados. Telemetria de gasto-verdade (`api_ledger.jsonl` + `cost_report.py`).
-- **Cognição cabeada:** gate de KB + **driver de Fase 0** (`kb_phase.py`); **controle de spoiler** por
-  ledger + filtro temporal (comprovado no reveal Ukon=Oshtor em `ch_13_08`).
+  de sessão eliminado**. **Caps 11–19 traduzidos e verificados ponta-a-ponta** (round-trip byte-idêntico
+  + back-translation de alto risco) — **77 cenas**. Caps 20–23, 30, 31 e 39 já **extraídos**, aguardando
+  tradução (~2ª metade do jogo).
+- **Custo sob controle:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro). Gasto
+  real acumulado até aqui: **~$43,5** (Sonnet $36,7 · Haiku $3,6 · Opus $3,2), **$0 desperdiçado** —
+  medido pelo `api_ledger.jsonl`. Batch API **−50%** comprovado vivo; tiering Haiku/Sonnet, dedup por TM,
+  escalonamento cirúrgico e **teto uniforme `--max-usd`** codados.
+- **Cognição cabeada:** **gate de fonte de KB** (`kb_review.py` + `kb_phase.py` — entidade nova sem fonte
+  declarada BLOQUEIA; `--strict` exige ratificação humana); **controle de spoiler/gênero** por ledger +
+  filtro temporal (comprovado no reveal Ukon=Oshtor em `ch_13_08`).
+- **Qualidade humana no loop:** revisão única por **XLSX amigável** (`quality_review.py`) → aplicação
+  **verbatim ($0)** ou nota cirúrgica; **TM como coração** (jogo nunca é re-traduzido inteiro após o QA).
 - **Jogo real (conector `hex_binary`):** ✅ validado **in-game** — ponteiro file-relativo, relocação
   intra-arquivo + reescrita da tabela Pack, transliteração de charset; pt-BR renderiza na tela do jogo.
-- **Qualidade travada:** 58 testes (42 runtime + 16 conector), determinismo/idempotência e um guard que
-  barra texto da obra hardcoded em `.py`.
-- **Pendente:** completar a 2ª metade do jogo (estratégia incremental por capítulo no
-  [`ROADMAP.md`](ROADMAP.md)) + pós-produção (build jogável, QA in-game, release).
+- **Qualidade travada:** **84 testes** (68 runtime + 16 conector), determinismo/idempotência e um guard
+  que barra texto da obra hardcoded em `.py`.
+- **Pendente:** traduzir a 2ª metade (caps 20+, estratégia incremental no [`ROADMAP.md`](ROADMAP.md)) +
+  pós-produção (build jogável, QA in-game completo, release).
 - **Filmes / séries:** pontos de extensão documentados (`framework/media-profiles/`), ainda não validados.
 
 ## Conquistas & design — por que isto é diferente
@@ -118,8 +146,9 @@ mérito está em escolhas de engenharia que se sustentam:
   determinístico dá **custo previsível, resultado reprodutível e escala** que não depende da memória do chat.
 - **Estado externalizado.** Consistência vem de TM + glossário + voice cards + decision log versionados —
   não da janela. Sem banco, sem embeddings, sem 2º serviço pago (só a API Anthropic).
-- **Governança explícita.** IA **propõe** → gates **aprovam** (round-trip + back-translation + lint) →
-  script **aplica**. Binário read-only; nenhuma tradução escrita à mão dentro dos dados.
+- **Governança explícita.** IA **propõe** → gates **aprovam** (round-trip + back-translation + lint +
+  fonte de KB) → script **aplica**. Binário read-only; nenhuma tradução escrita à mão dentro dos dados.
+  Contada com desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 - **Anti-overengineering deliberado.** Orquestrador determinístico + 2 papéis de IA é a granularidade
   certa — sem multiagentes, sem indireção que não paga o próprio custo (ver ADRs).
 - **Honestidade operacional.** O ledger conta cada centavo cobrado (mesmo em falha); os gates barram

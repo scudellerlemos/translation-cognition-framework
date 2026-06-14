@@ -5,24 +5,34 @@ Este é o projeto de localização que originou o framework. Serve como **refer�
 
 ---
 
-## Estado: harness de escala em produção — **caps 11–13 verificados** ✅
+## Estado: harness de escala em produção — **caps 11–19 verificados** ✅ (1ª metade do jogo)
 
 O projeto evoluiu de "valida em 2 cenas" para **tradução em escala pelo harness stateless**
 (`framework/runtime/`). Cada cena roda como um **job isolado** (contexto O(cena)) via API headless; o
-chat só lança o driver de capítulo e lê o resumo. Caps **11, 12 e 13** estão **traduzidos e verificados
-ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco):
+chat só lança o driver de capítulo e lê o resumo. **Caps 11 a 19** estão **traduzidos e verificados
+ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco) — **77 cenas**:
 
-| Capítulo | Cenas | Como | Status |
-|---|---|---|---|
-| **11** | `11_01`…`11_11` | API por cena | ✅ verificado |
-| **12** | 16 cenas | API por cena (pipeline endurecido, ~2.300 linhas) | ✅ **16/16** |
-| **13** | 9 cenas | **Batch API −50%** (resume idempotente) | ✅ **9/9** |
+| Capítulo | Cenas | Status |
+|---|---|---|
+| **11** | 11 | ✅ verificado |
+| **12** | 16 | ✅ verificado |
+| **13** | 9 | ✅ verificado (Batch API −50%) |
+| **14** | 9 | ✅ verificado |
+| **15** | 9 | ✅ verificado |
+| **16** | 5 | ✅ verificado |
+| **17** | 5 | ✅ verificado |
+| **18** | 5 | ✅ verificado |
+| **19** | 8 | ✅ verificado |
+| 20–23, 30, 31, 39 | — | 🟡 extraídos, aguardando tradução (2ª metade) |
 
-Alavancas de custo/qualidade comprovadas ou codadas no caminho de escala: **Sonnet aprovado** por
-benchmark (nível Opus-à-mão), **~$36/jogo** econômico; **Batch −50%** vivo; **tiering** Haiku/Sonnet por
-complexidade; **dedup por TM**; **escalonamento cirúrgico** de fitting; **back-translation em batch**;
-**telemetria de gasto-verdade** (`api_ledger.jsonl` + `cost_report.py`); **controle de spoiler** por
-ledger temporal (reveal Ukon=Oshtor em `ch_13_08`); **gate de KB** + **driver de Fase 0** (`kb_phase.py`).
+Gasto real acumulado: **~$43,5** (Sonnet $36,7 · Haiku $3,6 · Opus $3,2), **$0 desperdiçado** (medido
+pelo `api_ledger.jsonl`). Alavancas comprovadas/codadas no caminho de escala: **Sonnet aprovado** por
+benchmark (nível Opus-à-mão); **Batch −50%** vivo; **tiering** Haiku/Sonnet/Opus por complexidade;
+**dedup por TM**; **escalonamento cirúrgico** de fitting; **back-translation em batch** (+ amostragem
+~5%); **teto `--max-usd`**; **controle de spoiler/gênero** por ledger temporal (reveal Ukon=Oshtor em
+`ch_13_08`); **gate de fonte de KB** (`kb_review.py` + `kb_phase.py`); **revisão humana via XLSX** com
+**TM como coração** (o jogo não é re-traduzido inteiro após o QA). Governança com desenhos:
+[`../../framework/docs/GOVERNANCE.md`](../../framework/docs/GOVERNANCE.md).
 
 ### Marco anterior — validação in-game do conector ✅ (1025 linhas, cap. 11_01/02)
 
