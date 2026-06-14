@@ -1171,12 +1171,20 @@ def test_kb_review_digest_flags(tmp_path):
         "Shichirya,Personagem,,minor,medium,\"(cap.19) escudeiro; MASCULINO a confirmar\"\n", encoding="utf-8")
     paths.research_log(tmp_path).write_text(
         "# Research Log\n\n## cap.19 — delta\n- **Magecraft**: arte magica.\n", encoding="utf-8")
+    paths.kb_ratified(tmp_path).write_text("name\nMagecraft\n", encoding="utf-8")   # humano ratificou Magecraft
     items = kb_review.digest(tmp_path, "19")
     names = {i["name"]: i for i in items}
     assert "Velho" not in names                                  # outro capitulo, não entra
-    assert names["Magecraft"]["in_research"] and names["Magecraft"]["flags"] == []  # tem fonte
+    assert names["Magecraft"]["in_research"] and names["Magecraft"]["flags"] == []  # tem fonte + ratificado
     assert "sem fonte declarada" in names["Shichirya"]["flags"]  # não citado na seção
     assert "genero a confirmar" in names["Shichirya"]["flags"]
+    assert "nao ratificado" in names["Shichirya"]["flags"]       # não está no kb_ratified
+    # gate: fonte bloqueia SEMPRE (Shichirya sem fonte); Magecraft passa
+    blk = {i["name"] for i in kb_review.blocking(tmp_path, "19")}
+    assert blk == {"Shichirya"}
+    # strict tambem exigiria ratificacao -> Magecraft segue ok (ratificado), Shichirya bloqueia
+    blk_s = {i["name"] for i in kb_review.blocking(tmp_path, "19", strict=True)}
+    assert "Shichirya" in blk_s and "Magecraft" not in blk_s
 
 
 def test_blowup_guard_drops_pathological_line():

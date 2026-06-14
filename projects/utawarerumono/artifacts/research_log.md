@@ -120,3 +120,17 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus (dialogs cap.19). Reconciliacao auto
 - **Magecraft / High Magecraft**: arte magica secreta -> 'Magia' / 'Alta Magia' (traduzir).
 - **Nosuri Bandits / Nosuri Thieves**: bando que usa o nome Nosuri (etnia coberta) -> 'Bandidos Nosuri' / 'Ladroes Nosuri' (traduzir o substantivo, manter Nosuri).
 - Declinados (ruido/comum/interjeicao/contracao/UI/pontual): Dammit, Sounds, Chains (parte de 'Kamunagi of Chains'), Hahahaha, Hip (hip hooray), It'd, Boys, Forgot, Hear, Kind, Brigand Zzz, Caretaker Ey, Combat Tutorial (UI), Dessert Mountain, Guests Huzzah, Ignoring/Killing Moznu (Moznu coberto), 'Priestess Lady Honoka--her' (Honoka coberta).
+
+## Genero — auditoria de spoiler e resolucao de "a confirmar" (reconciliado IA+wiki, 2026-06-13)
+Fonte: Utawarerumono Wiki (Fandom) + corpus. Mata o risco "gender_quarantine inativo": pesquisa em vez de escuro.
+- **Gender-spoiler na faixa traduzida (caps 11-19): NENHUM confirmado.** O unico twist de identidade e
+  **Haku assumindo a mascara/identidade de Oshtor** — isso e IDENTIDADE (ja coberto no spoiler_ledger
+  `oshtor_mask_twist`/`ukon_identity`), nao genero. Logo `gender_quarantine` permanece DORMENTE por estar
+  CORRETO (nao ha caso), nao por lacuna. O mecanismo (spoiler_check.check_gender) segue pronto p/ quando
+  um caso real surgir (capitulos adiante / outro jogo).
+- **Shichirya**: MASCULINO (wiki — tenente de Raiko). Nuance: traveste-se de garota em ocasioes; em cena
+  de DISFARCE a traducao deve seguir a apresentacao da cena (nao "corrigir" o genero do disfarce).
+- **Honoka**: FEMININO (wiki+corpus cap.19 — Alta Sacerdotisa, mae de Uruuru & Saraana). Resolve o
+  "a confirmar" do cap.18 (la aparecia so como criada).
+- **Ainda 'a confirmar'** (wiki nao cobre; corpus-only; ficam flagrados no `kb_review --strict` p/
+  ratificacao humana, NAO chuto): Miruhj, Raurau, Mito (cap.18); Chalafun, Bokoinante (cap.17).
