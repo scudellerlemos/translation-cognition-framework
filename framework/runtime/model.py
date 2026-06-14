@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 import unicodedata
@@ -185,6 +186,43 @@ def _is_blowup(source, t) -> bool:
     return _translit_len(t) > max(_translit_len(source or "") * _BLOWUP_FACTOR, _BLOWUP_FLOOR)
 
 
+# RÓTULO DE ENGINE (R-CUSTO): identificadores internos de rig/asset que NAO sao dialogo — body, face,
+# hair, mask, Leg_2_B_L, ch120_01, env_bone, lightA02. O LLM os TRADUZIA, estourava o byte_budget e
+# disparava o retighten (re-traducao = 58% do custo medido no ledger). Solucao: PASSTHROUGH
+# deterministico (t = fonte), fora do lote do LLM. Detecta BLOCO de rotulos = corrida de linhas de
+# "token unico" (sem espaco) com >=1 identificador ESTRITO (snake_case/CamelCase/alfanumerico); a
+# palavra solta de dialogo (sem vizinho identificador) NAO e afetada. Determinista, $0, testavel.
+_TOKISH = re.compile(r"[A-Za-z][\w]*\Z")
+_STRICT_ID = re.compile(r"[A-Za-z]\w*_\w+\Z|[A-Za-z]+\d\w*\Z|[A-Z][a-z]+(?:[A-Z][a-z]+)+\Z")
+
+
+def _is_tokish(s: str) -> bool:
+    s = (s or "").strip()
+    return bool(s) and len(s) <= 16 and bool(_TOKISH.match(s))
+
+
+def _label_passthrough(pack) -> dict:
+    """Mapa {offset: entry} das linhas que sao rotulo de engine (t = fonte, sem ir ao LLM)."""
+    lines = pack.get("lines", [])
+    out, i, n = {}, 0, len(lines)
+    while i < n:
+        if not _is_tokish(lines[i].get("source", "")):
+            i += 1
+            continue
+        j = i
+        while j < n and _is_tokish(lines[j].get("source", "")):
+            j += 1
+        run = lines[i:j]                                   # corrida de tokens unicos consecutivos
+        if any(_STRICT_ID.match((r.get("source", "") or "").strip()) for r in run):
+            for r in run:                                  # bloco de rig: passthrough so identificador
+                s = (r.get("source", "") or "").strip()    # estrito OU minusculo (body/face/mask/env_bone).
+                if _STRICT_ID.match(s) or s.islower():      # palavra capitalizada (dialogo 'Sim'/'OK') FICA.
+                    out[r["offset"]] = {"speaker": "", "tone_register": "", "intent": "rotulo_engine",
+                                        "risk_level": "low", "risk_notes": "", "t": r.get("source", "") or ""}
+        i = j
+    return out
+
+
 def _select_reuse(pack, *, enabled):
     """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
     em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
@@ -244,6 +282,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
     # linhas com fonte ja traduzida em OUTRA cena nao vao ao modelo (corta tokens de saida).
     reuse = _select_reuse(pack, enabled=(budget_tolerance is None))
+    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough SEMPRE (ate no retighten)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
     if not novel:                                     # cena 100% reaproveitada -> zero chamada de API
@@ -415,6 +454,7 @@ def _translate_params(pack, model, note=""):
     (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
     `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
     reuse = _select_reuse(pack, enabled=True)
+    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough (fora do lote do LLM)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
