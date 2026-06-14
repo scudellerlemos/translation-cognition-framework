@@ -8,19 +8,22 @@
 
 ## Onde estamos (maturidade)
 
+> Atualizado: 2026-06-13.
+
 | Camada | Status |
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Perfil de jogos | 🟢 validado |
-| Instância Utawarerumono | 🟢 pipeline 00→08 em **2 cenas / 1025 linhas**, **validado in-game** (Plano B ✅); **resíduo T4=0**; QA de naturalidade/interjeições aplicada |
-| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **pytest** (9 testes) |
+| Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); 68 testes |
+| Instância Utawarerumono | 🟢 **caps 11–19 traduzidos e verificados** (77 cenas; round-trip + back-translation), **validado in-game**; **~$43,5 gastos, $0 desperdiçado** |
+| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **pytest** (16 testes) |
 | Perfis filme/série + conector subtitle_file | 🟠/🔴 stub / não iniciado |
 
-**Resumo:** o *processo* está maduro (~92) e a *validação de produção* foi **fechada nas 2 cenas**: o
-**pt-BR renderiza no jogo real** e a relocação **intra-arquivo (Plano B)** foi validada in-game (o
-EOF-append fora reprovado — `@@@@`/trava). O bloqueador de correção ("funciona no jogo?") **acabou**;
-o que resta é **escala** (jogo inteiro, A3) + **economia** (A4/A5) + **qualidade contínua** (naturalidade
-contextual, já incorporada ao processo).
+**Resumo:** o *processo* está maduro (~92) e a *escala* virou produção: a **1ª metade do jogo (caps
+11–19) está traduzida e verificada ponta-a-ponta**, com pt-BR renderizando no jogo real. O bloqueador de
+correção ("funciona no jogo?") acabou há tempos. O que resta é **terminar a 2ª metade** (caps 20–23, 30,
+31, 39 — já extraídos) + **pós-produção** (build jogável, QA in-game completo, release). Governança com
+desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 
 ---
 

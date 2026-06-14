@@ -53,9 +53,12 @@ framework/
   schemas/          ← artifacts_schema.md (outputs) + project_schema.md (manifesto)
   media-profiles/   ← games.md (validado), films.md / series.md (stubs)
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
-  runtime/          ← context_pack, state_index, model, run_scene (harness; cena = job stateless)
+  runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter), contexto
+                       (context_pack), estado (state_index), IA (model + back_translate), KB/spoiler
+                       (kb_review, kb_phase, spoiler_check), qualidade (quality_review/gate/fix,
+                       tm_correct), custo (cost, cost_report) — ~23 módulos. Ver runtime/README.md
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  docs/             ← ARCHITECTURE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
+  docs/             ← ARCHITECTURE, GOVERNANCE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
 
@@ -124,8 +127,8 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado **em produção** (Utawarerumono): harness de escala rodando, caps 11–13
-  traduzidos e verificados, pt-BR renderizando in-game. Ver `media-profiles/games.md`.
+- **Jogos** — ✅ validado **em produção** (Utawarerumono): harness de escala rodando, **caps 11–19
+  traduzidos e verificados** (77 cenas), pt-BR renderizando in-game. Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
 
@@ -137,8 +140,9 @@ Além das skills (o *processo*), `framework/runtime/` é o *harness* que torna a
 cada cena é um **job stateless e limitado** (contexto O(cena), não O(histórico)), o que elimina o
 estouro de sessão e viabiliza Sonnet a custo previsível. A LLM faz só cognição (traduzir / verificar
 alto risco); orquestração, estado, contexto e validação são determinísticos. Ver
-[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) e a convenção
-de nomes em [`docs/NAMING.md`](docs/NAMING.md).
+[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), a governança
+com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de nomes em
+[`docs/NAMING.md`](docs/NAMING.md).
 
 ---
 
@@ -146,5 +150,5 @@ de nomes em [`docs/NAMING.md`](docs/NAMING.md).
 
 `projects/utawarerumono/` é a prova viva de que o processo funciona em um título real e em escala:
 visual novel, EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. **Caps
-11–13 traduzidos e verificados ponta-a-ponta** pelo harness, com saída renderizando no jogo. Use-a como
-exemplo de como preencher manifesto e perfil.
+11–19 traduzidos e verificados ponta-a-ponta** (77 cenas) pelo harness, com saída renderizando no jogo.
+Use-a como exemplo de como preencher manifesto e perfil.
