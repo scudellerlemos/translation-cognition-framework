@@ -1,6 +1,6 @@
 # Roadmap — Translation Cognition Framework (SDD)
 
-> Última atualização: 2026-06-08
+> Última atualização: 2026-06-13
 > Escopo: framework genérico + instância de referência Utawarerumono.
 > O roadmap detalhado de decisões vive em `projects/<título>/artifacts/decision_log.md`.
 
@@ -25,6 +25,30 @@ correção ("funciona no jogo?") acabou há tempos. O que resta é **terminar a 
 31, 39 — já extraídos) + **pós-produção** (build jogável, QA in-game completo, release). Governança com
 desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 
+### Riscos do projeto
+
+Níveis alto / médio / baixo. O que está **sólido** e o que **ainda não está**. (Esta é a fonte única de
+riscos do projeto — o README só aponta para cá.)
+
+**🟢 Sólido (provado em produção):** harness stateless (77 cenas, 9 capítulos) · round-trip
+byte-idêntico in-game · governança propõe→aprova→aplica · custo medido (`$0` desperdiçado) · 100 testes.
+
+| Risco | Nível | O que significa | Mitigação / estado |
+|---|---|---|---|
+| **Validação estreita** | 🔴 Alto | Provado em **1 obra, 1 engine** (`hex_binary`, jogo). Filmes/séries e outros engines são pontos de extensão **não validados** — genérico no papel, não na prática. | Conector é camada isolada; perfis de mídia documentados. |
+| **QA humana em escala** | 🔴 Alto | Qualidade *literária* dos caps 12–19 ainda **não foi lida por humano** — depende de IA + linter + back-translation. O piso de qualidade real está pendente. | `quality_review.py` (XLSX) + TM-coração prontos; falta **executar** a revisão. |
+| **Jogo incompleto / pós-produção** | 🔴 Alto | 2ª metade (caps 20+) em tradução; **build jogável + release não existem** ainda. | Loop incremental/resumível; falta crédito + execução. |
+| **Fechamento global (Fase 3)** | 🟡 Médio | Consistência de glossário cross-capítulo + reinsert do **jogo inteiro** + patch final nunca rodaram ponta-a-ponta — só por capítulo. | Mecânica por-capítulo provada; passe global é território novo. |
+| **Conector em cenas distantes** | 🟡 Médio | Relocação validada in-game nos caps 11–19; saltos grandes (caps 30/39) **não testados na tela**. | Round-trip garante bytes; falta o gate visual. |
+| **KB sem ratificação humana** | 🟢 Baixo *(resolvido 2026-06-14)* | **55 entidades (caps 12–22) ratificadas** por Felipe Scudeller no `kb_ratified.csv`. `--strict` verde nos caps em uso (15,19,20,21,22). Resíduo: caps 12/13 (entidades antigas pré-gate, sem seção no research_log + ruído) e gênero de 2 menores (Chalafun/Bokoinante, corpus-only) — gate bloqueando **corretamente** até confirmar. | Ratificação feita; resíduo é cleanup pré-gate + 2 gêneros a ver in-game. |
+| **Re-tradução (R-CUSTO)** | 🟢 Baixo *(era Alto; raiz atacada 2026-06-14)* | Re-tradução era **58% do gasto** (medido), dominada por fitting-fail→retighten ao traduzir **rótulo de engine** (body/face/mask/`Leg_2_B_L`). | ✅ **Cabeado:** `model._label_passthrough` agora passa rótulos de rig como verbatim (fora do LLM) → sem estouro de budget → sem retighten. +teste. Resta (menor): cap/observabilidade de retighten. |
+| **Custo depende de disciplina** | 🟢 Baixo | Barato (~$0,0016/linha) **se** rodar em batch e 1–2 caps/sessão; tudo ao vivo de uma vez encarece. | Teto `--max-usd` + Batch −50% + dedup por TM. |
+| **Sinais derivados stale** | 🟢 Baixo | Editar tradução pode deixar back-translation/relatórios desatualizados. | Invalidação automática + gate `tm_correct --check-sync`. |
+
+> **Leitura honesta:** os riscos que sobram **não são de arquitetura/engenharia** (maduras) — são de
+> **abrangência** (1 obra/engine), **execução humana** (QA, ratificação) e **conclusão** (terminar +
+> empacotar). Padrão de arquitetura para estudar/reusar: pronto. Produto de tradução acabado: ainda não.
+
 ---
 
 ## Próximos passos
@@ -38,44 +62,51 @@ desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
   - ✅ **Plano B validado in-game** (`--validate-one 0x3442`): "ERRO DE SISTEMA." (que antes era `@@@@`)
     exibiu e o jogo seguiu para a cena seguinte sem travar (`testeplanob.png`, `testeplanob_avanco.png`).
     Relocação intra-arquivo + reescrita do Pack é a estratégia correta. **Run completa liberada.**
-- [x] **A2. Ordem offset × ordem narrativa.** *(resolvido p/ a abertura)* A extração agora segue a
-  **ordem de armazenamento por script** (= narrativa, verificado nas cenas iniciais). Para cenas
-  distantes, validar; se divergir, caminhar o bytecode por ordem de comando. Ver `decision_log.md`.
+- [x] **A2. Ordem offset × ordem narrativa.** ✅ **VALIDADO EM ESCALA.** A extração é determinística:
+  varre cada script linearmente por offset e retorna **em ordem de armazenamento (= ordem de exibição
+  deste engine)** — documentado em `sdat_format.py` (`Retorna [...] em ordem de armazenamento (= ordem
+  narrativa)`). Confirmado não só na abertura, mas em **9 capítulos (11–19, 77 cenas)**: você jogou
+  in-game até o Haku ser nomeado e a back-translation/QA pegaria diálogo embaralhado — nenhuma divergência
+  observada. **Limite arquitetural:** cada cena é job independente O(cena) + round-trip byte-idêntico →
+  uma eventual divergência em cena distante não corrompe bytes; apareceria como contexto incoerente
+  (capturado pela back-translation). Fallback (caminhar o bytecode por ordem de comando) documentado, mas
+  **nunca foi necessário** em 77 cenas. Ver `decision_log.md`.
 
-- [ ] **A3. Estratégia de JOGO INTEIRO (~30k+ linhas) — loop incremental, resumível.**
-  Fazer tudo de uma vez é inviável. Separar o **determinístico** (rápido, automático) do **cognitivo**
-  (gargalo) e fatiar por capítulo. Pré-requisito: **A1 verde**.
-  - **Fase 1 — "Ler o jogo" (barato, sem traduzir):** `SCENES`=todos os 353 scripts → medir o tamanho
-    exato; rodar Discovery+Entity sobre o corpus inteiro **uma vez** → **glossário/entidades GLOBAL**
-    (termos canônicos nascem uma vez e **congelam**) + mapa de tamanho por capítulo.
-  - **Fase 2 — Loop por capítulo (11→39, ~16 caps):** para cada cap.: extrair → Knowledge Building
-    com **fronteira de spoiler que avança** só até o cap. atual → traduzir em **lotes de 200**
-    (`translation_status.json` marca a fronteira → resumível) → micro-QA + `reinsert` + `pytest` →
-    spot-check in-game a cada poucos caps. Ritmo: **1–2 capítulos por sessão**, nunca tudo de uma vez.
-  - **Fase 3 — Fechamento:** passe global de **consistência de glossário** (linter determinístico) →
-    `reinsert` do jogo inteiro + `pytest` + patch IPS final.
-  - **Consistência em escala:** glossário congelado + voice profiles + **handoff de contexto** (últimas
-    N linhas da cena anterior) + fronteira de spoiler móvel.
+- [~] **A3. Estratégia de JOGO INTEIRO (~30k+ linhas) — loop incremental, resumível.** 🟢 **EM
+  PRODUÇÃO — 1ª metade fechada.** O loop incremental virou o **harness de escala** (`framework/runtime/`):
+  cena = job stateless O(cena), resumível por `run_state.json`. **Caps 11–19 traduzidos e verificados**
+  (77 cenas). O que resta é a 2ª metade (caps 20–23, 30, 31, 39, já extraídos) + a Fase 3.
+  - ✅ **Fase 1 — "Ler o jogo":** o corpus foi extraído; o KB/glossário cresce por **fronteira de
+    spoiler móvel** (`kb_phase.py` por capítulo) em vez de um único passe global — funcionalmente
+    equivalente, e mais seguro p/ spoiler (termos canônicos congelam ao entrar na fronteira).
+  - 🟢 **Fase 2 — Loop por capítulo (11→39):** **9 de ~16 capítulos feitos** (11–19) pelo driver
+    `run_chapter.py` (Knowledge Building com fronteira → traduzir → back-translation alto risco →
+    verify round-trip → checkpoint). Resumível; modo `--batch` (−50%) comprovado. Falta 20+.
+  - [ ] **Fase 3 — Fechamento:** passe global de **consistência de glossário** (linter determinístico) →
+    `reinsert` do jogo inteiro + `pytest` + patch IPS final. **Pendente** (depois da 2ª metade).
+  - **Consistência em escala:** glossário congelado + voice cards + TM + fronteira de spoiler móvel —
+    tudo externalizado em flat-files (não na janela). ✅ provado em 77 cenas.
   - **Aceleração opcional:** tradução por cena é paralelizável (glossário/voz congelados) → candidata a
     **workflow multi-agente** (fan-out por cena + passe de consistência). Caminho caro; só sob demanda.
   - Esta é a **prova de produção** do framework. Casa com A4 (custo) e A5 (redução de custo).
 - [x] **A4. Estimativa de custo real** — ✅ baseline medido (`framework/validation/cost_model.py` +
   `artifacts/cost_report.md`): **$/1k linhas 3.12 (forte) → 1.75 (model-mix + caching)**; projeção
   ~33k **$103 → $58 (−44%)**. Tokens ≈chars/3.8 (refinar com `count_tokens` na run real). Desbloqueia A5.
-- [ ] **A5. Analisar o custo atual e reduzir — meta: −80%** *(agressiva, pode mudar).*
-  Tomar o baseline da A4 como ponto de partida e atacar os maiores ofensores de custo. Linhas de
-  investigação:
-  - **Modelo certo por tarefa:** usar modelo barato (ex.: Haiku) para passos mecânicos/baixo risco e
-    reservar o modelo forte para linhas `risk_level ≥ high` e identidades duplas.
-  - **Prompt/context caching:** reaproveitar glossário, perfil de voz e regras entre lotes em vez de
-    reenviar (o glossário/voz é estável → ótimo candidato a cache).
-  - **Batching e shift-left:** já existe (T1–T3 determinístico, byte_budget no prompt); medir o
-    quanto realmente evita reescrita LLM e empurrar mais trabalho para o determinístico.
-  - **Evitar retrabalho:** Micro-QA/06c só re-tocam o que falhou; medir taxa de reprocessamento.
-  - **Triagem:** linhas de sistema/anomalias (ex.: `0x33f9`) e strings triviais podem sair do
-    caminho do LLM.
-  Definir a métrica ($ por 1.000 linhas) e acompanhar a redução contra a meta. A meta de 80% é alvo
-  inicial — recalibrar quando houver o baseline real.
+- [~] **A5. Analisar o custo atual e reduzir.** 🟢 **Alavancas no ar e medidas.** Gasto real dos caps
+  11–19: **~$43,5** (Sonnet $36,7 · Haiku $3,6 · Opus $3,2), **$0 desperdiçado** (`api_ledger.jsonl` +
+  `cost_report.py`). Contra a projeção da A4 com modelo forte (~$103 no jogo inteiro), o caminho atual já
+  roda bem abaixo. Alavancas implementadas:
+  - ✅ **Modelo certo por tarefa:** tiering Haiku (linha simples) / Sonnet (multi-linha) / Opus (só
+    back-translation de alto risco).
+  - ✅ **Prompt/context caching:** doutrina cacheável (~4K tok) cobrada ~1×; cache de leitura medido no
+    `cost_report` (~46% — alvo de melhora).
+  - ✅ **Batching e shift-left:** Batch API **−50%** comprovado vivo; T1–T3 determinístico + `byte_budget`
+    no prompt; **escalonamento cirúrgico** re-traduz só a linha que estoura o budget.
+  - ✅ **Evitar retrabalho:** **dedup por TM** (reuso $0); revisão humana aplica **verbatim a $0**; o jogo
+    **não** é re-traduzido inteiro após o QA.
+  - ✅ **Teto de gasto:** `--max-usd` uniforme nos drivers caros (para e reporta o que sobra).
+  *Resta:* fechar a 2ª metade e tirar o **$/1k linhas final**; subir a taxa de cache; revisitar a meta de
+  −80% com o baseline completo (hoje a redução real vs. modelo-forte já é substancial).
 
 ### Fase B — Evolução do motor (só DEPOIS da produção)
 
@@ -109,10 +140,11 @@ desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
   `artifacts/t4_residue.json` (lote pronto p/ reescrita LLM em 1 passada → volta pelo plano → reaplica).
   Hoje **inerte** (resíduo=0 com a relocação intra-arquivo); ativa sozinho se um corpus futuro gerar
   overflow não-relocável. 2 testes pytest (lote vazio no corpus + caso sintético).
-- [~] **Metadados cognitivos por linha em escala (F2):** `speaker`/`tone_register`/`intent` existem
-  para as 1025 linhas; **risco calibrado** (data-driven: spoiler/glossário/entidade → 9 high / 9 medium,
-  saindo do achatamento 0-high) com `risk_notes`. *Resta:* o **`tone_register` fino por situação/emoção**
-  das ~948 linhas `dialogo` — depende do passe contextual LLM (meia-maratona). Ver `decision_log.md`.
+- [x] **Metadados cognitivos por linha em escala (F2):** ✅ resolvido pelo harness. O `context_pack`
+  monta por cena o pacote com `speaker`/`tone_register`/`intent` + risco calibrado data-driven
+  (spoiler/glossário/entidade) + `risk_notes`, e o `translate` faz o **passe contextual por cena** — não
+  mais só nas 1025 linhas da abertura, mas nas **77 cenas** dos caps 11–19. O `tone_register` fino por
+  situação/emoção passou a ser produto natural do contexto montado por cena. Ver `decision_log.md`.
 - ~~CI + empacotamento de release~~ — **removido** (não há release planejada agora).
 
 ---
@@ -121,17 +153,17 @@ desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 
 > Não quebram o jogo, mas "não fazem sentido" na leitura. Coletados de spot-checks in-game.
 
-- [ ] **⭐ PRIORIDADE — processar até METADE do jogo (coleta de métricas).** Antes de comprometer com a
-  run completa (~33k), traduzir/reinserir **incrementalmente até ~cap. 25** (metade dos 353 scripts /
-  caps. 11–39) para **medir em escala** e decidir o resto com dados, não com palpite. Métricas a coletar:
-  - **Custo real** ($/tokens/tempo por 1.000 linhas) — alimenta A4/A5.
-  - **Qualidade/contexto:** taxa de interjeições/calques pegos pelo linter; consistência de voz da Kuon
-    e dos demais em escala; quantas linhas exigem `risk` alto de verdade (hoje 0).
-  - **Conector em escala:** % in_place vs RELOC; resíduo; **rótulos de falante** (o bug do opcode ≠ `50 00`);
-    se a relocação intra-arquivo aguenta caps. inteiros.
-  - **Governança:** validar a Carta de Governança aplicada de ponta a ponta num volume real.
-  Saída: relatório de métricas que recalibra A3/A4/A5 e a Carta. Ritmo: incremental e resumível
-  (`translation_status.json`), 1–2 caps. por sessão. **Não fazer a 2ª metade até revisar essas métricas.**
+- [x] **⭐ processar até METADE do jogo (coleta de métricas).** ✅ **ALCANÇADO.** A **1ª metade está
+  traduzida e verificada** (caps 11–19, 77 cenas) pelo harness incremental/resumível — exatamente o
+  experimento de "medir em escala antes de comprometer com a run completa". Métricas colhidas:
+  - ✅ **Custo real:** **~$43,5** acumulados, **$0 desperdiçado** (`cost_report.py`); recalibra A4/A5.
+  - ✅ **Qualidade/contexto:** linter de naturalidade + back-translation de alto risco rodando; voz
+    consistente via voice cards + TM; risco calibrado data-driven (deixou de ser 0-high).
+  - ✅ **Conector em escala:** relocação intra-arquivo aguenta capítulos inteiros; round-trip
+    byte-idêntico verde nas 77 cenas; resíduo controlado.
+  - ✅ **Governança:** a Carta + os gates (round-trip/back/KB/spoiler) foram aplicados ponta-a-ponta num
+    volume real, sem gasto invisível.
+  *Decisão habilitada:* a 2ª metade (caps 20+) está **liberada** — o experimento de métricas cumpriu o papel.
 
 - [x] **Carta de Governança de Tradução (diretrizes que a IA SEGUE).** ✅
   `framework/skills/translation_governance.md` — contrato de qualidade (voz/lore/situação/processo +
@@ -151,11 +183,29 @@ desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 - [x] **Governança de tradução — linter determinístico (genérico, sem LLM).** ✅
   `framework/validation/naturalness_lint.py`: `copia_crua` (alvo==source fora da whitelist de
   nomes/gritos/numérico), `fragmento_residual` (hesitação `X...` copiada), `rotulo_cru` → grava
-  `artifacts/naturalness_lint.json` (input do 06c). **7 testes pytest**. Na instância real sinalizou os
-  2 stammers "U..." (0x3640/0x124b1) sem falso-positivo.
-- [ ] **Stammers/hesitações residuais.** Ex.: `0x3640` `"U... Urgh... Everything's... distorted..."` →
-  `"U... Argh... Está tudo... distorcido..."` — o `"U..."` solto não foi localizado (deveria virar
-  `"Ugh..."`/`"Nh..."` ou fundir). Estender a localização de interjeições para **stammers iniciais**.
+  `artifacts/naturalness_lint.json` (input do 06c). **12 testes pytest**. Varre os planos por cena do
+  harness; `fragmento_residual` refinado (não dá falso-positivo em `a/e/o/é`); pula identificadores de
+  asset. Na instância real (caps 11–19): **0 stammer residual** (os "U..." já viraram "Nnh...").
+- [x] **Stammers/hesitações residuais.** ✅ **RESOLVIDO.** Os casos concretos já estão localizados no
+  dado (`0x3640`/`0x124b1` `"U... Urgh..."` → **`"Nnh... Argh..."`**). Mecanismo de prevenção fechado:
+  (a) `naturalness_lint.py` agora **varre os planos por cena** do harness (`ch_*/translation_plan_*.json`),
+  não só o legado; (b) `fragmento_residual` refinado — só sinaliza inicial **copiada crua** que NÃO é
+  começo pt-BR legítimo (`a/e/o/é` ficam; `U.../W.../K...` viram resíduo); (c) convenção de **stammer
+  inicial** documentada (`interjection_reference.md`, regra 5 + linha na tabela). Gate: `pytest`
+  (`fragmento_residual` = **0** nos caps 11–19) — não regride. $0 (offline).
+- [x] **Interjeições EN copiadas cruas (achado do linter em escala).** ✅ **RESOLVIDO ($0, offline).**
+  O linter em escala achou **266 `copia_crua`**; a maioria era **falso-positivo legítimo** (grito/risada/
+  grunhido, SFX `*CRASH*`, cognato `animal./crime?`, nome `Sir Haku?`, label `RightFoot`). Duas frentes:
+  - **Precisão do linter:** `_is_pure_onomatopoeia` agora pega grunhido sem vogal (`Ngh`,`Grr`,`Mmf`),
+    risada (`hahaha`/`fufu`) e sopa-de-consoante (vogal ≤25%); pula SFX entre `*...*`, labels
+    CamelCase/alfanuméricos (`RightFoot`,`lightA02`) e `speaker: rotulo`. (Família "hm/mm" segue
+    sinalizada — `Hein?` vs `Hum?` é decisão de contexto.) **+4 testes** (16 no total).
+  - **Localização governada:** CSV `interjection_corrections.csv` (dado) → `tm_correct.py` aplicou
+    **168 substituições** em 62 arquivos só nas formas **inequívocas e sem colisão pt-BR** (`Gah→Ai`,
+    `Urgh→Argh`, `Guh→Agh`, `Eep→Iik`, `Ack/Urk→Kh`, `Erm→Hum`, `Ahem→Ehem`; **deixei de fora** `Ugh`/`Uh`
+    por colidirem com nojo/`Uh-oh`). **31 cenas re-verificadas** (round-trip byte-idêntico, resíduo T4=0,
+    charset íntegro). `copia_crua`: **266 → 107** (o resto = cognato/nome/lore legítimo + família hm/mm,
+    advisory p/ a revisão humana — não-erros).
 - [x] **Rótulo de falante "Girl" em inglês in-game.** ✅ RE: o nome do falante usa o opcode **`53 00`**
   (file-relativo, ignorado pelo conector). `sdat_format.POINTER_OPCODES` agora indexa/repointa `50 00`
   **e** `53 00` → rótulos relocam como heads próprios (17/17 sites do "Girl" leem "Garota"). Travado por
