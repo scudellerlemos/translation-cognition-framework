@@ -98,6 +98,12 @@ anteriores do cap.12 não estão nele (não há como recuperar honestamente do r
   todos passavam no fake mas o **run de 1 cena (~$0,30) reprovava ao vivo**. Só a composição do pack
   (`MISSING == nº de single-line`) fechou o caso. **Lição forte: validar a mecânica de batch num run de 1
   cena ANTES de pagar capítulo — e o fake deve VALIDAR as restrições reais da API (custom_id, effort-por-modelo).**
+- ✅ **mitigação do risco "mock↔API diverge" (`batch_smoke.py`):** a lição acima virou ferramenta — smoke
+  vivo (~$0,02, ~min) de 1 cena de 2 linhas (1 Haiku + 1 Sonnet) pela API REAL; afirma os 4 invariantes
+  (submete sem 400, converge `written`, AMBOS os tiers ao vivo, zero fallback). **Rodar ANTES de cada
+  capítulo pago** (`python framework/runtime/batch_smoke.py`). A lógica de avaliação (`evaluate`) é testada
+  offline (pega os 4 modos de divergência que já custaram dinheiro). É o teste de contrato que faltava
+  entre o mock e a API real.
 - ✅ **tiering: causa do "$0,71 inalterado" ERA O BUG DO HAIKU, não falta de single-line.** A hipótese
   antiga ("o jogo pode não ter single-line suficiente → desligar `MODEL_TRANSLATE_CHEAP`") estava **errada
   e invertida**. Medição em **44.116 linhas** (`_tier_of` sobre todos os dialogs): **59% são single-line
@@ -185,14 +191,34 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | F | **release** — patch + docs de instalação |
 
 **Hardening arquitetural (dívidas conhecidas — ordem de ataque sugerida):**
-| # | Dívida | Fix | Quando morde |
+| # | Dívida | Fix | Status |
 |---|---|---|---|
-| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ao mudar/entrar conector — **endurecer 1º** |
-| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** (`NAMING.md` já documenta) | typo silencioso / rename |
-| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | crescimento |
-| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | — (fix barato) |
-| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | KB rasa passa o gate |
-| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | **risco DURANTE produção** |
+| H1 | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ✅ **feito** — `verify_chapter` emite exit 0/1/3 + linha `VERIFY_STATUS:{json}`; `run_scene` usa o exit-code (grep morto). Bug latente corrigido: o grep procurava `"fora do arquivo"` (espaços) vs `"fora-do-arquivo"` (hifens) → out-of-file nunca escalonava |
+| H2 | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** | ✅ **feito** — `paths.py` (módulo leaf, fonte única); 42 call sites migrados em 8 módulos; `test_paths_contract` fixa as strings; NAMING.md aponta |
+| H3 | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ⏸️ adiado (ainda legível; não mexer no que funciona) |
+| H4 | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
+| H5 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ⏸️ adiado (difuso; risco de overengineering) |
+| H6 | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ vazamento de **gênero** pt-BR fica como extensão (exige marcar entidades de gênero-quarentenado no ledger + atribuir token ao referente) |
+
+**Riscos de engenharia (avaliação crítica — mitigações offline):**
+| # | Risco | Mitigação | Status |
+|---|---|---|---|
+| R#1 | **mock↔API diverge** (3 bugs de batch passaram no fake e queimaram dinheiro) | smoke vivo de contrato | ✅ **feito** — `batch_smoke.py` (ver R5 acima) |
+| R#2 | **sem piso de qualidade** — verdict `revise` report-only + 59% (tier Haiku) sem crivo nenhum | gate observável + amostragem + correção dirigida | ✅ **feito (3 camadas)** — (a) `quality_gate.py` lê os `verdict: revise` + flagra high/critical sem cobertura + **métrica de cobertura** (% das linhas com crivo); (b) `model.sample_low_risk_lines` ~5% determinístico das low/medium entra na back-batch → piso medido p/ o Haiku (liga dos próximos caps); (c) `quality_fix.py` re-traduz dirigido os `revise` (worklist do `--export` = dado; reusa `retranslate_offsets`+merge; corrige translations+plan). 1ª execução: **134 `revise`** nos caps 11–19 (incl. corrupção crua de 5872 chars em ch_19_04) |
+| R#3 | **TM append-only** — termo errado propagado por N capítulos sem ferramenta de correção | correção governada cross-capítulo | ✅ **feito** — `tm_correct.py`: find→replace a partir de CSV de **dados**, match por limite de palavra, corrige translations+plan, dry-run por padrão. Dry-run real achou "paragon" em ch_12_04 **e** ch_14_10 |
+| R#2g | **vazamento de GÊNERO pt-BR** (ele/ela onde o EN é neutro) — o que o `spoiler_check` de nomes NÃO pegava | contraparte observável de gênero | ✅ **feito** — `spoiler_check.check_gender`: campo `gender_quarantine` no ledger + heurística de co-ocorrência (marcador de gênero pt-BR junto a entidade pré-reveal). Mecanismo ativo; marcação real aguarda caso confirmado por fonte (não fabricar spoiler = não recair no R#4) |
+| R#4 | **a IA reconcilia a própria KB** (sem segundo par de olhos no delta) | gate de fonte (hard) + ratificação humana | ✅ **feito (gate)** — `kb_review.py` + `kb_phase --check`: FALHA (hard) se entidade nova não citar **fonte** no research_log (âncora externa checável = mata "IA propõe E aprova"). `--strict` exige **ratificação humana** (`kb_ratified.csv`, só o humano edita) + gênero confirmado. Evoluiu de digest → gate |
+| R#4g | **gênero pt-BR inativo** (mecanismo pronto, zero entidades marcadas) | pesquisa + resolução com fonte | ✅ **feito** — faixa 11-19 auditada (wiki): NENHUM gender-spoiler (o twist é Haku→Oshtor = identidade, já no ledger) → `gender_quarantine` dormente por estar CORRETO, documentado. Shichirya→MASCULINO, Honoka→FEMININO (com fonte); restantes flagrados no `--strict` p/ ratificação (não-fabricado) |
+
+**Piso de qualidade HUMANO (supera a auto-avaliação por IA — `quality_review.py`):**
+A back-translation (Opus julgando Sonnet/Haiku) custa e não substitui um humano lendo o pt-BR. O fluxo
+human-in-the-loop fecha o nº 2 na raiz, governança *humano propõe → gate aprova → script aplica*:
+`export <cap>` gera **1 CSV com o capítulo inteiro**, cada linha **marcada deterministicamente** (sem IA)
+na coluna `revisar` — `risco:high/critical`, `amostra` (5% do Haiku), `identico-fonte` (provável
+não-traduzido), `tamanho` (outlier), `pt-PT?`. O humano preenche `correcao` (texto certo → aplicado
+**verbatim, 0 IA**: só charset/paridade/round-trip) ou `nota` (instrução → IA re-traduz **só aquela
+linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 691 marcadas (391 high +
+199 amostra + 77 idêntico-fonte + 37 critical). Custo de aplicar uma revisão verbatim = **$0**.
 
 **Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
 - **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada

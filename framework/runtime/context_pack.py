@@ -25,6 +25,7 @@ import json
 import re
 import sys
 from pathlib import Path
+import paths          # noqa: E402  (H2: fonte unica de paths)
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
@@ -200,12 +201,12 @@ def project_constraints(cfg: dict) -> dict:
 
 def build_pack(root: Path, scene: str) -> dict:
     root = Path(root)
-    art = root / "artifacts"
+    art = paths.artifacts(root)
     scene_dir = art / scene
     if not (scene_dir / "dialogs.csv").is_file():
         raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
-    state = art / "state"
-    if not (state / "translation_memory.jsonl").is_file():
+    state = paths.state_dir(root)
+    if not (paths.translation_memory(root)).is_file():
         state_index.build(root)               # auto-constroi os indices se faltarem
 
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
@@ -215,7 +216,7 @@ def build_pack(root: Path, scene: str) -> dict:
     glossary = load_glossary(art / "glossary.csv")
     voice_cards = json.loads(_read(state / "voice_cards.json") or "{}")
     decisions = json.loads(_read(state / "decision_index.json") or "[]")
-    tm = load_tm(state / "translation_memory.jsonl")
+    tm = load_tm(paths.translation_memory(root))
 
     gsub = select_glossary(glossary, blob_low)
     voices = select_voices(voice_cards, blob_low)
@@ -349,7 +350,7 @@ def render_prompt(pack: dict, carta: str) -> str:
 
 def write_pack(root: Path, scene: str) -> dict:
     pack = build_pack(root, scene)
-    scene_dir = Path(root) / "artifacts" / scene
+    scene_dir = paths.scene_dir(root, scene)
     carta = _read(CARTA_PATH)
     (scene_dir / "scene_prompt.md").write_text(render_prompt(pack, carta), encoding="utf-8")
     (scene_dir / "pack.json").write_text(

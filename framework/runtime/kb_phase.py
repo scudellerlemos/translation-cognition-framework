@@ -36,6 +36,8 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import kb_review      # noqa: E402  (gate de fonte/ratificacao do delta de KB)
+import paths          # noqa: E402  (H2: fonte unica de paths)
 from context_pack import scene_id_of, _present, _pos  # noqa: E402
 
 # sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").
@@ -71,6 +73,7 @@ dear guess getting nice we'd ahaha agh wheh pweeaase
 wait cheers ooh thou fate game perfect sisters mmmmm damn mayhap methinks barkeep
 urgh unhand regardless understood pardon oohh failure preposterous highness guardian
 it'll what're nah remember puffs expecting inform
+dammit sounds hahahaha hip it'd boys
 hand hands eye eyes face heart head room door water fire light dark good great
 mister miss missus sir lord lady master mom dad mother father brother sister son daughter missy
 don't won't can't cant didn't doesn't isn't aren't wasn't weren't haven't hasn't hadn't wouldn't couldn't
@@ -87,7 +90,7 @@ sirs madam madams milord milady yessir yep yup nope
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
     """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id)."""
-    names = [p.parent.name for p in (root / "artifacts").glob(f"ch_{chap}_*/dialogs.csv")]
+    names = [p.parent.name for p in paths.artifacts(root).glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=scene_id_of)
 
 
@@ -101,13 +104,13 @@ def _kb_blob(root: Path) -> str:
     """Blob lowercased de TUDO que a KB conhece como nome/termo: glossary (term+aliases) + entities
     (canonical+aliases). E contra ISTO que perguntamos se um candidato esta coberto (via _present)."""
     g_parts, e_parts = [], []
-    g = root / "artifacts" / "glossary.csv"
+    g = paths.glossary(root)
     if g.is_file():
         with g.open(encoding="utf-8") as fh:
             for r in csv.DictReader(fh):
                 g_parts.append(r.get("term", "") or "")
                 g_parts.append(r.get("aliases", "") or "")
-    e = root / "artifacts" / "entities.csv"
+    e = paths.entities(root)
     if e.is_file():
         with e.open(encoding="utf-8") as fh:
             for r in csv.DictReader(fh):
@@ -162,7 +165,7 @@ def _scan(root: Path, scenes: list[str]):
     """[(scene_id, source_text)] por cena (concatena as linhas-fonte do dialogs.csv)."""
     per = []
     for scene in scenes:
-        f = root / "artifacts" / scene / "dialogs.csv"
+        f = paths.dialogs(root, scene)
         if not f.is_file():
             continue
         rows = context_pack.load_dialogs(f)
@@ -260,15 +263,16 @@ def discover(root, chap) -> dict:
 
 
 def _reconciled(root: Path) -> bool:
-    rl = root / "artifacts" / "research_log.md"
+    rl = paths.research_log(root)
     return rl.is_file() and bool(
         re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I))
 
 
-def coverage(root, chap) -> dict:
-    """Valida se o capitulo esta pronto p/ avancar a fronteira: gap fechado + research reconciliada.
-    problems != [] => NAO avancar (rode/estenda a Fase 0). Limite honesto: 'gap fechado' = todos os
-    nomes proprios fortes ja estao na KB; nao garante que a pesquisa foi PROFUNDA, so que esta presente."""
+def coverage(root, chap, *, strict=False) -> dict:
+    """Valida se o capitulo esta pronto p/ avancar a fronteira: gap fechado + research reconciliada +
+    GATE DE FONTE (toda entidade nova cita fonte no research_log; em strict, +ratificada/genero ok).
+    problems != [] => NAO avancar. Limite honesto: 'gap fechado' = nomes fortes ja na KB; o gate de fonte
+    garante ANCORA EXTERNA por entidade (mata 'IA propoe E aprova'); ratificacao (strict) = humano."""
     root = Path(root)
     d = discover(root, chap)
     problems, warnings = [], []
@@ -278,6 +282,11 @@ def coverage(root, chap) -> dict:
                         f"— pesquise+reconcilie (skill 03) e adicione a glossary/entities: {sample}")
     if not _reconciled(root):
         problems.append("research_log.md sem 'status: reconciled' — reconcilie a pesquisa IA+humano.")
+    blk = kb_review.blocking(root, chap, strict=strict)    # gate de fonte (sempre) + ratificacao (strict)
+    if blk:
+        sample = [f"{i['name']} ({'/'.join(i['blockers'])})" for i in blk[:12]]
+        problems.append(f"{len(blk)} entidade(s) nova(s) do cap. sem ancora (fonte/ratificacao): {sample}. "
+                        f"Cite a fonte no research_log{' e ratifique no kb_ratified.csv' if strict else ''}.")
     one_off = [r for r in d["gap"] if r not in d["block"]]
     if one_off:
         warnings.append(f"{len(one_off)} candidato(s) de baixa confianca (citados 1x) — nao bloqueiam; "
@@ -352,7 +361,7 @@ def write_worklist(root, chap) -> Path:
     L.append("## Ja cobertos pela KB (conferencia)")
     L.append(", ".join(r["cand"] for r in d["covered"]) or "_(nenhum)_")
     L.append("")
-    out = root / "artifacts" / f"kb_phase_worklist_{chap}.md"
+    out = paths.kb_worklist(root, chap)
     out.write_text("\n".join(L), encoding="utf-8")
     return out
 
@@ -365,11 +374,13 @@ def main():
                     help="valida cobertura (gap fechado + reconciled); exit 1 se faltar")
     ap.add_argument("--apply-frontier", action="store_true",
                     help="com --check OK, avanca project.json kb_frontier p/ o ultimo scene_id do capitulo")
+    ap.add_argument("--strict", action="store_true",
+                    help="gate de KB tambem exige ratificacao humana (kb_ratified.csv) + genero confirmado")
     a = ap.parse_args()
     root = Path(a.project)
 
     if a.check:
-        cov = coverage(root, a.chapter)
+        cov = coverage(root, a.chapter, strict=a.strict)
         for w in cov["warnings"]:
             print(f"[warn] {w}")
         for p in cov["problems"]:
