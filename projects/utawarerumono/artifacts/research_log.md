@@ -134,3 +134,54 @@ Fonte: Utawarerumono Wiki (Fandom) + corpus. Mata o risco "gender_quarantine ina
   "a confirmar" do cap.18 (la aparecia so como criada).
 - **Ainda 'a confirmar'** (wiki nao cobre; corpus-only; ficam flagrados no `kb_review --strict` p/
   ratificacao humana, NAO chuto): Miruhj, Raurau, Mito (cap.18); Chalafun, Bokoinante (cap.17).
+
+## cap.20 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: Utawarerumono Wiki (Fandom) — paginas Vurai, Gundhurua, Uzurusha, Shinonon + corpus (dialogs cap.20).
+Reconciliacao autonoma (fonte autorizada no cap.13). O cap.20 abre o arco da invasao de Uzurusha.
+- **Uzurusha**: pais ao NORTE de Yamato; horda/imperio nomade invasor. manter_original. (wiki: "country located north of Yamato")
+- **Uzurushan / Uzurushans**: gentilico/soldados de Uzurusha -> 'uzurushano(s)' (adjetivo) ou manter 'Uzurushan' como etnia. Traduzir 'Uzurushan army' -> 'exercito uzurushano'.
+- **Gundhurua**: REI de Uzurusha; unificou 100+ tribos nomades num poder militar. MASCULINO ("a man who united over..."; wiki). manter_original.
+- **Vurai**: 'a Vanguarda' (the Vanguard); um dos Oito Generais-Pilar de Yamato, um dos mascarados; "a lanca poderosa de Yamato". MASCULINO (wiki). manter_original o nome; traduzir o epiteto 'the Vanguard' -> 'a Vanguarda'. SPOILER PROFUNDO (final boss de MoD / desfecho com Oshtor) = beyond_frontier (quarentena) — NAO antecipar; no cap.20 ele aparece em cena, entao o nome em si nao e leak.
+- **Jachdwalt**: espadachim famoso, 'the Mirage Blade' -> 'a Lamina Miragem'; pai adotivo de Shinonon; lutador do lado Uzurusha. MASCULINO (wiki). manter_original o nome.
+- **Shinonon**: MENINA, filha adotiva de Jachdwalt; brevemente refem da horda Uzurushan. FEMININO (wiki). manter_original.
+- **Entua**: 'Lady Entua'; agente do lado Uzurusha, papel no climax (envenenamento/intriga = beyond_frontier). FEMININO (corpus 'Lady'/'she' + wiki). manter_original.
+- **Woshis**: agente/desenhista do lado Uzurusha (corpus: "Woshis sketches on his drawing board" -> MASCULINO); papel no climax = beyond_frontier. manter_original. (wiki grafa "Woshisu"; usar a forma do jogo "Woshis".)
+- **Zeguni**: Comandante de Uzurusha (corpus: "Commander Zeguni"; tem 'owlo'/vassalo). MASCULINO. manter_original.
+- **Akuruturuka**: termo = 'homem mascarado' / forma do guerreiro mascarado (corpus 20_13: "what are we supposed to call that thing!? Akuruturuka"). manter_original + glosar. Lore profunda (mascaras/Oshtor) = beyond_frontier.
+- **Nakwan / Nakwans**: termo de Uzurusha = 'soldados-escravos descartaveis' (definido in-corpus 20: "Nakwans? Expendable slave soldiers"). manter_original + glosar.
+- **Maruruha**: nacao/regiao que CAIU para Uzurusha (corpus 20_01: "Maruruha has fallen to Uzurusha"). Local. manter_original.
+- **Yamatan / Yamatans**: gentilico de Yamato (ja coberto) -> 'yamato'(invariavel)/'de Yamato'; 'Yamatan army' -> 'exercito de Yamato'. Nao e entidade nova, e forma derivada.
+- Declinados (ruido/interjeicao/risada/UI/onomatopeia/frase-capitalizada): Hahaha, Hurry, Yamatans (derivado), Ahhhh, Hyahahahahaha, Khakakakakakaka, Open, Reporting, Vanguard (epiteto de Vurai), Yatanawarabe (guarda; pontual), Combat Tutorial/Glossary (UI), LeftLeg (rig), Mirage Blade (epiteto de Jachdwalt), Spine Winds (fala), "Adviser/Advisers/Beside/Damned/Multiple/Soldier/Messenger ..." (prefixos de rotulo + nome ja coberto).
+
+## cap.21 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: idem cap.20 (mesmo arco Uzurusha). Os recorrentes do cap.21 (Jachdwalt, Uzurushan) JA cobertos no delta cap.20 acima.
+- Sem entidade nova bloqueante propria. Baixa confianca (1x, nao bloqueiam; conferir na revisao humana, nao chuto): Hamyana Island (ilha; provavel local), Iceman Project / True Humanity Project (termos de lore sci-fi do arco final — beyond_frontier; manter + glosar quando confirmados), Eep/Guard Mm/Haku Eek (interjeicao+rotulo).
+
+## cap.22 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: Utawarerumono Wiki (Fandom) — paginas Tuskur (Country/Person), Aruruu, Camyu, Hakuowlo + Mask of
+Deception (lore sci-fi) + corpus cap.22. **Este e o capitulo do REVEAL sci-fi do final** (a obra se passa
+na Terra num futuro distante pos-colapso). Spoilers maiores aparecem EM CENA aqui — os nomes em si nao
+sao leak (a revelacao acontece neste cap.), mas as conexoes profundas ficam marcadas beyond_frontier.
+- **Tuskur**: (pais) nacao-refugio fundada por Hakuowlo; terra natal de Kuon (ela e princesa de Tuskur).
+  (pessoa) a velha boticaria que acolheu Hakuowlo (o pais leva o nome dela). manter_original. (wiki)
+- **Aruruu** (apelido **Aru**): personagem do Utawarerumono ORIGINAL; irma cacula de Eruruu; anda com o
+  tigre Mukkuru. FEMININO. manter_original. (wiki)
+- **Camyu**: 2a princesa de Onkamiyamukai; thaumaturga alada (Onkamiyaryu); amiga de Aruruu. FEMININO.
+  manter_original. (wiki)
+- **Onkamiyamukai**: teocracia de pacificadores, dominada pelos thaumaturgos alados (Onkamiyaryu). Local/
+  nacao. manter_original. (wiki)
+- **Chii**: filha do Mikado HUMANO (antes da queda da humanidade); **base genetica da Anju**; virou slime
+  (praga Tatari); sobrinha do Haku (flashbacks dele). FEMININO. SPOILER MAIOR; conexao Anju/Haku =
+  beyond_frontier. manter_original. (wiki/TVTropes)
+- **Amaterasu**: satelite de CONTROLE CLIMATICO; tentaram usar como arma -> tempestades catastroficas que
+  selaram o fim da humanidade. Termo sci-fi. manter_original + glosar. (wiki)
+- **Earth -> Terra**: revelacao de que o mundo e a Terra num futuro distante. 'Earth' TRADUZ -> 'Terra'.
+- **Onvitaikayan**: entidade(s) reverenciadas pelos demi-humanos = a antiga HUMANIDADE (Haku e um dos
+  poucos sobreviventes onvitaikayan). manter_original + glosar. beyond_frontier (natureza completa).
+- **Neko**: corpus-only (1 cena), provavel apelido/criatura; manter_original por seguranca (nao traduzir
+  nome). Conferir na revisao humana.
+- **Imperial Cloister**: local de Yamato (corpus cap.22; recinto imperial). Traduzir -> 'Claustro
+  Imperial' ('Imperial' ja coberto). Fonte: corpus + convencao de Yamato (wiki).
+- Baixa confianca (1x, nao bloqueiam): Hiroshi / Hiroyuki (provaveis nomes de humanos pre-queda do arco
+  sci-fi — manter se confirmados), Yaana Mauna, Imperial Palace ('Palacio Imperial'), Aru Hm.
+- Declinados (contracao/comum/interjeicao): Young, She'd, C'mon, Hmmm, Hm.

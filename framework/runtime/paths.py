@@ -66,6 +66,11 @@ def translation_plan(root, scene, scene_id) -> Path:
     return scene_dir(root, scene) / f"translation_plan_{scene_id}.json"
 
 
+def approved(root, scene, scene_id) -> Path:
+    # projecao (offset,text_target) que o conector consome no reinsert; DERIVADA de translations_*.json.
+    return scene_dir(root, scene) / f"approved_{scene_id}.csv"
+
+
 def back_translation(root, scene, scene_id) -> Path:
     return scene_dir(root, scene) / f"back_translation_{scene_id}.json"
 

@@ -5,17 +5,63 @@ Torna **cada cena um job stateless e limitado**: o contexto por execução é O(
 
 ## Módulos
 
-| Arquivo | Tipo | Função |
-|---|---|---|
-| `state_index.py` | determinístico | Materializa o estado externo: `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`. Idempotente, reconstruível. |
-| `context_pack.py` | determinístico | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. |
-| `model.py` | interface (única parte de IA) | `translate` / `back_translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix). |
-| `run_scene.py` | orquestrador (det.) | Encadeia pack → translate → build_plan → back-translate → verify → checkpoint. Resumível. |
-| `run_chapter.py` | driver (det.) | Loop de cenas de um capítulo via `run_scene`; modo `--batch` (−50%); resumível. |
-| `kb_gate.py` | gate (det.) | Cobertura de KB por cena (research reconciliada + `kb_frontier`) ANTES de traduzir. |
-| `kb_phase.py` | driver de Fase 0 (det.) | Descobre o gap de KB de um capítulo (cobrança) e valida/avança a fronteira. |
-| `cost_report.py` | observabilidade (det.) | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
-| `test_runtime.py` | pytest | Determinismo, boundedness, idempotência, guard de no-work-text. |
+Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`):
+
+**Orquestração & contexto (det.)**
+
+| Arquivo | Função |
+|---|---|
+| `run_scene.py` | Orquestrador: encadeia pack → translate → build_plan → back-translate → verify → checkpoint. Resumível. |
+| `run_chapter.py` | Driver de capítulo: loop de cenas via `run_scene`; modo `--batch` (−50%); resumível; `--max-usd`. |
+| `context_pack.py` | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. |
+| `artifact_io.py` | Camada única de leitura de artefatos (scenes, plan_lines, translations_map, back_entries). |
+| `paths.py` | Fonte única de caminhos de artefato. |
+
+**IA (a única fronteira não-determinística)**
+
+| Arquivo | Função |
+|---|---|
+| `model.py` | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
+| `back_translate.py` | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
+| `llm_client.py` | Cliente + backoff/retry, await de batch, dotenv. |
+| `config.py` | Constantes de tier/modelo/custo/status (sem lógica). |
+| `cost.py` | Pricing real + `log_api_call` (escreve o ledger). |
+| `bench_translate.py` | Benchmark Sonnet vs Opus-à-mão (gate de aprovação de modelo). |
+
+**Estado & memória (det.)**
+
+| Arquivo | Função |
+|---|---|
+| `state_index.py` | Materializa `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`. Idempotente. |
+| `tm_correct.py` | Find→replace governado em translations + plan (dado propõe, script aplica; dry-run/`--apply`). |
+
+**Gates de cognição (det.)**
+
+| Arquivo | Função |
+|---|---|
+| `kb_gate.py` | Cobertura de KB por cena (research reconciliada + `kb_frontier`) ANTES de traduzir. |
+| `kb_phase.py` | Driver de Fase 0: descobre o gap de KB do capítulo; `--check` falha sem fonte; `--strict` exige ratificação. |
+| `kb_review.py` | Digest + **gate de fonte** do delta de KB (`--gate`/`--strict`; lê `kb_ratified.csv`). |
+| `spoiler_check.py` | `check` (nomes) + `check_gender` (gênero) — não vaza reveal antes do `reveal_timing`. |
+
+**Qualidade & custo (det.)**
+
+| Arquivo | Função |
+|---|---|
+| `quality_gate.py` | Cruza veredito de back-translation + cobertura; `--export` da worklist `revise`. |
+| `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim ($0) ou nota cirúrgica; `--max-usd`. |
+| `quality_fix.py` | Re-traduz dirigido só os offsets `revise` da worklist; `--max-usd`. |
+| `cost_report.py` | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
+| `batch_smoke.py` | Smoke vivo do contrato da Batch API antes de pagar um capítulo inteiro. |
+
+**Testes**
+
+| Arquivo | Função |
+|---|---|
+| `test_runtime.py` | 68 testes: determinismo, boundedness, idempotência, guard de no-work-text, round-trip de integração. |
+
+> Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
+> [`../docs/GOVERNANCE.md`](../docs/GOVERNANCE.md).
 
 > Convenção de nomes (identificadores em inglês, glossário de abreviações aceitas — KB/TM/scene_id… — e o
 > **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`../docs/NAMING.md`](../docs/NAMING.md).
