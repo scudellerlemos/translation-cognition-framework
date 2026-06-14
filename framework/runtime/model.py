@@ -19,6 +19,7 @@ GOVERNANCA: sem work-text hardcoded. O conteudo vem do pacote/artefatos. Determi
 do context_pack; a chamada de IA e a unica parte nao-determinista (por isso isolada aqui).
 """
 from __future__ import annotations
+import hashlib
 import json
 import os
 import sys
@@ -29,49 +30,25 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io   # noqa: E402  (camada de leitura compartilhada de artefatos)
 import context_pack  # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
+# Plumbing de API extraido p/ llm_client.py (re-exportado aqui p/ compat: model._client/_stream_final/...).
+from llm_client import (  # noqa: E402,F401
+    _MAX_BACKOFF, _load_dotenv, _client, _carta_text, _transient_errors, _with_backoff,
+    _stream_final, _await_batch, _text_of, _usage_of, _add_usage)
 
-# --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
-MODEL_TRANSLATE = "claude-sonnet-4-6"
-MODEL_BACK = "claude-opus-4-8"
-# TIERING por complexidade (so no caminho BATCH): linhas SEM token de quebra (single-line, maioria) vao
-# p/ o Haiku (-67%/linha; benchmark: voz no nivel do Sonnet, inclusive registro arcaico); linhas COM `\n`
-# (multi-linha) ficam no Sonnet (Haiku derrapa na disciplina de \n em escala — paridade so falha onde HA
-# \n, entao o split DRIBLA a fraqueza). O caminho interativo (fallback/escalonamento) fica Sonnet (casos
-# dificeis = confiabilidade). MODEL_TRANSLATE_CHEAP=None desliga o tiering (tudo Sonnet no batch).
-MODEL_TRANSLATE_CHEAP = "claude-haiku-4-5"
-
-# Saida pode ser grande (ate ~500 linhas x speaker/tone/intent/risk/t). Streaming evita timeout;
-# este teto cobre a maior cena do corpus com folga (Sonnet/Opus 4.x suportam ate 64k de saida).
-MAX_OUTPUT_TOKENS = 64000
-# CHUNKING do batch: o endpoint de batch TRUNCA a saida estruturada longa (~100 linhas/resposta,
-# DETERMINISTICO — medido no 15_06: 120/221 linhas sempre faltando, identico nas 3 rodadas; re-mandar
-# nao adianta, volta o mesmo prefixo). Quebrar a cena em pedacos pequenos faz cada request voltar
-# COMPLETO; a cobertura acumula entre os chunks. (O interativo/streaming escapa pq trunca em pontos
-# variaveis a cada retry -> a uniao das 3 cobre; o batch trunca igual -> a uniao nao cresce.)
-_BATCH_CHUNK = 60     # linhas por requisicao de batch (folga sob o teto ~100 medido)
-_MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
-_MAX_BACKOFF = 4      # tentativas de rede com backoff exponencial
-
-# Tuning de custo da TRADUCAO (medido: effort:high + thinking estourou ~5x o cost_model — o thinking
-# conta como saida a $15/M). Traducao com contexto curado nao precisa de raciocinio profundo:
-# default sem thinking + effort baixo. back_translate (alto risco) mantem thinking (raciocinio importa).
-EFFORT_TRANSLATE = "low"
-THINK_TRANSLATE = False
-
-# Disciplina de orcamento: a traducao TRANSLITERADA (sem acentos — como vai p/ os bytes) nao deve
-# estourar MUITO o byte_budget. E SOFT (best-effort): linhas acima de budget*tol recebem um nudge de
-# encurtamento nas retries, mas sao aceitas (o conector absorve crescimento; a VERIFY e o juiz real).
-# 1.40 = DEFAULT (alinhado ao build_plan; traducoes naturais, menos retries = mais barato). Cenas de
-# binario APERTADO (multi-BIN) podem nao caber a 1.40 -> o run_scene ESCALA o aperto (1.40->1.15->1.0)
-# e re-traduz so quando a VERIFY falha por fitting (out-of-file/residuo). Ver BUDGET_ESCALATION.
-BUDGET_TOLERANCE = 1.40
-BUDGET_ESCALATION = (1.15, 1.0)   # tolerancias mais apertadas tentadas, em ordem, na falha de fitting
-
-AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
-READY = "ready"         # a saida ja existe
-DONE = "done"           # chamada de IA concluida (backend api)
+# Constantes de tier/custo/status extraidas p/ config.py (re-exportadas aqui p/ compat).
+from config import (  # noqa: E402,F401
+    MODEL_TRANSLATE, MODEL_BACK, MODEL_TRANSLATE_CHEAP, BACK_SAMPLE_RATE, MAX_OUTPUT_TOKENS,
+    _BATCH_CHUNK, _MAX_TRIES, EFFORT_TRANSLATE, THINK_TRANSLATE, BUDGET_TOLERANCE, BUDGET_ESCALATION,
+    AWAITING, READY, DONE)
+# Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
+from back_translate import (  # noqa: E402,F401
+    back_translate, _write_back_prompt, _BACK_SCHEMA, _back_params, _api_back_translate,
+    _plan_lines, _ln_entry, high_risk_lines, sample_low_risk_lines, back_translate_candidates,
+    invalidate_back_translation, batch_back_translate)
 
 
 def _no_effort_model(model: str) -> bool:
@@ -86,12 +63,12 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     scene_id = pack["scene_id"]
-    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
+    out = paths.translations(root, scene, scene_id)
     if backend == "in-session":
         if out.is_file():
             return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
         return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],
-                "prompt": str(root / "artifacts" / scene / "scene_prompt.md"),
+                "prompt": str(paths.scene_prompt(root, scene)),
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
@@ -102,45 +79,7 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
     raise ValueError(f"backend desconhecido: {backend}")
 
 
-# ----------------------------- BACK-TRANSLATE ---------------------------------
-
-def back_translate(root, scene, high_lines, *, backend="api", model=None):
-    """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
-    root = Path(root)
-    scene_id = context_pack.scene_id_of(scene)
-    out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
-    if not high_lines:
-        return {"status": DONE, "reviewed": 0, "path": None}
-    if backend == "in-session":
-        _write_back_prompt(root, scene, scene_id, high_lines)
-        if out.is_file():
-            return {"status": READY, "path": str(out), "reviewed": len(high_lines)}
-        return {"status": AWAITING, "reviewed": len(high_lines),
-                "prompt": str(root / "artifacts" / scene / f"back_prompt_{scene_id}.md"),
-                "expected_output": str(out)}
-    if backend == "api":
-        m = model or MODEL_BACK
-        data, usage = _api_back_translate(root, scene, high_lines, m)
-        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        return {"status": DONE, "path": str(out), "reviewed": len(high_lines),
-                "model": m, "usage": usage}
-    raise ValueError(f"backend desconhecido: {backend}")
-
-
-def _write_back_prompt(root, scene, scene_id, high_lines):
-    L = [f"# Back-translation — cena {scene} ({len(high_lines)} linhas de alto risco)", "",
-         "> Para cada linha: traduza o pt-BR de volta p/ EN, compare com o source, e confirme que",
-         "> SENTIDO, ambiguidade, voz e timing foram preservados. Divergencia -> revisar a traducao.",
-         f"> Saida: `back_translation_{scene_id}.json` = {{\"reviewed\": N, \"entries\": [",
-         ">   {{offset, source, target, back_en, verdict: pass|revise, note}} ]}}.", ""]
-    for h in high_lines:
-        L.append(f"## {h['offset']} ({h.get('speaker','')})")
-        L.append(f"- source : {h['source']}")
-        L.append(f"- target : {h['target']}")
-        if h.get("risk_notes"):
-            L.append(f"- notas  : {h['risk_notes']}")
-        L.append("")
-    (root / "artifacts" / scene / f"back_prompt_{scene_id}.md").write_text("\n".join(L), encoding="utf-8")
+# BACK-TRANSLATE -> back_translate.py (back_translate/_write_back_prompt importados acima).
 
 
 # ------------------------------- API backend ----------------------------------
@@ -168,40 +107,7 @@ _TRANSLATION_SCHEMA = {
 }
 
 
-def _load_dotenv():
-    """Carrega um `.env` (KEY=VALUE) p/ os.environ SEM dependencia externa. Nao sobrescreve
-    variavel ja setada no ambiente (env real vence). Procura na raiz do framework e no CWD."""
-    roots = [_HERE.parent.parent, Path.cwd()]   # framework/ (raiz do repo) e diretorio de execucao
-    for base in roots:
-        f = base / ".env"
-        if not f.is_file():
-            continue
-        for line in f.read_text(encoding="utf-8").splitlines():
-            s = line.strip()
-            if not s or s.startswith("#") or "=" not in s:
-                continue
-            k, _, v = s.partition("=")
-            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-
-
-def _client():
-    try:
-        import anthropic
-    except ImportError as e:
-        raise RuntimeError("backend 'api' requer o pacote 'anthropic' (pip install anthropic). "
-                           "Use backend 'in-session' p/ o caminho assinatura.") from e
-    _load_dotenv()
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not key or "cole-sua-chave" in key:
-        raise RuntimeError("backend 'api' requer ANTHROPIC_API_KEY: edite o `.env` na raiz do "
-                           "framework e troque o placeholder pela sua chave real (veja .env.example).")
-    # timeout generoso (fetch de resultados de batch grande) + retries do PROPRIO SDK (1a linha de
-    # defesa em 429/500/timeout/conexao); o _with_backoff por cima cobre o que escapar (2a linha).
-    return anthropic.Anthropic(timeout=900.0, max_retries=5)
-
-
-def _carta_text() -> str:
-    return context_pack._read(context_pack.CARTA_PATH)
+# _load_dotenv / _client / _carta_text -> llm_client.py (importados acima).
 
 
 # Regra do token de quebra reforcada na borda da API: em JSON, o literal barra+n e escrito `\\n`.
@@ -217,99 +123,12 @@ _NL_RULE = (
 )
 
 
-def _text_of(msg) -> str:
-    return "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+# _text_of / _usage_of / _add_usage -> llm_client.py (importados acima).
+# Preco/custo/ledger extraidos p/ cost.py (re-exportados aqui p/ compat: model.cost_of/log_api_call/_PRICE).
+from cost import _PRICE, cost_of, log_api_call  # noqa: E402,F401
 
 
-def _usage_of(msg) -> dict:
-    u = getattr(msg, "usage", None)
-    if not u:
-        return {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
-    return {"in": getattr(u, "input_tokens", 0) or 0,
-            "out": getattr(u, "output_tokens", 0) or 0,
-            "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0,
-            "cache_write": getattr(u, "cache_creation_input_tokens", 0) or 0}
-
-
-def _add_usage(acc: dict, u: dict) -> dict:
-    for k in ("in", "out", "cache_read", "cache_write"):
-        acc[k] = acc.get(k, 0) + u.get(k, 0)
-    return acc
-
-
-# precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
-# Fonte unica de verdade de custo (run_scene/cost_report importam daqui — sem drift de preco).
-_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
-          "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
-          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
-
-
-def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
-    """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write). A Batch API tem
-    desconto de 50% sobre TODO o uso (batch=True -> 0.5x)."""
-    p = _PRICE.get(model)
-    if not p or not u:
-        return 0.0
-    base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
-            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
-    return base * (0.5 if batch else 1.0)
-
-
-def log_api_call(root, scene, kind, model, usage, *, batch=False):
-    """Anexa 1 linha a artifacts/api_ledger.jsonl por chamada de API CONCLUIDA (cada tentativa de
-    cobertura e cada escalonamento de fitting). E a VERDADE de gasto: registra TODA chamada cobrada,
-    INCLUSIVE as de cenas que depois falham (cobertura/verify) ou retries — exatamente o que o
-    metrics.jsonl (resumo so-de-sucesso) perde. Sem isso o saldo surpreende (estimado << real).
-    Best-effort (nunca derruba a traducao por falha de log). Ver cost_report.py p/ o agregado."""
-    if not usage:
-        return None
-    rec = {"t": round(time.time(), 3), "scene": scene, "kind": kind, "model": model,
-           "batch": bool(batch), "usage": dict(usage),
-           "cost_usd": round(cost_of(model, usage, batch=batch), 5)}
-    try:
-        p = Path(root) / "artifacts" / "api_ledger.jsonl"
-        with p.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    except Exception:
-        pass
-    return rec
-
-
-def _transient_errors():
-    """Erros de rede TRANSITORIOS (curam com retry): 429/500/timeout + quedas de conexao httpx. NAO
-    inclui 400 BadRequest (esse nao 'cura'). Lazy import (anthropic/httpx so quando o backend api roda)."""
-    import anthropic
-    import httpx
-    return (anthropic.RateLimitError, anthropic.InternalServerError,
-            anthropic.APITimeoutError, anthropic.APIConnectionError,
-            httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout,
-            httpx.ConnectError, httpx.ConnectTimeout)
-
-
-def _with_backoff(fn):
-    """Executa fn() com backoff exponencial em erro transitorio de rede (mesma classe do _stream_final).
-    Para chamadas de BATCH (create/retrieve/results) que nao usam streaming — sem isso, um timeout de
-    rede num unico GET/POST derrubava todo o batch (ex.: back-batch do cap.18 morreu por timeout)."""
-    transient = _transient_errors()
-    delay = 2.0
-    for i in range(_MAX_BACKOFF):
-        try:
-            return fn()
-        except transient:
-            if i == _MAX_BACKOFF - 1:
-                raise
-            time.sleep(delay)
-            delay *= 2
-
-
-def _stream_final(client, **kwargs):
-    """Streaming + backoff. Streaming evita timeout em saidas longas; backoff cobre 429/500/timeout E
-    quedas de conexao no meio do stream (httpx RemoteProtocolError/'incomplete chunked read'), comuns
-    em cenas grandes (output longo). NAO retenta erros de request (400 BadRequest) — esses nao 'curam'."""
-    def _do():
-        with client.messages.stream(**kwargs) as s:
-            return s.get_final_message()
-    return _with_backoff(_do)
+# _transient_errors / _with_backoff / _stream_final -> llm_client.py (importados acima).
 
 
 def _check_translation(data, offsets):
@@ -348,6 +167,22 @@ def _parity_fit(source, t):
             out = out.replace("  ", " ")
         return out.strip()
     return t
+
+
+# Guarda contra BLOW-UP patologico de comprimento: o modelo (raro) emite centenas/milhares de chars de
+# lixo p/ uma linha curta (medido: um grito de ~17 chars virou 5872 chars de ruido num batch -> passou o
+# fitting so porque AQUELA linha tinha byte_budget; uma sem budget escaparia). Rejeitamos a traducao cuja
+# forma TRANSLITERADA passa de _BLOWUP_FACTOR x a fonte (piso _BLOWUP_FLOOR p/ nao punir linha curta
+# legitima) -> a linha conta como NAO retornada (re-roda / fica 'missing' -> coverage a pega), nunca aceita.
+_BLOWUP_FACTOR = 8
+_BLOWUP_FLOOR = 200
+
+
+def _is_blowup(source, t) -> bool:
+    """True se `t` e patologicamente mais longa que `source` (lixo provavel do modelo)."""
+    if not isinstance(t, str):
+        return False
+    return _translit_len(t) > max(_translit_len(source or "") * _BLOWUP_FACTOR, _BLOWUP_FLOOR)
 
 
 def _select_reuse(pack, *, enabled):
@@ -403,7 +238,7 @@ def _to_map(data):
 
 
 def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE,
-                   budget_tolerance=None):
+                   budget_tolerance=None, quality_note=""):
     tol = budget_tolerance or BUDGET_TOLERANCE
     tok = context_pack.TOKEN
     # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
@@ -419,6 +254,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
     red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)   # render so as linhas novas
     base_user = context_pack.render_prompt(red, carta="") + _NL_RULE  # Carta ja no system
+    base_user += quality_note   # feedback de qualidade da back-translation (quality_fix); "" no fluxo normal
     offsets = [r["offset"] for r in novel]
     offset_set = set(offsets)
     budgets = {r["offset"]: r.get("byte_budget") for r in novel}
@@ -454,6 +290,8 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             if off not in offset_set or not isinstance(v, dict):
                 continue
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
+            if _is_blowup(srcmap.get(off, ""), v["t"]):
+                continue                                 # lixo patologico -> descarta (vira 'missing' -> retry)
             good_parity = (v["t"].count(tok) == srcmap.get(off, "").count(tok))
             if off not in merged:
                 merged[off] = v                      # preenche lacuna
@@ -512,7 +350,7 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
     """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a estouro)."""
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
-    out = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
+    out = paths.translations(root, scene, pack['scene_id'])
     if not out.is_file():
         return []
     data = json.loads(out.read_text(encoding="utf-8"))
@@ -520,15 +358,18 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0) -> list:
     return _over_offsets(budgets, data.get("lines", {}), tolerance)
 
 
-def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
+# invalidate_back_translation -> back_translate.py (importado acima).
+
+
+def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
     """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<scene_id>.json,
-    preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting. Reusa
-    _api_translate sobre um pack reduzido (dedup ja vem OFF com budget_tolerance != None -> traduz fresco
-    e mais curto)."""
+    preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting (e do quality_fix).
+    Reusa _api_translate sobre um pack reduzido (dedup ja vem OFF com budget_tolerance != None -> traduz
+    fresco e mais curto). `quality_note` opcional anexa feedback de revisao da back-translation ao prompt."""
     root = Path(root)
     pack = context_pack.build_pack(root, scene)
     scene_id = pack["scene_id"]
-    out = root / "artifacts" / scene / f"translations_{scene_id}.json"
+    out = paths.translations(root, scene, scene_id)
     full = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
     offset_set = set(offsets)
     sub = dict(pack)
@@ -538,9 +379,11 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance):
         return {"status": DONE, "model": model or MODEL_TRANSLATE, "usage": None,
                 "n_lines": 0, "reused": 0, "novel": 0}
     m = model or MODEL_TRANSLATE
-    data, usage, meta = _api_translate(root, scene, sub, m, budget_tolerance=budget_tolerance)
+    data, usage, meta = _api_translate(root, scene, sub, m, budget_tolerance=budget_tolerance,
+                                       quality_note=quality_note)
     full.setdefault("lines", {}).update(data.get("lines", {}))   # merge: so os offsets re-traduzidos
     out.write_text(json.dumps(full, ensure_ascii=False, indent=2), encoding="utf-8")
+    invalidate_back_translation(root, scene, offset_set)         # o verdict antigo nao vale mais
     return {"status": DONE, "model": m, "usage": usage, "n_lines": sub["n_lines"],
             "reused": meta["reused"], "novel": meta["novel"]}
 
@@ -594,7 +437,7 @@ def _translate_params(pack, model, note=""):
 
 
 def _write_translations(root, scene, data):
-    out = Path(root) / "artifacts" / scene / f"translations_{context_pack.scene_id_of(scene)}.json"
+    out = paths.translations(root, scene, context_pack.scene_id_of(scene))
     out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
@@ -619,6 +462,8 @@ def _parse_batch_lines(pack, text):
     for off, v in parsed.get("lines", {}).items():
         if off in novel_offsets and isinstance(v, dict):
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
+            if _is_blowup(srcmap.get(off, ""), v["t"]):
+                continue                                 # lixo patologico -> descarta (re-roda / missing)
             out[off] = v
     return out
 
@@ -654,17 +499,7 @@ def _batch_coverage(pack, merged):
     return missing, bad_par
 
 
-def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
-    """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
-    waited = 0
-    while True:
-        b = _with_backoff(lambda: client.messages.batches.retrieve(batch_id))   # poll resiliente a timeout
-        if getattr(b, "processing_status", None) == "ended":
-            return True
-        if waited >= max_wait_seconds:
-            return False
-        time.sleep(poll_seconds)
-        waited += poll_seconds
+# _await_batch -> llm_client.py (importado acima).
 
 
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
@@ -697,7 +532,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
-        existing = root / "artifacts" / scene / f"translations_{pack['scene_id']}.json"
+        existing = paths.translations(root, scene, pack['scene_id'])
         if existing.is_file():
             try:
                 ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
@@ -777,119 +612,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     return status
 
 
-# Schema ESTRITO p/ a back-translation (garante JSON parseavel — sem ele o Opus as vezes devolvia
-# texto vazio/markdown e o parse quebrava DEPOIS de ja cobrar a chamada: vazamento de Opus).
-_BACK_SCHEMA = {
-    "type": "object", "additionalProperties": False, "required": ["entries"],
-    "properties": {"entries": {"type": "array", "items": {
-        "type": "object", "additionalProperties": False,
-        "required": ["offset", "back_en", "verdict", "note"],
-        "properties": {
-            "offset": {"type": "string"}, "back_en": {"type": "string"},
-            "verdict": {"type": "string", "enum": ["pass", "revise"]},
-            "note": {"type": "string"},
-        }}}},
-}
-
-
-def _back_params(high_lines, model):
-    """Params de UMA requisicao de back-translation (compartilhado pelo caminho streaming e pelo BATCH).
-    Determinista (sem rede) -> montagem do request testavel sem SDK."""
-    payload = [{"offset": h["offset"], "source": h["source"], "target": h["target"],
-                "speaker": h.get("speaker", "")} for h in high_lines]
-    instr = ("Para cada item, traduza o 'target' (pt-BR) de volta p/ EN ('back_en'), compare com "
-             "'source', e de um 'verdict' (pass|revise) + 'note' curta. verdict=revise se "
-             "sentido/ambiguidade/voz divergirem. Inclua o 'offset' de cada item.\n\n")
-    return {
-        "model": model, "max_tokens": MAX_OUTPUT_TOKENS,
-        "messages": [{"role": "user", "content": instr + json.dumps(payload, ensure_ascii=False)}],
-        "thinking": {"type": "adaptive"},
-        "output_config": {"effort": "high",
-                          "format": {"type": "json_schema", "schema": _BACK_SCHEMA}},
-    }
-
-
-def _api_back_translate(root, scene, high_lines, model):
-    client = _client()
-    msg = _stream_final(client, **_back_params(high_lines, model))
-    usage = _usage_of(msg)
-    log_api_call(root, scene, "back", model, usage)   # registra antes do parse (Opus cobra mesmo se quebrar)
-    data = json.loads(_text_of(msg))
-    data["reviewed"] = len(data.get("entries", []))
-    return data, usage
-
-
-def high_risk_lines(root, scene):
-    """Linhas risco>=high/critical do translation_plan_<scene_id>.json (candidatas a back-translation).
-    Le o plano do conector (existe apos build_plan). Fonte unica — run_scene e o batch leem daqui."""
-    scene_id = context_pack.scene_id_of(scene)
-    plan = Path(root) / "artifacts" / scene / f"translation_plan_{scene_id}.json"
-    if not plan.is_file():
-        return []
-    lines = json.loads(plan.read_text(encoding="utf-8")).get("lines", [])
-    out = []
-    for ln in lines:
-        if ln.get("risk_level") in ("high", "critical"):
-            out.append({"offset": ln.get("offset", ""), "source": ln.get("text_source", ""),
-                        "target": ln.get("base_translation", ""), "speaker": ln.get("speaker", ""),
-                        "risk_notes": ln.get("risk_notes", "")})
-    return out
-
-
-def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600):
-    """Back-translation de VARIAS cenas num UNICO batch (-50% sobre o Opus, o passo mais caro/linha).
-    A back-translation e report-only e roda DEPOIS do verify (precisa do translation_plan) -> e um
-    POS-PASSE natural: coleta as linhas high/critical de cada cena, monta 1 request por cena e submete
-    em batch. Grava back_translation_<scene_id>.json por cena. custom_id = scene.
-
-    Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra). Cena sem
-    linha de alto risco -> 'no_high' (sem request). Retorna {scene: status} em
-    {reviewed, no_high, errored, parse_failed, timeout}. NAO bloqueia o pipeline (o run_scene ja seguiu)."""
-    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
-    from anthropic.types.messages.batch_create_params import Request
-    root = Path(root)
-    m = model or MODEL_BACK
-    status, highs, reqs = {}, {}, []
-    for scene in scenes:
-        scene_id = context_pack.scene_id_of(scene)
-        out = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
-        hl = high_risk_lines(root, scene)
-        if not hl:
-            status[scene] = "no_high"
-            continue
-        if out.is_file():                                # ja revisada (run anterior) -> nao re-cobra
-            status[scene] = "reviewed"
-            continue
-        highs[scene] = hl
-        reqs.append(Request(custom_id=scene,
-                            params=MessageCreateParamsNonStreaming(**_back_params(hl, m))))
-    if not reqs:
-        return status
-    client = _client()
-    batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
-    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
-        for scene in highs:
-            status.setdefault(scene, "timeout")
-        return status
-    # materializa os resultados DENTRO do backoff (igual ao batch_translate; foi aqui que o cap.18 morreu)
-    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
-    for result in results:
-        scene = result.custom_id
-        if getattr(result.result, "type", None) != "succeeded":
-            status[scene] = "errored"
-            continue
-        msg = result.result.message
-        log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
-        try:
-            data = json.loads(_text_of(msg))
-            data["reviewed"] = len(data.get("entries", []))
-            scene_id = context_pack.scene_id_of(scene)
-            (root / "artifacts" / scene / f"back_translation_{scene_id}.json").write_text(
-                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-            status[scene] = "reviewed"
-        except Exception:
-            status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
-    return status
+# _BACK_SCHEMA / _back_params / _api_back_translate / high_risk_lines / sample_low_risk_lines /
+# back_translate_candidates / batch_back_translate -> back_translate.py (importados acima).
 
 
 def main():

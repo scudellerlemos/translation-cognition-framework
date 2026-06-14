@@ -32,6 +32,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
+import paths          # noqa: E402  (H2: fonte unica de paths)
 import model as M      # noqa: E402
 import state_index     # noqa: E402
 import kb_gate         # noqa: E402
@@ -57,8 +58,21 @@ def _run(cmd) -> tuple[int, str]:
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
+def _verify_status(out: str) -> dict:
+    """Protocolo estruturado (H1): le a 1 linha 'VERIFY_STATUS: {json}' que o conector emite. Fallback do
+    exit-code — conector legado sem a linha -> {} (run_scene usa o exit-code 3 como sinal primario)."""
+    for line in out.splitlines():
+        line = line.strip()
+        if line.startswith("VERIFY_STATUS:"):
+            try:
+                return json.loads(line[len("VERIFY_STATUS:"):].strip())
+            except Exception:
+                return {}
+    return {}
+
+
 def _checkpoint(root: Path, scene: str, patch: dict):
-    p = root / "artifacts" / "run_state.json"
+    p = paths.run_state(root)
     state = {}
     if p.is_file():
         state = json.loads(p.read_text(encoding="utf-8"))
@@ -72,7 +86,7 @@ def _checkpoint(root: Path, scene: str, patch: dict):
 def _ledger_scene_cost(root: Path, scene: str) -> float:
     """Custo-VERDADE da cena = soma de TODAS as chamadas no api_ledger.jsonl (cada retry de cobertura e
     cada escalonamento de fitting), nao so a ultima translate/back. E o numero que casa com o saldo."""
-    p = root / "artifacts" / "api_ledger.jsonl"
+    p = paths.ledger(root)
     if not p.is_file():
         return 0.0
     tot = 0.0
@@ -100,7 +114,7 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
     bmodel = bt.get("model", "") if isinstance(bt, dict) else ""
     # back-translation pass-rate (se houve saida)
     bt_pass = None
-    bpath = root / "artifacts" / scene / f"back_translation_{scene_id}.json"
+    bpath = paths.back_translation(root, scene, scene_id)
     if bpath.is_file():
         try:
             ents = json.loads(bpath.read_text(encoding="utf-8")).get("entries", [])
@@ -115,7 +129,7 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
            "back_pass_rate": bt_pass,
            "cost_usd_last": round(M.cost_of(tmodel, tu or {}) + M.cost_of(bmodel, bu or {}), 5)}
     rec["cost_usd"] = _ledger_scene_cost(root, scene)   # VERDADE: soma o ledger (retries + escalonamento)
-    p = root / "artifacts" / "metrics.jsonl"
+    p = paths.metrics(root)
     with p.open("a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     return rec
@@ -147,7 +161,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     tr = None
     if pretranslated:                                       # batch ja produziu o translations_<scene_id>.json
         pack = context_pack.write_pack(root, scene)
-        outp = root / "artifacts" / scene / f"translations_{scene_id}.json"
+        outp = paths.translations(root, scene, scene_id)
         if outp.is_file():
             tr = {"status": M.DONE, "n_lines": pack["n_lines"], "model": M.MODEL_TRANSLATE,
                   "usage": None, "reused": None, "novel": None}
@@ -220,8 +234,11 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True})
             break
-        low = out.lower()
-        fitting = ("fora do arquivo" in low) or ("residuo t4" in low and "esperado 0" in low)
+        # PROTOCOLO ESTRUTURADO (H1): exit-code do conector decide, NAO grep de prosa. exit 3 = falha
+        # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
+        # VERIFY_STATUS; se nem isso, conservadoramente NAO escala (falha dura). Acabou com o grep fragil
+        # que procurava "fora do arquivo" (espacos) — texto real e "fora-do-arquivo" (hifens) -> nunca casava.
+        fitting = (code == 3) or _verify_status(out).get("fitting_failure") is True
         if fitting and ti < len(tolerances) - 1:
             print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
             continue

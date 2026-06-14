@@ -80,7 +80,15 @@ flowchart LR
 ```
 
 > As **duas únicas** caixas de IA (rosa) são `translate` e `back_translate`. Todo o resto é
-> determinístico — é o que torna o custo previsível e o resultado reprodutível.
+> determinístico — é o que torna o custo previsível e os **gates** reprodutíveis.
+>
+> **Reprodutível com asterisco (H4 — seja preciso):** a **tradução em si** (saída do LLM) é
+> **estocástica** — re-rodar uma cena NÃO produz os mesmos bytes de tradução. O que é determinístico/
+> reproduzível é **a orquestração + os gates**: dado um `translations_*.json` fixo, `context_pack`
+> (`pack.json` byte-idêntico), `build_plan`, `verify` (round-trip byte-idêntico) e a reinserção rodam
+> igual toda vez. Em outras palavras: **o veredito é reproduzível; a geração não.** É por isso que o
+> `translations_*.json` é trackeado no git (o artefato caro/estocástico) e o `pack.json` é regenerável
+> (determinístico). Não confundir "pipeline determinístico" com "tradução determinística".
 
 **Estado externo consultável** (não na janela): `glossary.csv`, `state/translation_memory.jsonl`,
 `state/voice_cards.json`, `state/decision_index.json`, `translation_status.json`, `run_state.json`.
