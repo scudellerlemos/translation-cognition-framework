@@ -1,0 +1,940 @@
+{
+  "lines": {
+    "0x1b1468": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de Yamato."
+    },
+    "0x1b14b7": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmph..."
+    },
+    "0x1b1b95": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ngh..."
+    },
+    "0x1b1cbb": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "por um instante."
+    },
+    "0x1b1cc9": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein...?"
+    },
+    "0x1b1f1a": {
+      "speaker": "Man",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "do chão."
+    },
+    "0x1b1f54": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "afirmar fato brutal com indiferença",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sem estômago."
+    },
+    "0x1b1fbd": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "continuação descritiva, tom de fato consumado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tronco de lado."
+    },
+    "0x1b1ffc": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "descrição visceral de consequência",
+      "risk_level": "medium",
+      "risk_notes": "Conteúdo gráfico; manter tom frio sem dramatização; preservar a frieza enigmática.",
+      "t": "começa a se acumular em torno dos restos do homem."
+    },
+    "0x1b2054": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "desdém, indiferença absoluta frente à morte",
+      "risk_level": "medium",
+      "risk_notes": "'waste a second glance' = desprezo total; manter ambiguidade: 'carne inerte' preserva frieza sem resolver identidade/razão. Evitar personificação que revelaria vínculo.",
+      "t": "nem lança um segundo olhar à carne inerte."
+    },
+    "0x1b20ad": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "anúncio de proclamação iminente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com toda a voz."
+    },
+    "0x1b20bf": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "proclamação de invasão iminente; tom profético/ameaçador",
+      "risk_level": "critical",
+      "risk_notes": "'invasion of Yamato' = termo de lore maior; 'Yamato' mantém_original per glossário; preserva ambiguidade/ameaça enigmática (quem é o 'we'? por quê?); byte_budget 44 (transliterado 'Yamato' = 6 bytes). Risco crítico por ser anúncio de evento narrativo maior — back-translation obrigatória para garantir tom dúbio.",
+      "t": "Vamos começar nossa invasão de Yamato!"
+    },
+    "0x1b2117": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "ordem/profecia de destruição; tom imperativo velado em frieza",
+      "risk_level": "high",
+      "risk_notes": "'Trample down' = imperativo violento; 'people of Yamato' mantém lore (Yamato, povo de Yamato — glossário); preserva enigma: não resolve quem são os invasores nem por quê. Byte_budget 38. Alto risco por violência + spoiler potencial (vinculação com Yamato). Back-translation recomendada.",
+      "t": "Pisoteiem todo o povo de Yamato."
+    },
+    "0x1b219b": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "clímax de proclamação; invocação de título/autoridade enigmática",
+      "risk_level": "high",
+      "risk_notes": "'ruler' = soberano/governante; ambiguidade intencional (qual governante? contexto da cena exigido para resolver — spoiler se antecipado). Byte_budget apertado (6); translit 'soberano!' = 9 bytes. Usar forma concisa. Risco alto por ambiguidade + titulo. Back-translation obrigatória para preservar dúvida.",
+      "t": "soberano!"
+    },
+    "0x1b12fd": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "descrever Gundhurua no trono com expressão feroz",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua está sentado em seu trono, com um sorriso\\n"
+    },
+    "0x1b132b": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "completar descrição — olha para o mensageiro yamato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "feroz no rosto enquanto olha para o mensageiro de Yamato.\\n"
+    },
+    "0x1b1366": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "descrever a tensão na sala",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seus assessores ao redor prendem a respiração.\\n"
+    },
+    "0x1b13a4": {
+      "speaker": "Gundhurua",
+      "tone_register": "enigmático, frio, imperioso",
+      "intent": "perguntar o recado do Mikado com desdém",
+      "risk_level": "medium",
+      "risk_notes": "Mikado: manter como título distante; não antecipar vínculo pessoal",
+      "t": "...E então? O que é que o Mikado de Yamato\\n"
+    },
+    "0x1b13f3": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, submisso",
+      "intent": "recitar o edito do Mikado",
+      "risk_level": "medium",
+      "risk_notes": "Mikado: manter como título; tom de mensageiro recitando ordens",
+      "t": "Repito as palavras de nosso grande soberano, o Mikado.\\n"
+    },
+    "0x1b1435": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, submisso",
+      "intent": "transmitir ordem de retirada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Retire suas forças imediatamente e deixe as terras\\n"
+    },
+    "0x1b1473": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, submisso",
+      "intent": "oferecer clemência em troca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se assim agir, meu soberano demonstrará\\n"
+    },
+    "0x1b14d9": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, calculista",
+      "intent": "indicar que a mensagem está incompleta, pressionando o mensageiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Você não me deu a mensagem completa.\\n"
+    },
+    "0x1b1543": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, ameaçador",
+      "intent": "forçar o mensageiro a revelar o resto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A mensagem certamente não termina aí?\\n"
+    },
+    "0x1b1598": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, irônico",
+      "intent": "insistir para ouvir o pensamento completo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não seja modesto. Quero ouvir os pensamentos\\n"
+    },
+    "0x1b15df": {
+      "speaker": "Gundhurua",
+      "tone_register": "imperioso, ameaçador",
+      "intent": "ordenar que o mensageiro cumpra seu papel e diga tudo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cumpra seu dever de mensageiro. Diga-me tudo\\n"
+    },
+    "0x1b1611": {
+      "speaker": "Gundhurua",
+      "tone_register": "imperioso",
+      "intent": "concluir a ordem — esse é o propósito do mensageiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o que tem a dizer. Esse É o seu propósito.\\n"
+    },
+    "0x1b164b": {
+      "speaker": "Mensageiro",
+      "tone_register": "apavorado, hesitante",
+      "intent": "mensageiro reluta, preocupado com a reação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Entendido... E-Eu apenas... Temo que o\\n"
+    },
+    "0x1b16a8": {
+      "speaker": "Gundhurua",
+      "tone_register": "irônico, suave mas ameaçador",
+      "intent": "tranquilizar o mensageiro de forma ambígua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não precisa se preocupar. Não serei tão incivilizado\\n"
+    },
+    "0x1b16fd": {
+      "speaker": "Gundhurua",
+      "tone_register": "ameaçador suave",
+      "intent": "oferecer 'prova' de boa vontade de forma dúbia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se ainda duvida de mim, terei prazer em\\n"
+    },
+    "0x1b176c": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, submisso",
+      "intent": "transmitir exigência do Mikado — submissão de Gundhurua",
+      "risk_level": "medium",
+      "risk_notes": "Mikado como título distante; não antecipar vínculo",
+      "t": "Gundhurua, como prova de sua submissão, você\\n"
+    },
+    "0x1b17bb": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal",
+      "intent": "prometer paz e prosperidade a Uzurusha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se assim fizer, o povo de Uzurusha será\\n"
+    },
+    "0x1b17ea": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal",
+      "intent": "concluir a promessa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "agraciado com paz e prosperidade...\\n"
+    },
+    "0x1b183e": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "Gundhurua fecha os olhos — pausa de tensão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua fecha os olhos. Por algum tempo,\\n"
+    },
+    "0x1b18ad": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "o mensageiro aguarda ansioso em silêncio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O mensageiro prende a respiração ansiosamente,\\n"
+    },
+    "0x1b193f": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, calculista",
+      "intent": "reconhecer o que o Mikado quer — pausa antes de reagir",
+      "risk_level": "medium",
+      "risk_notes": "Mikado como título; não antecipar vínculo",
+      "t": "Entendo... Então é isso que o Mikado deseja.\\n"
+    },
+    "0x1b1986": {
+      "speaker": "Gundhurua",
+      "tone_register": "irônico, perturbador",
+      "intent": "reagir com gargalhada às condições do Mikado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hahaha... Que divertido... De fato, não consigo\\n"
+    },
+    "0x1b19c2": {
+      "speaker": "Mensageiro",
+      "tone_register": "chocado, assustado",
+      "intent": "mensageiro horrorizado com a risada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "R-Responder a tal proposta com risadas!\\n"
+    },
+    "0x1b19f7": {
+      "speaker": "Mensageiro",
+      "tone_register": "subserviente, nervoso",
+      "intent": "comentário bajulador por falta de resposta melhor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua benevolência é admirável, senhor...\\n"
+    },
+    "0x1b1a2c": {
+      "speaker": "Gundhurua",
+      "tone_register": "irônico, ameaçador",
+      "intent": "explicar que a proposta o fez rir, não enfurecer — tom dúbio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu disse, não disse? Uma proposta assim pode\\n"
+    },
+    "0x1b1a5d": {
+      "speaker": "Gundhurua",
+      "tone_register": "irônico",
+      "intent": "continuar — quem poderia se irritar com isso?",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ter me feito rir, mas quem ficaria irritado\\n"
+    },
+    "0x1b1aa5": {
+      "speaker": "Gundhurua",
+      "tone_register": "irônico, condescendente",
+      "intent": "fingir humildade — sua opinião não conta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Temo que a opinião de alguém tão baixo quanto\\n"
+    },
+    "0x1b1b31": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, ameaçador",
+      "intent": "afirmar que é natural rir do que é engraçado — tom sombrio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É natural que alguém ria quando ouve\\n"
+    },
+    "0x1b1b5f": {
+      "speaker": "Gundhurua",
+      "tone_register": "ameaçador, perturbador",
+      "intent": "retórica sinistra — por que você não ri?",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "algo engraçado. Então... por que você\\n"
+    },
+    "0x1b1c91": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "o corpo do mensageiro treme violentamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O corpo do mensageiro treme violentamente.\\n"
+    },
+    "0x1b1cd1": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "mensageiro olha para baixo e vê a espada de Gundhurua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele lentamente olha para baixo e vê\\n"
+    },
+    "0x1b1d32": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, sádico",
+      "intent": "perguntar ironicamente se é difícil rir — com espada enfiada nele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que foi...? Você acha... difícil\\n"
+    },
+    "0x1b1d6c": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "Gundhurua segura o mensageiro pela gola",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua agarra o mensageiro pela gola,\\n"
+    },
+    "0x1b1d9b": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "descrever a expressão de Gundhurua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mantendo-o ereto... rosto contorcido em\\n"
+    },
+    "0x1b1dd9": {
+      "speaker": "Gundhurua",
+      "tone_register": "sádico, irônico",
+      "intent": "lembrar que mandou não ser modesto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que disse para não ser tão modesto.\\n"
+    },
+    "0x1b1e05": {
+      "speaker": "Gundhurua",
+      "tone_register": "sádico",
+      "intent": "ordenar que o mensageiro ria — torturando-o",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos, ria. Ria do fundo do seu\\n"
+    },
+    "0x1b1e50": {
+      "speaker": "Gundhurua",
+      "tone_register": "sádico, rindo",
+      "intent": "ordenar risada enquanto ri ele mesmo",
+      "risk_level": "medium",
+      "risk_notes": "Gargalhada localizada: Khakakakaka mantida como onomatopeia alienígena/exótica de Gundhurua",
+      "t": "Sim, ria! RIA! Khakakakaka!\\n"
+    },
+    "0x1b1e93": {
+      "speaker": "Gundhurua",
+      "tone_register": "sádico, rindo",
+      "intent": "continuar a risada macabra",
+      "risk_level": "medium",
+      "risk_notes": "Mesma onomatopeia de gargalhada; manter padrão exótico de Gundhurua",
+      "t": "Khakakakakakaka!\\n"
+    },
+    "0x1b1eb7": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "a espada é enfiada repetidamente no mensageiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A espada mergulha em seu ventre repetidas vezes...\\n"
+    },
+    "0x1b1eeb": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "corpo do mensageiro é destroçado e cai",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "até que a parte inferior do corpo se rompe e cai\\n"
+    },
+    "0x1b1f22": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, entediado",
+      "intent": "comentário irônico — não dá mais para rir assim",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hmph. Acho que não dá mais para rir assim.\\n"
+    },
+    "0x1b1f60": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo sombrio",
+      "intent": "Gundhurua murmura entediado com a situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua murmura, como se estivesse cansado disso,\\n"
+    },
+    "0x1b1f8d": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo sombrio",
+      "intent": "Gundhurua descarta o corpo do mensageiro casualmente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e despreocupadamente arremessa o corpo do mensageiro\\n"
+    },
+    "0x1b1fca": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo de horror",
+      "intent": "o corpo cai com um respingo de sangue",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O corpo cai com um respingo de sangue, e o sangue\\n"
+    },
+    "0x1b2025": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo frio",
+      "intent": "Gundhurua perdeu o interesse e nem olha para o corpo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem interesse, Gundhurua nem sequer\\n"
+    },
+    "0x1b2080": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo imperioso",
+      "intent": "Gundhurua varre a sala com o olhar e ruge às tropas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele percorre os assessores com o olhar e ruge para\\n"
+    },
+    "0x1b20ec": {
+      "speaker": "Gundhurua",
+      "tone_register": "imperioso, brutal",
+      "intent": "ordenar massacre sem misericórdia — homem, mulher, criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não poupem ninguém. Homem, mulher, criança...\\n"
+    },
+    "0x1b213e": {
+      "speaker": "Gundhurua",
+      "tone_register": "imperioso, fanático",
+      "intent": "declarar Yamato indigno de governar — mostrar que Uzurusha é o legítimo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Yamato não tem direito de governar esta terra. Mostre\\n"
+    },
+    "0x1b216d": {
+      "speaker": "Gundhurua",
+      "tone_register": "imperioso, fanático",
+      "intent": "concluir — Uzurusha e ele são os legítimos donos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que é Uzurusha -- Que eu sou seu legítimo\\n"
+    },
+    "0x1b135b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "encerramento solene",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mensageiro."
+    },
+    "0x1b1398": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "narração de silêncio tenso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "em silêncio."
+    },
+    "0x1b13d2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "indagação formal sobre revelação",
+      "risk_level": "medium",
+      "risk_notes": "preservar ambiguidade; não resolver a relação pessoal",
+      "t": "deseja me contar?"
+    },
+    "0x1b13e5": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "referência a enviado estrangeiro",
+      "risk_level": "medium",
+      "risk_notes": "spoiler moderate: Yamatan; preservar distância; não antecipar vínculo",
+      "t": "enviado de Yamato"
+    },
+    "0x1b1428": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "ordem solene de atenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouçam bem."
+    },
+    "0x1b14a1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "oferta de clemência com ambiguidade ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "preservar duplo-sentido (clemência vs ameaça); tone frio, não caloroso",
+      "t": "clemência ao seu povo."
+    },
+    "0x1b14bf": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "pergunta definitiva sob pressão",
+      "risk_level": "high",
+      "risk_notes": "momento crítico; sentenças curtas e definitivas; ton enigmático preservado",
+      "t": "Qual será sua resposta?"
+    },
+    "0x1b1506": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "demanda de revelação completa",
+      "risk_level": "medium",
+      "risk_notes": "comando imperioso; sem vacilos",
+      "t": "Conte tudo, integralmente."
+    },
+    "0x1b151f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "confissão de incompreensão angustiada",
+      "risk_level": "high",
+      "risk_notes": "fragments preservados (I-I = Eu... eu); desorientação; não fluidificar",
+      "t": "Eu... eu tenho medo que não entenda--"
+    },
+    "0x1b156b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "pressão inteligente (acusação velada)",
+      "risk_level": "high",
+      "risk_notes": "ambiguidade: 'há mais' sem resolver o quê; tom cético-ameaçador",
+      "t": "Tenho certeza... que há mais do que isto."
+    },
+    "0x1b15c6": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "referência ao soberano distante",
+      "risk_level": "high",
+      "risk_notes": "spoiler major: Mikado; trate como título/soberano, não antecipe vínculo pessoal",
+      "t": "do Mikado de Yamato."
+    },
+    "0x1b163a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "confirmação retórica (interrogativa)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não é verdade?"
+    },
+    "0x1b167c": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "aviso de conteúdo ofensivo com pedido de piedade",
+      "risk_level": "medium",
+      "risk_notes": "tom discreto-ameaçador; pedir 'clemência' sugere poder",
+      "t": "o conteúdo pode... ofender. Peço sua clemência..."
+    },
+    "0x1b16dc": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "restrição de expressão emocional (ironia)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a ponto de expor minha cólera publicamente."
+    },
+    "0x1b172a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "juramento sagrado sobre divindade local",
+      "risk_level": "medium",
+      "risk_notes": "Onkami = divindade local; manter_original; ton solene",
+      "t": "juro pelo nosso Onkami sagrado."
+    },
+    "0x1b174d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "concordância relutante para prosseguir",
+      "risk_level": "low",
+      "risk_notes": "reticências preservadas; pausa significativa",
+      "t": "Muito bem... continuarei."
+    },
+    "0x1b179a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "ameaça direta (cabeça como pagamento)",
+      "risk_level": "critical",
+      "risk_notes": "violência explícita; tom profético/ameaçador máximo; irrevogável",
+      "t": "vão... oferecer sua cabeça a nós..."
+    },
+    "0x1b180d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "encerramento abrupto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É tudo."
+    },
+    "0x1b181a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "atribuição de fala ao soberano ausente",
+      "risk_level": "high",
+      "risk_notes": "spoiler major: identidade de 'liege' preservada; não resolver quem é",
+      "t": "...Aquelas são as palavras de meu senhor."
+    },
+    "0x1b186a": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "observação de repouso do corpo (Gundhurua)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ele permanece imóvel e silencioso."
+    },
+    "0x1b1886": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "narração de tensão ambiental congelada",
+      "risk_level": "low",
+      "risk_notes": "tom lírico-sinistro; 'icy silence' = silêncio glacial",
+      "t": "Um silêncio glacial envolve a multidão."
+    },
+    "0x1b18d9": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "posicionamento físico do personagem diante do trono",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "em pé diante do trono."
+    },
+    "0x1b18f5": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "riso sombrio inicial (Gundhurua reage)",
+      "risk_level": "high",
+      "risk_notes": "onomatopeia de riso: localizar; tom muda aqui — prazer em anúncio de morte; preservar o frio",
+      "t": "Heh... Heh hah hah hah..."
+    },
+    "0x1b190f": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "narração de riso baixo que escapa (ação física)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Após um tempo, uma risada baixa escapa de Gundhurua."
+    },
+    "0x1b196c": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "provocação ao interlocutor (confissão de prazer na tortura)",
+      "risk_level": "high",
+      "risk_notes": "duplo-sentido: 'contar' = revelar/relatar vs. contar como moeda de valor; ambiguidade máxima",
+      "t": "a me contar."
+    },
+    "0x1b1978": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "resposta assustada e submissa",
+      "risk_level": "high",
+      "risk_notes": "gagueira (Y-Yes = S-sim); tom de horror; manter fragmentação; spoiler: Oshtor = Ukon antes do reveal (cap.13), então ainda é 'General' enigmático aqui, não 'mercenário informal'",
+      "t": "S-Sim, senhor..."
+    },
+    "0x1b19b7": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "ordem de riso sob ameaça tácita",
+      "risk_level": "high",
+      "risk_notes": "imperativo encoberto; tom é 'ache graça ou sofra'; preservar a frieza",
+      "t": "apenas rir."
+    },
+    "0x1b1a1b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "reconhecimento forçado da 'generosidade' (ironia)",
+      "risk_level": "medium",
+      "risk_notes": "ironia pesada; 'magnânimo' = Gundhurua se vê como clemente (falso)",
+      "t": "Que generoso."
+    },
+    "0x1b1a8c": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "provocação curtíssima (o quê ofende você?)",
+      "risk_level": "high",
+      "risk_notes": "byte_budget muito baixo (6); simplificar mantendo duplo-sentido; 'by it' = afetado por isto",
+      "t": "por isto?"
+    },
+    "0x1b1a93": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "acordo relutante (ganho de tempo)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não concorda?"
+    },
+    "0x1b1ad5": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "meditação sombria sobre próprio valor (humildade falsa)",
+      "risk_level": "high",
+      "risk_notes": "'myself would matter little' = selfworth negado (falso); tom profundo e perturbador",
+      "t": "eu próprio importaria pouco."
+    },
+    "0x1b1af4": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "pergunta retórica demandando confirmação de diversão",
+      "risk_level": "high",
+      "risk_notes": "tom cruél; está testando Oshtor; 'amused' = comparte do riso/tortura",
+      "t": "Não está divertido?"
+    },
+    "0x1b1b08": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "confissão forçada de riso",
+      "risk_level": "high",
+      "risk_notes": "gagueira (Y-Yes); submissão sob ameaça; ton de medo/obediência",
+      "t": "...S-Sim, senhor, estou."
+    },
+    "0x1b1b1d": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "confirmação e ordem escalada de riso",
+      "risk_level": "high",
+      "risk_notes": "mudança de tom: agora exige AÇÃO (rir ativamente); intensificação da tortura psicológica",
+      "t": "Mesmo? Então ria."
+    },
+    "0x1b1b8a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "submissão absoluta (por que não rir?)",
+      "risk_level": "high",
+      "risk_notes": "retórica desesperada; pergunta desesperada que demonstra colapso psicológico",
+      "t": "não rir?"
+    },
+    "0x1b1b9c": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "provocação: talvez você não encontre divertimento?",
+      "risk_level": "high",
+      "risk_notes": "tom sadista crescente; oferece 'saída' falsa (permitir não-riso) mas sem real liberdade",
+      "t": "...Ou você não acha engraçado?"
+    },
+    "0x1b1bbe": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "riso forçado e angustiado",
+      "risk_level": "high",
+      "risk_notes": "onomatopeia de riso falso (hesitante); 'Ah... A-Ahah' = gagueira no riso; ton de desespero",
+      "t": "Ah... A-Ah ah..."
+    },
+    "0x1b1bce": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "encorajamento/exigência de riso maior",
+      "risk_level": "high",
+      "risk_notes": "imperativo duplicado; tom escalado; 'laugh laugh' = reforço de sadismo",
+      "t": "Sim. Ria, ria!"
+    },
+    "0x1b1be1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "riso forçado crescente",
+      "risk_level": "high",
+      "risk_notes": "onomatopeia; ton deteriora em riso quase histérico; preservar estrutura de diminuição/crescimento",
+      "t": "Ahahahaha... Hahaha..."
+    },
+    "0x1b1bf8": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "exortação ao riso máximo (pico de sadismo)",
+      "risk_level": "high",
+      "risk_notes": "imperativo triplicado; 'More! More!' = ápice de exigência; ton é agora claramente sádico",
+      "t": "Muito bem! Mais gargalhada! Mais!"
+    },
+    "0x1b1c18": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "riso histérico total (colapso psicológico pico)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de riso no pico de loucura; ponto de ruptura emocional; ton desumanizado",
+      "t": "Ahahahaha...! Haha... Hahahaha!"
+    },
+    "0x1b1c38": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "exigência final de riso (sadismo no pico)",
+      "risk_level": "critical",
+      "risk_notes": "'HARDER' em all-caps = grito; tom sádico absoluto; imperador desumano em êxtase de tortura",
+      "t": "Mais, mais! Ria MAIS ALTO!"
+    },
+    "0x1b1c52": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "riso desumanizado total (colapso completo)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de riso extremo; pessoa está psicologicamente destruída; som quase animal",
+      "t": "Ahahahahahah! Hahahahahaha!"
+    },
+    "0x1b1c6e": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "pergunta final (sadismo lógico: provação da loucura)",
+      "risk_level": "critical",
+      "risk_notes": "all-caps interrogação; mudança abrupta de tom: da exigência ao questionamento cruel; 'funny' já não é diversão mas prova de insanidade",
+      "t": "VOCÊ ACHA ISTO ENGRAÇADO!?"
+    },
+    "0x1b1c87": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "gasp/choque físico (faca entra; fim da tortura psicológica)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de sufocamento; momento de transição: sai da tortura psicológica, entra a física; som deve soar como engasgo de morte",
+      "t": "...Hgkh!?"
+    },
+    "0x1b1cfb": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "narração de arma (lâmina no abdômen)",
+      "risk_level": "critical",
+      "risk_notes": "violência explícita; narração de morte/desespero; ton visceral",
+      "t": "lâmina curvada enterrada fundo em seu abdômen."
+    },
+    "0x1b1d24": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "respiração/gemido de agonia",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de dor extrema; pessoa morrendo; som de sufocamento/respiração entrecortada",
+      "t": "Gah... hah..."
+    },
+    "0x1b1d62": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "pergunta final (sarcasmo: por que parou de rir?)",
+      "risk_level": "critical",
+      "risk_notes": "sarcasmo cruel no ápice da morte do interlocutor; ton frio, sem piedade",
+      "t": "de rir?"
+    },
+    "0x1b1dca": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "narração do rosto de Gundhurua (sorriso sinistro)",
+      "risk_level": "critical",
+      "risk_notes": "'ghastly sneer' = sorrisinho medonho; ton revoltante; imagem visceral de satisfação na morte",
+      "t": "sorriso medonho."
+    },
+    "0x1b1e33": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "referência ao abdômen ferido (diversão final)",
+      "risk_level": "critical",
+      "risk_notes": "'stomach' = abdômen/barriga; tom traz a arma de volta ao foco; dor contínua",
+      "t": "abdômen!"
+    },
+    "0x1b1e3c": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "respiração/gemido derradeiro (morte iminente)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de morte; respiração que se extingue; som de colapso final",
+      "t": "Hh... haha... hh..."
+    },
+    "0x1b1e72": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "riso final de Gundhurua (satisfação completa)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de riso demoníaco; tom frio e final; personagem é agora claramente monstruo/divindade desumana",
+      "t": "Khakakakakaka!"
+    },
+    "0x1b1e81": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "respiração final de Oshtor (morte confirmada)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia de respiração que cessa; confirmação de morte; tom vazio",
+      "t": "Hh... hh... hh..."
+    },
+    "0x1b1ea6": {
+      "speaker": "Gundhurua",
+      "tone_register": "profético, enigmático, frio; ganha tom de prazer sombrio",
+      "intent": "riso final (satisfação/apoteose do sadismo)",
+      "risk_level": "critical",
+      "risk_notes": "onomatopeia final de riso; fechamento da cena de tortura; ton absoluto de vilania",
+      "t": "Khakakakakakaka!"
+    }
+  }
+}

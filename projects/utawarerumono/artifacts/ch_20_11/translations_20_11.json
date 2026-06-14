@@ -1,0 +1,812 @@
+{
+  "lines": {
+    "0x1dd9de": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "status report, declarativo",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor ainda é Ukon nesta cena (reveal em 13_08); não antecipar pompa de general. Manter tom mercenário/informal.",
+      "t": "Comandante Uzurushan"
+    },
+    "0x1de070": {
+      "speaker": "Uzurushan Soldier",
+      "tone_register": "marcial, grito de ataque",
+      "intent": "identidade/título",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado Uzurushan"
+    },
+    "0x1de165": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "voltei."
+    },
+    "0x1dda20": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "descrição tática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ninho pequeno."
+    },
+    "0x1dda5f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "reconhecimento da resistência inimiga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eles são tenaces; vou reconhecer isso."
+    },
+    "0x1ddae2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "tática de ataque frontal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de frente..."
+    },
+    "0x1ddb1d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "questão retórica sobre atraso (projeção de timidez do Maroro)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosso mestre não se angustia com os atrasos?"
+    },
+    "0x1ddba3": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "motivação, glória própria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pela nossa própria glória."
+    },
+    "0x1ddbe2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "estratégia: esperar chegada e esmagar com números",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cheguem, depois os esmaguemos com força bruta."
+    },
+    "0x1ddc45": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "avaliação de risco (números desconhecidos)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desconhecidos, podem surpreender-nos ainda."
+    },
+    "0x1ddcd4": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "número de soldados (pensativo)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mil..."
+    },
+    "0x1ddd10": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "número de soldados (pausa reflexiva)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldados..."
+    },
+    "0x1ddd4f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comandante",
+      "intent": "conclusão tática: vitória garantida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desafiam toda lógica militar, vitória é certa."
+    },
+    "0x1ddd7f": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "onomatopeia de passos",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia deve ser localizada (não copiada). pt-BR: som ritmado de passos pesados em armadura.",
+      "t": "*Pom, pom, pom*"
+    },
+    "0x1ddd95": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "reação ao tremor do chão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah!? A terra tremula!"
+    },
+    "0x1dddab": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "identificação da chegada inimiga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este som... Eles chegaram!"
+    },
+    "0x1dddf7": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "alerta dramático de chegada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "chegaram. Finalmente chegou a hora!"
+    },
+    "0x1dde4c": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "pausa reflexiva (exército)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "exército..."
+    },
+    "0x1dde85": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "predição de vitória (fort Yamatan cairá)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "este patético forte Yamato há de cair."
+    },
+    "0x1ddee0": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "ambição de conquista até capital",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "até a capital deles!"
+    },
+    "0x1ddf5c": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "oferta de mercê (vitória esperada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "clemência e aceitem vosso serviço!"
+    },
+    "0x1ddfd8": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "pausa final (terra)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "terra."
+    },
+    "0x1de03a": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "honra na morte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "morte honrosa!"
+    },
+    "0x1de04b": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico, cômico, pomposo",
+      "intent": "imperative: esmagar inimigos (vermes)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esmagaem-os, como os vermes que são!"
+    },
+    "0x1de082": {
+      "speaker": "Uzurushan Soldier",
+      "tone_register": "marcial, grito de ataque",
+      "intent": "brado de ataque",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia de brado. Localizar com a forma que soaria natural em pt-BR (grito prolongado de guerra).",
+      "t": "Raaaaaaaaaaaaah!!"
+    },
+    "0x1de095": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "negação da beleza na morte (ambiguidade intencional)",
+      "risk_level": "high",
+      "risk_notes": "Homem é figura enigmática (spoiler: identidade não revelada). Manter tom dúbio e filosoficamente frio. Não resolver quem é.",
+      "t": "Nunca vi beleza na morte."
+    },
+    "0x1de0b8": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "ameaça direta (esmagá-los onde estão)",
+      "risk_level": "medium",
+      "risk_notes": "Homem: tom breve, definitivo, ameaçador. Preservar a frieza e duplo-sentido (ameaça física e existencial).",
+      "t": "Então a esmagarem onde estão!"
+    },
+    "0x1de0e0": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "interdição formal (não passarão)",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: Woman é Kuon, mas seu nome NÃO foi revelado nesta cena. Usar rótulo genérico ('Woman'/'Mulher'). Manter tom nobre sem resolver identidade. Cuidado: pt-BR força gênero em adjetivos (aqui: 'nobre', 'determinada') — preservar o senso de força sem derramar spoiler.",
+      "t": "Ninguém passará daqui."
+    },
+    "0x1de100": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "grito de dor/surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ngh!?"
+    },
+    "0x1de195": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "pergunta de confusão/alarme",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que está acontecendo!?"
+    },
+    "0x1de1fb": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando militar (marchar, derrotá-la)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Marchar! Derrotem-na!"
+    },
+    "0x1de20d": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "declaração de sem-piedade",
+      "risk_level": "medium",
+      "risk_notes": "Kuon em combate (identidade ainda oculta). Manter autoridade nobre sem revelar relação com Haku.",
+      "t": "Não darei piedade."
+    },
+    "0x1de228": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "grito de pânico (espera, não avancem)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gah... E-Espera...! P-Parem de avançar!"
+    },
+    "0x1de284": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando: cessar ataque de uma vez",
+      "risk_level": "medium",
+      "risk_notes": "Homem comanda soldados com frieza. Brevidade e autoridade. Tom sem emoção (nem raiva, nem piedade).",
+      "t": "Rrgh-- Soldados! Cessem o ataque já!"
+    },
+    "0x1de2ae": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando militar (um passo adiante)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldados. Um passo à frente."
+    },
+    "0x1de2e5": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "incredulidade (é possível isto?)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Será que... é possível...?"
+    },
+    "0x1de2fe": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "constatação de impossibilidade, ordem de reagrupamento urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Impossível... Precisamos reagrupar. Agora!"
+    },
+    "0x1de325": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando militar (dois passos adiante)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldados. Dois passos à frente."
+    },
+    "0x1de342": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "confusão total (o que está acontecendo?)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O... O que... está acontecendo...!?"
+    },
+    "0x1de361": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "negação em pânico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não... Isto não pode ser..."
+    },
+    "0x1de3d0": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "transformação declarada (mulher → demônio)",
+      "risk_level": "high",
+      "risk_notes": "CRITICAL SPOILER MOMENT: Kuon revela transformação. Manter tom solene e determinado (não melodramático). Preservar a revelação de poder sem insinuar identidade completa. Gênero em pt-BR força concordância — usar construção que soe natural mas não antecipe nada além do que o original revela.",
+      "t": "Deixo de ser uma mulher, mas me torno um demônio."
+    },
+    "0x1de3f1": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando militar (avançar)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldados... à frente."
+    },
+    "0x1de439": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "ordem de recuo urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Recuem!"
+    },
+    "0x1de474": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "constatação de bloqueio (atrás de nós)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "atrás bloqueiam o caminho!"
+    },
+    "0x1de4e0": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, frio, profético",
+      "intent": "comando (infantaria pesada avançar)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Infantaria pesada, à frente!"
+    },
+    "0x1de528": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "recusa de submissão",
+      "risk_level": "medium",
+      "risk_notes": "Kuon em poder total. Tom firme, nobre, sem triunfalismo vazio. Preservar autoridade.",
+      "t": "Não tolerarei isto!"
+    },
+    "0x1de5a0": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "despertar (verbo, ter acordado)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "despertaram."
+    },
+    "0x1de611": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "alma (referência enigmática)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "alma."
+    },
+    "0x1de617": {
+      "speaker": "Haku (Protagonista)",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "exclamação de impossibilidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isto é... impossível!"
+    },
+    "0x1de655": {
+      "speaker": "Woman (Kuon)",
+      "tone_register": "cotidiano, nobre, determinado",
+      "intent": "ameaça: exterminar todos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para vos exterminar todos."
+    },
+    "0x1de68e": {
+      "speaker": "Uzurushan Soldier",
+      "tone_register": "marcial, grito de dor/morte",
+      "intent": "grito de agonia (morrendo)",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia de morte/agonia. Localizar com a forma que um personagem pt-BR diria ao morrer em combate (grito prolongado de angústia).",
+      "t": "GYAAAAAARRGH!"
+    },
+    "0x1de69c": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (3D model base)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico de asset 3D. Não traduzir.",
+      "t": "ch400_00_base"
+    },
+    "0x1de6ab": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (roda/wheel)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico de asset 3D. Não traduzir.",
+      "t": "ch400_00_wheel"
+    },
+    "0x1de6ba": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (left leg)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico de asset 3D. Não traduzir.",
+      "t": "LeftLeg"
+    },
+    "0x1de6c2": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (target/alvo)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico. Não traduzir.",
+      "t": "target"
+    },
+    "0x1de6c9": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (máscara ou piece of armor)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico/lore. Não traduzir.",
+      "t": "kamen"
+    },
+    "0x1de6cf": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (billboard/sign)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico de asset. Não traduzir.",
+      "t": "billboard"
+    },
+    "0x1de6d9": {
+      "speaker": "SYSTEM",
+      "tone_register": "all_caps, técnico",
+      "intent": "asset name (global transform/rotation)",
+      "risk_level": "low",
+      "risk_notes": "Nome técnico de asset (global SRT = scale, rotation, translation). Não traduzir.",
+      "t": "GlobalSRT"
+    },
+    "0x1dd9f2": {
+      "speaker": "Ukon",
+      "tone_register": "informal, sarcástico",
+      "intent": "zombar dos inimigos entrincheirados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hah. Olha esses vermes se enfiando em suas\\n"
+    },
+    "0x1dda2d": {
+      "speaker": "Ukon",
+      "tone_register": "informal, admiração irônica",
+      "intent": "reconhecer a posição elevada do inimigo com ironia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tomar a posição alta, porém... Ratos ardilosos.\\n"
+    },
+    "0x1dda89": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico",
+      "intent": "rebater Ukon com pompa cômica",
+      "risk_level": "medium",
+      "risk_notes": "Voz arcaica do Maroro deve ser mantida; sem cicio nesta linha",
+      "t": "Vós falais bem. Aqui sentado apenas\\n"
+    },
+    "0x1ddab2": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico",
+      "intent": "continuar a repreensão pomposa",
+      "risk_level": "medium",
+      "risk_notes": "Continuação do arcaísmo do Maroro",
+      "t": "a intimidá-los, em vez de assaltá-los\\n"
+    },
+    "0x1ddaed": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico",
+      "intent": "questionar se estão perdendo tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dito isso, deveríamos desperdiçar tempo aqui?\\n"
+    },
+    "0x1ddb4a": {
+      "speaker": "Ukon",
+      "tone_register": "informal, confiante",
+      "intent": "tranquilizar — o líder não se irritaria com isso",
+      "risk_level": "medium",
+      "risk_notes": "'owlo' = título do líder; manter sem tradução ou adaptar — sem glossário explícito, uso como título",
+      "t": "Hm. Nosso owlo não se irritaria com essas\\n"
+    },
+    "0x1ddb76": {
+      "speaker": "Ukon",
+      "tone_register": "informal, prudente",
+      "intent": "aconselhar paciência, não precipitação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "trivialidades. Seria tolo apressar as coisas\\n"
+    },
+    "0x1ddbb6": {
+      "speaker": "Ukon",
+      "tone_register": "informal, estratégico",
+      "intent": "explicar que basta aguardar reforços",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Basta aguardar os reforços\\n"
+    },
+    "0x1ddc11": {
+      "speaker": "Ukon",
+      "tone_register": "informal, analítico",
+      "intent": "argumentar sobre a posição vantajosa — perto da capital inimiga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Verdade. Tão perto da capital deles, e com seus\\n"
+    },
+    "0x1ddc75": {
+      "speaker": "Ukon",
+      "tone_register": "informal, analítico",
+      "intent": "continuar análise — números limitados de Yamato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os números de Yamato são limitados. Pelo campo,\\n"
+    },
+    "0x1ddca8": {
+      "speaker": "Ukon",
+      "tone_register": "informal, calculista",
+      "intent": "estimar tropas inimigas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "no máximo vinte poderiam se posicionar\\n"
+    },
+    "0x1ddce0": {
+      "speaker": "Ukon",
+      "tone_register": "informal, confiante",
+      "intent": "revelar superioridade dos reforços aliados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E nossos reforços serão quarenta mil\\n"
+    },
+    "0x1ddd1c": {
+      "speaker": "Ukon",
+      "tone_register": "informal, estratégico",
+      "intent": "concluir vantagem numérica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seremos o dobro. A menos que eles quisessem\\n"
+    },
+    "0x1dddc7": {
+      "speaker": "Personagem desconhecido",
+      "tone_register": "formal, entusiasta",
+      "intent": "anunciar chegada das tropas de elite de Gundhurua",
+      "risk_level": "medium",
+      "risk_notes": "Speaker não identificado no contexto; Gundhurua = manter_original",
+      "t": "Ah! Os soldados de elite do Lorde Gundhurua\\n"
+    },
+    "0x1dde1b": {
+      "speaker": "Personagem desconhecido",
+      "tone_register": "admirativo, solene",
+      "intent": "admirar a força pessoal do owlo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que majestade... Então esta é a guarda pessoal\\n"
+    },
+    "0x1dde54": {
+      "speaker": "Personagem desconhecido",
+      "tone_register": "exultante, triunfal",
+      "intent": "rir de satisfação ante a força reunida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haha... Hahahahahaha! Com uma força tão grande,\\n"
+    },
+    "0x1ddeb1": {
+      "speaker": "Personagem desconhecido",
+      "tone_register": "triunfal, agressivo",
+      "intent": "declarar que vão esmagar os oponentes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "De fato! Vamos esmagar todos que nos opõem--\\n"
+    },
+    "0x1ddefe": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "formal, arrogante",
+      "intent": "reconhecer resistência do oponente antes de exigir rendição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua resistência foi admirável, de fato!\\n"
+    },
+    "0x1ddf2d": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "formal, ameaçador",
+      "intent": "oferecer clemência mediante rendição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Renda-se agora, e nosso owlo pode poupar você\\n"
+    },
+    "0x1ddf7b": {
+      "speaker": "Mulher",
+      "tone_register": "firme, resoluto",
+      "intent": "recusar servir outro senhor — lealdade clara",
+      "risk_level": "high",
+      "risk_notes": "Spoiler: identidade da Mulher não revelada; fala firme sem revelar quem é; gênero do speaker em pt-BR OK pois rótulo já é 'Mulher'",
+      "t": "Não tenho intenção de servir a outro senhor.\\n"
+    },
+    "0x1ddfa8": {
+      "speaker": "Mulher",
+      "tone_register": "firme, dedicado",
+      "intent": "declarar dever de proteger o povo",
+      "risk_level": "high",
+      "risk_notes": "Identidade da Mulher preservada como genérica; sem revelar vínculo",
+      "t": "Meu único dever é proteger o povo desta\\n"
+    },
+    "0x1ddfde": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "frio, ameaçador",
+      "intent": "lamentar ironicamente que o dever não será cumprido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Uma pena que seu dever não será cumprido.\\n"
+    },
+    "0x1de00f": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "frio, enigmático",
+      "intent": "prometer uma morte 'bela' — ambíguo e ameaçador",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade ameaçadora deve ser preservada; não resolver o duplo sentido",
+      "t": "Mas darei beleza à sua vida num\\n"
+    },
+    "0x1de108": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "frio, dominador",
+      "intent": "declarar controle total do território",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo além deste ponto está sob meu\\n"
+    },
+    "0x1de137": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "frio, dominador",
+      "intent": "exigir retirada para sobreviver",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "controle. Se quiser viver, deve recuar\\n"
+    },
+    "0x1de16b": {
+      "speaker": "Soldado inimigo",
+      "tone_register": "confuso, apavorado",
+      "intent": "não conseguir avançar — reação de pânico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O-O quê!? Por que não conseguimos avançar...?\\n"
+    },
+    "0x1de1a7": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "autoritário, irado",
+      "intent": "cobrar os soldados que hesitam",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que há? Por que vocês hesitam!?\\n"
+    },
+    "0x1de1cc": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "desdenhoso, arrogante",
+      "intent": "minimizar a ameaça — é apenas uma mulher",
+      "risk_level": "medium",
+      "risk_notes": "'Woman' = Mulher (glossário); cena de spoiler — não revelar identidade da Mulher",
+      "t": "Uma simples Mulher é tudo que nos barra!\\n"
+    },
+    "0x1de252": {
+      "speaker": "Soldado inimigo",
+      "tone_register": "apavorado, incrédulo",
+      "intent": "questionar se é magia — reconhecer o sobrenatural",
+      "risk_level": "medium",
+      "risk_notes": "Magecraft = Magia (glossário)",
+      "t": "O-O que é isso? Será que é Magia...?\\n"
+    },
+    "0x1de2ca": {
+      "speaker": "Soldado inimigo",
+      "tone_register": "aterrorizado, incrédulo",
+      "intent": "expressar pavor sem palavras",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que... O que é isso...?\\n"
+    },
+    "0x1de378": {
+      "speaker": "Mulher",
+      "tone_register": "solene, resoluto",
+      "intent": "invocar proteção dos que estão atrás",
+      "risk_level": "high",
+      "risk_notes": "Identidade da Mulher não revelada; tom enigmático preservado",
+      "t": "Pela salvação dos que estão às minhas costas...\\n"
+    },
+    "0x1de3a3": {
+      "speaker": "Mulher",
+      "tone_register": "solene, implacável",
+      "intent": "invocar destruição dos que enfrenta",
+      "risk_level": "high",
+      "risk_notes": "Continuação da invocação; identidade preservada como genérica",
+      "t": "Pela destruição dos que enfrento...\\n"
+    },
+    "0x1de406": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "em pânico, desesperado",
+      "intent": "ordenar retirada ante o impossível",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como isso é possível!? Soldados, recuem!\\n"
+    },
+    "0x1de444": {
+      "speaker": "Soldado inimigo",
+      "tone_register": "em pânico, desesperado",
+      "intent": "alertar que a retirada está bloqueada pela infantaria pesada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espere--não podemos recuar! A infantaria pesada\\n"
+    },
+    "0x1de48d": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "irado, ameaçador",
+      "intent": "repreender quem tenta recuar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Argh... O que vocês pensam que estão fazendo!?\\n"
+    },
+    "0x1de4b8": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "irado, brutal",
+      "intent": "ameaçar de morte quem recuar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem ousar recuar será morto!\\n"
+    },
+    "0x1de4f9": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "em colapso, incrédulo",
+      "intent": "negar a realidade do que vê",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Impossível... Impossível...! Isso é absurdo!\\n"
+    },
+    "0x1de543": {
+      "speaker": "Mulher",
+      "tone_register": "frio, sereno",
+      "intent": "declarar que o inimigo subestimou sua oponente",
+      "risk_level": "high",
+      "risk_notes": "Identidade da Mulher preservada; tom distante e enigmático",
+      "t": "Você subestimou gravemente sua oponente.\\n"
+    },
+    "0x1de56f": {
+      "speaker": "Mulher",
+      "tone_register": "solene, ameaçador",
+      "intent": "advertir que tocou no que não devia",
+      "risk_level": "high",
+      "risk_notes": "Ambiguidade sobre o que foi 'tocado' preservada; identidade não revelada",
+      "t": "Ousou tocar no que não devia\\n"
+    },
+    "0x1de5af": {
+      "speaker": "Mulher",
+      "tone_register": "solene, implacável",
+      "intent": "lembrar o terror de se opor a Yamato",
+      "risk_level": "high",
+      "risk_notes": "Referência a Yamato = manter_original; identidade da Mulher não revelada",
+      "t": "Se esqueceu do terror de se opor a\\n"
+    },
+    "0x1de5de": {
+      "speaker": "Mulher",
+      "tone_register": "solene, implacável",
+      "intent": "prometer gravar o terror na carne do inimigo",
+      "risk_level": "high",
+      "risk_notes": "Continuação da ameaça; Yamato = manter_original; identidade preservada",
+      "t": "Yamato, então deixe-me gravá-lo em sua própria\\n"
+    },
+    "0x1de62e": {
+      "speaker": "Antagonista/General inimigo",
+      "tone_register": "derrotado, resignado",
+      "intent": "alegar ordens imperiais como última justificativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Recebi ordens imperiais...\\n"
+    },
+    "0x1de66d": {
+      "speaker": "Mulher",
+      "tone_register": "frio, enigmático",
+      "intent": "rir de forma perturbadora — reação ambígua e ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "Riso da Mulher deve soar perturbador/ambíguo; identidade não revelada",
+      "t": "Ha... Haha... Ahahahahahaha...\\n"
+    }
+  }
+}

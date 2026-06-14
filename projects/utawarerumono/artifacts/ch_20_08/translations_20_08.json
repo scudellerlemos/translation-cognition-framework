@@ -1,0 +1,180 @@
+{
+  "lines": {
+    "0x1ca47a": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "military, urgent",
+      "intent": "identification, battle context",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado Uzurushan"
+    },
+    "0x1ca63f": {
+      "speaker": "Maroro",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "M-Mas..."
+    },
+    "0x1ca5e7": {
+      "speaker": "Haku",
+      "tone_register": "urgente, preocupado",
+      "intent": "constatar que o ritmo atual não é suficiente para alcançar alguém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não vamos alcançá-los nesse ritmo.\\n"
+    },
+    "0x1ca671": {
+      "speaker": "Haku",
+      "tone_register": "urgente, imperativo",
+      "intent": "pedir pressa sob pena de escassez de suprimentos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Rápido! Quer deixar nossa comida acabar?\\n"
+    },
+    "0x1ca48c": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "angry, determined",
+      "intent": "threat, pursuit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tch... Você não vai escapar!"
+    },
+    "0x1ca4ac": {
+      "speaker": "Ukon",
+      "tone_register": "calm, assured, informal",
+      "intent": "defiant confidence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos escapar sim."
+    },
+    "0x1ca4c1": {
+      "speaker": "Ukon",
+      "tone_register": "cold, matter-of-fact",
+      "intent": "warning, removal of obstacle",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade intencional ('estar no caminho' pode sugerir ameaça sem explicitar). Preservar tom enigmático.",
+      "t": "E você... está no caminho."
+    },
+    "0x1ca4dc": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "sharp, command",
+      "intent": "body part emphasis (battle instruction)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espinha!"
+    },
+    "0x1ca4e2": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "curse, archaic",
+      "intent": "expletive curse",
+      "risk_level": "low",
+      "risk_notes": "Interjeição localizada; 'Winds take you' é maldição clássica — pt-BR usa similar.",
+      "t": "Que os ventos a levem!"
+    },
+    "0x1ca4f3": {
+      "speaker": "Ukon",
+      "tone_register": "command, energetic",
+      "intent": "signal to ally",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora, Cocopo!"
+    },
+    "0x1ca527": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "urgent, commanding",
+      "intent": "rally troops, pursuit",
+      "risk_level": "low",
+      "risk_notes": "Repetição intencional (ênfase de urgência). Preservar estrutura.",
+      "t": "Atrás deles! ATRÁS DELES!"
+    },
+    "0x1ca53f": {
+      "speaker": "Ukon",
+      "tone_register": "formal, caloroso, ligeiramente burlão",
+      "intent": "announcement of departure, wit under pressure",
+      "risk_level": "medium",
+      "risk_notes": "Ukon = espirituoso mesmo em situação crítica. 'Taking our leave' tem leveza proposital. Manter tom caloroso/informal (não militar).",
+      "t": "Receio que teremos que nos retirar agora."
+    },
+    "0x1ca56c": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, panicked, empolado",
+      "intent": "discovery of sabotage, alarm",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: arcaísmo + cício (s→sh). 'Stirrups' é detalhe técnico; 'cut' é ação clara. Manter a pompa da voz (empolação contrasta com fragilidade).",
+      "t": "Os-Os estriboxsh foram cortados!"
+    },
+    "0x1ca58b": {
+      "speaker": "Ukon",
+      "tone_register": "alert, frustrated",
+      "intent": "realization + curse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando fizeram...? Maldição!"
+    },
+    "0x1ca5a8": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, desperate, verbose",
+      "intent": "solution proposal under duress",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: arcaísmo completo ('teremos de'/'cavalgaremos'). 'Without saddles' = improvisação desesperada. Manter empolação (piada é a pompa vs. caos).",
+      "t": "Bem! Teremos de cavalgar sem arçõesh--!"
+    },
+    "0x1ca5d2": {
+      "speaker": "Homem",
+      "tone_register": "commanding, cold, definitive",
+      "intent": "order to stop resistance",
+      "risk_level": "high",
+      "risk_notes": "Homem = enigmático, frio, profético. 'Enough' é final absoluto. Não resolver ambiguidade de quem comanda ou por quê. Tone deve ser ameaçador/sobrenatural.",
+      "t": "Chega!"
+    },
+    "0x1ca5da": {
+      "speaker": "Maroro",
+      "tone_register": "shocked, empolado",
+      "intent": "recognition + alarm at Entua's presence",
+      "risk_level": "high",
+      "risk_notes": "SPOILER: Entua é 'major spoiler' (glossário). Linha reconhece presença dela (não revela identidade secreta, apenas confirma estar ali). Risco alto por spoiler_timing. Manter tom de choque da personagem.",
+      "t": "Senhora Entua!?"
+    },
+    "0x1ca614": {
+      "speaker": "Homem",
+      "tone_register": "cold, practical, commanding",
+      "intent": "tactical instruction",
+      "risk_level": "medium",
+      "risk_notes": "Homem: tom profético/frio. 'Prioritize' é lógico/calculista. Manter distância/frieza (não caloroso).",
+      "t": "Devemos priorizar extinguir o fogo."
+    },
+    "0x1ca648": {
+      "speaker": "Ukon",
+      "tone_register": "angry, determined, informal",
+      "intent": "defiant curse at escape",
+      "risk_level": "low",
+      "risk_notes": "Ukon: indignação calorosa (não rígida). 'They won't get away with this' = promessa informal de retaliação.",
+      "t": "Maldição! Eles não vão se safar disso--"
+    },
+    "0x1ca6a1": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "horrified, urgent",
+      "intent": "exclamation at destruction",
+      "risk_level": "low",
+      "risk_notes": "Fragmento ('to ash!?') = reação inacabada. Preservar pontuação e tom de desespero.",
+      "t": "em cinzas!?"
+    },
+    "0x1ca6aa": {
+      "speaker": "Maroro",
+      "tone_register": "panicked, stammering, empolado",
+      "intent": "denial/negation under duress",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: gaguejo (N-No), tom assustado. 'ma'am' = deferência; preservar o formal+medo. Manter arcaísmo ('Não, senhora!').",
+      "t": "N-Não, senhora!"
+    },
+    "0x1ca6bb": {
+      "speaker": "Maroro",
+      "tone_register": "desperate, archaic, trailing",
+      "intent": "invocation/appeal to Shinonon",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: invocação (tom de apelo, não explicação). Shinonon = nome original (glossário). Reticências = desespero. Preservar fragmentação ('Shinonon...').",
+      "t": "Shinonon..."
+    }
+  }
+}

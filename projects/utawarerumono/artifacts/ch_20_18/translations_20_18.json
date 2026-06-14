@@ -1,0 +1,1004 @@
+{
+  "lines": {
+    "0x208ad5": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI/announcement",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mensageiro"
+    },
+    "0x208e4d": {
+      "speaker": "Oshtor",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entre."
+    },
+    "0x208e56": {
+      "speaker": "Maroro",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Silêncio!"
+    },
+    "0x208f7f": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "do aposento."
+    },
+    "0x209270": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cena estranha."
+    },
+    "0x209277": {
+      "speaker": "Moznu",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hm..."
+    },
+    "0x209677": {
+      "speaker": "SISTEMA",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bandido"
+    },
+    "0x209730": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "no chão."
+    },
+    "0x20973c": {
+      "speaker": "Maroro",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hurgh--"
+    },
+    "0x20988f": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de alguma coisa."
+    },
+    "0x209a85": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "afinal."
+    },
+    "0x209a90": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, então..."
+    },
+    "0x208b3a": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, pánico",
+      "intent": "relatar derrota iminente com hesitação e medo",
+      "risk_level": "medium",
+      "risk_notes": "Narrador de cena de tensão; manter fragmentação e pavor",
+      "t": "S-Senhor... N-Nossas forças no sul... foram\\n"
+    },
+    "0x208b89": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, imperioso",
+      "intent": "questionar o relatório com desdém",
+      "risk_level": "medium",
+      "risk_notes": "Voz enigmática e dominadora; manter tom de ameaça latente",
+      "t": "Oh...? Não me disseram recentemente que nossas forças\\n"
+    },
+    "0x208c02": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, apavorado",
+      "intent": "continuar o relato sobre o exército mascarado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "M-Momentos após o relatório, um exército liderado por um\\n"
+    },
+    "0x208c31": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, apavorado",
+      "intent": "descrever o ataque do comandante mascarado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "comandante mascarado surgiu, e nossos soldados\\n"
+    },
+    "0x208c6f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, narrativo",
+      "intent": "indicar que o mensageiro é interrompido antes de terminar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O mensageiro não consegue terminar o relatório.\\n"
+    },
+    "0x208c99": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "descrever Gundhurua derrubando o mensageiro com brutalidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua o derruba com um golpe violento\\n"
+    },
+    "0x208cde": {
+      "speaker": "Gundhurua",
+      "tone_register": "frio, ameaçador",
+      "intent": "repreender com frieza após bater no mensageiro",
+      "risk_level": "medium",
+      "risk_notes": "Linha dúbia e fria; preservar ambiguidade ameaçadora",
+      "t": "É preciso lembrar de transmitir relatórios corretamente.\\n"
+    },
+    "0x208d37": {
+      "speaker": "Mensageiro",
+      "tone_register": "apavorado, abatido",
+      "intent": "confirmar a destruição das forças orientais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As forças do leste foram dizimadas...\\n"
+    },
+    "0x208d5b": {
+      "speaker": "Mensageiro",
+      "tone_register": "formal, desesperado",
+      "intent": "relatar a perda de contato com a força da capital",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Perdemos contato com a força da Capital Imperial, e a\\n"
+    },
+    "0x208d9f": {
+      "speaker": "Subordinado",
+      "tone_register": "alarmado, incredulo",
+      "intent": "concluir que restam poucos soldados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Então isso significa que os únicos soldados que temos\\n"
+    },
+    "0x208df1": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "descrever o terror visível nos homens de Gundhurua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os homens de Gundhurua não conseguem esconder o terror\\n"
+    },
+    "0x208e1f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "continuação: derrotas se acumulam",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a cada novo relato das derrotas do seu exército\\n"
+    },
+    "0x208e8e": {
+      "speaker": "Subordinado",
+      "tone_register": "suplicante, nervoso",
+      "intent": "tentar argumentar que ainda há tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "M-Mas, meu owlo, é apenas uma questão de tempo\\n"
+    },
+    "0x208ebc": {
+      "speaker": "Subordinado",
+      "tone_register": "suplicante, nervoso",
+      "intent": "continuar argumento sobre as forças de Yamato chegando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "antes que as forças de Yamato cheguem até aqui\\n"
+    },
+    "0x208f20": {
+      "speaker": "Narração",
+      "tone_register": "neutro, brutal",
+      "intent": "descrever Gundhurua agarrando o subordinado pelo maxilar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua agarra seu subordinado pelo maxilar,\\n"
+    },
+    "0x208f4f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, brutal",
+      "intent": "descrever o som sinistro do osso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e um estalo horrível ecoa pelo\\n"
+    },
+    "0x208f98": {
+      "speaker": "Narração",
+      "tone_register": "neutro, sombrio",
+      "intent": "descrever o subordinado caído no chão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O miserável subordinado caído no chão está\\n"
+    },
+    "0x20902d": {
+      "speaker": "Narração",
+      "tone_register": "neutro, informativo",
+      "intent": "confirmar avanço bem-sucedido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Confirmamos que eles conseguiram com sucesso\\n"
+    },
+    "0x2090b1": {
+      "speaker": "Narração",
+      "tone_register": "neutro, estratégico",
+      "intent": "indicar que os Uzurushans saberão da resistência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os Uzurushan logo saberão que nem todas as nossas\\n"
+    },
+    "0x209104": {
+      "speaker": "Woshis",
+      "tone_register": "formal, levemente irônico",
+      "intent": "aceitar e pedir algo em troca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem. Espero que possam fornecer alguma\\n"
+    },
+    "0x209142": {
+      "speaker": "Woshis",
+      "tone_register": "filosófico, levemente tedioso",
+      "intent": "introduzir reflexão sobre algo ofensivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não há nada tão ofensivo quanto um\\n"
+    },
+    "0x2091a3": {
+      "speaker": "Narração",
+      "tone_register": "neutro, suspense",
+      "intent": "indicar presença de assassino no telhado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma sombra desliza pelo telhado.\\n"
+    },
+    "0x2091c8": {
+      "speaker": "Narração",
+      "tone_register": "neutro, suspense",
+      "intent": "descrever sinal dado às outras sombras",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela faz um sinal com a mão, e outras sombras\\n"
+    },
+    "0x209212": {
+      "speaker": "Narração",
+      "tone_register": "neutro, suspense",
+      "intent": "descrever as figuras observando o palácio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As figuras encapuzadas olham para o palácio,\\n"
+    },
+    "0x20923f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, sombrio",
+      "intent": "descrever o palácio escuro na noite e o desaparecimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sombrio na escuridão da noite, e somem de\\n"
+    },
+    "0x20927d": {
+      "speaker": "Woshis",
+      "tone_register": "didático, peculiar",
+      "intent": "instruir os Yatanawarabe sobre contato visual",
+      "risk_level": "medium",
+      "risk_notes": "Cena cômica com Woshis ensinando poses; manter tom absurdo-didático",
+      "t": "Olhos nos olhos, por favor. Sim, isso, isso... E\\n"
+    },
+    "0x2092ab": {
+      "speaker": "Woshis",
+      "tone_register": "didático, peculiar",
+      "intent": "corrigir posição dos lábios durante instrução",
+      "risk_level": "medium",
+      "risk_notes": "Continuação da instrução absurda; manter leveza cômica",
+      "t": "os lábios não devem se tocar. Lembrem-se,\\n"
+    },
+    "0x2092e9": {
+      "speaker": "Narração",
+      "tone_register": "neutro, cômico",
+      "intent": "descrever Woshis esboçando no quadro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Woshis esboça em sua prancheta,\\n"
+    },
+    "0x209311": {
+      "speaker": "Narração",
+      "tone_register": "neutro, cômico",
+      "intent": "descrever ilustração de dois homens nus se abraçando",
+      "risk_level": "medium",
+      "risk_notes": "Cena de comédia; conteúdo adulto leve; manter tom neutro-cômico",
+      "t": "ilustrando dois homens nus se abraçando enquanto\\n"
+    },
+    "0x209351": {
+      "speaker": "Narração",
+      "tone_register": "neutro, cômico",
+      "intent": "descrever os Yatanawarabe envergonhados diante de Woshis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Diante dele estão seus Yatanawarabe, rostos corados de\\n"
+    },
+    "0x2093b3": {
+      "speaker": "Woshis",
+      "tone_register": "entusiasmado, didático",
+      "intent": "continuar instruindo com prazer sobre a posição",
+      "risk_level": "medium",
+      "risk_notes": "Linha longa; cena cômica; verificar budget",
+      "t": "Isso, isso... Hmhmhm. Agora quero que você o empurre\\n"
+    },
+    "0x2093e6": {
+      "speaker": "Woshis",
+      "tone_register": "entusiasmado, didático",
+      "intent": "completar a instrução com frase de rendição",
+      "risk_level": "medium",
+      "risk_notes": "Preservar tom absurdo e a frase de duplo sentido",
+      "t": "para baixo, como se dissesse: \"Desista, e você está\\n"
+    },
+    "0x20941b": {
+      "speaker": "Narração",
+      "tone_register": "neutro, cômico",
+      "intent": "descrever reação de desaprovação dos Yatanawarabe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os Yatanawarabe o olham com o que parece\\n"
+    },
+    "0x20944a": {
+      "speaker": "Narração",
+      "tone_register": "neutro, cômico",
+      "intent": "Woshis responde à desaprovação com entusiasmo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ser desaprovação, e Woshis responde com uma\\n"
+    },
+    "0x209482": {
+      "speaker": "Woshis",
+      "tone_register": "lamentoso, irônico",
+      "intent": "reclamar do trabalho burocrático desde o início da guerra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Trabalho...? Ora, vamos. Desde que a guerra começou,\\n"
+    },
+    "0x2094b5": {
+      "speaker": "Woshis",
+      "tone_register": "lamentoso, irônico",
+      "intent": "descrever a pilha interminável de papelada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lido com papelada dia após dia após\\n"
+    },
+    "0x2094ec": {
+      "speaker": "Woshis",
+      "tone_register": "lamentoso, filosófico",
+      "intent": "questionar a utilidade de toda essa burocracia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sinceramente, pra que serve toda essa papelada?\\n"
+    },
+    "0x20954c": {
+      "speaker": "Woshis",
+      "tone_register": "casual, levemente petulante",
+      "intent": "pedir liberdade para fazer o que quiser à noite",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ao menos me deixem fazer o que quero depois da noite\\n"
+    },
+    "0x2095b5": {
+      "speaker": "Narração",
+      "tone_register": "neutro, suspense",
+      "intent": "Woshis coloca nova folha na prancheta — tensão aumenta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando Woshis coloca uma nova folha em sua prancheta\\n"
+    },
+    "0x20960f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "descrever arame fino saindo do pulso do assassino",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Um arame fino e longo desliza do pulso da sombra,\\n"
+    },
+    "0x209640": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "assassino tenta enrolar o arame no pescoço de Woshis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e ele tenta passá-lo em torno do pescoço de Woshis\\n"
+    },
+    "0x20967f": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "momento em que o arame é colocado ao redor do pescoço",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Assim que o posiciona ao redor do pescoço do homem,\\n"
+    },
+    "0x2096cb": {
+      "speaker": "Narração",
+      "tone_register": "neutro, ação",
+      "intent": "assassino é lançado para cima por força invisível",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seu corpo dispara para cima, como puxado por algo,\\n"
+    },
+    "0x2096fe": {
+      "speaker": "Narração",
+      "tone_register": "neutro, ação",
+      "intent": "assassino é arremessado contra o teto e depois o chão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e é arremessado contra o teto... e depois contra o\\n"
+    },
+    "0x209744": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "assassino não entende o que aconteceu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O assassino não consegue entender o que acabou de\\n"
+    },
+    "0x209784": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "assassino está imobilizado por força invisível",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele é contido por uma força invisível.\\n"
+    },
+    "0x2097b0": {
+      "speaker": "Narração",
+      "tone_register": "neutro, tenso",
+      "intent": "assassino imóvel encara Woshis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Incapaz de se mover, ele olha para Woshis, olhos\\n"
+    },
+    "0x2097e5": {
+      "speaker": "Narração",
+      "tone_register": "neutro, suspense",
+      "intent": "revelar outras sombras ao lado de Woshis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ao lado de Woshis, inúmeras outras sombras--\\n"
+    },
+    "0x209861": {
+      "speaker": "Narração",
+      "tone_register": "neutro, melancólico",
+      "intent": "Woshis suspira, levemente incomodado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Woshis suspira, como se levemente incomodado com\\n"
+    },
+    "0x20989a": {
+      "speaker": "Woshis",
+      "tone_register": "compassivo, irônico",
+      "intent": "lamentar a situação do assassino e mencionar o owlo de Uzurusha",
+      "risk_level": "medium",
+      "risk_notes": "Menciona owlo de Uzurusha; manter tom de pena condescendente",
+      "t": "Lamento sua situação... O owlo de Uzurusha prefere\\n"
+    },
+    "0x2098cd": {
+      "speaker": "Woshis",
+      "tone_register": "compassivo, irônico",
+      "intent": "apontar que o assassino deve preferir outro tipo de glória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "glória no combate, não é? Você deve preferir outra\\n"
+    },
+    "0x209905": {
+      "speaker": "Woshis",
+      "tone_register": "reflexivo, estratégico",
+      "intent": "sugerir que há outros meios de influenciar a guerra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se deseja mudar o curso da guerra às ocultas, há\\n"
+    },
+    "0x209987": {
+      "speaker": "Woshis",
+      "tone_register": "reflexivo, levemente pesaroso",
+      "intent": "concluir que essa tática não muda nada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas esse tipo de tática não muda nada...\\n"
+    },
+    "0x2099dc": {
+      "speaker": "Narração",
+      "tone_register": "neutro, informativo",
+      "intent": "uma das sombras se aproxima enquanto Woshis murmura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Enquanto Woshis murmura isso, uma das sombras\\n"
+    },
+    "0x209a28": {
+      "speaker": "Narração",
+      "tone_register": "neutro, informativo",
+      "intent": "relatar que os outros intrusos foram neutralizados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que os outros intrusos foram eliminados\\n"
+    },
+    "0x209a57": {
+      "speaker": "Sombra/Subordinado",
+      "tone_register": "formal, respeitoso",
+      "intent": "informar que o senhor está protegido por Honoka",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Meu senhor está protegido pela Senhora Honoka,\\n"
+    },
+    "0x209a9c": {
+      "speaker": "Narração",
+      "tone_register": "neutro, sereno",
+      "intent": "Woshis se levanta lentamente e olha ao redor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Woshis se levanta lentamente de seu assento e olha\\n"
+    },
+    "0x209afc": {
+      "speaker": "Woshis",
+      "tone_register": "cordial, levemente irônico",
+      "intent": "pedir desculpas e indicar que a conversa acabou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lamento muito, mas acho que já temos bastante\\n"
+    },
+    "0x209b3d": {
+      "speaker": "Woshis",
+      "tone_register": "calmo, ameaçador",
+      "intent": "tranquilizar o assassino enquanto deixa intenção dúbia",
+      "risk_level": "medium",
+      "risk_notes": "Linha ambígua propositalmente; não resolver a ameaça implícita",
+      "t": "Oh, não se preocupe. Não tenho intenção de causar\\n"
+    },
+    "0x209acb": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "afirmar uma verdade ameaçadora; manter ambiguidade",
+      "risk_level": "high",
+      "risk_notes": "Personagem de voz crítica (high); duplo sentido e tom profético devem ser preservados exatamente; 'pinned before him' refere-se à vítima do assassino, mantendo a cena enigmática sem revelar contexto futuro.",
+      "t": "no rosto do assassino fixado diante dele."
+    },
+    "0x209b2b": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "sugerir futuros acontecimentos com tom de aviso/ameaça velada",
+      "risk_level": "medium",
+      "risk_notes": "Frase curta, mas tone crítico; ambiguidade proposital ('a lot to discuss' pode sugerir destino/revelações futuras). Manter a concisão e a sensação de presságio.",
+      "t": "muito para discutir."
+    },
+    "0x209b70": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil; cuidadora",
+      "intent": "oferecer conforto e cuidado; perguntar se está tudo bem com a pessoa",
+      "risk_level": "low",
+      "risk_notes": "Voz bem estabelecida; tom de acolhimento; byte_budget apertado (13 bytes) — tradução concisa mantém a intenção.",
+      "t": "te dói?"
+    },
+    "0x209b7e": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "solenidade; dar início a algo importante/decisivo",
+      "risk_level": "medium",
+      "risk_notes": "Registro formal e cortante; 'Now... Let us commence' marca transição narrativa. Preservar a pausa (reticência) e o tom de cerimônia ameaçadora. Não resolver o que 'commence' refere-se (manter ambiguidade).",
+      "t": "Agora... Vamos começar."
+    },
+    "0x208adf": {
+      "speaker": "Messenger",
+      "tone_register": "urgent/panicked",
+      "intent": "report crisis",
+      "risk_level": "medium",
+      "risk_notes": "Truncated speech pattern critical to panic tone; preserve stammer",
+      "t": "R-Relatório! Nossas forças no sul estão--"
+    },
+    "0x208b0e": {
+      "speaker": "Protagonist",
+      "tone_register": "confused/dazed",
+      "intent": "involuntary pain sound",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ngh...!"
+    },
+    "0x208b16": {
+      "speaker": "Gundhurua",
+      "tone_register": "commanding/formal",
+      "intent": "demand clarification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E... nossas forças no sul?"
+    },
+    "0x208b67": {
+      "speaker": "Messenger",
+      "tone_register": "urgent/strained",
+      "intent": "report military setback",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "começaram a se retirar para se reagrupar..."
+    },
+    "0x208bba": {
+      "speaker": "Gundhurua",
+      "tone_register": "disbelief/angry",
+      "intent": "rhetorical outrage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tinham vantagem há pouco tempo atrás?"
+    },
+    "0x208be5": {
+      "speaker": "Gundhurua",
+      "tone_register": "formal/doubtful",
+      "intent": "questioning/suspicion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ou talvez tenha me enganado...?"
+    },
+    "0x208c5f": {
+      "speaker": "Messenger",
+      "tone_register": "panicked/struck",
+      "intent": "interrupted by violence",
+      "risk_level": "medium",
+      "risk_notes": "Sound cut off by physical impact; maintain interruption",
+      "t": "estavam--Gyaaaakh!"
+    },
+    "0x208cc9": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe violence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "no rosto."
+    },
+    "0x208cd6": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI/announcement",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conselheiro"
+    },
+    "0x208d0e": {
+      "speaker": "Oshtor",
+      "tone_register": "formal/commanding",
+      "intent": "inquiry about battle status",
+      "risk_level": "high",
+      "risk_notes": "Oshtor pre-reveal (still 'Ukon'); must not hint at general rank/pompa; maintain mercenary informality",
+      "t": "Então, como vai a frente leste?"
+    },
+    "0x208d8d": {
+      "speaker": "Adviser",
+      "tone_register": "formal/strained",
+      "intent": "report shortage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "reforços..."
+    },
+    "0x208dce": {
+      "speaker": "Adviser",
+      "tone_register": "distressed",
+      "intent": "convey dire situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ficaram são os aqui estacionados!?"
+    },
+    "0x208e5f": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI/plural",
+      "intent": "label multiple speakers",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conselheiros"
+    },
+    "0x208e6b": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe Gundhurua's reaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gundhurua ruge para seus homens abalados."
+    },
+    "0x208ee8": {
+      "speaker": "Gundhurua",
+      "tone_register": "cold/threatening",
+      "intent": "insult/humiliate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lugar..."
+    },
+    "0x208ef1": {
+      "speaker": "Gundhurua",
+      "tone_register": "contemptuous/disgusted",
+      "intent": "insult cowardice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sinto algo podre saindo de sua boca."
+    },
+    "0x208f89": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/pain",
+      "intent": "describe agony",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agh... Argh..."
+    },
+    "0x208fc6": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe forced removal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "arrastado à força por soldados."
+    },
+    "0x208fe7": {
+      "speaker": "Gundhurua",
+      "tone_register": "cold/determined",
+      "intent": "assert continuing resolve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmph... Esta guerra ainda não acabou."
+    },
+    "0x209009": {
+      "speaker": "Adviser",
+      "tone_register": "deferential/formal",
+      "intent": "request permission to speak",
+      "risk_level": "high",
+      "risk_notes": "Archaic 'owlo' term (lord honorific); must render as pt-BR formal address; avoid sounding modern",
+      "t": "Se me permite falar, meu senhor..."
+    },
+    "0x209024": {
+      "speaker": "Gundhurua",
+      "tone_register": "curt/permissive",
+      "intent": "grant permission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode."
+    },
+    "0x20905d": {
+      "speaker": "Adviser",
+      "tone_register": "formal/serious",
+      "intent": "report enemy infiltration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "infiltraram a capital imperial de Yamato."
+    },
+    "0x209084": {
+      "speaker": "Gundhurua",
+      "tone_register": "contemptuous/cold",
+      "intent": "express disdain for enemies",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então essas moscas imundas se instalaram...?"
+    },
+    "0x2090e3": {
+      "speaker": "Gundhurua",
+      "tone_register": "philosophical/menacing",
+      "intent": "contrast battle vs. infiltration strategy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "batalhas ocorrem no campo."
+    },
+    "0x20912c": {
+      "speaker": "Gundhurua",
+      "tone_register": "amused/sinister",
+      "intent": "express perverse enjoyment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "entretenimento para mim."
+    },
+    "0x209167": {
+      "speaker": "Gundhurua",
+      "tone_register": "dismissive/contemptuous",
+      "intent": "judge enemies as weak",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desempenho decepcionante."
+    },
+    "0x209182": {
+      "speaker": "Adviser",
+      "tone_register": "deferential/formal",
+      "intent": "acknowledge command",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim, meu senhor."
+    },
+    "0x209190": {
+      "speaker": "Gundhurua",
+      "tone_register": "amused/evil laugh",
+      "intent": "express malevolent pleasure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Khahahahahahaha..."
+    },
+    "0x2091f8": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/scene-setting",
+      "intent": "describe spreading phenomenon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sobem por toda a cidade."
+    },
+    "0x2092d4": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/strategic",
+      "intent": "note importance of timing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a antecipação é fundamental."
+    },
+    "0x20933f": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/intimate",
+      "intent": "describe physical proximity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aproximar-se para beijar."
+    },
+    "0x209383": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/comedic",
+      "intent": "describe embarrassment",
+      "risk_level": "medium",
+      "risk_notes": "Comedy of embarrassment; preserve awkward tone and contrast",
+      "t": "constrangimento enquanto modelam conforme sua instrução."
+    },
+    "0x209414": {
+      "speaker": "Maroro",
+      "tone_register": "archaic/emphatic",
+      "intent": "possessive declaration",
+      "risk_level": "high",
+      "risk_notes": "Maroro's archaic-comedic voice; maintain pomposity + speech impediment (s→sh); avoid modern tone",
+      "t": "meu!\""
+    },
+    "0x20947a": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/minimal",
+      "intent": "label response",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desculpa."
+    },
+    "0x2094e7": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI/temporal",
+      "intent": "time marker",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "dia."
+    },
+    "0x20951b": {
+      "speaker": "Woshis",
+      "tone_register": "enigmatic/cold",
+      "intent": "pragmatic observation about survival",
+      "risk_level": "high",
+      "risk_notes": "Woshis is major spoiler (major); tone must remain dryly philosophical, not hint at identity; ambiguity preserved",
+      "t": "Não podemos sustentar soldados apenas com documentos..."
+    },
+    "0x209579": {
+      "speaker": "Woshis",
+      "tone_register": "enigmatic/questioning",
+      "intent": "feign innocence while causing harm",
+      "risk_level": "critical",
+      "risk_notes": "Woshis major spoiler; must preserve duality (helpful advisor vs. malevolent agent); dual meaning essential; no hint of true nature",
+      "t": "cai. Não estou causando dano a ninguém, ou estou?"
+    },
+    "0x2095a8": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/transitional",
+      "intent": "scene progression marker",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, próximo..."
+    },
+    "0x2095e3": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe stealth movement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tabuleiro, uma sombra desliza silenciosamente atrás dele."
+    },
+    "0x209670": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/violent",
+      "intent": "describe throat strike",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pescoço--"
+    },
+    "0x2096ad": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe death spasm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o corpo do assassino se enrijece."
+    },
+    "0x209773": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/questioning",
+      "intent": "express uncertainty",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aconteceu com ele."
+    },
+    "0x2097df": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/gesture",
+      "intent": "describe physical reaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aberto."
+    },
+    "0x209810": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/revealing",
+      "intent": "describe emergence of additional assassins",
+      "risk_level": "medium",
+      "risk_notes": "Multiple assassins; parallel structure; maintain sense of escalating threat",
+      "t": "diferente dos assassinos--gradualmente aparecem."
+    },
+    "0x209840": {
+      "speaker": "Woshis",
+      "tone_register": "enigmatic/analytical",
+      "intent": "identify enemy agent",
+      "risk_level": "high",
+      "risk_notes": "Woshis major spoiler; matter-of-fact tone; must not hint at larger knowledge/identity; observation remains clinical",
+      "t": "Um agente Uzurushan... Presumo?"
+    },
+    "0x2098fb": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe mercenary practice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "empregado."
+    },
+    "0x209933": {
+      "speaker": "Woshis",
+      "tone_register": "enigmatic/philosophical",
+      "intent": "suggest alternative methods",
+      "risk_level": "high",
+      "risk_notes": "Woshis major spoiler; tone must remain ambiguous (is he offering mercy or manipulation?); preserve duality",
+      "t": "há formas mais pacíficas de fazer isso."
+    },
+    "0x209957": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/emotional",
+      "intent": "describe Woshis's weariness",
+      "risk_level": "high",
+      "risk_notes": "Woshis major spoiler; emotional beat shows burden; must preserve sense of hidden depth without revealing identity",
+      "t": "Woshis suspira novamente, mais profundo e desconsolado."
+    },
+    "0x2099b4": {
+      "speaker": "Woshis",
+      "tone_register": "enigmatic/resigned",
+      "intent": "express tragic necessity",
+      "risk_level": "critical",
+      "risk_notes": "Woshis major spoiler; cryptic observation on mutual misfortune; preserve ambiguity and fatalism; no hint of true nature or larger agenda",
+      "t": "Infeliz para nós dois, realmente."
+    },
+    "0x209a09": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative/action",
+      "intent": "describe confidential communication",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sussurra rapidamente em seu ouvido."
+    }
+  }
+}

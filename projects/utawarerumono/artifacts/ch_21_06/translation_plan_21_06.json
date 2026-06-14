@@ -1,0 +1,314 @@
+{
+  "scene_group": "21_06",
+  "lines": [
+    {
+      "offset": "0x228b8d",
+      "text_source": "Holy crap, this is... I figured they were up to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, chocado",
+      "intent": "revelar surpresa ao descobrir a escala do projeto",
+      "risk_level": "medium",
+      "base_translation": "Caramba, isso é... Eu achei que eles estavam aprontando\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase incompleta; preservar corte natural e tom de choque"
+    },
+    {
+      "offset": "0x228bbf",
+      "text_source": "something, but I didn't think they'd go this far.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, curiosa",
+      "intent": "expressar surpresa e desaprovação moderada",
+      "risk_level": "low",
+      "base_translation": "algo, mas não achei que fossem tão longe.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228bf1",
+      "text_source": "Man",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hom",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228bf5",
+      "text_source": "Oh? Find something interesting?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, curiosa",
+      "intent": "interesse leve, pergunta aberta",
+      "risk_level": "low",
+      "base_translation": "Hein? Encontrou algo interessante?",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228c15",
+      "text_source": "I don't know about \"interesting\"... I think I'd\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, desconfortável",
+      "intent": "questionar o uso da palavra 'interessante' para algo perturbador",
+      "risk_level": "medium",
+      "base_translation": "Não sei se 'interessante' é a palavra... Acho que eu\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase incompleta; tom de repulsa velada"
+    },
+    {
+      "offset": "0x228c47",
+      "text_source": "go with \"terrifying,\" or \"appalling.\"",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "sugerir alternativas de descrição (dúvida)",
+      "risk_level": "high",
+      "base_translation": "ir com \"aterradora\", ou \"horrível\".",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação intencional de pensamento confuso; alternativas entre 'aterradora' e 'horrível' devem soar hesitantes, não fluentes. Back-translation necessária para validar que a ambiguidade semântica é preservada (escolher entre dois adjetivos, não resolvida)."
+    },
+    {
+      "offset": "0x228c6d",
+      "text_source": "Here, I'm sending the files over.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "neutro, prático",
+      "intent": "informar que está enviando os arquivos",
+      "risk_level": "low",
+      "base_translation": "Aqui, estou mandando os arquivos.\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228c91",
+      "text_source": "You take a look.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, instrução simples",
+      "intent": "pedido direto, convite à ação",
+      "risk_level": "low",
+      "base_translation": "Você dá uma olhada.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228ca2",
+      "text_source": "This is...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Isto é...",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228cad",
+      "text_source": "This \"Iceman Project\" seems like an expanded\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico, grave",
+      "intent": "descrever o Projeto Homem de Gelo como algo de escopo maior",
+      "risk_level": "medium",
+      "base_translation": "Esse 'Projeto Homem de Gelo' parece uma versão ampliada\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase incompleta; nome 'Iceman Project' → 'Projeto Homem de Gelo' primeira ocorrência na cena"
+    },
+    {
+      "offset": "0x228cdc",
+      "text_source": "version of the True Humanity Project, but...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, processar informação",
+      "intent": "reconhecer semelhança mas expressar dúvida/incompletude",
+      "risk_level": "high",
+      "base_translation": "versão do Projeto da Verdadeira Humanidade, mas...",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação por reticências é crítica — 'mas...' marca incompreensão. Não resolver a frase; manter a suspensão. Identidade/verdadeira natureza não deve ser revelada. Protagonista reconhece algo (versão do 'Projeto Verdadeira Humanidade') mas não consegue completar o pensamento."
+    },
+    {
+      "offset": "0x228d09",
+      "text_source": "It's turned into something completely\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "grave, perturbado",
+      "intent": "constatar que o projeto evoluiu para algo fora de controle",
+      "risk_level": "low",
+      "base_translation": "Virou algo completamente\\n",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228d31",
+      "text_source": "different...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "torpor, fragmentação crítica",
+      "intent": "expressão de incerteza extrema, palavra isolada",
+      "risk_level": "high",
+      "base_translation": "diferente...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mínimo absoluto — uma palavra seguida de reticências. Deve soar como lampejo confuso de consciência. Não expandir; manter a brevidade traumática."
+    },
+    {
+      "offset": "0x228d3e",
+      "text_source": "And the final results were these... things.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "grave, perturbado",
+      "intent": "revelar que os resultados finais são as criaturas/coisas presentes",
+      "risk_level": "medium",
+      "base_translation": "E os resultados finais foram essas... coisas.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'things' ambíguo — preservar ambiguidade sem especificar"
+    },
+    {
+      "offset": "0x228d6c",
+      "text_source": "They're not even people anymore...",
+      "speaker": "Garota ou Protagonista",
+      "entities_present": [
+        "Garota ou Protagonista"
+      ],
+      "tone_register": "cotidiano reflexivo ou horror contido",
+      "intent": "observação de horror/recusa da humanidade",
+      "risk_level": "high",
+      "base_translation": "Eles nem são mais pessoas...",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nenhum nome/identidade/spoiler. A frase 'não são sequer pessoas' reflete o tema do Projeto e ambiguidade moral — não deve antecipar revelação. Back-translation para confirmar que o tom de horror moral é preservado sem resolver a identidade."
+    },
+    {
+      "offset": "0x228d8f",
+      "text_source": "Makes you wonder how far humans are willing\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, perturbado",
+      "intent": "questionar até onde os humanos vão em suas ambições",
+      "risk_level": "low",
+      "base_translation": "Dá pra imaginar até onde os humanos estão dispostos\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228dbd",
+      "text_source": "to go.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "decisão breve, determinação sub-expressa",
+      "intent": "conclusão/transição de movimento",
+      "risk_level": "low",
+      "base_translation": "ir.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228dc4",
+      "text_source": "Gotta wonder if they ever worry about divine\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico, inquieto",
+      "intent": "questionar se os responsáveis temem punição divina",
+      "risk_level": "low",
+      "base_translation": "Fica a dúvida se eles se preocupam com punição divina\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x228df3",
+      "text_source": "retribution, huh...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexão amarga, questionamento contido",
+      "intent": "expressar retribuição/justiça como problema não resolvido",
+      "risk_level": "medium",
+      "base_translation": "retribuição, hein...?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'retribution, huh...?' é uma ressonância de lore (retribuição/justiça é um tema recorrente). O 'huh' marca incredulidade/ironia contida. Back-translation para validar tom de cinismo + incerteza (não é pergunta genuína, é reflexão amarga)."
+    }
+  ],
+  "total_lines": 19,
+  "high_lines": 4,
+  "medium_lines": 5,
+  "needs_review": [],
+  "plan_version": "chapter-21_06-v1"
+}

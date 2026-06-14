@@ -1,0 +1,1596 @@
+{
+  "lines": {
+    "0x1fa7a7": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "report_urgent",
+      "risk_level": "high",
+      "risk_notes": "Maroro — preservar arcaísmo + cício (s→sh). 'Relatando!' mantém a brevidade cmica. Cício não cabe nesta linha (muito curta), mas preservar tom pomposo em linhas maiores.",
+      "t": "Reportando!"
+    },
+    "0x1fa94e": {
+      "speaker": "Maroro",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nhê?"
+    },
+    "0x1faf95": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê?"
+    },
+    "0x1fafda": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê!?"
+    },
+    "0x1fb4e5": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro, descritivo",
+      "intent": "rótulo de inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado Uzurushan"
+    },
+    "0x1fb658": {
+      "speaker": "Protagonista",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O-O que—!?"
+    },
+    "0x1fb668": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que?"
+    },
+    "0x1fb71e": {
+      "speaker": "SYSTEM",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado de Yamato"
+    },
+    "0x1fbcb0": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein!?"
+    },
+    "0x1fbd69": {
+      "speaker": "Haku",
+      "tone_register": "raiva contida, determinação",
+      "intent": "juramento de vingança contra Mikazuchi",
+      "risk_level": "medium",
+      "risk_notes": "Haku em estado emocional intenso; preservar tom ameaçador sem soar exagerado; 'watch' = observar/prestar atenção (não 'observar' erudito)",
+      "t": "Maldito você, Mikazuchi... Só espera...!"
+    },
+    "0x1fbd94": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "rótulo/identificador de sistema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "globalSRT"
+    },
+    "0x1fbd9e": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "rótulo/identificador de sistema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "alvo"
+    },
+    "0x1fbda5": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de cena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ch120_01"
+    },
+    "0x1fbdae": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de parte corporal/equipamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "arma2"
+    },
+    "0x1fbdb6": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de parte corporal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "body"
+    },
+    "0x1fbdbb": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de parte corporal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "face"
+    },
+    "0x1fbdc0": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de parte corporal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "hair"
+    },
+    "0x1fbdc5": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador de acessório",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mask"
+    },
+    "0x1fbdca": {
+      "speaker": "SYSTEM",
+      "tone_register": "neutro técnico",
+      "intent": "identificador técnico de osso/bone ambiental",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "osso_amb"
+    },
+    "0x1fb96c": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico, pomposo",
+      "intent": "alertar que o avanço inimigo persiste e a situação é grave",
+      "risk_level": "medium",
+      "risk_notes": "voz arcaica de Maroro deve ser mantida; orçamento apertado 46 bytes",
+      "t": "Se o avanço persistir, estamos verdadeiramente\\n"
+    },
+    "0x1fb9a3": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico",
+      "intent": "reconhecer que Mikazuchi abriu caminho para a retirada",
+      "risk_level": "medium",
+      "risk_notes": "manter arcaísmo; orçamento 45 bytes",
+      "t": "O Mestre Mikazuchi abriu um caminho que nós\\n"
+    },
+    "0x1fb9e1": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico",
+      "intent": "concluir que devem deixar a batalha nas mãos de Mikazuchi",
+      "risk_level": "medium",
+      "risk_notes": "arcaísmo + orçamento 44 bytes",
+      "t": "Devemos deixar o combate em suas mãos,\\n"
+    },
+    "0x1fbab2": {
+      "speaker": "Ukon",
+      "tone_register": "informal, caloroso, espirituoso",
+      "intent": "concordar relutantemente com a decisão do tático",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro que não! Mas se nosso tático assim quer,\\n"
+    },
+    "0x1fbb4e": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico, aliviado",
+      "intent": "observar que não há perseguição e elogiar Mikazuchi",
+      "risk_level": "medium",
+      "risk_notes": "arcaísmo; orçamento 46 bytes",
+      "t": "Parece que não há perseguição. O Senhor Mikazuchi\\n"
+    },
+    "0x1fbbd1": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, dramático, aliviado",
+      "intent": "expressar alívio e admiração pela resistência de Mikazuchi",
+      "risk_level": "medium",
+      "risk_notes": "arcaísmo; interjeição 'Phew' localizada",
+      "t": "Ufa... Senhor Mikazuchi, tua fortitude hath\\n"
+    },
+    "0x1fbc0c": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, sombrio",
+      "intent": "reconhecer que apesar do sucesso as baixas foram pesadas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Porém, nossas baixas foram muitas. Conseguimos\\n"
+    },
+    "0x1fbc3e": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, melancólico",
+      "intent": "completar o pensamento — travaram a invasão mas não foi vitória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "deter a invasão inimiga, mas chamar isso de\\n"
+    },
+    "0x1fbcf5": {
+      "speaker": "Ukon",
+      "tone_register": "informal, firme, irônico",
+      "intent": "ameaçar relatório detalhado sobre os erros cometidos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haverá um relatório detalhado dos SEUS erros\\n"
+    },
+    "0x1fb3f1": {
+      "speaker": "Protagonista",
+      "tone_register": "fragmentado, desorientado",
+      "intent": "susto e confusão extrema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Wh... Wh-Wh-O quê...!"
+    },
+    "0x1fb405": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo com cício",
+      "intent": "lamúria erudita; comédia",
+      "risk_level": "high",
+      "risk_notes": "cício (s→sh) preservado; arcaísmo não deve desaparecer",
+      "t": "Avisei, avisei e avisei novamente, mestre..."
+    },
+    "0x1fb489": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, brincalhão",
+      "intent": "brincar/elogiar",
+      "risk_level": "medium",
+      "risk_notes": "Ukon aqui é só o mercenário; não antecipar pompa de general",
+      "t": "Não me diga que é você meu estrategista!?"
+    },
+    "0x1fb4a3": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo com cício",
+      "intent": "protesto melodramático",
+      "risk_level": "high",
+      "risk_notes": "Th-Thou → Tu-Tú ou manter 'Tu' com hesitação; impossible → impossível; cício em sibilantes",
+      "t": "Tu... tu pedis o impossível!"
+    },
+    "0x1fb4c2": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo com cício",
+      "intent": "súplica desesperada",
+      "risk_level": "high",
+      "risk_notes": "'Master Haku' em relação ao protagonista; cício mantido; tom de pánico",
+      "t": "Mestre Haku... Por favor, me ajude...!"
+    },
+    "0x1fb51c": {
+      "speaker": "Haku",
+      "tone_register": "confidente, altivo",
+      "intent": "desdém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que patéticos!"
+    },
+    "0x1fb58c": {
+      "speaker": "Haku",
+      "tone_register": "interrogativo, confidente",
+      "intent": "retórica de desprezo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "eles estão pensando?"
+    },
+    "0x1fb5ca": {
+      "speaker": "Haku",
+      "tone_register": "irônico, competente",
+      "intent": "auto-referência cômica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de um estrategista."
+    },
+    "0x1fb5db": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, alegre",
+      "intent": "afirmação entusiasmada",
+      "risk_level": "low",
+      "risk_notes": "Hyahahahahaha mantém a risa natural",
+      "t": "Sem dúvida! Hyahahahahaha!"
+    },
+    "0x1fb5f4": {
+      "speaker": "Ukon",
+      "tone_register": "direto, caloroso",
+      "intent": "chamada à ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos, vamos acabar com esses lixos."
+    },
+    "0x1fb623": {
+      "speaker": "Haku",
+      "tone_register": "confiante, depois confuso",
+      "intent": "confiança quebrada por dúvida",
+      "risk_level": "medium",
+      "risk_notes": "mudança de tom no meio da linha; preservar a hesitação",
+      "t": "É... Hein?"
+    },
+    "0x1fb636": {
+      "speaker": "Haku",
+      "tone_register": "confuso, investigativo",
+      "intent": "perplexidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que foi aquilo...? Um golpe de vento?"
+    },
+    "0x1fb66e": {
+      "speaker": "Protagonista",
+      "tone_register": "confuso, alarmado",
+      "intent": "horror lento",
+      "risk_level": "medium",
+      "risk_notes": "descoberta gradual de perda; não soar dramático demais",
+      "t": "Seus braços... O que aconteceu?"
+    },
+    "0x1fb68a": {
+      "speaker": "Protagonista",
+      "tone_register": "fragmentado, desorientado",
+      "intent": "negação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Meus braços? O quê...?"
+    },
+    "0x1fb69a": {
+      "speaker": "Protagonista",
+      "tone_register": "horror absoluto, quebrado",
+      "intent": "realização do pior",
+      "risk_level": "high",
+      "risk_notes": "quebra de sanidade; reticências criticamente importantes",
+      "t": "Meus braços... se foram!?"
+    },
+    "0x1fb6b0": {
+      "speaker": "Haku",
+      "tone_register": "confuso, preocupado",
+      "intent": "observação desorientada",
+      "risk_level": "medium",
+      "risk_notes": "Haku percebe algo errado; não é diagnóstico, é confusão",
+      "t": "Por que você... está se inclinando tanto pra um lado...?"
+    },
+    "0x1fb6fd": {
+      "speaker": "Protagonista",
+      "tone_register": "horror fragmentado",
+      "intent": "alarme puro",
+      "risk_level": "high",
+      "risk_notes": "descoberta nova; desorientação extrema",
+      "t": "Sua... sua cabeça...!"
+    },
+    "0x1fb70d": {
+      "speaker": "Protagonista",
+      "tone_register": "grito puro",
+      "intent": "agonia absoluta",
+      "risk_level": "high",
+      "risk_notes": "onomatopeia de dor; preservar a força primitiva",
+      "t": "AAAAAAAGHHH!"
+    },
+    "0x1fb72e": {
+      "speaker": "Protagonista",
+      "tone_register": "confuso, questionador",
+      "intent": "reconhecimento incerto",
+      "risk_level": "medium",
+      "risk_notes": "Mikazuchi é figura de poder lore; não revelar identidade além do nome",
+      "t": "Senhor... Mikazuchi?"
+    },
+    "0x1fb741": {
+      "speaker": "Maroro",
+      "tone_register": "deslumbrado, pomposo",
+      "intent": "reconhecimento reverente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É o Senhor Mikazuchi...!"
+    },
+    "0x1fb759": {
+      "speaker": "Maroro",
+      "tone_register": "eufórico, alívio",
+      "intent": "salvação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Senhor Mikazuchi veio nos salvar!"
+    },
+    "0x1fb7c6": {
+      "speaker": "Mikazuchi",
+      "tone_register": "formal, poético",
+      "intent": "declaração de propósito",
+      "risk_level": "medium",
+      "risk_notes": "fala mítica; 'clad in the storm' → 'vestido/cingido na tempestade' — manter o lirismo",
+      "t": "Vou voar cingido pela tempestade."
+    },
+    "0x1fb7e5": {
+      "speaker": "Mikazuchi",
+      "tone_register": "resoluto",
+      "intent": "afirmação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...HÁ!"
+    },
+    "0x1fb830": {
+      "speaker": "Maroro",
+      "tone_register": "surpreso, admirado",
+      "intent": "descoberta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mikazuchi está aqui!?"
+    },
+    "0x1fb844": {
+      "speaker": "Bokoinante",
+      "tone_register": "formal, obediente",
+      "intent": "confirmação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim, senhor."
+    },
+    "0x1fb87c": {
+      "speaker": "Maroro",
+      "tone_register": "gaguejante, truncado",
+      "intent": "interrupção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu—"
+    },
+    "0x1fb8af": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo",
+      "intent": "comando militar",
+      "risk_level": "high",
+      "risk_notes": "'remaineth' → 'permaneça' com arcaísmo; 'tropa' é contável em pt-BR",
+      "t": "tropas enquanto a ocasião ainda o permitir!"
+    },
+    "0x1fb933": {
+      "speaker": "Maroro",
+      "tone_register": "urgente",
+      "intent": "comunicação cortada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devemos lançar um—"
+    },
+    "0x1fb946": {
+      "speaker": "Ukon",
+      "tone_register": "autoridade calorosa",
+      "intent": "comando firme",
+      "risk_level": "high",
+      "risk_notes": "'Thou wilt stay thy tongue' → 'Tu vais calar tua língua' com implicação clara mas não rude",
+      "t": "Tu vais calar tua língua!"
+    },
+    "0x1fb961": {
+      "speaker": "Maroro",
+      "tone_register": "gaguejante, chocado",
+      "intent": "reação ao silenciamento",
+      "risk_level": "high",
+      "risk_notes": "cício em 'Nyegh' → 'Nyégh'; gaguejo de choque",
+      "t": "Nyégh...!?"
+    },
+    "0x1fb99b": {
+      "speaker": "Maroro",
+      "tone_register": "lamento",
+      "intent": "despair",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desfeito!"
+    },
+    "0x1fb9d1": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo",
+      "intent": "esperança remota",
+      "risk_level": "high",
+      "risk_notes": "'scape' (escape) → 'escapar'; arcaísmo em 'possa' mantido",
+      "t": "possa escapar..."
+    },
+    "0x1fba0e": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico urgente",
+      "intent": "plano de retirada",
+      "risk_level": "high",
+      "risk_notes": "'hie' (archaic: hurry) → 'apressar'; 'to safety' preserva urgência",
+      "t": "e apressemos nossas tropas à segurança!"
+    },
+    "0x1fba2c": {
+      "speaker": "Ukon",
+      "tone_register": "esforço físico, relutância",
+      "intent": "assentimento forçado",
+      "risk_level": "medium",
+      "risk_notes": "som guttural; hesitação antes de ceder",
+      "t": "Nyuuurgh..."
+    },
+    "0x1fba38": {
+      "speaker": "Bokoinante",
+      "tone_register": "deferente, súplica",
+      "intent": "pedido urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, senhor!"
+    },
+    "0x1fba48": {
+      "speaker": "Ukon",
+      "tone_register": "resignado, caloroso",
+      "intent": "rendição cansada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá bom, tá bom!"
+    },
+    "0x1fba5d": {
+      "speaker": "Ukon",
+      "tone_register": "comando direto",
+      "intent": "ordem militar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bokoinante! Dê a ordem de retirada às nossas tropas!"
+    },
+    "0x1fba8f": {
+      "speaker": "Bokoinante",
+      "tone_register": "respeitoso, hesitante",
+      "intent": "confirmação de pedido extraordinário",
+      "risk_level": "medium",
+      "risk_notes": "dúvida respeitosa; não questiona, confirma apenas",
+      "t": "Você... realmente aprova isto, senhor?"
+    },
+    "0x1fbae2": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, desembaraçado",
+      "intent": "assentimento casual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ah! Bem, então DEVE ser assim!"
+    },
+    "0x1fbb00": {
+      "speaker": "Bokoinante",
+      "tone_register": "gaguejante, surpreso",
+      "intent": "exclamação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Então!?"
+    },
+    "0x1fbb0a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, frustrado",
+      "intent": "desaprovação contida",
+      "risk_level": "high",
+      "risk_notes": "Oshtor/Ukon antes do reveal (cap. 13); tom formal/nobre mas contido (não ainda a pompa de general)",
+      "t": "Que raiva. Humilhante..."
+    },
+    "0x1fbb25": {
+      "speaker": "Bokoinante",
+      "tone_register": "formal, relatório",
+      "intent": "confirmação de sucesso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todas as tropas completaram a retirada."
+    },
+    "0x1fbb7d": {
+      "speaker": "Maroro",
+      "tone_register": "admirado, erudito",
+      "intent": "observação respeitosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "parece ainda estar os segurando para nós."
+    },
+    "0x1fbbb5": {
+      "speaker": "Maroro",
+      "tone_register": "gaguejante, constrangido",
+      "intent": "hesitação e auto-censura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Er... Quer dizer... Esqueça."
+    },
+    "0x1fbbfe": {
+      "speaker": "Maroro",
+      "tone_register": "alívio, reverência",
+      "intent": "gratidão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nos salvou a todos."
+    },
+    "0x1fbc6e": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, irônico",
+      "intent": "reflexão amarga",
+      "risk_level": "high",
+      "risk_notes": "Oshtor ironia: 'vitória' é chamada em ironia; não resolver a ambiguidade (spoiler-sensitive)",
+      "t": "\"vitória\" seria..."
+    },
+    "0x1fbc84": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, comando",
+      "intent": "delegação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Bokoinante. Você fica responsável pelo relatório."
+    },
+    "0x1fbcb6": {
+      "speaker": "Bokoinante",
+      "tone_register": "gaguejante, nervoso",
+      "intent": "exclamação de choque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "NYÉH!"
+    },
+    "0x1fbcbc": {
+      "speaker": "Bokoinante",
+      "tone_register": "tenso, submisso",
+      "intent": "aceitação relutante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nnh... E-Entendido, Senhor..."
+    },
+    "0x1fbcd9": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, direto",
+      "intent": "chamada de atenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, e você. Maroro."
+    },
+    "0x1fbcee": {
+      "speaker": "Maroro",
+      "tone_register": "surpreso, hesitante",
+      "intent": "reconhecimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu...?"
+    },
+    "0x1fbd28": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, seco",
+      "intent": "ameaça velada",
+      "risk_level": "high",
+      "risk_notes": "redução de soldo é punição; tom deve ser frio mas não cruel (Oshtor é nobre antes do reveal)",
+      "t": "hoje. Sugiro que você se prepare para um corte no pagamento."
+    },
+    "0x1fbd58": {
+      "speaker": "Maroro",
+      "tone_register": "chocado, lamento",
+      "intent": "reação de pânico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, meu Deus!?"
+    },
+    "0x1fbd5f": {
+      "speaker": "Maroro",
+      "tone_register": "lamento arcaico",
+      "intent": "desespero",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ai... Ai..."
+    },
+    "0x1fa6a1": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo neutro",
+      "intent": "estabelecer cena — outro campo de batalha ao oeste",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Enquanto isso, em outra área ao longo do\\n"
+    },
+    "0x1fa6da": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo neutro",
+      "intent": "apresentar o exército de Dekopompo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Um exército liderado por Dekopompo, dos Oito Pilares,\\n"
+    },
+    "0x1fa737": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo neutro",
+      "intent": "descrever a formação tática diferente das outras batalhas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ao contrário dos outros campos, os dois exércitos\\n"
+    },
+    "0x1fa767": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo neutro",
+      "intent": "detalhar escaramuças em unidades menores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "se dividiram em unidades menores, escaramuçando enquanto\\n"
+    },
+    "0x1fa7b2": {
+      "speaker": "NARRADOR",
+      "tone_register": "narrativo neutro",
+      "intent": "relatar vitória sobre unidade inimiga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nossos soldados derrotaram a unidade inimiga que\\n"
+    },
+    "0x1fa82d": {
+      "speaker": "SOLDADO",
+      "tone_register": "relatório militar formal",
+      "intent": "informar Dekopompo sobre recuo inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lorde Dekopompo! A unidade que se aproximava\\n"
+    },
+    "0x1fa861": {
+      "speaker": "SOLDADO",
+      "tone_register": "relatório militar formal",
+      "intent": "celebrar vitória e sinalizar recuo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "começou a recuar. Mais uma gloriosa vitória\\n"
+    },
+    "0x1fa89a": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo cômico",
+      "intent": "riso de satisfação exagerado e arrogante",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia de riso pomposo — localizada para o padrão cômico do personagem",
+      "t": "Nyeh-peh-peh-peh-peh!\\n"
+    },
+    "0x1fa8c3": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo cômico",
+      "intent": "expressar alívio exagerado com a notícia",
+      "risk_level": "medium",
+      "risk_notes": "Arcaísmo cômico; 'sweeter missive' localizado mantendo o tom empolado",
+      "t": "Ótimas novas! Jamais me chegou mensagem mais doce\\n"
+    },
+    "0x1fa8fa": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo arrogante",
+      "intent": "ordenar recolhimento das tropas para descanso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem, recolhamos os homens para que possam\\n"
+    },
+    "0x1fa954": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante impaciente",
+      "intent": "recusar recuo e insistir em continuar o ataque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que tolice é essa? Por que eu desperdiçaria\\n"
+    },
+    "0x1fa9ac": {
+      "speaker": "Dekopompo",
+      "tone_register": "autoritário pomposo",
+      "intent": "ordenar continuação do ataque e convocar Bokoinante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Continuaremos o ataque. Bokoinante,\\n"
+    },
+    "0x1faa18": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico cômico suplicante",
+      "intent": "alertar Dekopompo sobre superioridade numérica inimiga",
+      "risk_level": "high",
+      "risk_notes": "Voz arcaica do Maroro + cicio obrigatório; 'outmatch'd' → construção arcaica; verificar back-translation",
+      "t": "Acaso esquecestes? Somos superados em número\\n"
+    },
+    "0x1faa5e": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante desdenhoso",
+      "intent": "desdenhar da superioridade numérica inimiga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmph. Os números deles não importam. São apenas\\n"
+    },
+    "0x1faa90": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante desdenhoso",
+      "intent": "depreciar o inimigo como multidão indisciplinada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "uma turba indisciplinada. Não estava observando o\\n"
+    },
+    "0x1faaca": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico cômico nervoso",
+      "intent": "implorar cautela ao mestre com medo das consequências",
+      "risk_level": "high",
+      "risk_notes": "Cicio Maroro: 'Prithee' → arcaísmo equivalente; tom suplicante ansioso; back-translation necessária",
+      "t": "P-Peço-vos, mestre, se agirmos sem cautela,\\n"
+    },
+    "0x1fab11": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado autoritário",
+      "intent": "mandar Maroro calar a boca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Silêncio! Já ouvi o suficiente de você!\\n"
+    },
+    "0x1fab3a": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante repreensivo",
+      "intent": "repreender alguém por se vangloriar de uma batalha pequena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se envaideça por uma migalha de\\n"
+    },
+    "0x1fab79": {
+      "speaker": "Maroro",
+      "tone_register": "bajulador efusivo",
+      "intent": "concordar servilmente com Dekopompo",
+      "risk_level": "medium",
+      "risk_notes": "Bajulação exagerada característica do Maroro; tom efusivo",
+      "t": "Meu senhor está absolutamente certo!\\n"
+    },
+    "0x1fabb5": {
+      "speaker": "Maroro",
+      "tone_register": "bajulador efusivo arcaico",
+      "intent": "validar a decisão de perseguir como correta",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo + bajulação do Maroro; verificar back-translation",
+      "t": "Vejam! Olhem só! Ordenar a perseguição foi a\\n"
+    },
+    "0x1fac5e": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante desdenhoso",
+      "intent": "rejeitar a ideia de mostrar misericórdia ao inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmph. Querem que eu lhes mostre piedade? Que\\n"
+    },
+    "0x1fac8d": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante desdenhoso",
+      "intent": "continuar o argumento sobre misericórdia ser tolice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tolice. Não entendem que eles são\\n"
+    },
+    "0x1facc6": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico agitado",
+      "intent": "discordar parcialmente e introduzir argumento sobre os nakwans",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro; 'Hark thou' e 'dispatch' mantêm tom empolado; back-translation necessária",
+      "t": "Não discuto isso! Ouvi-me bem, mandar abater\\n"
+    },
+    "0x1facf6": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico agitado",
+      "intent": "argumentar que exterminar nakwans não prejudica Uzurusha",
+      "risk_level": "medium",
+      "risk_notes": "Termos de glossário: nakwans, Uzurusha — manter originais",
+      "t": "mesmo mil nakwans não ameaça Uzurusha\\n"
+    },
+    "0x1fad31": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico agitado",
+      "intent": "concluir que apenas exaure as próprias forças",
+      "risk_level": "medium",
+      "risk_notes": "Continuação do argumento; arcaísmo Maroro",
+      "t": "Na verdade, só serve para esgotar as nossas\\n"
+    },
+    "0x1fad6b": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado explosivo",
+      "intent": "demonstrar frustração extrema com os conselhos de Maroro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Argh! Já chega de você! Pare de\\n"
+    },
+    "0x1fad97": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado explosivo",
+      "intent": "reclamar que Maroro estraga seu bom humor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "estragar meu humor! Estou TENTANDO aproveitar minha\\n"
+    },
+    "0x1fadcd": {
+      "speaker": "Dekopompo",
+      "tone_register": "autoritário impaciente",
+      "intent": "ordenar Bokoinante a continuar o ataque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bokoinante! Dê as ordens para continuar o\\n"
+    },
+    "0x1fae35": {
+      "speaker": "Bokoinante",
+      "tone_register": "hesitante casual",
+      "intent": "lembrar que ainda há uma unidade a ser considerada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmm... Se bem me lembro, ainda tínhamos uma unidade\\n"
+    },
+    "0x1fae9e": {
+      "speaker": "Dekopompo",
+      "tone_register": "autoritário impaciente",
+      "intent": "ordenar que essa unidade também persiga o inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem, passe a ordem para que persigam\\n"
+    },
+    "0x1faeca": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo triunfante",
+      "intent": "declarar que chegou a hora de esmagar o inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "também. Nossa hora chegou! Vamos esmagar\\n"
+    },
+    "0x1faeff": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico desesperado",
+      "intent": "implorar para não moverem aqueles homens",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro: 'Move'st thou not' → forma arcaica equivalente; back-translation necessária",
+      "t": "E-Espera, digo eu! Não movais esses homens!\\n"
+    },
+    "0x1faf5b": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo desdenhoso",
+      "intent": "riso curto de desdém após ignorar Maroro",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia de riso — variante mais contida que a anterior",
+      "t": "Nyeh peh peh peh.\\n"
+    },
+    "0x1fafa1": {
+      "speaker": "SOLDADO",
+      "tone_register": "urgente alarmado",
+      "intent": "relatar emboscada às unidades em perseguição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nossas unidades em perseguição foram emboscadas\\n"
+    },
+    "0x1fafe1": {
+      "speaker": "SOLDADO",
+      "tone_register": "urgente alarmado",
+      "intent": "revelar que o inimigo estava escondido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A-Ao que parece, o inimigo havia se escondido\\n"
+    },
+    "0x1fb073": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico agitado analítico",
+      "intent": "explicar que as montanhas oferecem vantagem estratégica para emboscada",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro; análise tática empolada; back-translation necessária",
+      "t": "Essas montanhas são perfeitas para uma\\n"
+    },
+    "0x1fb0bd": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico preventivo",
+      "intent": "revelar que por cautela havia reservado um regimento para isso",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro; 'I had set aside' → tom previdente e empolado",
+      "t": "Com minha cautela, havia reservado aquele regimento\\n"
+    },
+    "0x1fb183": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico alarmado",
+      "intent": "alertar que as unidades avançadas estão em perigo",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro; urgência crescente; back-translation necessária",
+      "t": "Nesse ritmo, as unidades separadas à frente\\n"
+    },
+    "0x1fb1e5": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante impulsivo",
+      "intent": "propor solução impulsiva de fazer as unidades recuarem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Eu sei! Faremos as unidades à frente\\n"
+    },
+    "0x1fb211": {
+      "speaker": "Dekopompo",
+      "tone_register": "arrogante impulsivo",
+      "intent": "completar o plano de cercar os emboscadores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "recuarem...! E pegamos os emboscadores em uma\\n"
+    },
+    "0x1fb26e": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico desesperado",
+      "intent": "rejeitar o plano de Dekopompo como perigoso para as unidades avançadas",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro: 'Thou mustn't' → forma arcaica; urgência máxima; back-translation necessária",
+      "t": "Não, não, não! Não deveis! As unidades à frente\\n"
+    },
+    "0x1fb2d0": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado insultuoso",
+      "intent": "insultar Maroro e ignorar seu conselho",
+      "risk_level": "medium",
+      "risk_notes": "Insulto colorido ao Maroro; 'painted little' localizado para manter o tom ofensivo",
+      "t": "O quê? É um tolo, seu palhaço pintado e\\n"
+    },
+    "0x1fb305": {
+      "speaker": "Dekopompo",
+      "tone_register": "autoritário desdenhoso",
+      "intent": "ordenar Bokoinante a ignorar Maroro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bokoinante, não dê ouvidos ao que ele diz.\\n"
+    },
+    "0x1fb385": {
+      "speaker": "SOLDADO",
+      "tone_register": "urgente derrotado",
+      "intent": "reportar falha do plano e contra-ataque inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não funcionou... Os inimigos em fuga\\n"
+    },
+    "0x1fb3b3": {
+      "speaker": "SOLDADO",
+      "tone_register": "urgente derrotado",
+      "intent": "concluir que agora são eles que estão cercados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "revidaram, e agora NÓS é que estamos em uma\\n"
+    },
+    "0x1fb437": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado negando responsabilidade",
+      "intent": "culpar Maroro por distraí-lo com falatório",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Silêncio! V-Você me distraiu com sua tagarelice!\\n"
+    },
+    "0x1fb461": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado desesperado",
+      "intent": "exigir que Maroro faça algo para resolver a situação",
+      "risk_level": "medium",
+      "risk_notes": "Insulto ao Maroro; 'pasty little clown' → localizado mantendo tom depreciativo",
+      "t": "Faça alguma coisa, seu palhacinho pálido!\\n"
+    },
+    "0x1fb4f7": {
+      "speaker": "Mikazuchi",
+      "tone_register": "triunfante zombeteiro",
+      "intent": "rir e zombar dos soldados inimigos em apuros",
+      "risk_level": "medium",
+      "risk_notes": "Gargalhada localizada; personagem introduzido com risada — tom dominante e irônico",
+      "t": "Hyahahahahaha! Olhem só esses caras!\\n"
+    },
+    "0x1fb531": {
+      "speaker": "Mikazuchi",
+      "tone_register": "zombeteiro desdenhoso",
+      "intent": "questionar o que há de errado com os soldados de Yamato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que há de errado com esses soldados de Yamato?\\n"
+    },
+    "0x1fb55e": {
+      "speaker": "Mikazuchi",
+      "tone_register": "zombeteiro desdenhoso",
+      "intent": "ridicularizar a tática de atacar e fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Primeiro atacam, depois fogem! O que são\\n"
+    },
+    "0x1fb59b": {
+      "speaker": "Mikazuchi",
+      "tone_register": "zombeteiro irônico",
+      "intent": "insinuar que o exército inimigo tem um líder idiota no comando",
+      "risk_level": "medium",
+      "risk_notes": "Duplo sentido irônico sobre o líder incompetente; tom de deboche",
+      "t": "Heh heh! Devem ter um idiota completo\\n"
+    },
+    "0x1fb6df": {
+      "speaker": "Dekopompo",
+      "tone_register": "confuso aterrorizado",
+      "intent": "reagir com surpresa e terror ao ver Mikazuchi",
+      "risk_level": "medium",
+      "risk_notes": "Transição de arrogância para terror; 'Ahhhh' localizado como grito de susto",
+      "t": "Hã? O que você...? Aaaaah!\\n"
+    },
+    "0x1fb77d": {
+      "speaker": "Mikazuchi",
+      "tone_register": "enigmático frio profético",
+      "intent": "apresentar-se como o relâmpago em carne e osso",
+      "risk_level": "high",
+      "risk_notes": "Fala de apresentação icônica; ambiguidade ameaçadora deve ser preservada; back-translation necessária",
+      "t": "Sou o relâmpago feito carne.\\n"
+    },
+    "0x1fb79a": {
+      "speaker": "Mikazuchi",
+      "tone_register": "solene invocatório",
+      "intent": "invocar o poder do Akuruka",
+      "risk_level": "high",
+      "risk_notes": "Termo de glossário Akuruka (manter); tom solene e arcaico; back-translation necessária",
+      "t": "Akuruka, concede-me teu poder infinito, e\\n"
+    },
+    "0x1fb7ed": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado semi-consciente",
+      "intent": "perguntar confusamente o que está acontecendo",
+      "risk_level": "medium",
+      "risk_notes": "Tom de torpor fragmentado; frases quebradas conforme perfil do Protagonista",
+      "t": "O que está acontecendo...? O que...?\\n"
+    },
+    "0x1fb80c": {
+      "speaker": "Personagem",
+      "tone_register": "chocado reconhecendo",
+      "intent": "identificar/reconhecer o General Imperial da Esquerda",
+      "risk_level": "medium",
+      "risk_notes": "Título importante de lore; tom de surpresa e reconhecimento",
+      "t": "O General Imperial da Esquerda?\\n"
+    },
+    "0x1fb84e": {
+      "speaker": "Personagem",
+      "tone_register": "chocado incrédulo",
+      "intent": "expressar incredulidade por não ter sido avisado sobre a presença dele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Impossível... Não ouvi nada sobre isso!\\n"
+    },
+    "0x1fb880": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico oportunista ansioso",
+      "intent": "sugerir fugir aproveitando a situação como sorte",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo Maroro + cicio; 'T-Tis our fortune' → arcaísmo; back-translation necessária",
+      "t": "É-É nossa sorte, mestre! Devemos chamar nossas\\n"
+    },
+    "0x1fb8db": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado orgulhoso",
+      "intent": "recusar-se a ficar parado enquanto Mikazuchi leva toda a glória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ainda ousa contradizer!? Não posso ficar parado\\n"
+    },
+    "0x1fb90c": {
+      "speaker": "Dekopompo",
+      "tone_register": "irado ciumento",
+      "intent": "declarar que não vai deixar Mikazuchi ficar com toda a glória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "enquanto Mikazuchi fica com toda a glória!\\n"
+    },
+    "0x1fa6d0": {
+      "speaker": "SYSTEM",
+      "tone_register": "system",
+      "intent": "scene_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "fronteira..."
+    },
+    "0x1fa70a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "military_report",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor ainda não é identificado como general; manter como Ukon (mercenário). Formalidade comedida, não antecipe pompa de general.",
+      "t": "Generais batem para estancar o exército Uzurushan."
+    },
+    "0x1fa79a": {
+      "speaker": "SYSTEM",
+      "tone_register": "system",
+      "intent": "scene_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "dispersos..."
+    },
+    "0x1fa7e3": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "report_tactical",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo cômico: 'vinha' é moderno. 'Se aproximava' soa melhor com pompa. Cício possível em linha maior. 'Do nosso lado esquerdo' é natural.",
+      "t": "se aproximava do nosso lado esquerdo!"
+    },
+    "0x1fa802": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "acknowledgment",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor/Ukon — formal mas não rígido. 'Vejo! Bom. Muito bom.' soa desejoso, próximo ao tom de general que revela a estratégia.",
+      "t": "Vejo! Bom. Muito bom."
+    },
+    "0x1fa815": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "query_suspicious",
+      "risk_level": "medium",
+      "risk_notes": "Tom de desconfiança gentil. 'Tem certeza?' preserva a dúvida e formalidade.",
+      "t": "Hm...? Tem certeza?"
+    },
+    "0x1fa892": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "plea_subordinate",
+      "risk_level": "medium",
+      "risk_notes": "Maroro — breve. Preservar a lealdade submissa. 'Para nós!' soa bem pomposo em português.",
+      "t": "para nós!"
+    },
+    "0x1fa8b2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "strong_approval",
+      "risk_level": "medium",
+      "risk_notes": "Aprovação forte, repetida. 'Bom. Muito bom.' mantém o ritmo.",
+      "t": "Bom. Muito bom."
+    },
+    "0x1fa8f3": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "exclamation_shock",
+      "risk_level": "medium",
+      "risk_notes": "Maroro em choque. 'Tinha...' captura torpor/fragmentação de fala assustada. Ou 'tínhamos...?' — manter a hesitação.",
+      "t": "tínhamos..."
+    },
+    "0x1fa92b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "command_strategic",
+      "risk_level": "high",
+      "risk_notes": "Comando militar claro. 'Se preparar para batalhas amanhã' é natural. Pode ser encurtado se necessário: 'preparar para batalhas de amanhã' (economia de bytes).",
+      "t": "preparar para batalhas de amanhã."
+    },
+    "0x1fa988": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "exclamation_disbelief",
+      "risk_level": "high",
+      "risk_notes": "Maroro — exclamação melodramática. 'Uma oportunidade tão dourada assim!?' é pomposa mas coloquial pt-BR moderno. Preservar a incredulidade.",
+      "t": "uma oportunidade tão dourada assim!?"
+    },
+    "0x1fa9d9": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "command_direct",
+      "risk_level": "medium",
+      "risk_notes": "Comando direto. 'Dar a ordem de perseguição' ou 'ordenar perseguição'. Preferir 'Ordenar a perseguição' (mais direto, menos bytes).",
+      "t": "Ordenar a perseguição."
+    },
+    "0x1fa9f3": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "acknowledgment_obedient",
+      "risk_level": "low",
+      "risk_notes": "Maroro — obediente e rápido. 'Entendido, senhor!' é padrão respeitoso.",
+      "t": "Entendido, senhor!"
+    },
+    "0x1faa04": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "urgent_plea_negative",
+      "risk_level": "high",
+      "risk_notes": "Maroro usa 'thou' (vós). 'N-Não, tu não deves!' preserva a gagueira de horror. 'Não, vós não deveis!' seria mais arcaico mas estranho em pt-BR moderno. Optar por 'Não, você não pode!' para moderno, ou 'Não, não devei!' para cômico-arcaico.",
+      "t": "N-Não, você não pode!"
+    },
+    "0x1faa48": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "argument_despair",
+      "risk_level": "medium",
+      "risk_notes": "Maroro argumenta contra números. 'Números tão opostos!' é pomposo. Ou 'Contra números tão grandes!' Mantém a dramaticidade.",
+      "t": "Contra números tão grandes!"
+    },
+    "0x1faac2": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "query_confirmation",
+      "risk_level": "low",
+      "risk_notes": "Breve. 'Batalha?' é natural e cômico (hesitação pomposa).",
+      "t": "Batalha?"
+    },
+    "0x1faafa": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "protest_strong",
+      "risk_level": "high",
+      "risk_notes": "Maroro em pânico. 'Agimos em erro grave!' é pomposo e elegante. Ou 'Atuamos em erro grave!' Manter a dramaticidade.",
+      "t": "Atuamos em erro grave!"
+    },
+    "0x1fab69": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "denial_praise",
+      "risk_level": "medium",
+      "risk_notes": "Maroro nega elogio. 'Elogio de mim!' é muito literal. 'Elogios vindos de mim!' é melhor. Ou 'Louvor de meu lado!' Escolher natural: 'Louvor de mim!' (breve, cômico).",
+      "t": "Louvor de mim!"
+    },
+    "0x1fab98": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "command_sharp",
+      "risk_level": "high",
+      "risk_notes": "Comando cortante. 'Conhece teu lugar!' é arcaico-cômico. 'Saiba seu lugar!' é moderno-severo. Escolher 'Conheça seu lugar!' (mais direto, preserva tom formal).",
+      "t": "Conheça seu lugar!"
+    },
+    "0x1fabaa": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "exclamation_despair",
+      "risk_level": "medium",
+      "risk_notes": "Maroro em choque completo. 'O-Ohhhh...' é onomatopeia de horror. Localizar: 'O-Ohhh...' ou 'O-Oohhh...' (mesmo tom). Pt-BR usa 'Oohhh' bem.",
+      "t": "O-Oohhh..."
+    },
+    "0x1fabe7": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "argument_strategic",
+      "risk_level": "high",
+      "risk_notes": "Maroro argumenta. 'Curso de ação correto!' é pomposo e natural. 'Curso correto de ação!' idem. Manter dramaticidade.",
+      "t": "Curso correto de ação!"
+    },
+    "0x1fac01": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "urgent_plea_stop",
+      "risk_level": "high",
+      "risk_notes": "Maroro em urgência. 'E-Espera! Por favor, cessa!' é pomposo. Ou 'E-Espere! Por favor, pare!' (moderno). Escolher 'E-Espere! Por favor, cesse!' (preserva tom erudito sem ser arcaico).",
+      "t": "E-Espere! Por favor, cesse!"
+    },
+    "0x1fac19": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_horror",
+      "risk_level": "high",
+      "risk_notes": "Maroro identifica inimigos. 'Todos são apenas nakwans!' é natural. 'Nakwan' = termo do glossário (manter_original). Risco: confirmar se 'nakwan' é entendível ou precisa glosa (em QA pode ser solicitada).",
+      "t": "Todos são apenas nakwans!"
+    },
+    "0x1fac34": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_national_betrayal",
+      "risk_level": "high",
+      "risk_notes": "Maroro faz argumento nacional. 'Não são verdadeiros compatriotas de Uzurusha!' é natural e formal. Preserva a gravidade da acusação.",
+      "t": "Não são verdadeiros compatriotas de Uzurusha!"
+    },
+    "0x1facbc": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "query_accusation",
+      "risk_level": "high",
+      "risk_notes": "Maroro acusa de traição. 'Traidores?' é direto. Cabe no orçamento. Preserva a gravidade.",
+      "t": "Traidores?"
+    },
+    "0x1fad29": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "emphatic_denial",
+      "risk_level": "low",
+      "risk_notes": "Breve. 'Nem um pouco!' é natural português. Ou 'Absolutamente não!' Escolher o conciso: 'Nada disso!' (7 bytes, cabe bem).",
+      "t": "Nada disso!"
+    },
+    "0x1fad5f": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "description_warriors",
+      "risk_level": "low",
+      "risk_notes": "Maroro descreve soldados. 'Guerreiros...' é natural e breve. Preserva hesitação.",
+      "t": "Guerreiros..."
+    },
+    "0x1fadc4": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "exclamation_triumph",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor em triunfo. 'Vitória!' é direto. Ou 'Vitória!' (mesmo). Cabe perfeitamente.",
+      "t": "Vitória!"
+    },
+    "0x1fadfb": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "command_pursuit",
+      "risk_level": "medium",
+      "risk_notes": "Comando de perseguição. 'Perseguição!' é direto e militar. Cabe perfeitamente.",
+      "t": "Perseguição!"
+    },
+    "0x1fae04": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "prophecy_doom",
+      "risk_level": "high",
+      "risk_notes": "Maroro em presságio. 'Isto pressagia mal... Oh, isto pressagia muito mal mesmo...' é pomposo e arcaico. 'Bodeth' é verbo antigo; 'pressagiar' é equivalente. Manter a repetição para drama.",
+      "t": "Isto pressagia mal... Oh, isto pressagia muito mal mesmo..."
+    },
+    "0x1fae61": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_location",
+      "risk_level": "low",
+      "risk_notes": "Maroro relata localização. 'Posicionado em algum lugar por aqui' é natural. Ou 'Localizado por aqui em algum lugar'. Escolher 'Posicionado em algum lugar por aqui' (mais natural).",
+      "t": "Posicionado em algum lugar por aqui."
+    },
+    "0x1fae82": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "urgent_negation",
+      "risk_level": "high",
+      "risk_notes": "Maroro em urgência. 'O quê!? Não, essa unidade é--!' preserva a gagueira e incredulidade. 'Nay' → 'Não' é padrão.",
+      "t": "O quê!? Não, essa unidade é--!"
+    },
+    "0x1faef5": {
+      "speaker": "SYSTEM",
+      "tone_register": "system",
+      "intent": "scene_location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uzurusha!"
+    },
+    "0x1faf2c": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "identification_broken",
+      "risk_level": "low",
+      "risk_notes": "Maroro em choque. 'Essa unidade--' é gagueira. Preserva interrupção.",
+      "t": "Essa unidade--"
+    },
+    "0x1faf38": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "command_silence",
+      "risk_level": "high",
+      "risk_notes": "Comando cortante. 'Pensei ter dito para você ficar em silêncio!' é natural. Oshtor fica irritado/imperioso aqui — tom muda de calmo para cortante.",
+      "t": "Pensei ter dito para você ficar em silêncio!"
+    },
+    "0x1faf6f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "statement_satisfaction",
+      "risk_level": "high",
+      "risk_notes": "Oshtor em satisfação enigmática. 'Tudo conforme o plano...' é calmaria após comando. Preserva a ambiguidade — o plano dele inclui armadilha? Não resolver.",
+      "t": "Tudo conforme o plano..."
+    },
+    "0x1faf88": {
+      "speaker": "SYSTEM",
+      "tone_register": "system",
+      "intent": "report_urgent",
+      "risk_level": "low",
+      "risk_notes": "Ou personagem? Revisar contexto. Se Maroro: 'R-Reportando!' preserva gagueira. Se SYSTEM: 'REPORTANDO!' (caps).",
+      "t": "R-Reportando!"
+    },
+    "0x1fafd0": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "location_report",
+      "risk_level": "low",
+      "risk_notes": "Breve. 'Do lado!' é natural. Ou 'Do flanco!' Escolher 'Do flanco!' (mais militar, 7 bytes exatos).",
+      "t": "Do flanco!"
+    },
+    "0x1fb00d": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "report_soldiers",
+      "risk_level": "low",
+      "risk_notes": "Maroro relata soldados. 'Soldados dentro das montanhas...' é natural. Preserva o tom de relatório.",
+      "t": "Soldados dentro das montanhas..."
+    },
+    "0x1fb02e": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "exclamation_anguish",
+      "risk_level": "medium",
+      "risk_notes": "Maroro em angústia. 'Nyuurrrrgh...' é onomatopeia de grito. Localizar: manter a vogal estendida em pt-BR — 'Nyuurrrrgh...' ou 'Nuurrrgh...' Cabe como está.",
+      "t": "Nyuurrrrgh..."
+    },
+    "0x1fb03c": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "lament_regret",
+      "risk_level": "high",
+      "risk_notes": "Maroro lamenta. 'Alack, I knew't!' é arcaísmo puro (Alack=Alas, knew't=knew it). Equivalente em pt-BR: 'Ah, eu sabia!' ou 'Ah, eu pressentira!' (mais erudito). Escolher 'Ah, eu sabia!' (natural) ou 'Ai, eu pressentira!' (mais cômico-arcaico).",
+      "t": "Ai, eu pressentira!"
+    },
+    "0x1fb04d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "query_demanding",
+      "risk_level": "high",
+      "risk_notes": "Oshtor impaciente. 'O quê? O que isso deveria significar!?' é repetição + incredulidade. Preservar a repetição para ênfase. Ou 'O quê? Que se supõe que signifique!?' Escolher 'O quê? O que se supõe que signifique!?' (mais formal/nobre).",
+      "t": "O quê? O que se supõe que signifique!?"
+    },
+    "0x1fb0a0": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "report_ambush",
+      "risk_level": "high",
+      "risk_notes": "Maroro relata emboscada. 'Um batalhão preparado em emboscada!' é natural e marcial. Preserva a urgência.",
+      "t": "Um batalhão preparado em emboscada!"
+    },
+    "0x1fb0ec": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "explanation_precaution",
+      "risk_level": "high",
+      "risk_notes": "Maroro explica armadilha. 'Como salvaguarda contra tal furtividade...' é pomposo. Ou 'Como proteção contra tal astúcia...' Escolher 'Como proteção contra tal astúcia...' (mais natural pt-BR).",
+      "t": "Como proteção contra tal astúcia..."
+    },
+    "0x1fb116": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "urgent_reproach",
+      "risk_level": "high",
+      "risk_notes": "Maroro recebe reprimenda. 'P-Por que não disse algo antes!?' é gagueira + urgência. Preservar tom de assustado/culpado. 'Dito' é mais formal; 'disse' é moderno. Usar 'disse' (natural).",
+      "t": "P-Por que não disse algo antes!?"
+    },
+    "0x1fb140": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "excuse_formal",
+      "risk_level": "high",
+      "risk_notes": "Maroro se desculpa formalmente. 'Tentativas sinceras foram rapidamente rejeitadas, Mestre.' é pomposo (voz passiva formal). Preserva a desculpa elegante. 'Rebuffed' = refutadas/rejeitadas.",
+      "t": "Tentativas sinceras foram rapidamente rejeitadas, Mestre."
+    },
+    "0x1fb16e": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "query_panic",
+      "risk_level": "low",
+      "risk_notes": "Maroro em pânico. 'P-O que faremos agora?' é gagueira + desespero. Ou 'P-O que fazer agora?' Escolher 'P-O que fazer agora?' (mais conciso, cabe melhor).",
+      "t": "P-O que fazer agora?"
+    },
+    "0x1fb1b0": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_doom",
+      "risk_level": "low",
+      "risk_notes": "Maroro em desespero. 'Será dizimado!' é futuro assustador. Ou 'Seremos dizimados!' Escolher 'Serão dizimados!' (impessoal, genérico).",
+      "t": "Serão dizimados!"
+    },
+    "0x1fb1c3": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "realization_sudden",
+      "risk_level": "high",
+      "risk_notes": "Oshtor tem ideia. 'Nyuuurrrrgh... Hm? Espera um minuto.' é grito + pausa + ideia. Preservar a onomatopeia e a hesitação. 'Wait a minute' = espera aí/um segundo. 'Espera um minuto' é natural.",
+      "t": "Nyuuurrrrgh... Hm? Espera um minuto."
+    },
+    "0x1fb241": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "military_tactic",
+      "risk_level": "high",
+      "risk_notes": "Oshtor propõe tática. 'Ataque de pinça!' é direto e marcial. Preserva entusiasmo. 'Pincer attack' = ataque de pinça/movimento de pinça.",
+      "t": "Ataque de pinça!"
+    },
+    "0x1fb250": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "praise_military",
+      "risk_level": "high",
+      "risk_notes": "Maroro elogia. 'Ah! Uma estratégia impecável, senhor!' é elogio pomposo. Preserva a admiração. 'Flawless' = impecável/perfeita.",
+      "t": "Ah! Uma estratégia impecável, senhor!"
+    },
+    "0x1fb2a0": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_endurance",
+      "risk_level": "high",
+      "risk_notes": "Maroro em epílogo épico. 'Soldado adiante, e assim escapem da sua sorte terrível!' é pomposo mas quebrado. 'Soldier on' = persevere/continue lutando. 'Scape' = escape (arcaico). Melhor: 'Continue lutando, e assim escapem de seu terrível destino!' Mas é longo. Conciso: 'Continue adiante e escape de seu terrível destino!' (ainda longo). Optar por algo mais natural: 'Continue lutando e escapa de seu destino terrível!' (45 bytes, cabe).",
+      "t": "Continue lutando e escapa de seu destino terrível!"
+    },
+    "0x1fb2fb": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "query_insult",
+      "risk_level": "high",
+      "risk_notes": "Maroro é insultado. 'Imbecil?' é insulto direto. Preserva incredulidade de ser chamado assim. Cabe bem.",
+      "t": "Imbecil?"
+    },
+    "0x1fb330": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "statement_chaos",
+      "risk_level": "medium",
+      "risk_notes": "Maroro faz observação. 'Tudo que ele fará é causar mais confusão.' é natural e crítico. Preserva a crítica ao comportamento caótico de outro personagem.",
+      "t": "Tudo que ele fará é causar mais confusão."
+    },
+    "0x1fb358": {
+      "speaker": "Maroro",
+      "tone_register": "archaic_pompous",
+      "intent": "desperate_plea",
+      "risk_level": "high",
+      "risk_notes": "Maroro em súplica desesperada. 'Waaaah! Por favor, Mestre, ouça-me com boa vontade!' é dramático. 'Willing ear' = ouvido disposto/escuta favorable. Melhor: 'Waaaah! P-Por favor, Mestre, escuta-me com vontade!' Ou 'Waaaah! Eu imploro, Mestre, uma escuta favorável!' Escolher: 'Waaaah! Por favor, Mestre, escuta-me com boa vontade!' (44 bytes, cabe exato; preserva pompa e gagueira).",
+      "t": "Waaaah! Por favor, Mestre, escuta-me com boa vontade!"
+    },
+    "0x1fb3e0": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_noble",
+      "intent": "military_tactic_repeat",
+      "risk_level": "high",
+      "risk_notes": "Oshtor repete tática. 'Ataque de pinça...' é ecoico/pensativo. Preserva a reflexão.",
+      "t": "Ataque de pinça..."
+    },
+    "0x1fbbaa": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente, fragmentado",
+      "intent": "expressão de dor, confusão, torpor",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia de dor/desconforto; fragilidade do estado semi-consciente deve transparecer. Quebra de frase com reticências é crítica para a voz. Byte budget muito apertado (10 bytes transliterado) — manter conciso mas natural.",
+      "t": "...*Olhar fixo*"
+    }
+  }
+}

@@ -1,0 +1,2794 @@
+{
+  "scene_group": "20_17",
+  "lines": [
+    {
+      "offset": "0x206452",
+      "text_source": "Uzurushan soldier",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "battle cry, urgent",
+      "intent": "announce unit type",
+      "risk_level": "low",
+      "base_translation": "Soldado Uzurushan",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206464",
+      "text_source": "Raaaaaaaaaaaaah!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "pain, desperation",
+      "intent": "cry of agony",
+      "risk_level": "low",
+      "base_translation": "Raaaaaaaaaaaaaah!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia localizada"
+    },
+    {
+      "offset": "0x206475",
+      "text_source": "Ghaaaaaaahhk!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "choking, dying",
+      "intent": "death cry",
+      "risk_level": "low",
+      "base_translation": "Gaaaaaaaahhk!",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia localizada"
+    },
+    {
+      "offset": "0x206483",
+      "text_source": "Ah... AAAGH!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "shock, pain",
+      "intent": "express surprise and injury",
+      "risk_level": "low",
+      "base_translation": "Ah... AAAGH!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206490",
+      "text_source": "Uzurushan commander",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "battle command, authoritative",
+      "intent": "announce rank/role",
+      "risk_level": "low",
+      "base_translation": "Comandante Uzurushan",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2064a4",
+      "text_source": "N-Nngh... We can't get close...\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "tenso, urgente",
+      "intent": "Relatar impossibilidade de avançar sob fogo inimigo",
+      "risk_level": "low",
+      "base_translation": "N-Nnh... Não conseguimos chegar perto...\\n",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2064c6",
+      "text_source": "The arrows just keep raining down...",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "weary resignation",
+      "intent": "lament continuous enemy attack",
+      "risk_level": "low",
+      "base_translation": "As flechas não param de cair...",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2064eb",
+      "text_source": "They seem to have two rows of archers,\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "tático, informativo",
+      "intent": "Descrever formação inimiga de arqueiros em duas fileiras",
+      "risk_level": "low",
+      "base_translation": "Parece que têm duas fileiras de arqueiros,\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206514",
+      "text_source": "alternating fire.",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "tactical, descriptive",
+      "intent": "describe enemy tactic",
+      "risk_level": "low",
+      "base_translation": "fogo alternado.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206526",
+      "text_source": "And even if we pass the barrage, the path is\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "tático, preocupado",
+      "intent": "Explicar obstáculos adicionais além da barreira de flechas",
+      "risk_level": "low",
+      "base_translation": "E mesmo se passarmos a barreira, o caminho é\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206555",
+      "text_source": "blocked by stakes and spearmen. We cannot\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "tático, frustrado",
+      "intent": "Completar descrição dos obstáculos — estacas e lanceiros",
+      "risk_level": "low",
+      "base_translation": "bloqueado por estacas e lanceiros. Não há como avançar.\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206581",
+      "text_source": "charge up...",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "determined, ready",
+      "intent": "prepare for charge",
+      "risk_level": "low",
+      "base_translation": "se preparem...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20658e",
+      "text_source": "Damn it! We cannot reach their camp...! Cowards!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "raivoso, frustrado",
+      "intent": "Expressar raiva pela incapacidade de alcançar o acampamento inimigo",
+      "risk_level": "low",
+      "base_translation": "Maldição! Não conseguimos chegar ao acampamento deles...! Covardes!\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2065c1",
+      "text_source": "Come down and fight! How long will they hide!?",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "aggressive, taunting",
+      "intent": "provoke enemy to close combat",
+      "risk_level": "medium",
+      "base_translation": "Desçam e lutem! Até quando vão se esconder!?",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "duplo sentido de 'esconder' vs 'covardia'; manter tom agressivo"
+    },
+    {
+      "offset": "0x2065f0",
+      "text_source": "Or are they... They must be!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "revelação, suspense",
+      "intent": "Perceber a intenção tática do inimigo",
+      "risk_level": "low",
+      "base_translation": "Ou será que eles... Têm que ser!\\n",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20660f",
+      "text_source": "They're thinning our numbers in preparation\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "alarmado, tático",
+      "intent": "Concluir que o inimigo está reduzindo suas fileiras antes de contra-atacar",
+      "risk_level": "low",
+      "base_translation": "Estão diminuindo nossas fileiras antes de\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20663d",
+      "text_source": "for a grand charge!",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "rallying cry",
+      "intent": "motivate troops for charge",
+      "risk_level": "low",
+      "base_translation": "para um grande ataque!",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206651",
+      "text_source": "Damn. At this rate...",
+      "speaker": "Uzurushan commander",
+      "entities_present": [
+        "Uzurushan commander"
+      ],
+      "tone_register": "grim realization",
+      "intent": "assess dire situation",
+      "risk_level": "low",
+      "base_translation": "Maldição. Nesse ritmo...",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206667",
+      "text_source": "Adviser",
+      "speaker": "Yamatan adviser",
+      "entities_present": [
+        "Yamatan adviser"
+      ],
+      "tone_register": "formal, advisory",
+      "intent": "announce role/title",
+      "risk_level": "low",
+      "base_translation": "Conselheiro",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "UI label"
+    },
+    {
+      "offset": "0x20666f",
+      "text_source": "The Yamatan army has begun their counterassault.\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, épico",
+      "intent": "Anunciar o contra-ataque do exército de Yamato",
+      "risk_level": "medium",
+      "base_translation": "O exército de Yamato iniciou seu contra-ataque.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Yamatan' -> 'de Yamato' conforme glossário; verificar naturalidade no contexto narrativo"
+    },
+    {
+      "offset": "0x2066a2",
+      "text_source": "Our frontline is slowly being pushed back.",
+      "speaker": "Yamatan adviser",
+      "entities_present": [
+        "Yamatan adviser"
+      ],
+      "tone_register": "factual, concerned",
+      "intent": "report military situation",
+      "risk_level": "low",
+      "base_translation": "Nossa linha de frente está sendo recuada lentamente.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2066cd",
+      "text_source": "Impossible... We had them in shambles mere\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "incrédulo, chocado",
+      "intent": "Expressar incredulidade com a virada tática inimiga",
+      "risk_level": "low",
+      "base_translation": "Impossível... Estavam em frangalhos há pouco\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2066fa",
+      "text_source": "moments ago. How did they turn the tables so\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "incrédulo, chocado",
+      "intent": "Continuar expressando espanto com a reviravolta",
+      "risk_level": "low",
+      "base_translation": "tempo atrás. Como viraram o jogo assim?\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206729",
+      "text_source": "quickly...?",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "suspicious, questioning",
+      "intent": "ask about enemy strategy",
+      "risk_level": "low",
+      "base_translation": "rápido...?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206735",
+      "text_source": "Khukakakaka! So, they DO know more than idling\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "jocoso, ameaçador, enigmático",
+      "intent": "Rir da resistência inimiga inesperada com escárnio admirado",
+      "risk_level": "medium",
+      "base_translation": "Khukakakaka! Então eles sabem mais do que ficar\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição 'Khukakakaka' — localizar como gargalhada vilã; manter tom frio e dúbio conforme perfil do Homem"
+    },
+    {
+      "offset": "0x206766",
+      "text_source": "in their golden city. They resist us with these\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "jocoso, ameaçador",
+      "intent": "Continuar o escárnio — eles resistem apesar de sua posição confortável",
+      "risk_level": "low",
+      "base_translation": "na cidade dourada. Resistem com isso?\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206798",
+      "text_source": "tricks...",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "dismissive, scornful",
+      "intent": "disregard enemy tactics as tricks",
+      "risk_level": "low",
+      "base_translation": "truques...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2067a2",
+      "text_source": "Hmph. So this is the Akuruturuka...",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "ominous, analyzing",
+      "intent": "recognize a legendary weapon/threat",
+      "risk_level": "high",
+      "base_translation": "Hmph. Então isso é o Akuruturuka...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Akuruturuka' é termo de lore (manter_original); risco alto por context spoiler; tom deve ser frio e presságio"
+    },
+    {
+      "offset": "0x2067c6",
+      "text_source": "You amuse me, Mikado. Creating a nation protected\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, profético, ambíguo",
+      "intent": "Zombar do Mikado por criar uma nação protegida mas ainda vulnerável",
+      "risk_level": "high",
+      "base_translation": "Você me diverte, Mikado. Criar uma nação protegida\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mikado = manter_original; spoiler major — não antecipar vínculo pessoal. Ambiguidade da fala deve ser preservada; tom frio e dúbio."
+    },
+    {
+      "offset": "0x2067fa",
+      "text_source": "by abominations such as these...",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "disgusted, categorical",
+      "intent": "condemn use of supernatural forces",
+      "risk_level": "high",
+      "base_translation": "por abominações como essas...",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'abominations' refere-se a criaturas não-humanas; manter ambiguidade sem antecipar identidade de Haku/Kuon"
+    },
+    {
+      "offset": "0x20681b",
+      "text_source": "But wars are not decided on the might of one\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, definitivo",
+      "intent": "Declarar que guerras não se decidem pela força de um único elemento",
+      "risk_level": "low",
+      "base_translation": "Mas as guerras não se decidem pela força de um\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20684a",
+      "text_source": "soldier alone.",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "scornful, final",
+      "intent": "dismiss single opponent as insignificant",
+      "risk_level": "low",
+      "base_translation": "soldado sozinho.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206859",
+      "text_source": "Main force, advance! Our numbers will finish\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "comandante, decisivo",
+      "intent": "Ordenar avanço da força principal para encerrar o combate pelos números",
+      "risk_level": "low",
+      "base_translation": "Força principal, avance! Nossos números vão acabar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206888",
+      "text_source": "this. This ends on the plains! Their tricks\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "comandante, definitivo",
+      "intent": "Concluir ordem — a batalha termina nas planícies, os truques não valem",
+      "risk_level": "low",
+      "base_translation": "com isso. Isso acaba nas planícies! Os truques deles\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2068b6",
+      "text_source": "are useless!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "dismissive, angry",
+      "intent": "declare conventional forces useless",
+      "risk_level": "low",
+      "base_translation": "são inúteis!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2068c3",
+      "text_source": "Let our roars resound in the air!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "épico, marcial",
+      "intent": "Convocar os soldados a gritar e avançar",
+      "risk_level": "low",
+      "base_translation": "Que nossos gritos ecoem pelos ares!\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2068e7",
+      "text_source": "Sound the gongs!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "commanding, urgent",
+      "intent": "sound alarm/war signal",
+      "risk_level": "low",
+      "base_translation": "Toquem os gongos!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2068f8",
+      "text_source": "Surround all soldiers with shields!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "tático, marcial",
+      "intent": "Ordenar formação de escudos ao redor dos soldados",
+      "risk_level": "low",
+      "base_translation": "Cerquem todos os soldados com escudos!\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20691e",
+      "text_source": "Our numbers shall crush them! Our iron wills\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "épico, determinado",
+      "intent": "Afirmar que seus números e determinação vencerão",
+      "risk_level": "low",
+      "base_translation": "Nossos números vão esmagá-los! Nossas vontades de ferro\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20694d",
+      "text_source": "shall dispel their tricks!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "confident, magical",
+      "intent": "assert supernatural power to counter tricks",
+      "risk_level": "low",
+      "base_translation": "dispersará seus truques!",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'dispel' = dissipar magicamente; localizar com confiança"
+    },
+    {
+      "offset": "0x206968",
+      "text_source": "That damned old prune... You shall know what it\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "raivoso, ameaçador",
+      "intent": "Amaldiçoar o adversário e ameaçar retaliação",
+      "risk_level": "medium",
+      "base_translation": "Velho maldito... Você vai saber o que é\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'damned old prune' — expressão pejorativa; localizar como xingamento natural em pt-BR sem perder o tom raivoso"
+    },
+    {
+      "offset": "0x20699a",
+      "text_source": "means to challenge Gundhurua, soon enough.",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "confident, challenging",
+      "intent": "boast readiness to face Gundhurua",
+      "risk_level": "high",
+      "base_translation": "meios para desafiar Gundhurua, em breve.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Gundhurua' = glossário manter_original (general inimigo); tom de desafio profético; não antecipar derrota"
+    },
+    {
+      "offset": "0x2069c5",
+      "text_source": "Hyahahahaha! Look at those Yamatan soldiers,\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "escarnecedor, confiante",
+      "intent": "Rir e zombar dos soldados de Yamato com superioridade",
+      "risk_level": "medium",
+      "base_translation": "Hyahahahaha! Olhem só os soldados de Yamato,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição 'Hyahahahaha' — gargalhada vilã; manter; 'Yamatan' -> 'de Yamato'"
+    },
+    {
+      "offset": "0x2069f4",
+      "text_source": "so full of themselves! They will crumble once\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "escarnecedor, confiante",
+      "intent": "Continuar zombaria — eles ruirão quando confrontados",
+      "risk_level": "low",
+      "base_translation": "tão cheios de si! Vão desmoronar assim que\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206a24",
+      "text_source": "we charge!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "battle cry, rallying",
+      "intent": "sound charge",
+      "risk_level": "low",
+      "base_translation": "atacamos!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206a2f",
+      "text_source": "Brave of you to show yourselves, but do you\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "desafiador, irônico",
+      "intent": "Provocar o inimigo que se apresentou — duvidar de suas chances",
+      "risk_level": "low",
+      "base_translation": "Corajosos em se mostrar, mas acham mesmo que\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206a5d",
+      "text_source": "truly think you stand a chance against a\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "desafiador, irônico",
+      "intent": "Completar a provocação — questionar se têm chance contra ele",
+      "risk_level": "low",
+      "base_translation": "têm alguma chance contra um\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206a88",
+      "text_source": "frontal assault!?",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "shocked, incredulous",
+      "intent": "protest absurd battle tactic",
+      "risk_level": "low",
+      "base_translation": "ataque frontal!?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206a9a",
+      "text_source": "Hyahahahahaha! Pathetic! Utterly pathetic!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "escarnecedor, triunfante",
+      "intent": "Gargalhar e declarar o inimigo patético",
+      "risk_level": "medium",
+      "base_translation": "Hyahahahahaha! Patéticos! Absolutamente patéticos!\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição 'Hyahahahahaha' — gargalhada vilã; localizar mantendo o mesmo padrão estabelecido"
+    },
+    {
+      "offset": "0x206ac7",
+      "text_source": "Besides the Nugwisomkami, there's nothing to be\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "desdenhoso, frio",
+      "intent": "Desdenhar do inimigo — além do Nugwisomkami, não há nada a temer",
+      "risk_level": "medium",
+      "base_translation": "Além do Nugwisomkami, não há nada a\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nugwisomkami = manter_original (glossário); verificar que termo aparece correto"
+    },
+    {
+      "offset": "0x206af9",
+      "text_source": "afraid of!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "contemptuous, dismissive",
+      "intent": "mock enemy fear",
+      "risk_level": "low",
+      "base_translation": "têm medo!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206b04",
+      "text_source": "Forward! Forwaaaaaard!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "rallying cry, triumphant",
+      "intent": "sound final charge",
+      "risk_level": "low",
+      "base_translation": "Avante! Avaaaaante!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de grito prolongado"
+    },
+    {
+      "offset": "0x206b1b",
+      "text_source": "They didn't even put up a fight before they\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "desdenhoso, frio",
+      "intent": "Completar o desprezo — o inimigo nem resistiu antes de cair",
+      "risk_level": "low",
+      "base_translation": "Nem chegaram a lutar antes de\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206b49",
+      "text_source": "fled! After them!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "alert, pursuing",
+      "intent": "pursue fleeing enemy",
+      "risk_level": "low",
+      "base_translation": "fugiram! Atrás deles!",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206b5b",
+      "text_source": "We'll finish them in one fell--\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "confiante, interrompido",
+      "intent": "Anunciar que vão acabar com o inimigo de uma vez — fala cortada",
+      "risk_level": "low",
+      "base_translation": "Vamos acabar com eles de uma--\\n",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206b7d",
+      "text_source": "What!? What is this?",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "shocked, confused",
+      "intent": "react to sudden unexpected event",
+      "risk_level": "low",
+      "base_translation": "Quê!? O que é isto?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206b92",
+      "text_source": "A smokescreen...? Damned Yamatan cowards!\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "raivoso, surpreendido",
+      "intent": "Reagir à cortina de fumaça inimiga com raiva",
+      "risk_level": "medium",
+      "base_translation": "Uma cortina de fumaça...? Covardes de Yamato!\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Yamatan cowards' -> 'covardes de Yamato'; verificar naturalidade"
+    },
+    {
+      "offset": "0x206bbe",
+      "text_source": "They're trying to escape in this smoke!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "alarmed, rapid",
+      "intent": "identify enemy escape route",
+      "risk_level": "low",
+      "base_translation": "Estão tentando escapar nesta fumaça!",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206be6",
+      "text_source": "Don't let their tricks confuse you! The enemy\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "comandante, urgente",
+      "intent": "Ordenar que os soldados não se confundam com os truques inimigos",
+      "risk_level": "low",
+      "base_translation": "Não deixem os truques deles confundi-los! O inimigo\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206c16",
+      "text_source": "is still right before us! Chaaaaarge!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "determined, pursuing",
+      "intent": "insist enemy is still within reach",
+      "risk_level": "low",
+      "base_translation": "ainda está bem aqui! Ataaaaaaque!",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206c3c",
+      "text_source": "Gah!",
+      "speaker": "Man",
+      "entities_present": [
+        "Man"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Ai!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206c41",
+      "text_source": "What!? Was this... a trap!?",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "shocked realization",
+      "intent": "recognize a tactical setup",
+      "risk_level": "high",
+      "base_translation": "Quê!? Isto foi... uma cilada!?",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'trap' = cilada (armadilha); tom revelador de erro de julgamento; preservar tensão"
+    },
+    {
+      "offset": "0x206c5d",
+      "text_source": "Damn it! What happened to the unit in front?\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "alarmado, furioso",
+      "intent": "Perguntar o que aconteceu com a unidade à frente",
+      "risk_level": "low",
+      "base_translation": "Maldição! O que aconteceu com a unidade à frente?\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206c8c",
+      "text_source": "I can't see a thing!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "helpless, blind",
+      "intent": "express inability to see in smoke",
+      "risk_level": "low",
+      "base_translation": "Não consigo ver nada!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206ca1",
+      "text_source": "Wh-What's going on?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Quê-O que está acontecendo?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206cb5",
+      "text_source": "Th-They're coming! They're coming!",
+      "speaker": "Yamatan commander",
+      "entities_present": [
+        "Yamatan commander"
+      ],
+      "tone_register": "panicked, rapid",
+      "intent": "warn of sudden enemy advance",
+      "risk_level": "low",
+      "base_translation": "El-Eles estão vindo! Estão vindo!",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "repetição para efeito de pavor"
+    },
+    {
+      "offset": "0x206cd8",
+      "text_source": "Huh...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hein...?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206ce0",
+      "text_source": "RAAAAAAAAAAAAAAH!",
+      "speaker": "Yamatan soldier/general",
+      "entities_present": [
+        "Yamatan soldier/general"
+      ],
+      "tone_register": "desperate battle cry",
+      "intent": "final charge cry",
+      "risk_level": "low",
+      "base_translation": "RAAAAAAAAAAAAAAH!",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia localizada"
+    },
+    {
+      "offset": "0x206cf5",
+      "text_source": "Ghaaah!",
+      "speaker": "Yamatan soldier",
+      "entities_present": [
+        "Yamatan soldier"
+      ],
+      "tone_register": "pain, agony",
+      "intent": "cry of death/wounding",
+      "risk_level": "low",
+      "base_translation": "Ghaaah!",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia localizada"
+    },
+    {
+      "offset": "0x206cfd",
+      "text_source": "Our pursuing unit was scattered by a smokescreen.\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, tático",
+      "intent": "Relatar dispersão da unidade perseguidora pela fumaça",
+      "risk_level": "low",
+      "base_translation": "Nossa unidade de perseguição foi dispersada pela fumaça.\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206d31",
+      "text_source": "Yamatan archers then fired on them in the chaos.",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "matter-of-fact, historical",
+      "intent": "narrate consequence of ambush",
+      "risk_level": "medium",
+      "base_translation": "Os arqueiros Yamatan então dispararam neles no caos.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "verbo 'then' marca sequência; 'Yamatan archers' = aliança com Yamata contra Uzurushan (spoiler moderado mas necessário para compreensão); preservar tom narrativo neutro"
+    },
+    {
+      "offset": "0x206d62",
+      "text_source": "They attempted retreat, but they were blocked\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, tático",
+      "intent": "Explicar tentativa de recuo bloqueada pelas próprias unidades",
+      "risk_level": "low",
+      "base_translation": "Tentaram recuar, mas foram bloqueados\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206d92",
+      "text_source": "by the unaware units behind them, causing more\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, tático",
+      "intent": "Continuar — o bloqueio pelas unidades atrás causou mais confusão",
+      "risk_level": "low",
+      "base_translation": "pelas unidades atrás, que nada sabiam, causando mais\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206dc3",
+      "text_source": "confusion.",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "summary, terse",
+      "intent": "conclude the ambush result",
+      "risk_level": "low",
+      "base_translation": "confusão.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206dce",
+      "text_source": "They were then charged by the enemy cavalry,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, tático",
+      "intent": "Relatar carga da cavalaria inimiga sobre os soldados confusos",
+      "risk_level": "low",
+      "base_translation": "Foram então atacados pela cavalaria inimiga,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206dfd",
+      "text_source": "and... wiped out.",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "summary, fatalistic",
+      "intent": "report total defeat",
+      "risk_level": "low",
+      "base_translation": "e... foram aniquilados.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206e0f",
+      "text_source": "This must have been their plan. The Yamatan\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "analítico, chocado",
+      "intent": "Concluir que isso era o plano de Yamato desde o início",
+      "risk_level": "medium",
+      "base_translation": "Esse devia ser o plano deles. Os soldados de Yamato\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Yamatan' -> 'de Yamato'"
+    },
+    {
+      "offset": "0x206e3d",
+      "text_source": "soldiers fled only to lead our soldiers into\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "analítico, chocado",
+      "intent": "Explicar que os soldados fugiram para atrair os inimigos para uma armadilha",
+      "risk_level": "low",
+      "base_translation": "fugiram apenas para atrair nossos soldados para uma\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206e6c",
+      "text_source": "a trap.",
+      "speaker": "Ougi",
+      "entities_present": [
+        "Ougi"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "uma cilada.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206e74",
+      "text_source": "A daring plan. If they had missed their timing\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "analítico, impressionado",
+      "intent": "Reconhecer o plano audacioso e seus riscos de timing",
+      "risk_level": "low",
+      "base_translation": "Um plano ousado. Se tivessem errado o timing\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206ea5",
+      "text_source": "by even a second, we would have overrun them.",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "analytical, counterfactual",
+      "intent": "assess near-escape of enemy",
+      "risk_level": "low",
+      "base_translation": "por nem um segundo, teríamos os esmagado.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'by even a second' = se nem fosse por um segundo (calculo apertado)"
+    },
+    {
+      "offset": "0x206ed3",
+      "text_source": "Yes. Without precise coordination, such a plan\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "analítico, impressionado",
+      "intent": "Afirmar que o plano exige coordenação precisa",
+      "risk_level": "low",
+      "base_translation": "Sim. Sem coordenação precisa, um plano assim\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206f04",
+      "text_source": "would be impossible. How did they accomplish\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "analítico, curioso",
+      "intent": "Questionar como conseguiram executar com tal precisão",
+      "risk_level": "low",
+      "base_translation": "seria impossível. Como conseguiram fazer isso?\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206f33",
+      "text_source": "it...?",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "uncertain, questioning",
+      "intent": "query result of battle",
+      "risk_level": "low",
+      "base_translation": "isto...?",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206f3a",
+      "text_source": "Rrrrrgh...",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "pained, strained",
+      "intent": "express effort/exertion",
+      "risk_level": "low",
+      "base_translation": "Rrrrrgh...",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia; marca cansaço mental/fisico"
+    },
+    {
+      "offset": "0x206f45",
+      "text_source": "Hm.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hm.",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x206f49",
+      "text_source": "Raiko's sharp eyes survey a map spread on a\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "Descrever Raiko examinando um mapa espalhado à sua frente",
+      "risk_level": "high",
+      "base_translation": "Os olhos afiados de Raiko percorrem um mapa aberto sobre\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko: spoiler major — tratar apenas como General-Pilar/Sábio recém-apresentado; não antecipar vínculos familiares ou papel futuro"
+    },
+    {
+      "offset": "0x206f77",
+      "text_source": "massive desk adorned in beautiful engravings.",
+      "speaker": "Narrator/Haku",
+      "entities_present": [
+        "Narrator/Haku"
+      ],
+      "tone_register": "descriptive, formal",
+      "intent": "describe Raiko's war room setup",
+      "risk_level": "low",
+      "base_translation": "uma escrivaninha massiva ornada com belos talhes.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "UI-adjacent; 'engravings' = gravuras/talhes (manter formalidade)"
+    },
+    {
+      "offset": "0x206fa5",
+      "text_source": "Those behind Raiko constantly give him new\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "Descrever assessores passando informações contínuas a Raiko",
+      "risk_level": "medium",
+      "base_translation": "Os que estão atrás de Raiko lhe trazem novos\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko: manter como figura calculista, sem antecipar papel futuro"
+    },
+    {
+      "offset": "0x206fd2",
+      "text_source": "reports, as though witness to every movement\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "Completar — como se testemunhassem cada movimento do campo de batalha",
+      "risk_level": "low",
+      "base_translation": "relatórios, como se vissem cada movimento\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207001",
+      "text_source": "of the army.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, measured",
+      "intent": "declare command authority",
+      "risk_level": "low",
+      "base_translation": "do exército.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20700e",
+      "text_source": "The enemy's main force will soon be in range\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, calculista",
+      "intent": "Anunciar que a força principal inimiga logo entrará no alcance",
+      "risk_level": "high",
+      "base_translation": "A força principal inimiga logo estará ao alcance\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko: spoiler major — frio e calculista, sem foreshadowing de vínculos; não antecipar papel futuro"
+    },
+    {
+      "offset": "0x20703d",
+      "text_source": "of our perierai's arrows!",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "proud, tactical",
+      "intent": "credit victory to archers",
+      "risk_level": "low",
+      "base_translation": "das flechas de nossos perierai!",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'perierai' = glossário não presente; tratar como termo étnico/técnico (archers Yamatan especializados); manter distância fria de Raiko"
+    },
+    {
+      "offset": "0x207057",
+      "text_source": "All progressing as intended. Spread the units\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, calculista, comandante",
+      "intent": "Confirmar progresso e ordenar dispersão das unidades",
+      "risk_level": "high",
+      "base_translation": "Tudo conforme o planejado. Dispersem as unidades\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko: mesma cautela de spoiler; manter voz fria e precisa"
+    },
+    {
+      "offset": "0x207087",
+      "text_source": "on the side of the enemy as planned.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "cold, analytical",
+      "intent": "confirm enemy defeat as planned",
+      "risk_level": "high",
+      "base_translation": "do lado do inimigo conforme planejado.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'on the side of the enemy as planned' = insinua conspiraçao/manipulacao de Raiko; manter tom enigmático; NÃO resolver a ambiguidade do plano"
+    },
+    {
+      "offset": "0x2070ac",
+      "text_source": "Proceed as planned! Perierai, move to flank the\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, tático",
+      "intent": "Ordenar flanco pela unidade Perierai segundo o plano",
+      "risk_level": "high",
+      "base_translation": "Sigam o plano! Perierai, mova-se para flanquear os\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; 'Perierai' — nome próprio, manter"
+    },
+    {
+      "offset": "0x2070de",
+      "text_source": "enemy! Coordinates: the hill at 4234, 4541!",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "commanding, precise",
+      "intent": "issue coordinate strike order",
+      "risk_level": "medium",
+      "base_translation": "inimigo! Coordenadas: o morro em 4234, 4541!",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'enemy' singular = foco em alvo específico (provavelmente Gundhurua); tom frio e estratégico; manter distância"
+    },
+    {
+      "offset": "0x20710a",
+      "text_source": "Our third unit seems to be taking heavy\\n",
+      "speaker": "Subordinado",
+      "entities_present": [
+        "Subordinado"
+      ],
+      "tone_register": "preocupado, tático",
+      "intent": "Reportar que a terceira unidade está sofrendo baixas pesadas",
+      "risk_level": "low",
+      "base_translation": "Nossa terceira unidade parece estar sofrendo\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207134",
+      "text_source": "casualties. Call them back and advance the\\n",
+      "speaker": "Subordinado",
+      "entities_present": [
+        "Subordinado"
+      ],
+      "tone_register": "tático, urgente",
+      "intent": "Sugerir recuar a terceira e avançar outra unidade",
+      "risk_level": "low",
+      "base_translation": "muitas baixas. Recuem-na e avancem a\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207161",
+      "text_source": "fourth unit.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "commanding, terse",
+      "intent": "assign unit to action",
+      "risk_level": "low",
+      "base_translation": "quarta unidade.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20716e",
+      "text_source": "Those around the table quickly move translucent\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "Descrever subordinados movendo peças translúcidas no mapa",
+      "risk_level": "low",
+      "base_translation": "Os que estão ao redor da mesa movem rapidamente peças translúcidas\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2071a0",
+      "text_source": "gamepieces across the map according to his\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "Completar — movem as peças conforme as ordens dele",
+      "risk_level": "low",
+      "base_translation": "pelo mapa conforme suas ordens.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2071cd",
+      "text_source": "orders.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, directive",
+      "intent": "issue orders",
+      "risk_level": "low",
+      "base_translation": "ordens.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2071d5",
+      "text_source": "Hmph, is this really all...? I suppose an owlo\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, levemente desdenhoso",
+      "intent": "Expressar leve desapontamento — questionar se é tudo que o inimigo oferece",
+      "risk_level": "high",
+      "base_translation": "Hmph, é só isso...? Suponho que uma owlo\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; 'owlo' — termo de mundo, manter se for nome de criatura; verificar glossário. Não está no glossário fornecido — manter 'owlo' como nome próprio"
+    },
+    {
+      "offset": "0x207206",
+      "text_source": "of barbarians is still only a barbarian himself.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "contemptuous, philosophical",
+      "intent": "dismiss barbarian intelligence/culture",
+      "risk_level": "high",
+      "base_translation": "de bárbaros é ainda apenas um bárbaro.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'barbarian' = termo de desprezo cultural (Uzurushan); 'of barbarians' + 'barbarian himself' = lógica circular menospreza; manter tom frio, não heroico; sensível a preconceito but necessario para caráter de Raiko"
+    },
+    {
+      "offset": "0x207237",
+      "text_source": "Lord Raiko, it would be unwise to underestimate\\n",
+      "speaker": "Subordinado",
+      "entities_present": [
+        "Subordinado"
+      ],
+      "tone_register": "respeitoso, cauteloso",
+      "intent": "Advertir Raiko contra subestimar o inimigo",
+      "risk_level": "high",
+      "base_translation": "Senhor Raiko, seria imprudente subestimar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler — subordinado fala com respeito mas adverte; não antecipar papel de Raiko"
+    },
+    {
+      "offset": "0x207269",
+      "text_source": "the enemy. A beast is most dangerous when\\n",
+      "speaker": "Subordinado",
+      "entities_present": [
+        "Subordinado"
+      ],
+      "tone_register": "cauteloso, sério",
+      "intent": "Completar aviso — fera é mais perigosa quando encurralada",
+      "risk_level": "low",
+      "base_translation": "o inimigo. Uma fera é mais perigosa quando\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207295",
+      "text_source": "cornered.",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "encurralados.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20729f",
+      "text_source": "Then perhaps I will do just that.\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, decidido, dúbio",
+      "intent": "Aceitar a sugestão com frieza ambígua — talvez seja isso que fará",
+      "risk_level": "high",
+      "base_translation": "Então talvez seja exatamente isso que farei.\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; fala curta e ambígua — preservar dubiedade, não resolver a intenção"
+    },
+    {
+      "offset": "0x2072c3",
+      "text_source": "That way, they may actually provide me some\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, calculista, dúbio",
+      "intent": "Declarar que assim o inimigo talvez lhe dê algum entretenimento",
+      "risk_level": "high",
+      "base_translation": "Assim, talvez eles me proporcionem algum\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; ambiguidade ameaçadora — preservar; 'provide me some' = entretenimento/diversão"
+    },
+    {
+      "offset": "0x2072f1",
+      "text_source": "entertainment.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "dismissive, bored",
+      "intent": "reduce battle to amusement",
+      "risk_level": "medium",
+      "base_translation": "entretenimento.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'entertainment' = tom de diversão/desinteresse; insinua Raiko vê a guerra como jogo (spoiler moderado de personalidade vilã)"
+    },
+    {
+      "offset": "0x207300",
+      "text_source": "Now, let us see just what you will do when\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, desafiador",
+      "intent": "Provocar o inimigo — querer ver o que farão em desespero",
+      "risk_level": "high",
+      "base_translation": "Agora, vamos ver o que você fará quando\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; manter tom frio e dúbio"
+    },
+    {
+      "offset": "0x20732d",
+      "text_source": "cornered... Hmhmhm.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "satisfied, pleased",
+      "intent": "savor victory and inner amusement",
+      "risk_level": "medium",
+      "base_translation": "encurralados... Hmhmhm.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'cornered...Hmhmhm' = tom de satisfação maliciosa; 'Hmhmhm' = riso contido (localizar com tom); manter ambiguidade da diversão (o que o amusa exatamente?)"
+    },
+    {
+      "offset": "0x207341",
+      "text_source": "Come now. What will your next move be?\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, provocador",
+      "intent": "Convidar o inimigo a fazer seu próximo movimento",
+      "risk_level": "high",
+      "base_translation": "Vamos lá. Qual será seu próximo passo?\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; frase curta e definitiva — manter brevidade"
+    },
+    {
+      "offset": "0x20736a",
+      "text_source": "I could use a bit more excitement.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "cold, eager",
+      "intent": "express desire for greater challenge",
+      "risk_level": "high",
+      "base_translation": "Eu poderia usar um pouco mais de emoção.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'a bit more excitement' = tom de tédio/sadismo; insinua Raiko quer confronto mais violento (spoiler de vilania); manter frieza enigmática"
+    },
+    {
+      "offset": "0x20738d",
+      "text_source": "Lord Raiko, you mustn't treat this as a game...",
+      "speaker": "Mikado/superior",
+      "entities_present": [
+        "Mikado/superior"
+      ],
+      "tone_register": "stern, warning, paternal",
+      "intent": "admonish Raiko against treating war as game",
+      "risk_level": "critical",
+      "base_translation": "Senhor Raiko, não deve tratar isto como um jogo...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER MAJOR: Mikado é soberano (título, glossário manter_original); aparição rara; NÃO antecipar relação pessoal com Raiko; tom deve ser autoridade distante e desaprovação; 'you mustn't' = advertência severa; genero de Raiko em pt-BR evitar se possível (ele=soldado mercenário até now)"
+    },
+    {
+      "offset": "0x2073bd",
+      "text_source": "War is decided by tactics. Man and beast alike\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, filosófico, ameaçador",
+      "intent": "Declarar que a guerra se decide por táticas, não por força bruta",
+      "risk_level": "high",
+      "base_translation": "A guerra se decide por táticas. Homens e feras\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; ambiguidade ameaçadora — preservar; frase sentenciosa e fria"
+    },
+    {
+      "offset": "0x2073ee",
+      "text_source": "dance in the palm of my hand, to whatever tune\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, arrogante, ameaçador",
+      "intent": "Completar — todos dançam na palma de sua mão conforme sua melodia",
+      "risk_level": "high",
+      "base_translation": "dançam na palma da minha mão, na melodia que eu\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler; imagem de controle total — preservar arrogância fria sem resolver ambiguidade"
+    },
+    {
+      "offset": "0x20741f",
+      "text_source": "I wish.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "wry, defiant",
+      "intent": "express wish rather than compliance",
+      "risk_level": "medium",
+      "base_translation": "Eu gostaria.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'I wish' = tom de resignação irônica / desafio leve; Raiko não obedece plenamente; manter ambiguidade entre respeito e desdém"
+    },
+    {
+      "offset": "0x207427",
+      "text_source": "Oh... Lord Raiko, a new report has come in.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "informar de novo relatório, tom profético",
+      "risk_level": "high",
+      "base_translation": "Ah... Senhor Raiko, um novo relatório chegou.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko = major spoiler; traduzir apenas como 'o Sabio' dos Oito Generais, não antecipe vinculo/papel futuro. Preservar frieza enigmática."
+    },
+    {
+      "offset": "0x207453",
+      "text_source": "Hm?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hum?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207457",
+      "text_source": "It is from Lord Mikazuchi. He has succeeded in\\n",
+      "speaker": "Subordinado",
+      "entities_present": [
+        "Subordinado"
+      ],
+      "tone_register": "informativo, urgente",
+      "intent": "Reportar mensagem do Senhor Mikazuchi sobre sucesso em missão",
+      "risk_level": "medium",
+      "base_translation": "É do Senhor Mikazuchi. Ele teve sucesso em\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mikazuchi = manter_original (glossário, moderate spoiler); não antecipar detalhes"
+    },
+    {
+      "offset": "0x207488",
+      "text_source": "saving Lord Dekopompo.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, profético",
+      "intent": "comentar sobre situação de Dekopompo",
+      "risk_level": "medium",
+      "base_translation": "salvando o Senhor Dekopompo.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Dekopompo é personagem; manter_original. Contexto: salvando. Tom frio/calculista."
+    },
+    {
+      "offset": "0x20749f",
+      "text_source": "Hmhm. Saved, eh? And here I might never have\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "enigmático, frio, irônico",
+      "intent": "comentário sardônico sobre Mikazuchi ter sobrevivido — leve desapontamento velado",
+      "risk_level": "high",
+      "base_translation": "Hmhm. Salvo, hein? E eu que poderia nunca mais\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Raiko spoiler: tratar como general frio/calculista recém-apresentado; sem antecipar vínculos familiares. Ironia fria preservada."
+    },
+    {
+      "offset": "0x2074ce",
+      "text_source": "had to see that fattened face again. His luck,\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, irônico",
+      "intent": "completar o pensamento sardônico — sorte de Mikazuchi ter sobrevivido",
+      "risk_level": "high",
+      "base_translation": "ter de ver aquela cara gorda de novo. Sorte a dele,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Spoiler Raiko: 'irmão' ainda não revelado aqui — esta linha não menciona, OK. Manter frieza."
+    },
+    {
+      "offset": "0x2074ff",
+      "text_source": "I suppose.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, enigmático, breve",
+      "intent": "consentimento lacônico",
+      "risk_level": "low",
+      "base_translation": "Suponho que sim.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20750a",
+      "text_source": "That was quite the feat for Lord Mikazuchi.\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "calculista, analítico",
+      "intent": "reconhecer a façanha de Mikazuchi de forma fria, sem elogio genuíno",
+      "risk_level": "medium",
+      "base_translation": "Foi uma façanha e tanto para o Senhor Mikazuchi.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter distância emocional; não soar como elogio caloroso."
+    },
+    {
+      "offset": "0x207538",
+      "text_source": "One can only wonder how he resolved such a\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "calculista, irônico",
+      "intent": "questionar como Mikazuchi resolveu a situação — desdém velado",
+      "risk_level": "medium",
+      "base_translation": "Só me pergunto como ele resolveu tudo isso.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom de dúvida fria, não admiração."
+    },
+    {
+      "offset": "0x207565",
+      "text_source": "dire situation.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, frio, profético",
+      "intent": "caracterizar a situação como crítica",
+      "risk_level": "low",
+      "base_translation": "situação crítica.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207575",
+      "text_source": "It is only the natural outcome. He is my brother,\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, definitivo",
+      "intent": "afirmar que o resultado era esperado — Mikazuchi é seu irmão",
+      "risk_level": "critical",
+      "base_translation": "É apenas o resultado natural. Ele é meu irmão,\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER MAJOR: 'irmão' revela vínculo familiar. O original diz isso explicitamente aqui — verificar se este é o momento do reveal ou se deve ser preservado ambíguo. Traduzir conforme o source (vínculo dito aqui), mas sem foreshadowing adicional."
+    },
+    {
+      "offset": "0x2075a9",
+      "text_source": "and one granted honor and title by the Mikado.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, calculista",
+      "intent": "descrever elevação por honra imperial",
+      "risk_level": "high",
+      "base_translation": "e um agraciado com honra e título pelo Mikado.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mikado = major spoiler; tratar apenas como soberano/título. Não antecipe vinculo pessoal. Tom mantém distância respeitosa e fria."
+    },
+    {
+      "offset": "0x2075d8",
+      "text_source": "It may serve you to be more honest about your\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "irônico, distante",
+      "intent": "sugerir que o interlocutor deveria ser mais honesto sobre seus sentimentos",
+      "risk_level": "medium",
+      "base_translation": "Talvez seja melhor ser mais honesto sobre os seus\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter ambiguidade/dubiedade da fala."
+    },
+    {
+      "offset": "0x207608",
+      "text_source": "feelings, Lord Raiko...",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, enigmático, profético",
+      "intent": "ironizar sentimentos como fraqueza",
+      "risk_level": "medium",
+      "base_translation": "sentimentos, Senhor Raiko...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom debe ser enigmático/ameaçador; 'feelings' traduzido como sentimentos. Frieza crítica."
+    },
+    {
+      "offset": "0x207620",
+      "text_source": "Hmph...",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hmph...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207628",
+      "text_source": "Lord Mikazuchi thrives in the heat of battle.\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "analítico, frio",
+      "intent": "descrever Mikazuchi como alguém que floresce no calor da batalha",
+      "risk_level": "low",
+      "base_translation": "O Senhor Mikazuchi prospera no calor da batalha.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207658",
+      "text_source": "A flower, one might say, that blooms on the\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "poético, irônico",
+      "intent": "metáfora — Mikazuchi como flor que desabrocha no campo de batalha",
+      "risk_level": "low",
+      "base_translation": "Uma flor, por assim dizer, que desabrocha no\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207686",
+      "text_source": "field of war...",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, contemplativo",
+      "intent": "evocar peso/gravidade do campo de batalha",
+      "risk_level": "low",
+      "base_translation": "campo de guerra...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207696",
+      "text_source": "The field of war, hm...?",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, questionador",
+      "intent": "refletir sobre a natureza da guerra",
+      "risk_level": "low",
+      "base_translation": "O campo de guerra, hm...?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2076af",
+      "text_source": "What Mikazuchi does is altogether different\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "calculista, analítico",
+      "intent": "contrastar o instinto de Mikazuchi com o método de Raiko",
+      "risk_level": "low",
+      "base_translation": "O que Mikazuchi faz é algo completamente diferente\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2076dd",
+      "text_source": "from what I would call war.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, analítico",
+      "intent": "traçar distinção entre violência e verdadeira guerra",
+      "risk_level": "medium",
+      "base_translation": "do que eu chamaria de guerra.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo sentido preservado: a linha nega que 'violência mera' seja guerra; tom profético de desaprovação."
+    },
+    {
+      "offset": "0x2076f9",
+      "text_source": "Lord Raiko...",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "dirigir-se com respeito formal/distância",
+      "risk_level": "low",
+      "base_translation": "Senhor Raiko...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207707",
+      "text_source": "Animalistic instinct and impulse, requiring\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "analítico, frio",
+      "intent": "descrever o instinto animal de Mikazuchi — implicitamente inferior ao método",
+      "risk_level": "low",
+      "base_translation": "Instinto e impulso animal, que não exige\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207735",
+      "text_source": "neither intellect nor forethought. Mere violence.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, crítico",
+      "intent": "condenar a falta de intelecto e planejamento",
+      "risk_level": "medium",
+      "base_translation": "nem intelecto nem previsão. Pura violência.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom profético e frio; 'mere violence' traduzido como 'pura violência' para preservar o tom de desaprovação calculista."
+    },
+    {
+      "offset": "0x207767",
+      "text_source": "War, however, is a science. Know your enemy,\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "professoral, frio",
+      "intent": "iniciar exposição da filosofia de guerra de Raiko — guerra como ciência",
+      "risk_level": "low",
+      "base_translation": "A guerra, porém, é uma ciência. Conheça o inimigo,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207796",
+      "text_source": "know your own power and all properties thereof,\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "professoral, calculista",
+      "intent": "continuar exposição — conhecer o próprio poder e suas propriedades",
+      "risk_level": "low",
+      "base_translation": "conheça seu próprio poder e todas as suas propriedades,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2077c8",
+      "text_source": "and calculate an answer thusly.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, metodológico",
+      "intent": "descrever processo de análise e conclusão",
+      "risk_level": "low",
+      "base_translation": "e calcular uma resposta assim.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2077e8",
+      "text_source": "In all situations, we must quickly adapt, move\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "professoral, estratégico",
+      "intent": "adaptar-se rapidamente em todas as situações",
+      "risk_level": "low",
+      "base_translation": "Em toda situação, devemos nos adaptar, agir\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207819",
+      "text_source": "before the enemy does, and strike at their\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "estratégico, frio",
+      "intent": "agir antes do inimigo e atacar seus pontos fracos",
+      "risk_level": "low",
+      "base_translation": "antes do inimigo e golpear seus\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207846",
+      "text_source": "weakness.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "nomear uma fraqueza fundamental",
+      "risk_level": "low",
+      "base_translation": "fraqueza.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207850",
+      "text_source": "Through that, one may conquer even with few\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "professoral, convicto",
+      "intent": "concluir que com isso se conquista mesmo com poucos soldados",
+      "risk_level": "low",
+      "base_translation": "Com isso, vence-se mesmo com poucos\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20787e",
+      "text_source": "soldiers, as inevitably as objects must fall\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "analítico, frio",
+      "intent": "metáfora — inevitabilidade como gravidade",
+      "risk_level": "low",
+      "base_translation": "soldados, tão inevitável quanto objetos que caem\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2078ad",
+      "text_source": "from height.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, contemplativo",
+      "intent": "questionar perspectiva/visão elevada",
+      "risk_level": "low",
+      "base_translation": "de altura.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2078ba",
+      "text_source": "Even without relying on the strength of a\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "calculista",
+      "intent": "não depender da força bruta de um herói",
+      "risk_level": "low",
+      "base_translation": "Sem depender da força de um\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2078e6",
+      "text_source": "select few...",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "referir-se a poucos escolhidos",
+      "risk_level": "medium",
+      "base_translation": "alguns poucos...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade preservada: 'select few' evoca poder e exclusividade; tom insinuador."
+    },
+    {
+      "offset": "0x2078f4",
+      "text_source": "Bravery and heroes do not win wars.\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "frio, definitivo",
+      "intent": "sentença conclusiva — coragem e heróis não vencem guerras",
+      "risk_level": "low",
+      "base_translation": "Bravura e heróis não vencem guerras.\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20791a",
+      "text_source": "What DOES is power... how you use it, and how\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "enfático, calculista",
+      "intent": "o que vence é o poder — como usá-lo e como movê-lo",
+      "risk_level": "low",
+      "base_translation": "O que VENCE é o poder... como usá-lo e como\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20794a",
+      "text_source": "you control it.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "questionar controle/domínio",
+      "risk_level": "low",
+      "base_translation": "você o controla.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x20795e",
+      "text_source": "But how boorish of me, to cheapen my own\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "irônico, autodepreciativo leve",
+      "intent": "Raiko se corrige — foi grosseiro ao diminuir o próprio irmão",
+      "risk_level": "high",
+      "base_translation": "Mas que grosseria da minha parte, diminuir meu próprio\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Vínculo 'irmão' já mencionado antes nesta cena. Manter ironia fria; não soar caloroso."
+    },
+    {
+      "offset": "0x207989",
+      "text_source": "brother's victory so.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, contemplativo",
+      "intent": "refletir sobre vitória do irmão",
+      "risk_level": "high",
+      "base_translation": "vitória do irmão assim.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'brother' = major spoiler potencial; traduzir literalmente como 'vitória do irmão' mas preservar a ambiguidade (quem é o irmão ainda não revelado nesta cena)."
+    },
+    {
+      "offset": "0x20799f",
+      "text_source": "Perhaps it smacks of jealousy, hm?\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "irônico, autocrítico",
+      "intent": "talvez seja ciúme — insinuação velada",
+      "risk_level": "medium",
+      "base_translation": "Talvez cheira a ciúme, hm?\\n",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade deve ser preservada; não resolver se é ciúme real ou não."
+    },
+    {
+      "offset": "0x2079c4",
+      "text_source": "The bitterness of a man who wields only the pen,\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "irônico, autodepreciativo",
+      "intent": "amargura de quem só usa a pena, não a espada",
+      "risk_level": "low",
+      "base_translation": "A amargura de quem só maneja a pena,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2079f7",
+      "text_source": "and never the sword?",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, enigmático",
+      "intent": "questionar contraste entre sabedoria e força",
+      "risk_level": "medium",
+      "base_translation": "e nunca a espada?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo sentido: 'tongue' (língua/palavra) vs 'sword' (espada); preservar a estrutura paralela."
+    },
+    {
+      "offset": "0x207a0c",
+      "text_source": "Not at all, milord.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, respeitoso",
+      "intent": "discordar respeitosamente",
+      "risk_level": "low",
+      "base_translation": "De modo algum, senhor.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207a20",
+      "text_source": "I jest, of course. But perhaps I can show my\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "irônico, ameaçador velado",
+      "intent": "diz que brincava, mas que pode mostrar ao irmão o que é um campo de batalha perfeito",
+      "risk_level": "high",
+      "base_translation": "É brincadeira, claro. Mas talvez eu possa mostrar ao meu\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fala dúbia/ameaçadora — não resolver a ambiguidade. Spoiler Raiko: não antecipar ações futuras."
+    },
+    {
+      "offset": "0x207a4f",
+      "text_source": "unworthy brother what a perfect battlefield\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "calculista, ameaçador",
+      "intent": "mostrar ao irmão indigno o que é um campo de batalha perfeito",
+      "risk_level": "high",
+      "base_translation": "indigno irmão o que é um campo de batalha perfeito\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continua fala ambígua/ameaçadora; não antecipar papel futuro de Raiko."
+    },
+    {
+      "offset": "0x207a7d",
+      "text_source": "looks like.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, breve",
+      "intent": "caracterizar algo por aparência",
+      "risk_level": "low",
+      "base_translation": "parece.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207a89",
+      "text_source": "Alert all forces! We end this war now!\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "imperativo, decisivo",
+      "intent": "ordem para alertar todas as forças e encerrar a guerra agora",
+      "risk_level": "low",
+      "base_translation": "Alertem todas as forças! Encerramos esta guerra agora!\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207ab2",
+      "text_source": "Send every soldier available! We eliminate\\n",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "imperativo, frio",
+      "intent": "ordem para enviar todos os soldados disponíveis e eliminar",
+      "risk_level": "low",
+      "base_translation": "Enviem todos os soldados disponíveis! Eliminemos\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207adf",
+      "text_source": "them once and for all!",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, determinado",
+      "intent": "exprimir resolução/finalidade",
+      "risk_level": "low",
+      "base_translation": "em de uma vez por todas!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207af6",
+      "text_source": "Yes, Lord Raiko.",
+      "speaker": "Raiko",
+      "entities_present": [
+        "Raiko"
+      ],
+      "tone_register": "formal, nobre, afirmativo",
+      "intent": "responder com consentimento",
+      "risk_level": "low",
+      "base_translation": "Sim, Senhor Raiko.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207b07",
+      "text_source": "ch400_00_base",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "técnico, neutro",
+      "intent": "rótulo de recurso (base do ch400)",
+      "risk_level": "low",
+      "base_translation": "ch400_00_base",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207b16",
+      "text_source": "ch400_00_wheel",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "técnico, neutro",
+      "intent": "rótulo de recurso (roda do ch400)",
+      "risk_level": "low",
+      "base_translation": "ch400_00_wheel",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207b25",
+      "text_source": "target",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "técnico, neutro",
+      "intent": "rótulo funcional (alvo)",
+      "risk_level": "low",
+      "base_translation": "alvo",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x207b2c",
+      "text_source": "L_yoroi",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "técnico, neutro",
+      "intent": "rótulo de recurso (armadura L)",
+      "risk_level": "low",
+      "base_translation": "L_yoroi",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 174,
+  "high_lines": 30,
+  "medium_lines": 26,
+  "needs_review": [],
+  "plan_version": "chapter-20_17-v1"
+}

@@ -1,0 +1,412 @@
+{
+  "lines": {
+    "0x1bb75e": {
+      "speaker": "Haku",
+      "tone_register": "narrativo",
+      "intent": "Indicar distância/horizonte",
+      "risk_level": "low",
+      "risk_notes": "Memória de tradução: 'distance.' → 'o horizonte.' — 12 bytes transliterados, budget 9. Encurtado para caber.",
+      "t": "longe."
+    },
+    "0x1bb788": {
+      "speaker": "Haku",
+      "tone_register": "comando",
+      "intent": "Sinal de ataque",
+      "risk_level": "low",
+      "risk_notes": "Memória: 'Now!' → 'Agora!' — 6 bytes, budget 4. Encurtado.",
+      "t": "Já!"
+    },
+    "0x1bbaba": {
+      "speaker": "Kuon",
+      "tone_register": "narrativo",
+      "intent": "Referência a eles/grupo",
+      "risk_level": "low",
+      "risk_notes": "Memória: 'them.' → 'deles.' — 7 bytes transliterados, budget 5. Encurtado.",
+      "t": "eles."
+    },
+    "0x1bbaf0": {
+      "speaker": "Haku",
+      "tone_register": "cotidiano",
+      "intent": "afirmar desejo/vontade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "quero."
+    },
+    "0x1bb565": {
+      "speaker": "Haku",
+      "tone_register": "observação casual, leve tensão",
+      "intent": "notar o nevoeiro que se aproxima",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que tem neblina chegando...\\n"
+    },
+    "0x1bb5a2": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, tático",
+      "intent": "informar que o alvo continua avançando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosso alvo continua seguindo em frente.\\n"
+    },
+    "0x1bb606": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, animado",
+      "intent": "avaliar o inimigo como ameaçador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oooh, esse parece ser durão.\\n"
+    },
+    "0x1bb64e": {
+      "speaker": "Kiwru",
+      "tone_register": "repreensivo, coloquial",
+      "intent": "criticar comportamento impulsivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que você sempre se joga de cabeça sem\\n"
+    },
+    "0x1bb6a2": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, exasperado",
+      "intent": "reclamar do parceiro que estraga o plano",
+      "risk_level": "medium",
+      "risk_notes": "budget 42 — cortar para caber",
+      "t": "*Suspiro* Amor, você é um pé no saco\\n"
+    },
+    "0x1bb72d": {
+      "speaker": "Atuy",
+      "tone_register": "confiante, decidido",
+      "intent": "afirmar que não vai errar o alvo daquela distância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro. Não tem como eu errar daqui\\n"
+    },
+    "0x1bb7a9": {
+      "speaker": "Kiwru",
+      "tone_register": "coloquial, aliviado",
+      "intent": "comemorar separar o alvo do grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso! Conseguimos separar eles...\\n"
+    },
+    "0x1bb82a": {
+      "speaker": "Haku",
+      "tone_register": "cauteloso, instrução",
+      "intent": "pedir que Atuy não avance sozinha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Atuy, não avance sozinha. Fique\\n"
+    },
+    "0x1bb87a": {
+      "speaker": "Atuy",
+      "tone_register": "animado, eufórico",
+      "intent": "expressar que adora esse tipo de situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hee hee, é pra isso que eu vivo.\\n"
+    },
+    "0x1bb917": {
+      "speaker": "Haku",
+      "tone_register": "casual, irônico",
+      "intent": "advertir que algo não é recomendável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tum tee tum... Eu não recomendaria\\n"
+    },
+    "0x1bb99f": {
+      "speaker": "Haku",
+      "tone_register": "tático, urgente",
+      "intent": "avisar que Atuy foi longe demais e pedir apoio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atuy foi longe demais... Cubram ela para que\\n"
+    },
+    "0x1bba58": {
+      "speaker": "Haku",
+      "tone_register": "observacional, coloquial",
+      "intent": "comentar que Atuy não tem piedade desse tipo de pessoa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela não tem piedade do tipo de gente\\n"
+    },
+    "0x1bba8a": {
+      "speaker": "Haku",
+      "tone_register": "observacional, coloquial",
+      "intent": "completar — quem escraviza outros para lutar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que escraviza os outros pra lutar por eles\\n"
+    },
+    "0x1bbac0": {
+      "speaker": "Haku",
+      "tone_register": "protetor, informal",
+      "intent": "sugerir que Uruuru e Saraana fiquem para trás",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uruuru, Saraana. Vocês duas podem ficar\\n"
+    },
+    "0x1bbb05": {
+      "speaker": "Uruuru",
+      "tone_register": "sereno, devoto",
+      "intent": "recusar a proteção, afirmar que existem para servir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe. Existimos apenas para servi-lo\\n"
+    },
+    "0x1bbb51": {
+      "speaker": "Haku",
+      "tone_register": "resignado, informal",
+      "intent": "aceitar que não adianta tentar segurar as duas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Não adianta tentar segurar vocês duas\\n"
+    },
+    "0x1bb55c": {
+      "speaker": "Narrador/Sistema",
+      "tone_register": "neutro",
+      "intent": "rótulo de ambiente/cena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "rock_00"
+    },
+    "0x1bb58b": {
+      "speaker": "Haku",
+      "tone_register": "tático, seco",
+      "intent": "reconhecer o perigo de emboscada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Perfeito para emboscada."
+    },
+    "0x1bb5cc": {
+      "speaker": "Haku",
+      "tone_register": "formal_observacional",
+      "intent": "confirmação_planejamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo está dentro do esperado."
+    },
+    "0x1bb5f4": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial_atentação",
+      "intent": "aviso_inimigos_chegando",
+      "risk_level": "medium",
+      "risk_notes": "Suspense/tensão; preservar reticência para fragmentação cênica.",
+      "t": "Aqui vêm eles..."
+    },
+    "0x1bb629": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial_flirtador",
+      "intent": "pedir_autorização_combate",
+      "risk_level": "high",
+      "risk_notes": "'love' é tratamento carinhoso/irônico de Nosuri. PT-BR coloquial: 'querido' seria muito formal; 'meu bem' é natural mas longa; 'amor' é comum em BR. Mantém tom esperto e desembaraçado.",
+      "t": "Se me deixa tomar a frente, amor?"
+    },
+    "0x1bb67c": {
+      "speaker": "Haku",
+      "tone_register": "focado, tático",
+      "intent": "corrigir alvo — não é esse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pensando? Não é esse que buscamos."
+    },
+    "0x1bb6cd": {
+      "speaker": "Protagonista",
+      "tone_register": "semi_consciente_reticência",
+      "intent": "hesitação_medo",
+      "risk_level": "medium",
+      "risk_notes": "Fragmentação de torpor/medo; reticência marca a emoção. Não limpar pontuação.",
+      "t": "às vezes..."
+    },
+    "0x1bb6da": {
+      "speaker": "Kiwru",
+      "tone_register": "coloquial_aviso",
+      "intent": "silêncio_inimigos_chegando",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia 'Shhh' localizada para pt-BR (manter o 'Shhh' internacional; não virar 'Psiu'). Reticência = tensão.",
+      "t": "Shhh... Eles vêm."
+    },
+    "0x1bb71d": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial_afirmação",
+      "intent": "aceitar_delegação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deixa comigo."
+    },
+    "0x1bb768": {
+      "speaker": "Haku",
+      "tone_register": "formal_planejamento",
+      "intent": "condição_de_sucesso",
+      "risk_level": "medium",
+      "risk_notes": "Reticência marca hesitação/planejamento condicional. Preservar tom de esperança contida.",
+      "t": "Contanto que não nos notem..."
+    },
+    "0x1bb78d": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "neutral",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldados Uzurushan"
+    },
+    "0x1bb7a0": {
+      "speaker": "Uzurushan_soldier",
+      "tone_register": "grito_surpresa",
+      "intent": "reação_ataque",
+      "risk_level": "medium",
+      "risk_notes": "Onomatopeia localizada para pt-BR. 'Gaaaaah' = grito de dor/surpresa. Risco: ritalizar o som ('Gaaaah' vs 'Aaargh'). Manter 'Gaaaaah' por consistência com voz=soldado jovem/surpreendido.",
+      "t": "Gaaaaah!"
+    },
+    "0x1bb7cf": {
+      "speaker": "Haku",
+      "tone_register": "comando_combate",
+      "intent": "ordem_tática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora derrubamos os soldados de trás!"
+    },
+    "0x1bb7fa": {
+      "speaker": "Nosuri",
+      "tone_register": "euforia_combate",
+      "intent": "celebração_desejo_realizado",
+      "risk_level": "high",
+      "risk_notes": "Risada + revelação emocional (esperou MUITO por isto). Risco alto: 'SO LONG' = ênfase temporal + emocional. PT-BR: 'TANTO TEMPO' é correto mas longo (byte budget 47). Teste: 'Ahahahahah! Esperei MUITO por isto!' = ~40 ASCII. Cabe. Risco: perder a ênfase de 'SO LONG'. Alternativa: 'Ahahahahah! Esperei tanto tempo por isto!' = ~42. Ou 'Ahahahahah! Finalmente chegou o momento!' = ~37. Ou 'Ahahahahah! Esperei de VERDADE por isto!' = ~40. Decido: 'Ahahahahah! Esperei de VERDADE por isto!' (preserva entusiasmo, ênfase, cabe no budget).?? Back-translation: high risk.?? Validar ton.",
+      "t": "Ahahahahah! Esperei de VERDADE por isto!"
+    },
+    "0x1bb858": {
+      "speaker": "Maroro",
+      "tone_register": "erudito_pomposo",
+      "intent": "coordenação_tática",
+      "risk_level": "high",
+      "risk_notes": "Maroro: voz arquetípica erudita+cício. 'Backlines' é jargão militar. PT-BR: 'retaguarda' é formal/correto. Risco alto: manter a pompa + cício (s→sh). Teste: 'coordenar com a retaguarda' = natural. 'Coordenar com o comando da retaguarda' = mais pomposo. Budget 33 bytes. Teste: 'para coordenar com a retaguarda' = 30 ASCII. Cabe. Risco: perder 'to coordinate' = 'para' implica finalidade; 'de coordenar' = infinitivo nominado. Alternativa coloquial arcaica (Maroro): 'afim de coordenar com a retaguarda' = ~37, supera. Simples: 'para coordenar com a retaguarda' = 30. OK. E o cício? Maroro fala em arcaísmo+cício ('sheeketh' por 'seeketh'). Nesta linha, não há 's' explosivo. Deixar para próximas com 's'. Decido: 'para coordenar com a retaguarda' sem cício (nenhum 's' explosivo).?? Back-translation + validação de voz.??",
+      "t": "para coordenar com a retaguarda."
+    },
+    "0x1bb89e": {
+      "speaker": "Nosuri",
+      "tone_register": "eufórico, coloquial",
+      "intent": "comemorar o sucesso",
+      "risk_level": "medium",
+      "risk_notes": "budget 36 sem acentos; cortar para caber",
+      "t": "Ih, que feliz que eu tô!"
+    },
+    "0x1bb8c3": {
+      "speaker": "Ukon",
+      "tone_register": "irônico_apaziguador",
+      "intent": "pedir_moderação_humor",
+      "risk_level": "high",
+      "risk_notes": "Ukon trata Nosuri como companheiro; tom é carinhoso-irônico ('turn it down a notch'). Risco alto: localizar a metáfora sem perder tom. 'Turn down = diminuir' (volume/emoção). PT-BR coloquial: 'Você não poderia abaixar o tom um pouco?' = formal. 'Será que cê conseguia diminuir a empolgação?' = coloquial demais. 'Será que você conseguia baixar um pouco a emoção?' = neutro. Risco: soar paternal/superior. Ukon é **colega/irmão** de Nosuri, não superior. Teste: 'Será que você consegue acalmar um pouco...?' = ~36. Budget 38. Cabe. Ou 'Você não poderia ser um pouco mais calmo...?' = ~37. Cabe. Decido: 'Você não poderia acalmar um pouco...?' = ~32. Cabe. Mantém tom de pedido, não ordem. Risco: 'acalmar' implica 'ser calmo'; 'abaixar' implica emoção. Melhor 'abaixar o tom'. 'Você não poderia abaixar o tom um pouco...?' = ~39. Supera 38 em 1. Risky. Volta pra 'acalmar um pouco'. Decido: 'Você não conseguiria acalmar um pouco...?' = ~35. Cabe. Risco mantido (back-translation).?? Hmm, 'conseguiria' é condicional; original é imperativo leve ('can you...?'). Melhor: 'Será que consegue acalmar um pouco?' = ~32. Cabe. Soa mais natural BR. Decido FINAL: 'Será que consegue acalmar um pouco...?'??",
+      "t": "Será que consegue acalmar um pouco...?"
+    },
+    "0x1bb8ea": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "neutral",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldado Uzurushan"
+    },
+    "0x1bb8fc": {
+      "speaker": "Uzurushan_soldier",
+      "tone_register": "grito_confusão",
+      "intent": "reação_inimigo_desconhecido",
+      "risk_level": "medium",
+      "risk_notes": "Grito de confusão/medo. Onomatopeia 'Wh-What' = gaguejo. PT-BR: 'O-O quê' / 'Q-Quem'. Teste: 'O-O que—Quem é você!?' = som de surpresa. Budget 26. Conte: O=1, travessão=1, O=1, espaço, que=3, travessão=2 (—), Quem=4, espaço, é=1, você=5, interrogação=1 = 19 ASCII (sem cedilha de 'você'). Cabe fácil. Ou 'Wh-Wha' = 'P-Pera'. Teste: 'P-Pera aí—Quem é você!?' = gaguejo + pausa. Soa BR. = ~24 ASCII. Cabe. Risco: qual gaguejo é mais natural em PT-BR? 'Wh-' = 'P-Pera' (desempenho de ator com gaguejo por medo). Ou 'O-O' (repetição de vogal). Decido: 'O-O que—Quem é você!?' (som de surpresa extrema).?? Risk=medium (onomatopeia + gaguejo).",
+      "t": "O-O que—Quem é você!?"
+    },
+    "0x1bb93d": {
+      "speaker": "Haku",
+      "tone_register": "advertência_combate",
+      "intent": "avisar_perda_foco",
+      "risk_level": "high",
+      "risk_notes": "Haku adverte sobre perda de foco em combate. Risco alto: sintaxe fragmentada ('losing your focus in battle, you know...?') é típica de Haku em dúvida/advertência. PT-BR: 'Você não perde o foco em combate, entende...?' = ~38 bytes. Budget 41. Cabe. Ou 'Perdendo o foco em combate, sabe...?' = ~34. Ou 'Não é bom perder o foco em combate, sabe...?' = ~42. Supera. Decido: 'Perdendo o foco em combate, sabe...?' (preserva fragmentação, tom de aviso leve).?? Back-translation.??",
+      "t": "Perdendo o foco em combate, sabe...?"
+    },
+    "0x1bb967": {
+      "speaker": "Protagonista",
+      "tone_register": "fragmentado, surpreso, desorientado",
+      "intent": "reação de choque/susto com colapso",
+      "risk_level": "medium",
+      "risk_notes": "Interjeição fragmentada; preservar ruptura e torpor característico do Protagonista; {W150} preservado",
+      "t": "Hein!? Q-Qu--{W150}Gah!"
+    },
+    "0x1bb980": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial_segurança",
+      "intent": "tática_não_cercar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não se deixa cercar."
+    },
+    "0x1bb9cf": {
+      "speaker": "Ukon",
+      "tone_register": "informal, tático",
+      "intent": "instrução para não deixar alguém ser cercado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não seja cercada."
+    },
+    "0x1bba0b": {
+      "speaker": "Nosuri",
+      "tone_register": "determinação_saída",
+      "intent": "anúncio_retirada_tática",
+      "risk_level": "high",
+      "risk_notes": "Nosuri anuncia saída. Risco alto: 'going on ahead' = 'vou na frente' ou 'vou à frente'. Budget 34. Teste: 'Vou indo na frente, então, Haku.' = ~32 ASCII. Cabe. Ou 'Vou à frente então, Haku.' = ~25. Cabe + mais natural BR. Decido: 'Vou à frente então, Haku.' (natural, cabe).?? Risk=high (pode ser interpretado como 'abandono'; back-translation verifica contexto).??",
+      "t": "Vou à frente então, Haku."
+    },
+    "0x1bba2e": {
+      "speaker": "Haku",
+      "tone_register": "suspeita_desconfiança",
+      "intent": "reação_desconfiado_sorriso",
+      "risk_level": "high",
+      "risk_notes": "Haku reage a sorriso de Nosuri com desconfiança/arrepio. Risco alto: 'gave me the chills' = 'arrepio', 'calafrio', 'medo'. PT-BR: 'aquele sorriso me deu calafrios'. Budget 41. Teste: 'Aquele sorriso me deu até calafrios...' = ~37 ASCII. Cabe. Ou 'Aquele sorriso agora me deu calafrios...' = ~41. Cabe exato. Risco: 'agora' altera sentido (significa 'neste momento' vs EN 'gave = aconteceu'). Melhor: 'Aquele sorriso me deu um calafrio...' = ~35. Ou 'Aquele sorriso... me deu um calafrio' = fragmentado (como Haku). Decido: 'Aquele sorriso me deu até um calafrio...' = ~37. Cabe. Preserva sentido + tom de desconfiança.??",
+      "t": "Aquele sorriso me deu até um calafrio..."
+    },
+    "0x1bbaf6": {
+      "speaker": "Personagem",
+      "tone_register": "formal, resoluto",
+      "intent": "declarar intenção de lutar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos lutar."
+    },
+    "0x1bbb38": {
+      "speaker": "Personagem",
+      "tone_register": "formal, solene",
+      "intent": "afirmar lealdade até o fim",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "até o fim, Mestre."
+    },
+    "0x1bbb84": {
+      "speaker": "Ukon",
+      "tone_register": "comando_casual",
+      "intent": "decisão_retirada_marcha",
+      "risk_level": "medium",
+      "risk_notes": "Ukon encerra a cena com comando casual ('let's head out'). Reticência fragmenta a decisão. Risco: 'head out' = 'vamos embora', 'vamos indo'. Budget 27. Teste: 'Volte. Certo, vamos indo.' = ~23. Ou 'Volta. Certo, vamos.' = ~19. Ou 'Certo, vamos embora então.' = ~25. Cabe. Ou 'De acordo, vamos ao caminho.' = ~27 (arcaico). Decido: 'Certo, vamos lá embora.' = ~22 ASCII. Cabe. Soa BR moderno/comando casual.??",
+      "t": "Certo, vamos lá embora."
+    },
+    "0x1bbba0": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_nobre_soldatico",
+      "intent": "juramento_lealdade_supremo",
+      "risk_level": "critical",
+      "risk_notes": "CRÍTICO: 'Oshtor' é identidade revelada DEPOIS (spoiler=Ukon em cap.13). Aqui deve manter voz de 'Ukon' (informal, caloroso, guerreiro). MAS o offset está em diálogo de personagem **Oshtor** (segundo a cena). Risco crítico: Se Oshtor fala em voz formal/nobre, ANTECIPA o reveal. Decisão: **Consultar con decision_log / spoiler_ledger**. Por segurança, asumir que nesta cena PRÉ-REVEAL, 'Oshtor' ainda é tratado como **aliado/general desconhecido** (não Ukon). Então tom é formal/nobre, NÃO Ukon-caloroso. 'We offer ourselves to you, Master' = juramento de vassalagem. PT-BR formal: 'Oferecemos-nos a você, Mestre.' = ~30. Budget 47. Cabe fácil. Ou 'Nos oferecemos a vós, Senhor.' = arcaico, refere identidade nobre. Risco CRÍTICO: soar formal ANTES do reveal antecipa. Teste estratégia: manter TOM AMBÍGUO (nem muito formal, nem muito caloroso). 'Nos oferecemos a você, Senhor.' = ~33. Cabe. Ou 'Nos entregamos a você, Mestre.' = ~31. Cabe. Risco crítico: qualquer inclinação para pompa/formalidade GRITA Oshtor. Melhor: tom de soldado respeitoso mas não nobreza. 'Oferecemos nossas vidas a você, Senhor.' = ~38. Cabe. Preserva lealdade (vidas = sacrifício) sem antecipar nobreza. Decido: 'Oferecemos nossas vidas a você, Senhor.' (solemne mas não nobre; back-translation CRÍTICA; validação de spoiler).??",
+      "t": "Oferecemos nossas vidas a você, Senhor."
+    },
+    "0x1bb6f6": {
+      "speaker": "Haku",
+      "tone_register": "comando direto",
+      "intent": "ordenar ação a Nosuri e Kiwru",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ainda não. Nosuri, Kiwru — conseguem?"
+    },
+    "0x1bb9e7": {
+      "speaker": "Cocopo",
+      "tone_register": "nervoso, submisso, obediente",
+      "intent": "confirmar ordem e preparar-se para agir; insegurança",
+      "risk_level": "high",
+      "risk_notes": "Personagem secundário em situação tensa. Reticências e fragmentação refletem nervosismo/hesitação ('U-Understood' = gagueira). Transliteração: sem cedilha/acentos soma ~27 bytes (bem dentro de 35). Back-translation para validar naturalidade da gagueira em pt-BR e coerência emocional com o contexto de ação.",
+      "t": "E-Entendido... Cocopo, vamos..."
+    }
+  }
+}

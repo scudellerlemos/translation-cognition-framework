@@ -1,0 +1,68 @@
+{
+  "lines": {
+    "0x1ca8f3": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "imperial."
+    },
+    "0x1ca99c": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "explicação tática disfarçada de observação enigmática",
+      "risk_level": "high",
+      "risk_notes": "Homem fala com duplo-sentido — a frase aparenta ser tática militar (aguardar reforços) mas carrega peso profético/ameaçador. Não resolver a ambiguidade em favor de nenhuma leitura. Identidade/spoiler: 'deles' refere-se ao inimigo/Yamatan — não antecipar alianças futuras. Back-translation obrigatória (high risk + voz crítica + ambiguidade preservada).",
+      "t": "deles, soldados, decide aguardar reforços..."
+    },
+    "0x1ca88f": {
+      "speaker": "Narrador",
+      "tone_register": "expositivo, estratégico",
+      "intent": "Descrever o plano de Uzurusha de usar o rio de Yamato como rota de invasão",
+      "risk_level": "medium",
+      "risk_notes": "Nomes de local mantidos conforme glossário; verificar byte budget na transliteração",
+      "t": "Uzurusha planeja usar a artéria vital de Yamato,\\n"
+    },
+    "0x1ca8c1": {
+      "speaker": "Narrador",
+      "tone_register": "expositivo, estratégico",
+      "intent": "Continuar descrição do avanço pelo grande rio até o interior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o grande rio que a corta, direto ao seu interior.\\n"
+    },
+    "0x1ca8fc": {
+      "speaker": "Narrador",
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever o exército de Yamato exausto e sem tempo para organizar defesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O exausto exército de Yamato mal tem tempo para\\n"
+    },
+    "0x1ca92c": {
+      "speaker": "Narrador",
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever acampamento às pressas e o perigo de um confronto direto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "um acampamento às pressas no rio. Um choque frontal\\n"
+    },
+    "0x1ca96d": {
+      "speaker": "Narrador",
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever hesitação do exército Uzurushan em sofrer mais baixas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O exército Uzurushan, hesitante em perder mais\\n"
+    },
+    "0x1ca95e": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "entregar uma sentença inevitável com duplo sentido ameaçador",
+      "risk_level": "high",
+      "risk_notes": "Identidade e intento do falante permanecem ambíguos; a frase curta e definitiva carrega ameaça implícita — não resolver a ambiguidade. Personagem (Homem) deve soar frio e profético, não caloroso. Byte budget restrito (14) — tradução concisa mantém peso. Verificar back-translation para garantir que a inevitabilidade e o tom enigmático não se perdem.",
+      "t": "é inevitável."
+    }
+  }
+}

@@ -1,0 +1,1012 @@
+{
+  "lines": {
+    "0x22195b": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "isso."
+    },
+    "0x221a32": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah..."
+    },
+    "0x221baa": {
+      "speaker": "Garota",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Senhor Haku..."
+    },
+    "0x221bd1": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Senhora Kuon..."
+    },
+    "0x221c56": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon..."
+    },
+    "0x22292a": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "perto."
+    },
+    "0x222931": {
+      "speaker": "Touka",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não..."
+    },
+    "0x222937": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê!?"
+    },
+    "0x222dd9": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tá?"
+    },
+    "0x222e40": {
+      "speaker": "Ougi",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de agora."
+    },
+    "0x223a29": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "um pouco..."
+    },
+    "0x223ff5": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku...?"
+    },
+    "0x2240d8": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "P-Peguei..."
+    },
+    "0x222f6b": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "",
+      "risk_level": "low",
+      "risk_notes": "AVISO: offset duplicado (já traduzido acima). Remover esta entrada do build final.",
+      "t": ""
+    },
+    "0x222fc9": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "concordância calorosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "quanto fica, né?"
+    },
+    "0x22300c": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado semi-consciente",
+      "intent": "confusão/negação fragmentada",
+      "risk_level": "medium",
+      "risk_notes": "voz crítica: frases quebradas, reticências. 'first place' = desde o começo/em primeiro lugar (ambíguo se sonho ou realidade). Manter fragmentação e incerteza.",
+      "t": "tudo isto é só um sonho desde o começo..."
+    },
+    "0x22395e": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo cômico",
+      "intent": "bajulação exagerada ao Haku (Master)",
+      "risk_level": "high",
+      "risk_notes": "Maroro: arcaísmo obrigatório + cício (s→sh em palavras-chave). 'thy brilliance' = tua brilhantia/genialidade. 'true to form' = confirma o padrão/expectativa. Preserve pompa e cômico.",
+      "t": "Mestre Haku, tua brilhantia é verdadeira segundo a forma!"
+    },
+    "0x22398b": {
+      "speaker": "Kuon",
+      "tone_register": "urgente autoritário",
+      "intent": "alerta/comando imperativo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera! Para, seu idiota!"
+    },
+    "0x2239a2": {
+      "speaker": "Kuon",
+      "tone_register": "advertência urgente",
+      "intent": "avisar de perigo iminente",
+      "risk_level": "medium",
+      "risk_notes": "frase interrompida ('clo--' = close cortado). Manter suspensão; nada resolver. Byte-budget apertado (27): 'Você não deveria chegar tão pe--' (24 bytes).",
+      "t": "Você não deveria ficar tão pe--"
+    },
+    "0x2239be": {
+      "speaker": "Protagonista",
+      "tone_register": "susto agudo fragmentado",
+      "intent": "grito de horror/reação extrema",
+      "risk_level": "high",
+      "risk_notes": "onomatopeia pura = TRADUZIR (localizar). 'Bwaaaah' = grito de pavor. Em pt-BR: 'Ahhhhhhh!' ou 'Ehhhhhhh!' (sem o 'bw' que é ruído de língua inglesa). Byte-budget: 9. Back-translation obrigatória (onomatopeia é pilar de emoção cênica).",
+      "t": "Ahhhhhhh!?"
+    },
+    "0x223a5e": {
+      "speaker": "Protagonista/Narração",
+      "tone_register": "observação em pânico",
+      "intent": "reconhecimento de criatura imortal",
+      "risk_level": "medium",
+      "risk_notes": "contexto: Tatari regenera. Linha curta/sistema-like. Byte-budget: 12. Manter concisão sem perder clareza.",
+      "t": "regenera!"
+    },
+    "0x223fd2": {
+      "speaker": "Haku",
+      "tone_register": "urgência comando",
+      "intent": "fuga imediata",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Precisamos correr! Agora!!"
+    },
+    "0x223fe8": {
+      "speaker": "Kuon",
+      "tone_register": "chamado aflito",
+      "intent": "localizar/verificar Haku em perigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, Haku..."
+    },
+    "0x223ffe": {
+      "speaker": "Kuon",
+      "tone_register": "horror especulativo",
+      "intent": "questionamento existencial de morte",
+      "risk_level": "high",
+      "risk_notes": "voz crítica de Kuon: gentil/cuidadora, aqui assustada. 'ended up like that' = virar uma criatura morta-viva (Tatari). Manter ambiguidade de identidade do 'that' (refere-se a si ou a Haku?). Spoiler: gênero em pt-BR força concordância; use construção que não resolva ('me tornar assim' em vez de 'ficado assim' que caria arcaico). Back-translation obrigatória.",
+      "t": "Será que... eu poderia ter me tornado assim...?"
+    },
+    "0x22404e": {
+      "speaker": "Kuon",
+      "tone_register": "afirmação esperançosa forte",
+      "intent": "reafirmar humanidade de Haku contra horror",
+      "risk_level": "high",
+      "risk_notes": "contexto crítico: Kuon reafirma que Haku é humano/pessoa. Voz: gentil cuidadora, aqui determinada. 'right here in front of me' = aqui diante de mim. 'as a person' = como pessoa (humanidade vs monstro). Preservar ênfase emocional. Back-translation obrigatória (declaração existencial).",
+      "t": "Haku está bem aqui na minha frente, como pessoa!"
+    },
+    "0x2240a8": {
+      "speaker": "Haku",
+      "tone_register": "comando pragmático focado",
+      "intent": "priorizar sobrevivência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Foque em sair daqui vivo primeiro!"
+    },
+    "0x2240e4": {
+      "speaker": "Kuon",
+      "tone_register": "urgência ação",
+      "intent": "comando fuga imediata",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos!!"
+    },
+    "0x22133d": {
+      "speaker": "Haku",
+      "tone_register": "action, strained",
+      "intent": "urgent warning about regenerating enemy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Droga, está regenerando de novo!"
+    },
+    "0x22138d": {
+      "speaker": "Haku",
+      "tone_register": "action, cautious",
+      "intent": "acknowledgment of enemy difficulty",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não esperava que fossem tão durões..."
+    },
+    "0x2213b4": {
+      "speaker": "SYSTEM",
+      "tone_register": "system, UI",
+      "intent": "capsule/hatch identifier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "capsule07_escotilha"
+    },
+    "0x2213c5": {
+      "speaker": "Haku",
+      "tone_register": "action, sardonic",
+      "intent": "observation on endless enemies",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Heh. Não tem fim pra eles."
+    },
+    "0x2213e6": {
+      "speaker": "Kuon",
+      "tone_register": "warning, concerned",
+      "intent": "alert Haku to danger escalation",
+      "risk_level": "medium",
+      "risk_notes": "gender-neutral construction; Kuon identity not yet established in earlier context",
+      "t": "Haku, acho que isso vai ficar feio muito rápido."
+    },
+    "0x221440": {
+      "speaker": "Haku",
+      "tone_register": "tactical, questioning",
+      "intent": "seek weakness strategy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alguma fraqueza que possamos explorar?"
+    },
+    "0x221498": {
+      "speaker": "Kuon",
+      "tone_register": "matter-of-fact, tactical",
+      "intent": "explain usual approach",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por isso eu normalmente só os afasto."
+    },
+    "0x2214f6": {
+      "speaker": "Kuon",
+      "tone_register": "explanation, tactical",
+      "intent": "describe Nosuri's approach to problem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ela usa uma das bombas de flash."
+    },
+    "0x221521": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, melodramatic, pompous",
+      "intent": "despair and appeal for help",
+      "risk_level": "high",
+      "risk_notes": "maintain archaic register (vós/peço-vos equiv); preserve cicio gag (s->sh); high criticality voice; melodramatic exaggeration must remain",
+      "t": "Prezado irmão, certamente há algo que possamos fazer."
+    },
+    "0x221582": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, despairing, pompous",
+      "intent": "catalog of failed methods",
+      "risk_level": "high",
+      "risk_notes": "archaic register required; cicio present in 'poison' equiv; melodrama preserved; back-translation needed for tone fidelity",
+      "t": "afogá-los, envená-los... Nada funciona, então..."
+    },
+    "0x2215b5": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, panicked, exaggerated",
+      "intent": "hysteria about predicament",
+      "risk_level": "high",
+      "risk_notes": "archaic register (Th-Then = Ent-Então); stammer preserved; cicio may apply to select consonants; back-translation for archaic fidelity",
+      "t": "Ent-Então, que diabo faremos nós!?"
+    },
+    "0x221608": {
+      "speaker": "Haku",
+      "tone_register": "thought, trailing, semi-conscious",
+      "intent": "realization interrupted",
+      "risk_level": "medium",
+      "risk_notes": "fragmented thought pattern; reticence critical to torpor voice; incomplete clause signals delirium or pause",
+      "t": "vamos estar... Hm?"
+    },
+    "0x22161f": {
+      "speaker": "Haku",
+      "tone_register": "observation, thoughtful, cold tone",
+      "intent": "notice of temperature drop",
+      "risk_level": "medium",
+      "risk_notes": "single word observation; pt-BR preserves ellipsis for mood; no clarification beyond what source gives",
+      "t": "...Frio...?"
+    },
+    "0x221659": {
+      "speaker": "Haku",
+      "tone_register": "explanation, tactical",
+      "intent": "recall detail about creature transformation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eles viraram monstros depois de sair."
+    },
+    "0x2216b8": {
+      "speaker": "Haku",
+      "tone_register": "realization, tactical",
+      "intent": "imply deduction follows",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso quer dizer..."
+    },
+    "0x2216f6": {
+      "speaker": "Kuon",
+      "tone_register": "tactical, assured",
+      "intent": "propose freezing as solution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "congelando-os. É quase clichê!"
+    },
+    "0x22171c": {
+      "speaker": "Haku",
+      "tone_register": "command, authoritative",
+      "intent": "call for group attention",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pessoal, ouçam só!"
+    },
+    "0x22175f": {
+      "speaker": "Kuon",
+      "tone_register": "tactical, speculative",
+      "intent": "suggest freezing effect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "provavelmente os deixam mais lentos."
+    },
+    "0x221778": {
+      "speaker": "Haku",
+      "tone_register": "surprise, questioning",
+      "intent": "confirm Kuon's method knowledge",
+      "risk_level": "medium",
+      "risk_notes": "gender-neutral (Kuon); avoid presupposing identity established elsewhere; preserve surprise",
+      "t": "O quê!? Você sabe fazer isso?"
+    },
+    "0x221798": {
+      "speaker": "Haku",
+      "tone_register": "familiar, affectionate, teasing",
+      "intent": "praise and tease Kuon for clever plan",
+      "risk_level": "high",
+      "risk_notes": "'love' term of affection in EN; pt-BR must preserve intimacy without premature relationship reveal; Haku's voice criticality high; back-translation required",
+      "t": "Veio com um de seus planos, é? Querida?"
+    },
+    "0x2217c9": {
+      "speaker": "Haku",
+      "tone_register": "directive, tactical",
+      "intent": "point out specific solution location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vê aquele cano grande ali na parede?"
+    },
+    "0x22184f": {
+      "speaker": "SYSTEM or context",
+      "tone_register": "descriptive, state change",
+      "intent": "describe result of freezing",
+      "risk_level": "low",
+      "risk_notes": "minimal; adjective state descriptor",
+      "t": "congelado."
+    },
+    "0x221889": {
+      "speaker": "Haku",
+      "tone_register": "explanation, deduction",
+      "intent": "clarify creature behavior in/out of capsules",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "viram lama lá fora. Isso quer dizer..."
+    },
+    "0x2218bc": {
+      "speaker": "Kuon",
+      "tone_register": "questioning, prompting",
+      "intent": "ask Haku to finish thought",
+      "risk_level": "medium",
+      "risk_notes": "gender-neutral construction; Kuon's identity not yet fully public; prompting continuation",
+      "t": "Isso quer dizer... o quê?"
+    },
+    "0x221902": {
+      "speaker": "Haku",
+      "tone_register": "tactical, realization",
+      "intent": "conclude that freezing aberrations is possible",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "seja possível congelar essas aberrações."
+    },
+    "0x221961": {
+      "speaker": "Haku",
+      "tone_register": "direct, questioning",
+      "intent": "ask if Kuon has freezing experience",
+      "risk_level": "medium",
+      "risk_notes": "Kuon identity; avoid presupposing prior relationship or role; gender-neutral approach",
+      "t": "Kuon, você já tentou congelar essas coisas?"
+    },
+    "0x2219c2": {
+      "speaker": "Kuon",
+      "tone_register": "tactical, confident",
+      "intent": "suggest sufficiency of single freezing blast",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "você poderia matá-los com isso só..."
+    },
+    "0x221a1b": {
+      "speaker": "Kuon",
+      "tone_register": "tactical, assurance",
+      "intent": "describe escape window from freezing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tempo suficiente pra fugir."
+    },
+    "0x221a69": {
+      "speaker": "Haku",
+      "tone_register": "tactical, directive",
+      "intent": "instruct on coolant discharge method",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aquela coisa com um jato do refrigerante lá dentro."
+    },
+    "0x221acb": {
+      "speaker": "Haku",
+      "tone_register": "warning, urgent",
+      "intent": "alert to danger of coolant proximity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o cano. Vai ser perigoso nem se aproximar!"
+    },
+    "0x221b59": {
+      "speaker": "Kuon",
+      "tone_register": "assurance, cavalier",
+      "intent": "dismiss concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vai dar certo!"
+    },
+    "0x221b95": {
+      "speaker": "Haku",
+      "tone_register": "concession, uncertain",
+      "intent": "acknowledge probability but with doubt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "em tudo que você diz..."
+    },
+    "0x221bba": {
+      "speaker": "Kuon",
+      "tone_register": "agreement, casual",
+      "intent": "accept probability assessment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você provavelmente tá certo."
+    },
+    "0x221c10": {
+      "speaker": "Haku",
+      "tone_register": "reflection, resigned",
+      "intent": "observe pattern of plans succeeding",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "eles sempre parecem dar certo no final."
+    },
+    "0x221c39": {
+      "speaker": "Haku",
+      "tone_register": "confirmation, leadership",
+      "intent": "seek group consensus on plan",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então todo mundo topa isso?"
+    },
+    "0x221c87": {
+      "speaker": "Maroro",
+      "tone_register": "formal, archaic, solemn",
+      "intent": "pledge trust and obedience",
+      "risk_level": "high",
+      "risk_notes": "archaic register critical (place/hands equiv to 'vós'); formal pledge tone; Maroro voice criticality high; back-translation required for archaic fidelity",
+      "t": "Coloco minha vida em vossas mãos."
+    },
+    "0x22280d": {
+      "speaker": "Protagonist",
+      "tone_register": "observation, shivering, disoriented",
+      "intent": "notice cold wind",
+      "risk_level": "high",
+      "risk_notes": "protagonist voice; fragmented/semi-conscious state; preserve torpor via short, simple syntax; no over-articulation",
+      "t": "Que vento frio..."
+    },
+    "0x222844": {
+      "speaker": "Protagonist",
+      "tone_register": "distress, semi-conscious, stammering",
+      "intent": "shock at intensity of cold/frost",
+      "risk_level": "high",
+      "risk_notes": "protagonist voice (broken, disoriented); stammer (d-didn't); preserve fragmentation; torpor state critical; back-translation check",
+      "t": "Eu n-não pensei que fosse ser tão ruim..."
+    },
+    "0x22289c": {
+      "speaker": "Protagonist",
+      "tone_register": "anguish, vivid, disoriented",
+      "intent": "describe painful frost sensation",
+      "risk_level": "high",
+      "risk_notes": "archaic/poetic 'wanton lurch' carries mood; protagonist semi-conscious; preserve sensory detail and fragmentation; metaphor (frost-crackled) must localize; back-translation for poetic fidelity",
+      "t": "craquelado de geada com cada movimento convulso!"
+    },
+    "0x2228f0": {
+      "speaker": "Protagonist",
+      "tone_register": "question, weary, semi-conscious",
+      "intent": "uncertain question about now/then",
+      "risk_level": "high",
+      "risk_notes": "protagonist voice; ultra-short, implies delirium or loss of time sense; preserve minimalism; no elaboration",
+      "t": "agora?"
+    },
+    "0x22293e": {
+      "speaker": "Haku",
+      "tone_register": "frustration, action, sardonic",
+      "intent": "observation that freezing splits creature",
+      "risk_level": "medium",
+      "risk_notes": "Haku voice; 'yeah...?' tag is characteristic (né?); preserve uncertainty tone; back-translation check for idiomatic pt-BR equiv",
+      "t": "Só os dividiu em mais, é?"
+    },
+    "0x22299a": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, panicked, melodramatic",
+      "intent": "horrified observation of creature multiplication",
+      "risk_level": "high",
+      "risk_notes": "archaic register; Maroro voice criticality high; cicio may apply; melodrama exaggerated; 'jellies' as diminutive must preserve cuteness-turned-horror tone; back-translation required",
+      "t": "pequenas gelatinas!"
+    },
+    "0x2229cb": {
+      "speaker": "Haku",
+      "tone_register": "urgency, tactical, desperate",
+      "intent": "call for solution amid creature multiplication",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que vamos fazer com isso!?"
+    },
+    "0x2229f0": {
+      "speaker": "Maroro",
+      "tone_register": "archaic, hysterical, melodramatic",
+      "intent": "panic at total defeat",
+      "risk_level": "high",
+      "risk_notes": "Maroro voice; archaic register with cicio; 'Eeeeek' is onomatopoeia (localize as pt-BR shriek); 'undone' repeated for melodrama; back-translation required; preserve exaggeration",
+      "t": "Aiiiih! Estamos perdidos! Estamos verdadeiramente perdidos!!"
+    },
+    "0x222a4d": {
+      "speaker": "Kuon",
+      "tone_register": "determination, tactical",
+      "intent": "assert capability to manage creatures",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lidar com eles."
+    },
+    "0x222a88": {
+      "speaker": "Kuon",
+      "tone_register": "tactical, directive",
+      "intent": "propose knocking creatures aside for escape",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "os empurra pra longe pra gente conseguir escapar!"
+    },
+    "0x222cfa": {
+      "speaker": "SYSTEM",
+      "tone_register": "system, UI",
+      "intent": "label/name fake/corrupted Nosuri encounter",
+      "risk_level": "medium",
+      "risk_notes": "spoiler control: term 'Fake' hints at duplicate/false entity; avoid over-explaining; Nosuri is original alias, maintain as identity obscured; preserve ambiguity (major spoiler)",
+      "t": "Nosuri Falsa"
+    },
+    "0x222d06": {
+      "speaker": "Fake Nosuri",
+      "tone_register": "enigmatic, ominous, cold",
+      "intent": "announce arrival with cryptic certainty",
+      "risk_level": "high",
+      "risk_notes": "Homem (mystery figure) voice criticality high; archaic/poetic speech pattern; ambiguity must survive pt-BR gender/identity markers; preserve dread tone; no resolution of 'who'; back-translation for enigmatic register",
+      "t": "Ha-ha-ha. Finalmente você chegou até aqui."
+    },
+    "0x222d2d": {
+      "speaker": "SYSTEM",
+      "tone_register": "system, UI",
+      "intent": "label/name fake/corrupted Jachdwalt encounter",
+      "risk_level": "medium",
+      "risk_notes": "spoiler control: 'Fake' identity obscured; Jachdwalt major spoiler (reveal later); preserve ambiguity; do not clarify relationship to original Jachdwalt",
+      "t": "Jachdwalt Falso"
+    },
+    "0x222d3c": {
+      "speaker": "Fake Jachdwalt",
+      "tone_register": "harsh, sardonic, ominous",
+      "intent": "dismissive comment on protagonist arrival",
+      "risk_level": "high",
+      "risk_notes": "Homem voice (cold, enigmatic); tone must remain duel/confrontational; avoid softening or resolution; preserve threat; back-translation check for ominous register in pt-BR",
+      "t": "Nada mal, né."
+    },
+    "0x222d7c": {
+      "speaker": "Haku",
+      "tone_register": "shock, realization, disoriented",
+      "intent": "recognition of impostor/fakeness",
+      "risk_level": "high",
+      "risk_notes": "Haku voice criticality high; protagonist (semi-conscious/confused state); reticence (Wait a minute...) signals delayed processing; preserve fragmentation; no over-clarification of what 'wait' means",
+      "t": "Espera aí..."
+    },
+    "0x222d8d": {
+      "speaker": "Haku",
+      "tone_register": "shock, horror, stammer",
+      "intent": "accusation of impostor/fake identity",
+      "risk_level": "critical",
+      "risk_notes": "Haku voice; shock stammer (Wh-What); revelation of 'fake' entity is major plot moment; identity ambiguity still preserved (not explained why/how); back-translation mandatory; preserve stammer and horror tone; do not resolve mystery here",
+      "t": "O quê-O quê!?! Um impostor!?"
+    },
+    "0x22135e": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, preocupado",
+      "intent": "Haku pondera sobre os Tatari serem imortais mas ainda achar isso perturbador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu sei que são imortais e tudo mais, mas ainda assim...\\n"
+    },
+    "0x221412": {
+      "speaker": "Haku",
+      "tone_register": "curioso, direto",
+      "intent": "Haku pergunta se Kuon sabe mais sobre os Tatari",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon, você sabe mais alguma coisa sobre eles?\\n"
+    },
+    "0x221466": {
+      "speaker": "Kuon",
+      "tone_register": "seco, irônico",
+      "intent": "Kuon admite que se soubesse não estariam nessa situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se eu soubesse, não estaríamos nessa situação, acho.\\n"
+    },
+    "0x2214c2": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo",
+      "intent": "Haku concorda com Kuon e relembra os encontros anteriores com os Tatari",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela tem razão. Toda vez que encontramos eles...\\n"
+    },
+    "0x221551": {
+      "speaker": "Haku",
+      "tone_register": "frustrado, listando",
+      "intent": "Haku lista as tentativas fracassadas de derrotar os Tatari",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cortar, queimar, bater, partir ao meio...\\n"
+    },
+    "0x2215d5": {
+      "speaker": "Haku",
+      "tone_register": "tenso, preocupado",
+      "intent": "Haku reconhece que a situação é crítica e que estão em perigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso não é nada bom. Nesse ritmo, a gente vai...\\n"
+    },
+    "0x22162b": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, percebendo algo",
+      "intent": "Haku nota as pessoas dentro dos caixões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, aquelas pessoas dentro dos caixões...\\n"
+    },
+    "0x221687": {
+      "speaker": "Haku",
+      "tone_register": "pensativo",
+      "intent": "Haku observa que antes estavam congelados nos caixões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas antes disso, eles estavam congelados lá dentro.\\n"
+    },
+    "0x2216c7": {
+      "speaker": "Haku",
+      "tone_register": "animado, descoberta",
+      "intent": "Haku tem um insight sobre como ferir os monstros de limo com frio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É isso! CLARO que você machuca monstros de gosma\\n"
+    },
+    "0x221731": {
+      "speaker": "Haku",
+      "tone_register": "confiante, explicando",
+      "intent": "Haku elabora que não precisa matar, só imobilizar temporariamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso pode não matar essas coisas, mas vai\\n"
+    },
+    "0x2217f3": {
+      "speaker": "Haku",
+      "tone_register": "técnico, direto",
+      "intent": "Haku aponta para o encanamento com refrigerante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem um líquido de resfriamento passando por ali.\\n"
+    },
+    "0x22181d": {
+      "speaker": "Haku",
+      "tone_register": "explicativo",
+      "intent": "Haku deduz que o líquido mantém os caixões frios",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É provavelmente o que mantém esses caixões\\n"
+    },
+    "0x221857": {
+      "speaker": "Haku",
+      "tone_register": "analítico",
+      "intent": "Haku explica a lógica: congelados como humanos, mas Tatari ao sair",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eles estão congelados como humanos dentro do caixão, mas\\n"
+    },
+    "0x2218d1": {
+      "speaker": "Kuon",
+      "tone_register": "formal, analítico",
+      "intent": "Kuon reformula o raciocínio do Haku de forma mais precisa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Creio que o que Haku está dizendo é que pode\\n"
+    },
+    "0x22192b": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo, cômico, arcaico",
+      "intent": "Maroro finge que já sabia, comédia",
+      "risk_level": "high",
+      "risk_notes": "Voz arcaica/cicio do Maroro; preservar pompa e fingimento; verificar naturalidade do arcaísmo",
+      "t": "O-Ohhh! Compreendo. Quer dizer, CLARO que eu já sabia disso\\n"
+    },
+    "0x221992": {
+      "speaker": "Kuon",
+      "tone_register": "cético, direto",
+      "intent": "Kuon duvida que o plano funcione mas não testou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não, nunca tentei... Mas duvido muito que\\n"
+    },
+    "0x2219e9": {
+      "speaker": "Haku",
+      "tone_register": "prático, confiante",
+      "intent": "Haku diz que não precisam matar, só ganhar tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não vai precisar. A gente só precisa ganhar tempo.\\n"
+    },
+    "0x221a38": {
+      "speaker": "Haku",
+      "tone_register": "direto, planejando",
+      "intent": "Haku explica o plano: romper o cano e usar o frio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O plano é simples. A gente quebra esse cano e atinge\\n"
+    },
+    "0x221a98": {
+      "speaker": "Maroro",
+      "tone_register": "nervoso, arcaico",
+      "intent": "Maroro questiona se vai funcionar, com medo dos Tatari ao redor",
+      "risk_level": "high",
+      "risk_notes": "Voz arcaica/cicio do Maroro; preservar hesitação pomposa",
+      "t": "M-Mas vai funcionar? Há mais Tatari por perto\\n"
+    },
+    "0x221afd": {
+      "speaker": "Ukon",
+      "tone_register": "descontraído, encorajador",
+      "intent": "Ukon tranquiliza o grupo com confiança casual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode deixar, tenho certeza que a gente dá um jeito.\\n"
+    },
+    "0x221b2a": {
+      "speaker": "Ukon",
+      "tone_register": "casual, descontraído",
+      "intent": "Ukon lembra que saem de enrascadas assim o tempo todo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente sempre sai de situações assim.\\n"
+    },
+    "0x221b68": {
+      "speaker": "Kuon",
+      "tone_register": "seco, irônico",
+      "intent": "Kuon critica a falta de lógica no plano do Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não havia nem um pingo de lógica\\n"
+    },
+    "0x221bde": {
+      "speaker": "Kuon",
+      "tone_register": "resignado, cômico",
+      "intent": "Kuon admite que os planos do Haku parecem absurdos mas funcionam",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os planos do Haku sempre parecem muito estranhos... mas\\n"
+    },
+    "0x221c5e": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, camarada",
+      "intent": "Ukon ri e reconhece a camaradagem do grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hah! Bom, somos camaradas, afinal.\\n"
+    },
+    "0x2227ee": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, aliviado",
+      "intent": "Haku vê o líquido explodir do cano conforme planejado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "I-Isso realmente funcionou...\\n"
+    },
+    "0x222821": {
+      "speaker": "Haku",
+      "tone_register": "chocado, sentindo frio",
+      "intent": "Haku reage ao frio intenso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Que frio... O que é esse gelo?\\n"
+    },
+    "0x22286e": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo, triunfante, arcaico",
+      "intent": "Maroro celebra a vitória com sua voz empolada",
+      "risk_level": "high",
+      "risk_notes": "Voz arcaica/cicio do Maroro; celebração pomposa; preservar arcaísmo",
+      "t": "Gloriosho triunfo! O Tatari vai ficando cada vez mais\\n"
+    },
+    "0x2228c3": {
+      "speaker": "Nosuri",
+      "tone_register": "curioso, irônico",
+      "intent": "Nosuri observa o Tatari congelado e considera tocá-lo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá congelado de vez. Acha que eu poderia tocar\\n"
+    },
+    "0x2228f8": {
+      "speaker": "Jachdwalt",
+      "tone_register": "sério, cuidadoso",
+      "intent": "Jachdwalt aconselha Nosuri a não se aproximar demais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Querida irmã, aconselho a não se aproximar demais\\n"
+    },
+    "0x22296a": {
+      "speaker": "Nosuri",
+      "tone_register": "animado, irônico",
+      "intent": "Nosuri ri da quantidade de Tatari congelados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ahahaha! Olha só. São tantos deles...\\n"
+    },
+    "0x2229aa": {
+      "speaker": "Jachdwalt",
+      "tone_register": "sério, preocupado",
+      "intent": "Jachdwalt repreende Nosuri por achar graça",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "I-Isso não tem nada de engraçado!\\n"
+    },
+    "0x222a1d": {
+      "speaker": "Haku",
+      "tone_register": "pensativo, estratégico",
+      "intent": "Haku observa que sendo pequenos podem conseguir fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Se eles são tão pequenos, talvez a gente consiga\\n"
+    },
+    "0x222a5a": {
+      "speaker": "Haku",
+      "tone_register": "prático, direto",
+      "intent": "Haku clarifica que não precisam matar, só escapar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não precisamos matar eles. A gente só precisa\\n"
+    },
+    "0x222d4a": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, reconhecendo",
+      "intent": "Haku avista Nosuri e Jachdwalt à distância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hm? É Nosuri e Jachdwalt ali...?\\n"
+    },
+    "0x222da8": {
+      "speaker": "Haku",
+      "tone_register": "impressionado, casual",
+      "intent": "Haku comenta o truque que Nosuri e Jachdwalt estão usando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caramba. Que truque inteligente esse deles,\\n"
+    },
+    "0x222ddf": {
+      "speaker": "Haku",
+      "tone_register": "analítico, curioso",
+      "intent": "Haku distingue os reais dos falsos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então os daqui são reais, e os outros\\n"
+    },
+    "0x222e10": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, curioso",
+      "intent": "Haku pondera sobre real e falso no sonho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "são falsos. Bem... real-de-sonho e falso-de-sonho,\\n"
+    },
+    "0x222f45": {
+      "speaker": "Nosuri",
+      "tone_register": "desdenhoso, irônico",
+      "intent": "Nosuri descarta os falsos com escárnio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hah! No fim, não passam de fraudes.\\n"
+    },
+    "0x222f96": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, bem-humorado",
+      "intent": "Haku comenta o quão surreal é lutar contra si mesmo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devo dizer, lutar contra si mesmo é das coisas mais surreais\\n"
+    },
+    "0x222fdb": {
+      "speaker": "Haku",
+      "tone_register": "curioso, levemente confuso",
+      "intent": "Haku acha estranho existir um real e um falso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É bem esquisito ter um real e um falso quando\\n"
+    },
+    "0x223935": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo, triunfante, arcaico",
+      "intent": "Maroro celebra a derrota do Tatari com sua voz empolada",
+      "risk_level": "high",
+      "risk_notes": "Voz arcaica/cicio do Maroro; preservar pompas e arcaísmos",
+      "t": "Oho! O Tatari jaz derrotado ante nós!\\n"
+    },
+    "0x2239c8": {
+      "speaker": "Haku",
+      "tone_register": "frustrado, preocupado",
+      "intent": "Haku constata que é impossível eliminar os Tatari permanentemente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que é impossível se livrar desses\\n"
+    },
+    "0x2239f9": {
+      "speaker": "Haku",
+      "tone_register": "resignado",
+      "intent": "Haku conclui que só conseguem parar temporariamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bicho. Tudo que faz é pará-los por um tempo\\n"
+    },
+    "0x223a32": {
+      "speaker": "Haku",
+      "tone_register": "urgente, imperativo",
+      "intent": "Haku ordena fuga antes que o Tatari se regenere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Corram! Precisamos sair daqui antes que ele\\n"
+    },
+    "0x223fb5": {
+      "speaker": "Kuon",
+      "tone_register": "preocupado, urgente",
+      "intent": "Kuon pergunta o que Haku está fazendo enquanto tentam fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku, o que você está fazendo!?\\n"
+    },
+    "0x22402a": {
+      "speaker": "Ukon",
+      "tone_register": "urgente, direto",
+      "intent": "Ukon manda parar de pensar e agir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não pensa nisso agora!\\n"
+    },
+    "0x22407e": {
+      "speaker": "Kuon",
+      "tone_register": "urgente, assertivo",
+      "intent": "Kuon repreende Haku por se deixar paralisar pelos pensamentos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você não pode se deixar pensar assim!\\n"
+    }
+  }
+}

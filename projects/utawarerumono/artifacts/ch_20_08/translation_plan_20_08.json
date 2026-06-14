@@ -1,0 +1,362 @@
+{
+  "scene_group": "20_08",
+  "lines": [
+    {
+      "offset": "0x1ca47a",
+      "text_source": "Uzurushan soldier",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "military, urgent",
+      "intent": "identification, battle context",
+      "risk_level": "low",
+      "base_translation": "Soldado Uzurushan",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca48c",
+      "text_source": "Tch... You're not getting away!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "angry, determined",
+      "intent": "threat, pursuit",
+      "risk_level": "low",
+      "base_translation": "Tch... Você não vai escapar!",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca4ac",
+      "text_source": "We are getting away.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "calm, assured, informal",
+      "intent": "defiant confidence",
+      "risk_level": "low",
+      "base_translation": "Vamos escapar sim.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca4c1",
+      "text_source": "And you... are in the way.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "cold, matter-of-fact",
+      "intent": "warning, removal of obstacle",
+      "risk_level": "medium",
+      "base_translation": "E você... está no caminho.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade intencional ('estar no caminho' pode sugerir ameaça sem explicitar). Preservar tom enigmático."
+    },
+    {
+      "offset": "0x1ca4dc",
+      "text_source": "Spine",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "sharp, command",
+      "intent": "body part emphasis (battle instruction)",
+      "risk_level": "low",
+      "base_translation": "Espinha!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca4e2",
+      "text_source": "Winds take you!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "curse, archaic",
+      "intent": "expletive curse",
+      "risk_level": "low",
+      "base_translation": "Que os ventos a levem!",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição localizada; 'Winds take you' é maldição clássica — pt-BR usa similar."
+    },
+    {
+      "offset": "0x1ca4f3",
+      "text_source": "Now, Cocopo!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "command, energetic",
+      "intent": "signal to ally",
+      "risk_level": "low",
+      "base_translation": "Agora, Cocopo!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca527",
+      "text_source": "After them! AFTER THEM!",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "urgent, commanding",
+      "intent": "rally troops, pursuit",
+      "risk_level": "low",
+      "base_translation": "Atrás deles! ATRÁS DELES!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Repetição intencional (ênfase de urgência). Preservar estrutura."
+    },
+    {
+      "offset": "0x1ca53f",
+      "text_source": "I am afraid we will be taking our leave now.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "formal, caloroso, ligeiramente burlão",
+      "intent": "announcement of departure, wit under pressure",
+      "risk_level": "medium",
+      "base_translation": "Receio que teremos que nos retirar agora.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ukon = espirituoso mesmo em situação crítica. 'Taking our leave' tem leveza proposital. Manter tom caloroso/informal (não militar)."
+    },
+    {
+      "offset": "0x1ca56c",
+      "text_source": "Th-The stirrups have been cut!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "archaic, panicked, empolado",
+      "intent": "discovery of sabotage, alarm",
+      "risk_level": "medium",
+      "base_translation": "Os-Os estriboxsh foram cortados!",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Maroro: arcaísmo + cício (s→sh). 'Stirrups' é detalhe técnico; 'cut' é ação clara. Manter a pompa da voz (empolação contrasta com fragilidade)."
+    },
+    {
+      "offset": "0x1ca58b",
+      "text_source": "When did they...? Damn them!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "alert, frustrated",
+      "intent": "realization + curse",
+      "risk_level": "low",
+      "base_translation": "Quando fizeram...? Maldição!",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca5a8",
+      "text_source": "Fine then! We can ride without saddles--!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "archaic, desperate, verbose",
+      "intent": "solution proposal under duress",
+      "risk_level": "medium",
+      "base_translation": "Bem! Teremos de cavalgar sem arçõesh--!",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Maroro: arcaísmo completo ('teremos de'/'cavalgaremos'). 'Without saddles' = improvisação desesperada. Manter empolação (piada é a pompa vs. caos)."
+    },
+    {
+      "offset": "0x1ca5d2",
+      "text_source": "Enough!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "commanding, cold, definitive",
+      "intent": "order to stop resistance",
+      "risk_level": "high",
+      "base_translation": "Chega!",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Homem = enigmático, frio, profético. 'Enough' é final absoluto. Não resolver ambiguidade de quem comanda ou por quê. Tone deve ser ameaçador/sobrenatural."
+    },
+    {
+      "offset": "0x1ca5da",
+      "text_source": "Lady Entua!?",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "shocked, empolado",
+      "intent": "recognition + alarm at Entua's presence",
+      "risk_level": "high",
+      "base_translation": "Senhora Entua!?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER: Entua é 'major spoiler' (glossário). Linha reconhece presença dela (não revela identidade secreta, apenas confirma estar ali). Risco alto por spoiler_timing. Manter tom de choque da personagem."
+    },
+    {
+      "offset": "0x1ca5e7",
+      "text_source": "We will not catch up to them at this rate.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, preocupado",
+      "intent": "constatar que o ritmo atual não é suficiente para alcançar alguém",
+      "risk_level": "low",
+      "base_translation": "Não vamos alcançá-los nesse ritmo.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca614",
+      "text_source": "We must prioritize extinguishing the fire.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "cold, practical, commanding",
+      "intent": "tactical instruction",
+      "risk_level": "medium",
+      "base_translation": "Devemos priorizar extinguir o fogo.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Homem: tom profético/frio. 'Prioritize' é lógico/calculista. Manter distância/frieza (não caloroso)."
+    },
+    {
+      "offset": "0x1ca63f",
+      "text_source": "B-But...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "M-Mas...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca648",
+      "text_source": "Damn it! They won't get away with this--",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "angry, determined, informal",
+      "intent": "defiant curse at escape",
+      "risk_level": "low",
+      "base_translation": "Maldição! Eles não vão se safar disso--",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ukon: indignação calorosa (não rígida). 'They won't get away with this' = promessa informal de retaliação."
+    },
+    {
+      "offset": "0x1ca671",
+      "text_source": "Hurry! Would you have our food supply reduced\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, imperativo",
+      "intent": "pedir pressa sob pena de escassez de suprimentos",
+      "risk_level": "low",
+      "base_translation": "Rápido! Quer deixar nossa comida acabar?\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca6a1",
+      "text_source": "to ash!?",
+      "speaker": "Uzurushan soldier",
+      "entities_present": [
+        "Uzurushan soldier"
+      ],
+      "tone_register": "horrified, urgent",
+      "intent": "exclamation at destruction",
+      "risk_level": "low",
+      "base_translation": "em cinzas!?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmento ('to ash!?') = reação inacabada. Preservar pontuação e tom de desespero."
+    },
+    {
+      "offset": "0x1ca6aa",
+      "text_source": "N-No, ma'am!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "panicked, stammering, empolado",
+      "intent": "denial/negation under duress",
+      "risk_level": "medium",
+      "base_translation": "N-Não, senhora!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Maroro: gaguejo (N-No), tom assustado. 'ma'am' = deferência; preservar o formal+medo. Manter arcaísmo ('Não, senhora!')."
+    },
+    {
+      "offset": "0x1ca6bb",
+      "text_source": "Shinonon...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "desperate, archaic, trailing",
+      "intent": "invocation/appeal to Shinonon",
+      "risk_level": "medium",
+      "base_translation": "Shinonon...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Maroro: invocação (tom de apelo, não explicação). Shinonon = nome original (glossário). Reticências = desespero. Preservar fragmentação ('Shinonon...')."
+    }
+  ],
+  "total_lines": 22,
+  "high_lines": 2,
+  "medium_lines": 7,
+  "needs_review": [],
+  "plan_version": "chapter-20_08-v1"
+}
