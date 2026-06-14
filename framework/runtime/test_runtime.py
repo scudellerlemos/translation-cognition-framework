@@ -983,6 +983,28 @@ def test_quality_gate_flags_revise_and_uncovered(tmp_path):
     assert clean["revise"] == [] and clean["uncovered"] == []
 
 
+def test_quality_review_xlsx_roundtrip(tmp_path):
+    pytest.importorskip("openpyxl")
+    import quality_review
+    from openpyxl import load_workbook
+    rows = [{"scene": "ch_70_01", "offset": "0x1", "speaker": "X", "risk": "high",
+             "revisar": "risco:high;largura", "source_en": "Hi", "target_pt": "Oi",
+             "correcao": "", "nota": ""},
+            {"scene": "ch_70_01", "offset": "0x2", "speaker": "Y", "risk": "low",
+             "revisar": "", "source_en": "Yes", "target_pt": "Sim", "correcao": "", "nota": ""}]
+    xlsx = tmp_path / "rev.xlsx"
+    quality_review.write_xlsx(rows, xlsx)
+    wb = load_workbook(xlsx)
+    assert wb.sheetnames == ["Leia-me", "Revisao"]         # aba amigavel + dados
+    ws = wb["Revisao"]
+    ws.cell(row=2, column=8).value = "Olá!"                 # revisor preenche Correcao (col 8)
+    ws.cell(row=3, column=9).value = "encurtar"             # e uma Nota (col 9) na 2a linha
+    wb.save(xlsx)
+    ret = quality_review.read_returned(xlsx)
+    assert ret["ch_70_01"]["verbatim"] == [("0x1", "Olá!")]
+    assert ret["ch_70_01"]["nota"] == [("0x2", "encurtar")]
+
+
 # --------------------- correcao governada da TM (risco #3) -------------------
 import tm_correct  # noqa: E402
 
