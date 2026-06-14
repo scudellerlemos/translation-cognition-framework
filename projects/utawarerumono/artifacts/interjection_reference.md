@@ -21,6 +21,7 @@
 | Grito puro (vogais) | `Aaaaah!`, `Waaaah!`, `EEEYAAAGH!` | manter/espelhar (`Aaaaah!`, `IIIAAAH!`) | só vogais → já universal |
 | Reação leve / alívio / "ah" | `Ah...!`, `...Ah!`, `...Ah.` | manter `Ah...!`, `...Ah!`, `...Ah.` | já natural em pt-BR |
 | Riso | `Hah`, `Heh`, `Fufu` | `Há`→`Haha`, `Hehe`, `Fufu` | sem depender de acento isolado |
+| **Stammer inicial (1 letra + `...`)** | `U... Urgh...`, `W-What...`, `H...Here` | `Nnh... Argh...`, `O-O quê...`, `A...Aqui` | ver regra 5 |
 
 ## Regras
 
@@ -30,3 +31,14 @@
 3. **byte_budget:** não é mais trava dura (o conector reloca overflow — Plano B); ainda assim preferir
    a forma natural mais curta.
 4. Tradução pela **emoção/situação** (campo `intent`/`tone_register` do plano), não pela letra do source.
+5. **Stammer inicial (`X...` de 1 letra):** uma inicial de *filler* em inglês (`U...`, `W...`, `K...`,
+   `H...`) **não** sobrevive crua — localizar pela situação (`U... Urgh...` → `Nnh... Argh...`) ou
+   reaproveitar a 1ª letra da palavra pt-BR que vem depois (`W-What...` → `O-O quê...`; `H...Here` →
+   `A...Aqui`). **Exceção:** inicial que já é palavra/grafema pt-BR legítimo — artigo/conjunção/vogal
+   `A.../E.../O.../É...` (`E... bem...`, `A... loja?`) — ou soletração de nome próprio (`Ha... ku...`)
+   **fica**. O linter (`naturalness_lint.fragmento_residual`) sinaliza exatamente o 1º caso e ignora o 2º.
+6. **Passe de localização aplicado (caps 11–19):** as formas inequívocas e sem colisão com palavra
+   pt-BR foram localizadas em lote via `interjection_corrections.csv` + `tm_correct.py` (`Gah→Ai`,
+   `Urgh→Argh`, `Guh→Agh`, `Eep→Iik`, `Ack/Urk→Kh`, `Erm→Hum`, `Ahem→Ehem`). Formas dependentes de
+   contexto (`Ugh` = nojo vs dor; `Hm?` = `Hein?` vs `Hum?`) ficam para a revisão humana — não
+   auto-trocar. O linter `naturalness_lint.copia_crua` lista os candidatos restantes.

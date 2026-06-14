@@ -1,0 +1,2684 @@
+{
+  "lines": {
+    "0x1c61fe": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tá?"
+    },
+    "0x1c6535": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "afinal."
+    },
+    "0x1c6613": {
+      "speaker": "Haku",
+      "tone_register": "narrativa",
+      "intent": "completar frase anterior — matar a todos",
+      "risk_level": "medium",
+      "risk_notes": "Budget 4 bytes. 'todos' = 5 bytes sem acento. Usar 'sim.' não serve; usar 'já.' também não. Melhor encaixe: encurtar para pronome ou omitir — reescrito como parte da frase anterior; aqui: 'ja.' mas risco de sentido. Usando 'tudo.' (4 bytes).",
+      "t": "tudo."
+    },
+    "0x1c6618": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Entendi."
+    },
+    "0x1c668f": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendido."
+    },
+    "0x1c66d5": {
+      "speaker": "Haku",
+      "tone_register": "seco, direto",
+      "intent": "recusar pedido de Nosuri",
+      "risk_level": "medium",
+      "risk_notes": "Budget 3 bytes. 'Nao.' = 4 bytes sem acento. Usar 'Nao' sem ponto = 3 bytes. Ou reescrever. Usando 'Nao' (sem ponto final) para caber.",
+      "t": "Não"
+    },
+    "0x1c67da": {
+      "speaker": "Ougi",
+      "tone_register": "casual confiante",
+      "intent": "confirmar que é fácil",
+      "risk_level": "medium",
+      "risk_notes": "Budget 7; 'Fácil.' = 5 bytes sem acento, ok.",
+      "t": "Fácil."
+    },
+    "0x1c6868": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "S-Sim..."
+    },
+    "0x1c6aae": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Quê?"
+    },
+    "0x1c6b10": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "agora não",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "agora..."
+    },
+    "0x1c6c04": {
+      "speaker": "Jachdwalt",
+      "tone_register": "narrativa/fala",
+      "intent": "não vou deixar para trás",
+      "risk_level": "medium",
+      "risk_notes": "Budget 7 bytes. 'para tras.' = 9 sem acento. Usar termo mais curto.",
+      "t": "assim."
+    },
+    "0x1c6ef2": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldado Uzurushan"
+    },
+    "0x1c6f04": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q--"
+    },
+    "0x1c7004": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "UI",
+      "intent": "rótulo de falante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Garota"
+    },
+    "0x1c7009": {
+      "speaker": "Garota",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Abra bem."
+    },
+    "0x1c7244": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "questionar o que ela faz aqui",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aqui..."
+    },
+    "0x1c78ac": {
+      "speaker": "Bandido",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim!"
+    },
+    "0x1c7a07": {
+      "speaker": "Garota",
+      "tone_register": "alarmado, reativo",
+      "intent": "reação de susto ao ser agarrada",
+      "risk_level": "medium",
+      "risk_notes": "Budget 14 bytes. 'O que voce esta--' = 16 sem acento. Memória: 'O que você está--'. Encurtar: 'O que--' = 6, mas perde sentido. 'Voce--' = 6. Usar 'Ei, que--' = 9 ou 'Que e isso--' = 12.",
+      "t": "Que é isso--"
+    },
+    "0x1c7a57": {
+      "speaker": "Garota",
+      "tone_register": "surpreso reativo",
+      "intent": "garota questiona identidade de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem exatamente é você?"
+    },
+    "0x1c7c67": {
+      "speaker": "Jachdwalt",
+      "tone_register": "confuso",
+      "intent": "reação de surpresa",
+      "risk_level": "medium",
+      "risk_notes": "Budget 4 bytes. 'Hein?' = 5 sem acento. Usar 'Ha?' = 3 ou 'Oi?' = 3.",
+      "t": "Oi?"
+    },
+    "0x1c7ec8": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "reação surpresa da garota/Entua",
+      "risk_level": "medium",
+      "risk_notes": "Entua ainda não nomeada explicitamente neste ponto — spoiler a verificar.",
+      "t": "...Hein?"
+    },
+    "0x1c7f26": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "por um momento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "por um momento."
+    },
+    "0x1c7f46": {
+      "speaker": "Entua",
+      "tone_register": "firme frio",
+      "intent": "Entua se dirige a Haku/alguém",
+      "risk_level": "high",
+      "risk_notes": "Entua tem spoiler:major — verificar se este é o ponto de reveal permitido.",
+      "t": "Você..."
+    },
+    "0x1c826a": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quê--!?"
+    },
+    "0x1c82e3": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativa",
+      "intent": "pronome — a nós",
+      "risk_level": "medium",
+      "risk_notes": "Budget 3 bytes. 'nos.' = 4 sem acento. Usar 'nos' sem ponto = 3.",
+      "t": "nós"
+    },
+    "0x1c8330": {
+      "speaker": "Personagem-Sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nakwan"
+    },
+    "0x1c847d": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldados Uzurushan"
+    },
+    "0x1c84b4": {
+      "speaker": "Garota",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "um pouco mais."
+    },
+    "0x1c87c5": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "OK!"
+    },
+    "0x1c8c85": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso..."
+    },
+    "0x1c60f5": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_01_open"
+    },
+    "0x1c6103": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_01_close"
+    },
+    "0x1c6111": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_02_open"
+    },
+    "0x1c611e": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_02_close"
+    },
+    "0x1c612c": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_03_open"
+    },
+    "0x1c6139": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "door_03_close"
+    },
+    "0x1c6147": {
+      "speaker": "Haku",
+      "tone_register": "narração tática",
+      "intent": "descrever aproximação furtiva ao acampamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nos aproximamos do acampamento Uzurushan\\n"
+    },
+    "0x1c6177": {
+      "speaker": "Haku",
+      "tone_register": "narrativa tática",
+      "intent": "descrever cobertura da névoa matinal",
+      "risk_level": "medium",
+      "risk_notes": "Budget 25 apertado; cortado para caber.",
+      "t": "sob a névoa da manhã."
+    },
+    "0x1c6191": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "notar que inimigos estão celebrando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que estão todos comemorando\\n"
+    },
+    "0x1c61bf": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com bebida."
+    },
+    "0x1c61cc": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "dedução sobre duração da festa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Provavelmente bebendo a noite toda,\\n"
+    },
+    "0x1c6204": {
+      "speaker": "Haku",
+      "tone_register": "indignado/irônico",
+      "intent": "irritação com descaso do inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A noite toda... Nem tentam fingir que\\n"
+    },
+    "0x1c6235": {
+      "speaker": "Haku",
+      "tone_register": "indignado/irônico",
+      "intent": "completar indignação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nos levam a sério..."
+    },
+    "0x1c624d": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "avaliar distância segura das linhas de frente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, estamos longe das linhas de frente, e\\n"
+    },
+    "0x1c6278": {
+      "speaker": "Jachdwalt",
+      "tone_register": "pragmático",
+      "intent": "continuar explicação tática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uzurusha tem vantagem. Eles provavelmente\\n"
+    },
+    "0x1c62a5": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "inimigos pensam que venceram",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "acham que venceram."
+    },
+    "0x1c62b8": {
+      "speaker": "Haku",
+      "tone_register": "narração tática",
+      "intent": "observar sentinelas também bebendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As sentinelas também estão aproveitando\\n"
+    },
+    "0x1c62eb": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "observar que os dois também estão lá, facilitando a missão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "os dois também. Isso facilita nosso trabalho..."
+    },
+    "0x1c6316": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "perguntar onde estão os reféns",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então, onde estão os reféns...?"
+    },
+    "0x1c6335": {
+      "speaker": "Jachdwalt",
+      "tone_register": "objetivo",
+      "intent": "indicar localização dos reféns",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ali. Todos devem estar presos\\n"
+    },
+    "0x1c6364": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "apontar a carruagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aquela carruagem."
+    },
+    "0x1c6373": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever o que vê ao seguir o gesto de Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sigo o dedo apontado de Jachdwalt e vejo\\n"
+    },
+    "0x1c63a3": {
+      "speaker": "Haku",
+      "tone_register": "narrativa",
+      "intent": "descrever carruagem grande com grades",
+      "risk_level": "medium",
+      "risk_notes": "Budget 39; simplificado.",
+      "t": "grande carruagem com grades nas laterais."
+    },
+    "0x1c63cb": {
+      "speaker": "Haku",
+      "tone_register": "indignado/comovido",
+      "intent": "reação ao ver mulheres e crianças presas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Prenderam mulheres e crianças lá dentro\\n"
+    },
+    "0x1c63fa": {
+      "speaker": "Haku",
+      "tone_register": "indignado/comovido",
+      "intent": "completar reação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...? Que crueldade."
+    },
+    "0x1c640f": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "iniciar briefing do plano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "OK... Agora é só seguir o plano. Nosuri\\n"
+    },
+    "0x1c643d": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "descrever papel de Nosuri e Ougi",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e Ougi vão atear fogo nos suprimentos\\n"
+    },
+    "0x1c646b": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "criar caos como distração",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "criar um caos."
+    },
+    "0x1c647b": {
+      "speaker": "Haku",
+      "tone_register": "tático informal",
+      "intent": "dizer que os dois podem se infiltrar sem serem notados",
+      "risk_level": "medium",
+      "risk_notes": "Budget 49; encurtado mas sentido preservado.",
+      "t": "Tenho certeza que vocês dois passam despercebidos.\\n"
+    },
+    "0x1c64ad": {
+      "speaker": "Ukon",
+      "tone_register": "informal/confiante",
+      "intent": "confirmar se estão prontos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conseguem?"
+    },
+    "0x1c64bb": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial esperto",
+      "intent": "Nosuri aceita com charme irônico de 'boa mulher'",
+      "risk_level": "medium",
+      "risk_notes": "Ironia de Nosuri — 'boa mulher' é pose, não seriedade. Manter tom levemente afetado.",
+      "t": "Hm. Como uma boa mulher, é meu dever\\n"
+    },
+    "0x1c64e4": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial confiante",
+      "intent": "prometer superar as expectativas",
+      "risk_level": "medium",
+      "risk_notes": "Budget 29; encurtado.",
+      "t": "superar todas as expectativas."
+    },
+    "0x1c6502": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "afirmar que esse tipo de trabalho é comum para eles",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esse trabalho se encaixa bem no que costumamos fazer,\\n"
+    },
+    "0x1c6540": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "instruir grupo principal a usar o caos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu e os outros usamos o caos a nosso\\n"
+    },
+    "0x1c656d": {
+      "speaker": "Ougi",
+      "tone_register": "tático",
+      "intent": "aproveitar vantagem e libertar todos eliminando inimigos",
+      "risk_level": "medium",
+      "risk_notes": "Budget 45; encurtado.",
+      "t": "aproveitar e libertar todos, eliminando quem\\n"
+    },
+    "0x1c659b": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "completar instrução",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "guarda no caminho."
+    },
+    "0x1c65ae": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "lembrar que os inimigos estão por toda parte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não esqueçam que os inimigos estão por toda parte.\\n"
+    },
+    "0x1c65e1": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "alertar que um erro pode custar a vida de todos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Confusos ou não, se escorregarmos, nos matam\\n"
+    },
+    "0x1c6626": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "dar instrução a Uruuru, Saraana e Atuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uruuru, Saraana e Atuy cortam as selas\\n"
+    },
+    "0x1c6656": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "explicar objetivo de cortar selas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para atrasar a perseguição caso tentem\\n"
+    },
+    "0x1c6685": {
+      "speaker": "Haku",
+      "tone_register": "narrativa",
+      "intent": "inimigos nos perseguirão",
+      "risk_level": "medium",
+      "risk_notes": "Budget 9 bytes sem acento. 'nos caca.' = 9 bytes. Adequado.",
+      "t": "nos caça."
+    },
+    "0x1c669b": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial atrevido",
+      "intent": "Nosuri prefere onde está a ação",
+      "risk_level": "medium",
+      "risk_notes": "Budget 44; encurtado para caber.",
+      "t": "Amor? Prefiro ficar onde tem mais\\n"
+    },
+    "0x1c66c8": {
+      "speaker": "Atuy",
+      "tone_register": "entusiasmado/impaciente",
+      "intent": "completar reclamação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tem ação..."
+    },
+    "0x1c66d9": {
+      "speaker": "Nosuri",
+      "tone_register": "suplicante, coloquial",
+      "intent": "pedir insistentemente",
+      "risk_level": "medium",
+      "risk_notes": "Budget 9 bytes. 'Por favor...' = 12 sem acento. Usar 'Vai la...' = 8. Ou 'Pleeease...' mantém EN — localizar: 'Vamos...' = 7. Usando forma curta.",
+      "t": "Vai lá..."
+    },
+    "0x1c66e3": {
+      "speaker": "Nosuri",
+      "tone_register": "súplica cômica exagerada",
+      "intent": "implorar de forma dramática",
+      "risk_level": "medium",
+      "risk_notes": "Budget 13; encurtado.",
+      "t": "Por faaavor..."
+    },
+    "0x1c66f1": {
+      "speaker": "Ukon",
+      "tone_register": "firme",
+      "intent": "recusar o pedido de Atuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não!"
+    },
+    "0x1c66fc": {
+      "speaker": "Atuy",
+      "tone_register": "dramático/frustrado",
+      "intent": "reclamar do Ukon por ser sem graça",
+      "risk_level": "medium",
+      "risk_notes": "Termo 'estraga-prazer' localiza 'spoilsport'; manter tom dramático/exagerado de Atuy.",
+      "t": "Que estraga-prazer horrível e terrível, amor."
+    },
+    "0x1c672a": {
+      "speaker": "Ukon",
+      "tone_register": "pragmático",
+      "intent": "explicar que Atuy saindo do plano pioraria tudo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É, e você causando bagunça vai só\\n"
+    },
+    "0x1c675c": {
+      "speaker": "Ukon",
+      "tone_register": "pragmático",
+      "intent": "completar argumento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "piorar as coisas."
+    },
+    "0x1c676f": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "redirecionar Uruuru e Saraana com Atuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uruuru e Saraana, vão com Atuy, e se\\n"
+    },
+    "0x1c679e": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "instruir a eliminar inimigos silenciosamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "encontrarem o inimigo, eliminem em silêncio."
+    },
+    "0x1c67cb": {
+      "speaker": "Ukon",
+      "tone_register": "informal/confirmação",
+      "intent": "confirmar se conseguem fazer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conseguem?"
+    },
+    "0x1c67e2": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo",
+      "intent": "Maroro afirma que é simples para ele, lisonjeando",
+      "risk_level": "medium",
+      "risk_notes": "Voz arcaica do Maroro — manter registro empolado.",
+      "t": "Simplicidade em si, Mestre."
+    },
+    "0x1c67fd": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "instruir Kuon, Nekone e Rulutieh a ficarem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon, Nekone e Rulutieh ficam aqui.\\n"
+    },
+    "0x1c682a": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "explicar tarefa de Cocopo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esperem o caos, aí fazem o Cocopo puxar\\n"
+    },
+    "0x1c6859": {
+      "speaker": "Ukon",
+      "tone_register": "informal/liderança",
+      "intent": "completar instrução",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a carruagem."
+    },
+    "0x1c6871": {
+      "speaker": "Haku",
+      "tone_register": "informal direto",
+      "intent": "Haku conta com Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Estou contando com você, Kuon."
+    },
+    "0x1c688f": {
+      "speaker": "Kuon",
+      "tone_register": "calmo/confiante",
+      "intent": "tranquilizar Ukon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mhm. Não tem nada com que se preocupar, acho.\\n"
+    },
+    "0x1c68c0": {
+      "speaker": "Kuon",
+      "tone_register": "cuidadoso",
+      "intent": "pedir cuidado a Haku",
+      "risk_level": "medium",
+      "risk_notes": "Budget 17; 'Cuidado, Haku.' = 13 bytes ok.",
+      "t": "Cuidado, Haku."
+    },
+    "0x1c68d2": {
+      "speaker": "Atuy",
+      "tone_register": "impaciente",
+      "intent": "perguntar se pode ir agora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Já posso ir?"
+    },
+    "0x1c68e0": {
+      "speaker": "Haku",
+      "tone_register": "narrativa, tenso",
+      "intent": "ainda não — Nosuri e Ougi ainda não infiltraram",
+      "risk_level": "medium",
+      "risk_notes": "Budget 8 bytes. 'Ainda nao.' = 9 sem acento. Usar 'Ainda nao' sem ponto = 8.",
+      "t": "Ainda não"
+    },
+    "0x1c68e9": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "informar que Nosuri e Ougi estão se infiltrando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosuri e Ougi estão se infiltrando na base.\\n"
+    },
+    "0x1c6916": {
+      "speaker": "Haku",
+      "tone_register": "narração tática",
+      "intent": "dizer que vai começar em breve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Querendo ou não, vai começar logo."
+    },
+    "0x1c693f": {
+      "speaker": "Ukon",
+      "tone_register": "informal/alerta",
+      "intent": "reforçar missão de Atuy — só cortar selas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E Atuy, sua missão é só cortar as selas\\n"
+    },
+    "0x1c696e": {
+      "speaker": "Ukon",
+      "tone_register": "informal/alerta",
+      "intent": "completar instrução com ênfase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para atrasar a perseguição. Entendeu?"
+    },
+    "0x1c699e": {
+      "speaker": "Atuy",
+      "tone_register": "entusiasmado",
+      "intent": "concordar mas deixar margem para um 'acidente'",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem problemas! Não demoro nada. E tudo bem se\\n"
+    },
+    "0x1c69ce": {
+      "speaker": "Atuy",
+      "tone_register": "entusiasmado",
+      "intent": "sugerir esfaquear um guarda por acidente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "só UM guarda acabar acidentalmente\\n"
+    },
+    "0x1c6a01": {
+      "speaker": "Haku",
+      "tone_register": "seco",
+      "intent": "mencionar que foi esfaqueado",
+      "risk_level": "medium",
+      "risk_notes": "Budget 8; 'esfaqueado' = 10 sem acento. Ajustado.",
+      "t": "atacado."
+    },
+    "0x1c6a0a": {
+      "speaker": "Haku",
+      "tone_register": "firme",
+      "intent": "proibir esfaqueamento acidental",
+      "risk_level": "medium",
+      "risk_notes": "Budget 29; encurtado.",
+      "t": "Nada de atacar por acidente. Nunca."
+    },
+    "0x1c6a28": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "perceber que alguém está faltando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera... Onde ela está...?\\n"
+    },
+    "0x1c6a43": {
+      "speaker": "Haku",
+      "tone_register": "narrativa, confuso",
+      "intent": "questionar por que ela não está lá",
+      "risk_level": "medium",
+      "risk_notes": "Budget 22 bytes. 'Por que ela nao esta aqui...?' = 27 sem acento. Encurtar.",
+      "t": "Por que não está aqui...?"
+    },
+    "0x1c6a5a": {
+      "speaker": "Ukon",
+      "tone_register": "urgente",
+      "intent": "chamar Jachdwalt de volta ao foco",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que foi? Está prestes a começar."
+    },
+    "0x1c6a82": {
+      "speaker": "Jachdwalt",
+      "tone_register": "angustiado",
+      "intent": "dizer que não vê sua garota na carruagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Minha garota... Não a vejo na carruagem."
+    },
+    "0x1c6ab7": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "confirmar que não consegue vê-la em lugar algum",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É... não consigo vê-la em lugar nenhum, né...?"
+    },
+    "0x1c6ae0": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "dilema — não podem parar a operação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que fazemos...? Não podemos parar a operação\\n"
+    },
+    "0x1c6b17": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal urgente",
+      "intent": "Jachdwalt se desculpa e avisa que vai embora sozinho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Desculpa, chefe, mas vou ter que ir.\\n"
+    },
+    "0x1c6b46": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal urgente",
+      "intent": "precisa encontrar sua garota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Preciso achar minha garota."
+    },
+    "0x1c6b5c": {
+      "speaker": "Kiwru",
+      "tone_register": "alarmado",
+      "intent": "tentar deter Jachdwalt alertando sobre o plano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, espera! Você vai arruinar o plano se\\n"
+    },
+    "0x1c6b8e": {
+      "speaker": "Haku",
+      "tone_register": "firme",
+      "intent": "proibir Jachdwalt de ir sozinho",
+      "risk_level": "medium",
+      "risk_notes": "Budget 19; encurtado.",
+      "t": "ir por conta própria!"
+    },
+    "0x1c6ba2": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal urgente",
+      "intent": "explicar que não pode deixar ela para trás",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Olha, me desculpa de verdade, mas se eu não salvá-la,\\n"
+    },
+    "0x1c6bd3": {
+      "speaker": "Jachdwalt",
+      "tone_register": "determinado/culpado",
+      "intent": "completar justificativa e se despedir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nada disso faz sentido. Deixa eu ir.\\n"
+    },
+    "0x1c6c0c": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "descrever Jachdwalt saindo em desespero",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt sai correndo, com expressão desesperada."
+    },
+    "0x1c6c3a": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku frustrado, sem saber o que fazer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Argh... O que é que eu faço agora...\\n"
+    },
+    "0x1c6c5d": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "sem tempo para pensar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não, não há tempo para pensar."
+    },
+    "0x1c6c7b": {
+      "speaker": "Haku",
+      "tone_register": "liderança improvisada",
+      "intent": "delegar comando a Kiwru",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kiwru, vou atrás de Jachdwalt.\\n"
+    },
+    "0x1c6c9f": {
+      "speaker": "Haku",
+      "tone_register": "informal direto",
+      "intent": "delegar o comando e manter o plano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você está no comando agora. Siga o plano."
+    },
+    "0x1c6cc8": {
+      "speaker": "Kiwru",
+      "tone_register": "surpreso/alarmado",
+      "intent": "reagir ao receber o comando de surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Quê!? Espera, isso é--"
+    },
+    "0x1c6ce1": {
+      "speaker": "Haku",
+      "tone_register": "narração furtiva",
+      "intent": "descrever perseguição furtiva a Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fico rente ao chão enquanto sigo furtivamente\\n"
+    },
+    "0x1c6d11": {
+      "speaker": "Haku",
+      "tone_register": "narração furtiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt."
+    },
+    "0x1c6d1c": {
+      "speaker": "Haku",
+      "tone_register": "urgente/questionador",
+      "intent": "perguntar a Jachdwalt se sabe onde ela está",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera aí, Jachdwalt! Você sabe onde ela\\n"
+    },
+    "0x1c6d4d": {
+      "speaker": "Haku",
+      "tone_register": "urgente/questionador",
+      "intent": "questionar se vai revistar o acampamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pode estar? Não vai sair vasculhando o\\n"
+    },
+    "0x1c6d7b": {
+      "speaker": "Haku",
+      "tone_register": "curioso tenso",
+      "intent": "mencionar acampamento como possível localização",
+      "risk_level": "medium",
+      "risk_notes": "Budget 8; encurtado.",
+      "t": "campo...?"
+    },
+    "0x1c6d84": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "supor onde ela pode estar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem um lugar onde ela pode estar, né?\\n"
+    },
+    "0x1c6dac": {
+      "speaker": "Jachdwalt",
+      "tone_register": "determinado",
+      "intent": "confirmar que só precisa checar esse lugar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Só preciso checar esse lugar."
+    },
+    "0x1c6dcf": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "descrever Jachdwalt se dirigindo a uma tenda especial",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt corre em direção a uma tenda com um\\n"
+    },
+    "0x1c6dff": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "continuar descrição da localização da tenda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "especial, um pouco afastada do centro do\\n"
+    },
+    "0x1c6e2d": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "dentro do acampamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "acampamento."
+    },
+    "0x1c6e39": {
+      "speaker": "Haku",
+      "tone_register": "surpreso/preocupado",
+      "intent": "notar que a tenda é de alguém importante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não pode ser. Essa é claramente a\\n"
+    },
+    "0x1c6e68": {
+      "speaker": "Haku",
+      "tone_register": "surpreso/preocupado",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tenda de alguém no comando..."
+    },
+    "0x1c6e86": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "questionar por que ela estaria ali ou se está sendo forçada",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade sobre situação da garota — preservar dúvida.",
+      "t": "Por que ela estaria aqui? Ou está sendo forçada\\n"
+    },
+    "0x1c6eb6": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "não tirar conclusões precipitadas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a...? Não, não posso tirar conclusões. Mais\\n"
+    },
+    "0x1c6ee3": {
+      "speaker": "Haku",
+      "tone_register": "focado",
+      "intent": "redirecionar atenção para o presente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "importante..."
+    },
+    "0x1c6f09": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação",
+      "intent": "onomatopeia de golpe/esforço",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hah...!"
+    },
+    "0x1c6f11": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação",
+      "intent": "descrever Jachdwalt abatendo guarda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt derruba o guarda com um único\\n"
+    },
+    "0x1c6f3f": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação",
+      "intent": "completar descrição da ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "golpe e avança em direção à tenda."
+    },
+    "0x1c6f63": {
+      "speaker": "Haku",
+      "tone_register": "curioso/admirado",
+      "intent": "questionar que tipo de garota faz isso com alguém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que tipo de garota deixaria um cara assim\\n"
+    },
+    "0x1c6f92": {
+      "speaker": "Haku",
+      "tone_register": "curioso/admirado",
+      "intent": "completar reflexão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tão louco por ela?"
+    },
+    "0x1c6fa5": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever Jachdwalt espiando dentro da tenda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt espia pelo interior pela abertura da\\n"
+    },
+    "0x1c6fd6": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "dizer que segue o exemplo e espia também",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "lona da tenda. Faço o mesmo e espio também."
+    },
+    "0x1c7014": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "rótulo de personagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Criança"
+    },
+    "0x1c7020": {
+      "speaker": "Criança",
+      "tone_register": "infantil/feliz",
+      "intent": "onomatopeia de comer com prazer",
+      "risk_level": "medium",
+      "risk_notes": "Localizar 'homf munch' para convenção pt-BR infantil.",
+      "t": "Ahhhh... *nhac* *munch*"
+    },
+    "0x1c7038": {
+      "speaker": "Garota",
+      "tone_register": "gentil/cuidador",
+      "intent": "perguntar se a criança está gostando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está gostando?"
+    },
+    "0x1c7048": {
+      "speaker": "Criança",
+      "tone_register": "infantil/entusiasmado",
+      "intent": "dizer que está delicioso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá, é uma delícia!"
+    },
+    "0x1c705b": {
+      "speaker": "Garota",
+      "tone_register": "gentil/cuidador",
+      "intent": "expressar alegria e incentivar a comer mais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que bom! Haha, fico feliz em saber. Come mais...\\n"
+    },
+    "0x1c708e": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "incentivar a criança a comer bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você precisa comer um bom café da manhã."
+    },
+    "0x1c70b2": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "descrever cena de café da manhã na tenda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vejo uma garota e uma criança pequena tomando\\n"
+    },
+    "0x1c70e4": {
+      "speaker": "Haku",
+      "tone_register": "narração",
+      "intent": "concluir descrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "café."
+    },
+    "0x1c70ec": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "reação surpresa — não era o que esperava ver",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hã...? Não era bem o que eu esperava."
+    },
+    "0x1c7117": {
+      "speaker": "Haku",
+      "tone_register": "questionador",
+      "intent": "perguntar a Jachdwalt se é ela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt, é essa a garota que você procura?"
+    },
+    "0x1c7147": {
+      "speaker": "Jachdwalt",
+      "tone_register": "aliviado",
+      "intent": "confirmar e dizer que está bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É. Parece que está bem.\\n"
+    },
+    "0x1c7166": {
+      "speaker": "Haku",
+      "tone_register": "confuso",
+      "intent": "questionar a presença dela ali",
+      "risk_level": "medium",
+      "risk_notes": "Budget 17; encurtado.",
+      "t": "Mas por que ela..."
+    },
+    "0x1c7178": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "descrever Jachdwalt aliviado mas confuso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt dá um suspiro de alívio, mas parece\\n"
+    },
+    "0x1c71a9": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tão confuso quanto eu."
+    },
+    "0x1c71c4": {
+      "speaker": "Garota",
+      "tone_register": "gentil/cuidador",
+      "intent": "oferecer mais comida à criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mais uma. Abre bem."
+    },
+    "0x1c71e1": {
+      "speaker": "Criança",
+      "tone_register": "infantil/feliz",
+      "intent": "onomatopeia de mastigar",
+      "risk_level": "medium",
+      "risk_notes": "Localizar onomatopeias de mastigação infantil para pt-BR.",
+      "t": "Ahhhh, *munch* *munch* *munch*\\n"
+    },
+    "0x1c7202": {
+      "speaker": "[CRIANÇA]",
+      "tone_register": "infantil animado",
+      "intent": "criança aprova a comida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Delícia!"
+    },
+    "0x1c720d": {
+      "speaker": "Garota",
+      "tone_register": "carinhoso",
+      "intent": "rir com ternura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haha..."
+    },
+    "0x1c7215": {
+      "speaker": "Criança",
+      "tone_register": "infantil/saudoso",
+      "intent": "dizer que seria mais gostoso se o pai estivesse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas seria mais gostoso se o papai estivesse\\n"
+    },
+    "0x1c724c": {
+      "speaker": "Garota",
+      "tone_register": "gentil/reconfortante",
+      "intent": "dizer que o pai volta logo e pedir que se comporte",
+      "risk_level": "medium",
+      "risk_notes": "Referente masculino 'Father/Dad' — sem spoiler, manter distinção pai/papai natural em pt-BR.",
+      "t": "Ah... Ele volta logo, então se comporte\\n"
+    },
+    "0x1c727f": {
+      "speaker": "Garota",
+      "tone_register": "gentil/reconfortante",
+      "intent": "completar instrução à criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bem até lá. OK?"
+    },
+    "0x1c7298": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "criança promete esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "OK. Vou ser boazinha e esperar."
+    },
+    "0x1c72b3": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "descrever garota limpando rosto da criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A garota limpa o rosto da criança com um guardanapo,\\n"
+    },
+    "0x1c72e4": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "descrever cena tranquila e feliz",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "removendo restos de comida. Parecem felizes\\n"
+    },
+    "0x1c7313": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "juntas."
+    },
+    "0x1c731d": {
+      "speaker": "Haku",
+      "tone_register": "urgente",
+      "intent": "lembrar Jachdwalt que o tempo está acabando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Merda. Jachdwalt, estamos sem tempo."
+    },
+    "0x1c734f": {
+      "speaker": "Jachdwalt",
+      "tone_register": "pragmático/aliviado",
+      "intent": "concordar que precisa se apressar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É, quase esqueci. Precisamos correr, sabe?"
+    },
+    "0x1c737d": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "avistar fogo no acampamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, tem algo pegando fogo."
+    },
+    "0x1c7397": {
+      "speaker": "Soldado",
+      "tone_register": "alarmado",
+      "intent": "gritar alerta de fogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fogo...! Fogo!!"
+    },
+    "0x1c73a7": {
+      "speaker": "Haku",
+      "tone_register": "aliviado/ansioso",
+      "intent": "reagir ao sinal do plano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ótimo, lá vai..."
+    },
+    "0x1c73c0": {
+      "speaker": "Soldado",
+      "tone_register": "alarmado",
+      "intent": "questionar se é ataque inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É um ataque inimigo!?"
+    },
+    "0x1c73d8": {
+      "speaker": "Soldado",
+      "tone_register": "urgente",
+      "intent": "ordenar combate ao fogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não sei, mas temos que apagar!\\n"
+    },
+    "0x1c7403": {
+      "speaker": "Soldado",
+      "tone_register": "urgente",
+      "intent": "pedir água",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tragam água!"
+    },
+    "0x1c7410": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "descrever fumaça e caos se espalhando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Colunas de fumaça começam a subir e o caos se espalha\\n"
+    },
+    "0x1c7443": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "pelo acampamento aos poucos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pelo acampamento, aos poucos."
+    },
+    "0x1c7460": {
+      "speaker": "Garota",
+      "tone_register": "alarmado",
+      "intent": "questionar se é fogo ou ataque inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fogo? É um ataque inimigo?"
+    },
+    "0x1c747f": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever reação da garota ao caos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A garota percebe a confusão lá fora e\\n"
+    },
+    "0x1c74af": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição — proteger a criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "abraça a criança enquanto olha ao redor."
+    },
+    "0x1c74d9": {
+      "speaker": "Garota",
+      "tone_register": "calmo/firme",
+      "intent": "dizer à criança que vai ver o que aconteceu",
+      "risk_level": "high",
+      "risk_notes": "Garota chama a criança por nome (Shinonon) — nome revelado aqui; spoiler controlado: é nome de personagem secundário, sem revelar identidade de Entua ainda.",
+      "t": "Shinonon, vou ver o que aconteceu.\\n"
+    },
+    "0x1c750d": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "pedir para a criança ficar quietinha e esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fique aqui e se comporte."
+    },
+    "0x1c7524": {
+      "speaker": "Criança",
+      "tone_register": "obediente infantil",
+      "intent": "confirmar que vai se comportar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá. Vou me comportar."
+    },
+    "0x1c753a": {
+      "speaker": "Garota",
+      "tone_register": "carinhoso",
+      "intent": "elogiar a criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Boa menina."
+    },
+    "0x1c754e": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever garota espiando pela entrada da tenda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A garota espia pela entrada da tenda e\\n"
+    },
+    "0x1c757f": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "olha ao redor com hesitação."
+    },
+    "0x1c75a1": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "notar que garota percebe ausência das guardas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela parece notar que as guardas sumiram\\n"
+    },
+    "0x1c75d4": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "garota se apressa em direção ao fogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e começa a se apressar em direção ao fogo."
+    },
+    "0x1c75fa": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "notar que a garota está saindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, ela está saindo."
+    },
+    "0x1c760e": {
+      "speaker": "Haku",
+      "tone_register": "tático animado",
+      "intent": "aproveitar a oportunidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora é nossa chance!"
+    },
+    "0x1c7626": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "Jachdwalt entra na tenda correndo até a criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jachdwalt entra correndo na tenda e corre até\\n"
+    },
+    "0x1c7654": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "ao lado da criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o lado da criança."
+    },
+    "0x1c7666": {
+      "speaker": "Criança",
+      "tone_register": "infantil/feliz",
+      "intent": "receber o pai com alegria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Papai! Você voltou."
+    },
+    "0x1c767c": {
+      "speaker": "Jachdwalt",
+      "tone_register": "carinhoso/pai",
+      "intent": "confirmar retorno e perguntar se foi boa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso. Você se comportou?"
+    },
+    "0x1c7699": {
+      "speaker": "Criança",
+      "tone_register": "infantil/orgulhoso",
+      "intent": "confirmar que foi boa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro que fui boa!"
+    },
+    "0x1c76ae": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "notar semelhança nos padrões de fala da criança com Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os padrões de fala da criança são curiosamente\\n"
+    },
+    "0x1c76de": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "criança parece estar de bom humor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com os dele. Ela parece estar de bom humor."
+    },
+    "0x1c7706": {
+      "speaker": "Jachdwalt",
+      "tone_register": "urgente/pai",
+      "intent": "dizer que vão fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos dar o fora daqui.\\n"
+    },
+    "0x1c7727": {
+      "speaker": "Jachdwalt",
+      "tone_register": "urgente carinhoso",
+      "intent": "pedir que a criança se segure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Segura firme, tá."
+    },
+    "0x1c7738": {
+      "speaker": "Criança",
+      "tone_register": "infantil/determinado",
+      "intent": "confirmar que não vai soltar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode deixar! Não solto!"
+    },
+    "0x1c7754": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever criança subindo em Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A criança sobe em Jachdwalt e se agarra\\n"
+    },
+    "0x1c7783": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "criança se agarra às roupas dele sorrindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nas roupas dele, radiante."
+    },
+    "0x1c779c": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "hora de ir embora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hora de sumir daqui, chefe."
+    },
+    "0x1c77b7": {
+      "speaker": "Haku",
+      "tone_register": "confuso",
+      "intent": "perguntar sobre a garota de Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein? E-Espera, e sua garota--"
+    },
+    "0x1c77db": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku decide ir buscar a outra pessoa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo bem, acho que vou buscá-la..."
+    },
+    "0x1c77fc": {
+      "speaker": "Haku",
+      "tone_register": "narração furtiva",
+      "intent": "descrever saída da tenda com cautela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Saio da tenda e olho ao redor, me escondendo\\n"
+    },
+    "0x1c782e": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "usar o que puder como cobertura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o que puder como cobertura."
+    },
+    "0x1c7848": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante/firme",
+      "intent": "ordenar combate ao fogo e proteção dos suprimentos",
+      "risk_level": "high",
+      "risk_notes": "Primeira aparição de Entua em voz de comando — identidade ainda não revelada formalmente como 'Entua'. Usar voz de comando firme.",
+      "t": "Apaguem o fogo! Os demais, movam os\\n"
+    },
+    "0x1c7874": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante/firme",
+      "intent": "completar ordem sobre os suprimentos",
+      "risk_level": "high",
+      "risk_notes": "Entua mencionando amam — manter_original per glossário.",
+      "t": "suprimentos! Não podemos perder nem um grão\\n"
+    },
+    "0x1c78a3": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante/firme",
+      "intent": "completar ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de amam!"
+    },
+    "0x1c78b8": {
+      "speaker": "Haku",
+      "tone_register": "reconhecendo",
+      "intent": "reconhecer a voz como sendo a garota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É a voz dela... vem dali."
+    },
+    "0x1c78e9": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku surpreso com situação — não pode ser tão descuidado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como isso aconteceu...? Não posso ser tão\\n"
+    },
+    "0x1c7914": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "autocrítico/preocupado",
+      "intent": "anunciar mudança necessária",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "descuidada. Preciso mudar algo..."
+    },
+    "0x1c7937": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "autocrítico/firme",
+      "intent": "comprometer-se a ser mais rígida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou ter que ser mais rígida com--"
+    },
+    "0x1c795d": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "avistar a garota sem ninguém por perto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ali está ela...! E... ninguém por perto.\\n"
+    },
+    "0x1c7986": {
+      "speaker": "Haku",
+      "tone_register": "urgente",
+      "intent": "aproveitar a oportunidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É agora!"
+    },
+    "0x1c7997": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação furtiva",
+      "intent": "verificar área e agarrar a mão da garota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Verifico se não tem ninguém e\\n"
+    },
+    "0x1c79c3": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku agarra a mão da garota e a conduz para longe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "agarro a mão da garota e a conduzo para longe."
+    },
+    "0x1c79ec": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "surpreso/alarmado",
+      "intent": "reagir ao ser agarrada — quem é você",
+      "risk_level": "high",
+      "risk_notes": "Primeira fala de voz de Entua — identidade não revelada ainda. Tom alarmado adequado.",
+      "t": "Quê--!? Q-Quem é você!?\\n"
+    },
+    "0x1c7a16": {
+      "speaker": "Haku",
+      "tone_register": "urgente/tranquilizador",
+      "intent": "dizer que vieram ajudar e continuar correndo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Viemos ajudar. Continue correndo!"
+    },
+    "0x1c7a38": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "confuso",
+      "intent": "questionar sobre o que é 'ajudar'",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vieram ajudar? O que você...\\n"
+    },
+    "0x1c7a6c": {
+      "speaker": "Haku",
+      "tone_register": "urgente",
+      "intent": "prometer explicar depois e apressar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Explico depois. Agora precisamos correr!"
+    },
+    "0x1c7a9a": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "cedendo/educado",
+      "intent": "pedir que pare de puxar com tanta força",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "T-Tudo bem, mas pode parar de me puxar\\n"
+    },
+    "0x1c7acb": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "cedendo/educado",
+      "intent": "completar pedido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tão forte...?"
+    },
+    "0x1c7ada": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever garota seguindo após o pedido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Com isso, a desconfiança da garota parece\\n"
+    },
+    "0x1c7b0b": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "diminuir e ela segue bem de perto."
+    },
+    "0x1c7b2f": {
+      "speaker": "Haku",
+      "tone_register": "narração/alívio",
+      "intent": "descrever fuga bem-sucedida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por sorte, nenhum soldado bárbaro nos avista.\\n"
+    },
+    "0x1c7b62": {
+      "speaker": "Haku",
+      "tone_register": "narração/alívio",
+      "intent": "descrever reencontro com Kiwru e Jachdwalt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Consigo alcançar Kiwru e Jachdwalt."
+    },
+    "0x1c7b91": {
+      "speaker": "Kiwru",
+      "tone_register": "aliviado/preocupado",
+      "intent": "verificar se Haku está bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku! Está bem!?"
+    },
+    "0x1c7bab": {
+      "speaker": "Haku",
+      "tone_register": "aliviado",
+      "intent": "dizer que conseguiu de algum jeito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É, consegui de algum jeito."
+    },
+    "0x1c7bc4": {
+      "speaker": "Kiwru",
+      "tone_register": "indignado",
+      "intent": "repreender Jachdwalt por abandonar a garota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, Jachdwalt. Que foi isso!? Não esperava\\n"
+    },
+    "0x1c7bf7": {
+      "speaker": "Haku",
+      "tone_register": "surpreso indignado",
+      "intent": "não esperava que ele deixasse a garota para trás",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "esperando você abandonar sua garota!"
+    },
+    "0x1c7c20": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal confuso",
+      "intent": "Jachdwalt confuso com o que o chefe fez",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que você tá falando...Quê--Chefe, por que você\\n"
+    },
+    "0x1c7c52": {
+      "speaker": "Jachdwalt",
+      "tone_register": "confuso/surpreso",
+      "intent": "completar questionamento chocado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "trouxe ELA?!"
+    },
+    "0x1c7c6c": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal confuso",
+      "intent": "Jachdwalt reconhece Jachdwalt e percebe implicação",
+      "risk_level": "high",
+      "risk_notes": "Linha de reveal — a garota é identificada como chefe inimiga. Spoiler de identidade.",
+      "t": "Você é... Jachdwalt!? Então isso significa--"
+    },
+    "0x1c7c98": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "garota olha furiosa e tira a mão de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A garota me olha furiosa e tira minha mão da dela."
+    },
+    "0x1c7cca": {
+      "speaker": "Haku",
+      "tone_register": "surpreso/confuso",
+      "intent": "reagir à ação da garota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gah!? O que você--"
+    },
+    "0x1c7cdf": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku descobre que a garota é a chefe deles — foi tudo em vão",
+      "risk_level": "high",
+      "risk_notes": "Reveal: garota é chefe inimiga — impacto emocional de frustração. Manter força da expressão.",
+      "t": "Ela é a CHEFE deles! Droga, passei por tudo isso\\n"
+    },
+    "0x1c7d0e": {
+      "speaker": "Jachdwalt",
+      "tone_register": "frustrado",
+      "intent": "explicar o que fez e o erro de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para pegar a Shinonon sem ser notado.\\n"
+    },
+    "0x1c7d3d": {
+      "speaker": "Haku",
+      "tone_register": "indignado",
+      "intent": "questionar por que trouxe ela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que você a trouxe aqui!?"
+    },
+    "0x1c7d58": {
+      "speaker": "Haku",
+      "tone_register": "informal direto",
+      "intent": "questionar o que Jachdwalt quis dizer com 'sua garota'",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera aí. Quando você disse sua garota...\\n"
+    },
+    "0x1c7d83": {
+      "speaker": "Haku",
+      "tone_register": "informal, incrédulo",
+      "intent": "questionar se é a criança",
+      "risk_level": "medium",
+      "risk_notes": "Budget 22 bytes. 'voce quer dizer aquela crianca!?' = 30 sem acento. Encurtar.",
+      "t": "é aquela criança!?"
+    },
+    "0x1c7d9a": {
+      "speaker": "Jachdwalt",
+      "tone_register": "orgulhoso/pai",
+      "intent": "confirmar que a filha é a melhor do mundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A melhor garotinha do mundo inteiro."
+    },
+    "0x1c7dc4": {
+      "speaker": "Haku",
+      "tone_register": "informal direto",
+      "intent": "Haku explode pedindo que esclareçam as coisas antes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Será que dá pra ESCLARECER essas coisas de antemão!?"
+    },
+    "0x1c7df6": {
+      "speaker": "Kiwru",
+      "tone_register": "alarmado",
+      "intent": "preocupar com o que fazer se a garota pedir ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-O que vamos fazer!? Se ela pedir ajuda,\\n"
+    },
+    "0x1c7e26": {
+      "speaker": "Kiwru",
+      "tone_register": "alarmado",
+      "intent": "completar preocupação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "seremos completamente superados!"
+    },
+    "0x1c7e4d": {
+      "speaker": "Haku",
+      "tone_register": "narração observacional",
+      "intent": "notar que Kiwru não lida bem com mudanças de plano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kiwru não lida muito bem com mudanças\\n"
+    },
+    "0x1c7e7d": {
+      "speaker": "Haku",
+      "tone_register": "irônico",
+      "intent": "concluir o comentário",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "imprevistos."
+    },
+    "0x1c7e8d": {
+      "speaker": "Haku",
+      "tone_register": "pensativo",
+      "intent": "reconhecer que Kiwru tem razão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas ele tem razão...\\n"
+    },
+    "0x1c7eab": {
+      "speaker": "Haku",
+      "tone_register": "pensativo/tenso",
+      "intent": "ponderar a ameaça se ela pedir ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se ela pedir ajuda..."
+    },
+    "0x1c7ed0": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "notar que a garota não grita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "No entanto, a garota não grita.\\n"
+    },
+    "0x1c7ef6": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "garota olha tristemente para Jachdwalt e a criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela olha com tristeza para Jachdwalt e a criança\\n"
+    },
+    "0x1c7f34": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "resignado/gentil",
+      "intent": "dizer para irem embora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Podem ir."
+    },
+    "0x1c7f4d": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "gentil/carinhoso",
+      "intent": "se despedir da criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se comporte, Shinonon."
+    },
+    "0x1c7f64": {
+      "speaker": "Jachdwalt",
+      "tone_register": "surpreso/emocionado",
+      "intent": "chamar a garota pelo nome — Entua",
+      "risk_level": "high",
+      "risk_notes": "Primeira vez que nome Entua é dito em voz alta — spoiler major. Preservar como está per glossário.",
+      "t": "...Entua?"
+    },
+    "0x1c7f6e": {
+      "speaker": "Haku",
+      "tone_register": "surpreso",
+      "intent": "questionar se ela vai deixá-los ir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você vai nos deixar ir?"
+    },
+    "0x1c7f89": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "som de passos apressados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Passo* *passo* *passo*"
+    },
+    "0x1c7fa1": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "alarmado",
+      "intent": "chamar Entua e perguntar onde está",
+      "risk_level": "high",
+      "risk_notes": "Primeira vez que soldados chamam Entua pelo título 'Lady Entua' — nome revelado. Per glossário manter_original.",
+      "t": "Lady Entua! Onde está!?"
+    },
+    "0x1c7fbd": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "alarmado",
+      "intent": "verificar se Entua está ilesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hm!? É o inimigo!? Lady Entua, está\\n"
+    },
+    "0x1c7fec": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "alarmado",
+      "intent": "completar verificação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ilesa!?"
+    },
+    "0x1c7ff7": {
+      "speaker": "Garota",
+      "tone_register": "autoritário",
+      "intent": "revelar que os homens estavam procurando por ela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que esses homens estavam me procurando.\\n"
+    },
+    "0x1c8024": {
+      "speaker": "Haku",
+      "tone_register": "narração descritiva",
+      "intent": "descrever soldados Uzurushan aparecendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vários soldados Uzurushan aparecem atrás dela."
+    },
+    "0x1c8053": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante/firme",
+      "intent": "ordenar que desenhem as espadas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nnngh...! Espadas!\\n"
+    },
+    "0x1c806a": {
+      "speaker": "Entua",
+      "tone_register": "firme frio",
+      "intent": "apontar os inimigos à frente",
+      "risk_level": "high",
+      "risk_notes": "Entua spoiler:major — verificar se reveal já ocorreu nesta cena antes desta linha.",
+      "t": "O inimigo está diante de vocês!"
+    },
+    "0x1c8087": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "narrativa",
+      "intent": "descrever expressão conflitante de Entua antes do comando",
+      "risk_level": "high",
+      "risk_notes": "Primeiro uso do nome Entua — spoiler major no glossário. Nome aparece pela primeira vez aqui; preservar.",
+      "t": "A garota que Shinonon chamou de Entua tem uma expressão\\n"
+    },
+    "0x1c80b9": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "mas seu comando é firme",
+      "risk_level": "medium",
+      "risk_notes": "Continuação da descrição de Entua — spoiler já introduzido na linha anterior.",
+      "t": "por um momento, mas seu comando é firme."
+    },
+    "0x1c80eb": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "perceber que o fogo foi causado por eles",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então esse fogo foi obra deles...\\n"
+    },
+    "0x1c810d": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante",
+      "intent": "confirmar presença do inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É o inimigo! O inimigo está aqui!"
+    },
+    "0x1c8130": {
+      "speaker": "Haku",
+      "tone_register": "narração tática",
+      "intent": "descrever bárbaros se juntando e necessidade de ganhar tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os bárbaros do fogo começam a se juntar\\n"
+    },
+    "0x1c8164": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "precisam ganhar tempo para os outros escaparem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "também. Precisamos ganhar tempo para os outros\\n"
+    },
+    "0x1c8191": {
+      "speaker": "Haku",
+      "tone_register": "tático",
+      "intent": "completar — escapar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "escapar..."
+    },
+    "0x1c819b": {
+      "speaker": "Jachdwalt",
+      "tone_register": "apelando",
+      "intent": "pedir a Entua que não lute",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entua, briga é ruim."
+    },
+    "0x1c81b2": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "comandante/frio",
+      "intent": "ordenar cerco sem deixar escapar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Cerquem. Não deixem escapar."
+    },
+    "0x1c81dc": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "obediente/furioso",
+      "intent": "confirmar e ameaçar os inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendido...! Como ousam nos humilhar!\\n"
+    },
+    "0x1c8210": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "ameaçador",
+      "intent": "ameaçar de morte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou te estripou aí mesmo!"
+    },
+    "0x1c822e": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "firme/fria",
+      "intent": "ordenar que não matem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não. Não haverá mortes.\\n"
+    },
+    "0x1c824e": {
+      "speaker": "Entua",
+      "tone_register": "firme frio",
+      "intent": "ordem para capturar com vida",
+      "risk_level": "high",
+      "risk_notes": "Entua spoiler:major — comando militar como chefe.",
+      "t": "Capturem-nos com vida."
+    },
+    "0x1c8272": {
+      "speaker": "Entua",
+      "tone_register": "firme frio",
+      "intent": "precisam interrogá-los primeiro",
+      "risk_level": "high",
+      "risk_notes": "Entua spoiler:major — linha de comando.",
+      "t": "Precisamos interrogá-los para obter informações primeiro!"
+    },
+    "0x1c829f": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "obediente/hesitante",
+      "intent": "confirmar com relutância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...E-Entendido."
+    },
+    "0x1c82b0": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação",
+      "intent": "descrever bárbaros cercando o grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os bárbaros avançam, fechando o cerco\\n"
+    },
+    "0x1c82e7": {
+      "speaker": "Haku",
+      "tone_register": "narração de ação",
+      "intent": "descrever nakwans chegando para ajudar",
+      "risk_level": "high",
+      "risk_notes": "Nakwan — manter_original per glossário; nakwans como plural natural em pt-BR.",
+      "t": "Nesse momento, os nakwans aparecem, impedindo\\n"
+    },
+    "0x1c8318": {
+      "speaker": "Haku",
+      "tone_register": "narração",
+      "intent": "descrever que evitam o cerco completo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "impedindo o cerco."
+    },
+    "0x1c8337": {
+      "speaker": "Nakwan",
+      "tone_register": "determinado",
+      "intent": "impedir passagem dos inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não vão passar!"
+    },
+    "0x1c834b": {
+      "speaker": "Nakwan",
+      "tone_register": "determinado",
+      "intent": "proteger os salvadores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não deixaremos que toquem em nossos\\n"
+    },
+    "0x1c837c": {
+      "speaker": "Refém",
+      "tone_register": "aliviado, urgente",
+      "intent": "aclamar os salvadores",
+      "risk_level": "medium",
+      "risk_notes": "Budget 8 bytes. 'salvadores!' = 10 sem acento. Usar 'salvadores' sem ! = 10, ainda estoura. Usar 'herois!' = 7.",
+      "t": "heróis!"
+    },
+    "0x1c8385": {
+      "speaker": "Nakwan",
+      "tone_register": "determinado",
+      "intent": "dizer a Haku que vão segurar os inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku, vamos segurá-los aqui!"
+    },
+    "0x1c83a6": {
+      "speaker": "Nakwan",
+      "tone_register": "apelando",
+      "intent": "pedir que fujam e deixem para eles",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deixem o resto conosco...\\n"
+    },
+    "0x1c83c4": {
+      "speaker": "Prisioneiro",
+      "tone_register": "desesperado",
+      "intent": "pedir que salve esposa e filho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, salve minha esposa e filho!"
+    },
+    "0x1c83e4": {
+      "speaker": "Haku",
+      "tone_register": "informal direto",
+      "intent": "não é hora de lutar, mas de correr",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não seja idiota! Precisamos correr, não lutar!"
+    },
+    "0x1c8410": {
+      "speaker": "Kiwru",
+      "tone_register": "desesperado",
+      "intent": "avisar que não vão aguentar muito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku, não vamos aguentar muito mais aqui!"
+    },
+    "0x1c8440": {
+      "speaker": "Haku",
+      "tone_register": "autocrítico/tenso",
+      "intent": "reconhecer que errou feio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que merda. Errei feio...\\n"
+    },
+    "0x1c8464": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "situação pode piorar muito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso pode ficar bem feio."
+    },
+    "0x1c8490": {
+      "speaker": "Soldado",
+      "tone_register": "grito de dor",
+      "intent": "grito de impacto/derrota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Graaaaaaagh!!"
+    },
+    "0x1c849e": {
+      "speaker": "Haku",
+      "tone_register": "confuso",
+      "intent": "não entender o que está acontecendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Que está acontecendo!?"
+    },
+    "0x1c84c3": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo",
+      "intent": "Maroro pede desculpas pelo atraso ao Mestre",
+      "risk_level": "medium",
+      "risk_notes": "Voz arcaica do Maroro — manter registro empolado.",
+      "t": "Pedimos desculpas pela demora, Mestre."
+    },
+    "0x1c84e7": {
+      "speaker": "Ukon",
+      "tone_register": "informal caloroso",
+      "intent": "aliviado com a chegada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você chegou!"
+    },
+    "0x1c84f4": {
+      "speaker": "Soldado",
+      "tone_register": "surpresa/dor",
+      "intent": "reação a ser atingido de surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Guh!?"
+    },
+    "0x1c84fa": {
+      "speaker": "Atuy",
+      "tone_register": "animado/selvagem",
+      "intent": "rir de prazer no combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ahahahahaha!"
+    },
+    "0x1c8507": {
+      "speaker": "Atuy",
+      "tone_register": "animado/irônico",
+      "intent": "reclamar que começaram a diversão sem ela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, amor, que injustiça! Vocês começaram\\n"
+    },
+    "0x1c8537": {
+      "speaker": "Atuy",
+      "tone_register": "animado/irônico",
+      "intent": "completar reclamação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "toda a diversão sem mim."
+    },
+    "0x1c855b": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Haku aliviado com Atuy — desta vez ela não complicou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atuy...! Por uma vez, você não veio só\\n"
+    },
+    "0x1c8588": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "Atuy é uma salvação desta vez",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "complicar as coisas. Você nos salvou!"
+    },
+    "0x1c85af": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "sistema",
+      "intent": "referência de objeto — flecha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obj_Arrow"
+    },
+    "0x1c85b9": {
+      "speaker": "Nosuri",
+      "tone_register": "arrogante/irônico",
+      "intent": "reclamar da espera e mostrar superioridade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Humph! Fiz você esperar? Parece que você é um\\n"
+    },
+    "0x1c85ec": {
+      "speaker": "Uruuru/Saraana",
+      "tone_register": "formal sereno",
+      "intent": "completar a repreensão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sem nós, como sempre."
+    },
+    "0x1c8609": {
+      "speaker": "Ougi",
+      "tone_register": "elegante/irônico",
+      "intent": "comentar que trabalhar com eles nunca é entediante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "De fato, nunca há um momento de tédio a seu\\n"
+    },
+    "0x1c8637": {
+      "speaker": "[NARRADOR]",
+      "tone_register": "narrativo",
+      "intent": "em seu serviço/emprego",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "serviço."
+    },
+    "0x1c8659": {
+      "speaker": "Personagem",
+      "tone_register": "respeitoso",
+      "intent": "endereçar Haku com título",
+      "risk_level": "medium",
+      "risk_notes": "Budget 12 bytes. 'Senhor Haku...!' = 14 sem acento. Encurtar: 'Sr. Haku...!' = 11.",
+      "t": "Sr. Haku...!"
+    },
+    "0x1c8666": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido/preocupado",
+      "intent": "perguntar se fez esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fizemos você esperar?"
+    },
+    "0x1c867f": {
+      "speaker": "Rulutieh",
+      "tone_register": "calmo/informativo",
+      "intent": "informar que está tudo pronto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está tudo pronto."
+    },
+    "0x1c8697": {
+      "speaker": "Haku",
+      "tone_register": "irritado",
+      "intent": "reclamar que o fizeram esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro que me fizeram esperar!"
+    },
+    "0x1c86b7": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "alarmado",
+      "intent": "alertar sobre reforços inimigos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Reforços inimigos!"
+    },
+    "0x1c86cd": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "abalado",
+      "intent": "chamar Entua hesitante",
+      "risk_level": "high",
+      "risk_notes": "Lady Entua nomeada — spoiler major, já revelado antes nesta cena.",
+      "t": "L-Lady Entua..."
+    },
+    "0x1c86dd": {
+      "speaker": "Garota (Entua)",
+      "tone_register": "firme/determinado",
+      "intent": "ordenar que não cedam e invocar orgulho Uzurushan",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "N-Não recuem! O número deles mal\\n"
+    },
+    "0x1c870a": {
+      "speaker": "[PERSONAGEM]",
+      "tone_register": "formal militar",
+      "intent": "mostrar orgulho como mononofu Uzurushan",
+      "risk_level": "medium",
+      "risk_notes": "Termo 'mononofu' — manter_original não está no glossário mas é termo cultural; manter.",
+      "t": "aumentou! Mostrem seu orgulho como mononofu Uzurushan!"
+    },
+    "0x1c873c": {
+      "speaker": "Soldado Uzurushan",
+      "tone_register": "obediente",
+      "intent": "confirmar a ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "S-Sim!"
+    },
+    "0x1c8749": {
+      "speaker": "Jachdwalt",
+      "tone_register": "carinhoso/pai",
+      "intent": "dizer à criança para se segurar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se segura bem, Shinonon."
+    },
+    "0x1c8766": {
+      "speaker": "Criança",
+      "tone_register": "infantil/preocupado",
+      "intent": "perguntar se o pai vai embora como o outro pai",
+      "risk_level": "high",
+      "risk_notes": "'Father' vs 'Dad' — dois referenciais diferentes. Manter distinção sem revelar identidade do 'Father'. Risco de gênero/identidade oculta.",
+      "t": "Papai... você vai embora como o pai foi?"
+    },
+    "0x1c8797": {
+      "speaker": "Jachdwalt",
+      "tone_register": "carinhoso/pai",
+      "intent": "tranquilizar a criança que não vai embora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe. Não vou a lugar nenhum."
+    },
+    "0x1c87c9": {
+      "speaker": "Haku",
+      "tone_register": "animado",
+      "intent": "iniciar combate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem, vamos lá!"
+    },
+    "0x1c89df": {
+      "speaker": "[SYSTEM]",
+      "tone_register": "UI tutorial",
+      "intent": "notificar adição de tutorial de combate ao glossário",
+      "risk_level": "medium",
+      "risk_notes": "Linha de UI com formatação especial — preservar tokens {c5} e {c-1}.",
+      "t": "{c5}Tutorial de Combate{c-1} adicionado ao Glossário do sistema."
+    },
+    "0x1c8c78": {
+      "speaker": "Personagem",
+      "tone_register": "assustado, dramático",
+      "intent": "pedir socorro",
+      "risk_level": "medium",
+      "risk_notes": "Budget 12 bytes. 'S-Socorro!!' = 11 sem acento. Ok.",
+      "t": "S-Socorro!!"
+    },
+    "0x1c8c8f": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "explicar que pediram a ela para fazer papel de refém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pedimos a ela para fazer o papel de refém."
+    },
+    "0x1c8cb8": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "explicar a ideia por trás do teste — salvar a donzela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A ideia por trás deste teste é salvar a donzela\\n"
+    },
+    "0x1c8ceb": {
+      "speaker": "Haku",
+      "tone_register": "narração explicativa",
+      "intent": "completar explicação do treino",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e se tornar mais destemido e heroico."
+    },
+    "0x1c8d1c": {
+      "speaker": "Haku",
+      "tone_register": "irônico/aliviado",
+      "intent": "comentar que esse treino parece normal comparado aos outros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pelo menos esse parece normal, comparado com os\\n"
+    },
+    "0x1c8d4e": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "resto/continuação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "resto."
+    },
+    "0x1c8d54": {
+      "speaker": "Haku",
+      "tone_register": "desconfiado",
+      "intent": "suspeitar que pode não ser tão simples",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas alguma coisa me diz que isso pode ser mais\\n"
+    },
+    "0x1c8d88": {
+      "speaker": "Haku",
+      "tone_register": "narrativo informal",
+      "intent": "parece mais difícil do que parece, talvez esteja exagerando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "do que parece... Ah, talvez eu esteja exagerando\\n"
+    },
+    "0x1c8db6": {
+      "speaker": "Haku",
+      "tone_register": "desconfiado",
+      "intent": "completar auto-questionamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pessimista."
+    },
+    "0x1c8fe1": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal/grato",
+      "intent": "agradecer pelo resgate com formalidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigada por me salvar. Guardarei sua\\n"
+    },
+    "0x1c9012": {
+      "speaker": "[PERSONAGEM]",
+      "tone_register": "formal solene",
+      "intent": "guardar bondade e bravura para sempre",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bondade e bravura para sempre."
+    },
+    "0x1c9030": {
+      "speaker": "Haku",
+      "tone_register": "casual modesto",
+      "intent": "minimizar sua contribuição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, não precisa. Não fiz grande coisa,\\n"
+    },
+    "0x1c905d": {
+      "speaker": "Haku",
+      "tone_register": "descontraído/modesto",
+      "intent": "completar minimização",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "foi pouca coisa, ahaha..."
+    },
+    "0x1c9077": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido/saindo do papel",
+      "intent": "perguntar se foi adequado o que fez",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hm, foi suficiente assim?"
+    },
+    "0x1c9098": {
+      "speaker": "Haku",
+      "tone_register": "elogioso",
+      "intent": "elogiar e agradecer cooperação de Rulutieh",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem. Obrigado pela cooperação."
+    },
+    "0x1c90c3": {
+      "speaker": "Ukon",
+      "tone_register": "informal caloroso",
+      "intent": "apresentar recompensa pelo trabalho do dia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta será sua recompensa pelo trabalho de hoje."
+    },
+    "0x1c90ee": {
+      "speaker": "[PERSONAGEM]",
+      "tone_register": "surpreso agradecido",
+      "intent": "surpresa agradável com a quantidade da recompensa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "U-Uau, tanto assim? Obrigado!"
+    }
+  }
+}

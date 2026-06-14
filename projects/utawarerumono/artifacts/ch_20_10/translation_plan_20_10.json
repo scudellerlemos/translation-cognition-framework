@@ -1,0 +1,138 @@
+{
+  "scene_group": "20_10",
+  "lines": [
+    {
+      "offset": "0x1ca88f",
+      "text_source": "Uzurusha intends to ride Yamato's lifeline, the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "expositivo, estratégico",
+      "intent": "Descrever o plano de Uzurusha de usar o rio de Yamato como rota de invasão",
+      "risk_level": "medium",
+      "base_translation": "Uzurusha planeja usar a artéria vital de Yamato,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nomes de local mantidos conforme glossário; verificar byte budget na transliteração"
+    },
+    {
+      "offset": "0x1ca8c1",
+      "text_source": "great river running through it, straight to its\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "expositivo, estratégico",
+      "intent": "Continuar descrição do avanço pelo grande rio até o interior",
+      "risk_level": "low",
+      "base_translation": "o grande rio que a corta, direto ao seu interior.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca8f3",
+      "text_source": "capital.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "imperial.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca8fc",
+      "text_source": "The flagging Yamatan army has only time for a\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever o exército de Yamato exausto e sem tempo para organizar defesa",
+      "risk_level": "low",
+      "base_translation": "O exausto exército de Yamato mal tem tempo para\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca92c",
+      "text_source": "hasty camp on the river's bank. A head-on clash\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever acampamento às pressas e o perigo de um confronto direto",
+      "risk_level": "low",
+      "base_translation": "um acampamento às pressas no rio. Um choque frontal\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca95e",
+      "text_source": "is inevitable.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "entregar uma sentença inevitável com duplo sentido ameaçador",
+      "risk_level": "high",
+      "base_translation": "é inevitável.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade e intento do falante permanecem ambíguos; a frase curta e definitiva carrega ameaça implícita — não resolver a ambiguidade. Personagem (Homem) deve soar frio e profético, não caloroso. Byte budget restrito (14) — tradução concisa mantém peso. Verificar back-translation para garantir que a inevitabilidade e o tom enigmático não se perdem."
+    },
+    {
+      "offset": "0x1ca96d",
+      "text_source": "The Uzurushan army, hesitant to lose more of\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "expositivo, tático",
+      "intent": "Descrever hesitação do exército Uzurushan em sofrer mais baixas",
+      "risk_level": "low",
+      "base_translation": "O exército Uzurushan, hesitante em perder mais\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1ca99c",
+      "text_source": "their soldiers, decides to wait for reinforcements...",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "explicação tática disfarçada de observação enigmática",
+      "risk_level": "high",
+      "base_translation": "deles, soldados, decide aguardar reforços...",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Homem fala com duplo-sentido — a frase aparenta ser tática militar (aguardar reforços) mas carrega peso profético/ameaçador. Não resolver a ambiguidade em favor de nenhuma leitura. Identidade/spoiler: 'deles' refere-se ao inimigo/Yamatan — não antecipar alianças futuras. Back-translation obrigatória (high risk + voz crítica + ambiguidade preservada)."
+    }
+  ],
+  "total_lines": 8,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "chapter-20_10-v1"
+}

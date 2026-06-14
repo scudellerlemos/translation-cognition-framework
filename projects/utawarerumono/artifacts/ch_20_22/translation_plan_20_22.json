@@ -1,0 +1,426 @@
+{
+  "scene_group": "20_22",
+  "lines": [
+    {
+      "offset": "0x214cf4",
+      "text_source": "So this is all your research.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "questionar a pesquisa do protagonista",
+      "risk_level": "medium",
+      "base_translation": "Então essa é toda sua pesquisa.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentenças curtas e definitivas; ambiguidade ameaçadora — evitar tom caloroso"
+    },
+    {
+      "offset": "0x214d12",
+      "text_source": "Man",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hom",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214d16",
+      "text_source": "Yeah... But to be honest, I've hit a roadblock.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "confessar impasse",
+      "risk_level": "high",
+      "base_translation": "Sim... Mas pra ser honesto, bati numa parede.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "1ª pessoa (Haku — voice_criticality: high); Frase quebrada com reticências reflete torpor — preservar fragmentação"
+    },
+    {
+      "offset": "0x214d46",
+      "text_source": "Lower birth rates, susceptibility to genetic\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Listar falhas genéticas da humanidade como argumento frio",
+      "risk_level": "medium",
+      "base_translation": "Baixas taxas de natalidade, suscetibilidade a doenças\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha técnica/científica; verificar naturalidade em pt-BR e budget (transliterado: ~44 bytes)"
+    },
+    {
+      "offset": "0x214d75",
+      "text_source": "diseases... and to top it off, environmental\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Continuar listagem de problemas — ambientais",
+      "risk_level": "medium",
+      "base_translation": "genéticas... e pior, degradação ambiental.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação direta; manter tom frio e sentença curta; verificar encaixe com linha anterior"
+    },
+    {
+      "offset": "0x214da4",
+      "text_source": "contamination.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "completar pensamento anterior",
+      "risk_level": "low",
+      "base_translation": "contaminação.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Noun simples; manter concisão"
+    },
+    {
+      "offset": "0x214db3",
+      "text_source": "Our species is coming to an end.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "revelar desespero central",
+      "risk_level": "high",
+      "base_translation": "Nossa espécie está chegando ao fim.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tema de urgência existencial; tom deve manter fragmentação semiconsciente — reticências e peso emocional"
+    },
+    {
+      "offset": "0x214dd8",
+      "text_source": "But the desire to live is instinct in humans--\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Reconhecer o instinto de sobrevivência humano como fato irrefutável",
+      "risk_level": "low",
+      "base_translation": "Mas o desejo de viver é instinto nos humanos--\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214e09",
+      "text_source": "in ANY creature. I can't give up now.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "expressar determinação apesar da nebulosidade",
+      "risk_level": "medium",
+      "base_translation": "em NENHUMA criatura. Não posso desistir agora.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Negação + determinação; manter tom quebrado — não soar fluente demais"
+    },
+    {
+      "offset": "0x214e2f",
+      "text_source": "I must bring hope to all of humanity.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "afirmar missão impossível",
+      "risk_level": "high",
+      "base_translation": "Preciso trazer esperança para toda a humanidade.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentença definitiva; identidade/missão central do protagonista — voice_criticality: high; manter tom solene mas semiconsciente"
+    },
+    {
+      "offset": "0x214e55",
+      "text_source": "Yeah, that sounds like my brother, all right...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil; cuidadora",
+      "intent": "reconhecer e empatizar com o irmão/conhecido",
+      "risk_level": "high",
+      "base_translation": "É, parece mesmo coisa de irmão, tá certo...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Garota confirma relação familiar/próxima com o protagonista (Haku); 'brother' pode ser literal ou figurado — contexto sugere irmão verdadeiro; spoiler_ledger deve marcar; voz gentil mas reconhecedora"
+    },
+    {
+      "offset": "0x214e85",
+      "text_source": "Hah... But lofty ideals are meaningless if you\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Dismissar ideais elevados como inúteis sem resultado prático",
+      "risk_level": "low",
+      "base_translation": "Hah... Mas ideais grandiosos não valem nada se você\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214eb6",
+      "text_source": "can't make something of them.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "negar capacidade de transformação",
+      "risk_level": "medium",
+      "base_translation": "não consegue fazer algo deles.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brevidade enigmática; tom frio preservado; estrutura negativa mantém ambiguidade ameaçadora"
+    },
+    {
+      "offset": "0x214ed4",
+      "text_source": "Indeed... If all your effort ends in nothing,\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Reforçar inutilidade do esforço sem resultado — sentença definitiva",
+      "risk_level": "low",
+      "base_translation": "De fato... Se todo esforço não leva a nada,\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214f04",
+      "text_source": "you've only been wasting your time.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "condenar esforço como inútil",
+      "risk_level": "medium",
+      "base_translation": "você só esteve desperdiçando tempo.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Acusação direta; tom permanece frio/profético sem explicar a razão — deixar dúbia"
+    },
+    {
+      "offset": "0x214f28",
+      "text_source": "Bro...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "invocação/chamado semi-consciente",
+      "risk_level": "low",
+      "base_translation": "Irmão...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição vocativa; manter reticência; forma ultracurta preservada"
+    },
+    {
+      "offset": "0x214f2f",
+      "text_source": "A paradigm shift...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "questão confusa sobre mudança de paradigma",
+      "risk_level": "medium",
+      "base_translation": "Uma mudança de paradigma...?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Frase fragmentada com interrogação; conceitual mas torpor mantido — reticência dentro da interrogação"
+    },
+    {
+      "offset": "0x214f44",
+      "text_source": "Huh...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hein...?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214f4c",
+      "text_source": "Perhaps what we need is a different approach\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Sugerir que uma abordagem diferente é necessária — dúbia/ameaçadora",
+      "risk_level": "medium",
+      "base_translation": "Talvez o que precisamos seja de uma abordagem\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade deve ser preservada; 'abordagem diferente' mantém o duplo sentido do original"
+    },
+    {
+      "offset": "0x214f7b",
+      "text_source": "than the drugs and genetic engineering we've\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Continuar — contrastando com drogas e engenharia genética já tentadas",
+      "risk_level": "low",
+      "base_translation": "diferente das drogas e engenharia genética que\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x214faa",
+      "text_source": "been relying on.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "auto-questionamento sobre suportes anteriores",
+      "risk_level": "low",
+      "base_translation": "esteve contando com.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmento de frase; manter brevidade"
+    },
+    {
+      "offset": "0x214fbb",
+      "text_source": "Well, any good ideas?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil; cuidadora",
+      "intent": "pedir sugestão prática",
+      "risk_level": "low",
+      "base_translation": "Bem, tem alguma ideia boa?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom acolhedor; pergunta direta mas paciente — voz estabelecida de cuidadora"
+    },
+    {
+      "offset": "0x214fd1",
+      "text_source": "If even you don't know, what makes you think\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Questionar o interlocutor — provocação fria e dúbia",
+      "risk_level": "medium",
+      "base_translation": "Se até você não sabe, o que te faz achar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom interrogativo mas ameaçador; manter frieza sem resolver a ambiguidade"
+    },
+    {
+      "offset": "0x215000",
+      "text_source": "I would?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "autoquestionamento de capacidade",
+      "risk_level": "low",
+      "base_translation": "Eu conseguiria?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmento interrogativo ultracurto; manter torpor — não expandir"
+    },
+    {
+      "offset": "0x215009",
+      "text_source": "Sometimes people like you can solve all our\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, frio, profético",
+      "intent": "Sugestão ambígua de que o interlocutor pode resolver tudo — ameaça velada",
+      "risk_level": "medium",
+      "base_translation": "Às vezes pessoas como você resolvem todos os\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade central da cena; 'pessoas como você' mantém o tom dúbio sem revelar nada"
+    },
+    {
+      "offset": "0x215037",
+      "text_source": "problems with an answer nobody expects.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "oferecer solução paradoxal/ameaçadora",
+      "risk_level": "high",
+      "base_translation": "problemas com uma resposta que ninguém espera.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo-sentido proposital ('answer nobody expects' pode ser morte/revelação); preservar ambiguidade ameaçadora; tom frio mantém dúbia a verdadeira intenção"
+    }
+  ],
+  "total_lines": 26,
+  "high_lines": 5,
+  "medium_lines": 10,
+  "needs_review": [],
+  "plan_version": "chapter-20_22-v1"
+}

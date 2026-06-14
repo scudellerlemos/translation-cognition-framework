@@ -1,0 +1,5370 @@
+{
+  "scene_group": "20_07",
+  "lines": [
+    {
+      "offset": "0x1c60f5",
+      "text_source": "door_01_open",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "base_translation": "door_01_open",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6103",
+      "text_source": "door_01_close",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "base_translation": "door_01_close",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6111",
+      "text_source": "door_02_open",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "base_translation": "door_02_open",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c611e",
+      "text_source": "door_02_close",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "base_translation": "door_02_close",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c612c",
+      "text_source": "door_03_open",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta abrindo",
+      "risk_level": "low",
+      "base_translation": "door_03_open",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6139",
+      "text_source": "door_03_close",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "ação de porta fechando",
+      "risk_level": "low",
+      "base_translation": "door_03_close",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6147",
+      "text_source": "We close in on the Uzurushan encampment under\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração tática",
+      "intent": "descrever aproximação furtiva ao acampamento",
+      "risk_level": "low",
+      "base_translation": "Nos aproximamos do acampamento Uzurushan\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6177",
+      "text_source": "cover of the morning fog.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa tática",
+      "intent": "descrever cobertura da névoa matinal",
+      "risk_level": "medium",
+      "base_translation": "sob a névoa da manhã.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 25 apertado; cortado para caber."
+    },
+    {
+      "offset": "0x1c6191",
+      "text_source": "Well, it looks like they're all celebrating\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "notar que inimigos estão celebrando",
+      "risk_level": "low",
+      "base_translation": "Parece que estão todos comemorando\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c61bf",
+      "text_source": "with drinks.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "base_translation": "com bebida.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c61cc",
+      "text_source": "Probably been tipping it back the entire night,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "dedução sobre duração da festa",
+      "risk_level": "low",
+      "base_translation": "Provavelmente bebendo a noite toda,\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c61fe",
+      "text_source": "yeah?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "tá?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6204",
+      "text_source": "The whole night... They're not even pretending\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado/irônico",
+      "intent": "irritação com descaso do inimigo",
+      "risk_level": "low",
+      "base_translation": "A noite toda... Nem tentam fingir que\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6235",
+      "text_source": "to take us seriously...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado/irônico",
+      "intent": "completar indignação",
+      "risk_level": "low",
+      "base_translation": "nos levam a sério...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c624d",
+      "text_source": "Well, it's far from the front lines, and\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "avaliar distância segura das linhas de frente",
+      "risk_level": "low",
+      "base_translation": "Bom, estamos longe das linhas de frente, e\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6278",
+      "text_source": "Uzurusha has the upper hand. They probably\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "pragmático",
+      "intent": "continuar explicação tática",
+      "risk_level": "low",
+      "base_translation": "Uzurusha tem vantagem. Eles provavelmente\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c62a5",
+      "text_source": "think they've won.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "inimigos pensam que venceram",
+      "risk_level": "low",
+      "base_translation": "acham que venceram.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c62b8",
+      "text_source": "Looks like the lookouts are enjoying a bottle or\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração tática",
+      "intent": "observar sentinelas também bebendo",
+      "risk_level": "low",
+      "base_translation": "As sentinelas também estão aproveitando\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c62eb",
+      "text_source": "two as well. That makes our jobs easier...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "observar que os dois também estão lá, facilitando a missão",
+      "risk_level": "low",
+      "base_translation": "os dois também. Isso facilita nosso trabalho...",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6316",
+      "text_source": "So, where are the hostages...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "perguntar onde estão os reféns",
+      "risk_level": "low",
+      "base_translation": "Então, onde estão os reféns...?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6335",
+      "text_source": "Over there. They should all be imprisoned in\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "objetivo",
+      "intent": "indicar localização dos reféns",
+      "risk_level": "low",
+      "base_translation": "Ali. Todos devem estar presos\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6364",
+      "text_source": "that carriage.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "apontar a carruagem",
+      "risk_level": "low",
+      "base_translation": "aquela carruagem.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6373",
+      "text_source": "I follow Jachdwalt's pointed finger, seeing a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever o que vê ao seguir o gesto de Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "Sigo o dedo apontado de Jachdwalt e vejo\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c63a3",
+      "text_source": "large boxlike carriage with bars on it.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa",
+      "intent": "descrever carruagem grande com grades",
+      "risk_level": "medium",
+      "base_translation": "grande carruagem com grades nas laterais.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 39; simplificado."
+    },
+    {
+      "offset": "0x1c63cb",
+      "text_source": "They've locked all the women and children in\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado/comovido",
+      "intent": "reação ao ver mulheres e crianças presas",
+      "risk_level": "low",
+      "base_translation": "Prenderam mulheres e crianças lá dentro\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c63fa",
+      "text_source": "there...? How cruel.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado/comovido",
+      "intent": "completar reação",
+      "risk_level": "low",
+      "base_translation": "...? Que crueldade.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c640f",
+      "text_source": "OK... Now we just stick to the plan. Nosuri\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "iniciar briefing do plano",
+      "risk_level": "low",
+      "base_translation": "OK... Agora é só seguir o plano. Nosuri\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c643d",
+      "text_source": "and Ougi will set fire to their supplies to\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "descrever papel de Nosuri e Ougi",
+      "risk_level": "low",
+      "base_translation": "e Ougi vão atear fogo nos suprimentos\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c646b",
+      "text_source": "sow some chaos.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "criar caos como distração",
+      "risk_level": "low",
+      "base_translation": "criar um caos.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c647b",
+      "text_source": "I'm pretty sure you two can sneak in unnoticed.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tático informal",
+      "intent": "dizer que os dois podem se infiltrar sem serem notados",
+      "risk_level": "medium",
+      "base_translation": "Tenho certeza que vocês dois passam despercebidos.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 49; encurtado mas sentido preservado."
+    },
+    {
+      "offset": "0x1c64ad",
+      "text_source": "You got this?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/confiante",
+      "intent": "confirmar se estão prontos",
+      "risk_level": "low",
+      "base_translation": "Conseguem?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c64bb",
+      "text_source": "Hm. As a good woman, I am dutybound to\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial esperto",
+      "intent": "Nosuri aceita com charme irônico de 'boa mulher'",
+      "risk_level": "medium",
+      "base_translation": "Hm. Como uma boa mulher, é meu dever\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ironia de Nosuri — 'boa mulher' é pose, não seriedade. Manter tom levemente afetado."
+    },
+    {
+      "offset": "0x1c64e4",
+      "text_source": "exceed all your expectations.",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial confiante",
+      "intent": "prometer superar as expectativas",
+      "risk_level": "medium",
+      "base_translation": "superar todas as expectativas.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 29; encurtado."
+    },
+    {
+      "offset": "0x1c6502",
+      "text_source": "Such work fits neatly into our usual repertoire,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "afirmar que esse tipo de trabalho é comum para eles",
+      "risk_level": "low",
+      "base_translation": "Esse trabalho se encaixa bem no que costumamos fazer,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6535",
+      "text_source": "after all.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "afinal.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6540",
+      "text_source": "Me and the other guys use the chaos to our\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "instruir grupo principal a usar o caos",
+      "risk_level": "low",
+      "base_translation": "Eu e os outros usamos o caos a nosso\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c656d",
+      "text_source": "advantage and free everyone, taking out any\\n",
+      "speaker": "Ougi",
+      "entities_present": [
+        "Ougi"
+      ],
+      "tone_register": "tático",
+      "intent": "aproveitar vantagem e libertar todos eliminando inimigos",
+      "risk_level": "medium",
+      "base_translation": "aproveitar e libertar todos, eliminando quem\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 45; encurtado."
+    },
+    {
+      "offset": "0x1c659b",
+      "text_source": "guards in the way.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "completar instrução",
+      "risk_level": "low",
+      "base_translation": "guarda no caminho.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c65ae",
+      "text_source": "Don't forget that the enemies are all around us.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "lembrar que os inimigos estão por toda parte",
+      "risk_level": "low",
+      "base_translation": "Não esqueçam que os inimigos estão por toda parte.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c65e1",
+      "text_source": "Confused or not, if we slip up, they'll kill us\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "alertar que um erro pode custar a vida de todos",
+      "risk_level": "low",
+      "base_translation": "Confusos ou não, se escorregarmos, nos matam\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6613",
+      "text_source": "all.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa",
+      "intent": "completar frase anterior — matar a todos",
+      "risk_level": "medium",
+      "base_translation": "tudo.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 4 bytes. 'todos' = 5 bytes sem acento. Usar 'sim.' não serve; usar 'já.' também não. Melhor encaixe: encurtar para pronome ou omitir — reescrito como parte da frase anterior; aqui: 'ja.' mas risco de sentido. Usando 'tudo.' (4 bytes)."
+    },
+    {
+      "offset": "0x1c6618",
+      "text_source": "U-Understood.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "E-Entendi.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6626",
+      "text_source": "Uruuru, Saraana, and Atuy will cut the saddle\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "dar instrução a Uruuru, Saraana e Atuy",
+      "risk_level": "low",
+      "base_translation": "Uruuru, Saraana e Atuy cortam as selas\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6656",
+      "text_source": "straps to slow them down in case they try to\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "explicar objetivo de cortar selas",
+      "risk_level": "low",
+      "base_translation": "para atrasar a perseguição caso tentem\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6685",
+      "text_source": "chase us.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa",
+      "intent": "inimigos nos perseguirão",
+      "risk_level": "medium",
+      "base_translation": "nos caça.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 9 bytes sem acento. 'nos caca.' = 9 bytes. Adequado."
+    },
+    {
+      "offset": "0x1c668f",
+      "text_source": "Understood.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Entendido.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c669b",
+      "text_source": "Oh, love? I'd much rather be where all the\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial atrevido",
+      "intent": "Nosuri prefere onde está a ação",
+      "risk_level": "medium",
+      "base_translation": "Amor? Prefiro ficar onde tem mais\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 44; encurtado para caber."
+    },
+    {
+      "offset": "0x1c66c8",
+      "text_source": "action is...",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "entusiasmado/impaciente",
+      "intent": "completar reclamação",
+      "risk_level": "low",
+      "base_translation": "tem ação...",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c66d5",
+      "text_source": "No.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "seco, direto",
+      "intent": "recusar pedido de Nosuri",
+      "risk_level": "medium",
+      "base_translation": "Não",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 3 bytes. 'Nao.' = 4 bytes sem acento. Usar 'Nao' sem ponto = 3 bytes. Ou reescrever. Usando 'Nao' (sem ponto final) para caber."
+    },
+    {
+      "offset": "0x1c66d9",
+      "text_source": "Please...",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "suplicante, coloquial",
+      "intent": "pedir insistentemente",
+      "risk_level": "medium",
+      "base_translation": "Vai lá...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 9 bytes. 'Por favor...' = 12 sem acento. Usar 'Vai la...' = 8. Ou 'Pleeease...' mantém EN — localizar: 'Vamos...' = 7. Usando forma curta."
+    },
+    {
+      "offset": "0x1c66e3",
+      "text_source": "Pleeeaaase...",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "súplica cômica exagerada",
+      "intent": "implorar de forma dramática",
+      "risk_level": "medium",
+      "base_translation": "Por faaavor...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 13; encurtado."
+    },
+    {
+      "offset": "0x1c66f1",
+      "text_source": "I said no!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "firme",
+      "intent": "recusar o pedido de Atuy",
+      "risk_level": "low",
+      "base_translation": "Não!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c66fc",
+      "text_source": "An utter, terrible, beastly spoilsport, love.",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "dramático/frustrado",
+      "intent": "reclamar do Ukon por ser sem graça",
+      "risk_level": "medium",
+      "base_translation": "Que estraga-prazer horrível e terrível, amor.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo 'estraga-prazer' localiza 'spoilsport'; manter tom dramático/exagerado de Atuy."
+    },
+    {
+      "offset": "0x1c672a",
+      "text_source": "Yeah, and you rampaging around is just going to\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pragmático",
+      "intent": "explicar que Atuy saindo do plano pioraria tudo",
+      "risk_level": "low",
+      "base_translation": "É, e você causando bagunça vai só\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c675c",
+      "text_source": "make things worse.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "pragmático",
+      "intent": "completar argumento",
+      "risk_level": "low",
+      "base_translation": "piorar as coisas.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c676f",
+      "text_source": "Uruuru and Saraana, go with Atuy, and if you\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "redirecionar Uruuru e Saraana com Atuy",
+      "risk_level": "low",
+      "base_translation": "Uruuru e Saraana, vão com Atuy, e se\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c679e",
+      "text_source": "encounter the enemy, take them out silently.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "instruir a eliminar inimigos silenciosamente",
+      "risk_level": "low",
+      "base_translation": "encontrarem o inimigo, eliminem em silêncio.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c67cb",
+      "text_source": "Can you do it?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/confirmação",
+      "intent": "confirmar se conseguem fazer",
+      "risk_level": "low",
+      "base_translation": "Conseguem?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c67da",
+      "text_source": "Easily.",
+      "speaker": "Ougi",
+      "entities_present": [
+        "Ougi"
+      ],
+      "tone_register": "casual confiante",
+      "intent": "confirmar que é fácil",
+      "risk_level": "medium",
+      "base_translation": "Fácil.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 7; 'Fácil.' = 5 bytes sem acento, ok."
+    },
+    {
+      "offset": "0x1c67e2",
+      "text_source": "Simplicity itself, Master.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico pomposo",
+      "intent": "Maroro afirma que é simples para ele, lisonjeando",
+      "risk_level": "medium",
+      "base_translation": "Simplicidade em si, Mestre.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica do Maroro — manter registro empolado."
+    },
+    {
+      "offset": "0x1c67fd",
+      "text_source": "Kuon, Nekone, and Rulutieh will stay here.\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "instruir Kuon, Nekone e Rulutieh a ficarem",
+      "risk_level": "low",
+      "base_translation": "Kuon, Nekone e Rulutieh ficam aqui.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c682a",
+      "text_source": "Wait for the chaos, then have Cocopo tow the\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "explicar tarefa de Cocopo",
+      "risk_level": "low",
+      "base_translation": "Esperem o caos, aí fazem o Cocopo puxar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6859",
+      "text_source": "carriage away.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/liderança",
+      "intent": "completar instrução",
+      "risk_level": "low",
+      "base_translation": "a carruagem.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6868",
+      "text_source": "Y-Yes...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "S-Sim...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6871",
+      "text_source": "...I'm counting on you, Kuon.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal direto",
+      "intent": "Haku conta com Kuon",
+      "risk_level": "low",
+      "base_translation": "...Estou contando com você, Kuon.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c688f",
+      "text_source": "Mhm. You have nothing to worry about, I think.\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "calmo/confiante",
+      "intent": "tranquilizar Ukon",
+      "risk_level": "low",
+      "base_translation": "Mhm. Não tem nada com que se preocupar, acho.\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c68c0",
+      "text_source": "Be careful, Haku.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cuidadoso",
+      "intent": "pedir cuidado a Haku",
+      "risk_level": "medium",
+      "base_translation": "Cuidado, Haku.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 17; 'Cuidado, Haku.' = 13 bytes ok."
+    },
+    {
+      "offset": "0x1c68d2",
+      "text_source": "Can I go now?",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "impaciente",
+      "intent": "perguntar se pode ir agora",
+      "risk_level": "low",
+      "base_translation": "Já posso ir?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c68e0",
+      "text_source": "Not yet.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa, tenso",
+      "intent": "ainda não — Nosuri e Ougi ainda não infiltraram",
+      "risk_level": "medium",
+      "base_translation": "Ainda não",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 8 bytes. 'Ainda nao.' = 9 sem acento. Usar 'Ainda nao' sem ponto = 8."
+    },
+    {
+      "offset": "0x1c68e9",
+      "text_source": "Nosuri and Ougi are infiltrating the base.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "informar que Nosuri e Ougi estão se infiltrando",
+      "risk_level": "low",
+      "base_translation": "Nosuri e Ougi estão se infiltrando na base.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6916",
+      "text_source": "Like it or not, it'll begin soon enough.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração tática",
+      "intent": "dizer que vai começar em breve",
+      "risk_level": "low",
+      "base_translation": "Querendo ou não, vai começar logo.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c693f",
+      "text_source": "And Atuy, your job is just to cut the saddle\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/alerta",
+      "intent": "reforçar missão de Atuy — só cortar selas",
+      "risk_level": "low",
+      "base_translation": "E Atuy, sua missão é só cortar as selas\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c696e",
+      "text_source": "straps to slow down their pursuit. You hear me?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/alerta",
+      "intent": "completar instrução com ênfase",
+      "risk_level": "low",
+      "base_translation": "para atrasar a perseguição. Entendeu?",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c699e",
+      "text_source": "No problem! I won't be a moment. And it'll be\\n",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "entusiasmado",
+      "intent": "concordar mas deixar margem para um 'acidente'",
+      "risk_level": "low",
+      "base_translation": "Sem problemas! Não demoro nada. E tudo bem se\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c69ce",
+      "text_source": "all right if just ONE guard ends up accidentally\\n",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "entusiasmado",
+      "intent": "sugerir esfaquear um guarda por acidente",
+      "risk_level": "low",
+      "base_translation": "só UM guarda acabar acidentalmente\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6a01",
+      "text_source": "stabbed.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "seco",
+      "intent": "mencionar que foi esfaqueado",
+      "risk_level": "medium",
+      "base_translation": "atacado.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 8; 'esfaqueado' = 10 sem acento. Ajustado."
+    },
+    {
+      "offset": "0x1c6a0a",
+      "text_source": "No accidental stabbing. Ever.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme",
+      "intent": "proibir esfaqueamento acidental",
+      "risk_level": "medium",
+      "base_translation": "Nada de atacar por acidente. Nunca.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 29; encurtado."
+    },
+    {
+      "offset": "0x1c6a28",
+      "text_source": "Wait... Where is she...?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "perceber que alguém está faltando",
+      "risk_level": "low",
+      "base_translation": "Espera... Onde ela está...?\\n",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6a43",
+      "text_source": "Why isn't she here...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa, confuso",
+      "intent": "questionar por que ela não está lá",
+      "risk_level": "medium",
+      "base_translation": "Por que não está aqui...?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 22 bytes. 'Por que ela nao esta aqui...?' = 27 sem acento. Encurtar."
+    },
+    {
+      "offset": "0x1c6a5a",
+      "text_source": "What's the matter? It's about to start.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "urgente",
+      "intent": "chamar Jachdwalt de volta ao foco",
+      "risk_level": "low",
+      "base_translation": "O que foi? Está prestes a começar.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6a82",
+      "text_source": "My girl... I don't see her in the carriage.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "angustiado",
+      "intent": "dizer que não vê sua garota na carruagem",
+      "risk_level": "low",
+      "base_translation": "Minha garota... Não a vejo na carruagem.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6aae",
+      "text_source": "...What?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "...Quê?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6ab7",
+      "text_source": "Just... can't see her anywhere, yeah...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "confirmar que não consegue vê-la em lugar algum",
+      "risk_level": "low",
+      "base_translation": "É... não consigo vê-la em lugar nenhum, né...?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6ae0",
+      "text_source": "What do we do...? We can't stop the operation\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "dilema — não podem parar a operação",
+      "risk_level": "low",
+      "base_translation": "O que fazemos...? Não podemos parar a operação\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6b10",
+      "text_source": "now...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "agora não",
+      "risk_level": "low",
+      "base_translation": "agora...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6b17",
+      "text_source": "...Sorry, boss, but I'm gonna have to leave.\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "informal urgente",
+      "intent": "Jachdwalt se desculpa e avisa que vai embora sozinho",
+      "risk_level": "low",
+      "base_translation": "...Desculpa, chefe, mas vou ter que ir.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6b46",
+      "text_source": "I gotta find my girl.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "informal urgente",
+      "intent": "precisa encontrar sua garota",
+      "risk_level": "low",
+      "base_translation": "Preciso achar minha garota.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6b5c",
+      "text_source": "Hey, wait! You're going to ruin the plan if you\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "alarmado",
+      "intent": "tentar deter Jachdwalt alertando sobre o plano",
+      "risk_level": "low",
+      "base_translation": "Ei, espera! Você vai arruinar o plano se\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6b8e",
+      "text_source": "go off on your own!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme",
+      "intent": "proibir Jachdwalt de ir sozinho",
+      "risk_level": "medium",
+      "base_translation": "ir por conta própria!",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 19; encurtado."
+    },
+    {
+      "offset": "0x1c6ba2",
+      "text_source": "Look, I'm real sorry, but if I can't save her,\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "informal urgente",
+      "intent": "explicar que não pode deixar ela para trás",
+      "risk_level": "low",
+      "base_translation": "Olha, me desculpa de verdade, mas se eu não salvá-la,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6bd3",
+      "text_source": "none of this means a damn thing. Just leave me\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "determinado/culpado",
+      "intent": "completar justificativa e se despedir",
+      "risk_level": "low",
+      "base_translation": "nada disso faz sentido. Deixa eu ir.\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6c04",
+      "text_source": "behind.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "narrativa/fala",
+      "intent": "não vou deixar para trás",
+      "risk_level": "medium",
+      "base_translation": "assim.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 7 bytes. 'para tras.' = 9 sem acento. Usar termo mais curto."
+    },
+    {
+      "offset": "0x1c6c0c",
+      "text_source": "Jachdwalt dashes off, his expression frantic.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever Jachdwalt saindo em desespero",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt sai correndo, com expressão desesperada.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6c3a",
+      "text_source": "Argh... What am I supposed to...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku frustrado, sem saber o que fazer",
+      "risk_level": "low",
+      "base_translation": "Argh... O que é que eu faço agora...\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6c5d",
+      "text_source": "No, there's no time to think.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "sem tempo para pensar",
+      "risk_level": "low",
+      "base_translation": "Não, não há tempo para pensar.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6c7b",
+      "text_source": "Kiwru, I'm going after Jachdwalt.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "liderança improvisada",
+      "intent": "delegar comando a Kiwru",
+      "risk_level": "low",
+      "base_translation": "Kiwru, vou atrás de Jachdwalt.\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6c9f",
+      "text_source": "You're in charge now. Stick to the plan.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal direto",
+      "intent": "delegar o comando e manter o plano",
+      "risk_level": "low",
+      "base_translation": "Você está no comando agora. Siga o plano.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6cc8",
+      "text_source": "Wh-What!? Wait, that's--",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "surpreso/alarmado",
+      "intent": "reagir ao receber o comando de surpresa",
+      "risk_level": "low",
+      "base_translation": "Q-Quê!? Espera, isso é--",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6ce1",
+      "text_source": "I stay low to the ground as I stealthily tail\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração furtiva",
+      "intent": "descrever perseguição furtiva a Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "Fico rente ao chão enquanto sigo furtivamente\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6d11",
+      "text_source": "Jachdwalt.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração furtiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6d1c",
+      "text_source": "Hold it, Jachdwalt! Do you even know where she\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente/questionador",
+      "intent": "perguntar a Jachdwalt se sabe onde ela está",
+      "risk_level": "low",
+      "base_translation": "Espera aí, Jachdwalt! Você sabe onde ela\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6d4d",
+      "text_source": "might be? You're not just gonna ransack the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente/questionador",
+      "intent": "questionar se vai revistar o acampamento",
+      "risk_level": "low",
+      "base_translation": "pode estar? Não vai sair vasculhando o\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6d7b",
+      "text_source": "camp...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso tenso",
+      "intent": "mencionar acampamento como possível localização",
+      "risk_level": "medium",
+      "base_translation": "campo...?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 8; encurtado."
+    },
+    {
+      "offset": "0x1c6d84",
+      "text_source": "There's one place she might be, yeah?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "supor onde ela pode estar",
+      "risk_level": "low",
+      "base_translation": "Tem um lugar onde ela pode estar, né?\\n",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6dac",
+      "text_source": "I just gotta check that one place.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "determinado",
+      "intent": "confirmar que só precisa checar esse lugar",
+      "risk_level": "low",
+      "base_translation": "Só preciso checar esse lugar.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6dcf",
+      "text_source": "Jachdwalt dashes towards a tent with a unique\\n",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever Jachdwalt se dirigindo a uma tenda especial",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt corre em direção a uma tenda com um\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6dff",
+      "text_source": "crest, a little ways from the center of the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "continuar descrição da localização da tenda",
+      "risk_level": "low",
+      "base_translation": "especial, um pouco afastada do centro do\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6e2d",
+      "text_source": "encampment.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "dentro do acampamento",
+      "risk_level": "low",
+      "base_translation": "acampamento.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6e39",
+      "text_source": "You've gotta be kidding me. That's clearly a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso/preocupado",
+      "intent": "notar que a tenda é de alguém importante",
+      "risk_level": "low",
+      "base_translation": "Não pode ser. Essa é claramente a\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6e68",
+      "text_source": "tent for someone in charge...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso/preocupado",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "base_translation": "tenda de alguém no comando...",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6e86",
+      "text_source": "Why would she be here? Or is she being forced\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "questionar por que ela estaria ali ou se está sendo forçada",
+      "risk_level": "medium",
+      "base_translation": "Por que ela estaria aqui? Ou está sendo forçada\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade sobre situação da garota — preservar dúvida."
+    },
+    {
+      "offset": "0x1c6eb6",
+      "text_source": "to...? No, can't jump to conclusions. More\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "não tirar conclusões precipitadas",
+      "risk_level": "low",
+      "base_translation": "a...? Não, não posso tirar conclusões. Mais\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6ee3",
+      "text_source": "importantly...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "focado",
+      "intent": "redirecionar atenção para o presente",
+      "risk_level": "low",
+      "base_translation": "importante...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6ef2",
+      "text_source": "Uzurushan soldier",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "soldado Uzurushan",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f04",
+      "text_source": "Wh--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Q--",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f09",
+      "text_source": "Hah...!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação",
+      "intent": "onomatopeia de golpe/esforço",
+      "risk_level": "low",
+      "base_translation": "Hah...!",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f11",
+      "text_source": "Jachdwalt cuts the guard down with a single\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação",
+      "intent": "descrever Jachdwalt abatendo guarda",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt derruba o guarda com um único\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f3f",
+      "text_source": "strike, and rushes toward the tent.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação",
+      "intent": "completar descrição da ação",
+      "risk_level": "low",
+      "base_translation": "golpe e avança em direção à tenda.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f63",
+      "text_source": "What kind of girl would make a guy like this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso/admirado",
+      "intent": "questionar que tipo de garota faz isso com alguém",
+      "risk_level": "low",
+      "base_translation": "Que tipo de garota deixaria um cara assim\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6f92",
+      "text_source": "so crazy over her?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso/admirado",
+      "intent": "completar reflexão",
+      "risk_level": "low",
+      "base_translation": "tão louco por ela?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6fa5",
+      "text_source": "Jachdwalt's peering inside through the gaps of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever Jachdwalt espiando dentro da tenda",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt espia pelo interior pela abertura da\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c6fd6",
+      "text_source": "the tent's canvas. I follow suit and peer in.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "dizer que segue o exemplo e espia também",
+      "risk_level": "low",
+      "base_translation": "lona da tenda. Faço o mesmo e espio também.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7004",
+      "text_source": "Girl",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "UI",
+      "intent": "rótulo de falante",
+      "risk_level": "low",
+      "base_translation": "Garota",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7009",
+      "text_source": "Open wide.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Abra bem.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7014",
+      "text_source": "Small child",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "rótulo de personagem",
+      "risk_level": "low",
+      "base_translation": "Criança",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7020",
+      "text_source": "Ahhhh... *homf* *munch*",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/feliz",
+      "intent": "onomatopeia de comer com prazer",
+      "risk_level": "medium",
+      "base_translation": "Ahhhh... *nhac* *munch*",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Localizar 'homf munch' para convenção pt-BR infantil."
+    },
+    {
+      "offset": "0x1c7038",
+      "text_source": "Do you like it?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil/cuidador",
+      "intent": "perguntar se a criança está gostando",
+      "risk_level": "low",
+      "base_translation": "Está gostando?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7048",
+      "text_source": "Yeah, it's delish!",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/entusiasmado",
+      "intent": "dizer que está delicioso",
+      "risk_level": "low",
+      "base_translation": "Tá, é uma delícia!",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c705b",
+      "text_source": "Really? Haha, I'm glad to hear it. Eat up now...\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil/cuidador",
+      "intent": "expressar alegria e incentivar a comer mais",
+      "risk_level": "low",
+      "base_translation": "Que bom! Haha, fico feliz em saber. Come mais...\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c708e",
+      "text_source": "You need to eat a hearty breakfast.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil",
+      "intent": "incentivar a criança a comer bem",
+      "risk_level": "low",
+      "base_translation": "Você precisa comer um bom café da manhã.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c70b2",
+      "text_source": "I see a girl and a small child having breakfast\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "descrever cena de café da manhã na tenda",
+      "risk_level": "low",
+      "base_translation": "Vejo uma garota e uma criança pequena tomando\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c70e4",
+      "text_source": "inside.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração",
+      "intent": "concluir descrição",
+      "risk_level": "low",
+      "base_translation": "café.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c70ec",
+      "text_source": "...Uhh...? Not quite what I was expecting.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "reação surpresa — não era o que esperava ver",
+      "risk_level": "low",
+      "base_translation": "...Hã...? Não era bem o que eu esperava.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7117",
+      "text_source": "Jachdwalt, is that the girl you're looking for?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "questionador",
+      "intent": "perguntar a Jachdwalt se é ela",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt, é essa a garota que você procura?",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7147",
+      "text_source": "Yeah. Looks like she's safe.\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "aliviado",
+      "intent": "confirmar e dizer que está bem",
+      "risk_level": "low",
+      "base_translation": "É. Parece que está bem.\\n",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7166",
+      "text_source": "But why is she...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso",
+      "intent": "questionar a presença dela ali",
+      "risk_level": "medium",
+      "base_translation": "Mas por que ela...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 17; encurtado."
+    },
+    {
+      "offset": "0x1c7178",
+      "text_source": "Jachdwalt gives a sigh of relief, but he looks\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "descrever Jachdwalt aliviado mas confuso",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt dá um suspiro de alívio, mas parece\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c71a9",
+      "text_source": "almost as baffled as I am.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "tão confuso quanto eu.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c71c4",
+      "text_source": "Here we go again. Open wide.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil/cuidador",
+      "intent": "oferecer mais comida à criança",
+      "risk_level": "low",
+      "base_translation": "Mais uma. Abre bem.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c71e1",
+      "text_source": "Ahhhh, *munch* *munch* *munch*\\n",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/feliz",
+      "intent": "onomatopeia de mastigar",
+      "risk_level": "medium",
+      "base_translation": "Ahhhh, *munch* *munch* *munch*\\n",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Localizar onomatopeias de mastigação infantil para pt-BR."
+    },
+    {
+      "offset": "0x1c7202",
+      "text_source": "...Delish!",
+      "speaker": "[CRIANÇA]",
+      "entities_present": [
+        "[CRIANÇA]"
+      ],
+      "tone_register": "infantil animado",
+      "intent": "criança aprova a comida",
+      "risk_level": "low",
+      "base_translation": "...Delícia!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c720d",
+      "text_source": "Haha...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "carinhoso",
+      "intent": "rir com ternura",
+      "risk_level": "low",
+      "base_translation": "Haha...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7215",
+      "text_source": "But it would've been more delish if Dad were\\n",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/saudoso",
+      "intent": "dizer que seria mais gostoso se o pai estivesse",
+      "risk_level": "low",
+      "base_translation": "Mas seria mais gostoso se o papai estivesse\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7244",
+      "text_source": "here...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "questionar o que ela faz aqui",
+      "risk_level": "low",
+      "base_translation": "aqui...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c724c",
+      "text_source": "Oh... He will be back soon, so be sure to behave\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil/reconfortante",
+      "intent": "dizer que o pai volta logo e pedir que se comporte",
+      "risk_level": "medium",
+      "base_translation": "Ah... Ele volta logo, então se comporte\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referente masculino 'Father/Dad' — sem spoiler, manter distinção pai/papai natural em pt-BR."
+    },
+    {
+      "offset": "0x1c727f",
+      "text_source": "yourself until then. OK?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil/reconfortante",
+      "intent": "completar instrução à criança",
+      "risk_level": "low",
+      "base_translation": "bem até lá. OK?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7298",
+      "text_source": "OK. I'll be good and wait.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil",
+      "intent": "criança promete esperar",
+      "risk_level": "low",
+      "base_translation": "OK. Vou ser boazinha e esperar.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c72b3",
+      "text_source": "The girl wipes the child's face with a napkin,\\n",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever garota limpando rosto da criança",
+      "risk_level": "low",
+      "base_translation": "A garota limpa o rosto da criança com um guardanapo,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c72e4",
+      "text_source": "gently removing errant food. They seem happy\\n",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "descrever cena tranquila e feliz",
+      "risk_level": "low",
+      "base_translation": "removendo restos de comida. Parecem felizes\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7313",
+      "text_source": "together.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "completar observação",
+      "risk_level": "low",
+      "base_translation": "juntas.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c731d",
+      "text_source": "...Oh crap. Jachdwalt, we're running out of time.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "lembrar Jachdwalt que o tempo está acabando",
+      "risk_level": "low",
+      "base_translation": "...Merda. Jachdwalt, estamos sem tempo.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c734f",
+      "text_source": "Right, almost forgot. We need to hurry, yeah?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "pragmático/aliviado",
+      "intent": "concordar que precisa se apressar",
+      "risk_level": "low",
+      "base_translation": "É, quase esqueci. Precisamos correr, sabe?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c737d",
+      "text_source": "Hey, something's on fire.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "avistar fogo no acampamento",
+      "risk_level": "low",
+      "base_translation": "Ei, tem algo pegando fogo.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7397",
+      "text_source": "Fire...! Fire!!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "alarmado",
+      "intent": "gritar alerta de fogo",
+      "risk_level": "low",
+      "base_translation": "Fogo...! Fogo!!",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c73a7",
+      "text_source": "Dammit, there it goes...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado/ansioso",
+      "intent": "reagir ao sinal do plano",
+      "risk_level": "low",
+      "base_translation": "Ótimo, lá vai...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c73c0",
+      "text_source": "Is it an enemy attack!?",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "alarmado",
+      "intent": "questionar se é ataque inimigo",
+      "risk_level": "low",
+      "base_translation": "É um ataque inimigo!?",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c73d8",
+      "text_source": "I don't know, but we have to put it out!\\n",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "urgente",
+      "intent": "ordenar combate ao fogo",
+      "risk_level": "low",
+      "base_translation": "Não sei, mas temos que apagar!\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7403",
+      "text_source": "Bring water!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "urgente",
+      "intent": "pedir água",
+      "risk_level": "low",
+      "base_translation": "Tragam água!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7410",
+      "text_source": "Plumes of smoke begin to rise, and chaos spreads\\n",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "descrever fumaça e caos se espalhando",
+      "risk_level": "low",
+      "base_translation": "Colunas de fumaça começam a subir e o caos se espalha\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7443",
+      "text_source": "across the camp, bit by bit.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "pelo acampamento aos poucos",
+      "risk_level": "low",
+      "base_translation": "pelo acampamento, aos poucos.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7460",
+      "text_source": "A fire? Is it an enemy attack?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "alarmado",
+      "intent": "questionar se é fogo ou ataque inimigo",
+      "risk_level": "low",
+      "base_translation": "Fogo? É um ataque inimigo?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c747f",
+      "text_source": "The girl notices the ruckus going on, and she\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever reação da garota ao caos",
+      "risk_level": "low",
+      "base_translation": "A garota percebe a confusão lá fora e\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c74af",
+      "text_source": "holds the child close as she looks about.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição — proteger a criança",
+      "risk_level": "low",
+      "base_translation": "abraça a criança enquanto olha ao redor.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c74d9",
+      "text_source": "Shinonon, I am going to go see what has happened.\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "calmo/firme",
+      "intent": "dizer à criança que vai ver o que aconteceu",
+      "risk_level": "high",
+      "base_translation": "Shinonon, vou ver o que aconteceu.\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Garota chama a criança por nome (Shinonon) — nome revelado aqui; spoiler controlado: é nome de personagem secundário, sem revelar identidade de Entua ainda."
+    },
+    {
+      "offset": "0x1c750d",
+      "text_source": "Be good and stay here.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil",
+      "intent": "pedir para a criança ficar quietinha e esperar",
+      "risk_level": "low",
+      "base_translation": "Fique aqui e se comporte.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7524",
+      "text_source": "Got it. I'll be good.",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "obediente infantil",
+      "intent": "confirmar que vai se comportar",
+      "risk_level": "low",
+      "base_translation": "Tá. Vou me comportar.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c753a",
+      "text_source": "That's a good girl.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "carinhoso",
+      "intent": "elogiar a criança",
+      "risk_level": "low",
+      "base_translation": "Boa menina.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c754e",
+      "text_source": "The girl peeks through the tent's entryway and\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever garota espiando pela entrada da tenda",
+      "risk_level": "low",
+      "base_translation": "A garota espia pela entrada da tenda e\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c757f",
+      "text_source": "looks hesitantly around the area.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "olha ao redor com hesitação.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c75a1",
+      "text_source": "She seems to notice that the guards are missing,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "notar que garota percebe ausência das guardas",
+      "risk_level": "low",
+      "base_translation": "Ela parece notar que as guardas sumiram\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c75d4",
+      "text_source": "and begins to hurry towards the fire.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "garota se apressa em direção ao fogo",
+      "risk_level": "low",
+      "base_translation": "e começa a se apressar em direção ao fogo.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c75fa",
+      "text_source": "Hey, she's leaving.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "notar que a garota está saindo",
+      "risk_level": "low",
+      "base_translation": "Ei, ela está saindo.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c760e",
+      "text_source": "Yeah, now's our chance!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tático animado",
+      "intent": "aproveitar a oportunidade",
+      "risk_level": "low",
+      "base_translation": "Agora é nossa chance!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7626",
+      "text_source": "Jachdwalt hurries into the tent and runs to\\n",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "Jachdwalt entra na tenda correndo até a criança",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt entra correndo na tenda e corre até\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7654",
+      "text_source": "the child's side.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "ao lado da criança",
+      "risk_level": "low",
+      "base_translation": "o lado da criança.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7666",
+      "text_source": "Oh, Dad! You're back.",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/feliz",
+      "intent": "receber o pai com alegria",
+      "risk_level": "low",
+      "base_translation": "Papai! Você voltou.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c767c",
+      "text_source": "That's right. You been good?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "carinhoso/pai",
+      "intent": "confirmar retorno e perguntar se foi boa",
+      "risk_level": "low",
+      "base_translation": "Isso. Você se comportou?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7699",
+      "text_source": "'Course I been good!",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/orgulhoso",
+      "intent": "confirmar que foi boa",
+      "risk_level": "low",
+      "base_translation": "Claro que fui boa!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c76ae",
+      "text_source": "The child's speech patterns are oddly similar\\n",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "notar semelhança nos padrões de fala da criança com Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "Os padrões de fala da criança são curiosamente\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c76de",
+      "text_source": "to his. She seems to be in a good mood.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "criança parece estar de bom humor",
+      "risk_level": "low",
+      "base_translation": "com os dele. Ela parece estar de bom humor.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7706",
+      "text_source": "We're gonna make a run for it.\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "urgente/pai",
+      "intent": "dizer que vão fugir",
+      "risk_level": "low",
+      "base_translation": "Vamos dar o fora daqui.\\n",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7727",
+      "text_source": "Hold tight, now.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "urgente carinhoso",
+      "intent": "pedir que a criança se segure",
+      "risk_level": "low",
+      "base_translation": "Segura firme, tá.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7738",
+      "text_source": "Got it! I ain't letting go!",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/determinado",
+      "intent": "confirmar que não vai soltar",
+      "risk_level": "low",
+      "base_translation": "Pode deixar! Não solto!",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7754",
+      "text_source": "The child clambers onto Jachdwalt and clings\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever criança subindo em Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "A criança sobe em Jachdwalt e se agarra\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7783",
+      "text_source": "to his clothes, beaming.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "criança se agarra às roupas dele sorrindo",
+      "risk_level": "low",
+      "base_translation": "nas roupas dele, radiante.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c779c",
+      "text_source": "Time to make tracks, boss.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "hora de ir embora",
+      "risk_level": "low",
+      "base_translation": "Hora de sumir daqui, chefe.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c77b7",
+      "text_source": "Huh? W-Wait, what about your girl--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso",
+      "intent": "perguntar sobre a garota de Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "Hein? E-Espera, e sua garota--",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c77db",
+      "text_source": "Fine, I guess I'll go get her...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku decide ir buscar a outra pessoa",
+      "risk_level": "low",
+      "base_translation": "Tudo bem, acho que vou buscá-la...",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c77fc",
+      "text_source": "I exit the tent and look around, ducking behind\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração furtiva",
+      "intent": "descrever saída da tenda com cautela",
+      "risk_level": "low",
+      "base_translation": "Saio da tenda e olho ao redor, me escondendo\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c782e",
+      "text_source": "whatever I can for cover.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "usar o que puder como cobertura",
+      "risk_level": "low",
+      "base_translation": "o que puder como cobertura.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7848",
+      "text_source": "Extinguish the fire! All others, move the\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante/firme",
+      "intent": "ordenar combate ao fogo e proteção dos suprimentos",
+      "risk_level": "high",
+      "base_translation": "Apaguem o fogo! Os demais, movam os\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeira aparição de Entua em voz de comando — identidade ainda não revelada formalmente como 'Entua'. Usar voz de comando firme."
+    },
+    {
+      "offset": "0x1c7874",
+      "text_source": "supplies away! We cannot lose a single grain\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante/firme",
+      "intent": "completar ordem sobre os suprimentos",
+      "risk_level": "high",
+      "base_translation": "suprimentos! Não podemos perder nem um grão\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua mencionando amam — manter_original per glossário."
+    },
+    {
+      "offset": "0x1c78a3",
+      "text_source": "of amam!",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante/firme",
+      "intent": "completar ordem",
+      "risk_level": "low",
+      "base_translation": "de amam!",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c78ac",
+      "text_source": "Yes, ma'am!",
+      "speaker": "Bandido",
+      "entities_present": [
+        "Bandido"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Sim!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c78b8",
+      "text_source": "That's her voice... It's coming from over there.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reconhecendo",
+      "intent": "reconhecer a voz como sendo a garota",
+      "risk_level": "low",
+      "base_translation": "É a voz dela... vem dali.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c78e9",
+      "text_source": "How could this happen...? I cannot be so\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku surpreso com situação — não pode ser tão descuidado",
+      "risk_level": "low",
+      "base_translation": "Como isso aconteceu...? Não posso ser tão\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7914",
+      "text_source": "careless. A change must be made...",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "autocrítico/preocupado",
+      "intent": "anunciar mudança necessária",
+      "risk_level": "low",
+      "base_translation": "descuidada. Preciso mudar algo...",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7937",
+      "text_source": "I will have to be more strict about--",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "autocrítico/firme",
+      "intent": "comprometer-se a ser mais rígida",
+      "risk_level": "low",
+      "base_translation": "Vou ter que ser mais rígida com--",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c795d",
+      "text_source": "There she is...! And... nobody around.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "avistar a garota sem ninguém por perto",
+      "risk_level": "low",
+      "base_translation": "Ali está ela...! E... ninguém por perto.\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7986",
+      "text_source": "Now's my chance!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "aproveitar a oportunidade",
+      "risk_level": "low",
+      "base_translation": "É agora!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7997",
+      "text_source": "I check to make sure nobody's around, and\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação furtiva",
+      "intent": "verificar área e agarrar a mão da garota",
+      "risk_level": "low",
+      "base_translation": "Verifico se não tem ninguém e\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c79c3",
+      "text_source": "grab the girl's hand as I lead her away.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku agarra a mão da garota e a conduz para longe",
+      "risk_level": "low",
+      "base_translation": "agarro a mão da garota e a conduzo para longe.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c79ec",
+      "text_source": "Wha--!? Wh-Who are you!?\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "surpreso/alarmado",
+      "intent": "reagir ao ser agarrada — quem é você",
+      "risk_level": "high",
+      "base_translation": "Quê--!? Q-Quem é você!?\\n",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeira fala de voz de Entua — identidade não revelada ainda. Tom alarmado adequado."
+    },
+    {
+      "offset": "0x1c7a07",
+      "text_source": "What are you--",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "alarmado, reativo",
+      "intent": "reação de susto ao ser agarrada",
+      "risk_level": "medium",
+      "base_translation": "Que é isso--",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 14 bytes. 'O que voce esta--' = 16 sem acento. Memória: 'O que você está--'. Encurtar: 'O que--' = 6, mas perde sentido. 'Voce--' = 6. Usar 'Ei, que--' = 9 ou 'Que e isso--' = 12."
+    },
+    {
+      "offset": "0x1c7a16",
+      "text_source": "We're here to help. Keep running!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente/tranquilizador",
+      "intent": "dizer que vieram ajudar e continuar correndo",
+      "risk_level": "low",
+      "base_translation": "Viemos ajudar. Continue correndo!",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7a38",
+      "text_source": "Come to help? What do you...\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "confuso",
+      "intent": "questionar sobre o que é 'ajudar'",
+      "risk_level": "low",
+      "base_translation": "Vieram ajudar? O que você...\\n",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7a57",
+      "text_source": "Who exactly are you?",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "surpreso reativo",
+      "intent": "garota questiona identidade de Haku",
+      "risk_level": "low",
+      "base_translation": "Quem exatamente é você?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7a6c",
+      "text_source": "I'll explain later. Anyway, we need to hurry!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "prometer explicar depois e apressar",
+      "risk_level": "low",
+      "base_translation": "Explico depois. Agora precisamos correr!",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7a9a",
+      "text_source": "A-All right, but could you please stop pulling\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "cedendo/educado",
+      "intent": "pedir que pare de puxar com tanta força",
+      "risk_level": "low",
+      "base_translation": "T-Tudo bem, mas pode parar de me puxar\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7acb",
+      "text_source": "me so hard...?",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "cedendo/educado",
+      "intent": "completar pedido",
+      "risk_level": "low",
+      "base_translation": "tão forte...?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7ada",
+      "text_source": "With those words, the girl's wariness seems to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever garota seguindo após o pedido",
+      "risk_level": "low",
+      "base_translation": "Com isso, a desconfiança da garota parece\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7b0b",
+      "text_source": "fade, and she follows close behind.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "completar descrição",
+      "risk_level": "low",
+      "base_translation": "diminuir e ela segue bem de perto.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7b2f",
+      "text_source": "Luckily, none of the barbarian soldiers spot us.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração/alívio",
+      "intent": "descrever fuga bem-sucedida",
+      "risk_level": "low",
+      "base_translation": "Por sorte, nenhum soldado bárbaro nos avista.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7b62",
+      "text_source": "I manage to catch up with Kiwru and Jachdwalt.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração/alívio",
+      "intent": "descrever reencontro com Kiwru e Jachdwalt",
+      "risk_level": "low",
+      "base_translation": "Consigo alcançar Kiwru e Jachdwalt.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7b91",
+      "text_source": "Haku! Are you all right!?",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "aliviado/preocupado",
+      "intent": "verificar se Haku está bem",
+      "risk_level": "low",
+      "base_translation": "Haku! Está bem!?",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7bab",
+      "text_source": "Yeah, I managed somehow.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "aliviado",
+      "intent": "dizer que conseguiu de algum jeito",
+      "risk_level": "low",
+      "base_translation": "É, consegui de algum jeito.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7bc4",
+      "text_source": "Hey, Jachdwalt. What's wrong with you!? I wasn't\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "indignado",
+      "intent": "repreender Jachdwalt por abandonar a garota",
+      "risk_level": "low",
+      "base_translation": "Ei, Jachdwalt. Que foi isso!? Não esperava\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7bf7",
+      "text_source": "expecting you to leave your girl behind!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso indignado",
+      "intent": "não esperava que ele deixasse a garota para trás",
+      "risk_level": "low",
+      "base_translation": "esperando você abandonar sua garota!",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7c20",
+      "text_source": "What are you talkin...What the--Boss, why'd you\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "informal confuso",
+      "intent": "Jachdwalt confuso com o que o chefe fez",
+      "risk_level": "low",
+      "base_translation": "O que você tá falando...Quê--Chefe, por que você\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7c52",
+      "text_source": "bring HER with you!?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "confuso/surpreso",
+      "intent": "completar questionamento chocado",
+      "risk_level": "low",
+      "base_translation": "trouxe ELA?!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7c67",
+      "text_source": "Huh?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "confuso",
+      "intent": "reação de surpresa",
+      "risk_level": "medium",
+      "base_translation": "Oi?",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 4 bytes. 'Hein?' = 5 sem acento. Usar 'Ha?' = 3 ou 'Oi?' = 3."
+    },
+    {
+      "offset": "0x1c7c6c",
+      "text_source": "You're... Jachdwalt!? Then that must mean--",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "informal confuso",
+      "intent": "Jachdwalt reconhece Jachdwalt e percebe implicação",
+      "risk_level": "high",
+      "base_translation": "Você é... Jachdwalt!? Então isso significa--",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha de reveal — a garota é identificada como chefe inimiga. Spoiler de identidade."
+    },
+    {
+      "offset": "0x1c7c98",
+      "text_source": "The girl glares at me and slaps my hand off hers.",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "garota olha furiosa e tira a mão de Haku",
+      "risk_level": "low",
+      "base_translation": "A garota me olha furiosa e tira minha mão da dela.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7cca",
+      "text_source": "Gah!? What are you--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso/confuso",
+      "intent": "reagir à ação da garota",
+      "risk_level": "low",
+      "base_translation": "Gah!? O que você--",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7cdf",
+      "text_source": "She's THEIR boss! Dammit, I went through all\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku descobre que a garota é a chefe deles — foi tudo em vão",
+      "risk_level": "high",
+      "base_translation": "Ela é a CHEFE deles! Droga, passei por tudo isso\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Reveal: garota é chefe inimiga — impacto emocional de frustração. Manter força da expressão."
+    },
+    {
+      "offset": "0x1c7d0e",
+      "text_source": "that to grab Shinonon without bein' noticed.\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "frustrado",
+      "intent": "explicar o que fez e o erro de Haku",
+      "risk_level": "low",
+      "base_translation": "para pegar a Shinonon sem ser notado.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7d3d",
+      "text_source": "Why'd you bring her here!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "indignado",
+      "intent": "questionar por que trouxe ela",
+      "risk_level": "low",
+      "base_translation": "Por que você a trouxe aqui!?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7d58",
+      "text_source": "Hold on a sec. When you say your girl...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal direto",
+      "intent": "questionar o que Jachdwalt quis dizer com 'sua garota'",
+      "risk_level": "low",
+      "base_translation": "Espera aí. Quando você disse sua garota...\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7d83",
+      "text_source": "do you mean that kid!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, incrédulo",
+      "intent": "questionar se é a criança",
+      "risk_level": "medium",
+      "base_translation": "é aquela criança!?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 22 bytes. 'voce quer dizer aquela crianca!?' = 30 sem acento. Encurtar."
+    },
+    {
+      "offset": "0x1c7d9a",
+      "text_source": "Best little girl in the whole wide world.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "orgulhoso/pai",
+      "intent": "confirmar que a filha é a melhor do mundo",
+      "risk_level": "low",
+      "base_translation": "A melhor garotinha do mundo inteiro.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7dc4",
+      "text_source": "Could we PLEASE clarify these things beforehand!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal direto",
+      "intent": "Haku explode pedindo que esclareçam as coisas antes",
+      "risk_level": "low",
+      "base_translation": "Será que dá pra ESCLARECER essas coisas de antemão!?",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7df6",
+      "text_source": "Wh-What are we going to do!? If she calls for\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "alarmado",
+      "intent": "preocupar com o que fazer se a garota pedir ajuda",
+      "risk_level": "low",
+      "base_translation": "Q-O que vamos fazer!? Se ela pedir ajuda,\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7e26",
+      "text_source": "help, we'll be completely outnumbered!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "alarmado",
+      "intent": "completar preocupação",
+      "risk_level": "low",
+      "base_translation": "seremos completamente superados!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7e4d",
+      "text_source": "Kiwru doesn't really handle sudden changes of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração observacional",
+      "intent": "notar que Kiwru não lida bem com mudanças de plano",
+      "risk_level": "low",
+      "base_translation": "Kiwru não lida muito bem com mudanças\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7e7d",
+      "text_source": "plan well, huh?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico",
+      "intent": "concluir o comentário",
+      "risk_level": "low",
+      "base_translation": "imprevistos.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7e8d",
+      "text_source": "But he does have a point...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "pensativo",
+      "intent": "reconhecer que Kiwru tem razão",
+      "risk_level": "low",
+      "base_translation": "Mas ele tem razão...\\n",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7eab",
+      "text_source": "If she calls for help...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "pensativo/tenso",
+      "intent": "ponderar a ameaça se ela pedir ajuda",
+      "risk_level": "low",
+      "base_translation": "Se ela pedir ajuda...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7ec8",
+      "text_source": "...Huh?",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "reação surpresa da garota/Entua",
+      "risk_level": "medium",
+      "base_translation": "...Hein?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua ainda não nomeada explicitamente neste ponto — spoiler a verificar."
+    },
+    {
+      "offset": "0x1c7ed0",
+      "text_source": "However, the girl doesn't call out.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "notar que a garota não grita",
+      "risk_level": "low",
+      "base_translation": "No entanto, a garota não grita.\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7ef6",
+      "text_source": "She just gazes sadly at Jachdwalt and the kid\\n",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "garota olha tristemente para Jachdwalt e a criança",
+      "risk_level": "low",
+      "base_translation": "Ela olha com tristeza para Jachdwalt e a criança\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7f26",
+      "text_source": "for a moment.",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "por um momento",
+      "risk_level": "low",
+      "base_translation": "por um momento.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7f34",
+      "text_source": "...You should go.",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "resignado/gentil",
+      "intent": "dizer para irem embora",
+      "risk_level": "low",
+      "base_translation": "...Podem ir.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7f46",
+      "text_source": "You...",
+      "speaker": "Entua",
+      "entities_present": [
+        "Entua"
+      ],
+      "tone_register": "firme frio",
+      "intent": "Entua se dirige a Haku/alguém",
+      "risk_level": "high",
+      "base_translation": "Você...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua tem spoiler:major — verificar se este é o ponto de reveal permitido."
+    },
+    {
+      "offset": "0x1c7f4d",
+      "text_source": "Be good now, Shinonon.",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "gentil/carinhoso",
+      "intent": "se despedir da criança",
+      "risk_level": "low",
+      "base_translation": "Se comporte, Shinonon.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7f64",
+      "text_source": "...Entua?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "surpreso/emocionado",
+      "intent": "chamar a garota pelo nome — Entua",
+      "risk_level": "high",
+      "base_translation": "...Entua?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeira vez que nome Entua é dito em voz alta — spoiler major. Preservar como está per glossário."
+    },
+    {
+      "offset": "0x1c7f6e",
+      "text_source": "You're going to let us go?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpreso",
+      "intent": "questionar se ela vai deixá-los ir",
+      "risk_level": "low",
+      "base_translation": "Você vai nos deixar ir?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7f89",
+      "text_source": "*Stomp* *stomp* *stomp*",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "som de passos apressados",
+      "risk_level": "low",
+      "base_translation": "*Passo* *passo* *passo*",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7fa1",
+      "text_source": "Lady Entua! Where are you!?",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "alarmado",
+      "intent": "chamar Entua e perguntar onde está",
+      "risk_level": "high",
+      "base_translation": "Lady Entua! Onde está!?",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeira vez que soldados chamam Entua pelo título 'Lady Entua' — nome revelado. Per glossário manter_original."
+    },
+    {
+      "offset": "0x1c7fbd",
+      "text_source": "Hm!? Is that the enemy!? Lady Entua, are you\\n",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "alarmado",
+      "intent": "verificar se Entua está ilesa",
+      "risk_level": "low",
+      "base_translation": "Hm!? É o inimigo!? Lady Entua, está\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7fec",
+      "text_source": "unharmed!?",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "alarmado",
+      "intent": "completar verificação",
+      "risk_level": "low",
+      "base_translation": "ilesa!?",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c7ff7",
+      "text_source": "It seems these men were searching for her.\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "autoritário",
+      "intent": "revelar que os homens estavam procurando por ela",
+      "risk_level": "low",
+      "base_translation": "Parece que esses homens estavam me procurando.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8024",
+      "text_source": "Multiple Uzurushan soldiers appear behind her.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração descritiva",
+      "intent": "descrever soldados Uzurushan aparecendo",
+      "risk_level": "low",
+      "base_translation": "Vários soldados Uzurushan aparecem atrás dela.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8053",
+      "text_source": "Nngh...! Draw steel!\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante/firme",
+      "intent": "ordenar que desenhem as espadas",
+      "risk_level": "low",
+      "base_translation": "Nnngh...! Espadas!\\n",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c806a",
+      "text_source": "Our enemy stands before you!",
+      "speaker": "Entua",
+      "entities_present": [
+        "Entua"
+      ],
+      "tone_register": "firme frio",
+      "intent": "apontar os inimigos à frente",
+      "risk_level": "high",
+      "base_translation": "O inimigo está diante de vocês!",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua spoiler:major — verificar se reveal já ocorreu nesta cena antes desta linha."
+    },
+    {
+      "offset": "0x1c8087",
+      "text_source": "The girl Shinonon called Entua has a conflicted\\n",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "descrever expressão conflitante de Entua antes do comando",
+      "risk_level": "high",
+      "base_translation": "A garota que Shinonon chamou de Entua tem uma expressão\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeiro uso do nome Entua — spoiler major no glossário. Nome aparece pela primeira vez aqui; preservar."
+    },
+    {
+      "offset": "0x1c80b9",
+      "text_source": "expression for a moment, but her command is firm.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "mas seu comando é firme",
+      "risk_level": "medium",
+      "base_translation": "por um momento, mas seu comando é firme.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação da descrição de Entua — spoiler já introduzido na linha anterior."
+    },
+    {
+      "offset": "0x1c80eb",
+      "text_source": "So this fire was their doing...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "perceber que o fogo foi causado por eles",
+      "risk_level": "low",
+      "base_translation": "Então esse fogo foi obra deles...\\n",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c810d",
+      "text_source": "It's the enemy! The enemy is here!",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante",
+      "intent": "confirmar presença do inimigo",
+      "risk_level": "low",
+      "base_translation": "É o inimigo! O inimigo está aqui!",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8130",
+      "text_source": "The barbarians handling the fire begin gathering,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração tática",
+      "intent": "descrever bárbaros se juntando e necessidade de ganhar tempo",
+      "risk_level": "low",
+      "base_translation": "Os bárbaros do fogo começam a se juntar\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8164",
+      "text_source": "too. We have to buy time for the others to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "precisam ganhar tempo para os outros escaparem",
+      "risk_level": "low",
+      "base_translation": "também. Precisamos ganhar tempo para os outros\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8191",
+      "text_source": "escape...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tático",
+      "intent": "completar — escapar",
+      "risk_level": "low",
+      "base_translation": "escapar...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c819b",
+      "text_source": "Entua, fighting's bad.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "apelando",
+      "intent": "pedir a Entua que não lute",
+      "risk_level": "low",
+      "base_translation": "Entua, briga é ruim.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c81b2",
+      "text_source": "...Surround them. Do not let them escape.",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "comandante/frio",
+      "intent": "ordenar cerco sem deixar escapar",
+      "risk_level": "low",
+      "base_translation": "...Cerquem. Não deixem escapar.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c81dc",
+      "text_source": "Understood...! How dare you make a mockery of us!\\n",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "obediente/furioso",
+      "intent": "confirmar e ameaçar os inimigos",
+      "risk_level": "low",
+      "base_translation": "Entendido...! Como ousam nos humilhar!\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8210",
+      "text_source": "I'll gut you where you stand!",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "ameaçador",
+      "intent": "ameaçar de morte",
+      "risk_level": "low",
+      "base_translation": "Vou te estripou aí mesmo!",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c822e",
+      "text_source": "No. There will be no killing.\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "firme/fria",
+      "intent": "ordenar que não matem",
+      "risk_level": "low",
+      "base_translation": "Não. Não haverá mortes.\\n",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c824e",
+      "text_source": "They are to be taken alive.",
+      "speaker": "Entua",
+      "entities_present": [
+        "Entua"
+      ],
+      "tone_register": "firme frio",
+      "intent": "ordem para capturar com vida",
+      "risk_level": "high",
+      "base_translation": "Capturem-nos com vida.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua spoiler:major — comando militar como chefe."
+    },
+    {
+      "offset": "0x1c826a",
+      "text_source": "Wha--!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Quê--!?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8272",
+      "text_source": "We must question them for information first!",
+      "speaker": "Entua",
+      "entities_present": [
+        "Entua"
+      ],
+      "tone_register": "firme frio",
+      "intent": "precisam interrogá-los primeiro",
+      "risk_level": "high",
+      "base_translation": "Precisamos interrogá-los para obter informações primeiro!",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Entua spoiler:major — linha de comando."
+    },
+    {
+      "offset": "0x1c829f",
+      "text_source": "...U-Understood.",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "obediente/hesitante",
+      "intent": "confirmar com relutância",
+      "risk_level": "low",
+      "base_translation": "...E-Entendido.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c82b0",
+      "text_source": "The barbarians take action, circling to surround\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação",
+      "intent": "descrever bárbaros cercando o grupo",
+      "risk_level": "low",
+      "base_translation": "Os bárbaros avançam, fechando o cerco\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c82e3",
+      "text_source": "us.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativa",
+      "intent": "pronome — a nós",
+      "risk_level": "medium",
+      "base_translation": "nós",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 3 bytes. 'nos.' = 4 sem acento. Usar 'nos' sem ponto = 3."
+    },
+    {
+      "offset": "0x1c82e7",
+      "text_source": "Just then, the nakwans appear, keeping us from\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração de ação",
+      "intent": "descrever nakwans chegando para ajudar",
+      "risk_level": "high",
+      "base_translation": "Nesse momento, os nakwans aparecem, impedindo\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nakwan — manter_original per glossário; nakwans como plural natural em pt-BR."
+    },
+    {
+      "offset": "0x1c8318",
+      "text_source": "being fully surrounded.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração",
+      "intent": "descrever que evitam o cerco completo",
+      "risk_level": "low",
+      "base_translation": "impedindo o cerco.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8330",
+      "text_source": "Nakwan",
+      "speaker": "Personagem-Sistema",
+      "entities_present": [
+        "Personagem-Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Nakwan",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8337",
+      "text_source": "You shall not pass!",
+      "speaker": "Nakwan",
+      "entities_present": [
+        "Nakwan"
+      ],
+      "tone_register": "determinado",
+      "intent": "impedir passagem dos inimigos",
+      "risk_level": "low",
+      "base_translation": "Não vão passar!",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c834b",
+      "text_source": "We will not let you lay a single finger on our\\n",
+      "speaker": "Nakwan",
+      "entities_present": [
+        "Nakwan"
+      ],
+      "tone_register": "determinado",
+      "intent": "proteger os salvadores",
+      "risk_level": "low",
+      "base_translation": "Não deixaremos que toquem em nossos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c837c",
+      "text_source": "saviors!",
+      "speaker": "Refém",
+      "entities_present": [
+        "Refém"
+      ],
+      "tone_register": "aliviado, urgente",
+      "intent": "aclamar os salvadores",
+      "risk_level": "medium",
+      "base_translation": "heróis!",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 8 bytes. 'salvadores!' = 10 sem acento. Usar 'salvadores' sem ! = 10, ainda estoura. Usar 'herois!' = 7."
+    },
+    {
+      "offset": "0x1c8385",
+      "text_source": "Haku, we shall keep them at bay!",
+      "speaker": "Nakwan",
+      "entities_present": [
+        "Nakwan"
+      ],
+      "tone_register": "determinado",
+      "intent": "dizer a Haku que vão segurar os inimigos",
+      "risk_level": "low",
+      "base_translation": "Haku, vamos segurá-los aqui!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c83a6",
+      "text_source": "We leave the rest to you...\\n",
+      "speaker": "Nakwan",
+      "entities_present": [
+        "Nakwan"
+      ],
+      "tone_register": "apelando",
+      "intent": "pedir que fujam e deixem para eles",
+      "risk_level": "low",
+      "base_translation": "Deixem o resto conosco...\\n",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c83c4",
+      "text_source": "Please, save my wife and child!",
+      "speaker": "Prisioneiro",
+      "entities_present": [
+        "Prisioneiro"
+      ],
+      "tone_register": "desesperado",
+      "intent": "pedir que salve esposa e filho",
+      "risk_level": "low",
+      "base_translation": "Por favor, salve minha esposa e filho!",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c83e4",
+      "text_source": "Don't be stupid! We need to run, not fight!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal direto",
+      "intent": "não é hora de lutar, mas de correr",
+      "risk_level": "low",
+      "base_translation": "Não seja idiota! Precisamos correr, não lutar!",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8410",
+      "text_source": "Haku, we're not going to last much longer here!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "desesperado",
+      "intent": "avisar que não vão aguentar muito",
+      "risk_level": "low",
+      "base_translation": "Haku, não vamos aguentar muito mais aqui!",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8440",
+      "text_source": "Not good. I messed up big time...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "autocrítico/tenso",
+      "intent": "reconhecer que errou feio",
+      "risk_level": "low",
+      "base_translation": "Que merda. Errei feio...\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8464",
+      "text_source": "This could get real bad.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "situação pode piorar muito",
+      "risk_level": "low",
+      "base_translation": "Isso pode ficar bem feio.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c847d",
+      "text_source": "Uzurushan soldiers",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "soldados Uzurushan",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8490",
+      "text_source": "Gwaaaaaaghh!!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "grito de dor",
+      "intent": "grito de impacto/derrota",
+      "risk_level": "low",
+      "base_translation": "Graaaaaaagh!!",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c849e",
+      "text_source": "Wh-What is going on!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso",
+      "intent": "não entender o que está acontecendo",
+      "risk_level": "low",
+      "base_translation": "Q-Que está acontecendo!?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c84b4",
+      "text_source": "A little more.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "um pouco mais.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c84c3",
+      "text_source": "We apologize for the delay, Master.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico pomposo",
+      "intent": "Maroro pede desculpas pelo atraso ao Mestre",
+      "risk_level": "medium",
+      "base_translation": "Pedimos desculpas pela demora, Mestre.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica do Maroro — manter registro empolado."
+    },
+    {
+      "offset": "0x1c84e7",
+      "text_source": "You're here!",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal caloroso",
+      "intent": "aliviado com a chegada",
+      "risk_level": "low",
+      "base_translation": "Você chegou!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c84f4",
+      "text_source": "Guh!?",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "surpresa/dor",
+      "intent": "reação a ser atingido de surpresa",
+      "risk_level": "low",
+      "base_translation": "Guh!?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c84fa",
+      "text_source": "Ahahahahaha!",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "animado/selvagem",
+      "intent": "rir de prazer no combate",
+      "risk_level": "low",
+      "base_translation": "Ahahahahaha!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8507",
+      "text_source": "Oh, love, that's just no fair! You went ahead\\n",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "animado/irônico",
+      "intent": "reclamar que começaram a diversão sem ela",
+      "risk_level": "low",
+      "base_translation": "Ah, amor, que injustiça! Vocês começaram\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8537",
+      "text_source": "and started all the fun without me.",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "animado/irônico",
+      "intent": "completar reclamação",
+      "risk_level": "low",
+      "base_translation": "toda a diversão sem mim.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c855b",
+      "text_source": "Atuy...! For once, you're not just here to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Haku aliviado com Atuy — desta vez ela não complicou",
+      "risk_level": "low",
+      "base_translation": "Atuy...! Por uma vez, você não veio só\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8588",
+      "text_source": "complicate things. You're a lifesaver!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "Atuy é uma salvação desta vez",
+      "risk_level": "low",
+      "base_translation": "complicar as coisas. Você nos salvou!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c85af",
+      "text_source": "Obj_Arrow",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "sistema",
+      "intent": "referência de objeto — flecha",
+      "risk_level": "low",
+      "base_translation": "Obj_Arrow",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c85b9",
+      "text_source": "Hmph! Kept you waiting? It seems you're hopeless\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "arrogante/irônico",
+      "intent": "reclamar da espera e mostrar superioridade",
+      "risk_level": "low",
+      "base_translation": "Humph! Fiz você esperar? Parece que você é um\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c85ec",
+      "text_source": "without me around, as usual.",
+      "speaker": "Uruuru/Saraana",
+      "entities_present": [
+        "Uruuru/Saraana"
+      ],
+      "tone_register": "formal sereno",
+      "intent": "completar a repreensão",
+      "risk_level": "low",
+      "base_translation": "sem nós, como sempre.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8609",
+      "text_source": "Truly, there is never a dull moment in your\\n",
+      "speaker": "Ougi",
+      "entities_present": [
+        "Ougi"
+      ],
+      "tone_register": "elegante/irônico",
+      "intent": "comentar que trabalhar com eles nunca é entediante",
+      "risk_level": "low",
+      "base_translation": "De fato, nunca há um momento de tédio a seu\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8637",
+      "text_source": "employ.",
+      "speaker": "[NARRADOR]",
+      "entities_present": [
+        "[NARRADOR]"
+      ],
+      "tone_register": "narrativo",
+      "intent": "em seu serviço/emprego",
+      "risk_level": "low",
+      "base_translation": "serviço.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8659",
+      "text_source": "Sir Haku...!",
+      "speaker": "Personagem",
+      "entities_present": [
+        "Personagem"
+      ],
+      "tone_register": "respeitoso",
+      "intent": "endereçar Haku com título",
+      "risk_level": "medium",
+      "base_translation": "Sr. Haku...!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 12 bytes. 'Senhor Haku...!' = 14 sem acento. Encurtar: 'Sr. Haku...!' = 11."
+    },
+    {
+      "offset": "0x1c8666",
+      "text_source": "Did we keep you waiting?",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "tímido/preocupado",
+      "intent": "perguntar se fez esperar",
+      "risk_level": "low",
+      "base_translation": "Fizemos você esperar?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c867f",
+      "text_source": "Everything is in place.",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "calmo/informativo",
+      "intent": "informar que está tudo pronto",
+      "risk_level": "low",
+      "base_translation": "Está tudo pronto.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8697",
+      "text_source": "Damn right you kept me waiting!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irritado",
+      "intent": "reclamar que o fizeram esperar",
+      "risk_level": "low",
+      "base_translation": "Claro que me fizeram esperar!",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c86b7",
+      "text_source": "Enemy reinforcements!",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "alarmado",
+      "intent": "alertar sobre reforços inimigos",
+      "risk_level": "low",
+      "base_translation": "Reforços inimigos!",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c86cd",
+      "text_source": "L-Lady Entua...",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "abalado",
+      "intent": "chamar Entua hesitante",
+      "risk_level": "high",
+      "base_translation": "L-Lady Entua...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lady Entua nomeada — spoiler major, já revelado antes nesta cena."
+    },
+    {
+      "offset": "0x1c86dd",
+      "text_source": "D-Do not falter! Their numbers have barely\\n",
+      "speaker": "Garota (Entua)",
+      "entities_present": [
+        "Garota (Entua)"
+      ],
+      "tone_register": "firme/determinado",
+      "intent": "ordenar que não cedam e invocar orgulho Uzurushan",
+      "risk_level": "low",
+      "base_translation": "N-Não recuem! O número deles mal\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c870a",
+      "text_source": "increased! Show your pride as Uzurushan mononofu!",
+      "speaker": "[PERSONAGEM]",
+      "entities_present": [
+        "[PERSONAGEM]"
+      ],
+      "tone_register": "formal militar",
+      "intent": "mostrar orgulho como mononofu Uzurushan",
+      "risk_level": "medium",
+      "base_translation": "aumentou! Mostrem seu orgulho como mononofu Uzurushan!",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Termo 'mononofu' — manter_original não está no glossário mas é termo cultural; manter."
+    },
+    {
+      "offset": "0x1c873c",
+      "text_source": "Y-Yes ma'am!",
+      "speaker": "Soldado Uzurushan",
+      "entities_present": [
+        "Soldado Uzurushan"
+      ],
+      "tone_register": "obediente",
+      "intent": "confirmar a ordem",
+      "risk_level": "low",
+      "base_translation": "S-Sim!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8749",
+      "text_source": "Hold on tight now, Shinonon.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "carinhoso/pai",
+      "intent": "dizer à criança para se segurar",
+      "risk_level": "low",
+      "base_translation": "Se segura bem, Shinonon.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8766",
+      "text_source": "Dad... are you going to go away like Father did?",
+      "speaker": "Criança",
+      "entities_present": [
+        "Criança"
+      ],
+      "tone_register": "infantil/preocupado",
+      "intent": "perguntar se o pai vai embora como o outro pai",
+      "risk_level": "high",
+      "base_translation": "Papai... você vai embora como o pai foi?",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Father' vs 'Dad' — dois referenciais diferentes. Manter distinção sem revelar identidade do 'Father'. Risco de gênero/identidade oculta."
+    },
+    {
+      "offset": "0x1c8797",
+      "text_source": "Don't you worry, now. I ain't goin' anywhere.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "carinhoso/pai",
+      "intent": "tranquilizar a criança que não vai embora",
+      "risk_level": "low",
+      "base_translation": "Não se preocupe. Não vou a lugar nenhum.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c87c5",
+      "text_source": "OK!",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "OK!",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c87c9",
+      "text_source": "All right, let's do it!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "animado",
+      "intent": "iniciar combate",
+      "risk_level": "low",
+      "base_translation": "Muito bem, vamos lá!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c89df",
+      "text_source": "A {c5}Combat Tutorial{c-1} has been added to the Glossary in the system menu.",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "UI tutorial",
+      "intent": "notificar adição de tutorial de combate ao glossário",
+      "risk_level": "medium",
+      "base_translation": "{c5}Tutorial de Combate{c-1} adicionado ao Glossário do sistema.",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha de UI com formatação especial — preservar tokens {c5} e {c-1}."
+    },
+    {
+      "offset": "0x1c8c78",
+      "text_source": "H-Heeeeelp!!",
+      "speaker": "Personagem",
+      "entities_present": [
+        "Personagem"
+      ],
+      "tone_register": "assustado, dramático",
+      "intent": "pedir socorro",
+      "risk_level": "medium",
+      "base_translation": "S-Socorro!!",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 12 bytes. 'S-Socorro!!' = 11 sem acento. Ok."
+    },
+    {
+      "offset": "0x1c8c85",
+      "text_source": "That's...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Isso...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8c8f",
+      "text_source": "We asked her to act the part of hostage.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "explicar que pediram a ela para fazer papel de refém",
+      "risk_level": "low",
+      "base_translation": "Pedimos a ela para fazer o papel de refém.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8cb8",
+      "text_source": "The idea behind this trial is to save the damsel\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "explicar a ideia por trás do teste — salvar a donzela",
+      "risk_level": "low",
+      "base_translation": "A ideia por trás deste teste é salvar a donzela\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8ceb",
+      "text_source": "in distress, and become more dashing and heroic.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narração explicativa",
+      "intent": "completar explicação do treino",
+      "risk_level": "low",
+      "base_translation": "e se tornar mais destemido e heroico.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8d1c",
+      "text_source": "At least this one seems normal, compared to the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico/aliviado",
+      "intent": "comentar que esse treino parece normal comparado aos outros",
+      "risk_level": "low",
+      "base_translation": "Pelo menos esse parece normal, comparado com os\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8d4e",
+      "text_source": "rest.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "resto/continuação",
+      "risk_level": "low",
+      "base_translation": "resto.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8d54",
+      "text_source": "Then again, something tells me this might be more\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "desconfiado",
+      "intent": "suspeitar que pode não ser tão simples",
+      "risk_level": "low",
+      "base_translation": "Mas alguma coisa me diz que isso pode ser mais\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8d88",
+      "text_source": "than it appears... Eh, maybe I'm just being\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo informal",
+      "intent": "parece mais difícil do que parece, talvez esteja exagerando",
+      "risk_level": "low",
+      "base_translation": "do que parece... Ah, talvez eu esteja exagerando\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8db6",
+      "text_source": "pessimistic.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "desconfiado",
+      "intent": "completar auto-questionamento",
+      "risk_level": "low",
+      "base_translation": "pessimista.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c8fe1",
+      "text_source": "Thank you for saving me. I shall remember your\\n",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "formal/grato",
+      "intent": "agradecer pelo resgate com formalidade",
+      "risk_level": "low",
+      "base_translation": "Obrigada por me salvar. Guardarei sua\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c9012",
+      "text_source": "kindness and bravery forever.",
+      "speaker": "[PERSONAGEM]",
+      "entities_present": [
+        "[PERSONAGEM]"
+      ],
+      "tone_register": "formal solene",
+      "intent": "guardar bondade e bravura para sempre",
+      "risk_level": "low",
+      "base_translation": "bondade e bravura para sempre.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c9030",
+      "text_source": "Hey, don't worry about it. I really didn't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "casual modesto",
+      "intent": "minimizar sua contribuição",
+      "risk_level": "low",
+      "base_translation": "Ei, não precisa. Não fiz grande coisa,\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c905d",
+      "text_source": "do much anyways, ahaha...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "descontraído/modesto",
+      "intent": "completar minimização",
+      "risk_level": "low",
+      "base_translation": "foi pouca coisa, ahaha...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c9077",
+      "text_source": "...Um, was that suitable enough?",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "tímido/saindo do papel",
+      "intent": "perguntar se foi adequado o que fez",
+      "risk_level": "low",
+      "base_translation": "...Hm, foi suficiente assim?",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c9098",
+      "text_source": "Well done. Thank you for your cooperation.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "elogioso",
+      "intent": "elogiar e agradecer cooperação de Rulutieh",
+      "risk_level": "low",
+      "base_translation": "Muito bem. Obrigado pela cooperação.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c90c3",
+      "text_source": "This will be your reward for today's work.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal caloroso",
+      "intent": "apresentar recompensa pelo trabalho do dia",
+      "risk_level": "low",
+      "base_translation": "Esta será sua recompensa pelo trabalho de hoje.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x1c90ee",
+      "text_source": "W-Wow, this much? Thank you!",
+      "speaker": "[PERSONAGEM]",
+      "entities_present": [
+        "[PERSONAGEM]"
+      ],
+      "tone_register": "surpreso agradecido",
+      "intent": "surpresa agradável com a quantidade da recompensa",
+      "risk_level": "low",
+      "base_translation": "U-Uau, tanto assim? Obrigado!",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 335,
+  "high_lines": 16,
+  "medium_lines": 40,
+  "needs_review": [],
+  "plan_version": "chapter-20_07-v1"
+}

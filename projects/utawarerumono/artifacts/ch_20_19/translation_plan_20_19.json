@@ -1,0 +1,42 @@
+{
+  "scene_group": "20_19",
+  "lines": [
+    {
+      "offset": "0x209cc3",
+      "text_source": "Yamatan Soldier",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Soldado de Yamato",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x209cd3",
+      "text_source": "RAAAAAAAAAHHHHH!!",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, grito de dor/susto",
+      "intent": "grito de agonia ou susto extremo; expressão de torpor quebrado por pânico",
+      "risk_level": "medium",
+      "base_translation": "AAAAAAAHHHHH!!",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "onomatopeia de grito; caractere repetido (A) é marca de intensidade emocional — localizar sem copiar literal; byte_budget restritivo (17 bytes) exige forma concisa em pt-BR; verbo de torpor vs. grito puro (evitar soar demasiado articulado)"
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "chapter-20_19-v1"
+}

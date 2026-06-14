@@ -1,0 +1,1492 @@
+{
+  "lines": {
+    "0x1e9ca5": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "military, urgent",
+      "intent": "identify unit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado Uzurushan"
+    },
+    "0x1e9cd9": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "military",
+      "intent": "name place",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nakwan"
+    },
+    "0x1e9d9a": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nnh..."
+    },
+    "0x1e9ef1": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "military, title",
+      "intent": "self-identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Comandante Uzurushan"
+    },
+    "0x1ea1a2": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aqui...?"
+    },
+    "0x1ea277": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hein?"
+    },
+    "0x1ea27f": {
+      "speaker": "Protagonista",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...O quê...?"
+    },
+    "0x1ea3b2": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hum...?"
+    },
+    "0x1ea3b9": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quê--!?"
+    },
+    "0x1ea407": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Que...?"
+    },
+    "0x1ea71a": {
+      "speaker": "Garota",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você provavelmente tá certo..."
+    },
+    "0x1ea8b7": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mesmo?"
+    },
+    "0x1eaa9d": {
+      "speaker": "Narração",
+      "tone_register": "neutra, descritiva",
+      "intent": "descrever ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldados."
+    },
+    "0x1eabc3": {
+      "speaker": "Protagonista",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "acontecendo."
+    },
+    "0x1eac62": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vurai o Vanguarda..."
+    },
+    "0x1eacd4": {
+      "speaker": "Atuy",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Senhora Munechika."
+    },
+    "0x1ead3f": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tudo!"
+    },
+    "0x1eb267": {
+      "speaker": "Mikazuchi",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A Guarda Imperial da Esquerda, Mikazuchi."
+    },
+    "0x1eb2be": {
+      "speaker": "Rulutieh",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Sim."
+    },
+    "0x1eb06d": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, reflexivo",
+      "intent": "Descrever o efeito do Akuruka consumindo o portador",
+      "risk_level": "medium",
+      "risk_notes": "Linha de contexto narrativo sobre lore; 'bearer' = portador; verificar byte budget",
+      "t": "seu portador, e eventualmente vai consumi-lo\\n"
+    },
+    "0x1eb0a3": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, reflexivo",
+      "intent": "Observar que os Yamatan usam esses poderes mesmo sabendo do risco",
+      "risk_level": "medium",
+      "risk_notes": "Continua o raciocínio anterior; 'knowing the' é linha incompleta que continua na próxima",
+      "t": "E eles ainda usam esses poderes, sabendo disso\\n"
+    },
+    "0x1eb0db": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, reflexivo",
+      "intent": "Reagir com horror à revelação sobre os Yamatan",
+      "risk_level": "medium",
+      "risk_notes": "'Yamatan' -> 'de Yamato' conforme glossário; linha incompleta",
+      "t": "Que horror. É assim que os de Yamato\\n"
+    },
+    "0x1eb136": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, reflexivo",
+      "intent": "Confirmar e acrescentar detalhe sobre os guerreiros de Yamato",
+      "risk_level": "medium",
+      "risk_notes": "Linha incompleta; 'Correct' como voz interna do Haku ou fala de outro — contexto sugere Haku refletindo",
+      "t": "Exato. E dizem que entre eles,\\n"
+    },
+    "0x1eb190": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, em choque",
+      "intent": "Revelar/confirmar que alguém é um general de Yamato",
+      "risk_level": "high",
+      "risk_notes": "Spoiler: não antecipar identidade/reveal. Linha curta; 'Yamatan general' -> 'general de Yamato'",
+      "t": "...é um general de Yamato...?\\n"
+    },
+    "0x1eb1bd": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, contemplativo",
+      "intent": "Evocar duas figuras que vêm à mente ao pensar no assunto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dois rostos surgem na minha mente enquanto reflito\\n"
+    },
+    "0x1eb1f9": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, contemplativo",
+      "intent": "Descrever que essas duas pessoas escondem o rosto atrás de máscaras",
+      "risk_level": "medium",
+      "risk_notes": "Spoiler moderado (máscaras ligadas a Oshtor/Mikazuchi); não antecipar revelação",
+      "t": "Duas pessoas que escondem o rosto atrás de máscaras\\n"
+    },
+    "0x1eb236": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, grave",
+      "intent": "Nomear Oshtor como Guarda Imperial da Direita",
+      "risk_level": "high",
+      "risk_notes": "Spoiler critical (Oshtor); traduzir como general vivo e atuante, sem foreshadowing. 'Imperial Guard of the Right' -> 'Guarda Imperial da Direita'",
+      "t": "A Guarda Imperial da Direita, Oshtor... e\\n"
+    },
+    "0x1eb2c6": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, grave",
+      "intent": "Nomear Mikazuchi e Munechika como portadores de máscaras",
+      "risk_level": "high",
+      "risk_notes": "Referência a Mikazuchi e Munechika; 'My dear brother' é pensamento do falante — não antecipar vínculos ocultos",
+      "t": "Meu caro irmão, Senhor Mikazuchi, e a\\n"
+    },
+    "0x1eb2f2": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, solene",
+      "intent": "Completar a lista e indicar que foram escolhidos pelo Mikado",
+      "risk_level": "high",
+      "risk_notes": "Spoiler major (Mikado); tratar apenas como soberano/título sem antecipar vínculo pessoal",
+      "t": "Munechika... Todos escolhidos pelo Mikado para\\n"
+    },
+    "0x1eb323": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, pesado, silêncio coletivo",
+      "intent": "Descrever a reação de silêncio do grupo diante da revelação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos ficamos parados — em silêncio absoluto diante disso\\n"
+    },
+    "0x1ea78f": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "reconhecer dívida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "delas."
+    },
+    "0x1ea7d3": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "descrever situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "defendida pela Senhora Munechika ali perto."
+    },
+    "0x1ea7f6": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso, informal, carismático",
+      "intent": "propor ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá bom, vamos pra lá primeiro."
+    },
+    "0x1ea84b": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar pesar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mal."
+    },
+    "0x1ea852": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, esperto, malandro",
+      "intent": "agradecer ironicamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que devo muito a você, chefe."
+    },
+    "0x1ea8a7": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico, pomposo",
+      "intent": "queixa cômica",
+      "risk_level": "medium",
+      "risk_notes": "manter arcaísmo/gag do cício; garantir contraste com pompa",
+      "t": "disso muito."
+    },
+    "0x1ea8ef": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, arcaico, pomposo",
+      "intent": "expressar resignação jocosa",
+      "risk_level": "medium",
+      "risk_notes": "tom melodramático; evitar modernizar",
+      "t": "alguma crise ou outra... graças a eles."
+    },
+    "0x1ea919": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sério. Por que sempre acaba assim?"
+    },
+    "0x1ea949": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar riso nervoso",
+      "risk_level": "low",
+      "risk_notes": "onomatopeia localizada",
+      "t": "Heh... Heh heh heh..."
+    },
+    "0x1ea95f": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "questionar curiosamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que é tão engraçado agora?"
+    },
+    "0x1ea9a2": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "avaliar personagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cara interessante."
+    },
+    "0x1ea9b8": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar choque",
+      "risk_level": "medium",
+      "risk_notes": "fragmentação mantida; torpor de semiconsciência",
+      "t": "Q-Que diabos foi isso...?"
+    },
+    "0x1ea9d6": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "chamar atenção urgentemente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Olha! Ali!"
+    },
+    "0x1eaa1b": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "descrever visão perturbadora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "uma visão que nos faz duvidar dos nossos olhos."
+    },
+    "0x1eaaa7": {
+      "speaker": "Narração",
+      "tone_register": "neutra, descritiva",
+      "intent": "descrever ação dramática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Subitamente, o homem é envolvido por chamas."
+    },
+    "0x1eab02": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar incompreensão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "completamente diferente."
+    },
+    "0x1eab13": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar horror",
+      "risk_level": "medium",
+      "risk_notes": "fragmentação de fala mantida; torpor",
+      "t": "Q-Que no... inferno..."
+    },
+    "0x1eab84": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "descrever ambiente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ao redor."
+    },
+    "0x1eac2a": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "nomear elemento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "chama."
+    },
+    "0x1eac31": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "avaliar cena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É um massacre."
+    },
+    "0x1eac42": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar atemorizado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que diabos é esse monstro!?"
+    },
+    "0x1ead6e": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "questionar pensamento",
+      "risk_level": "high",
+      "risk_notes": "Oshtor antes do reveal — traduzir como guerreiro generoso, não antecipação de general; preservar ambiguidade de identidade",
+      "t": "No que você está pensando?"
+    },
+    "0x1eadb5": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar pavorosamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "coisa!?"
+    },
+    "0x1eadbd": {
+      "speaker": "Narração",
+      "tone_register": "neutra, descritiva",
+      "intent": "nomear criatura",
+      "risk_level": "medium",
+      "risk_notes": "spoiler=major; termo exato do glossário",
+      "t": "Akuruturuka."
+    },
+    "0x1eadca": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar com incerteza",
+      "risk_level": "medium",
+      "risk_notes": "spoiler=major; termo exato; manter dúvida",
+      "t": "...Uma Akuruturuka?"
+    },
+    "0x1eae07": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "confirmar com solenidade",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; Oshtor como generoso conselheiro, não general; ambiguidade preservada",
+      "t": "Akuruturuka?"
+    },
+    "0x1eae14": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "explicar função com ambiguidade ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; manter duplo sentido e frieza; não resolver significado",
+      "t": "O Akuruka serve como portal para o grande poder."
+    },
+    "0x1eaea4": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "expressar preocupação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "seu poder."
+    },
+    "0x1eaee0": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar admiração horrível",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "primeira vez que vejo um..."
+    },
+    "0x1eaf34": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "descrever poder destrutivo",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; manter ambiguidade ameaçadora; não resolver a identidade do 'homem'",
+      "t": "vida... Um domínio de destruição consumidor de tudo..."
+    },
+    "0x1eafc2": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "questionar sobre poderes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "habilidades especiais."
+    },
+    "0x1eb007": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar avaliação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "demais."
+    },
+    "0x1eb011": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "questionar com preocupação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que... acontece se usarem isso demais?"
+    },
+    "0x1eb09d": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "sugerir perigo existencial",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; ambiguidade ameaçadora mantida; não resolver",
+      "t": "alma."
+    },
+    "0x1eb0d2": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "questionar risco",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "risco...?"
+    },
+    "0x1eb108": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar destino trágico",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; sem foreshadowing de morte/sacrifício de generais; manter ambiguidade",
+      "t": "generais com essas Akurukas precisam viver...?"
+    },
+    "0x1eb160": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "elogiar poder",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; Oshtor como aliado generoso; não antecipação de morte/herança",
+      "t": "O poder do Senhor Vurai é incomparável."
+    },
+    "0x1eb181": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "questionar com dúvida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então esse cara..."
+    },
+    "0x1eb1ae": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "questionar sobre criatura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aquela coisa...?"
+    },
+    "0x1eb1ec": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, nobre, comedido",
+      "intent": "nomear objeto de poder",
+      "risk_level": "medium",
+      "risk_notes": "spoiler=moderate; termo exato do glossário; Oshtor reservado",
+      "t": "a Akuruka."
+    },
+    "0x1eb228": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "comparar poderes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "como Vurai."
+    },
+    "0x1eb292": {
+      "speaker": "Haku",
+      "tone_register": "confuso, desorientado",
+      "intent": "expressar realização horrível",
+      "risk_level": "high",
+      "risk_notes": "spoiler=major; sem insinuação de identidade dupla de Oshtor/Ukon; manter ambiguidade",
+      "t": "Isso significa... aqueles dois... são os mesmos..."
+    },
+    "0x1eb356": {
+      "speaker": "Narração",
+      "tone_register": "neutra, descritiva",
+      "intent": "descrever visão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "vista diante de nós."
+    },
+    "0x1eb368": {
+      "speaker": "Sistema",
+      "tone_register": "técnica",
+      "intent": "rótulo de arquivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ch400_00_base"
+    },
+    "0x1eb376": {
+      "speaker": "Sistema",
+      "tone_register": "técnica",
+      "intent": "rótulo de arquivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ch400_00_wheel"
+    },
+    "0x1eb385": {
+      "speaker": "Sistema",
+      "tone_register": "técnica",
+      "intent": "rótulo de UI",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "alvo"
+    },
+    "0x1eb38c": {
+      "speaker": "Sistema",
+      "tone_register": "técnica",
+      "intent": "rótulo de arquivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "env_bone"
+    },
+    "0x1e9cf3": {
+      "speaker": "Homem",
+      "tone_register": "frio, definitivo",
+      "intent": "intimidar — fuga é impossível",
+      "risk_level": "medium",
+      "risk_notes": "voz enigmática; manter tom ameaçador sem calor",
+      "t": "É impossível... Não há como fugirmos\\n"
+    },
+    "0x1e9d46": {
+      "speaker": "Homem",
+      "tone_register": "frio, ameaçador",
+      "intent": "ameaça às famílias como coerção",
+      "risk_level": "medium",
+      "risk_notes": "tom coercitivo; manter frieza",
+      "t": "E você sabe o que acontecerá com suas famílias\\n"
+    },
+    "0x1e9da2": {
+      "speaker": "Homem",
+      "tone_register": "definitivo, sem apelo",
+      "intent": "encerrar qualquer resistência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você não tem escolha no assunto.\\n"
+    },
+    "0x1e9dea": {
+      "speaker": "Homem",
+      "tone_register": "sadístico, gozador",
+      "intent": "rir da situação dos cativos",
+      "risk_level": "medium",
+      "risk_notes": "interjeição localizada; tom cruel",
+      "t": "Wahahahaha! Olha eles!\\n"
+    },
+    "0x1e9e21": {
+      "speaker": "Homem",
+      "tone_register": "calculista, arrogante",
+      "intent": "descrever batalha fácil com desdém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma batalha fácil, sem dúvida. Tudo que precisamos\\n"
+    },
+    "0x1e9e4e": {
+      "speaker": "Homem",
+      "tone_register": "calculista",
+      "intent": "usar os nakwan como bucha de canhão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "é empurrar os nakwan à frente e observar\\n"
+    },
+    "0x1e9e8e": {
+      "speaker": "Homem",
+      "tone_register": "confiante, arrogante",
+      "intent": "afirmar superioridade posicional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim. O exército de Yamato é impotente para\\n"
+    },
+    "0x1e9ebb": {
+      "speaker": "Homem",
+      "tone_register": "arrogante",
+      "intent": "confirmar posição inexpugnável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nos alcançar aqui em cima. Um contra-ataque é\\n"
+    },
+    "0x1e9f05": {
+      "speaker": "Homem",
+      "tone_register": "sádico, lúdico",
+      "intent": "ordenar que dancem como peões descartáveis",
+      "risk_level": "medium",
+      "risk_notes": "interjeição 'Hahaha' mantida; 'dance' como ordem cruel",
+      "t": "Hahaha... Agora, dancem. Temos peões de sobra\\n"
+    },
+    "0x1e9f8d": {
+      "speaker": "Nosuri",
+      "tone_register": "indignado, coloquial",
+      "intent": "questionar humilhação forçada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E por que temos que ser nós a nos arrastar\\n"
+    },
+    "0x1e9fcd": {
+      "speaker": "Nosuri",
+      "tone_register": "revoltado, coloquial",
+      "intent": "rejeitar o papel de ladrão sujo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que temos que nos esgueirar feito ladrões imundos,\\n"
+    },
+    "0x1ea013": {
+      "speaker": "Nosuri",
+      "tone_register": "raivoso, pessoal",
+      "intent": "declarar que não esquecerá o escárnio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jamais vou esquecer esses olhos de deboche que você\\n"
+    },
+    "0x1ea055": {
+      "speaker": "Nosuri",
+      "tone_register": "raivoso",
+      "intent": "lembrar humilhação passada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Jamais esquecerei como nos jogou\\n"
+    },
+    "0x1ea09c": {
+      "speaker": "Nosuri",
+      "tone_register": "orgulhoso, desafiador",
+      "intent": "afirmar identidade de ladrão com brio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas você acertou em uma coisa. Somos ladrões.\\n"
+    },
+    "0x1ea172": {
+      "speaker": "Homem",
+      "tone_register": "surpreso, tenso",
+      "intent": "questionar presença de um dos Oito Generais",
+      "risk_level": "medium",
+      "risk_notes": "glossário: Eight Pillar Generals → Oito Generais-Pilar",
+      "t": "O quê... O que um dos Oito Pilares está fazendo\\n"
+    },
+    "0x1ea1c7": {
+      "speaker": "Homem",
+      "tone_register": "desesperado, suplicante",
+      "intent": "pedir ajuda para família capturada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, nos ajude! Minha esposa e meu filho foram\\n"
+    },
+    "0x1ea294": {
+      "speaker": "Protagonista",
+      "tone_register": "desesperado, fragmentado",
+      "intent": "súplica em pânico",
+      "risk_level": "medium",
+      "risk_notes": "voz fragmentada do protagonista; gaguejo preservado",
+      "t": "P-P-P-Por favor! Espere! Por favor, nos salve!\\n"
+    },
+    "0x1ea2d5": {
+      "speaker": "Protagonista",
+      "tone_register": "aterrorizado, fragmentado",
+      "intent": "explicar coerção",
+      "risk_level": "medium",
+      "risk_notes": "fragmentação e gaguejo característicos do protagonista",
+      "t": "E-E-Eles... Estão nos forçando!\\n"
+    },
+    "0x1ea34b": {
+      "speaker": "Homem",
+      "tone_register": "frio, absoluto",
+      "intent": "invocar autoridade máxima para encerrar debate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As ordens do Mikado são absolutas.\\n"
+    },
+    "0x1ea3c1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, comedido",
+      "intent": "identificar os responsáveis pelo caos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Suponho que vocês sejam as moscas responsáveis por\\n"
+    },
+    "0x1ea413": {
+      "speaker": "Homem",
+      "tone_register": "chocado, instável",
+      "intent": "horror ao ver o inimigo surgir de surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O-O que você é!? Como você...\\n"
+    },
+    "0x1ea436": {
+      "speaker": "Homem",
+      "tone_register": "confuso, interrompido",
+      "intent": "perguntar sobre os nakwan antes de ser cortado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que fez com os nakw--\\n"
+    },
+    "0x1ea46e": {
+      "speaker": "Homem",
+      "tone_register": "incrédulo",
+      "intent": "negar possibilidade do salto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele não pode ter saltado até aqui em cima...!\\n"
+    },
+    "0x1ea4ab": {
+      "speaker": "Homem",
+      "tone_register": "irritado, frustrado",
+      "intent": "xingar os nakwan por inúteis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Argh... Sabia que esses nakwans seriam inúteis\\n"
+    },
+    "0x1ea4e7": {
+      "speaker": "Homem",
+      "tone_register": "urgente, militar",
+      "intent": "alertar para o inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O inimigo está à nossa frente!\\n"
+    },
+    "0x1ea513": {
+      "speaker": "Homem",
+      "tone_register": "arrogante, ameaçador",
+      "intent": "provocar o inimigo por estar sozinho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que tolo vagar até aqui sozinho!\\n"
+    },
+    "0x1ea59f": {
+      "speaker": "Haku",
+      "tone_register": "aliviado, coloquial",
+      "intent": "constatar distância segura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ufa... Acho que chegamos longe o suficiente pra estar seguros\\n"
+    },
+    "0x1ea665": {
+      "speaker": "Haku",
+      "tone_register": "coloquial, avaliando situação",
+      "intent": "notar que viajaram a noite toda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Continuamos a noite toda, então devemos estar\\n"
+    },
+    "0x1ea6c9": {
+      "speaker": "Haku",
+      "tone_register": "preocupado, prático",
+      "intent": "reconhecer dificuldade de retornar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode ser um pouco difícil voltar para\\n"
+    },
+    "0x1ea733": {
+      "speaker": "Haku",
+      "tone_register": "preocupado, prático",
+      "intent": "listar obstáculos para continuar viagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vai ser difícil seguir viagem com tantos\\n"
+    },
+    "0x1ea762": {
+      "speaker": "Haku",
+      "tone_register": "prático",
+      "intent": "continuar listagem de problemas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "feridos, e com os nakwans esgotados e\\n"
+    },
+    "0x1ea79f": {
+      "speaker": "Haku",
+      "tone_register": "prático, lembrando",
+      "intent": "sugerir fortaleza próxima como destino",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se bem me lembro, deve haver uma fortaleza\\n"
+    },
+    "0x1ea819": {
+      "speaker": "Haku",
+      "tone_register": "esperançoso, coloquial",
+      "intent": "confiar que Munechika cuidará dos nakwan",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que Munechika não trataria esses nakwans\\n"
+    },
+    "0x1ea875": {
+      "speaker": "Nosuri",
+      "tone_register": "despreocupado, coloquial",
+      "intent": "minimizar o esforço como algo rotineiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe com isso. A gente acaba fazendo esse tipo\\n"
+    },
+    "0x1ea8bf": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, descontraído",
+      "intent": "descrever como se envolve em confusão sem querer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Antes que percebo, a gente já está enrolada em\\n"
+    },
+    "0x1ea974": {
+      "speaker": "Homem",
+      "tone_register": "coloquial, admirado",
+      "intent": "elogiar Nosuri informalmente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, nada. Tenho que dizer, chefa, você é uma\\n"
+    },
+    "0x1ea9e8": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, descritivo",
+      "intent": "narrar o momento em que todos olham para onde Nosuri aponta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos olhamos para onde Nosuri está apontando, e vemos\\n"
+    },
+    "0x1eaa45": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever figura imponente do outro lado do canyon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Do outro lado do canyon, um homem solitário — enorme e\\n"
+    },
+    "0x1eaa72": {
+      "speaker": "Haku",
+      "tone_register": "narrativo",
+      "intent": "completar descrição do homem enfrentando exército",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "musculoso — enfrenta um exército de soldados Uzurushan\\n"
+    },
+    "0x1eaacf": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, tenso",
+      "intent": "descrever transformação do homem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Segundos depois, o homem se transforma em algo\\n"
+    },
+    "0x1eab28": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, impactante",
+      "intent": "descrever rugido da criatura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A criatura gigante em seu lugar solta um\\n"
+    },
+    "0x1eab52": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, brutal",
+      "intent": "descrever massacre dos soldados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "rugido ensurdecedor e começa a dilacerar os soldados\\n"
+    },
+    "0x1eab94": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, corrigindo-se",
+      "intent": "admitir que 'dilacerar' é insuficiente para descrever a carnificina",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não... \"Dilacerar\" não é suficiente para descrever o que\\n"
+    },
+    "0x1eabce": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, chocado",
+      "intent": "mostrar impotência total dos soldados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os soldados Uzurushan mal conseguem tocá-la.\\n"
+    },
+    "0x1eabfc": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, horrorizado",
+      "intent": "descrever os soldados explodindo ao se aproximar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Assim que se aproximam, eles explodem em\\n"
+    },
+    "0x1eac78": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, reconhecendo",
+      "intent": "identificar como um dos Oito Generais-Pilar de Yamato",
+      "risk_level": "medium",
+      "risk_notes": "glossário: Eight Pillar Generals → Oito Generais-Pilar; spoiler Oshtor — não antecipar identidade",
+      "t": "Um dos Oito Generais-Pilar de Yamato,\\n"
+    },
+    "0x1eaca6": {
+      "speaker": "Haku",
+      "tone_register": "narrativo, pessoal",
+      "intent": "mencionar Akuruka como o do irmão — referência ao lore",
+      "risk_level": "high",
+      "risk_notes": "spoiler Oshtor: não revelar identidade; 'dear brother' — relação pode ser spoiler; traduzir neutro sem antecipar vínculo",
+      "t": "agraciado com um Akuruka como meu querido irmão e\\n"
+    },
+    "0x1eace4": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial, exasperado",
+      "intent": "interromper o assunto de Generais para focar no monstro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não estou falando dos Oito Generais-Pilar!\\n"
+    },
+    "0x1ead13": {
+      "speaker": "Nosuri",
+      "tone_register": "chocado, coloquial",
+      "intent": "questionar o que é aquele monstro que se transformou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que É aquele monstro!? Ele se transformou e\\n"
+    },
+    "0x1ead4b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, ofendido",
+      "intent": "repreender quem chamou de monstro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como ousa chamá-lo de monstro.\\n"
+    },
+    "0x1ead85": {
+      "speaker": "Nosuri",
+      "tone_register": "frustrado, coloquial",
+      "intent": "pedir alternativa para descrever a criatura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então como diabos eu deveria chamar aquilo\\n"
+    },
+    "0x1eaddd": {
+      "speaker": "Haku",
+      "tone_register": "coloquial, explicativo",
+      "intent": "pedir calma e introduzir explicação sobre Akuruturuka",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, chefa. Você não sabe sobre o\\n"
+    },
+    "0x1eae45": {
+      "speaker": "Haku",
+      "tone_register": "expositivo, respeitoso",
+      "intent": "explicar condição para assumir forma sagrada",
+      "risk_level": "medium",
+      "risk_notes": "lore: mononofu, Mikado — manter termos; explicação técnica de lore",
+      "t": "Apenas os mononofu reconhecidos pelo Mikado e\\n"
+    },
+    "0x1eae74": {
+      "speaker": "Haku",
+      "tone_register": "expositivo",
+      "intent": "completar explicação: escolhido pelo Akuruka toma forma sagrada",
+      "risk_level": "medium",
+      "risk_notes": "lore: Akuruka, Akuruturuka — glossário manter_original",
+      "t": "escolhidos pelo Akuruka podem assumir a forma sagrada com\\n"
+    },
+    "0x1eaeaf": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, confirmando",
+      "intent": "confirmar que havia ouvido rumores mas é a primeira vez que vê",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim. Já ouvi rumores, mas esta é a\\n"
+    },
+    "0x1eaf03": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, solene",
+      "intent": "descrever poder de acabar com qualquer batalha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O poder da Origem, capaz de encerrar qualquer\\n"
+    },
+    "0x1eaf66": {
+      "speaker": "Haku",
+      "tone_register": "expositivo, humilde",
+      "intent": "introduzir informação de rumor sobre os Akuruka",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Só sei isso por rumor, mas dizem\\n"
+    },
+    "0x1eaf94": {
+      "speaker": "Haku",
+      "tone_register": "expositivo",
+      "intent": "explicar que cada Akuruka tem poder diferente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que cada Akuruka é abençoado com\\n"
+    },
+    "0x1eafd5": {
+      "speaker": "Haku",
+      "tone_register": "expositivo, cauteloso",
+      "intent": "advertir sobre perigo de usar os poderes com excesso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas é preciso ter cuidado para não usar seus poderes\\n"
+    },
+    "0x1eb03a": {
+      "speaker": "Haku",
+      "tone_register": "expositivo, preocupado",
+      "intent": "explicar que o Akuruka assimila lentamente o usuário",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi que o Akuruka assimila lentamente\\n"
+    },
+    "0x1e9cb7": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "military, commanding",
+      "intent": "order movement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que estão fazendo!? Continuem!"
+    },
+    "0x1e9ce0": {
+      "speaker": "Protagonist",
+      "tone_register": "distressed, fragmented",
+      "intent": "plea",
+      "risk_level": "high",
+      "risk_notes": "torpor/fragmentation critical; reticence + broken syntax preserve confusion",
+      "t": "P-Por favor, não..."
+    },
+    "0x1e9d22": {
+      "speaker": "Protagonist",
+      "tone_register": "terrified, fragmented",
+      "intent": "express horror at cliff descent",
+      "risk_level": "high",
+      "risk_notes": "fragmented speech, reticence key; tone of dread",
+      "t": "para baixo uma encosta assim..."
+    },
+    "0x1e9d77": {
+      "speaker": "Protagonist",
+      "tone_register": "delirious question",
+      "intent": "express paradox/inevitability of fall",
+      "risk_level": "high",
+      "risk_notes": "ambiguity of 'if you don't' (consequence vs. option) preserved; fragmentation",
+      "t": "se não descer... não vai, né...?"
+    },
+    "0x1e9dcb": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "commanding, urgent",
+      "intent": "order immediate action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora vai! Logo!"
+    },
+    "0x1e9dda": {
+      "speaker": "Protagonist",
+      "tone_register": "scream, terror",
+      "intent": "onomatopoeia of fear/fall",
+      "risk_level": "high",
+      "risk_notes": "onomatopoeia localized to pt-BR scream convention; horror context",
+      "t": "A-Aaaaahhhhh!"
+    },
+    "0x1e9e08": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "amazed, tactical",
+      "intent": "observation of enemy survival",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eles foram de verdade."
+    },
+    "0x1e9e7d": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "tactical, calm",
+      "intent": "coordinate position",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "daqui de cima."
+    },
+    "0x1e9ee5": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "dismissive, certain",
+      "intent": "declare futility",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "impossível."
+    },
+    "0x1e9f35": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "tactical, derisive",
+      "intent": "characterize enemy weakness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pra descartar."
+    },
+    "0x1e9f42": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "confident, menacing",
+      "intent": "threaten attrition strategy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos desgastá-los aos poucos."
+    },
+    "0x1e9f61": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "bitter, questioning",
+      "intent": "express resentment/envy of enemy prosperity",
+      "risk_level": "high",
+      "risk_notes": "rhetorical question; tone of grievance + foreboding; no spoiler of Vurai's identity",
+      "t": "Por que vocês têm tanta prosperidade...?"
+    },
+    "0x1e9fbc": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "bitter, comparing",
+      "intent": "lament poverty contrast",
+      "risk_level": "medium",
+      "risk_notes": "rhetorical lament; preserves grievance tone",
+      "t": "como mendigos...?"
+    },
+    "0x1e9ffd": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "bitter, existential",
+      "intent": "lament struggle for survival",
+      "risk_level": "medium",
+      "risk_notes": "existential complaint; rhetorical",
+      "t": "só pra sobreviver...?"
+    },
+    "0x1ea045": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "accusatory",
+      "intent": "blame for betrayal",
+      "risk_level": "medium",
+      "risk_notes": "betrayal theme; no spoiler of specific cause",
+      "t": "viraram contra nós..."
+    },
+    "0x1ea083": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "poetic, dark",
+      "intent": "express unity of weapons and words",
+      "risk_level": "medium",
+      "risk_notes": "metaphorical language; ambiguity of 'words' (lies/orders) preserved",
+      "t": "pedras e palavras iguais..."
+    },
+    "0x1ea0cf": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "menacing, oath",
+      "intent": "vow retaliation",
+      "risk_level": "high",
+      "risk_notes": "dark oath; tone of irreversible vendetta; no spoiler of consequences",
+      "t": "E assim tomaremos tudo de vocês."
+    },
+    "0x1ea0f9": {
+      "speaker": "Uzurushan commander",
+      "tone_register": "menacing, deliberate",
+      "intent": "promise shared humiliation",
+      "risk_level": "high",
+      "risk_notes": "threat of imposed trauma; dark menace preserved",
+      "t": "E você conhecerá nossa humilhação."
+    },
+    "0x1ea126": {
+      "speaker": "Protagonist",
+      "tone_register": "shocked, fragmented",
+      "intent": "express shock",
+      "risk_level": "high",
+      "risk_notes": "fragmented shock; ellipsis key to torpor effect",
+      "t": "V-Você é..."
+    },
+    "0x1ea132": {
+      "speaker": "Girl",
+      "tone_register": "caring, concerned",
+      "intent": "check on distressed person",
+      "risk_level": "high",
+      "risk_notes": "caregiver voice; warmth + concern; gentle register",
+      "t": "H-Ei, tudo bem com você?"
+    },
+    "0x1ea14c": {
+      "speaker": "Protagonist",
+      "tone_register": "awed, disbelieving",
+      "intent": "recognize legendary warrior",
+      "risk_level": "high",
+      "risk_notes": "identity recognition (Vurai); no spoiler of future role; awe + disbelief",
+      "t": "Não pode ser... Vurai, o Vanguarda..."
+    },
+    "0x1ea1ab": {
+      "speaker": "Protagonist",
+      "tone_register": "hopeful, fragmented",
+      "intent": "speculate on rescue",
+      "risk_level": "medium",
+      "risk_notes": "hopeful conjecture; no spoiler of Vurai's trajectory",
+      "t": "Talvez ele tenha vindo nos salvar..."
+    },
+    "0x1ea1f8": {
+      "speaker": "Protagonist",
+      "tone_register": "distressed, fragmented",
+      "intent": "report capture",
+      "risk_level": "medium",
+      "risk_notes": "interrupted speech; despair tone",
+      "t": "capturados--"
+    },
+    "0x1ea209": {
+      "speaker": "Protagonist",
+      "tone_register": "desperate, formal plea",
+      "intent": "call for aid from legendary warrior",
+      "risk_level": "high",
+      "risk_notes": "formal plea to Vurai; tone of desperation; no spoiler of Vurai's decision",
+      "t": "Por favor, Senhor Vurai, nos dê força!"
+    },
+    "0x1ea234": {
+      "speaker": "Vurai",
+      "tone_register": "formal, ominous",
+      "intent": "declare imperial mandate",
+      "risk_level": "critical",
+      "risk_notes": "SPOILER CONTROL: Vurai's true allegiance/imperial orders hinted but NOT explicit; tone must remain ambiguous/foreboding. No reveal of betrayal intent.",
+      "t": "...Recebi ordens imperiais."
+    },
+    "0x1ea25a": {
+      "speaker": "Vurai",
+      "tone_register": "cold, absolute",
+      "intent": "declare total destruction",
+      "risk_level": "critical",
+      "risk_notes": "dark oath; tone of inexorable doom; no spoiler of specific target/scope",
+      "t": "E vou arrasar com tudo."
+    },
+    "0x1ea28a": {
+      "speaker": "Protagonist",
+      "tone_register": "primal scream",
+      "intent": "onomatopoeia of horror/pain",
+      "risk_level": "high",
+      "risk_notes": "primal scream; localized to pt-BR convention",
+      "t": "A-Aaaaahhh!"
+    },
+    "0x1ea2bb": {
+      "speaker": "Protagonist",
+      "tone_register": "desperate, interrupted",
+      "intent": "express helplessness",
+      "risk_level": "high",
+      "risk_notes": "interrupted plea; helplessness tone",
+      "t": "Não tínhamos escolha--"
+    },
+    "0x1ea2f9": {
+      "speaker": "Protagonist",
+      "tone_register": "anguished, explaining",
+      "intent": "describe coercion by hostage-taking",
+      "risk_level": "high",
+      "risk_notes": "tragic coercion; context of impossible choice",
+      "t": "Eles tomaram nossas famílias como reféns--"
+    },
+    "0x1ea31e": {
+      "speaker": "Protagonist",
+      "tone_register": "broken, pleading",
+      "intent": "beg for mercy",
+      "risk_level": "high",
+      "risk_notes": "final plea; despair; no spoiler of outcome",
+      "t": "Por favor... tenha piedade--"
+    },
+    "0x1ea335": {
+      "speaker": "Vurai",
+      "tone_register": "absolute, dismissive",
+      "intent": "banish/ignore",
+      "risk_level": "high",
+      "risk_notes": "cold finality; no explicit reveal of intent but tone foreboding",
+      "t": "...Saiam daqui."
+    },
+    "0x1ea340": {
+      "speaker": "Protagonist",
+      "tone_register": "primal cry",
+      "intent": "onomatopoeia of horror",
+      "risk_level": "high",
+      "risk_notes": "primal scream; horror/pain context",
+      "t": "A-Aaaahh...!"
+    },
+    "0x1ea36f": {
+      "speaker": "Vurai",
+      "tone_register": "menacing, absolute",
+      "intent": "vow unstoppable force",
+      "risk_level": "critical",
+      "risk_notes": "dark oath; tone of crushing inevitability; no spoiler of scope/target",
+      "t": "Todos que se opuserem serão esmagados."
+    },
+    "0x1ea398": {
+      "speaker": "Vurai",
+      "tone_register": "pained, powerful",
+      "intent": "onomatopoeia of exertion/power",
+      "risk_level": "medium",
+      "risk_notes": "exertion + power vocalization; no spoiler of source",
+      "t": "Ah... Aaargh!"
+    },
+    "0x1ea3ab": {
+      "speaker": "Man",
+      "tone_register": "enigmatic command",
+      "intent": "trigger/summon",
+      "risk_level": "critical",
+      "risk_notes": "single word command; enigmatic/prophetic tone; preserves mystery + foreboding",
+      "t": "Irrompa."
+    },
+    "0x1ea3ef": {
+      "speaker": "Protagonist",
+      "tone_register": "anguished, obsessing",
+      "intent": "express torment by sound/sensation",
+      "risk_level": "high",
+      "risk_notes": "psychological torment; no spoiler of source",
+      "t": "esse zumbido incessante."
+    },
+    "0x1ea45b": {
+      "speaker": "Protagonist",
+      "tone_register": "shocked, denying",
+      "intent": "reject impossible event",
+      "risk_level": "high",
+      "risk_notes": "shocked denial; fragmented; no spoiler of event scope",
+      "t": "Não... não é possível!"
+    },
+    "0x1ea49d": {
+      "speaker": "Protagonist",
+      "tone_register": "shocked, anguished",
+      "intent": "express disbelief at disaster",
+      "risk_level": "high",
+      "risk_notes": "anguished shock; fragmentation + denial",
+      "t": "I-Impossível!"
+    },
+    "0x1ea4db": {
+      "speaker": "Protagonist",
+      "tone_register": "bitter, resigned",
+      "intent": "lament inevitable fate",
+      "risk_level": "high",
+      "risk_notes": "resignation to doom; no spoiler of specific outcome",
+      "t": "no final das contas!"
+    },
+    "0x1ea501": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "martial cry",
+      "intent": "rally to arms",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Peguem armas! Peguem armas!"
+    },
+    "0x1ea541": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "murderous command",
+      "intent": "demand execution",
+      "risk_level": "high",
+      "risk_notes": "murder order; no spoiler of target/outcome",
+      "t": "Você pagará com sua vida! Matem-no!"
+    },
+    "0x1ea568": {
+      "speaker": "Vurai",
+      "tone_register": "contemptuous, dismissive",
+      "intent": "belittle opposition",
+      "risk_level": "medium",
+      "risk_notes": "contempt; no spoiler of specific target",
+      "t": "Brincadeira de criança..."
+    },
+    "0x1ea57d": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "shocked, disbelieving",
+      "intent": "express shock at development",
+      "risk_level": "medium",
+      "risk_notes": "shocked exclamation; no spoiler of scope",
+      "t": "O quê...!?"
+    },
+    "0x1ea587": {
+      "speaker": "Uzurushan soldier",
+      "tone_register": "terrified, denying",
+      "intent": "reject impossible sight",
+      "risk_level": "high",
+      "risk_notes": "terror + denial; fragmented; no spoiler of event",
+      "t": "V-Você não pode ser... Não..."
+    },
+    "0x1ea5d2": {
+      "speaker": "Man",
+      "tone_register": "enigmatic, suggestive",
+      "intent": "propose rest/respite",
+      "risk_level": "high",
+      "risk_notes": "enigmatic tone; double meaning of 'break' (rest vs. rupture); prophetic ambiguity preserved",
+      "t": "por enquanto. Vamos descansar ali."
+    },
+    "0x1ea5fa": {
+      "speaker": "Man",
+      "tone_register": "commanding",
+      "intent": "order creature to halt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cocopo, pare aqui."
+    },
+    "0x1ea633": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative",
+      "intent": "describe scene action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A carruagem para com o guincho agudo do Cocopo."
+    },
+    "0x1ea698": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative",
+      "intent": "describe distance traveled",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bem longe do acampamento bárbaro agora."
+    },
+    "0x1ea6f7": {
+      "speaker": "SYSTEM",
+      "tone_register": "narrative",
+      "intent": "describe impediment to travel",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Yamato neste estado."
+    }
+  }
+}

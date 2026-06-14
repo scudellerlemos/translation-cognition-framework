@@ -1,0 +1,156 @@
+{
+  "lines": {
+    "0x228bf1": {
+      "speaker": "Sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hom"
+    },
+    "0x228ca2": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isto é..."
+    },
+    "0x228b8d": {
+      "speaker": "Haku",
+      "tone_register": "informal, chocado",
+      "intent": "revelar surpresa ao descobrir a escala do projeto",
+      "risk_level": "medium",
+      "risk_notes": "frase incompleta; preservar corte natural e tom de choque",
+      "t": "Caramba, isso é... Eu achei que eles estavam aprontando\\n"
+    },
+    "0x228c15": {
+      "speaker": "Haku",
+      "tone_register": "informal, desconfortável",
+      "intent": "questionar o uso da palavra 'interessante' para algo perturbador",
+      "risk_level": "medium",
+      "risk_notes": "frase incompleta; tom de repulsa velada",
+      "t": "Não sei se 'interessante' é a palavra... Acho que eu\\n"
+    },
+    "0x228c6d": {
+      "speaker": "Haku",
+      "tone_register": "neutro, prático",
+      "intent": "informar que está enviando os arquivos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aqui, estou mandando os arquivos.\\n"
+    },
+    "0x228cad": {
+      "speaker": "Haku",
+      "tone_register": "analítico, grave",
+      "intent": "descrever o Projeto Homem de Gelo como algo de escopo maior",
+      "risk_level": "medium",
+      "risk_notes": "frase incompleta; nome 'Iceman Project' → 'Projeto Homem de Gelo' primeira ocorrência na cena",
+      "t": "Esse 'Projeto Homem de Gelo' parece uma versão ampliada\\n"
+    },
+    "0x228d09": {
+      "speaker": "Haku",
+      "tone_register": "grave, perturbado",
+      "intent": "constatar que o projeto evoluiu para algo fora de controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Virou algo completamente\\n"
+    },
+    "0x228d3e": {
+      "speaker": "Haku",
+      "tone_register": "grave, perturbado",
+      "intent": "revelar que os resultados finais são as criaturas/coisas presentes",
+      "risk_level": "medium",
+      "risk_notes": "'things' ambíguo — preservar ambiguidade sem especificar",
+      "t": "E os resultados finais foram essas... coisas.\\n"
+    },
+    "0x228d8f": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, perturbado",
+      "intent": "questionar até onde os humanos vão em suas ambições",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dá pra imaginar até onde os humanos estão dispostos\\n"
+    },
+    "0x228dc4": {
+      "speaker": "Haku",
+      "tone_register": "irônico, inquieto",
+      "intent": "questionar se os responsáveis temem punição divina",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fica a dúvida se eles se preocupam com punição divina\\n"
+    },
+    "0x228bbf": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, curiosa",
+      "intent": "expressar surpresa e desaprovação moderada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "algo, mas não achei que fossem tão longe."
+    },
+    "0x228bf5": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, curiosa",
+      "intent": "interesse leve, pergunta aberta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hein? Encontrou algo interessante?"
+    },
+    "0x228c47": {
+      "speaker": "Protagonista",
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "sugerir alternativas de descrição (dúvida)",
+      "risk_level": "high",
+      "risk_notes": "Fragmentação intencional de pensamento confuso; alternativas entre 'aterradora' e 'horrível' devem soar hesitantes, não fluentes. Back-translation necessária para validar que a ambiguidade semântica é preservada (escolher entre dois adjetivos, não resolvida).",
+      "t": "ir com \"aterradora\", ou \"horrível\"."
+    },
+    "0x228c91": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil, instrução simples",
+      "intent": "pedido direto, convite à ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você dá uma olhada."
+    },
+    "0x228cdc": {
+      "speaker": "Protagonista",
+      "tone_register": "confuso, desorientado, processar informação",
+      "intent": "reconhecer semelhança mas expressar dúvida/incompletude",
+      "risk_level": "high",
+      "risk_notes": "Fragmentação por reticências é crítica — 'mas...' marca incompreensão. Não resolver a frase; manter a suspensão. Identidade/verdadeira natureza não deve ser revelada. Protagonista reconhece algo (versão do 'Projeto Verdadeira Humanidade') mas não consegue completar o pensamento.",
+      "t": "versão do Projeto da Verdadeira Humanidade, mas..."
+    },
+    "0x228d31": {
+      "speaker": "Protagonista",
+      "tone_register": "torpor, fragmentação crítica",
+      "intent": "expressão de incerteza extrema, palavra isolada",
+      "risk_level": "high",
+      "risk_notes": "Mínimo absoluto — uma palavra seguida de reticências. Deve soar como lampejo confuso de consciência. Não expandir; manter a brevidade traumática.",
+      "t": "diferente..."
+    },
+    "0x228d6c": {
+      "speaker": "Garota ou Protagonista",
+      "tone_register": "cotidiano reflexivo ou horror contido",
+      "intent": "observação de horror/recusa da humanidade",
+      "risk_level": "high",
+      "risk_notes": "Nenhum nome/identidade/spoiler. A frase 'não são sequer pessoas' reflete o tema do Projeto e ambiguidade moral — não deve antecipar revelação. Back-translation para confirmar que o tom de horror moral é preservado sem resolver a identidade.",
+      "t": "Eles nem são mais pessoas..."
+    },
+    "0x228dbd": {
+      "speaker": "Haku",
+      "tone_register": "decisão breve, determinação sub-expressa",
+      "intent": "conclusão/transição de movimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ir."
+    },
+    "0x228df3": {
+      "speaker": "Haku",
+      "tone_register": "reflexão amarga, questionamento contido",
+      "intent": "expressar retribuição/justiça como problema não resolvido",
+      "risk_level": "medium",
+      "risk_notes": "'retribution, huh...?' é uma ressonância de lore (retribuição/justiça é um tema recorrente). O 'huh' marca incredulidade/ironia contida. Back-translation para validar tom de cinismo + incerteza (não é pergunta genuína, é reflexão amarga).",
+      "t": "retribuição, hein...?"
+    }
+  }
+}
