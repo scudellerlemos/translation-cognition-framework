@@ -177,8 +177,9 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
 def main():
     ap = argparse.ArgumentParser(description="Revisao humana por capitulo (export CSV marcado / apply do devolvido).")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    pe = sub.add_parser("export", help="gera o CSV do capitulo inteiro, marcado p/ revisao")
-    pe.add_argument("project"); pe.add_argument("chapter")
+    pe = sub.add_parser("export", help="gera o CSV marcado p/ revisao (capitulo, ou JOGO TODO se omitir)")
+    pe.add_argument("project")
+    pe.add_argument("chapter", nargs="?", default=None, help="capitulo (ex.: 11); OMITA p/ o jogo INTEIRO")
     pe.add_argument("--out", default=None)
     pa = sub.add_parser("apply", help="aplica o CSV devolvido (verbatim + notas)")
     pa.add_argument("project"); pa.add_argument("csv")
@@ -187,10 +188,12 @@ def main():
     a = ap.parse_args()
     if a.cmd == "export":
         rows = export(a.project, a.chapter)
-        out = a.out or str(paths.artifacts(Path(a.project)) / f"review_cap_{a.chapter}.csv")
+        scope = f"cap_{a.chapter}" if a.chapter else "all"
+        out = a.out or str(paths.artifacts(Path(a.project)) / f"review_{scope}.csv")
         write_csv(rows, out)
         marked = sum(1 for r in rows if r["revisar"])
-        print(f"[export] cap.{a.chapter}: {len(rows)} linha(s) -> {out}")
+        label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
+        print(f"[export] {label}: {len(rows)} linha(s) -> {out}")
         print(f"         {marked} marcada(s) p/ avaliar (coluna 'revisar' preenchida); preencha "
               f"'correcao' (texto certo) ou 'nota' (instrucao) e devolva.")
         sys.exit(0)
