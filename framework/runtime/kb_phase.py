@@ -36,6 +36,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import kb_review      # noqa: E402  (gate de fonte/ratificacao do delta de KB)
 import paths          # noqa: E402  (H2: fonte unica de paths)
 from context_pack import scene_id_of, _present, _pos  # noqa: E402
 
@@ -267,10 +268,11 @@ def _reconciled(root: Path) -> bool:
         re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I))
 
 
-def coverage(root, chap) -> dict:
-    """Valida se o capitulo esta pronto p/ avancar a fronteira: gap fechado + research reconciliada.
-    problems != [] => NAO avancar (rode/estenda a Fase 0). Limite honesto: 'gap fechado' = todos os
-    nomes proprios fortes ja estao na KB; nao garante que a pesquisa foi PROFUNDA, so que esta presente."""
+def coverage(root, chap, *, strict=False) -> dict:
+    """Valida se o capitulo esta pronto p/ avancar a fronteira: gap fechado + research reconciliada +
+    GATE DE FONTE (toda entidade nova cita fonte no research_log; em strict, +ratificada/genero ok).
+    problems != [] => NAO avancar. Limite honesto: 'gap fechado' = nomes fortes ja na KB; o gate de fonte
+    garante ANCORA EXTERNA por entidade (mata 'IA propoe E aprova'); ratificacao (strict) = humano."""
     root = Path(root)
     d = discover(root, chap)
     problems, warnings = [], []
@@ -280,6 +282,11 @@ def coverage(root, chap) -> dict:
                         f"— pesquise+reconcilie (skill 03) e adicione a glossary/entities: {sample}")
     if not _reconciled(root):
         problems.append("research_log.md sem 'status: reconciled' — reconcilie a pesquisa IA+humano.")
+    blk = kb_review.blocking(root, chap, strict=strict)    # gate de fonte (sempre) + ratificacao (strict)
+    if blk:
+        sample = [f"{i['name']} ({'/'.join(i['blockers'])})" for i in blk[:12]]
+        problems.append(f"{len(blk)} entidade(s) nova(s) do cap. sem ancora (fonte/ratificacao): {sample}. "
+                        f"Cite a fonte no research_log{' e ratifique no kb_ratified.csv' if strict else ''}.")
     one_off = [r for r in d["gap"] if r not in d["block"]]
     if one_off:
         warnings.append(f"{len(one_off)} candidato(s) de baixa confianca (citados 1x) — nao bloqueiam; "
@@ -367,11 +374,13 @@ def main():
                     help="valida cobertura (gap fechado + reconciled); exit 1 se faltar")
     ap.add_argument("--apply-frontier", action="store_true",
                     help="com --check OK, avanca project.json kb_frontier p/ o ultimo scene_id do capitulo")
+    ap.add_argument("--strict", action="store_true",
+                    help="gate de KB tambem exige ratificacao humana (kb_ratified.csv) + genero confirmado")
     a = ap.parse_args()
     root = Path(a.project)
 
     if a.check:
-        cov = coverage(root, a.chapter)
+        cov = coverage(root, a.chapter, strict=a.strict)
         for w in cov["warnings"]:
             print(f"[warn] {w}")
         for p in cov["problems"]:
