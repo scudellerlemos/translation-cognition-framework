@@ -1,151 +1,1062 @@
 {
-  "_note": "Cap. 11_06_000S (chegada a vila/estalagem). Carta. Sem work-text em .py. 't'=base canonico (acentos; reinsert translitera). '\\n'=token de quebra. Token {W110} preservado verbatim. Nova personagem: Estalajadeira (rotulo 53 00 -> glossary).",
   "lines": {
-    "0x18463": {"speaker": "Haku", "tone_register": "comedia_exaustao", "intent": "Haku, cansado, se pergunta ha quanto tempo andam.", "risk_level": "low", "t": "...Faz quanto tempo que a gente tá andando...?"},
-    "0x1848d": {"speaker": "Haku", "tone_register": "narracao", "intent": "O sol cai mas a vila nao aparece.", "risk_level": "low", "t": "O sol está caindo na direção do horizonte, mas a\\n"},
-    "0x184be": {"speaker": "Haku", "tone_register": "narracao", "intent": "...vila que a Kuon mencionou nao aparece.", "risk_level": "low", "t": "vila que a Kuon mencionou não aparece em lugar nenhum."},
-    "0x184ea": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Parece que andaram quilometros, mas a Kuon nem suou.", "risk_level": "low", "t": "Parece que a gente andou quilômetros, mas a Kuon\\n"},
-    "0x18521": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...nem suou.", "risk_level": "low", "t": "parece que nem suou."},
-    "0x1854c": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "E ainda num ritmo e tanto.", "risk_level": "low", "t": "E ainda por cima vem num ritmo e tanto."},
-    "0x18574": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Eu, por outro lado...", "risk_level": "low", "t": "Eu, por outro lado..."},
-    "0x1858d": {"speaker": "Haku", "tone_register": "interjeicao_exaustao", "intent": "Haku ofegante.", "risk_level": "medium", "risk_notes": "Interjeicao de cansaco localizada (respiracao pesada + gemido).", "t": "Uf... haah... haah... Nnnngh..."},
-    "0x185ad": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Ja nao tem muita energia, e ainda por cima...", "risk_level": "low", "t": "Eu já não tenho lá muita energia pra começo de conversa,\\n"},
-    "0x185e0": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...ainda por cima disso...", "risk_level": "low", "t": "mas ainda por cima disso..."},
-    "0x185f6": {"speaker": "Haku", "tone_register": "comedia_exaustao", "intent": "M-Meus pes...", "risk_level": "low", "t": "M-Meus pés..."},
-    "0x18603": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Arrasta os pes, pesados como chumbo.", "risk_level": "low", "t": "Arrasto os pés enquanto ando. Estão pesados como chumbo."},
-    "0x18637": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Nao da pra reclamar quando uma garota da metade do tamanho...", "risk_level": "low", "t": "Mas não dá bem pra reclamar quando uma garota da metade do meu tamanho\\n"},
-    "0x1866f": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...acompanha sem esforco.", "risk_level": "low", "t": "acompanha o ritmo sem esforço."},
-    "0x1868d": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Nao devia choramingar, mas...", "risk_level": "low", "t": "Eu não devia choramingar, mas..."},
-    "0x186a7": {"speaker": "Haku", "tone_register": "cotidiano", "intent": "E-Ei, Kuon?", "risk_level": "low", "t": "E-Ei, Kuon?"},
-    "0x186b4": {"speaker": "Kuon", "tone_register": "interjeicao_duvida", "intent": "Hum?", "risk_level": "low", "t": "Hum?"},
-    "0x186b8": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon olha por cima do ombro sem parar.", "risk_level": "low", "t": "A Kuon olha por cima do ombro sem parar."},
-    "0x186e9": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "Haku, sem jeito, pergunta se a vila esta perto.", "risk_level": "medium", "risk_notes": "Hesitacao 'Uh'->'Ahn'; Haku evita parecer manhoso ao perguntar. Manter o titubeio.", "t": "Ahn... Como é que eu digo? A gente tá andando faz\\n"},
-    "0x1871f": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "...um tempao, e a vila ta perto?", "risk_level": "low", "t": "um tempão já, e, hum... A vila tá perto?"},
-    "0x1874d": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: quase, ja deve chegar logo.", "risk_level": "low", "t": "Hum, quase. A gente já deve chegar logo--só\\n"},
-    "0x18783": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...mais um pouquinho, acho.", "risk_level": "low", "t": "mais um pouquinho, acho."},
-    "0x1879e": {"speaker": "Haku", "tone_register": "comedia_exaustao", "intent": "S-Serio?", "risk_level": "low", "t": "S-Sério?"},
-    "0x187a8": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "So mais um pouquinho.", "risk_level": "low", "t": "Só mais um pouquinho.\\n"},
-    "0x187c1": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Haku desconfia do 'pouquinho' da Kuon.", "risk_level": "medium", "risk_notes": "Ironia dramatica: 'DOES mean just a little' (enfase) -> 'MESMO so um pouquinho'. Setup da piada da noção de distancia.", "t": "...Ela quer dizer MESMO só um pouquinho, né?"},
-    "0x187ef": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Comeca a perceber que a noção de distancia dele difere da Kuon.", "risk_level": "medium", "risk_notes": "Punchline em construcao: a noção de escala dos dois e diferente. Manter o timing.", "t": "Tô começando a perceber que minha noção de distância\\n"},
-    "0x18823": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...e bem diferente da da Kuon.", "risk_level": "low", "t": "é bem diferente da da Kuon."},
-    "0x18841": {"speaker": "Haku", "tone_register": "comedia_exaustao", "intent": "Haku, exausto: finalmente chegaram.", "risk_level": "medium", "risk_notes": "Exaustao + alivio; gagueira 'm-made' -> 'c-conseguiu'. Manter o folego arrastado.", "t": "Haah... haahhh... Finalmente... A gente c-conseguiu..."},
-    "0x1886d": {"speaker": "Haku", "tone_register": "narracao", "intent": "Desaba ao cruzar a entrada, pernas doloridas.", "risk_level": "low", "t": "Desabo no chão assim que a gente cruza a\\n"},
-    "0x1889c": {"speaker": "Haku", "tone_register": "narracao", "intent": "...entrada, pernas doloridas alem da conta.", "risk_level": "low", "t": "entrada, com as pernas doloridas além da conta."},
-    "0x188c3": {"speaker": "Haku", "tone_register": "comedia_monologo", "intent": "Haku se elogia em 2a pessoa, esquisito.", "risk_level": "high", "risk_notes": "Comedia/voz (high): auto-elogio em 2a pessoa ('You go, me. You done good.') - tique comico do Haku se falando. Manter o auto-papo estranho e a gramatica relaxada. Back-translation.", "t": "Consegui. Isso aí, eu. Mandou bem."},
-    "0x188e9": {"speaker": "Haku", "tone_register": "comedia_monologo", "intent": "Acha justo se elogiar por ter chegado ate ali.", "risk_level": "low", "t": "Acho que posso me elogiar por ter chegado\\n"},
-    "0x1891a": {"speaker": "Haku", "tone_register": "comedia_monologo", "intent": "...ate aqui, ne? Me esforcei o caminho todo.", "risk_level": "low", "t": "até aqui, né? Me esforcei o caminho todo..."},
-    "0x1894c": {"speaker": "Kuon", "tone_register": "comedia_alfinetada", "intent": "Kuon pergunta, com falsa preocupacao, se ele nao se esforcou demais.", "risk_level": "medium", "risk_notes": "Voz da Kuon (high): preocupacao deliberada que alfineta o Haku (ele que reclamou). Tom inocente por fora.", "t": "Ei, você não se esforçou demais, né?"},
-    "0x1897b": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon o olha preocupada enquanto ele senta exausto.", "risk_level": "low", "t": "A Kuon me olha preocupada enquanto eu sento no\\n"},
-    "0x189b0": {"speaker": "Haku", "tone_register": "narracao", "intent": "...chao, exausto.", "risk_level": "low", "t": "chão, exausto."},
-    "0x189c3": {"speaker": "Haku", "tone_register": "comedia_orgulho", "intent": "Haku nega na hora: ta tudo bem, numa boa.", "risk_level": "medium", "risk_notes": "Orgulho ferido comico: nega o cansaco rapido demais. 'Totally fine' -> 'Numa boa'. Manter o exagero defensivo.", "t": "Hein? N-Não, que nada. Tô bem. Numa boa."},
-    "0x189f2": {"speaker": "Haku", "tone_register": "narracao", "intent": "Levanta as pressas, negando a 'acusacao' dela.", "risk_level": "low", "t": "Levanto às pressas, negando a acusação dela."},
-    "0x18a21": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Acha que ela soa preocupada de proposito.", "risk_level": "medium", "risk_notes": "Subtexto: a Kuon escolhe a hora pra soar preocupada e desarmar o choro dele. Manter a suspeita comica.", "t": "Ela escolhe esses momentos pra soar tão preocupada\\n"},
-    "0x18a56": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...de proposito, ne? Fica dificil reclamar.", "risk_level": "low", "t": "de propósito, né? Fica difícil me sentir bem\\n"},
-    "0x18a8c": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...em choramingar.", "risk_level": "low", "t": "em choramingar."},
-    "0x18a9b": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: entao vamos seguindo, nao falta muito.", "risk_level": "low", "t": "É mesmo? Então vamos seguindo. Não falta muito pra\\n"},
-    "0x18ad1": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...chegar, prometo.", "risk_level": "low", "t": "chegar, prometo."},
-    "0x18ade": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon sorri travessa e volta ao caminho.", "risk_level": "medium", "risk_notes": "'mischievously' -> 'travessa': sinaliza que a Kuon esta se divertindo as custas dele. Manter a malicia leve.", "t": "Com isso, a Kuon sorri travessa e volta\\n"},
-    "0x18b14": {"speaker": "Haku", "tone_register": "narracao", "intent": "...pro caminho, seguindo em frente.", "risk_level": "low", "t": "pro caminho, seguindo em frente."},
-    "0x18b30": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Haku desconfia: ela nao ta fazendo de proposito... ne?", "risk_level": "medium", "risk_notes": "Eco do gag da Kuon brincalhona; a desconfianca comica do Haku. Manter o '...ne?' inseguro.", "t": "...Ela não tá fazendo isso de propósito... né?"},
-    "0x18b5d": {"speaker": "Haku", "tone_register": "narracao", "intent": "A estrada e de terra simples, comum em vilarejos rurais.", "risk_level": "low", "t": "A estrada é de terra simples, provavelmente comum em\\n"},
-    "0x18b91": {"speaker": "Haku", "tone_register": "narracao", "intent": "...vilarejos rurais como este.", "risk_level": "low", "t": "vilarejos rurais como este..."},
-    "0x18bad": {"speaker": "Haku", "tone_register": "narracao", "intent": "Restos de neve enfeitam a vila.", "risk_level": "low", "t": "Restos de neve ainda enfeitam a vila. Parece...\\n"},
-    "0x18be1": {"speaker": "Haku", "tone_register": "narracao", "intent": "Nao rica, mas confortavel de viver. Bucolica.", "risk_level": "low", "t": "Não rica, sinceramente, mas provavelmente confortável de\\n"},
-    "0x18c13": {"speaker": "Haku", "tone_register": "narracao", "intent": "...se viver. Bucolica.", "risk_level": "low", "t": "se viver. Bucólica."},
-    "0x18c26": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Chegamos!", "risk_level": "low", "t": "Chegamos!"},
-    "0x18c33": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon para num predio velho com um pano colorido no beiral.", "risk_level": "low", "t": "A Kuon para num prédio velho, com um pano\\n"},
-    "0x18c69": {"speaker": "Haku", "tone_register": "narracao", "intent": "...colorido pendurado no beiral.", "risk_level": "low", "t": "colorido pendurado no beiral."},
-    "0x18c90": {"speaker": "Haku", "tone_register": "cotidiano", "intent": "Que lugar e esse?", "risk_level": "low", "t": "Que lugar é esse?"},
-    "0x18ca3": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon explica: lugares com essa marca sao estalagens.", "risk_level": "medium", "risk_notes": "Detalhe de mundo: a marca (pano colorido) sinaliza estalagem. Kuon ensina o Haku (que e de fora). Manter o tom didatico-gentil.", "t": "Uma estalagem. Lugares com essa marca são sempre estalagens--\\n"},
-    "0x18cd5": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...seria bom voce guardar isso.", "risk_level": "low", "t": "seria bom você guardar isso."},
-    "0x18d05": {"speaker": "Haku", "tone_register": "narracao", "intent": "Ela aponta o padrao na tira de pano pendurada.", "risk_level": "low", "t": "Ela aponta o padrão na tira de pano\\n"},
-    "0x18d39": {"speaker": "Haku", "tone_register": "narracao", "intent": "...pendurada.", "risk_level": "low", "t": "pendurada."},
-    "0x18d41": {"speaker": "Haku", "tone_register": "narracao", "intent": "Dentro, espaco amplo com mesas (refeitorio/taverna).", "risk_level": "low", "t": "Lá dentro é um espaço amplo e aberto, cheio de mesas--\\n"},
-    "0x18d76": {"speaker": "Haku", "tone_register": "narracao", "intent": "...provavelmente refeitorio ou taverna.", "risk_level": "low", "t": "provavelmente pra servir de refeitório ou taverna."},
-    "0x18da8": {"speaker": "Haku", "tone_register": "narracao", "intent": "E mais colorido aqui do que ele imaginava.", "risk_level": "low", "t": "É bem mais colorido aqui dentro do que eu imaginava\\n"},
-    "0x18dda": {"speaker": "Haku", "tone_register": "narracao", "intent": "...que seria.", "risk_level": "low", "t": "que seria..."},
-    "0x18de5": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon vai ate uma recepcao e puxa um cordao.", "risk_level": "low", "t": "Enquanto eu olho em volta, a Kuon vai até o que parece\\n"},
-    "0x18e18": {"speaker": "Haku", "tone_register": "narracao", "intent": "...ser uma recepcao e puxa um cordao pendurado.", "risk_level": "low", "t": "ser uma recepção e puxa um cordão pendurado."},
-    "0x18e4b": {"speaker": "Haku", "tone_register": "narracao", "intent": "Uma voz grita 'ja vou!' e uma mulher aparece.", "risk_level": "low", "t": "Uma voz de algum outro canto do prédio grita\\n"},
-    "0x18e80": {"speaker": "Haku", "tone_register": "narracao", "intent": "...'ja vou!' e logo uma mulher aparece de outro comodo.", "risk_level": "medium", "risk_notes": "Fala dentro da narracao 'coming!' -> 'ja vou!' (chamado natural BR). Aspas preservadas.", "t": "\"já vou!\" e logo uma mulher aparece de outro\\n"},
-    "0x18eb2": {"speaker": "Haku", "tone_register": "narracao", "intent": "...comodo.", "risk_level": "low", "t": "cômodo."},
-    "0x18eb8": {"speaker": "rotulo", "tone_register": "rotulo_falante", "intent": "Rotulo de falante da dona da estalagem.", "risk_level": "high", "risk_notes": "Rotulo 53 00 (high): nova personagem 'Innkeeper' -> 'Estalajadeira' (glossary). Como Garota/Mulher/Homem, exibido in-game. Pode relocar (overflow do slot de 9 bytes). Back-translation.", "t": "Estalajadeira"},
-    "0x18ec2": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Estalajadeira sauda a Kuon com carinho.", "risk_level": "medium", "risk_notes": "Nova voz (high): calorosa, maternal, trata por 'querida'. 'Miss Kuon' -> 'Senhorita Kuon'. Estabelecer o registro acolhedor.", "t": "Ah, Senhorita Kuon! Bem-vinda de volta."},
-    "0x18edf": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Desculpa por demorar; andaram ocupados.", "risk_level": "medium", "risk_notes": "Voz calorosa: 'dear' -> 'querida' (tratamento afetuoso recorrente da Estalajadeira).", "t": "Desculpe não ter vindo mais rápido, querida. A gente tem\\n"},
-    "0x18f14": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...andado muito ocupada, so isso.", "risk_level": "low", "t": "andado terrivelmente ocupada, só isso."},
-    "0x18f30": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: nao se preocupe; aqui as ervas medicinais.", "risk_level": "low", "t": "Por favor, não se preocupe. Aqui--essas são as\\n"},
-    "0x18f64": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...ervas medicinais que voce pediu.", "risk_level": "low", "t": "ervas medicinais que você me pediu pra trazer. "},
-    "0x18f8a": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Obrigada, voce e uma salvadora.", "risk_level": "low", "t": "Ah! Obrigada. Você é uma salvadora, isso sim."},
-    "0x18fb6": {"speaker": "Haku", "tone_register": "narracao", "intent": "A estalajadeira pega a bolsinha e pesa numa balanca.", "risk_level": "low", "t": "A estalajadeira pega contente a bolsinha que a Kuon\\n"},
-    "0x18fe8": {"speaker": "Haku", "tone_register": "narracao", "intent": "...oferece, pesando numa balanca.", "risk_level": "low", "t": "oferece, pesando numa balança."},
-    "0x19011": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Da uns 400, mas poe um bonus e faz 450.", "risk_level": "low", "t": "Hmm. Parece dar uns 400--mas vou\\n"},
-    "0x19047": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...jogar um bonus e fazer 450, pra voce.", "risk_level": "low", "t": "jogar um bônus e fazer 450, pra você."},
-    "0x19072": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Ah, obrigada!", "risk_level": "low", "t": "Ah, obrigada!"},
-    "0x19081": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Eu que agradeco; o estoque tava no fim.", "risk_level": "low", "t": "Eu é que devia agradecer, querida. Nosso estoque\\n"},
-    "0x190b5": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...quase no fim; voce chegou bem na hora.", "risk_level": "low", "t": "tava quase no fim. Você chegou bem na hora."},
-    "0x190e3": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Nao se preocupe; so de ouvir isso ja valeu.", "risk_level": "low", "t": "Por favor, não se preocupe. Só de ouvir você dizer\\n"},
-    "0x19118": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...isso ja valeu a pena.", "risk_level": "low", "t": "isso já valeu a pena."},
-    "0x19134": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Vai passar a noite? O quarto da ultima vez ta livre.", "risk_level": "low", "t": "Vai passar a noite? O quarto que a gente teve pra você\\n"},
-    "0x19167": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...da ultima vez esta livre.", "risk_level": "low", "t": "da última vez está livre."},
-    "0x1917f": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Seria otimo--mas somos dois desta vez.", "risk_level": "low", "t": "Seria ótim--Ah, mas somos dois desta\\n"},
-    "0x191b2": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...vez. Tudo bem?", "risk_level": "low", "t": "vez. Tudo bem?"},
-    "0x191c4": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Dois?", "risk_level": "low", "t": "Dois?"},
-    "0x191c9": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Aham. No mesmo quarto, se der.", "risk_level": "medium", "risk_notes": "Kuon pede o mesmo quarto com naturalidade total - arma o gag do constrangimento do Haku. Manter a casualidade.", "t": "Aham. No mesmo quarto, se for possível."},
-    "0x191f4": {"speaker": "Haku", "tone_register": "narracao", "intent": "A estalajadeira so entao parece notar o Haku, confusa.", "risk_level": "low", "t": "A estalajadeira só então parece me notar,\\n"},
-    "0x19227": {"speaker": "Haku", "tone_register": "narracao", "intent": "...me dando um olhar confuso.", "risk_level": "low", "t": "me dando um olhar confuso."},
-    "0x19241": {"speaker": "Haku", "tone_register": "comedia_panico", "intent": "Espera, o que ela falou sobre o mesmo quarto?", "risk_level": "medium", "risk_notes": "Inicio do panico comico do Haku com o 'mesmo quarto'. Manter o duplo-take.", "t": "Espera, o que foi isso que ela falou sobre ficar no\\n"},
-    "0x19274": {"speaker": "Haku", "tone_register": "comedia_panico", "intent": "...mesmo quarto?", "risk_level": "low", "t": "mesmo quarto?"},
-    "0x19283": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon resume: encontrou o Haku na volta.", "risk_level": "low", "t": "É uma longa história. Eu o encontrei na volta,\\n"},
-    "0x192b8": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...basicamente.", "risk_level": "low", "t": "basicamente."},
-    "0x192c3": {"speaker": "Haku", "tone_register": "comedia_panico", "intent": "E-Espera, espera, calma ai.", "risk_level": "medium", "risk_notes": "Panico/gagueira 'W-Wait'->'E-Espera'; corta a fala da Kuon. Manter a urgencia comica.", "t": "E-Espera, espera, calma aí."},
-    "0x192da": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Algum problema?", "risk_level": "low", "t": "Algum problema?"},
-    "0x192ee": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "Dividir quarto com um cara? Voce ta de boa com isso?", "risk_level": "medium", "risk_notes": "Constrangimento do Haku com a propriedade; ela nao ve problema. Manter o contraste comico.", "t": "Dividir quarto com um cara? Você tem certeza que tá de boa com\\n"},
-    "0x19323": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "...isso? Nao e estranho?", "risk_level": "low", "t": "isso? Não é estranho?"},
-    "0x19339": {"speaker": "Kuon", "tone_register": "comedia_deadpan", "intent": "Kuon, sem entender: por que seria estranho?", "risk_level": "medium", "risk_notes": "Voz da Kuon (high): inocencia genuina/deadpan - ela realmente nao ve malicia. Nao soar ironica aqui.", "t": "...Por que isso seria estranho?"},
-    "0x19355": {"speaker": "Haku", "tone_register": "narracao", "intent": "Ela o encara com genuina perplexidade.", "risk_level": "low", "t": "Ela me encara com genuína perplexidade.\\n"},
-    "0x19386": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Sera que nao e grande coisa mesmo?", "risk_level": "low", "t": "Será que não é grande coisa mesmo?"},
-    "0x193a8": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "Voce nao preferiria ficar sozinha do que com um estranho?", "risk_level": "medium", "risk_notes": "Haku tenta dar uma saida a ela; subtexto de pudor. Manter o argumento desajeitado.", "t": "Quer dizer, você não preferiria ficar sozinha,\\n"},
-    "0x193d9": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "...do que dividir com um completo estranho?", "risk_level": "low", "t": "em vez de dividir com um completo estranho?"},
-    "0x19401": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: voce nao e estranho; ja dormimos na mesma barraca.", "risk_level": "medium", "risk_notes": "CALLBACK da barraca (11_02/11_03). Kuon desarma o pudor com logica. Manter a naturalidade.", "t": "Mas você não é um completo estranho. Além disso, a gente dormiu\\n"},
-    "0x19436": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...na mesma barraca enquanto eu cuidava de voce.", "risk_level": "low", "t": "na mesma barraca enquanto eu cuidava de você."},
-    "0x19467": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Entao por que fazer disso um drama agora?", "risk_level": "low", "t": "Então eu acho: por que fazer disso um drama agora?"},
-    "0x19497": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "Haku insiste: voce nao ta preocupada de ser observada...", "risk_level": "medium", "risk_notes": "Haku tenta apontar os riscos (constrangido). Setup pro contra-ataque deadpan da Kuon.", "t": "...Mesmo assim, você não tá, tipo... preocupada\\n"},
-    "0x194cb": {"speaker": "Haku", "tone_register": "comedia_constrangimento", "intent": "...de ser vigiada se trocando, ou molestada...", "risk_level": "high", "risk_notes": "Tema delicado (high): 'watched while changing, or molested' -> 'vigiada se trocando, ou molestada'. Manter o registro (Haku preocupado com a HONRA dela, nao vulgar). Back-translation.", "t": "de ser vigiada enquanto se troca, ou molestada, ou..."},
-    "0x19500": {"speaker": "Kuon", "tone_register": "comedia_deadpan", "intent": "Kuon devolve, deadpan: pensando em me molestar, Haku?", "risk_level": "high", "risk_notes": "Pivot comico (high): Kuon vira a preocupacao contra ele com naturalidade letal. 'Planning to molest me, Haku?' -> 'Pensando em me molestar, Haku?'. Deadpan, nao acusatorio-serio. Back-translation.", "t": "Pensando em me molestar, Haku?"},
-    "0x1951d": {"speaker": "Haku", "tone_register": "comedia_panico", "intent": "Haku surta: nao quis dizer isso, voce ta me zoando!", "risk_level": "high", "risk_notes": "Panico comico (high): 'Damn it' -> 'Droga'; ele percebe que ela so esta provocando. Manter a frustracao envergonhada. Back-translation.", "t": "N-Não, eu não quis--Droga, você sabe exatamente o que\\n"},
-    "0x19553": {"speaker": "Haku", "tone_register": "comedia_panico", "intent": "...eu quis dizer e ta so me zoando, ne?", "risk_level": "low", "t": "eu quis dizer e tá só me zoando, né?"},
-    "0x19588": {"speaker": "Kuon", "tone_register": "comedia_deadpan", "intent": "Kuon, com falsa inocencia: do que voce esta falando?", "risk_level": "medium", "risk_notes": "Voz da Kuon: falsa inocencia que confirma a provocacao. Manter o ar de quem nao fez nada.", "t": "Do que você poderia estar falando?"},
-    "0x195ad": {"speaker": "Haku", "tone_register": "comedia_deadpan", "intent": "Eu sabia.", "risk_level": "low", "t": "Eu sabia."},
-    "0x195b8": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: voce nao parece vulgar nem ingrato, entao nao tô preocupada.", "risk_level": "medium", "risk_notes": "Kuon explica a confianca de forma direta; 'bite the hand that fed you' -> 'morder a mao que te alimentou' (expressao equivalente BR).", "t": "Você não parece do tipo vulgar, e duvido que fosse\\n"},
-    "0x195ec": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...morder a mao que te alimentou, entao nao tô preocupada.", "risk_level": "low", "t": "morder a mão que te alimentou, então não tô preocupada."},
-    "0x1961c": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "A gente pendura um pano pra ter privacidade.", "risk_level": "low", "t": "A gente só pendura um pano ou algo assim\\n"},
-    "0x19650": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...pra ter privacidade.", "risk_level": "low", "t": "pra ter privacidade."},
-    "0x1965d": {"speaker": "Kuon", "tone_register": "comedia_alfinetada", "intent": "Kuon alfineta: ou e que voce nao quer ficar comigo?", "risk_level": "high", "risk_notes": "Alfinetada (high): Kuon o pega desprevenido virando a mesa ('don't want to stay with me?'). Manter a provocacao charmosa que o desarma. Back-translation.", "t": "Ou é que você simplesmente não quer ficar comigo?"},
-    "0x19690": {"speaker": "Haku", "tone_register": "interjeicao_derrota", "intent": "Argh... (sem resposta).", "risk_level": "medium", "risk_notes": "Interjeicao de derrota 'Urgh' -> 'Argh' (padronizado no corpus).", "t": "Argh..."},
-    "0x19698": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Agora ela so ta tentando me pegar desprevenido.", "risk_level": "low", "t": "Agora ela só tá tentando me pegar desprevenido."},
-    "0x196c0": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Talvez ela confie nele, mas ele nao tem argumento.", "risk_level": "medium", "risk_notes": "'don't have a leg to stand on' -> 'nao tenho como responder' (sentido idiomatico, nao literal). Manter a derrota comica.", "t": "Talvez ela confie em mim mesmo, mas eu não tenho como\\n"},
-    "0x196f5": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...responder a um comentario desses.", "risk_level": "low", "t": "responder a um comentário desses."},
-    "0x19721": {"speaker": "Kuon", "tone_register": "cotidiano_firme", "intent": "Kuon: quem ta pagando o quarto, afinal? Desperdicio pagar dois.", "risk_level": "low", "t": "Quem você acha que tá pagando o quarto, afinal?\\n"},
-    "0x19754": {"speaker": "Kuon", "tone_register": "cotidiano_firme", "intent": "...desperdicio pagar por dois.", "risk_level": "low", "t": "Seria desperdício pagar por dois."},
-    "0x19779": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "So um quarto, por favor.", "risk_level": "low", "t": "Só um quarto, por favor."},
-    "0x19794": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Pode deixar; aproveitem os banhos e relaxem.", "risk_level": "low", "t": "Pode deixar. Vocês devem estar cansados, então por que não vão\\n"},
-    "0x197c9": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...aproveitar os banhos? Relaxem.", "risk_level": "low", "t": "aproveitar os banhos? Relaxem um pouco."},
-    "0x197f9": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Vou caprichar na refeicao; esperem pelo jantar.", "risk_level": "low", "t": "Vou caprichar numa boa refeição pra vocês,\\n"},
-    "0x1982e": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...esperem ansiosos pelo jantar.", "risk_level": "low", "t": "então esperem ansiosos pelo jantar."},
-    "0x19850": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Kuon: vamos sim! Mas antes, tem alguma tarefa na estalagem?", "risk_level": "high", "risk_notes": "TOKEN {W110} (pausa/timing) preservado verbatim no meio da fala. Kuon oferece ajuda - prepara o gag das tarefas. Back-translation.", "t": "Vamos sim! {W110}Mas antes, você tem alguma tarefa\\n"},
-    "0x1988e": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...na estalagem que precisa ser feita?", "risk_level": "low", "t": "na estalagem que precisa ser feita?"},
-    "0x198b5": {"speaker": "Haku", "tone_register": "interjeicao_surpresa", "intent": "Hein?", "risk_level": "low", "t": "Hein?"},
-    "0x198ba": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Qualquer trabalho braçal serve, se der pra terminar antes do escuro.", "risk_level": "low", "t": "Qualquer trabalho braçal ou recado serve, desde que\\n"},
-    "0x198f0": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "...a gente consiga terminar antes de escurecer.", "risk_level": "low", "t": "a gente consiga terminar antes de escurecer."},
-    "0x1991d": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "Haku surta: ela vai TRABALHAR depois daquela caminhada?", "risk_level": "medium", "risk_notes": "Indignacao comica (caixa-alta 'WORK'->'TRABALHAR'); incredulidade com a energia da Kuon. Manter a enfase.", "t": "Não me diga que ela vai TRABALHAR depois daquela\\n"},
-    "0x19953": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...caminhada brutal. Que historia e a da energia dela?", "risk_level": "low", "t": "caminhada brutal. Não entendo. Que história é a\\n"},
-    "0x19987": {"speaker": "Haku", "tone_register": "comedia_narracao", "intent": "...da energia dela?", "risk_level": "low", "t": "da energia dela?"},
-    "0x19990": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "Ta tarde, entao so sobram as tarefas das criancas. Serve?", "risk_level": "low", "t": "Bom, deixa ver... Está ficando tarde, então só\\n"},
-    "0x199c3": {"speaker": "Estalajadeira", "tone_register": "cotidiano_caloroso", "intent": "...sobram as tarefas das criancas. Serve?", "risk_level": "low", "t": "sobram mesmo as tarefas das crianças. Serve?"},
-    "0x199f4": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Sim, serve perfeitamente.", "risk_level": "low", "t": "Sim, serve perfeitamente."},
-    "0x19a0d": {"speaker": "Haku", "tone_register": "comedia_exaustao", "intent": "Mas eu ja tô exausto! Me deixa descansar.", "risk_level": "medium", "risk_notes": "Protesto manhoso do Haku exausto; quebra comica vs a disposicao da Kuon.", "t": "Mas eu já tô exausto! Me deixa descansar. Por favor."},
-    "0x19a3d": {"speaker": "Haku", "tone_register": "narracao", "intent": "A Kuon conversa mais com a estalajadeira, depois balanca o rabo, sorrindo.", "risk_level": "medium", "risk_notes": "Detalhe de mundo/personagem: 'swishes her tail' = rabo da Kuon (povo-fera, consistente com as orelhas). Manter o gesto.", "t": "A Kuon conversa mais um pouco com a estalajadeira, então\\n"},
-    "0x19a73": {"speaker": "Haku", "tone_register": "narracao", "intent": "...balanca o rabo na minha direcao, sorrindo.", "risk_level": "low", "t": "balança o rabo na minha direção, sorrindo."},
-    "0x19a9e": {"speaker": "Kuon", "tone_register": "cotidiano_gentil", "intent": "Certo, entao. Vamos trabalhar.", "risk_level": "low", "t": "Certo, então. Vamos trabalhar."}
+    "0x186b4": {
+      "speaker": "Kuon",
+      "tone_register": "interjeicao_duvida",
+      "intent": "Hum?",
+      "risk_level": "low",
+      "t": "Hum?"
+    },
+    "0x18463": {
+      "speaker": "Haku",
+      "tone_register": "comedia_exaustao",
+      "intent": "Haku, cansado, se pergunta ha quanto tempo andam.",
+      "risk_level": "low",
+      "t": "...Faz quanto tempo que a gente tá andando...?"
+    },
+    "0x1848d": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "O sol cai mas a vila nao aparece.",
+      "risk_level": "low",
+      "t": "O sol está caindo na direção do horizonte, mas a\\n"
+    },
+    "0x184be": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...vila que a Kuon mencionou nao aparece.",
+      "risk_level": "low",
+      "t": "vila que a Kuon mencionou não aparece em lugar nenhum."
+    },
+    "0x184ea": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Parece que andaram quilometros, mas a Kuon nem suou.",
+      "risk_level": "low",
+      "t": "Parece que a gente andou quilômetros, mas a Kuon\\n"
+    },
+    "0x18521": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...nem suou.",
+      "risk_level": "low",
+      "t": "parece que nem suou."
+    },
+    "0x1854c": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "E ainda num ritmo e tanto.",
+      "risk_level": "low",
+      "t": "E ainda por cima vem num ritmo e tanto."
+    },
+    "0x18574": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Eu, por outro lado...",
+      "risk_level": "low",
+      "t": "Eu, por outro lado..."
+    },
+    "0x1858d": {
+      "speaker": "Haku",
+      "tone_register": "interjeicao_exaustao",
+      "intent": "Haku ofegante.",
+      "risk_level": "medium",
+      "risk_notes": "Interjeicao de cansaco localizada (respiracao pesada + gemido).",
+      "t": "Uf... haah... haah... Nnnngh..."
+    },
+    "0x185ad": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Ja nao tem muita energia, e ainda por cima...",
+      "risk_level": "low",
+      "t": "Eu já não tenho lá muita energia pra começo de conversa,\\n"
+    },
+    "0x185e0": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...ainda por cima disso...",
+      "risk_level": "low",
+      "t": "mas ainda por cima disso..."
+    },
+    "0x185f6": {
+      "speaker": "Haku",
+      "tone_register": "comedia_exaustao",
+      "intent": "M-Meus pes...",
+      "risk_level": "low",
+      "t": "M-Meus pés..."
+    },
+    "0x18603": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Arrasta os pes, pesados como chumbo.",
+      "risk_level": "low",
+      "t": "Arrasto os pés enquanto ando. Estão pesados como chumbo."
+    },
+    "0x18637": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Nao da pra reclamar quando uma garota da metade do tamanho...",
+      "risk_level": "low",
+      "t": "Mas não dá bem pra reclamar quando uma garota da metade do meu tamanho\\n"
+    },
+    "0x1866f": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...acompanha sem esforco.",
+      "risk_level": "low",
+      "t": "acompanha o ritmo sem esforço."
+    },
+    "0x1868d": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Nao devia choramingar, mas...",
+      "risk_level": "low",
+      "t": "Eu não devia choramingar, mas..."
+    },
+    "0x186a7": {
+      "speaker": "Haku",
+      "tone_register": "cotidiano",
+      "intent": "E-Ei, Kuon?",
+      "risk_level": "low",
+      "t": "E-Ei, Kuon?"
+    },
+    "0x186b8": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon olha por cima do ombro sem parar.",
+      "risk_level": "low",
+      "t": "A Kuon olha por cima do ombro sem parar."
+    },
+    "0x186e9": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku, sem jeito, pergunta se a vila esta perto.",
+      "risk_level": "medium",
+      "risk_notes": "Hesitacao 'Uh'->'Ahn'; Haku evita parecer manhoso ao perguntar. Manter o titubeio.",
+      "t": "Ahn... Como é que eu digo? A gente tá andando faz\\n"
+    },
+    "0x1871f": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "...um tempao, e a vila ta perto?",
+      "risk_level": "low",
+      "t": "um tempão já, e, hum... A vila tá perto?"
+    },
+    "0x1874d": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: quase, ja deve chegar logo.",
+      "risk_level": "low",
+      "t": "Hum, quase. A gente já deve chegar logo--só\\n"
+    },
+    "0x18783": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...mais um pouquinho, acho.",
+      "risk_level": "low",
+      "t": "mais um pouquinho, acho."
+    },
+    "0x1879e": {
+      "speaker": "Haku",
+      "tone_register": "comedia_exaustao",
+      "intent": "S-Serio?",
+      "risk_level": "low",
+      "t": "S-Sério?"
+    },
+    "0x187a8": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "So mais um pouquinho.",
+      "risk_level": "low",
+      "t": "Só mais um pouquinho.\\n"
+    },
+    "0x187c1": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Haku desconfia do 'pouquinho' da Kuon.",
+      "risk_level": "medium",
+      "risk_notes": "Ironia dramatica: 'DOES mean just a little' (enfase) -> 'MESMO so um pouquinho'. Setup da piada da noção de distancia.",
+      "t": "...Ela quer dizer MESMO só um pouquinho, né?"
+    },
+    "0x187ef": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Comeca a perceber que a noção de distancia dele difere da Kuon.",
+      "risk_level": "medium",
+      "risk_notes": "Punchline em construcao: a noção de escala dos dois e diferente. Manter o timing.",
+      "t": "Tô começando a perceber que minha noção de distância\\n"
+    },
+    "0x18823": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...e bem diferente da da Kuon.",
+      "risk_level": "low",
+      "t": "é bem diferente da da Kuon."
+    },
+    "0x18841": {
+      "speaker": "Haku",
+      "tone_register": "comedia_exaustao",
+      "intent": "Haku, exausto: finalmente chegaram.",
+      "risk_level": "medium",
+      "risk_notes": "Exaustao + alivio; gagueira 'm-made' -> 'c-conseguiu'. Manter o folego arrastado.",
+      "t": "Haah... haahhh... Finalmente... A gente c-conseguiu..."
+    },
+    "0x1886d": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Desaba ao cruzar a entrada, pernas doloridas.",
+      "risk_level": "low",
+      "t": "Desabo no chão assim que a gente cruza a\\n"
+    },
+    "0x1889c": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...entrada, pernas doloridas alem da conta.",
+      "risk_level": "low",
+      "t": "entrada, com as pernas doloridas além da conta."
+    },
+    "0x188c3": {
+      "speaker": "Haku",
+      "tone_register": "comedia_monologo",
+      "intent": "Haku se elogia em 2a pessoa, esquisito.",
+      "risk_level": "high",
+      "risk_notes": "Comedia/voz (high): auto-elogio em 2a pessoa ('You go, me. You done good.') - tique comico do Haku se falando. Manter o auto-papo estranho e a gramatica relaxada. Back-translation.",
+      "t": "Consegui. Isso aí, eu. Mandou bem."
+    },
+    "0x188e9": {
+      "speaker": "Haku",
+      "tone_register": "comedia_monologo",
+      "intent": "Acha justo se elogiar por ter chegado ate ali.",
+      "risk_level": "low",
+      "t": "Acho que posso me elogiar por ter chegado\\n"
+    },
+    "0x1891a": {
+      "speaker": "Haku",
+      "tone_register": "comedia_monologo",
+      "intent": "...ate aqui, ne? Me esforcei o caminho todo.",
+      "risk_level": "low",
+      "t": "até aqui, né? Me esforcei o caminho todo..."
+    },
+    "0x1894c": {
+      "speaker": "Kuon",
+      "tone_register": "comedia_alfinetada",
+      "intent": "Kuon pergunta, com falsa preocupacao, se ele nao se esforcou demais.",
+      "risk_level": "medium",
+      "risk_notes": "Voz da Kuon (high): preocupacao deliberada que alfineta o Haku (ele que reclamou). Tom inocente por fora.",
+      "t": "Ei, você não se esforçou demais, né?"
+    },
+    "0x1897b": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon o olha preocupada enquanto ele senta exausto.",
+      "risk_level": "low",
+      "t": "A Kuon me olha preocupada enquanto eu sento no\\n"
+    },
+    "0x189b0": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...chao, exausto.",
+      "risk_level": "low",
+      "t": "chão, exausto."
+    },
+    "0x189c3": {
+      "speaker": "Haku",
+      "tone_register": "comedia_orgulho",
+      "intent": "Haku nega na hora: ta tudo bem, numa boa.",
+      "risk_level": "medium",
+      "risk_notes": "Orgulho ferido comico: nega o cansaco rapido demais. 'Totally fine' -> 'Numa boa'. Manter o exagero defensivo.",
+      "t": "Hein? N-Não, que nada. Tô bem. Numa boa."
+    },
+    "0x189f2": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Levanta as pressas, negando a 'acusacao' dela.",
+      "risk_level": "low",
+      "t": "Levanto às pressas, negando a acusação dela."
+    },
+    "0x18a21": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Acha que ela soa preocupada de proposito.",
+      "risk_level": "medium",
+      "risk_notes": "Subtexto: a Kuon escolhe a hora pra soar preocupada e desarmar o choro dele. Manter a suspeita comica.",
+      "t": "Ela escolhe esses momentos pra soar tão preocupada\\n"
+    },
+    "0x18a56": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...de proposito, ne? Fica dificil reclamar.",
+      "risk_level": "low",
+      "t": "de propósito, né? Fica difícil me sentir bem\\n"
+    },
+    "0x18a8c": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...em choramingar.",
+      "risk_level": "low",
+      "t": "em choramingar."
+    },
+    "0x18a9b": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: entao vamos seguindo, nao falta muito.",
+      "risk_level": "low",
+      "t": "É mesmo? Então vamos seguindo. Não falta muito pra\\n"
+    },
+    "0x18ad1": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...chegar, prometo.",
+      "risk_level": "low",
+      "t": "chegar, prometo."
+    },
+    "0x18ade": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon sorri travessa e volta ao caminho.",
+      "risk_level": "medium",
+      "risk_notes": "'mischievously' -> 'travessa': sinaliza que a Kuon esta se divertindo as custas dele. Manter a malicia leve.",
+      "t": "Com isso, a Kuon sorri travessa e volta\\n"
+    },
+    "0x18b14": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...pro caminho, seguindo em frente.",
+      "risk_level": "low",
+      "t": "pro caminho, seguindo em frente."
+    },
+    "0x18b30": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Haku desconfia: ela nao ta fazendo de proposito... ne?",
+      "risk_level": "medium",
+      "risk_notes": "Eco do gag da Kuon brincalhona; a desconfianca comica do Haku. Manter o '...ne?' inseguro.",
+      "t": "...Ela não tá fazendo isso de propósito... né?"
+    },
+    "0x18b5d": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A estrada e de terra simples, comum em vilarejos rurais.",
+      "risk_level": "low",
+      "t": "A estrada é de terra simples, provavelmente comum em\\n"
+    },
+    "0x18b91": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...vilarejos rurais como este.",
+      "risk_level": "low",
+      "t": "vilarejos rurais como este..."
+    },
+    "0x18bad": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Restos de neve enfeitam a vila.",
+      "risk_level": "low",
+      "t": "Restos de neve ainda enfeitam a vila. Parece...\\n"
+    },
+    "0x18be1": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Nao rica, mas confortavel de viver. Bucolica.",
+      "risk_level": "low",
+      "t": "Não rica, sinceramente, mas provavelmente confortável de\\n"
+    },
+    "0x18c13": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...se viver. Bucolica.",
+      "risk_level": "low",
+      "t": "se viver. Bucólica."
+    },
+    "0x18c26": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Chegamos!",
+      "risk_level": "low",
+      "t": "Chegamos!"
+    },
+    "0x18c33": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon para num predio velho com um pano colorido no beiral.",
+      "risk_level": "low",
+      "t": "A Kuon para num prédio velho, com um pano\\n"
+    },
+    "0x18c69": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...colorido pendurado no beiral.",
+      "risk_level": "low",
+      "t": "colorido pendurado no beiral."
+    },
+    "0x18c90": {
+      "speaker": "Haku",
+      "tone_register": "cotidiano",
+      "intent": "Que lugar e esse?",
+      "risk_level": "low",
+      "t": "Que lugar é esse?"
+    },
+    "0x18ca3": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon explica: lugares com essa marca sao estalagens.",
+      "risk_level": "medium",
+      "risk_notes": "Detalhe de mundo: a marca (pano colorido) sinaliza estalagem. Kuon ensina o Haku (que e de fora). Manter o tom didatico-gentil.",
+      "t": "Uma estalagem. Lugares com essa marca são sempre estalagens--\\n"
+    },
+    "0x18cd5": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...seria bom voce guardar isso.",
+      "risk_level": "low",
+      "t": "seria bom você guardar isso."
+    },
+    "0x18d05": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Ela aponta o padrao na tira de pano pendurada.",
+      "risk_level": "low",
+      "t": "Ela aponta o padrão na tira de pano\\n"
+    },
+    "0x18d39": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...pendurada.",
+      "risk_level": "low",
+      "t": "pendurada."
+    },
+    "0x18d41": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Dentro, espaco amplo com mesas (refeitorio/taverna).",
+      "risk_level": "low",
+      "t": "Lá dentro é um espaço amplo e aberto, cheio de mesas--\\n"
+    },
+    "0x18d76": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...provavelmente refeitorio ou taverna.",
+      "risk_level": "low",
+      "t": "provavelmente pra servir de refeitório ou taverna."
+    },
+    "0x18da8": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "E mais colorido aqui do que ele imaginava.",
+      "risk_level": "low",
+      "t": "É bem mais colorido aqui dentro do que eu imaginava\\n"
+    },
+    "0x18dda": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...que seria.",
+      "risk_level": "low",
+      "t": "que seria..."
+    },
+    "0x18de5": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon vai ate uma recepcao e puxa um cordao.",
+      "risk_level": "low",
+      "t": "Enquanto eu olho em volta, a Kuon vai até o que parece\\n"
+    },
+    "0x18e18": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...ser uma recepcao e puxa um cordao pendurado.",
+      "risk_level": "low",
+      "t": "ser uma recepção e puxa um cordão pendurado."
+    },
+    "0x18e4b": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Uma voz grita 'ja vou!' e uma mulher aparece.",
+      "risk_level": "low",
+      "t": "Uma voz de algum outro canto do prédio grita\\n"
+    },
+    "0x18e80": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...'ja vou!' e logo uma mulher aparece de outro comodo.",
+      "risk_level": "medium",
+      "risk_notes": "Fala dentro da narracao 'coming!' -> 'ja vou!' (chamado natural BR). Aspas preservadas.",
+      "t": "\"já vou!\" e logo uma mulher aparece de outro\\n"
+    },
+    "0x18eb2": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...comodo.",
+      "risk_level": "low",
+      "t": "cômodo."
+    },
+    "0x18eb8": {
+      "speaker": "rotulo",
+      "tone_register": "rotulo_falante",
+      "intent": "Rotulo de falante da dona da estalagem.",
+      "risk_level": "high",
+      "risk_notes": "Rotulo 53 00 (high): nova personagem 'Innkeeper' -> 'Estalajadeira' (glossary). Como Garota/Mulher/Homem, exibido in-game. Pode relocar (overflow do slot de 9 bytes). Back-translation.",
+      "t": "Estalajadeira"
+    },
+    "0x18ec2": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Estalajadeira sauda a Kuon com carinho.",
+      "risk_level": "medium",
+      "risk_notes": "Nova voz (high): calorosa, maternal, trata por 'querida'. 'Miss Kuon' -> 'Senhorita Kuon'. Estabelecer o registro acolhedor.",
+      "t": "Ah, Senhorita Kuon! Bem-vinda de volta."
+    },
+    "0x18edf": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Desculpa por demorar; andaram ocupados.",
+      "risk_level": "medium",
+      "risk_notes": "Voz calorosa: 'dear' -> 'querida' (tratamento afetuoso recorrente da Estalajadeira).",
+      "t": "Desculpe não ter vindo mais rápido, querida. A gente tem\\n"
+    },
+    "0x18f14": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...andado muito ocupada, so isso.",
+      "risk_level": "low",
+      "t": "andado terrivelmente ocupada, só isso."
+    },
+    "0x18f30": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: nao se preocupe; aqui as ervas medicinais.",
+      "risk_level": "low",
+      "t": "Por favor, não se preocupe. Aqui--essas são as\\n"
+    },
+    "0x18f64": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...ervas medicinais que voce pediu.",
+      "risk_level": "low",
+      "t": "ervas medicinais que você me pediu pra trazer. "
+    },
+    "0x18f8a": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Obrigada, voce e uma salvadora.",
+      "risk_level": "low",
+      "t": "Ah! Obrigada. Você é uma salvadora, isso sim."
+    },
+    "0x18fb6": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A estalajadeira pega a bolsinha e pesa numa balanca.",
+      "risk_level": "low",
+      "t": "A estalajadeira pega contente a bolsinha que a Kuon\\n"
+    },
+    "0x18fe8": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...oferece, pesando numa balanca.",
+      "risk_level": "low",
+      "t": "oferece, pesando numa balança."
+    },
+    "0x19011": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Da uns 400, mas poe um bonus e faz 450.",
+      "risk_level": "low",
+      "t": "Hmm. Parece dar uns 400--mas vou\\n"
+    },
+    "0x19047": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...jogar um bonus e fazer 450, pra voce.",
+      "risk_level": "low",
+      "t": "jogar um bônus e fazer 450, pra você."
+    },
+    "0x19072": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Ah, obrigada!",
+      "risk_level": "low",
+      "t": "Ah, obrigada!"
+    },
+    "0x19081": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Eu que agradeco; o estoque tava no fim.",
+      "risk_level": "low",
+      "t": "Eu é que devia agradecer, querida. Nosso estoque\\n"
+    },
+    "0x190b5": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...quase no fim; voce chegou bem na hora.",
+      "risk_level": "low",
+      "t": "tava quase no fim. Você chegou bem na hora."
+    },
+    "0x190e3": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Nao se preocupe; so de ouvir isso ja valeu.",
+      "risk_level": "low",
+      "t": "Por favor, não se preocupe. Só de ouvir você dizer\\n"
+    },
+    "0x19118": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...isso ja valeu a pena.",
+      "risk_level": "low",
+      "t": "isso já valeu a pena."
+    },
+    "0x19134": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Vai passar a noite? O quarto da ultima vez ta livre.",
+      "risk_level": "low",
+      "t": "Vai passar a noite? O quarto que a gente teve pra você\\n"
+    },
+    "0x19167": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...da ultima vez esta livre.",
+      "risk_level": "low",
+      "t": "da última vez está livre."
+    },
+    "0x1917f": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Seria otimo--mas somos dois desta vez.",
+      "risk_level": "low",
+      "t": "Seria ótim--Ah, mas somos dois desta\\n"
+    },
+    "0x191b2": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...vez. Tudo bem?",
+      "risk_level": "low",
+      "t": "vez. Tudo bem?"
+    },
+    "0x191c4": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Dois?",
+      "risk_level": "low",
+      "t": "Dois?"
+    },
+    "0x191c9": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Aham. No mesmo quarto, se der.",
+      "risk_level": "medium",
+      "risk_notes": "Kuon pede o mesmo quarto com naturalidade total - arma o gag do constrangimento do Haku. Manter a casualidade.",
+      "t": "Aham. No mesmo quarto, se for possível."
+    },
+    "0x191f4": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A estalajadeira so entao parece notar o Haku, confusa.",
+      "risk_level": "low",
+      "t": "A estalajadeira só então parece me notar,\\n"
+    },
+    "0x19227": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...me dando um olhar confuso.",
+      "risk_level": "low",
+      "t": "me dando um olhar confuso."
+    },
+    "0x19241": {
+      "speaker": "Haku",
+      "tone_register": "comedia_panico",
+      "intent": "Espera, o que ela falou sobre o mesmo quarto?",
+      "risk_level": "medium",
+      "risk_notes": "Inicio do panico comico do Haku com o 'mesmo quarto'. Manter o duplo-take.",
+      "t": "Espera, o que foi isso que ela falou sobre ficar no\\n"
+    },
+    "0x19274": {
+      "speaker": "Haku",
+      "tone_register": "comedia_panico",
+      "intent": "...mesmo quarto?",
+      "risk_level": "low",
+      "t": "mesmo quarto?"
+    },
+    "0x19283": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon resume: encontrou o Haku na volta.",
+      "risk_level": "low",
+      "t": "É uma longa história. Eu o encontrei na volta,\\n"
+    },
+    "0x192b8": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...basicamente.",
+      "risk_level": "low",
+      "t": "basicamente."
+    },
+    "0x192c3": {
+      "speaker": "Haku",
+      "tone_register": "comedia_panico",
+      "intent": "E-Espera, espera, calma ai.",
+      "risk_level": "medium",
+      "risk_notes": "Panico/gagueira 'W-Wait'->'E-Espera'; corta a fala da Kuon. Manter a urgencia comica.",
+      "t": "E-Espera, espera, calma aí."
+    },
+    "0x192da": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Algum problema?",
+      "risk_level": "low",
+      "t": "Algum problema?"
+    },
+    "0x192ee": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "Dividir quarto com um cara? Voce ta de boa com isso?",
+      "risk_level": "medium",
+      "risk_notes": "Constrangimento do Haku com a propriedade; ela nao ve problema. Manter o contraste comico.",
+      "t": "Dividir quarto com um cara? Você tem certeza que tá de boa com\\n"
+    },
+    "0x19323": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "...isso? Nao e estranho?",
+      "risk_level": "low",
+      "t": "isso? Não é estranho?"
+    },
+    "0x19339": {
+      "speaker": "Kuon",
+      "tone_register": "comedia_deadpan",
+      "intent": "Kuon, sem entender: por que seria estranho?",
+      "risk_level": "medium",
+      "risk_notes": "Voz da Kuon (high): inocencia genuina/deadpan - ela realmente nao ve malicia. Nao soar ironica aqui.",
+      "t": "...Por que isso seria estranho?"
+    },
+    "0x19355": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "Ela o encara com genuina perplexidade.",
+      "risk_level": "low",
+      "t": "Ela me encara com genuína perplexidade.\\n"
+    },
+    "0x19386": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Sera que nao e grande coisa mesmo?",
+      "risk_level": "low",
+      "t": "Será que não é grande coisa mesmo?"
+    },
+    "0x193a8": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "Voce nao preferiria ficar sozinha do que com um estranho?",
+      "risk_level": "medium",
+      "risk_notes": "Haku tenta dar uma saida a ela; subtexto de pudor. Manter o argumento desajeitado.",
+      "t": "Quer dizer, você não preferiria ficar sozinha,\\n"
+    },
+    "0x193d9": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "...do que dividir com um completo estranho?",
+      "risk_level": "low",
+      "t": "em vez de dividir com um completo estranho?"
+    },
+    "0x19401": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: voce nao e estranho; ja dormimos na mesma barraca.",
+      "risk_level": "medium",
+      "risk_notes": "CALLBACK da barraca (11_02/11_03). Kuon desarma o pudor com logica. Manter a naturalidade.",
+      "t": "Mas você não é um completo estranho. Além disso, a gente dormiu\\n"
+    },
+    "0x19436": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...na mesma barraca enquanto eu cuidava de voce.",
+      "risk_level": "low",
+      "t": "na mesma barraca enquanto eu cuidava de você."
+    },
+    "0x19467": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Entao por que fazer disso um drama agora?",
+      "risk_level": "low",
+      "t": "Então eu acho: por que fazer disso um drama agora?"
+    },
+    "0x19497": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "Haku insiste: voce nao ta preocupada de ser observada...",
+      "risk_level": "medium",
+      "risk_notes": "Haku tenta apontar os riscos (constrangido). Setup pro contra-ataque deadpan da Kuon.",
+      "t": "...Mesmo assim, você não tá, tipo... preocupada\\n"
+    },
+    "0x194cb": {
+      "speaker": "Haku",
+      "tone_register": "comedia_constrangimento",
+      "intent": "...de ser vigiada se trocando, ou molestada...",
+      "risk_level": "high",
+      "risk_notes": "Tema delicado (high): 'watched while changing, or molested' -> 'vigiada se trocando, ou molestada'. Manter o registro (Haku preocupado com a HONRA dela, nao vulgar). Back-translation.",
+      "t": "de ser vigiada enquanto se troca, ou molestada, ou..."
+    },
+    "0x19500": {
+      "speaker": "Kuon",
+      "tone_register": "comedia_deadpan",
+      "intent": "Kuon devolve, deadpan: pensando em me molestar, Haku?",
+      "risk_level": "high",
+      "risk_notes": "Pivot comico (high): Kuon vira a preocupacao contra ele com naturalidade letal. 'Planning to molest me, Haku?' -> 'Pensando em me molestar, Haku?'. Deadpan, nao acusatorio-serio. Back-translation.",
+      "t": "Pensando em me molestar, Haku?"
+    },
+    "0x1951d": {
+      "speaker": "Haku",
+      "tone_register": "comedia_panico",
+      "intent": "Haku surta: nao quis dizer isso, voce ta me zoando!",
+      "risk_level": "high",
+      "risk_notes": "Panico comico (high): 'Damn it' -> 'Droga'; ele percebe que ela so esta provocando. Manter a frustracao envergonhada. Back-translation.",
+      "t": "N-Não, eu não quis--Droga, você sabe exatamente o que\\n"
+    },
+    "0x19553": {
+      "speaker": "Haku",
+      "tone_register": "comedia_panico",
+      "intent": "...eu quis dizer e ta so me zoando, ne?",
+      "risk_level": "low",
+      "t": "eu quis dizer e tá só me zoando, né?"
+    },
+    "0x19588": {
+      "speaker": "Kuon",
+      "tone_register": "comedia_deadpan",
+      "intent": "Kuon, com falsa inocencia: do que voce esta falando?",
+      "risk_level": "medium",
+      "risk_notes": "Voz da Kuon: falsa inocencia que confirma a provocacao. Manter o ar de quem nao fez nada.",
+      "t": "Do que você poderia estar falando?"
+    },
+    "0x195ad": {
+      "speaker": "Haku",
+      "tone_register": "comedia_deadpan",
+      "intent": "Eu sabia.",
+      "risk_level": "low",
+      "t": "Eu sabia."
+    },
+    "0x195b8": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: voce nao parece vulgar nem ingrato, entao nao tô preocupada.",
+      "risk_level": "medium",
+      "risk_notes": "Kuon explica a confianca de forma direta; 'bite the hand that fed you' -> 'morder a mao que te alimentou' (expressao equivalente BR).",
+      "t": "Você não parece do tipo vulgar, e duvido que fosse\\n"
+    },
+    "0x195ec": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...morder a mao que te alimentou, entao nao tô preocupada.",
+      "risk_level": "low",
+      "t": "morder a mão que te alimentou, então não tô preocupada."
+    },
+    "0x1961c": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "A gente pendura um pano pra ter privacidade.",
+      "risk_level": "low",
+      "t": "A gente só pendura um pano ou algo assim\\n"
+    },
+    "0x19650": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...pra ter privacidade.",
+      "risk_level": "low",
+      "t": "pra ter privacidade."
+    },
+    "0x1965d": {
+      "speaker": "Kuon",
+      "tone_register": "comedia_alfinetada",
+      "intent": "Kuon alfineta: ou e que voce nao quer ficar comigo?",
+      "risk_level": "high",
+      "risk_notes": "Alfinetada (high): Kuon o pega desprevenido virando a mesa ('don't want to stay with me?'). Manter a provocacao charmosa que o desarma. Back-translation.",
+      "t": "Ou é que você simplesmente não quer ficar comigo?"
+    },
+    "0x19690": {
+      "speaker": "Haku",
+      "tone_register": "interjeicao_derrota",
+      "intent": "Argh... (sem resposta).",
+      "risk_level": "medium",
+      "risk_notes": "Interjeicao de derrota 'Urgh' -> 'Argh' (padronizado no corpus).",
+      "t": "Argh..."
+    },
+    "0x19698": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Agora ela so ta tentando me pegar desprevenido.",
+      "risk_level": "low",
+      "t": "Agora ela só tá tentando me pegar desprevenido."
+    },
+    "0x196c0": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Talvez ela confie nele, mas ele nao tem argumento.",
+      "risk_level": "medium",
+      "risk_notes": "'don't have a leg to stand on' -> 'nao tenho como responder' (sentido idiomatico, nao literal). Manter a derrota comica.",
+      "t": "Talvez ela confie em mim mesmo, mas eu não tenho como\\n"
+    },
+    "0x196f5": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...responder a um comentario desses.",
+      "risk_level": "low",
+      "t": "responder a um comentário desses."
+    },
+    "0x19721": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_firme",
+      "intent": "Kuon: quem ta pagando o quarto, afinal? Desperdicio pagar dois.",
+      "risk_level": "low",
+      "t": "Quem você acha que tá pagando o quarto, afinal?\\n"
+    },
+    "0x19754": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_firme",
+      "intent": "...desperdicio pagar por dois.",
+      "risk_level": "low",
+      "t": "Seria desperdício pagar por dois."
+    },
+    "0x19779": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "So um quarto, por favor.",
+      "risk_level": "low",
+      "t": "Só um quarto, por favor."
+    },
+    "0x19794": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Pode deixar; aproveitem os banhos e relaxem.",
+      "risk_level": "low",
+      "t": "Pode deixar. Vocês devem estar cansados, então por que não vão\\n"
+    },
+    "0x197c9": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...aproveitar os banhos? Relaxem.",
+      "risk_level": "low",
+      "t": "aproveitar os banhos? Relaxem um pouco."
+    },
+    "0x197f9": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Vou caprichar na refeicao; esperem pelo jantar.",
+      "risk_level": "low",
+      "t": "Vou caprichar numa boa refeição pra vocês,\\n"
+    },
+    "0x1982e": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...esperem ansiosos pelo jantar.",
+      "risk_level": "low",
+      "t": "então esperem ansiosos pelo jantar."
+    },
+    "0x19850": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Kuon: vamos sim! Mas antes, tem alguma tarefa na estalagem?",
+      "risk_level": "high",
+      "risk_notes": "TOKEN {W110} (pausa/timing) preservado verbatim no meio da fala. Kuon oferece ajuda - prepara o gag das tarefas. Back-translation.",
+      "t": "Vamos sim! {W110}Mas antes, você tem alguma tarefa\\n"
+    },
+    "0x1988e": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...na estalagem que precisa ser feita?",
+      "risk_level": "low",
+      "t": "na estalagem que precisa ser feita?"
+    },
+    "0x198b5": {
+      "speaker": "Haku",
+      "tone_register": "interjeicao_surpresa",
+      "intent": "Hein?",
+      "risk_level": "low",
+      "t": "Hein?"
+    },
+    "0x198ba": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Qualquer trabalho braçal serve, se der pra terminar antes do escuro.",
+      "risk_level": "low",
+      "t": "Qualquer trabalho braçal ou recado serve, desde que\\n"
+    },
+    "0x198f0": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "...a gente consiga terminar antes de escurecer.",
+      "risk_level": "low",
+      "t": "a gente consiga terminar antes de escurecer."
+    },
+    "0x1991d": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "Haku surta: ela vai TRABALHAR depois daquela caminhada?",
+      "risk_level": "medium",
+      "risk_notes": "Indignacao comica (caixa-alta 'WORK'->'TRABALHAR'); incredulidade com a energia da Kuon. Manter a enfase.",
+      "t": "Não me diga que ela vai TRABALHAR depois daquela\\n"
+    },
+    "0x19953": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...caminhada brutal. Que historia e a da energia dela?",
+      "risk_level": "low",
+      "t": "caminhada brutal. Não entendo. Que história é a\\n"
+    },
+    "0x19987": {
+      "speaker": "Haku",
+      "tone_register": "comedia_narracao",
+      "intent": "...da energia dela?",
+      "risk_level": "low",
+      "t": "da energia dela?"
+    },
+    "0x19990": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "Ta tarde, entao so sobram as tarefas das criancas. Serve?",
+      "risk_level": "low",
+      "t": "Bom, deixa ver... Está ficando tarde, então só\\n"
+    },
+    "0x199c3": {
+      "speaker": "Estalajadeira",
+      "tone_register": "cotidiano_caloroso",
+      "intent": "...sobram as tarefas das criancas. Serve?",
+      "risk_level": "low",
+      "t": "sobram mesmo as tarefas das crianças. Serve?"
+    },
+    "0x199f4": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Sim, serve perfeitamente.",
+      "risk_level": "low",
+      "t": "Sim, serve perfeitamente."
+    },
+    "0x19a0d": {
+      "speaker": "Haku",
+      "tone_register": "comedia_exaustao",
+      "intent": "Mas eu ja tô exausto! Me deixa descansar.",
+      "risk_level": "medium",
+      "risk_notes": "Protesto manhoso do Haku exausto; quebra comica vs a disposicao da Kuon.",
+      "t": "Mas eu já tô exausto! Me deixa descansar. Por favor."
+    },
+    "0x19a3d": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "A Kuon conversa mais com a estalajadeira, depois balanca o rabo, sorrindo.",
+      "risk_level": "medium",
+      "risk_notes": "Detalhe de mundo/personagem: 'swishes her tail' = rabo da Kuon (povo-fera, consistente com as orelhas). Manter o gesto.",
+      "t": "A Kuon conversa mais um pouco com a estalajadeira, então\\n"
+    },
+    "0x19a73": {
+      "speaker": "Haku",
+      "tone_register": "narracao",
+      "intent": "...balanca o rabo na minha direcao, sorrindo.",
+      "risk_level": "low",
+      "t": "balança o rabo na minha direção, sorrindo."
+    },
+    "0x19a9e": {
+      "speaker": "Kuon",
+      "tone_register": "cotidiano_gentil",
+      "intent": "Certo, entao. Vamos trabalhar.",
+      "risk_level": "low",
+      "t": "Certo, então. Vamos trabalhar."
+    }
   }
 }
