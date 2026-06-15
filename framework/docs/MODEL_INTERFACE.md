@@ -79,7 +79,7 @@ Sonnet**; Opus reservado à back-translation.
 |---|---|---|---|---|
 | ch_12_01 (TM) | 37 | 2.529 | 43s | ~$0.06 |
 | ch_12_03 (nova) | 408 | 27.000 | 432s | ~$0.45 |
-~**66 tok/linha** (bate o `cost_model`) → **~$1.1/1k linhas → jogo ~$36** (antes do bundle de custo R5).
+~**66 tok/linha** (bate o `cost_model`) → **~$1.1/1k linhas → jogo ~$36** (antes do bundle de custo).
 Compare: com effort:high+thinking seria ~5× (jogo ~$285). Ver `OBSERVABILITY.md`.
 
 ## Por que isto viabiliza Sonnet

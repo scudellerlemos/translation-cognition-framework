@@ -14,7 +14,7 @@
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Perfil de jogos | 🟢 validado |
-| Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); recuperação por-linha + teto previsível; 122 testes |
+| Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); recuperação por-linha + teto previsível; 125 testes |
 | Instância Utawarerumono | 🟢 **JOGO COMPLETO — 16 capítulos, 146 cenas, ~45.100 linhas** traduzidos e verificados (round-trip + back-translation), **validado in-game**; **~$65,9 gastos, $0 desperdiçado** |
 | Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **transliteração NFD** (preserva ①②③); **pytest** (16 testes) |
 | Perfis filme/série + conector subtitle_file | 🟠/🔴 stub / não iniciado |
@@ -32,7 +32,7 @@ riscos do projeto — o README só aponta para cá.)
 
 **🟢 Sólido (provado em produção):** harness stateless (**146 cenas, 16 capítulos = jogo inteiro**) ·
 round-trip byte-idêntico in-game · governança propõe→aprova→aplica · **custo previsível** (estimativa
-pré-voo + teto duro + recuperação por-linha; `$0` desperdiçado) · **122 testes**.
+pré-voo + teto duro + recuperação por-linha; `$0` desperdiçado) · **125 testes**.
 
 | Risco | Nível | O que significa | Mitigação / estado |
 |---|---|---|---|
@@ -42,7 +42,7 @@ pré-voo + teto duro + recuperação por-linha; `$0` desperdiçado) · **122 tes
 | **Fechamento global (Fase 3)** | 🟢 Baixo *(fechado 2026-06-15)* | reinsert do **jogo inteiro** rodou byte-perfeito (`reinsert_game`); **consistência de glossário cross-capítulo** agora tem linter determinístico (`glossary_lint`, 96 candidatos de nome próprio). | Passe global provado; linter $0 + revisão humana dos candidatos. |
 | **Conector em cenas distantes** | 🟡 Médio | Round-trip + reinsert **verdes em todos os 16 caps** (inclusive 30/39 e os 6 arquivos do `ch_30_09`, que exigiram o fix NFKD→NFD); o **gate visual in-game** dos saltos grandes ainda não foi rodado na tela. | Round-trip garante bytes; falta a conferência visual. |
 | **KB sem ratificação humana** | 🟢 Baixo *(resolvido 2026-06-14)* | **55 entidades (caps 12–22) ratificadas** por Felipe Scudeller no `kb_ratified.csv`. `--strict` verde nos caps em uso (15,19,20,21,22). Resíduo: caps 12/13 (entidades antigas pré-gate, sem seção no research_log + ruído) e gênero de 2 menores (Chalafun/Bokoinante, corpus-only) — gate bloqueando **corretamente** até confirmar. | Ratificação feita; resíduo é cleanup pré-gate + 2 gêneros a ver in-game. |
-| **Re-tradução (R-CUSTO)** | 🟢 Baixo *(era Alto; raiz atacada 2026-06-14)* | Re-tradução era **58% do gasto** (medido), dominada por fitting-fail→retighten ao traduzir **rótulo de engine** (body/face/mask/`Leg_2_B_L`). | ✅ **Cabeado:** `model._label_passthrough` agora passa rótulos de rig como verbatim (fora do LLM) → sem estouro de budget → sem retighten. +teste. Resta (menor): cap/observabilidade de retighten. |
+| **Re-tradução cara** | 🟢 Baixo *(era Alto; raiz atacada 2026-06-14)* | Re-tradução era **58% do gasto** (medido), dominada por fitting-fail→retighten ao traduzir **rótulo de engine** (body/face/mask/`Leg_2_B_L`). | ✅ **Cabeado:** `model._label_passthrough` agora passa rótulos de rig como verbatim (fora do LLM) → sem estouro de budget → sem retighten. +teste. Resta (menor): cap/observabilidade de retighten. |
 | **Custo depende de disciplina** | 🟢 Baixo *(reduzido 2026-06-15)* | Barato (~$0,0012–0,0016/linha) em batch. A dependência de disciplina caiu: agora há **estimativa pré-voo**, **teto duro** (gate de submissão do batch + por-cena → gasto de pior-caso ≤ teto) e **recuperação por-linha** (defeito de 1 linha não re-traduz a cena). | `run_chapter` imprime estimativa + `_fit_budget` + Batch −50% + dedup por TM. |
 | **Sinais derivados stale** | 🟢 Baixo | Editar tradução pode deixar back-translation/relatórios desatualizados. | Invalidação automática + gate `tm_correct --check-sync`. |
 

@@ -7,7 +7,12 @@ identidade, tom e consistência ao longo de corpora grandes.
 
 ---
 
-## O MODELO DE 3 CAMADAS
+## Estrutura de pastas (como o repositório se organiza)
+
+> **Não confunda com as camadas conceituais.** O **modelo conceitual** é de **4 camadas** — Cognition /
+> State / Execution / Validation (ver o [README raiz](../README.md#a-arquitetura-em-4-camadas)). O mapa
+> abaixo é a **estrutura de pastas**: onde cada coisa *mora* no disco. A última coluna liga cada pasta às
+> camadas que ela implementa.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -27,6 +32,14 @@ identidade, tom e consistência ao longo de corpora grandes.
 │  project.json + profile/ + artifacts/ + connector/. Os dados. │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+| Pasta | Papel | Implementa as camadas |
+|---|---|---|
+| `framework/skills/` | o processo SDD (00..08), em prosa | Cognition (guia) + Validation (gates) |
+| `framework/media-profiles/` | preocupações por tipo de mídia | — (configuração) |
+| `framework/connectors/` | I/O binário ↔ corpus (round-trip) | Execution + Validation |
+| `framework/runtime/` | o harness executável | State + Execution + Cognition |
+| `projects/<título>/` | a instância (os dados) | — (os artefatos) |
 
 **Princípio central:** as skills genéricas resolvem tudo que é específico de uma obra lendo o
 `project.json` e os artefatos gerados. Nenhum nome de personagem, termo de lore, token de engine

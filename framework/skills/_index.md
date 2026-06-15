@@ -10,7 +10,10 @@ configuração de um título vive em `projects/<título>/project.json` + `projec
 
 ---
 
-## MODELO DE 3 CAMADAS
+## ORGANIZAÇÃO (genérico + instância)
+
+> Isto é a **organização do código** (framework genérico vs. instância da obra), não as **4 camadas
+> conceituais** (Cognition / State / Execution / Validation — ver o README raiz).
 
 ```
 framework/skills/          ← O PROCESSO (como). Genérico. Nunca contém dados de obra.

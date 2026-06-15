@@ -3,6 +3,17 @@
 
 Este é o projeto de localização que originou o framework. Serve como **referência viva**: prova de que o processo genérico em `/framework/` funciona em um título real, e exemplo de como preencher uma instância nova.
 
+### Em 30 segundos
+
+| | |
+|---|---|
+| **O que é** | A primeira instância do framework — *Utawarerumono: Mask of Deception* (visual novel), EN→pt-BR. Prova viva de que o processo genérico roda num título real. |
+| **A prova** | Jogo **100% traduzido**: 16 capítulos, 146 cenas, ~45.100 linhas, **round-trip byte-idêntico**, **~$65,9** ($0 desperdiçado), pt-BR renderizando in-game. |
+| **O desafio** | Identidades duplas com spoiler crítico (Ukon/Oshtor…), comédia com timing, e um charset sem acentos (resolvido por transliteração NFD no conector). |
+
+> Como o processo inteiro funciona (IA · gates · humano, diagrama ponta a ponta) →
+> [README do framework](../../README.md). Esta página é a **instância**: os dados e o resultado.
+
 ---
 
 ## Estado: **JOGO COMPLETO** — 16 capítulos traduzidos e verificados ✅

@@ -37,6 +37,19 @@ domínio). Qualquer outra deve ser expandida.
 | `T4` | Tier 4 do cascade de reinserção (resíduo que exige cognição) | `t4_residue.json`, skill 08 |
 | `scene_id` | id da cena (ex.: `12_03`), derivado de `ch_12_03` por `scene_id_of()` | todo o runtime |
 
+## 3.1. Itens de planejamento têm NOME, não código
+
+Itens de risco/hardening/gap são identificados por **nome descritivo** — em código **e** nos
+documentos. Códigos crípticos (`H2`, `R5`, `R-CUSTO`, `GAP D`…) estão **aposentados**: eram mal
+desenhados (o mesmo `R3` chegou a significar coisas diferentes em tabelas diferentes) e obrigavam quem
+lia a abrir o ROADMAP para decifrar. Use sempre o nome (ex.: "Fonte única de paths", não "H2";
+`# paths.py: fonte única do contrato de caminhos`, não `# H2`).
+
+O **de-para** código-antigo → nome-atual vive em [`GLOSSARIO.md`](GLOSSARIO.md) (só para quem
+encontrar um código em commits/PRs antigos).
+
+> Regra de manutenção: quem lê um comentário, log ou tabela não deveria precisar de um decodificador.
+
 ## 4. Contrato CONGELADO (APIs estáveis — NÃO renomear sem migração)
 
 Estes nomes são **load-bearing**: há dados em disco, comandos que usuários digitam e config que o
@@ -48,7 +61,7 @@ exige script de migração + revalidação de round-trip — não é um "rename 
 > conceitual [`CONCEPTS.md`](CONCEPTS.md) — lá os conceitos (Context Pack, TM, KB, round-trip…) são
 > ensinados, não apenas nomeados.
 
-> **H2 — fonte única (`framework/runtime/paths.py`):** os nomes de artefato persistidos abaixo NÃO são
+> **Fonte única de paths (`framework/runtime/paths.py`):** os nomes de artefato persistidos abaixo NÃO são
 > mais f-strings espalhadas — vivem como helpers em `paths.py` (ex.: `paths.translations(root, scene,
 > scene_id)`), e o `test_paths_contract` FIXA cada string. Código novo deve usar `paths.*`, nunca montar
 > `root / "artifacts" / ...` à mão. Mudar um nome aqui = mudar em `paths.py` + rodar o teste (que vai

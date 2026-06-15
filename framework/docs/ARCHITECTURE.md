@@ -14,7 +14,12 @@ A regra existe por uma razão medida: o que estourava a sessão **não** era a t
 e sim o **modo de execução** — a tradução cognitiva sendo feita inline, turno-a-turno, numa sessão de
 vida-longa que acumulava todo o histórico (ver `adr/0002-stateless-scene-jobs.md`).
 
-## As 3 camadas (genéricas) + a instância
+## Organização do framework (genérico) + a instância
+
+> **Eixo diferente das 4 camadas.** Isto é a **organização do código** (genérico reutilizável vs.
+> instância da obra) — não confundir com as **4 camadas conceituais** de responsabilidade (Cognition /
+> State / Execution / Validation), descritas no [README raiz](../../README.md#a-arquitetura-em-4-camadas).
+> Uma pasta pode implementar mais de uma camada (ex.: `runtime/` cobre State + Execution + Cognition).
 
 ```
 framework/skills/          ← O PROCESSO (como). Genérico. Nunca contém dados de obra.
@@ -82,7 +87,7 @@ flowchart LR
 > As **duas únicas** caixas de IA (rosa) são `translate` e `back_translate`. Todo o resto é
 > determinístico — é o que torna o custo previsível e os **gates** reprodutíveis.
 >
-> **Reprodutível com asterisco (H4 — seja preciso):** a **tradução em si** (saída do LLM) é
+> **Reprodutível com asterisco (seja preciso):** a **tradução em si** (saída do LLM) é
 > **estocástica** — re-rodar uma cena NÃO produz os mesmos bytes de tradução. O que é determinístico/
 > reproduzível é **a orquestração + os gates**: dado um `translations_*.json` fixo, `context_pack`
 > (`pack.json` byte-idêntico), `build_plan`, `verify` (round-trip byte-idêntico) e a reinserção rodam
@@ -153,7 +158,7 @@ comprovado vivo, além do alvo acima:
   corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **122 testes** (77 runtime + 16 conector + 29 validação); determinismo,
+- **Travas de qualidade:** **125 testes** (80 runtime + 29 validação + 16 conector); determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
 
 ## Documentos relacionados
