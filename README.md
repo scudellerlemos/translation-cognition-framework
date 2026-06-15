@@ -136,21 +136,23 @@ flowchart LR
 
 ## Papéis: quem faz o quê (IA · gates · humano)
 
-Três tipos de ator, com fronteiras explícitas. **A IA nunca tem a palavra final** — ela propõe; quem
-*julga* é um gate determinístico (objetivo) ou um humano (gosto literário/experiência na tela).
+Três tipos de ator, com fronteiras explícitas. **A IA nunca julga** — ela **propõe** (tradução) e
+**revisa** (back-translation). Quem dá veredito é o **gate determinístico** (juiz objetivo das regras)
+e, acima de tudo, o **humano (juiz final** do sentido, da voz e da tela).
 
 | Ator | Papel | Faz | NÃO faz |
 |---|---|---|---|
 | 🩷 **IA-tradutora** | propõe a tradução | traduz cada linha (Haiku/Sonnet por complexidade) → `translation_plan` | gravar no canônico; decidir lore |
-| 🩷 **IA-juíza** (back-translation) | crivo **barato** de sentido | re-traduz pt-BR→EN só em alto risco e **marca** `revise` | aprovar sozinha — é sinal, não veredito |
-| 🟦🟩 **Gates determinísticos** | o **juiz objetivo** | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
-| 👤 **Humano-Ratificador** | âncora de verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
-| 👤 **Humano-Revisor** | palavra final do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim ($0) ou nota | mexer no binário |
-| 👤 **Humano-Tester** | palavra final na **tela** | joga, reporta por print + trecho (localizador determinístico) | usar OCR/IA |
+| 🩷 **IA-revisora** (back-translation) | revisão automática **barata** de sentido | re-traduz pt-BR→EN só em alto risco e **aponta** (marca `revise`) | **dar veredito** — só sinaliza, não decide |
+| 🟦🟩 **Gates determinísticos** | **juiz objetivo** (regras) | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
+| 👤 **Humano-Ratificador** | **juiz** da verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
+| 👤 **Humano-Revisor** | **juiz final** do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim ($0) ou nota | mexer no binário |
+| 👤 **Humano-Tester** | **juiz final** na **tela** | joga, reporta por print + trecho (localizador determinístico) | usar OCR/IA |
 
-> **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, humano com a palavra final.* A
-> back-translation é uma IA que **acusa barato**; quem **decide** é o gate (objetivo) ou o humano (gosto).
-> Detalhe com desenhos em [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) e os papéis humanos em
+> **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, **o humano é o juiz**.* A IA
+> **revisa** (a back-translation aponta o que cheira mal); quem **julga** é o gate (objetivo, sobre
+> regras) ou o **humano (juiz final**, sobre sentido e gosto). Detalhe com desenhos em
+> [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) e os papéis humanos em
 > [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md).
 
 ---
@@ -250,12 +252,12 @@ loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem 
 
 ```mermaid
 flowchart TB
-  bin[("binário do jogo<br/>(.sdat, read-only)")]:::sta
+  bin[("binário do jogo<br/>.sdat · read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
-  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz (IA) → micro-QA por lote → reinsere"]:::cog
+  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
   pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
-  build --> qa["QA HUMANO<br/>REVISOR (texto) + TESTER (in-game)"]:::val
-  qa -->|"correção cirúrgica via TM<br/>(não re-traduz o jogo)"| pipe
+  build --> qa["QA HUMANO<br/>REVISOR no texto + TESTER in-game"]:::val
+  qa -->|"correção cirúrgica via TM · não re-traduz o jogo"| pipe
   qa --> rel["RELEASE<br/>patch + instalação"]:::exe
   rel --> play(["🎮 pessoa joga em pt-BR"]):::good
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;

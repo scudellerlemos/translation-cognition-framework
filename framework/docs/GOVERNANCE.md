@@ -21,7 +21,7 @@ grava no artefato canônico. Se o gate reprova, o dado não se move.
 
 ```mermaid
 flowchart LR
-  ia{{"IA<br/>PROPÕE"}} -->|"translation_plan_*.json<br/>(proposta)"| gate
+  ia{{"IA<br/>PROPÕE"}} -->|"translation_plan_*.json · proposta"| gate
   subgraph gate["GATES (determinísticos)"]
     direction TB
     g1["round-trip<br/>byte-idêntico"]
@@ -135,9 +135,9 @@ flowchart TB
   done["jogo 100% traduzido"] --> rep["relatório ÚNICO<br/>review_all.xlsx<br/>(amigável p/ humano)"]
   rep --> human["revisor humano<br/>marca linhas"]
   human --> apply{"tipo de correção"}
-  apply -->|"verbatim<br/>(texto pronto)"| free["script aplica · $0"]
-  apply -->|"nota<br/>(pedido)"| ai["IA re-traduz<br/>SÓ aquela linha"]
-  free --> tm[("TM<br/>(coração)")]
+  apply -->|"verbatim · texto pronto"| free["script aplica · $0"]
+  apply -->|"nota · pedido"| ai["IA re-traduz<br/>SÓ aquela linha"]
+  free --> tm[("TM<br/>— coração")]
   ai --> tm
   tm -->|"reaplica de graça<br/>+ consistência"| canon[("translations_*.json<br/>+ plan")]
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
@@ -161,7 +161,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-  call["chamada de API"] -->|"sempre"| ledger[("api_ledger.jsonl<br/>(verdade do gasto)")]
+  call["chamada de API"] -->|"sempre"| ledger[("api_ledger.jsonl<br/>verdade do gasto")]
   ledger --> report["cost_report.py<br/>(por modelo/tipo/cena)"]
   cap["--max-usd N"] -.->|"teto: pára<br/>e reporta o que sobra"| call
   classDef det fill:#d6e8f6,stroke:#1f6f9b,color:#000;
