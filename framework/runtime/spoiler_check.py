@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-spoiler_check.py — VERIFICACAO POS-TRADUCAO de nao-vazamento de spoiler (H6, contraparte observavel).
+spoiler_check.py — VERIFICACAO POS-TRADUCAO de nao-vazamento de spoiler (contraparte observavel).
 
 O `context_pack` injeta guards de spoiler ANTES de traduzir (preventivo: filtro temporal +
 `pre_reveal`). Faltava o lado OBSERVAVEL: depois de traduzir, checar se algum spoiler VAZOU de fato.
 Sem isso, um vazamento (ex.: o nome 'Oshtor' numa cena ANTES do reveal em 13_08, onde a fonte usa
-'Ukon') so seria pego por QA humano de olho — risco DURANTE a producao (H6 = o unico hardening com
-risco enquanto se traduz).
+'Ukon') so seria pego por QA humano de olho — risco DURANTE a producao (o vazamento de spoiler e o
+unico risco que persiste enquanto se traduz, nao so antes/depois).
 
 Sinal de ALTA confianca (deterministico): cada entry do `spoiler_ledger.json` pode declarar
 `forbidden_pre_reveal` — strings (nome/titulo canonico pos-reveal) que NAO podem aparecer na traducao
@@ -16,8 +16,8 @@ pre-reveal e flagra qualquer ocorrencia (casada por LIMITE DE PALAVRA, reusa con
 NB de escopo honesto: o vazamento de GENERO pt-BR (ele/ela onde a fonte e neutra) e o outro risco que
 a memoria do projeto enfatiza — mas detecta-lo com precisao exige marcar no ledger QUAIS entidades tem
 genero em quarentena (campo futuro) + atribuir o token de genero ao referente certo na linha (NLP). Aqui
-entregamos o sinal CATCHAVEL e deterministico (nome/titulo); o de genero fica como extensao (ver ROADMAP
-H6). Governanca: read-only, sem rede, sem work-text.
+entregamos o sinal CATCHAVEL e deterministico (nome/titulo); o de genero fica como extensao (ver ROADMAP).
+Governanca: read-only, sem rede, sem work-text.
 
 Uso:  python spoiler_check.py <projeto> [--json]   (exit 1 se houver vazamento; 0 se limpo)
 """

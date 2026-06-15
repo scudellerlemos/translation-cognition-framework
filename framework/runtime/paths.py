@@ -1,4 +1,4 @@
-"""paths.py — FONTE UNICA do contrato de paths de artefato (H2).
+"""paths.py — FONTE UNICA do contrato de paths de artefato.
 
 Antes, os nomes de arquivo load-bearing (`translations_<id>.json`, `run_state.json`,
 `api_ledger.jsonl`, `state/translation_memory.jsonl`, ...) estavam espalhados por ~18 call sites
@@ -44,6 +44,14 @@ def tone_analysis(root) -> Path:    return artifacts(root) / "tone_analysis.md"
 def decision_log(root) -> Path:     return artifacts(root) / "decision_log.md"
 def kb_worklist(root, chap) -> Path:    return artifacts(root) / f"kb_phase_worklist_{chap}.md"
 def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.csv"
+
+# ---- revisao humana de qualidade (QA), em duas pastas (artifacts/qa_revisao/) ----
+# OUTBOX: o sistema DISPONIBILIZA aqui o XLSX p/ o humano ler (gerado SEMPRE, obrigatorio).
+# INBOX: o humano DEVOLVE aqui o XLSX preenchido; o apply le SO as linhas marcadas (Correcao/Nota).
+def qa_outbox(root) -> Path:            return artifacts(root) / "qa_revisao" / "para_revisar"
+def qa_inbox(root) -> Path:             return artifacts(root) / "qa_revisao" / "devolvido"
+# TESTER in-game: larga prints + preenche relato_tester.csv (trecho do texto visto + problema).
+def qa_tester(root) -> Path:            return artifacts(root) / "qa_revisao" / "teste_ingame"
 
 
 # ---- estado duravel destilado (artifacts/state/) ----

@@ -46,9 +46,18 @@ def load_game():
     return budgets, approved, scenes
 
 
+def _qa_review_present() -> bool:
+    """GATE DE QA: o relatorio de revisao humana do JOGO INTEIRO existe no outbox? (checagem de path,
+    sem importar o runtime — mantem o conector isolado da camada de cognicao)."""
+    outbox = R.ART / "qa_revisao" / "para_revisar"
+    return any((outbox / f"review_all.{ext}").is_file() for ext in ("xlsx", "csv"))
+
+
 def main():
     ap = argparse.ArgumentParser(description="Fase 3 — reinserção global (jogo inteiro num passe).")
     ap.add_argument("binary", nargs="?", default=None, help="binário-fonte (default: project.json)")
+    ap.add_argument("--skip-qa-gate", action="store_true",
+                    help="pula o gate de QA obrigatorio (NAO recomendado; use so com revisao ja feita por fora)")
     a = ap.parse_args()
     src = R.resolve_source(a.binary)
     original = src.read_bytes()
@@ -56,6 +65,19 @@ def main():
     print(f"jogo: {n_scenes} cena(s) · {len(budgets)} linha(s) · {len(approved)} aprovada(s)")
     if not budgets:
         sys.exit("ERRO: nenhuma cena com dialogs.csv + approved_*.csv em artifacts/ch_*/")
+
+    # GATE DE QA OBRIGATORIO (cobre o usuario): nao gera o .sdat de ENTREGA sem o relatorio de revisao
+    # humana do jogo inteiro ter sido disponibilizado. Garante que o piso de qualidade (humano ler) nao
+    # e pulado por esquecimento. Escape consciente: --skip-qa-gate (logado em alto e bom som).
+    if a.skip_qa_gate:
+        print("[QA gate] PULADO via --skip-qa-gate (revisao humana assumida feita por fora).")
+    elif not _qa_review_present():
+        sys.exit("BLOQUEADO (QA obrigatorio): o relatorio de revisao humana do JOGO INTEIRO nao existe.\n"
+                 "  Gere antes do output final:  python quality_review.py export <projeto>\n"
+                 "  (esperado: artifacts/qa_revisao/para_revisar/review_all.xlsx)\n"
+                 "  Pular conscientemente (NAO recomendado): reinsert_game.py --skip-qa-gate")
+    else:
+        print("[QA gate] OK — relatorio de revisao humana disponibilizado (artifacts/qa_revisao/para_revisar/).")
 
     fails = []
 
