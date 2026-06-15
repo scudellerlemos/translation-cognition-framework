@@ -5,6 +5,17 @@ Framework spec-driven para localização de obras narrativas complexas (jogos, f
 Separa **entendimento, estrutura, regras, planejamento, execução e validação** para preservar
 identidade, tom e consistência ao longo de corpora grandes.
 
+### Em 30 segundos
+
+| | |
+|---|---|
+| **O que é** | O processo + o motor genéricos para localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — IA cercada na cognição, estado externo, gates determinísticos. |
+| **A prova** | Validado num jogo real 100% traduzido e verificado: 16 capítulos, 146 cenas, ~45.100 linhas, **round-trip byte-idêntico**. Ver [a instância](../projects/utawarerumono/README.md). |
+| **O diferencial** | A IA só **propõe**; **gates determinísticos julgam**; o **humano é o juiz final**. Nada entra no dado canônico sem prova reproduzível. |
+
+> Conceitos e o "porquê" das 4 camadas estão no [README raiz](../README.md). Esta página mostra a
+> **organização do código** e como **instanciar** um projeto novo.
+
 ---
 
 ## Estrutura de pastas (como o repositório se organiza)
