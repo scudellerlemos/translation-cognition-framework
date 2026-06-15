@@ -1,0 +1,2868 @@
+{
+  "scene_group": "30_06",
+  "lines": [
+    {
+      "offset": "0x2dd7c9",
+      "text_source": "RightArm",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "RightArm",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd7d2",
+      "text_source": "mask",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "mask",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd7d8",
+      "text_source": "door_open",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "door_open",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd7e2",
+      "text_source": "Dear brother... Are you... all right...?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "emocional, irmã preocupada",
+      "intent": "verificar se o irmão está bem após vê-lo em situação crítica",
+      "risk_level": "medium",
+      "base_translation": "Querido irmão... Você está... bem...?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz estabelecida de Nekone; 'Dear brother' já traduzido como 'Querido irmão'"
+    },
+    {
+      "offset": "0x2dd80b",
+      "text_source": "Nekone asks, her voice quavering.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever a voz trêmula de Nekone",
+      "risk_level": "low",
+      "base_translation": "Nekone pergunta, com a voz trêmula.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd82d",
+      "text_source": "Dear brothe--",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "emocional, interrompida",
+      "intent": "começar a chamar o irmão mas se cortar",
+      "risk_level": "low",
+      "base_translation": "Querido irm--",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd83b",
+      "text_source": "lock04",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "lock04",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd842",
+      "text_source": "polySurface731",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "polySurface731",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd851",
+      "text_source": "polySurface27814",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "polySurface27814",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd862",
+      "text_source": "polySurface1005",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "polySurface1005",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd872",
+      "text_source": "polySurface1006",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "polySurface1006",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd882",
+      "text_source": "polySurface1007",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "polySurface1007",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd892",
+      "text_source": "jail_roof",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "jail_roof",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd8a0",
+      "text_source": "B-Brother...?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "choque, medo",
+      "intent": "reação de susto ao ver o estado do irmão",
+      "risk_level": "low",
+      "base_translation": "I-Irmão...?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd8ae",
+      "text_source": "Don't tell me he's--",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "pavor, pensamento interno",
+      "intent": "temer o pior sobre o estado do irmão",
+      "risk_level": "low",
+      "base_translation": "Não me diga que ele--",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd8c3",
+      "text_source": "...Kuon, please.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme, contido",
+      "intent": "pedir calma a Kuon num momento tenso",
+      "risk_level": "low",
+      "base_translation": "...Kuon, por favor.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd8d4",
+      "text_source": "Of course.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "claro.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd8df",
+      "text_source": "After entering the cell, Kuon silently examines\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, sóbrio",
+      "intent": "descrever a entrada silenciosa de Kuon na cela para examinar Oshtor",
+      "risk_level": "low",
+      "base_translation": "Ao entrar na cela, Kuon examina Oshtor\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd911",
+      "text_source": "Oshtor for a moment... and sighs softly.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, sóbrio",
+      "intent": "completar a descrição do exame e do suspiro de Kuon",
+      "risk_level": "low",
+      "base_translation": "em silêncio por um instante... e suspira baixinho.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd93a",
+      "text_source": "It's all right. He's just unconscious.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "calmo, profissional",
+      "intent": "tranquilizar os presentes — Oshtor está vivo, apenas inconsciente",
+      "risk_level": "low",
+      "base_translation": "Está bem. Ele só está inconsciente.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd961",
+      "text_source": "Ah...!",
+      "speaker": "Man",
+      "entities_present": [
+        "Man"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Ah...!",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd968",
+      "text_source": "Thank goodness...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Que alívio...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd97a",
+      "text_source": "...Ah... Nekone.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "exausto, murmúrio",
+      "intent": "recuperar levemente a consciência e reconhecer Nekone",
+      "risk_level": "low",
+      "base_translation": "...Ah... Nekone.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd98b",
+      "text_source": "Oshtor stirs, managing only a raspy murmur.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever o despertar débil e rouco de Oshtor",
+      "risk_level": "low",
+      "base_translation": "Oshtor se mexe, conseguindo apenas um murmúrio rouco.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd9b7",
+      "text_source": "Dear brother...!",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "alívio e aflição misturados",
+      "intent": "reagir ao ouvir a voz do irmão",
+      "risk_level": "low",
+      "base_translation": "Querido irmão...!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd9c8",
+      "text_source": "Nekone pulls Oshtor in a tight embrace without\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, emocional",
+      "intent": "descrever Nekone abraçando Oshtor sem se preocupar com as lágrimas",
+      "risk_level": "low",
+      "base_translation": "Nekone puxa Oshtor em um abraço apertado, sem\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dd9f9",
+      "text_source": "even bothering to wipe her tears.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, emocional",
+      "intent": "continuação — sem nem limpar as lágrimas",
+      "risk_level": "low",
+      "base_translation": "sequer se preocupar em enxugar as lágrimas.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dda1b",
+      "text_source": "Haku, everyone... You came.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "débil, aliviado",
+      "intent": "reconhecer que os aliados vieram resgatá-lo",
+      "risk_level": "low",
+      "base_translation": "Haku, todos... Vocês vieram.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dda37",
+      "text_source": "Yeah, we sure did. Can you stand?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, direto",
+      "intent": "confirmar chegada e checar se Oshtor consegue se levantar",
+      "risk_level": "low",
+      "base_translation": "É, viemos sim. Consegue ficar de pé?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dda59",
+      "text_source": "Yes... We must... make haste.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "determinado, esforçado",
+      "intent": "confirmar que pode se mover e expressar urgência",
+      "risk_level": "low",
+      "base_translation": "Sim... Precisamos... nos apressar.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dda77",
+      "text_source": "door_close",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "door_close",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dda82",
+      "text_source": "We unbind him from the chains, and lend him\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever o grupo soltando as correntes de Oshtor e ajudando-o a se levantar",
+      "risk_level": "low",
+      "base_translation": "Soltamos as correntes que o prendem e oferecemos\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddab0",
+      "text_source": "a hand as he slowly rises.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "neutro, descritivo",
+      "intent": "descreve ação física — personagem levanta a mão devagar",
+      "risk_level": "low",
+      "base_translation": "enquanto se levanta devagar.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddacb",
+      "text_source": "Below his ragged clothes, we can see reddened stripes\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, chocado",
+      "intent": "revelar as marcas de açoite visíveis sob as roupas rasgadas",
+      "risk_level": "low",
+      "base_translation": "Sob suas roupas rasgadas, vemos listras vermelhas\\n",
+      "byte_budget": 55,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddb03",
+      "text_source": "and wounds from the lashes covering his body.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, chocado",
+      "intent": "completar a descrição das feridas pelo corpo",
+      "risk_level": "low",
+      "base_translation": "e feridas dos chicotadas cobrindo seu corpo.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddb31",
+      "text_source": "He... withstood all that pain up to now?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "impressionado, perturbado",
+      "intent": "admiração dolorosa pela resistência de Oshtor",
+      "risk_level": "low",
+      "base_translation": "Ele... aguentou toda essa dor até agora?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddb5a",
+      "text_source": "Nekone hastens to Oshtor's side in an attempt\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever Nekone correndo para apoiar Oshtor",
+      "risk_level": "low",
+      "base_translation": "Nekone corre até Oshtor numa tentativa\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddb8a",
+      "text_source": "to support his weight.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — Nekone ampara o peso do irmão",
+      "risk_level": "low",
+      "base_translation": "de amparar seu peso.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddba1",
+      "text_source": "Oshtor looks down at her, his eyes softening,\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ternura",
+      "intent": "descrever o olhar de Oshtor se amolecendo ao ver Nekone",
+      "risk_level": "low",
+      "base_translation": "Oshtor olha para ela, os olhos se amolecendo,\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddbd1",
+      "text_source": "and gently holds her close.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ternura",
+      "intent": "completar — ele a abraça com delicadeza",
+      "risk_level": "low",
+      "base_translation": "e a abraça com delicadeza.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddbed",
+      "text_source": "Dear brother...",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Querido irmão...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddbfd",
+      "text_source": "At that, Nekone finally relaxes, the terrified\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, alívio",
+      "intent": "descrever a tensão saindo do corpo de Nekone",
+      "risk_level": "low",
+      "base_translation": "Com isso, Nekone finalmente relaxa, o terror\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddc2e",
+      "text_source": "tension draining from her expression and body.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, alívio",
+      "intent": "completar — a expressão e o corpo se desfazem do pavor",
+      "risk_level": "low",
+      "base_translation": "esvaindo de sua expressão e de seu corpo.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddc5d",
+      "text_source": "Drink this. It'll only be a temporary fix, but\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático, cuidador",
+      "intent": "oferecer remédio como solução temporária para a dor",
+      "risk_level": "low",
+      "base_translation": "Beba isto. Só vai resolver por um tempo, mas\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddc8e",
+      "text_source": "it should help with the pain.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático, cuidador",
+      "intent": "completar — o remédio vai ajudar com a dor",
+      "risk_level": "low",
+      "base_translation": "deve ajudar com a dor.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddcac",
+      "text_source": "Kuon takes out a pouch of medicine and hands it\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever Kuon retirando o remédio e entregando a Oshtor",
+      "risk_level": "low",
+      "base_translation": "Kuon tira uma bolsa de remédio e a entrega\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddcde",
+      "text_source": "to Oshtor.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — entrega a Oshtor",
+      "risk_level": "low",
+      "base_translation": "a Oshtor.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddce9",
+      "text_source": "Ah... My thanks.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, grato",
+      "intent": "agradecer a Kuon pelo remédio",
+      "risk_level": "low",
+      "base_translation": "Ah... Obrigado.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddcfa",
+      "text_source": "If we had the time, I would've preferred to give\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "profissional, levemente lamentoso",
+      "intent": "explicar que gostaria de ter dado tratamento adequado",
+      "risk_level": "low",
+      "base_translation": "Se tivéssemos tempo, eu preferiria ter dado\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddd2d",
+      "text_source": "you proper treatment...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "profissional, levemente lamentoso",
+      "intent": "completar — tratamento adequado",
+      "risk_level": "low",
+      "base_translation": "um tratamento de verdade...",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddd45",
+      "text_source": "No need. I can already feel the medicine working.\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "determinado, urgente",
+      "intent": "dispensar a preocupação e alertar sobre o perigo da Alteza",
+      "risk_level": "medium",
+      "base_translation": "Não precisa. Já sinto o remédio agindo.\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Her Highness' = 'Alteza' conforme glossário; linha longa, verificar budget"
+    },
+    {
+      "offset": "0x2ddd79",
+      "text_source": "But we must move swiftly--Her Highness is in\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "determinado, urgente",
+      "intent": "completar — a Alteza está em perigo, devem se mover rápido",
+      "risk_level": "medium",
+      "base_translation": "Mas devemos agir rápido — a Alteza está em\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Her Highness' = 'Alteza'; verificar budget 46 bytes"
+    },
+    {
+      "offset": "0x2ddda8",
+      "text_source": "grave danger.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "determinado, urgente",
+      "intent": "completar — perigo grave",
+      "risk_level": "low",
+      "base_translation": "grave perigo.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dddb6",
+      "text_source": "We know. Oshtor, do you have any idea where the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, informativo",
+      "intent": "confirmar que sabem e perguntar onde está a princesa",
+      "risk_level": "low",
+      "base_translation": "Sabemos. Oshtor, você tem alguma ideia de onde\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddde8",
+      "text_source": "princess would be?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, informativo",
+      "intent": "completar — onde a princesa estaria",
+      "risk_level": "low",
+      "base_translation": "a princesa estaria?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dddfb",
+      "text_source": "It's only a matter of time until they realize\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, pragmático",
+      "intent": "alertar que o tempo é curto, não podem sair procurando",
+      "risk_level": "low",
+      "base_translation": "É só uma questão de tempo até nos descobrirem.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dde2b",
+      "text_source": "we're here. We don't have the luxury of searching.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, pragmático",
+      "intent": "completar — não têm tempo para busca extensiva",
+      "risk_level": "low",
+      "base_translation": "Não podemos nos dar ao luxo de sair procurando.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dde5e",
+      "text_source": "Her Highness's sleeping quarters are at the apex\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, informativo",
+      "intent": "indicar a localização dos aposentos da Alteza",
+      "risk_level": "low",
+      "base_translation": "Os aposentos da Alteza ficam no topo do\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dde91",
+      "text_source": "of the innermost building. I know... she is there...",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, informativo, esforçado",
+      "intent": "completar — ele sabe que ela está lá",
+      "risk_level": "low",
+      "base_translation": "prédio mais interno. Sei... que ela está lá...",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddec6",
+      "text_source": "At my nod, Oshtor puts all his weight on his own\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever Oshtor se apoiando nas próprias pernas após o aceno de Haku",
+      "risk_level": "low",
+      "base_translation": "Com meu aceno, Oshtor coloca todo seu peso nas\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddef9",
+      "text_source": "legs, and tries to walk forward.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — tenta caminhar sozinho",
+      "risk_level": "low",
+      "base_translation": "próprias pernas e tenta caminhar.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddf1a",
+      "text_source": "Dear brother! You must not push yourself like that...",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "preocupado, suplicante",
+      "intent": "implorar ao irmão que não force o corpo",
+      "risk_level": "low",
+      "base_translation": "Querido irmão! Não pode se forçar assim...",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddf50",
+      "text_source": "She's right. You can leave the rescue of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, solidário",
+      "intent": "concordar com Nekone e oferecer que o grupo cuide do resgate",
+      "risk_level": "low",
+      "base_translation": "Ela tem razão. Pode deixar o resgate da\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddf7b",
+      "text_source": "Her Highness to us.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, solidário",
+      "intent": "completar — resgate da Alteza com eles",
+      "risk_level": "low",
+      "base_translation": "Alteza com a gente.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddf8f",
+      "text_source": "That's right. You need to escape quickly, brother...",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "urgente, irmã protetora",
+      "intent": "reforçar que Oshtor precisa escapar logo",
+      "risk_level": "low",
+      "base_translation": "É isso. Você precisa escapar logo, irmão...",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddfc4",
+      "text_source": "I am sorry, but... I must go.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, determinado",
+      "intent": "pedir desculpas mas afirmar que precisa ir mesmo assim",
+      "risk_level": "low",
+      "base_translation": "Me desculpem, mas... preciso ir.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ddfe2",
+      "text_source": "Whether or not my limbs can move, I will go to her.\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "resoluto, emocional",
+      "intent": "declarar que irá até a Alteza independente das condições físicas",
+      "risk_level": "low",
+      "base_translation": "Mesmo que meus membros não me obedeçam, eu irei.\\n",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de018",
+      "text_source": "Even if I must crawl, I will go to her...",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "resoluto, emocional",
+      "intent": "completar — mesmo rastejando, ele vai",
+      "risk_level": "low",
+      "base_translation": "Mesmo que precise rastejar, eu irei até ela...",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de042",
+      "text_source": "Even Oshtor--stoic, calm, composed Oshtor--\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "impressionado, reflexivo",
+      "intent": "comentar internamente sobre Oshtor perder a compostura",
+      "risk_level": "medium",
+      "base_translation": "Até o Oshtor — o impassível, calmo e sereno Oshtor —\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "repetição estilística do nome 'Oshtor' para ênfase; preservar estrutura"
+    },
+    {
+      "offset": "0x2de070",
+      "text_source": "has totally lost his cool...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "impressionado, reflexivo",
+      "intent": "completar — perdeu completamente a calma",
+      "risk_level": "low",
+      "base_translation": "perdeu completamente a cabeça...",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de08d",
+      "text_source": "Guess that just shows how bad the situation's\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, sóbrio",
+      "intent": "concluir que isso mostra a gravidade da situação",
+      "risk_level": "low",
+      "base_translation": "Isso só mostra o quanto a situação está\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de0bd",
+      "text_source": "gotten.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, sóbrio",
+      "intent": "completar — situação ficou grave",
+      "risk_level": "low",
+      "base_translation": "séria.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de0c5",
+      "text_source": "Lady-in-waiting",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Dama de companhia",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de0d5",
+      "text_source": "Um... If that is the case, I do not mind helping\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, prestativa",
+      "intent": "se oferecer para ajudar Oshtor a caminhar",
+      "risk_level": "low",
+      "base_translation": "Hm... Se for o caso, não me importo de ajudar\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de108",
+      "text_source": "you walk.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, prestativa",
+      "intent": "completar — ajudar a caminhar",
+      "risk_level": "low",
+      "base_translation": "a caminhar.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de112",
+      "text_source": "Please, take my hand.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "gentil, acolhedor",
+      "intent": "convidar Oshtor a segurar sua mão",
+      "risk_level": "low",
+      "base_translation": "Por favor, pegue minha mão.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de128",
+      "text_source": "You are...?",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "curioso, débil",
+      "intent": "perguntar quem é a garota",
+      "risk_level": "low",
+      "base_translation": "Você é...?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de134",
+      "text_source": "My apologies for the belated introduction.\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educado, formal",
+      "intent": "se desculpar pela apresentação tardia",
+      "risk_level": "low",
+      "base_translation": "Me desculpe pela apresentação tardia.\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de161",
+      "text_source": "I am the one in charge of Her Highness's\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educado, formal",
+      "intent": "apresentar-se como responsável pelo bem-estar da Alteza",
+      "risk_level": "low",
+      "base_translation": "Sou a responsável pelo bem-estar da Alteza.\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de18c",
+      "text_source": "well-being.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "educado, formal",
+      "intent": "completar a apresentação",
+      "risk_level": "low",
+      "base_translation": "bem-estar.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de198",
+      "text_source": "She's the one who told us you were being held\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informativo, rápido",
+      "intent": "explicar a Oshtor que foi ela quem os avisou da prisão",
+      "risk_level": "low",
+      "base_translation": "Foi ela que nos disse que você estava preso\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de1c8",
+      "text_source": "in this prison.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informativo, rápido",
+      "intent": "completar — nesta prisão",
+      "risk_level": "low",
+      "base_translation": "nesta prisão.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de1d8",
+      "text_source": "I am truly sorry, Lord Oshtor. This is all my\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "culpado, arrependido",
+      "intent": "pedir desculpas a Oshtor por sua responsabilidade na situação",
+      "risk_level": "low",
+      "base_translation": "Sinto muito, Senhor Oshtor. A culpa é toda\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de208",
+      "text_source": "fault...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "culpado, arrependido",
+      "intent": "completar — minha culpa",
+      "risk_level": "low",
+      "base_translation": "minha...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de211",
+      "text_source": "Sorry, but I'll have to ask you to save that stuff\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, impaciente",
+      "intent": "interromper as desculpas e pedir para deixar para depois",
+      "risk_level": "low",
+      "base_translation": "Me desculpe, mas vou ter que pedir que guarde\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de246",
+      "text_source": "for later. We don't have time to stand around\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, impaciente",
+      "intent": "completar — não há tempo para ficar se desculpando",
+      "risk_level": "low",
+      "base_translation": "isso para depois. Não temos tempo de ficar\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de276",
+      "text_source": "apologizing.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, impaciente",
+      "intent": "completar — se desculpando",
+      "risk_level": "low",
+      "base_translation": "se desculpando.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de283",
+      "text_source": "Uruuru, Saraana, could you do your... thing?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, coordenando",
+      "intent": "pedir às irmãs que usem suas habilidades especiais novamente",
+      "risk_level": "low",
+      "base_translation": "Uruuru, Saraana, podem fazer aquela... coisa?\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'their thing' = algo específico delas (barreira); manter vago como no original"
+    },
+    {
+      "offset": "0x2de2b2",
+      "text_source": "One more time?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, coordenando",
+      "intent": "completar — mais uma vez",
+      "risk_level": "low",
+      "base_translation": "Mais uma vez?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de2c1",
+      "text_source": "...As you wish.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "...Como desejar.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de2d1",
+      "text_source": "Oshtor, are you OK walking?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, verificando",
+      "intent": "confirmar se Oshtor consegue caminhar",
+      "risk_level": "low",
+      "base_translation": "Oshtor, você consegue caminhar?",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de2ed",
+      "text_source": "If you slow us down, I swear I'm just gonna\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "brincalhão, ameaça cômica",
+      "intent": "ameaçar deixar Oshtor para trás se atrasar o grupo",
+      "risk_level": "low",
+      "base_translation": "Se você nos atrasar, juro que vou te deixar\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de31b",
+      "text_source": "leave you in a ditch somewhere.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "brincalhão, ameaça cômica",
+      "intent": "completar — largado num fosso",
+      "risk_level": "low",
+      "base_translation": "largado num buraco por aí.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de33b",
+      "text_source": "I would have it no other way.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, seco, aceitando",
+      "intent": "aceitar os termos com sua habitual compostura",
+      "risk_level": "low",
+      "base_translation": "Não poderia ser de outro jeito.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de359",
+      "text_source": "This is how it must be, Nekone. We have no time.\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, determinado",
+      "intent": "explicar a Nekone que é como deve ser e que não há tempo",
+      "risk_level": "low",
+      "base_translation": "É assim que deve ser, Nekone. Não temos tempo.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de38c",
+      "text_source": "I would rather fall behind than hinder you all.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, altruísta",
+      "intent": "afirmar que prefere ficar para trás a atrapalhar o grupo",
+      "risk_level": "low",
+      "base_translation": "Prefiro ficar para trás a atrapalhar vocês.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de3bc",
+      "text_source": "...I will help you walk.",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "decidida, suave",
+      "intent": "oferecer silenciosamente ajuda para Oshtor caminhar",
+      "risk_level": "low",
+      "base_translation": "...Eu vou te ajudar a caminhar.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de3d5",
+      "text_source": "Nekone--",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "surpreso, tentando recusar",
+      "intent": "começar a recusar a ajuda de Nekone",
+      "risk_level": "low",
+      "base_translation": "Nekone--",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de3de",
+      "text_source": "I WILL help you walk.",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "firme, decidida",
+      "intent": "insistir com determinação — vai ajudar sem discussão",
+      "risk_level": "low",
+      "base_translation": "EU VOU te ajudar a caminhar.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de3f4",
+      "text_source": "Anju's caretaker also stands beside Oshtor,\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever a cuidadora de Anju também se posicionando ao lado de Oshtor",
+      "risk_level": "low",
+      "base_translation": "A cuidadora de Anju também fica ao lado de Oshtor,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de422",
+      "text_source": "supporting him.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — amparando-o",
+      "risk_level": "low",
+      "base_translation": "amparando-o.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de432",
+      "text_source": "I cannot fight like the rest of you...\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "humilde, determinado",
+      "intent": "admitir limitação em combate mas querer contribuir",
+      "risk_level": "low",
+      "base_translation": "Não sei lutar como vocês...\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de45b",
+      "text_source": "So please, allow me to help in this small way.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "humilde, determinado",
+      "intent": "completar — pedir para ajudar de forma pequena",
+      "risk_level": "low",
+      "base_translation": "Por isso, por favor, me deixem ajudar assim.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de48a",
+      "text_source": "Just let them handle it, Oshtor.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, resolvendo",
+      "intent": "dizer a Oshtor para aceitar a ajuda e parar de discutir",
+      "risk_level": "low",
+      "base_translation": "Deixa elas cuidarem disso, Oshtor.\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de4ad",
+      "text_source": "Otherwise we'll be wasting all our time here\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, resolvendo",
+      "intent": "completar — caso contrário perderão tempo",
+      "risk_level": "low",
+      "base_translation": "Senão vamos ficar perdendo tempo aqui\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de4dc",
+      "text_source": "arguing about it.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "prático, resolvendo",
+      "intent": "completar — discutindo",
+      "risk_level": "low",
+      "base_translation": "discutindo.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de4ee",
+      "text_source": "I suppose so... Thank you, you two.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "cedendo, grato",
+      "intent": "concordar e agradecer às duas",
+      "risk_level": "low",
+      "base_translation": "Suponho que sim... Obrigado, vocês duas.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de512",
+      "text_source": "I-It is nothing...",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "tímido, modesto",
+      "intent": "resposta humilde ao agradecimento",
+      "risk_level": "low",
+      "base_translation": "N-Não foi nada...",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de525",
+      "text_source": "You good to go, Oshtor?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, verificando",
+      "intent": "confirmar se Oshtor está pronto para partir",
+      "risk_level": "low",
+      "base_translation": "Pronto para ir, Oshtor?",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de53d",
+      "text_source": "Yes. Sorry for keeping you.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, agradecido",
+      "intent": "confirmar e pedir desculpa pelo atraso",
+      "risk_level": "low",
+      "base_translation": "Sim. Desculpe a demora.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2de559",
+      "text_source": "Don't worry about it.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "descontraído, tranquilizador",
+      "intent": "dispensar o pedido de desculpas de Oshtor",
+      "risk_level": "low",
+      "base_translation": "Não precisa se desculpar.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dea1b",
+      "text_source": "We continue onward to the top of the building,\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever o avanço do grupo em direção ao topo",
+      "risk_level": "low",
+      "base_translation": "Seguimos em frente rumo ao topo do prédio,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dea4c",
+      "text_source": "through the dense fog.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — através da névoa densa",
+      "risk_level": "low",
+      "base_translation": "através da névoa densa.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dea63",
+      "text_source": "We pass by several patrols on the way, but thanks\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "descrever patrulhas encontradas no caminho",
+      "risk_level": "low",
+      "base_translation": "Passamos por várias patrulhas no caminho, mas\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dea97",
+      "text_source": "to the barrier, nobody spots us.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, ação",
+      "intent": "completar — a barreira os mantém invisíveis",
+      "risk_level": "low",
+      "base_translation": "graças à barreira, ninguém nos vê.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deabc",
+      "text_source": "I sneak a look at Oshtor, walking alongside me.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, reflexivo",
+      "intent": "Haku espreita Oshtor caminhando ao seu lado",
+      "risk_level": "low",
+      "base_translation": "Dou uma espiada em Oshtor, caminhando ao meu lado.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deaec",
+      "text_source": "He's definitely not looking good...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "preocupado, interno",
+      "intent": "notar que Oshtor está claramente mal",
+      "risk_level": "low",
+      "base_translation": "Ele definitivamente não está bem...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deb10",
+      "text_source": "His footsteps are heavy and slow...\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, preocupado",
+      "intent": "descrever os passos pesados e lentos de Oshtor",
+      "risk_level": "low",
+      "base_translation": "Seus passos são pesados e lentos...\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deb36",
+      "text_source": "It's like looking at a completely different person.",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, preocupado",
+      "intent": "comentar que parece outra pessoa",
+      "risk_level": "low",
+      "base_translation": "É como olhar para uma pessoa completamente diferente.",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deb6a",
+      "text_source": "Oshtor's wounds must be a lot more serious\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, preocupado",
+      "intent": "concluir que os ferimentos são mais sérios do que Oshtor admite",
+      "risk_level": "low",
+      "base_translation": "Os ferimentos de Oshtor devem ser bem mais sérios\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deb97",
+      "text_source": "than he's letting on.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "neutro, observacional",
+      "intent": "sugere que o personagem esconde mais do que aparenta",
+      "risk_level": "low",
+      "base_translation": "do que aparenta.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2debad",
+      "text_source": "...Hey, Oshtor.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "hesitante, íntimo",
+      "intent": "iniciar uma conversa delicada com Oshtor",
+      "risk_level": "low",
+      "base_translation": "...Ei, Oshtor.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2debbd",
+      "text_source": "Hm?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hum?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2debc1",
+      "text_source": "Maybe this isn't the best time, but...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "hesitante, cuidadoso",
+      "intent": "reconhecer que pode não ser a hora mas querer perguntar",
+      "risk_level": "low",
+      "base_translation": "Pode não ser a melhor hora, mas...",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2debe8",
+      "text_source": "It is unlike you to dance around a subject so.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, perspicaz",
+      "intent": "notar que Haku está rodeando o assunto, o que não é seu jeito",
+      "risk_level": "low",
+      "base_translation": "Não é do seu feitio ficar rodeando o assunto.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dec17",
+      "text_source": "Well, I guess I'll just be blunt...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, decidido",
+      "intent": "decidir ser direto e perguntar sobre a morte do Mikado",
+      "risk_level": "low",
+      "base_translation": "Bom, vou ser direto...\\n",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dec3d",
+      "text_source": "Is the Mikado really dead?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "direto, grave",
+      "intent": "perguntar diretamente se o Mikado realmente morreu",
+      "risk_level": "medium",
+      "base_translation": "O Mikado realmente está morto?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mikado = manter_original; spoiler major — tratar como soberano distante, sem vínculo pessoal"
+    },
+    {
+      "offset": "0x2dec58",
+      "text_source": "...Yes. Without doubt.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "sóbrio, definitivo",
+      "intent": "confirmar a morte do Mikado sem sombra de dúvida",
+      "risk_level": "medium",
+      "base_translation": "...Sim. Sem a menor dúvida.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; tratar como confirmação fria e formal"
+    },
+    {
+      "offset": "0x2dec6f",
+      "text_source": "I have seen my liege's body with my own eyes.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "sóbrio, pessoal",
+      "intent": "afirmar que viu o corpo do soberano com os próprios olhos",
+      "risk_level": "medium",
+      "base_translation": "Eu vi o corpo do meu soberano com os próprios olhos.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; 'my liege' = 'meu soberano'"
+    },
+    {
+      "offset": "0x2dec9d",
+      "text_source": "I hear Kiwru and the others' breathing skip\\n",
+      "speaker": "NARRADOR",
+      "entities_present": [
+        "NARRADOR"
+      ],
+      "tone_register": "narrativo, observador",
+      "intent": "descrever a reação dos outros ao ouvir a confirmação",
+      "risk_level": "low",
+      "base_translation": "Ouço a respiração de Kiwru e dos outros parar\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deccb",
+      "text_source": "for a moment.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "por um instante.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2decd9",
+      "text_source": "I'm sure there was a part of them that hoped\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, empático",
+      "intent": "reconhecer que todos esperavam que não fosse verdade",
+      "risk_level": "low",
+      "base_translation": "Tenho certeza que uma parte deles esperava\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ded08",
+      "text_source": "it wasn't true, like I did...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, empático",
+      "intent": "completar — assim como ele próprio esperava",
+      "risk_level": "low",
+      "base_translation": "que não fosse verdade, como eu...",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2ded26",
+      "text_source": "It is believed that the ones responsible for his\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, sério",
+      "intent": "revelar quem é apontado como culpado pela morte",
+      "risk_level": "medium",
+      "base_translation": "Acredita-se que os responsáveis pela sua morte\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; Lady Honoka = Lady Honoka; manter tom distante"
+    },
+    {
+      "offset": "0x2ded59",
+      "text_source": "death are Lady Honoka and myself.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, sério",
+      "intent": "completar — Lady Honoka e ele mesmo são apontados",
+      "risk_level": "medium",
+      "base_translation": "sejam a Lady Honoka e eu mesmo.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler; manter tom formal e distante"
+    },
+    {
+      "offset": "0x2ded7b",
+      "text_source": "Yeah. I heard the Mikado's meal was poisoned...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informado, sóbrio",
+      "intent": "mencionar o que ouviu sobre o envenenamento da refeição do Mikado",
+      "risk_level": "medium",
+      "base_translation": "É. Ouvi que a refeição do Mikado foi envenenada...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; manter tom de informação recebida, não conclusão"
+    },
+    {
+      "offset": "0x2dedab",
+      "text_source": "So the real culprit is still in the imperial\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico, preocupado",
+      "intent": "deduzir que o verdadeiro culpado ainda está na capital aguardando",
+      "risk_level": "low",
+      "base_translation": "Então o verdadeiro culpado ainda está na capital\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dedda",
+      "text_source": "capital somewhere, waiting for a chance to strike?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico, preocupado",
+      "intent": "completar — aguardando uma chance de agir",
+      "risk_level": "low",
+      "base_translation": "em algum lugar, esperando a hora de agir?",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dee0d",
+      "text_source": "Regardless...",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "neutro, conclusivo",
+      "intent": "transição/concessão — encerra raciocínio anterior",
+      "risk_level": "low",
+      "base_translation": "Seja como for...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2dee1b",
+      "text_source": "I see. So... he really is gone.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, pesado",
+      "intent": "assimilar de vez que o Mikado realmente morreu",
+      "risk_level": "medium",
+      "base_translation": "Entendo. Então... ele realmente se foi.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; linha do Haku; 'he' é o Mikado — não antecipar vínculo pessoal"
+    },
+    {
+      "offset": "0x2dee3b",
+      "text_source": "The keeper of lost technology, the man who lived\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, pesado",
+      "intent": "descrever o Mikado como guardião da tecnologia e homem que viveu séculos",
+      "risk_level": "high",
+      "base_translation": "O guardião da tecnologia perdida, o homem que viveu\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "contexto da revelação do vínculo; 'the man who lived for centuries' — não antecipar outras revelações"
+    },
+    {
+      "offset": "0x2dee6e",
+      "text_source": "for centuries...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, pesado",
+      "intent": "completar — séculos de vida",
+      "risk_level": "high",
+      "base_translation": "por séculos...\\n",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "parte da revelação do vínculo com o Mikado"
+    },
+    {
+      "offset": "0x2dee81",
+      "text_source": "My brother... is dead.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "pessoal, luto contido",
+      "intent": "revelar que o Mikado era seu irmão",
+      "risk_level": "high",
+      "base_translation": "Meu irmão... está morto.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "SPOILER MAJOR: revelação de vínculo pessoal Haku-Mikado. Traduzir diretamente, sem foreshadowing extra."
+    },
+    {
+      "offset": "0x2dee98",
+      "text_source": "And it happened just like that...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "atônito, luto",
+      "intent": "expressar que aconteceu de forma súbita",
+      "risk_level": "low",
+      "base_translation": "E aconteceu assim, de repente...",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2deeba",
+      "text_source": "He just appeared before me as the Mikado, and\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "atônito, luto",
+      "intent": "descrever como o Mikado apareceu como soberano e desapareceu sem aviso",
+      "risk_level": "medium",
+      "base_translation": "Ele simplesmente apareceu diante de mim como o Mikado, e\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major; manter distância emocional contida"
+    },
+    {
+      "offset": "0x2deeea",
+      "text_source": "without any warning, he disappeared from me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "atônito, luto",
+      "intent": "completar — desapareceu sem aviso",
+      "risk_level": "medium",
+      "base_translation": "sem nenhum aviso, desapareceu de mim.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler major"
+    },
+    {
+      "offset": "0x2def17",
+      "text_source": "It's so sudden. I know I should be sad, but...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, luto reprimido",
+      "intent": "admitir que a morte foi súbita demais para sentir tristeza adequada",
+      "risk_level": "low",
+      "base_translation": "É tão repentino. Sei que deveria sentir tristeza, mas...\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2def48",
+      "text_source": "why can't I shed any tears for him?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, luto reprimido",
+      "intent": "completar — por que não consigo chorar por ele",
+      "risk_level": "low",
+      "base_translation": "por que não consigo chorar por ele?",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2def6c",
+      "text_source": "I'm sure if he could see me now, he'd just laugh\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "auto-irônico, luto",
+      "intent": "imaginar que o irmão riria dele por ser insensível",
+      "risk_level": "low",
+      "base_translation": "Tenho certeza que se ele pudesse me ver agora, só riria\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2def9f",
+      "text_source": "and tell me what a heartless brother I am.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "auto-irônico, luto",
+      "intent": "completar — chamando-o de irmão sem coração",
+      "risk_level": "low",
+      "base_translation": "e diria que sou um irmão sem coração.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2defca",
+      "text_source": "What's certain, at least, is that now...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, sóbrio",
+      "intent": "concluir que ao menos agora ninguém mais conhece seu passado",
+      "risk_level": "high",
+      "base_translation": "O que é certo, ao menos, é que agora...\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "linha sensível: implica segredo sobre o passado do Haku; não antecipar revelações futuras sobre sua identidade"
+    },
+    {
+      "offset": "0x2deff5",
+      "text_source": "there's no one left who knows about my past.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, sóbrio",
+      "intent": "completar — não resta ninguém que saiba do seu passado",
+      "risk_level": "high",
+      "base_translation": "não há mais ninguém que saiba do meu passado.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "anti-spoiler: não resolver nem ampliar a ambiguidade sobre o passado do Haku"
+    },
+    {
+      "offset": "0x2df022",
+      "text_source": "...The top floor is just ahead.\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático, urgente",
+      "intent": "informar que o andar de cima está próximo e apressar Haku",
+      "risk_level": "low",
+      "base_translation": "...O último andar está logo ali.\\n",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df044",
+      "text_source": "We should hurry, Haku.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "prático, urgente",
+      "intent": "completar — devem se apressar",
+      "risk_level": "low",
+      "base_translation": "Devemos nos apressar, Haku.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df05b",
+      "text_source": "Sure... Right.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "distraído, voltando à realidade",
+      "intent": "concordar brevemente saindo do devaneio",
+      "risk_level": "low",
+      "base_translation": "Certo... Sim.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df223",
+      "text_source": "Uzurushan Soldier",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "soldado Uzurushan",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df235",
+      "text_source": "The bravest warrior of Uzurusha is eternal!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata Uzurushan",
+      "intent": "proclamar a eternidade do guerreiro de Uzurusha",
+      "risk_level": "low",
+      "base_translation": "O bravo guerreiro de Uzurusha é eterno!",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df261",
+      "text_source": "Dammit. Not you again...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, cansado",
+      "intent": "lamentar que os guerreiros Uzurushan apareceram de novo",
+      "risk_level": "low",
+      "base_translation": "Merda. Vocês de novo...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df27a",
+      "text_source": "Almighty overlord, I have returned!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "anunciar o retorno ao soberano supremo",
+      "risk_level": "low",
+      "base_translation": "Supremo soberano, voltamos!",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df29e",
+      "text_source": "And I have come to prove that the brave warriors\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "declarar intenção de provar o valor dos guerreiros de Uzurusha",
+      "risk_level": "low",
+      "base_translation": "E viemos provar que os bravos guerreiros\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df2d1",
+      "text_source": "of Uzurusha are the bravest of brave warriors!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "completar — de Uzurusha são os mais bravos",
+      "risk_level": "low",
+      "base_translation": "de Uzurusha são os mais bravos entre os bravos!",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df300",
+      "text_source": "We shall take the title of almighty overlord\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "anunciar que tomarão o título de soberano supremo",
+      "risk_level": "low",
+      "base_translation": "Tomaremos o título de supremo soberano\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df32f",
+      "text_source": "for ourselves!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "completar — para nós mesmos",
+      "risk_level": "low",
+      "base_translation": "para nós!",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df33e",
+      "text_source": "Now then! To battle!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "épico, bravata",
+      "intent": "convocar para a batalha",
+      "risk_level": "low",
+      "base_translation": "Agora! Para a batalha!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df353",
+      "text_source": "I genuinely could not care less. Look, seriously,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, irônico",
+      "intent": "dizer que não se importa nada com o título e que pode ficar com ele",
+      "risk_level": "low",
+      "base_translation": "Sinceramente, não poderia me importar menos. Olha,\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df387",
+      "text_source": "you can HAVE the name.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, irônico",
+      "intent": "completar — pode FICAR com o nome",
+      "risk_level": "low",
+      "base_translation": "pode FICAR com o nome.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df548",
+      "text_source": "Uzurushan Soldier",
+      "speaker": "[SYSTEM]",
+      "entities_present": [
+        "[SYSTEM]"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "soldado Uzurushan",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df55a",
+      "text_source": "Gghh... We lost.",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "derrotado, determinado",
+      "intent": "admitir a derrota mas recusar desistir",
+      "risk_level": "low",
+      "base_translation": "Argh... Perdemos.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df56b",
+      "text_source": "But I shall not give up! One day I shall prove\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "determinado, solene",
+      "intent": "afirmar que não vai desistir e que um dia provará o valor Uzurushan",
+      "risk_level": "low",
+      "base_translation": "Mas não vou desistir! Um dia provarei\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df59c",
+      "text_source": "that the warriors of Uzurusha are true brave\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "determinado, solene",
+      "intent": "completar — que os guerreiros de Uzurusha são verdadeiramente bravos",
+      "risk_level": "low",
+      "base_translation": "que os guerreiros de Uzurusha são verdadeiramente bravos!\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df5cb",
+      "text_source": "warriors.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "guerreiras.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df5d5",
+      "text_source": "Until then, you may uphold the name of the\\n",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "solene, concessão",
+      "intent": "até lá, conceder o título ao Haku para carregar com orgulho",
+      "risk_level": "low",
+      "base_translation": "Até lá, pode carregar o nome do\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df602",
+      "text_source": "almighty overlord with pride!",
+      "speaker": "Kiwru",
+      "entities_present": [
+        "Kiwru"
+      ],
+      "tone_register": "solene, concessão",
+      "intent": "completar — supremo soberano com orgulho",
+      "risk_level": "low",
+      "base_translation": "supremo soberano com orgulho!",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df620",
+      "text_source": "Please, take the name. Honestly.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado, resignado",
+      "intent": "insistir para ficarem com o nome — de verdade",
+      "risk_level": "low",
+      "base_translation": "Por favor, fiquem com o nome. De verdade.\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df643",
+      "text_source": "I do NOT care.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "reforçar que não quer saber do título",
+      "risk_level": "low",
+      "base_translation": "NÃO me importo.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df652",
+      "text_source": "Very fitting for you.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, arcaico",
+      "intent": "comentar sarcasticamente que o título é perfeito para Haku",
+      "risk_level": "low",
+      "base_translation": "Muito a seu feitio, isso.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2df668",
+      "text_source": "The almighty bonerlord. Very distinguished.\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, arcaico, cômico",
+      "intent": "anunciar o título ridículo com falsa solenidade",
+      "risk_level": "medium",
+      "base_translation": "O supremo senhor do osso. Muito distinto.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'bonerlord' é título cômico/obsceno; localizar mantendo o duplo sentido ou absurdo; 'Very distinguished' = tom pomposo de Maroro"
+    },
+    {
+      "offset": "0x2df696",
+      "text_source": "It truly embodies the essence of your\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, arcaico",
+      "intent": "completar — afirmar que encarna a essência do mestre",
+      "risk_level": "medium",
+      "base_translation": "Verdadeiramente encarna a essência do vosso\\n",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz de Maroro: arcaico/pomposo; 'truly embodies the essence' preservar pompa"
+    },
+    {
+      "offset": "0x2df6be",
+      "text_source": "character, master.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, arcaico",
+      "intent": "completar — caráter do mestre",
+      "risk_level": "medium",
+      "base_translation": "caráter, mestre.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz de Maroro; completar a bajulação cômica"
+    },
+    {
+      "offset": "0x2df6d1",
+      "text_source": "And THAT'S not any better!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "exasperado",
+      "intent": "rejeitar o comentário de Maroro — ainda pior",
+      "risk_level": "low",
+      "base_translation": "Isso TAMBÉM não ajuda em nada!",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 180,
+  "high_lines": 5,
+  "medium_lines": 16,
+  "needs_review": [],
+  "plan_version": "chapter-30_06-v1"
+}

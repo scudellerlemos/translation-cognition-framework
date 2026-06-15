@@ -1,0 +1,598 @@
+{
+  "scene_group": "23_12",
+  "lines": [
+    {
+      "offset": "0x2aa735",
+      "text_source": "ch_401_00",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "ch_401_00",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa73f",
+      "text_source": "Wh--Kuon--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, fragmentado",
+      "intent": "Haku semi-consciente reconhece Kuon",
+      "risk_level": "medium",
+      "base_translation": "Qu--Kuon--",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "fala truncada — preservar fragmentação; budget 10 bytes apertado"
+    },
+    {
+      "offset": "0x2aa74a",
+      "text_source": "Head",
+      "speaker": "rotulo",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Head",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa74f",
+      "text_source": "Looks like she's trying to knock them out to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, observação tática",
+      "intent": "Haku narra que Kuon está nocauteando inimigos sem matar",
+      "risk_level": "low",
+      "base_translation": "Parece que ela está tentando nocauteá-los para\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa77e",
+      "text_source": "incapacitate them...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo, continuação",
+      "intent": "conclusão: apenas incapacitar",
+      "risk_level": "low",
+      "base_translation": "apenas incapacitá-los...",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa793",
+      "text_source": "...If we do end up encountering more, we're\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, planejamento",
+      "intent": "Haku anuncia plano de combate não-letal caso encontrem mais inimigos",
+      "risk_level": "low",
+      "base_translation": "...Se encontrarmos mais, vamos tentar\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa7c1",
+      "text_source": "gonna try our best to fight non-lethally.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, direto",
+      "intent": "continuação: lutar sem matar",
+      "risk_level": "low",
+      "base_translation": "lutar sem matar ninguém.\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa7ed",
+      "text_source": "No casualties.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme, breve",
+      "intent": "ordem clara: sem baixas",
+      "risk_level": "low",
+      "base_translation": "Sem mortes.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa7fc",
+      "text_source": "U-Understood...",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "E-Entendido...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa80c",
+      "text_source": "You are, of course, aware that we are fighting\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, questionador",
+      "intent": "Oshtor (como Ukon) questiona a ordem — estão em guerra",
+      "risk_level": "medium",
+      "base_translation": "O senhor sabe, claro, que estamos travando\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Oshtor nesta cena age como Ukon; manter registro informal-formal comedido, não antecipar pompa de general"
+    },
+    {
+      "offset": "0x2aa83d",
+      "text_source": "a WAR? Are you quite sure you won't retract\\n",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, questionador",
+      "intent": "continuação: tem certeza da ordem?",
+      "risk_level": "medium",
+      "base_translation": "uma GUERRA? Tem certeza que não vai reconsiderar\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "manter ambiguidade respeitosa sem soar paternal"
+    },
+    {
+      "offset": "0x2aa86b",
+      "text_source": "that order?",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal",
+      "intent": "conclusão da pergunta",
+      "risk_level": "low",
+      "base_translation": "essa ordem?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa877",
+      "text_source": "I won't.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme, breve",
+      "intent": "Haku mantém a ordem",
+      "risk_level": "low",
+      "base_translation": "Não vou.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa880",
+      "text_source": "So be it. That shouldn't be so hard.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "neutro, aceitação",
+      "intent": "aceita a ordem com leveza",
+      "risk_level": "low",
+      "base_translation": "Muito bem. Não deve ser tão difícil.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa8a5",
+      "text_source": "Sure, why not? Orders're orders. I just do what\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído, brincalhão",
+      "intent": "Ukon aceita ordens com humor",
+      "risk_level": "low",
+      "base_translation": "Tá bom, por que não? Ordem é ordem. Só faço o\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa8d7",
+      "text_source": "you tell me, boss.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "descontraído",
+      "intent": "conclusão: obedece ao chefe",
+      "risk_level": "low",
+      "base_translation": "que o chefe mandar.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa8ea",
+      "text_source": "Aww, I'm not allowed to kill anyone?",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "levemente provocador, ambíguo",
+      "intent": "reação cômica-ameaçadora: não pode matar ninguém?",
+      "risk_level": "medium",
+      "base_translation": "Ah, não posso matar ninguém?",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "manter ambiguidade; não resolver se é brincadeira ou ameaça real"
+    },
+    {
+      "offset": "0x2aa90f",
+      "text_source": "That's right. Do your best to incapacitate\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme, didático",
+      "intent": "confirma: incapacitar sem matar",
+      "risk_level": "low",
+      "base_translation": "Isso. Faça o possível para incapacitar\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa93c",
+      "text_source": "without killing.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "firme",
+      "intent": "conclusão da instrução",
+      "risk_level": "low",
+      "base_translation": "sem matar.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa94d",
+      "text_source": "I see... Hmhm. Very well.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, aceitação fria",
+      "intent": "aceita com brevidade dúbia",
+      "risk_level": "medium",
+      "base_translation": "Entendo... Hmhm. Muito bem.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "manter tom frio e ambíguo; não soar caloroso"
+    },
+    {
+      "offset": "0x2aa967",
+      "text_source": "Kuon, I know you're anxious about all this,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "gentil, preocupado",
+      "intent": "Haku repreende Kuon por agir sozinha",
+      "risk_level": "low",
+      "base_translation": "Kuon, eu sei que você está ansiosa com tudo,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa995",
+      "text_source": "but you need to stop rushing in by yourself.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "gentil, direto",
+      "intent": "pede que ela pare de agir impulsivamente",
+      "risk_level": "low",
+      "base_translation": "mas precisa parar de se jogar sozinha na frente.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa9c2",
+      "text_source": "Oh. S-Sorry, I just... Yeah.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpresa, defensiva, vulnerável",
+      "intent": "Kuon reage com um pedido de desculpas sem terminar o pensamento",
+      "risk_level": "low",
+      "base_translation": "Ah. D-Desculpe, eu só... É.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aa9df",
+      "text_source": "We're going to do our best not to kill any of\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tranquilizador, informal",
+      "intent": "Haku assegura que vão evitar matar soldados de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Vamos fazer o possível para não matar nenhum\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa0f",
+      "text_source": "Tuskur's soldiers, so relax a little, OK?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tranquilizador",
+      "intent": "conclusão: pede que Kuon relaxe",
+      "risk_level": "low",
+      "base_translation": "soldado de Tuskur, então relaxa um pouco, tá?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa39",
+      "text_source": "...Huh?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "...Hein?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa41",
+      "text_source": "Hm?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hum?",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa45",
+      "text_source": "What are y--\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpresa, interrompida",
+      "intent": "Kuon começa a protestar e é cortada",
+      "risk_level": "low",
+      "base_translation": "O que você--\\n",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa54",
+      "text_source": "That's not what I--",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "defensiva, interrompida",
+      "intent": "Kuon tenta corrigir a interpretação de Haku",
+      "risk_level": "low",
+      "base_translation": "Não foi isso que--",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa68",
+      "text_source": "Haku, did you think I was worried because--?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpresa, indignada",
+      "intent": "Kuon pergunta se Haku achava que ela estava preocupada por outro motivo",
+      "risk_level": "low",
+      "base_translation": "Haku, você achou que eu estava preocupada porque--?",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaa95",
+      "text_source": "Tuskur soldier",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Soldado de Tuskur",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaaa4",
+      "text_source": "It's the enemy! Sound the alar--\\n",
+      "speaker": "Soldado inimigo",
+      "entities_present": [
+        "Soldado inimigo"
+      ],
+      "tone_register": "alarmado, urgente",
+      "intent": "soldado detecta o grupo e grita alarme",
+      "risk_level": "low",
+      "base_translation": "É o inimigo! Soem o alerta--\\n",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaac7",
+      "text_source": "{W90}Eh!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "surpresa, reação instintiva",
+      "intent": "Haku leva susto com o alarme",
+      "risk_level": "low",
+      "base_translation": "{W90}Eh!?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaad1",
+      "text_source": "Shit.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "tenso, pragmático",
+      "intent": "Haku reage com impropério rápido",
+      "risk_level": "low",
+      "base_translation": "Merda.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaad7",
+      "text_source": "It's the enemy! They're over here!",
+      "speaker": "Soldado inimigo",
+      "entities_present": [
+        "Soldado inimigo"
+      ],
+      "tone_register": "alarmado",
+      "intent": "soldado chama reforços indicando posição",
+      "risk_level": "low",
+      "base_translation": "É o inimigo! Estão aqui!",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aaafa",
+      "text_source": "This isn't good. We need to clean this mess up\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente, tático",
+      "intent": "Haku ordena resolver a situação antes que cheguem reforços",
+      "risk_level": "low",
+      "base_translation": "Não está bom. Precisamos resolver isso aqui\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2aab2b",
+      "text_source": "before they call for reinforcements.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "urgente",
+      "intent": "conclusão: antes dos reforços chegarem",
+      "risk_level": "low",
+      "base_translation": "antes que chamem reforços.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 37,
+  "high_lines": 0,
+  "medium_lines": 5,
+  "needs_review": [],
+  "plan_version": "chapter-23_12-v1"
+}

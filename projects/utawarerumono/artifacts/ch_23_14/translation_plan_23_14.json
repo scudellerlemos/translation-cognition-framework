@@ -1,0 +1,3256 @@
+{
+  "scene_group": "23_14",
+  "lines": [
+    {
+      "offset": "0x2b6a2f",
+      "text_source": "ch_401_00",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "ch_401_00",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6a39",
+      "text_source": "GYAAAAH!",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "grito de dor/esforço",
+      "intent": "grito de dor durante batalha",
+      "risk_level": "low",
+      "base_translation": "GYAAAAH!",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6a42",
+      "text_source": "Huff, hah, hah...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "exaustão, ofegante",
+      "intent": "respiração pesada após esforço",
+      "risk_level": "low",
+      "base_translation": "Huff, hah, hah...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6a54",
+      "text_source": "W-We won...",
+      "speaker": "Personagem",
+      "entities_present": [
+        "Personagem"
+      ],
+      "tone_register": "alívio exausto",
+      "intent": "constatar vitória",
+      "risk_level": "medium",
+      "base_translation": "V-Vencemos...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 11 transliterado; encurtado ao máximo"
+    },
+    {
+      "offset": "0x2b6a60",
+      "text_source": "What prowess. I had no idea men like him existed\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "admiração informal",
+      "intent": "reconhecer a força surpreendente do inimigo",
+      "risk_level": "medium",
+      "base_translation": "Que habilidade. Não fazia ideia que existiam homens assim\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha longa; verificar byte budget após transliteração."
+    },
+    {
+      "offset": "0x2b6a93",
+      "text_source": "in Tuskur.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "admiração informal",
+      "intent": "completar pensamento sobre Tuskur",
+      "risk_level": "low",
+      "base_translation": "em Tuskur.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6aa2",
+      "text_source": "Kuon...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Kuon...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6aaa",
+      "text_source": "Right...\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, pensativo",
+      "intent": "concordar brevemente, processar",
+      "risk_level": "low",
+      "base_translation": "É...\\n",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6ab5",
+      "text_source": "He was someone she knew, huh?",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, observacional",
+      "intent": "notar que Kurou era conhecido de alguém",
+      "risk_level": "low",
+      "base_translation": "Ele era alguém que ela conhecia, hein?",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6ad3",
+      "text_source": "It's not over yet! Nobody let your guard down.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, autoritário",
+      "intent": "manter vigilância, não baixar a guarda",
+      "risk_level": "low",
+      "base_translation": "Ainda não acabou! Ninguém abaixe a guarda.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6b02",
+      "text_source": "What?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Que?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6b08",
+      "text_source": "This man... The Kurou I know wouldn't go down\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, suspicaz",
+      "intent": "alertar que Kurou não cairia tão fácil",
+      "risk_level": "low",
+      "base_translation": "Esse homem... O Kurou que conheço não cairia\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6b38",
+      "text_source": "so easily.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "continuação firme",
+      "intent": "completar raciocínio",
+      "risk_level": "medium",
+      "base_translation": "tão fácil.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 10 transliterado; encurtado"
+    },
+    {
+      "offset": "0x2b6b43",
+      "text_source": "Huh... But he's...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, duvidando",
+      "intent": "questionar o estado do inimigo",
+      "risk_level": "low",
+      "base_translation": "Hein... Mas ele está...?",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6b57",
+      "text_source": "We did quite a number on him. He may be\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, analítico",
+      "intent": "avaliar estado do inimigo",
+      "risk_level": "low",
+      "base_translation": "Fizemos um estrago considerável nele. Pode estar\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6b81",
+      "text_source": "breathing, but he's not in fighting shape.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, analítico",
+      "intent": "completar — respirando mas fora de combate",
+      "risk_level": "low",
+      "base_translation": "respirando, mas não está em condições de lutar.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6bac",
+      "text_source": "He's likely toying with us.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, cauteloso",
+      "intent": "sugerir que ele está fingindo",
+      "risk_level": "low",
+      "base_translation": "Provavelmente está nos enganando.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6bc8",
+      "text_source": "Chances are, he's waiting for us to be convinced\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, cauteloso",
+      "intent": "teorizar que ele aguarda o momento certo para contra-atacar",
+      "risk_level": "low",
+      "base_translation": "É provável que esteja esperando nos convenencermos\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6bfb",
+      "text_source": "of our victory so he can have the last laugh.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, cauteloso",
+      "intent": "completar — espera para dar a última risada",
+      "risk_level": "low",
+      "base_translation": "da vitória para dar a última risada.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6c29",
+      "text_source": "I highly doubt he's any danger to us in the\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, descontraído",
+      "intent": "minimizar o perigo, contradizer Munechika",
+      "risk_level": "low",
+      "base_translation": "Duvido muito que ele seja perigo pra gente no\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6c57",
+      "text_source": "state he's in.",
+      "speaker": "Personagem",
+      "entities_present": [
+        "Personagem"
+      ],
+      "tone_register": "continuação",
+      "intent": "concluir argumento",
+      "risk_level": "medium",
+      "base_translation": "estado que está.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 14 transliterado; encurtado"
+    },
+    {
+      "offset": "0x2b6c66",
+      "text_source": "She's right. I've never had anyone take a blow\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, brincalhão",
+      "intent": "reforçar argumento com bravata cômica",
+      "risk_level": "low",
+      "base_translation": "É isso. Nunca vi ninguém levar um golpe meu\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6c97",
+      "text_source": "from me and be quite all right afterwards.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, brincalhão",
+      "intent": "completar — e sair bem depois",
+      "risk_level": "low",
+      "base_translation": "e sair completamente bem depois.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6cd1",
+      "text_source": "Cocopo?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Cocopo?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6cd9",
+      "text_source": "Come on, now. Why would you go and ruin the\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, provocador",
+      "intent": "reclamar que Ukon estragou a surpresa",
+      "risk_level": "low",
+      "base_translation": "Ei, ei. Eu não faria isso se fosse você.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d07",
+      "text_source": "surprise like that?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "continuação irônica",
+      "intent": "completar reclamação",
+      "risk_level": "medium",
+      "base_translation": "Que decepção.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 19 transliterado; encurtado drasticamente"
+    },
+    {
+      "offset": "0x2b6d1b",
+      "text_source": "Wh--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Q--",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d20",
+      "text_source": "Huh...!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "chocado",
+      "intent": "reação de surpresa ao ver Kurou de pé",
+      "risk_level": "low",
+      "base_translation": "Hein...!?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d29",
+      "text_source": "This guy's good.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "admiração informal",
+      "intent": "reconhecer a habilidade de Kurou",
+      "risk_level": "low",
+      "base_translation": "Esse cara é bom.",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d3a",
+      "text_source": "That can't be... We just...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "incrédulo",
+      "intent": "não conseguir acreditar no que vê",
+      "risk_level": "low",
+      "base_translation": "Não pode ser... A gente acabou de...",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d56",
+      "text_source": "How? I was sure we hit all sorts of vital spots...",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, descrente",
+      "intent": "questionar como ele sobreviveu aos golpes vitais",
+      "risk_level": "low",
+      "base_translation": "Como? Tínhamos certeza de ter atingido todos os pontos vitais...",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6d89",
+      "text_source": "That really stings, you know. I thought I was\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, relaxado",
+      "intent": "admitir que doeu mas de forma leve",
+      "risk_level": "low",
+      "base_translation": "Isso doeu pra valer, sabia. Por um momento achei\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6db9",
+      "text_source": "really in danger for a moment, there.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, relaxado",
+      "intent": "completar — achei que estava em perigo",
+      "risk_level": "low",
+      "base_translation": "que estava em perigo de verdade.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6ddf",
+      "text_source": "Hee hee. Just an act, then? I see.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, irônico",
+      "intent": "perceber que era tudo encenação",
+      "risk_level": "low",
+      "base_translation": "Hee hee. Só uma encenação, então? Entendo.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6e02",
+      "text_source": "No, no, really. That beating you gave me?\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, sincero",
+      "intent": "garantir que a surra foi real",
+      "risk_level": "low",
+      "base_translation": "Não, não, de verdade. Aquela surra que vocês me deram?\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6e2e",
+      "text_source": "Knocked the drowsiness RIGHT out of me.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, sincero",
+      "intent": "dizer que a surra o acordou",
+      "risk_level": "low",
+      "base_translation": "Espantou a preguiça de vez.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6e56",
+      "text_source": "Ooh, what a man... You might go and actually\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "animado, provocador",
+      "intent": "flertar com a ideia de entrar a sério",
+      "risk_level": "low",
+      "base_translation": "Ooh, que homem... Você pode acabar me fazendo\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6e85",
+      "text_source": "make me get serious!",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "animado, provocador",
+      "intent": "completar — me fazer ficar sério",
+      "risk_level": "low",
+      "base_translation": "ficar sério de verdade!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6e9a",
+      "text_source": "But is that really what you expect of me,\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "provocador, irônico",
+      "intent": "questionar se ela realmente esperava isso dele",
+      "risk_level": "low",
+      "base_translation": "Mas é isso mesmo que você espera de mim,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6ec6",
+      "text_source": "my lady? That I'd just try to get a laugh out\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "provocador, irônico",
+      "intent": "completar — que eu só tentasse arrancar uma risada",
+      "risk_level": "low",
+      "base_translation": "minha senhora? Que eu só tentasse arrancar uma risada?\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6ef6",
+      "text_source": "of you?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "de vocês?",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6efe",
+      "text_source": "Could it be you're still nursing grudges from\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "provocador, nostálgico",
+      "intent": "sugerir que ela ainda guarda rancor do passado",
+      "risk_level": "low",
+      "base_translation": "Será que você ainda guarda rancor de\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6f2e",
+      "text_source": "years ago?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "provocador, nostálgico",
+      "intent": "completar — anos atrás",
+      "risk_level": "low",
+      "base_translation": "anos atrás?",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6f39",
+      "text_source": "I mean, sure, I pinched your snacks from time\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "descontraído, confessando",
+      "intent": "admitir que roubava os lanches dela",
+      "risk_level": "low",
+      "base_translation": "Quer dizer, sim, eu peguei seus lanches de vez\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6f69",
+      "text_source": "to time, but it was a spur-of-the-moment thing.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "descontraído, confessando",
+      "intent": "completar — era por impulso",
+      "risk_level": "low",
+      "base_translation": "em quando, mas era coisa do momento.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6f99",
+      "text_source": "...So you were the culprit.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, revelador",
+      "intent": "confirmar que era ele o culpado",
+      "risk_level": "low",
+      "base_translation": "...Então era você o culpado.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6fb5",
+      "text_source": "Huh? Heh, didn't expect you to remember that.\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "surpreso, bem-humorado",
+      "intent": "não esperava que ela lembrasse",
+      "risk_level": "low",
+      "base_translation": "Hein? Heh, não esperava que você lembrasse disso.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b6fe5",
+      "text_source": "Guess I walked right into that one.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, admitindo derrota",
+      "intent": "reconhecer que se enrolou sozinho",
+      "risk_level": "low",
+      "base_translation": "Acho que me meti numa fria sem querer.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7009",
+      "text_source": "Easy, now. I wouldn't do that, if I were you.\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "sério, aviso",
+      "intent": "avisar que não deveriam agir",
+      "risk_level": "low",
+      "base_translation": "Calma. Eu não faria isso, se fosse vocês.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7039",
+      "text_source": "If you don't retreat soon, it'll be too late\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "sério, urgente",
+      "intent": "avisar que é tarde demais se não recuarem",
+      "risk_level": "low",
+      "base_translation": "Se não recuarem logo, será tarde demais\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7068",
+      "text_source": "for you.",
+      "speaker": "Ougi",
+      "entities_present": [
+        "Ougi"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "para você.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7071",
+      "text_source": "Too late?",
+      "speaker": "Personagem",
+      "entities_present": [
+        "Personagem"
+      ],
+      "tone_register": "confuso, questionador",
+      "intent": "questionar o aviso",
+      "risk_level": "medium",
+      "base_translation": "Tarde?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 9 transliterado; encurtado"
+    },
+    {
+      "offset": "0x2b707b",
+      "text_source": "Some other force is acting as a distraction\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "analítico, deduzindo",
+      "intent": "revelar que sabe da estratégia deles",
+      "risk_level": "low",
+      "base_translation": "Uma outra força está servindo de distração\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b70a9",
+      "text_source": "while you make off with the supplies, right?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "analítico, deduzindo",
+      "intent": "completar — enquanto pegam os suprimentos",
+      "risk_level": "low",
+      "base_translation": "enquanto vocês fogem com os suprimentos, certo?",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b70d6",
+      "text_source": "The longer you take, the more danger you're\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "analítico, pressionando",
+      "intent": "alertar que o atraso coloca aliados em risco",
+      "risk_level": "low",
+      "base_translation": "Quanto mais tempo levarem, mais perigo correm\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7104",
+      "text_source": "putting your comrades in. I know I'm right.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "analítico, pressionando",
+      "intent": "completar — seus companheiros estão em perigo",
+      "risk_level": "low",
+      "base_translation": "seus companheiros. Pode ter certeza.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7130",
+      "text_source": "I appreciate your concern, but the one leading\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, confiante",
+      "intent": "agradecer a preocupação mas descartar",
+      "risk_level": "low",
+      "base_translation": "Agradeço a preocupação, mas quem lidera\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7161",
+      "text_source": "that force isn't as weak as you think.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, confiante",
+      "intent": "completar — não é tão fraco",
+      "risk_level": "low",
+      "base_translation": "aquela força não é tão fraco quanto você pensa.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7188",
+      "text_source": "Oh? That so?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "curioso, irônico",
+      "intent": "reagir com ceticismo à confiança de Ukon",
+      "risk_level": "low",
+      "base_translation": "Oh? É mesmo?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7195",
+      "text_source": "If I were you, I wouldn't talk such a big game.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "provocador",
+      "intent": "rebater a confiança excessiva de Ukon",
+      "risk_level": "low",
+      "base_translation": "Se eu fosse você, não falaria tão grande assim.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b71c5",
+      "text_source": "Nngh! I knew it--",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, percebendo",
+      "intent": "perceber que estava certa sobre Kurou",
+      "risk_level": "low",
+      "base_translation": "Ngh! Eu sabia--",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b71d7",
+      "text_source": "That's right. How long will your \"distraction\"\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "irônico, pressionando",
+      "intent": "questionar quanto tempo a distração vai durar",
+      "risk_level": "medium",
+      "base_translation": "Isso mesmo. Por quanto tempo sua \"distração\"\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "A palavra 'distração' entre aspas é intencional (ironizando o plano deles)."
+    },
+    {
+      "offset": "0x2b7208",
+      "text_source": "last against the Chief, I wonder...?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "irônico, pressionando",
+      "intent": "completar — quanto vai durar contra o Chefe",
+      "risk_level": "low",
+      "base_translation": "vai durar contra o Chefe, eu me pergunto...?",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b722d",
+      "text_source": "I shall open the \"gate.\" All forces, defensive\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, solene, comando",
+      "intent": "abrir o portão e ordenar formação defensiva",
+      "risk_level": "medium",
+      "base_translation": "Vou abrir o \"portão\". Todas as forças, formação\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fala ritual/poder. Lore: Akuruka. Verificar budget."
+    },
+    {
+      "offset": "0x2b725e",
+      "text_source": "bulkhead formation! Now!",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, comando",
+      "intent": "completar — formação anteparo agora",
+      "risk_level": "low",
+      "base_translation": "defensiva em anteparo! Agora!",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7277",
+      "text_source": "Soldier",
+      "speaker": "SOLDIER",
+      "entities_present": [
+        "SOLDIER"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "SOLDADO",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b727f",
+      "text_source": "No, you mustn't! Releasing your full power\\n",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "urgente, preocupado",
+      "intent": "alertar Munechika do custo de usar pleno poder",
+      "risk_level": "low",
+      "base_translation": "Não, não pode! Usar todo o seu poder\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b72ac",
+      "text_source": "will tax you too much, Lady Munechika--!!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "urgente, preocupado",
+      "intent": "completar — vai custar muito para Munechika",
+      "risk_level": "low",
+      "base_translation": "vai pesar demais sobre você, Senhora Munechika--!!",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b72d6",
+      "text_source": "It's likely that these soldiers are their\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, estratégico",
+      "intent": "avaliar que os soldados inimigos são elite",
+      "risk_level": "low",
+      "base_translation": "É provável que esses soldados sejam a\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7302",
+      "text_source": "elite.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "continuação analítica",
+      "intent": "concluir avaliação",
+      "risk_level": "medium",
+      "base_translation": "elite.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 6 transliterado; encurtado ao máximo"
+    },
+    {
+      "offset": "0x2b7309",
+      "text_source": "It is our duty to hold their attention for as\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, resoluto",
+      "intent": "declarar dever de segurar a atenção inimiga",
+      "risk_level": "low",
+      "base_translation": "É nosso dever manter a atenção deles pelo\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7339",
+      "text_source": "long as we can.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, resoluto",
+      "intent": "completar — o máximo que pudermos",
+      "risk_level": "low",
+      "base_translation": "maior tempo possível.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7349",
+      "text_source": "Lord Haku and the others are trusting in us so\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, resoluto",
+      "intent": "invocar a confiança de Haku e outros no grupo",
+      "risk_level": "low",
+      "base_translation": "O Senhor Haku e os outros confiam em nós para\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b737a",
+      "text_source": "their plan can succeed. We shall not fail them.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, resoluto",
+      "intent": "completar — não podemos falhar",
+      "risk_level": "low",
+      "base_translation": "que o plano funcione. Não vamos decepcioná-los.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b73aa",
+      "text_source": "I am sorry, but... I must ask you all to entrust\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, solene",
+      "intent": "pedir que confiem suas vidas a ela",
+      "risk_level": "low",
+      "base_translation": "Me perdoem, mas... preciso pedir que confiem\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b73dd",
+      "text_source": "your lives to me.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, solene",
+      "intent": "completar — suas vidas a mim",
+      "risk_level": "low",
+      "base_translation": "suas vidas a mim.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b73ef",
+      "text_source": "...Lady Munechika.",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "respeitoso, emocionado",
+      "intent": "reconhecer Munechika com respeito",
+      "risk_level": "low",
+      "base_translation": "...Senhora Munechika.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7402",
+      "text_source": "Speak no more. We will follow you to the bitter\\n",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "resoluto, leal",
+      "intent": "jurar seguir até o fim",
+      "risk_level": "low",
+      "base_translation": "Não precisa dizer mais. Vamos segui-la até o\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7434",
+      "text_source": "end!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "resoluto, leal",
+      "intent": "completar — até o fim",
+      "risk_level": "low",
+      "base_translation": "fim!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7439",
+      "text_source": "...You have my apologies and my greatest thanks.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, grata",
+      "intent": "pedir desculpas e agradecer profundamente",
+      "risk_level": "low",
+      "base_translation": "...Minhas desculpas e minha mais profunda gratidão.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b746a",
+      "text_source": "I am the Guardian! Open the way to the origin,\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, ritual/invocação",
+      "intent": "invocar o Akuruka como Guardiã",
+      "risk_level": "high",
+      "base_translation": "Sou a Guardiã! Abra o caminho à origem,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fala ritual. Lore: Akuruka, Guardiã. Verificar que 'Guardiã' bate com glossário 'Guardian→Guardia'; aqui é título feminino. Budget 48 bytes."
+    },
+    {
+      "offset": "0x2b749b",
+      "text_source": "O Akuruka, and through it grant me the heavens'\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, ritual/invocação",
+      "intent": "completar invocação — conceder a égide dos céus",
+      "risk_level": "high",
+      "base_translation": "Ó Akuruka, e por ele me conceda a égide\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore: Akuruka. Termo 'egide' pode ser pouco familiar; mas adequado ao registro solene."
+    },
+    {
+      "offset": "0x2b74cd",
+      "text_source": "aegis!",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "continuação de invocação",
+      "intent": "concluir invocação",
+      "risk_level": "medium",
+      "base_translation": "celeste!",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 6 transliterado; encurtado ao máximo"
+    },
+    {
+      "offset": "0x2b74d4",
+      "text_source": "With a flash of blinding light, Munechika's\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever a manifestação do poder de Munechika",
+      "risk_level": "low",
+      "base_translation": "Com um clarão de luz cegante, o poder de Munechika\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7502",
+      "text_source": "power manifests before her as a great,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — manifesta-se como grande barreira",
+      "risk_level": "low",
+      "base_translation": "se manifesta diante dela como uma grande\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b752b",
+      "text_source": "shielding barrier.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — barreira protetora",
+      "risk_level": "low",
+      "base_translation": "barreira protetora.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b753e",
+      "text_source": "All soldiers, ready weapons!",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, comando",
+      "intent": "ordenar que soldados preparem armas",
+      "risk_level": "low",
+      "base_translation": "Todos os soldados, armas em punho!",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b755b",
+      "text_source": "...Forward.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, lacônico",
+      "intent": "ordenar avanço",
+      "risk_level": "low",
+      "base_translation": "...Avançar.",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7567",
+      "text_source": "Benawi and his rakusharai charge forward,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Benawi e seus soldados avançando sem hesitar",
+      "risk_level": "low",
+      "base_translation": "Benawi e seus rakusharai avançam sem hesitar,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7593",
+      "text_source": "unflappable in the face of Munechika's display\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — impassíveis diante do poder de Munechika",
+      "risk_level": "low",
+      "base_translation": "impassíveis diante da demonstração de poder\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b75c4",
+      "text_source": "of power.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "completar trecho narrativo",
+      "risk_level": "medium",
+      "base_translation": "de poder.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 9 bytes; texto transliterado deve caber. Forma curta adotada."
+    },
+    {
+      "offset": "0x2b75ce",
+      "text_source": "You shall go no further!",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, imperativo",
+      "intent": "barrar o avanço inimigo",
+      "risk_level": "low",
+      "base_translation": "Até aqui vocês não vão!",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b75e7",
+      "text_source": "The earth before Munechika rolls and undulates\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever o chão ondulando diante de Munechika",
+      "risk_level": "low",
+      "base_translation": "O terreno diante de Munechika range e ondula\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7618",
+      "text_source": "in a great wave, as if to swallow Benawi's\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — como se fosse engolir as forças de Benawi",
+      "risk_level": "low",
+      "base_translation": "em grande onda, como se fosse engolir as forças\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7645",
+      "text_source": "forces...",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — de Benawi",
+      "risk_level": "low",
+      "base_translation": "de Benawi...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b764f",
+      "text_source": "Yes!",
+      "speaker": "Rulutieh",
+      "entities_present": [
+        "Rulutieh"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Sim!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7654",
+      "text_source": "But Benawi and his soldiers gracefully sidestep\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Benawi e soldados desviando com graça",
+      "risk_level": "low",
+      "base_translation": "Mas Benawi e seus soldados desviam com elegância\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7686",
+      "text_source": "it, charging instead from Munechika's flank.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — atacando pelo flanco",
+      "risk_level": "low",
+      "base_translation": "e avançam pelo flanco de Munechika.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b76b3",
+      "text_source": "Hah!!",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "esforço em combate",
+      "intent": "grito de ataque",
+      "risk_level": "low",
+      "base_translation": "Hah!!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b76b9",
+      "text_source": "As Benawi's soldiers close in from the sides,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever soldados de Benawi fechando pelos lados",
+      "risk_level": "low",
+      "base_translation": "Enquanto os soldados de Benawi fecham pelos lados,\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b76e9",
+      "text_source": "they release a hail of arrows, pinning the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — chuva de flechas prende os de Yamato",
+      "risk_level": "low",
+      "base_translation": "disparam uma chuva de flechas, prendendo os\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7716",
+      "text_source": "Yamatans down.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — os de Yamato",
+      "risk_level": "low",
+      "base_translation": "de Yamato no lugar.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7725",
+      "text_source": "What!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "O quê!?",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b772c",
+      "text_source": "The tables turn quickly as arrows rain down on\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever virada enquanto flechas caem sobre Munechika",
+      "risk_level": "low",
+      "base_translation": "A situação vira rapidamente com a chuva de flechas\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b775d",
+      "text_source": "Munechika's forces...",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo",
+      "intent": "completar cena das flechas sobre as forças de Munechika",
+      "risk_level": "medium",
+      "base_translation": "sobre as forças...",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Budget 21 bytes; encurtado ao máximo."
+    },
+    {
+      "offset": "0x2b7773",
+      "text_source": "Tch. Ring formation!",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, comando rápido",
+      "intent": "ordenar formação de anel defensivo",
+      "risk_level": "low",
+      "base_translation": "Tch. Formação circular!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7788",
+      "text_source": "Munechika quickly rallies her troops and\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Munechika reagrupando as tropas",
+      "risk_level": "low",
+      "base_translation": "Munechika rapidamente reorganiza suas tropas e\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b77b3",
+      "text_source": "protects them from the archers, but Benawi\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — protege dos arqueiros mas Benawi cerca",
+      "risk_level": "low",
+      "base_translation": "as protege dos arqueiros, mas Benawi\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b77e0",
+      "text_source": "surrounds her.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — a cerca",
+      "risk_level": "low",
+      "base_translation": "a cerca.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b77ef",
+      "text_source": "They're fast--",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, surpreso",
+      "intent": "reconhecer a velocidade do inimigo",
+      "risk_level": "low",
+      "base_translation": "São rápidos--",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b77fe",
+      "text_source": "Benawi's rakusharai circle like a pack of\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever rakusharai circulando como predadores",
+      "risk_level": "low",
+      "base_translation": "Os rakusharai de Benawi circulam como predadores\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b782a",
+      "text_source": "predators seeking an opening in the herd, then\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — buscando abertura e então carregando",
+      "risk_level": "low",
+      "base_translation": "buscando uma abertura no rebanho, e então\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b785b",
+      "text_source": "charge.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — carregam",
+      "risk_level": "low",
+      "base_translation": "avançam.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7863",
+      "text_source": "Gah!",
+      "speaker": "Man",
+      "entities_present": [
+        "Man"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Ai!",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7868",
+      "text_source": "The Yamatan line buckles under the pressure\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever a linha de Yamato cedendo",
+      "risk_level": "low",
+      "base_translation": "A linha de Yamato cede sob a pressão\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7896",
+      "text_source": "from Benawi, and soon, Munechika's position\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — posição de Munechika ameaçada",
+      "risk_level": "low",
+      "base_translation": "de Benawi, e logo a posição de Munechika\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b78c4",
+      "text_source": "is threatened.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — está ameaçada",
+      "risk_level": "low",
+      "base_translation": "é ameaçada.",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b78d3",
+      "text_source": "Nngh...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Nnh...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b78db",
+      "text_source": "With nothing between her and Benawi, Munechika\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Munechika sendo atingida pela lança de Benawi",
+      "risk_level": "low",
+      "base_translation": "Sem nada entre ela e Benawi, Munechika\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b790c",
+      "text_source": "quickly takes a gash from his spear and cries\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — leva um corte da lança e grita",
+      "risk_level": "low",
+      "base_translation": "leva um golpe de corte de sua lança e grita\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b793c",
+      "text_source": "out.",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "fora.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7941",
+      "text_source": "Rgh... If I use my abilities in such close\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, pensando em combate",
+      "intent": "evitar usar poderes que atingiriam aliados",
+      "risk_level": "low",
+      "base_translation": "Rgh... Se usar minhas habilidades num espaço tão\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b796e",
+      "text_source": "quarters, I can't avoid hitting my own soldiers--",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, pensando em combate",
+      "intent": "completar — atingiria os próprios soldados",
+      "risk_level": "low",
+      "base_translation": "fechado, não evitarei atingir meus próprios soldados--",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b79a0",
+      "text_source": "Munechika manages to block each of Benawi's\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Munechika bloqueando mas recuando",
+      "risk_level": "low",
+      "base_translation": "Munechika consegue bloquear cada golpe de Benawi,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b79ce",
+      "text_source": "attacks, but the ferocity of them slowly drives\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — mas a ferocidade a faz recuar",
+      "risk_level": "low",
+      "base_translation": "mas a ferocidade deles a empurra lentamente\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7a00",
+      "text_source": "her back.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — para trás",
+      "risk_level": "low",
+      "base_translation": "para trás.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7a0a",
+      "text_source": "This man... He's well-versed in how to fight\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, analítico",
+      "intent": "perceber que Benawi conhece como lutar contra habilidades como as dela",
+      "risk_level": "low",
+      "base_translation": "Esse homem... Ele conhece bem como enfrentar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7a39",
+      "text_source": "people with abilities like mine.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "tenso, analítico",
+      "intent": "completar — pessoas com habilidades como as dela",
+      "risk_level": "low",
+      "base_translation": "pessoas com habilidades como as minhas.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7a5a",
+      "text_source": "Munechika grits her teeth, keeping up her\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Munechika sustentando a defesa",
+      "risk_level": "low",
+      "base_translation": "Munechika range os dentes, mantendo\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7a86",
+      "text_source": "defense, the clash of steel continuing\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — a defesa, aço contra aço sem parar",
+      "risk_level": "low",
+      "base_translation": "a defesa, o choque do aço continuando\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7aaf",
+      "text_source": "relentlessly.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — sem cessar",
+      "risk_level": "low",
+      "base_translation": "sem cessar.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7abd",
+      "text_source": "I see now. This is what Lady Kuon had meant.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, revelação interna",
+      "intent": "compreender o que Kuon quis dizer",
+      "risk_level": "low",
+      "base_translation": "Entendo agora. Era isso que a Senhora Kuon quis dizer.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7aea",
+      "text_source": "She was not worried for her countrymen's\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, revelação interna",
+      "intent": "perceber que Kuon se preocupava com ela, não com os compatriotas",
+      "risk_level": "low",
+      "base_translation": "Ela não estava preocupada com seus compatriotas,\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7b15",
+      "text_source": "safety... but my own.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, revelação interna",
+      "intent": "completar — mas comigo",
+      "risk_level": "low",
+      "base_translation": "mas comigo.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7b2b",
+      "text_source": "I've grown sloppy. Haphazard. When did I become\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, autocrítico",
+      "intent": "reconhecer que ficou descuidada e arrogante",
+      "risk_level": "low",
+      "base_translation": "Fiquei desleixada. Negligente. Quando fui parar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7b5d",
+      "text_source": "so overconfident in my own skills...?",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, autocrítico",
+      "intent": "completar — com tanta confiança nas próprias habilidades",
+      "risk_level": "low",
+      "base_translation": "tão confiante demais nas minhas habilidades...?",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7b83",
+      "text_source": "Suddenly, Benawi lowers his spear, and the\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever Benawi abaixando a lança e dissipando a aura",
+      "risk_level": "low",
+      "base_translation": "De repente, Benawi abaixa a lança e a aura\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7bb0",
+      "text_source": "menacing aura about him dissipates almost\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — aura ameaçadora se dissipa",
+      "risk_level": "low",
+      "base_translation": "ameaçadora ao redor dele se dissipa quase\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7bdc",
+      "text_source": "instantly.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "continuação narrativa",
+      "intent": "concluir — dissipação quase instantânea",
+      "risk_level": "medium",
+      "base_translation": "de imediato.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 10 transliterado; encurtado"
+    },
+    {
+      "offset": "0x2b7be7",
+      "text_source": "His rakusharai also cease their fighting,\\n",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "descrever rakusharai parando de lutar e se alinhando",
+      "risk_level": "low",
+      "base_translation": "Seus rakusharai também cessam o combate,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7c13",
+      "text_source": "instead lining up behind their commander.",
+      "speaker": "Narrador",
+      "entities_present": [
+        "Narrador"
+      ],
+      "tone_register": "narrativo, descritivo",
+      "intent": "completar — se alinham atrás do comandante",
+      "risk_level": "low",
+      "base_translation": "se alinhando atrás de seu comandante.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7c3d",
+      "text_source": "What...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "O quê...?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7c46",
+      "text_source": "I believe that will be enough, Lady Munechika.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, calmo",
+      "intent": "declarar que é suficiente, encerrar combate",
+      "risk_level": "low",
+      "base_translation": "Creio que já basta, Senhora Munechika.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7c75",
+      "text_source": "Wh--You know my name?",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "surpresa, formal",
+      "intent": "espantar-se que ele sabe seu nome",
+      "risk_level": "low",
+      "base_translation": "Wh--Você sabe meu nome?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7c8b",
+      "text_source": "I am Benawi, and mine is the mantle of\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, apresentando-se",
+      "intent": "apresentar-se como Mestre de Guerra de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Sou Benawi, e carrego o manto de\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7cb4",
+      "text_source": "Warmaster of Tuskur.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, apresentando-se",
+      "intent": "completar — Mestre de Guerra de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Mestre de Guerra de Tuskur.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7cc9",
+      "text_source": "So it IS you. I am General Munechika, of the\\n",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, reconhecendo",
+      "intent": "confirmar a identidade e apresentar-se",
+      "risk_level": "low",
+      "base_translation": "Então é você mesmo. Sou a General Munechika, dos\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7cf8",
+      "text_source": "Eight Pillars of Yamato.",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, reconhecendo",
+      "intent": "completar — dos Oito Pilares de Yamato",
+      "risk_level": "low",
+      "base_translation": "Oito Pilares de Yamato.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7d11",
+      "text_source": "You'd do best to fall back now, Pillar.\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, aconselhando",
+      "intent": "aconselhar recuo, o plano falhou",
+      "risk_level": "low",
+      "base_translation": "O melhor é recuar agora, Pilar.\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7d3b",
+      "text_source": "Your plan has already ended in failure.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, aconselhando",
+      "intent": "completar — o plano já falhou",
+      "risk_level": "low",
+      "base_translation": "Seu plano já terminou em fracasso.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7d63",
+      "text_source": "Fall back...? You're not demanding surrender?",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, surpresa",
+      "intent": "surpreender-se que ele não exige rendição",
+      "risk_level": "low",
+      "base_translation": "Recuar...? Não está exigindo rendição?",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7d91",
+      "text_source": "Yes. Forcing a surrender from you would be a...\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, ponderado",
+      "intent": "explicar que forçar rendição seria custoso",
+      "risk_level": "low",
+      "base_translation": "Sim. Forçar uma rendição de você seria uma...\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7dc3",
+      "text_source": "costly pursuit.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, ponderado",
+      "intent": "completar — empreitada custosa",
+      "risk_level": "low",
+      "base_translation": "empreitada custosa.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7dd3",
+      "text_source": "And besides...",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, pausado",
+      "intent": "indicar que há outro motivo",
+      "risk_level": "low",
+      "base_translation": "E além disso...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7de2",
+      "text_source": "Besides?",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, interrogando",
+      "intent": "pedir que ele continue",
+      "risk_level": "low",
+      "base_translation": "Além disso?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7deb",
+      "text_source": "You no longer have a reason to fight.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, revelando",
+      "intent": "dizer que ela não tem mais razão para lutar",
+      "risk_level": "low",
+      "base_translation": "Você não tem mais razão para lutar.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7e11",
+      "text_source": "Regardless of the outcome here, you will return\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, enigmático",
+      "intent": "dizer que independente do resultado ela voltará",
+      "risk_level": "medium",
+      "base_translation": "Independente do resultado aqui, você vai voltar\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fala ambígua/profética de Benawi. Preservar ambiguidade."
+    },
+    {
+      "offset": "0x2b7e43",
+      "text_source": "to your country and begone.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, enigmático",
+      "intent": "completar — ao seu país e ir embora",
+      "risk_level": "medium",
+      "base_translation": "ao seu país e partir.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ambiguidade preservada; não resolver."
+    },
+    {
+      "offset": "0x2b7e5f",
+      "text_source": "What are y--",
+      "speaker": "Munechika",
+      "entities_present": [
+        "Munechika"
+      ],
+      "tone_register": "formal, interrompendo",
+      "intent": "começar a questionar Benawi mas é interrompida",
+      "risk_level": "low",
+      "base_translation": "O que você--",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7e6c",
+      "text_source": "Well, I'm warmed up, now. Why don't we have\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, provocador",
+      "intent": "retomar o combate de boa vontade",
+      "risk_level": "low",
+      "base_translation": "Bom, já esquentei. Que tal mais uma rodada?\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7e9a",
+      "text_source": "another bout, hm?",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "bem-humorado, provocador",
+      "intent": "completar — mais uma rodada?",
+      "risk_level": "low",
+      "base_translation": "Hm?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7eac",
+      "text_source": "Jachdwalt, on me.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, comando",
+      "intent": "chamar Jachdwalt para junto de si",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt, comigo.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7ebe",
+      "text_source": "Understood!",
+      "speaker": "Soldado",
+      "entities_present": [
+        "Soldado"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Entendido!",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7eca",
+      "text_source": "HYAH!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "HYAH!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7ed0",
+      "text_source": "Gah! That was close...\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal, aliviado",
+      "intent": "reagir a quase ser atingido",
+      "risk_level": "low",
+      "base_translation": "Gah! Por pouco...\\n",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7ee9",
+      "text_source": "Huh?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hein?",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7eee",
+      "text_source": "You were talking about letting us go, so I think\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, pragmático",
+      "intent": "aceitar a oferta de recuo de Benawi",
+      "risk_level": "low",
+      "base_translation": "Você falou em nos deixar ir, então acho que\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7f21",
+      "text_source": "we'll be taking you up on that offer.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, pragmático",
+      "intent": "completar — vamos aceitar a oferta",
+      "risk_level": "low",
+      "base_translation": "vamos aceitar essa oferta.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7f47",
+      "text_source": "Oh...? Turning tail when you realize the wind's\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, irônico",
+      "intent": "comentar a retirada tática com aprovação irônica",
+      "risk_level": "low",
+      "base_translation": "Oh...? Fugir quando percebe que o vento\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7f79",
+      "text_source": "not in your favor? Quick tactical thinking.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, irônico",
+      "intent": "completar — não sopra a seu favor; pensamento tático rápido",
+      "risk_level": "low",
+      "base_translation": "não está a seu favor? Pensamento tático ágil.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7fa5",
+      "text_source": "What's your name, boy?",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, curioso",
+      "intent": "perguntar o nome de Haku",
+      "risk_level": "low",
+      "base_translation": "Qual o seu nome, garoto?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7fbc",
+      "text_source": "It's Haku.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "É Haku.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7fc7",
+      "text_source": "Haku? But that's...",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, surpreso",
+      "intent": "surpreender-se com o nome Haku",
+      "risk_level": "high",
+      "base_translation": "Haku? Mas isso é...",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nome 'Haku' tem spoiler moderate. Reação de Benawi é significativa. Verificar que não antecipa revelações."
+    },
+    {
+      "offset": "0x2b7fdb",
+      "text_source": "Jachdwalt.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7fe6",
+      "text_source": "Yessir. Last one, yeah?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, confiante",
+      "intent": "confirmar nome e indicar que é o último",
+      "risk_level": "low",
+      "base_translation": "Isso mesmo. Último, tá?",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b7ffe",
+      "text_source": "What the--\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "surpreso, interrompido",
+      "intent": "reação de espanto antes de ser cortado",
+      "risk_level": "low",
+      "base_translation": "Mas que--\\n",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b800b",
+      "text_source": "Oh, you HAVE to be kidding me.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "incrédulo",
+      "intent": "não acreditar no que está acontecendo",
+      "risk_level": "low",
+      "base_translation": "Você tem que estar brincando.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b802a",
+      "text_source": "We'll gladly accept these gifts, as well.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, atrevido",
+      "intent": "pegar os presentes também ao fugir",
+      "risk_level": "low",
+      "base_translation": "Vamos aceitar esses presentes também, com prazer.\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8056",
+      "text_source": "Later, old man!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal, atrevido",
+      "intent": "se despedir provocando o inimigo",
+      "risk_level": "low",
+      "base_translation": "Até mais, velho!",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8066",
+      "text_source": "Heh... Ah heh heh.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Heh... Ah heh heh.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8079",
+      "text_source": "Ahahaha! What in the world? The nerve on that\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, divertido",
+      "intent": "rir da audácia de Haku",
+      "risk_level": "low",
+      "base_translation": "Ahahaha! Que é isso? A audácia desse\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b80a9",
+      "text_source": "kid... He's good.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, divertido",
+      "intent": "completar — o garoto é bom",
+      "risk_level": "low",
+      "base_translation": "garoto... Ele é bom.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b80bb",
+      "text_source": "No one would've expected an idiotic plan like\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, admirado",
+      "intent": "reconhecer que ninguém esperaria que o plano idiota funcionasse",
+      "risk_level": "low",
+      "base_translation": "Ninguém esperaria que um plano tão idiota\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b80eb",
+      "text_source": "that to go off without a hitch. No one sane.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, admirado",
+      "intent": "completar — funcionasse sem falhas. Ninguém são",
+      "risk_level": "low",
+      "base_translation": "saísse perfeito assim. Ninguém em sã consciência.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8118",
+      "text_source": "And his name's Haku. What exactly is that\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, pensativo",
+      "intent": "comentar o nome Haku e questionar o significado",
+      "risk_level": "high",
+      "base_translation": "E o nome dele é Haku. O que isso\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Spoiler moderate para Haku. Fala significativa sobre o nome."
+    },
+    {
+      "offset": "0x2b8144",
+      "text_source": "supposed to mean... my lady?",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, pensativo",
+      "intent": "completar — o que isso quer dizer, minha senhora",
+      "risk_level": "high",
+      "base_translation": "pode significar... minha senhora?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Dirigido a alguém (minha senhora) — implicação de revelação futura. Não antecipar."
+    },
+    {
+      "offset": "0x2b8161",
+      "text_source": "Kurou, status report.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, comando",
+      "intent": "pedir relatório de situação de Kurou",
+      "risk_level": "low",
+      "base_translation": "Kurou, situação.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8177",
+      "text_source": "...They got me. Got me good, too.\\n",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "informal, admitindo derrota",
+      "intent": "admitir que foi pego e bem pego",
+      "risk_level": "low",
+      "base_translation": "...Me pegaram. E bem, também.\\n",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b819b",
+      "text_source": "Sorry about that, chief.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "informal, pedindo desculpa",
+      "intent": "se desculpar com o chefe",
+      "risk_level": "low",
+      "base_translation": "Me desculpe, chefe.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b81b4",
+      "text_source": "It won't be an issue. As I said, they'll have\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, tranquilizando",
+      "intent": "dizer que não é problema, eles recuarão de qualquer jeito",
+      "risk_level": "low",
+      "base_translation": "Não há problema. Como disse, não vão ter\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b81e4",
+      "text_source": "no choice but to pull out, regardless of the\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, tranquilizando",
+      "intent": "completar — não terão escolha senão recuar",
+      "risk_level": "low",
+      "base_translation": "escolha a não ser recuar, independente\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8213",
+      "text_source": "outcome.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, tranquilizando",
+      "intent": "completar — do resultado",
+      "risk_level": "low",
+      "base_translation": "do resultado.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b821c",
+      "text_source": "I never expected them to execute on a plan like\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, surpreso",
+      "intent": "admitir que não esperava esse plano deles",
+      "risk_level": "low",
+      "base_translation": "Nunca esperaria que executassem um plano\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b824e",
+      "text_source": "that, though.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "continuação reflexiva",
+      "intent": "concluir pensamento",
+      "risk_level": "medium",
+      "base_translation": "assim, porém.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "budget 13 transliterado; encurtado"
+    },
+    {
+      "offset": "0x2b825c",
+      "text_source": "Bold, almost insane tactics...\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, admirado",
+      "intent": "descrever a tática como audaciosa, quase insana",
+      "risk_level": "low",
+      "base_translation": "Uma tática audaciosa, quase insana...\\n",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b827d",
+      "text_source": "Remind you of anyone we know?",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, insinuando",
+      "intent": "sugerir que isso lembra alguém que conhecem",
+      "risk_level": "low",
+      "base_translation": "Lembra alguém que conhecemos?",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b829b",
+      "text_source": "You seem happy about it.",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "informal, observando",
+      "intent": "notar que Benawi parece satisfeito",
+      "risk_level": "low",
+      "base_translation": "Você parece feliz com isso.",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b82b4",
+      "text_source": "I'm not the only one here smiling, chief.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, admitindo",
+      "intent": "dizer que não é o único sorrindo",
+      "risk_level": "low",
+      "base_translation": "Não sou o único aqui sorrindo, chefe.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b82de",
+      "text_source": "My lady was with him, too. She seems to be\\n",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, afetuoso",
+      "intent": "mencionar que sua senhora estava com eles e parece bem",
+      "risk_level": "medium",
+      "base_translation": "Minha senhora estava com ele também. Parece estar\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'My lady' refere-se a personagem não nomeada aqui — não antecipar identidade."
+    },
+    {
+      "offset": "0x2b830b",
+      "text_source": "doing well. Good to see her.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, afetuoso",
+      "intent": "completar — está bem, bom vê-la",
+      "risk_level": "low",
+      "base_translation": "bem. Bom vê-la.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8328",
+      "text_source": "I see. She accompanied them all the way here...",
+      "speaker": "Kurou",
+      "entities_present": [
+        "Kurou"
+      ],
+      "tone_register": "informal, refletindo",
+      "intent": "observar que ela os acompanhou até lá",
+      "risk_level": "low",
+      "base_translation": "Entendo. Ela os acompanhou até aqui...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b8358",
+      "text_source": "Kurou, with me. We shall give chase.",
+      "speaker": "Benawi",
+      "entities_present": [
+        "Benawi"
+      ],
+      "tone_register": "formal, decisivo",
+      "intent": "ordenar que Kurou o acompanhe na perseguição",
+      "risk_level": "low",
+      "base_translation": "Kurou, comigo. Vamos dar-lhes o troco.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2b837d",
+      "text_source": "Yes, sir.",
+      "speaker": "Bokoinante",
+      "entities_present": [
+        "Bokoinante"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Sim, senhor.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 203,
+  "high_lines": 5,
+  "medium_lines": 17,
+  "needs_review": [],
+  "plan_version": "chapter-23_14-v1"
+}

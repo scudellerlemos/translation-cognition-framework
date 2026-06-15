@@ -1,0 +1,3876 @@
+{
+  "scene_group": "23_09",
+  "lines": [
+    {
+      "offset": "0x29527f",
+      "text_source": "Whew... We've walked a fair bit now.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/informal",
+      "intent": "Comentário cansado após longa caminhada",
+      "risk_level": "low",
+      "base_translation": "Ufa... Já caminhamos bastante.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2952a4",
+      "text_source": "Hey, bosslady. About how far are we now?",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial/direto",
+      "intent": "Pergunta prática sobre distância restante",
+      "risk_level": "low",
+      "base_translation": "Ei, chefe. Quanto falta ainda?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2952cd",
+      "text_source": "I think we should be seeing the road soon.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/informativo",
+      "intent": "Estimativa otimista da chegada à estrada",
+      "risk_level": "low",
+      "base_translation": "Acho que a estrada deve aparecer em breve.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2952f8",
+      "text_source": "This took much longer than we anticipated.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/reflexivo",
+      "intent": "Reconhece que demorou mais que o esperado",
+      "risk_level": "low",
+      "base_translation": "Demorou bem mais do que esperávamos.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295323",
+      "text_source": "Well, we can't help it, with these bumpy and\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/pomposo",
+      "intent": "Justifica o atraso pelas estradas ruins",
+      "risk_level": "medium",
+      "base_translation": "Bem, não há o que fazer, com estradas tão acidentadas e\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica de Maroro; manter tom empolado sem modernizar."
+    },
+    {
+      "offset": "0x295352",
+      "text_source": "winding roads...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/pomposo",
+      "intent": "Continuação da justificativa",
+      "risk_level": "medium",
+      "base_translation": "sinuosas...",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação da fala arcaica de Maroro."
+    },
+    {
+      "offset": "0x295363",
+      "text_source": "Perhaps it would behoove us to hurry. Our\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/formal",
+      "intent": "Sugere apressar o passo para chegar antes do anoitecer",
+      "risk_level": "medium",
+      "base_translation": "Seria conveniente nos apressarmos. Nosso\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica de Maroro; 'behoove' → tom empolado equivalente."
+    },
+    {
+      "offset": "0x29538f",
+      "text_source": "progress will stall if we do not arrive by\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/formal",
+      "intent": "Alerta sobre parar o progresso se não chegarem antes de anoitecer",
+      "risk_level": "medium",
+      "base_translation": "avanço será comprometido se não chegarmos antes da\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação da fala formal de Maroro."
+    },
+    {
+      "offset": "0x2953bc",
+      "text_source": "nightfall.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/formal",
+      "intent": "Conclusão: antes do anoitecer",
+      "risk_level": "low",
+      "base_translation": "noite.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2953c7",
+      "text_source": "Yeah, you're right. Let's pick up the pace,\\n",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/carismático",
+      "intent": "Concorda e motiva o grupo a acelerar",
+      "risk_level": "low",
+      "base_translation": "É, tem razão. Vamos acelerar o passo,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2953f5",
+      "text_source": "everyone. Gotta get there before it gets dark.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "informal/carismático",
+      "intent": "Conclusão do incentivo — chegar antes de escurecer",
+      "risk_level": "low",
+      "base_translation": "pessoal. Temos que chegar antes de escurecer.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295424",
+      "text_source": "Just as I try to rally the rest of the group\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: tenta motivar o grupo mas é parado pelos gêmeos",
+      "risk_level": "low",
+      "base_translation": "Bem quando tento animar o resto do grupo a seguir\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295453",
+      "text_source": "forward, the twins suddenly stop me.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Continuação: os gêmeos o detêm",
+      "risk_level": "low",
+      "base_translation": "em frente, os gêmeos me param de repente.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295478",
+      "text_source": "Wait.",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "sério/urgente",
+      "intent": "Ordem breve para parar",
+      "risk_level": "low",
+      "base_translation": "Espere.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29547e",
+      "text_source": "Please be careful, Master. Something is drawing\\n",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "sério/alerta",
+      "intent": "Avisa que algo se aproxima",
+      "risk_level": "low",
+      "base_translation": "Tome cuidado, Mestre. Algo está se aproximando.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2954b0",
+      "text_source": "near.",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "sério/alerta",
+      "intent": "Conclusão do aviso",
+      "risk_level": "low",
+      "base_translation": "perto.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2954b6",
+      "text_source": "What...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "O quê...?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2954bf",
+      "text_source": "At the twins' words, Jachdwalt immediately\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: Jachdwalt reage ao aviso dos gêmeos",
+      "risk_level": "low",
+      "base_translation": "Com as palavras dos gêmeos, Jachdwalt imediatamente\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2954ec",
+      "text_source": "lowers himself down to put his ear to the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Descrição de Jachdwalt abaixando para ouvir o chão",
+      "risk_level": "low",
+      "base_translation": "se abaixa e coloca o ouvido no chão para\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295518",
+      "text_source": "ground.",
+      "speaker": "Man",
+      "entities_present": [
+        "Man"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "do chão.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295520",
+      "text_source": "...Footsteps. Not just one or two people,\\n",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "sério/tenso",
+      "intent": "Relata passos de muitas pessoas se aproximando",
+      "risk_level": "low",
+      "base_translation": "...Passos. Não são uma ou duas pessoas,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29554c",
+      "text_source": "either. Whole lot of 'em on the way.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "sério/tenso",
+      "intent": "Conclusão: muita gente vindo",
+      "risk_level": "low",
+      "base_translation": "não. São muitos a caminho.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295571",
+      "text_source": "Tuskur soldiers?",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "tenso/interrogativo",
+      "intent": "Especula se são soldados de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Soldados de Tuskur?",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295582",
+      "text_source": "Safe bet.",
+      "speaker": "Jachdwalt",
+      "entities_present": [
+        "Jachdwalt"
+      ],
+      "tone_register": "seco",
+      "intent": "confirmar a suspeita",
+      "risk_level": "low",
+      "base_translation": "Aposta.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29558c",
+      "text_source": "A sudden anxiety hangs in the air with\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: ansiedade paira no ar",
+      "risk_level": "low",
+      "base_translation": "Uma ansiedade repentina paira no ar com\\n",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2955b5",
+      "text_source": "Jachdwalt's words.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão da narração de tensão",
+      "risk_level": "low",
+      "base_translation": "as palavras de Jachdwalt.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2955c8",
+      "text_source": "Wh-What do we do? At this rate, we're going to\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "tenso/preocupado",
+      "intent": "Preocupação com encontro iminente com soldados",
+      "risk_level": "low",
+      "base_translation": "O-O que fazemos? Do jeito que está, vamos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2955f9",
+      "text_source": "run right into them...",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "tenso/preocupado",
+      "intent": "Conclusão: vão esbarrar nos soldados",
+      "risk_level": "low",
+      "base_translation": "dar de cara com eles...",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295610",
+      "text_source": "We should turn back! Now!",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "impulsivo/urgente",
+      "intent": "Propõe recuar imediatamente",
+      "risk_level": "low",
+      "base_translation": "Devemos voltar! Agora!",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29562a",
+      "text_source": "We cannot turn around so easily on such a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "ponderado/realista",
+      "intent": "Explica que voltar não é fácil na estrada estreita",
+      "risk_level": "low",
+      "base_translation": "Não dá para voltar tão fácil numa estrada tão\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295656",
+      "text_source": "narrow road...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "ponderado/realista",
+      "intent": "Conclusão: estrada estreita impede recuo",
+      "risk_level": "low",
+      "base_translation": "estreita...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295665",
+      "text_source": "We may easily hide ourselves, but concealing\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/tenso",
+      "intent": "Esconder pessoas é fácil, mas as carroças não",
+      "risk_level": "low",
+      "base_translation": "Podemos nos esconder com facilidade, mas ocultar\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295694",
+      "text_source": "these carts would be nigh impossible.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/tenso",
+      "intent": "Conclusão: impossível esconder as carroças",
+      "risk_level": "low",
+      "base_translation": "essas carroças seria quase impossível.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2956ba",
+      "text_source": "Then can we... take care of them?",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "direto/belicoso",
+      "intent": "Sugere eliminar os soldados",
+      "risk_level": "low",
+      "base_translation": "Então podemos... dar um jeito neles?",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2956dc",
+      "text_source": "Atuy eagerly readies her spear. Faces grim,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: Atuy prepara a lança, outros sacam armas",
+      "risk_level": "low",
+      "base_translation": "Atuy prontamente prepara sua lança. Sérios,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29570a",
+      "text_source": "Nosuri and Jachdwalt begin drawing their own\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Continuação: Nosuri e Jachdwalt saindo as armas",
+      "risk_level": "low",
+      "base_translation": "Nosuri e Jachdwalt começam a sacar suas próprias\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295739",
+      "text_source": "weapons.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Conclusão: armando-se",
+      "risk_level": "low",
+      "base_translation": "armas.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295742",
+      "text_source": "Hold on, hold on! We haven't been found out yet.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/urgente",
+      "intent": "Tenta acalmar todos antes de agir precipitadamente",
+      "risk_level": "low",
+      "base_translation": "Calma, calma! Ainda não nos descobriram.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295773",
+      "text_source": "I hastily try to calm everyone down.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: tenta acalmar o grupo",
+      "risk_level": "low",
+      "base_translation": "Apressado, tento acalmar todo mundo.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295798",
+      "text_source": "The Tuskur army must be using this road to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/estratégico",
+      "intent": "Explica que o exército de Tuskur usa a estrada para emboscar yamatanos",
+      "risk_level": "low",
+      "base_translation": "O exército de Tuskur deve estar usando essa estrada para\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2957c5",
+      "text_source": "ambush the Yamatan forces.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/estratégico",
+      "intent": "Conclusão: emboscada às forças yamatanas",
+      "risk_level": "low",
+      "base_translation": "emboscar as forças de Yamato.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2957e0",
+      "text_source": "I'm sorry, Haku... I didn't--",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "arrependido/culpado",
+      "intent": "Kuon se desculpa com Haku pela situação",
+      "risk_level": "low",
+      "base_translation": "Me desculpe, Haku... Eu não sabia--",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2957fe",
+      "text_source": "Hey, don't worry. This path was our only shot\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/tranquilizador",
+      "intent": "Acalma Kuon, diz que foi o único caminho e fica grato pela informação",
+      "risk_level": "low",
+      "base_translation": "Ei, não se preocupe. Era o único caminho de\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29582e",
+      "text_source": "anyways, and I'm glad you told us about it.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/tranquilizador",
+      "intent": "Conclusão: fica grato por ela ter avisado",
+      "risk_level": "low",
+      "base_translation": "qualquer jeito, e fico feliz que você nos avisou.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29585a",
+      "text_source": "Haku...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Haku...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295862",
+      "text_source": "The Tuskur army knows this path is here.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/reflexivo",
+      "intent": "O exército sabia do caminho; previu que isso podia acontecer",
+      "risk_level": "low",
+      "base_translation": "O exército de Tuskur sabe que esse caminho existe.\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29588d",
+      "text_source": "I figured there was a chance something like this\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/reflexivo",
+      "intent": "Continuação: havia chance de algo assim ocorrer",
+      "risk_level": "low",
+      "base_translation": "Sabia que tinha chance de algo assim acontecer.\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2958c0",
+      "text_source": "would happen.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/reflexivo",
+      "intent": "Conclusão da linha fragmentada",
+      "risk_level": "low",
+      "base_translation": "Era esperado.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2958ce",
+      "text_source": "Well, ain't that reassurin'.",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "irônico/coloquial",
+      "intent": "Comentário sarcástico sobre a revelação tranquilizadora",
+      "risk_level": "low",
+      "base_translation": "Que alívio, hein.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2958eb",
+      "text_source": "It sounds like you've already got a plan in that\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "irônico/astuto",
+      "intent": "Insinua que Haku já tem um plano",
+      "risk_level": "low",
+      "base_translation": "Parece que você já tem um plano naquela\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29591e",
+      "text_source": "clever head of yours, eh, love?",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "irônico/astuto",
+      "intent": "Conclusão com apelido afetivo irônico",
+      "risk_level": "medium",
+      "base_translation": "cabecinha esperta sua, não é, querido?",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'love' como apelido informal/irônico de Nosuri para Haku — manter tom malandro sem soar afetado."
+    },
+    {
+      "offset": "0x29593e",
+      "text_source": "I knew it could happen... I just hoped it\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo/resignado",
+      "intent": "Admite que sabia que podia acontecer, mas esperava não chegar a isso",
+      "risk_level": "low",
+      "base_translation": "Sabia que podia acontecer... Só esperava que\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29596a",
+      "text_source": "wouldn't come to this.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo/resignado",
+      "intent": "Conclusão: esperava não chegar a isso",
+      "risk_level": "low",
+      "base_translation": "não chegasse a isso.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295981",
+      "text_source": "Kuon, you said that only the locals know about\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/direto",
+      "intent": "Retoma a informação de Kuon sobre quem conhece o caminho",
+      "risk_level": "low",
+      "base_translation": "Kuon, você disse que só os moradores de cá conhecem\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2959b2",
+      "text_source": "this path, right?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/direto",
+      "intent": "Conclusão: confirma a informação",
+      "risk_level": "low",
+      "base_translation": "esse caminho, certo?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2959c4",
+      "text_source": "Huh? Yes...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpreso/confirmando",
+      "intent": "Confirma com hesitação",
+      "risk_level": "low",
+      "base_translation": "Hein? Sim...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2959d0",
+      "text_source": "Then... I might have an idea.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "pensativo",
+      "intent": "anunciar que pode ter uma ideia",
+      "risk_level": "low",
+      "base_translation": "Então... talvez eu tenha uma ideia.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2959ee",
+      "text_source": "You do, Haku!?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "surpreso/animado",
+      "intent": "Reação de surpresa/alívio ao ouvir que Haku tem um plano",
+      "risk_level": "low",
+      "base_translation": "Tem, Haku!?",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2959fd",
+      "text_source": "It's gonna be risky, though.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/cauteloso",
+      "intent": "Avisa que o plano é arriscado",
+      "risk_level": "low",
+      "base_translation": "Vai ser arriscado, é claro.\\n",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295a1c",
+      "text_source": "Listen up, everybody.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/decisivo",
+      "intent": "Pede atenção de todos para explicar o plano",
+      "risk_level": "low",
+      "base_translation": "Escutem todos.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295a32",
+      "text_source": "I'm pretty sure the Tuskur army isn't expecting\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/explicativo",
+      "intent": "O exército de Tuskur não espera yamatanos nessa estrada",
+      "risk_level": "low",
+      "base_translation": "Tenho certeza de que o exército de Tuskur não espera\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295a64",
+      "text_source": "any Yamatans on this path.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/explicativo",
+      "intent": "Conclusão: nenhum yamatano por aqui",
+      "risk_level": "low",
+      "base_translation": "nenhum yamatano nessa estrada.",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295a7f",
+      "text_source": "So their first assumption would be that only\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/explicativo",
+      "intent": "Primeira suposição dos soldados seria que são locais de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Então, a primeira suposição deles seria que só\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295aae",
+      "text_source": "other people from Tuskur would use this road.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/explicativo",
+      "intent": "Conclusão: apenas gente de Tuskur usaria essa estrada",
+      "risk_level": "low",
+      "base_translation": "outros de Tuskur usariam esse caminho.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295adc",
+      "text_source": "A sound enough theory...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/ponderado",
+      "intent": "Concorda com a teoria de Haku",
+      "risk_level": "medium",
+      "base_translation": "Uma teoria bastante razoável...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica de Maroro; manter tom empolado."
+    },
+    {
+      "offset": "0x295af5",
+      "text_source": "Luckily, we're not real soldiers of Yamato.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/animado",
+      "intent": "Ponto-chave: não são soldados de Yamato de verdade, sem fardas",
+      "risk_level": "low",
+      "base_translation": "Ainda bem que não somos soldados de Yamato de verdade.\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295b23",
+      "text_source": "No uniforms or anything. We might just be able\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/animado",
+      "intent": "Sem fardas, podem se passar por locais",
+      "risk_level": "low",
+      "base_translation": "Sem farda nem nada. Talvez consigamos enganá-los.\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295b54",
+      "text_source": "to fool them.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/animado",
+      "intent": "Conclusão: dar o golpe",
+      "risk_level": "low",
+      "base_translation": "Dá pra enganar.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295b62",
+      "text_source": "Even if we defeat them, it won't make our job\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/pragmático",
+      "intent": "Mesmo se vencer a luta, não ajuda — melhor esconder armas e agir natural",
+      "risk_level": "low",
+      "base_translation": "Mesmo se vencermos, não facilita as coisas pra gente.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295b92",
+      "text_source": "any easier. Let's hide our weapons, and play it\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "analítico/pragmático",
+      "intent": "Conclusão: esconder armas e ficar na deles",
+      "risk_level": "low",
+      "base_translation": "Vamos esconder as armas e jogar na defesa.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295bc4",
+      "text_source": "cool!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico",
+      "intent": "completar o incentivo",
+      "risk_level": "low",
+      "base_translation": "Vai!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295bca",
+      "text_source": "As I'm explaining all this, I sneak a glance\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/reflexivo",
+      "intent": "Narração: enquanto explica, olha para Kuon",
+      "risk_level": "low",
+      "base_translation": "Enquanto explico tudo isso, dou uma olhada\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295bf9",
+      "text_source": "at Kuon.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/reflexivo",
+      "intent": "Conclusão: olha para Kuon",
+      "risk_level": "low",
+      "base_translation": "para Kuon.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295c02",
+      "text_source": "I want to avoid bloodshed wherever possible\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/reflexivo",
+      "intent": "Quer evitar derramamento de sangue tanto quanto possível",
+      "risk_level": "low",
+      "base_translation": "Quero evitar derramamento de sangue ao máximo\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295c30",
+      "text_source": "here.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Aqui.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295c36",
+      "text_source": "Gotcha. Guess we'll go with the boss's plan\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial/prático",
+      "intent": "Concorda em seguir o plano do chefe",
+      "risk_level": "low",
+      "base_translation": "Entendido. Acho que vamos com o plano do chefe\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295c64",
+      "text_source": "then, yeah?",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "coloquial/prático",
+      "intent": "Conclusão do acordo",
+      "risk_level": "low",
+      "base_translation": "então, né?",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295c70",
+      "text_source": "It is the best course of action we've come up\\n",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/formal",
+      "intent": "Confirma que é o melhor curso de ação",
+      "risk_level": "medium",
+      "base_translation": "É o melhor curso de ação que chegamos\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz arcaica de Maroro."
+    },
+    {
+      "offset": "0x295ca0",
+      "text_source": "with so far.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "arcaico/formal",
+      "intent": "Conclusão da confirmação",
+      "risk_level": "low",
+      "base_translation": "até agora.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295cad",
+      "text_source": "Yes. If we can get through this without having\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "esperançoso/cauteloso",
+      "intent": "Se conseguirem passar sem lutar, é o melhor resultado",
+      "risk_level": "low",
+      "base_translation": "Sim. Se conseguirmos passar sem ter que\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295cde",
+      "text_source": "to fight, that would be the best outcome for\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "esperançoso/cauteloso",
+      "intent": "Conclusão: seria o melhor resultado",
+      "risk_level": "low",
+      "base_translation": "lutar, seria o melhor resultado para todos.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d0d",
+      "text_source": "all.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "nunca mais.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d12",
+      "text_source": "But do you really think this is going to work?",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "duvidoso/direto",
+      "intent": "Questiona se o plano vai realmente funcionar",
+      "risk_level": "low",
+      "base_translation": "Mas você realmente acha que isso vai funcionar?",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d41",
+      "text_source": "Well if it doesn't, then we just take care of\\n",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "pragmático/irônico",
+      "intent": "Se não funcionar, simplesmente eliminam os soldados",
+      "risk_level": "low",
+      "base_translation": "Bom, se não funcionar, a gente dá um jeito\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d71",
+      "text_source": "them, right?",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "pragmático/irônico",
+      "intent": "Conclusão despreocupada",
+      "risk_level": "low",
+      "base_translation": "neles, certo?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d7e",
+      "text_source": "I-I suppose.",
+      "speaker": "Atuy",
+      "entities_present": [
+        "Atuy"
+      ],
+      "tone_register": "hesitante",
+      "intent": "Concorda a contragosto",
+      "risk_level": "low",
+      "base_translation": "S-Suponho.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295d8f",
+      "text_source": "Still feeling uneasy, we shift the carts to the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: ainda nervosos, movem as carroças para o lado",
+      "risk_level": "low",
+      "base_translation": "Ainda apreensivos, deslocamos as carroças para a\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295dc1",
+      "text_source": "roadside. Eventually, in the distance...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: ao longe, avistam algo",
+      "risk_level": "low",
+      "base_translation": "beira da estrada. Ao longe, finalmente...",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295dea",
+      "text_source": "Just like we expected...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/confirmação",
+      "intent": "Confirma que é exatamente o que esperavam",
+      "risk_level": "low",
+      "base_translation": "Exatamente como esperávamos...",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295e03",
+      "text_source": "Fully-armed soldiers of Tuskur.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Soldados armados de Tuskur aparecem",
+      "risk_level": "low",
+      "base_translation": "Soldados de Tuskur totalmente armados.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295e23",
+      "text_source": "They idly chat among themselves as they close in\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Soldados conversando entre si enquanto se aproximam",
+      "risk_level": "low",
+      "base_translation": "Eles conversam entre si tranquilamente enquanto se aproximam\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295e56",
+      "text_source": "on us.",
+      "speaker": "Personagem-UI",
+      "entities_present": [
+        "Personagem-UI"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "em nós.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295e5d",
+      "text_source": "Judging by how relaxed they are, they might be\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/analítico",
+      "intent": "Pelo jeito relaxado, devem estar em patrulha ou indo a um posto",
+      "risk_level": "low",
+      "base_translation": "Pelo jeito descontraído, devem estar em patrulha ou\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295e8e",
+      "text_source": "on patrol or just heading to an assigned post.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/analítico",
+      "intent": "Conclusão: indo a um posto designado",
+      "risk_level": "low",
+      "base_translation": "indo para um posto designado.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295ebd",
+      "text_source": "Maybe their guards will be down if they don't\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/esperançoso",
+      "intent": "Talvez a guarda esteja baixa pois não esperam yamatanos ali",
+      "risk_level": "low",
+      "base_translation": "Talvez estejam com a guarda baixa se não esperam\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295eed",
+      "text_source": "expect the Yamatans to have found this path...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "estratégico/esperançoso",
+      "intent": "Conclusão: não esperam yamatanos nessa estrada",
+      "risk_level": "low",
+      "base_translation": "os yamatanos nesse caminho...",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295f1c",
+      "text_source": "They seem too deep in conversation at first, but\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "A princípio fundo demais em conversa, mas então notam o grupo",
+      "risk_level": "low",
+      "base_translation": "No começo parecem absortos demais na conversa, mas\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295f4f",
+      "text_source": "then they notice us clustered around the carts.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: soldados notam o grupo perto das carroças",
+      "risk_level": "low",
+      "base_translation": "então nos notam reunidos em torno das carroças.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295f7f",
+      "text_source": "Tuskur soldier",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "UI/rótulo",
+      "intent": "Rótulo de falante: Soldado de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Soldado de Tuskur",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295f8e",
+      "text_source": "Hm? Who are all of you...?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "suspeito/interrogativo",
+      "intent": "Soldado questiona quem são",
+      "risk_level": "low",
+      "base_translation": "Hm? Quem são vocês todos...?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295fa9",
+      "text_source": "The man at the front, their apparent leader,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "O líder na frente os observa com desconfiança enquanto fala",
+      "risk_level": "low",
+      "base_translation": "O homem à frente, aparente líder deles,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295fd8",
+      "text_source": "eyes us warily as he speaks.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: olha com desconfiança",
+      "risk_level": "low",
+      "base_translation": "nos olha com cautela enquanto fala.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x295ff5",
+      "text_source": "Argh, just gonna have to wing it...!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/nervoso",
+      "intent": "Haku decide improvisar",
+      "risk_level": "low",
+      "base_translation": "Argh, vai ter que ser no improviso...!",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29601a",
+      "text_source": "I hunch slightly and put my hands together,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Narração: Haku se curva ligeiramente e junta as mãos, se aproximando",
+      "risk_level": "low",
+      "base_translation": "Me curvo levemente e uno as mãos,\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296048",
+      "text_source": "striding toward their leader with a booming\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Continuação: caminha em direção ao líder de forma exuberante",
+      "risk_level": "low",
+      "base_translation": "caminhando em direção ao líder com uma voz\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296076",
+      "text_source": "voice.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "voz.",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29607d",
+      "text_source": "Heh hyeh hyeh! A most delightful and rejuvenating\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/exagerado",
+      "intent": "Cumprimento exagerado e falso para enganar os soldados (voz de Maroro/mercador)",
+      "risk_level": "high",
+      "base_translation": "Heh hyeh hyeh! Uma manhã deliciosa e revigorante\\n",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Haku imita tom exagerado/mercador para enganar soldados; precisa soar artificialmente pomposo e cômico sem quebrar a tensão. Interjeição localizada."
+    },
+    {
+      "offset": "0x2960b1",
+      "text_source": "morning to you, my good sir!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/exagerado",
+      "intent": "Conclusão do cumprimento pomposo",
+      "risk_level": "low",
+      "base_translation": "para o senhor, meu bom homem!",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2960ce",
+      "text_source": "And you would be...?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desconfiado/interrogativo",
+      "intent": "Líder pede identificação",
+      "risk_level": "low",
+      "base_translation": "E o senhor seria...?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2960e3",
+      "text_source": "Y-Yes, ah, the big cheeses over at the fortress\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/improvisado",
+      "intent": "Explica de forma hesitante que entregam suprimentos à fortaleza",
+      "risk_level": "medium",
+      "base_translation": "S-Sim, ah, os graúdos lá da fortaleza\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom hesitante/improvisado; Haku inventando na hora."
+    },
+    {
+      "offset": "0x296115",
+      "text_source": "needed supplies delivered, so we're on the job!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/improvisado",
+      "intent": "Conclusão: estão fazendo a entrega",
+      "risk_level": "low",
+      "base_translation": "precisavam de suprimentos, então estamos no serviço!",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296145",
+      "text_source": "The fortress, hm?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "ponderado/neutro",
+      "intent": "Soldado repete 'a fortaleza' em tom de reconhecimento",
+      "risk_level": "low",
+      "base_translation": "A fortaleza, hm?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296157",
+      "text_source": "He seems to understand whatever I'm referencing,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Narração: o soldado entende a referência mesmo sendo inventada",
+      "risk_level": "low",
+      "base_translation": "Ele parece entender o que mencionei,\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29618a",
+      "text_source": "even though it was just a shot in the dark.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Conclusão: foi um chute no escuro",
+      "risk_level": "low",
+      "base_translation": "mesmo tendo sido um chute no escuro.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2961b6",
+      "text_source": "Ah, then you must be from the nearby village...",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/dedutivo",
+      "intent": "Conclui que são da aldeia próxima",
+      "risk_level": "low",
+      "base_translation": "Ah, então vocês devem ser da aldeia aqui perto...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2961e6",
+      "text_source": "Y-Yes, there you have it!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/aliviado",
+      "intent": "Confirma nervosamente",
+      "risk_level": "low",
+      "base_translation": "S-Sim, isso mesmo!",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296200",
+      "text_source": "That explains it then. Fine work you're doing.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/aprovador",
+      "intent": "Elogia o trabalho deles",
+      "risk_level": "low",
+      "base_translation": "Agora faz sentido. Bom trabalho, hein.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29622f",
+      "text_source": "Their leader gives me an approving nod.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Narração: líder faz aceno de aprovação",
+      "risk_level": "low",
+      "base_translation": "O líder me dá um aceno de aprovação.\\n",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296259",
+      "text_source": "It doesn't look like he doubts me at all...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Conclusão: não parece desconfiar nada",
+      "risk_level": "low",
+      "base_translation": "Parece que ele não desconfia de mim nem um pouco...",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296285",
+      "text_source": "He's even praising us for our efforts.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Até elogiando os esforços deles",
+      "risk_level": "low",
+      "base_translation": "Está até nos elogiando pelo esforço.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2962ac",
+      "text_source": "I'm sorry to put you through all this. Still,\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "simpático/informal",
+      "intent": "Pede desculpa pelo incomodo, promete expulsar os yamatanos logo",
+      "risk_level": "low",
+      "base_translation": "Me desculpem pelo transtorno. Ainda assim,\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2962dc",
+      "text_source": "we should have them driven back to their land\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "simpático/informal",
+      "intent": "Continuação: vão expulsar os yamatanos de volta",
+      "risk_level": "low",
+      "base_translation": "devemos expulsá-los de volta à terra deles\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29630c",
+      "text_source": "soon.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "em breve.",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296312",
+      "text_source": "Th-That is most relieving to hear!\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/aliviado/exagerado",
+      "intent": "Reação exagerada de alívio de Haku disfarçado",
+      "risk_level": "low",
+      "base_translation": "I-Isso é um alívio enorme!\\n",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296337",
+      "text_source": "But I heard that the Yamatan soldiers are\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/improvisado",
+      "intent": "Haku improvisa pergunta sobre os soldados de Yamato",
+      "risk_level": "low",
+      "base_translation": "Mas ouvi dizer que os soldados de Yamato são\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296363",
+      "text_source": "really strong...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/improvisado",
+      "intent": "Conclusão: são muito fortes",
+      "risk_level": "low",
+      "base_translation": "muito fortes...",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296374",
+      "text_source": "It seems they believed us to be backwater\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/informal",
+      "intent": "Diz que os yamatanos são caipiras sem habilidade",
+      "risk_level": "low",
+      "base_translation": "Parece que nos viram como uns caipiras do interior.\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2963a0",
+      "text_source": "bumpkins. They were all talk and no skill.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/informal",
+      "intent": "Conclusão: muito papo e pouca competência",
+      "risk_level": "low",
+      "base_translation": "Todo papo e nenhuma habilidade.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2963cb",
+      "text_source": "Some have genuine ability, but the majority are\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "analítico/condescendente",
+      "intent": "Alguns têm habilidade, maioria é novato",
+      "risk_level": "low",
+      "base_translation": "Alguns têm talento de verdade, mas a maioria são\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2963fd",
+      "text_source": "mere novices. And their commander is simply\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "analítico/condescendente",
+      "intent": "E o comandante é um caso perdido",
+      "risk_level": "low",
+      "base_translation": "meros novatos. E o comandante é simplesmente\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29642b",
+      "text_source": "hopeless.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso",
+      "intent": "completar: sem esperança",
+      "risk_level": "low",
+      "base_translation": "perdido.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296435",
+      "text_source": "Hopeless?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "curioso, fingindo",
+      "intent": "questionar sobre o comandante sem esperança",
+      "risk_level": "low",
+      "base_translation": "Perdido?",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29643f",
+      "text_source": "What was his name again? Something like Deppa...\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "informal/tentando lembrar",
+      "intent": "Tenta lembrar o nome do comandante yamatano",
+      "risk_level": "medium",
+      "base_translation": "Como era o nome mesmo? Algo tipo Deppa...\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gag de nome: Deppa/Dekopachi/Degarashi → Dekopompo. Manter nomes similares a Dekopompo para o gag funcionar."
+    },
+    {
+      "offset": "0x296472",
+      "text_source": "Dekopachi, maybe, or Degarashi...?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "informal/tentando lembrar",
+      "intent": "Continuação das tentativas de nome",
+      "risk_level": "medium",
+      "base_translation": "Dekopachi, talvez, ou Degarashi...?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gag de nomes próximos a Dekopompo; manter nomes similares inventados."
+    },
+    {
+      "offset": "0x296495",
+      "text_source": "Wait, Dekopompo...!? I mean--I believe there\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/quase-escorregando",
+      "intent": "Haku quase solta o nome certo e se corrige",
+      "risk_level": "high",
+      "base_translation": "Espera, Dekopompo...!? Quer dizer-- Creio que\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Momento cômico crítico: Haku quase revela conhecer o nome (Dekopompo) e se corrige. Back-translation necessária para verificar que a hesitação fica clara."
+    },
+    {
+      "offset": "0x2964c4",
+      "text_source": "was a general by such, er, name.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/quase-escorregando",
+      "intent": "Conclusão: havia um general com esse nome",
+      "risk_level": "high",
+      "base_translation": "havia um general com tal... nome.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação do momento cômico de Haku quase escorregando."
+    },
+    {
+      "offset": "0x2964e5",
+      "text_source": "Yes, that's it! You certainly are well-informed.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "animado/confirmando",
+      "intent": "Confirma que é esse o nome e elogia Haku por ser bem informado",
+      "risk_level": "low",
+      "base_translation": "Isso mesmo! O senhor é bem informado.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296516",
+      "text_source": "Anyhow, his name doesn't really matter.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/informal",
+      "intent": "De qualquer forma, o nome não importa",
+      "risk_level": "low",
+      "base_translation": "De qualquer jeito, o nome não importa muito.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29653e",
+      "text_source": "Th-That was a close one.\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Narração interna: quase se revelou",
+      "risk_level": "low",
+      "base_translation": "U-Ufa... Por pouco.\\n",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296559",
+      "text_source": "Almost blew my cover there.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/aliviado",
+      "intent": "Conclusão: quase se entregou",
+      "risk_level": "low",
+      "base_translation": "Quase dei bobeira ali.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296575",
+      "text_source": "So this Dekopachi guy yells out his name like\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/anedótico",
+      "intent": "Conta que Dekopompo grita o próprio nome como idiota ao entrar em batalha",
+      "risk_level": "medium",
+      "base_translation": "Esse Dekopachi berrava o próprio nome como um\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gag de Dekopompo gritando o próprio nome; manter tom escarnecedor."
+    },
+    {
+      "offset": "0x2965a5",
+      "text_source": "an idiot when he shows up in battle.\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/anedótico",
+      "intent": "Continuação: gritava na hora de entrar em batalha",
+      "risk_level": "low",
+      "base_translation": "idiota quando aparecia em batalha.\\n",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2965cc",
+      "text_source": "Everyone knows it by now.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "desdenhoso/anedótico",
+      "intent": "Conclusão: todo mundo já sabe o nome",
+      "risk_level": "low",
+      "base_translation": "Todo mundo já sabe quem é.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2965e6",
+      "text_source": "Well, you clearly haven't remembered it...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irônico/internal",
+      "intent": "Irônico: Haku pensa que o soldado não lembrou o nome direito",
+      "risk_level": "low",
+      "base_translation": "Bom, você claramente não lembrou o nome...",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296611",
+      "text_source": "Yes, the commander is a lost cause. I know\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "simpático/irônico",
+      "intent": "Diz que o comandante é um caso perdido e tem pena dos soldados dele",
+      "risk_level": "low",
+      "base_translation": "Sim, o comandante não tem jeito. Até entendo\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29663e",
+      "text_source": "they're the enemy, but you really have to pity\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "simpático/irônico",
+      "intent": "Continuação: apesar de inimigos, tem pena dos soldados",
+      "risk_level": "low",
+      "base_translation": "que são inimigos, mas dá pena dos soldados\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29666f",
+      "text_source": "his soldiers...",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "simpático/irônico",
+      "intent": "Conclusão: coitados dos soldados dele",
+      "risk_level": "low",
+      "base_translation": "dele...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29667f",
+      "text_source": "We just provoke him, and he charges blindly into\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "anedótico/divertido",
+      "intent": "Explicam que provocam Dekopompo e ele cai nas armadilhas de lama",
+      "risk_level": "low",
+      "base_translation": "A gente só provoca ele, e ele parte cegamente para\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2966b2",
+      "text_source": "our hidden mud pits. It's worked three times\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "anedótico/divertido",
+      "intent": "Continuação: cai nas armadilhas de lama, já funcionou três vezes",
+      "risk_level": "low",
+      "base_translation": "nossas armadilhas de lama. Já funcionou três vezes\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2966e1",
+      "text_source": "now.",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "já.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2966e6",
+      "text_source": "I-Is that so...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "constrangido/surpreso",
+      "intent": "Haku reage constrangido com a informação",
+      "risk_level": "low",
+      "base_translation": "É... que dizer...",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2966f6",
+      "text_source": "He just always falls for it! We're honestly\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "anedótico/perplexo",
+      "intent": "Está sempre caindo na mesma! Já desconfiam se é estratégia",
+      "risk_level": "low",
+      "base_translation": "Ele cai sempre! A gente já tá se perguntando se\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296724",
+      "text_source": "starting to wonder if it's part of some scheme\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "anedótico/perplexo",
+      "intent": "Continuação: será que faz parte de algum esquema?",
+      "risk_level": "low",
+      "base_translation": "não é parte de algum plano\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296755",
+      "text_source": "of his.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "anedótico/perplexo",
+      "intent": "Conclusão: dele.",
+      "risk_level": "low",
+      "base_translation": "dele.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29675d",
+      "text_source": "He is a disgrace to all of Yamato...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/constrangido",
+      "intent": "Pensamento interno: Dekopompo é uma vergonha para Yamato",
+      "risk_level": "low",
+      "base_translation": "Ele é uma vergonha para todo Yamato...",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296782",
+      "text_source": "I don't know why, but... I feel like crying...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/emocionado",
+      "intent": "Haku não sabe por quê, mas quer chorar",
+      "risk_level": "low",
+      "base_translation": "Não sei por quê, mas... dá vontade de chorar...",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2967b1",
+      "text_source": "They should be running out of supplies soon,\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "analítico/informativo",
+      "intent": "Os yamatanos estão ficando sem suprimentos e a paciência está no limite",
+      "risk_level": "low",
+      "base_translation": "Em breve devem ficar sem suprimentos,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2967e0",
+      "text_source": "and their patience is likely running thin.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "analítico/informativo",
+      "intent": "Conclusão: paciência no limite",
+      "risk_level": "low",
+      "base_translation": "e a paciência deles deve estar acabando.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29680b",
+      "text_source": "They may go for an all-out assault if they get\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "preocupado/alertando",
+      "intent": "Podem partir para um ataque total se ficarem desesperados; aviso",
+      "risk_level": "low",
+      "base_translation": "Podem tentar um ataque total se ficarem\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29683c",
+      "text_source": "too desperate. Be careful on your way.",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "preocupado/alertando",
+      "intent": "Conclusão: cuidado no caminho",
+      "risk_level": "low",
+      "base_translation": "desesperados. Cuidado na estrada.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296863",
+      "text_source": "Th-Thank you. We will.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "grato/aliviado",
+      "intent": "Agradece e confirma que vão tomar cuidado",
+      "risk_level": "low",
+      "base_translation": "O-Obrigado. Vamos sim.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29687a",
+      "text_source": "As I nod in agreement, I feel something prodding\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: enquanto acena, sente algo cutucando seus joelhos",
+      "risk_level": "low",
+      "base_translation": "Enquanto aceno concordando, sinto algo cutucando\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2968ad",
+      "text_source": "at my knees.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: cutucando nos joelhos",
+      "risk_level": "low",
+      "base_translation": "meus joelhos.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2968ba",
+      "text_source": "I look over to see Nekone, trying to send me a\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: olha e vê Nekone tentando passar uma mensagem com os olhos",
+      "risk_level": "low",
+      "base_translation": "Olho e vejo Nekone, tentando me mandar uma\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2968eb",
+      "text_source": "message with her eyes alone.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: mensagem só com os olhos",
+      "risk_level": "low",
+      "base_translation": "mensagem só com os olhos.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296908",
+      "text_source": "...Yeah, I know. Staying here won't do us any\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/decidido",
+      "intent": "Haku entende: ficar mais tempo é perigoso, hora de ir",
+      "risk_level": "low",
+      "base_translation": "...Sim, entendi. Ficar mais aqui não adianta.\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296938",
+      "text_source": "good. We should get a move on before someone\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/decidido",
+      "intent": "Continuação: ir embora antes de alguém escorregar",
+      "risk_level": "low",
+      "base_translation": "Melhor ir antes que alguém se entregue.\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296967",
+      "text_source": "slips up.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/decidido",
+      "intent": "Conclusão fragmentada",
+      "risk_level": "low",
+      "base_translation": "se entregue.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296971",
+      "text_source": "W-Well, we will be going on our way now, then.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "informal/encerrando",
+      "intent": "Haku se despede dos soldados",
+      "risk_level": "low",
+      "base_translation": "B-Bem, então seguiremos nosso caminho agora.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2969a0",
+      "text_source": "Katana_mesh",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "Katana_mesh",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2969ad",
+      "text_source": "Saya_mesh",
+      "speaker": "",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "base_translation": "Saya_mesh",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2969b7",
+      "text_source": "I end the conversation and turn back to the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: encerra a conversa e se vira para os outros",
+      "risk_level": "low",
+      "base_translation": "Encerro a conversa e me viro para os\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2969e5",
+      "text_source": "others.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Conclusão: vira para os outros",
+      "risk_level": "low",
+      "base_translation": "outros.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2969ed",
+      "text_source": "Jachdwalt sees my intent, and goes to push the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: Jachdwalt percebe e vai empurrar as carroças de volta, quando--",
+      "risk_level": "low",
+      "base_translation": "Jachdwalt percebe minha intenção e vai empurrar as\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296a1e",
+      "text_source": "carts back on the road, when--",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: vai colocar as carroças na estrada, quando--",
+      "risk_level": "low",
+      "base_translation": "carroças de volta à estrada, quando--",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296a3d",
+      "text_source": "Hey.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Ei.",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296a42",
+      "text_source": "I jump a little, not expecting to be directly\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/surpreso",
+      "intent": "Narração: dá um pulo por ser chamado diretamente",
+      "risk_level": "low",
+      "base_translation": "Dou um pulo, sem esperar ser chamado\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296a72",
+      "text_source": "called to.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/surpreso",
+      "intent": "Conclusão: chamado diretamente",
+      "risk_level": "low",
+      "base_translation": "diretamente.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296a7d",
+      "text_source": "Y-Yes? Is there something else...?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "nervoso/disfarçado",
+      "intent": "Haku responde nervosamente: mais alguma coisa?",
+      "risk_level": "low",
+      "base_translation": "S-Sim? Tem mais alguma coisa...?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296aa0",
+      "text_source": "I look back in fear, but the leader stands\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: olha com medo, mas o líder está com sorriso tranquilo",
+      "risk_level": "low",
+      "base_translation": "Olho de volta com medo, mas o líder está\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296acd",
+      "text_source": "there with an easy smile.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: líder com sorriso tranquilo",
+      "risk_level": "low",
+      "base_translation": "ali com um sorriso tranquilo.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296ae7",
+      "text_source": "The road here is pretty uneven. It'll be hard\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/prestativo",
+      "intent": "A estrada é irregular; difícil empurrar as carroças sozinhos",
+      "risk_level": "low",
+      "base_translation": "Essa estrada é bem acidentada. Vai ser difícil\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296b17",
+      "text_source": "setting the carts on your own. Men, we assist\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/prestativo",
+      "intent": "Manda os homens ajudarem com as carroças",
+      "risk_level": "low",
+      "base_translation": "colocar as carroças sozinhos. Homens, vamos ajudar\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296b47",
+      "text_source": "them!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "deles!",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296b4d",
+      "text_source": "N-No need, my good sir. I would not want to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "nervoso/recusando",
+      "intent": "Haku tenta recusar a ajuda educadamente",
+      "risk_level": "low",
+      "base_translation": "N-Não precisa, meu bom senhor. Não quero\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296b7b",
+      "text_source": "get in your way...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "nervoso/recusando",
+      "intent": "Conclusão: não quero atrapalhar",
+      "risk_level": "low",
+      "base_translation": "atrapalhar...",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296b8e",
+      "text_source": "It's fine. Don't worry about it--we need to\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/insistindo",
+      "intent": "Insiste que é normal se ajudarem quando precisam",
+      "risk_level": "low",
+      "base_translation": "Não tem problema. Pode deixar--a gente se\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296bbc",
+      "text_source": "help each other when we're in need, right?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "amigável/insistindo",
+      "intent": "Conclusão: ajudar uns aos outros quando precisam",
+      "risk_level": "low",
+      "base_translation": "ajuda quando precisamos, certo?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296be7",
+      "text_source": "The soldiers ignore my words and approach the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: soldados ignoram e se aproximam das carroças, mas um para",
+      "risk_level": "low",
+      "base_translation": "Os soldados ignoram minhas palavras e se aproximam das\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296c17",
+      "text_source": "carts... but one of them pauses, sounding\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Continuação: um deles hesita, parecendo incerto",
+      "risk_level": "low",
+      "base_translation": "carroças... mas um deles para, parecendo\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296c43",
+      "text_source": "unsure.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: incerto",
+      "risk_level": "low",
+      "base_translation": "incerto.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296c4b",
+      "text_source": "Hm...?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hum...?",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296c52",
+      "text_source": "I follow the soldier's gaze to Kuon, who is\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: segue o olhar do soldado até Kuon, que olha para o outro lado",
+      "risk_level": "low",
+      "base_translation": "Sigo o olhar do soldado até Kuon, que está\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296c80",
+      "text_source": "determinedly looking in the opposite direction.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: Kuon olhando decidida para o lado oposto",
+      "risk_level": "low",
+      "base_translation": "olhando com determinação para o lado oposto.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296cb0",
+      "text_source": "Wh--Kuon!!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "alarme interno",
+      "intent": "reação de susto ao ver o comportamento suspeito de Kuon",
+      "risk_level": "low",
+      "base_translation": "K-Kuon!!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296cbb",
+      "text_source": "She's acting way too suspicious.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/preocupado",
+      "intent": "Kuon está agindo de forma muito suspeita",
+      "risk_level": "low",
+      "base_translation": "Ela está sendo suspeita demais.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296cdc",
+      "text_source": "And of course, the soldier walks over to where\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: soldado se aproxima de Kuon para ver seu rosto",
+      "risk_level": "low",
+      "base_translation": "E claro, o soldado vai até onde\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296d0d",
+      "text_source": "Kuon is, trying to get a look at her face.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: tenta ver o rosto de Kuon",
+      "risk_level": "low",
+      "base_translation": "Kuon está, tentando ver seu rosto.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296d38",
+      "text_source": "I swear I've seen you before...",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "pensativo/reconhecendo",
+      "intent": "Soldado acha que já viu Kuon antes",
+      "risk_level": "low",
+      "base_translation": "Juro que já vi você antes...",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296d58",
+      "text_source": "Kuon's neck strains slightly as she avoids the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: Kuon estica o pescoço enquanto evita o olhar do soldado",
+      "risk_level": "low",
+      "base_translation": "O pescoço de Kuon fica tenso enquanto ela evita o\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296d89",
+      "text_source": "peering eyes of the soldier.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: evita o olhar curioso do soldado",
+      "risk_level": "low",
+      "base_translation": "olhar curioso do soldado.",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296da6",
+      "text_source": "The soldier continues to step around her,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: soldado continua tentando dar a volta para ver seu rosto",
+      "risk_level": "low",
+      "base_translation": "O soldado continua circulando em torno dela,\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296dd2",
+      "text_source": "trying to get a good look at her face.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: tentando ver o rosto dela",
+      "risk_level": "low",
+      "base_translation": "tentando ver bem seu rosto.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296df9",
+      "text_source": "Gradually, the other Tuskur soldiers notice\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: outros soldados de Tuskur começam a notar",
+      "risk_level": "low",
+      "base_translation": "Aos poucos, os outros soldados de Tuskur percebem\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296e27",
+      "text_source": "this strange scene.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: cena estranha chama atenção",
+      "risk_level": "low",
+      "base_translation": "essa cena estranha.",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296e3b",
+      "text_source": "Hey, I know she's pretty, but that's enough\\n",
+      "speaker": "Soldado de Tuskur 2",
+      "entities_present": [
+        "Soldado de Tuskur 2"
+      ],
+      "tone_register": "informal/escarnecendo",
+      "intent": "Soldados fazem gracinha: ela é bonita, mas deixa ela em paz",
+      "risk_level": "low",
+      "base_translation": "Ei, eu sei que ela é bonita, mas já chega\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296e69",
+      "text_source": "bothering the lady!",
+      "speaker": "Soldado de Tuskur 2",
+      "entities_present": [
+        "Soldado de Tuskur 2"
+      ],
+      "tone_register": "informal/escarnecendo",
+      "intent": "Conclusão: para de amolar a moça",
+      "risk_level": "low",
+      "base_translation": "de encher o saco da moça!",
+      "byte_budget": 19,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296e7d",
+      "text_source": "This is why you never get any girls, y'know!",
+      "speaker": "Soldado de Tuskur 2",
+      "entities_present": [
+        "Soldado de Tuskur 2"
+      ],
+      "tone_register": "informal/escarnecendo",
+      "intent": "Zomba: é por isso que ele nunca pega nenhuma",
+      "risk_level": "low",
+      "base_translation": "É por isso que você não pega ninguém, sabia!",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296eaa",
+      "text_source": "Th-That's not what this is about!",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "defensivo/irritado",
+      "intent": "O soldado se defende irritado",
+      "risk_level": "low",
+      "base_translation": "N-Não é isso!",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296ecc",
+      "text_source": "The soldier reddens as the other men in the unit\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Narração: soldado fica vermelho enquanto os outros zoam",
+      "risk_level": "low",
+      "base_translation": "O soldado fica vermelho enquanto os outros da tropa\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296eff",
+      "text_source": "taunt him, and he yells back defensively.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/descritivo",
+      "intent": "Conclusão: grita defensivamente de volta",
+      "risk_level": "low",
+      "base_translation": "zoam dele, e ele grita na defensiva.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296f29",
+      "text_source": "I swear I've seen her before... Not in my\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "pensativo/insistindo",
+      "intent": "Insiste que já viu ela antes, não na aldeia, mas em festival",
+      "risk_level": "low",
+      "base_translation": "Juro que já vi ela antes... Não na minha\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296f55",
+      "text_source": "village, but at a festival after I moved to\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "pensativo/insistindo",
+      "intent": "Continuação: em um festival depois que se mudou para a capital",
+      "risk_level": "low",
+      "base_translation": "aldeia, mas num festival depois que me mudei para\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296f83",
+      "text_source": "the capital...?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "pensativo/insistindo",
+      "intent": "Conclusão: para a capital?",
+      "risk_level": "low",
+      "base_translation": "a capital...?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296f93",
+      "text_source": "He pauses a moment longer, still in thought,\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: soldado hesita mais um momento, ainda pensando",
+      "risk_level": "low",
+      "base_translation": "Ele pausa por mais um momento, ainda pensando,\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296fc2",
+      "text_source": "but seems to recall something in a sudden jolt.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: parece lembrar de algo de repente",
+      "risk_level": "low",
+      "base_translation": "mas parece lembrar de algo num sobressalto.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296ff2",
+      "text_source": "Head",
+      "speaker": "rotulo",
+      "entities_present": [],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Head",
+      "byte_budget": 4,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x296ff7",
+      "text_source": "I-I remember now! Are you--!?\\n",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "animado/surpreso",
+      "intent": "Diz que lembrou e pergunta se ela é quem ele pensa",
+      "risk_level": "high",
+      "base_translation": "E-Eu lembro agora! Você é--!?\\n",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Momento de tensão máxima: soldado está prestes a revelar identidade de Kuon. Tradução não pode antecipar o que exatamente ele vai dizer (identidade de Kuon não explicitada aqui)."
+    },
+    {
+      "offset": "0x297017",
+      "text_source": "But... you CAN'T be--",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "animado/surpreso",
+      "intent": "Mas logo hesita — não pode ser ela",
+      "risk_level": "high",
+      "base_translation": "Mas... não pode ser--",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tensão de identidade de Kuon; manter ambiguidade."
+    },
+    {
+      "offset": "0x29702d",
+      "text_source": "Tch...!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "decisivo/abrupto",
+      "intent": "Interjeição de irritação/decisão de Kuon antes de agir",
+      "risk_level": "medium",
+      "base_translation": "Tch...!",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição localizada: som de irritação/clique; equivalente BR."
+    },
+    {
+      "offset": "0x297035",
+      "text_source": "K-Kuon...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "assustado/interno",
+      "intent": "Haku chama Kuon assustado",
+      "risk_level": "low",
+      "base_translation": "K-Kuon...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29703f",
+      "text_source": "Sh-She just chopped him right in the neck...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/chocado",
+      "intent": "Narração: Kuon golpeou o soldado no pescoço",
+      "risk_level": "low",
+      "base_translation": "E-Ela acabou de golpeá-lo bem no pescoço...",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29706c",
+      "text_source": "He's not dead, but he's definitely out cold.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cômico/chocado",
+      "intent": "Não está morto, mas definitivamente inconsciente",
+      "risk_level": "low",
+      "base_translation": "Ele não está morto, mas está completamente desmaiado.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297099",
+      "text_source": "Kuon hastily crouches down, and sits the\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Narração: Kuon se agacha e senta o soldado inconsciente",
+      "risk_level": "low",
+      "base_translation": "Kuon se agacha rapidamente e senta o\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2970c4",
+      "text_source": "unconscious soldier up as she begins to rub\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Continuação: começa a massagear os ombros dele",
+      "risk_level": "low",
+      "base_translation": "soldado inconsciente enquanto começa a massagear\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2970f2",
+      "text_source": "his shoulders vigorously.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Conclusão: massageando os ombros vigorosamente",
+      "risk_level": "low",
+      "base_translation": "seus ombros com vigor.",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x29710c",
+      "text_source": "A-Aha... Ahahaha... H-His shoulders looked a\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cômico/desculpando",
+      "intent": "Kuon inventa desculpa constrangida: os ombros dele estavam rígidos",
+      "risk_level": "high",
+      "base_translation": "A-Ah... Ahahaha... É que os ombros dele estavam um\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Momento cômico chave de Kuon inventando desculpa ridícula. Back-translation para verificar naturalidade cômica."
+    },
+    {
+      "offset": "0x29713b",
+      "text_source": "little stiff, you know...?",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cômico/desculpando",
+      "intent": "Conclusão: estavam um pouco rígidos",
+      "risk_level": "low",
+      "base_translation": "pouco tensos, sabe...?",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297156",
+      "text_source": "But the soldier's eyes have completely rolled up\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Mas os olhos do soldado estão revirados e o corpo tombando mole",
+      "risk_level": "low",
+      "base_translation": "Mas os olhos do soldado estão completamente revirados\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297189",
+      "text_source": "into his head, his body flopping limply.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Conclusão: corpo caindo limpo",
+      "risk_level": "low",
+      "base_translation": "e o corpo tombando frouxo.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2971b2",
+      "text_source": "Ah... um...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "cômico/nervoso",
+      "intent": "Kuon faz sons de nervosismo/constrangimento",
+      "risk_level": "medium",
+      "base_translation": "Ah... bem...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição localizada de constrangimento; som natural em pt-BR."
+    },
+    {
+      "offset": "0x2971be",
+      "text_source": "Everyone's expression is frozen. The area goes\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/cômico",
+      "intent": "Narração: expressões de todos congeladas; silêncio total",
+      "risk_level": "low",
+      "base_translation": "A expressão de todos está congelada. O lugar fica\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2971ef",
+      "text_source": "completely silent.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativa",
+      "intent": "completar: silêncio absoluto",
+      "risk_level": "low",
+      "base_translation": "ficou em silêncio.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297202",
+      "text_source": "The first one to snap back to reality is their\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Narração: o primeiro a voltar à realidade é o líder",
+      "risk_level": "low",
+      "base_translation": "O primeiro a sair do choque é o líder deles.\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297233",
+      "text_source": "leader. He shouts, pointing an accusing finger.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/tenso",
+      "intent": "Conclusão: líder grita apontando o dedo acusador",
+      "risk_level": "low",
+      "base_translation": "Ele grita, apontando um dedo acusador.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297263",
+      "text_source": "Y-You're from Yamato, aren't you!?",
+      "speaker": "Soldado de Tuskur",
+      "entities_present": [
+        "Soldado de Tuskur"
+      ],
+      "tone_register": "acusatório/tenso",
+      "intent": "Acusa o grupo de serem de Yamato",
+      "risk_level": "low",
+      "base_translation": "V-Vocês são de Yamato, não são!?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297286",
+      "text_source": "D-Dear sister!?",
+      "speaker": "Nekone",
+      "entities_present": [
+        "Nekone"
+      ],
+      "tone_register": "surpreso/assustado",
+      "intent": "Nekone reage surpresa chamando Kuon de 'querida irmã'",
+      "risk_level": "high",
+      "base_translation": "Q-Querida irmã!?",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Spoiler moderado: Nekone chama Kuon de 'Dear sister' — relação fraternal. Manter tradução natural sem antecipar mais do que o texto deixa. 'D-Dear sister!?' → forma de tratamento afetivo surpreso."
+    },
+    {
+      "offset": "0x297296",
+      "text_source": "Hah... I suppose we could not deceive the keen\\n",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "irônico/resignado",
+      "intent": "Kuon ri e comenta que não conseguiram enganar os guerreiros de Tuskur",
+      "risk_level": "low",
+      "base_translation": "Hah... Parece que não conseguimos enganar os olhos\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2972c7",
+      "text_source": "eyes of Tuskur warriors after all! Well spotted!",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "irônico/resignado",
+      "intent": "Conclusão: bem observado! (irônico)",
+      "risk_level": "low",
+      "base_translation": "afiados dos guerreiros de Tuskur! Boa observação!",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2972f8",
+      "text_source": "Hee hee! Finally, things are picking up a bit.",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "animado/aliviado",
+      "intent": "Nosuri finalmente se anima — as coisas estão esquentando",
+      "risk_level": "low",
+      "base_translation": "Hee hee! Finalmente as coisas estão animando.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297327",
+      "text_source": "It would seem she has given up.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "narrativo/resignado",
+      "intent": "Narração: parece que Kuon desistiu do disfarce",
+      "risk_level": "low",
+      "base_translation": "Parece que ela desistiu.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x297347",
+      "text_source": "\"Well spotted\" my ASS!",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "interno/frustrado",
+      "intent": "Haku indignado internamente com o elogio 'bem observado' de Kuon",
+      "risk_level": "medium",
+      "base_translation": "\"Boa observação\" uma ova!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Expressão forte/informal; 'my ASS' → equivalente BR expressivo mas não excessivamente chulo."
+    }
+  ],
+  "total_lines": 242,
+  "high_lines": 7,
+  "medium_lines": 14,
+  "needs_review": [],
+  "plan_version": "chapter-23_09-v1"
+}

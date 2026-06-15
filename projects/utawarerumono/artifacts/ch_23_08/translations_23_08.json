@@ -1,0 +1,1700 @@
+{
+  "lines": {
+    "0x29038d": {
+      "speaker": "SISTEMA",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Grupo"
+    },
+    "0x29042c": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aqui."
+    },
+    "0x29050d": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tá?"
+    },
+    "0x290715": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "feliz."
+    },
+    "0x290920": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "isto..."
+    },
+    "0x291397": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "C-Certo..."
+    },
+    "0x291506": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê?"
+    },
+    "0x29185d": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Haku."
+    },
+    "0x291866": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hum?"
+    },
+    "0x2918c9": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, obrigado."
+    },
+    "0x2918d5": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigada, cara irmã."
+    },
+    "0x291b2e": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Do que você está falando?"
+    },
+    "0x291c12": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cara irmã...?"
+    },
+    "0x291d68": {
+      "speaker": "Homem",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Suspiro*..."
+    },
+    "0x291e20": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não tem?"
+    },
+    "0x291e2b": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah..."
+    },
+    "0x291e31": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Não entendo."
+    },
+    "0x291ecf": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cara irmã..."
+    },
+    "0x291ffe": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "questionar a natureza divina; manter ambiguidade ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "Personagem com voice_criticality=high e registro enigmático que deve preservar duplo sentido e frieza. Tradução exige back-translation para validar que a ambiguidade e o tom profético não foram resolvidos. Byte budget: 39 bytes (pt-BR moderno, transliterado, é crítico).",
+      "t": "A questão é... que tipo de deus...?"
+    },
+    "0x290375": {
+      "speaker": "Ukon",
+      "tone_register": "líder informal, comando desembaraçado",
+      "intent": "ordenar ancoragem com autoridade leve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo bem! Larguem âncora!"
+    },
+    "0x290392": {
+      "speaker": "Marinheiro",
+      "tone_register": "soldado formal, respeitoso",
+      "intent": "confirmar ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "SIM, SENHOR!"
+    },
+    "0x2903f5": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "desorientado, torpor",
+      "intent": "reconhecer local",
+      "risk_level": "medium",
+      "risk_notes": "Haku ainda confuso; nome do local é lore importante (Tuskur). Preservar fragmentação da fala.",
+      "t": "Tuskur."
+    },
+    "0x290432": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "confuso, semi-consciente",
+      "intent": "afirmar chegada com dúvida",
+      "risk_level": "medium",
+      "risk_notes": "Torpor do protagonista deve soar em tom de reticência/incerteza; não soar alerta.",
+      "t": "Isto é Tuskur..."
+    },
+    "0x2904a2": {
+      "speaker": "Ukon",
+      "tone_register": "líder informal, seguro",
+      "intent": "confirmar local com possessão",
+      "risk_level": "low",
+      "risk_notes": "Referência ao reino Yamato — mantém lore consistente.",
+      "t": "De Yamato."
+    },
+    "0x290544": {
+      "speaker": "Ukon",
+      "tone_register": "líder caloroso, convidativo",
+      "intent": "autorizar desembarque e ir adiante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bagagem. Por favor, desçam à terra."
+    },
+    "0x290563": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, alívio cômico",
+      "intent": "aprovação pedantemente expressada",
+      "risk_level": "medium",
+      "risk_notes": "Maroro — manter o tom arcaico e empolado (equivalente a 'vós'). Cômico pelo contraste entre pompa e fragilidade. Não modernizar.",
+      "t": "Ah... Muito bem, então."
+    },
+    "0x2905a8": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, melancólico-cômico",
+      "intent": "expressar alívio corporal ao pisar em terra",
+      "risk_level": "medium",
+      "risk_notes": "Maroro continua — tom arcaico preservado; 'estes rapazes' = camaradagem pomposa. O cômico sai do contraste.",
+      "t": "para estes rapazes. Vamos descer, sim?"
+    },
+    "0x29062c": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, melodramático",
+      "intent": "dramático retorno saudoso à terra",
+      "risk_level": "medium",
+      "risk_notes": "'stable embrace' = terra firme; Maroro usa 'abraço estável' com dramaticidade cômica. Preservar a empolação.",
+      "t": "em teu abraço estável outra vez!"
+    },
+    "0x290683": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, sensorial-éxtase",
+      "intent": "celebração sensória exagerada da terra",
+      "risk_level": "low",
+      "risk_notes": "Exclamações de Maroro em tom poético/erudito. Preservar caps em 'PERTENCEM'.",
+      "t": "Este aroma! Este toque! As pessoas PERTENCEM à terra!"
+    },
+    "0x290750": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, queixa cômico-arcaica",
+      "intent": "lamento empolado do mal-estar do mar",
+      "risk_level": "medium",
+      "risk_notes": "'green with seasickness' — Maroro dramatiza o enjoo. Manter tom arcaico sem ser truncado.",
+      "t": "a maioria da viagem verde de enjôo."
+    },
+    "0x2907ac": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, exultante",
+      "intent": "alegria desproporcionada por pisar em terra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tão feliz em pisar em algo que não se move."
+    },
+    "0x290806": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "confuso, observação tímida",
+      "intent": "contraste: Maroro preferia navio (ironia suave)",
+      "risk_level": "medium",
+      "risk_notes": "Haku observa com tom leve, quase para si; preservar a fragmentação e dúvida na voz.",
+      "t": "confortável no navio do que na terra."
+    },
+    "0x290861": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "confuso, pergunta suave",
+      "intent": "questionar preferência contradita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "num navio, não tinha?"
+    },
+    "0x29089c": {
+      "speaker": "Maroro",
+      "tone_register": "erudito pomposo, confirmação evasiva",
+      "intent": "afirmar que terra é melhor (com dramaticidade)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Definitivamente terra..."
+    },
+    "0x2908e3": {
+      "speaker": "Ukon",
+      "tone_register": "líder alerta, foco tático",
+      "intent": "reconhecer ameaça de invasão",
+      "risk_level": "high",
+      "risk_notes": "'invasion' — termo militarista; Ukon passa a modo tático. Spoiler potencial: não insinuar conhecimento futuro. Manter o tom profissional de general sem revelar identidade verdadeira (ainda é 'Ukon' nesta cena).",
+      "t": "invasão..."
+    },
+    "0x290954": {
+      "speaker": "Ukon",
+      "tone_register": "líder tático, observação profissional",
+      "intent": "avaliar situação navios/defesa",
+      "risk_level": "medium",
+      "risk_notes": "'moored' — lore militar; confirma presença de navios. Manter foco tático sem revelar conhecimento arcano.",
+      "t": "além do nosso atracado na área."
+    },
+    "0x2909d1": {
+      "speaker": "Ukon",
+      "tone_register": "líder tático, afirmação",
+      "intent": "confirmar defesa em posição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "defesa."
+    },
+    "0x2909da": {
+      "speaker": "Ukon",
+      "tone_register": "líder tático, pergunta de rotina",
+      "intent": "verificar andamento do desembarque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Como está o desembarque?"
+    },
+    "0x2909f2": {
+      "speaker": "Personagem-resposta (soldado/tenente)",
+      "tone_register": "soldado profissional, relato",
+      "intent": "relatar progresso suave",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece estar progredindo bem até agora."
+    },
+    "0x290a4a": {
+      "speaker": "Personagem (genérico)",
+      "tone_register": "soldado, confirmação",
+      "intent": "confirmar desembarque prosseguindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "desembarcados do navio."
+    },
+    "0x290abe": {
+      "speaker": "Personagem (genérico)",
+      "tone_register": "soldado, transição de método",
+      "intent": "indicar próxima etapa logística",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "depois carroças."
+    },
+    "0x290b1c": {
+      "speaker": "Personagem (Rulutieh?)",
+      "tone_register": "cortês, despedida cuidadosa",
+      "intent": "desejar segurança",
+      "risk_level": "medium",
+      "risk_notes": "Rulutieh — voice_criticality medium; tom tímido-educado, gentil. Preservar sutileza.",
+      "t": "Cuide bem de si."
+    },
+    "0x290b2a": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial atrevido, pragmático",
+      "intent": "decidir pegar algo/alguém",
+      "risk_level": "low",
+      "risk_notes": "Nosuri — fora-da-lei esperta, oportunista. Tom malandro-aliada.",
+      "t": "Acho que dá pra pegar esse, então."
+    },
+    "0x290b4c": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido-cortês, pedido gentil",
+      "intent": "pedir ajuda a Cocopo",
+      "risk_level": "medium",
+      "risk_notes": "Rulutieh — tom hesitante mas educado. Evitar arrogância apesar de princesa. Preservar delicadeza.",
+      "t": "Cocopo, podia nos ajudar a carregar isso?"
+    },
+    "0x290bb8": {
+      "speaker": "Personagem (genérico)",
+      "tone_register": "soldado, exasperação leve",
+      "intent": "comentar que situação se prolonga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "espera isto até agora."
+    },
+    "0x290bf6": {
+      "speaker": "Personagem (genérico)",
+      "tone_register": "soldado, preocupação",
+      "intent": "temer atraso no ritmo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "neste ritmo."
+    },
+    "0x290c04": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido-lamentar, melancólico",
+      "intent": "expressar pesar por partida",
+      "risk_level": "medium",
+      "risk_notes": "Rulutieh — voz tímida; se anima com certos tópicos mas aqui é melancolia. Manter suavidade.",
+      "t": "Aiiii, já estamos indo?"
+    },
+    "0x290c7a": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido, desejo preso",
+      "intent": "aproveitar momento antes de partir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "enquanto podemos..."
+    },
+    "0x290c8a": {
+      "speaker": "Atuy (criança)",
+      "tone_register": "infantil, grito alegre-urgente",
+      "intent": "chamado de retorno exuberante",
+      "risk_level": "low",
+      "risk_notes": "Onomatopeia vocal — localizar para pt-BR (grito criança, alongado e alegre). Não copiar EN.",
+      "t": "AIIII, PAPAAAAAAIIII!!"
+    },
+    "0x290ca8": {
+      "speaker": "Ukon",
+      "tone_register": "líder informal, reconhecimento irônico",
+      "intent": "registrar chegada de Atuy",
+      "risk_level": "low",
+      "risk_notes": "Ukon — carismático, informal. 'devil' = Atuy; tom leve, brincalhão.",
+      "t": "Hum? Fala do diabo..."
+    },
+    "0x290cc2": {
+      "speaker": "Ukon",
+      "tone_register": "líder caloroso, desculpa brincalhona",
+      "intent": "pedir desculpas por fazer Atuy esperar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpa te fazer esperar, Atuy!"
+    },
+    "0x290ce3": {
+      "speaker": "Atuy",
+      "tone_register": "infantil confuso, indignação",
+      "intent": "reação surpresa/ofensa",
+      "risk_level": "low",
+      "risk_notes": "Criança reage com mini-revolta; tom ingênuo-irritado.",
+      "t": "Ué!? Que raiva!?"
+    },
+    "0x290cf5": {
+      "speaker": "Atuy",
+      "tone_register": "infantil indignado, pergunta retórica",
+      "intent": "questionar lógica do pai (para que esperar se já chegou?)",
+      "risk_level": "low",
+      "risk_notes": "Atuy — criança; 'kept me waiting' é a reclamação da criança sobre o pai ter chegado tarde. Manter a lógica infantil.",
+      "t": "Como assim me fez esperar, Papai?"
+    },
+    "0x290d77": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal carinhoso, apelido",
+      "intent": "responder com ternura ao protesto",
+      "risk_level": "low",
+      "risk_notes": "Pai de Atuy fala com ternura; 'sea blossom' = apelido carinhoso. Localizar para pt-BR (flor-do-mar ou similar).",
+      "t": "minha querida flor-do-mar."
+    },
+    "0x290ded": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal protetor, restrição lógica",
+      "intent": "explicar que não pode deixá-la sair sozinha",
+      "risk_level": "low",
+      "risk_notes": "Pai protetor; 'pet' = termo carinhoso (querida/gatinha). Manter a lógica paternal.",
+      "t": "meter-se em perigo sozinha, posso, querida?"
+    },
+    "0x290e41": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal firme, instrução",
+      "intent": "estabelecer que Atuy deve ficar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "bem. Você tem que ficar aqui."
+    },
+    "0x290e90": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal elogio-ternura, exaltação",
+      "intent": "expressar orgulho na filha de forma exagerada",
+      "risk_level": "low",
+      "risk_notes": "Pai exagera na ternura/orgulho; tom carinhoso-pomposo. Preservar a dramaticidade paternal.",
+      "t": "atenciosa e dedicada, minha Atuy é!"
+    },
+    "0x290f1d": {
+      "speaker": "Personagem (genérico/militar)",
+      "tone_register": "soldado, observação breve",
+      "intent": "comentar casas/estruturas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "casas."
+    },
+    "0x290f84": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal leve-jocoso, pergunta retórica",
+      "intent": "questionar se Atuy sabe dos perigos",
+      "risk_level": "low",
+      "risk_notes": "Pai — tom carinhoso-jocoso; 'pumpkin' = abóbora/querida (carinhoso).",
+      "t": "não sabem, não é, queridinha?"
+    },
+    "0x290f9d": {
+      "speaker": "Atuy",
+      "tone_register": "infantil defensiva, contradição",
+      "intent": "rejeitar argumento do pai",
+      "risk_level": "low",
+      "risk_notes": "Atuy — criança desafiadora; não entende o ponto do pai ou finge não entender (comédia infantil).",
+      "t": "Não é isso o problema."
+    },
+    "0x290fea": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal questionador, dúvida tática",
+      "intent": "questionar capacidade de Atuy em combate",
+      "risk_level": "low",
+      "risk_notes": "Pai duvida que Atuy saiba lutar (ela treina mas é criança). Tom desafiante-paternal.",
+      "t": "balançar uma lâmina, agora?"
+    },
+    "0x291054": {
+      "speaker": "Atuy",
+      "tone_register": "infantil indignada, afirmação defensiva",
+      "intent": "alegar que treina constantemente",
+      "risk_level": "low",
+      "risk_notes": "Atuy responde ao desafio do pai com insistência criança; preservar o tom de orgulho-infantil.",
+      "t": "Nunca pulei um dia de treino."
+    },
+    "0x2910ad": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal irônico-observador, dúvida",
+      "intent": "observar que músculos sob roupas não provam capacidade",
+      "risk_level": "low",
+      "risk_notes": "Pai duvida que treino = poder real; ironia paternal sobre 'músculos na roupa bonita'.",
+      "t": "os músculos dela sob as roupas chiques."
+    },
+    "0x29112f": {
+      "speaker": "Atuy",
+      "tone_register": "infantil incômodo-revoltada, rejeição",
+      "intent": "rejeitar insinuação do pai sobre suor/fraqueza",
+      "risk_level": "low",
+      "risk_notes": "Atuy é sugestionada sobre 'transpirante' — rejeita com nojo infantil (comédia de constrangimento criança).",
+      "t": "suado."
+    },
+    "0x291137": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal exasperado-cômico, constatação",
+      "intent": "reconhecer que situação está ficando estranha",
+      "risk_level": "low",
+      "risk_notes": "Pai — tom de exasperação calorosa; 'isso está ficando realmente estranho' = piada sobre discussão estranha (criança defensiva + pai irônico).",
+      "t": "Ou seja, isto está ficando realmente estranho."
+    },
+    "0x291165": {
+      "speaker": "Atuy",
+      "tone_register": "infantil enfadada, pedido de parada",
+      "intent": "pedir que pai pare a brincadeira",
+      "risk_level": "low",
+      "risk_notes": "Atuy pede parada com tom de ",
+      "t": "Ugh... Por favor pare com isso..."
+    },
+    "0x2911dd": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal sério-protetor, aviso",
+      "intent": "alertar que comportamento chama atenção perigosa",
+      "risk_level": "low",
+      "risk_notes": "Pai muda para tom sério; 'inimigos' = perigo real. Transição de comédia para aviso.",
+      "t": "atrair inimigos."
+    },
+    "0x2911ee": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal pensativo, pausa",
+      "intent": "retomar aviso de forma pensada",
+      "risk_level": "low",
+      "risk_notes": "Pai pausa ('bem, tudo igual--') — tom de reflexão antes de continuar sério.",
+      "t": "Hm, tudo igual--"
+    },
+    "0x29122f": {
+      "speaker": "Atuy",
+      "tone_register": "infantil confiante-arrogante, afirmação",
+      "intent": "alegar que soldados de Tuskur não são páreo",
+      "risk_level": "medium",
+      "risk_notes": "Atuy bravata infantil sobre capacidade; contém nome de local (Tuskur) e refere-se a soldados. Preservar a arrogância-infantil sem soar perigosa.",
+      "t": "Os soldados de Tuskur não me preocupam."
+    },
+    "0x291287": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal saudosista, reflexão",
+      "intent": "expressar que filha um dia sairá (foreshadow suave)",
+      "risk_level": "medium",
+      "risk_notes": "Pai — tom de melancolia paternal; 'sair do ninho' é metáfora de crescimento/partir. Preservar a nostalgia sem spoiler.",
+      "t": "fadado a sair do ninho um dia..."
+    },
+    "0x2912ff": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal firme, restrição final",
+      "intent": "reafirmar proibição de recklessness",
+      "risk_level": "low",
+      "risk_notes": "Pai — tom firme-paternal; 'aye' = estilo coloquial marinheiro (preservar levemente em pt-BR).",
+      "t": "algo temerário, tá bem?"
+    },
+    "0x291317": {
+      "speaker": "Atuy",
+      "tone_register": "infantil submissa, reconhecimento",
+      "intent": "aceitar ordem do pai com gratidão",
+      "risk_level": "low",
+      "risk_notes": "Atuy aquiesce; tom de criança obediente-resignada mas grata.",
+      "t": "Sabemos. Obrigada, Papai."
+    },
+    "0x291357": {
+      "speaker": "Pai-de-Atuy",
+      "tone_register": "paternal carinhoso, afirmação final",
+      "intent": "garantir segurança absoluta",
+      "risk_level": "low",
+      "risk_notes": "Pai fecha com promessa de segurança; tom de conforto paternal.",
+      "t": "absolutamente segura."
+    },
+    "0x291368": {
+      "speaker": "Protagonista (Haku)",
+      "tone_register": "narração 1ª pessoa, observação sensória",
+      "intent": "descrever gesto físico do pai sobre ombro de Haku",
+      "risk_level": "high",
+      "risk_notes": "Narração de Haku — voice_criticality HIGH. Descrevendo cena observada (pai tocando ombro de Haku). Preservar a fragmentação sensória (queda de mão com 'thump'). Semi-consciente ou na memória — tom introspectivo.",
+      "t": "A mão dele desce no meu ombro com um baque."
+    },
+    "0x29039b": {
+      "speaker": "Haku",
+      "tone_register": "narrativa casual",
+      "intent": "descrever a chegada após dias no mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Depois de dias balançando no mar,\\n"
+    },
+    "0x2903c9": {
+      "speaker": "Haku",
+      "tone_register": "narrativa casual",
+      "intent": "o navio se aproxima da costa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o navio desliza até a costa de\\n"
+    },
+    "0x2903fd": {
+      "speaker": "Haku",
+      "tone_register": "aliviado, informal",
+      "intent": "exclamar alívio de finalmente chegar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mmmm! Esse vento, esse cheiro... Finalmente\\n"
+    },
+    "0x290444": {
+      "speaker": "Haku",
+      "tone_register": "narrativa observacional",
+      "intent": "observar semelhanças botânicas e geológicas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aparentemente, a variação botânica e a\\n"
+    },
+    "0x290475": {
+      "speaker": "Haku",
+      "tone_register": "narrativa observacional",
+      "intent": "continuar comparação geológica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "formação geológica são bem parecidas com\\n"
+    },
+    "0x2904ac": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, casual",
+      "intent": "relativizar: terra estrangeira ainda é terra de pessoas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, pode ser uma terra estrangeira além do mar,\\n"
+    },
+    "0x2904dd": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, casual",
+      "intent": "concluir que é só um lugar onde pessoas vivem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "mas ainda é só um lugar onde as pessoas vivem,\\n"
+    },
+    "0x290513": {
+      "speaker": "Marinheiro/Sistema",
+      "tone_register": "formal, anúncio",
+      "intent": "avisar passageiros sobre bagagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Prezados passageiros! Cuidaremos de toda a\\n"
+    },
+    "0x29057a": {
+      "speaker": "Haku",
+      "tone_register": "casual, pragmático",
+      "intent": "decidir deixar o serviço pesado com os outros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, melhor deixar o serviço pesado\\n"
+    },
+    "0x2905d2": {
+      "speaker": "Nosuri",
+      "tone_register": "eufórico, coloquial",
+      "intent": "expressar alívio dramático ao ver terra firme",
+      "risk_level": "medium",
+      "risk_notes": "Interjeição localizada; tom eufórico da Nosuri preservado",
+      "t": "Ah, terra! Terra doce, abençoada, gloriosa!\\n"
+    },
+    "0x2905fd": {
+      "speaker": "Nosuri",
+      "tone_register": "dramático, aliviado",
+      "intent": "agradecer por pisar em terra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agradeço por ter posto os pés em você,\\n"
+    },
+    "0x290650": {
+      "speaker": "Nosuri",
+      "tone_register": "eufórico, físico",
+      "intent": "expressar prazer físico de estar em chão firme",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que sensação boa! Dois pés no chão firme!\\n"
+    },
+    "0x2906b1": {
+      "speaker": "Haku",
+      "tone_register": "narrativa divertida",
+      "intent": "descrever a reação exagerada da Nosuri",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosuri parece tão feliz de chegar que ela\\n"
+    },
+    "0x2906e2": {
+      "speaker": "Haku",
+      "tone_register": "narrativa divertida",
+      "intent": "continuar descrição: rola no chão esfregando o rosto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cai no chão e esfrega o rosto nele,\\n"
+    },
+    "0x29071e": {
+      "speaker": "Haku",
+      "tone_register": "narrativa reflexiva",
+      "intent": "reconhecer que faz sentido dado o tempo no mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece exagero, mas faz sentido. Ela ficou\\n"
+    },
+    "0x29077b": {
+      "speaker": "Haku",
+      "tone_register": "casual, solidário",
+      "intent": "admitir que também não esperava ficar tão no mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo o que você quer dizer, tá? Não achei que ia\\n"
+    },
+    "0x2907dd": {
+      "speaker": "Interlocutor",
+      "tone_register": "casual, curioso",
+      "intent": "perguntar sobre preferência por mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É assim? Eu costumo me sentir mais\\n"
+    },
+    "0x290830": {
+      "speaker": "Interlocutor",
+      "tone_register": "casual",
+      "intent": "explicar que passou a infância no mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, você passou boa parte da infância no\\n"
+    },
+    "0x290875": {
+      "speaker": "Haku",
+      "tone_register": "firme, casual",
+      "intent": "declarar preferência por terra firme",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Prefiro terra ao oceano qualquer dia.\\n"
+    },
+    "0x2908af": {
+      "speaker": "Haku",
+      "tone_register": "narrativa observacional",
+      "intent": "reconhecer o porto como base de Tuskur",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então, esta é a base de operações de Tuskur\\n"
+    },
+    "0x2908ef": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, reflexivo",
+      "intent": "espanto com porto em lugar inesperado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nunca imaginei ver um porto num lugar assim\\n"
+    },
+    "0x290928": {
+      "speaker": "Haku",
+      "tone_register": "narrativa descritiva",
+      "intent": "observar outros navios de Yamato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Olhamos ao redor e vemos outros navios de Yamato\\n"
+    },
+    "0x290975": {
+      "speaker": "Haku",
+      "tone_register": "narrativa descritiva",
+      "intent": "descrever depósitos e barracas na costa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Na costa há pequenos galpões de suprimentos e\\n"
+    },
+    "0x2909a6": {
+      "speaker": "Haku",
+      "tone_register": "narrativa descritiva",
+      "intent": "mencionar tropas estacionadas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "áreas de barracas, com tropas estacionadas para\\n"
+    },
+    "0x290a18": {
+      "speaker": "Haku",
+      "tone_register": "narrativa casual",
+      "intent": "ver suprimentos sendo descarregados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sigo o olhar de Kiwru e vejo nossos suprimentos sendo\\n"
+    },
+    "0x290a62": {
+      "speaker": "Haku",
+      "tone_register": "narrativa descritiva",
+      "intent": "descrever fluxo da tripulação entre terra e navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A tripulação flui entre a terra e o\\n"
+    },
+    "0x290a90": {
+      "speaker": "Haku",
+      "tone_register": "narrativa descritiva",
+      "intent": "carregar suprimentos em barcos pequenos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "navio, carregando suprimentos nos botes e\\n"
+    },
+    "0x290aca": {
+      "speaker": "Trabalhador",
+      "tone_register": "instrução direta",
+      "intent": "ordenar caixas de madeira ao carrinho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caixas de madeira no carrinho, por favor.\\n"
+    },
+    "0x290af1": {
+      "speaker": "Trabalhador",
+      "tone_register": "advertência casual",
+      "intent": "avisar que a caixa é mais pesada que parece",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, essa é mais pesada do que parece.\\n"
+    },
+    "0x290b86": {
+      "speaker": "Haku",
+      "tone_register": "narrativa casual",
+      "intent": "observar Ougi no elemento e pensar em agir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ougi está no seu elemento, como sempre. Acho que devo\\n"
+    },
+    "0x290bcc": {
+      "speaker": "Haku",
+      "tone_register": "casual, prático",
+      "intent": "constatar que podem partir em breve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que podemos partir bem em breve,\\n"
+    },
+    "0x290c22": {
+      "speaker": "Haku",
+      "tone_register": "prático",
+      "intent": "lembrar que estão entregando suprimentos de emergência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim. Estamos entregando suprimentos de emergência.\\n"
+    },
+    "0x290c4f": {
+      "speaker": "Haku",
+      "tone_register": "cortês, prático",
+      "intent": "sugerir se despedir de Soyankekur",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devemos nos despedir do Senhor Soyankekur\\n"
+    },
+    "0x290d20": {
+      "speaker": "Soyankekur",
+      "tone_register": "caloroso, paternal",
+      "intent": "revelar de forma óbvia que vai acompanhar a filha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hahaha, não é óbvio, minha doce\\n"
+    },
+    "0x290d4a": {
+      "speaker": "Soyankekur",
+      "tone_register": "caloroso, paternal",
+      "intent": "confirmar que vai junto com Atuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atuy? Obviamente vou com você,\\n"
+    },
+    "0x290d8f": {
+      "speaker": "Soyankekur",
+      "tone_register": "protetor, paternal",
+      "intent": "justificar: estão indo a território inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Afinal, estamos entrando em território inimigo\\n"
+    },
+    "0x290dbf": {
+      "speaker": "Soyankekur",
+      "tone_register": "protetor, paternal",
+      "intent": "não pode deixar sua Atuy ir sozinha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "agora. Não posso simplesmente deixar minha Atuy\\n"
+    },
+    "0x290e13": {
+      "speaker": "Atuy",
+      "tone_register": "gentil, firme",
+      "intent": "agradecer mas recusar a companhia do pai",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pai, agradeço a preocupação, mas vou ficar\\n"
+    },
+    "0x290e5d": {
+      "speaker": "Soyankekur",
+      "tone_register": "despreocupado, afetuoso",
+      "intent": "questionar se ela se preocupa com os navios",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê, está preocupada com meus navios? Ah, que\\n"
+    },
+    "0x290ec1": {
+      "speaker": "Soyankekur",
+      "tone_register": "tranquilizador, paternal",
+      "intent": "garantir que deixa soldados suficientes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe, meu amor, estou deixando\\n"
+    },
+    "0x290eef": {
+      "speaker": "Soyankekur",
+      "tone_register": "tranquilizador",
+      "intent": "soldados suficientes para manter os navios seguros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "soldados suficientes para mantê-los seguros como\\n"
+    },
+    "0x290f25": {
+      "speaker": "Soyankekur",
+      "tone_register": "confiante",
+      "intent": "mencionar tropas de Raiko no porto",
+      "risk_level": "medium",
+      "risk_notes": "Raiko: apresentar só como General-Pilar, sem antecipar vínculos futuros",
+      "t": "E além disso, este porto tem tropas sob o comando de Raiko\\n"
+    },
+    "0x290f57": {
+      "speaker": "Soyankekur",
+      "tone_register": "confiante, casual",
+      "intent": "comando direto de Raiko, não precisa dele ali",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "direto. Eles não precisam de mim por aqui\\n"
+    },
+    "0x290fbd": {
+      "speaker": "Atuy",
+      "tone_register": "brincalhão, preocupado",
+      "intent": "provocar: ele esqueceu como lutar?",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ahahaha! Esqueceu como\\n"
+    },
+    "0x290ffe": {
+      "speaker": "Soyankekur",
+      "tone_register": "orgulhoso, bem-humorado",
+      "intent": "rebater que não é um dos Oito Generais à toa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmhmhm... Seu velho pai não é um dos\\n"
+    },
+    "0x29102b": {
+      "speaker": "Soyankekur",
+      "tone_register": "orgulhoso",
+      "intent": "concluir: é dos Oito Generais-Pilar por uma razão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oito Generais-Pilar à toa.\\n"
+    },
+    "0x29107a": {
+      "speaker": "Haku",
+      "tone_register": "narrativa cômica",
+      "intent": "descrever Soyankekur inflando o peito com orgulho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soyankekur infla o peito de orgulho, mostrando\\n"
+    },
+    "0x2910d4": {
+      "speaker": "Haku",
+      "tone_register": "narrativa cômica",
+      "intent": "reação em cadeia dos homens atrás dele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Em reação, todos os homens atrás dele\\n"
+    },
+    "0x291102": {
+      "speaker": "Haku",
+      "tone_register": "narrativa cômica, desconfortável",
+      "intent": "todos começam a flexionar, clima estranho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "começam a flexionar, e a situação fica...\\n"
+    },
+    "0x291180": {
+      "speaker": "Munechika/Oficial",
+      "tone_register": "formal, direto",
+      "intent": "lembrar que a missão primária é entrega de suprimentos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soyankekur, nossa missão principal é o fornecimento\\n"
+    },
+    "0x2911ac": {
+      "speaker": "Munechika/Oficial",
+      "tone_register": "formal, estratégico",
+      "intent": "viajar em grupo grande chama atenção/problemas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "de suprimentos. Se viajamos em grupo grande,\\n"
+    },
+    "0x291201": {
+      "speaker": "Atuy",
+      "tone_register": "confiante, descontraído",
+      "intent": "garantir que ficará bem por ser filha dele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vai ficar tudo bem! Sou sua filha, não sou?\\n"
+    },
+    "0x29125a": {
+      "speaker": "Soyankekur",
+      "tone_register": "paternal, melancólico",
+      "intent": "aceitar a independência da filha com saudade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, minha Atuy... Suponho que todo filhote\\n"
+    },
+    "0x2912aa": {
+      "speaker": "Soyankekur",
+      "tone_register": "resignado, caloroso",
+      "intent": "ceder e dizer que fica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo bem, tudo bem. Já que é assim, fico\\n"
+    },
+    "0x2912d7": {
+      "speaker": "Soyankekur",
+      "tone_register": "paternal, preocupado",
+      "intent": "pedir que não faça nada imprudente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aqui, minha filha. Mas não vá fazer\\n"
+    },
+    "0x29132e": {
+      "speaker": "Soyankekur",
+      "tone_register": "grave, paternal",
+      "intent": "pedir a Haku que proteja a filha",
+      "risk_level": "medium",
+      "risk_notes": "Tom de ameaça velada implícita a Haku",
+      "t": "Haku. Espero que cuide bem da minha filha\\n"
+    },
+    "0x2913a2": {
+      "speaker": "Soyankekur",
+      "tone_register": "ameaça velada, paternal",
+      "intent": "avisar que sabe quem culpar se algo acontecer",
+      "risk_level": "medium",
+      "risk_notes": "Ameaça implícita; preservar ambiguidade intimidadora",
+      "t": "Tenho certeza que entende, mas se algo\\n"
+    },
+    "0x2913cd": {
+      "speaker": "Soyankekur",
+      "tone_register": "ameaça velada",
+      "intent": "concluir a ameaça indireta",
+      "risk_level": "medium",
+      "risk_notes": "Ameaça velada; não resolver explicitamente",
+      "t": "acontecer com ela... bem, sabemos quem será\\n"
+    },
+    "0x291459": {
+      "speaker": "Haku",
+      "tone_register": "narrativa tensa, cômica",
+      "intent": "Soyankekur sorri mas há perigo nos olhos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele sorri... mas consigo ver perigo em seus\\n"
+    },
+    "0x2914ab": {
+      "speaker": "Haku",
+      "tone_register": "narrativa, alívio",
+      "intent": "Soyankekur parte relutantemente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Enquanto Soyankekur parte (embora a contragosto),\\n"
+    },
+    "0x291512": {
+      "speaker": "Haku",
+      "tone_register": "informativo/planejamento",
+      "intent": "Introduzir a necessidade de reconhecer a rota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Queremos reconhecer nossa rota até o\\n"
+    },
+    "0x291552": {
+      "speaker": "Haku",
+      "tone_register": "informativo/planejamento",
+      "intent": "Indicar a posição atual no mapa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nossa posição atual é... aqui, na\\n"
+    },
+    "0x29158c": {
+      "speaker": "Haku",
+      "tone_register": "informativo/planejamento",
+      "intent": "Identificar a fortaleza onde estão Munechika e outros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E a fortaleza onde estão Munechika e\\n"
+    },
+    "0x2915d6": {
+      "speaker": "Haku",
+      "tone_register": "informativo/planejamento",
+      "intent": "Descrever a estrada principal entre os dois pontos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que há uma estrada bem grande que\\n"
+    },
+    "0x291648": {
+      "speaker": "Haku",
+      "tone_register": "informal/preocupado",
+      "intent": "Ressaltar o perigo da exposição da rota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É bem longa. E totalmente a céu aberto...\\n"
+    },
+    "0x291691": {
+      "speaker": "Haku",
+      "tone_register": "estratégico/direto",
+      "intent": "Alertar que seguir a estrada principal é arriscado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim. Seria imprudente seguir diretamente\\n"
+    },
+    "0x2916ca": {
+      "speaker": "Haku",
+      "tone_register": "estratégico/direto",
+      "intent": "Concluir que usar a estrada os exporia ao inimigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seria nos entregar de bandeja ao inimigo\\n"
+    },
+    "0x29170b": {
+      "speaker": "Haku",
+      "tone_register": "informativo/sério",
+      "intent": "Mencionar que tentativas anteriores falharam",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que tentativas anteriores foram\\n"
+    },
+    "0x291752": {
+      "speaker": "Haku",
+      "tone_register": "informativo/sério",
+      "intent": "Informar que o resto da área é de difícil travessia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Porém... além dessa estrada, a área toda\\n"
+    },
+    "0x2917a6": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial/confiante",
+      "intent": "Afirmar que ela e o irmão estão acostumados com terrenos difíceis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim. Minha querida irmã e eu estamos acostumados\\n"
+    },
+    "0x2917d3": {
+      "speaker": "Nosuri",
+      "tone_register": "coloquial/confiante",
+      "intent": "Reconhecer que a perícia deles tem limite no contexto atual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com essas áreas, mas nossa perícia não basta para\\n"
+    },
+    "0x29181d": {
+      "speaker": "Haku",
+      "tone_register": "informal/pragmático",
+      "intent": "Propor se preparar para o pior e avançar assim mesmo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que é se preparar para o pior e\\n"
+    },
+    "0x29186a": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano/gentil",
+      "intent": "Oferecer água fresca ao grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alguém está com sede? Trouxe água fresca\\n"
+    },
+    "0x2918ed": {
+      "speaker": "Haku",
+      "tone_register": "informal/grato",
+      "intent": "Agradecer sem querer dar trabalho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, não precisava se dar a esse trabalho.\\n"
+    },
+    "0x29193a": {
+      "speaker": "Haku",
+      "tone_register": "informal/aliviado",
+      "intent": "Comentar o sabor refrescante da água",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A água gelada cai bem depois de\\n"
+    },
+    "0x2919af": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico/pomposo",
+      "intent": "Expressar nostalgia de água de qualidade, de forma empolada",
+      "risk_level": "medium",
+      "risk_notes": "Manter registro arcaico/empolado do Maroro; verificar naturalidade do arcaísmo em pt-BR.",
+      "t": "Ahhh, já faz um tempo desde que tive\\n"
+    },
+    "0x2919e9": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico/pomposo",
+      "intent": "Afirmar o valor da água de forma erudita",
+      "risk_level": "medium",
+      "risk_notes": "Registro arcaico de Maroro; curto — verificar orçamento.",
+      "t": "De fato. A água é algo de valor\\n"
+    },
+    "0x291a2e": {
+      "speaker": "Haku",
+      "tone_register": "informal/curioso",
+      "intent": "Questionar o comportamento estranho de Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que foi com ela? Kuon ficou ali\\n"
+    },
+    "0x291ace": {
+      "speaker": "Kuon",
+      "tone_register": "analítico/calmo",
+      "intent": "Revelar que há outro caminho não registrado nos documentos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Achei que sim. Como não está registrado aqui,\\n"
+    },
+    "0x291b4a": {
+      "speaker": "Kuon",
+      "tone_register": "informativo/direto",
+      "intent": "Confirmar que existe outro acesso à fortaleza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este não é o único caminho para a fortaleza.\\n"
+    },
+    "0x291bad": {
+      "speaker": "Kuon",
+      "tone_register": "informativo/direto",
+      "intent": "Alertar que a rota alternativa é desviante e mal conservada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Será um desvio e não está bem conservado.\\n"
+    },
+    "0x291c54": {
+      "speaker": "Kuon",
+      "tone_register": "estratégico/calmo",
+      "intent": "Sugerir dividir a carga em grupos menores para a travessia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se dividirmos a carga em grupos menores...\\n"
+    },
+    "0x291cbc": {
+      "speaker": "Haku",
+      "tone_register": "informal/coordenando",
+      "intent": "Pedir a Ougi que avise os homens montando o acampamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ougi, pode avisar o pessoal que está montando\\n"
+    },
+    "0x291cf4": {
+      "speaker": "Haku",
+      "tone_register": "informal/pragmático",
+      "intent": "Antecipar que precisarão de mais provisões para estradas ruins",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se as estradas não forem tão boas, vamos\\n"
+    },
+    "0x291dc1": {
+      "speaker": "Haku",
+      "tone_register": "informal/irônico",
+      "intent": "Ironizar que Kuon aceitou a água mas agora reclama",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E foi você que acabou de aceitar aquela água de mim.\\n"
+    },
+    "0x291df2": {
+      "speaker": "Kuon",
+      "tone_register": "orgulhoso/firme",
+      "intent": "Reafirmar sua identidade como Kuon de Tuskur com indignação",
+      "risk_level": "medium",
+      "risk_notes": "'TUSKUR' em maiúsculas no original — preservar ênfase. Kuon afirmando identidade com firmeza.",
+      "t": "Sou Kuon de TUSKUR! Você entende isso,\\n"
+    },
+    "0x291e44": {
+      "speaker": "Haku",
+      "tone_register": "informal/direto",
+      "intent": "Reconhecer que Kuon é a mais entendida sobre o assunto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É você quem mais entende sobre\\n"
+    },
+    "0x291e85": {
+      "speaker": "Haku",
+      "tone_register": "informal/direto",
+      "intent": "Explicar por que pediu a opinião de Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por isso pedi sua opinião.\\n"
+    },
+    "0x291ede": {
+      "speaker": "Kuon",
+      "tone_register": "tímido/hesitante",
+      "intent": "Kuon disfarça o embaraço negando que algo aconteceu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "N-Não é nada. Acho que...\\n"
+    },
+    "0x291f39": {
+      "speaker": "Haku",
+      "tone_register": "estratégico/cuidadoso",
+      "intent": "Sugerir que Nekone e Rulutieh sigam um caminho mais seguro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Melhor Nekone e Rulutieh\\n"
+    },
+    "0x291fd4": {
+      "speaker": "Haku",
+      "tone_register": "informativo/sério",
+      "intent": "Referir-se ao local pela alcunha místico-geográfica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chamam de a terra onde o deus dorme.\\n"
+    },
+    "0x2913f9": {
+      "speaker": "Ukon",
+      "tone_register": "informal, caloroso, camarada",
+      "intent": "confrontar com urgência e confirmar acordo",
+      "risk_level": "medium",
+      "risk_notes": "Preservar tom de liderança desembaraçada (não militar); 'lad' → 'rapaz' mantém a informalidade pai de criação.",
+      "t": "você que vai responder por isso, né? Espero que estejamos claros, rapaz."
+    },
+    "0x291427": {
+      "speaker": "Protagonista",
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "narração física; despertar da inconscência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seu aperto no meu ombro se aperta."
+    },
+    "0x291449": {
+      "speaker": "Protagonista",
+      "tone_register": "desconforto físico, susto",
+      "intent": "reação à dor",
+      "risk_level": "low",
+      "risk_notes": "Interjeição localizada; 'Gah' → onomatopeia de dor/susto em pt-BR.",
+      "t": "Agh!? Aiaiaiaia!"
+    },
+    "0x291487": {
+      "speaker": "Protagonista",
+      "tone_register": "torpor fragmentado",
+      "intent": "visão desfocada reabrindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "olhos..."
+    },
+    "0x29148f": {
+      "speaker": "Garota",
+      "tone_register": "gentil, acolhedor, paciente",
+      "intent": "pedir privacidade/atenção individual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku, pode me dar um momento?"
+    },
+    "0x2914d8": {
+      "speaker": "Protagonista",
+      "tone_register": "observação narrativa, torpor saindo",
+      "intent": "descrever movimento; cenário",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nekone e Ougi se aproximam com um mapa na mão."
+    },
+    "0x29153d": {
+      "speaker": "Haku",
+      "tone_register": "investigativo, cauteloso",
+      "intent": "reconhecimento estratégico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a fortaleza antes."
+    },
+    "0x291581": {
+      "speaker": "Haku",
+      "tone_register": "observação estratégica",
+      "intent": "mapear topografia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "costa."
+    },
+    "0x2915bf": {
+      "speaker": "Haku",
+      "tone_register": "sombrio, pensativo",
+      "intent": "reconhecimento de risco",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade de 'the others' (alguém presente? inimigo?); traduzir como 'os outros' para preservar incerteza.",
+      "t": "os outros está... aqui."
+    },
+    "0x291604": {
+      "speaker": "Kuon",
+      "tone_register": "objetivo, análise tática",
+      "intent": "descrever rota de ataque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "sai da costa até a fortaleza."
+    },
+    "0x29162a": {
+      "speaker": "Ougi",
+      "tone_register": "pragmático, observador",
+      "intent": "confirmar evidência visual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece ser um caminho direto."
+    },
+    "0x291678": {
+      "speaker": "Kuon",
+      "tone_register": "preocupado, tático",
+      "intent": "identificar armadilha potencial",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isto pode ser um problema."
+    },
+    "0x2916bf": {
+      "speaker": "Haku",
+      "tone_register": "reflexivo, cauteloso",
+      "intent": "indicar risco estratégico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "este caminho."
+    },
+    "0x2916f6": {
+      "speaker": "Kuon",
+      "tone_register": "crítica tática mordaz",
+      "intent": "descrever desvantagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "forças num prato."
+    },
+    "0x29173d": {
+      "speaker": "Haku",
+      "tone_register": "sombrio, realista",
+      "intent": "enumerar custo humano",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "perdas graves."
+    },
+    "0x291782": {
+      "speaker": "Ougi",
+      "tone_register": "informativo, técnico",
+      "intent": "descrever barreira geográfica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "é montanhoso demais pra cruzar."
+    },
+    "0x291801": {
+      "speaker": "Kuon",
+      "tone_register": "logístico, prático",
+      "intent": "descrever desvantagem de rota alternativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "comboio de suprimentos totalmente carregado."
+    },
+    "0x29184d": {
+      "speaker": "Haku",
+      "tone_register": "determinado, resolutivo",
+      "intent": "decisão tática; partir em movimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pegar a estrada..."
+    },
+    "0x29189b": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico, pomposo, arcaico",
+      "intent": "relatar com satisfação falsa; pedir ordem",
+      "risk_level": "high",
+      "risk_notes": "Arquétipo de Maroro: pompa arcaica + gag de cício ('s'→'sh'). Traduzir como 'daquele regato/córrego' (agua fresca, contraste cômico). Manter arcaísmo sem exagero.",
+      "t": "daquele regato. Deve estar bem gelado."
+    },
+    "0x29191a": {
+      "speaker": "Ukon",
+      "tone_register": "formal agradecido, educado",
+      "intent": "reconhecimento gentil de serviço",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito apreciado, com certeza."
+    },
+    "0x291968": {
+      "speaker": "Maroro",
+      "tone_register": "reclamação cômico-patética",
+      "intent": "lamentar fadiga após jornada",
+      "risk_level": "medium",
+      "risk_notes": "Maroro é cômico; 'salty sea wind' → não traduzir literalmente como 'vento salgado', mas como 'ar do mar' (mais natural); preservar a queixa melodramática.",
+      "t": "de estar tanto tempo naquele ar do mar ventoso."
+    },
+    "0x291996": {
+      "speaker": "Maroro",
+      "tone_register": "alívio cômico-dramático",
+      "intent": "expressão de satisfação após beber",
+      "risk_level": "low",
+      "risk_notes": "Interjeição + expressão idiomática; 'Whew' = 'Uffa' ou 'Suspiro'.",
+      "t": "Uffa, isto foi bom demais."
+    },
+    "0x2919dc": {
+      "speaker": "Ukon",
+      "tone_register": "pragmático, instrução",
+      "intent": "lembrete de recurso essencial",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "água doce."
+    },
+    "0x291a14": {
+      "speaker": "Ukon",
+      "tone_register": "sábio, conselho camaradeado",
+      "intent": "destacar importância de água em viagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "quando fora no mar."
+    },
+    "0x291a5d": {
+      "speaker": "Protagonista",
+      "tone_register": "observação narrativa, desconforto social",
+      "intent": "notar vigilância não-dita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "olhando quieto pra cá..."
+    },
+    "0x291a79": {
+      "speaker": "Kuon",
+      "tone_register": "direto, casual, curiosidade tática",
+      "intent": "pedir para examinar mapa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku, posso dar uma olhada naquele mapa?"
+    },
+    "0x291a9e": {
+      "speaker": "Protagonista",
+      "tone_register": "narração observatória",
+      "intent": "descrever ação de personagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon pega o mapa, estudando com atenção."
+    },
+    "0x291aff": {
+      "speaker": "Kuon",
+      "tone_register": "análise tática esperançosa",
+      "intent": "identificar vantagem estratégica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "as forças de Yamato ainda não descobriram."
+    },
+    "0x291b77": {
+      "speaker": "Ougi",
+      "tone_register": "informação pragmática, observador",
+      "intent": "revelar opção alternativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem outro que fica mais escondido."
+    },
+    "0x291b9f": {
+      "speaker": "Haku",
+      "tone_register": "surpresa, questionamento rápido",
+      "intent": "pedir confirmação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, sério?"
+    },
+    "0x291be0": {
+      "speaker": "Ougi",
+      "tone_register": "prudente, realistico",
+      "intent": "balancear vantagem com risco",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Podemos ser encontrados por bestas, mas não pelas forças de Tuskur."
+    },
+    "0x291c22": {
+      "speaker": "Haku",
+      "tone_register": "pergunta prática, cálculo logístico",
+      "intent": "testar viabilidade da rota",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você acha que dá pra gente levar carroças por lá?"
+    },
+    "0x291c87": {
+      "speaker": "Ougi",
+      "tone_register": "contingencial, reflexivo",
+      "intent": "oferecer suposição condicional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "talvez?"
+    },
+    "0x291c93": {
+      "speaker": "Haku",
+      "tone_register": "resoluto, decisão tática final",
+      "intent": "confirmar e autorizar movimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Beleza... OK, vamos tentar aquele caminho então."
+    },
+    "0x291ced": {
+      "speaker": "Maroro",
+      "tone_register": "pomposo arcaico, subserviente",
+      "intent": "pedir confirmação obediente",
+      "risk_level": "high",
+      "risk_notes": "Maroro: arcaísmo + pompa; 'cargo' isolado é parte de resposta; manter tom subserviente de bajulação (sem cício aqui, mas arcaísmo sim).",
+      "t": "carga?"
+    },
+    "0x291d26": {
+      "speaker": "Ukon",
+      "tone_register": "comandante caloroso, instrução prática",
+      "intent": "dar ordem de ajuste logístico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tem que ajustar o equipamento para as montarias."
+    },
+    "0x291d53": {
+      "speaker": "Maroro",
+      "tone_register": "arcaico pomposo, obediência entusiasta",
+      "intent": "oferecimento de serviço",
+      "risk_level": "medium",
+      "risk_notes": "Maroro arcaísmo: 'Of course' → 'Certo, claro' (não 'Naturalmente'); 'allow me' → 'deixa comigo' preserva informalidade pomposa.",
+      "t": "Claro--deixa comigo."
+    },
+    "0x291d72": {
+      "speaker": "Kuon",
+      "tone_register": "curiosa, observador de comportamento",
+      "intent": "questionar reação emocional não-verbalizada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que suspiro era esse?"
+    },
+    "0x291d8a": {
+      "speaker": "Haku",
+      "tone_register": "esquivo, defensivo, reflexivo",
+      "intent": "desviar de questão incômoda",
+      "risk_level": "high",
+      "risk_notes": "Resposta evasiva de Haku a pergunta sobre confiança em desconhecido (Oshtor/Ukon); preservar ambiguidade (ainda não se sabe a verdadeira identidade). Não resolver o incômodo.",
+      "t": "Por que não desconfia de mim?"
+    },
+    "0x291db2": {
+      "speaker": "Haku",
+      "tone_register": "confuso, comprando tempo",
+      "intent": "pedir esclarecimento evasivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Sobre o quê?"
+    },
+    "0x291e77": {
+      "speaker": "Kuon",
+      "tone_register": "desconfiado, crítico social",
+      "intent": "apontar padrão estranho de comportamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "deste país."
+    },
+    "0x291eb0": {
+      "speaker": "Haku",
+      "tone_register": "defensivo, contraataque suave",
+      "intent": "rejeitar acusação velada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que tem de estranho nisso?"
+    },
+    "0x291efb": {
+      "speaker": "Kuon",
+      "tone_register": "entusiasmado, mudança de tópico voluntária",
+      "intent": "fugir da discussão desconfortável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que vou ajudar a Rulutieh!"
+    },
+    "0x291f1a": {
+      "speaker": "Ougi",
+      "tone_register": "educado tímido, hesitante",
+      "intent": "oferecer ajuda seguindo liderança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E-Eu também ajudo, cara irmã--"
+    },
+    "0x291f66": {
+      "speaker": "Kuon",
+      "tone_register": "caloroso, exclusão gentil",
+      "intent": "pedir que não interfira; confiança delegada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "pode lidar com isto melhor do que me atrapalhar."
+    },
+    "0x291f8f": {
+      "speaker": "Haku",
+      "tone_register": "determinado, auto-instruído",
+      "intent": "reconhecer necessidade de preparação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devo me apressar e se preparar pra sair."
+    },
+    "0x291fb9": {
+      "speaker": "Haku",
+      "tone_register": "contemplativo, atmosfera reflexiva",
+      "intent": "reação emocional ao chegar num destino misterioso",
+      "risk_level": "medium",
+      "risk_notes": "Tuskur = localidade do mundo; 'huh' → 'hein?' captura incerteza/reflexão. Preservar tom de chegada significativa sem antecipar papel futuro de Raiko.",
+      "t": "Então isto é Tuskur, hein...?"
+    }
+  }
+}

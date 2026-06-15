@@ -1,0 +1,666 @@
+{
+  "scene_group": "23_05",
+  "lines": [
+    {
+      "offset": "0x27fe1f",
+      "text_source": "What's this pill for...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "questionar a finalidade de um comprimido",
+      "risk_level": "low",
+      "base_translation": "Para que serve esse comprimido...?",
+      "byte_budget": 24,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27fe38",
+      "text_source": "Man",
+      "speaker": "Sistema",
+      "entities_present": [
+        "Sistema"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Hom",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27fe3c",
+      "text_source": "Hmhmhm... It's something like a new antibiotic\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético",
+      "intent": "Apresentar a substância de forma ambígua e perturbadora",
+      "risk_level": "high",
+      "base_translation": "Hmhmhm... É algo como um novo antibiótico\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter ambiguidade; não soar caloroso; 'antibiótico' é termo técnico mas acessível; verificar budget: tradução transliterada deve caber em 48 bytes"
+    },
+    {
+      "offset": "0x27fe6d",
+      "text_source": "I've developed.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "relatar desenvolvimento de um remédio",
+      "risk_level": "low",
+      "base_translation": "Eu desenvolvi.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27fe7d",
+      "text_source": "Uh huh...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "expressar confirmação ou dúvida leve",
+      "risk_level": "low",
+      "base_translation": "Hã hã...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27fe87",
+      "text_source": "Haha... No need to worry. You ARE the first\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, definitivo",
+      "intent": "Tranquilizar de forma ameaçadora; revelar que o interlocutor é cobaia",
+      "risk_level": "high",
+      "base_translation": "Haha... Não há com que se preocupar. Você É o primeiro\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Você É o primeiro' — manter ênfase; ambiguidade ameaçadora; sem calor"
+    },
+    {
+      "offset": "0x27feb5",
+      "text_source": "human test subject, but I've run all the\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, técnico",
+      "intent": "Continuar revelação sobre ser cobaia humana",
+      "risk_level": "medium",
+      "base_translation": "sujeito de teste humano, mas fiz todos os\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação direta; manter tom clínico"
+    },
+    {
+      "offset": "0x27fee0",
+      "text_source": "simulations.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "mencionar simulações de eficácia",
+      "risk_level": "low",
+      "base_translation": "simulações.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27feed",
+      "text_source": "I guarantee it's safe to take.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "assegurar segurança da medicação",
+      "risk_level": "low",
+      "base_translation": "Garanto que é seguro tomar.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x27ff0c",
+      "text_source": "That's not what I'm talking about.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "indicar que não compreende o ponto central",
+      "risk_level": "medium",
+      "base_translation": "Não é sobre isso que...",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preservar fragmentação de pensamento; protagonista desorientado não articula bem. Evitar fluidez."
+    },
+    {
+      "offset": "0x27ff31",
+      "text_source": "Is this... all really necessary for us?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "questionar a necessidade da situação",
+      "risk_level": "high",
+      "base_translation": "Isto... é tudo realmente necessário para nós?",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Alto risco de perder a fragmentação e torpor do protagonista. Pontuação e reticências mantêm o desordenado mental. Back-translation recomendada."
+    },
+    {
+      "offset": "0x27ff5d",
+      "text_source": "I'm actually starting to question all this too.\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, levemente hesitante",
+      "intent": "Insinuar dúvida própria sem perder frieza",
+      "risk_level": "high",
+      "base_translation": "Até eu estou começando a questionar tudo isso.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Personagem raro em mostrar hesitação; não resolver a ambiguidade; manter dubiedade"
+    },
+    {
+      "offset": "0x27ff8f",
+      "text_source": "I understand your sense of duty and all, but--",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "reconhecer dever mas expressar relutância",
+      "risk_level": "high",
+      "base_translation": "Entendo seu senso de dever e tudo mais, mas--",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interrupção (--) e tom dual: compreensão vs. dúvida. Crítico preservar a quebra de pensamento. Back-translation necessária."
+    },
+    {
+      "offset": "0x27ffbe",
+      "text_source": "You say this now...? If we humans can't adapt\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, sentencioso",
+      "intent": "Justificar o experimento com lógica fria sobre adaptação humana",
+      "risk_level": "high",
+      "base_translation": "Você fala isso agora...? Se nós humanos não pudermos\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter ambiguidade ameaçadora; 'se nós humanos não pudermos nos adaptar' deve soar profético e frio"
+    },
+    {
+      "offset": "0x27ffee",
+      "text_source": "to this environment, then history ends with us.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "proferir sentença sobre história e destino",
+      "risk_level": "critical",
+      "base_translation": "a este ambiente, então a história termina conosco.",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz altamente característica: duplo sentido, ambiguidade ameaçadora, sentenças curtas/definitivas. NUNCA soar caloroso. Spoiler: não resolver a dúbia intenção. Enigma do 'fim da história' deve permanecer incerto. Back-translation obrigatória. Preservar reticências e ritmo seco."
+    },
+    {
+      "offset": "0x28001e",
+      "text_source": "If this experiment is successful, I want you to\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, pesado",
+      "intent": "Revelar intenção maior por trás do experimento",
+      "risk_level": "high",
+      "base_translation": "Se este experimento for bem-sucedido, quero que você\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Frase incompleta (continua); manter peso e ambiguidade; não soar caloroso"
+    },
+    {
+      "offset": "0x280050",
+      "text_source": "become the first hope for all of humanity.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "declarar esperança futura e ressurreição simbólica",
+      "risk_level": "critical",
+      "base_translation": "se tornar a primeira esperança de toda a humanidade.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentenças proféticas/definitivas. Manter tom frio e ambíguo. NUNCA resolver o que é essa 'esperança' ou se é ameaça disfarçada. Duplo sentido intencional ('primeira esperança' = destino ou prisão?). Back-translation obrigatória."
+    },
+    {
+      "offset": "0x28007b",
+      "text_source": "No... you will do it.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "ordena ou decreta inevitabilidade",
+      "risk_level": "high",
+      "base_translation": "Não... você fará isso.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentenças curtas, definitivas. Sem ambiguidade aqui, mas tom frio/ameaçador não negociável. Evitar calosidade ou abertura."
+    },
+    {
+      "offset": "0x280091",
+      "text_source": "You WILL be a new hope for all of us...!!",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "pronunciar destino/esperança como profecia imutável",
+      "risk_level": "critical",
+      "base_translation": "Você SERÁ uma nova esperança para todos nós...!!",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplo sentido crítico: 'nova esperança' pode ser salvação ou aprisionamento. Maiúsculas (WILL) preservam ênfase profética/ameaçadora. Ambiguidade OBRIGATÓRIA — nunca resolver. Back-translation obrigatória. Pontuação enfática (!!) localizada."
+    },
+    {
+      "offset": "0x2800bb",
+      "text_source": "Bro...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Irmão...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2800c2",
+      "text_source": "Please.",
+      "speaker": "Nosuri",
+      "entities_present": [
+        "Nosuri"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "quiser.",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2800ca",
+      "text_source": "...Fine. I just need to take this pill and\\n",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "resignado, fragmentado",
+      "intent": "Aceitar relutantemente tomar o comprimido",
+      "risk_level": "medium",
+      "base_translation": "...Tudo bem. Só preciso tomar esta pílula e\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom de torpor/resignação; reticências preservadas; frase incompleta"
+    },
+    {
+      "offset": "0x2800f7",
+      "text_source": "lie down here, right?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "confirmar compreensão de instrução simples",
+      "risk_level": "low",
+      "base_translation": "deitar aqui, certo?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação leve; tom dorminhoco/desorientado aceitável."
+    },
+    {
+      "offset": "0x28010d",
+      "text_source": "Yes. Now then, let's get started.",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "dar início ao procedimento, transição suave",
+      "risk_level": "low",
+      "base_translation": "Sim. Agora, vamos começar.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom de cuidadora determinada mas afetuosa. Naturalidade de sequência."
+    },
+    {
+      "offset": "0x28012f",
+      "text_source": "Yeah...",
+      "speaker": "Kuon",
+      "entities_present": [
+        "Kuon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "É...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x280137",
+      "text_source": "The treatment will take some time, but to you\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, técnico",
+      "intent": "Explicar que o tratamento levará tempo mas será subjetivamente curto",
+      "risk_level": "medium",
+      "base_translation": "O tratamento levará algum tempo, mas para você\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação; manter tom clínico"
+    },
+    {
+      "offset": "0x280167",
+      "text_source": "it shouldn't feel very long. It'll be like...\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, suave mas perturbador",
+      "intent": "Minimizar a duração de forma ambígua e inquietante",
+      "risk_level": "high",
+      "base_translation": "não deve parecer muito longo. Será como...\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'como...' final deve permanecer aberto/ameaçador; não resolver; manter suspense"
+    },
+    {
+      "offset": "0x280197",
+      "text_source": "a short nap.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "descrever sonolência crescente",
+      "risk_level": "low",
+      "base_translation": "uma soneca rápida.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Onomatopeia/interjeição: 'Uh' localizada a português coloquial (Uh = 'hã'/interjec. de torpor). Preservar semiconsciência."
+    },
+    {
+      "offset": "0x2801a4",
+      "text_source": "There'll be a whole new world waiting for you\\n",
+      "speaker": "Homem (memória)",
+      "entities_present": [
+        "Homem (memória)"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Um mundo totalmente novo te aguarda\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2801d4",
+      "text_source": "when you wake up... Hmhmhm.",
+      "speaker": "Homem (memória)",
+      "entities_present": [
+        "Homem (memória)"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "quando você acordar... Hmhmhm.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2801f0",
+      "text_source": "Uh... Getting kinda sleepy...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "comentar sobre o efeito do medicamento",
+      "risk_level": "medium",
+      "base_translation": "Hã... Começando a ficar com sono...",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação com reticências; torpor aumentando. 'kinda' (certa informalidade) = coloquial pt-BR. Preservar o torpor crescente, não fluidificar."
+    },
+    {
+      "offset": "0x28020e",
+      "text_source": "All will look at you with envy.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "profetizar inveja/admiração futura como destino",
+      "risk_level": "high",
+      "base_translation": "Todos o olharão com inveja.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentença profética simples mas de tom ameaçador/sedutor (destino que outros invejam — pode ser prisão áurea). Duplo sentido: admiração vs. escravização? Back-translation recomendada. Manter frio."
+    },
+    {
+      "offset": "0x28022e",
+      "text_source": "...Yes, we will create true humanity with this.\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "solene, definitivo, profético",
+      "intent": "Declarar o objetivo maior: criar a verdadeira humanidade",
+      "risk_level": "high",
+      "base_translation": "...Sim, criaremos a verdadeira humanidade com isso.\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Frase central e grandiosa; manter peso e ambiguidade de 'verdadeira humanidade'"
+    },
+    {
+      "offset": "0x280260",
+      "text_source": "You... You will become the true--",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "iniciar revelação interrompida de destino/identidade",
+      "risk_level": "critical",
+      "base_translation": "Você... Você se tornará o verdadeiro--",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interrupção (--) deixa revelação em aberto. SPOILER CRÍTICO: não antecipar nome, identidade verdadeira ou natureza do 'verdadeiro' ser. A ambiguidade é anti-spoiler por construção. Duplo sentido ('true' = verdadeiro? divino? escravo?). Back-translation obrigatória. Preservar o ponto de interrupção."
+    },
+    {
+      "offset": "0x280282",
+      "text_source": "Yes... You are the first... and the last...",
+      "speaker": "Homem (memória)",
+      "entities_present": [
+        "Homem (memória)"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "Sim... Você é o primeiro... e o último...",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x2802ae",
+      "text_source": "Hope...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "balbuciar fragmento de palavra sob influência",
+      "risk_level": "high",
+      "base_translation": "Esper...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Onomatopeia de torpor/semiconsciência: balbucio. Balbucia parte de palavra (hope/esperança), sugerindo absorção subliminar. Localizar 'Hope' como 'Esper...' (truncado). Preservar fragmentação. Back-translation recomendada para validar sintaxe de balbucio pt-BR."
+    },
+    {
+      "offset": "0x2802b6",
+      "text_source": "What did you... just say...?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "questionar/ecoar confusamente o que ouviu",
+      "risk_level": "high",
+      "base_translation": "Você... Você disse o quê...?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Eco fragmentado: protagonista repete/questiona o que o Homem disse, ainda sob efeito. Reticências críticas para torpor. Back-translation necessária. Evitar fluidez."
+    },
+    {
+      "offset": "0x2802d3",
+      "text_source": "And I want you to create... the future... you...\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, fragmentado, profético",
+      "intent": "Encerrar com frase incompleta e carregada — o futuro e 'você'",
+      "risk_level": "critical",
+      "base_translation": "E quero que você crie... o futuro... você...\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Frase deliberadamente incompleta e fragmentada ('você...' sem conclusão); preservar exatamente a estrutura de reticências e a suspensão; ambiguidade máxima; não completar o pensamento"
+    },
+    {
+      "offset": "0x280306",
+      "text_source": "desi...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "balbuciar fragmento de palavra ininteligível",
+      "risk_level": "high",
+      "base_translation": "dese...",
+      "byte_budget": 7,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balbucio profundo, quase ininteligível (desejo?). Localizar como fragmento pt-BR (desejar/desi...). Preservar torpor máximo. Back-translation validar naturalidade do balbucio."
+    },
+    {
+      "offset": "0x28030e",
+      "text_source": "I'm...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, semi-consciente",
+      "intent": "começar frase que não completa, torpor máximo",
+      "risk_level": "medium",
+      "base_translation": "Eu...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Fragmentação máxima: apenas duas palavras inacabadas. Torpor final. Pontuação mínima preserva desorientação."
+    },
+    {
+      "offset": "0x280315",
+      "text_source": "The last...",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "proferir sentença final, sublime/ameaçadora",
+      "risk_level": "critical",
+      "base_translation": "O último...",
+      "byte_budget": 11,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Última frase do Homem, deixada em suspenso. Potencial spoiler de identidade (o 'último' de quê? ou de quem?). OBRIGATÓRIO manter ambiguidade — não resolver. Duplo sentido: último da linhagem? último ser mortal? último esperado? Back-translation crítica. Enigma inviolável."
+    }
+  ],
+  "total_lines": 41,
+  "high_lines": 20,
+  "medium_lines": 6,
+  "needs_review": [],
+  "plan_version": "chapter-23_05-v1"
+}

@@ -1,0 +1,522 @@
+{
+  "scene_group": "39_00",
+  "lines": [
+    {
+      "offset": "0x31d4b0",
+      "text_source": "*Sigh*... Man, I'm beat...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cansado, despojado",
+      "intent": "expressar cansaço físico",
+      "risk_level": "low",
+      "base_translation": "*Suspirot...*. Caramba, tô quebrado...",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d4cb",
+      "text_source": "Shoulder massage.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, arcaico",
+      "intent": "sugerir alívio para cansaço",
+      "risk_level": "low",
+      "base_translation": "Massagem de ombros.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d4dd",
+      "text_source": "Another job well done today, Master.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, erudito",
+      "intent": "elogiar o desempenho",
+      "risk_level": "low",
+      "base_translation": "Outro trabalho bem feito hoje, Mestre.",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d502",
+      "text_source": "Hooooooff... Yeah, that's the spot.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "relaxado, satisfeito",
+      "intent": "confirmar alívio da massagem",
+      "risk_level": "low",
+      "base_translation": "Aaahhh... Sim, é aí mesmo.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d526",
+      "text_source": "All these jobs lately just aren't worth it...\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, cansado, reclamando",
+      "intent": "desabafar sobre trabalhos ruins",
+      "risk_level": "low",
+      "base_translation": "Esses trampos ultimamente não valem nada...\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d556",
+      "text_source": "There's gotta be some quick and easy way to get\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, desejoso",
+      "intent": "querer um atalho fácil para ganhar dinheiro",
+      "risk_level": "low",
+      "base_translation": "Tinha que ter um jeito fácil e rápido de conseguir\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d588",
+      "text_source": "stronger.",
+      "speaker": "Narrator",
+      "entities_present": [
+        "Narrator"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "mais forte.",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d592",
+      "text_source": "Wonder if my brother has some kind of tech\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, especulativo",
+      "intent": "lembrar do irmão como possível fonte de solução",
+      "risk_level": "low",
+      "base_translation": "Será que meu irmão tem alguma técnica\\n",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d5bf",
+      "text_source": "that'll make me stronger just by sleeping.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, enigmático",
+      "intent": "descrever propriedade mágica",
+      "risk_level": "medium",
+      "base_translation": "que me tornará mais forte apenas dormindo.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Conceito mágico novo; preservar tom dúbio/erudito de Maroro"
+    },
+    {
+      "offset": "0x31d5ea",
+      "text_source": "Life would be so much easier if we had something\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, sonhador",
+      "intent": "imaginar como a vida seria melhor com algo conveniente",
+      "risk_level": "low",
+      "base_translation": "A vida seria muito mais fácil se tivéssemos algo\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d61d",
+      "text_source": "like that.",
+      "speaker": "Ukon",
+      "entities_present": [
+        "Ukon"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "assim.",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d62c",
+      "text_source": "Ah, well. Something that convenient probably\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cotidiano, resignado",
+      "intent": "concluir que algo conveniente demais provavelmente não existe",
+      "risk_level": "low",
+      "base_translation": "Ah, bom. Algo tão conveniente assim provavelmente\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d65b",
+      "text_source": "couldn't exist anyway.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, paradoxal",
+      "intent": "negar a possibilidade sem magia",
+      "risk_level": "low",
+      "base_translation": "não poderia existir mesmo assim.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d672",
+      "text_source": "It does.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "desorientado, semi-consciente",
+      "intent": "afirmação confusa",
+      "risk_level": "low",
+      "base_translation": "Faz sim.",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d67b",
+      "text_source": "Wait, what!?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, alarmado",
+      "intent": "reação de surpresa",
+      "risk_level": "low",
+      "base_translation": "Espera aí, o quê!?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d688",
+      "text_source": "An ancient art.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, reverente",
+      "intent": "nomear a arte mágica",
+      "risk_level": "low",
+      "base_translation": "Uma arte antiga.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d698",
+      "text_source": "It is a forbidden spell that even the Mikado\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "enigmático, profético, frio",
+      "intent": "apresentar o feitiço proibido com peso e ambiguidade",
+      "risk_level": "high",
+      "base_translation": "É um feitiço proibido que até o Mikado\\n",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menciona Mikado — manter_original conforme glossário; não antecipar vínculo pessoal (spoiler_ledger). Ambiguidade deve permanecer."
+    },
+    {
+      "offset": "0x31d6c7",
+      "text_source": "chose to avoid using. And it is called--",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, dramático",
+      "intent": "descrever evitação e revelar nome",
+      "risk_level": "high",
+      "base_translation": "escolheu evitar usar. E ela é chamada--",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Momento revelação de técnica mágica; tom enigmático deve ser preservado; nome da magia em suspensão"
+    },
+    {
+      "offset": "0x31d6f0",
+      "text_source": "The sleep-learning spell!",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "dramático, pomposo",
+      "intent": "revelar o nome da magia",
+      "risk_level": "medium",
+      "base_translation": "O feitiço do sono-aprendizado!",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nome de magia inventada; mantém tom melodramático"
+    },
+    {
+      "offset": "0x31d70a",
+      "text_source": "...This is starting to sound real fishy.",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cético, desconfiado",
+      "intent": "expressar ceticismo",
+      "risk_level": "low",
+      "base_translation": "...Isso tá cheirando muito estranho.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d733",
+      "text_source": "No need to worry.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, reassegurador",
+      "intent": "tranquilizar",
+      "risk_level": "low",
+      "base_translation": "Sem motivo para se preocupar.",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d745",
+      "text_source": "It is certain to have an effect. Satisfaction\\n",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "frio, definitivo, vendedor de ilusão",
+      "intent": "garantir efeito com tom ambíguo/ameaçador",
+      "risk_level": "medium",
+      "base_translation": "Certamente surtirá efeito. Satisfação\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom deve permanecer dúbio — não resolver ambiguidade entre promessa e ameaça."
+    },
+    {
+      "offset": "0x31d775",
+      "text_source": "guaranteed or your money back.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, comercial",
+      "intent": "fazer promessa garantida",
+      "risk_level": "low",
+      "base_translation": "garantido ou seu dinheiro de volta.",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d794",
+      "text_source": "And how's that money-back guarantee supposed to\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "cético, irônico, informal",
+      "intent": "questionar a garantia de devolução de dinheiro com ceticismo",
+      "risk_level": "low",
+      "base_translation": "E como essa garantia de reembolso vai\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d7c6",
+      "text_source": "work...? Whatever. It's worth a shot. So I just\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "resignado, informal, decidido",
+      "intent": "aceitar tentar mesmo sem confiar totalmente",
+      "risk_level": "low",
+      "base_translation": "funcionar...? Tanto faz. Vale tentar. Então é só\\n",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d7f8",
+      "text_source": "fall asleep?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, cético",
+      "intent": "questionar o processo",
+      "risk_level": "low",
+      "base_translation": "adormecer?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d805",
+      "text_source": "We shall begin at once.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "pomposo, solene",
+      "intent": "iniciar procedimento",
+      "risk_level": "low",
+      "base_translation": "Começaremos imediatamente.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d81d",
+      "text_source": "We shall start by chanting the spell. Please relax\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, acolhedor",
+      "intent": "iniciar o ritual pedindo que Haku relaxe",
+      "risk_level": "low",
+      "base_translation": "Vamos começar recitando o feitiço. Por favor, relaxe\\n",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d852",
+      "text_source": "and close your eyes.",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "suave, instrutor",
+      "intent": "instruir ação",
+      "risk_level": "low",
+      "base_translation": "e feche seus olhos.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d867",
+      "text_source": "L-Like this?",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "hesitante, desorientado",
+      "intent": "confirmar ação com dúvida",
+      "risk_level": "low",
+      "base_translation": "A-Assim?",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31d874",
+      "text_source": "Deilnidrah, deilnidrah...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "místico, incantação",
+      "intent": "recitar encantamento",
+      "risk_level": "high",
+      "base_translation": "Deilnidrah, deilnidrah...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Palavras mágicas/nonsense — transliteração preservada; som/ritmo do encantamento crítico; preservar estranheza"
+    },
+    {
+      "offset": "0x31d88e",
+      "text_source": "Suolucidteews, suolucidteews...",
+      "speaker": "Maroro",
+      "entities_present": [
+        "Maroro"
+      ],
+      "tone_register": "místico, incantação intensificada",
+      "intent": "aprofundar encantamento",
+      "risk_level": "high",
+      "base_translation": "Suolucidteews, suolucidteews...",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Continuação de encantamento; som invertido/mágico; preservar o padrão e a crescente mágica"
+    }
+  ],
+  "total_lines": 32,
+  "high_lines": 4,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "chapter-39_00-v1"
+}
