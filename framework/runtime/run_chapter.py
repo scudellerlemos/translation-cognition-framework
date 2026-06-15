@@ -34,6 +34,47 @@ import kb_gate         # noqa: E402
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
 
+# PREVISIBILIDADE — estimativa pre-voo: custo esperado ANTES de gastar, derivado do nº de linhas.
+# Faixa medida (batch -50% + back-translation; com recuperacao-por-linha do model._api_translate):
+# ~$0.0007 (otimista, muito reuso de TM) a ~$0.0014 (pessimista, pouco reuso) por linha. O reuso de TM
+# (dedup) puxa o real p/ BAIXO -> trate o topo como teto-ish, nao piso. Game-agnostico.
+_USD_PER_LINE_LO = 0.0007
+_USD_PER_LINE_HI = 0.0014
+
+
+def _count_lines(root: Path, scenes) -> int:
+    """Soma as linhas (dialogs.csv) das cenas dadas — base da estimativa de custo."""
+    import csv
+    n = 0
+    for s in scenes:
+        d = paths.artifacts(root) / s / "dialogs.csv"
+        if d.is_file():
+            with d.open(encoding="utf-8") as f:
+                n += sum(1 for _ in csv.DictReader(f))
+    return n
+
+
+def _estimate(root: Path, scenes) -> dict:
+    n = _count_lines(root, scenes)
+    return {"lines": n, "lo": n * _USD_PER_LINE_LO, "hi": n * _USD_PER_LINE_HI}
+
+
+def _fit_budget(root: Path, scenes, max_usd):
+    """Subconjunto de `scenes` (preservando a ordem) cujo custo estimado PESSIMISTA acumulado cabe em
+    max_usd, + as que sobraram. Usa _USD_PER_LINE_HI -> garante TETO: mesmo no pior caso o trabalho
+    comprometido fica <= max_usd (o reuso de TM so melhora). max_usd None -> tudo cabe (sem teto)."""
+    if max_usd is None:
+        return list(scenes), []
+    fit, dropped, acc = [], [], 0.0
+    for s in scenes:
+        c = _count_lines(root, [s]) * _USD_PER_LINE_HI
+        if acc + c <= max_usd:
+            fit.append(s)
+            acc += c
+        else:
+            dropped.append(s)
+    return fit, dropped
+
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
     art = paths.artifacts(root)
@@ -110,10 +151,30 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
 
-    # MODO BATCH: traduz todas as pendentes num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
+    # PREVISIBILIDADE: estima o custo das cenas PENDENTES (nao-verified) ANTES de gastar 1 centavo.
+    pend_est = [s for s in scenes if redo or not _verified(root, s)]
+    est = _estimate(root, pend_est)
+    print(f"estimativa pre-voo: {est['lines']} linha(s) pendente(s) -> ~${est['lo']:.2f}-${est['hi']:.2f}"
+          f" (reuso de TM puxa p/ baixo)"
+          + (f" | teto --max-usd ${max_usd:.2f}" if max_usd is not None else ""))
+
+    # TETO DURO PREVISIVEL: comete ao batch SO as cenas cujo custo pessimista acumulado cabe no teto;
+    # as que nao cabem sao ADIADAS (skipped_budget), nunca traduzidas caro no interativo. Sem gasto-
+    # surpresa: o trabalho iniciado tem custo de pior-caso <= max_usd. Resto resumivel apos recarga.
+    affordable, budget_excluded = _fit_budget(root, pend_est, max_usd)
+    budget_excluded = set(budget_excluded)
+    if budget_excluded:
+        print(f"[teto ${max_usd:.2f}] {len(budget_excluded)} cena(s) adiada(s) por orcamento "
+              f"(resumiveis apos recarga): {', '.join(sorted(budget_excluded, key=context_pack.scene_id_of))}")
+    if max_usd is not None and not affordable and pend_est:
+        print(f"\nABORTADO ANTES DE GASTAR: nem a 1a cena pendente cabe em --max-usd ${max_usd:.2f} "
+              f"(estimativa ~${est['lo']:.2f}-${est['hi']:.2f}). Aumente o teto ou recarregue. Nada foi gasto.")
+        return {"chapter": chap, "scenes": [], "status": "stopped_budget_preflight"}
+
+    # MODO BATCH: traduz as pendentes QUE CABEM num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
     batch_status = {}
     if batch and backend == "api":
-        pending = [s for s in scenes if redo or not _verified(root, s)]
+        pending = [s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
         if pending:
             batch_status = _batch_phase(root, pending, skip_kb_gate=skip_kb_gate)
 
@@ -122,6 +183,10 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         if not redo and _verified(root, scene):
             print(f"[skip] {scene} ja verified")
             results.append({"scene": scene, "status": "skipped"})
+            continue
+        if scene in budget_excluded:                  # adiada no pre-voo por orcamento — nao gasta
+            print(f"[teto] {scene} adiada por orcamento (rode de novo apos recarga)")
+            results.append({"scene": scene, "status": "skipped_budget"})
             continue
         # TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
         # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
@@ -156,9 +221,13 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         else:
             _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
-    print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas.")
+    print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas."
+          + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
+             if budget_excluded else ""))
     _print_cost(root, chap)
-    return {"chapter": chap, "scenes": results, "status": "complete"}
+    # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
+    status = "stopped_budget" if budget_excluded else "complete"
+    return {"chapter": chap, "scenes": results, "status": status}
 
 
 def _print_cost(root: Path, chap: str | None = None):
