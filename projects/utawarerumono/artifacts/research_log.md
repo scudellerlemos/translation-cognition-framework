@@ -185,3 +185,41 @@ sao leak (a revelacao acontece neste cap.), mas as conexoes profundas ficam marc
 - Baixa confianca (1x, nao bloqueiam): Hiroshi / Hiroyuki (provaveis nomes de humanos pre-queda do arco
   sci-fi — manter se confirmados), Yaana Mauna, Imperial Palace ('Palacio Imperial'), Aru Hm.
 - Declinados (contracao/comum/interjeicao): Young, She'd, C'mon, Hmmm, Hm.
+
+## cap.23 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: Utawarerumono Wiki (Fandom) — paginas Benawi, Kurou + corpus cap.23. Capitulo da invasao de
+Yamato a Tuskur (defesa de Benawi). Recorrentes ja cobertos: Munechika, Tuskur, Kuon, Anju, Raiko.
+- **Benawi**: Mestre de Guerra (Warmaster) de Tuskur; ex-general (mononofu) de Kenashikourupe, rendeu-se
+  a Hakuowlo e passou a servir Tuskur ao lado de Kurou. MASCULINO. Forte senso de dever/defesa do pais.
+  manter_original. (wiki: Benawi)
+- **Kurou**: braco-direito e general companheiro de Benawi em Tuskur ('Lord Kurou'). MASCULINO.
+  manter_original. (wiki: Kurou)
+- **Warmaster**: patente militar (Warmaster of Tuskur). Traduzir -> 'Mestre de Guerra'. (wiki)
+- Ruido tratado no _STOP (nao-entidade): Bro, Eep, Hmhmhm, Hope, Later, They'd, Welcome, Almighty.
+  Baixa confianca / artefato de parse (1x, nao bloqueia): Dekopachi (gag de nome trocado de Dekopompo),
+  Assassin Grh / Center Blade (rotulo de engine 'Blade_Center'), Loincloth Force / Mononofu's Warehouse
+  (nomes-piada de cena unica; traduzir em contexto).
+
+## cap.30 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: Utawarerumono Wiki (Fandom) + corpus cap.30. Recorrentes ja cobertos: Oshtor, Vurai, Nekone,
+Nosuri, Honoka, Woshis, Anju.
+- **Yatanawarabe**: patente de servo/agente a servico do Mikado ('one of his Yatanawarabe'). Termo do
+  mundo. manter_original. (wiki)
+- **Ohn Riyaak** (Ohn-Riyaak): 'the Great Sealing' — grande selo/barreira magica do mundo. Nome proprio.
+  manter_original. (wiki)
+- Ruido tratado no _STOP: Ngh, Hee, Speak, Follow, Open, Osh, Hahh, True, Wonder. Artefatos de parse
+  (1x, nao bloqueiam): 'Anju Shit'/'O Osh'/'Wh Osh'/'Wh Lord Oshtor' (truncacoes de fala), Lounge Mode
+  (gag), Goodbadguy (apelido de cena), Yatanawarabe Liveruni (Yatanawarabe + nome).
+
+## cap.31 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: corpus cap.31 (2 cenas). Recorrentes ja cobertos: Haku, Oshtor, Ennakamuy, Vurai, Rulutieh.
+- Sem entidade nova bloqueante. 'Run' (6x) = verbo/imperativo ('Run, and never stop running'), nao
+  entidade -> _STOP. Baixa confianca (1x): Timanonna ('the sun's flower' — metafora/flor, conferir
+  na revisao humana; provavel termo poetico, traduzir em contexto).
+
+## cap.39 — delta de KB (reconciliado IA+wiki, 2026-06-14)
+Fonte: corpus cap.39 (DLC/pos-jogo, 4 cenas). Recorrentes ja cobertos: Mikado.
+- **Dream Arena**: recurso pos-jogo (arena de batalha desbloqueavel; '{c5}Dream Arena{c-} has been
+  added'). UI -> 'Arena dos Sonhos'. (corpus)
+- Baixa confianca / nonsense proposital (sonho): Deilnidrah / Suolucidteews / Suoluc (palavras de sonho,
+  varias ao contrario: 'Suolucidteews' = 'sweeticulos' invertido; manter como onomatopeia/nonsense).

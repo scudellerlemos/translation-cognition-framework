@@ -291,14 +291,12 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     client = _client()
     # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena (so as novas)
     system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
-    red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)   # render so as linhas novas
-    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE  # Carta ja no system
-    base_user += quality_note   # feedback de qualidade da back-translation (quality_fix); "" no fluxo normal
+    novel_by_off = {r["offset"]: r for r in novel}
     offsets = [r["offset"] for r in novel]
     offset_set = set(offsets)
     budgets = {r["offset"]: r.get("byte_budget") for r in novel}
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
-    note, last, usage = "", None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+    last, usage = None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
     merged = {}        # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
     # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
@@ -313,11 +311,20 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         b = budgets.get(off)
         return b and _translit_len((v or {}).get("t", "")) > b * tol
 
+    def _render(target, note):
+        # PREVISIBILIDADE (recuperacao por-linha): o 1o passe manda TODAS as linhas novas; a re-rodada manda
+        # SO as quebradas (faltantes/paridade-ruim/acima-do-budget), nunca a cena inteira de novo. O
+        # context_pack (glossario/vozes/decisoes/TM) vai junto em qualquer caso -> a coerencia de cena se
+        # preserva; muda so a LISTA de linhas a traduzir -> custo de retry ∝ linhas quebradas, nao ∝ cena.
+        red = dict(pack); red["lines"] = target; red["n_lines"] = len(target)
+        return context_pack.render_prompt(red, carta="") + _NL_RULE + quality_note + note
+
+    target, note = novel, ""   # quality_note (back-translation/quality_fix) entra via _render; "" no fluxo normal
     for attempt in range(_MAX_TRIES):
         msg = _stream_final(
             client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
             system=system,
-            messages=[{"role": "user", "content": base_user + note}],
+            messages=[{"role": "user", "content": _render(target, note)}],
             thinking=thinking,
             output_config=out_cfg,
         )
@@ -352,7 +359,10 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         if not missing and not bad_par and (not over or attempt == _MAX_TRIES - 1):
             merged.update(reuse)                      # reanexa as linhas reaproveitadas da TM
             return {"lines": merged}, usage, meta
-        note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
+        # PROXIMA RODADA = SO as linhas quebradas (recuperacao por-linha, nao re-traduz a cena inteira)
+        broken = set(missing) | set(bad_par) | {o for o, _b, _c in over}
+        target = [novel_by_off[o] for o in offsets if o in broken]
+        note = "\n\n## CORRECAO NECESSARIA (traduza SO as linhas acima; vamos MESCLAR com o resto ja pronto)\n"
         if missing:
             note += f"- Faltam estes offsets — INCLUA todos: {missing[:40]}\n"
         if bad_par:

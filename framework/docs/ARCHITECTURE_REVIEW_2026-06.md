@@ -1,8 +1,8 @@
-# Architecture Review #2 — pós-harness de escala (2026-06)
+# Revisão de arquitetura — pós-harness de escala (2026-06)
 
-> Segunda revisão de arquitetura, no mesmo espírito da #1 (que diagnosticou o estouro de sessão e
-> propôs o harness). Esta revisão avalia o estado **depois** de o harness ter sido construído e
-> endurecido, e registra **duas lacunas estruturais novas** que só ficaram visíveis agora.
+> Revisão de arquitetura feita logo após o harness de escala (a anterior diagnosticou o estouro de
+> sessão e propôs o harness). Esta avalia o estado **depois** de o harness ter sido construído e
+> endurecido, e registra **duas lacunas estruturais** que só ficaram visíveis agora.
 > Aterrada no código real (`framework/runtime/`), não em memória.
 
 ## Veredito geral

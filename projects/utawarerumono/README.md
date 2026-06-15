@@ -5,12 +5,13 @@ Este é o projeto de localização que originou o framework. Serve como **refer�
 
 ---
 
-## Estado: harness de escala em produção — **caps 11–19 verificados** ✅ (1ª metade do jogo)
+## Estado: **JOGO COMPLETO** — 16 capítulos traduzidos e verificados ✅
 
-O projeto evoluiu de "valida em 2 cenas" para **tradução em escala pelo harness stateless**
+O projeto evoluiu de "valida em 2 cenas" para **a obra inteira traduzida pelo harness stateless**
 (`framework/runtime/`). Cada cena roda como um **job isolado** (contexto O(cena)) via API headless; o
-chat só lança o driver de capítulo e lê o resumo. **Caps 11 a 19** estão **traduzidos e verificados
-ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco) — **77 cenas**:
+chat só lança o driver de capítulo e lê o resumo. **Os 16 capítulos** (toda a história do jogo) estão
+**traduzidos e verificados ponta-a-ponta** — round-trip byte-idêntico (resíduo 0) + back-translation de
+alto risco — **146 cenas, ~45.100 linhas**:
 
 | Capítulo | Cenas | Status |
 |---|---|---|
@@ -23,15 +24,23 @@ ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco) —
 | **17** | 5 | ✅ verificado |
 | **18** | 5 | ✅ verificado |
 | **19** | 8 | ✅ verificado |
-| 20–23, 30, 31, 39 | — | 🟡 extraídos, aguardando tradução (2ª metade) |
+| **20** | 19 | ✅ verificado |
+| **21** | 7 | ✅ verificado |
+| **22** | 7 | ✅ verificado (reveal sci-fi do final) |
+| **23** | 19 | ✅ verificado |
+| **30** | 11 | ✅ verificado |
+| **31** | 2 | ✅ verificado |
+| **39** | 4 | ✅ verificado (DLC/pós-jogo) |
 
-Gasto real acumulado: **~$43,5** (Sonnet $36,7 · Haiku $3,6 · Opus $3,2), **$0 desperdiçado** (medido
+Gasto real acumulado: **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5), **$0 desperdiçado** (medido
 pelo `api_ledger.jsonl`). Alavancas comprovadas/codadas no caminho de escala: **Sonnet aprovado** por
 benchmark (nível Opus-à-mão); **Batch −50%** vivo; **tiering** Haiku/Sonnet/Opus por complexidade;
-**dedup por TM**; **escalonamento cirúrgico** de fitting; **back-translation em batch** (+ amostragem
-~5%); **teto `--max-usd`**; **controle de spoiler/gênero** por ledger temporal (reveal Ukon=Oshtor em
-`ch_13_08`); **gate de fonte de KB** (`kb_review.py` + `kb_phase.py`); **revisão humana via XLSX** com
-**TM como coração** (o jogo não é re-traduzido inteiro após o QA). Governança com desenhos:
+**dedup por TM**; **recuperação por-linha** (defeito de 1 linha re-traduz ~1 linha, não a cena);
+**estimativa pré-voo + teto duro** (gasto de pior-caso conhecido antes de pagar — ver
+[README → Engenharia de custo](../../README.md#engenharia-de-custo-e-previsibilidade)); **back-translation
+em batch**; **controle de spoiler/gênero** por ledger temporal (reveal Ukon=Oshtor em `ch_13_08`);
+**gate de fonte de KB** (`kb_review.py` + `kb_phase.py`); **revisão humana via XLSX** com **TM como
+coração** (o jogo não é re-traduzido inteiro após o QA). Governança com desenhos:
 [`../../framework/docs/GOVERNANCE.md`](../../framework/docs/GOVERNANCE.md).
 
 ### Marco anterior — validação in-game do conector ✅ (1025 linhas, cap. 11_01/02)
@@ -131,4 +140,6 @@ O Passo 00 (extração) só avança se o gate de round-trip passar.
 - **Múltiplos pares de identidade dupla** com spoilers críticos (Ukon/Oshtor, Sakon/Mikazuchi, Mito/Mikado)
 - **Gestão de spoiler** rigorosa: nomes revelados nunca aparecem antes do `reveal_timing`
 - **Comédia com timing** sensível (Haku, Nosuri)
-- **Corpus extenso** (~33.000 linhas estimadas)
+- **Corpus extenso** (~45.100 linhas traduzidas, 16 capítulos)
+- **Glifos especiais do charset** (dígitos circulados ①②③ em sequências de puzzle) — preservados pela
+  transliteração NFD do conector (ver `connector/README.md`)
