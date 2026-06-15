@@ -31,6 +31,7 @@ import csv
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -44,17 +45,25 @@ import paths          # noqa: E402
 # 'marcar' = a COLUNA DE DECISÃO do humano: ele escreve CORRIGIR (ou corrigir) na linha que quer mudar.
 # O apply lê SÓ as linhas marcadas. 'revisar' é só DICA ($0, micro-QA da IA) de onde olhar — não decide nada.
 COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt",
-        "marcar", "correcao", "nota"]
+        "caixa", "marcar", "correcao", "nota"]
 
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
 
 # Largura do BALAO: o byte_budget garante que cabe no ARQUIVO (reinsercao), NAO que cabe na largura
-# VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida; o pt-BR (~+25% vs
-# EN) estoura linhas que no EN estavam no limite. Calibrado por QA in-game: o maior segmento EN que
-# COUBE no corpus tem 62 chars transliterados -> usamos 60 (margem). Segmento pt-BR > isso = risco de
-# sair do balao (o round-trip de bytes NAO pega isto).
-WIDTH_MAX = 60
+# VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida.
+# TESTE SEM IN-GAME (deterministico): a RE da fonte do jogo (Font.fnt) mostrou um ATLAS DE GRADE
+# UNIFORME (celula fixa por glifo, zero largura proporcional) -> a fonte e MONOESPACADA, logo
+# nº de caracteres VISIVEIS == largura real em pixels. Calibrado pelo corpus EN (que ja roda no jogo):
+# o ENVELOPE = o maior segmento de DIALOGO que o EN ja renderizou (provado em tela). A massa fica <=54,
+# mas ha linhas reais ate ~64 que o jogo embarcou -> usar o MAXIMO provado (62, abaixo do maior real),
+# nao o 99-pct (54 super-marcaria linhas que de fato cabem). Segmento pt-BR > 62 = mais largo que
+# qualquer EN que o jogo mostrou -> risco de sair do balao. (Narracao/credito em caixa larga pode passar
+# disso no EN; sao poucos e fora do balao de dialogo.)
+# IMPORTANTE: medir SO os glifos visiveis — tokens `{c5}/{c-1}/{W12}/...` NAO renderizam largura
+# (ex.: "H{W10}A{W10}V{W10}E..." sao poucos chars na tela). Ver _VISIBLE_RX.
+WIDTH_MAX = 62
+_VISIBLE_RX = re.compile(r"\{c-?\d*\}|\{W\d+\}|\{COLOR\}|\{END\}")   # tokens que NAO ocupam largura visual
 
 
 def _norm_cmp(s: str) -> str:
@@ -77,11 +86,40 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
     slen, tlen = model._translit_len(source), model._translit_len(target)
     if slen and (tlen > slen * 3 or (slen > 8 and tlen < slen * 0.4)):
         fl.append("tamanho")                              # outlier de comprimento
-    if any(model._translit_len(seg) > WIDTH_MAX for seg in (target or "").split(context_pack.TOKEN)):
+    if any(model._translit_len(_VISIBLE_RX.sub("", seg)) > WIDTH_MAX     # so glifos VISIVEIS (sem tokens)
+           for seg in (target or "").split(context_pack.TOKEN)):
         fl.append("largura")                              # segmento estoura a largura do balao (in-game)
     if _PTPT.search(target or ""):
         fl.append("pt-PT?")
     return ";".join(fl)
+
+
+def _envelope(s):
+    """(maior largura de segmento VISIVEL, nº de segmentos) de uma string. Quebra por TOKEN (\\n) OU
+    '\\n' literal; desconta tokens de formatacao (nao renderizam). Monospace -> chars = pixels."""
+    parts = re.split(re.escape(context_pack.TOKEN) + r"|\\n", s or "")
+    widths = [model._translit_len(_VISIBLE_RX.sub("", p)) for p in parts]
+    nseg = sum(1 for p in parts if p.strip())
+    return (max(widths) if widths else 0), max(nseg, 1)
+
+
+def _box_verdict(source: str, target: str) -> str:
+    """Veredito DETERMINISTICO de caixa, por linha: compara o pt-BR com a SUA EN (mesmo offset = MESMA
+    caixa). Como char=px (fonte monospace) e a EN JA rodou no jogo:
+      - pt-BR <= EN (largura E nº linhas) -> '' (CABE, provado; a caixa ja exibiu esse envelope).
+      - pt-BR > EN mas <= maior dialogo EN do jogo -> 'rever +Nc/+NL' (pode usar a folga da caixa).
+      - pt-BR > maior dialogo EN do jogo -> 'ESTOUROU +Nc' (mais largo que tudo que o jogo mostrou)."""
+    ew, el = _envelope(source)
+    pw, pl = _envelope(target)
+    if pw <= ew and pl <= el:
+        return ""
+    delta = []
+    if pw > ew:
+        delta.append(f"+{pw - ew}c")
+    if pl > el:
+        delta.append(f"+{pl - el}L")
+    head = "ESTOUROU" if pw > WIDTH_MAX else "rever"
+    return f"{head} {' '.join(delta)}".strip()
 
 
 def export(root, chapter) -> list[dict]:
@@ -104,7 +142,7 @@ def export(root, chapter) -> list[dict]:
             rows.append({"scene": scene, "offset": off, "speaker": ln.get("speaker", ""),
                          "risk": risk,
                          "revisar": _flags(src, tgt, risk, off in sampled, off in revise),
-                         "source_en": src, "target_pt": tgt,
+                         "source_en": src, "target_pt": tgt, "caixa": _box_verdict(src, tgt),
                          "marcar": "", "correcao": "", "nota": ""})
     return rows
 
@@ -122,6 +160,14 @@ def _bt_revise_offsets(root, scene) -> set:
     return {e.get("offset") for e in data.get("entries", []) if e.get("verdict") == "revise"}
 
 
+def width_violations(root, chapter=None) -> list:
+    """GATE de risco ALTO: linhas 'ESTOUROU' — pt-BR mais largo que QUALQUER dialogo EN que o jogo ja
+    mostrou (veredito determinístico da coluna 'caixa'; char=px monospace). Quebra quase certa -> loop ate
+    zerar. ('rever' = cresceu vs a propria EN mas dentro do envelope = zona cinza, NAO gateia; '' = cabe,
+    provado.) Ver _box_verdict."""
+    return [r for r in export(root, chapter) if (r.get("caixa") or "").startswith("ESTOUROU")]
+
+
 def write_csv(rows, out_path):
     with Path(out_path).open("w", encoding="utf-8-sig", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=COLS)
@@ -132,8 +178,8 @@ def write_csv(rows, out_path):
 
 # rotulos amigaveis (PT) p/ o XLSX, na MESMA ordem de COLS (a leitura mapeia por posicao)
 _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ingles (fonte)",
-              "Portugues (atual)", "Corrigir? (escreva CORRIGIR)", "Correcao (texto certo)",
-              "Nota (instrucao p/ IA)"]
+              "Portugues (atual)", "Caixa (cresceu vs EN?)", "Corrigir? (escreva CORRIGIR)",
+              "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
 _XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
              ("identico-fonte", "E8E8E8"), ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
@@ -201,6 +247,9 @@ def write_xlsx(rows, out_path):
     wrap = Alignment(vertical="top", wrap_text=True)
     top = Alignment(vertical="top")
     inputfill = PatternFill("solid", fgColor=_XLSX_INPUT)
+    cx = COLS.index("caixa") + 1                           # coluna 'caixa' (1-indexed)
+    box_red = PatternFill("solid", fgColor="FFC7CE")       # ESTOUROU (passou do maior EN)
+    box_org = PatternFill("solid", fgColor="FFE2C7")       # rever (cresceu vs EN)
     for r in rows:
         ws.append([r.get(c, "") for c in COLS])
         i = ws.max_row
@@ -209,12 +258,18 @@ def write_xlsx(rows, out_path):
         for col in range(1, len(COLS) + 1):
             cell = ws.cell(row=i, column=col)
             cell.font = Font(name="Arial", size=10)
-            cell.alignment = wrap if col in (6, 7, 9, 10) else top
-            if col in (8, 9, 10):                          # Corrigir?/Correcao/Nota = input do humano (amarelo)
+            cell.alignment = wrap if col in (6, 7, 10, 11) else top
+            if col in (9, 10, 11):                          # Corrigir?/Correcao/Nota = input do humano (amarelo)
                 cell.fill = inputfill
+            elif col == cx:                                 # 'caixa': cor por veredito (det.)
+                cv = r.get("caixa", "")
+                if cv.startswith("ESTOUROU"):
+                    cell.fill = box_red
+                elif cv:
+                    cell.fill = box_org
             elif fill is not None:
                 cell.fill = fill
-    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 52, 7: 52, 8: 16, 9: 42, 10: 28}
+    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 50, 7: 50, 8: 18, 9: 16, 10: 42, 11: 28}
     for col, w in widths.items():
         ws.column_dimensions[ws.cell(row=1, column=col).column_letter].width = w
     ws.freeze_panes = "A2"                                 # cabecalho fixo ao rolar
@@ -311,6 +366,70 @@ def returned_files(root, arg) -> list[Path]:
                   if f.suffix.lower() in (".xlsx", ".csv") and not f.name.startswith("~$"))
 
 
+# ----------------------------- TESTER in-game (print -> texto -> linha) -----------------------------
+# O tester NAO le offset (in-game so ve TEXTO). Ele digita um trecho do pt-BR que apareceu na tela +
+# larga o print (prova). Este localizador casa o trecho contra os approved_*.csv e devolve a linha.
+# DETERMINISTICO ($0, sem IA, sem OCR): "transformar print em texto" = o olho do tester; o print e prova.
+# O texto in-game e TRANSLITERADO (sem acento) -> dobramos acento dos dois lados pra casar (NFD).
+
+def _fold(s: str) -> str:
+    """Normaliza p/ casar com o que aparece NA TELA: tira tokens, dobra acento (NFD), minuscula, colapsa
+    espacos. 'está tão' -> 'esta tao' (= o transliterado in-game)."""
+    s = _VISIBLE_RX.sub("", (s or "").replace("\\n", " ").replace(context_pack.TOKEN, " "))
+    s = "".join(c for c in unicodedata.normalize("NFD", s) if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", s).strip().lower()
+
+
+def _approved_index(root):
+    """[(scene, offset, target_pt)] de TODAS as cenas (le approved_*.csv via artifact_io)."""
+    out = []
+    for scene in artifact_io.scenes(root, None):
+        tmap = artifact_io.translations_map(root, scene)
+        for off, v in (tmap or {}).items():
+            t = v.get("t", "") if isinstance(v, dict) else ""
+            if t:
+                out.append((scene, off, t))
+    return out
+
+
+def locate(index, snippet):
+    """Linhas cujo pt-BR (dobrado) CONTEM o trecho (dobrado). Trecho < 3 chars uteis -> [] (ambiguo demais)."""
+    q = _fold(snippet)
+    if len(q) < 3:
+        return []
+    return [(sc, off, t) for sc, off, t in index if q in _fold(t)]
+
+
+def tester_to_review(root, relato_path):
+    """Le relato_tester.csv (print, texto_visto, problema, sugestao) -> resolve cada relato p/ cena+offset
+    e monta linhas CORRIGIR (mesmo formato do devolvido). Retorna (rows, ambiguos, nao_achados)."""
+    root = Path(root)
+    with Path(relato_path).open(encoding="utf-8-sig", newline="") as fh:
+        relatos = list(csv.DictReader(fh))
+    index = _approved_index(root)
+    rows, ambiguous, missing = [], [], []
+    for r in relatos:
+        snip = (r.get("texto_visto") or "").strip()
+        if not snip:
+            continue
+        prob = (r.get("problema") or "").strip()
+        sug = (r.get("sugestao") or "").strip()
+        prnt = (r.get("print") or "").strip()
+        hits = locate(index, snip)
+        if len(hits) == 1:
+            sc, off, t = hits[0]
+            rows.append({"scene": sc, "offset": off, "source_en": "", "target_pt": t,
+                         "marcar": "CORRIGIR",
+                         "correcao": sug,                                   # sugestao = verbatim ($0)
+                         "nota": "" if sug else (f"{prob} (ver print {prnt})".strip())})  # senao = IA
+        elif not hits:
+            missing.append({"print": prnt, "texto_visto": snip, "problema": prob})
+        else:
+            ambiguous.append({"print": prnt, "texto_visto": snip, "n": len(hits),
+                              "candidatos": [f"{sc}:{off}" for sc, off, _ in hits[:8]]})
+    return rows, ambiguous, missing
+
+
 def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
     """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). `max_usd` so
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
@@ -354,7 +473,51 @@ def main():
                     help="arquivo OU pasta devolvida; OMITA p/ ler do inbox (artifacts/qa_revisao/devolvido/)")
     pa.add_argument("--model", default=None)
     pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
+    pw = sub.add_parser("width", help="GATE deterministico 'fora do balao': lista SO as linhas que estouram "
+                                      "a largura visual (exit 1 se houver); loop ate zerar")
+    pw.add_argument("project")
+    pw.add_argument("chapter", nargs="?", default=None, help="capitulo; OMITA p/ o jogo INTEIRO")
+    pw.add_argument("--out", default=None)
+    pt = sub.add_parser("tester", help="relato in-game do TESTER (trecho do texto visto + print) -> localiza "
+                                       "a linha e gera CORRIGIR no inbox (deterministico, $0, sem OCR/IA)")
+    pt.add_argument("project")
+    pt.add_argument("relato", nargs="?", default=None,
+                    help="relato_tester.csv; OMITA p/ usar teste_ingame/relato_tester.csv")
     a = ap.parse_args()
+    if a.cmd == "tester":
+        relato = a.relato or str(paths.qa_tester(Path(a.project)) / "relato_tester.csv")
+        if not Path(relato).is_file():
+            sys.exit(f"[tester] relato nao encontrado: {relato} (preencha o template em teste_ingame/).")
+        rows, ambiguous, missing = tester_to_review(a.project, relato)
+        if rows:
+            inbox = paths.qa_inbox(Path(a.project)); inbox.mkdir(parents=True, exist_ok=True)
+            out = inbox / "relato_tester_resolvido.csv"
+            write_csv(rows, out)
+            print(f"[tester] {len(rows)} relato(s) localizado(s) -> {out} (rode: quality_review.py apply <projeto>)")
+        else:
+            print("[tester] nenhum relato localizado de forma unica.")
+        for a_ in ambiguous:
+            print(f"  AMBIGUO ({a_['n']}x) print={a_['print']} '{a_['texto_visto']}': {', '.join(a_['candidatos'])} "
+                  f"-> desempate pelo print e edite o devolvido a mao")
+        for m in missing:
+            print(f"  NAO ACHADO print={m['print']} '{m['texto_visto']}' -> trecho maior/mais exato")
+        sys.exit(0)
+    if a.cmd == "width":
+        rows = width_violations(a.project, a.chapter)
+        scope = f"cap_{a.chapter}" if a.chapter else "all"
+        label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
+        if not rows:
+            print(f"[width] {label}: OK — 0 linha(s) fora do balao (segmento <= {WIDTH_MAX} translit).")
+            sys.exit(0)
+        if a.out:
+            out = a.out
+        else:
+            outbox = paths.qa_outbox(Path(a.project)); outbox.mkdir(parents=True, exist_ok=True)
+            out = str(outbox / f"review_largura_{scope}.xlsx")
+        write_xlsx(rows, out)                              # arquivo SO com as linhas problematicas
+        print(f"[width] {label}: {len(rows)} linha(s) FORA DO BALAO (segmento > {WIDTH_MAX}) -> {out}")
+        print("        Encurte (CORRIGIR + Correcao/Nota), rode 'apply', e re-rode 'width' ate zerar.")
+        sys.exit(1)                                        # gate: exit !=0 alimenta o loop ate ficar limpo
     if a.cmd == "export":
         rows = export(a.project, a.chapter)
         scope = f"cap_{a.chapter}" if a.chapter else "all"
