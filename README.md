@@ -250,12 +250,12 @@ loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem 
 
 ```mermaid
 flowchart TB
-  bin[("binário do jogo<br/>(.sdat, read-only)")]:::sta
+  bin[("binário do jogo<br/>.sdat · read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
-  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz (IA) → micro-QA por lote → reinsere"]:::cog
+  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
   pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
-  build --> qa["QA HUMANO<br/>REVISOR (texto) + TESTER (in-game)"]:::val
-  qa -->|"correção cirúrgica via TM<br/>(não re-traduz o jogo)"| pipe
+  build --> qa["QA HUMANO<br/>REVISOR no texto + TESTER in-game"]:::val
+  qa -->|"correção cirúrgica via TM · não re-traduz o jogo"| pipe
   qa --> rel["RELEASE<br/>patch + instalação"]:::exe
   rel --> play(["🎮 pessoa joga em pt-BR"]):::good
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
