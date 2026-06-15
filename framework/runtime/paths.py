@@ -50,6 +50,8 @@ def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.cs
 # INBOX: o humano DEVOLVE aqui o XLSX preenchido; o apply le SO as linhas marcadas (Correcao/Nota).
 def qa_outbox(root) -> Path:            return artifacts(root) / "qa_revisao" / "para_revisar"
 def qa_inbox(root) -> Path:             return artifacts(root) / "qa_revisao" / "devolvido"
+# TESTER in-game: larga prints + preenche relato_tester.csv (trecho do texto visto + problema).
+def qa_tester(root) -> Path:            return artifacts(root) / "qa_revisao" / "teste_ingame"
 
 
 # ---- estado duravel destilado (artifacts/state/) ----
