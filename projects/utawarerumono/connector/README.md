@@ -17,7 +17,7 @@ flowchart LR
   bin[(".sdat<br/>binário do jogo")] -->|"extract.py"| csv[("dialogs.csv<br/>corpus")]
   csv -->|"tradução +<br/>approved_*.csv"| rein["reinsert.py"]
   rein --> out[(".sdat traduzido<br/>+ patch .ips")]
-  bin -. "round-trip: extrair→reinserir SEM mudar = bytes idênticos (oráculo de correção)" .-> rein
+  bin -. "round-trip: extrair→reinserir sem mudar = bytes idênticos · oráculo" .-> rein
   classDef io fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   class bin,csv,rein,out io;
 ```
