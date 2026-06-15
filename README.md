@@ -59,7 +59,7 @@ flowchart TB
     v1["round-trip · back-translation · fonte de KB · spoiler · naturalidade"]
   end
   C --> S --> E --> V
-  V -->|reprova → não avança| E
+  V -->|"reprova → não avança"| E
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
   classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
@@ -127,7 +127,7 @@ Cinco decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 ```mermaid
 flowchart LR
   ia{{"IA<br/>propõe"}} --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
-  human["humano<br/>(palavra final)"] -.->|revisa & ratifica| gate
+  human["humano<br/>(palavra final)"] -.->|"revisa & ratifica"| gate
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
   class ia ia;
 ```
@@ -138,7 +138,7 @@ flowchart LR
 
 Três tipos de ator, com fronteiras explícitas. **A IA nunca julga** — ela **propõe** (tradução) e
 **revisa** (back-translation). Quem dá veredito é o **gate determinístico** (juiz objetivo das regras)
-e, acima de tudo, o **humano (juiz final** do sentido, da voz e da tela).
+e, acima de tudo, o **humano (juiz final do sentido, da voz e da tela)**.
 
 | Ator | Papel | Faz | NÃO faz |
 |---|---|---|---|
@@ -151,7 +151,7 @@ e, acima de tudo, o **humano (juiz final** do sentido, da voz e da tela).
 
 > **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, **o humano é o juiz**.* A IA
 > **revisa** (a back-translation aponta o que cheira mal); quem **julga** é o gate (objetivo, sobre
-> regras) ou o **humano (juiz final**, sobre sentido e gosto). Detalhe com desenhos em
+> regras) ou o **humano (juiz final, sobre sentido e gosto)**. Detalhe com desenhos em
 > [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) e os papéis humanos em
 > [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md).
 
@@ -308,8 +308,10 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ## Status
 
-> junho 2026 — **o jogo de referência está 100% traduzido, verificado e com QA.** O framework saiu do
-> "valida em 2 cenas" e entregou uma obra inteira de ponta a ponta, a custo medido e previsível.
+> junho 2026 — **o jogo de referência está 100% traduzido e verificado** (round-trip byte-idêntico +
+> back-translation de alto risco). A **QA humana literária** e a **pós-produção (build/release)** seguem
+> pendentes — ver [ROADMAP](ROADMAP.md#riscos-do-projeto). O framework saiu do "valida em 2 cenas" e
+> entregou uma obra inteira de ponta a ponta, a custo medido e previsível.
 
 - **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
   (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**

@@ -1,5 +1,5 @@
 # Conector — Utawarerumono
-## Estado: ✅ jogo inteiro reinsere e round-trip íntegro (16 caps, ~45.100 linhas); validado in-game
+## Estado: ✅ jogo inteiro reinsere e round-trip íntegro (16 capítulos, ~45.100 linhas); validado in-game
 
 Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.md`). O formato do
 `ScriptEvent.sdat` foi mapeado por engenharia reversa — ver `table_schema.md`.
@@ -58,7 +58,7 @@ flowchart LR
       146 cenas, ~45.100 linhas, pelo harness (`framework/runtime/`). Ordem offset × ordem narrativa
       confirmada em todos (nenhuma divergência pega pela back-translation/QA).
 - [ ] **Pós-produção:** reinsert do **jogo inteiro num passe só** + patch IPS final (hoje é por
-      capítulo) e **gate visual in-game** dos saltos grandes (caps 30/39). Ver `ROADMAP.md`.
+      capítulo) e **gate visual in-game** dos saltos grandes (capítulos 30/39). Ver `ROADMAP.md`.
 
 ## Como rodar
 
