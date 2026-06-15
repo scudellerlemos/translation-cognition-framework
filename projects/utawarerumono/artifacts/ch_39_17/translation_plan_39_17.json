@@ -1,0 +1,410 @@
+{
+  "scene_group": "39_17",
+  "lines": [
+    {
+      "offset": "0x31f25b",
+      "text_source": "Master, it is morning.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, nobre, comedido",
+      "intent": "acordar o protagonista com respeito",
+      "risk_level": "low",
+      "base_translation": "Mestre, já é manhã.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f272",
+      "text_source": "Good morning, Master. It is time for you to\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "cotidiano gentil, cuidadora",
+      "intent": "acordar o Haku com gentileza, anunciar que é hora de levantar",
+      "risk_level": "medium",
+      "base_translation": "Bom dia, Mestre. Está na hora de você\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "linha cortada — continuação desconhecida; budget 45 bytes; transliterado 'Bom dia, Mestre. Está na hora de você\n' ~38 bytes OK"
+    },
+    {
+      "offset": "0x31f2a0",
+      "text_source": "wake up.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "despertar gradualmente",
+      "risk_level": "low",
+      "base_translation": "acorde...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f2a9",
+      "text_source": "*Yawn*...",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "*Bocejo*...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f2b3",
+      "text_source": "Nnngh... I feel like I had a really long\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "semi-consciente, sonolento",
+      "intent": "resmungar ao acordar, comentar que dormiu muito",
+      "risk_level": "low",
+      "base_translation": "Nnh... Parece que dormi por um tempão...\\n",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f2de",
+      "text_source": "dream...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "emergir de um sonho",
+      "risk_level": "low",
+      "base_translation": "sonho...",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f2e7",
+      "text_source": "So what's the verdict, you two? You think I'm\\n",
+      "speaker": "Garota",
+      "entities_present": [
+        "Garota"
+      ],
+      "tone_register": "curioso, levemente irônico",
+      "intent": "perguntar se o sono longo teve algum efeito — tom brincalhão",
+      "risk_level": "low",
+      "base_translation": "Então, qual o veredito? Vocês acham que eu\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f317",
+      "text_source": "any stronger?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "questionar sensações físicas",
+      "risk_level": "low",
+      "base_translation": "mais forte?",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f325",
+      "text_source": "You were only sleeping, Master.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, nobre, comedido",
+      "intent": "reconfortar e informar",
+      "risk_level": "low",
+      "base_translation": "Você apenas dormia, Mestre.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f345",
+      "text_source": "If one could become stronger just by sleeping,\\n",
+      "speaker": "Garota ou Ukon",
+      "entities_present": [
+        "Garota ou Ukon"
+      ],
+      "tone_register": "irônico, debochado",
+      "intent": "rebater a ideia de que dormir muito deixa mais forte",
+      "risk_level": "medium",
+      "base_translation": "Se alguém pudesse ficar mais forte só dormindo,\\n",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "speaker ambíguo pela linha cortada; tom irônico preservado; 'Se alguém pudesse ficar mais forte só dormindo,\n' ~47 bytes OK"
+    },
+    {
+      "offset": "0x31f376",
+      "text_source": "hardships in this world would be no more.",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "reflexão existencial sobre sofrimento",
+      "risk_level": "medium",
+      "base_translation": "neste mundo não haveria mais sofrimento.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preservar ambiguidade (não resolver se o sonho era real ou premonição); evitar soar esperançoso demais."
+    },
+    {
+      "offset": "0x31f3a0",
+      "text_source": "W-Wait, hold on. What are you two talking about?\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, desorientado",
+      "intent": "interromper a conversa, pedir esclarecimento — não entende o que estão dizendo",
+      "risk_level": "low",
+      "base_translation": "E-Espera, calma. Sobre o que vocês dois estão falando?\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f3d3",
+      "text_source": "You know how much crap I went through in my\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "defensivo, indignado",
+      "intent": "alegar que passou por muita coisa difícil",
+      "risk_level": "low",
+      "base_translation": "Sabe quanto eu sofri durante o meu\\n",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f401",
+      "text_source": "dreams!?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "negação/dúvida súbita",
+      "risk_level": "low",
+      "base_translation": "sonhos!?",
+      "byte_budget": 8,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f40a",
+      "text_source": "Cannot comprehend.",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, nobre, comedido",
+      "intent": "confessar incompreensão diante do mistério",
+      "risk_level": "low",
+      "base_translation": "Não compreendo.",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f41d",
+      "text_source": "Perhaps the entire endeavor itself was only a\\n",
+      "speaker": "Garota ou outro",
+      "entities_present": [
+        "Garota ou outro"
+      ],
+      "tone_register": "irônico, neutro-frio",
+      "intent": "sugerir que tudo não passou de um sonho",
+      "risk_level": "medium",
+      "base_translation": "Talvez tudo isso não tenha passado de um\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'endeavor' = esforço/perrengue; 'Talvez tudo isso não tenha passado de um\n' ~42 bytes OK"
+    },
+    {
+      "offset": "0x31f44d",
+      "text_source": "dream?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "insistir na questão anterior",
+      "risk_level": "low",
+      "base_translation": "sonho?",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f454",
+      "text_source": "Well, yeah, of course I was dreaming, you\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "irritado, defensivo",
+      "intent": "confirmar que estava sonhando mas reagir com indignação ao comentário",
+      "risk_level": "low",
+      "base_translation": "Tá, tudo bem, eu estava sonhando, mas e\\n",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f480",
+      "text_source": "SAID--",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "lembrança fragmentada, interrupção abrupta",
+      "risk_level": "low",
+      "base_translation": "DISSE--",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f487",
+      "text_source": "...Wait a minute, was all that trouble I went\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "confuso, caindo em si",
+      "intent": "questionar se o esforço todo foi apenas dentro de um sonho",
+      "risk_level": "low",
+      "base_translation": "...Peraí, tudo que eu passei foi só um\\n",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f4b7",
+      "text_source": "through really only a dream?",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "questionar a natureza da realidade vivida",
+      "risk_level": "high",
+      "base_translation": "só era um sonho mesmo?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Spoiler potencial: a dúvida sobre realidade vs. sonho conecta ao reveal de identidade. Preservar a ambiguidade; não resolver. Fragmentação de fala exigida (reticências) mantém torpor."
+    },
+    {
+      "offset": "0x31f4d4",
+      "text_source": "Now that I think about it, I can barely remember\\n",
+      "speaker": "Haku",
+      "entities_present": [
+        "Haku"
+      ],
+      "tone_register": "reflexivo, ainda sonolento",
+      "intent": "constatar que mal consegue se lembrar do sonho",
+      "risk_level": "low",
+      "base_translation": "Agora que penso, mal consigo me lembrar\\n",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f507",
+      "text_source": "any of it now...",
+      "speaker": "Oshtor",
+      "entities_present": [
+        "Oshtor"
+      ],
+      "tone_register": "formal, nobre, comedido",
+      "intent": "confessar ignorância compassiva",
+      "risk_level": "low",
+      "base_translation": "de nada disto agora...",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31f518",
+      "text_source": "But that can't be... I'm sure...",
+      "speaker": "Protagonista",
+      "entities_present": [
+        "Protagonista"
+      ],
+      "tone_register": "confuso, desorientado, semi-consciente",
+      "intent": "negação incerta, questão existencial quebrada",
+      "risk_level": "high",
+      "base_translation": "Mas não pode ser... tenho certeza...",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Spoiler: identidade/memória em questão. Tom de dúvida profunda e torpor. Fragmentação com reticências e incerteza mantém o não-dito. Não resolver com certeza."
+    },
+    {
+      "offset": "0x31f53d",
+      "text_source": "And thus the wheels of time turn back.",
+      "speaker": "Homem",
+      "entities_present": [
+        "Homem"
+      ],
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "base_translation": "E assim as rodas do tempo retrocedem.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 25,
+  "high_lines": 2,
+  "medium_lines": 4,
+  "needs_review": [],
+  "plan_version": "chapter-39_17-v1"
+}

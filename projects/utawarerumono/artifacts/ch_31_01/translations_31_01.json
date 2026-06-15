@@ -1,0 +1,1972 @@
+{
+  "lines": {
+    "0x3169b8": {
+      "speaker": "SYSTEM",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "body"
+    },
+    "0x3169be": {
+      "speaker": "SYSTEM",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "face"
+    },
+    "0x3169c3": {
+      "speaker": "SYSTEM",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "hair"
+    },
+    "0x3169da": {
+      "speaker": "Sistema",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Guarda"
+    },
+    "0x316cfe": {
+      "speaker": "Ukon",
+      "tone_register": "informal",
+      "intent": "encerrar a frase anterior",
+      "risk_level": "medium",
+      "risk_notes": "budget 4; 'você.' -> 'isso.'",
+      "t": "isso."
+    },
+    "0x316ef2": {
+      "speaker": "Ukon",
+      "tone_register": "informal",
+      "intent": "concordar brevemente",
+      "risk_level": "medium",
+      "risk_notes": "budget 6; 'Certo.' -> 'Ok.'",
+      "t": "Ok."
+    },
+    "0x316ef9": {
+      "speaker": "SOLDIER",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "SOLDADO"
+    },
+    "0x316fc8": {
+      "speaker": "Oshtor",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "morte."
+    },
+    "0x317107": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "por aí."
+    },
+    "0x3172b8": {
+      "speaker": "Nekone",
+      "tone_register": "surpreso",
+      "intent": "reação de surpresa ao receber algo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hein?"
+    },
+    "0x317375": {
+      "speaker": "Ukon",
+      "tone_register": "surpreso",
+      "intent": "reagir brevemente",
+      "risk_level": "medium",
+      "risk_notes": "budget 3; 'Hm?' -> 'Hm?'",
+      "t": "Hm?"
+    },
+    "0x317872": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "no chão."
+    },
+    "0x31787e": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cara irmã..."
+    },
+    "0x3178a8": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon?"
+    },
+    "0x3179bd": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon..."
+    },
+    "0x3179c5": {
+      "speaker": "Kuon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você tem certeza disso?"
+    },
+    "0x317a8e": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah..."
+    },
+    "0x317d6c": {
+      "speaker": "Ukon",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "vista."
+    },
+    "0x317fd3": {
+      "speaker": "Nekone",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Q-Que...?"
+    },
+    "0x31849d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal caloroso",
+      "intent": "completar — a nós",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nós."
+    },
+    "0x316a33": {
+      "speaker": "Soldado",
+      "tone_register": "formal, urgente",
+      "intent": "Ordenar abertura imediata dos portões para os que retornam",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Abriremos os portões imediatamente!\\n"
+    },
+    "0x316b0f": {
+      "speaker": "Ukon",
+      "tone_register": "informal caloroso",
+      "intent": "recepcionar com leve bronca",
+      "risk_level": "medium",
+      "risk_notes": "budget 44; encurtado",
+      "t": "Bem-vindos! Demorou mais que o esperado,\\n"
+    },
+    "0x316b71": {
+      "speaker": "Ukon",
+      "tone_register": "informal, animado, vitorioso",
+      "intent": "Provocar Jachdwalt com bom humor após vencer aposta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Olha só, parece que ganhei, Jachdwalt.\\n"
+    },
+    "0x316bc3": {
+      "speaker": "Jachdwalt",
+      "tone_register": "informal, frustrado, bom humor",
+      "intent": "Admitir derrota na aposta, lamentar que a volta foi rápida demais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, droga. E eu achando que ia levar mais\\n"
+    },
+    "0x316c31": {
+      "speaker": "Ukon",
+      "tone_register": "informal, carinhoso, firme",
+      "intent": "Repreender Nekone para não sumir de novo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora, não quero você sumindo de novo, Nekone.\\n"
+    },
+    "0x316c64": {
+      "speaker": "Ukon",
+      "tone_register": "informal, compreensivo mas sério",
+      "intent": "Reconhecer sentimentos de Nekone mas repreender a atitude",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo como você se sentiu, mas isso foi\\n"
+    },
+    "0x316c9d": {
+      "speaker": "Ukon",
+      "tone_register": "preocupado",
+      "intent": "reprovar o risco que correram",
+      "risk_level": "medium",
+      "risk_notes": "budget 47; encurtado",
+      "t": "O que poderia ter acontecido? Demoraram\\n"
+    },
+    "0x316ccd": {
+      "speaker": "Ukon",
+      "tone_register": "informal, aliviado mas preocupado",
+      "intent": "Continuar expressando preocupação pela demora no retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "tempo para voltar que fiquei preocupado com\\n"
+    },
+    "0x316d25": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentil, hesitante",
+      "intent": "Perguntar com cuidado se algo está errado com Nekone",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nekone... está tudo bem?\\n"
+    },
+    "0x316d6b": {
+      "speaker": "Ukon",
+      "tone_register": "informal, brincalhão, caloroso",
+      "intent": "Perguntar de forma descontraída se Nekone está mal do estômago",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que foi, mocinha? Está com dor de\\n"
+    },
+    "0x316dbf": {
+      "speaker": "Ukon",
+      "tone_register": "informal direto",
+      "intent": "perguntar sobre o perseguidor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E quanto ao nosso perseguidor?\\n"
+    },
+    "0x316df2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal sóbrio",
+      "intent": "relatar destino do perseguidor",
+      "risk_level": "high",
+      "risk_notes": "menciona Vurai e 'querido irmão' — não antecipar twist; manter ambiguidade de identidade",
+      "t": "...Nosso perseguidor, o General Vurai... foi\\n"
+    },
+    "0x316e3d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal comedido",
+      "intent": "informar que o perigo passou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O perigo que enfrentávamos foi contido por\\n"
+    },
+    "0x316e93": {
+      "speaker": "Personagem",
+      "tone_register": "surpreso, respeitoso",
+      "intent": "Reagir com espanto ao feito de Oshtor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você realmente o derrotou... Mas claro,\\n"
+    },
+    "0x316ec1": {
+      "speaker": "Personagem",
+      "tone_register": "admirado, informativo",
+      "intent": "Ressaltar a identidade de Oshtor como Guarda Imperial",
+      "risk_level": "medium",
+      "risk_notes": "Menciona identidade de Oshtor — manter como fato público, sem antecipar twist.",
+      "t": "Oshtor É o famoso Guarda Imperial de\\n"
+    },
+    "0x316f01": {
+      "speaker": "Personagem",
+      "tone_register": "surpreso, reconhecendo",
+      "intent": "Confirmar se é o Vurai dos Oito Pilares",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espera, eles querem dizer o Vurai dos Oito\\n"
+    },
+    "0x316f69": {
+      "speaker": "Personagem",
+      "tone_register": "informativo, respeitoso",
+      "intent": "Confirmar e acrescentar contexto sobre Oshtor e a Alteza",
+      "risk_level": "medium",
+      "risk_notes": "Menciona relação Oshtor/Alteza — sem antecipar vínculos não revelados.",
+      "t": "De fato. Pelo que ouvi, o Senhor Oshtor\\n"
+    },
+    "0x316f97": {
+      "speaker": "Personagem",
+      "tone_register": "informativo",
+      "intent": "Detalhar que Oshtor salvou a Alteza de conspiração",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "resgatou Sua Alteza de uma conspiração contra\\n"
+    },
+    "0x316fcf": {
+      "speaker": "Haku",
+      "tone_register": "surpreso, confuso",
+      "intent": "Reagir com espanto ao saber que a Alteza está envolvida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua Alteza...? Espera, Sua Alteza está\\n"
+    },
+    "0x317020": {
+      "speaker": "Personagem",
+      "tone_register": "informativo, casual",
+      "intent": "Explicar que a Alteza confia muito em Oshtor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não sabia? Sua Alteza confia no Senhor Oshtor\\n"
+    },
+    "0x317053": {
+      "speaker": "Nekone",
+      "tone_register": "emotivo preocupado",
+      "intent": "justificar presença de alguém — continuação de frase",
+      "risk_level": "medium",
+      "risk_notes": "linha fragmentada sem contexto de início; traduzir como continuação natural",
+      "t": "mais do que ninguém. Claro que ela viria\\n"
+    },
+    "0x31708b": {
+      "speaker": "Haku",
+      "tone_register": "informal, impressionado",
+      "intent": "Expressar espanto entusiasmado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caramba! Isso é incrível!\\n"
+    },
+    "0x3170da": {
+      "speaker": "Personagem",
+      "tone_register": "casual, curioso",
+      "intent": "Perguntar onde está Haku, notar sua ausência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "De qualquer forma, cadê o Haku? Não o vejo\\n"
+    },
+    "0x31712b": {
+      "speaker": "Personagem",
+      "tone_register": "casual, curioso",
+      "intent": "Concordar e especular sobre o paradeiro de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmm, é mesmo. Para onde ele foi\\n"
+    },
+    "0x317164": {
+      "speaker": "Kuon",
+      "tone_register": "irritado, indignado",
+      "intent": "Reclamar que Haku não a acordou para a ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A audácia de não me acordar para algo tão\\n"
+    },
+    "0x317194": {
+      "speaker": "Nekone",
+      "tone_register": "irritado indignado",
+      "intent": "expressar raiva pela diversão de Haku às suas custas",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; manter energia irritada de Nekone",
+      "t": "Isso não é nada engraçado. Tenho que dar uma\\n"
+    },
+    "0x3171c9": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentil cauteloso",
+      "intent": "adivinhar o comportamento de Haku",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; voz hesitante de Rulutieh",
+      "t": "Acho que posso imaginar. Suponho que... ele reclamou\\n"
+    },
+    "0x3171fb": {
+      "speaker": "Nekone",
+      "tone_register": "resignado",
+      "intent": "Confirmar que Haku ficou para trás por cansaço",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que estava cansado demais e ficou para trás\\n"
+    },
+    "0x31724b": {
+      "speaker": "Nekone",
+      "tone_register": "compreensivo, resignado",
+      "intent": "Desculpar Haku pelo calor do sol",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, não posso culpá-lo. O sol está\\n"
+    },
+    "0x3173ee": {
+      "speaker": "Kuon",
+      "tone_register": "sério, enfático",
+      "intent": "Defender o caráter de Haku como cauteloso e determinado a sobreviver",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku é covarde. É extremamente cauteloso, e\\n"
+    },
+    "0x31742c": {
+      "speaker": "Kuon",
+      "tone_register": "convicto, enfático",
+      "intent": "Afirmar que Haku faria qualquer coisa para sobreviver",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei que ele faria tudo--TUDO para ficar vivo.\\n"
+    },
+    "0x3174de": {
+      "speaker": "Nekone",
+      "tone_register": "angustiado",
+      "intent": "pedir que Nekone faça parar a brincadeira",
+      "risk_level": "medium",
+      "risk_notes": "Nekone fala com Nekone — verificar se não é Kuon; linha cortada",
+      "t": "Nekone, diga a ele para parar com essa piada\\n"
+    },
+    "0x317592": {
+      "speaker": "Kuon",
+      "tone_register": "angustiado, acusatório",
+      "intent": "Questionar como Nekone deixou aquilo acontecer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você estava com ele... Como deixou isso\\n"
+    },
+    "0x317631": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "descrever ataque de Kuon com o leque",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; cena de alto impacto físico",
+      "t": "O leque de metal desce direto sobre o crânio dele\\n"
+    },
+    "0x31768e": {
+      "speaker": "Narrador",
+      "tone_register": "descritivo, dramático",
+      "intent": "Descrever todos desviando o olhar instintivamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos instintivamente desviam o olhar antes\\n"
+    },
+    "0x3176d7": {
+      "speaker": "Narrador",
+      "tone_register": "descritivo, aliviado",
+      "intent": "Descrever leque parado a um fio de distância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O leque metálico parou, a um fio de\\n"
+    },
+    "0x31771c": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo emotivo",
+      "intent": "descrever o leque tremendo na mão de Kuon",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; cena emocional intensa",
+      "t": "O leque treme na mão de Kuon enquanto permanece\\n"
+    },
+    "0x31779c": {
+      "speaker": "Narrador/Kuon",
+      "tone_register": "emocional, nostálgico",
+      "intent": "Evocar memórias dos dias vividos juntos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Todos os dias que passei com vocês... foi uma\\n"
+    },
+    "0x317812": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo emotivo",
+      "intent": "descrever o braço de Kuon caindo",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; momento de colapso emocional",
+      "t": "O braço de Kuon cai frouxo ao lado do corpo, o metal\\n"
+    },
+    "0x317843": {
+      "speaker": "Narrador",
+      "tone_register": "descritivo, melancólico",
+      "intent": "Continuar descrição do leque caindo ao chão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "escorregando da mão e tilintando no\\n"
+    },
+    "0x3178ae": {
+      "speaker": "Haku",
+      "tone_register": "introspectivo, pesaroso",
+      "intent": "Lamentar ter salvo alguém em primeiro lugar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Só... o salvei para começo de conversa...\\n"
+    },
+    "0x31793b": {
+      "speaker": "Kuon",
+      "tone_register": "melancólico",
+      "intent": "explicar que só ficou até Haku aprender",
+      "risk_level": "high",
+      "risk_notes": "linha cortada; revela motivação da presença de Kuon — não antecipar outros fatos",
+      "t": "Só pude ficar aqui... até Haku aprender\\n"
+    },
+    "0x3179de": {
+      "speaker": "Haku",
+      "tone_register": "melancólico, caloroso",
+      "intent": "Expressar gratidão pelos momentos vividos e perguntar a Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Me diverti muito com todos vocês. Kuon, você\\n"
+    },
+    "0x317b02": {
+      "speaker": "Haku",
+      "tone_register": "narração introspectiva",
+      "intent": "considerar contar a verdade só para Kuon",
+      "risk_level": "high",
+      "risk_notes": "spoiler Oshtor — não revelar identidade; 'a morte de Oshtor' não pode ser antecipada como identidade",
+      "t": "...Talvez eu pudesse contar a verdade para Kuon,\\n"
+    },
+    "0x317b2f": {
+      "speaker": "Haku",
+      "tone_register": "interno conflitado",
+      "intent": "limitar — somente Kuon, mais ninguém",
+      "risk_level": "high",
+      "risk_notes": "linha cortada; spoiler de identidade — manter ambiguidade",
+      "t": "e mais ninguém--\\n"
+    },
+    "0x317b52": {
+      "speaker": "Haku",
+      "tone_register": "interno sóbrio",
+      "intent": "afirmar que ninguém pode saber da morte de Oshtor",
+      "risk_level": "critical",
+      "risk_notes": "revela morte de Oshtor e o segredo central — spoiler crítico; tradução deve preservar peso sem antecipar desdobramentos",
+      "t": "Ninguém pode saber da morte de Oshtor.\\n"
+    },
+    "0x317b93": {
+      "speaker": "Haku",
+      "tone_register": "resignado, firme",
+      "intent": "Instruir a si mesmo a não perseguir Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não a siga... Você não pode.\\n"
+    },
+    "0x317bf4": {
+      "speaker": "Haku",
+      "tone_register": "interno determinado",
+      "intent": "descrever que vira as costas para Kuon reprimindo vontade de segui-la",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; momento de resolução interna",
+      "t": "Viro as costas para Kuon, resistindo ao impulso de ir\\n"
+    },
+    "0x317c31": {
+      "speaker": "Haku",
+      "tone_register": "narração resoluta",
+      "intent": "afirmar que a escolha foi feita no momento em que segurou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Já havia feito minha escolha no instante em que\\n"
+    },
+    "0x317c7a": {
+      "speaker": "Haku",
+      "tone_register": "sombrio, resoluto",
+      "intent": "Afirmar que o único caminho que resta é de sofrimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O único caminho que me resta é um caminho de\\n"
+    },
+    "0x317cb4": {
+      "speaker": "Haku",
+      "tone_register": "interno resoluto",
+      "intent": "afirmar que não pode vacilar mesmo perdendo tudo",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; peso da decisão",
+      "t": "Não posso vacilar. Mesmo que isso signifique perder\\n"
+    },
+    "0x317d0f": {
+      "speaker": "Haku",
+      "tone_register": "descritivo, solene",
+      "intent": "Descrever olhar do palanque para os cidadãos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Olho do palanque para os cidadãos de\\n"
+    },
+    "0x317d40": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo formal",
+      "intent": "descrever reunião em Ennakamuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ennakamuy, todos reunidos com pouca\\n"
+    },
+    "0x317d74": {
+      "speaker": "Haku",
+      "tone_register": "descritivo, solene",
+      "intent": "Descrever a multidão olhando para cima em silêncio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos me olham em silêncio, suas expressões\\n"
+    },
+    "0x317dc3": {
+      "speaker": "Haku",
+      "tone_register": "hesitante, oprimido",
+      "intent": "Sentir peso dos olhares de centenas ou milhares de pessoas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vacilo diante de centenas--milhares de\\n"
+    },
+    "0x317df5": {
+      "speaker": "Haku",
+      "tone_register": "resoluto apesar do peso",
+      "intent": "Superar a hesitação e prosseguir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "olhos me buscando por respostas. Porém, eu\\n"
+    },
+    "0x317e4e": {
+      "speaker": "Haku",
+      "tone_register": "solene, público, formal",
+      "intent": "Saudar o povo de Ennakamuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Amado povo de Ennakamuy!\\n"
+    },
+    "0x317e8e": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "reconhecer a preocupação dos presentes",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; início de discurso formal",
+      "t": "Sei que estão consumidos pela preocupação e incerteza,\\n"
+    },
+    "0x317ef2": {
+      "speaker": "Haku",
+      "tone_register": "solene, sombrio, público",
+      "intent": "Anunciar uma verdade difícil ao povo de Ennakamuy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Povo de Ennakamuy, trago uma dura verdade.\\n"
+    },
+    "0x317f1f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "anunciar crise em Yamato",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; momento de discurso solene",
+      "t": "Yamato está à beira de uma crise sem precedentes,\\n"
+    },
+    "0x318021": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "afirmar que a morte não foi por vontade do povo",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; discurso sobre morte do Mikado",
+      "t": "Mas sua vida não findou pela vontade do\\n"
+    },
+    "0x31804d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, discurso solene",
+      "intent": "concluir a ideia: morte por conspiração maliciosa",
+      "risk_level": "high",
+      "risk_notes": "Continuação direta; manter coesão com linha anterior.",
+      "t": "céus, mas por trama sombria e vil.\\n"
+    },
+    "0x31809d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "descrever surgimento do mal após a morte do Mikado",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "Após a morte do Mikado, incontáveis sementes do mal\\n"
+    },
+    "0x3180ff": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, indignado",
+      "intent": "denunciar a ousadia dos traidores em atacar a sucessora",
+      "risk_level": "high",
+      "risk_notes": "Manter tom de indignação solene.",
+      "t": "E ousaram até mostrar suas garras contra a\\n"
+    },
+    "0x318130": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "apresentar a sucessora legítima",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada; referência à princesa — spoiler controlado",
+      "t": "A legítima sucessora do Mikado, Sua\\n"
+    },
+    "0x318166": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, aliviado mas grave",
+      "intent": "relatar o resgate da Alteza por sua intervenção",
+      "risk_level": "medium",
+      "risk_notes": "Budget 46 bytes; versão transliterada cabe.",
+      "t": "Por graça do destino, pude resgatar Sua\\n"
+    },
+    "0x318195": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "descrever estado da princesa doente",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "Alteza. Ela agora jaz enferma, mas\\n"
+    },
+    "0x3181d0": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, determinado",
+      "intent": "advertir que os inimigos tentarão de novo",
+      "risk_level": "medium",
+      "risk_notes": "Continuidade narrativa.",
+      "t": "Porém, aqueles que buscaram feri-la irão\\n"
+    },
+    "0x3181fd": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, ameaçador/grave",
+      "intent": "reforçar a ameaça iminente dos traidores",
+      "risk_level": "medium",
+      "risk_notes": "Imagem das 'mãos vis se estendendo' — manter.",
+      "t": "certamente estender suas mãos vis novamente,\\n"
+    },
+    "0x31823c": {
+      "speaker": "Oshtor",
+      "tone_register": "formal inflamado",
+      "intent": "condenar os atos vis",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "Tais atos vis, tal ATROCIDADE contra nossa\\n"
+    },
+    "0x318268": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, apelo",
+      "intent": "questionar se ficarão inertes diante do crime",
+      "risk_level": "medium",
+      "risk_notes": "Pergunta retórica para engajar a plateia.",
+      "t": "amada Alteza! E ficaremos parados enquanto\\n"
+    },
+    "0x3182a7": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, retórico",
+      "intent": "questionar entrega da Alteza a traidores",
+      "risk_level": "medium",
+      "risk_notes": "Pergunta retórica; budget 50 bytes.",
+      "t": "Como poderíamos entregar Sua Alteza a traidores\\n"
+    },
+    "0x3182da": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, acusatório",
+      "intent": "caracterizar os traidores como ingratos",
+      "risk_level": "medium",
+      "risk_notes": "Continuação da pergunta retórica anterior.",
+      "t": "que esqueceram tudo o que devem ao grande\\n"
+    },
+    "0x318312": {
+      "speaker": "Oshtor",
+      "tone_register": "formal discurso",
+      "intent": "descrever uma terra injusta e desonrada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma terra injusta — manchada pela vergonha e\\n"
+    },
+    "0x318342": {
+      "speaker": "Oshtor",
+      "tone_register": "formal eloqüente",
+      "intent": "completar — não é a terra que devemos deixar",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "e traição -- não é a terra que devemos aos\\n"
+    },
+    "0x3183cb": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, apelo pessoal, pausa dramática",
+      "intent": "pedir que se unam a ele — correção para apelo coletivo",
+      "risk_level": "medium",
+      "risk_notes": "'No...' sugere correção retórica; preservar pausa.",
+      "t": "Peço que fiquem ao meu lado — Não...\\n"
+    },
+    "0x31840c": {
+      "speaker": "Oshtor",
+      "tone_register": "formal caloroso",
+      "intent": "descrever o sorriso da princesa",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "O sorriso de Sua Alteza era caloroso e gentil como o\\n"
+    },
+    "0x31846d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, emotivo, apelo",
+      "intent": "lamentar que o sorriso amado foi roubado",
+      "risk_level": "medium",
+      "risk_notes": "Continuação emocional.",
+      "t": "O sorriso que tanto amamos nos foi tomado\\n"
+    },
+    "0x3184a1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal apaixonado",
+      "intent": "declarar intenção de devolver o sorriso à princesa",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "E... que eu possa devolver esse sorriso a Sua\\n"
+    },
+    "0x318518": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, confiante",
+      "intent": "afirmar certeza na vitória com o apoio de todos",
+      "risk_level": "medium",
+      "risk_notes": "Abertura de condicional de vitória; budget 46.",
+      "t": "E sei com certeza que com a ajuda de vocês —\\n"
+    },
+    "0x318547": {
+      "speaker": "Oshtor",
+      "tone_register": "formal inflamado",
+      "intent": "afirmar que unidos não há o que temer",
+      "risk_level": "medium",
+      "risk_notes": "linha cortada",
+      "t": "se Ennakamuy se unir, não precisamos temer\\n"
+    },
+    "0x31857b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, encorajador",
+      "intent": "afirmar que com a força deles a Alteza estará salva",
+      "risk_level": "medium",
+      "risk_notes": "Budget 46.",
+      "t": "Sei que com a força de vocês, Sua Alteza\\n"
+    },
+    "0x3185bc": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, assertivo",
+      "intent": "prometer que Ennakamuy jamais cairá se agirem juntos",
+      "risk_level": "medium",
+      "risk_notes": "Budget 47.",
+      "t": "Se agirmos como um só, Ennakamuy nunca\\n"
+    },
+    "0x3185f9": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, juramento solene",
+      "intent": "jurar proteção à Alteza e à pátria",
+      "risk_level": "medium",
+      "risk_notes": "Início do juramento; budget 47.",
+      "t": "E juro a vocês! Protegerei tanto\\n"
+    },
+    "0x318629": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, juramento",
+      "intent": "nomear os objetos do juramento: Alteza e pátria",
+      "risk_level": "medium",
+      "risk_notes": "Budget 42.",
+      "t": "Sua Imperial Alteza quanto minha pátria,\\n"
+    },
+    "0x31865f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, juramento solene",
+      "intent": "jurar pelo Akuruka concedido pelo Mikado",
+      "risk_level": "high",
+      "risk_notes": "Akuruka: manter_original. Mikado: spoiler major — tratar como título/soberano.",
+      "t": "Juro pelo Akuruka que me foi concedido pelo\\n"
+    },
+    "0x318690": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, juramento, proclamação",
+      "intent": "jurar em nome de Oshtor, Guarda Imperial",
+      "risk_level": "high",
+      "risk_notes": "Oshtor spoiler crítico: não antecipar twist. Título 'Imperial Guard' → 'Guarda Imperial'.",
+      "t": "Mikado! Em nome de Oshtor, da Guarda Imperial\\n"
+    },
+    "0x3186d1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, clamor, discurso",
+      "intent": "clamar ao povo de Ennakamuy como irmãos",
+      "risk_level": "medium",
+      "risk_notes": "Budget 46; apelo coletivo, ponto alto do discurso.",
+      "t": "Povo de Ennakamuy! Meus irmãos! Este é o\\n"
+    },
+    "0x318700": {
+      "speaker": "Oshtor",
+      "tone_register": "formal/inflamado",
+      "intent": "convocar todos sob a bandeira da princesa",
+      "risk_level": "medium",
+      "risk_notes": "budget 44; encurtado",
+      "t": "hora de agir! Uni-vos sob o estandarte de Sua Alteza!\\n"
+    },
+    "0x3169c8": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI label",
+      "intent": "identify body part",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "DedoÍndiceDir2"
+    },
+    "0x3169e5": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano animado",
+      "intent": "chamar atenção para algo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, olha!"
+    },
+    "0x3169f0": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "relief/confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim... eles voltaram."
+    },
+    "0x316a09": {
+      "speaker": "Garota",
+      "tone_register": "cotidiano gentil",
+      "intent": "gratitude/relief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Graças a Deus voltaram em segurança!"
+    },
+    "0x316a5a": {
+      "speaker": "Garota",
+      "tone_register": "urgente",
+      "intent": "pedir que recuem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, recuem!"
+    },
+    "0x316a6c": {
+      "speaker": "SYSTEM",
+      "tone_register": "UI label",
+      "intent": "identify NPC type",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cidadão"
+    },
+    "0x316a74": {
+      "speaker": "Cidadão",
+      "tone_register": "formal admirativo",
+      "intent": "admiration/observation",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor aparece (antes do reveal); traduzir como mercenário atuante, não antecipando identidade de General",
+      "t": "Ah, que ar real ele tem..."
+    },
+    "0x316a9d": {
+      "speaker": "Cidadão",
+      "tone_register": "formal nostálgico",
+      "intent": "admiration/pride",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor em contexto público; manter ambiguidade de identidade",
+      "t": "Cresceu e virou um homem tão nobre..."
+    },
+    "0x316ac7": {
+      "speaker": "Garota",
+      "tone_register": "urgente, imperativo",
+      "intent": "ordenar abertura dos portões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Abram os portões! ABRAM OS PORTÕES!!"
+    },
+    "0x316b3c": {
+      "speaker": "Homem",
+      "tone_register": "enigmático frio",
+      "intent": "confirmation/probing",
+      "risk_level": "high",
+      "risk_notes": "Homem (entidade misteriosa); manter tom dúbio/profético; não resolver ambiguidade",
+      "t": "esperado. Tudo correu bem, então, suponho?"
+    },
+    "0x316b9c": {
+      "speaker": "Homem",
+      "tone_register": "enigmático frio",
+      "intent": "observation",
+      "risk_level": "high",
+      "risk_notes": "Manter frieza e duplo-sentido; não soar caloroso",
+      "t": "Chegaram antes do anoitecer afinal."
+    },
+    "0x316bf2": {
+      "speaker": "Ukon",
+      "tone_register": "informal caloroso",
+      "intent": "admitir derrota numa aposta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "esperava. Tudo bem, vou pagar."
+    },
+    "0x316c22": {
+      "speaker": "Rulie",
+      "tone_register": "animado",
+      "intent": "comemorar vitória sobre o pai",
+      "risk_level": "medium",
+      "risk_notes": "budget 14; 'Você perdeu, pai!' -> 'Perdeu, pai!'",
+      "t": "Perdeu, pai!"
+    },
+    "0x316c92": {
+      "speaker": "Ukon",
+      "tone_register": "caloroso informal",
+      "intent": "agreement/caution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "perigoso."
+    },
+    "0x316d03": {
+      "speaker": "Oshtor",
+      "tone_register": "formal comedido",
+      "intent": "reconhecer o erro e pedir desculpas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Sim... Peço desculpas."
+    },
+    "0x316d1a": {
+      "speaker": "Haku",
+      "tone_register": "desorientado/semiconsciente",
+      "intent": "questioning/uncertainty",
+      "risk_level": "medium",
+      "risk_notes": "Manter tom vago, semi-inconsciente",
+      "t": "...Nekone?"
+    },
+    "0x316d4f": {
+      "speaker": "Rulutieh",
+      "tone_register": "tímido hesitante",
+      "intent": "concern/observation",
+      "risk_level": "medium",
+      "risk_notes": "Rulutieh: hesitante, educada; não arrogante apesar de princesa",
+      "t": "Você não parece bem..."
+    },
+    "0x316d99": {
+      "speaker": "Haku",
+      "tone_register": "desorientado/semiconsciente",
+      "intent": "incomplete response",
+      "risk_level": "medium",
+      "risk_notes": "Fragmentação natural; reticência preserva torpor",
+      "t": "dor?"
+    },
+    "0x316d9f": {
+      "speaker": "Haku",
+      "tone_register": "desorientado/semiconsciente",
+      "intent": "denial/reassurance",
+      "risk_level": "medium",
+      "risk_notes": "Manter tom frágil; negação vaga",
+      "t": "Não... Não é nada. Estou bem."
+    },
+    "0x316ddc": {
+      "speaker": "Ukon",
+      "tone_register": "informal direto",
+      "intent": "perguntar o que aconteceu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que aconteceu com ele?"
+    },
+    "0x316e1e": {
+      "speaker": "Oshtor",
+      "tone_register": "formal sóbrio",
+      "intent": "confirmar eliminação pelo irmão",
+      "risk_level": "high",
+      "risk_notes": "'dear brother' — não antecipar identidade; traduzir como relação fraterna neutra",
+      "t": "eliminado pelo meu querido irmão."
+    },
+    "0x316e6b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal comedido",
+      "intent": "completar — por ora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "enquanto."
+    },
+    "0x316e77": {
+      "speaker": "Ukon",
+      "tone_register": "informal admirado",
+      "intent": "expressar admiração com leveza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Assobia* Caramba. Impressionante."
+    },
+    "0x316f30": {
+      "speaker": "Ukon",
+      "tone_register": "informal surpreso",
+      "intent": "questionar sobre generais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Generais...?"
+    },
+    "0x316f3d": {
+      "speaker": "Ukon",
+      "tone_register": "informal reflexivo",
+      "intent": "concluir que os rumores eram verdadeiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então os rumores de rebelião eram verdadeiros..."
+    },
+    "0x317000": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico arcaico",
+      "intent": "exclamation/disbelief",
+      "risk_level": "high",
+      "risk_notes": "Maroro: manter tom pomposo/cômico; 'way in this neck of the woods' = registro arcaico/erudito em pt-BR",
+      "t": "jeito nisso tudo por aqui!?"
+    },
+    "0x317086": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico arcaico",
+      "intent": "call-out/emphasis",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: cômico, breve exclamação",
+      "t": "ele!"
+    },
+    "0x3170a8": {
+      "speaker": "Soldado",
+      "tone_register": "formal admirativo",
+      "intent": "praise/recognition",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor em contexto militar; não antecipar identidade verdadeira",
+      "t": "É nosso Senhor Oshtor!"
+    },
+    "0x3170c0": {
+      "speaker": "Rulutieh",
+      "tone_register": "hesitante tímida",
+      "intent": "perguntar sobre Haku",
+      "risk_level": "medium",
+      "risk_notes": "budget 25; encurtado",
+      "t": "Mas... e o Haku?"
+    },
+    "0x31710f": {
+      "speaker": "Nekone",
+      "tone_register": "preocupada",
+      "intent": "perguntar onde está Haku",
+      "risk_level": "medium",
+      "risk_notes": "budget 27; encurtado",
+      "t": "S-Sim... Onde está o Haku?"
+    },
+    "0x31715c": {
+      "speaker": "Nekone",
+      "tone_register": "impaciente",
+      "intent": "completar pergunta — até agora",
+      "risk_level": "medium",
+      "risk_notes": "budget 7; encurtado 'até agora?'",
+      "t": "até já?"
+    },
+    "0x3171c3": {
+      "speaker": "Nekone",
+      "tone_register": "irritado",
+      "intent": "completar ameaça",
+      "risk_level": "medium",
+      "risk_notes": "budget 5; encurtado",
+      "t": "nele!"
+    },
+    "0x317229": {
+      "speaker": "Kuon",
+      "tone_register": "confuso firme",
+      "intent": "accusation/blame",
+      "risk_level": "medium",
+      "risk_notes": "Kuon: irmã biologica ainda oculta; não antecipar relação; tom de repreensão preservado",
+      "t": "enrolando?"
+    },
+    "0x317237": {
+      "speaker": "Oshtor",
+      "tone_register": "formal",
+      "intent": "chamar a atenção de Nekone",
+      "risk_level": "medium",
+      "risk_notes": "budget 19; encurtado",
+      "t": "...Nekone?"
+    },
+    "0x31727a": {
+      "speaker": "Maroro",
+      "tone_register": "erudito cômico arcaico",
+      "intent": "statement/action",
+      "risk_level": "medium",
+      "risk_notes": "Maroro: manter pompa verbal mesmo em contexto sérvio",
+      "t": "indo... Já vou buscá-lo agora."
+    },
+    "0x3172a4": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentil sério",
+      "intent": "entregar algo a Nekone",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Isso é para você."
+    },
+    "0x3172c0": {
+      "speaker": "Nekone",
+      "tone_register": "surpreso reconhecendo",
+      "intent": "reconhecer o leque de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso é... o leque do Haku?"
+    },
+    "0x3172d7": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentil sério",
+      "intent": "explicar que Haku pediu para devolver",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Ele pediu que eu devolvesse isso a você."
+    },
+    "0x3172fe": {
+      "speaker": "Nekone",
+      "tone_register": "confuso crescente",
+      "intent": "não entender o que isso significa",
+      "risk_level": "medium",
+      "risk_notes": "budget 31; encurtado",
+      "t": "O que... isso quer dizer?"
+    },
+    "0x31731e": {
+      "speaker": "Nekone",
+      "tone_register": "confuso angustiado",
+      "intent": "exigir explicação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que isso significa?"
+    },
+    "0x317338": {
+      "speaker": "Nekone",
+      "tone_register": "confuso urgente",
+      "intent": "panic/pleading",
+      "risk_level": "high",
+      "risk_notes": "Nekone: quebra de frases ('What's... What's') = choque; tom fragmentado; não resolver o que aconteceu",
+      "t": "O-O que aconteceu com Haku?"
+    },
+    "0x31735b": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "ordenar resposta",
+      "risk_level": "medium",
+      "risk_notes": "budget 10; encurtado",
+      "t": "Responda!"
+    },
+    "0x317366": {
+      "speaker": "Rulutieh",
+      "tone_register": "sóbrio doloroso",
+      "intent": "revelar a morte de Haku",
+      "risk_level": "high",
+      "risk_notes": "revelação da morte de Haku — momento de alto impacto emocional; manter brevidade e peso",
+      "t": "...Ele morreu."
+    },
+    "0x317379": {
+      "speaker": "Nekone",
+      "tone_register": "chocado",
+      "intent": "expressão de choque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Hein...?"
+    },
+    "0x317384": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentil sóbrio",
+      "intent": "confirmar pedido de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Foi desejo dele que eu devolvesse isso a você."
+    },
+    "0x317da4": {
+      "speaker": "Oshtor",
+      "tone_register": "formal",
+      "intent": "descrever rostos preocupados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "marcados pela preocupação e angústia."
+    },
+    "0x317e22": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo formal",
+      "intent": "afirmar que não pode recuar agora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não posso recuar agora."
+    },
+    "0x317e38": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "iniciar discurso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então, vamos começar..."
+    },
+    "0x317e6d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "agradecer a reunião",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agradeço a presença de todos!"
+    },
+    "0x317ec1": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_concerned",
+      "intent": "explain_ignorance_of_recent_events",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "não sabe o que aconteceu em Yamato ultimamente."
+    },
+    "0x317f50": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_grave",
+      "intent": "name_the_crisis",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "crise."
+    },
+    "0x317f58": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_solemn",
+      "intent": "reference_the_mikado",
+      "risk_level": "high",
+      "risk_notes": "Mikado is major spoiler; treat as sovereign/title only, distance; no personal ties hinted. Rulutieh as speaker not yet revealed as princess.",
+      "t": "Nosso grande pai, o Mikado--"
+    },
+    "0x317f77": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_grave",
+      "intent": "announce_mikado_death",
+      "risk_level": "critical",
+      "risk_notes": "Mikado death major plot point; Rulutieh identity (princess) hidden until later. No gender-locked pronouns that spoil identity. Translate as formal announcement without revealing speaker's relation.",
+      "t": "O deus encarnado se foi!"
+    },
+    "0x317f96": {
+      "speaker": "Personagem",
+      "tone_register": "chocado",
+      "intent": "questionar o que significa 'passou'",
+      "risk_level": "medium",
+      "risk_notes": "referência implícita à morte do Mikado — não resolver ambiguidade",
+      "t": "Passou... Ele quer dizer...?"
+    },
+    "0x317fb1": {
+      "speaker": "Rulutieh",
+      "tone_register": "choque",
+      "intent": "rejeitar a possibilidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "*Gaspei*... Não... Não pode ser...!"
+    },
+    "0x317fdf": {
+      "speaker": "Personagem",
+      "tone_register": "chocado",
+      "intent": "questionar sobre o Mikado",
+      "risk_level": "high",
+      "risk_notes": "referência ao Mikado — spoiler major; preservar ambiguidade",
+      "t": "O Mikado...? Mas ele não pode ter...?"
+    },
+    "0x318004": {
+      "speaker": "Homem",
+      "tone_register": "chocado",
+      "intent": "concluir que o Mikado está morto",
+      "risk_level": "medium",
+      "risk_notes": "budget 28; encurtado; spoiler major",
+      "t": "Então... ele está morto!?"
+    },
+    "0x318077": {
+      "speaker": "Oshtor",
+      "tone_register": "formal inflamado",
+      "intent": "nomear a conspiração",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "conspiração!"
+    },
+    "0x318083": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_ominous",
+      "intent": "hint_at_deeper_crisis",
+      "risk_level": "medium",
+      "risk_notes": "Foreshadowing without spoiling; preserve ambiguity and ominous tone.",
+      "t": "E ainda há mais..."
+    },
+    "0x3180d1": {
+      "speaker": "Oshtor",
+      "tone_register": "formal/grave",
+      "intent": "continuar a metáfora do jardim sombrio",
+      "risk_level": "medium",
+      "risk_notes": "budget 45; encurtado para caber",
+      "t": "começaram a brotar, como um jardim de trevas."
+    },
+    "0x31815c": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_urgent",
+      "intent": "address_rulutieh_respectfully",
+      "risk_level": "high",
+      "risk_notes": "Oshtor uses formal honorific for Rulutieh (Highness); treats as superior. No hint of general identity yet.",
+      "t": "Alteza!"
+    },
+    "0x3181c3": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_desperate",
+      "intent": "assert_someone_survives",
+      "risk_level": "high",
+      "risk_notes": "Rulutieh identity as princess hidden; maintain formal/desperate tone. 'still lives' = major plot point.",
+      "t": "ainda vive."
+    },
+    "0x31822f": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_urgent",
+      "intent": "express_threat_to_person",
+      "risk_level": "high",
+      "risk_notes": "High emotion; Rulutieh protecting someone (identity/relation hidden); no gender-locked terms.",
+      "t": "em sua vida!"
+    },
+    "0x318295": {
+      "speaker": "Oshtor",
+      "tone_register": "indignado",
+      "intent": "questionar quem permite isso",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; encurtado",
+      "t": "aceitar isso!?"
+    },
+    "0x3182a2": {
+      "speaker": "Personagem",
+      "tone_register": "indignado furioso",
+      "intent": "gritar negação coletiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "NÃO!!"
+    },
+    "0x318309": {
+      "speaker": "Haku",
+      "tone_register": "shocked_questioning",
+      "intent": "express_shock_about_mikado",
+      "risk_level": "medium",
+      "risk_notes": "Haku confused/shocked; semi-conscious tone; preserve fragmentation.",
+      "t": "Mikado!?"
+    },
+    "0x31836b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal discurso",
+      "intent": "completar — aos nossos descendentes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "aos nossos filhos!"
+    },
+    "0x318380": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_measured",
+      "intent": "acknowledge_fear_respectfully",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor diplomatic/formal; addressing Rulutieh as superior. No general identity hinted.",
+      "t": "Claro, entendo seus medos de guerra."
+    },
+    "0x3183ab": {
+      "speaker": "Oshtor",
+      "tone_register": "formal solene",
+      "intent": "pedir algo mesmo assim",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mesmo assim, preciso pedir a vocês."
+    },
+    "0x3183f9": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_respectful",
+      "intent": "express_alliance_with_princess",
+      "risk_level": "high",
+      "risk_notes": "'with Her Highness' confirms Rulutieh as target/person of interest; Oshtor protecting/supporting her. No spoiler of relation/identity.",
+      "t": "com Sua Alteza."
+    },
+    "0x31843c": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_poetic_melancholic",
+      "intent": "lament_loss_of_beauty_hope",
+      "risk_level": "medium",
+      "risk_notes": "Poetic/lore term 'Timanonna' (sun's flower = symbol); melancholic. Rulutieh identity hidden.",
+      "t": "Timanonna, a flor do sol, mas agora se foi."
+    },
+    "0x3184d0": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_desperate_plea",
+      "intent": "request_aid_for_survival",
+      "risk_level": "high",
+      "risk_notes": "Rulutieh desperate plea; 'Highness's face' = protecting identity/relation. Preserve desperation without spoiling who/why.",
+      "t": "de Sua Alteza, peço a ajuda de todos vocês."
+    },
+    "0x3184fe": {
+      "speaker": "Oshtor",
+      "tone_register": "formal apaixonado",
+      "intent": "declarar que são a última esperança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês são minha última esperança!"
+    },
+    "0x318572": {
+      "speaker": "Haku",
+      "tone_register": "confused_weak",
+      "intent": "respond_with_powerlessness",
+      "risk_level": "medium",
+      "risk_notes": "Haku semi-conscious/confused; fragmented tone; express powerlessness without clarity.",
+      "t": "nada!"
+    },
+    "0x3185aa": {
+      "speaker": "Rulutieh",
+      "tone_register": "formal_determined_hopeful",
+      "intent": "promise_future_restoration",
+      "risk_level": "low",
+      "risk_notes": "Formal hopeful tone; poetic; Rulutieh's determination.",
+      "t": "voltará a sorrir!"
+    },
+    "0x3185ec": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_resolute",
+      "intent": "swear_determination",
+      "risk_level": "low",
+      "risk_notes": "Formal vow; Oshtor resolve. Preserve gravity.",
+      "t": "derrota!"
+    },
+    "0x318654": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_emphatic",
+      "intent": "invoke_place_name",
+      "risk_level": "low",
+      "risk_notes": "Lore term (place); manter_original per glossary; formal invocation.",
+      "t": "Ennakamuy!"
+    },
+    "0x3186c2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal_emphatic",
+      "intent": "invoke_military_rank_title",
+      "risk_level": "high",
+      "risk_notes": "'General of the Right' (Oshtor's true rank) hidden until major reveal; do NOT hint at military rank/identity here. Translate generically as formal title/position without revealing true identity.",
+      "t": "da Direita!!"
+    },
+    "0x31872d": {
+      "speaker": "Oshtor",
+      "tone_register": "formal/grito",
+      "intent": "concluir o chamado à batalha",
+      "risk_level": "medium",
+      "risk_notes": "budget 8; encurtado",
+      "t": "bandeira!!"
+    },
+    "0x3173af": {
+      "speaker": "Nekone",
+      "tone_register": "atônito",
+      "intent": "não conseguir processar a notícia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que... você está dizendo...?"
+    },
+    "0x3173ca": {
+      "speaker": "Nekone",
+      "tone_register": "incrédulo doloroso",
+      "intent": "negar a morte de Haku",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Haku está... morto?"
+    },
+    "0x3173db": {
+      "speaker": "Rulutieh",
+      "tone_register": "fragile, denial",
+      "intent": "rejection of reality",
+      "risk_level": "medium",
+      "risk_notes": "Simple but emotionally weighted line",
+      "t": "É impossível."
+    },
+    "0x31741f": {
+      "speaker": "Ukon",
+      "tone_register": "informal",
+      "intent": "comentar sobre Haku ser esperto",
+      "risk_level": "medium",
+      "risk_notes": "budget 12; fragmento — encurtado",
+      "t": "e manhoso."
+    },
+    "0x31745f": {
+      "speaker": "Rulutieh",
+      "tone_register": "gentle, understanding",
+      "intent": "explaining Haku's nature",
+      "risk_level": "medium",
+      "risk_notes": "Characterization of Haku; preserve gentleness of Rulutieh's explanation",
+      "t": "Assim é a natureza dele."
+    },
+    "0x317485": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "confrontar a notícia da morte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E você está me dizendo... que ele morreu?"
+    },
+    "0x3174b0": {
+      "speaker": "Nekone",
+      "tone_register": "negação",
+      "intent": "rejeitar a notícia",
+      "risk_level": "medium",
+      "risk_notes": "budget 45; encurtado",
+      "t": "Impossível. Eu... não acredito."
+    },
+    "0x31750f": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "completar o pedido",
+      "risk_level": "medium",
+      "risk_notes": "budget 6; encurtado",
+      "t": "piada--"
+    },
+    "0x317516": {
+      "speaker": "Nekone",
+      "tone_register": "affectionate, gentle",
+      "intent": "calling to Rulutieh with love",
+      "risk_level": "low",
+      "risk_notes": "Established voice pattern (TM); preserve warm sisterly tone",
+      "t": "Cara... irmã..."
+    },
+    "0x317528": {
+      "speaker": "Rulutieh",
+      "tone_register": "abalado",
+      "intent": "expressar choque e negação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "I-Isso... não pode ser..."
+    },
+    "0x317544": {
+      "speaker": "Rulutieh",
+      "tone_register": "choque suave",
+      "intent": "mencionar Haku com pesar",
+      "risk_level": "medium",
+      "risk_notes": "budget 14; encurtado",
+      "t": "Haku..."
+    },
+    "0x317553": {
+      "speaker": "Oshtor",
+      "tone_register": "urgent, commanding",
+      "intent": "stabilizing Rulutieh in crisis",
+      "risk_level": "high",
+      "risk_notes": "Oshtor (Ukon identity until reveal) — must not anticipate death/sacrifice; treat as living General of the Right",
+      "t": "Que--Ei, Rulutieh! Se controle--"
+    },
+    "0x317580": {
+      "speaker": "Nekone",
+      "tone_register": "raiva dor",
+      "intent": "questionar como isso pode ter acontecido",
+      "risk_level": "medium",
+      "risk_notes": "budget 17; encurtado",
+      "t": "...Como isso pôde...?"
+    },
+    "0x3175be": {
+      "speaker": "Nekone",
+      "tone_register": "angustiado",
+      "intent": "exigir explicação de como aconteceu",
+      "risk_level": "medium",
+      "risk_notes": "budget 10; encurtado",
+      "t": "como...?"
+    },
+    "0x3175c9": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "exigir explicação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Me responda..."
+    },
+    "0x3175d6": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "exigir resposta de Oshtor diretamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Me responda, Oshtor..."
+    },
+    "0x3175eb": {
+      "speaker": "Kuon",
+      "tone_register": "explosive, demanding",
+      "intent": "ultimatum + emotion",
+      "risk_level": "high",
+      "risk_notes": "Double exclamation — Kuon at breaking point; preserve urgency",
+      "t": "Exijo sua resposta, Oshtor!!"
+    },
+    "0x31760a": {
+      "speaker": "Oshtor",
+      "tone_register": "formal pesaroso",
+      "intent": "pedir desculpas",
+      "risk_level": "medium",
+      "risk_notes": "budget 14; encurtado",
+      "t": "...Sinto muito."
+    },
+    "0x31761c": {
+      "speaker": "Kuon",
+      "tone_register": "fragile, shocked",
+      "intent": "desperate call",
+      "risk_level": "low",
+      "risk_notes": "Short exclamation (6 bytes); Kuon calling to Haku",
+      "t": "Haku!?"
+    },
+    "0x317623": {
+      "speaker": "Nekone",
+      "tone_register": "desesperado",
+      "intent": "gritar por sua irmã",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cara irmã!!"
+    },
+    "0x317663": {
+      "speaker": "Haku",
+      "tone_register": "narração",
+      "intent": "descrever força do golpe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "com força suficiente para partir uma árvore."
+    },
+    "0x3176be": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo tenso",
+      "intent": "descrever o impacto — continuação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o impacto brutal, mas--"
+    },
+    "0x317705": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever que o leque parou antes do contato",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "antes de tocá-lo."
+    },
+    "0x31774c": {
+      "speaker": "Haku",
+      "tone_register": "narrator, observational",
+      "intent": "describing spatial positioning",
+      "risk_level": "low",
+      "risk_notes": "Haku narration; spatial detail; 'mark' = alvo",
+      "t": "no ar, bem acima de seu alvo."
+    },
+    "0x31776d": {
+      "speaker": "Haku",
+      "tone_register": "narração/emocional",
+      "intent": "transmitir a última mensagem de Haku",
+      "risk_level": "high",
+      "risk_notes": "budget 46; mensagem final — encurtada para caber",
+      "t": "...\"Me desculpe por quebrar nossa promessa no fim.\""
+    },
+    "0x3177cd": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo emotivo",
+      "intent": "completar citação — parte final da mensagem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ótimo tempo.\""
+    },
+    "0x3177da": {
+      "speaker": "Haku",
+      "tone_register": "narrator, quoting",
+      "intent": "closing relayed message",
+      "risk_level": "low",
+      "risk_notes": "Final words of quote; preserve simplicity and gratitude",
+      "t": "\"...Obrigado.\""
+    },
+    "0x3177ea": {
+      "speaker": "Haku",
+      "tone_register": "narração",
+      "intent": "indicar que a mensagem foi enviada por Haku",
+      "risk_level": "medium",
+      "risk_notes": "budget 39; encurtado",
+      "t": "Lord Haku me pediu para entregar esta mensagem."
+    },
+    "0x31788d": {
+      "speaker": "Kuon",
+      "tone_register": "desperate, anguished",
+      "intent": "questioning why Haku left/died",
+      "risk_level": "high",
+      "risk_notes": "Kuon's breaking point; 'does it matter' = importa — preserve fragmentation of anguish",
+      "t": "O que... importa agora...?"
+    },
+    "0x3178da": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "completar — por capricho/impulso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "por impulso..."
+    },
+    "0x3178e7": {
+      "speaker": "Ukon",
+      "tone_register": "preocupado",
+      "intent": "questionar para onde Kuon vai",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Kuon, para onde você vai!?"
+    },
+    "0x317903": {
+      "speaker": "Kuon",
+      "tone_register": "abatido",
+      "intent": "dizer que precisa ir para casa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Preciso ir para casa..."
+    },
+    "0x317918": {
+      "speaker": "Ukon",
+      "tone_register": "confuso",
+      "intent": "questionar onde fica a casa de Kuon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para casa...? Mas onde fica a sua casa?"
+    },
+    "0x31796e": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, resigned, determined",
+      "intent": "explaining the promise that drives him",
+      "risk_level": "critical",
+      "risk_notes": "MAJOR SPOILER PROTECTION: 'to live on his own' — Haku's identity/origin NOT yet revealed; do NOT anticipate Haku being an alternate timeline version; preserve simple interpretation (just personal promise)",
+      "t": "viver sozinho... Aquela era a promessa..."
+    },
+    "0x31799c": {
+      "speaker": "Kuon",
+      "tone_register": "melancólico",
+      "intent": "concluir que não pode mais ficar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então... não posso mais ficar aqui..."
+    },
+    "0x317a0d": {
+      "speaker": "Kuon",
+      "tone_register": "desperate, questioning",
+      "intent": "final plea/challenge to Haku",
+      "risk_level": "high",
+      "risk_notes": "Kuon's last attempt; 'leave it all behind' = abandonar tudo; preserve her urgency",
+      "t": "você realmente quer deixar tudo para trás?"
+    },
+    "0x317a3c": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, grateful, sad",
+      "intent": "thanking everyone before departure",
+      "risk_level": "medium",
+      "risk_notes": "Haku's gratitude to the group; 'everyone' = todos; simple, heartfelt",
+      "t": "...Obrigado, a todos."
+    },
+    "0x317a54": {
+      "speaker": "Kuon",
+      "tone_register": "melancólico caloroso",
+      "intent": "dizer que também se divertiu muito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu também me diverti muito..."
+    },
+    "0x317a6e": {
+      "speaker": "Kuon",
+      "tone_register": "melancólico",
+      "intent": "reforçar que foi muito divertido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Foi mesmo... muito divertido..."
+    },
+    "0x317a94": {
+      "speaker": "Rulu",
+      "tone_register": "childlike, innocent, surprised",
+      "intent": "noticing Kuon's departure",
+      "risk_level": "low",
+      "risk_notes": "Rulu (child character) — simple, direct question; 'Bosslady' = Chefa/Patroa",
+      "t": "Chefa, você vai embora?"
+    },
+    "0x317ab1": {
+      "speaker": "Kuon",
+      "tone_register": "warrior, final, sad",
+      "intent": "goodbye",
+      "risk_level": "high",
+      "risk_notes": "Kuon's final word to the group; single word carries weight; preserve simplicity",
+      "t": "...Adeus."
+    },
+    "0x317abd": {
+      "speaker": "Rulu",
+      "tone_register": "childlike, confused",
+      "intent": "questioning the farewell",
+      "risk_level": "low",
+      "risk_notes": "Rulu's simple response; 'Bosslady' = familiar form from child",
+      "t": "Chefa?"
+    },
+    "0x317ac7": {
+      "speaker": "Rulu",
+      "tone_register": "childlike, pleading",
+      "intent": "begging Kuon to stay",
+      "risk_level": "low",
+      "risk_notes": "Child's plea; 'Don't go' = Não vá/Não saia; preserve innocence",
+      "t": "Não vá..."
+    },
+    "0x317ad3": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, urgent, present",
+      "intent": "asserting his presence to Kuon",
+      "risk_level": "high",
+      "risk_notes": "Haku calls out to Kuon — moment of presence/proximity; 'right here... right in front of you' = fragmentação de insistência; voice_criticality: high",
+      "t": "Estou aqui... estou bem na sua frente..."
+    },
+    "0x317b43": {
+      "speaker": "Haku",
+      "tone_register": "interno determinado",
+      "intent": "decidir que não pode",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não... não posso."
+    },
+    "0x317b77": {
+      "speaker": "Kuon",
+      "tone_register": "warrior, absolute, isolated",
+      "intent": "acknowledging complete separation",
+      "risk_level": "high",
+      "risk_notes": "Kuon's solitude — not even Kuon (herself) can bridge the gap; ambiguous/poetic; preserve mystery",
+      "t": "Nem sequer eu..."
+    },
+    "0x317b88": {
+      "speaker": "Kuon",
+      "tone_register": "warrior, whispered",
+      "intent": "calling out to Haku as she walks away",
+      "risk_level": "high",
+      "risk_notes": "Kuon's last whisper; voice_criticality: high; preserve the tenderness + finality",
+      "t": "...Haku..."
+    },
+    "0x317bb3": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, narrator, inevitable",
+      "intent": "reflecting on the irreversible choice",
+      "risk_level": "medium",
+      "risk_notes": "Haku's observation of Kuon's choice; 'You've already made your choice' = preserva a resignação",
+      "t": "Você já fez sua escolha."
+    },
+    "0x317bd4": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, narrator, somber",
+      "intent": "noting the point of no return",
+      "risk_level": "medium",
+      "risk_notes": "Haku's final reflection on the separation; 'no turning back' = sem volta; preserve fatality",
+      "t": "...Não há mais volta agora."
+    },
+    "0x317c26": {
+      "speaker": "Haku",
+      "tone_register": "interno determinado",
+      "intent": "completar — atrás dela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "atrás dela."
+    },
+    "0x317c62": {
+      "speaker": "Haku",
+      "tone_register": "protagonist, narrator, grim",
+      "intent": "noting the magical artifact in hand",
+      "risk_level": "high",
+      "risk_notes": "Akuruka (lore object, manter_original) — Haku holds it; tone is grim/resolute; 'in my hand' = na minha mão",
+      "t": "o Akuruka na minha mão."
+    },
+    "0x317cab": {
+      "speaker": "Haku",
+      "tone_register": "interno sombrio",
+      "intent": "completar — a carnificina/o caos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "o caos."
+    },
+    "0x317cfd": {
+      "speaker": "Haku",
+      "tone_register": "interno solene",
+      "intent": "iniciar declaração de identidade",
+      "risk_level": "critical",
+      "risk_notes": "revelação de identidade — 'meu nome é...' — spoiler crítico; não antecipar nem resolver",
+      "t": "Pois meu nome é..."
+    },
+    "0x3169af": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "RightArm"
+    },
+    "0x316ae8": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "gate"
+    },
+    "0x316aed": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "polySurface19404"
+    },
+    "0x316afe": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "polySurface19405"
+    },
+    "0x317ce6": {
+      "speaker": "Homem",
+      "tone_register": "enigmático, profético, frio",
+      "intent": "proferir sentença ambígua e ameaçadora",
+      "risk_level": "high",
+      "risk_notes": "Fala curta e definitiva com duplo sentido. Ambiguidade ameaçadora deve ser preservada — não resolver o significado. Byte budget restritivo (22 bytes); transliteração crítica. Original sugere que 'everything dear' é objeto de perda iminente; manter essa dúbia tensão.",
+      "t": "tudo que lhe é caro."
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "scene_group": "39_01",
+  "lines": [
+    {
+      "offset": "0x31da9a",
+      "text_source": "{c5}Dream Arena{c-} has been added to the system menu.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "all_caps UI",
+      "intent": "Notificar jogador que Arena dos Sonhos foi adicionada ao menu do sistema",
+      "risk_level": "low",
+      "base_translation": "{c5}Arena dos Sonhos{c-} adicionada ao menu.",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "0x31dad1",
+      "text_source": "Dream Arena stages can be played repeatedly.",
+      "speaker": "SYSTEM",
+      "entities_present": [
+        "SYSTEM"
+      ],
+      "tone_register": "UI/sistema",
+      "intent": "Informar que os estágios podem ser jogados repetidamente",
+      "risk_level": "low",
+      "base_translation": "Os estágios podem ser jogados várias vezes.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "chapter-39_01-v1"
+}

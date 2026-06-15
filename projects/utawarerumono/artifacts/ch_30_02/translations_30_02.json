@@ -1,0 +1,1228 @@
+{
+  "lines": {
+    "0x2c8d1f": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isto é..."
+    },
+    "0x2c8f7d": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que você quer dizer?"
+    },
+    "0x2c90e1": {
+      "speaker": "Ougi",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "isso--"
+    },
+    "0x2c9117": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "isso!?"
+    },
+    "0x2c919a": {
+      "speaker": "Haku",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom..."
+    },
+    "0x2c9769": {
+      "speaker": "Raiko",
+      "tone_register": "",
+      "intent": "reuso_tm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ordens."
+    },
+    "0x2c9c05": {
+      "speaker": "Raiko",
+      "tone_register": "formal, cold, definitive",
+      "intent": "conclude statement with finality",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "para baixo."
+    },
+    "0x2c9c40": {
+      "speaker": "Raiko",
+      "tone_register": "formal, questioning, suspicious",
+      "intent": "express doubt about Woshis's true intentions",
+      "risk_level": "medium",
+      "risk_notes": "preserve ambiguity; 'bluff' implies deception without revealing Woshis's role/identity (spoiler: major)",
+      "t": "de farsa está jogando, ameaçando assim...?"
+    },
+    "0x2c9ccb": {
+      "speaker": "Raiko",
+      "tone_register": "formal, inclusive",
+      "intent": "emphasize totality of support/alignment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "todos, até Woshis."
+    },
+    "0x2c9cdd": {
+      "speaker": "STAGE_DIRECTION",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Raiko lança um olhar rápido para Woshis."
+    },
+    "0x2c9d64": {
+      "speaker": "Raiko",
+      "tone_register": "formal, condemnatory",
+      "intent": "name the crime gravely",
+      "risk_level": "medium",
+      "risk_notes": "term 'traição' must match glossary; spoiler context (Woshis identity) — preserve without insinuation",
+      "t": "traição."
+    },
+    "0x2c9d6d": {
+      "speaker": "Raiko",
+      "tone_register": "formal, imperative",
+      "intent": "demand decision/choice from addressee",
+      "risk_level": "medium",
+      "risk_notes": "phrasing 'como você vai escolher' more natural in pt-BR than literal 'como você escolherá'; preserve formality",
+      "t": "Então, como você vai escolher?"
+    },
+    "0x2c9d86": {
+      "speaker": "Woshis",
+      "tone_register": "shocked, accusatory",
+      "intent": "express outrage at accusation",
+      "risk_level": "high",
+      "risk_notes": "Woshis identity/role is major spoiler; DO NOT insinuate identity in tone/word choice; keep shock/outrage generic; must not hint at status/revelation",
+      "t": "V-Você...!"
+    },
+    "0x2c9dc0": {
+      "speaker": "Woshis",
+      "tone_register": "bitter, accusatory, aggrieved",
+      "intent": "condemn Raiko's actions as hypocrisy/betrayal",
+      "risk_level": "high",
+      "risk_notes": "spoiler: Woshis identity major; preserve Woshis as betrayed party without revealing future role; 'stages a coup' = political accusation only; no foreshadow of consequence",
+      "t": "todos brincaram de guerra, e agora ele encena um golpe..."
+    },
+    "0x2c9e47": {
+      "speaker": "Raiko",
+      "tone_register": "formal, questioning",
+      "intent": "challenge Woshis to explain how he orchestrated this",
+      "risk_level": "medium",
+      "risk_notes": "pt-BR 'maquinar' = archaic; use 'fazer' (more modern/colloquial); budget tight (14 bytes)",
+      "t": "maquinar isso."
+    },
+    "0x2c9e87": {
+      "speaker": "Raiko",
+      "tone_register": "formal, categorical",
+      "intent": "summarize crime/plan in single word",
+      "risk_level": "low",
+      "risk_notes": "budget 5 bytes — extremely tight; 'trama' (5 bytes transliterated) = best fit",
+      "t": "trama."
+    },
+    "0x2c9eee": {
+      "speaker": "Raiko",
+      "tone_register": "formal, ominous",
+      "intent": "express imminent collapse/chaos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "explodir."
+    },
+    "0x2c9f2a": {
+      "speaker": "Raiko",
+      "tone_register": "formal, dire, prophetic",
+      "intent": "predict empire's fracture and doom if unchecked",
+      "risk_level": "high",
+      "risk_notes": "spoiler: Yamato's fate (major); preserve doom/destiny language without revealing specifics of collapse; cold, enigmatic tone (Raiko's voice: definitive, no mercy)",
+      "t": "este império se fraturará. Yamato está condenado."
+    },
+    "0x2c9f89": {
+      "speaker": "Raiko",
+      "tone_register": "formal, questioning",
+      "intent": "ask what Woshis trusts to avert disaster",
+      "risk_level": "medium",
+      "risk_notes": "preserve ambiguity of 'faith' (fé/confiança); Raiko's tone remains cold/skeptical; do not insinuate Woshis's future action",
+      "t": "confiança, para evitar isso?"
+    },
+    "0x2c9fd4": {
+      "speaker": "Woshis",
+      "tone_register": "bitter, defiant",
+      "intent": "describe self as destroyed/broken by events",
+      "risk_level": "high",
+      "risk_notes": "spoiler: Woshis identity/status (major); preserve emotional destruction without hinting at future role/revelation; 'shattered' = metaphorical (emotional, not literal)",
+      "t": "despedaçado."
+    },
+    "0x2ca014": {
+      "speaker": "Raiko",
+      "tone_register": "formal, advisory, weary",
+      "intent": "counsel patience/survival strategy",
+      "risk_level": "medium",
+      "risk_notes": "pt-BR 'esperar a tempestade passar' more idiomatic than literal 'aguardar'; budget 22 bytes",
+      "t": "esperar a tempestade passar."
+    },
+    "0x2ca05e": {
+      "speaker": "Raiko",
+      "tone_register": "formal, advisory, cold",
+      "intent": "recommend Woshis adopt passive/survival strategy",
+      "risk_level": "medium",
+      "risk_notes": "preserve Raiko's cold, pragmatic tone; 'similar path' = survival/passivity; spoiler context (Yamato's fate) — no revelation",
+      "t": "de guerra. Aconselho que siga caminho parecido."
+    },
+    "0x2ca0b1": {
+      "speaker": "Raiko",
+      "tone_register": "formal, absolute",
+      "intent": "affirm certainty of prediction",
+      "risk_level": "low",
+      "risk_notes": "Raiko's definitive tone; brief affirmation",
+      "t": "Disso tenho certeza."
+    },
+    "0x2ca0f6": {
+      "speaker": "STAGE_DIRECTION",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe Raiko's exit route",
+      "risk_level": "low",
+      "risk_notes": "stage direction; transliterate 'portão' (gates) to match glossary",
+      "t": "portões via a passagem pequena de onde emergiu."
+    },
+    "0x2ca123": {
+      "speaker": "Woshis",
+      "tone_register": "bitter, accusatory, defeated",
+      "intent": "rebuke Vurai for acting without consultation/consent",
+      "risk_level": "high",
+      "risk_notes": "spoiler: Vurai identity (major); preserve Woshis as betrayed without insinuating Vurai's future role/relationship; tone = bitter but not revealing; 'done it now' = colloquial for irrevocable action",
+      "t": "Vurai... Você fez agora, com certeza."
+    },
+    "0x2ca178": {
+      "speaker": "Vurai",
+      "tone_register": "calm, matter-of-fact, slightly mocking",
+      "intent": "acknowledge/claim precedence in action (perhaps ironic)",
+      "risk_level": "high",
+      "risk_notes": "spoiler: Vurai identity (major); preserve ambiguity of tone (mocking? resigned?); do not insinuate Vurai's status/future role; 'beaten me to the punch' = idiomatic (acted first)",
+      "t": "Você me antecipou no golpe."
+    },
+    "0x2ca1c8": {
+      "speaker": "STAGE_DIRECTION",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe Haku's physical state/action",
+      "risk_level": "low",
+      "risk_notes": "stage direction; Haku character voice (protagonista: fragmentado, torpor) preserved in simplicity",
+      "t": "deitado..."
+    },
+    "0x2c8cca": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, noble, commanding",
+      "intent": "demand explanation, authority questioned",
+      "risk_level": "high",
+      "risk_notes": "Identity of Oshtor as Ukon must not be anticipated; maintain mercenary/informal warrior tone, not general's gravitas. High-voice criticality.",
+      "t": "Q-Que significado tem isso!?"
+    },
+    "0x2c8d18": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, cold, measured",
+      "intent": "state fact dismissively",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "furor."
+    },
+    "0x2c8d57": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, calculating, observant",
+      "intent": "assess situation with suspicion",
+      "risk_level": "medium",
+      "risk_notes": "Oshtor's analytical coldness; avoid warmth. Preserve measured tone.",
+      "t": "examina seus arredores com a testa franzida."
+    },
+    "0x2c8de2": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, ominous, brief",
+      "intent": "invoke gravity of consequence",
+      "risk_level": "medium",
+      "risk_notes": "Enigmatic tone; preserve dread without resolving ambiguity. Avoid causal warmth.",
+      "t": "morte..."
+    },
+    "0x2c8e3f": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, incredulous, commanding",
+      "intent": "express shock and disbelief at breach",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "entrando na cidade!?"
+    },
+    "0x2c8eb4": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, authoritative, summoning",
+      "intent": "call generals to attention",
+      "risk_level": "low",
+      "risk_notes": "All-caps system convention.",
+      "t": "GENERAIS!"
+    },
+    "0x2c8eeb": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, cold, questioning",
+      "intent": "probe response to action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "portas altas, mas nenhuma resposta vem."
+    },
+    "0x2c8f3b": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, resolute, threatening",
+      "intent": "assert willingness to act unilaterally",
+      "risk_level": "medium",
+      "risk_notes": "Preserve warrior's determination without revealing general rank. Maintain informal mercenary edge.",
+      "t": "EU MESMO se for preciso!"
+    },
+    "0x2c8f50": {
+      "speaker": "Oshtor",
+      "tone_register": "formal, challenging, rhetorical",
+      "intent": "pressure for escalation, test resolve",
+      "risk_level": "medium",
+      "risk_notes": "Rhetorical challenge; preserve confrontational tone without resolution.",
+      "t": "Você vai deixá-lo continuar assim?"
+    },
+    "0x2c8fbf": {
+      "speaker": "Raiko",
+      "tone_register": "formal, sage-like, calculating",
+      "intent": "counsel restraint, warn of political consequence",
+      "risk_level": "high",
+      "risk_notes": "Raiko speaks as 'the Wise'; cold, distant, political. Maintain formality and disdain. No foreshadowing of role/family ties.",
+      "t": "suas ameaças e ordenar um ataque às portas."
+    },
+    "0x2c9049": {
+      "speaker": "Raiko",
+      "tone_register": "formal, distant, imperious",
+      "intent": "refer to seat of power with reverence and distance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "porta imperial."
+    },
+    "0x2c9058": {
+      "speaker": "Raiko",
+      "tone_register": "formal, sage-like, warning",
+      "intent": "educate on political reality, warn of treason charge",
+      "risk_level": "high",
+      "risk_notes": "Raiko as voice of cold reason; preserve distance and political weight. No hint of future relationship.",
+      "t": "E tal ordem seria motivo para traição."
+    },
+    "0x2c90ba": {
+      "speaker": "Raiko",
+      "tone_register": "formal, contemptuous, imperious",
+      "intent": "dismiss and remove a troublemaker",
+      "risk_level": "medium",
+      "risk_notes": "Contempt is clear; preserve formal disdain without cruelty that undermines gravitas.",
+      "t": "este miserável cão tirado de minha vista."
+    },
+    "0x2c9150": {
+      "speaker": "Raiko",
+      "tone_register": "formal, observant, detached",
+      "intent": "note continued agitation and indifference",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "se debatendo, mas Raiko continua ignorando-o."
+    },
+    "0x2c917c": {
+      "speaker": "Raiko",
+      "tone_register": "formal, calculating, probing",
+      "intent": "seek intelligence, change subject to strategy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alguma notícia dos Tiriryarai?"
+    },
+    "0x2c91a4": {
+      "speaker": "Raiko",
+      "tone_register": "formal, cold, satisfied",
+      "intent": "acknowledge development with approval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmph. Enfim, algum movimento."
+    },
+    "0x2c91c2": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, stammering",
+      "intent": "express shock and alarm, gag of lisp (nyeh)",
+      "risk_level": "medium",
+      "risk_notes": "Dekopompo's archaic pomposity + lisp ('s' → 'sh') is core comedy. 'NYEH!?' is localized exclamation, not copied. Preserve melodrama.",
+      "t": "NÉIII!?"
+    },
+    "0x2c91fb": {
+      "speaker": "Raiko",
+      "tone_register": "formal, observant, matter-of-fact",
+      "intent": "narrate arrival, pause for dramatic effect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e por ela entra--"
+    },
+    "0x2c9212": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, stammering, shocked",
+      "intent": "recognize presence with uncertainty and alarm",
+      "risk_level": "medium",
+      "risk_notes": "Preserve lisp and archaic tone; uncertainty in 'Woshis...?' maintains suspense. No foreshadowing of Woshis' role.",
+      "t": "Woshis...?"
+    },
+    "0x2c921d": {
+      "speaker": "Woshis",
+      "tone_register": "formal, authoritative, questioning",
+      "intent": "demand explanation from superior officer",
+      "risk_level": "high",
+      "risk_notes": "Woshis as major-spoiler character; treat as military/political figure without revealing identity or ties. Formal, direct authority.",
+      "t": "Woshis. O que exatamente está acontecendo aqui?"
+    },
+    "0x2c9274": {
+      "speaker": "Raiko",
+      "tone_register": "formal, grave, expository",
+      "intent": "explain situation with gravitas and cold finality",
+      "risk_level": "high",
+      "risk_notes": "Raiko as sage-voice; preserve distance. 'grave expression' localized to tone/sentence structure, not explicitly translated.",
+      "t": "respostas, Woshis fala com expressão séria."
+    },
+    "0x2c9305": {
+      "speaker": "Raiko",
+      "tone_register": "formal, detached, naming the problem",
+      "intent": "name the disorder, state it as fact",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "caos."
+    },
+    "0x2c930c": {
+      "speaker": "Woshis",
+      "tone_register": "formal, commanding, intolerant",
+      "intent": "reject explanation, demand action or truth",
+      "risk_level": "high",
+      "risk_notes": "Woshis authority and impatience; no foreshadowing. Maintain command tone.",
+      "t": "Não quero suas desculpas!"
+    },
+    "0x2c9384": {
+      "speaker": "Raiko",
+      "tone_register": "formal, descriptive, cold",
+      "intent": "narrate physical manifestation of emotion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a vapor."
+    },
+    "0x2c93ee": {
+      "speaker": "Raiko",
+      "tone_register": "formal, cut-off, defensive",
+      "intent": "begin explanation but be interrupted",
+      "risk_level": "low",
+      "risk_notes": "Preserve interruption with dash; incomplete thought.",
+      "t": "para dentro d--"
+    },
+    "0x2c942a": {
+      "speaker": "Woshis",
+      "tone_register": "formal, commanding, decisive",
+      "intent": "refuse explanation with gesture",
+      "risk_level": "medium",
+      "risk_notes": "Woshis rejects Raiko's hedging; assert dominance. Preserve formal refusal.",
+      "t": "com um aceno de cabeça."
+    },
+    "0x2c946e": {
+      "speaker": "Woshis",
+      "tone_register": "formal, authoritative, absolute",
+      "intent": "state decree of isolation and control",
+      "risk_level": "high",
+      "risk_notes": "Woshis delivers the order; treat as unquestionable authority figure. No identity spoiler. Preserve gravity of 'closed...none may enter--nor exit.'",
+      "t": "para permanecerem fechadas para que ninguém entre--nem saia."
+    },
+    "0x2c94c9": {
+      "speaker": "Raiko",
+      "tone_register": "formal, grave, despondent",
+      "intent": "describe consequence of isolation with sorrow",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "capital chora em silêncio e isolamento."
+    },
+    "0x2c94f2": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, shocked, stammering",
+      "intent": "express alarm and confusion with lisp",
+      "risk_level": "medium",
+      "risk_notes": "Archaic + lisp ('NYEH!?') is core gag. Localize to pt-BR exclamation convention.",
+      "t": "Néh!?"
+    },
+    "0x2c952b": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, outraged, stammering",
+      "intent": "protest decree as absurd, invoke status of Pillars",
+      "risk_level": "high",
+      "risk_notes": "Dekopompo's pompous indignation; preserve archaic lexicon and lisp. Maintain melodrama without resolving status.",
+      "t": "Generais Pilar servem se não podemos entrar EM NOSSA PRÓPRIA CIDADE?"
+    },
+    "0x2c958c": {
+      "speaker": "Woshis",
+      "tone_register": "formal, final, authoritative",
+      "intent": "state source of order and close debate",
+      "risk_level": "high",
+      "risk_notes": "Order from 'the princess'; Mikado is major-spoiler. Treat as distant authority, no personal tie revealed. Formal, absolute tone.",
+      "t": "Esta ordem vem diretamente da princesa."
+    },
+    "0x2c9617": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, sputtering, distressed",
+      "intent": "question the chaos and disorder",
+      "risk_level": "medium",
+      "risk_notes": "Preserve archaic tone and stammer; comic distress without crudeness.",
+      "t": "confusão?"
+    },
+    "0x2c964b": {
+      "speaker": "Woshis",
+      "tone_register": "formal, cutting, warning",
+      "intent": "silence objection with threat",
+      "risk_level": "high",
+      "risk_notes": "Woshis silences Dekopompo; preserve authority and edge without warmth. No identity hint.",
+      "t": "acusação, você..."
+    },
+    "0x2c968f": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, terrified, stammering",
+      "intent": "backpedal in fear, invoke innocence",
+      "risk_level": "medium",
+      "risk_notes": "Archaic tone + fear of treason charge; lisp maintained. Comedy from contrast of pomp + cowardice.",
+      "t": "insinuação de traição."
+    },
+    "0x2c9701": {
+      "speaker": "Woshis",
+      "tone_register": "formal, grave, but wavering slightly",
+      "intent": "introduce doubt, suggest coercion or manipulation",
+      "risk_level": "high",
+      "risk_notes": "Woshis hints at doubt re: princess' free will; preserve ambiguity. No foreshadowing of relationship/knowledge. Formal, grave.",
+      "t": "Porém..."
+    },
+    "0x2c97a5": {
+      "speaker": "Woshis",
+      "tone_register": "formal, probing, suspicious",
+      "intent": "voice suspicion that princess may have been coerced",
+      "risk_level": "high",
+      "risk_notes": "Woshis suspects foul play; maintain grave, formal tone. Preserve ambiguity—no resolution of what happened. No identity/tie spoiler.",
+      "t": "ou pior, coagida a fazer este decreto."
+    },
+    "0x2c97f7": {
+      "speaker": "Raiko",
+      "tone_register": "formal, calculating, confrontational",
+      "intent": "face off with Woshis, ready for conflict",
+      "risk_level": "high",
+      "risk_notes": "Direct confrontation; Raiko meets Woshis as equal. Preserve cold calculation, no warmth or fear. High-voice criticality.",
+      "t": "cara a cara com Woshis."
+    },
+    "0x2c9838": {
+      "speaker": "Woshis",
+      "tone_register": "formal, duty-bound, formal",
+      "intent": "state commitment to execute orders without question",
+      "risk_level": "high",
+      "risk_notes": "Woshis affirms loyalty to princess (distant authority); maintain formal, committed tone. No hint of personal tie.",
+      "t": "A vontade de Sua Alteza para mim."
+    },
+    "0x2c98b3": {
+      "speaker": "Raiko",
+      "tone_register": "formal, probing, challenging",
+      "intent": "ask what Woshis will do with armies if locked out",
+      "risk_level": "high",
+      "risk_notes": "Rhetorical challenge; Raiko tests Woshis' logic. Maintain cold, calculating tone. No warmth or agreement.",
+      "t": "exércitos?"
+    },
+    "0x2c98ec": {
+      "speaker": "Woshis",
+      "tone_register": "formal, grave, somber",
+      "intent": "express regret but resolve",
+      "risk_level": "medium",
+      "risk_notes": "Woshis acknowledges cost; preserve formal resolve without warmth.",
+      "t": "meus pêsames."
+    },
+    "0x2c98fc": {
+      "speaker": "Raiko",
+      "tone_register": "formal, observant, narrating",
+      "intent": "note that Woshis acknowledges the weight",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Às palavras de Raiko, Woshis acena."
+    },
+    "0x2c991b": {
+      "speaker": "Woshis",
+      "tone_register": "formal, measured, acknowledging",
+      "intent": "confirm understanding of the situation",
+      "risk_level": "high",
+      "risk_notes": "Woshis affirms grasp of political reality; maintain formal, distant tone. High-voice criticality.",
+      "t": "Eu entendo isto, Senhor Raiko."
+    },
+    "0x2c996a": {
+      "speaker": "Woshis",
+      "tone_register": "formal, resolute, final",
+      "intent": "affirm obedience to imperial authority",
+      "risk_level": "high",
+      "risk_notes": "Woshis commits to order from princess; maintain formal resolve. Mikado is major-spoiler; no personal revelation.",
+      "t": "uma ordem direta da princesa imperial."
+    },
+    "0x2c99f5": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, whimpering, stammering",
+      "intent": "plead for mercy, invoke patience",
+      "risk_level": "medium",
+      "risk_notes": "Dekopompo begs; archaic tone + lisp + melodrama preserved. Comic cowardice.",
+      "t": "paciência."
+    },
+    "0x2c9a2b": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, defiant, stammering, outraged",
+      "intent": "declare intent to confront princess directly",
+      "risk_level": "medium",
+      "risk_notes": "Archaic indignation + lisp; maintain melodrama and resolve. Dekopompo's stubbornness despite fear.",
+      "t": "Vou perguntar a Sua Alteza pessoalmente sobre isto!"
+    },
+    "0x2c9a59": {
+      "speaker": "Raiko",
+      "tone_register": "formal, observant, narrating",
+      "intent": "note Dekopompo's angry action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo furiosamente avança para as portas..."
+    },
+    "0x2c9ab5": {
+      "speaker": "Woshis",
+      "tone_register": "formal, authoritative, intervening",
+      "intent": "move to stop Dekopompo",
+      "risk_level": "medium",
+      "risk_notes": "Woshis physically blocks; maintain authority and resolve without cruelty.",
+      "t": "bloqueando seu caminho."
+    },
+    "0x2c9ac5": {
+      "speaker": "Woshis",
+      "tone_register": "formal, warning, measured",
+      "intent": "advise caution with grave implication",
+      "risk_level": "high",
+      "risk_notes": "Warning to Dekopompo; maintain formal, ominous tone. Preserve ambiguity of threat.",
+      "t": "Eu aconselharia contra isso."
+    },
+    "0x2c9ae2": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, shocked, stammering",
+      "intent": "express shock at being blocked, invoke sight/witness",
+      "risk_level": "medium",
+      "risk_notes": "Archaic + lisp + shock; Dekopompo confronts Woshis. Preserve melodrama.",
+      "t": "HNENGH!?"
+    },
+    "0x2c9aeb": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, accusatory, stammering",
+      "intent": "challenge Woshis' judgment and vision",
+      "risk_level": "medium",
+      "risk_notes": "Accusatory archaic tone; maintain pomposity and lisp. Dekopompo's outrage at being challenged.",
+      "t": "Você não tem olhos para ver?"
+    },
+    "0x2c9b36": {
+      "speaker": "Raiko",
+      "tone_register": "formal, observant, narrating",
+      "intent": "note Dekopompo's realization or hesitation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "então congela."
+    },
+    "0x2c9b74": {
+      "speaker": "Raiko",
+      "tone_register": "formal, descriptive, narrating",
+      "intent": "describe physical manifestation of tension",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "seus dentes tensamente."
+    },
+    "0x2c9b87": {
+      "speaker": "Dekopompo",
+      "tone_register": "erudite-comedic, archaic, dawning realization, stammering",
+      "intent": "recognize Woshis, imply guilt or manipulation",
+      "risk_level": "high",
+      "risk_notes": "Dekopompo realizes Woshis' involvement ('HIS doing'); maintain archaic tone + lisp. Preserve ambiguity of accusation without explaining. No spoiler of Woshis' identity/role.",
+      "t": "Então, isto é OBRA DELE?"
+    },
+    "0x2c9b9e": {
+      "speaker": "Woshis",
+      "tone_register": "formal, grave, final",
+      "intent": "name the one who gave the order",
+      "risk_level": "high",
+      "risk_notes": "Woshis names 'Vurai' as source; major-spoiler character. Treat as authoritative figure, no identity/relationship revealed. Formal, decisive tone.",
+      "t": "Vurai."
+    },
+    "0x2c9e56": {
+      "speaker": "Raiko",
+      "tone_register": "frio, enigmático, calculista",
+      "intent": "Raiko evita se comprometer — diz que não pode falar por tais coisas",
+      "risk_level": "high",
+      "risk_notes": "Spoiler: Raiko apresentado como frio/sábio sem revelar vínculos; manter ambiguidade. Back-translation necessária.",
+      "t": "Quem sabe? Certamente não posso falar por tais\\n"
+    },
+    "0x2c9e8d": {
+      "speaker": "Raiko",
+      "tone_register": "frio, profético, definitivo",
+      "intent": "Enuncia princípio político: governo absoluto sufoca, mesmo de um deus",
+      "risk_level": "high",
+      "risk_notes": "Spoiler Mikado: não antecipar vínculo pessoal; manter distância formal de 'soberano/título'. Preservar ambiguidade ameaçadora.",
+      "t": "Mas direi isto: governo absoluto — mesmo de um\\n"
+    },
+    "0x2c9ebd": {
+      "speaker": "Raiko",
+      "tone_register": "frio, profético",
+      "intent": "Conclui a metáfora: recipiente sob pressão explode — colapso inevitável",
+      "risk_level": "medium",
+      "risk_notes": "Metáfora 'vessel under pressure' deve soar natural em pt-BR sem perder o duplo sentido político.",
+      "t": "deus — sufoca. Um recipiente sob pressão acaba\\n"
+    },
+    "0x2c9ef8": {
+      "speaker": "Raiko",
+      "tone_register": "calculista, definitivo",
+      "intent": "Prevê colapso iminente nos próximos anos ou meses",
+      "risk_level": "medium",
+      "risk_notes": "Foreshadowing político; não antecipar eventos específicos do enredo.",
+      "t": "Nos proximos anos, talvez ate meses,\\n"
+    },
+    "0x2c9f5a": {
+      "speaker": "Interlocutor",
+      "tone_register": "questionador, neutro",
+      "intent": "Pergunta se Vurai é o escolhido para assumir o poder",
+      "risk_level": "high",
+      "risk_notes": "Spoiler Vurai (major): tratar apenas como nome citado; não antecipar papel futuro.",
+      "t": "E você acha que Vurai e o homem certo para\\n"
+    },
+    "0x2c9fa4": {
+      "speaker": "Raiko",
+      "tone_register": "frio, calculista",
+      "intent": "Responde que até um recipiente transbordando é preferível ao atual estado",
+      "risk_level": "medium",
+      "risk_notes": "Metáfora política; manter o tom dúbio e frio.",
+      "t": "Mesmo um recipiente transbordando e preferivel a\\n"
+    },
+    "0x2c9fe3": {
+      "speaker": "Interlocutor",
+      "tone_register": "questionador, ligeiramente irônico",
+      "intent": "Questiona se Raiko aceitou papel passivo e decidiu apenas observar",
+      "risk_level": "medium",
+      "risk_notes": "Tom levemente irônico; não resolver ambiguidade sobre intenções de Raiko.",
+      "t": "Entao, voce aceitou um papel passivo e decidiu\\n"
+    },
+    "0x2ca02b": {
+      "speaker": "Raiko",
+      "tone_register": "frio, contido, quase paternal mas calculista",
+      "intent": "Diz que deseja apenas poupar seus compatriotas dos horrores",
+      "risk_level": "medium",
+      "risk_notes": "'Countrymen' → 'compatriotas'; cuidado para não soar caloroso demais — manter frieza calculista.",
+      "t": "Desejo apenas poupar meus compatriotas dos horrores\\n"
+    },
+    "0x2ca08a": {
+      "speaker": "Raiko",
+      "tone_register": "frio, definitivo, curto",
+      "intent": "Afirma que a transição não deve demorar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A transicao nao deve demorar.\\n"
+    },
+    "0x2ca0c7": {
+      "speaker": "Narração/Sistema",
+      "tone_register": "neutro, narrativo",
+      "intent": "Didascália: Woshis se inclina profundamente e recua atrás do...",
+      "risk_level": "high",
+      "risk_notes": "Spoiler Woshis (major): tratar apenas como personagem presente na cena sem antecipar papel futuro. Nome mantido per glossário.",
+      "t": "Woshis se inclina profundamente e recua atras do\\n"
+    },
+    "0x2ca147": {
+      "speaker": "Raiko",
+      "tone_register": "frio, ambíguo, ameaçador",
+      "intent": "Raiko revela que pretendia acelerar seus próprios planos — duplo sentido",
+      "risk_level": "high",
+      "risk_notes": "Fala deve permanecer dúbia; não resolver intenções. Manter o tom ameaçador sem calor.",
+      "t": "E eu que pensava em acelerar meus proprios planos.\\n"
+    },
+    "0x2ca197": {
+      "speaker": "Raiko",
+      "tone_register": "frio, ameaçador, solene",
+      "intent": "Raiko avisa que não aceitará isso passivamente — auto-nomeação dramática",
+      "risk_level": "high",
+      "risk_notes": "Spoiler Raiko: não antecipar vínculos futuros. Auto-nomeação ('I, Raiko') → 'eu, Raiko' — manter a formalidade fria. Back-translation necessária.",
+      "t": "Mas nao pense que eu, Raiko, aceitarei isto\\n"
+    },
+    "0x2c8ceb": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo, tenso",
+      "intent": "descrever Dekopompo aos berros, espumando de raiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo espuma enquanto\\n"
+    },
+    "0x2c8d2a": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo, frio",
+      "intent": "contrastar Raiko com Dekopompo — calmo, calculista",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Raiko, bem mais calmo que seu companheiro Pilar,\\n"
+    },
+    "0x2c8d86": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever retirada às pressas para a capital",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Suas forças combinadas recuaram rapidamente para\\n"
+    },
+    "0x2c8db6": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "continuar — recuo motivado pela morte do Mikado",
+      "risk_level": "medium",
+      "risk_notes": "Mikado marcado como spoiler major; tratar apenas como título/soberano, sem antecipação de vínculo pessoal.",
+      "t": "a capital com a notícia da morte do Mikado.\\n"
+    },
+    "0x2c8deb": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, exigente",
+      "intent": "Dekopompo exige explicações aos gritos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "EXIJO saber o que está acontecendo aqui!\\n"
+    },
+    "0x2c8e14": {
+      "speaker": "Dekopompo",
+      "tone_register": "indignado, ultrajado",
+      "intent": "apontar a morte do soberano e o bloqueio como ultraje",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosso soberano está MORTO e nos barraram de\\n"
+    },
+    "0x2c8e57": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, ameaçador",
+      "intent": "ameaçar chamar a guarda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não vou aceitar isso! Onde estão os guardas!?\\n"
+    },
+    "0x2c8e88": {
+      "speaker": "Dekopompo",
+      "tone_register": "pomposo, indignado",
+      "intent": "afirmar sua posição como um dos Oito Generais-Pilar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sou Dekopompo, dos malditos Oito Generais-\\n"
+    },
+    "0x2c8ebe": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever Dekopompo gritando para o posto de guarda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo late para o posto de guarda no topo do\\n"
+    },
+    "0x2c8f0c": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, ameaçador",
+      "intent": "ameaçar derrubar os portões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "RESPONDAM! Vou abater esses portões malditos\\n"
+    },
+    "0x2c8f8f": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo, tenso",
+      "intent": "indicar que Dekopompo pode cumprir a ameaça",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nesse ritmo, ele pode muito bem cumprir a\\n"
+    },
+    "0x2c8fee": {
+      "speaker": "Raiko",
+      "tone_register": "frio, desdenhoso",
+      "intent": "Raiko descarta a ameaça de Dekopompo com frieza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hah, como se isso resolvesse alguma coisa.\\n"
+    },
+    "0x2c901b": {
+      "speaker": "Raiko",
+      "tone_register": "frio, calculista",
+      "intent": "Raiko observa que nem os exércitos unidos moveriam os portões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nem unidos, nossos exércitos moveriam os\\n"
+    },
+    "0x2c9088": {
+      "speaker": "Raiko",
+      "tone_register": "frio, irônico, levemente sádico",
+      "intent": "Raiko admite que adoraria ver Dekopompo tentar",
+      "risk_level": "medium",
+      "risk_notes": "Tom ambíguo de Raiko — frio e calculista conforme perfil de spoiler; não antecipar papel futuro.",
+      "t": "Na verdade, não me desagradaria ver isso.\\n"
+    },
+    "0x2c90e8": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, exasperado",
+      "intent": "Dekopompo explode contra Raiko pela calma dele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "RAIKO! Como pode estar tão calmo agora!?\\n"
+    },
+    "0x2c911e": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever Dekopompo virando sua fúria para Raiko",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo vira sua fúria para Raiko, cuspindo e\\n"
+    },
+    "0x2c91c9": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever abertura de uma passagem menor ao lado dos portões",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ao lado dos portões, uma passagem menor se abre,\\n"
+    },
+    "0x2c9245": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever os generais olhando para o recém-chegado, exigindo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Enquanto os dois generais o encaram, exigindo\\n"
+    },
+    "0x2c92a4": {
+      "speaker": "Woshis",
+      "tone_register": "formal, contido, cortês",
+      "intent": "Woshis pede desculpas pela espera",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Peço desculpas por fazê-los esperar.\\n"
+    },
+    "0x2c92d7": {
+      "speaker": "Woshis",
+      "tone_register": "formal, contido",
+      "intent": "explicar que a morte do soberano lançou a corte em caos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A morte de nosso soberano lançou a corte em\\n"
+    },
+    "0x2c9327": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever Dekopompo ladrando para Woshis, enraivecendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo late bruscamente para Woshis, sua\\n"
+    },
+    "0x2c9357": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever a cabeça de Dekopompo ficando vermelha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "cabeça avermelhando a ponto de ameaçar\\n"
+    },
+    "0x2c938e": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, indignado",
+      "intent": "Dekopompo exige saber o significado do bloqueio; invoca o dever de Pilar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que significado tem isso!? O Mikado está\\n"
+    },
+    "0x2c93bc": {
+      "speaker": "Dekopompo",
+      "tone_register": "furioso, pomposo",
+      "intent": "Dekopompo proclama o dever dos Pilares",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "MORTO. É nosso dever como PILARES manter firme\\n"
+    },
+    "0x2c93fa": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "Woshis corta Dekopompo com brevidade fria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Woshis corta Dekopompo com um gesto seco e\\n"
+    },
+    "0x2c943d": {
+      "speaker": "Woshis",
+      "tone_register": "formal, firme",
+      "intent": "Woshis nega a passagem — portões bloqueados por ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lamento, não posso permitir. Os portões estão\\n"
+    },
+    "0x2c949c": {
+      "speaker": "Woshis",
+      "tone_register": "formal, firme",
+      "intent": "citar a ordem de Sua Alteza para o bloqueio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É ordem de Sua Alteza que o\\n"
+    },
+    "0x2c94f9": {
+      "speaker": "Dekopompo",
+      "tone_register": "indignado, ultrajado",
+      "intent": "Dekopompo questiona o propósito dos Oito Pilares diante do bloqueio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso é um absurdo! Para que servem os Oito\\n"
+    },
+    "0x2c955a": {
+      "speaker": "Woshis",
+      "tone_register": "frio, cortante, advertindo",
+      "intent": "Woshis adverte Dekopompo a vigiar a língua",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sugiro que vigie sua língua, Lorde Dekopompo.\\n"
+    },
+    "0x2c95b9": {
+      "speaker": "Woshis",
+      "tone_register": "frio, ameaçador",
+      "intent": "Woshis insinua que Dekopompo poderia estar tentando um golpe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ou talvez deseje desembainhar sua lâmina contra\\n"
+    },
+    "0x2c95ea": {
+      "speaker": "Woshis",
+      "tone_register": "frio, acusatório",
+      "intent": "completar a insinuação — tomar o poder enquanto o império está vulnerável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "ela e tomar o poder enquanto o império está em\\n"
+    },
+    "0x2c9621": {
+      "speaker": "Dekopompo",
+      "tone_register": "nervoso, defensivo, gaguejando",
+      "intent": "Dekopompo nega a acusação com desespero",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ga-gah, eu j-jamais faria isso-- Isso é INFUNDADO\\n"
+    },
+    "0x2c965e": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "descrever Dekopompo se atrapalhando com a acusação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo imediatamente se atrapalha com a\\n"
+    },
+    "0x2c96a7": {
+      "speaker": "Woshis",
+      "tone_register": "formal, assertivo",
+      "intent": "afirmar que Sua Alteza é de sangue real, nascida para governar",
+      "risk_level": "medium",
+      "risk_notes": "Cuidado com spoiler de Mikado — tratar apenas como soberano distante; sem vínculo pessoal antecipado.",
+      "t": "Sua Alteza é sangue do Mikado, nascida\\n"
+    },
+    "0x2c96d7": {
+      "speaker": "Woshis",
+      "tone_register": "formal, assertivo",
+      "intent": "afirmar que a palavra de Sua Alteza é absoluta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e criada para governar. Sua palavra é absoluta.\\n"
+    },
+    "0x2c970c": {
+      "speaker": "Dekopompo",
+      "tone_register": "condescendente, duvidoso",
+      "intent": "Dekopompo minimiza Sua Alteza como jovem demais para governar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sua Alteza ainda é apenas uma jovem garota.\\n"
+    },
+    "0x2c973d": {
+      "speaker": "Dekopompo",
+      "tone_register": "condescendente, insinuante",
+      "intent": "Dekopompo duvida que ela esteja em condições de dar ordens",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Duvido muito que esteja em condições de dar\\n"
+    },
+    "0x2c9771": {
+      "speaker": "Dekopompo",
+      "tone_register": "insinuante, acusatório",
+      "intent": "Dekopompo insinua que alguém está por trás das ordens dela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Portanto, só posso supor que foi aconselhada--\\n"
+    },
+    "0x2c97d0": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "Raiko avança, se interpondo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Raiko avança, se colocando\\n"
+    },
+    "0x2c9811": {
+      "speaker": "Raiko",
+      "tone_register": "frio, formal",
+      "intent": "Raiko agradece Woshis pela mensagem, mas vai além",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lorde Woshis, obrigado por transmitir\\n"
+    },
+    "0x2c9852": {
+      "speaker": "Raiko",
+      "tone_register": "frio, formal, insistente",
+      "intent": "Raiko lembra que são generais jurados à princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Porém, somos generais jurados a proteger nossa\\n"
+    },
+    "0x2c9882": {
+      "speaker": "Raiko",
+      "tone_register": "frio, formal",
+      "intent": "Raiko pede passagem em nome do dever de proteção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "princesa. Não nos deixará passar, se não a nós,\\n"
+    },
+    "0x2c98bb": {
+      "speaker": "Raiko",
+      "tone_register": "frio, contido",
+      "intent": "Raiko quer vê-la pessoalmente e expressar condolências",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gostaria de vê-la pessoalmente e expressar\\n"
+    },
+    "0x2c993a": {
+      "speaker": "Woshis",
+      "tone_register": "formal, apologético",
+      "intent": "Woshis admite que não tem autoridade para revogar a ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "No entanto, não tenho autoridade para revogar\\n"
+    },
+    "0x2c9995": {
+      "speaker": "Woshis",
+      "tone_register": "formal, cortês",
+      "intent": "Woshis se oferece para levar o pedido a Sua Alteza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devo levar seu pedido a Sua Alteza\\n"
+    },
+    "0x2c99c9": {
+      "speaker": "Woshis",
+      "tone_register": "formal, solicitando paciência",
+      "intent": "pedir que aguardem enquanto vai e volta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "e retornar. Por favor, peço sua\\n"
+    },
+    "0x2c99ff": {
+      "speaker": "Dekopompo",
+      "tone_register": "explosivo, impaciente",
+      "intent": "Dekopompo explode — não há tempo para isso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Arrgh!? Não temos tempo para isso!\\n"
+    },
+    "0x2c9a86": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "Woshis fecha a passagem de forma eficiente e calma",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...apenas para Woshis fechar com eficiência e calma\\n"
+    },
+    "0x2c9b08": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "Dekopompo segue o olhar de Woshis para o topo da muralha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dekopompo segue o olhar de Woshis pela muralha,\\n"
+    },
+    "0x2c9b44": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo",
+      "intent": "Raiko também olha para a muralha, tenso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Raiko também olha para a muralha, cerrando\\n"
+    },
+    "0x2c9ba5": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo, tenso",
+      "intent": "soldados no topo da muralha prontos para atirar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "No alto das muralhas, soldados estão a postos com\\n"
+    },
+    "0x2c9bd8": {
+      "speaker": "Narrador",
+      "tone_register": "narrativo, tenso",
+      "intent": "flechas encordoadas, mirando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "flechas enfiadas e cordas tensas, mirando\\n"
+    },
+    "0x2c9c0f": {
+      "speaker": "Dekopompo",
+      "tone_register": "chocado, confuso",
+      "intent": "Dekopompo reconhece a armadura de Vurai — intriga sobre a lealdade",
+      "risk_level": "medium",
+      "risk_notes": "Vurai marcado como spoiler major; tratar apenas como nome de general, sem antecipar ações ou papel futuro.",
+      "t": "Essa armadura... É a insígnia de Vurai. Que tipo\\n"
+    },
+    "0x2c9c71": {
+      "speaker": "Raiko",
+      "tone_register": "frio, analítico",
+      "intent": "Raiko descarta a hipótese de que Vurai esteja fingindo — ele acredita nisso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não. Postura calculada está além dele.\\n"
+    },
+    "0x2c9c9b": {
+      "speaker": "Raiko",
+      "tone_register": "frio, calculista",
+      "intent": "Raiko conclui que Vurai realmente acredita que pode enfrentá-los",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele deve realmente acreditar que pode nos enfrentar\\n"
+    },
+    "0x2c9d02": {
+      "speaker": "Vurai/Woshis",
+      "tone_register": "formal, ameaçador, imperial",
+      "intent": "avisar que desobedecer um comando imperial resultará em julgamento por traição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se desobedecerem um comando imperial, não terei\\n"
+    },
+    "0x2c9d34": {
+      "speaker": "Vurai/Woshis",
+      "tone_register": "formal, ameaçador",
+      "intent": "completar a ameaça — ambos serão julgados por alta traição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "escolha senão declará-los culpados de alta\\n"
+    },
+    "0x2c9d90": {
+      "speaker": "Raiko",
+      "tone_register": "frio, reflexivo",
+      "intent": "Raiko reconhece que Vurai ganhou a confiança da princesa enquanto eles estavam fora",
+      "risk_level": "medium",
+      "risk_notes": "Não antecipar papel ou ações futuras de Raiko; tratar como observação fria e calculista.",
+      "t": "Entendo. Ele ganhou a confiança da princesa enquanto\\n"
+    },
+    "0x2c9def": {
+      "speaker": "Raiko",
+      "tone_register": "frio, calculista, paciente",
+      "intent": "Raiko conclui que quando os portões abrirem, a situação terá se resolvido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando esses portões abrirem, a poeira terá\\n"
+    },
+    "0x2c9e1b": {
+      "speaker": "Raiko",
+      "tone_register": "frio, enigmático",
+      "intent": "Raiko sugere que um homem insatisfeito na paz TENDERIA a agir",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade intencional de Raiko deve ser mantida — não resolver o subtexto. Frase final em caps preservada.",
+      "t": "baixado. Um homem insatisfeito na paz TENDERIA\\n"
+    }
+  }
+}
