@@ -16,7 +16,7 @@ Esta ferramenta aplica um lote de correcoes find->replace nos artefatos de tradu
   - Corrige OS TRES artefatos coerentes: `translations_<id>.json` (campo `t`, fonte de verdade),
     `translation_plan_<id>.json` (campo `base_translation`, fonte da TM) E `approved_<id>.csv` (coluna
     `text_target`, o que o CONECTOR consome no reinsert). Corrigir so um reintroduziria drift — em
-    especial, esquecer o `approved` deixava a correcao invisivel pro jogo (R3).
+    especial, esquecer o `approved` deixava a correcao invisivel pro jogo (drift entre artefatos).
   - DRY-RUN por padrao: lista cada (cena, offset, antes->depois) sem gravar. `--apply` grava.
   - `--check-sync`: GATE de coerencia (sem correcoes) — falha se algum `approved_<id>.csv` divergir do
     `translations_<id>.json` (qualquer fonte de drift, nao so este script). Use no CI/pre-commit.
@@ -98,7 +98,7 @@ def plan(root, corrections, chapter=None) -> list[dict]:
         # translation_plan_<id>.json: lines = [{offset, base_translation, ...}]
         pf = paths.translation_plan(root, scene, sid)
         _collect(hits, pf, scene, sid, "plan", "base_translation", _iter_plan, compiled)
-        # approved_<id>.csv: linhas (offset,text_target) — o que o conector reinsere (R3)
+        # approved_<id>.csv: linhas (offset,text_target) — o que o conector reinsere
         _collect_approved(hits, paths.approved(root, scene, sid), scene, sid, compiled)
     return hits
 
@@ -209,7 +209,7 @@ def apply(root, corrections, chapter=None) -> dict:
             if changed:
                 path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
                 files_changed += 1
-        # approved_<id>.csv (CSV, coluna text_target) — terceiro artefato coerente (R3)
+        # approved_<id>.csv (CSV, coluna text_target) — terceiro artefato coerente
         ap = paths.approved(root, scene, sid)
         rows = _read_approved(ap)
         if rows:
@@ -230,7 +230,7 @@ def apply(root, corrections, chapter=None) -> dict:
 
 
 def sync_mismatches(root, chapter=None) -> list[dict]:
-    """GATE de coerencia (R3): para cada cena, compara approved_<id>.csv (text_target) com
+    """GATE de coerencia entre artefatos: para cada cena, compara approved_<id>.csv (text_target) com
     translations_<id>.json (campo t) por offset. Retorna divergencias — qualquer fonte de drift,
     nao so o tm_correct. Lista vazia = approved e projecao fiel de translations."""
     root = Path(root)
@@ -265,7 +265,7 @@ def main():
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
 
-    if a.check_sync:                                    # gate de coerencia (R3) — nao precisa de CSV
+    if a.check_sync:                                    # gate de coerencia entre artefatos — nao precisa de CSV
         mm = sync_mismatches(a.project, a.chapter)
         if a.json:
             print(json.dumps(mm, ensure_ascii=False, indent=2))

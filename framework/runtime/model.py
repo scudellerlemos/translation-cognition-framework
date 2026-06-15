@@ -33,7 +33,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import artifact_io   # noqa: E402  (camada de leitura compartilhada de artefatos)
 import context_pack  # noqa: E402
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
 # Plumbing de API extraido p/ llm_client.py (re-exportado aqui p/ compat: model._client/_stream_final/...).
 from llm_client import (  # noqa: E402,F401
@@ -186,7 +186,7 @@ def _is_blowup(source, t) -> bool:
     return _translit_len(t) > max(_translit_len(source or "") * _BLOWUP_FACTOR, _BLOWUP_FLOOR)
 
 
-# RÓTULO DE ENGINE (R-CUSTO): identificadores internos de rig/asset que NAO sao dialogo — body, face,
+# RÓTULO DE ENGINE: identificadores internos de rig/asset que NAO sao dialogo — body, face,
 # hair, mask, Leg_2_B_L, ch120_01, env_bone, lightA02. O LLM os TRADUZIA, estourava o byte_budget e
 # disparava o retighten (re-traducao = 58% do custo medido no ledger). Solucao: PASSTHROUGH
 # deterministico (t = fonte), fora do lote do LLM. Detecta BLOCO de rotulos = corrida de linhas de

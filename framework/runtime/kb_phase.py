@@ -37,7 +37,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
 import kb_review      # noqa: E402  (gate de fonte/ratificacao do delta de KB)
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from context_pack import scene_id_of, _present, _pos  # noqa: E402
 
 # sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").

@@ -1,4 +1,4 @@
-"""paths.py — FONTE UNICA do contrato de paths de artefato (H2).
+"""paths.py — FONTE UNICA do contrato de paths de artefato.
 
 Antes, os nomes de arquivo load-bearing (`translations_<id>.json`, `run_state.json`,
 `api_ledger.jsonl`, `state/translation_memory.jsonl`, ...) estavam espalhados por ~18 call sites

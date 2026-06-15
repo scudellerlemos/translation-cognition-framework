@@ -21,7 +21,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 
 def _read_ledger(root: Path) -> list[dict]:

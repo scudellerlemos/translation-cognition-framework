@@ -8,7 +8,7 @@ de QUALIDADE que o pipeline ja produz e a back-translation: nas linhas high/crit
 Mas esse sinal era REPORT-ONLY: ficava no `back_translation_<id>.json` em disco e ninguem lia de volta.
 Um `verdict: revise` (o proprio modelo dizendo "sentido/voz/ambiguidade divergiu") passava silencioso.
 
-Este gate torna o sinal OBSERVAVEL e BLOQUEANTE (contraparte do spoiler_check.py p/ o H6). Varre as
+Este gate torna o sinal OBSERVAVEL e BLOQUEANTE (mesma logica observavel do spoiler_check.py). Varre as
 back_translation ja gravadas e o translation_plan de cada cena e levanta DOIS problemas:
 
   (R) REVISE  — linha high/critical onde o verdict do back-translate foi 'revise' (divergencia real

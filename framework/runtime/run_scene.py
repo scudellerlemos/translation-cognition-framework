@@ -32,7 +32,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import model as M      # noqa: E402
 import state_index     # noqa: E402
 import kb_gate         # noqa: E402
@@ -59,7 +59,7 @@ def _run(cmd) -> tuple[int, str]:
 
 
 def _verify_status(out: str) -> dict:
-    """Protocolo estruturado (H1): le a 1 linha 'VERIFY_STATUS: {json}' que o conector emite. Fallback do
+    """Protocolo estruturado de saida do conector: le a 1 linha 'VERIFY_STATUS: {json}' que o conector emite. Fallback do
     exit-code — conector legado sem a linha -> {} (run_scene usa o exit-code 3 como sinal primario)."""
     for line in out.splitlines():
         line = line.strip()
@@ -234,7 +234,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True})
             break
-        # PROTOCOLO ESTRUTURADO (H1): exit-code do conector decide, NAO grep de prosa. exit 3 = falha
+        # PROTOCOLO ESTRUTURADO DE SAIDA: exit-code do conector decide, NAO grep de prosa. exit 3 = falha
         # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
         # VERIFY_STATUS; se nem isso, conservadoramente NAO escala (falha dura). Acabou com o grep fragil
         # que procurava "fora do arquivo" (espacos) — texto real e "fora-do-arquivo" (hifens) -> nunca casava.
