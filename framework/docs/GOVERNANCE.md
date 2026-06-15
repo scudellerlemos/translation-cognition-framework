@@ -161,9 +161,9 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-  call["chamada de API"] -->|"sempre"| ledger[("api_ledger.jsonl<br/>verdade do gasto")]
-  ledger --> report["cost_report.py<br/>(por modelo/tipo/cena)"]
-  cap["--max-usd N"] -.->|"teto: pára<br/>e reporta o que sobra"| call
+  apicall["chamada de API"] -->|"sempre"| ledger[("api_ledger.jsonl<br/>verdade do gasto")]
+  ledger --> report["cost_report.py<br/>por modelo/tipo/cena"]
+  cap["--max-usd N"] -.->|"teto: pára<br/>e reporta o que sobra"| apicall
   classDef det fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   class ledger,report,cap det;
 ```
