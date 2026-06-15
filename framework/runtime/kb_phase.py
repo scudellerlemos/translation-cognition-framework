@@ -88,6 +88,7 @@ despite god gods mysterious gonna wanna gotta gimme lemme dunno kinda sorta caus
 lords ladies masters mistress mistresses prince princes princess princesses king kings queen queens
 emperor empress general generals captain captains commander commanders chief chiefs boss colonel
 sirs madam madams milord milady yessir yep yup nope
+bro eep hmhmhm hope later they'd welcome almighty ngh hee speak follow open osh hahh true wonder run
 """.split())
 
 
