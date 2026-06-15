@@ -747,6 +747,22 @@ def test_fit_budget_caps_pessimistic(monkeypatch):
     assert run_chapter._fit_budget(None, ["a"], 0.5) == ([], ["a"])           # nem a 1a cabe -> dropa tudo
 
 
+def test_qa_returned_files_resolution(tmp_path):
+    # QA: o apply resolve de onde ler a revisao devolvida — arquivo, pasta, ou INBOX padrao.
+    import quality_review as QR
+    import paths
+    f = tmp_path / "x.xlsx"; f.write_text("", encoding="utf-8")
+    assert QR.returned_files(tmp_path, str(f)) == [f]                       # arquivo explicito
+    d = tmp_path / "ret"; d.mkdir()
+    for nm in ("a.xlsx", "b.csv", "~$a.xlsx", "nota.txt"):                  # mistura
+        (d / nm).write_text("", encoding="utf-8")
+    assert [p.name for p in QR.returned_files(tmp_path, str(d))] == ["a.xlsx", "b.csv"]  # ignora ~$ e .txt
+    inbox = paths.qa_inbox(tmp_path); inbox.mkdir(parents=True)
+    (inbox / "c.xlsx").write_text("", encoding="utf-8")
+    assert [p.name for p in QR.returned_files(tmp_path, None)] == ["c.xlsx"]  # default = inbox
+    assert QR.returned_files(tmp_path, str(tmp_path / "nope.xlsx")) == []     # inexistente -> []
+
+
 def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
     # PREVISIBILIDADE (recuperacao por-linha): o retry interativo manda SO as linhas quebradas, nunca a
     # cena inteira de novo -> custo de retry ∝ linhas com defeito, nao ∝ tamanho da cena.
@@ -1045,8 +1061,9 @@ def test_quality_review_xlsx_roundtrip(tmp_path):
     wb = load_workbook(xlsx)
     assert wb.sheetnames == ["Leia-me", "Revisao"]         # aba amigavel + dados
     ws = wb["Revisao"]
-    ws.cell(row=2, column=8).value = "Olá!"                 # revisor preenche Correcao (col 8)
-    ws.cell(row=3, column=9).value = "encurtar"             # e uma Nota (col 9) na 2a linha
+    # layout: col8=Corrigir? · col9=Correcao · col10=Nota. So linha MARCADA 'corrigir' e lida.
+    ws.cell(row=2, column=8).value = "CORRIGIR"; ws.cell(row=2, column=9).value = "Olá!"     # marca + correcao
+    ws.cell(row=3, column=8).value = "corrigir"; ws.cell(row=3, column=10).value = "encurtar"  # marca + nota (case-insens.)
     wb.save(xlsx)
     ret = quality_review.read_returned(xlsx)
     assert ret["ch_70_01"]["verbatim"] == [("0x1", "Olá!")]
@@ -1345,10 +1362,11 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
         encoding="utf-8")
     csvp = tmp_path / "ret.csv"
     csvp.write_text(
-        "scene,offset,speaker,risk,revisar,source_en,target_pt,correcao,nota\n"
-        "ch_71_01,0x1,X,high,risco:high,A,ruim,Corrigido pelo humano,\n"   # verbatim -> 0 IA
-        "ch_71_01,0x2,X,low,,B,longo demais,,encurtar\n"                    # nota -> IA cirurgica
-        "ch_71_01,0x9,X,low,,C,ok,,\n", encoding="utf-8")                   # vazio -> ignorado
+        "scene,offset,speaker,risk,revisar,source_en,target_pt,marcar,correcao,nota\n"
+        "ch_71_01,0x1,X,high,risco:high,A,ruim,CORRIGIR,Corrigido pelo humano,\n"  # marcado + verbatim -> 0 IA
+        "ch_71_01,0x2,X,low,,B,longo demais,corrigir,,encurtar\n"                  # marcado + nota -> IA cirurgica
+        "ch_71_01,0x8,X,low,,D,texto,,NAO marcado mas com texto,\n"               # SEM CORRIGIR -> ignorado
+        "ch_71_01,0x9,X,low,,C,ok,CORRIGIR,,\n", encoding="utf-8")                # marcado mas vazio -> ignorado
 
     called = {}
 

@@ -45,6 +45,12 @@ def decision_log(root) -> Path:     return artifacts(root) / "decision_log.md"
 def kb_worklist(root, chap) -> Path:    return artifacts(root) / f"kb_phase_worklist_{chap}.md"
 def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.csv"
 
+# ---- revisao humana de qualidade (QA), em duas pastas (artifacts/qa_revisao/) ----
+# OUTBOX: o sistema DISPONIBILIZA aqui o XLSX p/ o humano ler (gerado SEMPRE, obrigatorio).
+# INBOX: o humano DEVOLVE aqui o XLSX preenchido; o apply le SO as linhas marcadas (Correcao/Nota).
+def qa_outbox(root) -> Path:            return artifacts(root) / "qa_revisao" / "para_revisar"
+def qa_inbox(root) -> Path:             return artifacts(root) / "qa_revisao" / "devolvido"
+
 
 # ---- estado duravel destilado (artifacts/state/) ----
 def translation_memory(root) -> Path:   return state_dir(root) / "translation_memory.jsonl"
