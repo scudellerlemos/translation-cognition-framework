@@ -17,16 +17,36 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 | `artifact_io.py` | Camada única de leitura de artefatos (scenes, plan_lines, translations_map, back_entries). |
 | `paths.py` | Fonte única de caminhos de artefato. |
 
-**IA (a única fronteira não-determinística)**
+**Modelo — IA + suporte determinístico**
 
-| Arquivo | Função |
-|---|---|
-| `model.py` | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
-| `back_translate.py` | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
-| `llm_client.py` | Cliente + backoff/retry, await de batch, dotenv. |
-| `config.py` | Constantes de tier/modelo/custo/status (sem lógica). |
-| `cost.py` | Pricing real + `log_api_call` (escreve o ledger). |
-| `bench_translate.py` | Benchmark Sonnet vs Opus-à-mão (gate de aprovação de modelo). |
+A fronteira não-determinística é **só** `model.py` + `back_translate.py` (as chamadas ao LLM). Todo o
+resto deste grupo é plumbing **determinístico** em volta da IA:
+
+```mermaid
+flowchart LR
+  subgraph ia["IA — a fronteira não-determinística"]
+    tr["model.py<br/>translate · batch_*"]:::a
+    bt["back_translate.py<br/>revisão de alto risco"]:::a
+  end
+  subgraph det["suporte ao modelo — determinístico"]
+    client["llm_client.py<br/>cliente · backoff · batch"]:::d
+    cost["cost.py<br/>pricing · ledger"]:::d
+    cfg["config.py<br/>tiers · custo · status"]:::d
+    bench["bench_translate.py<br/>aprovação de modelo"]:::d
+  end
+  det --> ia
+  classDef a fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef d fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+```
+
+| Arquivo | IA? | Função |
+|---|---|---|
+| `model.py` | 🩷 IA | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
+| `back_translate.py` | 🩷 IA | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
+| `llm_client.py` | det. | Cliente + backoff/retry, await de batch, dotenv. |
+| `config.py` | det. | Constantes de tier/modelo/custo/status (sem lógica). |
+| `cost.py` | det. | Pricing real + `log_api_call` (escreve o ledger). |
+| `bench_translate.py` | det. | Benchmark Sonnet vs Opus-à-mão (gate de aprovação de modelo). |
 
 **Estado & memória (det.)**
 
@@ -51,6 +71,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 | `quality_gate.py` | Cruza veredito de back-translation + cobertura; `--export` da worklist `revise`. |
 | `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim ($0) ou nota cirúrgica; `--max-usd`. |
 | `quality_fix.py` | Re-traduz dirigido só os offsets `revise` da worklist; `--max-usd`. |
+| `glossary_lint.py` | Consistência de glossário cross-capítulo: termo do EN sem a forma canônica no pt-BR → candidatos p/ revisão. |
 | `cost_report.py` | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
 | `batch_smoke.py` | Smoke vivo do contrato da Batch API antes de pagar um capítulo inteiro. |
 
@@ -58,7 +79,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 
 | Arquivo | Função |
 |---|---|
-| `test_runtime.py` | 77 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, round-trip de integração. |
+| `test_runtime.py` | 80 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, round-trip de integração. |
 
 > Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
 > [`../docs/GOVERNANCE.md`](../docs/GOVERNANCE.md).
