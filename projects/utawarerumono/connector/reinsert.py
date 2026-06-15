@@ -93,9 +93,12 @@ def resolve_source(path: str | None = None) -> Path:
 # ----------------------------------------------------------------------------- transliteração (charset)
 # Acentos pt-BR -> ASCII. Determinístico, sem LLM. Tokens {..} são ASCII e não são afetados.
 def transliterate(s: str) -> str:
-    """Dobra diacríticos para ASCII (NFKD + descarte de combining marks). Mantém tudo o mais."""
-    nfkd = unicodedata.normalize("NFKD", s)
-    return "".join(c for c in nfkd if not unicodedata.combining(c))
+    """Dobra diacríticos para ASCII (NFD canônico + descarte de combining marks). Mantém tudo o mais.
+    NFD (não NFKD): decomposição CANÔNICA dobra acento (á->a, ç->c), mas PRESERVA glifos de compat.
+    que o jogo já usa (ex.: dígitos circulados ①②③ de sequências de puzzle: NFKD os reduzia a 1/2/3,
+    corrompendo o round-trip do binário original — ver ch_30_09)."""
+    nfd = unicodedata.normalize("NFD", s)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
 
 
 # Leitura do binário (read_cstr/find_pointers/is_head/read_run): vêm de sdat_format (módulo único

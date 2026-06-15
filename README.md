@@ -123,6 +123,48 @@ flowchart LR
 
 ---
 
+## Engenharia de custo e previsibilidade
+
+A arquitetura diz *onde* a IA vive; a **engenharia** é o que torna rodar uma obra inteira **barato,
+previsível e auditável** — o requisito real de quem tem orçamento apertado. Três propriedades sustentam isso.
+
+**1. Custo de pior-caso conhecido ANTES de gastar.** Todo capítulo imprime uma **estimativa pré-voo**
+(linhas × faixa medida) e respeita um **teto duro**: o `--max-usd` não é só um corte no meio — o driver
+**só compromete ao batch as cenas cujo custo pessimista cabe no teto** e adia o resto (resumível). Você
+sabe o número antes de pagar, e ele não estoura.
+
+**2. O conserto é por LINHA, não por cena.** A causa nº1 de gasto imprevisível era: um defeito de **1
+linha** (cobertura, paridade de quebra, byte budget) re-traduzia a **cena inteira**. Como o gatilho é
+variância do LLM (aleatória), o custo virava aleatório. A recuperação agora re-traduz **só as linhas
+quebradas** — custo de retry ∝ linhas com defeito, não ∝ tamanho da cena.
+
+```mermaid
+flowchart LR
+  v["verify falhou<br/>(1 linha quebrada)"]:::val --> q{recuperação}
+  q -->|"❌ antes: por CENA"| a["re-traduz 800 linhas<br/>custo aleatório"]:::cog
+  q -->|"✅ agora: por LINHA"| b["re-traduz 1 linha<br/>custo limitado"]:::cog
+  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+```
+
+**3. Cada centavo é auditável.** O `api_ledger.jsonl` registra **toda** chamada (modelo, tokens, custo)
+**antes** de qualquer parse — inclusive as que falham. Isso permite responder, com dados, *onde* o
+dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `$0 desperdiçado`.
+
+| Alavanca de custo | Mecanismo | Efeito |
+|---|---|---|
+| Reuso | TM *append-only* + dedup por cena | fala repetida não re-paga; o jogo não é re-traduzido após o QA |
+| Tier por complexidade | Haiku (linha simples) / Sonnet (com quebra) / Opus (só verificação) | paga o modelo certo por linha |
+| Batch | Batch API −50%, Carta cacheada compartilhada | metade do preço no 1º passe |
+| Recuperação por-linha | re-traduz só o que quebrou | retry barato e previsível |
+| Teto + estimativa | estimativa pré-voo + gate de submissão | gasto de pior-caso ≤ teto, conhecido antes |
+
+> A **governança** (acima) e a **engenharia** (aqui) se reforçam: gates determinísticos garantem que
+> nada entra no dado canônico sem prova; a economia garante que provar isso em escala **cabe no bolso**.
+> O round-trip byte-idêntico é o oráculo que torna a correção **objetiva** (não opinião).
+
+---
+
 ## Glossário (leia antes de mergulhar)
 
 Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual em
@@ -205,21 +247,23 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ## Status
 
-> junho 2026 — o framework saiu do "valida em 2 cenas" e entrou em **produção real**: o harness
-> stateless traduz e verifica capítulos inteiros de forma sustentável, em Sonnet, a custo medido.
+> junho 2026 — **o jogo de referência está 100% traduzido, verificado e com QA.** O framework saiu do
+> "valida em 2 cenas" e entregou uma obra inteira de ponta a ponta, a custo medido e previsível.
 
-- **Harness de escala (`framework/runtime/`):** ✅ em produção. **Caps 11–19 traduzidos e verificados
-  ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco) — **77 cenas**. Caps
-  20–23, 30, 31 e 39 já **extraídos**, em tradução (~2ª metade do jogo).
-- **Custo medido:** gasto real acumulado **~$43,5** (Sonnet $36,7 · Haiku $3,6 · Opus $3,2),
-  **$0 desperdiçado** (`api_ledger.jsonl`). Batch API **−50%** vivo; tiering Haiku/Sonnet/Opus, dedup
-  por TM, escalonamento cirúrgico e teto uniforme `--max-usd`.
+- **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
+  (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
+  + **back-translation de alto risco**. Validado **in-game** (pt-BR renderiza na tela; conector `hex_binary`).
+- **Custo medido:** gasto real acumulado **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5),
+  **$0 desperdiçado** (`api_ledger.jsonl` audita cada centavo, mesmo em falha). Batch API **−50%** vivo;
+  tiering Haiku/Sonnet/Opus, dedup por TM, recuperação **por-linha** e teto **previsível**.
+- **Custo previsível (engenharia desta fase):** estimativa **pré-voo** por capítulo, **teto duro** que
+  não estoura (gate de submissão do batch + por-cena), e **recuperação por-linha** (um defeito de 1
+  linha re-traduz ~1 linha, não a cena). Ver [Engenharia de custo](#engenharia-de-custo-e-previsibilidade).
 - **Cognição cabeada:** **gate de fonte de KB** (entidade nova sem fonte declarada BLOQUEIA);
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
 - **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim ($0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Jogo real (conector `hex_binary`):** ✅ validado **in-game** — pt-BR renderiza na tela do jogo.
-- **Qualidade travada:** **100 testes** (68 runtime + 16 conector + 16 validação), determinismo/
+- **Qualidade travada:** **122 testes** (77 runtime + 16 conector + 29 validação), determinismo/
   idempotência e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 

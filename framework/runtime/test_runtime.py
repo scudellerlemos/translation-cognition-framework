@@ -737,6 +737,53 @@ def test_merge_best_parity_keeps_good_line(monkeypatch):
     assert dest["0x1"]["t"] == f"p{tok}q"
 
 
+def test_fit_budget_caps_pessimistic(monkeypatch):
+    # TETO DURO: o batch so comete as cenas cujo custo PESSIMISTA acumulado cabe no teto; o resto e adiado.
+    monkeypatch.setattr(run_chapter, "_count_lines", lambda root, scs: 100)   # 100 linhas/cena
+    monkeypatch.setattr(run_chapter, "_USD_PER_LINE_HI", 0.01)                # -> $1.00/cena (pessimista)
+    fit, dropped = run_chapter._fit_budget(None, ["a", "b", "c"], 2.5)        # cabem 2 ($2 <= 2.5); a 3a nao
+    assert fit == ["a", "b"] and dropped == ["c"]
+    assert run_chapter._fit_budget(None, ["a", "b", "c"], None) == (["a", "b", "c"], [])  # sem teto -> tudo
+    assert run_chapter._fit_budget(None, ["a"], 0.5) == ([], ["a"])           # nem a 1a cabe -> dropa tudo
+
+
+def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
+    # PREVISIBILIDADE (recuperacao por-linha): o retry interativo manda SO as linhas quebradas, nunca a
+    # cena inteira de novo -> custo de retry ∝ linhas com defeito, nao ∝ tamanho da cena.
+    (tmp_path / "artifacts" / "ch_95_01").mkdir(parents=True)
+    pack = {"scene_id": "95_01", "tm_exact": [],
+            "lines": [{"offset": "0x1", "source": "Hello"},
+                      {"offset": "0x2", "source": "World"},
+                      {"offset": "0x3", "source": "Friend"}]}
+    # render_prompt -> lista os offsets das linhas-alvo (assim o conteudo enviado revela o subconjunto)
+    monkeypatch.setattr(context_pack, "render_prompt",
+                        lambda p, carta="": " ".join(r["offset"] for r in p["lines"]))
+    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    monkeypatch.setattr(model, "_client", lambda: object())
+    monkeypatch.setattr(model, "_text_of", lambda msg: json.dumps(msg))
+    monkeypatch.setattr(model, "_usage_of",
+                        lambda msg: {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0})
+
+    def _good(off):
+        return {"offset": off, "speaker": "X", "tone_register": "n", "intent": "i",
+                "risk_level": "low", "risk_notes": "", "t": "ok"}
+    rounds = [{"lines": [_good("0x1"), _good("0x2")]},   # attempt 0: cobre 2, FALTA 0x3
+              {"lines": [_good("0x3")]}]                  # attempt 1: cobre o que faltou
+    sent = []
+
+    def fake_stream(client, **kw):
+        sent.append(kw["messages"][0]["content"])
+        return rounds[len(sent) - 1]
+    monkeypatch.setattr(model, "_stream_final", fake_stream)
+
+    data, usage, meta = model._api_translate(tmp_path, "ch_95_01", pack, model.MODEL_TRANSLATE)
+    assert set(data["lines"]) == {"0x1", "0x2", "0x3"}, "convergiu cobrindo tudo"
+    assert len(sent) == 2, "1o passe + 1 retry"
+    assert all(o in sent[0] for o in ("0x1", "0x2", "0x3")), "1o passe manda a cena inteira"
+    assert "0x3" in sent[1] and "0x1" not in sent[1] and "0x2" not in sent[1], \
+        "retry manda SO a linha quebrada (recuperacao por-linha)"
+
+
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)

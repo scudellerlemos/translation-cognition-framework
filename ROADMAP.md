@@ -8,41 +8,42 @@
 
 ## Onde estamos (maturidade)
 
-> Atualizado: 2026-06-13.
+> Atualizado: 2026-06-15.
 
 | Camada | Status |
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Perfil de jogos | 🟢 validado |
-| Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); 68 testes |
-| Instância Utawarerumono | 🟢 **caps 11–19 traduzidos e verificados** (77 cenas; round-trip + back-translation), **validado in-game**; **~$43,5 gastos, $0 desperdiçado** |
-| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **pytest** (16 testes) |
+| Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); recuperação por-linha + teto previsível; 122 testes |
+| Instância Utawarerumono | 🟢 **JOGO COMPLETO — 16 capítulos, 146 cenas, ~45.100 linhas** traduzidos e verificados (round-trip + back-translation), **validado in-game**; **~$65,9 gastos, $0 desperdiçado** |
+| Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack** (EOF-append reprovado in-game); **transliteração NFD** (preserva ①②③); **pytest** (16 testes) |
 | Perfis filme/série + conector subtitle_file | 🟠/🔴 stub / não iniciado |
 
-**Resumo:** o *processo* está maduro (~92) e a *escala* virou produção: a **1ª metade do jogo (caps
-11–19) está traduzida e verificada ponta-a-ponta**, com pt-BR renderizando no jogo real. O bloqueador de
-correção ("funciona no jogo?") acabou há tempos. O que resta é **terminar a 2ª metade** (caps 20–23, 30,
-31, 39 — já extraídos) + **pós-produção** (build jogável, QA in-game completo, release). Governança com
-desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
+**Resumo:** o *processo* está maduro (~92) e a *escala* entregou: o **jogo de referência está 100%
+traduzido e verificado ponta-a-ponta** (16 capítulos), com pt-BR renderizando no jogo real. O bloqueador
+de correção ("funciona no jogo?") acabou há tempos. O que resta é **pós-produção** (passe global da
+Fase 3, build jogável, QA in-game completo do jogo inteiro, release) + **abrangência** (2ª obra/engine,
+filmes/séries). Governança com desenhos em [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
 
 ### Riscos do projeto
 
 Níveis alto / médio / baixo. O que está **sólido** e o que **ainda não está**. (Esta é a fonte única de
 riscos do projeto — o README só aponta para cá.)
 
-**🟢 Sólido (provado em produção):** harness stateless (77 cenas, 9 capítulos) · round-trip
-byte-idêntico in-game · governança propõe→aprova→aplica · custo medido (`$0` desperdiçado) · 100 testes.
+**🟢 Sólido (provado em produção):** harness stateless (**146 cenas, 16 capítulos = jogo inteiro**) ·
+round-trip byte-idêntico in-game · governança propõe→aprova→aplica · **custo previsível** (estimativa
+pré-voo + teto duro + recuperação por-linha; `$0` desperdiçado) · **122 testes**.
 
 | Risco | Nível | O que significa | Mitigação / estado |
 |---|---|---|---|
 | **Validação estreita** | 🔴 Alto | Provado em **1 obra, 1 engine** (`hex_binary`, jogo). Filmes/séries e outros engines são pontos de extensão **não validados** — genérico no papel, não na prática. | Conector é camada isolada; perfis de mídia documentados. |
-| **QA humana em escala** | 🔴 Alto | Qualidade *literária* dos caps 12–19 ainda **não foi lida por humano** — depende de IA + linter + back-translation. O piso de qualidade real está pendente. | `quality_review.py` (XLSX) + TM-coração prontos; falta **executar** a revisão. |
-| **Jogo incompleto / pós-produção** | 🔴 Alto | 2ª metade (caps 20+) em tradução; **build jogável + release não existem** ainda. | Loop incremental/resumível; falta crédito + execução. |
+| **QA humana em escala** | 🔴 Alto | Qualidade *literária* do **jogo inteiro (16 caps)** ainda **não foi lida por humano** — depende de IA + linter + back-translation. O piso de qualidade real está pendente. | `quality_review.py` (XLSX) + TM-coração prontos; falta **executar** a revisão. |
+| **Pós-produção (build + release)** | 🟡 Médio *(era Alto; tradução 100% feita)* | A **tradução está completa e verificada** (16 caps), mas **build jogável do jogo inteiro + release não existem** ainda — só patches por capítulo. | Mecânica por-capítulo provada; falta o passe global (Fase 3) + empacotar. |
 | **Fechamento global (Fase 3)** | 🟡 Médio | Consistência de glossário cross-capítulo + reinsert do **jogo inteiro** + patch final nunca rodaram ponta-a-ponta — só por capítulo. | Mecânica por-capítulo provada; passe global é território novo. |
-| **Conector em cenas distantes** | 🟡 Médio | Relocação validada in-game nos caps 11–19; saltos grandes (caps 30/39) **não testados na tela**. | Round-trip garante bytes; falta o gate visual. |
+| **Conector em cenas distantes** | 🟡 Médio | Round-trip + reinsert **verdes em todos os 16 caps** (inclusive 30/39 e os 6 arquivos do `ch_30_09`, que exigiram o fix NFKD→NFD); o **gate visual in-game** dos saltos grandes ainda não foi rodado na tela. | Round-trip garante bytes; falta a conferência visual. |
 | **KB sem ratificação humana** | 🟢 Baixo *(resolvido 2026-06-14)* | **55 entidades (caps 12–22) ratificadas** por Felipe Scudeller no `kb_ratified.csv`. `--strict` verde nos caps em uso (15,19,20,21,22). Resíduo: caps 12/13 (entidades antigas pré-gate, sem seção no research_log + ruído) e gênero de 2 menores (Chalafun/Bokoinante, corpus-only) — gate bloqueando **corretamente** até confirmar. | Ratificação feita; resíduo é cleanup pré-gate + 2 gêneros a ver in-game. |
 | **Re-tradução (R-CUSTO)** | 🟢 Baixo *(era Alto; raiz atacada 2026-06-14)* | Re-tradução era **58% do gasto** (medido), dominada por fitting-fail→retighten ao traduzir **rótulo de engine** (body/face/mask/`Leg_2_B_L`). | ✅ **Cabeado:** `model._label_passthrough` agora passa rótulos de rig como verbatim (fora do LLM) → sem estouro de budget → sem retighten. +teste. Resta (menor): cap/observabilidade de retighten. |
-| **Custo depende de disciplina** | 🟢 Baixo | Barato (~$0,0016/linha) **se** rodar em batch e 1–2 caps/sessão; tudo ao vivo de uma vez encarece. | Teto `--max-usd` + Batch −50% + dedup por TM. |
+| **Custo depende de disciplina** | 🟢 Baixo *(reduzido 2026-06-15)* | Barato (~$0,0012–0,0016/linha) em batch. A dependência de disciplina caiu: agora há **estimativa pré-voo**, **teto duro** (gate de submissão do batch + por-cena → gasto de pior-caso ≤ teto) e **recuperação por-linha** (defeito de 1 linha não re-traduz a cena). | `run_chapter` imprime estimativa + `_fit_budget` + Batch −50% + dedup por TM. |
 | **Sinais derivados stale** | 🟢 Baixo | Editar tradução pode deixar back-translation/relatórios desatualizados. | Invalidação automática + gate `tm_correct --check-sync`. |
 
 > **Leitura honesta:** os riscos que sobram **não são de arquitetura/engenharia** (maduras) — são de
@@ -72,20 +73,20 @@ byte-idêntico in-game · governança propõe→aprova→aplica · custo medido 
   (capturado pela back-translation). Fallback (caminhar o bytecode por ordem de comando) documentado, mas
   **nunca foi necessário** em 77 cenas. Ver `decision_log.md`.
 
-- [~] **A3. Estratégia de JOGO INTEIRO (~30k+ linhas) — loop incremental, resumível.** 🟢 **EM
-  PRODUÇÃO — 1ª metade fechada.** O loop incremental virou o **harness de escala** (`framework/runtime/`):
-  cena = job stateless O(cena), resumível por `run_state.json`. **Caps 11–19 traduzidos e verificados**
-  (77 cenas). O que resta é a 2ª metade (caps 20–23, 30, 31, 39, já extraídos) + a Fase 3.
+- [x] **A3. Estratégia de JOGO INTEIRO (~45k linhas) — loop incremental, resumível.** 🟢 **CONCLUÍDA —
+  jogo inteiro traduzido.** O loop incremental virou o **harness de escala** (`framework/runtime/`):
+  cena = job stateless O(cena), resumível por `run_state.json`. **Os 16 capítulos (146 cenas) traduzidos
+  e verificados.** O que resta é só a Fase 3 (fechamento/pós-produção).
   - ✅ **Fase 1 — "Ler o jogo":** o corpus foi extraído; o KB/glossário cresce por **fronteira de
     spoiler móvel** (`kb_phase.py` por capítulo) em vez de um único passe global — funcionalmente
     equivalente, e mais seguro p/ spoiler (termos canônicos congelam ao entrar na fronteira).
-  - 🟢 **Fase 2 — Loop por capítulo (11→39):** **9 de ~16 capítulos feitos** (11–19) pelo driver
+  - ✅ **Fase 2 — Loop por capítulo (11→39):** **16 de 16 capítulos feitos** pelo driver
     `run_chapter.py` (Knowledge Building com fronteira → traduzir → back-translation alto risco →
-    verify round-trip → checkpoint). Resumível; modo `--batch` (−50%) comprovado. Falta 20+.
+    verify round-trip → checkpoint). Resumível; modo `--batch` (−50%) comprovado.
   - [ ] **Fase 3 — Fechamento:** passe global de **consistência de glossário** (linter determinístico) →
-    `reinsert` do jogo inteiro + `pytest` + patch IPS final. **Pendente** (depois da 2ª metade).
+    `reinsert` do jogo inteiro num passe só + `pytest` + patch IPS final + **gate visual in-game**. **Pendente.**
   - **Consistência em escala:** glossário congelado + voice cards + TM + fronteira de spoiler móvel —
-    tudo externalizado em flat-files (não na janela). ✅ provado em 77 cenas.
+    tudo externalizado em flat-files (não na janela). ✅ provado em 146 cenas.
   - **Aceleração opcional:** tradução por cena é paralelizável (glossário/voz congelados) → candidata a
     **workflow multi-agente** (fan-out por cena + passe de consistência). Caminho caro; só sob demanda.
   - Esta é a **prova de produção** do framework. Casa com A4 (custo) e A5 (redução de custo).

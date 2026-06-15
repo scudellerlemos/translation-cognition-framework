@@ -119,30 +119,42 @@ A única fronteira não-determinística é `model.py` — por isso ela é fina e
 Resultado: Sonnet passa a ser o default de tradução com contexto pequeno e curado. Ver
 `adr/0004-model-agnostic-interface.md` e a seção *Sonnet Readiness* do `ROADMAP.md`.
 
-## Estado atual (junho 2026) — a arquitetura alvo está EM PRODUÇÃO
+## Estado atual (junho 2026) — OBRA DE REFERÊNCIA COMPLETA
 
-O harness deixou de ser projeto e virou o caminho de produção: **caps 11–19 traduzidos e verificados
-ponta-a-ponta** (round-trip byte-idêntico + back-translation de alto risco) — **77 cenas**, incluindo
-capítulos inteiros **via Batch API**. Caps 20–23, 30, 31 e 39 já extraídos, aguardando tradução. O que
-foi comprovado vivo, além do alvo acima:
+O harness deixou de ser projeto e entregou uma obra inteira: **os 16 capítulos do jogo (11–23 + 30, 31,
+39) traduzidos e verificados ponta-a-ponta** (round-trip byte-idêntico, resíduo 0, + back-translation de
+alto risco) — **146 cenas, ~45.100 linhas**, em capítulos inteiros **via Batch API**. O que foi
+comprovado vivo, além do alvo acima:
 
 - **Estouro de sessão morto:** o contexto por execução é O(cena); a sessão de chat só lança o driver
   (`run_chapter.py`) e lê o resumo — footprint constante, independente do nº de capítulos.
 - **Custo medido e controlado:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
-  gasto real acumulado **~$43,5**, **$0 desperdiçado**. Alavancas codadas: Batch API **−50%**
-  (comprovado), **tiering** por complexidade (Haiku nas simples, Sonnet nas multi-linha, Opus só
-  back-translation), **dedup por TM**, **escalonamento cirúrgico** de fitting, **back-translation em
-  batch** (+ amostragem ~5% das low/medium), e **teto uniforme `--max-usd`** nos drivers caros.
+  gasto real acumulado **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5), **$0 desperdiçado**.
+  Alavancas codadas: Batch API **−50%**, **tiering** por complexidade (Haiku simples, Sonnet multi-linha,
+  Opus só back-translation), **dedup por TM**, **back-translation em batch**.
+- **Custo PREVISÍVEL (a engenharia que fecha o caso p/ orçamento baixo):**
+  - **Recuperação por-linha** — quando o `verify` reprova por cobertura/paridade/budget, o re-translate
+    manda **só as linhas quebradas** (não a cena inteira). O gatilho é variância do LLM (aleatória); a
+    recuperação por-cena transformava isso em custo aleatório. Agora o custo de retry é ∝ linhas com
+    defeito. Vale no interativo (`model._api_translate`), no batch (rodada >0 re-batcha só `missing|bad_par`)
+    e no fitting (`retranslate_offsets`).
+  - **Estimativa pré-voo + teto duro** — `run_chapter` imprime o custo esperado (linhas × faixa medida)
+    ANTES de gastar e **só compromete ao batch as cenas cujo custo pessimista cabe no `--max-usd`**
+    (`_fit_budget`), adiando o resto (resumível). O gasto de pior-caso é **conhecido e ≤ teto**.
 - **Telemetria de gasto-verdade:** `api_ledger.jsonl` registra TODA chamada cobrada (inclusive as que
-  falham depois) → `cost_report.py` agrega; nenhum gasto fica invisível.
+  falham depois) → `cost_report.py` agrega; nenhum gasto fica invisível. Permite auditar *onde* o
+  dinheiro vai (1º passe vs re-tradução vs back) — foi assim que a re-tradução caiu de 58% p/ ~4%.
 - **Cognição cabeada no runtime:** **gate de fonte de KB** (`kb_review.py` + `kb_phase.py` — entidade
   nova sem fonte declarada BLOQUEIA; `--strict` exige ratificação humana em `kb_ratified.csv`);
   **controle de spoiler/gênero** por ledger + filtro temporal (comprovado no reveal Ukon=Oshtor em
   `ch_13_08`).
+- **Conector robusto:** transliteração **NFD** (canônica) dobra acento (á→a) mas **preserva glifos de
+  compatibilidade do charset do jogo** (dígitos circulados ①②③ de sequências de puzzle — NFKD os
+  corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **68 testes no runtime + 16 no conector**; determinismo, idempotência e um
-  guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
+- **Travas de qualidade:** **122 testes** (77 runtime + 16 conector + 29 validação); determinismo,
+  idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
 
 ## Documentos relacionados
 
