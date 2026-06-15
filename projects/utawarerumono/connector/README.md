@@ -4,6 +4,27 @@
 Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.md`). O formato do
 `ScriptEvent.sdat` foi mapeado por engenharia reversa — ver `table_schema.md`.
 
+### Em 30 segundos
+
+| | |
+|---|---|
+| **O que é** | Código **determinístico** que tira o texto de dentro do binário do jogo (`.sdat`) e o devolve traduzido — específico desta engine (Aquaplus). Sem IA: é I/O. |
+| **O oráculo** | **Round-trip**: extrair → reinserir **sem mudar nada** tem que regenerar o binário **byte a byte**. Se os bytes batem, não corrompemos o jogo. É prova objetiva, não opinião. |
+| **A prova** | Jogo inteiro reinsere com **resíduo 0** e renderiza in-game; **16 testes** travam os invariantes. |
+
+```mermaid
+flowchart LR
+  bin[(".sdat<br/>binário do jogo")] -->|"extract.py"| csv[("dialogs.csv<br/>corpus")]
+  csv -->|"tradução +<br/>approved_*.csv"| rein["reinsert.py"]
+  rein --> out[(".sdat traduzido<br/>+ patch .ips")]
+  bin -. "round-trip: extrair→reinserir SEM mudar = bytes idênticos (oráculo de correção)" .-> rein
+  classDef io fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+  class bin,csv,rein,out io;
+```
+
+> O binário é **read-only**: `reinsert.py` nunca o edita — gera um arquivo **novo** + patch. A tradução
+> vem de `approved_*.csv` (a IA propôs, um gate aprovou); o conector só **aplica**.
+
 ## Formato (resumo)
 
 - Container: `Filename` (header) → tabela de nomes → `Pack` (count + (offset,size) por arquivo) →
