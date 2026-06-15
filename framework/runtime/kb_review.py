@@ -9,7 +9,7 @@ timing de spoiler. Um erro decidido uma vez PROPAGA via TM por todos os capitulo
 passada de IA) ratificar ANTES de confiar.
 
 Este modulo NAO e um gate (nao bloqueia, sempre exit 0) — de proposito, p/ nao virar o motor pesado de
-reconciliacao que o H5 advertia ser overengineering. Ele so DESTILA: cruza as linhas novas de
+reconciliacao (risco conhecido de overengineering). Ele so DESTILA: cruza as linhas novas de
 glossary.csv/entities.csv (marcadas `(cap.N)` nas notas) com a secao `## cap.N` do research_log.md e
 sinaliza o que merece olho humano:
   - `sem fonte declarada` : a entidade nao aparece na secao do research_log daquele capitulo;

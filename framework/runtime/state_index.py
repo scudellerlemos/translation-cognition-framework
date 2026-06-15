@@ -28,7 +28,7 @@ import json
 import re
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -188,7 +188,7 @@ def build_decision_index(log_md: str) -> list[dict]:
     blocks = re.split(r"\n##\s+", "\n" + log_md)
     for b in blocks:
         b = b.strip()
-        if not b or b.startswith("#"):           # pula o H1/preambulo
+        if not b or b.startswith("#"):           # pula o titulo/preambulo (linha markdown iniciada por #)
             continue
         title = b.splitlines()[0].strip()
         if not title or title.lower().startswith("decision log"):

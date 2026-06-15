@@ -226,7 +226,7 @@ def _fake_chapter(tmp_path, scenes):
 
 
 def test_paths_contract():
-    # H2: paths.py e a FONTE UNICA do contrato de paths de artefato. Este teste FIXA as strings exatas
+    # paths.py e a FONTE UNICA do contrato de paths de artefato. Este teste FIXA as strings exatas
     # (congeladas — caps ja traduzidos dependem delas); qualquer rename acidental falha aqui.
     import paths
     r = Path("/proj")
@@ -249,7 +249,7 @@ def test_paths_contract():
 
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
-    # H6: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
+    # nao-vazamento de spoiler: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
     import spoiler_check, paths
     (tmp_path / "artifacts" / "ch_50_01").mkdir(parents=True)
     (tmp_path / "artifacts" / "ch_50_09").mkdir(parents=True)
@@ -271,7 +271,7 @@ def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
 
 
 def test_spoiler_no_leak_in_committed_translations():
-    # H6 (regressao sobre dados reais): nenhuma traducao commitada vaza spoiler de nome/titulo.
+    # nao-vazamento (regressao sobre dados reais): nenhuma traducao commitada vaza spoiler de nome/titulo.
     import spoiler_check
     root = Path(__file__).resolve().parents[2] / "projects" / "utawarerumono"
     if not (root / "artifacts" / "spoiler_ledger.json").is_file():
@@ -302,7 +302,7 @@ def test_batch_smoke_evaluate():
 
 
 def test_verify_status_parses_structured_line():
-    # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
+    # protocolo estruturado de saida: run_scene le a linha VERIFY_STATUS, nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
            'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo_t4": 2, "out_of_file": 0, "n_fails": 1}\n'
            "\nFALHAS:\n  - resíduo T4 = 2 (esperado 0)\n")
@@ -399,7 +399,7 @@ def test_cost_report_aggregates_and_flags_waste(tmp_path):
     assert cost_report._fmt(rep, by_scene=True)   # nao quebra ao formatar
 
 
-# ------------------------------- dedup por TM (R5 custo) ----------------------
+# ------------------------------- dedup por TM (economia de custo) -------------
 # Reaproveita traducao de OUTRA cena (mesma fonte) -> nao re-gera (corta tokens de saida).
 
 def _pack_for_reuse(lines, tm_exact, scene_id="12_09"):
@@ -459,7 +459,7 @@ def test_over_offsets_selects_only_overflowing():
     assert model._over_offsets({"0x2": 5}, {"0x2": {"t": "seis66"}}, 2.0) == []   # tolerancia folgada
 
 
-# ------------------------------- batch API (R5 custo, -50%) -------------------
+# ------------------------------- batch API (economia de custo, -50%) ----------
 import types as _types   # noqa: E402
 
 
@@ -748,7 +748,7 @@ def test_fit_budget_caps_pessimistic(monkeypatch):
 
 
 def test_glossary_lint_consistency(tmp_path):
-    # GAP D: termo do glossario presente no EN mas forma canonica ausente no pt-BR -> candidato.
+    # consistencia de glossario: termo presente no EN mas forma canonica ausente no pt-BR -> candidato.
     import glossary_lint
     art = tmp_path / "artifacts"
     (art / "ch_50_01").mkdir(parents=True)
@@ -1174,7 +1174,7 @@ def test_tm_correct_literal_mode(tmp_path):
 
 
 def test_tm_correct_keeps_approved_coherent(tmp_path):
-    # R3: tm_correct corrige os TRES artefatos — translations, plan E approved_<id>.csv. Esquecer o
+    # coerencia entre artefatos: tm_correct corrige os TRES — translations, plan E approved_<id>.csv. Esquecer o
     # approved deixava a correcao invisivel pro conector/jogo.
     import paths
     d = tmp_path / "artifacts" / "ch_30_02"; d.mkdir(parents=True)
@@ -1194,7 +1194,7 @@ def test_tm_correct_keeps_approved_coherent(tmp_path):
 
 
 def test_tm_correct_sync_gate_detects_drift(tmp_path):
-    # R3 gate: approved divergente de translations e detectado.
+    # gate de coerencia: approved divergente de translations e detectado.
     import paths
     d = tmp_path / "artifacts" / "ch_30_03"; d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_30_03", "30_03").write_text(
@@ -1224,7 +1224,7 @@ def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
 
 
 def test_label_passthrough_blocks_engine_labels_not_dialogue():
-    # R-CUSTO: rótulo de engine (rig/asset) vira passthrough (t=fonte), fora do lote do LLM -> não
+    # rótulo de engine (rig/asset) vira passthrough (t=fonte), fora do lote do LLM -> não
     # estoura budget -> sem retighten (a maior fonte de re-tradução = 58% do custo).
     pack = {"lines": [
         {"offset": "0x1", "source": "Eu vou te encontrar.", "byte_budget": 40},  # diálogo
@@ -1536,7 +1536,7 @@ def test_integration_roundtrip_real_scene(scene):
     assert code1 == 0, f"{scene}: build_plan_chapter falhou:\n{out1[-700:]}"
     code2, out2 = run_scene._run([sys.executable, str(vf), scene])
     assert code2 == 0, f"{scene}: verify_chapter falhou:\n{out2[-700:]}"
-    st = run_scene._verify_status(out2)               # protocolo estruturado (H1)
+    st = run_scene._verify_status(out2)               # protocolo estruturado de saida
     assert st.get("ok") is True, f"{scene}: VERIFY_STATUS nao-ok: {st}"
     assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
 

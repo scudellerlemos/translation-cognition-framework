@@ -163,7 +163,7 @@ def main():
         for n in label_notes:
             print("    *", n)
 
-    # PROTOCOLO ESTRUTURADO (H1) — o orquestrador (run_scene) NAO faz grep no stdout p/ decidir
+    # PROTOCOLO ESTRUTURADO DE SAIDA — o orquestrador (run_scene) NAO faz grep no stdout p/ decidir
     # escalonamento de fitting. Em vez disso: exit-code distinto + 1 linha JSON machine-readable.
     #   exit 0 = OK | exit 3 = falha SO de FITTING (residuo/out-of-file -> re-traduzir mais apertado
     #   ajuda) | exit 1 = falha DURA (round-trip/leitura -> apertar nao cura). A linha VERIFY_STATUS
