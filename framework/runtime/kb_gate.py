@@ -26,7 +26,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 _KB_ARTIFACTS = ("glossary.csv", "universe_knowledge_base.md")
 
