@@ -7,6 +7,17 @@
 >
 > Validado na prática traduzindo **um jogo real, EN→pt-BR, capítulos inteiros** (ver [Status](#status)).
 
+### Em 30 segundos
+
+| | |
+|---|---|
+| **O que é** | Engenharia que faz um LLM localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — tirando memória, governança e fluxo de **dentro** do modelo. |
+| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~$65,9** com **$0 desperdiçado**. |
+| **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
+
+> Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta-fase-0--jogando)
+> e a [quem faz o quê](#papéis-quem-faz-o-quê-ia--gates--humano).
+
 Se você está chegando agora e nunca viu os conceitos, leia nesta ordem: **o problema** → **as 4
 camadas** → **os princípios** → **o glossário**. Há também um guia conceitual passo a passo em
 [`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md) ("explique como se eu estivesse aprendendo IA").
@@ -123,6 +134,27 @@ flowchart LR
 
 ---
 
+## Papéis: quem faz o quê (IA · gates · humano)
+
+Três tipos de ator, com fronteiras explícitas. **A IA nunca tem a palavra final** — ela propõe; quem
+*julga* é um gate determinístico (objetivo) ou um humano (gosto literário/experiência na tela).
+
+| Ator | Papel | Faz | NÃO faz |
+|---|---|---|---|
+| 🩷 **IA-tradutora** | propõe a tradução | traduz cada linha (Haiku/Sonnet por complexidade) → `translation_plan` | gravar no canônico; decidir lore |
+| 🩷 **IA-juíza** (back-translation) | crivo **barato** de sentido | re-traduz pt-BR→EN só em alto risco e **marca** `revise` | aprovar sozinha — é sinal, não veredito |
+| 🟦🟩 **Gates determinísticos** | o **juiz objetivo** | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
+| 👤 **Humano-Ratificador** | âncora de verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
+| 👤 **Humano-Revisor** | palavra final do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim ($0) ou nota | mexer no binário |
+| 👤 **Humano-Tester** | palavra final na **tela** | joga, reporta por print + trecho (localizador determinístico) | usar OCR/IA |
+
+> **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, humano com a palavra final.* A
+> back-translation é uma IA que **acusa barato**; quem **decide** é o gate (objetivo) ou o humano (gosto).
+> Detalhe com desenhos em [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) e os papéis humanos em
+> [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md).
+
+---
+
 ## Engenharia de custo e previsibilidade
 
 A arquitetura diz *onde* a IA vive; a **engenharia** é o que torna rodar uma obra inteira **barato,
@@ -211,6 +243,32 @@ Nenhum nome de personagem, termo de lore ou idioma vive dentro de `framework/`.
 
 ---
 
+## O processo ponta a ponta (Fase 0 → jogando)
+
+O filme inteiro, do binário do jogo até a pessoa jogando em pt-BR. As cores são as das 4 camadas; o
+loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem re-traduzir o jogo.
+
+```mermaid
+flowchart TB
+  bin[("binário do jogo<br/>(.sdat, read-only)")]:::sta
+  bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
+  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz (IA) → micro-QA por lote → reinsere"]:::cog
+  pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
+  build --> qa["QA HUMANO<br/>REVISOR (texto) + TESTER (in-game)"]:::val
+  qa -->|"correção cirúrgica via TM<br/>(não re-traduz o jogo)"| pipe
+  qa --> rel["RELEASE<br/>patch + instalação"]:::exe
+  rel --> play(["🎮 pessoa joga em pt-BR"]):::good
+  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
+  classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+  classDef good fill:#cdebc5,stroke:#2e7d32,color:#000;
+```
+
+> 🟧 binário (read-only) · 🟩 gates/QA (Fase 0 + QA humano) · 🩷 IA (tradução) · 🟦 build/release
+> (determinístico). A Fase 0 e o QA humano **cercam** a parte de IA — nada é traduzido sem KB de fonte,
+> nada é entregue sem revisão humana.
+
 ## O pipeline (00 → 08)
 
 As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entrada.
@@ -241,6 +299,7 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
+[`QA_REVIEW.md`](framework/docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
 [`adr/`](framework/docs/adr/) (as decisões de IA, registradas) · [`ROADMAP.md`](ROADMAP.md).
 
 ---
@@ -263,7 +322,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
 - **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim ($0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Qualidade travada:** **122 testes** (77 runtime + 16 conector + 29 validação), determinismo/
+- **Qualidade travada:** **125 testes** (80 runtime + 29 validação + 16 conector), determinismo/
   idempotência e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 

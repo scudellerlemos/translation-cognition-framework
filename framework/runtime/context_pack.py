@@ -25,7 +25,7 @@ import json
 import re
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:

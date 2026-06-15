@@ -25,11 +25,12 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack   # noqa: E402
-import paths          # noqa: E402  (H2: fonte unica de paths)
+import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import run_scene as RS  # noqa: E402
 import cost_report     # noqa: E402
 import model as M      # noqa: E402
 import kb_gate         # noqa: E402
+import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
@@ -225,9 +226,29 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
              if budget_excluded else ""))
     _print_cost(root, chap)
+    _export_qa(root, chap)        # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
+
+
+def _export_qa(root: Path, chap: str):
+    """OBRIGATORIO: ao fim do capitulo, disponibiliza o XLSX de revisao HUMANA no outbox — SEMPRE, mesmo
+    que a IA nao tenha marcado nada (o piso de qualidade e o humano ler). Best-effort: nao derruba um
+    capitulo ja traduzido se o export falhar (ex.: openpyxl ausente) — so avisa em alto e bom som."""
+    try:
+        rows = quality_review.export(root, chap)
+        outbox = paths.qa_outbox(root)
+        outbox.mkdir(parents=True, exist_ok=True)
+        out = outbox / f"review_cap_{chap}.xlsx"
+        quality_review.write_xlsx(rows, str(out))
+        marked = sum(1 for r in rows if r.get("revisar"))
+        print(f"[QA obrigatorio] revisao humana disponibilizada: {out}")
+        print(f"                 {len(rows)} linha(s), {marked} marcada(s) p/ ler. Devolva preenchido em "
+              f"{paths.qa_inbox(root)} e rode: quality_review.py apply <projeto>")
+    except Exception as e:
+        print(f"[QA obrigatorio] AVISO: falha ao gerar o XLSX de revisao ({e}). "
+              f"Gere a mao: python quality_review.py export <projeto> {chap}")
 
 
 def _print_cost(root: Path, chap: str | None = None):

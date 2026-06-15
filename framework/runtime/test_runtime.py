@@ -226,7 +226,7 @@ def _fake_chapter(tmp_path, scenes):
 
 
 def test_paths_contract():
-    # H2: paths.py e a FONTE UNICA do contrato de paths de artefato. Este teste FIXA as strings exatas
+    # paths.py e a FONTE UNICA do contrato de paths de artefato. Este teste FIXA as strings exatas
     # (congeladas — caps ja traduzidos dependem delas); qualquer rename acidental falha aqui.
     import paths
     r = Path("/proj")
@@ -249,7 +249,7 @@ def test_paths_contract():
 
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
-    # H6: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
+    # nao-vazamento de spoiler: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
     import spoiler_check, paths
     (tmp_path / "artifacts" / "ch_50_01").mkdir(parents=True)
     (tmp_path / "artifacts" / "ch_50_09").mkdir(parents=True)
@@ -271,7 +271,7 @@ def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
 
 
 def test_spoiler_no_leak_in_committed_translations():
-    # H6 (regressao sobre dados reais): nenhuma traducao commitada vaza spoiler de nome/titulo.
+    # nao-vazamento (regressao sobre dados reais): nenhuma traducao commitada vaza spoiler de nome/titulo.
     import spoiler_check
     root = Path(__file__).resolve().parents[2] / "projects" / "utawarerumono"
     if not (root / "artifacts" / "spoiler_ledger.json").is_file():
@@ -302,7 +302,7 @@ def test_batch_smoke_evaluate():
 
 
 def test_verify_status_parses_structured_line():
-    # H1: run_scene le a linha VERIFY_STATUS (protocolo estruturado), nao faz grep de prosa.
+    # protocolo estruturado de saida: run_scene le a linha VERIFY_STATUS, nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
            'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo_t4": 2, "out_of_file": 0, "n_fails": 1}\n'
            "\nFALHAS:\n  - resíduo T4 = 2 (esperado 0)\n")
@@ -399,7 +399,7 @@ def test_cost_report_aggregates_and_flags_waste(tmp_path):
     assert cost_report._fmt(rep, by_scene=True)   # nao quebra ao formatar
 
 
-# ------------------------------- dedup por TM (R5 custo) ----------------------
+# ------------------------------- dedup por TM (economia de custo) -------------
 # Reaproveita traducao de OUTRA cena (mesma fonte) -> nao re-gera (corta tokens de saida).
 
 def _pack_for_reuse(lines, tm_exact, scene_id="12_09"):
@@ -459,7 +459,7 @@ def test_over_offsets_selects_only_overflowing():
     assert model._over_offsets({"0x2": 5}, {"0x2": {"t": "seis66"}}, 2.0) == []   # tolerancia folgada
 
 
-# ------------------------------- batch API (R5 custo, -50%) -------------------
+# ------------------------------- batch API (economia de custo, -50%) ----------
 import types as _types   # noqa: E402
 
 
@@ -745,6 +745,70 @@ def test_fit_budget_caps_pessimistic(monkeypatch):
     assert fit == ["a", "b"] and dropped == ["c"]
     assert run_chapter._fit_budget(None, ["a", "b", "c"], None) == (["a", "b", "c"], [])  # sem teto -> tudo
     assert run_chapter._fit_budget(None, ["a"], 0.5) == ([], ["a"])           # nem a 1a cabe -> dropa tudo
+
+
+def test_glossary_lint_consistency(tmp_path):
+    # consistencia de glossario: termo presente no EN mas forma canonica ausente no pt-BR -> candidato.
+    import glossary_lint
+    art = tmp_path / "artifacts"
+    (art / "ch_50_01").mkdir(parents=True)
+    (art / "glossary.csv").write_text(
+        "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n"
+        "Kuon,Personagem,Kuon,manter_original,none,,\n"
+        "Warmaster,Titulo,Mestre de Guerra,traduzir,none,,\n", encoding="utf-8")
+    (art / "ch_50_01" / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\n"
+        "0x1,Kuon sorriu.,20\n"            # nome preservado -> OK
+        "0x2,The Warmaster arrived.,30\n"  # traducao do glossario NAO usada -> candidato
+        "0x3,Kuon left.,20\n"              # nome ausente no pt-BR -> candidato
+        "0x4,Hello there.,20\n", encoding="utf-8")  # sem termo -> ignora
+    (art / "ch_50_01" / "translations_50_01.json").write_text(json.dumps({"lines": {
+        "0x1": {"t": "Kuon sorriu."}, "0x2": {"t": "O comandante chegou."},
+        "0x3": {"t": "Ela partiu."}, "0x4": {"t": "Ola."}}}), encoding="utf-8")
+    found = glossary_lint.lint(tmp_path)
+    offs = sorted(f["offset"] for f in found)
+    assert offs == ["0x2", "0x3"]                          # so as duas inconsistencias reais
+    assert {f["offset"]: f["term"] for f in found} == {"0x2": "Warmaster", "0x3": "Kuon"}
+
+
+def test_qa_tester_locator(tmp_path, monkeypatch):
+    # TESTER in-game: trecho digitado (sem acento, como aparece na tela) -> localiza a linha (det., sem IA).
+    import quality_review as QR
+    idx = [("ch_50_01", "0x1", "Tudo está tão escuro..."),
+           ("ch_50_01", "0x2", "Bom dia, comandante."),
+           ("ch_50_02", "0x9", "Bom dia, comandante.")]            # duplicada de proposito
+    # trecho com acento dobrado casa o transliterado in-game
+    assert QR.locate(idx, "esta tao escuro") == [("ch_50_01", "0x1", "Tudo está tão escuro...")]
+    assert len(QR.locate(idx, "bom dia")) == 2                      # ambiguo (2 cenas)
+    assert QR.locate(idx, "ab") == []                              # < 3 chars uteis -> nada
+    # relato -> rows/ambiguos/missing
+    monkeypatch.setattr(QR, "_approved_index", lambda root: idx)
+    rel = tmp_path / "relato_tester.csv"
+    rel.write_text("print,texto_visto,problema,sugestao\n"
+                   "p1.png,esta tao escuro,balao,\n"               # unico -> nota (IA)
+                   "p2.png,bom dia,sentido,Bom dia!\n"             # ambiguo -> nao resolve
+                   "p3.png,nao existe isso aqui,quebra,\n", encoding="utf-8")
+    rows, amb, miss = QR.tester_to_review(tmp_path, rel)
+    assert len(rows) == 1 and rows[0]["scene"] == "ch_50_01" and rows[0]["marcar"] == "CORRIGIR"
+    assert rows[0]["nota"] and not rows[0]["correcao"]             # sem sugestao -> vira nota
+    assert len(amb) == 1 and amb[0]["n"] == 2
+    assert len(miss) == 1
+
+
+def test_qa_returned_files_resolution(tmp_path):
+    # QA: o apply resolve de onde ler a revisao devolvida — arquivo, pasta, ou INBOX padrao.
+    import quality_review as QR
+    import paths
+    f = tmp_path / "x.xlsx"; f.write_text("", encoding="utf-8")
+    assert QR.returned_files(tmp_path, str(f)) == [f]                       # arquivo explicito
+    d = tmp_path / "ret"; d.mkdir()
+    for nm in ("a.xlsx", "b.csv", "~$a.xlsx", "nota.txt"):                  # mistura
+        (d / nm).write_text("", encoding="utf-8")
+    assert [p.name for p in QR.returned_files(tmp_path, str(d))] == ["a.xlsx", "b.csv"]  # ignora ~$ e .txt
+    inbox = paths.qa_inbox(tmp_path); inbox.mkdir(parents=True)
+    (inbox / "c.xlsx").write_text("", encoding="utf-8")
+    assert [p.name for p in QR.returned_files(tmp_path, None)] == ["c.xlsx"]  # default = inbox
+    assert QR.returned_files(tmp_path, str(tmp_path / "nope.xlsx")) == []     # inexistente -> []
 
 
 def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
@@ -1045,8 +1109,9 @@ def test_quality_review_xlsx_roundtrip(tmp_path):
     wb = load_workbook(xlsx)
     assert wb.sheetnames == ["Leia-me", "Revisao"]         # aba amigavel + dados
     ws = wb["Revisao"]
-    ws.cell(row=2, column=8).value = "Olá!"                 # revisor preenche Correcao (col 8)
-    ws.cell(row=3, column=9).value = "encurtar"             # e uma Nota (col 9) na 2a linha
+    # layout: col8=Caixa(info) · col9=Corrigir? · col10=Correcao · col11=Nota. So linha MARCADA e lida.
+    ws.cell(row=2, column=9).value = "CORRIGIR"; ws.cell(row=2, column=10).value = "Olá!"     # marca + correcao
+    ws.cell(row=3, column=9).value = "corrigir"; ws.cell(row=3, column=11).value = "encurtar"  # marca + nota (case-insens.)
     wb.save(xlsx)
     ret = quality_review.read_returned(xlsx)
     assert ret["ch_70_01"]["verbatim"] == [("0x1", "Olá!")]
@@ -1109,7 +1174,7 @@ def test_tm_correct_literal_mode(tmp_path):
 
 
 def test_tm_correct_keeps_approved_coherent(tmp_path):
-    # R3: tm_correct corrige os TRES artefatos — translations, plan E approved_<id>.csv. Esquecer o
+    # coerencia entre artefatos: tm_correct corrige os TRES — translations, plan E approved_<id>.csv. Esquecer o
     # approved deixava a correcao invisivel pro conector/jogo.
     import paths
     d = tmp_path / "artifacts" / "ch_30_02"; d.mkdir(parents=True)
@@ -1129,7 +1194,7 @@ def test_tm_correct_keeps_approved_coherent(tmp_path):
 
 
 def test_tm_correct_sync_gate_detects_drift(tmp_path):
-    # R3 gate: approved divergente de translations e detectado.
+    # gate de coerencia: approved divergente de translations e detectado.
     import paths
     d = tmp_path / "artifacts" / "ch_30_03"; d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_30_03", "30_03").write_text(
@@ -1159,7 +1224,7 @@ def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
 
 
 def test_label_passthrough_blocks_engine_labels_not_dialogue():
-    # R-CUSTO: rótulo de engine (rig/asset) vira passthrough (t=fonte), fora do lote do LLM -> não
+    # rótulo de engine (rig/asset) vira passthrough (t=fonte), fora do lote do LLM -> não
     # estoura budget -> sem retighten (a maior fonte de re-tradução = 58% do custo).
     pack = {"lines": [
         {"offset": "0x1", "source": "Eu vou te encontrar.", "byte_budget": 40},  # diálogo
@@ -1331,6 +1396,11 @@ def test_quality_review_export_marks_lines(tmp_path):
     assert "largura" not in quality_review._flags(           # 2 segmentos curtos (cada < max) -> ok
         "s", f"ok{context_pack.TOKEN}tambem ok", "low", False)
     assert by["0x1"]["source_en"] == "Hello there." and by["0x1"]["target_pt"] == "Ola."
+    # coluna 'caixa' (DETERMINISTICA: pt-BR vs a SUA EN, mesma caixa; char=px monospace):
+    assert quality_review._box_verdict("Hello there.", "Ola.") == ""              # pt-BR <= EN -> cabe (provado)
+    assert quality_review._box_verdict("x" * 40, "x" * 48).startswith("rever")    # cresceu vs EN, mas < max
+    assert quality_review._box_verdict("curta", "x" * (quality_review.WIDTH_MAX + 5)).startswith("ESTOUROU")
+    assert by["0x1"]["caixa"] == ""                                               # 'Ola.' <= 'Hello there.'
 
 
 def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
@@ -1345,10 +1415,11 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
         encoding="utf-8")
     csvp = tmp_path / "ret.csv"
     csvp.write_text(
-        "scene,offset,speaker,risk,revisar,source_en,target_pt,correcao,nota\n"
-        "ch_71_01,0x1,X,high,risco:high,A,ruim,Corrigido pelo humano,\n"   # verbatim -> 0 IA
-        "ch_71_01,0x2,X,low,,B,longo demais,,encurtar\n"                    # nota -> IA cirurgica
-        "ch_71_01,0x9,X,low,,C,ok,,\n", encoding="utf-8")                   # vazio -> ignorado
+        "scene,offset,speaker,risk,revisar,source_en,target_pt,marcar,correcao,nota\n"
+        "ch_71_01,0x1,X,high,risco:high,A,ruim,CORRIGIR,Corrigido pelo humano,\n"  # marcado + verbatim -> 0 IA
+        "ch_71_01,0x2,X,low,,B,longo demais,corrigir,,encurtar\n"                  # marcado + nota -> IA cirurgica
+        "ch_71_01,0x8,X,low,,D,texto,,NAO marcado mas com texto,\n"               # SEM CORRIGIR -> ignorado
+        "ch_71_01,0x9,X,low,,C,ok,CORRIGIR,,\n", encoding="utf-8")                # marcado mas vazio -> ignorado
 
     called = {}
 
@@ -1465,7 +1536,7 @@ def test_integration_roundtrip_real_scene(scene):
     assert code1 == 0, f"{scene}: build_plan_chapter falhou:\n{out1[-700:]}"
     code2, out2 = run_scene._run([sys.executable, str(vf), scene])
     assert code2 == 0, f"{scene}: verify_chapter falhou:\n{out2[-700:]}"
-    st = run_scene._verify_status(out2)               # protocolo estruturado (H1)
+    st = run_scene._verify_status(out2)               # protocolo estruturado de saida
     assert st.get("ok") is True, f"{scene}: VERIFY_STATUS nao-ok: {st}"
     assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
 

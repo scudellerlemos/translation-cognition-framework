@@ -1,0 +1,10 @@
+# Os XLSX/CSV de revisao sao GERADOS (export, regeneravel) e DEVOLVIDOS (input do humano, processado
+# pelo apply -> o resultado vai p/ translations, que e versionado). Nao incham o git; versiona-se so a
+# ESTRUTURA (LEIA-ME + .gitkeep) e o MECANISMO (quality_review.py).
+para_revisar/review_*.xlsx
+para_revisar/review_*.csv
+devolvido/*.xlsx
+devolvido/*.csv
+# TESTER: prints (binarios/dados) e o relato preenchido nao incham o git; versiona-se so o template.
+teste_ingame/prints/*
+!teste_ingame/prints/.gitkeep
