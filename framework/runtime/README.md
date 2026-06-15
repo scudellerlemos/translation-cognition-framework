@@ -58,7 +58,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 
 | Arquivo | Função |
 |---|---|
-| `test_runtime.py` | 68 testes: determinismo, boundedness, idempotência, guard de no-work-text, round-trip de integração. |
+| `test_runtime.py` | 77 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, round-trip de integração. |
 
 > Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
 > [`../docs/GOVERNANCE.md`](../docs/GOVERNANCE.md).
