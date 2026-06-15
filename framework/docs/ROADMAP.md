@@ -32,7 +32,7 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | 9b | **telemetria de gasto REAL** (`api_ledger.jsonl` por chamada + `cost_report.py`) | ✅ **feito** — toda chamada cobrada conta, inclusive cenas que falham/escalam |
 
 ### P1.5 — cabear cognição no runtime (gaps da Architecture Review #2)
-> Doutrina existe nas skills, mas o harness de escala não a aplica. Ver `ARCHITECTURE_REVIEW_2.md`.
+> Doutrina existe nas skills, mas o harness de escala não a aplica. Ver `ARCHITECTURE_REVIEW_2026-06.md`.
 
 | # | Item | Severidade | Status |
 |---|---|---|---|

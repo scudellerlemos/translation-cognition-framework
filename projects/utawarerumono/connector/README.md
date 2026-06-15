@@ -1,5 +1,5 @@
 # Conector — Utawarerumono
-## Estado: ✅ validado in-game (1025 linhas; relocação intra-arquivo + Pack)
+## Estado: ✅ jogo inteiro reinsere e round-trip íntegro (16 caps, ~45.100 linhas); validado in-game
 
 Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.md`). O formato do
 `ScriptEvent.sdat` foi mapeado por engenharia reversa — ver `table_schema.md`.
@@ -23,16 +23,21 @@ Este projeto usa o conector `hex_binary` (ver `framework/connectors/hex_binary.m
       arquivo cresce e a tabela Pack é reescrita (`rebuild_container`, padding a 16 bytes); ponteiro =
       offset local. (EOF-append ao fim do container foi **reprovado in-game**.)
 - [x] **Charset**: gate FALHOU (fonte sem diacríticos → `@`); resolvido por **transliteração** na
-      gravação. Evidência: `artifacts/evidence/char1.png`, `char2.png`.
+      gravação. Evidência: `artifacts/evidence/char1.png`, `char2.png`. **Transliteração usa NFD
+      (canônica), não NFKD:** dobra acento (á→a, ç→c) mas **preserva glifos de compatibilidade que o
+      jogo já usa** — ex.: dígitos circulados ①②③ em sequências de puzzle (`{W12}`). NFKD os reduzia a
+      `1/2/3` e quebrava o round-trip do binário original (descoberto no `ch_30_09`).
 - [x] **Validação in-game ✅**: pt-BR exibe (`artifacts/evidence/Fasea*.png`); linha relocada pelo Plano B
       exibe e o jogo avança sem travar (`artifacts/evidence/testeplanob.png`, `testeplanob_avanco.png`).
 - [x] Patch IPS gerado em `output/ScriptEvent.sdat.ips`.
 
 ## Próximos passos
 
-- [ ] Ordem offset × ordem narrativa para cenas distantes (ver `decision_log.md`).
-- [ ] 2ª metade do jogo (~33k linhas no total) — extração por capítulo via `extract_chapter.py`;
-      caps 11–13 já traduzidos/verificados pelo harness (`framework/runtime/`).
+- [x] **Jogo inteiro extraído, reinserido e round-trip verde** — 16 capítulos (11–23 + 30, 31, 39),
+      146 cenas, ~45.100 linhas, pelo harness (`framework/runtime/`). Ordem offset × ordem narrativa
+      confirmada em todos (nenhuma divergência pega pela back-translation/QA).
+- [ ] **Pós-produção:** reinsert do **jogo inteiro num passe só** + patch IPS final (hoje é por
+      capítulo) e **gate visual in-game** dos saltos grandes (caps 30/39). Ver `ROADMAP.md`.
 
 ## Como rodar
 
@@ -44,8 +49,8 @@ pytest  connector/                                        # gate de regressão (
 
 O formato é parseado por `connector/sdat_format.py` (módulo único compartilhado por extract e
 reinsert — garante o round-trip). O escopo extraído é controlado por capítulo via
-`connector/extract_chapter.py` (prefixos de nome de script por capítulo, ex.: `13` → `ch_13_*`); caps
-11–13 já extraídos e traduzidos.
+`connector/extract_chapter.py` (prefixos de nome de script por capítulo, ex.: `13` → `ch_13_*`); os
+16 capítulos do jogo já extraídos e traduzidos.
 
 O caminho do binário **nunca** é hardcoded: vem do argumento de CLI ou de
 `connector.source_binary` no `project.json` (relativo à raiz do projeto).
