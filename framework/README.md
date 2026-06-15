@@ -127,8 +127,8 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado **em produção** (Utawarerumono): harness de escala rodando, **caps 11–19
-  traduzidos e verificados** (77 cenas), pt-BR renderizando in-game. Ver `media-profiles/games.md`.
+- **Jogos** — ✅ validado **em produção** (Utawarerumono): **jogo COMPLETO — 16 capítulos, 146 cenas,
+  ~45.100 linhas** traduzidas e verificadas, pt-BR renderizando in-game. Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
 
@@ -149,6 +149,6 @@ com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de no
 ## INSTÂNCIA DE REFERÊNCIA
 
 `projects/utawarerumono/` é a prova viva de que o processo funciona em um título real e em escala:
-visual novel, EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. **Caps
-11–19 traduzidos e verificados ponta-a-ponta** (77 cenas) pelo harness, com saída renderizando no jogo.
-Use-a como exemplo de como preencher manifesto e perfil.
+visual novel, EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. **Jogo
+inteiro traduzido e verificado ponta-a-ponta** (16 capítulos, 146 cenas, ~45.100 linhas) pelo harness,
+com saída renderizando no jogo. Use-a como exemplo de como preencher manifesto e perfil.
