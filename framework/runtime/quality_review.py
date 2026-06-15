@@ -9,11 +9,14 @@ risco alto, amostra do tier barato, ou flags baratas (identico-a-fonte=provavel 
 de tamanho, `largura`=segmento estoura o balao no jogo, marcador pt-PT). Linha sem tag = passa o olho;
 tag preenchida = "avalie aqui".
 
-O humano devolve o MESMO CSV preenchendo, por linha:
+O humano devolve o MESMO arquivo. A DECISAO e dele, numa coluna propria: escreve **CORRIGIR** (ou
+corrigir) na coluna `marcar` da linha que quer mudar. O `apply` le SO as linhas marcadas CORRIGIR.
+Na linha marcada, preenche UMA:
   - coluna `correcao` = o texto certo  -> aplico VERBATIM (zero IA: so gate de charset/round-trip + merge);
   - coluna `nota` (sem correcao) = instrucao (ex.: "encurtar", "tom formal") -> IA re-traduz SO aquela
-    linha seguindo a nota (cirurgico, nunca a cena inteira);
-  - ambas vazias = aprovado, nao toco.
+    linha seguindo a nota (cirurgico, nunca a cena inteira).
+Linha SEM CORRIGIR = aprovada, nao toco. A coluna `revisar` e so DICA de onde olhar (deterministica +
+o micro-QA da IA JA pago — verdict 'revise' da back-translation); NAO decide nada, $0, sem nova API.
 
 O `apply` processa EXATAMENTE o que foi marcado e re-verifica round-trip dos capitulos tocados. Governanca:
 HUMANO propoe -> gate (charset/paridade/round-trip) aprova -> script aplica. Sem work-text no .py.
@@ -25,6 +28,7 @@ Uso:
 from __future__ import annotations
 import argparse
 import csv
+import json
 import re
 import sys
 from pathlib import Path
@@ -37,7 +41,10 @@ import context_pack  # noqa: E402
 import model          # noqa: E402
 import paths          # noqa: E402
 
-COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt", "correcao", "nota"]
+# 'marcar' = a COLUNA DE DECISÃO do humano: ele escreve CORRIGIR (ou corrigir) na linha que quer mudar.
+# O apply lê SÓ as linhas marcadas. 'revisar' é só DICA ($0, micro-QA da IA) de onde olhar — não decide nada.
+COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt",
+        "marcar", "correcao", "nota"]
 
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
@@ -54,9 +61,13 @@ def _norm_cmp(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace("\\n", " ")).strip().lower()
 
 
-def _flags(source: str, target: str, risk: str, sampled: bool) -> str:
-    """Tags DETERMINISTICAS de 'onde avaliar' (sem IA). '' = linha sem sinal (passa o olho)."""
+def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool = False) -> str:
+    """Tags de 'onde avaliar' — DICA p/ o humano, NUNCA decisao (a decisao e a coluna CORRIGIR).
+    Tudo $0: deterministico OU reusa o micro-QA da IA JA pago (verdict 'revise' da back-translation).
+    '' = linha sem sinal (passa o olho)."""
     fl = []
+    if bt_revise:
+        fl.append("micro-qa:revise")                      # a back-translation (IA, ja paga) achou divergencia
     if risk in ("high", "critical"):
         fl.append(f"risco:{risk}")
     if sampled:
@@ -83,6 +94,7 @@ def export(root, chapter) -> list[dict]:
             continue
         tmap = artifact_io.translations_map(root, scene)
         sampled = {x["offset"] for x in model.sample_low_risk_lines(root, scene)}
+        revise = _bt_revise_offsets(root, scene)          # micro-QA da IA JA pago ($0 ler)
         for ln in plan_lines:
             off = ln.get("offset", "")
             src = ln.get("text_source", "")
@@ -90,9 +102,24 @@ def export(root, chapter) -> list[dict]:
                 else ln.get("base_translation", "")
             risk = ln.get("risk_level", "")
             rows.append({"scene": scene, "offset": off, "speaker": ln.get("speaker", ""),
-                         "risk": risk, "revisar": _flags(src, tgt, risk, off in sampled),
-                         "source_en": src, "target_pt": tgt, "correcao": "", "nota": ""})
+                         "risk": risk,
+                         "revisar": _flags(src, tgt, risk, off in sampled, off in revise),
+                         "source_en": src, "target_pt": tgt,
+                         "marcar": "", "correcao": "", "nota": ""})
     return rows
+
+
+def _bt_revise_offsets(root, scene) -> set:
+    """Offsets que a back-translation (micro-QA da IA, JA paga) marcou 'revise'. So leitura ($0)."""
+    sid = context_pack.scene_id_of(scene)
+    btf = paths.back_translation(root, scene, sid)
+    if not btf.is_file():
+        return set()
+    try:
+        data = json.loads(btf.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {e.get("offset") for e in data.get("entries", []) if e.get("verdict") == "revise"}
 
 
 def write_csv(rows, out_path):
@@ -105,11 +132,12 @@ def write_csv(rows, out_path):
 
 # rotulos amigaveis (PT) p/ o XLSX, na MESMA ordem de COLS (a leitura mapeia por posicao)
 _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ingles (fonte)",
-              "Portugues (atual)", "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
+              "Portugues (atual)", "Corrigir? (escreva CORRIGIR)", "Correcao (texto certo)",
+              "Nota (instrucao p/ IA)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
-_XLSX_SEV = [("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
+_XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
              ("identico-fonte", "E8E8E8"), ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
-_XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input (Correcao/Nota)
+_XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input do humano (Corrigir?/Correcao/Nota)
 
 
 def write_xlsx(rows, out_path):
@@ -134,18 +162,22 @@ def write_xlsx(rows, out_path):
     intro.column_dimensions["B"].width = 60
     L = [("COMO REVISAR", ""), ("", ""),
          ("1.", "Va para a aba 'Revisao'."),
-         ("2.", "Filtre a coluna 'Revisar (onde olhar)' por NAO-vazias p/ ver so o que precisa de olho."),
-         ("3.", "Onde estiver errado, escreva na coluna AMARELA 'Correcao' o texto CERTO."),
-         ("4.", "OU, se quiser que a IA reescreva, deixe uma 'Nota' (ex.: 'encurtar', 'mais formal')."),
-         ("5.", "Linha boa = deixe em branco. Salve e devolva o arquivo."),
-         ("", ""), ("LEGENDA DAS CORES (coluna Revisar)", ""),
+         ("2.", "A coluna 'Revisar (onde olhar)' e so DICA (do micro-QA da IA, ja pago) — NAO decide nada. "
+                "Filtre por NAO-vazias p/ priorizar onde olhar."),
+         ("3.", "VOCE decide: na coluna 'Corrigir? (escreva CORRIGIR)' escreva CORRIGIR (ou corrigir) "
+                "na linha que quer mudar. So as linhas marcadas CORRIGIR serao processadas."),
+         ("4.", "Na MESMA linha, preencha UMA: 'Correcao' = o texto CERTO (aplicado verbatim, $0); "
+                "OU 'Nota' = instrucao p/ a IA reescrever so aquela linha (ex.: 'encurtar', 'mais formal')."),
+         ("5.", "Linha boa = NAO escreva CORRIGIR (deixe em branco). Salve e devolva no inbox (devolvido/)."),
+         ("", ""), ("LEGENDA DAS CORES (dica 'Revisar')", ""),
+         ("micro-qa:revise", "a back-translation da IA (ja paga) achou divergencia de sentido — olhe"),
          ("critical / high", "linha de alto risco (voz/sentido/spoiler) — leia com atencao"),
          ("largura", "o texto pode SAIR do balao no jogo — encurte se preciso"),
          ("identico-fonte", "igual ao ingles — provavel nao-traduzido (confira; SFX/rotulo pode ficar)"),
          ("tamanho", "traducao muito mais longa/curta que o original"),
          ("pt-PT", "marcador de portugues de Portugal — adaptar p/ pt-BR"),
          ("", ""), ("RESUMO", ""),
-         ("Total de linhas", len(rows)), ("Marcadas p/ avaliar", marked)]
+         ("Total de linhas", len(rows)), ("Com dica p/ olhar", marked)]
     for tag, c in cnt.most_common():
         L.append((f"  {tag}", c))
     for a, b in L:
@@ -177,12 +209,12 @@ def write_xlsx(rows, out_path):
         for col in range(1, len(COLS) + 1):
             cell = ws.cell(row=i, column=col)
             cell.font = Font(name="Arial", size=10)
-            cell.alignment = wrap if col in (6, 7, 8, 9) else top
-            if col in (8, 9):                              # Correcao/Nota = input (amarelo)
+            cell.alignment = wrap if col in (6, 7, 9, 10) else top
+            if col in (8, 9, 10):                          # Corrigir?/Correcao/Nota = input do humano (amarelo)
                 cell.fill = inputfill
             elif fill is not None:
                 cell.fill = fill
-    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 55, 7: 55, 8: 45, 9: 30}
+    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 52, 7: 52, 8: 16, 9: 42, 10: 28}
     for col, w in widths.items():
         ws.column_dimensions[ws.cell(row=1, column=col).column_letter].width = w
     ws.freeze_panes = "A2"                                 # cabecalho fixo ao rolar
@@ -210,7 +242,8 @@ def _read_xlsx_rows(path):
 
 def read_returned(path) -> dict:
     """Le o CSV ou XLSX devolvido -> {scene: {'verbatim': [(offset, texto)], 'nota': [(offset, instrucao)]}}.
-    So linhas com correcao OU nota preenchida entram."""
+    So entram as linhas que o HUMANO marcou explicitamente com CORRIGIR (coluna 'marcar', case-insensitive)
+    E que tenham correcao OU nota. Linha sem CORRIGIR = aprovada, ignorada (le-se so o que o humano marcou)."""
     p = Path(path)
     if p.suffix.lower() == ".xlsx":
         records = _read_xlsx_rows(p)
@@ -220,9 +253,12 @@ def read_returned(path) -> dict:
     by_scene = {}
     for r in records:
         scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
+        marcar = (r.get("marcar") or "").strip().lower()
         cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
-        if not scene or not off or (not cor and not nota):
-            continue
+        if not scene or not off or marcar != "corrigir":
+            continue                                       # so processa o que foi MARCADO 'corrigir'
+        if not cor and not nota:
+            continue                                       # marcada mas sem texto/instrucao -> nada a aplicar
         slot = by_scene.setdefault(scene, {"verbatim": [], "nota": []})
         if cor:
             slot["verbatim"].append((off, cor))           # correcao verbatim vence a nota
@@ -253,6 +289,26 @@ def _apply_verbatim(root, scene, pairs) -> int:
     pf.write_text(json.dumps(pdata, ensure_ascii=False, indent=2), encoding="utf-8")
     model.invalidate_back_translation(root, scene, [o for o, _ in pairs])  # crivo antigo nao vale mais
     return n
+
+
+def returned_files(root, arg) -> list[Path]:
+    """Resolve de ONDE ler a revisao devolvida: arquivo explicito, ou uma PASTA (todos os .xlsx/.csv
+    dentro), ou — se nada for passado — o INBOX padrao (artifacts/qa_revisao/devolvido/). Ignora
+    arquivos temporarios do Excel (~$...). Devolve [] se nao houver nada (apply vira no-op seguro)."""
+    if arg:
+        p = Path(arg)
+        if p.is_file():
+            return [p]
+        if p.is_dir():
+            base = p
+        else:
+            return []                                       # caminho dado mas inexistente
+    else:
+        base = paths.qa_inbox(root)
+    if not base.is_dir():
+        return []
+    return sorted(f for f in base.iterdir()
+                  if f.suffix.lower() in (".xlsx", ".csv") and not f.name.startswith("~$"))
 
 
 def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
@@ -292,8 +348,10 @@ def main():
     pe.add_argument("chapter", nargs="?", default=None, help="capitulo (ex.: 11); OMITA p/ o jogo INTEIRO")
     pe.add_argument("--out", default=None)
     pe.add_argument("--csv", action="store_true", help="gera CSV cru (default: XLSX amigavel p/ o revisor)")
-    pa = sub.add_parser("apply", help="aplica o CSV devolvido (verbatim + notas)")
-    pa.add_argument("project"); pa.add_argument("csv")
+    pa = sub.add_parser("apply", help="aplica a revisao devolvida (verbatim + notas); le do INBOX por padrao")
+    pa.add_argument("project")
+    pa.add_argument("returned", nargs="?", default=None,
+                    help="arquivo OU pasta devolvida; OMITA p/ ler do inbox (artifacts/qa_revisao/devolvido/)")
     pa.add_argument("--model", default=None)
     pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
     a = ap.parse_args()
@@ -301,23 +359,38 @@ def main():
         rows = export(a.project, a.chapter)
         scope = f"cap_{a.chapter}" if a.chapter else "all"
         ext = "csv" if a.csv else "xlsx"
-        out = a.out or str(paths.artifacts(Path(a.project)) / f"review_{scope}.{ext}")
+        if a.out:
+            out = a.out
+        else:
+            outbox = paths.qa_outbox(Path(a.project))      # OUTBOX: disponibiliza p/ o humano ler
+            outbox.mkdir(parents=True, exist_ok=True)
+            out = str(outbox / f"review_{scope}.{ext}")
         (write_csv if a.csv else write_xlsx)(rows, out)
         marked = sum(1 for r in rows if r["revisar"])
         label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
         print(f"[export] {label}: {len(rows)} linha(s) -> {out}")
         print(f"         {marked} marcada(s) p/ avaliar; abra no Excel/LibreOffice, filtre a coluna "
-              f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva.")
+              f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva no inbox "
+              f"({paths.qa_inbox(Path(a.project))}).")
         sys.exit(0)
-    print(f"[apply] processando revisao devolvida: {a.csv}")
-    r = apply(a.project, a.csv, model_name=a.model, max_usd=a.max_usd)
-    print(f"[apply] verbatim={r['verbatim']} (0 IA) | nota+IA={r['ai']} (~${r['cost_usd']:.4f}) "
-          f"| cenas tocadas={r['scenes']}")
-    if r.get("stopped_budget"):
+    files = returned_files(Path(a.project), a.returned)
+    if not files:
+        print(f"[apply] nada a aplicar — nenhum .xlsx/.csv devolvido em "
+              f"{a.returned or paths.qa_inbox(Path(a.project))}.")
+        sys.exit(0)
+    tot = {"verbatim": 0, "ai": 0, "cost": 0.0, "scenes": set(), "stopped": False}
+    for f in files:
+        print(f"[apply] processando revisao devolvida: {f}")
+        r = apply(a.project, f, model_name=a.model, max_usd=a.max_usd)
+        tot["verbatim"] += r["verbatim"]; tot["ai"] += r["ai"]; tot["cost"] += r["cost_usd"]
+        tot["scenes"].update(r["scenes_touched"]); tot["stopped"] = tot["stopped"] or r.get("stopped_budget")
+    print(f"[apply] TOTAL: verbatim={tot['verbatim']} (0 IA) | nota+IA={tot['ai']} (~${tot['cost']:.4f}) "
+          f"| cenas tocadas={len(tot['scenes'])}")
+    if tot["stopped"]:
         print(f"[apply] teto de ${a.max_usd:.2f} atingido — algumas notas (IA) nao foram processadas; "
               "verbatim entrou tudo. Re-rode com mais orcamento p/ as notas restantes.")
     print("Proximos passos: verify_chapter de cada cap. tocado (round-trip/charset) + state_index --rebuild.")
-    print(f"  cenas: {', '.join(r['scenes_touched'])}")
+    print(f"  cenas: {', '.join(sorted(tot['scenes']))}")
     sys.exit(0)
 
 
