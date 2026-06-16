@@ -36,15 +36,37 @@ import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminh
 import model as M      # noqa: E402
 import state_index     # noqa: E402
 import kb_gate         # noqa: E402
+from config import RunSceneResult, RunSceneOptions, CONNECTOR_REGISTRY  # noqa: E402
+
+
+def _validate_scene_arg(root: Path, scene: str) -> None:
+    """Garante que scene nao resulta em path fora de artifacts/ (path traversal guard)."""
+    if not scene:
+        raise ValueError("scene nao pode ser vazia")
+    resolved = paths.scene_dir(root, scene).resolve()
+    if not resolved.is_relative_to(paths.artifacts(root).resolve()):
+        raise ValueError(f"scene {scene!r} resultaria em path fora de artifacts/ — bloqueado")
+
+
+def _validate_connector_cfg(cfg: dict) -> list:
+    """Retorna lista de avisos sobre chaves desconhecidas em project.json connector.{}."""
+    known = {s.key for s in CONNECTOR_REGISTRY}
+    return [f"connector.{k!r} desconhecida — chaves validas: {sorted(known)}"
+            for k in sorted(cfg.get("connector", {})) if k not in known]
 
 
 def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
     override = cfg.get("connector", {}).get(key)
     p = (root / override) if override else (root / "connector" / default)
+    if not p.resolve().is_relative_to(root.resolve()):
+        raise ValueError(f"conector fora do projeto: {p!r} (override={override!r})")
     return p
 
 
-def _run(cmd) -> tuple[int, str]:
+_CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) nao bloqueia o pipeline
+
+
+def _run(cmd, timeout=_CONNECTOR_TIMEOUT) -> tuple[int, str]:
     # ROBUSTEZ (Windows): o filho (build_plan/verify) pode imprimir bytes nao-utf-8 (acentos cp1252 no
     # console). Sem protecao, a thread leitora do subprocess quebrava com UnicodeDecodeError e derrubava
     # o run_chapter NO MEIO da run (em background isso deixava o chip da UI preso, sem saida limpa).
@@ -53,9 +75,13 @@ def _run(cmd) -> tuple[int, str]:
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
     # stdin=DEVNULL: os connectors nao leem stdin; evita herdar o stdin do pai (sob captura de
     # pytest/headless o stdin nao tem handle de OS -> DuplicateHandle falharia no Windows).
-    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
-                       errors="replace", env=env, stdin=subprocess.DEVNULL)
-    return r.returncode, (r.stdout or "") + (r.stderr or "")
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", env=env, stdin=subprocess.DEVNULL,
+                           timeout=timeout)
+        return r.returncode, (r.stdout or "") + (r.stderr or "")
+    except subprocess.TimeoutExpired:
+        return 1, f"[timeout] conector nao respondeu em {timeout}s — verifique o script e rode novamente."
 
 
 def _verify_status(out: str) -> dict:
@@ -139,25 +165,12 @@ def _high_lines(root: Path, scene: str, scene_id: str):
     return M.high_risk_lines(root, scene)               # fonte unica (model.high_risk_lines)
 
 
-def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
-              pretranslated=False, defer_back=False):
-    root = Path(root)
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    scene_id = context_pack.scene_id_of(scene)
+def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
+                        pretranslated: bool) -> tuple:
+    """FASE 1/2: monta o contexto (context_pack) e obtém a tradução (batch preexistente ou M.translate).
 
-    # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
-    kb = kb_gate.check(root, scene)
-    for w in kb["warnings"]:
-        print(f"[kb] aviso: {w}")
-    if kb["problems"] and not skip_kb_gate:
-        print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
-        for p in kb["problems"]:
-            print(f"      - {p}")
-        print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
-        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
-        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
-
-    print(f"[1/6] context_pack {scene} ...")
+    Retorna (tr, early_return): se early_return não é None, run_scene() deve retorná-lo imediatamente.
+    """
     tr = None
     if pretranslated:                                       # batch ja produziu o translations_<scene_id>.json
         pack = context_pack.write_pack(root, scene)
@@ -174,7 +187,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         except Exception as e:                              # backend api: erro de rede/saida invalida
             print(f"      ERRO na traducao ({backend}): {e}")
             _checkpoint(root, scene, {"scene_id": scene_id, "status": "api_translate_failed"})
-            return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+            return None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     if isinstance(tr, dict) and tr.get("reused"):
         print(f"      dedup: {tr['reused']}/{tr['n_lines']} linha(s) reaproveitadas da TM "
@@ -186,14 +199,24 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         print(f"      prompt : {tr['prompt']}")
         print(f"      saida  : {tr['expected_output']}")
         print("      -> rode novamente apos o arquivo aparecer. (checkpoint: 'packed')")
-        return {"status": "awaiting_translation", "scene": scene}
+        return None, {"status": "awaiting_translation", "scene": scene}
     print(f"[2/6] traducao presente ({tr['status']}).")
+    return tr, None
 
-    # [3+5] build_plan + verify com ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a
-    # verify falha por fitting (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION)
-    # e repete. Cenas normais passam de primeira (sem custo extra); so as apertadas escalam.
+
+def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,
+                  do_verify: bool, tr: dict) -> tuple:
+    """FASE 3/5: build_plan + verify com escalonamento de fitting.
+
+    Re-traduz apenas as linhas acima do budget quando a verify falha por fitting (exit 3), escalando
+    BUDGET_ESCALATION em sequência. Retorna (tr, verified, early_return): se early_return não é None,
+    run_scene() deve retorná-lo imediatamente.
+    """
     build_plan_script = _connector_script(root, cfg, "build_plan_script", "build_plan_chapter.py")
     verify_script = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
+    # ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a verify falha por fitting
+    # (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION) e repete. Cenas
+    # normais passam de primeira (sem custo extra); so as apertadas escalam.
     tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend == "api" else [])
     verified = None
     for ti, tol in enumerate(tolerances):
@@ -214,14 +237,14 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             except Exception as e:
                 print(f"      ERRO na re-traducao ({backend}): {e}")
                 _checkpoint(root, scene, {"status": "api_translate_failed"})
-                return {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+                return tr, None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
 
         print(f"[3/6] build_plan_chapter {scene} ...")
         code, out = _run([sys.executable, str(build_plan_script), scene])
         print(_indent(out))
         if code != 0:
             _checkpoint(root, scene, {"status": "build_plan_failed"})
-            return {"status": "build_plan_failed", "scene": scene}
+            return tr, None, {"status": "build_plan_failed", "scene": scene}
         _checkpoint(root, scene, {"status": "planned"})
 
         if not do_verify:
@@ -243,7 +266,44 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
             continue
         _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
-        return {"status": "verify_failed", "scene": scene}
+        return tr, None, {"status": "verify_failed", "scene": scene}
+
+    return tr, verified, None
+
+
+def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
+              pretranslated=False, defer_back=False, opts: RunSceneOptions = None) -> RunSceneResult:
+    if opts is not None:
+        backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
+        skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
+    root = Path(root)
+    _validate_scene_arg(root, scene)
+    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    for w in _validate_connector_cfg(cfg):
+        print(f"[cfg] AVISO: {w}")
+    scene_id = context_pack.scene_id_of(scene)
+
+    # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
+    kb = kb_gate.check(root, scene)
+    for w in kb["warnings"]:
+        print(f"[kb] aviso: {w}")
+    if kb["problems"] and not skip_kb_gate:
+        print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
+        for p in kb["problems"]:
+            print(f"      - {p}")
+        print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
+        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+
+    print(f"[1/6] context_pack {scene} ...")
+    tr, early = _pack_and_translate(root, scene, scene_id, backend, pretranslated)
+    if early is not None:
+        return early
+
+    # [3+5] build_plan + verify com escalonamento de fitting (ver _fitting_loop)
+    tr, verified, early = _fitting_loop(root, scene, scene_id, cfg, backend, do_verify, tr)
+    if early is not None:
+        return early
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
     highs = _high_lines(root, scene, scene_id)
@@ -256,6 +316,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
         si = state_index.build(root)
         print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+        for w in si.get("warnings", []):
+            print(f"      [state_index] AVISO: {w}")
         _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
         mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                       n_high=len(highs), verified=bool(verified))
@@ -288,6 +350,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
     si = state_index.build(root)
     print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+    for w in si.get("warnings", []):
+        print(f"      [state_index] AVISO: {w}")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
@@ -295,6 +359,46 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,
             "high": len(highs), "verified": verified}
+
+
+def clean_failed_scene(root, scene) -> list[str]:
+    """Move artefatos de uma cena em estado de falha para artifacts/discontinued/<scene>/.
+
+    Move (nao apaga) artefatos DERIVADOS: translations, plan, approved, back_translation,
+    back_prompt, pack, scene_prompt. Preserva dialogs.csv (entrada) e api_ledger.jsonl
+    (auditoria — os tokens cobrados nao voltam). Remove o checkpoint da cena em run_state.json.
+    artifacts/discontinued/<scene>/ serve como historico de runs anteriores (nao e re-ingerido
+    pelo pipeline). Retorna lista de destinos (strs). Idempotente: rodar 2x nao levanta excecao."""
+    root = Path(root)
+    scene_id = context_pack.scene_id_of(scene)
+    to_move = [
+        paths.translations(root, scene, scene_id),
+        paths.translation_plan(root, scene, scene_id),
+        paths.approved(root, scene, scene_id),
+        paths.back_translation(root, scene, scene_id),
+        paths.back_prompt(root, scene, scene_id),
+        paths.pack(root, scene),
+        paths.scene_prompt(root, scene),
+    ]
+    disc = paths.discontinued_scene_dir(root, scene)
+    moved = []
+    for p in to_move:
+        if p.is_file():
+            disc.mkdir(parents=True, exist_ok=True)
+            dest = disc / p.name
+            p.rename(dest)
+            moved.append(str(dest))
+    # remove o checkpoint da cena do run_state.json (nao apaga o arquivo, so a chave)
+    rs = paths.run_state(root)
+    if rs.is_file():
+        try:
+            state = json.loads(rs.read_text(encoding="utf-8"))
+            if scene in state.get("scenes", {}):
+                del state["scenes"][scene]
+                rs.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        except (json.JSONDecodeError, OSError):
+            pass
+    return moved
 
 
 def _indent(s: str) -> str:
@@ -311,7 +415,12 @@ def main():
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")
     ap.add_argument("--skip-kb-gate", action="store_true",
                     help="ignora o gate de cobertura de KB (nao recomendado)")
+    ap.add_argument("--clean", action="store_true",
+                    help="remove artefatos de run anterior antes de rodar (retry limpo)")
     a = ap.parse_args()
+    if a.clean:
+        removed = clean_failed_scene(a.project, a.scene)
+        print(f"[clean] {len(removed)} artefato(s) removido(s).")
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate)
     sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",

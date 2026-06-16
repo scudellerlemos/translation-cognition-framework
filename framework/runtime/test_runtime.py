@@ -189,8 +189,14 @@ def _kb_project(tmp_path, *, reconciled=True, frontier=None, with_kb=True):
 
 
 def test_kb_gate_passes_when_reconciled_and_present(tmp_path):
-    root = _kb_project(tmp_path)
+    root = _kb_project(tmp_path, frontier="12_17")
     assert kb_gate.check(root, "ch_12_03")["problems"] == []
+
+
+def test_kb_gate_blocks_when_frontier_not_declared(tmp_path):
+    root = _kb_project(tmp_path)   # sem kb_frontier -> hard block desde esta sessao
+    probs = kb_gate.check(root, "ch_12_03")["problems"]
+    assert any("kb_frontier" in p for p in probs), "ausencia de kb_frontier deve bloquear"
 
 
 def test_kb_gate_blocks_unreconciled(tmp_path):
@@ -253,6 +259,9 @@ def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
     import spoiler_check, paths
     (tmp_path / "artifacts" / "ch_50_01").mkdir(parents=True)
     (tmp_path / "artifacts" / "ch_50_09").mkdir(parents=True)
+    # artifact_io.scenes() exige dialogs.csv para considerar o diretorio como cena valida
+    (tmp_path / "artifacts" / "ch_50_01" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (tmp_path / "artifacts" / "ch_50_09" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     led = {"entries": [{"id": "x", "entity": "Ukon", "reveal": "50_05",
                         "forbidden_pre_reveal": ["Oshtor"]}]}
     paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
@@ -1063,6 +1072,7 @@ def test_quality_gate_flags_revise_and_uncovered(tmp_path):
                   ("ch_19_02", _plan([("0x9", "high")]))):
         d = tmp_path / "artifacts" / s
         d.mkdir(parents=True)
+        (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
         (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(
             json.dumps(pl), encoding="utf-8")
     paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(
@@ -1070,6 +1080,7 @@ def test_quality_gate_flags_revise_and_uncovered(tmp_path):
     # cap.20: back presente mas SEM o offset da linha critical -> uncovered "offset ausente"
     d = tmp_path / "artifacts" / "ch_20_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_20_01.json").write_text(
         json.dumps(_plan([("0xa", "critical")])), encoding="utf-8")
     paths.back_translation(tmp_path, "ch_20_01", "20_01").write_text(
@@ -1130,6 +1141,7 @@ def test_tm_correct_dryrun_apply_and_word_boundary(tmp_path):
     import paths
     d = tmp_path / "artifacts" / "ch_30_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     # 0x1: 'Ukon' como palavra (deve casar). 0x2: 'Ukonometro' (substring -> NAO casa).
     paths.translations(tmp_path, "ch_30_01", "30_01").write_text(
         _trans({"0x1": {"t": "Ola, Ukon!"}, "0x2": {"t": "Um Ukonometro qualquer"}}), encoding="utf-8")
@@ -1163,6 +1175,7 @@ def test_tm_correct_literal_mode(tmp_path):
     import paths
     d = tmp_path / "artifacts" / "ch_31_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_31_01", "31_01").write_text(
         _trans({"0x1": {"t": "ver 1.0 aqui"}}), encoding="utf-8")
     csvp = tmp_path / "c2.csv"
@@ -1178,6 +1191,7 @@ def test_tm_correct_keeps_approved_coherent(tmp_path):
     # approved deixava a correcao invisivel pro conector/jogo.
     import paths
     d = tmp_path / "artifacts" / "ch_30_02"; d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_30_02", "30_02").write_text(
         _trans({"0x1": {"t": "Ola, Ukon!"}}), encoding="utf-8")
     paths.translation_plan(tmp_path, "ch_30_02", "30_02").write_text(
@@ -1197,6 +1211,7 @@ def test_tm_correct_sync_gate_detects_drift(tmp_path):
     # gate de coerencia: approved divergente de translations e detectado.
     import paths
     d = tmp_path / "artifacts" / "ch_30_03"; d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_30_03", "30_03").write_text(
         _trans({"0x1": {"t": "novo texto"}}), encoding="utf-8")
     paths.approved(tmp_path, "ch_30_03", "30_03").write_text(
@@ -1249,6 +1264,7 @@ def test_quality_gate_coverage_and_export(tmp_path):
     import quality_gate, paths, csv as _csv
     d = tmp_path / "artifacts" / "ch_89_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_89_01.json").write_text(
         json.dumps(_plan([("0x1", "high"), ("0x2", "critical"), ("0x3", "low"), ("0x4", "low")])),
         encoding="utf-8")
@@ -1311,6 +1327,8 @@ def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
         {"id": "g2", "entity": "Bezno", "reveal": "60_01", "triggers": ["Bezno"]}]}   # sem quarentena
     (tmp_path / "artifacts" / "ch_60_02").mkdir(parents=True)
     (tmp_path / "artifacts" / "ch_60_09").mkdir(parents=True)
+    (tmp_path / "artifacts" / "ch_60_02" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (tmp_path / "artifacts" / "ch_60_09" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
     # 60_02 (pré-reveal de Mizura): linha cita Mizura + 'ela' -> flag
     paths.translations(tmp_path, "ch_60_02", "60_02").write_text(
@@ -1375,6 +1393,7 @@ def test_quality_review_export_marks_lines(tmp_path):
     import paths
     d = tmp_path / "artifacts" / "ch_70_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     plan = {"lines": [
         {"offset": "0x1", "risk_level": "high", "text_source": "Hello there.", "base_translation": "Ola.", "speaker": "X"},
         {"offset": "0x2", "risk_level": "low", "text_source": "Yes.", "base_translation": "Yes.", "speaker": "X"},   # idêntico
@@ -1456,6 +1475,7 @@ def test_quality_gate_treats_stale_as_uncovered(tmp_path):
     import quality_gate, paths
     d = tmp_path / "artifacts" / "ch_73_01"
     d.mkdir(parents=True)
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_73_01.json").write_text(json.dumps(_plan([("0x1", "high")])), encoding="utf-8")
     bt = json.loads(_back([("0x1", "revise", "voz")]))
     bt["entries"][0]["stale"] = True                       # verdict julgou texto antigo
@@ -1485,7 +1505,9 @@ def test_artifact_io_readers(tmp_path):
     import paths
     assert artifact_io.scene_chapter("ch_19_03") == "19" and artifact_io.scene_chapter("x") == ""
     for s in ("ch_19_01", "ch_19_02", "ch_20_01"):
-        (tmp_path / "artifacts" / s).mkdir(parents=True)
+        d = tmp_path / "artifacts" / s
+        d.mkdir(parents=True)
+        (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     assert artifact_io.scenes(tmp_path) == ["ch_19_01", "ch_19_02", "ch_20_01"]
     assert artifact_io.scenes(tmp_path, "19") == ["ch_19_01", "ch_19_02"]   # filtro por cap.
     paths.translation_plan(tmp_path, "ch_19_01", "19_01").write_text(
@@ -1561,6 +1583,351 @@ def test_no_work_text_in_runtime_scripts():
         src = _norm_accents(py.read_text(encoding="utf-8"))
         hit = next((p for p in phrases if p in src), None)
         assert hit is None, f"work-text hardcoded em {py.name}: '{hit[:40]}...'"
+
+
+# ------------------- quality_review._flags() — cobertura de todos os tags ----
+
+def test_flags_all_tags():
+    """Cada condição de _flags() gera a tag correspondente; linha limpa não gera nada."""
+    import quality_review as QR
+    # bt_revise -> micro-qa:revise
+    assert "micro-qa:revise" in QR._flags("Hello", "Olá", "low", False, bt_revise=True)
+    # risco
+    assert "risco:high"     in QR._flags("Hello", "Olá", "high", False)
+    assert "risco:critical" in QR._flags("Hello", "Olá", "critical", False)
+    # amostra
+    assert "amostra"        in QR._flags("Hello", "Olá", "low", True)
+    # identico-fonte (source == target normalizado)
+    assert "identico-fonte" in QR._flags("Hello world", "Hello world", "low", False)
+    # tamanho: muito longo (tlen > slen * 3)
+    assert "tamanho"        in QR._flags("Hi", "A" * 20, "low", False)
+    # tamanho: muito curto (slen > 8 e tlen < slen * 0.4)
+    assert "tamanho"        in QR._flags("Hello world!", "X", "low", False)
+    # largura: segmento unico acima de WIDTH_MAX (62) glifos visiveis
+    assert "largura"        in QR._flags("Hello", "A" * 63, "low", False)
+    # pt-PT? — marcador inequivoco de variedade europeia
+    assert "pt-PT?"         in QR._flags("How are you?", "Como tens estado?", "low", False)
+    # expr-cultural — idioma EN na fonte
+    assert "expr-cultural"  in QR._flags("Cross my heart and hope to die", "Juro de coração",
+                                          "low", False)
+    # linha limpa -> sem tags
+    assert QR._flags("Hello", "Olá", "low", False) == ""
+
+
+# ------------------- quality_review.write_xlsx() / read_returned() ------------
+
+def test_write_xlsx_roundtrip(tmp_path):
+    """write_xlsx + _read_xlsx_rows deve retornar os mesmos dados (unicodee incluido)."""
+    pytest.importorskip("openpyxl")
+    import quality_review as QR
+    rows = [{"scene": "ch_01_01", "offset": "0x1", "speaker": "Haku", "risk": "high",
+             "revisar": "risco:high", "source_en": "Hello", "target_pt": "Olá",
+             "caixa": "", "marcar": "", "correcao": "", "nota": ""}]
+    out = tmp_path / "test.xlsx"
+    QR.write_xlsx(rows, out)
+    back = QR._read_xlsx_rows(out)
+    assert len(back) == 1
+    assert back[0]["scene"] == "ch_01_01" and back[0]["target_pt"] == "Olá"
+    assert back[0]["speaker"] == "Haku" and back[0]["revisar"] == "risco:high"
+
+
+def test_write_xlsx_quoteprefix_blocks_formula_injection(tmp_path):
+    """Células com '=' no valor devem ter quotePrefix=True — Excel trata como texto, não fórmula."""
+    pytest.importorskip("openpyxl")
+    from openpyxl import load_workbook
+    import quality_review as QR
+    rows = [{"scene": "ch_01_01", "offset": "0x1", "speaker": "", "risk": "low",
+             "revisar": "", "source_en": "=INJECT()", "target_pt": "=MALICIOUS",
+             "caixa": "", "marcar": "", "correcao": "=formula", "nota": ""}]
+    out = tmp_path / "test.xlsx"
+    QR.write_xlsx(rows, out)
+    wb = load_workbook(out)                    # nao read_only para acessar atributos de estilo
+    ws = wb["Revisao"]
+    for row in ws.iter_rows(min_row=2):        # pula o cabecalho
+        for cell in row:
+            if isinstance(cell.value, str) and cell.value.startswith("="):
+                assert cell.quotePrefix, (
+                    f"célula {cell.coordinate} valor={cell.value!r} deve ter quotePrefix=True")
+
+
+def test_read_returned_skips_path_traversal(tmp_path):
+    """Entradas com separador de path em 'scene' ou 'offset' devem ser descartadas."""
+    pytest.importorskip("openpyxl")
+    import quality_review as QR
+    legit = {"scene": "ch_01_01", "offset": "0x1", "speaker": "", "risk": "low",
+             "revisar": "", "source_en": "A", "target_pt": "B",
+             "caixa": "", "marcar": "corrigir", "correcao": "Correto", "nota": ""}
+    evil  = {**legit, "scene": "../evil/scene", "correcao": "MALICIOUS"}
+    out = tmp_path / "test.xlsx"
+    QR.write_xlsx([legit, evil], out)
+    result = QR.read_returned(out)
+    assert "ch_01_01" in result               # legítima processada
+    assert "../evil/scene" not in result       # path traversal descartada
+
+
+# ------------------- governança: state_index + kb_gate -----------------------
+
+def test_state_index_warns_missing_voice_card(tmp_path):
+    """Falante com falas na TM mas sem voice card deve aparecer em warnings."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "translation_plan_desconhecido.json").write_text(json.dumps({
+        "scene_group": "ch_50_01",
+        "lines": [{"offset": "0x1", "text_source": "Hi", "base_translation": "Oi",
+                   "speaker": "Desconhecido"}],
+    }), encoding="utf-8")
+    (art / "tone_analysis.md").write_text(
+        "### Haku — `voice_criticality: high`\n- Direto.\n", encoding="utf-8")
+    (art / "decision_log.md").write_text("", encoding="utf-8")
+    r = state_index.build(tmp_path)
+    assert any("Desconhecido" in w for w in r.get("warnings", [])), (
+        "esperava aviso sobre falante sem voice card")
+
+
+def test_state_index_warns_glossary_missing_updated_date(tmp_path):
+    """glossary.csv sem coluna 'updated_date' deve gerar warning."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "translation_plan_test.json").write_text(
+        json.dumps({"scene_group": "ch_50_01", "lines": []}), encoding="utf-8")
+    (art / "tone_analysis.md").write_text("", encoding="utf-8")
+    (art / "decision_log.md").write_text("", encoding="utf-8")
+    (art / "glossary.csv").write_text(
+        "term,target_translation,notes\nKuon,Kuon,\n", encoding="utf-8")
+    r = state_index.build(tmp_path)
+    assert any("updated_date" in w for w in r.get("warnings", [])), (
+        "esperava aviso sobre coluna updated_date ausente no glossário")
+
+
+def test_kb_gate_warns_ratified_without_date_column(tmp_path):
+    """kb_ratified.csv sem coluna de data deve gerar warning (nao bloqueia)."""
+    art = tmp_path / "artifacts"
+    art.mkdir(parents=True)
+    (art / "research_log.md").write_text("**Status:** reconciled\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term\nKuon\n", encoding="utf-8")
+    (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
+    (art / "state").mkdir()
+    (art / "state" / "voice_cards.json").write_text('{"Haku": {"criticality": "high"}}',
+                                                    encoding="utf-8")
+    (art / "kb_ratified.csv").write_text(
+        "entity,source\nHaku,wiki\n", encoding="utf-8")    # sem coluna de data
+    (tmp_path / "project.json").write_text('{"kb_frontier": "50_01"}', encoding="utf-8")
+    r = kb_gate.check(tmp_path, "ch_50_01")
+    assert r["problems"] == [], "kb_ratified sem data NAO deve bloquear traducao"
+    assert any("date" in w.lower() or "data" in w.lower() for w in r["warnings"]), (
+        "esperava aviso sobre ausencia de coluna de data em kb_ratified.csv")
+
+
+def test_kb_gate_warns_ratified_entries_undated(tmp_path):
+    """Entradas em kb_ratified.csv com data vazia devem gerar warning com a contagem."""
+    art = tmp_path / "artifacts"
+    art.mkdir(parents=True)
+    (art / "research_log.md").write_text("**Status:** reconciled\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term\nKuon\n", encoding="utf-8")
+    (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
+    (art / "state").mkdir()
+    (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
+    (art / "kb_ratified.csv").write_text(
+        "entity,date_ratified\nHaku,2026-06-01\nOshtor,\n",  # Oshtor sem data
+        encoding="utf-8")
+    (tmp_path / "project.json").write_text('{"kb_frontier": "50_01"}', encoding="utf-8")
+    r = kb_gate.check(tmp_path, "ch_50_01")
+    assert r["problems"] == [], "entrada sem data NAO deve bloquear traducao"
+    assert any("1" in w and ("date" in w.lower() or "data" in w.lower())
+               for w in r["warnings"]), (
+        "esperava aviso indicando 1 entidade sem data de ratificacao")
+
+
+# ------------------- Tier 3: RunSceneOptions + clean_failed_scene -----------
+
+def test_run_scene_options_defaults():
+    """RunSceneOptions tem os defaults canonicos alinhados com run_scene()."""
+    from config import RunSceneOptions
+    opts = RunSceneOptions()
+    assert opts.backend == "api"
+    assert opts.require_back is False
+    assert opts.do_verify is True
+    assert opts.skip_kb_gate is False
+    assert opts.pretranslated is False
+    assert opts.defer_back is False
+
+
+def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
+    """opts=RunSceneOptions(...) sobrescreve os kwargs individuais de run_scene()."""
+    from config import RunSceneOptions
+    called_with = {}
+
+    def fake_kb(r, s):
+        return {"problems": [], "warnings": []}
+
+    def fake_translate(r, s, *, backend="api", **kw):
+        called_with["backend"] = backend
+        return {"status": "awaiting", "n_lines": 0, "scene_id": "50_01",
+                "prompt": "p", "expected_output": "e"}
+
+    monkeypatch.setattr(run_scene.kb_gate, "check", fake_kb)
+    monkeypatch.setattr(run_scene.M, "translate", fake_translate)
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+
+    opts = RunSceneOptions(backend="in-session")
+    run_scene.run_scene(tmp_path, "ch_50_01", backend="api", opts=opts)
+    assert called_with.get("backend") == "in-session", (
+        "opts deve sobrescrever o kwarg backend='api'")
+
+
+def test_clean_failed_scene_moves_to_discontinued(tmp_path):
+    """clean_failed_scene move artefatos para discontinued/ e limpa o checkpoint."""
+    import paths
+    scene = "ch_50_01"
+    scene_id = "50_01"
+    d = tmp_path / "artifacts" / scene
+    d.mkdir(parents=True)
+
+    (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    paths.translations(tmp_path, scene, scene_id).write_text("{}", encoding="utf-8")
+    paths.translation_plan(tmp_path, scene, scene_id).write_text("{}", encoding="utf-8")
+    paths.approved(tmp_path, scene, scene_id).write_text("", encoding="utf-8")
+    paths.back_translation(tmp_path, scene, scene_id).write_text("{}", encoding="utf-8")
+    paths.pack(tmp_path, scene).write_text("{}", encoding="utf-8")
+    paths.ledger(tmp_path).parent.mkdir(parents=True, exist_ok=True)
+    paths.ledger(tmp_path).write_text("{}\n", encoding="utf-8")
+    paths.run_state(tmp_path).write_text(
+        json.dumps({"scenes": {scene: {"status": "verify_failed"}}}), encoding="utf-8")
+
+    moved = run_scene.clean_failed_scene(tmp_path, scene)
+
+    # artefatos movidos para discontinued/
+    disc = paths.discontinued_scene_dir(tmp_path, scene)
+    assert len(moved) >= 4
+    assert all(Path(p).parent == disc for p in moved), "destinos devem estar em discontinued/"
+    assert not paths.translations(tmp_path, scene, scene_id).exists(), "original deve sumir"
+    assert not paths.pack(tmp_path, scene).exists()
+    assert (disc / f"translations_{scene_id}.json").exists(), "arquivo deve existir no discontinued"
+
+    # entradas e auditoria preservadas
+    assert (d / "dialogs.csv").exists(), "dialogs.csv (entrada) NAO deve ser movido"
+    assert paths.ledger(tmp_path).exists(), "api_ledger (auditoria) NAO deve ser movido"
+
+    # checkpoint removido
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert scene not in state.get("scenes", {})
+
+
+def test_clean_failed_scene_idempotent(tmp_path):
+    """clean_failed_scene nao levanta excecao quando chamado 2x (artefatos ja ausentes)."""
+    r1 = run_scene.clean_failed_scene(tmp_path, "ch_50_01")
+    r2 = run_scene.clean_failed_scene(tmp_path, "ch_50_01")
+    assert r1 == [] and r2 == []
+
+
+# ------------------- próximos passos: seg + gov + arq -------------------------
+
+def test_run_scene_rejects_path_traversal_scene(tmp_path):
+    """scene com separador de path deve levantar ValueError antes de qualquer I/O."""
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    with pytest.raises(ValueError, match="bloqueado|fora de artifacts"):
+        run_scene.run_scene(tmp_path, "../evil/scene")
+
+
+def test_validate_connector_cfg_warns_unknown_key():
+    """Chave desconhecida em connector{} deve gerar aviso (typo guard)."""
+    probs = run_scene._validate_connector_cfg({"connector": {"build_plan_script": "ok.py",
+                                                              "typo_script": "x.py"}})
+    assert len(probs) == 1
+    assert "typo_script" in probs[0]
+    assert run_scene._validate_connector_cfg({"connector": {}}) == []
+
+
+def test_connector_registry_contains_known_slots():
+    """CONNECTOR_REGISTRY declara os dois slots obrigatórios do harness."""
+    from config import CONNECTOR_REGISTRY
+    keys = {s.key for s in CONNECTOR_REGISTRY}
+    assert "build_plan_script" in keys and "verify_script" in keys
+
+
+def test_state_index_warnings_persisted_to_jsonl(tmp_path):
+    """Warnings do state_index devem ser anexados a artifacts/warnings.jsonl."""
+    import paths
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    # falante sem card -> gera warning
+    (art / "translation_plan_w.json").write_text(json.dumps({
+        "scene_group": "ch_50_01",
+        "lines": [{"offset": "0x1", "text_source": "Hi", "base_translation": "Oi",
+                   "speaker": "SemCard"}],
+    }), encoding="utf-8")
+    (art / "tone_analysis.md").write_text("", encoding="utf-8")
+    (art / "decision_log.md").write_text("", encoding="utf-8")
+    r = state_index.build(tmp_path)
+    assert r["warnings"], "esperava ao menos 1 warning"
+    wlog = paths.warnings_log(tmp_path)
+    assert wlog.is_file(), "warnings.jsonl deve ser criado"
+    rec = json.loads(wlog.read_text(encoding="utf-8").splitlines()[0])
+    assert rec["source"] == "state_index" and rec["warnings"]
+
+
+# ------------------- Gap 3: staleness de glossary ----------------------------
+
+def test_state_index_warns_stale_glossary_terms(tmp_path):
+    """Termos com updated_date > GLOSSARY_STALENESS_DAYS devem gerar warning."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "translation_plan_test.json").write_text(
+        json.dumps({"scene_group": "ch_50_01", "lines": []}), encoding="utf-8")
+    (art / "tone_analysis.md").write_text("", encoding="utf-8")
+    (art / "decision_log.md").write_text("", encoding="utf-8")
+    (art / "glossary.csv").write_text(
+        "term,target_translation,updated_date\n"
+        "Kuon,Kuon,2000-01-01\n"     # stale: data no passado remoto
+        "Haku,Haku,2099-01-01\n",    # futuro: nunca stale
+        encoding="utf-8")
+    r = state_index.build(tmp_path)
+    assert any("1" in w and "dias" in w for w in r.get("warnings", [])), (
+        "esperava aviso indicando 1 termo com updated_date stale")
+
+
+# ------------------- Gap 4a: validacao de chapter arg ------------------------
+
+def test_validate_chapter_arg_rejects_traversal(tmp_path):
+    """chapter com separador de path deve levantar ValueError antes de qualquer I/O."""
+    (tmp_path / "artifacts").mkdir()
+    with pytest.raises(ValueError, match="bloqueado|fora de artifacts"):
+        run_chapter._validate_chapter_arg(tmp_path, "../evil")
+
+
+def test_validate_chapter_arg_accepts_valid(tmp_path):
+    """chapter numerico valido nao deve levantar excecao."""
+    (tmp_path / "artifacts").mkdir()
+    run_chapter._validate_chapter_arg(tmp_path, "12")    # nao deve levantar
+
+
+# ------------------- Gap 4b: aviso de tamanho do ledger ---------------------
+
+def test_warn_ledger_size_emits_warning(tmp_path):
+    """_warn_ledger_size emite RuntimeWarning quando ledger ultrapassa _MAX_LEDGER_MB."""
+    import cost
+    import warnings as _warnings
+    ledger = tmp_path / "ledger.jsonl"
+    ledger.write_bytes(b"x" * int(cost._MAX_LEDGER_MB * 1024 * 1024 + 1))
+    with _warnings.catch_warnings(record=True) as caught:
+        _warnings.simplefilter("always")
+        cost._warn_ledger_size(ledger)
+    assert any(issubclass(w.category, RuntimeWarning) for w in caught), \
+        "esperava RuntimeWarning para ledger acima do limite"
+
+
+def test_warn_ledger_size_silent_below_limit(tmp_path):
+    """_warn_ledger_size nao emite warning quando ledger esta abaixo do limite."""
+    import cost
+    import warnings as _warnings
+    ledger = tmp_path / "ledger.jsonl"
+    ledger.write_bytes(b"x" * 100)
+    with _warnings.catch_warnings(record=True) as caught:
+        _warnings.simplefilter("always")
+        cost._warn_ledger_size(ledger)
+    assert not any(issubclass(w.category, RuntimeWarning) for w in caught)
 
 
 if __name__ == "__main__":

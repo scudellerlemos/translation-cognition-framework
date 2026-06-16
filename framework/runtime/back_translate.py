@@ -14,13 +14,14 @@ from pathlib import Path
 import artifact_io   # noqa: E402
 import context_pack  # noqa: E402
 import paths          # noqa: E402
-from config import MODEL_BACK, MAX_OUTPUT_TOKENS, BACK_SAMPLE_RATE, AWAITING, READY, DONE  # noqa: E402
+from config import (MODEL_BACK, MAX_OUTPUT_TOKENS, BACK_SAMPLE_RATE, AWAITING, READY, DONE,  # noqa: E402
+                    BackTranslateResult)
 from cost import log_api_call  # noqa: E402
 from llm_client import (  # noqa: E402
     _client, _stream_final, _await_batch, _with_backoff, _text_of, _usage_of)
 
 
-def back_translate(root, scene, high_lines, *, backend="api", model=None):
+def back_translate(root, scene, high_lines, *, backend="api", model=None) -> BackTranslateResult:
     """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
     root = Path(root)
     scene_id = context_pack.scene_id_of(scene)

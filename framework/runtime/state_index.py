@@ -29,6 +29,7 @@ import re
 import sys
 from pathlib import Path
 import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -231,7 +232,63 @@ def build(root: Path) -> dict:
         json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
     (paths.decision_index(root)).write_text(
         json.dumps(decisions, ensure_ascii=False, indent=2), encoding="utf-8")
-    return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions), "dir": state}
+    warnings = []
+
+    # Voice cards completeness: falantes com falas na TM mas sem card de voz
+    tm_speakers = {e["speaker"] for e in tm if e.get("speaker")}
+    def _has_card(sp):
+        if sp in cards:
+            return True
+        return any(sp in c.get("aliases", []) for c in cards.values())
+    missing = sorted(s for s in tm_speakers if not _has_card(s))
+    if missing:
+        warnings.append(f"{len(missing)} falante(s) sem voice card: {missing[:5]}"
+                        + (" ..." if len(missing) > 5 else ""))
+
+    # Governanca do glossario: verifica coluna updated_date e detecta termos com revisao atrasada.
+    import csv as _csv
+    gp = paths.glossary(root)
+    if gp.is_file():
+        try:
+            with gp.open(encoding="utf-8-sig", newline="") as fh:
+                hdr = next(_csv.reader(fh), [])
+            hdr_clean = [h.strip() for h in hdr]
+            if "updated_date" not in hdr_clean:
+                warnings.append("glossary.csv sem coluna 'updated_date' — adicione p/ rastrear "
+                                 "quando cada termo foi revisado pela ultima vez.")
+            else:
+                import datetime as _dt
+                threshold = (
+                    _dt.date.today() - _dt.timedelta(days=GLOSSARY_STALENESS_DAYS)
+                ).isoformat()
+                ud_idx = hdr_clean.index("updated_date")
+                stale = 0
+                with gp.open(encoding="utf-8-sig", newline="") as fh2:
+                    rdr = _csv.reader(fh2)
+                    next(rdr, None)         # pula cabecalho
+                    for row in rdr:
+                        val = row[ud_idx].strip() if ud_idx < len(row) else ""
+                        if val and val < threshold:
+                            stale += 1
+                if stale:
+                    warnings.append(f"{stale} termo(s) do glossario com updated_date "
+                                    f"> {GLOSSARY_STALENESS_DAYS} dias — considere revisar.")
+        except Exception:
+            pass
+
+    # persiste avisos em warnings.jsonl (agregado permanente — nao so stdout)
+    if warnings:
+        import time as _time
+        rec = {"t": round(_time.time(), 3), "source": "state_index", "warnings": warnings}
+        wlog = paths.warnings_log(root)
+        try:
+            with wlog.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        except OSError:
+            pass
+
+    return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions),
+            "dir": state, "warnings": warnings}
 
 
 def _read(p: Path) -> str:
