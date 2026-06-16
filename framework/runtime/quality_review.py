@@ -426,6 +426,10 @@ def write_xlsx(rows, out_path):
         fill = next((PatternFill("solid", fgColor=clr) for tag, clr in _XLSX_SEV if tag in rev), None)
         for col in range(1, len(COLS) + 1):
             cell = ws.cell(row=i, column=col)
+            # openpyxl promove strings com '=' para data_type='f' (formula); quotePrefix=True
+            # instrui o Excel a tratar o conteudo como texto simples (invisivel ao usuario).
+            if isinstance(cell.value, str) and cell.value and cell.value[0] in "=+-@":
+                cell.quotePrefix = True
             cell.font = Font(name="Arial", size=10)
             cell.alignment = wrap if col in (6, 7, 10, 11) else top
             if col in (9, 10, 11):                          # Corrigir?/Correcao/Nota = input do humano (amarelo)
@@ -446,12 +450,19 @@ def write_xlsx(rows, out_path):
     wb.save(out_path)
 
 
+_MAX_XLSX_MB = 20
+
+
 def _read_xlsx_rows(path):
     """Le a aba 'Revisao' do xlsx devolvido -> lista de dicts {COLS: valor} (mapeado por POSICAO)."""
     try:
         from openpyxl import load_workbook
     except ImportError as e:
         raise RuntimeError("ler XLSX devolvido requer 'openpyxl' (pip install openpyxl).") from e
+    size_mb = Path(path).stat().st_size / (1024 * 1024)
+    if size_mb > _MAX_XLSX_MB:
+        raise ValueError(f"XLSX muito grande ({size_mb:.1f} MB > {_MAX_XLSX_MB} MB); "
+                         f"verifique se o arquivo e valido.")
     wb = load_workbook(path, read_only=True, data_only=True)
     ws = wb["Revisao"] if "Revisao" in wb.sheetnames else wb[wb.sheetnames[-1]]
     out, first = [], True
@@ -481,6 +492,9 @@ def read_returned(path) -> dict:
         cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
         if not scene or not off or marcar != "corrigir":
             continue                                       # so processa o que foi MARCADO 'corrigir'
+        # Guard path traversal: scene/off vêm de XLSX externo; sem separadores ou '..'
+        if any(c in scene for c in ("/", "\\", "..")) or any(c in off for c in ("/", "\\")):
+            continue
         if not cor and not nota:
             continue                                       # marcada mas sem texto/instrucao -> nada a aplicar
         slot = by_scene.setdefault(scene, {"verbatim": [], "nota": []})
