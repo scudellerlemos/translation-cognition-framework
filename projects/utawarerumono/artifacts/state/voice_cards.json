@@ -1,4 +1,31 @@
 {
+  "Anju": {
+    "aliases": ["Princesa Anju", "Princess Anju"],
+    "criticality": "high",
+    "lines": [
+      "Registro: imperial/nobre com veias de impetuosidade juvenil; princesa que foge do protocolo.",
+      "Características: fala formal-imperativa ('Solte-me imediatamente!', 'Imploro-vos') que quebra para o impulso ('Fui ver Oshtor por conta própria'); dramaticidade emocional, reações que escapam à compostura ('I... I have... done noth--!!'); frases que começam formais e terminam em colapso emotivo.",
+      "Red flags: soar só fria/distante (ela é teimosa e apaixonada, não glacial); perder o contraste formalidade↔ impulso; usar 'você' genérico onde caberia registro mais elevado."
+    ]
+  },
+  "Atuy": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: informal, desinibida, flertadora e bem-humorada; guerreira que trata o mundo como palco.",
+      "Características: abordagem direta e descarada ('Oi, gato'; 'Que pena, de costas era tão bonito...'); autodepreciação irônica; não tem filtro mas não é vulgar — é espirituosa.",
+      "Red flags: soar tímida ou contida; formal demais; perder o humor desarmante que é a marca do personagem."
+    ]
+  },
+  "Dekopompo": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: nobre pomposo e autocomplacente; cômica arrogância de quem se acha mais importante do que é.",
+      "Características: se apresenta em terceira pessoa ou com títulos longos ('Eu sou Dekopompo, senhor destas magníficas propriedades'); espera reverência; verboso, usa superlativo a torto e a direito; paternalistico.",
+      "Red flags: soar genuinamente ameaçador (é cômica incompetência, não vilania real); perder a auto-grandiosidade; fala curta/direta."
+    ]
+  },
   "Garota": {
     "aliases": [],
     "criticality": "high",
@@ -12,7 +39,8 @@
     "aliases": [],
     "criticality": "high",
     "lines": [
-      "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:",
+      "Monólogo interno irônico/autodepreciativo, pânico cômico, comentários sarcásticos. Red flags: narração sem humor, formal demais, ou perder o pânico."
     ]
   },
   "Homem": {
@@ -24,6 +52,22 @@
       "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
     ]
   },
+  "Kiwru": {
+    "aliases": [],
+    "criticality": "low",
+    "lines": [
+      "Kiwru — `voice_criticality: low`. De Ennakamuy; educado, caloroso, levemente formal ('Permita-me apresentar-me'); surpreende com revelações mas mantém tom calmo. Fala genérica sem marcador especial — PT-BR contemporâneo natural."
+    ]
+  },
+  "Kuon": {
+    "aliases": ["a Garota"],
+    "criticality": "high",
+    "lines": [
+      "Registro: caloroso, cuidadoso, naturalidade feminina contemporânea; alterna fofa↔firme conforme contexto.",
+      "Características: pausas expressivas com reticências ('Eu acho que... talvez seja difícil explicar agora'); gentileza direta sem afetação; quando firma posição, o tom muda para autoridade leve sem grosseria (bronca da cauda); nunca sermão longo.",
+      "Red flags: só doce e passiva (perde o lado firme que define o contraste); só ríspida (perde o calor); formalidade excessiva; PT-PT."
+    ]
+  },
   "Maroro": {
     "aliases": [],
     "criticality": "high",
@@ -31,6 +75,13 @@
       "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
       "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
       "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+    ]
+  },
+  "Mikazuchi": {
+    "aliases": ["Imperial Guard of the Left"],
+    "criticality": "low",
+    "lines": [
+      "Mikazuchi — `voice_criticality: low`. Comandante militar da Guarda Imperial Esquerda; mistura comandos secos em caixa alta ('SENTIDO!', 'Primeira formação, avançar!') com formalidade cortes quando não está em combate. Não soar casual; manter o ritmo de comando quando em ação."
     ]
   },
   "Moznu": {
@@ -47,6 +98,33 @@
       "Registro: afetuoso, infantilizado, provocador.",
       "Características: trata o protagonista por \"Tio\"; promessa de mindinho (\"Cross your heart and hope to die\"); carinho disfarçado de implicância.",
       "Red flags: soar adulta/séria demais; perder a leveza infantil da promessa."
+    ]
+  },
+  "Munechika": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: formal-militar respeitoso; não rígida, sabe ser acessível sem perder a postura.",
+      "Características: tratamento elevado ('Lorde Oshtor', 'excelsa personagem') mas sem afetação; frases diretas e funcionais; não hesita mas também não ladra ordens — é serena.",
+      "Red flags: soar fria ou arrogante (ela é diligente, não altiva); informalidade excessiva; perder o tratamento honorífico quando fala de superiores."
+    ]
+  },
+  "Narrador": {
+    "aliases": ["Narrador/Haku", "Narrador (Haku)", "Narrator", "Narração", "NARRADOR"],
+    "criticality": "low",
+    "lines": [
+      "Narrador — `voice_criticality: low`. Narração em 1ª pessoa (voz interna do Haku: irônica, autodepreciativa, coloquial) OU em 3ª pessoa descritiva (ação de cena: neutra, factual).",
+      "Distinguir: 1ª pessoa = tom do Haku (sarcasmo, desconforto cômico); 3ª pessoa = prosa limpa sem cor pessoal.",
+      "Red flags: narração interna sem humor; 3ª pessoa com muita emoção subjetiva."
+    ]
+  },
+  "Nekone": {
+    "aliases": [],
+    "criticality": "high",
+    "lines": [
+      "Registro: formal e ligeiramente arcaico; tsundere intelectual; irmã mais nova do Oshtor.",
+      "Características: usa construções formais mesmo no cotidiano ('Estou me dirigindo a você, caro irmão'; 'Não é da sua conta'; 'Com o que, exatamente, você se ocupa?'); dispensa demonstrações de afeto abertamente mas age por elas; breve e assertiva.",
+      "Red flags: soar casual/moderna (perde o registro formal que define a personagem); soar fria/hostil de verdade (o formal é a armadura, não o sentimento); frases longas e meias."
     ]
   },
   "Nosuri": {
@@ -86,6 +164,15 @@
       "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
     ]
   },
+  "Raiko": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: calculista, analítico, frio; conselheiro/espião que trata informação como moeda.",
+      "Características: frases medidas e densas ('A informação é a chave do controle'); observações que revelam mais do que o interlocutor esperava; nunca emocional em excesso — controle é a marca.",
+      "Red flags: soar caloroso ou indiscreto; verbosidade excessiva (ele é preciso, não eloquente); perder a frieza calculada."
+    ]
+  },
   "Rulutieh": {
     "aliases": [],
     "criticality": "medium",
@@ -94,7 +181,7 @@
     ]
   },
   "Sistema": {
-    "aliases": [],
+    "aliases": ["SYSTEM", "SISTEMA", "sistema"],
     "criticality": "medium",
     "lines": [
       "Registro: técnico, impessoal, em CAPS.",
@@ -109,6 +196,24 @@
       "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
       "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
       "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+    ]
+  },
+  "Vurai": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: vilão monolítico, poder bruto, sem subtileza — cada frase é uma sentença.",
+      "Características: frases curtíssimas e absolutas ('Destruirei tudo.', 'Quem me barra, é esmagado.'); sem diálogo real — declara, não conversa; intensidade constante sem pico dramático (já está sempre no máximo).",
+      "Red flags: humanizar com hesitação ou nuance; frases longas; qualquer sinal de dúvida interna."
+    ]
+  },
+  "Woshis": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Registro: refinado, precioso, exigente; espécie de coreógrafo/conselheiro de corte extremamente particular.",
+      "Características: tutela com exclamações controladas ('Contato visual, por favor. Sim, assim... E os lábios não devem se tocar. Lembre-se...'); hmms e risadas leves entre as correções; descreve o absurdo como se fosse óbvio; surpreende pela estranheza do que diz sem perceber.",
+      "Red flags: soar vulgar ou grosseiro; perder a precisão pretensiosa; tratar as situações com normalidade (o humor vem do fato de ele ser completamente sério)."
     ]
   }
 }
