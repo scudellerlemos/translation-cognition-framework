@@ -44,7 +44,9 @@ from llm_client import (  # noqa: E402,F401
 from config import (  # noqa: E402,F401
     MODEL_TRANSLATE, MODEL_BACK, MODEL_TRANSLATE_CHEAP, BACK_SAMPLE_RATE, MAX_OUTPUT_TOKENS,
     _BATCH_CHUNK, _MAX_TRIES, EFFORT_TRANSLATE, THINK_TRANSLATE, BUDGET_TOLERANCE, BUDGET_ESCALATION,
-    AWAITING, READY, DONE)
+    AWAITING, READY, DONE,
+    TranslateResult, TranslateReady, TranslateAwaiting, TranslateDone,
+    BackTranslateResult, BackTranslateReady, BackTranslateAwaiting, BackTranslateDone, BackTranslateDoneApi)
 # Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
 from back_translate import (  # noqa: E402,F401
     back_translate, _write_back_prompt, _BACK_SCHEMA, _back_params, _api_back_translate,
@@ -60,7 +62,7 @@ def _no_effort_model(model: str) -> bool:
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, max_usd=None):
+def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, max_usd=None) -> TranslateResult:
     """Traduz uma cena. `max_usd` e informativo: emite aviso se o custo estimado supera o teto,
     mas NAO aborta (use run_chapter --max-usd para teto duro por capitulo)."""
     root = Path(root)

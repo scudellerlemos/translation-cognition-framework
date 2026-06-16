@@ -77,6 +77,23 @@ def _fit_budget(root: Path, scenes, max_usd):
     return fit, dropped
 
 
+def _validate_chapter_arg(root: Path, chap: str) -> None:
+    """Garante que chap nao resulta em path fora de artifacts/ (path traversal guard).
+
+    O chap e interpolado como 'ch_{chap}_*' no glob. Separadores de path (/ ou barra-invertida)
+    inserem segmentos '..' navegaveis pelo glob e causam traversal. Bloqueamos na raiz:
+    qualquer separador no chap e proibido antes de qualquer I/O.
+    """
+    if not chap:
+        raise ValueError("chapter nao pode ser vazio")
+    if "/" in chap or "\\" in chap:
+        raise ValueError(f"chapter {chap!r} contem separador de path — bloqueado")
+    # defesa adicional: verifica que o path composto nao escapa de artifacts/
+    candidate = (paths.artifacts(root) / f"ch_{chap}_00").resolve()
+    if not candidate.is_relative_to(paths.artifacts(root).resolve()):
+        raise ValueError(f"chapter {chap!r} resultaria em path fora de artifacts/ — bloqueado")
+
+
 def _scenes_of(root: Path, chap: str) -> list[str]:
     art = paths.artifacts(root)
     names = [p.parent.name for p in art.glob(f"ch_{chap}_*/dialogs.csv")]
@@ -145,6 +162,7 @@ def _chapter_cost(root, chap) -> float:
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
                 skip_kb_gate=False, batch=False, max_usd=None):
     root = Path(root)
+    _validate_chapter_arg(root, chap)
     scenes = _scenes_of(root, chap)
     if not scenes:
         print(f"nenhuma cena encontrada p/ cap {chap} (esperado artifacts/ch_{chap}_*/dialogs.csv)")
