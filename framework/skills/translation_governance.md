@@ -23,6 +23,17 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## AS QUATRO DIRETRIZES
 
 ### 1. Contexto de PERSONAGEM (voz)
+
+> **HIERARQUIA DE REGISTRO — leia antes de tudo:**
+> 1. **VOZ DO KB (máxima prioridade, inegociável):** se `tone_analysis.md` registra que o
+>    personagem fala em **terceira pessoa** ("Aruruu quer brincar"), usa **`tu`** em vez de
+>    "você", tem **registro arcaico/formal/solene**, gíria própria ou qualquer marcador de voz
+>    consistente — isso **não é opcional**. Preservar em *toda* linha desse personagem,
+>    independente do que seria mais "natural" no PT-BR genérico.
+> 2. **PT-BR contemporâneo (padrão quando KB não especifica):** se o falante não tem marcador
+>    de voz definido no KB, traduzir com PT-BR natural de hoje (ver Diretriz 3). Este padrão
+>    só existe para os casos sem definição — nunca sobrepõe o KB.
+
 - Cada linha respeita o **perfil de voz** do falante em `tone_analysis.md` (registro, léxico,
   comprimento de frase, tiques). `voice_criticality: high` → verificação **em cada linha**.
 - **Identidade dupla:** a persona pública nunca exibe traços/nomes da identidade revelada antes do
@@ -42,8 +53,10 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
   em um artefato de referência do projeto), nunca copiar do source. (Ver `06_translation.md` e a
   referência de interjeições do projeto.)
 - **Continuidade:** a junção de linhas quebradas (`\n`) soa natural; ritmo de comédia preservado.
-- **pt-BR MODERNO (registro do jogador de hoje):** preferir a forma que um jogador BR atual usaria, não
-  a "correta-mas-arcaica/truncada". Dois erros recorrentes pegos em QA in-game:
+- **pt-BR MODERNO (registro do jogador de hoje — PISO, não teto):** quando o KB não define a voz
+  do personagem (ver hierarquia na Diretriz 1), usar a forma que um jogador BR atual usaria, não
+  a "correta-mas-arcaica/truncada". Se o KB *define* a voz (arcaico, `tu`, 3ª pessoa etc.) esse
+  piso não se aplica — a voz do KB prevalece. Dois erros recorrentes pegos em QA in-game:
   - **Resposta de NOME** (`I'm…`/`My name's…`/`I am…` quando responde "qual seu nome?") → **"Meu nome é…"
     / "Eu me chamo…" / "Sou o(a)…"** conforme a voz. NUNCA "Eu sou" seco — refere-se a estado, soa
     truncado para apresentação.
@@ -74,12 +87,16 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## CHECKLIST (executar antes de aceitar/aprovar uma linha ou lote)
 
 ```
+□ KB de voz: o personagem tem marcador no tone_analysis.md? (3ª pessoa, tu, arcaico, gíria própria?)
+    → SIM: toda linha segue esse marcador — não "corrigir para pt-BR genérico".
+    → NÃO: aplicar pt-BR contemporâneo natural como padrão.
 □ Voz: registro/léxico batem com o perfil do falante? (high → toda linha)
 □ Identidade/spoiler: nada revelado antes do reveal_timing?
 □ Lore: termos do glossário na forma certa?
 □ Situação: traduzida pela emoção/intenção da cena? interjeição localizada?
 □ Naturalidade: um nativo lê NESTA situação e entende fácil? (senão, revisa)
-□ pt-BR moderno: forma que um jogador de HOJE usaria? (nome → "Meu nome é/Eu me chamo", não "Eu sou"; sem arcaísmo gratuito)
+□ pt-BR contemporâneo (só quando KB não define voz): forma que um jogador de HOJE usaria?
+    (nome → "Meu nome é/Eu me chamo", não "Eu sou"; sem arcaísmo gratuito)
 □ Conector: cabe/translitera sem virar outra coisa? tokens preservados?
 □ Risco: se ≥ high, passou por back-translation?
 □ Não satisfez algo acima? → sinalizar em QA/risk_notes (não entregar às cegas).
