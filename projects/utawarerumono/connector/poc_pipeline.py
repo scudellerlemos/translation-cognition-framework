@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """
+DEPRECATED — poc_pipeline.py era um script de PoC (Prova de Conceito) para os Passos 05+06.
+NAO usar em producao: paths hardcoded (ART / "dialogs.csv" / "approved_translations.csv"),
+sem gate de KB, sem back-translation, sem run_state. Use run_chapter.py + run_scene.py.
+Mantido apenas como referencia historica. Sera removido apos confirmacao de desuso.
+
 poc_pipeline.py — Passos 05 (planejamento) + 06 (tradução), no arco extraído (dialogs.csv).
 
 DETERMINÍSTICO. Não contém nenhuma frase da obra:

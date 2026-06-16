@@ -1,6 +1,10 @@
 # CARTA DE GOVERNANÇA DE TRADUÇÃO
 ## Contrato de qualidade que a IA SEGUE ao traduzir (transversal aos Passos 05–08)
 
+> **Versão:** 2026-06-16 — atualizar esta linha ao modificar a Carta.
+> O `api_ledger.jsonl` registra tokens/modelo por chamada, mas não a versão da Carta.
+> Para rastrear qual governança gerou uma tradução, use esta data + `git log --follow`.
+
 > **Natureza:** não é um passo do pipeline — é o **contrato** que rege *como* traduzir em todos os
 > passos cognitivos (05 planejamento, 06 tradução, 06b/06c QA, 07 QA final). Genérico: nenhum dado de
 > obra vive aqui; tudo específico vem de `project.json` + artefatos.
@@ -25,14 +29,14 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ### 1. Contexto de PERSONAGEM (voz)
 
 > **HIERARQUIA DE REGISTRO — leia antes de tudo:**
-> 1. **VOZ DO KB (máxima prioridade, inegociável):** se `tone_analysis.md` registra que o
->    personagem fala em **terceira pessoa** ("Aruruu quer brincar"), usa **`tu`** em vez de
->    "você", tem **registro arcaico/formal/solene**, gíria própria ou qualquer marcador de voz
->    consistente — isso **não é opcional**. Preservar em *toda* linha desse personagem,
->    independente do que seria mais "natural" no PT-BR genérico.
-> 2. **PT-BR contemporâneo (padrão quando KB não especifica):** se o falante não tem marcador
->    de voz definido no KB, traduzir com PT-BR natural de hoje (ver Diretriz 3). Este padrão
->    só existe para os casos sem definição — nunca sobrepõe o KB.
+> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json`.
+>    Se o falante (`speaker`) tiver um card registrado ali — mesmo que a entrada seja mínima —
+>    *toda* linha desse personagem segue o perfil de voz documentado (3ª pessoa, `tu`,
+>    registro arcaico/formal/solene, gíria própria, comprimento de frase etc.).
+>    Isso **não é opcional**, independente do que seria mais "natural" no PT-BR genérico.
+> 2. **PT-BR contemporâneo (padrão para os demais):** se o `speaker` **não existe** em
+>    `voice_cards.json`, traduzir com PT-BR natural de hoje (ver Diretriz 3). Este padrão
+>    cobre a maioria dos NPCs e narradores sem perfil definido — nunca sobrepõe o KB.
 
 - Cada linha respeita o **perfil de voz** do falante em `tone_analysis.md` (registro, léxico,
   comprimento de frase, tiques). `voice_criticality: high` → verificação **em cada linha**.

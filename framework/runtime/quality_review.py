@@ -155,31 +155,6 @@ _CULTURAL_EN = re.compile(
     re.IGNORECASE
 )
 
-# Expressoes idiomaticas/coloquiais do PT-BR no ALVO — sinal de que a localizacao adaptou culturalmente
-# (bom!) mas o revisor deve confirmar que a expressao cabe na voz do personagem e no contexto da cena.
-# Alta precisao: multi-palavra inequivoca; evitar palavras comuns isoladas.
-_CULTURAL_PTBR = re.compile(
-    r"\b("
-    r"jurado furadinho|puxar o tapete|cair a ficha"
-    r"|botar a m[aã]o na massa|encher linguiça|encher linguica"
-    r"|fazer vista grossa|pagar mico"
-    r"|dar o jeitinho|meter o louco|tirar uma onda|fazer charme"
-    r"|matar dois coelhos com (uma )?cajadada"
-    r"|mais vale (um )?p[aá]ssaro na m[aã]o"
-    r"|(á|a)gua mole em pedra dura"
-    r"|quem n[aã]o tem c[aã]o ca[cç]a com gato"
-    r"|j[aá] era|foi por [aá]gua abaixo"
-    r"|queimar? o filme|perder o fio da meada"
-    r"|bater papo|pagar o pato"
-    r"|meter os p[eé]s pelas m[aã]os"
-    r"|tirar de letra|dar o troco"
-    r"|virar a mesa|dar uns panos quentes"
-    r"|bater o p[eé]|n[aã]o tem cabimento"
-    r"|de jeito nenhum|(n[aã]o )?é l[aá] essas coisas"
-    r")\b",
-    re.IGNORECASE
-)
-
 # Largura do BALAO: o byte_budget garante que cabe no ARQUIVO (reinsercao), NAO que cabe na largura
 # VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida.
 # TESTE SEM IN-GAME (deterministico): a RE da fonte do jogo (Font.fnt) mostrou um ATLAS DE GRADE
@@ -223,8 +198,6 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
         fl.append("pt-PT?")
     if _CULTURAL_EN.search(source or ""):
         fl.append("expr-cultural")   # idioma EN na fonte — checar se localizacao PT-BR ficou equivalente
-    if _CULTURAL_PTBR.search(target or ""):
-        fl.append("expr-ptbr")       # expressao PT-BR no alvo — confirmar que cabe na voz/contexto
     return ";".join(fl)
 
 
@@ -316,7 +289,7 @@ _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ing
               "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
 _XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"),
-             ("expr-cultural", "D5F5E3"), ("expr-ptbr", "E8F8D0"),
+             ("expr-cultural", "D5F5E3"),
              ("largura", "CFE2FF"), ("identico-fonte", "E8E8E8"),
              ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
 _XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input do humano (Corrigir?/Correcao/Nota)
@@ -407,11 +380,8 @@ def write_xlsx(rows, out_path):
     _leg(r, "FFE2C7", "high",
          "Linha de risco ALTO — leia com cuidado"); r += 1
     _leg(r, "D5F5E3", "expr-cultural",
-         "Expressao idiomatica EN detectada na fonte (ex.: 'break a leg', 'spill the beans') — "
+         "Expressao idiomatica EN detectada na fonte (ex.: 'cross my heart', 'break a leg', 'spill the beans') — "
          "verifique se a localizacao PT-BR ficou equivalente e natural, nao so traduzida ao pe da letra"); r += 1
-    _leg(r, "E8F8D0", "expr-ptbr",
-         "Expressao idiomatica PT-BR detectada no alvo (ex.: 'cair a ficha', 'jurado furadinho') — "
-         "confirme que a expressao cabe na voz do personagem e no contexto da cena"); r += 1
     _leg(r, "CFE2FF", "largura",
          "Texto pode SAIR do balao no jogo — encurte se necessario"); r += 1
     _leg(r, "E8E8E8", "identico-fonte",
