@@ -264,7 +264,9 @@ def _bt_revise_offsets(root, scene) -> set:
         data = json.loads(btf.read_text(encoding="utf-8"))
     except Exception:
         return set()
-    return {e.get("offset") for e in data.get("entries", []) if e.get("verdict") == "revise"}
+    # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir micro-qa)
+    return {e.get("offset") for e in data.get("entries", [])
+            if e.get("verdict") == "revise" and not e.get("stale")}
 
 
 def width_violations(root, chapter=None) -> list:
