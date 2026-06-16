@@ -50,6 +50,67 @@ COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
 
+# Expressoes culturais/idiomaticas EN (americana/britanica) na FONTE — sinal p/ o revisor checar se a
+# localizacao pt-BR ficou equivalente (nao so traduzida literalmente). Deterministico, $0, varre o source.
+# Alta precisao: preferir expressoes multi-palavra inequivocas; evitar palavras comuns isoladas.
+_CULTURAL_EN = re.compile(
+    r"\b("
+    # idiomas multi-palavra claros
+    r"bite the bullet|kick the bucket|break a leg|piece of cake"
+    r"|under the weather|let the cat out of the bag|spill the beans"
+    r"|hit the (road|sack|nail on the head)"
+    r"|once in a blue moon|burn the midnight oil"
+    r"|beat around the bush|bend over backwards"
+    r"|hold your horses|kill two birds with one stone"
+    r"|pull (someone'?s|your|my|his|her) leg"
+    r"|on the fence|tip of the iceberg"
+    r"|no pain[,]? no gain|keep your chin up|hang in there"
+    r"|break the ice|cost(s)? an arm and a leg"
+    r"|the last straw|back to square one"
+    r"|when pigs fly|barking up the wrong tree"
+    r"|it'?s? all greek to me|the elephant in the room"
+    r"|throw (someone )?under the bus|bite off more than (you|he|she|they) can chew"
+    r"|the ball is in your court|a blessing in disguise"
+    r"|every cloud has a silver lining|go the extra mile"
+    r"|hit the ground running|miss the boat|see eye to eye"
+    r"|sit on the fence|cut corners|add fuel to the fire"
+    r"|pull (yourself|yourself) up by (your|the) bootstraps"
+    # giria americana marcante
+    r"|holy (cow|moly|smokes|guacamole)|what the heck|what in tarnation"
+    r"|y'all|ya'?ll"
+    # marcadores britanicos marcantes
+    r"|blimey|crikey|bloody hell|cheerio|innit"
+    r"|gobsmacked|knackered|taking the mickey|bob'?s your uncle"
+    r"|cor blimey|gutted\b"
+    r")\b",
+    re.IGNORECASE
+)
+
+# Expressoes idiomaticas/coloquiais do PT-BR no ALVO — sinal de que a localizacao adaptou culturalmente
+# (bom!) mas o revisor deve confirmar que a expressao cabe na voz do personagem e no contexto da cena.
+# Alta precisao: multi-palavra inequivoca; evitar palavras comuns isoladas.
+_CULTURAL_PTBR = re.compile(
+    r"\b("
+    r"jurado furadinho|puxar o tapete|cair a ficha"
+    r"|botar a m[aã]o na massa|encher linguiça|encher linguica"
+    r"|fazer vista grossa|pagar mico"
+    r"|dar o jeitinho|meter o louco|tirar uma onda|fazer charme"
+    r"|matar dois coelhos com (uma )?cajadada"
+    r"|mais vale (um )?p[aá]ssaro na m[aã]o"
+    r"|(á|a)gua mole em pedra dura"
+    r"|quem n[aã]o tem c[aã]o ca[cç]a com gato"
+    r"|j[aá] era|foi por [aá]gua abaixo"
+    r"|queimar? o filme|perder o fio da meada"
+    r"|bater papo|pagar o pato"
+    r"|meter os p[eé]s pelas m[aã]os"
+    r"|tirar de letra|dar o troco"
+    r"|virar a mesa|dar uns panos quentes"
+    r"|bater o p[eé]|n[aã]o tem cabimento"
+    r"|de jeito nenhum|(n[aã]o )?é l[aá] essas coisas"
+    r")\b",
+    re.IGNORECASE
+)
+
 # Largura do BALAO: o byte_budget garante que cabe no ARQUIVO (reinsercao), NAO que cabe na largura
 # VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida.
 # TESTE SEM IN-GAME (deterministico): a RE da fonte do jogo (Font.fnt) mostrou um ATLAS DE GRADE
@@ -91,6 +152,10 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
         fl.append("largura")                              # segmento estoura a largura do balao (in-game)
     if _PTPT.search(target or ""):
         fl.append("pt-PT?")
+    if _CULTURAL_EN.search(source or ""):
+        fl.append("expr-cultural")   # idioma EN na fonte — checar se localizacao PT-BR ficou equivalente
+    if _CULTURAL_PTBR.search(target or ""):
+        fl.append("expr-ptbr")       # expressao PT-BR no alvo — confirmar que cabe na voz/contexto
     return ";".join(fl)
 
 
@@ -181,8 +246,10 @@ _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ing
               "Portugues (atual)", "Caixa (cresceu vs EN?)", "Corrigir? (escreva CORRIGIR)",
               "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
-_XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
-             ("identico-fonte", "E8E8E8"), ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
+_XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"),
+             ("expr-cultural", "D5F5E3"), ("expr-ptbr", "E8F8D0"),
+             ("largura", "CFE2FF"), ("identico-fonte", "E8E8E8"),
+             ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
 _XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input do humano (Corrigir?/Correcao/Nota)
 
 
@@ -202,39 +269,100 @@ def write_xlsx(rows, out_path):
     marked = sum(1 for r in rows if r.get("revisar"))
     wb = Workbook()
 
+    # ── aba Leia-me ──────────────────────────────────────────────────────────────
     intro = wb.active
     intro.title = "Leia-me"
-    intro.column_dimensions["A"].width = 26
-    intro.column_dimensions["B"].width = 60
-    L = [("COMO REVISAR", ""), ("", ""),
-         ("1.", "Va para a aba 'Revisao'."),
-         ("2.", "A coluna 'Revisar (onde olhar)' e so DICA (do micro-QA da IA, ja pago) — NAO decide nada. "
-                "Filtre por NAO-vazias p/ priorizar onde olhar."),
-         ("3.", "VOCE decide: na coluna 'Corrigir? (escreva CORRIGIR)' escreva CORRIGIR (ou corrigir) "
-                "na linha que quer mudar. So as linhas marcadas CORRIGIR serao processadas."),
-         ("4.", "Na MESMA linha, preencha UMA: 'Correcao' = o texto CERTO (aplicado verbatim, $0); "
-                "OU 'Nota' = instrucao p/ a IA reescrever so aquela linha (ex.: 'encurtar', 'mais formal')."),
-         ("5.", "Linha boa = NAO escreva CORRIGIR (deixe em branco). Salve e devolva no inbox (devolvido/)."),
-         ("", ""), ("LEGENDA DAS CORES (dica 'Revisar')", ""),
-         ("micro-qa:revise", "a back-translation da IA (ja paga) achou divergencia de sentido — olhe"),
-         ("critical / high", "linha de alto risco (voz/sentido/spoiler) — leia com atencao"),
-         ("largura", "o texto pode SAIR do balao no jogo — encurte se preciso"),
-         ("identico-fonte", "igual ao ingles — provavel nao-traduzido (confira; SFX/rotulo pode ficar)"),
-         ("tamanho", "traducao muito mais longa/curta que o original"),
-         ("pt-PT", "marcador de portugues de Portugal — adaptar p/ pt-BR"),
-         ("", ""), ("RESUMO", ""),
-         ("Total de linhas", len(rows)), ("Com dica p/ olhar", marked)]
-    for tag, c in cnt.most_common():
-        L.append((f"  {tag}", c))
-    for a, b in L:
-        intro.append([a, b])
-    intro["A1"].font = Font(name="Arial", bold=True, size=14)
-    for row in intro.iter_rows():
-        for cell in row:
-            if cell.column == 1 and cell.value in ("COMO REVISAR", "LEGENDA DAS CORES (coluna Revisar)", "RESUMO"):
-                cell.font = Font(name="Arial", bold=True, size=12)
-            elif not cell.font or cell.font.name != "Arial":
-                cell.font = Font(name="Arial", size=10)
+    intro.column_dimensions["A"].width = 24
+    intro.column_dimensions["B"].width = 68
+    intro.sheet_view.showGridLines = False
+
+    def _c(row, col, value="", bold=False, size=10, color="1A1A1A",
+           bg=None, wrap=False, halign="left", valign="center"):
+        cell = intro.cell(row=row, column=col, value=value)
+        cell.font = Font(name="Arial", bold=bold, size=size, color=color)
+        cell.alignment = Alignment(horizontal=halign, vertical=valign, wrap_text=wrap)
+        if bg:
+            cell.fill = PatternFill("solid", fgColor=bg)
+        return cell
+
+    def _sec(row, label, bg="1F3864"):
+        _c(row, 1, "  " + label, bold=True, size=11, color="FFFFFF", bg=bg, valign="center")
+        _c(row, 2, bg=bg)
+        intro.row_dimensions[row].height = 24
+
+    def _step(row, num, text):
+        _c(row, 1, str(num) + ".", bold=True, size=11, color="1F3864",
+           bg="D6E4F7", halign="center", valign="top")
+        _c(row, 2, text, size=10, wrap=True, valign="top")
+        intro.row_dimensions[row].height = max(18, min(60, 15 + len(text) // 5))
+
+    def _leg(row, bg_hex, label, desc):
+        _c(row, 1, label, bold=True, size=9, color="333333",
+           bg=bg_hex, halign="center", valign="center")
+        _c(row, 2, desc, size=9, wrap=True, valign="top")
+        intro.row_dimensions[row].height = 24
+
+    def _kv(row, key, val, key_bold=True):
+        _c(row, 1, key, bold=key_bold, size=10, color="333333")
+        _c(row, 2, val, size=10, color="333333")
+
+    r = 1
+    # Titulo
+    _c(r, 1, "GUIA DO REVISOR", bold=True, size=16, color="FFFFFF",
+       bg="1F3864", halign="center", valign="center")
+    _c(r, 2, bg="1F3864")
+    intro.row_dimensions[r].height = 36
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: como usar
+    _sec(r, "COMO USAR"); r += 1
+    _step(r, 1, "Va para a aba 'Revisao'. Voce vera todas as linhas do jogo, uma por linha."); r += 1
+    _step(r, 2, "A coluna 'Revisar (onde olhar)' e so DICA — indica onde o sistema ou o micro-QA "
+                "da IA apontou algo. Filtre por nao-vazias para priorizar. NAO decide nada."); r += 1
+    _step(r, 3, "VOCE decide: na coluna 'Corrigir? (escreva CORRIGIR)' escreva CORRIGIR na linha "
+                "que quer mudar. So as linhas marcadas serao processadas."); r += 1
+    _step(r, 4, "Na MESMA linha marcada, preencha UMA das duas colunas:\n"
+                "  'Correcao' = o texto EXATO que deve ir para o jogo (verbatim, $0, sem IA);\n"
+                "  'Nota' = instrucao para a IA reescrever so aquela linha "
+                "(ex.: 'encurtar', 'mais formal', 'tom brincalhao')."); r += 1
+    _step(r, 5, "Linha boa = deixe em branco (nao escreva CORRIGIR). "
+                "Salve e devolva o arquivo na pasta devolvido/."); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: legenda
+    _sec(r, "LEGENDA DAS CORES  (coluna Revisar)"); r += 1
+    _leg(r, "F4CCCC", "micro-qa:revise",
+         "A back-translation da IA achou divergencia de sentido — releia com atencao"); r += 1
+    _leg(r, "FFC7CE", "critical",
+         "Linha de risco CRITICO (voz, sentido central, spoiler) — leitura obrigatoria"); r += 1
+    _leg(r, "FFE2C7", "high",
+         "Linha de risco ALTO — leia com cuidado"); r += 1
+    _leg(r, "D5F5E3", "expr-cultural",
+         "Expressao idiomatica EN detectada na fonte (ex.: 'break a leg', 'spill the beans') — "
+         "verifique se a localizacao PT-BR ficou equivalente e natural, nao so traduzida ao pe da letra"); r += 1
+    _leg(r, "E8F8D0", "expr-ptbr",
+         "Expressao idiomatica PT-BR detectada no alvo (ex.: 'cair a ficha', 'jurado furadinho') — "
+         "confirme que a expressao cabe na voz do personagem e no contexto da cena"); r += 1
+    _leg(r, "CFE2FF", "largura",
+         "Texto pode SAIR do balao no jogo — encurte se necessario"); r += 1
+    _leg(r, "E8E8E8", "identico-fonte",
+         "Igual ao ingles — provavel nao-traduzido (SFX/rotulo pode ficar igual; confirme)"); r += 1
+    _leg(r, "FFF0C7", "tamanho",
+         "Traducao muito mais longa ou curta que o original"); r += 1
+    _leg(r, "EAD9F2", "pt-PT?",
+         "Marcador de portugues de Portugal detectado (tens/estás/podes...) — adaptar para pt-BR"); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: resumo
+    _sec(r, "RESUMO DO ARQUIVO"); r += 1
+    _kv(r, "Total de linhas", len(rows)); r += 1
+    _kv(r, "Com dica para avaliar", f"{marked}  ({round(100*marked/len(rows)) if rows else 0}%)"); r += 1
+    if cnt:
+        r += 1
+        _c(r, 1, "Distribuicao das dicas:", bold=True, size=9, color="555555"); r += 1
+        for tag, count in cnt.most_common():
+            _c(r, 1, f"    {tag}", size=9, color="555555")
+            _c(r, 2, count, size=9, color="555555"); r += 1
 
     ws = wb.create_sheet("Revisao")
     ws.append(_XLSX_HEAD)
