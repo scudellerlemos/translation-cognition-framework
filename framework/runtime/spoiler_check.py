@@ -27,6 +27,11 @@ import json
 import sys
 from pathlib import Path
 
+# Uso completo:
+#   python spoiler_check.py <projeto>                   # verifica vazamentos (exit 1 se houver)
+#   python spoiler_check.py <projeto> --list-guards     # lista guards ativos no ledger
+#   python spoiler_check.py <projeto> --json            # saida JSON (compativel com CI)
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
@@ -124,11 +129,45 @@ def check_gender(root) -> list[dict]:
     return flags
 
 
+def list_guards(root) -> list[dict]:
+    """Guards ativos no ledger: entidade, reveal, strings proibidas pré-reveal, gender_quarantine."""
+    root = Path(root)
+    led = paths.spoiler_ledger(root)
+    if not led.is_file():
+        return []
+    entries = json.loads(led.read_text(encoding="utf-8")).get("entries", [])
+    return [{"entity": e.get("entity", "?"),
+             "reveal": e.get("reveal", "beyond_frontier"),
+             "forbidden_pre_reveal": e.get("forbidden_pre_reveal") or [],
+             "gender_quarantine": bool(e.get("gender_quarantine")),
+             "notes": e.get("notes", "")}
+            for e in entries]
+
+
 def main():
     ap = argparse.ArgumentParser(description="Verificacao de nao-vazamento de spoiler (pos-traducao).")
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--list-guards", action="store_true",
+                    help="lista todos os guards ativos no ledger (inspecao, nao verifica vazamentos)")
     a = ap.parse_args()
+
+    if a.list_guards:
+        guards = list_guards(a.project)
+        if not guards:
+            print("Nenhum guard ativo (spoiler_ledger.json vazio ou ausente).")
+            sys.exit(0)
+        if a.json:
+            print(json.dumps(guards, ensure_ascii=False, indent=2))
+            sys.exit(0)
+        print(f"{len(guards)} guard(s) ativo(s) no spoiler_ledger:")
+        for g in guards:
+            fb = ", ".join(g["forbidden_pre_reveal"]) if g["forbidden_pre_reveal"] else "(sem string proibida)"
+            gq = "  [gender_quarantine]" if g["gender_quarantine"] else ""
+            print(f"  {g['entity']:<22} reveal={g['reveal']:<15}  proibido={fb}{gq}")
+            if g["notes"]:
+                print(f"    nota: {g['notes']}")
+        sys.exit(0)
     leaks = check(a.project)
     gender = check_gender(a.project)
     if a.json:
