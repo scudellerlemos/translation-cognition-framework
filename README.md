@@ -301,7 +301,9 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
+[`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
+[`CHANGELOG.md`](CHANGELOG.md) (histórico de versões) ·
 [`adr/`](framework/docs/adr/) (as decisões de IA, registradas) · [`ROADMAP.md`](ROADMAP.md).
 
 ---
@@ -311,7 +313,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 > junho 2026 — **o jogo de referência está 100% traduzido e verificado** (round-trip byte-idêntico +
 > back-translation de alto risco). A **QA humana literária** e a **pós-produção (build/release)** seguem
 > pendentes — ver [ROADMAP](ROADMAP.md#riscos-do-projeto). O framework saiu do "valida em 2 cenas" e
-> entregou uma obra inteira de ponta a ponta, a custo medido e previsível.
+> entregou uma obra inteira de ponta a ponta, a custo medido e previsível. **Versão estável: [1.0.0](CHANGELOG.md).**
 
 - **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
   (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
@@ -326,8 +328,8 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
 - **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim ($0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Qualidade travada:** **125 testes** (80 runtime + 29 validação + 16 conector), determinismo/
-  idempotência e um guard que barra texto da obra hardcoded em `.py`.
+- **Qualidade travada:** **151 testes** (106 runtime + 29 validação + 16 conector), determinismo/
+  idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 
 > **Maturidade & riscos:** a postura honesta de risco (alto/médio/baixo: validação estreita, QA humana

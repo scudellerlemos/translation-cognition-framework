@@ -77,6 +77,7 @@ framework/
   schemas/          ← artifacts_schema.md (outputs) + project_schema.md (manifesto)
   media-profiles/   ← games.md (validado), films.md / series.md (stubs)
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
+  SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–08) + quem produz/consome cada artefato
   runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter), contexto
                        (context_pack), estado (state_index), IA (model + back_translate), KB/spoiler
                        (kb_review, kb_phase, spoiler_check), qualidade (quality_review/gate/fix,
