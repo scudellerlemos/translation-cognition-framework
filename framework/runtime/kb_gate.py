@@ -67,11 +67,35 @@ def check(root, scene) -> dict:
         if _pos(scene_id) > _pos(frontier):
             problems.append(f"cena {scene_id} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
-    elif rl.is_file():
-        m = re.search(r"Fronteira de spoiler:\s*(.+)", rl.read_text(encoding="utf-8"))
-        fr = m.group(1).strip() if m else "(nao declarada)"
-        warnings.append(f"kb_frontier nao declarada em project.json; research_log diz: \"{fr[:120]}\". "
-                        f"Sem fronteira machine-readable, o gate NAO bloqueia por posicao de cena.")
+    else:
+        # kb_frontier ausente = gate nao tem fronteira machine-readable para validar posicao de cena.
+        # Promovido para problema (hard block): sem declaracao explicita nao e possivel garantir que
+        # a KB cobre a cena sendo traduzida — declare "kb_frontier": "<scene_id>" em project.json.
+        problems.append("kb_frontier nao declarada em project.json — declare a scene_id maxima coberta "
+                        "pela pesquisa (ex.: \"kb_frontier\": \"12_17\"). Sem isso o gate nao pode "
+                        "validar fronteira e qualquer cena alem da pesquisa seria traduzida as cegas.")
+    # kb_ratified: se existe, checar coluna de data de ratificacao
+    kr = paths.kb_ratified(root)
+    if kr.is_file():
+        import csv as _csv
+        try:
+            with kr.open(encoding="utf-8-sig", newline="") as fh:
+                ratified_rows = list(_csv.DictReader(fh))
+            if ratified_rows:
+                date_cols = [c for c in ratified_rows[0].keys()
+                             if "date" in c.lower() or "data" in c.lower()]
+                if not date_cols:
+                    warnings.append("kb_ratified.csv sem coluna de data — adicione 'date_ratified' "
+                                    "p/ rastrear quando cada entidade foi ratificada.")
+                else:
+                    undated = sum(1 for r in ratified_rows
+                                  if not any(r.get(c, "").strip() for c in date_cols))
+                    if undated:
+                        warnings.append(f"{undated} entidade(s) em kb_ratified.csv sem data de "
+                                        f"ratificacao (coluna '{date_cols[0]}').")
+        except Exception:
+            pass
+
     return {"problems": problems, "warnings": warnings}
 
 

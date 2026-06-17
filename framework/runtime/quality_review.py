@@ -50,6 +50,111 @@ COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
 
+# Expressoes culturais/idiomaticas EN (americana/britanica) na FONTE — sinal p/ o revisor checar se a
+# localizacao pt-BR ficou equivalente (nao so traduzida literalmente). Deterministico, $0, varre o source.
+# Alta precisao: preferir expressoes multi-palavra inequivocas; evitar palavras comuns isoladas.
+_CULTURAL_EN = re.compile(
+    r"\b("
+    # promessas / juramentos
+    r"cross my heart( and hope to die)?"
+    r"|pinky (promise|swear)|scout'?s honor"
+    # vida / morte / sorte
+    r"|bite the bullet|kick the bucket|bite the dust"
+    r"|on (your|my|his|her|their|one'?s) last legs"
+    r"|nine lives|cat'?s got (your|my|his|her|their) tongue"
+    r"|curiosity killed the cat"
+    r"|every dog has (its|his) day"
+    r"|when pigs fly|raining cats and dogs"
+    r"|once in a blue moon|a blessing in disguise"
+    # sucesso / fracasso
+    r"|break a leg|hit the jackpot|paint the town red"
+    r"|hit (the ground running|rock bottom|the nail on the head)"
+    r"|by the skin of (my|your|his|her|their|one'?s) teeth"
+    r"|pass with flying colors"
+    r"|miss the boat|drop the ball|blow (it|your|my|his|her|their) chance"
+    r"|throw in the towel|bite off more than (you|he|she|they|one) can chew"
+    # facilidade / dificuldade
+    r"|piece of cake|not rocket science|it'?s? no (picnic|walk in the park)"
+    r"|easier said than done|uphill battle"
+    r"|a tough nut to crack|no (pain[,]? no gain|strings attached)"
+    # honestidade / segredo
+    r"|let the cat out of the bag|spill the beans"
+    r"|straight from the horse'?s mouth|read between the lines"
+    r"|cards on the table|skeleton in the (closet|cupboard)"
+    r"|elephant in the room|tip of the iceberg"
+    # traição / lealdade
+    r"|throw (someone )?under the bus|stab (someone )?in the back"
+    r"|bite the hand that feeds (you|him|her|them|one)"
+    r"|wolf in sheep'?s clothing|turn a blind eye"
+    r"|bury the hatchet|burn (your|my|our|their|one'?s|the) bridges?"
+    r"|leave (someone )?in the lurch|give (someone )?the cold shoulder"
+    # dinheiro / custo
+    r"|cost(s)? an arm and a leg|cost a pretty penny"
+    r"|bring home the bacon|make ends meet"
+    r"|worth (its|his|her|their|your|my|one'?s) weight in gold"
+    r"|dime a dozen|a penny for your thoughts"
+    # tempo / urgência
+    r"|burn the midnight oil|against the clock"
+    r"|at the drop of a hat|jump the gun"
+    r"|better late than never|time flies"
+    r"|call it a day|back to (the drawing board|square one)"
+    # confusão / erro
+    r"|barking up the wrong tree|put (your|my|his|her|their|one'?s) foot in (your|my|his|her|their|one'?s) mouth"
+    r"|make a mountain out of a molehill|a storm in a (teacup|teapot)"
+    r"|lose (your|my|his|her|their|one'?s) marbles|go off the rails"
+    r"|beat around the bush|miss the point"
+    r"|get out of hand|in over (your|my|his|her|their|one'?s) head"
+    r"|don'?t count your chickens( before they hatch)?"
+    r"|don'?t cry over spilled milk|out of the frying pan (and )?into the fire"
+    # aparência / julgamento
+    r"|don'?t judge a book by its cover|all bark (and )?no bite"
+    r"|actions speak louder than words|the pot calling the kettle black"
+    r"|two peas in a pod|blood is thicker than water"
+    # pressão / persistência
+    r"|bend over backwards|go the extra mile|go above and beyond"
+    r"|hold your horses|keep your nose to the grindstone"
+    r"|hang in there|keep your chin up|keep (your|my|his|her|their|one'?s) head above water"
+    r"|add fuel to (the )?fire|add insult to injury"
+    r"|twist (someone'?s|your|my|his|her|their|one'?s) arm"
+    # posição / indecisão
+    r"|on the fence|sit on the fence|up in the air"
+    r"|on thin ice|in hot water|in (deep|hot) water"
+    r"|the ball is in your court|on cloud nine"
+    # relacionamento / social
+    r"|break the ice|see eye to eye|head over heels"
+    r"|pull (someone'?s|your|my|his|her|their) leg"
+    r"|steal (someone'?s|your|my|his|her|their) thunder"
+    r"|rule of thumb|the best of both worlds"
+    r"|cut corners|kill two birds with one stone"
+    r"|(touch|knock on) wood|come in handy"
+    r"|devil'?s advocate|double.edged sword"
+    r"|think outside (the|of the) box|cut to the chase"
+    r"|let sleeping dogs lie|don'?t push (your|my|his|her|their|one'?s) luck"
+    r"|look on the bright side|every cloud has a silver lining"
+    r"|the last straw|the tip of the iceberg"
+    r"|jump on the bandwagon|ring a bell"
+    r"|get cold feet|in the same boat"
+    r"|pull (yourself|oneself) up by (your|the) bootstraps"
+    r"|the plot thickens|a red herring"
+    r"|cast (the )?pearls? before swine|a wolf at the door"
+    r"|once bitten[,]? twice shy|burn your (fingers|hands)"
+    r"|get a taste of (your|my|his|her|their|one'?s) own medicine"
+    r"|it takes two to tango|you can'?t have your cake and eat it( too)?"
+    r"|actions speak louder than words|get the ball rolling"
+    r"|face the music|out of the blue"
+    # girias americanas
+    r"|holy (cow|moly|smokes|guacamole|mackerel)|what the heck|what in tarnation"
+    r"|y'all|ya'?ll|you bet|good grief|for crying out loud"
+    r"|cut me some slack|no sweat|piece of my mind"
+    r"|give (me|him|her|them|you|us|someone) a (break|hand|piece of)"
+    # marcadores britanicos
+    r"|blimey|crikey|bloody hell|cheerio|innit"
+    r"|gobsmacked|knackered|taking the mickey|bob'?s your uncle"
+    r"|cor blimey|gutted\b|chuffed|(bang|spot) on|chin up"
+    r")\b",
+    re.IGNORECASE
+)
+
 # Largura do BALAO: o byte_budget garante que cabe no ARQUIVO (reinsercao), NAO que cabe na largura
 # VISUAL do balao. Cada segmento entre tokens de quebra (`\n`) e UMA linha exibida.
 # TESTE SEM IN-GAME (deterministico): a RE da fonte do jogo (Font.fnt) mostrou um ATLAS DE GRADE
@@ -91,6 +196,8 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
         fl.append("largura")                              # segmento estoura a largura do balao (in-game)
     if _PTPT.search(target or ""):
         fl.append("pt-PT?")
+    if _CULTURAL_EN.search(source or ""):
+        fl.append("expr-cultural")   # idioma EN na fonte — checar se localizacao PT-BR ficou equivalente
     return ";".join(fl)
 
 
@@ -157,7 +264,9 @@ def _bt_revise_offsets(root, scene) -> set:
         data = json.loads(btf.read_text(encoding="utf-8"))
     except Exception:
         return set()
-    return {e.get("offset") for e in data.get("entries", []) if e.get("verdict") == "revise"}
+    # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir micro-qa)
+    return {e.get("offset") for e in data.get("entries", [])
+            if e.get("verdict") == "revise" and not e.get("stale")}
 
 
 def width_violations(root, chapter=None) -> list:
@@ -181,8 +290,10 @@ _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ing
               "Portugues (atual)", "Caixa (cresceu vs EN?)", "Corrigir? (escreva CORRIGIR)",
               "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
-_XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"), ("largura", "CFE2FF"),
-             ("identico-fonte", "E8E8E8"), ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
+_XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"),
+             ("expr-cultural", "D5F5E3"),
+             ("largura", "CFE2FF"), ("identico-fonte", "E8E8E8"),
+             ("tamanho", "FFF0C7"), ("pt-PT", "EAD9F2")]
 _XLSX_INPUT = "FFF7CC"   # amarelo claro nas colunas de input do humano (Corrigir?/Correcao/Nota)
 
 
@@ -202,39 +313,97 @@ def write_xlsx(rows, out_path):
     marked = sum(1 for r in rows if r.get("revisar"))
     wb = Workbook()
 
+    # ── aba Leia-me ──────────────────────────────────────────────────────────────
     intro = wb.active
     intro.title = "Leia-me"
-    intro.column_dimensions["A"].width = 26
-    intro.column_dimensions["B"].width = 60
-    L = [("COMO REVISAR", ""), ("", ""),
-         ("1.", "Va para a aba 'Revisao'."),
-         ("2.", "A coluna 'Revisar (onde olhar)' e so DICA (do micro-QA da IA, ja pago) — NAO decide nada. "
-                "Filtre por NAO-vazias p/ priorizar onde olhar."),
-         ("3.", "VOCE decide: na coluna 'Corrigir? (escreva CORRIGIR)' escreva CORRIGIR (ou corrigir) "
-                "na linha que quer mudar. So as linhas marcadas CORRIGIR serao processadas."),
-         ("4.", "Na MESMA linha, preencha UMA: 'Correcao' = o texto CERTO (aplicado verbatim, $0); "
-                "OU 'Nota' = instrucao p/ a IA reescrever so aquela linha (ex.: 'encurtar', 'mais formal')."),
-         ("5.", "Linha boa = NAO escreva CORRIGIR (deixe em branco). Salve e devolva no inbox (devolvido/)."),
-         ("", ""), ("LEGENDA DAS CORES (dica 'Revisar')", ""),
-         ("micro-qa:revise", "a back-translation da IA (ja paga) achou divergencia de sentido — olhe"),
-         ("critical / high", "linha de alto risco (voz/sentido/spoiler) — leia com atencao"),
-         ("largura", "o texto pode SAIR do balao no jogo — encurte se preciso"),
-         ("identico-fonte", "igual ao ingles — provavel nao-traduzido (confira; SFX/rotulo pode ficar)"),
-         ("tamanho", "traducao muito mais longa/curta que o original"),
-         ("pt-PT", "marcador de portugues de Portugal — adaptar p/ pt-BR"),
-         ("", ""), ("RESUMO", ""),
-         ("Total de linhas", len(rows)), ("Com dica p/ olhar", marked)]
-    for tag, c in cnt.most_common():
-        L.append((f"  {tag}", c))
-    for a, b in L:
-        intro.append([a, b])
-    intro["A1"].font = Font(name="Arial", bold=True, size=14)
-    for row in intro.iter_rows():
-        for cell in row:
-            if cell.column == 1 and cell.value in ("COMO REVISAR", "LEGENDA DAS CORES (coluna Revisar)", "RESUMO"):
-                cell.font = Font(name="Arial", bold=True, size=12)
-            elif not cell.font or cell.font.name != "Arial":
-                cell.font = Font(name="Arial", size=10)
+    intro.column_dimensions["A"].width = 24
+    intro.column_dimensions["B"].width = 68
+    intro.sheet_view.showGridLines = False
+
+    def _c(row, col, value="", bold=False, size=10, color="1A1A1A",
+           bg=None, wrap=False, halign="left", valign="center"):
+        cell = intro.cell(row=row, column=col, value=value)
+        cell.font = Font(name="Arial", bold=bold, size=size, color=color)
+        cell.alignment = Alignment(horizontal=halign, vertical=valign, wrap_text=wrap)
+        if bg:
+            cell.fill = PatternFill("solid", fgColor=bg)
+        return cell
+
+    def _sec(row, label, bg="1F3864"):
+        _c(row, 1, "  " + label, bold=True, size=11, color="FFFFFF", bg=bg, valign="center")
+        _c(row, 2, bg=bg)
+        intro.row_dimensions[row].height = 24
+
+    def _step(row, num, text):
+        _c(row, 1, str(num) + ".", bold=True, size=11, color="1F3864",
+           bg="D6E4F7", halign="center", valign="top")
+        _c(row, 2, text, size=10, wrap=True, valign="top")
+        intro.row_dimensions[row].height = max(18, min(60, 15 + len(text) // 5))
+
+    def _leg(row, bg_hex, label, desc):
+        _c(row, 1, label, bold=True, size=9, color="333333",
+           bg=bg_hex, halign="center", valign="center")
+        _c(row, 2, desc, size=9, wrap=True, valign="top")
+        intro.row_dimensions[row].height = 24
+
+    def _kv(row, key, val, key_bold=True):
+        _c(row, 1, key, bold=key_bold, size=10, color="333333")
+        _c(row, 2, val, size=10, color="333333")
+
+    r = 1
+    # Titulo
+    _c(r, 1, "GUIA DO REVISOR", bold=True, size=16, color="FFFFFF",
+       bg="1F3864", halign="center", valign="center")
+    _c(r, 2, bg="1F3864")
+    intro.row_dimensions[r].height = 36
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: como usar
+    _sec(r, "COMO USAR"); r += 1
+    _step(r, 1, "Va para a aba 'Revisao'. Voce vera todas as linhas do jogo, uma por linha."); r += 1
+    _step(r, 2, "A coluna 'Revisar (onde olhar)' e so DICA — indica onde o sistema ou o micro-QA "
+                "da IA apontou algo. Filtre por nao-vazias para priorizar. NAO decide nada."); r += 1
+    _step(r, 3, "VOCE decide: na coluna 'Corrigir? (escreva CORRIGIR)' escreva CORRIGIR na linha "
+                "que quer mudar. So as linhas marcadas serao processadas."); r += 1
+    _step(r, 4, "Na MESMA linha marcada, preencha UMA das duas colunas:\n"
+                "  'Correcao' = o texto EXATO que deve ir para o jogo (verbatim, $0, sem IA);\n"
+                "  'Nota' = instrucao para a IA reescrever so aquela linha "
+                "(ex.: 'encurtar', 'mais formal', 'tom brincalhao')."); r += 1
+    _step(r, 5, "Linha boa = deixe em branco (nao escreva CORRIGIR). "
+                "Salve e devolva o arquivo na pasta devolvido/."); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: legenda
+    _sec(r, "LEGENDA DAS CORES  (coluna Revisar)"); r += 1
+    _leg(r, "F4CCCC", "micro-qa:revise",
+         "A back-translation da IA achou divergencia de sentido — releia com atencao"); r += 1
+    _leg(r, "FFC7CE", "critical",
+         "Linha de risco CRITICO (voz, sentido central, spoiler) — leitura obrigatoria"); r += 1
+    _leg(r, "FFE2C7", "high",
+         "Linha de risco ALTO — leia com cuidado"); r += 1
+    _leg(r, "D5F5E3", "expr-cultural",
+         "Expressao idiomatica EN detectada na fonte (ex.: 'cross my heart', 'break a leg', 'spill the beans') — "
+         "verifique se a localizacao PT-BR ficou equivalente e natural, nao so traduzida ao pe da letra"); r += 1
+    _leg(r, "CFE2FF", "largura",
+         "Texto pode SAIR do balao no jogo — encurte se necessario"); r += 1
+    _leg(r, "E8E8E8", "identico-fonte",
+         "Igual ao ingles — provavel nao-traduzido (SFX/rotulo pode ficar igual; confirme)"); r += 1
+    _leg(r, "FFF0C7", "tamanho",
+         "Traducao muito mais longa ou curta que o original"); r += 1
+    _leg(r, "EAD9F2", "pt-PT?",
+         "Marcador de portugues de Portugal detectado (tens/estás/podes...) — adaptar para pt-BR"); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: resumo
+    _sec(r, "RESUMO DO ARQUIVO"); r += 1
+    _kv(r, "Total de linhas", len(rows)); r += 1
+    _kv(r, "Com dica para avaliar", f"{marked}  ({round(100*marked/len(rows)) if rows else 0}%)"); r += 1
+    if cnt:
+        r += 1
+        _c(r, 1, "Distribuicao das dicas:", bold=True, size=9, color="555555"); r += 1
+        for tag, count in cnt.most_common():
+            _c(r, 1, f"    {tag}", size=9, color="555555")
+            _c(r, 2, count, size=9, color="555555"); r += 1
 
     ws = wb.create_sheet("Revisao")
     ws.append(_XLSX_HEAD)
@@ -257,6 +426,10 @@ def write_xlsx(rows, out_path):
         fill = next((PatternFill("solid", fgColor=clr) for tag, clr in _XLSX_SEV if tag in rev), None)
         for col in range(1, len(COLS) + 1):
             cell = ws.cell(row=i, column=col)
+            # openpyxl promove strings com '=' para data_type='f' (formula); quotePrefix=True
+            # instrui o Excel a tratar o conteudo como texto simples (invisivel ao usuario).
+            if isinstance(cell.value, str) and cell.value and cell.value[0] in "=+-@":
+                cell.quotePrefix = True
             cell.font = Font(name="Arial", size=10)
             cell.alignment = wrap if col in (6, 7, 10, 11) else top
             if col in (9, 10, 11):                          # Corrigir?/Correcao/Nota = input do humano (amarelo)
@@ -277,12 +450,19 @@ def write_xlsx(rows, out_path):
     wb.save(out_path)
 
 
+_MAX_XLSX_MB = 20
+
+
 def _read_xlsx_rows(path):
     """Le a aba 'Revisao' do xlsx devolvido -> lista de dicts {COLS: valor} (mapeado por POSICAO)."""
     try:
         from openpyxl import load_workbook
     except ImportError as e:
         raise RuntimeError("ler XLSX devolvido requer 'openpyxl' (pip install openpyxl).") from e
+    size_mb = Path(path).stat().st_size / (1024 * 1024)
+    if size_mb > _MAX_XLSX_MB:
+        raise ValueError(f"XLSX muito grande ({size_mb:.1f} MB > {_MAX_XLSX_MB} MB); "
+                         f"verifique se o arquivo e valido.")
     wb = load_workbook(path, read_only=True, data_only=True)
     ws = wb["Revisao"] if "Revisao" in wb.sheetnames else wb[wb.sheetnames[-1]]
     out, first = [], True
@@ -298,20 +478,26 @@ def _read_xlsx_rows(path):
 def read_returned(path) -> dict:
     """Le o CSV ou XLSX devolvido -> {scene: {'verbatim': [(offset, texto)], 'nota': [(offset, instrucao)]}}.
     So entram as linhas que o HUMANO marcou explicitamente com CORRIGIR (coluna 'marcar', case-insensitive)
-    E que tenham correcao OU nota. Linha sem CORRIGIR = aprovada, ignorada (le-se so o que o humano marcou)."""
+    E que tenham correcao OU nota. Linha sem CORRIGIR = aprovada, ignorada (le-se so o que o humano marcou).
+    O campo '_total_marked' (chave interna) conta linhas marcadas CORRIGIR antes de qualquer guard."""
     p = Path(path)
     if p.suffix.lower() == ".xlsx":
         records = _read_xlsx_rows(p)
     else:
         with p.open(encoding="utf-8-sig", newline="") as fh:
             records = list(csv.DictReader(fh))
-    by_scene = {}
+    by_scene: dict = {}
+    total_marked = 0
     for r in records:
         scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
         marcar = (r.get("marcar") or "").strip().lower()
         cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
         if not scene or not off or marcar != "corrigir":
             continue                                       # so processa o que foi MARCADO 'corrigir'
+        total_marked += 1
+        # Guard path traversal: scene/off vêm de XLSX externo; sem separadores ou '..'
+        if any(c in scene for c in ("/", "\\", "..")) or any(c in off for c in ("/", "\\")):
+            continue
         if not cor and not nota:
             continue                                       # marcada mas sem texto/instrucao -> nada a aplicar
         slot = by_scene.setdefault(scene, {"verbatim": [], "nota": []})
@@ -319,6 +505,7 @@ def read_returned(path) -> dict:
             slot["verbatim"].append((off, cor))           # correcao verbatim vence a nota
         else:
             slot["nota"].append((off, nota))
+    by_scene["_total_marked"] = total_marked              # metadado interno, removido pelo apply antes de iterar
     return by_scene
 
 
@@ -433,9 +620,12 @@ def tester_to_review(root, relato_path):
 def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
     """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). `max_usd` so
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
-    scenes_touched[], stopped_budget}."""
+    scenes_touched[], stopped_budget, total_marked, effectiveness_rate}.
+    Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo."""
+    import time as _time
     root = Path(root)
     returned = read_returned(csv_path)
+    total_marked = returned.pop("_total_marked", 0)       # metadado interno injetado pelo read_returned
     m = model_name or model.MODEL_TRANSLATE
     verbatim_n, ai_n, cost = 0, 0, 0.0
     touched, stopped = [], False
@@ -455,8 +645,20 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
             if res.get("usage"):
                 cost += model.cost_of(m, res["usage"])
             ai_n += len(slot["nota"])
+    applied = verbatim_n + ai_n
+    eff = round(applied / total_marked, 3) if total_marked else None
+    rec = {"t": round(_time.time(), 3), "source": str(Path(csv_path).name),
+           "total_marked": total_marked, "applied": applied,
+           "verbatim": verbatim_n, "ai": ai_n,
+           "effectiveness_rate": eff, "cost_usd": round(cost, 4)}
+    try:
+        with paths.qa_effectiveness(root).open("a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
     return {"verbatim": verbatim_n, "ai": ai_n, "scenes": len(touched),
-            "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped}
+            "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped,
+            "total_marked": total_marked, "effectiveness_rate": eff}
 
 
 def main():

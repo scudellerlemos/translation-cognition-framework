@@ -11,7 +11,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 
 | Arquivo | Função |
 |---|---|
-| `run_scene.py` | Orquestrador: encadeia pack → translate → build_plan → back-translate → verify → checkpoint. Resumível. |
+| `run_scene.py` | Orquestrador: encadeia `_pack_and_translate` → `_fitting_loop` → `_back_phase` → verify → checkpoint. Grava `connector_hash` (SHA1[:12] dos scripts) junto com `verified=True`. Resumível. |
 | `run_chapter.py` | Driver de capítulo: loop de cenas via `run_scene`; modo `--batch` (−50%); resumível; `--max-usd`. |
 | `context_pack.py` | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. |
 | `artifact_io.py` | Camada única de leitura de artefatos (scenes, plan_lines, translations_map, back_entries). |
@@ -69,7 +69,7 @@ flowchart LR
 | Arquivo | Função |
 |---|---|
 | `quality_gate.py` | Cruza veredito de back-translation + cobertura; `--export` da worklist `revise`. |
-| `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim ($0) ou nota cirúrgica; `--max-usd`. |
+| `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim ($0) ou nota cirúrgica; `--max-usd`. Persiste `qa_effectiveness.jsonl` (`total_marked` vs `applied`) a cada ciclo. |
 | `quality_fix.py` | Re-traduz dirigido só os offsets `revise` da worklist; `--max-usd`. |
 | `glossary_lint.py` | Consistência de glossário cross-capítulo: termo do EN sem a forma canônica no pt-BR → candidatos p/ revisão. |
 | `cost_report.py` | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
@@ -79,7 +79,10 @@ flowchart LR
 
 | Arquivo | Função |
 |---|---|
-| `test_runtime.py` | 80 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, round-trip de integração. |
+| `test_runtime.py` | 106 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, contrato do conector (hash determinístico, sandbox, protocolo VERIFY_STATUS), round-trip de integração. |
+
+> Mapa skill↔runtime (qual módulo executa cada etapa do SDD, quem produz/consome cada artefato):
+> [`../SDD_RUNTIME.md`](../SDD_RUNTIME.md).
 
 > Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
 > [`../docs/GOVERNANCE.md`](../docs/GOVERNANCE.md).

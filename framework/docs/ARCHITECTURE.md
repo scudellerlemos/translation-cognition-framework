@@ -107,12 +107,21 @@ flowchart LR
 | Montagem de contexto | Determinístico | `runtime/context_pack.py` |
 | Memória / consistência (TM, vozes, decisões) | Determinístico | `runtime/state_index.py` |
 | Checkpoints | Determinístico | `run_state.json` |
-| Validação (schemas/tokens/naturalidade/custo) | Determinístico | `validation/` |
+| Validação (gates de qualidade/custo/kb) | Determinístico | `runtime/` (`quality_gate.py`, `kb_gate.py`, `kb_review.py`) |
+| Constantes, TypedDicts de contrato | Determinístico | `runtime/config.py` |
+| Preços, ledger de gasto | Determinístico | `runtime/cost.py` |
+| Cliente HTTP / retry / batch | Determinístico | `runtime/llm_client.py` |
 | **Tradução** | **IA** | `runtime/model.py` |
-| **Back-translation (alto risco)** | **IA** | `runtime/model.py` |
+| **Back-translation (alto risco)** | **IA** | `runtime/back_translate.py` |
 
-A única fronteira não-determinística é `model.py` — por isso ela é fina e isolada. Ver
-`MODEL_INTERFACE.md`.
+A única fronteira não-determinística é `model.py` + `back_translate.py` — por isso são finas e
+isoladas. Ver `MODEL_INTERFACE.md`.
+
+> **Estrutura pós-refatoração (jun/2026):** `model.py` era um god-module. Extraído para módulos
+> folha sem deps circulares: `config.py` (constantes + TypedDicts) ← `cost.py` (ledger) ←
+> `llm_client.py` (HTTP) ← `back_translate.py` (back-translation) ← `model.py` (translate +
+> re-export). O `model` importa e re-exporta os nomes públicos de cada submódulo para
+> compatibilidade com call-sites existentes.
 
 ## Por que isto escala e roda em Sonnet
 

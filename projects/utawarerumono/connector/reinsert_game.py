@@ -47,10 +47,16 @@ def load_game():
 
 
 def _qa_review_present() -> bool:
-    """GATE DE QA: o relatorio de revisao humana do JOGO INTEIRO existe no outbox? (checagem de path,
-    sem importar o runtime — mantem o conector isolado da camada de cognicao)."""
+    """GATE DE QA: o relatorio de revisao humana do JOGO INTEIRO existe e tem conteudo no outbox?
+    Checa path E tamanho > 0 — um arquivo vazio (touch/0 bytes) nao passa.
+    Path esperado = artifacts/qa_revisao/para_revisar/ (alinhado com paths.qa_outbox do runtime;
+    se qa_outbox mudar, atualizar aqui tambem)."""
     outbox = R.ART / "qa_revisao" / "para_revisar"
-    return any((outbox / f"review_all.{ext}").is_file() for ext in ("xlsx", "csv"))
+    for ext in ("xlsx", "csv"):
+        f = outbox / f"review_all.{ext}"
+        if f.is_file() and f.stat().st_size > 256:   # >256 bytes: descarta arquivos vazios/corrompidos
+            return True
+    return False
 
 
 def main():
