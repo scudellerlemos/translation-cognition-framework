@@ -1930,5 +1930,51 @@ def test_warn_ledger_size_silent_below_limit(tmp_path):
     assert not any(issubclass(w.category, RuntimeWarning) for w in caught)
 
 
+# ------------------- Contrato do conector --------------------------------
+
+
+def test_connector_hash_is_deterministic(tmp_path):
+    """Mesmo conteúdo de scripts → mesmo hash; conteúdo diferente → hash diferente."""
+    (tmp_path / "connector").mkdir()
+    bp = tmp_path / "connector" / "build_plan_chapter.py"
+    vf = tmp_path / "connector" / "verify_chapter.py"
+    bp.write_bytes(b"# build_plan v1\n")
+    vf.write_bytes(b"# verify v1\n")
+    cfg: dict = {}
+    h1 = run_scene._connector_hash(tmp_path, cfg)
+    h2 = run_scene._connector_hash(tmp_path, cfg)
+    assert h1 == h2, "mesmo conteúdo deve produzir o mesmo hash"
+    assert len(h1) == 12, "hash deve ter 12 caracteres (SHA1[:12])"
+
+    bp.write_bytes(b"# build_plan v2\n")  # muda o conteúdo
+    h3 = run_scene._connector_hash(tmp_path, cfg)
+    assert h3 != h1, "conteúdo diferente deve produzir hash diferente"
+
+
+def test_connector_hash_absent_scripts(tmp_path):
+    """Conector ausente (em desenvolvimento) não explode — retorna hash de conteúdo vazio."""
+    (tmp_path / "connector").mkdir()
+    cfg: dict = {}
+    # nenhum script criado → hash de strings vazias, mas não deve levantar exceção
+    h = run_scene._connector_hash(tmp_path, cfg)
+    assert isinstance(h, str) and len(h) == 12
+
+
+def test_connector_sandbox_blocks_external_path(tmp_path):
+    """_connector_script() deve rejeitar override que aponta para fora do root do projeto."""
+    evil_override = "../../etc/passwd"
+    cfg = {"connector": {"verify_script": evil_override}}
+    with pytest.raises(ValueError, match="fora do projeto"):
+        run_scene._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
+
+
+def test_connector_sandbox_accepts_internal_override(tmp_path):
+    """Override dentro do root deve ser aceito sem exceção."""
+    (tmp_path / "connector").mkdir()
+    cfg = {"connector": {"verify_script": "connector/verify_chapter.py"}}
+    p = run_scene._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
+    assert p == tmp_path / "connector" / "verify_chapter.py"
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))

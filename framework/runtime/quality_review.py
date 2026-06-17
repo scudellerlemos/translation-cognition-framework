@@ -478,20 +478,23 @@ def _read_xlsx_rows(path):
 def read_returned(path) -> dict:
     """Le o CSV ou XLSX devolvido -> {scene: {'verbatim': [(offset, texto)], 'nota': [(offset, instrucao)]}}.
     So entram as linhas que o HUMANO marcou explicitamente com CORRIGIR (coluna 'marcar', case-insensitive)
-    E que tenham correcao OU nota. Linha sem CORRIGIR = aprovada, ignorada (le-se so o que o humano marcou)."""
+    E que tenham correcao OU nota. Linha sem CORRIGIR = aprovada, ignorada (le-se so o que o humano marcou).
+    O campo '_total_marked' (chave interna) conta linhas marcadas CORRIGIR antes de qualquer guard."""
     p = Path(path)
     if p.suffix.lower() == ".xlsx":
         records = _read_xlsx_rows(p)
     else:
         with p.open(encoding="utf-8-sig", newline="") as fh:
             records = list(csv.DictReader(fh))
-    by_scene = {}
+    by_scene: dict = {}
+    total_marked = 0
     for r in records:
         scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
         marcar = (r.get("marcar") or "").strip().lower()
         cor, nota = (r.get("correcao") or "").strip(), (r.get("nota") or "").strip()
         if not scene or not off or marcar != "corrigir":
             continue                                       # so processa o que foi MARCADO 'corrigir'
+        total_marked += 1
         # Guard path traversal: scene/off vêm de XLSX externo; sem separadores ou '..'
         if any(c in scene for c in ("/", "\\", "..")) or any(c in off for c in ("/", "\\")):
             continue
@@ -502,6 +505,7 @@ def read_returned(path) -> dict:
             slot["verbatim"].append((off, cor))           # correcao verbatim vence a nota
         else:
             slot["nota"].append((off, nota))
+    by_scene["_total_marked"] = total_marked              # metadado interno, removido pelo apply antes de iterar
     return by_scene
 
 
@@ -616,9 +620,12 @@ def tester_to_review(root, relato_path):
 def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
     """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). `max_usd` so
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
-    scenes_touched[], stopped_budget}."""
+    scenes_touched[], stopped_budget, total_marked, effectiveness_rate}.
+    Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo."""
+    import time as _time
     root = Path(root)
     returned = read_returned(csv_path)
+    total_marked = returned.pop("_total_marked", 0)       # metadado interno injetado pelo read_returned
     m = model_name or model.MODEL_TRANSLATE
     verbatim_n, ai_n, cost = 0, 0, 0.0
     touched, stopped = [], False
@@ -638,8 +645,20 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
             if res.get("usage"):
                 cost += model.cost_of(m, res["usage"])
             ai_n += len(slot["nota"])
+    applied = verbatim_n + ai_n
+    eff = round(applied / total_marked, 3) if total_marked else None
+    rec = {"t": round(_time.time(), 3), "source": str(Path(csv_path).name),
+           "total_marked": total_marked, "applied": applied,
+           "verbatim": verbatim_n, "ai": ai_n,
+           "effectiveness_rate": eff, "cost_usd": round(cost, 4)}
+    try:
+        with paths.qa_effectiveness(root).open("a", encoding="utf-8") as _fh:
+            _fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
     return {"verbatim": verbatim_n, "ai": ai_n, "scenes": len(touched),
-            "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped}
+            "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped,
+            "total_marked": total_marked, "effectiveness_rate": eff}
 
 
 def main():

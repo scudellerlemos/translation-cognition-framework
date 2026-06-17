@@ -98,3 +98,7 @@ def back_translation(root, scene, scene_id) -> Path:
 
 def back_prompt(root, scene, scene_id) -> Path:
     return scene_dir(root, scene) / f"back_prompt_{scene_id}.md"
+
+
+def qa_effectiveness(root) -> Path:
+    return artifacts(root) / "qa_effectiveness.jsonl"
