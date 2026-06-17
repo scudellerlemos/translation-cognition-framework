@@ -3,8 +3,14 @@
 Extraido do model.py (god-module). Fonte unica das defaults de modelo, tuning de custo e enums de
 status. `model`/`batch`/`back_translate` importam daqui (re-exportado por `model` p/ compat). Sem deps
 de runtime -> nunca causa import circular.
+
+Tambem define os TypedDicts dos contratos de retorno das duas chamadas de IA (translate / back_translate).
+Tipar aqui (e nao em model.py) evita import circular: config <- back_translate <- model.
 """
 from __future__ import annotations
+from dataclasses import dataclass
+from typing import Optional, Union
+from typing import TypedDict
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
 MODEL_TRANSLATE = "claude-sonnet-4-6"
@@ -49,3 +55,121 @@ BUDGET_ESCALATION = (1.15, 1.0)   # tolerancias mais apertadas tentadas, em orde
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
 DONE = "done"           # chamada de IA concluida (backend api)
+
+# Governanca do glossario: entradas com updated_date mais antiga que este limite geram aviso de revisao.
+GLOSSARY_STALENESS_DAYS = 180
+
+
+# ---------------------------------------------------------------------------
+# Contratos de retorno das duas chamadas de IA — TypedDicts (documentacao
+# e suporte a mypy/Pylance). Cada funcao retorna um dos shapes abaixo;
+# o campo `status` e o discriminante (AWAITING | READY | DONE).
+#
+# Nota: o campo `usage` e um dict {'in': int, 'out': int, 'cache_read': int,
+# 'cache_write': int} (chave 'in' e palavra reservada Python — nao cabe em
+# class-based TypedDict; mantem-se como dict anotado nos docstrings).
+# ---------------------------------------------------------------------------
+
+class _TranslateBase(TypedDict):
+    """Campos presentes em TODOS os retornos de translate()."""
+    status: str    # AWAITING | READY | DONE
+    scene_id: str
+    n_lines: int
+
+
+class TranslateReady(_TranslateBase):
+    """translate() in-session — traducao ja existe em disco (status=READY)."""
+    path: str
+
+
+class TranslateAwaiting(_TranslateBase):
+    """translate() in-session — aguardando producao manual (status=AWAITING)."""
+    prompt: str
+    expected_output: str
+
+
+class TranslateDone(_TranslateBase):
+    """translate() backend api — chamada concluida (status=DONE)."""
+    path: str
+    model: str
+    usage: dict    # {'in': int, 'out': int, 'cache_read': int, 'cache_write': int}
+    reused: int
+    novel: int
+
+
+TranslateResult = Union[TranslateReady, TranslateAwaiting, TranslateDone]
+
+
+class _BackTranslateBase(TypedDict):
+    """Campos presentes em TODOS os retornos de back_translate()."""
+    status: str    # AWAITING | READY | DONE
+    reviewed: int
+
+
+class BackTranslateReady(_BackTranslateBase):
+    """back_translate() in-session — resultado ja existe em disco (status=READY)."""
+    path: str
+
+
+class BackTranslateAwaiting(_BackTranslateBase):
+    """back_translate() in-session — aguardando producao manual (status=AWAITING)."""
+    prompt: str
+    expected_output: str
+
+
+class BackTranslateDone(_BackTranslateBase):
+    """back_translate() concluida: reviewed=0 (sem linhas) ou backend api (status=DONE).
+    `path` e None quando reviewed=0 (nenhuma linha de alto risco); str nos demais casos."""
+    path: Optional[str]
+
+
+class BackTranslateDoneApi(BackTranslateDone):
+    """back_translate() backend api com chamada de rede realizada."""
+    model: str
+    usage: dict    # {'in': int, 'out': int, 'cache_read': int, 'cache_write': int}
+
+
+BackTranslateResult = Union[BackTranslateReady, BackTranslateAwaiting, BackTranslateDone]
+
+
+class _RunSceneBase(TypedDict):
+    """Campos presentes em TODOS os retornos de run_scene()."""
+    status: str
+    scene: str
+
+
+class RunSceneResult(_RunSceneBase, total=False):
+    """Retorno de run_scene(). `status` e `scene` sempre presentes; demais por caminho."""
+    high: int
+    verified: Optional[bool]
+    problems: list
+    error: str
+
+
+@dataclass(frozen=True)
+class ConnectorSlot:
+    """Entrada no registry de conectores do harness."""
+    key: str        # chave em project.json connector.{}
+    default: str    # script default (relativo a <projeto>/connector/)
+
+
+CONNECTOR_REGISTRY: tuple = (
+    ConnectorSlot("build_plan_script", "build_plan_chapter.py"),
+    ConnectorSlot("verify_script",     "verify_chapter.py"),
+)
+
+
+@dataclass
+class RunSceneOptions:
+    """Opcoes de orquestracao para run_scene() — alternativa tipada aos 6 keyword-args individuais.
+
+    Uso:  run_scene(root, scene, opts=RunSceneOptions(backend="in-session", defer_back=True))
+    Equivale a: run_scene(root, scene, backend="in-session", defer_back=True)
+    Se `opts` for passado, sobrescreve todos os kwargs individuais.
+    """
+    backend: str = "api"
+    require_back: bool = False
+    do_verify: bool = True
+    skip_kb_gate: bool = False
+    pretranslated: bool = False
+    defer_back: bool = False

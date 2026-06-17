@@ -44,7 +44,9 @@ from llm_client import (  # noqa: E402,F401
 from config import (  # noqa: E402,F401
     MODEL_TRANSLATE, MODEL_BACK, MODEL_TRANSLATE_CHEAP, BACK_SAMPLE_RATE, MAX_OUTPUT_TOKENS,
     _BATCH_CHUNK, _MAX_TRIES, EFFORT_TRANSLATE, THINK_TRANSLATE, BUDGET_TOLERANCE, BUDGET_ESCALATION,
-    AWAITING, READY, DONE)
+    AWAITING, READY, DONE,
+    TranslateResult, TranslateReady, TranslateAwaiting, TranslateDone,
+    BackTranslateResult, BackTranslateReady, BackTranslateAwaiting, BackTranslateDone, BackTranslateDoneApi)
 # Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
 from back_translate import (  # noqa: E402,F401
     back_translate, _write_back_prompt, _BACK_SCHEMA, _back_params, _api_back_translate,
@@ -60,7 +62,9 @@ def _no_effort_model(model: str) -> bool:
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
+def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, max_usd=None) -> TranslateResult:
+    """Traduz uma cena. `max_usd` e informativo: emite aviso se o custo estimado supera o teto,
+    mas NAO aborta (use run_chapter --max-usd para teto duro por capitulo)."""
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     scene_id = pack["scene_id"]
@@ -73,7 +77,16 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None):
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
+        if max_usd is None:
+            import warnings
+            warnings.warn(
+                f"translate({scene}): sem teto de custo (max_usd=None). "
+                "Use run_chapter --max-usd para teto duro por capitulo.", stacklevel=2)
         data, usage, meta = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
+        c = cost_of(m, usage)
+        if max_usd is not None and c > max_usd:
+            import warnings
+            warnings.warn(f"translate({scene}): custo ${c:.4f} excedeu max_usd=${max_usd:.4f}.", stacklevel=2)
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
@@ -189,9 +202,23 @@ def _is_blowup(source, t) -> bool:
 # RÓTULO DE ENGINE: identificadores internos de rig/asset que NAO sao dialogo — body, face,
 # hair, mask, Leg_2_B_L, ch120_01, env_bone, lightA02. O LLM os TRADUZIA, estourava o byte_budget e
 # disparava o retighten (re-traducao = 58% do custo medido no ledger). Solucao: PASSTHROUGH
-# deterministico (t = fonte), fora do lote do LLM. Detecta BLOCO de rotulos = corrida de linhas de
-# "token unico" (sem espaco) com >=1 identificador ESTRITO (snake_case/CamelCase/alfanumerico); a
-# palavra solta de dialogo (sem vizinho identificador) NAO e afetada. Determinista, $0, testavel.
+# deterministico (t = fonte), fora do lote do LLM.
+#
+# ALLOWLIST EXPLICITA: labels conhecidos que NUNCA sao dialogo (qualquer um desses => passthrough imediato).
+# Adicionar aqui quando aparecer um novo label traduzido indevidamente no ledger.
+_ENGINE_LABELS = frozenset({
+    "body", "face", "hair", "mask", "env_bone", "bone",
+    "light", "lightA", "lightB", "lightC",
+})
+_ENGINE_LABEL_RX = re.compile(
+    r"^(body|face|hair|mask|env_bone|bone|light[A-Za-z0-9]*"
+    r"|ch\d+_\d+|Leg_\d+_[A-Z]_[LR]|Spine\d*|Root|Hips"
+    r"|[A-Z][a-z]+(?:[A-Z][a-z]+)+\d*"   # CamelCase strict (LeftFoot, RightArm...)
+    r"|[a-z]+[A-Z]\w+\d*"                # camelCase (lightA02)
+    r")\Z"
+)
+# Deteccao HEURISTICA de bloco de rotulos (corrida de tokens-unicos com >=1 STRICT_ID):
+# detecta casos nao cobertos pela allowlist — nao substitui, complementa.
 _TOKISH = re.compile(r"[A-Za-z][\w]*\Z")
 _STRICT_ID = re.compile(r"[A-Za-z]\w*_\w+\Z|[A-Za-z]+\d\w*\Z|[A-Z][a-z]+(?:[A-Z][a-z]+)+\Z")
 
@@ -202,23 +229,35 @@ def _is_tokish(s: str) -> bool:
 
 
 def _label_passthrough(pack) -> dict:
-    """Mapa {offset: entry} das linhas que sao rotulo de engine (t = fonte, sem ir ao LLM)."""
+    """Mapa {offset: entry} das linhas que sao rotulo de engine (t = fonte, sem ir ao LLM).
+    Prioridade: allowlist explicita (_ENGINE_LABELS / _ENGINE_LABEL_RX) -> heuristica de bloco."""
     lines = pack.get("lines", [])
     out, i, n = {}, 0, len(lines)
+
+    def _passthrough(r):
+        return {"speaker": "", "tone_register": "", "intent": "rotulo_engine",
+                "risk_level": "low", "risk_notes": "", "t": r.get("source", "") or ""}
+
     while i < n:
-        if not _is_tokish(lines[i].get("source", "")):
+        s = (lines[i].get("source", "") or "").strip()
+        # Allowlist explicita: passthrough imediato, sem precisar de bloco vizinho
+        if s.lower() in _ENGINE_LABELS or _ENGINE_LABEL_RX.match(s):
+            out[lines[i]["offset"]] = _passthrough(lines[i])
+            i += 1
+            continue
+        # Heuristica de bloco: corrida de tokens-unicos com >=1 STRICT_ID
+        if not _is_tokish(s):
             i += 1
             continue
         j = i
-        while j < n and _is_tokish(lines[j].get("source", "")):
+        while j < n and _is_tokish((lines[j].get("source", "") or "").strip()):
             j += 1
-        run = lines[i:j]                                   # corrida de tokens unicos consecutivos
+        run = lines[i:j]
         if any(_STRICT_ID.match((r.get("source", "") or "").strip()) for r in run):
-            for r in run:                                  # bloco de rig: passthrough so identificador
-                s = (r.get("source", "") or "").strip()    # estrito OU minusculo (body/face/mask/env_bone).
-                if _STRICT_ID.match(s) or s.islower():      # palavra capitalizada (dialogo 'Sim'/'OK') FICA.
-                    out[r["offset"]] = {"speaker": "", "tone_register": "", "intent": "rotulo_engine",
-                                        "risk_level": "low", "risk_notes": "", "t": r.get("source", "") or ""}
+            for r in run:
+                rs = (r.get("source", "") or "").strip()
+                if _STRICT_ID.match(rs) or rs.islower():   # capitalizada (Sim/OK) fica no LLM
+                    out[r["offset"]] = _passthrough(r)
         i = j
     return out
 

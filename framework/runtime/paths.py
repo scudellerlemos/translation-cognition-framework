@@ -45,6 +45,19 @@ def decision_log(root) -> Path:     return artifacts(root) / "decision_log.md"
 def kb_worklist(root, chap) -> Path:    return artifacts(root) / f"kb_phase_worklist_{chap}.md"
 def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.csv"
 
+# ---- artefatos descontinuados: cenas falhas/limpas movidas aqui (nao apagadas) ----
+def discontinued_dir(root) -> Path:
+    return artifacts(root) / "discontinued"
+
+
+def discontinued_scene_dir(root, scene) -> Path:
+    return discontinued_dir(root) / scene
+
+
+def warnings_log(root) -> Path:
+    return artifacts(root) / "warnings.jsonl"
+
+
 # ---- revisao humana de qualidade (QA), em duas pastas (artifacts/qa_revisao/) ----
 # OUTBOX: o sistema DISPONIBILIZA aqui o XLSX p/ o humano ler (gerado SEMPRE, obrigatorio).
 # INBOX: o humano DEVOLVE aqui o XLSX preenchido; o apply le SO as linhas marcadas (Correcao/Nota).
@@ -85,3 +98,7 @@ def back_translation(root, scene, scene_id) -> Path:
 
 def back_prompt(root, scene, scene_id) -> Path:
     return scene_dir(root, scene) / f"back_prompt_{scene_id}.md"
+
+
+def qa_effectiveness(root) -> Path:
+    return artifacts(root) / "qa_effectiveness.jsonl"

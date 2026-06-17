@@ -1,6 +1,10 @@
 # CARTA DE GOVERNANÇA DE TRADUÇÃO
 ## Contrato de qualidade que a IA SEGUE ao traduzir (transversal aos Passos 05–08)
 
+> **Versão:** 2026-06-16 — atualizar esta linha ao modificar a Carta.
+> O `api_ledger.jsonl` registra tokens/modelo por chamada, mas não a versão da Carta.
+> Para rastrear qual governança gerou uma tradução, use esta data + `git log --follow`.
+
 > **Natureza:** não é um passo do pipeline — é o **contrato** que rege *como* traduzir em todos os
 > passos cognitivos (05 planejamento, 06 tradução, 06b/06c QA, 07 QA final). Genérico: nenhum dado de
 > obra vive aqui; tudo específico vem de `project.json` + artefatos.
@@ -23,6 +27,17 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## AS QUATRO DIRETRIZES
 
 ### 1. Contexto de PERSONAGEM (voz)
+
+> **HIERARQUIA DE REGISTRO — leia antes de tudo:**
+> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json`.
+>    Se o falante (`speaker`) tiver um card registrado ali — mesmo que a entrada seja mínima —
+>    *toda* linha desse personagem segue o perfil de voz documentado (3ª pessoa, `tu`,
+>    registro arcaico/formal/solene, gíria própria, comprimento de frase etc.).
+>    Isso **não é opcional**, independente do que seria mais "natural" no PT-BR genérico.
+> 2. **PT-BR contemporâneo (padrão para os demais):** se o `speaker` **não existe** em
+>    `voice_cards.json`, traduzir com PT-BR natural de hoje (ver Diretriz 3). Este padrão
+>    cobre a maioria dos NPCs e narradores sem perfil definido — nunca sobrepõe o KB.
+
 - Cada linha respeita o **perfil de voz** do falante em `tone_analysis.md` (registro, léxico,
   comprimento de frase, tiques). `voice_criticality: high` → verificação **em cada linha**.
 - **Identidade dupla:** a persona pública nunca exibe traços/nomes da identidade revelada antes do
@@ -42,8 +57,10 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
   em um artefato de referência do projeto), nunca copiar do source. (Ver `06_translation.md` e a
   referência de interjeições do projeto.)
 - **Continuidade:** a junção de linhas quebradas (`\n`) soa natural; ritmo de comédia preservado.
-- **pt-BR MODERNO (registro do jogador de hoje):** preferir a forma que um jogador BR atual usaria, não
-  a "correta-mas-arcaica/truncada". Dois erros recorrentes pegos em QA in-game:
+- **pt-BR MODERNO (registro do jogador de hoje — PISO, não teto):** quando o KB não define a voz
+  do personagem (ver hierarquia na Diretriz 1), usar a forma que um jogador BR atual usaria, não
+  a "correta-mas-arcaica/truncada". Se o KB *define* a voz (arcaico, `tu`, 3ª pessoa etc.) esse
+  piso não se aplica — a voz do KB prevalece. Dois erros recorrentes pegos em QA in-game:
   - **Resposta de NOME** (`I'm…`/`My name's…`/`I am…` quando responde "qual seu nome?") → **"Meu nome é…"
     / "Eu me chamo…" / "Sou o(a)…"** conforme a voz. NUNCA "Eu sou" seco — refere-se a estado, soa
     truncado para apresentação.
@@ -74,12 +91,16 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ## CHECKLIST (executar antes de aceitar/aprovar uma linha ou lote)
 
 ```
+□ KB de voz: o personagem tem marcador no tone_analysis.md? (3ª pessoa, tu, arcaico, gíria própria?)
+    → SIM: toda linha segue esse marcador — não "corrigir para pt-BR genérico".
+    → NÃO: aplicar pt-BR contemporâneo natural como padrão.
 □ Voz: registro/léxico batem com o perfil do falante? (high → toda linha)
 □ Identidade/spoiler: nada revelado antes do reveal_timing?
 □ Lore: termos do glossário na forma certa?
 □ Situação: traduzida pela emoção/intenção da cena? interjeição localizada?
 □ Naturalidade: um nativo lê NESTA situação e entende fácil? (senão, revisa)
-□ pt-BR moderno: forma que um jogador de HOJE usaria? (nome → "Meu nome é/Eu me chamo", não "Eu sou"; sem arcaísmo gratuito)
+□ pt-BR contemporâneo (só quando KB não define voz): forma que um jogador de HOJE usaria?
+    (nome → "Meu nome é/Eu me chamo", não "Eu sou"; sem arcaísmo gratuito)
 □ Conector: cabe/translitera sem virar outra coisa? tokens preservados?
 □ Risco: se ≥ high, passou por back-translation?
 □ Não satisfez algo acima? → sinalizar em QA/risk_notes (não entregar às cegas).

@@ -82,6 +82,8 @@ def _present(needle: str, blob_low: str) -> bool:
     return n in blob_low
 
 
+_GLOSSARY_CAP = 60   # max entradas por pack; acima disso o contexto da IA começa a saturar
+
 def select_glossary(glossary, blob_low):
     sub = []
     for g in glossary:
@@ -92,7 +94,15 @@ def select_glossary(glossary, blob_low):
                         "handling_rule": g.get("handling_rule", ""),
                         "spoiler_level": g.get("spoiler_level", ""),
                         "notes": g.get("notes", "")})
-    return sorted(sub, key=lambda x: x["term"].lower())
+    sub = sorted(sub, key=lambda x: x["term"].lower())
+    if len(sub) > _GLOSSARY_CAP:
+        import warnings
+        warnings.warn(
+            f"select_glossary: {len(sub)} termos casaram na cena, truncando para {_GLOSSARY_CAP}. "
+            "Glossario cresceu demais? Considere dividir por dominio ou aumentar _GLOSSARY_CAP.",
+            stacklevel=3)
+        sub = sub[:_GLOSSARY_CAP]
+    return sub
 
 
 def select_voices(voice_cards, blob_low):
@@ -225,7 +235,16 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
 
-    ledger = json.loads(_read(art / "spoiler_ledger.json") or "{}")
+    ledger_path = art / "spoiler_ledger.json"
+    if not ledger_path.is_file():
+        import warnings
+        warnings.warn(
+            f"spoiler_ledger.json nao encontrado em {ledger_path} — "
+            "guards de spoiler DESATIVADOS para esta cena. Crie o ledger ou verifique se foi deletado.",
+            stacklevel=3)
+        ledger = {}
+    else:
+        ledger = json.loads(_read(ledger_path) or "{}")
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
     return {
