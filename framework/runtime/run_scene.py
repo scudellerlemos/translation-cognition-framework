@@ -66,6 +66,20 @@ def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
 _CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) nao bloqueia o pipeline
 
 
+def _connector_hash(root: Path, cfg: dict) -> str:
+    """SHA1 do conteúdo dos scripts do conector — identifica a versão em uso no momento da verificação.
+    Gravado no run_state.json junto com 'verified=True': artefato sabe com qual conector foi gerado.
+    Conector ausente (em-desenvolvimento) = hash de string vazia por slot."""
+    import hashlib
+    h = hashlib.sha1()
+    for key, default in [("build_plan_script", "build_plan_chapter.py"),
+                          ("verify_script", "verify_chapter.py")]:
+        p = _connector_script(root, cfg, key, default)
+        if p.is_file():
+            h.update(p.read_bytes())
+    return h.hexdigest()[:12]
+
+
 def _run(cmd, timeout=_CONNECTOR_TIMEOUT) -> tuple[int, str]:
     # ROBUSTEZ (Windows): o filho (build_plan/verify) pode imprimir bytes nao-utf-8 (acentos cp1252 no
     # console). Sem protecao, a thread leitora do subprocess quebrava com UnicodeDecodeError e derrubava
@@ -255,7 +269,8 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         print(_indent(out))
         if code == 0:
             verified = True
-            _checkpoint(root, scene, {"status": "verified", "verified": True})
+            _checkpoint(root, scene, {"status": "verified", "verified": True,
+                                      "connector_hash": _connector_hash(root, cfg)})
             break
         # PROTOCOLO ESTRUTURADO DE SAIDA: exit-code do conector decide, NAO grep de prosa. exit 3 = falha
         # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
@@ -269,6 +284,41 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         return tr, None, {"status": "verify_failed", "scene": scene}
 
     return tr, verified, None
+
+
+def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str,
+                require_back: bool, defer_back: bool) -> tuple:
+    """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
+
+    Retorna (bt, early_return): se early_return nao e None, run_scene() deve retorna-lo imediatamente.
+    No modo defer_back, apenas registra o checkpoint de deferimento; state_index/metrics ficam em run_scene.
+    """
+    if defer_back:
+        print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
+        _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
+        return {"status": M.DONE, "reviewed": 0, "path": None}, None
+    print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
+    try:
+        bt = M.back_translate(root, scene, highs, backend=backend)
+    except Exception as e:
+        print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")
+        bt = {"status": M.DONE, "reviewed": 0, "path": None}
+        if require_back:
+            _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
+            return bt, {"status": "back_translation_failed", "scene": scene, "error": str(e)}
+    if bt["status"] == M.AWAITING:
+        msg = f"      AGUARDANDO back-translation: {bt['prompt']}"
+        if require_back:
+            print(msg + "  (--require-back: bloqueia)")
+            _checkpoint(root, scene, {"status": "awaiting_back_translation", "high": len(highs)})
+            return bt, {"status": "awaiting_back_translation", "scene": scene}
+        print(msg + "  (apenas reportado; use --require-back p/ bloquear)")
+    elif bt["status"] == M.READY:
+        print(f"      back-translation presente: {bt['path']}")
+    else:
+        print(f"      back-translation: {bt.get('reviewed',0)} revisada(s)")
+    _checkpoint(root, scene, {"high": len(highs)})
+    return bt, None
 
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
@@ -307,45 +357,9 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
     highs = _high_lines(root, scene, scene_id)
-    if defer_back:
-        # MODO BATCH: a back-translation vira POS-PASSE do capitulo (1 batch -50% Opus). Aqui so contamos
-        # as linhas de alto risco; o run_chapter coleta os planos e batcheia ao fim (ver _back_batch_phase).
-        print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
-        bt = {"status": M.DONE, "reviewed": 0, "path": None}
-        _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
-        print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
-        si = state_index.build(root)
-        print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
-        for w in si.get("warnings", []):
-            print(f"      [state_index] AVISO: {w}")
-        _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
-        mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
-                      n_high=len(highs), verified=bool(verified))
-        print(f"      metrics: custo ~${mr['cost_usd']:.4f} (back-translation deferida p/ batch)")
-        print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
-        return {"status": "verified" if verified else "planned", "scene": scene,
-                "high": len(highs), "verified": verified}
-    print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
-    try:
-        bt = M.back_translate(root, scene, highs, backend=backend)
-    except Exception as e:                                  # nao-bloqueante: reporta e segue
-        print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")
-        bt = {"status": M.DONE, "reviewed": 0, "path": None}
-        if require_back:                                    # so bloqueia se exigida explicitamente
-            _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
-            return {"status": "back_translation_failed", "scene": scene, "error": str(e)}
-    if bt["status"] == M.AWAITING:
-        msg = f"      AGUARDANDO back-translation: {bt['prompt']}"
-        if require_back:
-            print(msg + "  (--require-back: bloqueia)")
-            _checkpoint(root, scene, {"status": "awaiting_back_translation", "high": len(highs)})
-            return {"status": "awaiting_back_translation", "scene": scene}
-        print(msg + "  (apenas reportado; use --require-back p/ bloquear)")
-    elif bt["status"] == M.READY:
-        print(f"      back-translation presente: {bt['path']}")
-    else:
-        print(f"      back-translation: {bt.get('reviewed',0)} revisada(s)")
-    _checkpoint(root, scene, {"high": len(highs)})
+    bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back)
+    if early is not None:
+        return early
 
     print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
     si = state_index.build(root)
@@ -355,7 +369,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
-    print(f"      metrics: custo ~${mr['cost_usd']:.4f} | back_pass_rate={mr['back_pass_rate']}")
+    cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
+    print(f"      metrics: custo ~${mr['cost_usd']:.4f} {cost_note}")
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,
             "high": len(highs), "verified": verified}
