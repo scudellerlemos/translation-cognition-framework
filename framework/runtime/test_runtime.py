@@ -1549,6 +1549,9 @@ def test_integration_roundtrip_real_scene(scene):
     if scene == "<sem-projeto>" or not pj.is_file():
         pytest.skip("projeto utawarerumono nao disponivel")
     cfg = _json.loads(pj.read_text(encoding="utf-8"))
+    src_bin = PROJECT / cfg.get("connector", {}).get("source_binary", "")
+    if src_bin and not src_bin.is_file():
+        pytest.skip(f"binario do conector nao disponivel: {src_bin.name}")
     bp = run_scene._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
     vf = run_scene._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
     if not (bp.is_file() and vf.is_file()):
