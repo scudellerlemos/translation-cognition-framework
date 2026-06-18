@@ -1,0 +1,52 @@
+{
+  "title": "Breath of Fire IV",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": [],
+  "formatting_token_patterns": [],
+  "system_line_convention": "TBD",
+  "length_constraints": {
+    "mode": "byte_space",
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110,
+    "note": "TBD — ajustar após mapeamento do byte_budget real do engine Capcom"
+  },
+  "batch_size": 200,
+  "connector": {
+    "type": "hex_binary",
+    "source_binary": "artifacts/TBD.BIN",
+    "container_format": "TBD",
+    "source_binary_note": "O USUÁRIO entrega o binário a traduzir. Copiar para artifacts/ (este campo, relativo à raiz) OU passar o caminho como argumento de CLI no runtime. NUNCA persistir caminho absoluto/externo aqui.",
+    "table_schema": "connector/table_schema.md",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "encoding": "TBD",
+    "control_codes": {},
+    "pointer_table": {
+      "location": "TBD — mapear no Passo 00 (hex dump + localização de strings reconhecíveis)",
+      "format": "TBD"
+    },
+    "space_strategy": "TBD",
+    "patch_format": "TBD",
+    "target_charset_supported": "TBD",
+    "charset_note": "TBD — validar in-game se a fonte do PC port suporta diacríticos pt-BR. Se não: transliteração NFD (padrão do framework, ver Utawarerumono como referência).",
+    "mapping_status": "FASE 00 — MAPEAMENTO PENDENTE",
+    "mapping_note": "Breath of Fire IV PC (Capcom, 2000). Engine diferente do Utawarerumono. Formato de arquivo a ser determinado via análise do hex dump. Candidatos a investigar: arquivos .BIN de diálogo no diretório de instalação do jogo. Referência de precedente: comunidade de modding BoF (ver decision_log.md quando mapeado)."
+  },
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "Segunda instância do framework SDD — primeiro teste de portabilidade para engine fora do Aquaplus/SDAT. Capcom PS1/PC (2000). Corpus estimado TBD. RPG linear com sistema de Combo de dragão (Ryu/Fou-Lu) e forte componente espiritual/filosófico. Piloto multi-game (ver memory/connector-multi-game-future.md).",
+  "kb_frontier": "TBD"
+}

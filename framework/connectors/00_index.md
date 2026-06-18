@@ -108,10 +108,13 @@ connectors/
   00_index.md        ← este arquivo
   hex_binary.md      ← contrato do conector de jogos antigos (tabela, ponteiros, byte-space, cascata)
   _skeleton/
-    extract.py       ← esqueleto comentado do extrator (a IA adapta por projeto)
-    reinsert.py      ← esqueleto comentado do reinseridor (cascata T1–T4 + patch)
-    table_schema.md  ← formato do schema de tabela (byte=char + control codes)
+    extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)
+    reinsert.py                ← esqueleto comentado do reinseridor (cascata T1–T4 + patch)
+    table_schema.md            ← formato do schema de tabela (byte=char + control codes)
+    test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
 ```
+
+Ver `framework/docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.
 
 Os scripts **reais** (adaptados ao binário específico) vivem na instância, em
 `projects/<título>/connector/`. O framework fornece apenas contrato + esqueleto.
