@@ -9,9 +9,10 @@
 
 ### Fase 0 — Mapear o conector (gate obrigatório antes de tudo)
 
-- [ ] **0.1. Fornecer o binário de diálogo**
-  - Copiar o arquivo de diálogo do jogo para `artifacts/`
-  - Atualizar `connector.source_binary` em `project.json`
+- [ ] **0.1. Fornecer o diretório do jogo**
+  - Usuário passa o caminho/link do diretório de instalação do jogo
+  - Claude explora o diretório, identifica os arquivos de diálogo e entende a estrutura (bootstrap da Fase D)
+  - Não é necessário copiar manualmente para `artifacts/` — a descoberta é parte do processo
 
 - [ ] **0.2. Análise hex — localizar strings**
   - Abrir no HxD e buscar strings reconhecíveis ("Ryu", "Cray", "Nina")
@@ -71,8 +72,9 @@
 
 ## Questões abertas (piloto multi-game)
 
-A responder à medida que o projeto avança (ver `memory/connector-multi-game-future.md`):
+> Respondidas pelo **Generic Connector System (Fase D do ROADMAP raiz)**.
+> BoF4 é o jogo-piloto dessa fase — as decisões de design foram tomadas aqui.
 
-1. O conector BoF4 é reutilizável para outros jogos Capcom PS1?
-2. Como versionar o conector se mudar após cenas já traduzidas?
-3. TM compartilhada faz sentido entre jogos da série BoF?
+1. ~~O conector BoF4 é reutilizável para outros jogos Capcom PS1?~~ → **Sim, via registry T1 (Fase D1): se engine idêntica, script reutilizado direto; se variante, reclassifica como T2.**
+2. ~~Como versionar o conector se mudar após cenas já traduzidas?~~ → **`connector_version` no manifesto (Fase D3): extrações antigas com versão anterior ficam marcadas; framework recomenda re-extração.**
+3. ~~TM compartilhada faz sentido entre jogos da série BoF?~~ → **Sim, `tm/breath_of_fire.json` compartilhado entre BoF 3, 4, Dragon Quarter (Fase D4); retradução de 1 jogo deleta só as entradas dele.**
