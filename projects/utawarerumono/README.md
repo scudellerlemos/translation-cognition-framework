@@ -8,7 +8,7 @@ Este é o projeto de localização que originou o framework. Serve como **refer�
 | | |
 |---|---|
 | **O que é** | A primeira instância do framework — *Utawarerumono: Mask of Deception* (visual novel), EN→pt-BR. Prova viva de que o processo genérico roda num título real. |
-| **A prova** | Jogo **100% traduzido**: 16 capítulos, 146 cenas, ~45.100 linhas, **round-trip byte-idêntico**, **~$65,9** ($0 desperdiçado), pt-BR renderizando in-game. |
+| **A prova** | Jogo **100% traduzido**: 16 capítulos, 146 cenas, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 65,9** (R$ 0 desperdiçado), pt-BR renderizando in-game. |
 | **O desafio** | Identidades duplas com spoiler crítico (Ukon/Oshtor…), comédia com timing, e um charset sem acentos (resolvido por transliteração NFD no conector). |
 
 > Como o processo inteiro funciona (IA · gates · humano, diagrama ponta a ponta) →
@@ -43,7 +43,7 @@ alto risco — **146 cenas, ~45.100 linhas**:
 | **31** | 2 | ✅ verificado |
 | **39** | 4 | ✅ verificado (DLC/pós-jogo) |
 
-Gasto real acumulado: **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5), **$0 desperdiçado** (medido
+Gasto real acumulado: **~R$ 65,9** (Sonnet R$ 50,6 · Opus R$ 7,8 · Haiku R$ 7,5), **R$ 0 desperdiçado** (medido
 pelo `api_ledger.jsonl`). Alavancas comprovadas/codadas no caminho de escala: **Sonnet aprovado** por
 benchmark (nível Opus-à-mão); **Batch −50%** vivo; **tiering** Haiku/Sonnet/Opus por complexidade;
 **dedup por TM**; **recuperação por-linha** (defeito de 1 linha re-traduz ~1 linha, não a cena);
