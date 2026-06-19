@@ -12,7 +12,7 @@
 | | |
 |---|---|
 | **O que é** | Engenharia que faz um LLM localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — tirando memória, governança e fluxo de **dentro** do modelo. |
-| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~$65,9** com **$0 desperdiçado**. |
+| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 65,9** com **R$ 0 desperdiçado**. |
 | **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
 
 > Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta-fase-0--jogando)
@@ -146,7 +146,7 @@ e, acima de tudo, o **humano (juiz final do sentido, da voz e da tela)**.
 | 🩷 **IA-revisora** (back-translation) | revisão automática **barata** de sentido | re-traduz pt-BR→EN só em alto risco e **aponta** (marca `revise`) | **dar veredito** — só sinaliza, não decide |
 | 🟦🟩 **Gates determinísticos** | **juiz objetivo** (regras) | round-trip, fonte de KB, spoiler, largura de balão, glossário — **bloqueiam** | opinar sobre gosto literário |
 | 👤 **Humano-Ratificador** | **juiz** da verdade da KB | confirma entidade/gênero **com fonte** (`kb_ratified.csv`) | traduzir linha a linha |
-| 👤 **Humano-Revisor** | **juiz final** do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim ($0) ou nota | mexer no binário |
+| 👤 **Humano-Revisor** | **juiz final** do **texto** | lê o XLSX, marca `CORRIGIR` → verbatim (R$ 0) ou nota | mexer no binário |
 | 👤 **Humano-Tester** | **juiz final** na **tela** | joga, reporta por print + trecho (localizador determinístico) | usar OCR/IA |
 
 > **A linha-mestra:** *determinístico por padrão, IA só onde exige IA, **o humano é o juiz**.* A IA
@@ -183,7 +183,7 @@ flowchart LR
 
 **3. Cada centavo é auditável.** O `api_ledger.jsonl` registra **toda** chamada (modelo, tokens, custo)
 **antes** de qualquer parse — inclusive as que falham. Isso permite responder, com dados, *onde* o
-dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `$0 desperdiçado`.
+dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `R$ 0 desperdiçado`.
 
 | Alavanca de custo | Mecanismo | Efeito |
 |---|---|---|
@@ -318,15 +318,15 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 - **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
   (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
   + **back-translation de alto risco**. Validado **in-game** (pt-BR renderiza na tela; conector `hex_binary`).
-- **Custo medido:** gasto real acumulado **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5),
-  **$0 desperdiçado** (`api_ledger.jsonl` audita cada centavo, mesmo em falha). Batch API **−50%** vivo;
+- **Custo medido:** gasto real acumulado **~R$ 65,9** (Sonnet R$ 50,6 · Opus R$ 7,8 · Haiku R$ 7,5),
+  **R$ 0 desperdiçado** (`api_ledger.jsonl` audita cada centavo, mesmo em falha). Batch API **−50%** vivo;
   tiering Haiku/Sonnet/Opus, dedup por TM, recuperação **por-linha** e teto **previsível**.
 - **Custo previsível (engenharia desta fase):** estimativa **pré-voo** por capítulo, **teto duro** que
   não estoura (gate de submissão do batch + por-cena), e **recuperação por-linha** (um defeito de 1
   linha re-traduz ~1 linha, não a cena). Ver [Engenharia de custo](#engenharia-de-custo-e-previsibilidade).
 - **Cognição cabeada:** **gate de fonte de KB** (entidade nova sem fonte declarada BLOQUEIA);
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
-- **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim ($0)** ou nota
+- **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim (R$ 0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
 - **Qualidade travada:** **151 testes** (106 runtime + 29 validação + 16 conector), determinismo/
   idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
