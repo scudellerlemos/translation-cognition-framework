@@ -135,6 +135,63 @@ pré-voo + teto duro + recuperação por-linha; `R$ 0` desperdiçado) · **125 t
 
 ---
 
+### Fase D — Generic Connector System (framework multi-game)
+
+> Pré-requisito: Fase A concluída (Utawarerumono em produção).
+> Jogo-piloto: **Breath of Fire IV** (ver `projects/breath_of_fire_4/ROADMAP.md`).
+> Score atual do conceito: **81/100**. Score alvo após D4: **97/100**.
+
+**Visão:** quando o framework encontra um novo jogo pela primeira vez, ele descobre automaticamente onde estão os arquivos de diálogo, entende a estrutura, gera um script de extração determinístico e estático, valida via round-trip e produz output no formato padronizado. O LLM participa **apenas no bootstrap** — após aprovação, o conector roda sem IA em runtime.
+
+#### Arquitetura
+
+```
+novo jogo
+    │
+    ▼
+[1] evidence_collector      ← entropia, string scan, magic bytes, encoding detection
+    │
+    ▼
+[2] tier_classifier         ← T1 / T2 / T3
+    │
+    ├── T1 ──► connector_registry (engine conhecida — script direto, sem LLM)
+    ├── T2 ──► script_generator  (LLM + evidências → candidato → confirmação humana)
+    └── T3 ──► contrato de escape (humano implementa extract / reinsert / validate)
+                   │
+    ┌──────────────┘
+    ▼
+[3] coverage_gate           ← dry-run obrigatório; COVERAGE_FLOOR=85%; 3+ arquivos
+    │
+    ▼
+[4] adversarial_validator   ← multi-arquivo + distribuição estatística + consistência
+    │
+    ▼
+[5] round_trip_validator    ← portão final de aceitação (não muda: já é inegociável)
+    │
+    ▼
+[6] connector_manifest      ← tier, versão, fingerprints, validation_status
+```
+
+#### TM por série
+
+- `tm/{série}.json` — TM isolada por série; jogos da mesma série compartilham, séries diferentes nunca se misturam
+- TM usada **apenas na entrada** (tradução inicial); ciclo de QA humano roda independente da TM
+- Traduções aprovadas pelo QA alimentam a TM de volta
+- Retradução de um jogo: warning explícito + delete das entradas daquele jogo na TM da série
+
+#### Implementação
+
+- [ ] **D1. Evidence Collector + Registry T1** — `evidence_collector.py`, `tier_classifier.py`, `connector_registry.json` (seeds: KiriKiri, RPG Maker MV/MZ, Wolf RPG), `script_generator.py`. Score: **~87**
+- [ ] **D2. Coverage Gate + Adversarial Validator** — `coverage_gate.py` (dry-run obrigatório, threshold, 3+ arquivos), `adversarial_validator.py` (3 eixos), interface T3 (contrato fixo). Score: **~92**
+- [ ] **D3. Manifesto + Versionamento + Fingerprint** — `connector_manifest.json`, `fingerprint_monitor.py` (detecta patch do jogo, bloqueia se stale), corpus acumulativo (aprovados viram entradas no registry). Score: **~95**
+- [ ] **D4. TM por série + integração QA** — `tm_lookup.py` (exact + fuzzy), `tm_updater.py` (retradução = warning + delete do jogo na TM), integração com `quality_review.py` existente. Score: **~97**
+
+#### Teto dos 3 pontos (irredutível)
+
+Formatos com alta entropia total (cifrados/ofuscados) exigem engenharia reversa real — fora do escopo do framework. O `evidence_collector` os detecta e classifica como `T3-bloqueado`, documentando claramente sem fingir que resolve.
+
+---
+
 ### Adiado (baixa prioridade agora — fazer no momento certo)
 
 - [x] **T4 em lote (LLM) — plumbing pronto.** `reinsert.py` exporta o resíduo irredutível para
