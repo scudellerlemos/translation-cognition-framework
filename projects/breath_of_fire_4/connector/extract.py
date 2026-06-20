@@ -92,8 +92,9 @@ def find_text_section(data: bytes, entries: list) -> tuple[int, int, int] | None
     Critérios (todos devem ser satisfeitos para pontuar):
     1. first_ptr (tamanho da tabela) está em [4, min(0x1000, sz/2)]
     2. Ao menos 70% dos ponteiros na tabela apontam para [first_ptr, sz)
-    3. Conteúdo após a tabela tem >= 40% de bytes ASCII
-    4. Conteúdo pós-tabela cabe em uint16 (total bytes < 0xFFFF)
+    3. Ao menos 5% dos destinos são únicos (rejeita tabelas onde todos apontam pro mesmo lugar)
+    4. Conteúdo após a tabela tem >= 40% de bytes ASCII
+    5. Conteúdo pós-tabela cabe em uint16 (total bytes < 0xFFFF)
 
     Retorna (entry_idx, section_offset, section_size) ou None.
     """
@@ -115,16 +116,23 @@ def find_text_section(data: bytes, entries: list) -> tuple[int, int, int] | None
         # Critério 2: maioria dos ponteiros deve apontar para dentro da seção
         ptr_count = first_ptr // 2
         valid_ptrs = 0
+        unique_dests: set[int] = set()
         for p in range(0, first_ptr, 2):
             if p + 2 > len(section):
                 break
             v = struct.unpack_from('<H', section, p)[0]
             if first_ptr <= v < sz:
                 valid_ptrs += 1
+                unique_dests.add(v)
         if ptr_count > 0 and (valid_ptrs / ptr_count) < 0.70:
             continue
 
-        # Critério 3: conteúdo após a tabela deve ser majoritariamente ASCII
+        # Critério 3: ao menos 5% dos destinos devem ser únicos
+        # (rejeita config/metadata onde todos os ponteiros apontam pro mesmo offset)
+        if ptr_count > 0 and len(unique_dests) / ptr_count < 0.05:
+            continue
+
+        # Critério 4: conteúdo após a tabela deve ser majoritariamente ASCII
         sample = section[first_ptr:first_ptr + 256]
         if len(sample) < 10:
             continue
@@ -203,7 +211,20 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     files_processed = 0
     files_with_text = 0
 
-    for dat_path in sorted(game_dat_dir.glob('*.DAT')):
+    # Ordem narrativa: agrupa por número de área (001, 002…) e dentro de cada área
+    # prioriza família de diálogo principal (AREAD > AREAS > AREAE > AREAM > outros).
+    # Isso garante que dialogs.csv preserve a sequência da história — o pipeline
+    # processa lotes na ordem das linhas do CSV, não pelo valor do id_column.
+    _FAMILY_PRI = {'AREAD': 0, 'AREAS': 1, 'AREAE': 2, 'AREAM': 3}
+
+    def _narrative_key(p: Path) -> tuple:
+        import re as _re
+        m = _re.match(r'([A-Za-z]+?)(\d+)', p.stem)
+        num = int(m.group(2)) if m else 9999
+        fam = m.group(1).upper() if m else p.stem
+        return (num, _FAMILY_PRI.get(fam, 99), p.name)
+
+    for dat_path in sorted(game_dat_dir.glob('*.DAT'), key=_narrative_key):
         fname = dat_path.name
         data = dat_path.read_bytes()
         if len(data) < 64:

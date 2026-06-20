@@ -95,8 +95,20 @@ Regra: linhas de sistema mantêm a convenção na tradução (CAPS permanece CAP
 
 ## 5. SEGMENTAÇÃO E LOTES
 
-O corpus é processado em **lotes de tamanho fixo** (`project.json → batch_size`, default 200),
-ordenados pelo `id_column`. Lotes permitem Micro-QA incremental (Passo 6b) e retomada.
+O corpus é processado em **lotes de tamanho fixo** (`project.json → batch_size`, default 200).
+Lotes permitem Micro-QA incremental (Passo 6b) e retomada.
+
+**Dois modelos de corpus:**
+
+| Modelo | Quando usar | Ordem dos lotes |
+|--------|-------------|-----------------|
+| **Por cena** | Jogos com ficheiros separados por cena (`ch_XX_YY.sdat`, etc.) | `id_column` (estável, ordenado pelo nome do ficheiro) |
+| **Flat CSV** | Jogos com ficheiros por área sem granularidade de cena (ex: `AREAD001.DAT`) | **Ordem das linhas do CSV** — o extrator grava em ordem narrativa (por número de área); não reordenar após Passo 00 |
+
+> **Invariante (ambos os modelos):** a fonte é **somente leitura** a partir do Passo 01.
+> O `id_column` é a âncora de identidade de cada string — nunca muda.
+> No modelo flat CSV, a ordem narrativa é estabelecida pelo extrator e fixada no arquivo;
+> o pipeline respeita a ordem das linhas, não o valor lexicográfico do `id_column`.
 
 ---
 
