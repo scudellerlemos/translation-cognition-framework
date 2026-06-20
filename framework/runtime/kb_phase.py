@@ -23,6 +23,10 @@ Modos (CLI):
   python kb_phase.py <projeto> <cap>                  # discover: escreve artifacts/kb_phase_worklist_<cap>.md
   python kb_phase.py <projeto> <cap> --check          # valida cobertura: exit 0 se pronto p/ avancar
   python kb_phase.py <projeto> <cap> --check --apply-frontier   # se OK, avanca project.json kb_frontier
+
+Capitulo especial "all" (corpus flat — sem estrutura de cenas):
+  python kb_phase.py <projeto> all     # le artifacts/dialogs.csv diretamente (modelo flat-CSV, ex: BoF4)
+  A worklist e gerada normalmente; kb_frontier fica "all" quando coberto.
 """
 from __future__ import annotations
 import argparse
@@ -92,8 +96,14 @@ bro eep hmhmhm hope later they'd welcome almighty ngh hee speak follow open osh 
 """.split())
 
 
+_FLAT_SCENE = "_flat"  # pseudo-cena para corpus flat (chap == "all")
+
+
 def _scenes_of(root: Path, chap: str) -> list[str]:
-    """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id)."""
+    """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id).
+    Capitulo especial "all": usa artifacts/dialogs.csv diretamente (modelo flat, ex: BoF4)."""
+    if chap == "all":
+        return [_FLAT_SCENE] if paths.dialogs_flat(root).is_file() else []
     names = [p.parent.name for p in paths.artifacts(root).glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=scene_id_of)
 
@@ -166,14 +176,16 @@ def _excerpt(text: str, pos: int, span: int = 32) -> str:
 
 
 def _scan(root: Path, scenes: list[str]):
-    """[(scene_id, source_text)] por cena (concatena as linhas-fonte do dialogs.csv)."""
+    """[(scene_id, source_text)] por cena (concatena as linhas-fonte do dialogs.csv).
+    Para o pseudo-scene _FLAT_SCENE le de paths.dialogs_flat (modelo flat, ex: BoF4)."""
     per = []
     for scene in scenes:
-        f = paths.dialogs(root, scene)
+        f = paths.dialogs_flat(root) if scene == _FLAT_SCENE else paths.dialogs(root, scene)
         if not f.is_file():
             continue
-        rows = context_pack.load_dialogs(f)
-        per.append((scene_id_of(scene), "\n".join(r["source"] for r in rows)))
+        rows = context_pack.load_dialogs(f)  # suporta text_en e text_source
+        sid = "all" if scene == _FLAT_SCENE else scene_id_of(scene)
+        per.append((sid, "\n".join(r["source"] for r in rows)))
     return per
 
 
@@ -262,7 +274,8 @@ def discover(root, chap) -> dict:
     # nome proprio/lore real (ruido de frase raramente recorre fundido identico). One-off entra no gap
     # (worklist) mas so AVISA — nome citado 1x e baixa confianca; o humano revisa sem travar a fronteira.
     block = [r for r in gap if len(r["scenes"]) >= 2 or r["count"] >= 3]
-    return {"chapter": chap, "scenes": [scene_id_of(s) for s in scenes],
+    scenes_out = ["all" if s == _FLAT_SCENE else scene_id_of(s) for s in scenes]
+    return {"chapter": chap, "scenes": scenes_out,
             "gap": gap, "block": block, "weak": weak, "covered": covered}
 
 
@@ -307,15 +320,19 @@ def apply_frontier(root, chap):
     scenes = _scenes_of(root, chap)
     if not scenes:
         return None
-    last = scene_id_of(scenes[-1])
+    # Para corpus flat (chap=="all") a fronteira e "all" — sem comparacao numerica.
+    if chap == "all":
+        last = "all"
+    else:
+        last = scene_id_of(scenes[-1])
     cfgp = root / "project.json"
     txt = cfgp.read_text(encoding="utf-8")
     m = re.search(r'("kb_frontier"\s*:\s*")([^"]*)(")', txt)
     if not m:
         return None                                    # sem campo -> nao inserir cegamente; reportar
     cur = m.group(2)
-    if cur and _pos(cur) >= _pos(last):
-        return cur                                     # nunca regride
+    if chap != "all" and cur and _pos(cur) >= _pos(last):
+        return cur                                     # nunca regride (so no modelo por-cena)
     new = txt[:m.start()] + m.group(1) + last + m.group(3) + txt[m.end():]
     cfgp.write_text(new, encoding="utf-8")
     return last
