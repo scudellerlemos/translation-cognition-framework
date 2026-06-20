@@ -88,8 +88,10 @@ framework/
   README.md         ← este arquivo
 
 projects/
-  utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR)
+  utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
     connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
+  breath_of_fire_4/ ← segunda instância — piloto Generic Connector System (Fase D)
+    connector/      ← em desenvolvimento (Fase 00 pendente)
 ```
 
 ---
@@ -153,7 +155,8 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 ## MÍDIA SUPORTADA
 
 - **Jogos** — ✅ validado **em produção** (Utawarerumono): **jogo COMPLETO — 16 capítulos, 146 cenas,
-  ~45.100 linhas** traduzidas e verificadas, pt-BR renderizando in-game. Ver `media-profiles/games.md`.
+  ~45.100 linhas** traduzidas e verificadas, pt-BR renderizando in-game. 🔄 *Breath of Fire IV* em
+  andamento — piloto do Generic Connector System (engine Capcom). Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
 
@@ -171,9 +174,13 @@ com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de no
 
 ---
 
-## INSTÂNCIA DE REFERÊNCIA
+## INSTÂNCIAS
 
-`projects/utawarerumono/` é a prova viva de que o processo funciona em um título real e em escala:
-visual novel, EN→pt-BR, com múltiplos pares de identidade dupla e gestão crítica de spoilers. **Jogo
-inteiro traduzido e verificado ponta-a-ponta** (16 capítulos, 146 cenas, ~45.100 linhas) pelo harness,
-com saída renderizando no jogo. Use-a como exemplo de como preencher manifesto e perfil.
+**`projects/utawarerumono/`** — primeira instância de referência. Visual novel, EN→pt-BR, com múltiplos
+pares de identidade dupla e gestão crítica de spoilers. **Jogo inteiro traduzido e verificado
+ponta-a-ponta** (16 capítulos, 146 cenas, ~45.100 linhas), saída renderizando in-game. Use como
+exemplo de manifesto e perfil.
+
+**`projects/breath_of_fire_4/`** — segunda instância. Piloto do Generic Connector System (Fase D):
+valida a portabilidade do framework para um engine Capcom. Status: Fase 00 (mapeamento do conector)
+pendente. Ver `projects/breath_of_fire_4/ROADMAP.md`.

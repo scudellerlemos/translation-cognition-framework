@@ -50,6 +50,6 @@ output/                   ← vazio até reinserção (Passo 08)
 
 ## Questões abertas (piloto multi-game)
 
-Ver `memory/connector-multi-game-future.md`. As 4 questões (família de engine,
+Ver [ROADMAP.md raiz](../../ROADMAP.md) — Fase D. As 4 questões (família de engine,
 versionamento do conector, onboarding mínimo, TM compartilhada) serão respondidas
 à medida que este projeto avança.

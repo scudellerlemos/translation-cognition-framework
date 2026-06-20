@@ -1,7 +1,30 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
-> Última atualização: 2026-06-18
+> Última atualização: 2026-06-20
 > Status atual: **FASE 00 — MAPEAMENTO DO CONECTOR PENDENTE**
+
+---
+
+## Objetivos e contexto de engenharia
+
+> Por que este projeto existe além da tradução em si.
+
+O framework foi avaliado em **81/100 como projeto de AI engineering (jun/2026) — top 10–15% do espaço**.
+Os dois maiores gaps que BoF4 precisa fechar:
+
+| Gap | Nota atual | O que BoF4 prova |
+|---|---|---|
+| Generalização | 62/100 | T2 do Generic Connector funcionando num engine Capcom desconhecido |
+| Autonomia | 52/100 | Bootstrap de conector via descoberta de diretório sem intervenção manual |
+
+**Se BoF4 validar T2:** nota sobe para ~86. É o maior salto único disponível no roadmap.
+
+### Insights do projeto anterior que se aplicam aqui
+
+- **Round-trip como oráculo** — o gate de aceitação inegociável. Não avançar sem ele verde.
+- **Recovery por linha** — quando a extração falhar em N linhas, re-extrair só essas N, não o corpus inteiro.
+- **R$0 desperdiçado como métrica** — custo de retry deve ser monitorado desde a Fase 0. O `api_ledger.jsonl` começa junto com o primeiro conector.
+- **Engine labels não traduzem** — o Utawarerumono aprendeu isso pagando. BoF4 começa com a allowlist já no lugar.
 
 ---
 
