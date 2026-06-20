@@ -22,24 +22,36 @@
   "batch_size": 200,
   "connector": {
     "type": "hex_binary",
-    "source_binary": "artifacts/TBD.BIN",
-    "container_format": "TBD",
-    "source_binary_note": "O USUÁRIO entrega o binário a traduzir. Copiar para artifacts/ (este campo, relativo à raiz) OU passar o caminho como argumento de CLI no runtime. NUNCA persistir caminho absoluto/externo aqui.",
+    "game_dat_dir": "TBD — passar via CLI: python extract.py project.json <DAT_DIR>",
+    "game_dat_dir_note": "Caminho absoluto do diretório english/DAT do jogo (nunca persistir aqui). Passar via CLI ou variável de ambiente.",
+    "container_format": "capcom_dat_toc",
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
     "reinsert_script": "connector/reinsert.py",
-    "encoding": "TBD",
-    "control_codes": {},
-    "pointer_table": {
-      "location": "TBD — mapear no Passo 00 (hex dump + localização de strings reconhecíveis)",
-      "format": "TBD"
+    "encoding": "ascii_with_ctrl_codes",
+    "control_codes": {
+      "01": "newline",
+      "02": "page_break",
+      "04": "var_char_name",
+      "05": "var_item_name",
+      "0A": "voice_sfx",
+      "0B": "pause",
+      "0C": "event_cmd",
+      "12": "choice_start",
+      "14": "speaker_id"
     },
-    "space_strategy": "TBD",
-    "patch_format": "TBD",
-    "target_charset_supported": "TBD",
-    "charset_note": "TBD — validar in-game se a fonte do PC port suporta diacríticos pt-BR. Se não: transliteração NFD (padrão do framework, ver Utawarerumono como referência).",
-    "mapping_status": "FASE 00 — MAPEAMENTO PENDENTE",
-    "mapping_note": "Breath of Fire IV PC (Capcom, 2000). Engine diferente do Utawarerumono. Formato de arquivo a ser determinado via análise do hex dump. Candidatos a investigar: arquivos .BIN de diálogo no diretório de instalação do jogo. Referência de precedente: comunidade de modding BoF (ver decision_log.md quando mapeado)."
+    "pointer_table": {
+      "location": "inicio da secao de texto (entrada com maior score ASCII apos tabela de ponteiros)",
+      "format": "uint16_le_relative_to_section",
+      "table_size_bytes": 512,
+      "entries": 256
+    },
+    "space_strategy": "reconstrucao_secao",
+    "patch_format": "full_file",
+    "target_charset_supported": "ascii_only",
+    "charset_note": "PC port usa fonte ASCII. Diacríticos pt-BR (ã, ç, é etc.) NÃO têm suporte nativo. Pendente: validar in-game se a fonte foi expandida. Se não: transliteração NFD antes de exportar.",
+    "mapping_status": "MAPEADO — 2026-06-20",
+    "mapping_note": "Formato Capcom DAT com TOC. Texto ASCII puro com tokens de controle hex. Seção de texto identificada por heurística (pointer table + ASCII%). Extração multi-arquivo (AREAD/AREAS/AREAE/AREAM). Ver connector/table_schema.md."
   },
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",
