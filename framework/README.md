@@ -90,8 +90,8 @@ framework/
 projects/
   utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
     connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
-  breath_of_fire_4/ ← segunda instância — piloto Generic Connector System (Fase D)
-    connector/      ← em desenvolvimento (Fase 00 pendente)
+  breath_of_fire_4/ ← segunda instância — piloto de portabilidade para engine Capcom
+    connector/      ← implementado (Fase 0 concluída, round-trip green)
 ```
 
 ---
@@ -181,6 +181,4 @@ pares de identidade dupla e gestão crítica de spoilers. **Jogo inteiro traduzi
 ponta-a-ponta** (16 capítulos, 146 cenas, ~45.100 linhas), saída renderizando in-game. Use como
 exemplo de manifesto e perfil.
 
-**`projects/breath_of_fire_4/`** — segunda instância. Piloto do Generic Connector System (Fase D):
-valida a portabilidade do framework para um engine Capcom. Status: Fase 00 (mapeamento do conector)
-pendente. Ver `projects/breath_of_fire_4/ROADMAP.md`.
+**`projects/breath_of_fire_4/`** — segunda instância. Valida a portabilidade do framework para um engine Capcom diferente. Conector mapeado e implementado (Fase 0 concluída, round-trip byte-idêntico). Ver `projects/breath_of_fire_4/ROADMAP.md`.

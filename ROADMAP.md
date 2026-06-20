@@ -39,19 +39,49 @@
 
 ---
 
-### Fase B — Evolução do motor (pós-produção BoF4)
+### Evolução do Motor (pós-produção BoF4)
 
 - [x] **B1. Validation leve.** ✅ `framework/validation/validate.py` — genérico, ERROR/WARN, 7 testes pytest.
 - [ ] **B2. Memory leve** — glossário + character state consultável entre lotes, no lugar de re-ler CSV ad-hoc.
+
+  #### Stack de ML local (zero custo de API, zero servidor, empacotável em .exe)
+
+  > Decisões tomadas em jun/2026 com benchmark real (MTEB, SIFT1M, TREC DL).
+  > Todos os modelos baixados on-demand no primeiro uso; o .exe base fica ~250 MB.
+
+  | Componente | Modelo escolhido | Tamanho | Função |
+  |---|---|---|---|
+  | **Bi-encoder** | `paraphrase-multilingual-MiniLM-L12-v2` | ~470 MB | Embedding de TM, KB e glossário |
+  | **Reranker** | FlashRank (`ms-marco-MiniLM-L-12-v2` quantizado) | ~4 MB | Reordena top-N do bi-encoder por relevância real |
+  | **NER** | `spaCy xx_ent_wiki_sm` | ~31 MB | Extração de entidades no Passo 01 (PT+EN, sem LLM) |
+  | **Vector DB** | `sqlite-vec` | extensão C | Índice vetorial com filtros SQL (byte_budget, game, chapter) |
+
+  Upgrades documentados: bi-encoder → `multilingual-e5-small` se hit rate insatisfatório; reranker → `bge-reranker-v2-m3` quando PT reranking for crítico; NER → GLiNER zero-shot quando vocabulário de entidades do jogo estiver mapeado; vector DB → LanceDB acima de 500k vetores.
 - [ ] **B3. Kernel simples** — runtime que orquestra os passos usando Validation + Memory. Compensa com ≥2 projetos.
+  - As primitivas (`run_scene`, `validate`, `context_pack`) devem expor contratos Python limpos e tipados — chamáveis por qualquer agente, CLI ou orquestrador externo sem depender do Claude ou de MCP. MCP tools ficam como conveniência de desenvolvimento apenas, nunca entram no produto.
 - [ ] **B4. Skill DSL** — forma declarativa dos passos 00–08. Por último: só vale com o Kernel existente e 2–3 projetos.
 
 ---
 
-### Fase C — Escalar para outras mídias
+### Outras Mídias (Filmes e Séries)
 
 - [ ] **C1. Perfil de filmes** — conector `subtitle_file` (SRT/ASS), constraint de CPS. `framework/media-profiles/films.md` (stub).
 - [ ] **C2. Perfil de séries** — glossário/decision_log compartilhados, spoiler-check cross-episódio. `framework/media-profiles/series.md` (stub).
+
+  #### Stack de voz (filmes/séries — pós-produção BoF4)
+
+  > Para filmes e séries, "voz" deixa de ser só texto (voice card) e passa a incluir áudio real.
+  > Pipeline novo: áudio → ASR → diarização → voice card enriquecida → pipeline existente.
+  > Todos os componentes rodam local em CPU; baixados on-demand (~900 MB total).
+
+  | Componente | Modelo/Lib | Tamanho | Função |
+  |---|---|---|---|
+  | **ASR** | `faster-whisper` (medium) | ~500 MB | Transcreve áudio em texto com timestamps |
+  | **Diarização** | `pyannote/speaker-diarization-3.1` | ~300 MB | Identifica quem fala em cada segmento |
+  | **Combinado** | WhisperX | wrapper | ASR + diarização integrados |
+  | **Prosódia** | SpeechBrain | ~100 MB | Extrai pitch, tempo, energia por personagem |
+
+  Voice card enriquecida: adiciona `pitch_range`, `tempo`, `energia`, `cps_máximo` (characters per second medido do áudio) — o `cps_máximo` por personagem substitui o byte_budget fixo como constraint de fitting em filmes.
 
 ---
 
@@ -116,4 +146,27 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 ### Adiado
 
 - [x] **T4 em lote (LLM).** Plumbing pronto em `reinsert.py` (`t4_residue.json`). Inerte hoje (resíduo=0); ativa sozinho se corpus futuro gerar overflow não-relocável.
-- ~~CI + empacotamento de release~~ — removido.
+- ~~CI + empacotamento de release~~ — removido (escopo antigo; substituído por CI offline e packaging nas seções abaixo).
+
+---
+
+### Produto e Distribuição (pós-validação BoF4)
+
+> **Pré-requisito:** round-trip do BoF4 verde + Generic Connector System validado.
+> **Valor:** comunicação externa (portfolio, open-source) — zero valor operacional para uso interno.
+
+- [ ] **E1. CLI instalável** — entrypoint `tcf` via `pyproject.toml` (`tcf translate`, `tcf extract`, `tcf verify`).
+- [ ] **E2. README de produto** — reescrever o README raiz como "você instala e usa" em vez de tour pela árvore.
+- [ ] **E3. Consolidar documentação** — mover `.md` puramente documentais para `docs/`; os `.md` de runtime (skills, schemas) ficam onde estão.
+- [ ] **E4. Distribuição como `.exe`** — PyInstaller ou Nuitka empacotam CLI + runtime Python em binário standalone para usuários sem Python. Modelo de embedding (~470MB) baixado on-demand no primeiro uso.
+
+---
+
+### CI e Qualidade Contínua (pós-validação BoF4)
+
+> **Pré-requisito:** framework estável com ≥2 projetos ativos.
+> **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
+
+- [ ] **F1. CI offline** — GitHub Actions rodando `pytest` nos 135 testes a cada push. Zero custo (runner público, sem chamada de API).
+- [ ] **F2. CI de packaging** — após `pytest` passar, PyInstaller builda o `.exe` e um smoke test valida o binário gerado.
+- [ ] **F3. LLM judge** — segundo modelo avalia fidelidade + naturalidade + aderência ao personagem com score numérico por linha; complementa o back-translate e prioriza o QA humano melhor que o risco heurístico atual.
