@@ -1,71 +1,117 @@
-# Table Schema — Breath of Fire IV
+# Table Schema — Breath of Fire IV (PC Port, Capcom 2000)
 
-> Status: **FASE 00 — MAPEAMENTO PENDENTE**
->
-> Este arquivo deve ser preenchido durante o Passo 00 (Extração) com base na
-> análise do hex dump dos arquivos de diálogo do jogo.
->
-> Referência: `framework/connectors/hex_binary.md` e
-> `projects/utawarerumono/connector/table_schema.md`.
+> Status: **MAPEADO** — análise do diretório english/DAT em 2026-06-20
 
 ---
 
-## O que precisa ser mapeado
+## 1. Arquivos de diálogo
 
-### 1. Localizar os arquivos de diálogo
+O jogo usa um container binário com TOC (Table of Contents). O mesmo formato
+se aplica a todos os tipos:
 
-- Identificar quais arquivos no diretório de instalação contêm strings de diálogo legíveis.
-- Candidatos típicos em jogos Capcom PS1/PC: arquivos `.BIN`, `.DAT`, `.ARC`.
-- Método: abrir no HxD e buscar strings reconhecíveis do jogo ("Ryu", "Cray", "Nina").
-
-### 2. Encoding / charset
-
-- [ ] ASCII puro?
-- [ ] Shift-JIS com tabela de substituição?
-- [ ] Encoding customizado com tabela própria?
-- [ ] Suporte a diacríticos? (validar com pangrama pt-BR in-game)
-
-### 3. Estrutura de cada string
-
-- [ ] Terminador: `\x00`? comprimento prefixado? outro?
-- [ ] Tokens de controle (quebra de linha, pausa, cor, nome do personagem)?
-
-### 4. Estrutura de ponteiros
-
-- [ ] Inline (no bytecode, como SDAT)?
-- [ ] Tabela central (offsets de todas as strings num header)?
-- [ ] Sem ponteiro (strings contíguas, tamanho fixo)?
-
-### 5. Restrições de tamanho
-
-- [ ] Byte budget por string?
-- [ ] Limite de caracteres por linha de diálogo?
-- [ ] Limite de linhas por caixa de diálogo?
-
----
-
-## Tabela de caracteres
-
-> Preencher após análise do hex dump.
-
-| Byte(s) hex | Char / Token | Notas |
+| Família | Conteúdo | Exemplo |
 |---|---|---|
-| TBD | TBD | TBD |
+| `AREAD*.DAT` | Diálogo principal de cenas (field events) | `AREAD001.DAT` |
+| `AREAS*.DAT` | Scripts de área (cutscenes, NPCs avançados) | `AREAS001.DAT` |
+| `AREAE*.DAT` | Eventos de área (encuentros, interações) | `AREAE001.DAT` |
+| `AREAM*.DAT` | Mapas (NPC dialog de campo aberto) | `AREAM000.DAT` |
+| `SHOP.DAT`, `CAMP.DAT`, `DEMO.DAT` | UI de loja, menu camp, demo/intro | — |
 
 ---
 
-## Tokens de controle
+## 2. Formato do container DAT
 
-> Preencher após análise.
+```
+[0:4]       = TOC size (little-endian uint32) — ex. 0xB0 = 176 bytes = 11 entradas × 16
+[4:TOC_SZ]  = entradas do TOC, cada uma de 16 bytes:
+    [0:4]   = offset da seção no arquivo (absoluto)
+    [4:8]   = tamanho da seção em bytes
+    [8:12]  = flags
+    [12:16] = tipo
+```
 
-| Token | Byte(s) hex | Significado |
+A entrada 0 do TOC é o header global (v[0]=TOC_SIZE, v[1]=main_data_size).
+As entradas 1..N descrevem seções adicionais.
+
+---
+
+## 3. Seção de texto
+
+Identificada pela heurística: primeira seção cuja tabela de ponteiros + conteúdo pós-tabela
+apresenta ≥ 70% de bytes ASCII com palavras reais em inglês.
+
+**Estrutura interna da seção de texto:**
+
+```
+[0:PTR_TABLE_SIZE]        = tabela de ponteiros 2-byte (little-endian uint16)
+                            valor[0] = PTR_TABLE_SIZE (= tamanho da própria tabela em bytes)
+                            PTR_TABLE_SIZE = 0x200 para AREAD/AREAS/AREAE/AREAM
+                            PTR_TABLE_SIZE variável para SHOP/CAMP/DEMO
+[PTR_TABLE_SIZE:end]      = strings null-terminadas (\x00) em ASCII
+```
+
+Cada entrada da tabela de ponteiros é um uint16 = offset da string dentro desta seção.
+Entradas duplicadas = aliases (dois slots apontam para a mesma string).
+
+---
+
+## 4. Encoding
+
+**ASCII puro** para o PC port em inglês (bytes 0x20–0x7E são caracteres diretos).
+Bytes fora desse range são tokens de controle — representados como `[XX]` no CSV.
+
+---
+
+## 5. Tokens de controle conhecidos
+
+| Token (hex) | Representação CSV | Significado |
 |---|---|---|
-| TBD | TBD | TBD |
+| `00` | fim de string | terminador null |
+| `01` | `[01]` | newline dentro da caixa de diálogo |
+| `02` | `[02]` | page break (aguarda input, abre nova caixa) |
+| `04` | `[04]` | variável: nome de personagem (dinâmico) |
+| `05` | `[05]` | variável: nome de item/magia (dinâmico) |
+| `0A` | `[0A]` | efeito sonoro / voz |
+| `0B` | `[0B]` | pausa breve (ellipsis beat) |
+| `0C` | `[0C]` | comando de evento (seguido de bytes de parâmetro) |
+| `12` | `[12]` | início de menu de escolha |
+| `14` | `[14]` | ID de speaker (seguido de byte de personagem) |
+| `8B` | `[8B]` | marcador de opção de menu |
+| `93` | `[93]` | código de menu (pós-`[8B][0C]`) |
+| outros | `[XX]` | tokens não mapeados — preservar sem alteração |
+
+**Padrão de speaker ID:**
+```
+[14][C1]@ = Nina falando
+[14][C2]@ = Cray falando
+[14][80]@ = NPC/personagem genérico
+[14][81]@ = variante de NPC
+```
+O byte após `[14]` identifica o personagem; o byte seguinte (ex. `@` = 0x40) pode ser
+um parâmetro de posição ou estilo de caixa.
 
 ---
 
-## Notas de mapeamento
+## 6. Restrições de tamanho
 
-> Registrar descobertas incrementais durante o Passo 00.
+- **byte_budget por string**: comprimento em bytes do conteúdo original + 1 (terminador)
+- **Estratégia de espaço (T1)**: substituição direta se `len(encoded) <= byte_budget`
+- **Estratégia de espaço (T2)**: reconstrução da seção — se total da seção nova ≤ total original
+- **Estratégia de espaço (T3)**: expansão da seção (atualiza TOC + offsets subsequentes)
+- **Overflow irredutível (T4)**: quando nenhuma estratégia cabe; enviar para reescrita por LLM
 
-*(vazio — preencher durante a análise)*
+---
+
+## 7. Ponteiros
+
+**Tabela central no início da seção de texto** (ver seção 3 acima).
+Offsets são relativos ao início da seção.
+Ponteiros duplicados (aliases) devem ser preservados.
+
+---
+
+## 8. Variantes de localização
+
+O diretório `english/DAT/` contém a versão EN (corpus de extração).
+O diretório `japanese/DAT/` contém a versão JP (para referência de lore/nomes).
+Mesma estrutura de container e seções entre as duas versões.
