@@ -24,6 +24,8 @@ Para cada linha do corpus, definir intenção, identificar entidades presentes, 
 
 ## ⬛ INPUT GATE — VERIFICAR ANTES DE INICIAR
 
+> Ver também `framework/skills/_pre_task.md` — decisões fechadas do projeto que antecedem este skill.
+
 | Artefato | Critério |
 |----------|---------|
 | `glossary.csv` | Existe; verificação de cobertura do Passo 4 aprovada |

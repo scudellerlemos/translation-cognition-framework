@@ -109,7 +109,7 @@ flowchart LR
 
 ## Princípios arquiteturais
 
-Cinco decisões sustentam tudo. Cada uma resolve um dos problemas acima.
+Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 
 - **Scene as Stateless Job** — cada cena roda isolada, com contexto **O(cena)** (não O(histórico)).
   Mata o estouro de janela e torna o pipeline resumível: cair na cena 40 não perde as 39 anteriores.
@@ -123,6 +123,13 @@ Cinco decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 - **Gates explícitos** — a IA **propõe**, gates determinísticos **aprovam**, um script **aplica**.
   Nada entra no dado canônico sem passar por uma verificação reproduzível. Ver
   [`framework/docs/GOVERNANCE.md`](framework/docs/GOVERNANCE.md).
+- **Versionamento de artefatos e prompts** — todo artefato carrega as instruções exatas que o
+  produziram (`doctrine_hash`, `model_id`, `skills_revision`). Sem proveniência, melhorar um prompt
+  é cego: não há como saber quais cenas foram traduzidas com doutrina obsoleta nem re-traduzir só o
+  que mudou. Ver [ROADMAP — Prioridade #1](ROADMAP.md).
+- **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
+  os arquivos de diálogo, gera um conector determinístico e valida via round-trip. O LLM participa
+  **apenas no bootstrap**; após aprovação, o conector roda sem IA. Piloto: *Breath of Fire IV* (Fase D).
 
 ```mermaid
 flowchart LR
@@ -252,7 +259,7 @@ loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem 
 
 ```mermaid
 flowchart TB
-  bin[("binário do jogo<br/>.sdat · read-only")]:::sta
+  bin[("binário do jogo<br/>read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
   f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
   pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
@@ -296,6 +303,8 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 2. Leia [`framework/README.md`](framework/README.md) — o modelo de camadas e como instanciar um projeto.
 3. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
    um jogo (visual novel), EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
+4. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
+   piloto do Generic Connector System (Fase D), novo engine Capcom.
 4. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..08`.
 
@@ -310,10 +319,11 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ## Status
 
-> junho 2026 — **o jogo de referência está 100% traduzido e verificado** (round-trip byte-idêntico +
-> back-translation de alto risco). A **QA humana literária** e a **pós-produção (build/release)** seguem
-> pendentes — ver [ROADMAP](ROADMAP.md#riscos-do-projeto). O framework saiu do "valida em 2 cenas" e
-> entregou uma obra inteira de ponta a ponta, a custo medido e previsível. **Versão estável: [1.0.0](CHANGELOG.md).**
+> junho 2026 — **o jogo de referência (Utawarerumono) está 100% traduzido e verificado** (round-trip
+> byte-idêntico + back-translation de alto risco). A **QA humana literária** e a **pós-produção
+> (build/release)** seguem pendentes. O framework saiu do "valida em 2 cenas" e entregou uma obra
+> inteira de ponta a ponta, a custo medido e previsível. **Próximo:** *Breath of Fire IV* — piloto
+> do Generic Connector System. **Versão estável: [1.0.0](CHANGELOG.md).** Ver [ROADMAP](ROADMAP.md).
 
 - **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
   (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
@@ -332,8 +342,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
   idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 
-> **Maturidade & riscos:** a postura honesta de risco (alto/médio/baixo: validação estreita, QA humana
-> pendente, pós-produção, etc.) vive em [ROADMAP.md → Riscos do projeto](ROADMAP.md#riscos-do-projeto) — fonte única.
+> **Próximos passos e maturidade do framework:** ver [ROADMAP.md](ROADMAP.md).
 
 ---
 
