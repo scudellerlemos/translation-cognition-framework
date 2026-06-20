@@ -135,7 +135,7 @@ flowchart TB
   done["jogo 100% traduzido"] --> rep["relatório ÚNICO<br/>review_all.xlsx<br/>(amigável p/ humano)"]
   rep --> human["revisor humano<br/>marca linhas"]
   human --> apply{"tipo de correção"}
-  apply -->|"verbatim · texto pronto"| free["script aplica · $0"]
+  apply -->|"verbatim · texto pronto"| free["script aplica · R$ 0"]
   apply -->|"nota · pedido"| ai["IA re-traduz<br/>SÓ aquela linha"]
   free --> tm[("TM<br/>— coração")]
   ai --> tm
@@ -150,7 +150,7 @@ flowchart TB
   "Revisão" com filtro, cores por severidade, colunas de input destacadas) — o revisor não precisa "se
   achar". Flags determinísticas pré-marcam o que merece olhar (alto risco, idêntico à fonte, largura de
   balão, suspeita de pt-PT…).
-- **Aplicação barata:** `verbatim` (o revisor já escreveu o texto) custa **$0**; `nota` (o revisor
+- **Aplicação barata:** `verbatim` (o revisor já escreveu o texto) custa **R$ 0**; `nota` (o revisor
   descreve o que quer) dispara a IA **só naquela linha**.
 - **TM = consistência + reuso.** Reconstruída por `state_index` a partir das `base_translations`, ela
   garante que o mesmo termo seja traduzido igual em todo lugar e que nada precise ser refeito.

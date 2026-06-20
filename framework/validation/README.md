@@ -3,12 +3,12 @@
 Camada de **gates executáveis** do pipeline — a contraparte de código dos schemas/regras em prosa.
 Genéricos: descobrem tudo lendo o `project.json` da instância; **não contêm dados de obra**.
 
-- **`validate.py`** — schemas + invariantes estruturais (B1).
+- **`validate.py`** — schemas + invariantes estruturais.
 - **`naturalness_lint.py`** — smells de naturalidade/tradução (apoio à Carta de Governança).
 
 ---
 
-## `validate.py` — Validation leve (B1)
+## `validate.py`
 
 Validadores **executáveis** dos artefatos do pipeline — a contraparte de código dos schemas em prosa
 (`framework/schemas/artifacts_schema.md`).

@@ -69,7 +69,7 @@ flowchart LR
 | Arquivo | Função |
 |---|---|
 | `quality_gate.py` | Cruza veredito de back-translation + cobertura; `--export` da worklist `revise`. |
-| `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim ($0) ou nota cirúrgica; `--max-usd`. Persiste `qa_effectiveness.jsonl` (`total_marked` vs `applied`) a cada ciclo. |
+| `quality_review.py` | Relatório humano **XLSX** amigável; aplica verbatim (R$ 0) ou nota cirúrgica; `--max-usd`. Persiste `qa_effectiveness.jsonl` (`total_marked` vs `applied`) a cada ciclo. |
 | `quality_fix.py` | Re-traduz dirigido só os offsets `revise` da worklist; `--max-usd`. |
 | `glossary_lint.py` | Consistência de glossário cross-capítulo: termo do EN sem a forma canônica no pt-BR → candidatos p/ revisão. |
 | `cost_report.py` | Agrega `api_ledger.jsonl` (custo real por modelo/tipo/cena; gasto desperdiçado). |
