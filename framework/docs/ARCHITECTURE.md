@@ -143,7 +143,7 @@ comprovado vivo, além do alvo acima:
 - **Estouro de sessão morto:** o contexto por execução é O(cena); a sessão de chat só lança o driver
   (`run_chapter.py`) e lê o resumo — footprint constante, independente do nº de capítulos.
 - **Custo medido e controlado:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
-  gasto real acumulado **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5), **$0 desperdiçado**.
+  gasto real acumulado **~R$ 65,9** (Sonnet R$ 50,6 · Opus R$ 7,8 · Haiku R$ 7,5), **R$ 0 desperdiçado**.
   Alavancas codadas: Batch API **−50%**, **tiering** por complexidade (Haiku simples, Sonnet multi-linha,
   Opus só back-translation), **dedup por TM**, **back-translation em batch**.
 - **Custo PREVISÍVEL (a engenharia que fecha o caso p/ orçamento baixo):**
