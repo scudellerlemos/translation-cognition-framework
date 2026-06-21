@@ -1,75 +1,29 @@
-# Translation Cognition Framework
-## Framework SDD para tradução baseada em cognição narrativa
+# Translation Cognition Framework — guia do framework
 
-Framework spec-driven para localização de obras narrativas complexas (jogos, filmes, séries).
-Separa **entendimento, estrutura, regras, planejamento, execução e validação** para preservar
-identidade, tom e consistência ao longo de corpora grandes.
+> O processo + o motor para localizar obras narrativas longas: IA cercada na cognição, estado externalizado, gates determinísticos.
+> **Validado em produção:** 16 capítulos, 146 cenas, ~45.100 linhas, R$ 0 desperdiçado.
 
-### Em 30 segundos
-
-| | |
-|---|---|
-| **O que é** | O processo + o motor genéricos para localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — IA cercada na cognição, estado externo, gates determinísticos. |
-| **A prova** | Validado num jogo real 100% traduzido e verificado: 16 capítulos, 146 cenas, ~45.100 linhas, **round-trip byte-idêntico**. Ver [a instância](../projects/utawarerumono/README.md). |
-| **O diferencial** | A IA só **propõe**; **gates determinísticos julgam**; o **humano é o juiz final**. Nada entra no dado canônico sem prova reproduzível. |
-
-> Conceitos e o "porquê" das 4 camadas estão no [README raiz](../README.md). Esta página mostra a
-> **organização do código** e como **instanciar** um projeto novo.
+Esta página mostra a **organização do código** e como **instanciar um projeto novo**.
+Conceitos, arquitetura e o "porquê" das decisões → [README raiz](../README.md).
 
 ---
 
-## Estrutura de pastas (como o repositório se organiza)
+## Estrutura de pastas
 
-> **Não confunda com as camadas conceituais.** O **modelo conceitual** é de **4 camadas** — Cognition /
-> State / Execution / Validation (ver o [README raiz](../README.md#a-arquitetura-em-4-camadas)). O mapa
-> abaixo é a **estrutura de pastas**: onde cada coisa *mora* no disco. A última coluna liga cada pasta às
-> camadas que ela implementa.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  framework/skills/         O PROCESSO (como)                  │
-│  Genérico. Os passos 00..08 do SDD. Nunca contém dados de obra│
-├─────────────────────────────────────────────────────────────┤
-│  framework/media-profiles/ A CATEGORIA (jogos/filmes/séries)  │
-│  Formato de fonte, tokens, timing, restrições de comprimento. │
-├─────────────────────────────────────────────────────────────┤
-│  framework/connectors/     A I/O (código determinístico)      │
-│  Extração (meio→corpus) e reinserção (corpus→meio).           │
-├─────────────────────────────────────────────────────────────┤
-│  framework/runtime/        O HARNESS (orquestração det.)      │
-│  Cena = job stateless e limitado; interface de modelo.        │
-├─────────────────────────────────────────────────────────────┤
-│  projects/<título>/        A INSTÂNCIA (o quê)                │
-│  project.json + profile/ + artifacts/ + connector/. Os dados. │
-└─────────────────────────────────────────────────────────────┘
-```
-
-| Pasta | Papel | Implementa as camadas |
+| Pasta | Papel | Camadas |
 |---|---|---|
-| `framework/skills/` | o processo SDD (00..08), em prosa | Cognition (guia) + Validation (gates) |
-| `framework/media-profiles/` | preocupações por tipo de mídia | — (configuração) |
-| `framework/connectors/` | I/O binário ↔ corpus (round-trip) | Execution + Validation |
-| `framework/runtime/` | o harness executável | State + Execution + Cognition |
-| `projects/<título>/` | a instância (os dados) | — (os artefatos) |
+| `framework/skills/` | Passos 00..08 do SDD — o processo, em prosa | Cognition + Validation |
+| `framework/media-profiles/` | Preocupações por tipo de mídia (jogos/filmes/séries) | — |
+| `framework/connectors/` | I/O binário ↔ corpus (extração + reinserção, round-trip) | Execution + Validation |
+| `framework/runtime/` | Harness executável — cena = job stateless | State + Execution + Cognition |
+| `projects/<título>/` | A instância: `project.json` + artefatos + conector | — |
 
-**Princípio central:** as skills genéricas resolvem tudo que é específico de uma obra lendo o
-`project.json` e os artefatos gerados. Nenhum nome de personagem, termo de lore, token de engine
-ou idioma vive dentro de `framework/`.
-
-**Conector (camada de I/O):** para jogos antigos, o texto está dentro de um binário e precisa ser
-extraído com hex editor + tabela de caracteres. O conector modela isso como **código Python
-determinístico**: o usuário fornece o binário, a IA escreve `extract.py` (binário → `dialogs.csv`) e
-`reinsert.py` (`approved_translations.csv` → binário traduzido em `output/`). Propriedade-chave:
-**round-trip** — extrair e reinserir sem mudanças regenera o binário byte-a-byte. Ver `framework/connectors/`.
-
-> **Convenções de conector (genéricas, travadas por teste):** os scripts **nunca contêm texto da obra**
-> (leem dos artefatos) e o **round-trip** é um gate de regressão automatizado (`connector/test_roundtrip.py`,
-> pytest) — incluindo um guard data-driven que falha se houver frase hardcoded em `.py`. Servem de
-> referência para qualquer instância nova.
+> **Princípio:** as skills genéricas resolvem tudo que é específico de uma obra lendo o `project.json`.
+> Nenhum nome de personagem, termo de lore ou idioma vive dentro de `framework/`.
 
 ---
 
-## ESTRUTURA
+## Arquivos
 
 ```
 framework/
