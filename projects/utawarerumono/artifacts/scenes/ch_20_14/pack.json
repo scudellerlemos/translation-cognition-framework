@@ -1,0 +1,2583 @@
+{
+  "scene": "ch_20_14",
+  "scene_id": "20_14",
+  "n_lines": 199,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Akuruka",
+      "category": "Objeto",
+      "target_translation": "Akuruka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Mascaras amaldicoadas que concedem poder; 'Akuruka do Raio' e de Mikazuchi. Lore central do arco."
+    },
+    {
+      "term": "Bokoinante",
+      "category": "Personagem",
+      "target_translation": "Bokoinante",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Subordinado do Dekopompo. Menor."
+    },
+    {
+      "term": "Dekopompo",
+      "category": "Personagem",
+      "target_translation": "Dekopompo",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "General-Pilar por sucessao. MASCULINO. Voz pomposa/arrogante."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Maro",
+      "category": "Personagem",
+      "target_translation": "Maro",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido afetuoso de Maroro ('thee call me Maro!'). NAO e entidade nova; manter consistente com Maroro (fala arcaica thee/hath/thou)."
+    },
+    {
+      "term": "Maroro",
+      "category": "Personagem",
+      "target_translation": "Maroro",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Erudito/escriba/mago comico e franzino do grupo do Ukon (cap.12); magia de fogo com cantico+danca longos. Fala em registro ARCAICO e comico (pleaseth/mine own; gag de cicio s->sh). Gruda no Haku como 'benfeitor'."
+    },
+    {
+      "term": "Master",
+      "category": "Cultural",
+      "target_translation": "Mestre",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorifico (Maroro -> 'Master Ukon' = 'Mestre Ukon'). Traduzir."
+    },
+    {
+      "term": "Mikazuchi",
+      "category": "Personagem",
+      "target_translation": "Mikazuchi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General Imperial da Esquerda de Yamato; usuario do Akuruka do Raio; irmao do falecido Raiko. Com Oshtor = os Twin Shields. Disfarce 'Sakon' (velho vendedor de doces) NAO aparece no corpus 11-14."
+    },
+    {
+      "term": "Nakwan",
+      "category": "Termo",
+      "target_translation": "Nakwan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Soldados-escravos descartaveis de Uzurusha (definido in-corpus). manter_original + glosar."
+    },
+    {
+      "term": "Uzurusha",
+      "category": "Local",
+      "target_translation": "Uzurusha",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Pais/imperio nomade ao NORTE de Yamato; horda invasora. manter_original. Fonte: wiki."
+    },
+    {
+      "term": "Uzurushan",
+      "category": "Etnia",
+      "target_translation": "Uzurushan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico/soldado de Uzurusha. 'Uzurushan army' -> 'exercito uzurushano'; manter 'Uzurushan' como etnia."
+    },
+    {
+      "term": "Yamatan",
+      "category": "Etnia",
+      "target_translation": "de Yamato",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico de Yamato (ja coberto). 'Yamatan army' -> 'exercito de Yamato'; 'yamato' invariavel. Forma derivada, nao entidade nova."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Meanwhile, in another area along the western\\n",
+      "target": "Enquanto isso, em outra área ao longo do\\n",
+      "speaker": "NARRADOR",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "border...",
+      "target": "fronteira...",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "An army lead by Dekopompo of the Eight Pillar\\n",
+      "target": "Um exército liderado por Dekopompo, dos Oito Pilares,\\n",
+      "speaker": "NARRADOR",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Generals fights to stall the Uzurushan army.",
+      "target": "Generais batem para estancar o exército Uzurushan.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Unlike the other battlefields, the two armies\\n",
+      "target": "Ao contrário dos outros campos, os dois exércitos\\n",
+      "speaker": "NARRADOR",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "here split into smaller units, skirmishing while\\n",
+      "target": "se dividiram em unidades menores, escaramuçando enquanto\\n",
+      "speaker": "NARRADOR",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "scattered...",
+      "target": "dispersos...",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Reporting!",
+      "target": "Relatando!",
+      "speaker": "SOLDIER",
+      "from_scene": "20_01"
+    },
+    {
+      "source": "Our soldiers have defeated the enemy unit that\\n",
+      "target": "Nossos soldados derrotaram a unidade inimiga que\\n",
+      "speaker": "NARRADOR",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "was approaching from our left!",
+      "target": "se aproximava do nosso lado esquerdo!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I see! Good. Good.",
+      "target": "Vejo! Bom. Muito bom.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Hm...? Are you certain?",
+      "target": "Hm...? Tem certeza?",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Lord Dekopompo! The unit approaching our position\\n",
+      "target": "Lorde Dekopompo! A unidade que se aproximava\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "has begun to retreat. Another glorious victory\\n",
+      "target": "começou a recuar. Mais uma gloriosa vitória\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "for us!",
+      "target": "para nós!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyeh-peh-peh-peh-peh!\\n",
+      "target": "Nyeh-peh-peh-peh-peh!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Good. Very good.",
+      "target": "Bom. Muito bom.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Huzzah! A sweeter missive of relief was never\\n",
+      "target": "Ótimas novas! Jamais me chegou mensagem mais doce\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "had...",
+      "target": "tínhamos...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Good now, let us recall the men, that they may\\n",
+      "target": "Muito bem, recolhamos os homens para que possam\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "prepare for battles on the morrow.",
+      "target": "preparar para batalhas de amanhã.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyeh?",
+      "target": "Nhê?",
+      "speaker": "Maroro",
+      "from_scene": "12_13"
+    },
+    {
+      "source": "What drivel are you spouting? Why would I pass up\\n",
+      "target": "Que tolice é essa? Por que eu desperdiçaria\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "such a golden opportunity as this!?",
+      "target": "uma oportunidade tão dourada assim!?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "We shall continue our assault. Bokoinante,\\n",
+      "target": "Continuaremos o ataque. Bokoinante,\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "give the order to pursue.",
+      "target": "Ordenar a perseguição.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Understood, sir!",
+      "target": "Entendido, senhor!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "N-No, thou mustn't!",
+      "target": "N-Não, você não pode!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Hast thou forgotten? We are far outmatch'd by\\n",
+      "target": "Acaso esquecestes? Somos superados em número\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "such opposed numbers!",
+      "target": "Contra números tão grandes!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Hmph. Their numbers don't matter. They are only\\n",
+      "target": "Hmph. Os números deles não importam. São apenas\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "an undisciplined mob. Were you not watching the\\n",
+      "target": "uma turba indisciplinada. Não estava observando o\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "battle?",
+      "target": "Batalha?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "P-Prithee, master, if we act without caution,\\n",
+      "target": "P-Peço-vos, mestre, se agirmos sem cautela,\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "we act in grave error!",
+      "target": "Atuamos em erro grave!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Silence! I have heard enough from you!\\n",
+      "target": "Silêncio! Já ouvi o suficiente de você!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Don't get a big head because of one scrap of\\n",
+      "target": "Não se envaideça por uma migalha de\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "praise from me!",
+      "target": "Louvor de mim!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "My lord is absolutely right!\\n",
+      "target": "Meu senhor está absolutamente certo!\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Know your place! ",
+      "target": "Conheça seu lugar!",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "O-Ohhhh...",
+      "target": "O-Oohhh...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "See! Look at that! Ordering the pursuit was the\\n",
+      "target": "Vejam! Olhem só! Ordenar a perseguição foi a\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "correct course of action!",
+      "target": "Curso correto de ação!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "W-Wait! Please, desist!",
+      "target": "E-Espere! Por favor, cesse!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Those are all but nakwans!",
+      "target": "Todos são apenas nakwans!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "They are not true countrymen of Uzurusha!",
+      "target": "Não são verdadeiros compatriotas de Uzurusha!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Hmph. You would have me show them mercy? How\\n",
+      "target": "Hmph. Querem que eu lhes mostre piedade? Que\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "foolish. Do you not understand that they are\\n",
+      "target": "tolice. Não entendem que eles são\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "traitors?",
+      "target": "Traidores?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I do not dispute thus! Hark thou, to dispatch\\n",
+      "target": "Não discuto isso! Ouvi-me bem, mandar abater\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "even a thousand nakwans will not hinder Uzurusha\\n",
+      "target": "mesmo mil nakwans não ameaça Uzurusha\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "a whit!",
+      "target": "Nada disso!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I'faith, it does naught but exhaust our own\\n",
+      "target": "Na verdade, só serve para esgotar as nossas\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "warriors...",
+      "target": "Guerreiros...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Arrrrgh! I've had enough out of you! Stop\\n",
+      "target": "Argh! Já chega de você! Pare de\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "dampening my mood! I am TRYING to enjoy my\\n",
+      "target": "estragar meu humor! Estou TENTANDO aproveitar minha\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "victory!",
+      "target": "Vitória!",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Bokoinante! Give the orders to continue the\\n",
+      "target": "Bokoinante! Dê as ordens para continuar o\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "pursuit!",
+      "target": "Perseguição!",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "This bodeth ill... Oh, this bodeth ill indeed...",
+      "target": "Isto pressagia mal... Oh, isto pressagia muito mal mesmo...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyah... If I recall, we had one more unit\\n",
+      "target": "Hmm... Se bem me lembro, ainda tínhamos uma unidade\\n",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "stationed somewhere around here.",
+      "target": "Posicionado em algum lugar por aqui.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What!? Nay, that unit is--!",
+      "target": "O quê!? Não, essa unidade é--!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Very well, give them the orders to pursue\\n",
+      "target": "Muito bem, passe a ordem para que persigam\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "as well. Our time has come! Let us crush\\n",
+      "target": "também. Nossa hora chegou! Vamos esmagar\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Uzurusha!",
+      "target": "Uzurusha!",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "H-Hold, I say! Move'st thou not those men!\\n",
+      "target": "E-Espera, digo eu! Não movais esses homens!\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "That unit--",
+      "target": "Essa unidade--",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I thought I told you to be silent!",
+      "target": "Pensei ter dito para você ficar em silêncio!",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyeh peh peh peh.\\n",
+      "target": "Nyeh peh peh peh.\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "All according to plan...",
+      "target": "Tudo conforme o plano...",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "R-Reporting!",
+      "target": "R-Reportando!",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What is it?",
+      "target": "O quê?",
+      "speaker": "Kuon",
+      "from_scene": "13_02"
+    },
+    {
+      "source": "Our units in pursuit have been ambushed from\\n",
+      "target": "Nossas unidades em perseguição foram emboscadas\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "the side!",
+      "target": "Do flanco!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What!?",
+      "target": "O quê!?",
+      "speaker": "Haku",
+      "from_scene": "12_03"
+    },
+    {
+      "source": "I-It seems as though the enemy had hidden\\n",
+      "target": "A-Ao que parece, o inimigo havia se escondido\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "soldiers within the mountains...",
+      "target": "Soldados dentro das montanhas...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyuurrrrgh...",
+      "target": "Nyuurrrrgh...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Alack, I knew't!",
+      "target": "Ai, eu pressentira!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What? What is that supposed to mean!?",
+      "target": "O quê? O que se supõe que signifique!?",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Those mountains give perfect vantage for a\\n",
+      "target": "Essas montanhas são perfeitas para uma\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "battalion readied in ambush!",
+      "target": "Um batalhão preparado em emboscada!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "In my caution, I had set aside that regiment\\n",
+      "target": "Com minha cautela, havia reservado aquele regimento\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "as safeguard against such skullduggery...",
+      "target": "Como proteção contra tal astúcia...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Wh-Why didn't you say something earlier!?",
+      "target": "P-Por que não disse algo antes!?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Earnest attempts were swift rebuffed, Master.",
+      "target": "Tentativas sinceras foram rapidamente rejeitadas, Mestre.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Wh-What shall we do?",
+      "target": "P-O que fazer agora?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "At this rate, the separated units in front\\n",
+      "target": "Nesse ritmo, as unidades separadas à frente\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "will be decimated!",
+      "target": "Serão dizimados!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyuuurrrrgh... Hm? Wait a minute.",
+      "target": "Nyuuurrrrgh... Hm? Espera um minuto.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I-I know! We will have the units in front\\n",
+      "target": "E-Eu sei! Faremos as unidades à frente\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "turn back...! And we catch the ambushers in a\\n",
+      "target": "recuarem...! E pegamos os emboscadores em uma\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "pincer attack!",
+      "target": "Ataque de pinça!",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Ah! A flawless strategy, sir!",
+      "target": "Ah! Uma estratégia impecável, senhor!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "No no no! Thou mustn't! The units in front must\\n",
+      "target": "Não, não, não! Não deveis! As unidades à frente\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "soldier on, and thus 'scape their dire straits!",
+      "target": "Continue lutando e escapa de seu destino terrível!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What? Are you a fool, you painted little\\n",
+      "target": "O quê? É um tolo, seu palhaço pintado e\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "imbecile?",
+      "target": "Imbecil?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Bokoinante, pay no mind to what he says.\\n",
+      "target": "Bokoinante, não dê ouvidos ao que ele diz.\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "All he will do is cause more confusion.",
+      "target": "Tudo que ele fará é causar mais confusão.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Waaaah! I-I pray you, master, a willing ear!",
+      "target": "Waaaah! Por favor, Mestre, escuta-me com boa vontade!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "It did not work... The fleeing enemies have\\n",
+      "target": "Não funcionou... Os inimigos em fuga\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "turned in kind, and now WE are caught in a\\n",
+      "target": "revidaram, e agora NÓS é que estamos em uma\\n",
+      "speaker": "SOLDADO",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "pincer attack...",
+      "target": "Ataque de pinça...",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Wh... Wh-Wh-Wha...!",
+      "target": "Wh... Wh-Wh-O quê...!",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I warned, and warned, and warned again, master...",
+      "target": "Avisei, avisei e avisei novamente, mestre...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Silence! Y-Your babbling distracted me!\\n",
+      "target": "Silêncio! V-Você me distraiu com sua tagarelice!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Do something, you pasty little clown!\\n",
+      "target": "Faça alguma coisa, seu palhacinho pálido!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Aren't you my tactician!?",
+      "target": "Não me diga que é você meu estrategista!?",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Th-Thou askest the impossible!",
+      "target": "Tu... tu pedis o impossível!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Master Haku... Please, help me...!",
+      "target": "Mestre Haku... Por favor, me ajude...!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Uzurushan soldier",
+      "target": "soldado Uzurushan",
+      "speaker": "[SYSTEM]",
+      "from_scene": "20_04"
+    },
+    {
+      "source": "Hyahahahahaha! Look at these guys!\\n",
+      "target": "Hyahahahahaha! Olhem só esses caras!\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "They're so pathetic!",
+      "target": "Que patéticos!",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What is wrong with these Yamatan soldiers?\\n",
+      "target": "O que há de errado com esses soldados de Yamato?\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "First they charge, then they flee! What are\\n",
+      "target": "Primeiro atacam, depois fogem! O que são\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "they thinking?",
+      "target": "eles estão pensando?",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Heh heh! They've gotta have a complete idiot\\n",
+      "target": "Heh heh! Devem ter um idiota completo\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "for a tactician.",
+      "target": "de um estrategista.",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "No doubt! Hyahahahahaha!",
+      "target": "Sem dúvida! Hyahahahahaha!",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "C'mon, let's finish off these pieces of trash.",
+      "target": "Vamos, vamos acabar com esses lixos.",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Yeah, righ... Huh?",
+      "target": "É... Hein?",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What was that...? A gust of wind?",
+      "target": "O que foi aquilo...? Um golpe de vento?",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Wh-What the--!?",
+      "target": "O-O que—!?",
+      "speaker": "Protagonista",
+      "from_scene": "18_04"
+    },
+    {
+      "source": "What?",
+      "target": "Que?",
+      "speaker": "Haku",
+      "from_scene": "12_02"
+    },
+    {
+      "source": "Your arms... What happened?",
+      "target": "Seus braços... O que aconteceu?",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "My arms? Wh...?",
+      "target": "Meus braços? O quê...?",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "My arms... are gone!?",
+      "target": "Meus braços... se foram!?",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Why are you... leaning to the side so much...?",
+      "target": "Por que você... está se inclinando tanto pra um lado...?",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Huh? What are you... Ahhhh!\\n",
+      "target": "Hã? O que você...? Aaaaah!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Y-Your head...!",
+      "target": "Sua... sua cabeça...!",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "AAAAAAAGHHH!",
+      "target": "AAAAAAAGHHH!",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Yamatan Soldier",
+      "target": "Soldado de Yamato",
+      "speaker": "SYSTEM",
+      "from_scene": "12_10"
+    },
+    {
+      "source": "Lord... Mikazuchi?",
+      "target": "Senhor... Mikazuchi?",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "It's Lord Mikazuchi...!",
+      "target": "É o Senhor Mikazuchi...!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Lord Mikazuchi has come to save us!",
+      "target": "O Senhor Mikazuchi veio nos salvar!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I am lightning made flesh.\\n",
+      "target": "Sou o relâmpago feito carne.\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Akuruka, grant me thy infinite power, and\\n",
+      "target": "Akuruka, concede-me teu poder infinito, e\\n",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I shall fly clad in the storm.",
+      "target": "Vou voar cingido pela tempestade.",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "...HAH!",
+      "target": "...HÁ!",
+      "speaker": "Mikazuchi",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "What's going on...? What...?\\n",
+      "target": "O que está acontecendo...? O que...?\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "The Imperial General of the Left?\\n",
+      "target": "O General Imperial da Esquerda?\\n",
+      "speaker": "Personagem",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Mikazuchi is here!?",
+      "target": "Mikazuchi está aqui!?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Yes, sir.",
+      "target": "Sim, senhor.",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Impossible... I have heard nothing of this!\\n",
+      "target": "Impossível... Não ouvi nada sobre isso!\\n",
+      "speaker": "Personagem",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I--",
+      "target": "Eu—",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "'T-Tis our fortune, master! We must call our\\n",
+      "target": "É-É nossa sorte, mestre! Devemos chamar nossas\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "troops back while the chance yet remaineth!",
+      "target": "tropas enquanto a ocasião ainda o permitir!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Still you dare talk back!? I can't sit idly by\\n",
+      "target": "Ainda ousa contradizer!? Não posso ficar parado\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "while Mikazuchi takes all the glory!\\n",
+      "target": "enquanto Mikazuchi fica com toda a glória!\\n",
+      "speaker": "Dekopompo",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "We must launch a--",
+      "target": "Devemos lançar um—",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Thou wilt stay thy tongue!",
+      "target": "Tu vais calar tua língua!",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyegh...!?",
+      "target": "Nyégh...!?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "If the advance should persist, we are verily\\n",
+      "target": "Se o avanço persistir, estamos verdadeiramente\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "undone!",
+      "target": "desfeito!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Master Mikazuchi hath carved a path that we\\n",
+      "target": "O Mestre Mikazuchi abriu um caminho que nós\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "might 'scape...",
+      "target": "possa escapar...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "We must needs leave the fray in his hands,\\n",
+      "target": "Devemos deixar o combate em suas mãos,\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "and hie our troops to safety!",
+      "target": "e apressemos nossas tropas à segurança!",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nyuuurgh...",
+      "target": "Nyuuurgh...",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Please, master!",
+      "target": "Por favor, senhor!",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Graaaah, fine. Fine!",
+      "target": "Tá bom, tá bom!",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Bokoinante! Give our troops the order to retreat!",
+      "target": "Bokoinante! Dê a ordem de retirada às nossas tropas!",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "You... truly approve of this, sir?",
+      "target": "Você... realmente aprova isto, senhor?",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Of course not! But if our tactician wills it,\\n",
+      "target": "Claro que não! Mas se nosso tático assim quer,\\n",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "oh! Well then, it MUST be so!",
+      "target": "ah! Bem, então DEVE ser assim!",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "I-I say!?",
+      "target": "E-Então!?",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Curses. How humiliating...",
+      "target": "Que raiva. Humilhante...",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "All troops have completed their retreat.",
+      "target": "Todas as tropas completaram a retirada.",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "There seems to be no pursuit. Lord Mikazuchi\\n",
+      "target": "Parece que não há perseguição. O Senhor Mikazuchi\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "appears still to be holding them off for us.",
+      "target": "parece ainda estar os segurando para nós.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "...*Glare*",
+      "target": "...*Olhar fixo*",
+      "speaker": "Protagonista",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Er... I mean... Never mind.",
+      "target": "Er... Quer dizer... Esqueça.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Phew... Lord Mikazuchi, thy fortitude hath\\n",
+      "target": "Ufa... Senhor Mikazuchi, tua fortitude hath\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "saved us all.",
+      "target": "nos salvou a todos.",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "However, our casualties were many. We succeeded\\n",
+      "target": "Porém, nossas baixas foram muitas. Conseguimos\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "in halting the enemy invasion, but to call it\\n",
+      "target": "deter a invasão inimiga, mas chamar isso de\\n",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "\"victory\" would be...",
+      "target": "\"vitória\" seria...",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "...Bokoinante. You take care of the report.",
+      "target": "...Bokoinante. Você fica responsável pelo relatório.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Huh!?",
+      "target": "Hein!?",
+      "speaker": "Haku",
+      "from_scene": "15_05"
+    },
+    {
+      "source": "NYEH!",
+      "target": "NYÉH!",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Nngh... U-Understood, Sir...",
+      "target": "Nnh... E-Entendido, Senhor...",
+      "speaker": "Bokoinante",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Oh, and you. Maroro.",
+      "target": "Ah, e você. Maroro.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Ay...?",
+      "target": "Eu...?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "There will be a detailed report on YOUR blunders\\n",
+      "target": "Haverá um relatório detalhado dos SEUS erros\\n",
+      "speaker": "Ukon",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "today. I suggest you prepare for a dock in pay.",
+      "target": "hoje. Sugiro que você se prepare para um corte no pagamento.",
+      "speaker": "Oshtor",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "O me!?",
+      "target": "Ah, meu Deus!?",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "A-Alas...",
+      "target": "Ai... Ai...",
+      "speaker": "Maroro",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Damn you, Mikazuchi... Just you watch...!",
+      "target": "Maldito você, Mikazuchi... Só espera...!",
+      "speaker": "Haku",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "GlobalSRT",
+      "target": "GlobalSRT",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "target",
+      "target": "target",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "ch120_01",
+      "target": "cap120_01",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "weapon2",
+      "target": "arma2",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "body",
+      "target": "corpo",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "face",
+      "target": "rosto",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "hair",
+      "target": "cabelo",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "mask",
+      "target": "másc.",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "env_bone",
+      "target": "env_bone",
+      "speaker": "Sistema",
+      "from_scene": "20_13"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0x1fa6a1",
+      "source": "Meanwhile, in another area along the western\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fa6d0",
+      "source": "border...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fa6da",
+      "source": "An army lead by Dekopompo of the Eight Pillar\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fa70a",
+      "source": "Generals fights to stall the Uzurushan army.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fa737",
+      "source": "Unlike the other battlefields, the two armies\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fa767",
+      "source": "here split into smaller units, skirmishing while\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1fa79a",
+      "source": "scattered...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1fa7a7",
+      "source": "Reporting!",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1fa7b2",
+      "source": "Our soldiers have defeated the enemy unit that\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1fa7e3",
+      "source": "was approaching from our left!",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1fa802",
+      "source": "I see! Good. Good.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1fa815",
+      "source": "Hm...? Are you certain?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1fa82d",
+      "source": "Lord Dekopompo! The unit approaching our position\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1fa861",
+      "source": "has begun to retreat. Another glorious victory\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1fa892",
+      "source": "for us!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1fa89a",
+      "source": "Nyeh-peh-peh-peh-peh!\\n",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1fa8b2",
+      "source": "Good. Very good.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1fa8c3",
+      "source": "Huzzah! A sweeter missive of relief was never\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fa8f3",
+      "source": "had...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1fa8fa",
+      "source": "Good now, let us recall the men, that they may\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1fa92b",
+      "source": "prepare for battles on the morrow.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1fa94e",
+      "source": "Nyeh?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1fa954",
+      "source": "What drivel are you spouting? Why would I pass up\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1fa988",
+      "source": "such a golden opportunity as this!?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1fa9ac",
+      "source": "We shall continue our assault. Bokoinante,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fa9d9",
+      "source": "give the order to pursue.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1fa9f3",
+      "source": "Understood, sir!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1faa04",
+      "source": "N-No, thou mustn't!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1faa18",
+      "source": "Hast thou forgotten? We are far outmatch'd by\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1faa48",
+      "source": "such opposed numbers!",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1faa5e",
+      "source": "Hmph. Their numbers don't matter. They are only\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1faa90",
+      "source": "an undisciplined mob. Were you not watching the\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1faac2",
+      "source": "battle?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1faaca",
+      "source": "P-Prithee, master, if we act without caution,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1faafa",
+      "source": "we act in grave error!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x1fab11",
+      "source": "Silence! I have heard enough from you!\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1fab3a",
+      "source": "Don't get a big head because of one scrap of\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fab69",
+      "source": "praise from me!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fab79",
+      "source": "My lord is absolutely right!\\n",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1fab98",
+      "source": "Know your place! ",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1fabaa",
+      "source": "O-Ohhhh...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1fabb5",
+      "source": "See! Look at that! Ordering the pursuit was the\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1fabe7",
+      "source": "correct course of action!",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1fac01",
+      "source": "W-Wait! Please, desist!",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1fac19",
+      "source": "Those are all but nakwans!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x1fac34",
+      "source": "They are not true countrymen of Uzurusha!",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1fac5e",
+      "source": "Hmph. You would have me show them mercy? How\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fac8d",
+      "source": "foolish. Do you not understand that they are\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1facbc",
+      "source": "traitors?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1facc6",
+      "source": "I do not dispute thus! Hark thou, to dispatch\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1facf6",
+      "source": "even a thousand nakwans will not hinder Uzurusha\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1fad29",
+      "source": "a whit!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1fad31",
+      "source": "I'faith, it does naught but exhaust our own\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fad5f",
+      "source": "warriors...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1fad6b",
+      "source": "Arrrrgh! I've had enough out of you! Stop\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fad97",
+      "source": "dampening my mood! I am TRYING to enjoy my\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fadc4",
+      "source": "victory!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1fadcd",
+      "source": "Bokoinante! Give the orders to continue the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fadfb",
+      "source": "pursuit!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1fae04",
+      "source": "This bodeth ill... Oh, this bodeth ill indeed...",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1fae35",
+      "source": "Nyah... If I recall, we had one more unit\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fae61",
+      "source": "stationed somewhere around here.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x1fae82",
+      "source": "What!? Nay, that unit is--!",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x1fae9e",
+      "source": "Very well, give them the orders to pursue\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1faeca",
+      "source": "as well. Our time has come! Let us crush\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1faef5",
+      "source": "Uzurusha!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1faeff",
+      "source": "H-Hold, I say! Move'st thou not those men!\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1faf2c",
+      "source": "That unit--",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1faf38",
+      "source": "I thought I told you to be silent!",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1faf5b",
+      "source": "Nyeh peh peh peh.\\n",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1faf6f",
+      "source": "All according to plan...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1faf88",
+      "source": "R-Reporting!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1faf95",
+      "source": "What is it?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1fafa1",
+      "source": "Our units in pursuit have been ambushed from\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fafd0",
+      "source": "the side!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fafda",
+      "source": "WHAT!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1fafe1",
+      "source": "I-It seems as though the enemy had hidden\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fb00d",
+      "source": "soldiers within the mountains...",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x1fb02e",
+      "source": "Nyuurrrrgh...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1fb03c",
+      "source": "Alack, I knew't!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1fb04d",
+      "source": "What? What is that supposed to mean!?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x1fb073",
+      "source": "Those mountains give perfect vantage for a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fb0a0",
+      "source": "battalion readied in ambush!",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x1fb0bd",
+      "source": "In my caution, I had set aside that regiment\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb0ec",
+      "source": "as safeguard against such skullduggery...",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1fb116",
+      "source": "Wh-Why didn't you say something earlier!?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1fb140",
+      "source": "Earnest attempts were swift rebuffed, Master.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fb16e",
+      "source": "Wh-What shall we do?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1fb183",
+      "source": "At this rate, the separated units in front\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fb1b0",
+      "source": "will be decimated!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1fb1c3",
+      "source": "Nyuuurrrrgh... Hm? Wait a minute.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x1fb1e5",
+      "source": "I-I know! We will have the units in front\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fb211",
+      "source": "turn back...! And we catch the ambushers in a\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fb241",
+      "source": "pincer attack!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1fb250",
+      "source": "Ah! A flawless strategy, sir!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1fb26e",
+      "source": "No no no! Thou mustn't! The units in front must\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1fb2a0",
+      "source": "soldier on, and thus 'scape their dire straits!",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fb2d0",
+      "source": "What? Are you a fool, you painted little\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1fb2fb",
+      "source": "imbecile?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fb305",
+      "source": "Bokoinante, pay no mind to what he says.\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1fb330",
+      "source": "All he will do is cause more confusion.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1fb358",
+      "source": "Waaaah! I-I pray you, master, a willing ear!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fb385",
+      "source": "It did not work... The fleeing enemies have\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fb3b3",
+      "source": "turned in kind, and now WE are caught in a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fb3e0",
+      "source": "pincer attack...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1fb3f1",
+      "source": "Wh... Wh-Wh-Wha...!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1fb405",
+      "source": "I warned, and warned, and warned again, master...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1fb437",
+      "source": "Silence! Y-Your babbling distracted me!\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1fb461",
+      "source": "Do something, you pasty little clown!\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1fb489",
+      "source": "Aren't you my tactician!?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1fb4a3",
+      "source": "Th-Thou askest the impossible!",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1fb4c2",
+      "source": "Master Haku... Please, help me...!",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1fb4e5",
+      "source": "Uzurushan soldier",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1fb4f7",
+      "source": "Hyahahahahaha! Look at these guys!\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x1fb51c",
+      "source": "They're so pathetic!",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1fb531",
+      "source": "What is wrong with these Yamatan soldiers?\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fb55e",
+      "source": "First they charge, then they flee! What are\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fb58c",
+      "source": "they thinking?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1fb59b",
+      "source": "Heh heh! They've gotta have a complete idiot\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb5ca",
+      "source": "for a tactician.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1fb5db",
+      "source": "No doubt! Hyahahahahaha!",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1fb5f4",
+      "source": "C'mon, let's finish off these pieces of trash.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb623",
+      "source": "Yeah, righ... Huh?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1fb636",
+      "source": "What was that...? A gust of wind?",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x1fb658",
+      "source": "Wh-What the--!?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fb668",
+      "source": "What?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1fb66e",
+      "source": "Your arms... What happened?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x1fb68a",
+      "source": "My arms? Wh...?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fb69a",
+      "source": "My arms... are gone!?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1fb6b0",
+      "source": "Why are you... leaning to the side so much...?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb6df",
+      "source": "Huh? What are you... Ahhhh!\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1fb6fd",
+      "source": "Y-Your head...!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fb70d",
+      "source": "AAAAAAAGHHH!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1fb71e",
+      "source": "Yamatan Soldier",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fb72e",
+      "source": "Lord... Mikazuchi?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1fb741",
+      "source": "It's Lord Mikazuchi...!",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1fb759",
+      "source": "Lord Mikazuchi has come to save us!",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1fb77d",
+      "source": "I am lightning made flesh.\\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x1fb79a",
+      "source": "Akuruka, grant me thy infinite power, and\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fb7c6",
+      "source": "I shall fly clad in the storm.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1fb7e5",
+      "source": "...HAH!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1fb7ed",
+      "source": "What's going on...? What...?\\n",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1fb80c",
+      "source": "The Imperial General of the Left?\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1fb830",
+      "source": "Mikazuchi is here!?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1fb844",
+      "source": "Yes, sir.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fb84e",
+      "source": "Impossible... I have heard nothing of this!\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fb87c",
+      "source": "I--",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x1fb880",
+      "source": "'T-Tis our fortune, master! We must call our\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb8af",
+      "source": "troops back while the chance yet remaineth!",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fb8db",
+      "source": "Still you dare talk back!? I can't sit idly by\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1fb90c",
+      "source": "while Mikazuchi takes all the glory!\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x1fb933",
+      "source": "We must launch a--",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1fb946",
+      "source": "Thou wilt stay thy tongue!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x1fb961",
+      "source": "Nyegh...!?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1fb96c",
+      "source": "If the advance should persist, we are verily\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fb99b",
+      "source": "undone!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1fb9a3",
+      "source": "Master Mikazuchi hath carved a path that we\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1fb9d1",
+      "source": "might 'scape...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fb9e1",
+      "source": "We must needs leave the fray in his hands,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fba0e",
+      "source": "and hie our troops to safety!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1fba2c",
+      "source": "Nyuuurgh...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1fba38",
+      "source": "Please, master!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1fba48",
+      "source": "Graaaah, fine. Fine!",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1fba5d",
+      "source": "Bokoinante! Give our troops the order to retreat!",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1fba8f",
+      "source": "You... truly approve of this, sir?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1fbab2",
+      "source": "Of course not! But if our tactician wills it,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fbae2",
+      "source": "oh! Well then, it MUST be so!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1fbb00",
+      "source": "I-I say!?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fbb0a",
+      "source": "Curses. How humiliating...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x1fbb25",
+      "source": "All troops have completed their retreat.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1fbb4e",
+      "source": "There seems to be no pursuit. Lord Mikazuchi\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1fbb7d",
+      "source": "appears still to be holding them off for us.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fbbaa",
+      "source": "...*Glare*",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1fbbb5",
+      "source": "Er... I mean... Never mind.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x1fbbd1",
+      "source": "Phew... Lord Mikazuchi, thy fortitude hath\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1fbbfe",
+      "source": "saved us all.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1fbc0c",
+      "source": "However, our casualties were many. We succeeded\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1fbc3e",
+      "source": "in halting the enemy invasion, but to call it\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fbc6e",
+      "source": "\"victory\" would be...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1fbc84",
+      "source": "...Bokoinante. You take care of the report.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1fbcb0",
+      "source": "Huh!?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1fbcb6",
+      "source": "NYEH!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1fbcbc",
+      "source": "Nngh... U-Understood, Sir...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x1fbcd9",
+      "source": "Oh, and you. Maroro.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1fbcee",
+      "source": "Ay...?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1fbcf5",
+      "source": "There will be a detailed report on YOUR blunders\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1fbd28",
+      "source": "today. I suggest you prepare for a dock in pay.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1fbd58",
+      "source": "O me!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1fbd5f",
+      "source": "A-Alas...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fbd69",
+      "source": "Damn you, Mikazuchi... Just you watch...!",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1fbd94",
+      "source": "globalSRT",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1fbd9e",
+      "source": "target",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1fbda5",
+      "source": "ch120_01",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1fbdae",
+      "source": "weapon2",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1fbdb6",
+      "source": "body",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1fbdbb",
+      "source": "face",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1fbdc0",
+      "source": "hair",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1fbdc5",
+      "source": "mask",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1fbdca",
+      "source": "env_bone",
+      "byte_budget": 8
+    }
+  ]
+}

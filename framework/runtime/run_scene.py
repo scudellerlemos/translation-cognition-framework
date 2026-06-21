@@ -45,8 +45,8 @@ def _validate_scene_arg(root: Path, scene: str) -> None:
     if not scene:
         raise ValueError("scene nao pode ser vazia")
     resolved = paths.scene_dir(root, scene).resolve()
-    if not resolved.is_relative_to(paths.artifacts(root).resolve()):
-        raise ValueError(f"scene {scene!r} resultaria em path fora de artifacts/ — bloqueado")
+    if not resolved.is_relative_to(paths.scenes_dir(root).resolve()):
+        raise ValueError(f"scene {scene!r} resultaria em path fora de artifacts/scenes/ — bloqueado")
 
 
 def _validate_connector_cfg(cfg: dict) -> list:
@@ -293,6 +293,13 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     kb = kb_gate.check(root, scene)
     for w in kb["warnings"]:
         print(f"[kb] aviso: {w}")
+    # hard_problems: nunca bypassavel (nem com --skip-kb-gate)
+    if kb.get("hard_problems"):
+        print(f"[0/6] BLOQUEADO (hard) — {len(kb['hard_problems'])} problema(s) sem bypass possivel:")
+        for p in kb["hard_problems"]:
+            print(f"      - {p}")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
+        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["hard_problems"]}
     if kb["problems"] and not skip_kb_gate:
         print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
         for p in kb["problems"]:
@@ -300,6 +307,13 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
         _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
         return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+
+    # Decisoes pendentes: sempre exibidas ao usuario antes de traduzir (nao bloqueia, mas obrigatorio)
+    if kb.get("pending_decisions"):
+        pd = kb["pending_decisions"]
+        print(f"[kb] DECISOES PENDENTES ({len(pd)}) — requerem revisao humana antes do merge final:")
+        for i, d in enumerate(pd, 1):
+            print(f"      {i}. {d}")
 
     print(f"[1/6] context_pack {scene} ...")
     tr, early = _pack_and_translate(root, scene, scene_id, backend, pretranslated)

@@ -100,11 +100,11 @@ _FLAT_SCENE = "_flat"  # pseudo-cena para corpus flat (chap == "all")
 
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
-    """Cenas do capitulo por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id).
+    """Cenas do capitulo por glob de artifacts/scenes/ch_<cap>_*/dialogs.csv (ordem por scene_id).
     Capitulo especial "all": usa artifacts/dialogs.csv diretamente (modelo flat, ex: BoF4)."""
     if chap == "all":
         return [_FLAT_SCENE] if paths.dialogs_flat(root).is_file() else []
-    names = [p.parent.name for p in paths.artifacts(root).glob(f"ch_{chap}_*/dialogs.csv")]
+    names = [p.parent.name for p in paths.scenes_dir(root).glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=scene_id_of)
 
 

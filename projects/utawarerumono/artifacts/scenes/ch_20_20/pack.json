@@ -1,0 +1,1701 @@
+{
+  "scene": "ch_20_20",
+  "scene_id": "20_20",
+  "n_lines": 240,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Entua",
+      "category": "Personagem",
+      "target_translation": "Entua",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'Lady Entua'; agente do lado Uzurusha. FEMININO. Papel no climax (intriga/veneno) = beyond_frontier. Fonte: corpus+wiki."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Gundhurua",
+      "category": "Personagem",
+      "target_translation": "Gundhurua",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "(cap.20) REI de Uzurusha; unificou 100+ tribos nomades. MASCULINO. Fonte: wiki."
+    },
+    {
+      "term": "Imperial Guard",
+      "category": "Organizacao",
+      "target_translation": "Guarda Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Guarda Imperial de Yamato; Oshtor e seu general (General da Direita)."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Mikado",
+      "category": "Titulo",
+      "target_translation": "Mikado",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "Soberano de Yamato ('o grande Mikado'); presenteou o moinho a vila. No cap.12 = o imperador/titulo. SPOILER: identidade pessoal e reveal posterior — NAO antecipar. reveal_timing: alem do cap.12."
+    },
+    {
+      "term": "Oshtor",
+      "category": "Personagem",
+      "target_translation": "Oshtor",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "= Ukon (reveal 13_08; ver spoiler_ledger). General da Direita / Imperial Guard. Twist final em quarentena (beyond_frontier)."
+    },
+    {
+      "term": "Uzurusha",
+      "category": "Local",
+      "target_translation": "Uzurusha",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Pais/imperio nomade ao NORTE de Yamato; horda invasora. manter_original. Fonte: wiki."
+    },
+    {
+      "term": "Uzurushan",
+      "category": "Etnia",
+      "target_translation": "Uzurushan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico/soldado de Uzurusha. 'Uzurushan army' -> 'exercito uzurushano'; manter 'Uzurushan' como etnia."
+    },
+    {
+      "term": "Yamatan",
+      "category": "Etnia",
+      "target_translation": "de Yamato",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico de Yamato (ja coberto). 'Yamatan army' -> 'exercito de Yamato'; 'yamato' invariavel. Forma derivada, nao entidade nova."
+    },
+    {
+      "term": "Yamato",
+      "category": "Local",
+      "target_translation": "Yamato",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nacao/estado onde se passa o cap.12; composta de muitas provincias; capital = sede do Mikado. Manter."
+    },
+    {
+      "term": "Zeguni",
+      "category": "Personagem",
+      "target_translation": "Zeguni",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Comandante de Uzurusha (tem 'owlo'). MASCULINO. manter_original."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Adviser",
+      "target": "Conselheiro",
+      "speaker": "Yamatan adviser",
+      "from_scene": "20_17"
+    },
+    {
+      "source": "Soldier",
+      "target": "SOLDADO",
+      "speaker": "SOLDIER",
+      "from_scene": "20_01"
+    },
+    {
+      "source": "back.",
+      "target": "voltei.",
+      "speaker": "Haku",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Sir!",
+      "target": "Sim!",
+      "speaker": "Maroro",
+      "from_scene": "12_09"
+    },
+    {
+      "source": "No.",
+      "target": "Não.",
+      "speaker": "Protagonista (narração)",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "What...?",
+      "target": "O quê...?",
+      "speaker": "Protagonista",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Hm...",
+      "target": "Hm...",
+      "speaker": "Moznu",
+      "from_scene": "13_05"
+    },
+    {
+      "source": "And then...",
+      "target": "e depois...",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "Hm...?",
+      "target": "Hum...?",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "stomach.",
+      "target": "estômago.",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "the ground.",
+      "target": "no chão.",
+      "speaker": "Haku",
+      "from_scene": "13_05"
+    },
+    {
+      "source": "LeftLeg",
+      "target": "LeftLeg",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Oshtor (twist final)",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "spoiler_level": "critical",
+      "guard": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho."
+    },
+    {
+      "entity": "Mikado",
+      "fact": "A identidade pessoal do Mikado por tras do titulo.",
+      "spoiler_level": "major",
+      "guard": "Trate o Mikado apenas como o soberano/titulo, a distancia. NAO antecipe vinculo pessoal com nenhum personagem."
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x20eb0f",
+      "source": "From far off, the cries of the Yamatan army\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20eb3d",
+      "source": "can be heard.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x20eb4b",
+      "source": "Adviser",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x20eb53",
+      "source": "My owlo, the Yamatan army is swiftly closing\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20eb82",
+      "source": "in on our position.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x20eb96",
+      "source": "Although we may stall them for now, it is only\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20ebc7",
+      "source": "a matter of time before they break through...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20ebf5",
+      "source": "We need a decision.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x20ec09",
+      "source": "Very well... What will be my options?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x20ec2f",
+      "source": "For now, we can flee to the west... Uzurusha\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20ec5e",
+      "source": "is wide and vast. Even the Yamatans could not\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20ec8e",
+      "source": "maintain pursuit.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x20eca0",
+      "source": "As long as you live, my owlo, we may regroup.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20ecd0",
+      "source": "You can reclaim the separated units on our\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20ecfd",
+      "source": "return.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x20ed05",
+      "source": "Now is the time to persevere...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x20ed25",
+      "source": "Ghhhh...!!",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x20ed30",
+      "source": "The room falls silent, apart from the sounds of\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x20ed62",
+      "source": "battle outside. All freeze as the man's head\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20ed91",
+      "source": "rolls.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x20ed98",
+      "source": "Soldier",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x20eda0",
+      "source": "Ah... Ahhh!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x20edac",
+      "source": "The owlo brandishes his bloodstained blade.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x20edd8",
+      "source": "...You dare tell me to turn tail?\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x20edfc",
+      "source": "You dare tell me to abandon my homeland!?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20ee26",
+      "source": "My owlo, please! You must understand!",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x20ee4c",
+      "source": "You DARE!!",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x20ee57",
+      "source": "My owlo!!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x20ee61",
+      "source": "Hmh...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x20ee6c",
+      "source": "Commander Zeguni stares into Gundhurua's eyes\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20ee9c",
+      "source": "unflinchingly.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x20eeab",
+      "source": "Gundhurua finally relents at his determined\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20eed9",
+      "source": "gaze, and sheathes his sword as he turns his\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20ef08",
+      "source": "back.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x20ef0e",
+      "source": "We shall go, then... Zeguni.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x20ef2b",
+      "source": "My owlo...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x20ef36",
+      "source": "This is not a retreat...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x20ef4f",
+      "source": "We are merely shifting course!",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x20ef6e",
+      "source": "Y-Yes, milord...!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x20ef80",
+      "source": "We shall return here one day!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x20ef9e",
+      "source": "Those who yet live, rise and escort our owlo!",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20efcc",
+      "source": "Sir!",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x20efd1",
+      "source": "Zeguni follows the retreating soldiers, but\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20efff",
+      "source": "pauses a moment to look up at the sky.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x20f026",
+      "source": "...Entua.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x20f030",
+      "source": "Zeguni speaks the name of his absent daughter.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f05f",
+      "source": "Are you still alive...? Then please, do not\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20f08d",
+      "source": "throw your life away in vain. You must live.\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f0bc",
+      "source": "Grovel, bow, and scrape, but live...",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x20f0e1",
+      "source": "There are no signs of pursuit. It may be too\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f110",
+      "source": "difficult to follow us over such treacherous\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f13f",
+      "source": "terrain.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f148",
+      "source": "And with their numbers, it would surely take\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f177",
+      "source": "time to get through here.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x20f191",
+      "source": "If we are able to regroup in that time--",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x20f1ba",
+      "source": "Gundhurua, who had been showing no sign of\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f1e7",
+      "source": "attention to Zeguni's words, suddenly halts.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f214",
+      "source": "Owlo?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x20f21a",
+      "source": "Th-That is...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x20f228",
+      "source": "A single man stands before the remnants of the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20f259",
+      "source": "Uzurushan army, blocking their way. ",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x20f27e",
+      "source": "Khuhahaha... So that is it...\\n",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x20f29e",
+      "source": "I understand now why there was no pursuit.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x20f2c9",
+      "source": "The old man's favorite lapdog has come for me.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f2f8",
+      "source": "The Imperial Guard of the Right, Oshtor!",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x20f321",
+      "source": "When I did not see your face on the field,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f34e",
+      "source": "I thought you cowering behind your capital's\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f37d",
+      "source": "walls...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f386",
+      "source": "You gnat! You make me laugh.\\n",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x20f3a5",
+      "source": "Was this supposed to be an ambush?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x20f3c8",
+      "source": "You dare think you can stand in my way!?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x20f3f1",
+      "source": "No.",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x20f3f5",
+      "source": "What...?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f3fe",
+      "source": "The orders given to me by the Mikado were to\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f42d",
+      "source": "exterminate.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x20f43a",
+      "source": "Hmph. So that old relic thinks me little more\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20f46a",
+      "source": "than a pest, eh?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x20f47b",
+      "source": "Very well, Oshtor. But I warn you now;\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x20f4a4",
+      "source": "my head will not be so easily taken.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x20f4c9",
+      "source": "As Gundhurua draws his blade and begins\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20f4f3",
+      "source": "advancing, Zeguni kneels before him to block\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f522",
+      "source": "his way.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f52b",
+      "source": "My owlo.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f534",
+      "source": "Oh? So you would obstruct my path as well?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x20f55f",
+      "source": "No, my owlo. I would ask your permission.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20f589",
+      "source": "Then speak.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x20f595",
+      "source": "I ask that you allow me to handle this.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x20f5bd",
+      "source": "I wish to slay this bearer of the mask to\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x20f5e9",
+      "source": "attain glory.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x20f5f7",
+      "source": "Gundhurua stares at the commander's face for a\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20f628",
+      "source": "moment, then mutters.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x20f63e",
+      "source": "I see... Martyrdom, is it?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x20f659",
+      "source": "Old fool... You may do as you please.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x20f67f",
+      "source": "I thank you for this honor.\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x20f69d",
+      "source": "I promise to kill him without fail!",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x20f6c1",
+      "source": "Gundhurua does not reply as he turns his back\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20f6f1",
+      "source": "on Zeguni.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x20f6fc",
+      "source": "Zeguni stands and draws his blade.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x20f71f",
+      "source": "Those of you who seek glory, follow me!\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20f749",
+      "source": "Oshtor's head will be worth one thousand\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x20f774",
+      "source": "gold!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x20f77a",
+      "source": "Raaaaaaaaah!!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x20f788",
+      "source": "Zeguni charges Oshtor together with his soldiers.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x20f7ba",
+      "source": "You would sacrifice your own life to allow\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f7e7",
+      "source": "Gundhurua to escape... I commend your valor.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f814",
+      "source": "Haaaaaaaaaah!!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x20f823",
+      "source": "Then I shall honor your resolve...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x20f846",
+      "source": "Gaaaaaaaaaaaaah!!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x20f858",
+      "source": "With one swing of Oshtor's massive arm, the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20f886",
+      "source": "closest Uzurushan soldiers are flung aside.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x20f8b2",
+      "source": "These masked generals are nothing short of\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20f8df",
+      "source": "monsters... Numbers mean nothing against them.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20f910",
+      "source": "So, then--",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x20f91b",
+      "source": "Oshtor!!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20f927",
+      "source": "I am Commander Zeguni of Uzurusha!\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x20f94c",
+      "source": "I challenge you to a duel!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x20f967",
+      "source": "It would be shameful of me to deny such a brave\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x20f999",
+      "source": "warrior as yourself.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x20f9ae",
+      "source": "I accept.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x20f9b8",
+      "source": "Hm... So you will not use that accursed mask\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20f9e7",
+      "source": "against me. That's quite arrogant of you...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x20fa13",
+      "source": "I would claim victory against a true warrior\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20fa42",
+      "source": "with my own hands!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x20fa55",
+      "source": "Then let your arrogance be your downfall!",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20fa7f",
+      "source": "Haaaaaaaaaah!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x20fa8d",
+      "source": "Entua, following the remaining Uzurusha forces\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20fabe",
+      "source": "to the west, tracks their escape to a raging\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20faed",
+      "source": "battle.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x20faf5",
+      "source": "...That... crest on the flag...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x20fb15",
+      "source": "Father!!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20fb1e",
+      "source": "Hrraaaaaah!!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x20fb2b",
+      "source": "Hm...!",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x20fb32",
+      "source": "Ggh!!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x20fb38",
+      "source": "Oshtor's powerful strikes knock Zeguni back\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20fb66",
+      "source": "across the ground, even as he blocks with his\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20fb96",
+      "source": "blade.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x20fb9d",
+      "source": "The difference in power is too great...\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x20fbc7",
+      "source": "Zeguni cannot land a single blow, and he is\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20fbf5",
+      "source": "soon knocked down.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x20fc08",
+      "source": "S-Such power... It seems I am no match for you...\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x20fc3c",
+      "source": "However--",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x20fc46",
+      "source": "Hm...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x20fc4c",
+      "source": "Zeguni's body is covered in wounds, but he still\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x20fc7f",
+      "source": "stands, defying the pain coursing through him.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20fcae",
+      "source": "You shall not pass... Even if my body is\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x20fcd9",
+      "source": "destroyed... I shall not let you pass!!",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x20fd01",
+      "source": "So you still stand... I did not expect to\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x20fd2d",
+      "source": "encounter such a warrior as yourself among\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20fd5a",
+      "source": "the Uzurushans.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x20fd6a",
+      "source": "However, I am a warrior of Yamato in service\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20fd99",
+      "source": "of the Mikado!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x20fda8",
+      "source": "I shall show no forgiveness to those that bring\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x20fdda",
+      "source": "despair to my liege, and suffering to my people.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x20fe0b",
+      "source": "Lord Zeguni, come at me with all your might!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x20fe38",
+      "source": "This will be our final strike!\\n",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x20fe59",
+      "source": "Let this end our duel!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x20fe70",
+      "source": "Very well. Then taste the might of my final\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20fe9e",
+      "source": "strike... for I shall put my very life behind\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x20fece",
+      "source": "it!",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x20fed2",
+      "source": "HAAAAAAAAAAH!!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x20fee1",
+      "source": "It ends in a flash. Each sword strikes with\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x20ff0f",
+      "source": "speed beyond the eye's perception...\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x20ff36",
+      "source": "and silence falls.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x20ff49",
+      "source": "And then...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x20ff55",
+      "source": "Ghh...!!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x20ff5e",
+      "source": "Blood spurts in a line across Zeguni's chest\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x20ff8d",
+      "source": "to his shoulder.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x20ff9e",
+      "source": "Oshtor's strike has left a fatal cut diagonally\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x20ffd0",
+      "source": "across Zeguni's body.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x20ffe6",
+      "source": "Ghaaah...!!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x20fff2",
+      "source": "The scent of blood fills the air as Zeguni\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x21001f",
+      "source": "staggers, his sword clattering to the ground.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x21004d",
+      "source": "However... as Zeguni looks toward Oshtor, his\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x21007d",
+      "source": "face shows only a gentle serenity.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2100a0",
+      "source": "...Impressive... I would expect no less from\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2100cf",
+      "source": "the Imperial Guard of the Right...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2100f2",
+      "source": "Your skills are remarkable, as well...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x210119",
+      "source": "Hah... So I have succeeded... in landing one\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x210148",
+      "source": "strike.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x210150",
+      "source": "A small trickle of blood trails down Oshtor's\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x210180",
+      "source": "body. A small cut, but Zeguni's blade had\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2101ac",
+      "source": "indeed reached him.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2101c0",
+      "source": "Then I have no regrets...\\n",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2101dc",
+      "source": "I thank you for this battle...",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2101fb",
+      "source": "A satisfied smile crosses Zeguni's face...\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x210228",
+      "source": "and he crumples to the ground.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x210247",
+      "source": "What an extraordinary man you were.\\n",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x21026d",
+      "source": "You protected your lord, and died with honor\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x21029c",
+      "source": "as a brave samurai.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2102b0",
+      "source": "You truly embody the spirit of a mononofu...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2102dd",
+      "source": "Lord Zeguni... I can only hope that I one day\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x21030d",
+      "source": "meet my end as you did yours...\\n",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x21032f",
+      "source": "With honor.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x21033b",
+      "source": "NOOOOOOOO!!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x210347",
+      "source": "Hm...?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x21034e",
+      "source": "Father! FATHER!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x21035e",
+      "source": "A girl jumps from the brush and runs to the man\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x210390",
+      "source": "on the ground, tears streaming down her face.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2103be",
+      "source": "Entua glares up at Oshtor.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2103d9",
+      "source": "You... You did this to him...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2103f7",
+      "source": "Entua swiftly draws a shortsword from her side.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x210427",
+      "source": "You will PAY for what you've done!",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x21044a",
+      "source": "Nh, nnngh...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x210457",
+      "source": "Entua's sword strikes Oshtor directly in the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x210486",
+      "source": "stomach.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x21048f",
+      "source": "However, the blade does not pierce him.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2104b9",
+      "source": "It is stopped at the surface, as Entua's hand\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2104e9",
+      "source": "begins to shake.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2104fa",
+      "source": "...I am afraid your skill with a sword will not\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x21052c",
+      "source": "be enough to make a scratch on me.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x21054f",
+      "source": "Aah!!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x210555",
+      "source": "Oshtor grabs the blade of Entua's sword and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x210583",
+      "source": "rips it from her hand. The force casts her to\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2105b3",
+      "source": "the ground.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2105bf",
+      "source": "You... You killed my father!",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2105dc",
+      "source": "...I cannot excuse what I have done. Nor will I\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x21060e",
+      "source": "run from it. I have chosen a path of carnage.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x21063c",
+      "source": "But... I would not have you share your father's\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x21066e",
+      "source": "fate.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x210674",
+      "source": "Oshtor turns his back on Entua as if she doesn't\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2106a7",
+      "source": "even exist, intent on pursuing Gundhurua.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2106d1",
+      "source": "Entua can do nothing but watch as he departs.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2106ff",
+      "source": "Oshtor quickly begins pursuing Gundhurua as he\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x210730",
+      "source": "leaves the site of his duel.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x21074d",
+      "source": "Yet the remaining Uzurushans continue to resist,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x210780",
+      "source": "and sacrifice themselves to let Gundhurua\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2107ac",
+      "source": "escape.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2107b4",
+      "source": "Many Uzurushans fall to Oshtor's blade, but in\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2107e5",
+      "source": "the end, Gundhurua is never found among the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x210813",
+      "source": "dead.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x210819",
+      "source": "Meanwhile, the other generals begin subjugating\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x21084b",
+      "source": "the rest of Uzurusha, mountains of corpses in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x21087b",
+      "source": "their wake.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x210887",
+      "source": "With their leader on the run, the Uzurushan\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2108b5",
+      "source": "people soon give in, and Yamato assumes\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2108df",
+      "source": "political control.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2108f2",
+      "source": "Thus ends the great war between Yamato and\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x21091f",
+      "source": "Uzurusha...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x21092b",
+      "source": "flag",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x210930",
+      "source": "LeftLeg",
+      "byte_budget": 7
+    }
+  ]
+}

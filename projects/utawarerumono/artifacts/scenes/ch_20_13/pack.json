@@ -1,0 +1,1529 @@
+{
+  "scene": "ch_20_13",
+  "scene_id": "20_13",
+  "n_lines": 186,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Akuruka",
+      "category": "Objeto",
+      "target_translation": "Akuruka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Mascaras amaldicoadas que concedem poder; 'Akuruka do Raio' e de Mikazuchi. Lore central do arco."
+    },
+    {
+      "term": "Akuruturuka",
+      "category": "Termo",
+      "target_translation": "Akuruturuka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'homem mascarado' / forma do guerreiro mascarado. manter_original + glosar. Lore profunda (mascaras/Oshtor) = beyond_frontier. Fonte: wiki+corpus."
+    },
+    {
+      "term": "Cocopo",
+      "category": "Criatura",
+      "target_translation": "Cocopo",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Ave Hororon gigante; montaria/pet da Rulutieh."
+    },
+    {
+      "term": "Eight Pillar Generals",
+      "category": "Termo",
+      "target_translation": "Oito Generais-Pilar",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Os oito generais de Yamato. Ozen e um deles."
+    },
+    {
+      "term": "Imperial Guard",
+      "category": "Organizacao",
+      "target_translation": "Guarda Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Guarda Imperial de Yamato; Oshtor e seu general (General da Direita)."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Mikado",
+      "category": "Titulo",
+      "target_translation": "Mikado",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "Soberano de Yamato ('o grande Mikado'); presenteou o moinho a vila. No cap.12 = o imperador/titulo. SPOILER: identidade pessoal e reveal posterior — NAO antecipar. reveal_timing: alem do cap.12."
+    },
+    {
+      "term": "Mikazuchi",
+      "category": "Personagem",
+      "target_translation": "Mikazuchi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General Imperial da Esquerda de Yamato; usuario do Akuruka do Raio; irmao do falecido Raiko. Com Oshtor = os Twin Shields. Disfarce 'Sakon' (velho vendedor de doces) NAO aparece no corpus 11-14."
+    },
+    {
+      "term": "Munechika",
+      "category": "Personagem",
+      "target_translation": "Munechika",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General-Pilar, 'a Guardia'. FEMININO. 'the Guardian'->'a Guardia'."
+    },
+    {
+      "term": "Nakwan",
+      "category": "Termo",
+      "target_translation": "Nakwan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Soldados-escravos descartaveis de Uzurusha (definido in-corpus). manter_original + glosar."
+    },
+    {
+      "term": "Nosuri",
+      "category": "Personagem",
+      "target_translation": "Nosuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, 'aliada da justica'. Irma de Ougi. Trabalhou com Oshtor/Haku."
+    },
+    {
+      "term": "Oshtor",
+      "category": "Personagem",
+      "target_translation": "Oshtor",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "= Ukon (reveal 13_08; ver spoiler_ledger). General da Direita / Imperial Guard. Twist final em quarentena (beyond_frontier)."
+    },
+    {
+      "term": "Uzurushan",
+      "category": "Etnia",
+      "target_translation": "Uzurushan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico/soldado de Uzurusha. 'Uzurushan army' -> 'exercito uzurushano'; manter 'Uzurushan' como etnia."
+    },
+    {
+      "term": "Vurai",
+      "category": "Personagem",
+      "target_translation": "Vurai",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'a Vanguarda'; um dos Oito Generais-Pilar (mascarado), a lanca de Yamato. MASCULINO. manter nome; traduzir epiteto 'the Vanguard'->'a Vanguarda'. Desfecho (final boss/Oshtor) = beyond_frontier (quarentena). Fonte: wiki."
+    },
+    {
+      "term": "Yamatan",
+      "category": "Etnia",
+      "target_translation": "de Yamato",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico de Yamato (ja coberto). 'Yamatan army' -> 'exercito de Yamato'; 'yamato' invariavel. Forma derivada, nao entidade nova."
+    },
+    {
+      "term": "Yamato",
+      "category": "Local",
+      "target_translation": "Yamato",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nacao/estado onde se passa o cap.12; composta de muitas provincias; capital = sede do Mikado. Manter."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Nosuri": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Nosuri — `voice_criticality: medium`. Fora-da-lei atrevida e malandra; \"aliada da justiça\" irônica; oportunista. Registro coloquial/esperto."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Uzurushan soldier",
+      "target": "soldado Uzurushan",
+      "speaker": "[SYSTEM]",
+      "from_scene": "20_04"
+    },
+    {
+      "source": "Nakwan",
+      "target": "Nakwan",
+      "speaker": "Personagem-Sistema",
+      "from_scene": "20_06"
+    },
+    {
+      "source": "Nngh...",
+      "target": "Nnh...",
+      "speaker": "Haku",
+      "from_scene": "11_08"
+    },
+    {
+      "source": "Uzurushan commander",
+      "target": "comandante Uzurushan",
+      "speaker": "SISTEMA",
+      "from_scene": "20_05"
+    },
+    {
+      "source": "here...?",
+      "target": "aqui...?",
+      "speaker": "Haku",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "...Wha...?",
+      "target": "...O quê...?",
+      "speaker": "Protagonista",
+      "from_scene": "19_06"
+    },
+    {
+      "source": "Hm...?",
+      "target": "Hum...?",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "Wha--!?",
+      "target": "Quê--!?",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Wh-What...?",
+      "target": "Q-Que...?",
+      "speaker": "Nekone",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "You're probably right...",
+      "target": "Você provavelmente tá certo...",
+      "speaker": "Garota",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Really?",
+      "target": "Mesmo?",
+      "speaker": "Kuon",
+      "from_scene": "14_03"
+    },
+    {
+      "source": "soldiers.",
+      "target": "soldados.",
+      "speaker": "Oshtor",
+      "from_scene": "20_01"
+    },
+    {
+      "source": "happening.",
+      "target": "acontecendo.",
+      "speaker": "Protagonista",
+      "from_scene": "16_03"
+    },
+    {
+      "source": "Vurai the Vanguard...",
+      "target": "Vurai o Vanguarda...",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Lady Munechika.",
+      "target": "Senhora Munechika.",
+      "speaker": "Atuy",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "everything!",
+      "target": "tudo!",
+      "speaker": "Haku",
+      "from_scene": "18_04"
+    },
+    {
+      "source": "soul.",
+      "target": "alma.",
+      "speaker": "Woman (Kuon)",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "The Imperial Guard of the Left, Mikazuchi.",
+      "target": "A Guarda Imperial da Esquerda, Mikazuchi.",
+      "speaker": "Mikazuchi",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "...Yes.",
+      "target": "...Sim.",
+      "speaker": "Rulutieh",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "ch400_00_base",
+      "target": "ch400_00_base",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "ch400_00_wheel",
+      "target": "ch400_00_wheel",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "target",
+      "target": "target",
+      "speaker": "SYSTEM",
+      "from_scene": "20_11"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "Moznu, enough. If you're going to be working with\\n",
+      "target": "Moznu, chega. Se vai trabalhar com os Ladrões\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "the Nosuri Thieves from now on, you abide by our\\n",
+      "target": "de Nosuri de agora em diante, segue nossas\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "rules, not yours.",
+      "target": "regras, não as suas."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Oshtor (twist final)",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "spoiler_level": "critical",
+      "guard": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho."
+    },
+    {
+      "entity": "Mikado",
+      "fact": "A identidade pessoal do Mikado por tras do titulo.",
+      "spoiler_level": "major",
+      "guard": "Trate o Mikado apenas como o soberano/titulo, a distancia. NAO antecipe vinculo pessoal com nenhum personagem."
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x1e9ca5",
+      "source": "Uzurushan soldier",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1e9cb7",
+      "source": "What are you doing!? Keep moving.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x1e9cd9",
+      "source": "Nakwan",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1e9ce0",
+      "source": "P-Please, don't...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1e9cf3",
+      "source": "It's impossible... There's no way we can run\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1e9d22",
+      "source": "down a sheer cliffside like this...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1e9d46",
+      "source": "And you know what will happen to your families\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1e9d77",
+      "source": "if you don't go down... don't you?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1e9d9a",
+      "source": "Nngh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1e9da2",
+      "source": "You don't have a choice in the matter.\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1e9dcb",
+      "source": "Now go! Go on!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1e9dda",
+      "source": "A-Ahhhhhhhhhhh!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1e9dea",
+      "source": "Wahahahahaha! Look at them!\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1e9e08",
+      "source": "They actually went down.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1e9e21",
+      "source": "An easy battle, to be sure. All we must do\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1e9e4e",
+      "source": "is force the nakwan forward, and watch their\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1e9e7d",
+      "source": "fight from here.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1e9e8e",
+      "source": "Yes. The Yamatan army is even powerless to\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1e9ebb",
+      "source": "reach us up here. A counteroffensive is\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1e9ee5",
+      "source": "impossible.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1e9ef1",
+      "source": "Uzurushan commander",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1e9f05",
+      "source": "Hahaha... Now, dance. We have plenty of pawns\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1e9f35",
+      "source": "to toss out.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1e9f42",
+      "source": "We'll slowly whittle you down.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1e9f61",
+      "source": "Why is it that you know such prosperity...?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1e9f8d",
+      "source": "And why must we be the ones forced to grovel\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1e9fbc",
+      "source": "like beggars...?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1e9fcd",
+      "source": "Why must we scurry around like dirty thieves,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1e9ffd",
+      "source": "merely to survive...?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1ea013",
+      "source": "I will never forget those mocking eyes that you\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1ea045",
+      "source": "turned on us...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1ea055",
+      "source": "I shall never forget how you pelted us with\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1ea083",
+      "source": "rocks and words alike...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1ea09c",
+      "source": "But you were right in one thing. We are thieves.\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1ea0cf",
+      "source": "And so shall we take everything from you.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1ea0f9",
+      "source": "And you will know our humiliation.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea126",
+      "source": "Y-You're...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1ea132",
+      "source": "H-Hey, what's the matter?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1ea14c",
+      "source": "It can't be... Vurai, the Vanguard...",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x1ea172",
+      "source": "Wha... What is one of the Eight Pillars doing\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1ea1a2",
+      "source": "here...?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1ea1ab",
+      "source": "Maybe he came to save us...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x1ea1c7",
+      "source": "Please, help us! My wife and son, they've been\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1ea1f8",
+      "source": "taken prisoner--",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1ea209",
+      "source": "Please, Lord Vurai, lend us your strength!",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1ea234",
+      "source": "...I have been given imperial orders.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x1ea25a",
+      "source": "And I will lay waste to all.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x1ea277",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1ea27f",
+      "source": "...Wha...?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1ea28a",
+      "source": "A-Ahhhhh!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1ea294",
+      "source": "P-P-P-Please! Wait! Please, save us!\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x1ea2bb",
+      "source": "We didn't have a choice--",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1ea2d5",
+      "source": "Th-Th-They... They're forcing us!\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1ea2f9",
+      "source": "They've taken our families hostage--",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x1ea31e",
+      "source": "Please... have mercy--",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x1ea335",
+      "source": "...Begone.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1ea340",
+      "source": "A-Ahhh...!",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1ea34b",
+      "source": "The Mikado's orders are absolute.\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1ea36f",
+      "source": "All who stand in my way will be crushed.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1ea398",
+      "source": "Ah... Aaaaaarrrgh!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1ea3ab",
+      "source": "Erupt.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1ea3b2",
+      "source": "Hm...?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1ea3b9",
+      "source": "Wha--!?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1ea3c1",
+      "source": "I take it you are the flies responsible for\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1ea3ef",
+      "source": "this ceaseless buzzing.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1ea407",
+      "source": "Wh-What...?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1ea413",
+      "source": "Wh-What are you!? How did you...\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea436",
+      "source": "What have you done with the nakw--\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x1ea45b",
+      "source": "No... it can't be!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1ea46e",
+      "source": "He can't have jumped all the way up here...!\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1ea49d",
+      "source": "I-Impossible!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1ea4ab",
+      "source": "Argh... I knew those nakwans would be useless\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1ea4db",
+      "source": "in the end!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1ea4e7",
+      "source": "The enemy is before us!\\n",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x1ea501",
+      "source": "To arms! To arms!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1ea513",
+      "source": "You are a fool for wandering up here alone!\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1ea541",
+      "source": "You will pay with your life! Kill him!",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x1ea568",
+      "source": "Mere child's play...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1ea57d",
+      "source": "What...!?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1ea587",
+      "source": "Y-You can't be... No...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1ea59f",
+      "source": "Whew... I think we've gone far enough to be safe\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1ea5d2",
+      "source": "for now. Let's take a break over there.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1ea5fa",
+      "source": "Cocopo, stop here.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1ea633",
+      "source": "The carriage stops with Cocopo's shrill chirping.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1ea665",
+      "source": "We kept going through the night, so we should be\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1ea698",
+      "source": "pretty far from the barbarian encampment by now.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1ea6c9",
+      "source": "It might be a little difficult to return to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1ea6f7",
+      "source": "Yamato immediately, in this state.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea71a",
+      "source": "You're probably right...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1ea733",
+      "source": "It'll be hard to keep traveling with so many\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1ea762",
+      "source": "injured, and with the worn-out nakwans and\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1ea78f",
+      "source": "their families.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1ea79f",
+      "source": "If I recall correctly, there should be a fortress\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1ea7d3",
+      "source": "defended by Lady Munechika nearby.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea7f6",
+      "source": "All right, let's head there first.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea819",
+      "source": "I'm sure Munechika wouldn't treat these nakwans\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1ea84b",
+      "source": "badly.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1ea852",
+      "source": "Looks like I really owe you, boss.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ea875",
+      "source": "Don't worry about it. We end up doing this kind\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1ea8a7",
+      "source": "of thing a lot.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1ea8b7",
+      "source": "Really?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1ea8bf",
+      "source": "Before I know it, we're usually wrapped up in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1ea8ef",
+      "source": "some crisis or another... thanks to them.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1ea919",
+      "source": "Seriously. Why does it always end up like this?",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1ea949",
+      "source": "Heh... Heh heh heh...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1ea95f",
+      "source": "What's so funny now?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1ea974",
+      "source": "Eh, nothin'. Gotta say, boss, you're a real\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1ea9a2",
+      "source": "interesting fella.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1ea9b8",
+      "source": "Wh-What the hell was that...?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1ea9d6",
+      "source": "Look! Over there!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1ea9e8",
+      "source": "We all look to where Nosuri is pointing, and see\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1eaa1b",
+      "source": "a sight that makes us doubt our own eyes.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1eaa45",
+      "source": "Across the canyon, a lone man--massive and\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1eaa72",
+      "source": "muscled--faces down an army of Uzurushan\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1eaa9d",
+      "source": "soldiers.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1eaaa7",
+      "source": "Suddenly, the man is engulfed by flame.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1eaacf",
+      "source": "Seconds later, the man has turned into something\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1eab02",
+      "source": "else altogether.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1eab13",
+      "source": "Wh-What in... the...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1eab28",
+      "source": "The giant creature in his place gives a\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1eab52",
+      "source": "deafening roar, and begins to maul the soldiers\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1eab84",
+      "source": "surrounding it.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1eab94",
+      "source": "No... \"Maul\" isn't enough to describe what's\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1eabc3",
+      "source": "happening.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1eabce",
+      "source": "The Uzurushan soldiers can't even touch it.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eabfc",
+      "source": "As soon as they draw close, they burst into\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eac2a",
+      "source": "flame.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1eac31",
+      "source": "It's a massacre.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1eac42",
+      "source": "What the hell is that monster!?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x1eac62",
+      "source": "Vurai the Vanguard...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1eac78",
+      "source": "One of the Eight Pillar Generals of Yamato,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eaca6",
+      "source": "granted an Akuruka like my dear brother and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eacd4",
+      "source": "Lady Munechika.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1eace4",
+      "source": "I'm not talking about Eight Pillar Generals!\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1ead13",
+      "source": "What IS that monster!? He transformed and\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1ead3f",
+      "source": "everything!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1ead4b",
+      "source": "How dare you call him a monster.\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1ead6e",
+      "source": "What are you thinking?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x1ead85",
+      "source": "Then what the hell am I supposed to call that\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1eadb5",
+      "source": "thing!?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1eadbd",
+      "source": "Akuruturuka.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1eadca",
+      "source": "...An Akuruturuka?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1eaddd",
+      "source": "Hold on, Boss. You don't know about the\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1eae07",
+      "source": "Akuruturuka?",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1eae14",
+      "source": "The Akuruka serves as a gate to the great power.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1eae45",
+      "source": "Only mononofu acknowledged by the Mikado and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1eae74",
+      "source": "chosen by the Akuruka may take holy form with\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1eaea4",
+      "source": "its power.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1eaeaf",
+      "source": "Yes. I've heard rumors before, but this is the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1eaee0",
+      "source": "first time I've set eyes on one...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1eaf03",
+      "source": "The power of the Origin, capable of ending any\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1eaf34",
+      "source": "life... An all-consuming domain of destruction...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1eaf66",
+      "source": "I only know this from rumor, but it is said\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eaf94",
+      "source": "that each Akuruka is blessed with different\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eafc2",
+      "source": "special abilities.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1eafd5",
+      "source": "But one must be careful not to use their powers\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1eb007",
+      "source": "overmuch.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1eb011",
+      "source": "What... happens if they use it too much?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1eb03a",
+      "source": "I have heard that the Akuruka slowly assimilates\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1eb06d",
+      "source": "its bearer, and eventually will consume their\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1eb09d",
+      "source": "soul.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1eb0a3",
+      "source": "And they still use these powers, knowing the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1eb0d2",
+      "source": "risk...?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1eb0db",
+      "source": "That's terrifying. Is that how the Yamatan\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1eb108",
+      "source": "generals with these Akurukas have to live...?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1eb136",
+      "source": "Correct. And it's said that among them,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1eb160",
+      "source": "Lord Vurai's power is unrivaled.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x1eb181",
+      "source": "So that guy...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1eb190",
+      "source": "...is a Yamatan general...?\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1eb1ae",
+      "source": "That thing...?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1eb1bd",
+      "source": "Two faces pop up in my mind as I contemplate\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1eb1ec",
+      "source": "the Akuruka.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x1eb1f9",
+      "source": "Two people who hide their faces behind masks\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1eb228",
+      "source": "like Vurai's.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1eb236",
+      "source": "The Imperial Guard of the Right, Oshtor... and\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1eb267",
+      "source": "the Imperial Guard of the Left, Mikazuchi.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1eb292",
+      "source": "Which means... those two... are the same...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1eb2be",
+      "source": "...Yes.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1eb2c6",
+      "source": "My dear brother, Lord Mikazuchi, and Lady\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1eb2f2",
+      "source": "Munechika... All chosen by the Mikado to wield\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1eb323",
+      "source": "All of us just stand there--struck silent by the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1eb356",
+      "source": "sight before us.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1eb368",
+      "source": "ch400_00_base",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1eb376",
+      "source": "ch400_00_wheel",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x1eb385",
+      "source": "target",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1eb38c",
+      "source": "env_bone",
+      "byte_budget": 8
+    }
+  ]
+}

@@ -1,0 +1,665 @@
+{
+  "scene": "ch_23_17",
+  "scene_id": "23_17",
+  "n_lines": 57,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Gigiri",
+      "category": "Criatura",
+      "target_translation": "Gigiri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Criaturas/monstros altamente venenosos (cap.12). Nome de mundo — manter."
+    },
+    {
+      "term": "Jachdwalt",
+      "category": "Personagem",
+      "target_translation": "Jachdwalt",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "(cap.20) Espadachim 'a Lamina Miragem'; pai adotivo de Shinonon; lado Uzurusha. MASCULINO. manter nome; traduzir epiteto. Fonte: wiki."
+    },
+    {
+      "term": "Kurou",
+      "category": "Personagem",
+      "target_translation": "Kurou",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.23) Braco-direito de Benawi, general de Tuskur. MASCULINO. Nome proprio - manter. Fonte: wiki (utawarerumono.fandom/Kurou)."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Tatari",
+      "category": "Criatura",
+      "target_translation": "Tatari",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Criatura imortal do subsolo. Nome próprio do mundo — manter."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "going on here.",
+      "target": "que é assim.",
+      "speaker": "Haku",
+      "from_scene": "15_01"
+    },
+    {
+      "source": "Head",
+      "target": "Head",
+      "speaker": "rotulo",
+      "from_scene": "11_03"
+    },
+    {
+      "source": "EEP!?",
+      "target": "EEEK!?",
+      "speaker": "Atuy",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "It can't be...",
+      "target": "Não pode ser...",
+      "speaker": "Kiwru",
+      "from_scene": "15_05"
+    },
+    {
+      "source": "Kurou...",
+      "target": "Kurou...",
+      "speaker": "Kuon",
+      "from_scene": "23_13"
+    },
+    {
+      "source": "again...",
+      "target": "de novo...",
+      "speaker": "Homem",
+      "from_scene": "13_09"
+    },
+    {
+      "source": "to you.",
+      "target": "com você.",
+      "speaker": "Ukon",
+      "from_scene": "13_02"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0x2bea40",
+      "source": "Hah... h-hah... hah...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2bea57",
+      "source": "Th-They finally stopped...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2bea72",
+      "source": "What insanity possesses them? They keep\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2bea9c",
+      "source": "fighting, even after taking so many wounds...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2beaca",
+      "source": "Ech, how boring. Nobody likes a man who doesn't\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2beafc",
+      "source": "show his emotions.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2beb0f",
+      "source": "Yeah, there's definitely somethin' strange\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2beb3c",
+      "source": "going on here.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2beb4b",
+      "source": "These guys are supposed to be like shadows.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2beb79",
+      "source": "They're not the type of folks to just charge in\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2bebab",
+      "source": "blindly, yeah?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2bebba",
+      "source": "They should be aiming for weak spots, with\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2bebe7",
+      "source": "pinpoint precision.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2bebfb",
+      "source": "With such pathetic tactics, you gotta wonder...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2bec2b",
+      "source": "More than that, they looked like they didn't\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2bec5a",
+      "source": "even feel any pain while they were fighting.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2bec87",
+      "source": "Assassin",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2bec90",
+      "source": "Grh... Urgh... Grrrhhh...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x2becab",
+      "source": "Head",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2becb0",
+      "source": "Eep!?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2becb6",
+      "source": "Th-They're... corpses? Walking corpses?",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2becde",
+      "source": "Graahh... g-gargh...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2becf3",
+      "source": "GRAAAAAAAHH!!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2bed01",
+      "source": "Aaaaaaah!!",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2bed10",
+      "source": "It can't be...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2bed1f",
+      "source": "You have to be kidding me...!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2bed3d",
+      "source": "Ah... Ah... Ah...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2bed4f",
+      "source": "H-Hey, um, Jachdwalt-",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2bed65",
+      "source": "J-Jachdwalt! Care to give us a WARNING about\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2bed94",
+      "source": "these things first, next time?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2bedb3",
+      "source": "Yeah, uh.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2bedbd",
+      "source": "Sorry to say, but the ones I knew didn't have\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2beded",
+      "source": "any party tricks like these guys.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2bee0f",
+      "source": "This is insanity.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2bee21",
+      "source": "Just when I get used to all the monstrosities\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2bee51",
+      "source": "like the gigiri and Tatari...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2bee6f",
+      "source": "This just isn't fair.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2bf093",
+      "source": "W-Wait, you're...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2bf0a5",
+      "source": "Kurou...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2bf0ae",
+      "source": "Well, well. Didn't think I'd see you pop up\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2bf0dc",
+      "source": "in my dreams, my lady.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2bf0f3",
+      "source": "Well, long as we're all here... what say we\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2bf121",
+      "source": "pick up where we left off?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2bf13c",
+      "source": "We have to fight you again...? God, this is\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2bf16a",
+      "source": "ruthless, even for a dream.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2bf186",
+      "source": "Well, you ARE my lady's favorite. Better act\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2bf1b5",
+      "source": "the part, eh?",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2bf1c3",
+      "source": "K-Kurou, what are you even saying!?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2bf36d",
+      "source": "Huh, not bad. I can tell next time we bump into\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2bf39f",
+      "source": "each other, we're gonna have some real fun.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2bf3cb",
+      "source": "Honestly, I'm hoping I'm never gonna see you\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2bf3fa",
+      "source": "again...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2bf403",
+      "source": "Guess I can see why the lady's taken a shine\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2bf432",
+      "source": "to you.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2bf43a",
+      "source": "Kurou, that is ENOUGH nonsense out of you!",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2bf465",
+      "source": "Whoop, I'm in for it now! See ya later!",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2bf48d",
+      "source": "Wait just one minute...! Argh!",
+      "byte_budget": 30
+    }
+  ]
+}

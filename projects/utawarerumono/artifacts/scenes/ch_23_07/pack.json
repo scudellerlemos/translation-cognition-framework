@@ -1,0 +1,5488 @@
+{
+  "scene": "ch_23_07",
+  "scene_id": "23_07",
+  "n_lines": 879,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Atuy",
+      "category": "Personagem",
+      "target_translation": "Atuy",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Princesa de Shyahoro. FEMININO."
+    },
+    {
+      "term": "Earth",
+      "category": "Local",
+      "target_translation": "Terra",
+      "handling_rule": "traduzir",
+      "spoiler_level": "major",
+      "notes": "(cap.22) O mundo e a Terra num futuro distante (reveal sci-fi). 'Earth' -> 'Terra'."
+    },
+    {
+      "term": "Entua",
+      "category": "Personagem",
+      "target_translation": "Entua",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'Lady Entua'; agente do lado Uzurusha. FEMININO. Papel no climax (intriga/veneno) = beyond_frontier. Fonte: corpus+wiki."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Honoka",
+      "category": "Personagem",
+      "target_translation": "Honoka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.19) Alta Sacerdotisa; mae de Uruuru & Saraana. FEMININO. (apareceu cap.18 como criada)"
+    },
+    {
+      "term": "Imperial Capital",
+      "category": "Local",
+      "target_translation": "Capital Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "A capital de Yamato."
+    },
+    {
+      "term": "Imperial Guard",
+      "category": "Organizacao",
+      "target_translation": "Guarda Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Guarda Imperial de Yamato; Oshtor e seu general (General da Direita)."
+    },
+    {
+      "term": "Jachdwalt",
+      "category": "Personagem",
+      "target_translation": "Jachdwalt",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "(cap.20) Espadachim 'a Lamina Miragem'; pai adotivo de Shinonon; lado Uzurusha. MASCULINO. manter nome; traduzir epiteto. Fonte: wiki."
+    },
+    {
+      "term": "Kujyuri",
+      "category": "Local",
+      "target_translation": "Kujyuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Topônimo. Manter."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Maro",
+      "category": "Personagem",
+      "target_translation": "Maro",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido afetuoso de Maroro ('thee call me Maro!'). NAO e entidade nova; manter consistente com Maroro (fala arcaica thee/hath/thou)."
+    },
+    {
+      "term": "Master",
+      "category": "Cultural",
+      "target_translation": "Mestre",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorifico (Maroro -> 'Master Ukon' = 'Mestre Ukon'). Traduzir."
+    },
+    {
+      "term": "Mikado",
+      "category": "Titulo",
+      "target_translation": "Mikado",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "Soberano de Yamato ('o grande Mikado'); presenteou o moinho a vila. No cap.12 = o imperador/titulo. SPOILER: identidade pessoal e reveal posterior — NAO antecipar. reveal_timing: alem do cap.12."
+    },
+    {
+      "term": "Mikazuchi",
+      "category": "Personagem",
+      "target_translation": "Mikazuchi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General Imperial da Esquerda de Yamato; usuario do Akuruka do Raio; irmao do falecido Raiko. Com Oshtor = os Twin Shields. Disfarce 'Sakon' (velho vendedor de doces) NAO aparece no corpus 11-14."
+    },
+    {
+      "term": "Munechika",
+      "category": "Personagem",
+      "target_translation": "Munechika",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General-Pilar, 'a Guardia'. FEMININO. 'the Guardian'->'a Guardia'."
+    },
+    {
+      "term": "Neko",
+      "category": "Personagem",
+      "target_translation": "Neko",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.22) corpus-only (1 cena); provavel apelido/criatura. manter por seguranca (nao traduzir nome); conferir na revisao humana."
+    },
+    {
+      "term": "Nekone",
+      "category": "Personagem",
+      "target_translation": "Nekone",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Irma cacula de Oshtor/Ukon; prodigio (passou no exame da corte muito jovem), mandona mas apegada ao irmao. Papel profundo (encobrir o disfarce de Haku) e beyond_frontier (Mask of Truth) - quarentenado."
+    },
+    {
+      "term": "Nosuri",
+      "category": "Personagem",
+      "target_translation": "Nosuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, 'aliada da justica'. Irma de Ougi. Trabalhou com Oshtor/Haku."
+    },
+    {
+      "term": "Oshtor",
+      "category": "Personagem",
+      "target_translation": "Oshtor",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "= Ukon (reveal 13_08; ver spoiler_ledger). General da Direita / Imperial Guard. Twist final em quarentena (beyond_frontier)."
+    },
+    {
+      "term": "Ougi",
+      "category": "Personagem",
+      "target_translation": "Ougi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, irmao de Nosuri."
+    },
+    {
+      "term": "Rulie",
+      "category": "Personagem",
+      "target_translation": "Rulie",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido de Rulutieh (Atuy a chama 'Rulie'). NAO e entidade nova; manter consistente com Rulutieh."
+    },
+    {
+      "term": "Rulu",
+      "category": "Personagem",
+      "target_translation": "Rulu",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido de Rulutieh (variante de 'Rulie'). NAO entidade nova."
+    },
+    {
+      "term": "Rulutieh",
+      "category": "Personagem",
+      "target_translation": "Rulutieh",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Princesa de Kujyuri, filha de Ozen. Timida; gosta de BL; desenha e cozinha bem. Anda com a ave Cocopo. Fonte: corpus cap.13 + wiki."
+    },
+    {
+      "term": "Saraana",
+      "category": "Personagem",
+      "target_translation": "Saraana",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.19) Sacerdotisa Kamunagi gemea, irma MAIS NOVA de Uruuru, filha de Honoka. FEMININO. Fala longa/formal; pele morena."
+    },
+    {
+      "term": "Shinonon",
+      "category": "Personagem",
+      "target_translation": "Shinonon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) MENINA, filha adotiva de Jachdwalt; refem da horda. FEMININO. Fonte: wiki."
+    },
+    {
+      "term": "Shyahoro",
+      "category": "Local",
+      "target_translation": "Shyahoro",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Reino/nacao de Atuy."
+    },
+    {
+      "term": "Soyankekur",
+      "category": "Personagem",
+      "target_translation": "Soyankekur",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General-Pilar, owlo de Shyahoro. MASCULINO. 'the Mariner'->'o Marinheiro'."
+    },
+    {
+      "term": "Tuskur",
+      "category": "Local",
+      "target_translation": "Tuskur",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "(cap.22) Nacao-refugio fundada por Hakuowlo; terra natal de Kuon (princesa de Tuskur). Tambem nome da velha boticaria homonima. manter. Fonte: wiki."
+    },
+    {
+      "term": "Uruuru",
+      "category": "Personagem",
+      "target_translation": "Uruuru",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.19) Sacerdotisa Kamunagi gemea, irma MAIS VELHA de Saraana, filha de Honoka. FEMININO. Fala curta/informal/girias; pele clara. Dada a Haku p/ servi-lo."
+    },
+    {
+      "term": "Uzurushan",
+      "category": "Etnia",
+      "target_translation": "Uzurushan",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) Gentilico/soldado de Uzurusha. 'Uzurushan army' -> 'exercito uzurushano'; manter 'Uzurushan' como etnia."
+    },
+    {
+      "term": "Vurai",
+      "category": "Personagem",
+      "target_translation": "Vurai",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'a Vanguarda'; um dos Oito Generais-Pilar (mascarado), a lanca de Yamato. MASCULINO. manter nome; traduzir epiteto 'the Vanguard'->'a Vanguarda'. Desfecho (final boss/Oshtor) = beyond_frontier (quarentena). Fonte: wiki."
+    },
+    {
+      "term": "Woman",
+      "category": "UI",
+      "target_translation": "Mulher",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Woshis",
+      "category": "Personagem",
+      "target_translation": "Woshis",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) Agente/desenhista do lado Uzurusha. MASCULINO ('his drawing board'). Papel no climax = beyond_frontier. Forma do jogo 'Woshis' (wiki: 'Woshisu')."
+    },
+    {
+      "term": "Yatanawarabe",
+      "category": "Termo",
+      "target_translation": "Yatanawarabe",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.30) Patente de servo/agente (a servico do Mikado). Termo do mundo - manter. Fonte: wiki."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Nosuri": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Nosuri — `voice_criticality: medium`. Fora-da-lei atrevida e malandra; \"aliada da justiça\" irônica; oportunista. Registro coloquial/esperto."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Ougi": {
+      "aliases": [],
+      "criticality": "low",
+      "lines": [
+        "Ougi — `voice_criticality: low`. Irmão da Nosuri; pragmático, parceria com a irmã."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Rulutieh": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Rulutieh — `voice_criticality: medium`. Princesa tímida e gentil; hesitante (gagueja quando nervosa: \"P-Princesa...\"), educada, se anima ao falar de arte/BL. Não soar arrogante apesar de princesa."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "the imperial capital.",
+      "target": "a capital imperial.",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "today.",
+      "target": "hoje.",
+      "speaker": "Atuy",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Hey, Kuon...",
+      "target": "Ei, Haku...",
+      "speaker": "Kuon",
+      "from_scene": "21_04"
+    },
+    {
+      "source": "What's the matter?",
+      "target": "O que foi?",
+      "speaker": "Haku",
+      "from_scene": "15_02"
+    },
+    {
+      "source": "anything.",
+      "target": "nada.",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Atuy?",
+      "target": "Atuy?",
+      "speaker": "Ukon",
+      "from_scene": "16_02"
+    },
+    {
+      "source": "water.",
+      "target": "água.",
+      "speaker": "Haku",
+      "from_scene": "13_03"
+    },
+    {
+      "source": "appraising us.",
+      "target": "nos avaliando.",
+      "speaker": "Haku",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "speed.",
+      "target": "velocidade.",
+      "speaker": "Haku",
+      "from_scene": "22_04"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Ugh...",
+      "target": "Ugh...",
+      "speaker": "Haku",
+      "from_scene": "13_02"
+    },
+    {
+      "source": "Ah!",
+      "target": "Ah!",
+      "speaker": "Garota",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "bewildered.",
+      "target": "confusa.",
+      "speaker": "Haku",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "Mikazuchi.",
+      "target": "Mikazuchi.",
+      "speaker": "Haku",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "capital.",
+      "target": "imperial.",
+      "speaker": "Kuon",
+      "from_scene": "12_04"
+    },
+    {
+      "source": "...Haku.",
+      "target": "...Haku.",
+      "speaker": "Haku",
+      "from_scene": "22_05"
+    },
+    {
+      "source": "Heh... Heh heh heh...",
+      "target": "Heh... Heh heh heh...",
+      "speaker": "Haku",
+      "from_scene": "20_13"
+    },
+    {
+      "source": "Master.",
+      "target": "Mestre.",
+      "speaker": "Homem",
+      "from_scene": "12_14"
+    },
+    {
+      "source": "...You disgust me.",
+      "target": "...Você me repugna.",
+      "speaker": "Maroro",
+      "from_scene": "19_05"
+    },
+    {
+      "source": "our guide.",
+      "target": "nosso guia.",
+      "speaker": "Protagonista",
+      "from_scene": "21_03"
+    },
+    {
+      "source": "himself.",
+      "target": "si mesmo.",
+      "speaker": "Nekone",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "piece.",
+      "target": "peça.",
+      "speaker": "Haku",
+      "from_scene": "20_06"
+    },
+    {
+      "source": "Kuon...",
+      "target": "Kuon...",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "Crew",
+      "target": "Grupo",
+      "speaker": "SISTEMA",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "Sir!",
+      "target": "Sim!",
+      "speaker": "Maroro",
+      "from_scene": "12_09"
+    },
+    {
+      "source": "Huh...?",
+      "target": "Hein...?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "*Sigh*...",
+      "target": "*Suspiro*...",
+      "speaker": "Homem",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "What's up? Why the long face?",
+      "target": "Qual é? Que carinha funda é essa?",
+      "speaker": "Ukon",
+      "from_scene": "22_02"
+    },
+    {
+      "source": "or anything.",
+      "target": "especificamente.",
+      "speaker": "Haku",
+      "from_scene": "15_05"
+    },
+    {
+      "source": "it!",
+      "target": "isso!",
+      "speaker": "Narrator",
+      "from_scene": "20_20"
+    },
+    {
+      "source": "from.",
+      "target": "de.",
+      "speaker": "Atuy",
+      "from_scene": "16_02"
+    },
+    {
+      "source": "properly.",
+      "target": "direito.",
+      "speaker": "Nosuri",
+      "from_scene": "19_02"
+    },
+    {
+      "source": "her.",
+      "target": "a ela.",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "Rulutieh.",
+      "target": "Rulutieh.",
+      "speaker": "Haku",
+      "from_scene": "13_02"
+    },
+    {
+      "source": "Oh...",
+      "target": "Ah...",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "world.",
+      "target": "mundo.",
+      "speaker": "Haku",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "Oh, thanks.",
+      "target": "Ah, obrigado.",
+      "speaker": "Haku",
+      "from_scene": "11_09"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "...I see.",
+      "target": "...Entendo.",
+      "speaker": "Kuon",
+      "from_scene": "14_03"
+    },
+    {
+      "source": "...As you wish.",
+      "target": "...Como desejar.",
+      "speaker": "Oshtor",
+      "from_scene": "23_01"
+    },
+    {
+      "source": "then?",
+      "target": "então?",
+      "speaker": "Kuon",
+      "from_scene": "16_02"
+    },
+    {
+      "source": "What is this?",
+      "target": "O que é isto?",
+      "speaker": "Homem",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "delight.",
+      "target": "deleite.",
+      "speaker": "SYSTEM",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "...Wh--!?",
+      "target": "...Que--!?",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "Hah... Now that I recall, you enjoyed weaving\\n",
+      "target": "Hah... Agora que me lembro, você preferia tecer\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "and cooking much more than warfare, didn't\\n",
+      "target": "e cozinhar muito mais do que guerrear, não é?\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "you...?",
+      "target": "você...?",
+      "speaker": "Kuon",
+      "from_scene": "14_09"
+    },
+    {
+      "source": "That's right... You... never belonged on the\\n",
+      "target": "É verdade... Você... nunca pertenceu ao\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "battlefield...",
+      "target": "campo de batalha...",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "That is not true!",
+      "target": "Isso não é verdade!",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "I am your daughter! The daughter of a brave\\n",
+      "target": "Sou sua filha! A filha de um bravo\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "Uzurushan warrior!",
+      "target": "Guerreiro Uzurushan!",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "That is enough...",
+      "target": "Isto é suficiente...",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "You may live your life as your own woman...\\n",
+      "target": "Pode viver sua vida como sua própria mulher...\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "and find your own happiness...",
+      "target": "e encontre sua própria felicidade...",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "Father...",
+      "target": "Pai...",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "Father?",
+      "target": "Pai?",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "...F-Father...? No... This can't be happening.\\n",
+      "target": "...P-Pai...? Não... Isso não pode estar acontecendo.\\n",
+      "speaker": "Protagonista",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "country.",
+      "target": "país.",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "homeland.",
+      "target": "terra natal.",
+      "speaker": "Haku",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "But...",
+      "target": "mas...",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "soul.",
+      "target": "alma.",
+      "speaker": "Woman (Kuon)",
+      "from_scene": "20_11"
+    },
+    {
+      "source": "Yes...",
+      "target": "Sim...",
+      "speaker": "Rulutieh",
+      "from_scene": "14_10"
+    },
+    {
+      "source": "you...",
+      "target": "você...",
+      "speaker": "Haku",
+      "from_scene": "12_11"
+    },
+    {
+      "source": "Understood.",
+      "target": "Entendido.",
+      "speaker": "Ukon",
+      "from_scene": "13_08"
+    },
+    {
+      "source": "Who is it?",
+      "target": "Quem é?",
+      "speaker": "Kuon",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Honoka.",
+      "target": "Honoka.",
+      "speaker": "Haku",
+      "from_scene": "19_05"
+    },
+    {
+      "source": "work.",
+      "target": "trabalho.",
+      "speaker": "Protagonista",
+      "from_scene": "16_01"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "Oh, pardon me.",
+      "target": "Ah, com licença."
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "I'm... sorry about, um...",
+      "target": "Eu... desculpe, é que..."
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "That's a relief... Come on, Cocopo. We'll just be\\n",
+      "target": "Ainda bem... Vamos, Cocopo. Só estamos\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "Moznu, enough. If you're going to be working with\\n",
+      "target": "Moznu, chega. Se vai trabalhar com os Ladrões\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "the Nosuri Thieves from now on, you abide by our\\n",
+      "target": "de Nosuri de agora em diante, segue nossas\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "rules, not yours.",
+      "target": "regras, não as suas."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "Truly most impressive, dearest sister. Your\\n",
+      "target": "Muito impressionante, querida irmã. Seu charme\\n"
+    },
+    {
+      "speaker": "Ougi",
+      "source": "feminine charms dazzle, as ever.",
+      "target": "feminino encanta, como sempre."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "How positively boorish. A good MAN simply\\n",
+      "target": "Que grosseria. Um bom HOMEM simplesmente\\n"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Oshtor (twist final)",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "spoiler_level": "critical",
+      "guard": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho."
+    },
+    {
+      "entity": "Mikado",
+      "fact": "A identidade pessoal do Mikado por tras do titulo.",
+      "spoiler_level": "major",
+      "guard": "Trate o Mikado apenas como o soberano/titulo, a distancia. NAO antecipe vinculo pessoal com nenhum personagem."
+    },
+    {
+      "entity": "Figuras de memoria (Woman/Man)",
+      "fact": "As identidades das figuras de memoria/sonho ('Woman'/'Man', 'Mestre').",
+      "spoiler_level": "major",
+      "guard": "Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)"
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x285ebc",
+      "source": "We leave the imperial capital, and head straight\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x285eef",
+      "source": "to the port city nearby.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x285f08",
+      "source": "From there we'll take a ship, and head to Tuskur\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x285f3b",
+      "source": "by ocean, just as Munechika and the others did.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x285f6b",
+      "source": "As we get closer to our destination, a scent\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x285f9a",
+      "source": "hits our noses that's... hard to describe.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x285fc5",
+      "source": "It's the smell of the ocean.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x285fe2",
+      "source": "The trees by the roadside have taken strange\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x286011",
+      "source": "shapes, different from the ones back home.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28603c",
+      "source": "It makes me realize how far we've gone from\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28606a",
+      "source": "the imperial capital.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x286080",
+      "source": "And as I remember the capital... I remember\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2860ae",
+      "source": "Shinonon, and the others we're leaving behind.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2860dd",
+      "source": "I'm also worried about Kuon, whose face clouds\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28610e",
+      "source": "more the farther we get from the capital.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x286138",
+      "source": "But all that aside...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x28614e",
+      "source": "I-It's so hot...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x28615f",
+      "source": "Yeah. I heard it gets warmer in these parts,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28618e",
+      "source": "but this is way beyond warm... It's hot as hell.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2861bf",
+      "source": "What is this heat? It's like I'm trapped in a\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2861ef",
+      "source": "sauna...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2861f8",
+      "source": "We wipe the sweat from our brows, looking to the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28622b",
+      "source": "sky with anguish on our faces.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28624a",
+      "source": "You think so? But it's such a lovely day out\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x286279",
+      "source": "today.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x286280",
+      "source": "So compared to Atuy's homeland, this heat's\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2862ae",
+      "source": "practically nothing...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2862c5",
+      "source": "But why the hell is it so hot? We haven't even\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2862f6",
+      "source": "gone that far south.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x28630b",
+      "source": "This heat clearly isn't from simple change in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28633b",
+      "source": "latitude, but what else would affect it to this\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28636d",
+      "source": "degree?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x286375",
+      "source": "Are the sea currents affecting weather patterns\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2863a7",
+      "source": "this much? Or... is it because of...?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2863cd",
+      "source": "Haku, what's got you so deep in thought like\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2863fc",
+      "source": "that? Come on, everyone's waiting.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28641f",
+      "source": "Kuon calls out. Maybe it's my imagination, but\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286450",
+      "source": "her chipper tone might be masking her own\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28647c",
+      "source": "feelings.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x286486",
+      "source": "Not a word about Tuskur since we left. Kuon's\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2864b6",
+      "source": "trying to avoid the subject so we don't feel\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2864e5",
+      "source": "guilty...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2864ef",
+      "source": "Hey, Kuon...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2864fc",
+      "source": "What's the matter?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x28650f",
+      "source": "I want to make sure she's not pushing herself\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28653f",
+      "source": "too hard... but I don't want to pry.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x286564",
+      "source": "...Never mind. Be there in a sec.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x286586",
+      "source": "In the end, I can't bring myself to say\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2865b0",
+      "source": "anything.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2865ba",
+      "source": "Merchant",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2865c3",
+      "source": "Step right up, step right up! We got cheap\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2865f0",
+      "source": "shama, itow, and mamashu today! Super cheap!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28661d",
+      "source": "We arrive in some kind of bazaar with merchants\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28664f",
+      "source": "and shops of all sorts, full of activity and life.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x286682",
+      "source": "All of us forget the heat for a moment, gazing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2866b3",
+      "source": "around in awe at the unfamiliar sights.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2866db",
+      "source": "Hey there, pretty lady! We got some real sweet\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28670c",
+      "source": "rintan fruits in right now! Why not try one?",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x286739",
+      "source": "The shouts of the merchants fill the air.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x286763",
+      "source": "Oh, wow. Look at this hustle and bustle!\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28678e",
+      "source": "I almost feel like I'm back home.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2867b0",
+      "source": "Your hometown's like this place?",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2867d1",
+      "source": "This port is governed by Atuy's father, Lord\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x286800",
+      "source": "Soyankekur. Little wonder that it resembles\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28682e",
+      "source": "Shyahoro.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x286838",
+      "source": "I see. So you're used to sights like this then,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28686a",
+      "source": "Atuy?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x286870",
+      "source": "It's as lively as the market in the imperial\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28689f",
+      "source": "capital, but everyone seems a bit more\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2868c8",
+      "source": "aggressive.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2868d4",
+      "source": "The items on offer here are... much different...",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286905",
+      "source": "Rulutieh looks around with clear interest at the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x286938",
+      "source": "products lining the shops, muttering to herself.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286969",
+      "source": "A strange fish that I've never seen before...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x286997",
+      "source": "Colorful apparel and accessories...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2869bb",
+      "source": "What grabs my attention, though, are those huge\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2869ed",
+      "source": "fruits. You'd need both arms to carry one...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x286a1a",
+      "source": "They're bright orange, and they give off an\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x286a48",
+      "source": "alluring sweet scent that fills the area.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x286a72",
+      "source": "Wonder what that is. Are they going to pack\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x286aa0",
+      "source": "that stuff in the ship?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x286ab8",
+      "source": "Ah, you've got your eye on those, have you, love?\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x286aec",
+      "source": "Well spotted!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x286afa",
+      "source": "This fruit's actually a vital tool for any\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x286b27",
+      "source": "seafarer.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x286b31",
+      "source": "The rintan fruit? I have read of this...\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x286b5c",
+      "source": "It is used to hydrate at sea when drinking\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x286b89",
+      "source": "water is scarce.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x286b9a",
+      "source": "Ooh, clever clogs Neko! The fruit has a lot of\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286bcb",
+      "source": "sweet juice, and it stays fresh for days and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x286bfa",
+      "source": "days!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x286c00",
+      "source": "That's why we often load a ship up with those,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286c31",
+      "source": "instead of plain old water.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x286c4d",
+      "source": "Um... Why don't you just load up a lot of water\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x286c7f",
+      "source": "then? Wouldn't that work just as well...?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x286ca9",
+      "source": "It doesn't take that long before water spoils,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286cda",
+      "source": "pet. So we rely on these fruits a lot more.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x286d06",
+      "source": "Huh...? Water spoils...? What do you mean?\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x286d33",
+      "source": "Does the water taste bad?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x286d4d",
+      "source": "...Oh, right. I suppose Kujyuri's cold enough\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x286d7d",
+      "source": "that you don't have to worry about that.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x286da6",
+      "source": "We can't have our water out in the sunlight\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x286dd4",
+      "source": "for too long, or it gets undrinkable.\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x286dfc",
+      "source": "Spoils like milk.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x286e0e",
+      "source": "I... I had no idea that was possible.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x286e34",
+      "source": "Well, it makes sense. I bet water never spoils\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286e65",
+      "source": "where you're from, and the capital has running\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x286e96",
+      "source": "water.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x286e9d",
+      "source": "Atuy's right. There is absolutely no shame in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x286ecd",
+      "source": "not knowing how to handle water situations on\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x286efd",
+      "source": "a ship!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x286f05",
+      "source": "Yep... That's about it.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x286f1d",
+      "source": "Oh, this must be the fruit we ate while\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x286f47",
+      "source": "traveling at sea. I was wondering how they kept\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x286f79",
+      "source": "it so fresh.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x286f86",
+      "source": "But the flavor was a little... well...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x286fad",
+      "source": "Hee hee, I think the one you had might have been\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x286fe0",
+      "source": "a touch overripe, Kuon.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x286ff8",
+      "source": "Overripe?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x287002",
+      "source": "Hey mister. Could me and my friends have\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28702d",
+      "source": "a piece of rintan each?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x287045",
+      "source": "Right you are!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x287054",
+      "source": "We all get our slices of rintan and take a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x287081",
+      "source": "bite out of them.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x287093",
+      "source": "Hm... It has a unique flavor. Kinda sweet,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2870c0",
+      "source": "kinda sour... but it's pretty good.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2870e4",
+      "source": "Yes. I see why they use it for hydration\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28710f",
+      "source": "purposes--it is extraordinarily juicy.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x287136",
+      "source": "Ah, brings back memories. I used to eat tons of\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x287168",
+      "source": "these back when I was cruisin' around on the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287197",
+      "source": "sea.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x28719c",
+      "source": "It's very sweet and sour, but quite delicious.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2871cb",
+      "source": "Hm? I don't know why... It's a similar taste,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2871fb",
+      "source": "but a little different from what I remember.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x287228",
+      "source": "It felt much thicker. Much sweeter than this...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x287258",
+      "source": "Mm. I suppose it's not bad.\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x287276",
+      "source": "Ougi, grab me another one.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x287291",
+      "source": "Understood. This one seems to be at peak\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2872bc",
+      "source": "ripeness; doubtless the ideal time for\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2872e5",
+      "source": "consumption.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2872f2",
+      "source": "Hmm... ngh!? *Cough, hack* What IS this...?\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x287320",
+      "source": "It tastes like liquor!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x287337",
+      "source": "Hee hee! Guess you got an overripe one too,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x287365",
+      "source": "Nosuri.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28736d",
+      "source": "The riper the rintan fruit gets, the more its\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28739d",
+      "source": "contents ferment into alcohol.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2873bc",
+      "source": "Kuon and Nosuri had the ripe ones, so that's\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2873eb",
+      "source": "what happened to the insides.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x287409",
+      "source": "Mister, which one's the ripest one you've got?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287438",
+      "source": "Oh, you're lookin' for a drink? Hold on a sec.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287467",
+      "source": "The merchant brings out another fruit from the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287498",
+      "source": "back of his store.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2874ab",
+      "source": "This one here's pretty ripe. Ain't all the way,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2874dd",
+      "source": "but should be a bit easier to drink.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x287502",
+      "source": "He opens up a hole on the fruit with a small\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287531",
+      "source": "knife, and pours its contents out into a bowl.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287560",
+      "source": "A murky-looking liquid gradually fills the\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28758d",
+      "source": "bowl...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x287595",
+      "source": "Pretty neat, eh? As it gets ripe, the\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2875bd",
+      "source": "inside-bits start melting in the shell.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2875e5",
+      "source": "And the longer you let it sit, the better it\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287614",
+      "source": "gets. The really old ones cost a fortune!",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28763e",
+      "source": "Huh... sounds pretty cool. I'll take a little\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28766e",
+      "source": "sip, if you don't mind.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x287686",
+      "source": "Oh, Haku, make sure you save some for me.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2876b0",
+      "source": "Hold it! If we're tasting liquor, you can leave\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2876e2",
+      "source": "it to me.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2876ec",
+      "source": "We all gather around, chatting happily about the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28771f",
+      "source": "drink. It's like we never left the capital.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28774b",
+      "source": "You're all pretty carefree for folks sailin' off\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28777e",
+      "source": "to war.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x287786",
+      "source": "It makes me wonder if we're doing the right\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2877b4",
+      "source": "thing... I mean...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2877c7",
+      "source": "Worried about the bosslady, eh?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2877e7",
+      "source": "Outwardly, she yet remains unreadable... but\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x287816",
+      "source": "who knows how she truly feels about all this.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x287844",
+      "source": "...Yes, it does worry me.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28785e",
+      "source": "As for my dear sister, you need not worry.\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28788b",
+      "source": "It has been a long time indeed since I have seen\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2878be",
+      "source": "her so carefree.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2878cf",
+      "source": "Doesn't seem to me as though your sister ever\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2878ff",
+      "source": "worries about anything, yeah?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x287921",
+      "source": "We look over to find a number of men staring at\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x287953",
+      "source": "us from afar.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x287961",
+      "source": "The deputies of the Imperial Guard of the Right,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x287994",
+      "source": "correct? We have come as your guides.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x2879ba",
+      "source": "Yes, that's us... and you are?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2879d9",
+      "source": "They don't immediately answer her. They\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x287a03",
+      "source": "carefully look us up and down, like they're\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x287a31",
+      "source": "appraising us.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x287a40",
+      "source": "Who the hell are these guys?",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x287a5d",
+      "source": "They're dressed in fancy formal attire,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x287a87",
+      "source": "like the nobles in the capital.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x287aa7",
+      "source": "But they're definitely not giving off the vibe\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287ad8",
+      "source": "of nobles.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x287ae3",
+      "source": "More like their demeanors are completely at odds\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x287b16",
+      "source": "with what they're wearing...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x287b33",
+      "source": "All of the men are fairly tall, about the same\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287b64",
+      "source": "height as Jachdwalt.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x287b79",
+      "source": "Maybe not to General-Vurai-levels, but they're\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287baa",
+      "source": "all pretty ripped.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x287bbd",
+      "source": "Thanks to that, their formalwear is stretched\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x287bed",
+      "source": "to its limits. Most of it looks ready to burst.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x287c1d",
+      "source": "It almost feels like they're being forced into\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287c4e",
+      "source": "those clothes... The disconnect is almost\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x287c7a",
+      "source": "creepy.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x287c82",
+      "source": "Seriously, who the hell are these guys...?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x287cad",
+      "source": "Oh, love, those people are--",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x287cca",
+      "source": "Just as Atuy seems about to explain, it happens.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287cfb",
+      "source": "I hear a rumbling in the earth, and I see\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x287d27",
+      "source": "something closing in on us with incredible\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x287d54",
+      "source": "speed.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x287d5b",
+      "source": "...uuuuuuUUUYYYYYY!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x287d6f",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x287d74",
+      "source": "Ugh...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x287d7b",
+      "source": "Atuy gives a sigh of resignation, her shoulders\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x287dad",
+      "source": "drooping as she notices.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x287dc6",
+      "source": "AAAAAAAATUUUUUUUUUYYYYYYYY!!",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x287de3",
+      "source": "From beyond the road I see a giant scruffy man\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287e14",
+      "source": "charging toward us, a massive dust cloud in his\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x287e46",
+      "source": "wake.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x287e4c",
+      "source": "Oh, how I've MISSED you!!",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x287e66",
+      "source": "The man uses his momentum to bound high into the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x287e99",
+      "source": "air, then descends on Atuy like an unkempt hawk.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x287eca",
+      "source": "Ah!",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x287ece",
+      "source": "Wh-Wh-What is all this!?",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x287ee7",
+      "source": "Oh, Atuy, Atuy, my Atuy!\\n",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x287f02",
+      "source": "How have you been!?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x287f16",
+      "source": "The man clutches Atuy in a ferocious hug,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x287f42",
+      "source": "rubbing his cheek happily against hers.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x287f6a",
+      "source": "This is clearly an emergency, but it's such a\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x287f9a",
+      "source": "weird one that we're all frozen in place,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x287fc6",
+      "source": "bewildered.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x287fd2",
+      "source": "Y-Yes. It's, ah, been a while, hasn't it...\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288000",
+      "source": "Papa.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x288006",
+      "source": "P-Papa...?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x288011",
+      "source": "Atuy's father... Soyankekur the Mariner?\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28803c",
+      "source": "He seems pretty different from when I saw\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x288068",
+      "source": "him before...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x288076",
+      "source": "Oh, Atuy. You left home without so much as\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2880a3",
+      "source": "a goodbye! I was worried sick about you, aye!",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2880d1",
+      "source": "*Nuzzle, nuzzle, nuzzle*",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2880ea",
+      "source": "Egh... Uh, Papa?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2880fb",
+      "source": "Ah, this feeling in my arms.\\n",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28811a",
+      "source": "It brings back so many memories...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28813d",
+      "source": "Papa, would you stop--Your stubble gets all\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28816b",
+      "source": "scratchy when you do that--",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x288187",
+      "source": "I rushed over fast as I could when I heard you'd\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2881ba",
+      "source": "arrived!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2881c3",
+      "source": "Owie owie owie! It's getting worse...\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2881eb",
+      "source": "Papa, that huuurts!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2881ff",
+      "source": "You must have been so lonely, out on your\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28822b",
+      "source": "own! But now you're back, you can stay by\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x288257",
+      "source": "my side forever and ever and ever and ever--",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288284",
+      "source": "*Nuzzle, nuzzle, nuzzle*\\n",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x28829f",
+      "source": "I SAID IT HUUURTS!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2882b2",
+      "source": "Atuy seems to have had enough, and thwacks\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2882df",
+      "source": "the man's head with the butt of her spear.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28830a",
+      "source": "...The man doesn't even flinch.\\n",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x28832c",
+      "source": "He just keeps beaming at Atuy.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28834b",
+      "source": "You're... the same as always, Papa.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x28836f",
+      "source": "Well now! Allow me to introduce myself.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x288397",
+      "source": "I'm Soyankekur. As you might have figured\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2883c3",
+      "source": "out, I'm the proud father of dear little\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2883ee",
+      "source": "Atuy here.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2883f9",
+      "source": "Soyankekur the Mariner. After that, I'd think\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288429",
+      "source": "it was a joke, but... he does have the aura\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288457",
+      "source": "of a general.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x288465",
+      "source": "He's not enormous or anything, but he's lean,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288495",
+      "source": "with a lot of muscle. Kinda like Oshtor and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2884c3",
+      "source": "Mikazuchi.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2884ce",
+      "source": "And as proof...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2884de",
+      "source": "She's smiling, but her tail is swaying at the\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28850e",
+      "source": "same time. She's being cautious... and wary.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28853b",
+      "source": "Now, you must be Haku. I've heard a lot about\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28856b",
+      "source": "you from all Atuy's letters.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x288588",
+      "source": "The way I hear it, Atuy relied on you quite a\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2885b8",
+      "source": "bit while she was staying in the imperial\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2885e4",
+      "source": "capital.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2885ed",
+      "source": "Well, I suppose I'd better extend my gratitude\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28861e",
+      "source": "in Atuy's stead, aye? Pleasure to finally\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28864a",
+      "source": "make your acquaintance, Haku.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x288668",
+      "source": "Uh, likewise...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x288678",
+      "source": "I hesitantly take the offered hand as he grins\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2886a9",
+      "source": "broadly, showing off his pearly-white teeth.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2886d6",
+      "source": "He doesn't seem like a bad person, just...\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288703",
+      "source": "how do I put it... A tad overbearing?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x288729",
+      "source": "Now I think I understand why Atuy hasn't talked\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28875b",
+      "source": "about her family before.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x288774",
+      "source": "Now then, boy... Let's move on to a more\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28879f",
+      "source": "important topic.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2887b0",
+      "source": "Soyankekur continues the conversation,\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2887d9",
+      "source": "my hand still trapped in his.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2887f7",
+      "source": "What, exactly, is the relationship between\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288824",
+      "source": "you and my Atuy?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x288835",
+      "source": "THAT'S the more important topic!?",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x288857",
+      "source": "Oh, me and him? I suppose he's a very special\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288887",
+      "source": "person to me, aren't you, love?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2888a7",
+      "source": "You know, we don't keep secrets from each other.\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2888da",
+      "source": "Someone I can speak freely with. Like that!",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x288906",
+      "source": "I guess you could say that. It's more like I\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x288935",
+      "source": "listen to you vent whenever you get rejected...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288965",
+      "source": "Soyankekur's smile abruptly twists, his face\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x288994",
+      "source": "hardening at his daughter's words.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2889b7",
+      "source": "A...Atuy?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2889c1",
+      "source": "Ooh, and sometimes we meet up for drinks, and\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2889f1",
+      "source": "go at it until morning. Just nonstop!",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x288a17",
+      "source": "...A-ha. Go at it, eh...?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x288a31",
+      "source": "His grip instantly intensifies.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x288a51",
+      "source": "...Haku.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x288a5a",
+      "source": "Seems like you've been taking more care\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x288a84",
+      "source": "of my daughter than I thought...\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x288aa7",
+      "source": "Heh... heh heh heh...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x288abd",
+      "source": "Um, I think there's been a misunderstanding--",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288aeb",
+      "source": "Yeek!",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x288af1",
+      "source": "H-Holy crap, how is his hand that strong...!?\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288b21",
+      "source": "It's like I'm being crushed in a vise...!",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x288b4b",
+      "source": "N-No, really! By \"go at it\" she just means\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288b78",
+      "source": "we'd DRINK until the morning, it's not like\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288ba6",
+      "source": "we're--",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x288bae",
+      "source": "Now that I think about it, you and Atuy do go\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288bde",
+      "source": "out on your own a lot, late at night...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x288c06",
+      "source": "Look, the ambiguous commentary ISN'T HELPING!",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288c34",
+      "source": "Another servant.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x288c45",
+      "source": "She is a new member that also serves our\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x288c70",
+      "source": "Master.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x288c78",
+      "source": "...You disgust me.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x288c8b",
+      "source": "...I see. Let's have a little chat, you and I,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x288cbc",
+      "source": "and we can talk about everything you've been\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x288ceb",
+      "source": "doing... in excruciating detail.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x288d0c",
+      "source": "Look, I'm telling you, you've got it all wrong!",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288d3c",
+      "source": "I look to Atuy for some help.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x288d5a",
+      "source": "Hmmm?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x288d60",
+      "source": "...She seems totally unaware of where this\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288d8d",
+      "source": "conversation's gone, waving back with a cheery\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x288dbe",
+      "source": "smile.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x288dc5",
+      "source": "Wha--Are you--Can't you take a hint...!?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x288dee",
+      "source": "Let's you and I take a little walk, aye, Haku?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x288e1d",
+      "source": "...Later that day.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x288e30",
+      "source": "With enough explanation and desperation, he\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288e5e",
+      "source": "finally believes that we were only drinking.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x288e8b",
+      "source": "Atuy... But WE'VE never stayed up all night\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288eb9",
+      "source": "enjoying fine drink and fine banter...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x288ee0",
+      "source": "...Although I'm not sure if he's totally\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x288f0b",
+      "source": "convinced yet.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x288f1a",
+      "source": "We arrive at the harbor, with Soyankekur as\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288f48",
+      "source": "our guide.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x288f53",
+      "source": "So? How do you like her? You're looking at my\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x288f83",
+      "source": "pride and joy... my castle.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x288f9f",
+      "source": "He brings us to a massive ship, far beyond the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x288fd0",
+      "source": "scale of any of the other boats docked there.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x288ffe",
+      "source": "It's no metaphor. This ship is practically a\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28902d",
+      "source": "castle in its own right.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x289046",
+      "source": "That thing's huge...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x28905b",
+      "source": "Heh heh. A real beauty, isn't she? Aye, she's\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28908b",
+      "source": "my castle, and the finest prize my liege\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2890b6",
+      "source": "could offer me... The Pororounha!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2890d8",
+      "source": "She and I will see you lot all safely to Tuskur.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289109",
+      "source": "Huh? Wait, you're coming with us, Papa?",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x289131",
+      "source": "Naturally! Why wouldn't I handle this\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x289159",
+      "source": "personally?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x289165",
+      "source": "It was a favor asked of me by Lord Oshtor\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x289191",
+      "source": "himself.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x28919a",
+      "source": "Come on, it's clear you're only doing this\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2891c7",
+      "source": "cause Atuy's here...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2891dc",
+      "source": "I guess it makes sense, though. Atuy's the\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x289209",
+      "source": "princess of Shyahoro. It figures she'd have\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x289237",
+      "source": "escorts.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x289240",
+      "source": "A large number of sailors rush to and fro,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28926d",
+      "source": "loading up the ship with crate after crate of\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28929d",
+      "source": "supplies.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2892a7",
+      "source": "We'll be departing soon...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2892c2",
+      "source": "Ah, what orderly and swift movements! It's\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2892ef",
+      "source": "almost refreshing to see such efficient command.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289320",
+      "source": "I suppose you aren't Soyankekur the Mariner for\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289352",
+      "source": "nothing. My father praised you as a worthy rival.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289384",
+      "source": "Not even Kuon can hide her awe at the expertise\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2893b6",
+      "source": "of the well-trained sailors. Her gloom seems to\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2893e8",
+      "source": "have faded.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2893f4",
+      "source": "Should be ready before the sun reaches its\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x289421",
+      "source": "zenith, I expect. Just a bit longer until\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28944d",
+      "source": "we set out.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x289459",
+      "source": "We're counting on you to get us there in one\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x289488",
+      "source": "piece.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28948f",
+      "source": "Oh, no worries, chum. You've absolutely nothing\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2894c1",
+      "source": "to worry about anymore.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2894d9",
+      "source": "After all, it'll all be SMOOTH SAILING\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x289502",
+      "source": "from here! Get it!? AHAHAHAHAHA!",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x289523",
+      "source": "At his dad-joke quality pun, the men around\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x289551",
+      "source": "us all laugh heartily along with him.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x289577",
+      "source": "...Ugh...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x289581",
+      "source": "...Anyway, looks like we're about ready to\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2895ae",
+      "source": "leave port.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2895ba",
+      "source": "Tuskur, huh...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2895c9",
+      "source": "Munechika... and Maro...\\n",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2895e4",
+      "source": "Hope they're all right.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2895fc",
+      "source": "Kuon...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x289604",
+      "source": "All right, boys, anchors aweigh!\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x289627",
+      "source": "Cast off!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x289631",
+      "source": "Crew",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x289636",
+      "source": "SIR!",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x28963b",
+      "source": "A raucous response from the crew erupts as the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28966c",
+      "source": "ship is unmoored.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28967e",
+      "source": "All the sails raise and unfurl, and the ship\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2896ad",
+      "source": "begins to drift out to sea.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2896c9",
+      "source": "Our destination: Shyahoro!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2896e4",
+      "source": "I climb up a short stairway from the cabin to\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x289714",
+      "source": "reach the top of the deck.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x28972f",
+      "source": "Mysterious. By my calculations, a ship of this\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289760",
+      "source": "size could never sail as smoothly as this.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28978b",
+      "source": "Not to mention the ship moves without a rowing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2897bc",
+      "source": "crew, or even the spells of a mage.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2897e0",
+      "source": "You're right. I've traveled quite a bit now,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28980f",
+      "source": "but I've never seen a ship both this big and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28983e",
+      "source": "fast.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x289844",
+      "source": "It's just a thought, but perhaps the ship runs\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289875",
+      "source": "on eldcraft.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x289882",
+      "source": "That is... a possibility. I cannot imagine\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2898af",
+      "source": "any other clear explanation.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2898cc",
+      "source": "Hey, Nekone. How much of those stories about\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2898fb",
+      "source": "eldcraft do you think are true?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28991b",
+      "source": "Huh...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x289923",
+      "source": "The writings of the ancients talked about such\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289954",
+      "source": "unimaginable forms of transport...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x289977",
+      "source": "Steedless carriages, silver serpents that carry\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2899a9",
+      "source": "people in their bellies, metallic birds, even\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2899d9",
+      "source": "ships that sail the stars...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2899f6",
+      "source": "They sound so absurd, said aloud.\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x289a1a",
+      "source": "I was often teased as a child for believing in\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289a4b",
+      "source": "such stories.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x289a59",
+      "source": "But the more I study it, the more I think these\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289a8b",
+      "source": "can't just be fantastic tales.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x289aaa",
+      "source": "...I agree!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x289ab6",
+      "source": "The two begin to talk animatedly, comparing\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x289ae4",
+      "source": "their notes on ancient legends.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x289b04",
+      "source": "Kuon seems to have forgotten her worries\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x289b2f",
+      "source": "for the time being...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x289b45",
+      "source": "In actuality, the imperial capital itself\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x289b71",
+      "source": "holds the key. I wonder how they would react\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x289ba0",
+      "source": "if they knew...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x289bb0",
+      "source": "Unfortunately for them, I can't bring them\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x289bdd",
+      "source": "any closer to the truth.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x289bf6",
+      "source": "*Sigh*...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x289c00",
+      "source": "Oh, it's not that bad.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x289c17",
+      "source": "I get to the starboard side to find Atuy and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x289c46",
+      "source": "Nosuri in conversation.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x289c5e",
+      "source": "Atuy seems depressed. She leans on the railing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x289c8f",
+      "source": "with both arms, resting her chin on her hands\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x289cbf",
+      "source": "and sighing.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x289ccc",
+      "source": "What's up? Why the long face?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x289cea",
+      "source": "Oh, hey there, love...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x289d01",
+      "source": "Well, I'm just a touch exhausted right now...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x289d2f",
+      "source": "I'm pretty sure I know what's got her so\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x289d5a",
+      "source": "worn down.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x289d65",
+      "source": "Er, well... I think your dad's a great guy.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x289d91",
+      "source": "Do you really mean that?",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x289daa",
+      "source": "I think so as well. He seems like a wonderful\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x289dda",
+      "source": "father figure.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x289de9",
+      "source": "I see... Well... it's not like I hate him\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x289e15",
+      "source": "or anything.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x289e22",
+      "source": "I mean, when it comes down to it, I do like\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x289e50",
+      "source": "He's strong, and reliable, and I do admire him...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289e82",
+      "source": "But... that's exactly why I wish he'd act a bit\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289eb4",
+      "source": "more proper.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x289ec1",
+      "source": "I guess she feels conflicted about how he melts\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x289ef3",
+      "source": "into a puddle around her.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x289f0d",
+      "source": "Now that I think about it, all the crew here\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x289f3c",
+      "source": "wear such fashionable clothes, including your\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x289f6c",
+      "source": "father.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x289f74",
+      "source": "I was expecting something more... ragged.\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x289fa0",
+      "source": "Practical, you know?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x289fb5",
+      "source": "Hee hee, you think so? That was actually all\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x289fe4",
+      "source": "my idea.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x289fed",
+      "source": "A while back, they'd all wear these dreadful\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a01c",
+      "source": "musky-looking clothes.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28a033",
+      "source": "They'd walk around town in their undies, never\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28a064",
+      "source": "wash, use such vulgar language--I couldn't have\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28a096",
+      "source": "it!",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x28a09a",
+      "source": "Hm. I suppose that isn't acceptable behavior.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a0ca",
+      "source": "A good man must present themselves well!",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28a0f3",
+      "source": "You think so? Aren't all sailors kinda like that?\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x28a127",
+      "source": "That's closer to my mental image of one...",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28a152",
+      "source": "No, no, no, no, no! I won't accept that.\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28a17d",
+      "source": "Everything's different now. We don't go\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28a1a7",
+      "source": "raiding and pillaging!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28a1be",
+      "source": "The Mikado needs us to preserve order and\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28a1ea",
+      "source": "oversee trade. We can't have men trotting\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28a216",
+      "source": "around in undies.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28a228",
+      "source": "I'd rather run away from home than have some\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a257",
+      "source": "poor dear think that was the official uniform\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a287",
+      "source": "of Shyahoro...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28a296",
+      "source": "Uh, didn't you already run away from home...?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28a2c4",
+      "source": "I guess I can understand where you're coming\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a2f3",
+      "source": "from.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28a2f9",
+      "source": "So since I decided all this was unacceptable,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a329",
+      "source": "I came up with a plan.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28a340",
+      "source": "All I had to do was make everyone look\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28a369",
+      "source": "fashionable!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28a376",
+      "source": "From that point on, I made sure the sailors\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28a3a4",
+      "source": "tidied up, wore nice clothing, and talked\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28a3d0",
+      "source": "properly.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28a3da",
+      "source": "It was no easy thing! I tried to make them so\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a40a",
+      "source": "fashionable--I picked out the most popular\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28a437",
+      "source": "suits I could find...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x28a44d",
+      "source": "But you have to start somewhere, don't you?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28a479",
+      "source": "Atuy pulls out what looks like a block of\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28a4a5",
+      "source": "prints as she says this.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28a4be",
+      "source": "All of them feature colorful drawings of thin\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a4ee",
+      "source": "and handsome men wearing flashy clothing.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28a518",
+      "source": "\"The hottest new menswear that's all the rage\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a548",
+      "source": "in the imperial capital!\"",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28a562",
+      "source": "\"All the girls' eyes are on me thanks to this\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a592",
+      "source": "one weird trick!\"",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28a5a4",
+      "source": "\"Mononofu's Warehouse. You're gonna love the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a5d3",
+      "source": "way you look--we guarantee it.\"",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28a5f3",
+      "source": "Hm, those look pretty good.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28a60f",
+      "source": "You think so? That's what I thought too...",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28a63a",
+      "source": "...at the time, anyway. I don't know where I\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a669",
+      "source": "went wrong.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28a675",
+      "source": "In reality, it looked so different from what I\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28a6a6",
+      "source": "had imagined...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28a6b6",
+      "source": "Really? I don't think it looks THAT bad.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28a6df",
+      "source": "Well, it's kind of understandable...",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x28a704",
+      "source": "The drawings are all of slim and tall handsome\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28a735",
+      "source": "men with long legs.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x28a749",
+      "source": "But the sailors are all barrel-chested,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28a773",
+      "source": "musclebound lugs with legs like tree trunks.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28a7a0",
+      "source": "Clothes or not, they'll never look anything\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28a7ce",
+      "source": "like the guys in these drawings.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28a7ef",
+      "source": "*Sigh*... I suppose it's best to leave these\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a81e",
+      "source": "to the boys who can pull it off.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28a83f",
+      "source": "I head over to the port side to find Rulutieh\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a86f",
+      "source": "watching the shore, standing near the railing.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a89e",
+      "source": "I see a number of seagulls circling Rulutieh,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a8ce",
+      "source": "as though they're having a conversation with\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28a8fd",
+      "source": "her.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x28a902",
+      "source": "I guess animals really do tend to flock to her.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a932",
+      "source": "Rulutieh.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28a93c",
+      "source": "Oh, Sir Haku...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28a94c",
+      "source": "What were you looking at?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28a966",
+      "source": "I saw a... very big fish over there...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x28a98d",
+      "source": "I follow Rulutieh's pointed finger to a large\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28a9bd",
+      "source": "school of fish, swimming alongside the ship.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28a9ea",
+      "source": "Oh...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28a9f0",
+      "source": "Their silver scales glitter serenely as the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28aa1e",
+      "source": "light plays off of them.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28aa37",
+      "source": "I can't help but stare in awe at the sight.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28aa63",
+      "source": "It's so... beautiful...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28aa7b",
+      "source": "Yeah, when you see them like this...\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x28aaa2",
+      "source": "It really is.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28aab0",
+      "source": "I've only ever seen dried fish... I never knew\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28aae1",
+      "source": "how large and beautiful they could be.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x28ab08",
+      "source": "I dunno if I've ever seen dried fish that could\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28ab3a",
+      "source": "be beautiful--Ah, better not spoil the moment.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28ab69",
+      "source": "Oh... Sir Haku, look at that!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x28ab87",
+      "source": "Again I look, and this time I see a large\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28abb3",
+      "source": "creature jump up from the waters--\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x28abd8",
+      "source": "big enough to ride, even.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28abf2",
+      "source": "Eee! Eeeee!\\n",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28ac00",
+      "source": "*click, click, click, click*",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28ac1d",
+      "source": "They almost seem to be chirping happily,\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28ac48",
+      "source": "waving their fins as if in greeting.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x28ac6d",
+      "source": "Oh, they're adorable...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28ac85",
+      "source": "They spin around each other, as if giving us a\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28acb6",
+      "source": "show, occasionally spouting little bursts of\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28ace5",
+      "source": "They sure seem friendly.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28acfe",
+      "source": "Hee... Maybe they're saying hello to us.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28ad27",
+      "source": "That's exactly right. They're glad to see you,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28ad58",
+      "source": "Rulie!",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28ad5f",
+      "source": "Looks like Atuy's come to join us.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28ad82",
+      "source": "Tantans are awfully clever. They came to say\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28adb1",
+      "source": "hello, since they've never seen you before.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28addd",
+      "source": "Hee hee... that's so sweet of them...",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x28ae03",
+      "source": "Rulutieh seems unable to take her eyes off\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28ae30",
+      "source": "the friendly tantans.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x28ae46",
+      "source": "Plus, they taste delicious!",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28ae62",
+      "source": "...Um?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28ae69",
+      "source": "Rulutieh's smile turns glassy.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28ae88",
+      "source": "Ooh, they're great in a fry-up. Smoking them's\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28aeb9",
+      "source": "good too. Just a bite, and you'll be in utter\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28aee9",
+      "source": "bliss.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28aef0",
+      "source": "Uh... huh?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28aefb",
+      "source": "Um... You're... going to eat them?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28af1e",
+      "source": "Yup.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x28af23",
+      "source": "These ones.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28af2f",
+      "source": "It's... erm... \"mutual coexistence\"?\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x28af56",
+      "source": "They tend to help us on fishing trips, and we\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28af86",
+      "source": "share our catches.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x28af99",
+      "source": "B-But then, why--",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28afab",
+      "source": "Sometimes their numbers get a bit out of control.\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x28afdf",
+      "source": "That's when we have to draw the line, see.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28b00a",
+      "source": "Otherwise they'd eat all the fish right up,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28b038",
+      "source": "and there'd be nothing left for us people.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28b063",
+      "source": "Eeeee, eeee!\\n",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28b072",
+      "source": "*click, click, click* ",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28b089",
+      "source": "Hee hee, you guys are so cute... I promise I'll\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28b0bb",
+      "source": "eat you myself to show my respect.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28b0de",
+      "source": "When the time comes, I'll make some for you\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28b10c",
+      "source": "too, Rulie!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28b118",
+      "source": "Atuy leaves us with this cheery thought,\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28b143",
+      "source": "waving goodbye with a smile.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28b160",
+      "source": "...OK...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x28b169",
+      "source": "Rulutieh's expression is pale and distant\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28b195",
+      "source": "as she contemplates the cruelties of this\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28b1c1",
+      "source": "world.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28b1c8",
+      "source": "...I guess she can't reject it outright\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28b1f2",
+      "source": "because she understands about coexisting\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28b21d",
+      "source": "with nature...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28b22c",
+      "source": "...I don't know if there's anything I can say\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28b25c",
+      "source": "to make her feel better.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28b275",
+      "source": "None of us even get off the boat when we arrive\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28b2a7",
+      "source": "at Shyahoro.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28b2b4",
+      "source": "The crew quickly gets the ship resupplied,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28b2e1",
+      "source": "and soon we're back on the path to Tuskur.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28b30c",
+      "source": "I head for the stern of the boat, hearing a\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28b33a",
+      "source": "quiet singing from that direction.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28b35d",
+      "source": "That's a really pretty voice...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28b37d",
+      "source": "Who could it be? I'm pretty sure I only remember\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28b3b0",
+      "source": "seeing burly guys on this ship.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28b3d0",
+      "source": "I look over to find Uruuru and Saraana sitting\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28b401",
+      "source": "at the ship's edge, legs dangling over the side.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28b432",
+      "source": "Oh. Uruuru and Saraana...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28b44c",
+      "source": "I lean back against the cabin and listen to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28b47a",
+      "source": "their song for a while.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28b492",
+      "source": "A gentle song, with the waves as accompaniment.\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28b4c4",
+      "source": "It's quiet and soft, and somehow nostalgic.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28b4f0",
+      "source": "I initially only listen out of curiosity, but\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28b520",
+      "source": "after a while, I'm completely entranced.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28b549",
+      "source": "When you look at the both of them like this...",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28b578",
+      "source": "They have an ethereal beauty to them.\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x28b5a0",
+      "source": "Like a pair of perfectly crafted dolls.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x28b5c8",
+      "source": "As I think to myself, the two of them seem to\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28b5f8",
+      "source": "notice me standing there.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28b612",
+      "source": "Is there something you require?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28b632",
+      "source": "Oh, sorry. Didn't mean to disturb you. Go ahead,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28b665",
+      "source": "just pretend I'm not here or something...",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28b68f",
+      "source": "More important to be with you.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28b6ae",
+      "source": "It is much more important for us to be at your\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28b6df",
+      "source": "side, Master.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28b6ed",
+      "source": "That so...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28b6f8",
+      "source": "Master, please come here.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28b712",
+      "source": "...I have no idea how, but they suddenly produce\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28b745",
+      "source": "a cushion for me to sit on.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28b761",
+      "source": "Oh, thanks.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28b76d",
+      "source": "We shall ready a bed immediately.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x28b78f",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28b797",
+      "source": "Blue waters. Blue sky. Passion.\\n",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x28b7b9",
+      "source": "Recipe for romance.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x28b7cd",
+      "source": "We will be bonded together in the vast ocean\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28b7fc",
+      "source": "under the blue sky. This is our destiny...\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28b829",
+      "source": "our fate.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28b833",
+      "source": "You guys get more and more aggressive about this\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28b866",
+      "source": "every time, don't you!?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28b87e",
+      "source": "And they're just the same old twins as always.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28b8af",
+      "source": "Geez...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28b8b7",
+      "source": "...Hey, about that song.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28b8d0",
+      "source": "A lullaby.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28b8db",
+      "source": "It is a lullaby that our mother sang to us\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28b908",
+      "source": "when we were young.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x28b91c",
+      "source": "...I see.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28b926",
+      "source": "Hey, Uruuru, Saraana. Would... you mind singing\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28b958",
+      "source": "me that song again?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x28b96c",
+      "source": "...As you wish.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28b97c",
+      "source": "It feels like a song I know... from long, long\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28b9ad",
+      "source": "ago.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x28b9b2",
+      "source": "I relax, letting the song take over my thoughts\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28b9e4",
+      "source": "as I rest at the ship's edge...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28ba04",
+      "source": "All the emotions that have been flooding my\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28ba32",
+      "source": "mind slowly calm, and fade away.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28ba53",
+      "source": "My mind is filled with peace, and--if only\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28ba80",
+      "source": "for a little while--I let myself forget the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28baae",
+      "source": "hardships ahead of us.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28d0d4",
+      "source": "Honoka calls out to a court lady walking alone\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28d105",
+      "source": "down the hallway.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28d117",
+      "source": "Entua, what impeccable timing.\\n",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28d138",
+      "source": "Could I ask your help with something?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x28d15e",
+      "source": "Yes, Lady Honoka. I would be glad to help.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28d189",
+      "source": "Entua gives a respectful bow as Honoka holds\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d1b8",
+      "source": "out a small bowl full of assorted sweets.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28d1e2",
+      "source": "Would you try tasting one of these for me,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28d20f",
+      "source": "then?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28d215",
+      "source": "What is this?",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28d223",
+      "source": "Let the taste inform you.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x28d23d",
+      "source": "Spurred on by Honoka's mischievous smile, Entua\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28d26f",
+      "source": "carefully plucks one of the sweets from the bowl.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28d2a1",
+      "source": "If you do not mind, then...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28d2bd",
+      "source": "She takes a small bite, a serious expression\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d2ec",
+      "source": "on her face... and it shifts to a look of\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28d318",
+      "source": "delight.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x28d321",
+      "source": "...How delicious!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28d333",
+      "source": "I am glad to hear it.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x28d349",
+      "source": "Yes... The outer shell is crisp and fragrant,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d379",
+      "source": "but the inside is soft and sweet. It melts in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d3a9",
+      "source": "the mouth...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28d3b6",
+      "source": "I do not think I have ever eaten a treat such\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d3e6",
+      "source": "as this before.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28d3f6",
+      "source": "It relieves me to hear that this is even enough\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28d428",
+      "source": "to satisfy foreign tastes...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28d445",
+      "source": "A brief shudder runs through Entua at the use\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d475",
+      "source": "of the word \"foreign.\" ",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28d48d",
+      "source": "Her gaze falls to the sweet in her hand, a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28d4ba",
+      "source": "single bite missing, and a tear glimmers as it\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28d4eb",
+      "source": "falls.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28d4f2",
+      "source": "Is something the matter, Entua?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28d512",
+      "source": "Lady Honoka...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28d521",
+      "source": "You have been truly kind to me. I... do not have\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28d554",
+      "source": "the words to express how grateful I am to you.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d583",
+      "source": "I have done nothing to deserve such gratitude.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d5b2",
+      "source": "That is simply not true...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x28d5cd",
+      "source": "I took up arms against your land just as my\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28d5fb",
+      "source": "father did. I would expect only death as\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28d626",
+      "source": "punishment.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28d632",
+      "source": "Leave him be. I forbid you to seek\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x28d657",
+      "source": "vengeance...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28d664",
+      "source": "...Wh--!?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28d66e",
+      "source": "Hah... Now that I recall, you enjoyed weaving\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d69e",
+      "source": "and cooking much more than warfare, didn't\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28d6cb",
+      "source": "you...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28d6d3",
+      "source": "That's right... You... never belonged on the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d702",
+      "source": "battlefield...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28d711",
+      "source": "That is not true!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28d723",
+      "source": "I am your daughter! The daughter of a brave\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28d751",
+      "source": "Uzurushan warrior!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x28d764",
+      "source": "That is enough...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28d776",
+      "source": "You may live your life as your own woman...\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28d7a4",
+      "source": "and find your own happiness...",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x28d7c3",
+      "source": "Father...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28d7cd",
+      "source": "Haha... I suppose my only regret... is that I\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d7fd",
+      "source": "will never see you in your... bridal...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x28d825",
+      "source": "Father?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28d82d",
+      "source": "...F-Father...? No... This can't be happening.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28d85e",
+      "source": "Father, please... Don't leave me...\\n",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x28d884",
+      "source": "Father... Father!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28d896",
+      "source": "...My father's dying wish was for me to \"leave\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28d8c7",
+      "source": "the battlefield behind, and find my own\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28d8f1",
+      "source": "happiness.\"",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28d8fd",
+      "source": "I took those words to heart, and traveled the\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28d92d",
+      "source": "barren lands for days until I reached this\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28d95a",
+      "source": "country.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x28d963",
+      "source": "Perhaps I wished to see what lay ahead of us...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28d995",
+      "source": "had we been able to finish our battle.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x28d9bc",
+      "source": "And in the country I once hated as an enemy,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28d9eb",
+      "source": "I found people living just as I did in my\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28da17",
+      "source": "homeland.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x28da21",
+      "source": "Weaving clothes, earning enough to eat each day,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28da54",
+      "source": "raising children... It was a very peaceful\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28da81",
+      "source": "lifestyle.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28da8c",
+      "source": "I even saw mothers and children who had lost\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28dabb",
+      "source": "husbands and fathers to the war.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28dadc",
+      "source": "I was... at a loss. The happiness my father\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28db0a",
+      "source": "wished for me was to live an ordinary life...\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28db3a",
+      "source": "but...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28db41",
+      "source": "...How can I allow myself that after fighting in\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28db74",
+      "source": "the war that claimed so many lives? How could I\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28dba6",
+      "source": "face them?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28dbb5",
+      "source": "And it was then that you found me, Lady Honoka...\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x28dbe9",
+      "source": "paralyzed by the sight.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28dc01",
+      "source": "I do remember. I had thought only to venture\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28dc30",
+      "source": "into the city for a change...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x28dc4e",
+      "source": "I saw you crouched at the side of the street...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28dc80",
+      "source": "like a wild young beast that had lost its very\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28dcb1",
+      "source": "soul.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28dcb7",
+      "source": "Yes...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28dcbe",
+      "source": "Not only did you take me back with you, you did\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28dcf0",
+      "source": "not judge me when I revealed my heritage to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28dd1e",
+      "source": "you...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x28dd25",
+      "source": "Instead, you allowed me to work here as a\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28dd51",
+      "source": "full-fledged court attendant...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x28dd71",
+      "source": "I merely saw the potential within you. And was\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28dda2",
+      "source": "I not correct? You are helping me as we speak.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28ddd1",
+      "source": "As Entua stiffens in humility, Honoka gently\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28de00",
+      "source": "rests her hand on the girl's head.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28de23",
+      "source": "I was wrong to have spoken so carelessly.\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28de4f",
+      "source": "I am sorry to have disturbed such terrible\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28de7c",
+      "source": "memories...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28de88",
+      "source": "P-Please, don't be! That is... such words are\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28deb8",
+      "source": "wasted on me...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28dec8",
+      "source": "Well then, allow me at least to apologize for\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28def8",
+      "source": "always asking such odd tasks of you.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x28df1d",
+      "source": "For you, Lady Honoka, I would fulfill any\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28df49",
+      "source": "request, even at the cost of my own life.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28df73",
+      "source": "...If that is the case, I would ask one more\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28dfa2",
+      "source": "thing of you.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28dfb0",
+      "source": "Please, do not hesitate. Ask whatever you wish.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28dfe0",
+      "source": "Honoka can't help but smile at the girl's\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28e00c",
+      "source": "earnest, forthright personality.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28e02d",
+      "source": "I would like you to take these sweets to the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e05c",
+      "source": "young--Pardon, to Lord Woshis. If you would.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e089",
+      "source": "Please also deliver this message: \"I am sure\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e0b8",
+      "source": "you are very busy, but please do not overwork\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28e0e8",
+      "source": "yourself.\"",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28e0f3",
+      "source": "Understood.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28e0ff",
+      "source": "Entua takes another deep bow, then accepts the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28e130",
+      "source": "bowl of sweets.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28e140",
+      "source": "Who is it?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28e14b",
+      "source": "Woshis raises his head from his paperwork,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e178",
+      "source": "sensing someone at his door.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28e195",
+      "source": "I have come to deliver a message from Lady\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e1c2",
+      "source": "Honoka.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x28e1ca",
+      "source": "Please, come in.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x28e1db",
+      "source": "Your pardon.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28e1e8",
+      "source": "Ah, so it was you.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x28e1fb",
+      "source": "Woshis recognizes the girl that enters his room,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28e22e",
+      "source": "giving her a cordial smile.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28e24a",
+      "source": "It seems you are quite the hard worker.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28e274",
+      "source": "Lady Honoka must be proud... After all, she\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28e2a2",
+      "source": "was the one who recommended you.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x28e2c3",
+      "source": "I thank you, but I am afraid I am not worthy\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e2f2",
+      "source": "of such praise...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28e304",
+      "source": "Oh? And what could these be?",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28e321",
+      "source": "I have been told by Lady Honoka to deliver these\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28e354",
+      "source": "sweets to you, Lord Woshis.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28e370",
+      "source": "I see... sweets.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x28e381",
+      "source": "Yes. They are very fine quality, and most\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28e3ad",
+      "source": "palatable--",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x28e3b9",
+      "source": "Entua notices that she's smiling, and hastily\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28e3e9",
+      "source": "covers her mouth.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x28e3fb",
+      "source": "...My apologies.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x28e40c",
+      "source": "I am afraid I am currently quite busy. Would\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e43b",
+      "source": "you mind setting them there for the moment?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28e467",
+      "source": "Entua places the bowl at the indicated corner\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28e497",
+      "source": "of his desk.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x28e4a4",
+      "source": "And this message from Lady Honoka?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28e4c7",
+      "source": "She wished me to tell you... \"I am sure you are\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28e4f9",
+      "source": "very busy, but please do not overwork yourself.\"",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28e52a",
+      "source": "Well, well...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28e538",
+      "source": "Please convey my reply to Lady Honoka:\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28e561",
+      "source": "\"Thank you for your concern.\"",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x28e57f",
+      "source": "I will be sure to do so.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x28e598",
+      "source": "Entua gives a deep bow and turns to leave,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e5c5",
+      "source": "but Woshis calls out to her.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x28e5e2",
+      "source": "Ah, that reminds me... There is something\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x28e60e",
+      "source": "I should inform you of.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x28e626",
+      "source": "...Yes? What is it?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x28e63a",
+      "source": "There is yet to be an official decision...",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28e665",
+      "source": "But you should know you are being considered for\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28e698",
+      "source": "the position of the imperial princess's\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x28e6c2",
+      "source": "caretaker.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x28e6cd",
+      "source": "The imperial princess's...?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x28e6e9",
+      "source": "Lady Munechika currently serves as governess,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28e719",
+      "source": "but war divides her duties. It behooves us\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e746",
+      "source": "to train others, hm?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x28e75b",
+      "source": "But... It may be unwise to appoint one of my\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e78a",
+      "source": "background to be so near the princess--",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x28e7b2",
+      "source": "Background...? I'm afraid I cannot imagine what\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28e7e4",
+      "source": "you are referring to.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x28e7fa",
+      "source": "Woshis tilts his head in polite puzzlement.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28e828",
+      "source": "Entua can only bow deeply again in response.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x28e855",
+      "source": "None can deny the work you've done. And it may\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28e886",
+      "source": "serve our eventual ruler to be exposed to many\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28e8b7",
+      "source": "perspectives.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x28e8c5",
+      "source": "...Do you not agree?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x28e8da",
+      "source": "I... would not wish to cause trouble for you\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28e909",
+      "source": "or Lady Honoka.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28e919",
+      "source": "Only Lady Honoka and I know of your ancestry.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28e949",
+      "source": "Whatever you are imagining will not come to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x28e977",
+      "source": "pass.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28e97d",
+      "source": "Regardless, I certainly wouldn't want to force\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28e9ae",
+      "source": "you into the position. But what say you?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28e9d7",
+      "source": "Entua is still for a moment, in silent\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x28ea00",
+      "source": "contemplation, then bows low and speaks with\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28ea2f",
+      "source": "solemn gravity.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28ea3f",
+      "source": "If you truly believe me fit for such a station,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x28ea71",
+      "source": "I would gladly accept.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x28ea88",
+      "source": "...Good. That handily solves one of the problems\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x28eabb",
+      "source": "recently plaguing me, I must say.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x28eadd",
+      "source": "You should have more information in due time.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28eb0d",
+      "source": "Until then, I expect you to continue your hard\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28eb3e",
+      "source": "work.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x28eb44",
+      "source": "I have high hopes for you, indeed.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x28eb67",
+      "source": "Woshis gives one last smile, then returns his\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28eb97",
+      "source": "gaze to the field of paperwork before him.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x28ebc2",
+      "source": "By your leave.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x28ebd1",
+      "source": "Woshis sits there in silence, staring at the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x28ec00",
+      "source": "bowl of sweets resting on the side of his desk.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28ec30",
+      "source": "...Please dispose of this. I am not especially\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x28ec61",
+      "source": "fond of sweets.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x28ec71",
+      "source": "There is a hint of regret in his voice, as he\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x28eca1",
+      "source": "speaks to one of the Yatanawarabe shadowing him.",
+      "byte_budget": 48
+    }
+  ]
+}
