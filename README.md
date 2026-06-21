@@ -1,4 +1,7 @@
 # Translation Cognition Framework
+> *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
+
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![145 testes](https://img.shields.io/badge/testes-145%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -21,6 +24,18 @@
 Se você está chegando agora e nunca viu os conceitos, leia nesta ordem: **o problema** → **as 4
 camadas** → **os princípios** → **o glossário**. Há também um guia conceitual passo a passo em
 [`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md) ("explique como se eu estivesse aprendendo IA").
+
+---
+
+## Por que isto é diferente
+
+Não é um "tradutor por linha". É um **framework de execução cognitiva governada**, e o mérito está em escolhas de engenharia que se sustentam:
+
+- **LLM só para cognição** → custo previsível, resultado verificável e escala que não depende da memória do chat.
+- **Estado externalizado** → consistência vem do store versionado, não da janela. Só a API Anthropic; nada de 2º serviço.
+- **Governança explícita** → IA propõe, gates aprovam, script aplica; binário read-only; nenhuma tradução à mão no dado.
+- **Anti-overengineering deliberado** → orquestrador determinístico + 2 papéis de IA. Sem multiagentes, sem indireção que não se paga (ver ADRs).
+- **Honestidade operacional** → o ledger conta cada centavo (mesmo em falha); os gates barram base incompleta; spoiler é decisão **por linha**.
 
 ---
 
@@ -344,15 +359,3 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 > **Próximos passos e maturidade do framework:** ver [ROADMAP.md](ROADMAP.md).
 
----
-
-## Por que isto é diferente
-
-Não é um "tradutor por linha". É um **framework de execução cognitiva governada**, e o mérito está em
-escolhas de engenharia que se sustentam:
-
-- **LLM só para cognição** → custo previsível, resultado verificável e escala que não depende da memória do chat.
-- **Estado externalizado** → consistência vem do store versionado, não da janela. Só a API Anthropic; nada de 2º serviço.
-- **Governança explícita** → IA propõe, gates aprovam, script aplica; binário read-only; nenhuma tradução à mão no dado.
-- **Anti-overengineering deliberado** → orquestrador determinístico + 2 papéis de IA. Sem multiagentes, sem indireção que não se paga (ver ADRs).
-- **Honestidade operacional** → o ledger conta cada centavo (mesmo em falha); os gates barram base incompleta; spoiler é decisão **por linha**.
