@@ -12,7 +12,7 @@
 | | |
 |---|---|
 | **O que é** | Engenharia que faz um LLM localizar obras narrativas longas sem perder consistência, voz nem controle de spoiler — tirando memória, governança e fluxo de **dentro** do modelo. |
-| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 65,9** com **R$ 0 desperdiçado**. |
+| **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 338,46** com **R$ 0 desperdiçado**. |
 | **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
 
 > Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta)
@@ -328,7 +328,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 - **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
   (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
   + **back-translation de alto risco**. Validado **in-game** (pt-BR renderiza na tela; conector `hex_binary`).
-- **Custo medido:** gasto real acumulado **~R$ 65,9** (Sonnet R$ 50,6 · Opus R$ 7,8 · Haiku R$ 7,5),
+- **Custo medido:** gasto real acumulado **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28),
   **R$ 0 desperdiçado** (`api_ledger.jsonl` audita cada centavo, mesmo em falha). Batch API **−50%** vivo;
   tiering Haiku/Sonnet/Opus, dedup por TM, recuperação **por-linha** e teto **previsível**.
 - **Custo previsível (engenharia desta fase):** estimativa **pré-voo** por capítulo, **teto duro** que
