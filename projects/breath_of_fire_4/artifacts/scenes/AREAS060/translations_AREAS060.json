@@ -1,0 +1,244 @@
+{
+  "lines": {
+    "AREAS060.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "casual, colloquial",
+      "intent": "complaint about weight and hunger from armor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"A armadura que usamos para nos proteger da maldição é muito pesada![02]Ficar o dia todo andando nela deixa a gente com fome de mais!\""
+    },
+    "AREAS060.DAT:7:6": {
+      "speaker": "npc",
+      "tone_register": "weak, unwell",
+      "intent": "expressing physical discomfort from hex exposure",
+      "risk_level": "medium",
+      "risk_notes": "'get to me' = subteleza da maldição; traduzir como efeito sutil e perigoso",
+      "t": "[14][02][02]\"Uhhh...Nao estou me sentindo bem nao...[02]Acho que a maldição me afetou...\""
+    },
+    "AREAS060.DAT:7:7": {
+      "speaker": "npc",
+      "tone_register": "informative, neutral",
+      "intent": "identify authority figure (boss Tahb)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Vê aquele cara ali em pé, na frente do caldeirão? Esse [02]é nosso patrão, o Tahb.\""
+    },
+    "AREAS060.DAT:7:8": {
+      "speaker": "npc",
+      "tone_register": "explanatory, conversational",
+      "intent": "explain hex as analogy to bad words/influence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Do jeito que vejo, maldição é tipo alguém falar mal de você. [02]Quer dizer, quando alguém diz algo ruim, você nao se sente bem, certo? [02]Então maldição é tipo isso, mas muito mais potente, entende?\""
+    },
+    "AREAS060.DAT:7:9": {
+      "speaker": "npc",
+      "tone_register": "serious, warning",
+      "intent": "describe deadly nature of Empire's hex",
+      "risk_level": "medium",
+      "risk_notes": "'wraiths and specters' = criaturas perigosas; preservar a solenidade do aviso; 'lethal' = crítico para game mechanic",
+      "t": "[14][05][05]\"A maldição que o Império faz é tipo uma névoa preta... [02]E tem um monte de coisa desagradável tipo espectros e assombrações dentro dela... [02]Qualquer exposição a ela sem proteção é fatal!\""
+    },
+    "AREAS060.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "rough, protective",
+      "intent": "warn women and children away from hexed area",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Esse lugar nao é pra mulher e criança... Nao [02]sabe que foi amaldiçoado!?\""
+    },
+    "AREAS060.DAT:7:12": {
+      "speaker": "Nina",
+      "tone_register": "formal, determined, warm",
+      "intent": "request passage through Chamba before hex dissipates",
+      "risk_level": "high",
+      "risk_notes": "Nina = leader, responsible voice; 'before the hex disappears' = time pressure element; preserve firmeza and leadership tone",
+      "t": "[0C][04][14][C1]@\"Precisamos passar por Chamba. [02]Tem algum jeito de fazer isso antes que a maldição desapareça?\""
+    },
+    "AREAS060.DAT:7:17": {
+      "speaker": "Nina",
+      "tone_register": "formal, direct",
+      "intent": "confirm understanding that a guide is the key requirement",
+      "risk_level": "medium",
+      "risk_notes": "'So' = conclusão lógica; preservar tom de Nina como líder pensante; [0B] = quebra visual (UI)",
+      "t": "[0C][04][14][C1]@\"Então tudo que precisamos é de um guia, certo?\"[0B][0B][0B][15][12]"
+    },
+    "AREAS060.DAT:7:20": {
+      "speaker": "npc",
+      "tone_register": "emphatic, shocked",
+      "intent": "warn against entering hex without armor; shock at the idea",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Voce quer entrar na maldição? Sem nenhuma armadura!? [02]Voce ta maluco!? Voce nao duraria cinco segundos la dentro!\""
+    },
+    "AREAS060.DAT:7:21": {
+      "speaker": "npc",
+      "tone_register": "hesitant, cautious",
+      "intent": "reveal weak points in hex but pull back from real help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Bem, tem alguns lugares onde a maldição ta ficando fraca e desaparecendo... [02]Ah, esquece—é muito perigoso!\""
+    },
+    "AREAS060.DAT:7:22": {
+      "speaker": "npc",
+      "tone_register": "gruff, proud, discouraging",
+      "intent": "boast about personal knowledge; discourage guide request",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Voce quer que eu te leve pela maldição? [02]Humph! Voce nao conhece como eu conheço... [02]Se conhecesse, saberia nao nem pedir isso.\""
+    },
+    "AREAS060.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "matter-of-fact",
+      "intent": "explain why workplace is empty (everyone working)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][07]\"Todo mundo ta ai fora trabalhando. [02][19]"
+    },
+    "AREAS060.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "resigned, warning",
+      "intent": "accept their decision but caution them",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"O que!? Voce vai mesmo fazer isso!? [02]Tudo bem... É sua escolha, mas nao diga que nao avisei voce.\""
+    },
+    "AREAS060.DAT:7:26": {
+      "speaker": "npc",
+      "tone_register": "serious, delegating",
+      "intent": "place responsibility on protagonist for companions' safety",
+      "risk_level": "medium",
+      "risk_notes": "[04][05] = placeholder para nome do herói; tom de responsabilidade = crítico para narrativa de liderança",
+      "t": "[14][04][04]\"Eles sao responsabilidade sua, [04][05]. [02]É melhor você cuidar bem deles!\""
+    },
+    "AREAS060.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "urgent, grave",
+      "intent": "warn of multiple dangers within mist; emphasize lethality",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Qualquer contato com a névoa é perigoso... [02]Pode te envenenar, ou fazer coisas estranhas na sua cabeça... [02]E às vezes simplesmente te mata! [02]Nao importa o que faca, fique longe da névoa!\""
+    },
+    "AREAS060.DAT:7:28": {
+      "speaker": "npc",
+      "tone_register": "serious, protective",
+      "intent": "remind protagonist that companions lack armor; emphasize protective duty",
+      "risk_level": "medium",
+      "risk_notes": "[04][05] = placeholder; 'safe' refere-se ao protagonista em armadura; tom de responsabilidade compartilhada",
+      "t": "[14][05][05]\"Só porque voce ta seguro, [04][05], nao esqueca que eles nao estao. [02]Certifique-se de protege-los—entendeu?\""
+    },
+    "AREAS060.DAT:7:29": {
+      "speaker": "npc",
+      "tone_register": "amazed, admiring",
+      "intent": "express awe at protagonist's bravery in attempting hex passage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Voce vai deixar [04][05] guiar voce pela névoa!? [02]Voce deve ser bem corajoso pra tentar algo assim!\""
+    },
+    "AREAS060.DAT:7:30": {
+      "speaker": "npc",
+      "tone_register": "familiar, amused",
+      "intent": "comment on protagonist's unusual/brave nature",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Sempre soube que voce era um sujeito estranho... [02]Faz sentido que voce pegasse esse trampo!\""
+    },
+    "AREAS060.DAT:7:31": {
+      "speaker": "npc",
+      "tone_register": "cautious, helpful",
+      "intent": "warn about confusing layout of Chamba center",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][08][08]\"O centro de Chamba é bem confuso... [02]Certifique-se de nao se perder.\""
+    },
+    "AREAS060.DAT:7:32": {
+      "speaker": "npc",
+      "tone_register": "serious, delegating",
+      "intent": "final responsibility reminder to guide/protagonist",
+      "risk_level": "medium",
+      "risk_notes": "[04][05] = placeholder; tom de responsabilidade final = pressão narrativa",
+      "t": "[14][08][08]\"Só certifique-se de tirar eles vivos daqui, ta [04][05]?\""
+    },
+    "AREAS060.DAT:7:33": {
+      "speaker": "system",
+      "tone_register": "UI/menu",
+      "intent": "offer rest/sleep mechanic; present menu options",
+      "risk_level": "low",
+      "risk_notes": "UI text; [12][86][0C][93] = tokens de menu/sistema; 'Rest/Diary/Never mind' = opcoes do jogador",
+      "t": "\"Se voce quer descansar, posso deixar voce usar uma dessas camas.\"[12][86][0C][93]Descansar[01]Diario[01]Nao, obrigado"
+    },
+    "AREAS060.DAT:7:34": {
+      "speaker": "npc",
+      "tone_register": "weak, apologetic",
+      "intent": "explain absence from work due to sickness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Todo mundo ta trabalhando. [02]Eu? Eu, uh... [0B]Estou doente.\""
+    },
+    "AREAS060.DAT:7:35": {
+      "speaker": "npc",
+      "tone_register": "tired, self-pitying",
+      "intent": "lament loss of energy; blame hex for exhaustion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][08][08]\"Nao to trabalhando com o vigor de antes... [02]Só nao tenho mais energia. [02]Deve ser a maldição... [01]Sim, é isso—tem que ser a maldição!\""
+    },
+    "AREAS060.DAT:7:36": {
+      "speaker": "npc",
+      "tone_register": "impressed, comparative",
+      "intent": "comment on potency of current hex vs. Synesta",
+      "risk_level": "medium",
+      "risk_notes": "'Synesta' = lore reference (previous hexed location); preservar tom de veterano; 'potent' = game mechanics",
+      "t": "[14][04][04]\"Essa maldição é bem potente... Nunca vi uma igual. [02]Quer dizer, a gente limpou Synesta num instante!\""
+    },
+    "AREAS060.DAT:7:37": {
+      "speaker": "npc",
+      "tone_register": "casual, slightly defensive",
+      "intent": "agree to go to work after finishing meal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Tudo bem, tudo bem, [04][05]... [02]Eu vou pro trabalho assim que acabar de comer isso, ta certo?\""
+    },
+    "AREAS060.DAT:7:38": {
+      "speaker": "npc",
+      "tone_register": "conversational, curious",
+      "intent": "probe protagonist about past involvement in Synesta cleanup",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Pensando bem... [02]Voce nao estava com a gente quando a gente limpou Synesta, era?\""
+    },
+    "AREAS060.DAT:7:39": {
+      "speaker": "npc",
+      "tone_register": "teasing, familiar",
+      "intent": "greet protagonist on return; ask if they got lost",
+      "risk_level": "medium",
+      "risk_notes": "[04][05] = placeholder; tom casual/teasing = rapport com jogador",
+      "t": "[14][08][08]\"Demorou pra voltar, hein [04][05]? [02]Voce se perdeu la dentro?\""
+    },
+    "AREAS060.DAT:7:40": {
+      "speaker": "npc",
+      "tone_register": "optimistic, confident",
+      "intent": "express confidence that current hex will be cleaned soon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Espera só pra ver—a gente vai limpar esse lugar em poucos dias... [02]Vai ficar igual Synesta!\""
+    },
+    "AREAS060.DAT:7:41": {
+      "speaker": "npc",
+      "tone_register": "conversational, questioning",
+      "intent": "discuss future after hex cleanup; mention potential recall to war",
+      "risk_level": "medium",
+      "risk_notes": "Multi-speaker exchange: speaker I then J; '[14][FF][FF]' = speaker transition token; 'another war starts' = lore/world building",
+      "t": "[14][09][09]\"O que a gente vai fazer com a gente mesmo depois que a gente terminar aqui?\" [02][14][FF][FF][14][8A]J\"Bem, eles disseram que se outra guerra comecar, [02]eles nos chamam.\""
+    },
+    "AREAS060.DAT:7:43": {
+      "speaker": "npc",
+      "tone_register": "gossip/amazed, then analytical",
+      "intent": "Share rumor of fish monster in city; discuss hex's effect on creatures",
+      "risk_level": "high",
+      "risk_notes": "Multi-speaker: speaker I (gossip) then I (analytical); '[14][FF][FF]' = transition; 'fish monster' = lore creature (spoiler potential if identity unclear); 'what do you expect' = world-logic explanation",
+      "t": "[14][0A][0A]\"Voce ja ouviu? Dizem que tem um tipo de monstro-peixe ou algo assim morando bem fundo da cidade!\" [02][14][FF][FF][14][89]I\"Sim, ja ouvi falar disso. [02]O que voce espera? Essa maldição afeta qualquer coisa que toca— [02]Aposto que tem um monte de coisa estranha ai dentro!\""
+    }
+  }
+}

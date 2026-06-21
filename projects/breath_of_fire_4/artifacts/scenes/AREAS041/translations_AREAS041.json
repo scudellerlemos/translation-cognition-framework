@@ -1,0 +1,3692 @@
+{
+  "lines": {
+    "AREAS041.DAT:7:0": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "prompt_choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][8A][12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:1": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "prompt_choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][8A][12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:2": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "prompt_choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][88][12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:276": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_gameplay_activity",
+      "risk_level": "medium",
+      "risk_notes": "UI menu structure with Yes/No options; preserve exact token count [01], [02], [12], [82], [0C]",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:277": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_gameplay_activity",
+      "risk_level": "medium",
+      "risk_notes": "UI menu structure with Yes/No options; preserve exact token count [01], [02], [12], [82], [0C]",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:278": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_gameplay_activity",
+      "risk_level": "medium",
+      "risk_notes": "UI menu structure with Yes/No options; preserve exact token count [01], [02], [12], [82], [0C]",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:279": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_gameplay_activity",
+      "risk_level": "medium",
+      "risk_notes": "UI menu structure with Yes/No options; preserve exact token count [01], [02], [12], [82], [0C]",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:280": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_gameplay_activity",
+      "risk_level": "medium",
+      "risk_notes": "UI menu structure with Yes/No options; preserve exact token count [01], [02], [12], [82], [0C]",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:281": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "query_target_selection",
+      "risk_level": "low",
+      "risk_notes": "UI decision point; [02] preserved for page break",
+      "t": "A quem voce quer dar um apelido[01]-- a um de nos, ou a um dos[01]seus amigos[02]?"
+    },
+    "AREAS041.DAT:7:282": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "query_selection",
+      "risk_level": "low",
+      "risk_notes": "concise UI follow-up",
+      "t": "Certo, entao, a quem voce quer[01]dar um apelido?"
+    },
+    "AREAS041.DAT:7:283": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "confirm_action",
+      "risk_level": "low",
+      "risk_notes": "UI confirmation dialog",
+      "t": "Tem certeza que quer usar[01]esse nome?"
+    },
+    "AREAS041.DAT:7:284": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "confirm_action",
+      "risk_level": "low",
+      "risk_notes": "UI confirmation dialog",
+      "t": "Tem certeza que quer usar[01]esse nome?"
+    },
+    "AREAS041.DAT:7:285": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "confirm_action",
+      "risk_level": "low",
+      "risk_notes": "UI confirmation dialog",
+      "t": "Tem certeza que quer usar[01]esse nome?"
+    },
+    "AREAS041.DAT:7:286": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "confirm_nickname_result",
+      "risk_level": "low",
+      "risk_notes": "short UI message with token placeholders [07]",
+      "t": "Certo, o apelido novo de [07] e [07]"
+    },
+    "AREAS041.DAT:7:287": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_repeat",
+      "risk_level": "low",
+      "risk_notes": "UI repeat offer",
+      "t": "Quer dar apelido a outro?"
+    },
+    "AREAS041.DAT:7:288": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "goodbye_invite",
+      "risk_level": "low",
+      "risk_notes": "casual closing",
+      "t": "Volte aqui e me veja de novo, certo?"
+    },
+    "AREAS041.DAT:7:289": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:290": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:291": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:292": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:293": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:294": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:295": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:296": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:297": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:298": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:299": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:300": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:301": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:302": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:303": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:304": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:305": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:306": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:307": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:308": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:309": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:310": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:311": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:312": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:313": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:314": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:315": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:316": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:317": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:318": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:319": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:320": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:321": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:322": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:323": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:324": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:325": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:326": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:327": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:328": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:329": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:330": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:331": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:332": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:333": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:334": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:335": {
+      "speaker": "npc",
+      "tone_register": "conversational, friendly",
+      "intent": "offer_game",
+      "risk_level": "low",
+      "risk_notes": "UI menu; Kecak is cultural term (manter_original)",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:336": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:337": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:338": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:339": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:340": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:341": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:342": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:343": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:344": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:345": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:346": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:347": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:348": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:349": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:350": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:351": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:352": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:353": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:354": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:355": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:356": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:357": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:358": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:359": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:360": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:361": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:362": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:363": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:364": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:365": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:366": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:367": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:368": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:369": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:370": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:371": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:372": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:373": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:374": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:375": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:376": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:377": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:378": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:379": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:380": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:381": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:382": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:383": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:384": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:385": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:386": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:387": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:388": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:389": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:390": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:391": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:392": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:393": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:394": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:395": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:143": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "explain_insurance_mechanics_and_solicit_purchase",
+      "risk_level": "medium",
+      "risk_notes": "UI dialogue with [02] page break token — must preserve exact count and position. Budget tight (272 bytes). Deduction percentage [05]8%[06] must remain inline.",
+      "t": "Se voce tem seguro, pode voltar quando for derrotado em combate![02]Porem, [05]8%[06] do zenny ganho em combate e automaticamente descontado.[02]Quer comprar seguro?"
+    },
+    "AREAS041.DAT:7:144": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "warn_of_contract_permanence_and_confirm_purchase",
+      "risk_level": "medium",
+      "risk_notes": "Contract terms dialogue. [02] page break preserved. Budget 198 bytes — concise phrasing required.",
+      "t": "Depois de contratar seguro, voce nao pode cancelar — tem que esperar ate expirar.[02]Ainda quer comprar seguro?"
+    },
+    "AREAS041.DAT:7:145": {
+      "speaker": "npc",
+      "tone_register": "commercial/dismissive",
+      "intent": "express_disappointment_at_rejection",
+      "risk_level": "low",
+      "risk_notes": "Short dismissal line (38 bytes). Tone: mildly sarcastic.",
+      "t": "Tudo bem entao, e sua perda."
+    },
+    "AREAS041.DAT:7:146": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "offer_premium_addon",
+      "risk_level": "low",
+      "risk_notes": "Budget 89 bytes. 'premium' = additional insurance feature in this game context.",
+      "t": "E quanto a um aditivo? Quer adicionar um aditivo?"
+    },
+    "AREAS041.DAT:7:149": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "confirm_policy_continuation_and_offer_cancellation",
+      "risk_level": "high",
+      "risk_notes": "Complex conditional flow with [02] page break token. Policy cancellation refund mechanics. [02] count must match source exactly (appears 2x). Phrasing must remain unambiguous for UI branching.",
+      "t": "Quer continuar sua apólice de seguro?[02]Se nao quiser, voce recebe parte do zenny de volta.[02]Quer cancelar sua apólice?"
+    },
+    "AREAS041.DAT:7:150": {
+      "speaker": "npc",
+      "tone_register": "commercial/cautionary",
+      "intent": "confirm_cancellation_intention",
+      "risk_level": "low",
+      "risk_notes": "Confirmation prompt. Budget 79 bytes.",
+      "t": "Tem certeza que quer cancelar sua apólice?"
+    },
+    "AREAS041.DAT:7:151": {
+      "speaker": "npc",
+      "tone_register": "commercial/cautionary",
+      "intent": "confirm_policy_continuation",
+      "risk_level": "low",
+      "risk_notes": "Confirmation prompt. Budget 82 bytes.",
+      "t": "Tem certeza que quer continuar sua apólice?"
+    },
+    "AREAS041.DAT:7:152": {
+      "speaker": "npc",
+      "tone_register": "commercial/reassuring",
+      "intent": "confirm_refund_issuance",
+      "risk_level": "low",
+      "risk_notes": "Refund confirmation. Budget 106 bytes. Tone: matter-of-fact.",
+      "t": "Tudo bem, entao vamos devolver o zenny que voce pagou ate agora, tá?"
+    },
+    "AREAS041.DAT:7:153": {
+      "speaker": "npc",
+      "tone_register": "commercial/friendly",
+      "intent": "thank_and_offer_bonus_item",
+      "risk_level": "low",
+      "risk_notes": "Bonus reward announcement. Budget 104 bytes.",
+      "t": "Obrigado! Como presente, aqui esta parte do seu pagamento de volta e um item!"
+    },
+    "AREAS041.DAT:7:154": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "acknowledge_transaction_close",
+      "risk_level": "low",
+      "risk_notes": "Short closing. Budget 22 bytes.",
+      "t": "Obrigado de novo."
+    },
+    "AREAS041.DAT:7:155": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "ask_which_premium_to_renew",
+      "risk_level": "low",
+      "risk_notes": "Premium selection prompt. Budget 52 bytes. Appears 3x in succession (lines 155-157) with identical source.",
+      "t": "Qual aditivo voce quer renovar?"
+    },
+    "AREAS041.DAT:7:156": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "ask_which_premium_to_renew",
+      "risk_level": "low",
+      "risk_notes": "Premium selection prompt (duplicate). Budget 52 bytes.",
+      "t": "Qual aditivo voce quer renovar?"
+    },
+    "AREAS041.DAT:7:157": {
+      "speaker": "npc",
+      "tone_register": "commercial/instructional",
+      "intent": "ask_which_premium_to_renew",
+      "risk_level": "low",
+      "risk_notes": "Premium selection prompt (duplicate). Budget 52 bytes.",
+      "t": "Qual aditivo voce quer renovar?"
+    },
+    "AREAS041.DAT:7:158": {
+      "speaker": "npc",
+      "tone_register": "commercial/cautionary",
+      "intent": "inform_premium_limit_reached",
+      "risk_level": "low",
+      "risk_notes": "Limit-reached message. Budget 48 bytes.",
+      "t": "Voce nao pode adicionar mais aditivos!"
+    },
+    "AREAS041.DAT:7:159": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_music_listening",
+      "risk_level": "low",
+      "risk_notes": "Music invitation. Budget 66 bytes. Appears 3x (lines 159-161).",
+      "t": "Quer ouvir nossa musica?"
+    },
+    "AREAS041.DAT:7:160": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_music_listening",
+      "risk_level": "low",
+      "risk_notes": "Music invitation (duplicate). Budget 66 bytes.",
+      "t": "Quer ouvir nossa musica?"
+    },
+    "AREAS041.DAT:7:161": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_music_listening",
+      "risk_level": "low",
+      "risk_notes": "Music invitation (duplicate). Budget 66 bytes.",
+      "t": "Quer ouvir nossa musica?"
+    },
+    "AREAS041.DAT:7:162": {
+      "speaker": "npc",
+      "tone_register": "social/emphatic",
+      "intent": "boast_of_music_effort_and_demand_audience",
+      "risk_level": "medium",
+      "risk_notes": "Faerie/artist NPC — prideful tone. [02] page break present. Budget 129 bytes. Tone: slightly pushy but not hostile.",
+      "t": "Nos tivemos muito trabalho para fazer musica.[02]Voce é obrigado a ouvir.[01]Bem?"
+    },
+    "AREAS041.DAT:7:163": {
+      "speaker": "npc",
+      "tone_register": "social/persuasive",
+      "intent": "persuade_to_listen_to_music",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC — softly coercive. Budget 83 bytes.",
+      "t": "Voce vai ouvir a musica que a gente fez, né?"
+    },
+    "AREAS041.DAT:7:164": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_singing_performance",
+      "risk_level": "low",
+      "risk_notes": "Singing invitation. Budget 69 bytes. Appears 2x (lines 164-165).",
+      "t": "Quer ouvir nossa musica cantada?"
+    },
+    "AREAS041.DAT:7:165": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_singing_performance",
+      "risk_level": "low",
+      "risk_notes": "Singing invitation (duplicate). Budget 69 bytes.",
+      "t": "Quer ouvir nossa musica cantada?"
+    },
+    "AREAS041.DAT:7:166": {
+      "speaker": "npc",
+      "tone_register": "social/insistent",
+      "intent": "demand_attention_to_songs",
+      "risk_level": "low",
+      "risk_notes": "Faerie artist — pushy but lighthearted. Budget 85 bytes.",
+      "t": "Ei! Voce quer ouvir nossas musicas, né?"
+    },
+    "AREAS041.DAT:7:167": {
+      "speaker": "npc",
+      "tone_register": "social/casual",
+      "intent": "confirm_interest_in_songs",
+      "risk_level": "low",
+      "risk_notes": "Casual confirmation prompt. Budget 72 bytes.",
+      "t": "Voce quer ouvir nossas musicas, certo?"
+    },
+    "AREAS041.DAT:7:168": {
+      "speaker": "npc",
+      "tone_register": "social/threatening",
+      "intent": "intimidate_with_gossip_threat",
+      "risk_level": "medium",
+      "risk_notes": "Faerie artist — playfully threatening. Budget 106 bytes. Tone: jesting but pointed.",
+      "t": "Se voce nao ouve nossa musica, a gente fala coisa ruim sobre voce para os outros!"
+    },
+    "AREAS041.DAT:7:169": {
+      "speaker": "npc",
+      "tone_register": "social/defensive",
+      "intent": "protest_lack_of_recognition_for_chorus_role",
+      "risk_level": "low",
+      "risk_notes": "Faerie artist defending chorus participation. [02] page break. Budget 106 bytes. Defensive but comedic tone.",
+      "t": "Como assim voce nao esta vendo eu fazer nada?[02]Eu sou parte do coral!"
+    },
+    "AREAS041.DAT:7:170": {
+      "speaker": "npc",
+      "tone_register": "social/exhausted",
+      "intent": "sing_scales_and_express_fatigue",
+      "risk_level": "high",
+      "risk_notes": "Onomatopoeia: 'dooooo/reeeey/meeeeee' (musical scale syllables) — localize as pt-BR solmization (do/ré/mi). [0B] = line break within same page. [02] = page break. Budget 101 bytes. Preserve tone: singers straining.",
+      "t": "do[0B]ré[0B]mi[0B][02]Ufa! Caramba, essas escalas dao muito trabalho!"
+    },
+    "AREAS041.DAT:7:171": {
+      "speaker": "npc",
+      "tone_register": "social/flattering",
+      "intent": "express_gratitude_to_sole_audience",
+      "risk_level": "high",
+      "risk_notes": "[04] = player name token (must preserve). Incomplete line in source (ends with comma-space-[04]). Risk: ensure token position matches. Budget 71 bytes.",
+      "t": "O unico publico que a gente precisa para nossas musicas é voce, [04]"
+    },
+    "AREAS041.DAT:7:172": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation. Budget 61 bytes. Appears 6x (lines 172-177) with identical source.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:173": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation (duplicate). Budget 61 bytes.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:174": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation (duplicate). Budget 61 bytes.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:175": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation (duplicate). Budget 61 bytes.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:176": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation (duplicate). Budget 61 bytes.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:177": {
+      "speaker": "npc",
+      "tone_register": "social/inviting",
+      "intent": "offer_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Painting invitation (duplicate). Budget 61 bytes.",
+      "t": "Quer ver nossas pinturas?"
+    },
+    "AREAS041.DAT:7:178": {
+      "speaker": "npc",
+      "tone_register": "social/persuasive",
+      "intent": "persuade_to_view_paintings",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC — softer persuasion. Budget 73 bytes.",
+      "t": "Voce vai ver nossas pinturas, né?"
+    },
+    "AREAS041.DAT:7:179": {
+      "speaker": "npc",
+      "tone_register": "social/inquisitive",
+      "intent": "read_interest_and_solicit_art_viewing",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC — probing. Budget 101 bytes.",
+      "t": "Voce parece alguem que quer ver arte.[01]Nao é?"
+    },
+    "AREAS041.DAT:7:180": {
+      "speaker": "npc",
+      "tone_register": "social/melancholic",
+      "intent": "lament_hardship_of_artistic_life",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC — wistful complaint. Budget 96 bytes. Appears 2x (lines 180-181).",
+      "t": "A vida de artista é dificil, voce sabe. Ninguém nos entende."
+    },
+    "AREAS041.DAT:7:181": {
+      "speaker": "npc",
+      "tone_register": "social/melancholic",
+      "intent": "lament_hardship_of_artistic_life",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC — wistful complaint (duplicate). Budget 96 bytes.",
+      "t": "A vida de artista é dificil, voce sabe. Ninguém nos entende."
+    },
+    "AREAS041.DAT:7:182": {
+      "speaker": "npc",
+      "tone_register": "social/neutral",
+      "intent": "acknowledge_viewing_artwork",
+      "risk_level": "high",
+      "risk_notes": "Incomplete line in source (ends with space-[04]). Player name token [04] must preserve exact position. Budget 19 bytes — very tight. Risk: token placement critical.",
+      "t": "Olhando para [04]"
+    },
+    "AREAS041.DAT:7:183": {
+      "speaker": "npc",
+      "tone_register": "social/neutral",
+      "intent": "acknowledge_viewing_artwork",
+      "risk_level": "high",
+      "risk_notes": "Incomplete line in source (ends with space-[04]). Player name token [04] must preserve exact position. Budget 19 bytes — very tight. Risk: token placement critical. Duplicate of 182.",
+      "t": "Olhando para [04]"
+    },
+    "AREAS041.DAT:7:184": {
+      "speaker": "npc",
+      "tone_register": "social/withdrawn",
+      "intent": "express_artistic_slump_and_request_solitude",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC in creative crisis. Budget 80 bytes. Tone: moody but understandable.",
+      "t": "Estou num tipo de bloqueio agora — nao fale comigo, tá?"
+    },
+    "AREAS041.DAT:7:185": {
+      "speaker": "npc",
+      "tone_register": "social/withdrawn",
+      "intent": "express_artistic_slump_and_request_solitude",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC in creative crisis (duplicate). Budget 80 bytes.",
+      "t": "Estou num tipo de bloqueio agora — nao fale comigo, tá?"
+    },
+    "AREAS041.DAT:7:186": {
+      "speaker": "npc",
+      "tone_register": "social/enlightened",
+      "intent": "express_breakthrough_understanding_of_art",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC celebrating epiphany. [02] page break. Budget 141 bytes. Tone: proud, content.",
+      "t": "Sinto que finalmente estou começando a entender arte.[02]Eu sabia que ia conseguir — era so uma questao de tempo!"
+    },
+    "AREAS041.DAT:7:187": {
+      "speaker": "npc",
+      "tone_register": "social/grateful",
+      "intent": "thank_and_dedicate_future_work",
+      "risk_level": "low",
+      "risk_notes": "Artist NPC gratitude. Budget 93 bytes. Tone: warm.",
+      "t": "Obrigado por todo apoio. Vou dedicar meu proximo trabalho a voce!"
+    },
+    "AREAS041.DAT:7:198": {
+      "speaker": "system",
+      "tone_register": "mechanical/descriptive",
+      "intent": "describe_insurance_option_vitamin_recovery",
+      "risk_level": "high",
+      "risk_notes": "Game mechanic UI text with [05][02]1%[06] inline formatting. [02] = page break token (must preserve count). Budget 85 bytes. 'Vitamin' is recovery item (glossary: Recuperar). Deduction percentage must remain exact position.",
+      "t": "Recuperar com Vitaminico.[01][05][02]1%[06] é descontado do zenny ganho."
+    },
+    "AREAS041.DAT:7:199": {
+      "speaker": "system",
+      "tone_register": "mechanical/descriptive",
+      "intent": "describe_insurance_option_recover_and_retreat",
+      "risk_level": "high",
+      "risk_notes": "Game mechanic UI text with [05][02]2%[06] inline formatting. [02] page break token. Budget 100 bytes. 'Automatically Retreat' = battle exit mechanic.",
+      "t": "Recuperar e automaticamente Recuar.[01][05][02]2%[06] é descontado do zenny ganho."
+    },
+    "AREAS041.DAT:7:200": {
+      "speaker": "system",
+      "tone_register": "mechanical/descriptive",
+      "intent": "describe_insurance_option_ap_recovery",
+      "risk_level": "high",
+      "risk_notes": "Game mechanic UI text with [05][02]3%[06] inline formatting. Budget 93 bytes. AP = glossary term (manter_original). [02] page break token.",
+      "t": "Recuperar com todo AP restaurado.[01][05][02]3%[06] é descontado do zenny ganho."
+    },
+    "AREAS041.DAT:7:201": {
+      "speaker": "system",
+      "tone_register": "mechanical/descriptive",
+      "intent": "describe_insurance_option_dragon_recovery",
+      "risk_level": "high",
+      "risk_notes": "Game mechanic UI text with [05][02]3%[06] inline formatting. Budget 94 bytes. 'dragons' = battle allies (glossary: Dragão, traduzir). [02] page break token.",
+      "t": "Recuperar com dragoes restaurados.[01][05][02]3%[06] é descontado do zenny ganho."
+    },
+    "AREAS041.DAT:7:202": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message. Budget 43 bytes. [01] line break within same page. Glossary: Insurance Contract = Contrato de Seguro.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 1!"
+    },
+    "AREAS041.DAT:7:203": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 2!"
+    },
+    "AREAS041.DAT:7:204": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 3!"
+    },
+    "AREAS041.DAT:7:205": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 4!"
+    },
+    "AREAS041.DAT:7:206": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 5!"
+    },
+    "AREAS041.DAT:7:207": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 6!"
+    },
+    "AREAS041.DAT:7:208": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 7!"
+    },
+    "AREAS041.DAT:7:209": {
+      "speaker": "system",
+      "tone_register": "mechanical/informative",
+      "intent": "announce_item_acquisition_insurance_contract",
+      "risk_level": "low",
+      "risk_notes": "Loot acquisition message (duplicate). Budget 43 bytes.",
+      "t": "Voce ganhou:[01]Contrato de Seguro 8!"
+    },
+    "AREAS041.DAT:7:210": {
+      "speaker": "system",
+      "tone_register": "title/neutral",
+      "intent": "display_music_track_title",
+      "risk_level": "low",
+      "risk_notes": "Song/music title. Budget 22 bytes. Preserve quoted form.",
+      "t": "\"Starlight Run\""
+    },
+    "AREAS041.DAT:7:211": {
+      "speaker": "system",
+      "tone_register": "title/neutral",
+      "intent": "display_music_track_title",
+      "risk_level": "low",
+      "risk_notes": "Song/music title. Budget 16 bytes.",
+      "t": "\"Walkabout\""
+    },
+    "AREAS041.DAT:7:212": {
+      "speaker": "system",
+      "tone_register": "title/neutral",
+      "intent": "display_music_track_title",
+      "risk_level": "low",
+      "risk_notes": "Song/music title. Budget 23 bytes.",
+      "t": "\"By The Numbers\""
+    },
+    "AREAS041.DAT:7:213": {
+      "speaker": "system",
+      "tone_register": "title/neutral",
+      "intent": "display_music_track_title",
+      "risk_level": "low",
+      "risk_notes": "Song/music title. Budget 30 bytes.",
+      "t": "\"Bringing Home A Win\""
+    },
+    "AREAS041.DAT:7:214": {
+      "speaker": "system",
+      "tone_register": "title/neutral",
+      "intent": "display_music_track_title",
+      "risk_level": "low",
+      "risk_notes": "Song/music title. Budget 20 bytes.",
+      "t": "\"Slow Tension\""
+    },
+    "AREAS041.DAT:7:4": {
+      "speaker": "npc",
+      "tone_register": "warm_conversational",
+      "intent": "offer_rest_concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E perigoso viajar[01]ferido desse jeito. [02]Por que nao fica aqui[01]e descansa um pouco?"
+    },
+    "AREAS041.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "warm_conversational",
+      "intent": "offer_rest",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer descansar?"
+    },
+    "AREAS041.DAT:7:6": {
+      "speaker": "npc",
+      "tone_register": "warm_conversational",
+      "intent": "offer_rest",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer descansar?"
+    },
+    "AREAS041.DAT:7:7": {
+      "speaker": "npc",
+      "tone_register": "casual_tired",
+      "intent": "complain_offer_rest",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E dificil trabalhar nesse[01]negocio, sabe? Lidar com[01]reclamacoes e gente[01]sem zenny...[02]Enfim, quer[01]descansar?"
+    },
+    "AREAS041.DAT:7:8": {
+      "speaker": "npc",
+      "tone_register": "casual_tired",
+      "intent": "complain_offer_rest",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E dificil trabalhar nesse[01]negocio, sabe? Lidar com[01]reclamacoes e gente[01]sem zenny...[02]Enfim, quer[01]descansar?"
+    },
+    "AREAS041.DAT:7:9": {
+      "speaker": "npc",
+      "tone_register": "proud_conversational",
+      "intent": "offer_rest_proud",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aqui e a hospedaria[01]mais limpa do[01]vilarejo![02]Quer descansar?"
+    },
+    "AREAS041.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "proud_conversational",
+      "intent": "offer_rest_proud",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aqui e a hospedaria[01]mais limpa do[01]vilarejo![02]Quer descansar?"
+    },
+    "AREAS041.DAT:7:11": {
+      "speaker": "npc",
+      "tone_register": "casual_friendly",
+      "intent": "acknowledge_knowledge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei tudo sobre voce[01]e seus amigos, [04]"
+    },
+    "AREAS041.DAT:7:12": {
+      "speaker": "npc",
+      "tone_register": "casual_friendly",
+      "intent": "acknowledge_knowledge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei tudo sobre voce[01]e seus amigos, [04]"
+    },
+    "AREAS041.DAT:7:13": {
+      "speaker": "npc",
+      "tone_register": "neutral_reporting",
+      "intent": "summarize_journey",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ate agora, voces[01]procuraram em [07]"
+    },
+    "AREAS041.DAT:7:20": {
+      "speaker": "npc",
+      "tone_register": "frustrated_young",
+      "intent": "express_boredom_desire",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que tenho que ficar[01]aqui vendendo coisa nessa[01]loja, hein?[02]E chato! Quero um[01]trabalho mais emocionante,[01]com viagem e responsabilidade!"
+    },
+    "AREAS041.DAT:7:21": {
+      "speaker": "npc",
+      "tone_register": "casual_surprised",
+      "intent": "express_amazement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao fazia ideia de[01]haver tantos tipos[01]de itens diferentes!"
+    },
+    "AREAS041.DAT:7:22": {
+      "speaker": "npc",
+      "tone_register": "casual_content",
+      "intent": "explain_mechanism",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto mais fadas[01]trabalhando aqui, mais[01]facil ficar com itens raros!"
+    },
+    "AREAS041.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "warm_friendly",
+      "intent": "greet_warmly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigado por vir! E[01]bom ver voces de novo!"
+    },
+    "AREAS041.DAT:7:24": {
+      "speaker": "npc",
+      "tone_register": "frustrated_bored",
+      "intent": "express_extreme_boredom",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estou MUITO entediado![01]Nunca acontece nada[01]emocionante por aqui!"
+    },
+    "AREAS041.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "joking_playful",
+      "intent": "joke_lighthearted",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao temos armazem,[01]entao guardamos tudo[01]na barriga![02][0B]E brincadeira, tolinho!"
+    },
+    "AREAS041.DAT:7:26": {
+      "speaker": "npc",
+      "tone_register": "matter_of_fact",
+      "intent": "explain_role",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que a gente faz?[01]Compramos coisas."
+    },
+    "AREAS041.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "polite_regretful",
+      "intent": "apologize_business",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpa—gostaria de[01]dar desconto, mas[01]negocio e negocio."
+    },
+    "AREAS041.DAT:7:33": {
+      "speaker": "npc",
+      "tone_register": "casual_friendly",
+      "intent": "greet_offer_trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Somos so uma loja[01]de armas comum![01]Quer comprar algo?"
+    },
+    "AREAS041.DAT:7:36": {
+      "speaker": "npc",
+      "tone_register": "reluctant_thoughtful",
+      "intent": "express_discomfort",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sabe...[02]Nao gosto muito de[01]armas...Nem de[01]vender elas..."
+    },
+    "AREAS041.DAT:7:37": {
+      "speaker": "npc",
+      "tone_register": "nervous_flustered",
+      "intent": "offer_practice_nervous",
+      "risk_level": "medium",
+      "risk_notes": "tone shift to nervous/flustered suggests character discomfort; ensure 'Por que voce esta olhando assim pra mim!?' conveys panic",
+      "t": "Quer testar uma de[01]nossas armas? Dar[01]um golpe pratico?[02]E-espera...[01]Por que ta olhando[01]assim pra mim!?"
+    },
+    "AREAS041.DAT:7:38": {
+      "speaker": "npc",
+      "tone_register": "casual_content",
+      "intent": "explain_mechanism",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto mais fadas[01]trabalhando aqui, mais[01]facil ficar com boas armas!"
+    },
+    "AREAS041.DAT:7:39": {
+      "speaker": "npc",
+      "tone_register": "polite_friendly",
+      "intent": "thank_farewell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigado por comprar![01]Volte sempre!"
+    },
+    "AREAS041.DAT:7:40": {
+      "speaker": "npc",
+      "tone_register": "content_passionate",
+      "intent": "describe_passion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Meu trabalho e afiar[01]espadas e tal.[02]Nao ha nada como uma[01]espada bem brilhante[01]e afiada![02]Me faz querer[01]testa-la, sabe..."
+    },
+    "AREAS041.DAT:7:41": {
+      "speaker": "npc",
+      "tone_register": "curious_amazed",
+      "intent": "ask_curious_question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vi um cara num circo[01]engolir espadas uma[01]vez...Voce consegue?"
+    },
+    "AREAS041.DAT:7:42": {
+      "speaker": "npc",
+      "tone_register": "thoughtful_uneasy",
+      "intent": "express_concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem algo assustador[01]em quem coleciona[01]armas, sabe..."
+    },
+    "AREAS041.DAT:7:43": {
+      "speaker": "npc",
+      "tone_register": "warm_delighted",
+      "intent": "greet_warmly_return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uau! Voces voltaram?[01]Que bom ver[01]voces de novo!"
+    },
+    "AREAS041.DAT:7:44": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, eu saio[01]procurando varios[01]itens pra voce![02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:45": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, eu saio[01]procurando varios[01]itens pra voce![02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:46": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, eu saio[01]procurando varios[01]itens pra voce![02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:47": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, eu saio[01]procurando varios[01]itens pra voce![02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:48": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, eu saio[01]procurando varios[01]itens pra voce![02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:49": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, saio e[01]trago o que achar.[02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:50": {
+      "speaker": "npc",
+      "tone_register": "eager_helpful",
+      "intent": "offer_search_mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quiser, saio e[01]pego alguns itens[01]pra voce.[02]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:51": {
+      "speaker": "npc",
+      "tone_register": "enthusiastic_passionate",
+      "intent": "offer_search_enthusiastic",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Adoro sair e[01]viajar! Se achar algo,[02]trago pra voce.[01]Quer que eu saia em[01]uma missao?"
+    },
+    "AREAS041.DAT:7:52": {
+      "speaker": "npc",
+      "tone_register": "casual_query",
+      "intent": "ask_destination",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pra onde devo ir?"
+    },
+    "AREAS041.DAT:7:54": {
+      "speaker": "npc",
+      "tone_register": "casual_cheerful",
+      "intent": "farewell_departure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Beleza, to indo![01]Te vejo quando[01]voltar!"
+    },
+    "AREAS041.DAT:7:55": {
+      "speaker": "npc",
+      "tone_register": "neutral_polite",
+      "intent": "casual_farewell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, falou depois."
+    },
+    "AREAS041.DAT:7:56": {
+      "speaker": "npc",
+      "tone_register": "determined_effort",
+      "intent": "confirm_search_offer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou tentar achar as[01]melhores coisas![02]Ou voce nao quer[01]que eu va agora?"
+    },
+    "AREAS041.DAT:7:57": {
+      "speaker": "npc",
+      "tone_register": "determined_effort",
+      "intent": "confirm_search_offer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou tentar achar as[01]melhores coisas![02]Ou voce nao quer[01]que eu va agora?"
+    },
+    "AREAS041.DAT:7:58": {
+      "speaker": "npc",
+      "tone_register": "nervous_scared",
+      "intent": "express_fear_cancel",
+      "risk_level": "medium",
+      "risk_notes": "emotional shift to scared; preserve 'E meio assustador' tone without melodrama",
+      "t": "E meio assustador,[01]ir em uma jornada[01]pra um lugar longe...[02]Quer cancelar a[01]missao?"
+    },
+    "AREAS041.DAT:7:59": {
+      "speaker": "npc",
+      "tone_register": "dramatic_fearful",
+      "intent": "express_extreme_fear",
+      "risk_level": "medium",
+      "risk_notes": "dramatic hyperbole ('e sua culpa') — maintain tone but ensure pt-BR idiom; 'fica aqui' = natural choice to stay",
+      "t": "Se eu morrer, e[01]culpa sua![02]Posso ficar aqui e[01]nao sair em missao?"
+    },
+    "AREAS041.DAT:7:60": {
+      "speaker": "npc",
+      "tone_register": "casual_matter_of_fact",
+      "intent": "report_status_confirm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "To arrumando minha[01]mochila, pronto pra[01]sair em missao.[02]E, a menos que voce[01]nao queira mais?"
+    },
+    "AREAS041.DAT:7:61": {
+      "speaker": "npc",
+      "tone_register": "resigned_accept",
+      "intent": "accept_cancellation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Beleza, entao[01]nao vou!"
+    },
+    "AREAS041.DAT:7:62": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.5 Deserto"
+    },
+    "AREAS041.DAT:7:63": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.5 Deserto"
+    },
+    "AREAS041.DAT:7:64": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.5 Deserto"
+    },
+    "AREAS041.DAT:7:65": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.1 Wyndia"
+    },
+    "AREAS041.DAT:7:66": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.2 Ludia"
+    },
+    "AREAS041.DAT:7:67": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.2 Astan"
+    },
+    "AREAS041.DAT:7:68": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.5 Mt. Zhinga"
+    },
+    "AREAS041.DAT:7:69": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.1 Planicie Dourada"
+    },
+    "AREAS041.DAT:7:70": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.5 Terras Altas"
+    },
+    "AREAS041.DAT:7:71": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.3 S. Hesperia"
+    },
+    "AREAS041.DAT:7:72": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.2 Shikk"
+    },
+    "AREAS041.DAT:7:73": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.4 Mar Salgado"
+    },
+    "AREAS041.DAT:7:74": {
+      "speaker": "system",
+      "tone_register": "neutral_ui",
+      "intent": "location_difficulty_label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.4 N. Ilhas"
+    },
+    "AREAS041.DAT:7:75": {
+      "speaker": "npc",
+      "tone_register": "neutral/informative",
+      "intent": "provide difficulty/location info",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.3 Paedra"
+    },
+    "AREAS041.DAT:7:76": {
+      "speaker": "npc",
+      "tone_register": "neutral/informative",
+      "intent": "provide difficulty/location info",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dif.3 C. Hesperia"
+    },
+    "AREAS041.DAT:7:77": {
+      "speaker": "npc",
+      "tone_register": "frustrated/determined",
+      "intent": "complain about difficulty of retrieval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quase morri trazendo isso aqui.[01]Espero que esteja feliz!"
+    },
+    "AREAS041.DAT:7:78": {
+      "speaker": "npc",
+      "tone_register": "frustrated/determined",
+      "intent": "complain about difficulty of retrieval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quase morri trazendo isso aqui.[01]Espero que esteja feliz!"
+    },
+    "AREAS041.DAT:7:79": {
+      "speaker": "npc",
+      "tone_register": "frustrated/determined",
+      "intent": "complain about difficulty of retrieval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quase morri trazendo isso aqui.[01]Espero que esteja feliz!"
+    },
+    "AREAS041.DAT:7:80": {
+      "speaker": "npc",
+      "tone_register": "frustrated/determined",
+      "intent": "complain about difficulty of retrieval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quase morri trazendo isso aqui.[01]Espero que esteja feliz!"
+    },
+    "AREAS041.DAT:7:81": {
+      "speaker": "npc",
+      "tone_register": "relieved/grateful",
+      "intent": "express relief at safe return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "So estou feliz de voltar inteiro!"
+    },
+    "AREAS041.DAT:7:82": {
+      "speaker": "npc",
+      "tone_register": "proud/cheerful",
+      "intent": "announce gift/reward",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Trouxe algo bem legal pra voce!"
+    },
+    "AREAS041.DAT:7:83": {
+      "speaker": "npc",
+      "tone_register": "hopeful/modest",
+      "intent": "express effort for patron",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fiz o melhor por voce, [04]"
+    },
+    "AREAS041.DAT:7:87": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "state shop purpose",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compramos e vendemos [09]"
+    },
+    "AREAS041.DAT:7:88": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "state shop purpose",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compramos e vendemos [09]"
+    },
+    "AREAS041.DAT:7:89": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "state shop purpose",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compramos e vendemos [09]"
+    },
+    "AREAS041.DAT:7:90": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "state shop purpose",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compramos e vendemos [09]"
+    },
+    "AREAS041.DAT:7:91": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "state shop purpose",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compramos e vendemos [09]"
+    },
+    "AREAS041.DAT:7:92": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "query price",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto por [09]"
+    },
+    "AREAS041.DAT:7:93": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "query price",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto por [09]"
+    },
+    "AREAS041.DAT:7:94": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "query price",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto por [09]"
+    },
+    "AREAS041.DAT:7:95": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "confirm purchase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer [07]"
+    },
+    "AREAS041.DAT:7:96": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "query price",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quanto por [09]"
+    },
+    "AREAS041.DAT:7:97": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "confirm sale",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Venda de [07]"
+    },
+    "AREAS041.DAT:7:98": {
+      "speaker": "system",
+      "tone_register": "neutral/informative",
+      "intent": "inform insufficient funds",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem zenny suficiente!"
+    },
+    "AREAS041.DAT:7:99": {
+      "speaker": "system",
+      "tone_register": "neutral/informative",
+      "intent": "inform inventory full",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao pode carregar mais [09]"
+    },
+    "AREAS041.DAT:7:100": {
+      "speaker": "system",
+      "tone_register": "neutral/informative",
+      "intent": "inform no item to sell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem [09] para vender!"
+    },
+    "AREAS041.DAT:7:106": {
+      "speaker": "npc",
+      "tone_register": "grateful/cheerful",
+      "intent": "express thanks",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigado!"
+    },
+    "AREAS041.DAT:7:107": {
+      "speaker": "npc",
+      "tone_register": "confident/speculative",
+      "intent": "predict price rise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que os precos[01]vao subir em breve! Sinto!"
+    },
+    "AREAS041.DAT:7:108": {
+      "speaker": "npc",
+      "tone_register": "confident/speculative",
+      "intent": "predict price rise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que os precos[01]vao subir em breve! Sinto!"
+    },
+    "AREAS041.DAT:7:109": {
+      "speaker": "npc",
+      "tone_register": "confident/speculative",
+      "intent": "predict price rise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que os precos[01]vao subir em breve! Sinto!"
+    },
+    "AREAS041.DAT:7:110": {
+      "speaker": "npc",
+      "tone_register": "confident/speculative",
+      "intent": "predict price rise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que os precos[01]vao subir em breve! Sinto!"
+    },
+    "AREAS041.DAT:7:111": {
+      "speaker": "npc",
+      "tone_register": "confident/speculative",
+      "intent": "predict price rise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho certeza que os precos[01]vao subir em breve! Sinto!"
+    },
+    "AREAS041.DAT:7:112": {
+      "speaker": "npc",
+      "tone_register": "neutral/analytical",
+      "intent": "predict price trend",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que precos vao subir."
+    },
+    "AREAS041.DAT:7:113": {
+      "speaker": "npc",
+      "tone_register": "neutral/analytical",
+      "intent": "assess current market",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As coisas estao estaveis agora."
+    },
+    "AREAS041.DAT:7:114": {
+      "speaker": "npc",
+      "tone_register": "neutral/analytical",
+      "intent": "predict price drop",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Precos podem cair em breve."
+    },
+    "AREAS041.DAT:7:115": {
+      "speaker": "npc",
+      "tone_register": "worried/cautionary",
+      "intent": "warn of poor outlook",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao esta[01]muito bom..."
+    },
+    "AREAS041.DAT:7:116": {
+      "speaker": "npc",
+      "tone_register": "advisory/confident",
+      "intent": "recommend buying",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu compraria agora."
+    },
+    "AREAS041.DAT:7:117": {
+      "speaker": "npc",
+      "tone_register": "advisory/confident",
+      "intent": "recommend selling",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu venderia agora."
+    },
+    "AREAS041.DAT:7:118": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "propose trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar [09]"
+    },
+    "AREAS041.DAT:7:119": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "propose trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar [09]"
+    },
+    "AREAS041.DAT:7:120": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "propose trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar [09]"
+    },
+    "AREAS041.DAT:7:121": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "propose trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar [09]"
+    },
+    "AREAS041.DAT:7:122": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "propose trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar [09]"
+    },
+    "AREAS041.DAT:7:123": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; 'insurance' = Contrato de Seguro per glossary; concise to fit byte budget (153 total including tokens)",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:124": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:125": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:126": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:127": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:128": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:129": {
+      "speaker": "npc",
+      "tone_register": "cheerful/sales-pitch",
+      "intent": "sell insurance product with options",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; [02] page break must be preserved; concise variant",
+      "t": "Oi! Quer comprar um[01]Contrato de Seguro?[02]Nunca se sabe quando vai servir! Tem interesse?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:130": {
+      "speaker": "npc",
+      "tone_register": "cheerful/incentive",
+      "intent": "offer insurance with gift bonus",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; 'free gift' must stay natural; concise fit required",
+      "t": "Oi! Se comprar um Contrato,[01]dou um presente gratis![12][82][0C][82]OK[01]Desculpe"
+    },
+    "AREAS041.DAT:7:131": {
+      "speaker": "npc",
+      "tone_register": "cheerful/incentive",
+      "intent": "offer insurance with gift bonus",
+      "risk_level": "medium",
+      "risk_notes": "UI with menu options; variant phrasing for gift appeal",
+      "t": "Oi! Compre um Contrato e[01]ganha presente de graca![12][82][0C][82]OK[01]Desculpe"
+    },
+    "AREAS041.DAT:7:132": {
+      "speaker": "npc",
+      "tone_register": "worried/affectionate",
+      "intent": "express concern for player safety",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao morra, [04]"
+    },
+    "AREAS041.DAT:7:133": {
+      "speaker": "npc",
+      "tone_register": "earnest/practical",
+      "intent": "emphasize importance of self-care and insurance",
+      "risk_level": "medium",
+      "risk_notes": "[02] page break preserved; self-interest angle of insurance pitch; natural pt-BR flow",
+      "t": "Se cuide muito bem.[02][0B]Por que? Porque se nao, a gente[01]paga a conta do seguro!"
+    },
+    "AREAS041.DAT:7:134": {
+      "speaker": "npc",
+      "tone_register": "reassuring/professional",
+      "intent": "assure customer support",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estamos prontos quando[01]voce chamar. Vamos cuidar[01]de voce, [04]"
+    },
+    "AREAS041.DAT:7:135": {
+      "speaker": "npc",
+      "tone_register": "reassuring/proverbial",
+      "intent": "offer insurance as safety measure",
+      "risk_level": "medium",
+      "risk_notes": "[02] page break; 'Better safe than sorry' idiom localized to pt-BR as 'Mais vale prevenir'",
+      "t": "Mais vale prevenir,[01]certo?[02]Estamos aqui se precisar, [04]"
+    },
+    "AREAS041.DAT:7:136": {
+      "speaker": "npc",
+      "tone_register": "stressed/urgent",
+      "intent": "express sales pressure and target anxiety",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estamos longe da meta![01]Precisamos vender mais!"
+    },
+    "AREAS041.DAT:7:137": {
+      "speaker": "npc",
+      "tone_register": "advisory/confident",
+      "intent": "recommend insurance purchase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seguro e muito bom.[01]Eu compraria."
+    },
+    "AREAS041.DAT:7:138": {
+      "speaker": "npc",
+      "tone_register": "persuasive/campaign-like",
+      "intent": "promote insurance with health/benefit angle",
+      "risk_level": "high",
+      "risk_notes": "[02] page break must align; idiomatic 'ounce of prevention' = 'prevencao e ouro' in pt-BR; self-interest language ('for our own good') requires balance to not sound greedy",
+      "t": "Prevencao e ouro![02]Compre um Contrato—vale[01]para voce e pra gente tambem!"
+    },
+    "AREAS041.DAT:7:139": {
+      "speaker": "character",
+      "tone_register": "determined/conflicted/self-aware",
+      "intent": "declare protective intent but acknowledge social jealousy risk; recommend insurance as compromise",
+      "risk_level": "high",
+      "risk_notes": "Character voice critical: possessive/protective language ('eu mesmo vou proteger') balanced with awareness of social consequence; [02] breaks must align; long line requires concision and natural pt-BR flow without losing emotional arc",
+      "t": "Nao precisa de seguro![01]Eu mesmo vou proteger![02][0B]...Mas se fizesse isso,[01]todos ficariam com ciume[01]e me chamavam de chato...[02]Talvez voce deva comprar[01]um Contrato mesmo."
+    },
+    "AREAS041.DAT:7:140": {
+      "speaker": "npc",
+      "tone_register": "commercial/neutral",
+      "intent": "ask about insurance premium upgrade",
+      "risk_level": "medium",
+      "risk_notes": "UI menu; 'premium' = 'adicional' or 'extra' in insurance context; concise",
+      "t": "Quer adicionar um extra?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:141": {
+      "speaker": "npc",
+      "tone_register": "warm/congratulatory",
+      "intent": "thank customer for insurance purchase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Valeu! Aposto que se[01]sente melhor protegido!"
+    },
+    "AREAS041.DAT:7:142": {
+      "speaker": "npc",
+      "tone_register": "neutral/informative",
+      "intent": "notify expired insurance coverage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oi! Seu Contrato de[01]Seguro expirou."
+    },
+    "AREAS041.DAT:7:396": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:397": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:398": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:399": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:400": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:401": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:402": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:403": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:404": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:405": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:406": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:407": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:408": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:409": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:410": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:411": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:412": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:413": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:414": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:415": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:416": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:417": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "invitation to play game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer jogar Kecak conosco?"
+    },
+    "AREAS041.DAT:7:418": {
+      "speaker": "npc",
+      "tone_register": "casual, warm farewell",
+      "intent": "goodbye and encouragement to return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Volta pra jogar com[01]a gente em breve!"
+    },
+    "AREAS041.DAT:7:419": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "offer to teach rules",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer aprender as regras?[12][82][0C][C2]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:420": {
+      "speaker": "system",
+      "tone_register": "neutral, explanatory",
+      "intent": "teach game rules in detail",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce tem que apertar[01]os botoes no ritmo[01]dos tambores Kecak. [02]Se acertar, ganha[01]muitos pontos. [02]Se errar o ritmo,[01]perde pontos. [02]Quando acabar a musica,[01]seus pontos sao somados[01]e mostrados. [02]Voce ganha premios[01]de acordo com os pontos.[02]Precisa de [05][02]1500[06] pontos pro[01]melhor premio. [02][0B]...Ninguem conseguiu[01]esse tanto ainda. [02]Entao, essas sao as[01]regras. Quer ouvir[01]de novo?[12][82][0C][C2]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:421": {
+      "speaker": "system",
+      "tone_register": "neutral, prompt",
+      "intent": "signal readiness to begin",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo bem, vamos[01]comeco!"
+    },
+    "AREAS041.DAT:7:422": {
+      "speaker": "system",
+      "tone_register": "neutral, menu prompt",
+      "intent": "ask player what to do next",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que quer fazer?[12][82][0C][93]Tentar ganhar premio[01]Praticar[01]Sair do Kecak"
+    },
+    "AREAS041.DAT:7:423": {
+      "speaker": "system",
+      "tone_register": "neutral, menu prompt",
+      "intent": "select lesson difficulty level",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qual licao voce[01]quer tentar?[12][82][0C][15]Estagio 1[01]Estagio 2[01]Estagio 3[01]Estagio 4[01]Estagio 5"
+    },
+    "AREAS041.DAT:7:424": {
+      "speaker": "system",
+      "tone_register": "neutral, energetic prompt",
+      "intent": "ready player to begin game round",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pronto? Vamos!"
+    },
+    "AREAS041.DAT:7:425": {
+      "speaker": "system",
+      "tone_register": "neutral, energetic prompt",
+      "intent": "signal start of game with countdown",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "OK, pronto, ja, vai!"
+    },
+    "AREAS041.DAT:7:426": {
+      "speaker": "system",
+      "tone_register": "neutral, energetic prompt",
+      "intent": "signal start of game with countdown",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "OK, pronto, ja, vai!"
+    },
+    "AREAS041.DAT:7:427": {
+      "speaker": "system",
+      "tone_register": "neutral, menu prompt",
+      "intent": "ask if player wants to retry game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer tentar de novo?[12][82][0C][93]Tentar de novo[01]Praticar[01]Sair do Kecak"
+    },
+    "AREAS041.DAT:7:428": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "invite to play rock-paper-scissors card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente joga pedra-papel-[01]tesoura com cartas aqui![01]Quer jogar comigo? [02]Tem uns premios[01]legais!"
+    },
+    "AREAS041.DAT:7:429": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "invite to play rock-paper-scissors card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente joga pedra-papel-[01]tesoura com cartas aqui![01]Quer jogar comigo? [02]Tem uns premios[01]legais!"
+    },
+    "AREAS041.DAT:7:430": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "invite to play rock-paper-scissors card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente joga pedra-papel-[01]tesoura com cartas aqui![01]Quer jogar comigo? [02]Tem uns premios[01]legais!"
+    },
+    "AREAS041.DAT:7:431": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "invite to play rock-paper-scissors card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente joga pedra-papel-[01]tesoura com cartas aqui![01]Quer jogar comigo? [02]Tem uns premios[01]legais!"
+    },
+    "AREAS041.DAT:7:432": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "invite to play rock-paper-scissors card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A gente joga pedra-papel-[01]tesoura com cartas aqui![01]Quer jogar comigo? [02]Tem uns premios[01]legais!"
+    },
+    "AREAS041.DAT:7:433": {
+      "speaker": "system",
+      "tone_register": "neutral, menu prompt",
+      "intent": "ask what player wants to do in card game",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que quer fazer?[12][82][0C][94]Jogar[01]Aprender regras[01]Ver premios[01]Sair"
+    },
+    "AREAS041.DAT:7:435": {
+      "speaker": "npc",
+      "tone_register": "casual, warm farewell",
+      "intent": "goodbye and encouragement to return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Volta em breve!"
+    },
+    "AREAS041.DAT:7:437": {
+      "speaker": "npc",
+      "tone_register": "casual, apologetic",
+      "intent": "inform player lacks currency to play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce nao tem zenny[01]suficiente! Isso significa[01]que nao pode jogar --[01]desculpa!"
+    },
+    "AREAS041.DAT:7:438": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly warning",
+      "intent": "encourage good sportsmanship",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos la! Se perder,[01]promete nao ser mau[01]perdedor, OK?"
+    },
+    "AREAS041.DAT:7:439": {
+      "speaker": "system",
+      "tone_register": "neutral, confirmation prompt",
+      "intent": "warn about losing points and confirm quit action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que? Quer sair? [02]Se sair, perde todos[01]os pontos! Tem certeza?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:440": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "congratulate and ask if wants to play again",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ótimo jogo! [01]Quer jogar de novo?[12][82][0C][93]Jogar de novo[01]Trocar por premios[01]Sair"
+    },
+    "AREAS041.DAT:7:441": {
+      "speaker": "npc",
+      "tone_register": "casual, playful",
+      "intent": "acknowledge loss and display player score",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "...Dessa vez voce[01]me pegou! [02]Deixa eu ver...Voce tem [07]"
+    },
+    "AREAS041.DAT:7:442": {
+      "speaker": "npc",
+      "tone_register": "casual, playful victory",
+      "intent": "declare victory and reset player points",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha ha! Eu ganho! [02]Desculpa -- seus[01]pontos sao zerados!"
+    },
+    "AREAS041.DAT:7:443": {
+      "speaker": "npc",
+      "tone_register": "casual, enthusiastic",
+      "intent": "affirm player spirit and begin play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso! Pois e, vamos[01]jogar!"
+    },
+    "AREAS041.DAT:7:444": {
+      "speaker": "system",
+      "tone_register": "neutral, confirmation prompt",
+      "intent": "confirm trading points for prize",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer trocar os[01]pontos por isso?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:445": {
+      "speaker": "system",
+      "tone_register": "neutral, informational",
+      "intent": "inform player inventory is full",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Huh? [02]Parece que nao[01]cabe mais desse item."
+    },
+    "AREAS041.DAT:7:446": {
+      "speaker": "system",
+      "tone_register": "neutral, informational",
+      "intent": "inform player inventory is full",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Huh? [02]Parece que nao[01]cabe mais desse item."
+    },
+    "AREAS041.DAT:7:448": {
+      "speaker": "system",
+      "tone_register": "neutral, menu prompt",
+      "intent": "ask which game mode to select",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DQual modo voce[01]quer jogar? [12][82][0C][02]Normal[01]Aleatorio"
+    },
+    "AREAS041.DAT:7:449": {
+      "speaker": "system",
+      "tone_register": "neutral, confirmation prompt",
+      "intent": "confirm card usage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]FVoce tem certeza[01]que quer usar[01]essa carta?[12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAS041.DAT:7:450": {
+      "speaker": "system",
+      "tone_register": "neutral, energetic prompt",
+      "intent": "signal start of card game round",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DPois e, vamos la![02]Um... dois... tres!"
+    },
+    "AREAS041.DAT:7:451": {
+      "speaker": "npc",
+      "tone_register": "casual, exclamation",
+      "intent": "exclaim during card play",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DHei!"
+    },
+    "AREAS041.DAT:7:452": {
+      "speaker": "npc",
+      "tone_register": "casual, disappointed",
+      "intent": "lament losing again",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D...Perdi de novo..."
+    },
+    "AREAS041.DAT:7:453": {
+      "speaker": "npc",
+      "tone_register": "casual, playful victory",
+      "intent": "celebrate winning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DHa ha! [01]Eu ganho de novo!"
+    },
+    "AREAS041.DAT:7:454": {
+      "speaker": "npc",
+      "tone_register": "casual, resigned",
+      "intent": "acknowledge inevitable defeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DBom, é so isso -- [01]nao consigo ganhar[01]agora nao tem jeito."
+    },
+    "AREAS041.DAT:7:455": {
+      "speaker": "npc",
+      "tone_register": "casual, frustrated",
+      "intent": "express frustration with losing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DOdio perder!"
+    },
+    "AREAS041.DAT:7:456": {
+      "speaker": "npc",
+      "tone_register": "casual, triumphant",
+      "intent": "celebrate final victory",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DHa ha! [02]Pronto! Voce nao[01]pode mais ganhar! Eu[01]ganho! Eba!"
+    },
+    "AREAS041.DAT:7:457": {
+      "speaker": "npc",
+      "tone_register": "casual, encouraging taunt",
+      "intent": "urge player to try harder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DVoce nao ta indo[01]muito bem... [02]Vamos, tenta mais!"
+    },
+    "AREAS041.DAT:7:458": {
+      "speaker": "npc",
+      "tone_register": "casual, confident",
+      "intent": "comment on favorable game state",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]DAs coisas tao indo[01]bem!"
+    },
+    "AREAS041.DAT:7:215": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fins e Comeos"
+    },
+    "AREAS041.DAT:7:216": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Problemas Adiante"
+    },
+    "AREAS041.DAT:7:217": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Efemero"
+    },
+    "AREAS041.DAT:7:218": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "medium",
+      "risk_notes": "Titulo refere-se a Fou-Lu; contexto potencial de identidade dupla",
+      "t": "O Primeiro Imperador"
+    },
+    "AREAS041.DAT:7:219": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lutadores"
+    },
+    "AREAS041.DAT:7:220": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pega o Dinheiro e Corre"
+    },
+    "AREAS041.DAT:7:221": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Batendo Contra Deuses"
+    },
+    "AREAS041.DAT:7:222": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cidade do Deserto"
+    },
+    "AREAS041.DAT:7:223": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Roda e Roda"
+    },
+    "AREAS041.DAT:7:224": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sob Pressao"
+    },
+    "AREAS041.DAT:7:225": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espada Bastarda"
+    },
+    "AREAS041.DAT:7:226": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mais um Dia de Trabalho"
+    },
+    "AREAS041.DAT:7:227": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo Misturado"
+    },
+    "AREAS041.DAT:7:228": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ar Envenenado"
+    },
+    "AREAS041.DAT:7:229": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Verdade e Ficcao"
+    },
+    "AREAS041.DAT:7:230": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cuidado com os Passos"
+    },
+    "AREAS041.DAT:7:231": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Escuridao"
+    },
+    "AREAS041.DAT:7:232": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mercador Viajante"
+    },
+    "AREAS041.DAT:7:233": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Homem Macho"
+    },
+    "AREAS041.DAT:7:234": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Som do Dinheiro"
+    },
+    "AREAS041.DAT:7:235": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Coracao Corajoso"
+    },
+    "AREAS041.DAT:7:236": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Requiem"
+    },
+    "AREAS041.DAT:7:237": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pastores"
+    },
+    "AREAS041.DAT:7:238": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Queda Livre"
+    },
+    "AREAS041.DAT:7:239": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chuva Interminavel"
+    },
+    "AREAS041.DAT:7:240": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espiritos da Arvore"
+    },
+    "AREAS041.DAT:7:241": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cancao das Planices"
+    },
+    "AREAS041.DAT:7:242": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mil Ventos"
+    },
+    "AREAS041.DAT:7:243": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ver e Acreditar"
+    },
+    "AREAS041.DAT:7:244": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma Terra Distante"
+    },
+    "AREAS041.DAT:7:245": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Colinas e Riachos"
+    },
+    "AREAS041.DAT:7:246": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Sol e a Lua"
+    },
+    "AREAS041.DAT:7:247": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1-2-3 1-2-3"
+    },
+    "AREAS041.DAT:7:249": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pesca de Hoje"
+    },
+    "AREAS041.DAT:7:250": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma Historica Fabulosa"
+    },
+    "AREAS041.DAT:7:251": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fadas"
+    },
+    "AREAS041.DAT:7:252": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Game Over"
+    },
+    "AREAS041.DAT:7:253": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oracao"
+    },
+    "AREAS041.DAT:7:254": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Coragem Inabalavel"
+    },
+    "AREAS041.DAT:7:255": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A Maldicao"
+    },
+    "AREAS041.DAT:7:256": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Turismo"
+    },
+    "AREAS041.DAT:7:257": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Replay"
+    },
+    "AREAS041.DAT:7:258": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Gaivotas"
+    },
+    "AREAS041.DAT:7:259": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Navegando os Sete Mares"
+    },
+    "AREAS041.DAT:7:260": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pabupabu, Pukapuka"
+    },
+    "AREAS041.DAT:7:261": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pela Princesa"
+    },
+    "AREAS041.DAT:7:262": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Perigo Divino"
+    },
+    "AREAS041.DAT:7:263": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "medium",
+      "risk_notes": "Titulo refere-se a Fou-Lu; contexto potencial de identidade dupla",
+      "t": "Imperador Rampante"
+    },
+    "AREAS041.DAT:7:264": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sangue do Dragao"
+    },
+    "AREAS041.DAT:7:265": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:266": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:267": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:268": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:269": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:270": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Remoinho"
+    },
+    "AREAS041.DAT:7:271": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ilhas por Todo Lado"
+    },
+    "AREAS041.DAT:7:272": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Flutuando"
+    },
+    "AREAS041.DAT:7:273": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Os Eternos"
+    },
+    "AREAS041.DAT:7:274": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Apos o Sonho"
+    },
+    "AREAS041.DAT:7:275": {
+      "speaker": "system",
+      "tone_register": "neutral/formal",
+      "intent": "tutorial_dialogue",
+      "risk_level": "medium",
+      "risk_notes": "Contém token de formatação [12] e escolha de UI; [02] marca quebra de página/seção; preservar exato",
+      "t": "Tenho estudado nomes-- de onde vem, o que significam... [02]Por que nao tenta? Gostaria de dar um apelido novo a alguem? [12][82][0C][82]Sim Nao"
+    },
+    "AREAS041.DAT:7:459": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "frustration_mild",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Estou comecando a[01]parecer boba!\""
+    },
+    "AREAS041.DAT:7:460": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "thinking",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Vamos ver...O que eu[01]faco agora...?\""
+    },
+    "AREAS041.DAT:7:461": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "agreement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Peguei!\""
+    },
+    "AREAS041.DAT:7:462": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "thinking",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Hmm...O que eu faco[01]agora...?\""
+    },
+    "AREAS041.DAT:7:463": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "thinking",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Vamos ver...\""
+    },
+    "AREAS041.DAT:7:464": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "uncertainty",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Nao sei o que[01]fazer!\""
+    },
+    "AREAS041.DAT:7:465": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "determination",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"O jogo ainda nao[01]terminou!\""
+    },
+    "AREAS041.DAT:7:466": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "determination",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Nao quero[01]perder!\""
+    },
+    "AREAS041.DAT:7:467": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "encouragement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Vamos!\""
+    },
+    "AREAS041.DAT:7:468": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "resignation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Suspiro...\""
+    },
+    "AREAS041.DAT:7:469": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "hopelessness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Nao ha jeito de eu[01]vencer...\""
+    },
+    "AREAS041.DAT:7:470": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "surprise_concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Uau! Isso foi rapido![02]Voce esta bem?\""
+    },
+    "AREAS041.DAT:7:471": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "celebration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Hurra! Eu venci!\""
+    },
+    "AREAS041.DAT:7:472": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "celebration_relief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Ufa! Venci! Esse jogo[01]foi dificil! Voce quase[01]me derrotou!\""
+    },
+    "AREAS041.DAT:7:473": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "technical_victory",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade de 'draw' (empate vs. desenho); contexto de jogo sugere empate. Traducao preserva a logica do jogo.",
+      "t": "[0C]D\"Parece que e um empate...[02][0B]...O que significa[01]que eu venci!\""
+    },
+    "AREAS041.DAT:7:474": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "resolve",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Sem cartas![02]Preciso tentar mais[01]proxima vez!\""
+    },
+    "AREAS041.DAT:7:475": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "resignation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Suspiro...[01]Perdi...\""
+    },
+    "AREAS041.DAT:7:476": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "defeat_admission",
+      "risk_level": "low",
+      "risk_notes": "Source tem 'tired' (cansado) mas contexto sugere typo para 'tried'; traducao assume 'tentei'.",
+      "t": "[0C]D\"Nao adianta! Nada que[01]tentei funcionou[01]contra voce!\""
+    },
+    "AREAS041.DAT:7:477": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Anel da Alma"
+    },
+    "AREAS041.DAT:7:478": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "10.000 zenny"
+    },
+    "AREAS041.DAT:7:479": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pedra Midas"
+    },
+    "AREAS041.DAT:7:480": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1.000 zenny"
+    },
+    "AREAS041.DAT:7:481": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sapato Social"
+    },
+    "AREAS041.DAT:7:482": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "item_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Multinutricional"
+    },
+    "AREAS041.DAT:7:483": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "self_reflection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Hmm...Talvez proxima[01]vez eu jogue uma[01]pedra...\""
+    },
+    "AREAS041.DAT:7:484": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "self_reflection",
+      "risk_level": "low",
+      "risk_notes": "Duplicata intencional da linha anterior.",
+      "t": "[0C]D\"Hmm...Talvez proxima[01]vez eu jogue uma[01]pedra...\""
+    },
+    "AREAS041.DAT:7:485": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "self_awareness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Tesoura...[0B][0B][01]Huh? Deixa pra la--[01]falando sozinha!\""
+    },
+    "AREAS041.DAT:7:486": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "planning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]D\"Talvez eu deveria[01]jogar papel...\""
+    },
+    "AREAS041.DAT:7:487": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "speculation",
+      "risk_level": "low",
+      "risk_notes": "Source tem typo 'will be' (redundante); traducao normaliza.",
+      "t": "[0C]D\"Com tantas cartas[01]sobrando, qual sera a[01]proxima?\""
+    },
+    "AREAS041.DAT:7:488": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "instruction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Selecione um personagem."
+    },
+    "AREAS041.DAT:7:489": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "instruction_ui",
+      "risk_level": "medium",
+      "risk_notes": "Botoes de controle ([7F], [80]) sao tokens; espacos de alinhamento preservam formatacao UI. Linha longa e critica para layout.",
+      "t": "Botoes direcionais: Mover[01] cursor[01][7F]: Confirmar [80]: Cancelar"
+    },
+    "AREAS041.DAT:7:490": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Diligente"
+    },
+    "AREAS041.DAT:7:491": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "label",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ordinario"
+    },
+    "AREAS041.DAT:7:499": {
+      "speaker": "npc",
+      "tone_register": "friendly",
+      "intent": "game_invitation",
+      "risk_level": "medium",
+      "risk_notes": "Personagem se apresenta como praticante; tom entusiastico. Preservar 'rock-paper-scissors' em portugues para naturalidade de jogo.",
+      "t": "\"Aqui jogamos pedra-papel-[01]tesoura com cartas![02]Quer jogar comigo?[01]Tenho praticado bastante!\""
+    },
+    "AREAS041.DAT:7:500": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "game_invitation",
+      "risk_level": "medium",
+      "risk_notes": "Personagem se apresenta como jogador medio; tom modesto.",
+      "t": "\"Aqui jogamos pedra-papel-[01]tesoura com cartas![02]Sou um jogador comum--[01]quer jogar comigo?\""
+    },
+    "AREAS041.DAT:7:501": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "game_invitation_humble",
+      "risk_level": "medium",
+      "risk_notes": "Personagem se apresenta como iniciante; tom inseguro.",
+      "t": "\"Aqui jogamos pedra-papel-[01]tesoura com cartas![02]Nao jogo muito, mas jogo[01]com voce se quiser!\""
+    },
+    "AREAS041.DAT:7:502": {
+      "speaker": "npc",
+      "tone_register": "lonely",
+      "intent": "game_invitation_desperate",
+      "risk_level": "high",
+      "risk_notes": "Personagem apresenta-se como 'estranho' rejeitado; tom vulneravel. Critico preservar pathos sem parecer manipulador. Risco de redundancia em 'won't play with me' + 'do you want' -- simplificar sem perder emocao.",
+      "t": "\"Aqui jogamos pedra-papel-[01]tesoura com cartas![02]Todos dizem que sou estranho e[01]ninguem quer jogar! Voce[01]joga comigo?\""
+    },
+    "AREAS041.DAT:7:503": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "offer_reward",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Perfeito! Que tal tentar[01]ganhar um premio?\""
+    },
+    "AREAS041.DAT:7:504": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "offer_next_level",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Perfeito! Tente o proximo[01]nivel -- um pouco mais[01]dificil!\""
+    },
+    "AREAS041.DAT:7:505": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "near_miss",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Quase! Relaxe e tente[01]de novo!\""
+    },
+    "AREAS041.DAT:7:506": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "constructive_feedback",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Hmm...[0B][0B][01]Acho que voce deveria[01]praticar um pouco mais.\""
+    }
+  }
+}

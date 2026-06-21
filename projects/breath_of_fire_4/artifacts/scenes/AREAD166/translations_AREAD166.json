@@ -1,0 +1,404 @@
+{
+  "lines": {
+    "AREAD166.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "alarmed",
+      "intent": "challenge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai la!?\""
+    },
+    "AREAD166.DAT:8:0": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "confirm_action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer se transportar para a entrada do Castelo?"
+    },
+    "AREAD166.DAT:8:1": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "confirm_action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer se transportar para a entrada do Castelo?"
+    },
+    "AREAD166.DAT:8:3": {
+      "speaker": "unknown",
+      "tone_register": "formal",
+      "intent": "inquiry",
+      "risk_level": "critical",
+      "risk_notes": "Soniel (13o Imperador) - identidade em questao; Fou-Lu alter-ego; linguagem imperial arcaica obrigatoria; tom solene/distante",
+      "t": "[0C][81] [05][08]Soniel, 13º Imperador do Império Fou[06][13][90][14][81]A\"Yuna... Digo, estais ai, Yuna?\""
+    },
+    "AREAD166.DAT:8:4": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "inquiry",
+      "risk_level": "high",
+      "risk_notes": "Registro imperial (arcaico) obrigatorio; identidade dupla com Ryu; tom solene sem modernizacao",
+      "t": "[14][81]A\"Yuna... Digo, estais ai, Yuna?\""
+    },
+    "AREAD166.DAT:8:5": {
+      "speaker": "Yuna",
+      "tone_register": "formal_respectful",
+      "intent": "acknowledge_command",
+      "risk_level": "medium",
+      "risk_notes": "Yuna servil; resposta rapida e discreta; polidez superficial",
+      "t": "[0C][06][14][82]B\"Sim, Vossa Alteza. [0B]Aqui presente.\""
+    },
+    "AREAD166.DAT:8:6": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "observation",
+      "risk_level": "high",
+      "risk_notes": "Arcaico obrigatorio; tom preocupado mas controlado; [02] marca quebra de pagina - CONTAR",
+      "t": "[14][81]A\"Parece...que algo se apassa... [02]Nao e verdade, Yuna?\""
+    },
+    "AREAD166.DAT:8:7": {
+      "speaker": "Yuna",
+      "tone_register": "formal_precise",
+      "intent": "agree_and_act",
+      "risk_level": "medium",
+      "risk_notes": "Educado, preciso; nunca perde compostura; [02] marca quebra de pagina",
+      "t": "[14][02][02]\"Decerto, Alteza. [02]Vou investigar a perturbacao eu mesmo.\""
+    },
+    "AREAD166.DAT:8:8": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "exclamation",
+      "risk_level": "high",
+      "risk_notes": "Breve; arcaico implícito; tom urgente",
+      "t": "[14][81]A\"Yuna!\""
+    },
+    "AREAD166.DAT:8:9": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "express_concern",
+      "risk_level": "high",
+      "risk_notes": "Imperial 'we'; ansiedade mas voz nao cai; arcaico obrigatorio; [02] marca quebra de pagina",
+      "t": "[14][81]A\"Temos certeza de que nao precisamos nos cercar de guardas? [02]Estamos preocupado com nossa seguranca!\""
+    },
+    "AREAD166.DAT:8:10": {
+      "speaker": "Yuna",
+      "tone_register": "formal_precise",
+      "intent": "reassure_with_warning",
+      "risk_level": "high",
+      "risk_notes": "Educado, ligeiramente condescendente; [02] marca quebra; Yuna refere-se ao God Emperor (Fou-Lu/Ryu)",
+      "t": "[14][02][02]\"Bem, Alteza... [02]Receio que todos os guardas do mundo [02]fariam pouca diferenca se o Deus Imperador aparecesse.\""
+    },
+    "AREAD166.DAT:8:12": {
+      "speaker": "Yuna",
+      "tone_register": "formal_confident",
+      "intent": "pledge_loyalty",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra; Yuna promete conter o Emperor com magia; tom confiante mas calculado",
+      "t": "[14][02][02]\"Alem disso, serei seu servo fiel e dedicado, [02]pronto a sacrificar minha vida, se necessario, para protege-lo [02]aprisionando o Imperador [04][06] numa teia de magia. Por favor, Alteza, fique tranquilo!\""
+    },
+    "AREAD166.DAT:8:13": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "accept_plan",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra; tom imperial; arcaico obrigatorio",
+      "t": "[14][81]A\"Muito bem. [02]Contamos com voce, Yuna.\""
+    },
+    "AREAD166.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "anguish",
+      "risk_level": "low",
+      "risk_notes": "Onomatopeia; traducao localizada",
+      "t": "[14][83]C\"Aaaarrgh!\""
+    },
+    "AREAD166.DAT:8:15": {
+      "speaker": "Yuna",
+      "tone_register": "formal_strained",
+      "intent": "false_greeting",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra; Yuna reconhece Fou-Lu/God Emperor; tom condescendente fingido",
+      "t": "[0C][04][14][82]B\"Bem! Se nao e [04][06], o Deus Imperador... [02]Permita que eu o cumprimente pelo seu [02]retorno triunfal, Vossa Majestade. Eu...\""
+    },
+    "AREAD166.DAT:8:17": {
+      "speaker": "Yuna",
+      "tone_register": "formal_resolute",
+      "intent": "block_path",
+      "risk_level": "medium",
+      "risk_notes": "Yuna bloqueia Fou-Lu; tom educado mas firme",
+      "t": "[0C][04][14][82]B\"Bem! Receio que nao possa deixa-lo passa, Majestade.\""
+    },
+    "AREAD166.DAT:8:18": {
+      "speaker": "Yuna",
+      "tone_register": "formal_ominous",
+      "intent": "declare_trap",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra; tom precisamente ameacador mas controlado",
+      "t": "[0C][06][14][82]B\"Hoje seu trajeto termina aqui. [02]Nao se preocupe--apenas selamos seu poder e o retornamos [02]ao seu lugar de descanso.\""
+    },
+    "AREAD166.DAT:8:19": {
+      "speaker": "Yuna",
+      "tone_register": "formal_shocked",
+      "intent": "realize_trap_failed",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra; Yuna reconhece derrota; tom desapontado",
+      "t": "[0C][06][14][82]B\"Bem! Suponho que deria ter sabido... [02]Parece que aqui, neste castelo que construiu, [02]seus poderes totalmente retornaram.\""
+    },
+    "AREAD166.DAT:8:20": {
+      "speaker": "Yuna",
+      "tone_register": "formal_resigned",
+      "intent": "concede_defeat",
+      "risk_level": "low",
+      "risk_notes": "Yuna cede; tom educado mesmo na derrota",
+      "t": "[0C][06][14][82]B\"Bem entao, nao e da minha alcada obsta-lo, Majestade.\""
+    },
+    "AREAD166.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "astonished",
+      "intent": "react_to_presence",
+      "risk_level": "high",
+      "risk_notes": "[04][06] = placeholder de nome; spoiler de identidade; nao resolver",
+      "t": "[0C][06][14][01][01]\"...[04][06]!\""
+    },
+    "AREAD166.DAT:8:22": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "greet_as_master",
+      "risk_level": "critical",
+      "risk_notes": "Imperativo arcaico; 'Great Lord'; tom triste + majestoso; identidade de servilismo/ironia tragica",
+      "t": "[0C][06][14][81]A\"Nos... [0B]Vos aguardavamos, oh Grandiosos Lorde...\""
+    },
+    "AREAD166.DAT:8:23": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "accuse_of_betrayal",
+      "risk_level": "critical",
+      "risk_notes": "Arcaico 'Thou' (tu/vos); [02] marca quebra; promessa quebrada; tom acusador-triste",
+      "t": "[0C][05][14][04][04]\"Violastes nosso pacto... [02]Nao cumprisdes a promessa.\""
+    },
+    "AREAD166.DAT:8:24": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "deny_betrayal",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra; Fou-Lu refuta acusacao; tom imperial ofendido",
+      "t": "[0C][06][14][81]A\"N... [0B]Majestade, como podeis dizer isso!? [02]Decerto nao esquecemos! [02]Agora que retornastes, [02]o Imperio vosso e! [02]Jamais eu pensaria em...\""
+    },
+    "AREAD166.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "triumphant_maniacal",
+      "intent": "boast_victory",
+      "risk_level": "high",
+      "risk_notes": "[09]V = placeholder; [02] marca quebra; tom riso manico; npc celebra morte de deus",
+      "t": "[14][01][01]\"Haha haha haha! Este e [09]V [02]Consegui! Matei um deus!\""
+    },
+    "AREAD166.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "triumphant_maniacal",
+      "intent": "mock_promise",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra; tom riso descontrolado; personagem desmente promessa",
+      "t": "[14][01][01]\"Ha ha ha ha ha! E agora vossa promessa!? [02]E velha e insignificante... Just like you! [02]Tudo isto pertence a mim agora!!\""
+    },
+    "AREAD166.DAT:8:28": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "condemn",
+      "risk_level": "critical",
+      "risk_notes": "[02] marca quebra; Fou-Lu rejeita o mortal; tom arcaico solene",
+      "t": "[0C][04][14][05][05]\"Ha ha...Ha ha ha ha! [02][14][06][06]\"Mortal insensato!\""
+    },
+    "AREAD166.DAT:8:29": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "call_to_self",
+      "risk_level": "critical",
+      "risk_notes": "[02] e [13]0 = tokens de formatacao; Fou-Lu chama o outro (Ryu); arcaico 'Thou' obrigatorio; spoiler de identidade dupla",
+      "t": "[14][C6]@\"... [0B]... [0B]... [02][14][84]D... [0B]...\"[13]0[14][C6]@\"Viestes afinal... [0B]Tu que me es...\""
+    },
+    "AREAD166.DAT:8:30": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "call_to_self",
+      "risk_level": "critical",
+      "risk_notes": "Duplicata de offset; mesma traducao",
+      "t": "[14][C6]@\"... [0B]... [0B]... [02][14][84]D... [0B]...\"[13]0[14][C6]@\"Viestes afinal... [0B]Tu que me es...\""
+    },
+    "AREAD166.DAT:8:31": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "call_to_self",
+      "risk_level": "critical",
+      "risk_notes": "Arcaico 'Thou'; tom sumario/resumo da cena anterior",
+      "t": "[14][C6]@\"Viestes afinal... [0B]Tu que me es...\""
+    },
+    "AREAD166.DAT:8:32": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "reject_mortals",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra; Fou-Lu desaprova presenca de mortais; tom arcaico desdenhoso",
+      "t": "[14][C6]@\"Mas o que e isto? [02]Estes...mortais que trazides com [02]vos nao tem lugar aqui.\""
+    },
+    "AREAD166.DAT:8:33": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "summon",
+      "risk_level": "critical",
+      "risk_notes": "Arcaico 'Thou'; tom imperativo-tragico; chama o outro self",
+      "t": "[0C][04][14][C6]@\"Vinde...Vinde para mim, tu que me es...\""
+    },
+    "AREAD166.DAT:8:34": {
+      "speaker": "system",
+      "tone_register": "neutral_descriptive",
+      "intent": "status_report",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que ainda estao vivos..."
+    },
+    "AREAD166.DAT:8:35": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "locate_self",
+      "risk_level": "high",
+      "risk_notes": "Arcaico 'Whither'; tom solemne-persistente",
+      "t": "[0C][04][14][84]D\"Para onde vais? Estou aqui.\""
+    },
+    "AREAD166.DAT:8:37": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "demand_merge",
+      "risk_level": "critical",
+      "risk_notes": "Arcaico 'Discard thy flesh'; [02] marca quebra; tom solemne-irresistivel; identidade dupla",
+      "t": "[0C][06][14][C6]@\"Descartai esse veu de carne que usais e libertai vosso espírito! [02]Uni-vos comigo!\""
+    },
+    "AREAD166.DAT:8:38": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "agree_to_merge",
+      "risk_level": "critical",
+      "risk_notes": "[02] marca quebra; tom arcaico-suplicante; Fou-Lu cedendo ao outro self",
+      "t": "[0C][06][14][85]E\"... [0B]Sim! Vinde para mim! [02]Entao...Entao, adeus a este mundo miseravel.\""
+    },
+    "AREAD166.DAT:8:39": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "accuse_corruption",
+      "risk_level": "critical",
+      "risk_notes": "Arcaico 'T'would'; [02] marca quebra; Fou-Lu critica Ryu por viver entre mortais",
+      "t": "[0C][06][14][84]D\"Parecia que vivestes entre [02]os mortais por muito tempo... [0B][04]\""
+    },
+    "AREAD166.DAT:8:40": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal_archaic",
+      "intent": "command_separation",
+      "risk_level": "critical",
+      "risk_notes": "[02] marca quebra x2; Fou-Lu ordena severar lacos com mundo",
+      "t": "[0C][06][14][C6]@\"Devemos sever vossos lacos com este mundo... [02]Desemaranhar os caminhos que se emaranham... [02]Aguarda-vos, [04]\""
+    },
+    "AREAD166.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "traumatized",
+      "intent": "express_fear",
+      "risk_level": "low",
+      "risk_notes": "Crianca/personagem assustado; [04] = placeholder",
+      "t": "[0C][05][14][07][07]\"Tive muito medo, [04]\""
+    },
+    "AREAD166.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "confused",
+      "intent": "question_event",
+      "risk_level": "low",
+      "risk_notes": "[02] marca quebra; duvida se o evento foi real",
+      "t": "[14][08][08]\"Entao...Ele estava realmente aqui? [02]Ou foi alguma especie de projecao?\""
+    },
+    "AREAD166.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "resigned",
+      "intent": "continue_journey",
+      "risk_level": "low",
+      "risk_notes": "[02] marca quebra; personagem aceita inevitabilidade",
+      "t": "[14][09][07]\"Bem...Suponho que nao temos escolha a nao ser continuar. [02][14]A\""
+    },
+    "AREAD166.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "[13]0 = token; Fou-Lu deixa cena; onomatopeia localizada; ton arcaico breve",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:49": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:52": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "enraged",
+      "intent": "depart_statement",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de linha anterior; mesmo conteudo",
+      "t": "[0C][05][14][0A][08]\"Aaaarrgh!\"[13]0[14][04][04]\"Meus assuntos\\estao alhures...\""
+    },
+    "AREAD166.DAT:8:56": {
+      "speaker": "npc",
+      "tone_register": "determined",
+      "intent": "depart_statement",
+      "risk_level": "low",
+      "risk_notes": "Variacao final; tom resoluto",
+      "t": "[14][04][04]\"Meus assuntos\\estao alhures...\""
+    }
+  }
+}

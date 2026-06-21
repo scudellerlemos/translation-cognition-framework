@@ -1,0 +1,745 @@
+{
+  "lines": {
+    "AREAS025.DAT:7:1": {
+      "speaker": "npc",
+      "tone_register": "informal, orgulhoso, expansivo",
+      "intent": "Apresentar Shikk como cidade de grandes marinheiros, vangloriar o mar local",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Bem-vindo a Shikk, lar dos[01]melhores marinheiros do[01]mundo![02]Sabe por que? Porque Shikk fica[01]no unico mar sem lama do mundo,[01]e so isso!\""
+    },
+    "AREAS025.DAT:7:2": {
+      "speaker": "npc",
+      "tone_register": "infantil, animado",
+      "intent": "Crianca esperando o pai marinheiro voltar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Meu pai e marinheiro![02]Estou esperando o navio[01]dele chegar!\""
+    },
+    "AREAS025.DAT:7:3": {
+      "speaker": "npc",
+      "tone_register": "casual, curioso",
+      "intent": "Responder sobre dono do barco e sugerir o pub",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Hein? Quer saber de quem e[01]aquele barco?[02]Nao sei, mas quem for o[01]dono provavelmente ta[01]no boteco.\""
+    },
+    "AREAS025.DAT:7:4": {
+      "speaker": "npc",
+      "tone_register": "preocupado, incerto",
+      "intent": "Comentar sobre o Checkpoint fechado e dificuldade de sair da cidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi dizer que o Posto[01]de Controle foi fechado[02]e que ta dificil chegar[01]aqui...[02]Sera que vamos conseguir[01]sair sem problema...?\""
+    },
+    "AREAS025.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "casual, informativo",
+      "intent": "Comentar que e possivel pescar no mar local ao contrario do Mar de Lama",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Nao da pra pescar no Mar[01]de Lama, mas aqui da,[01]sabia!\""
+    },
+    "AREAS025.DAT:7:6": {
+      "speaker": "npc",
+      "tone_register": "casual, admirado",
+      "intent": "Comentar que o oceano chega ate o continente ocidental",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Dizem que esse oceano[01]se estende ate o[01]continente Ocidental.\""
+    },
+    "AREAS025.DAT:7:8": {
+      "speaker": "npc",
+      "tone_register": "casual, informativo",
+      "intent": "Explicar que os homens da cidade estao em seus navios",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"A maioria dos homens[01]daqui esta nos seus[01]navios agora.\""
+    },
+    "AREAS025.DAT:7:9": {
+      "speaker": "npc",
+      "tone_register": "maravilhado, curioso",
+      "intent": "Comentar sobre barcos que navegam na areia e comparar com os locais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi dizer que em alguns[01]lugares tem barcos que[01]navegam na areia![02]Queria ver um desses algum[01]dia -- os daqui so navegam[01]na agua.\""
+    },
+    "AREAS025.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "surpreso, indignado",
+      "intent": "Reagir com espanto ao pedido de passagem no navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"O QUEEE!?[02]Voce quer uma carona[01]no nosso navio?\""
+    },
+    "AREAS025.DAT:7:13": {
+      "speaker": "npc",
+      "tone_register": "casual, prestativo",
+      "intent": "Orientar quem procura contratar um navio a falar com os marinheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Quer contratar um navio,[01]e?[02]Entao fale com aqueles[01]marinheiros ali.\""
+    },
+    "AREAS025.DAT:7:14": {
+      "speaker": "npc",
+      "tone_register": "acolhedor",
+      "intent": "Dar boas-vindas e convidar a entrar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Bem-vindo. Entre![02][19]"
+    },
+    "AREAS025.DAT:7:15": {
+      "speaker": "npc",
+      "tone_register": "casual, desconcertado",
+      "intent": "Informar que o dinheiro do jogador nao e suficiente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ops -- parece que seu[01]dinheiro ta um pouco[01]curto.\""
+    },
+    "AREAS025.DAT:7:16": {
+      "speaker": "npc",
+      "tone_register": "comercial, convidativo",
+      "intent": "Oferecer itens raros e abrir menu de loja",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Itens raros de alem-mar![01]Quer dar uma olhada?\"[12][84][0C][94]Comprar[01]Vender[01]Trocar[01]Deixa pra la"
+    },
+    "AREAS025.DAT:7:17": {
+      "speaker": "npc",
+      "tone_register": "brusco, territorial",
+      "intent": "Impedir desconhecidos de subirem no navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ei, nao sei quem voce[01]pensa que e,[02]mas nao deixamos qualquer[01]um no nosso navio,[01]ta!\""
+    },
+    "AREAS025.DAT:7:18": {
+      "speaker": "npc",
+      "tone_register": "supersticioso, firme",
+      "intent": "Explicar regra da bencao do Deus do Mar e dispensar os jogadores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Alem disso...[02]Nao podemos levar ninguem[01]que nao tenha a bencao do[02][05][02]Deus do Mar[06] com a gente --[01]da azar![02]Agora sumam daqui!\""
+    },
+    "AREAS025.DAT:7:19": {
+      "speaker": "npc",
+      "tone_register": "explicativo, supersticioso",
+      "intent": "Explicar o costume da bencao antes de navegar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Todo marinheiro recebe[01]a bencao do[02][05][02]Deus do Mar[06][01]antes de zarpar![02]Nao podemos ter ninguem[01]sem essa bencao[01]a bordo, entendeu?\""
+    },
+    "AREAS025.DAT:7:20": {
+      "speaker": "npc",
+      "tone_register": "prestativo, informativo",
+      "intent": "Indicar o caminho para o Fane do Deus do Mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Hein? Procurando o[01]Deus do Mar?[02]Aquela estrada leva[01]ao [05][02]Fane do[01]Deus do Mar[06].\""
+    },
+    "AREAS025.DAT:7:21": {
+      "speaker": "npc",
+      "tone_register": "chocado, incredulo",
+      "intent": "Reagir com espanto ao saber que os jogadores foram ao Fane",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"O QUE!?[02]Voce foi ao Fane do[01]Deus do Mar!?\""
+    },
+    "AREAS025.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "mistico, reverente",
+      "intent": "Interpretar a visita ao Fane como um sinal divino",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Isso deve ser um[01]presagio...[02]Um sinal da vontade do[01]Deus do Mar...\""
+    },
+    "AREAS025.DAT:7:24": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Aceitar levar os jogadores no navio apos o sinal divino",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Tudo bem, quem sou eu[01]pra discutir com o[01]Deus do Mar?[02]Podem vir com a gente[01]no navio se[01]quiserem!\""
+    },
+    "AREAS025.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "surpreso, hesitante",
+      "intent": "Questionar se as mulheres do grupo tambem vao embarcar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Espera![0B] Um momento[01]ai...[02]Nao me diga que essas[01]mocas aqui vao[01]vir tambem?\""
+    },
+    "AREAS025.DAT:7:26": {
+      "speaker": "Ryu",
+      "tone_register": "direto, desafiador",
+      "intent": "Defender as companheiras e questionar o preconceito do marinheiro",
+      "risk_level": "medium",
+      "risk_notes": "Speaker e Ryu mas linha pode ser de outro personagem do grupo; sem indicador claro no source. Assumido Ryu pelo token C4 ausente (83D).",
+      "t": "[0C][06][14][83]D\"Por que nao? Tem algum[01]problema[01]com isso?\""
+    },
+    "AREAS025.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "desconfortavel, firme",
+      "intent": "Confirmar que mulheres nao podem embarcar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"E...tenho sim.[02]Mulher nao pode[01]entrar no nosso navio!\""
+    },
+    "AREAS025.DAT:7:28": {
+      "speaker": "npc",
+      "tone_register": "supersticioso, explicativo",
+      "intent": "Justificar a regra antiga contra mulheres a bordo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"E uma regra antiga[01]de marinheiro -- mulher[01]da azar!\""
+    },
+    "AREAS025.DAT:7:29": {
+      "speaker": "npc",
+      "tone_register": "apologetico, firme",
+      "intent": "Pedir que as mulheres fiquem para tras",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Entao, desculpem, mas[01]vao ter que esperar[01]aqui!\""
+    },
+    "AREAS025.DAT:7:30": {
+      "speaker": "Nina",
+      "tone_register": "formal-medio, determinado, suplicante",
+      "intent": "Nina pede uma chance e argumenta que ja passaram por muita coisa",
+      "risk_level": "medium",
+      "risk_notes": "Nina falando; preservar firmeza e calor caracteristicos.",
+      "t": "[14][C1]@\"Mas...[01]nao tem nada que a[01]gente possa fazer?[02][14][84]EQuero dizer, passamos[01]por muita coisa pra[01]chegar ate aqui.[02]Por pior que seja, tenho[01]certeza que a gente[01]consegue!\""
+    },
+    "AREAS025.DAT:7:31": {
+      "speaker": "npc",
+      "tone_register": "machista, convicto",
+      "intent": "Rejeitar a ideia e listar virtudes masculinas necessarias para navegar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Nem pensar![02]Olha, nao e nada pessoal,[01]mas navegar e coisa[01]de homem![02]Marinheiro precisa ser[01]corajoso, determinado[01]e forte...\""
+    },
+    "AREAS025.DAT:7:32": {
+      "speaker": "unknown",
+      "tone_register": "exclamativo",
+      "intent": "confirmação enfática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][03][14][05][06]\"[0D]Exato![0E][0F][03]\""
+    },
+    "AREAS025.DAT:7:33": {
+      "speaker": "npc",
+      "tone_register": "energico, surpreso, dramatico",
+      "intent": "Rival recorrente reaparece e conta sua historia de como virou marinheiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][06]\"Uhuuu! Haaaaa![01]A gente se encontra de novo![02]Depois que voce me derrotou[01]pela segunda vez,[02]errei o mundo ate[01]chegar aqui,[02]onde me tornei[01]marinheiro!\""
+    },
+    "AREAS025.DAT:7:34": {
+      "speaker": "npc",
+      "tone_register": "bravata, grandiloq",
+      "intent": "Rival declara que marinheiro e coisa de homem de verdade e desafia o grupo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][06]\"Marinheiro e homem de[01]verdade! Nao e pra[01]fraco![02]So um [05][02]homem de verdade[06][01]pode ser marinheiro![02]E agora vou mostrar[01]pra voces[02]o que um homem de[01]verdade faz!\""
+    },
+    "AREAS025.DAT:7:35": {
+      "speaker": "npc",
+      "tone_register": "casual, informativo",
+      "intent": "Informar que o rival apareceu antes e esta limpando o navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Voces sao amigos[01]dele ou algo assim?[02]Ele apareceu aqui[01]faz pouco...[02]A gente deu a ele o[01]servico de limpar o navio.\""
+    },
+    "AREAS025.DAT:7:36": {
+      "speaker": "Ryu",
+      "tone_register": "direto, simples",
+      "intent": "Chamar a atencao de alguem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C4]@\"Ei. Voce ai.\""
+    },
+    "AREAS025.DAT:7:37": {
+      "speaker": "Ryu",
+      "tone_register": "direto, desafiador",
+      "intent": "Propor que derrotar o rival sirva como prova de forca",
+      "risk_level": "medium",
+      "risk_notes": "Ryu; manter registro simples e direto.",
+      "t": "[0C][06][14][C4]@\"Voce estava falando[01]que marinheiro precisa[02]ser forte.[02]Se a gente derrotar ele,[01]isso nao prova[02]que somos fortes[01]o suficiente?\""
+    },
+    "AREAS025.DAT:7:38": {
+      "speaker": "npc",
+      "tone_register": "confuso, hesitante",
+      "intent": "Marinheiro fica sem palavras com a proposta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Hein?[0B] Hmm...[01]Ah...\""
+    },
+    "AREAS025.DAT:7:39": {
+      "speaker": "unknown",
+      "tone_register": "surpresa/dor cômica",
+      "intent": "Reação de susto ou impacto",
+      "risk_level": "medium",
+      "risk_notes": "Interjeição localizada; 'Gack' não existe em PT-BR. 'Ai!' é curto e cabe no budget.",
+      "t": "[0C][03][14][06][06]\"Ai!\""
+    },
+    "AREAS025.DAT:7:40": {
+      "speaker": "Ryu",
+      "tone_register": "calmo, direto, lacônico",
+      "intent": "Pressionar o marinheiro por uma resposta apos a demonstracao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C4]@\"...[0B]...[0B]E ai?\""
+    },
+    "AREAS025.DAT:7:41": {
+      "speaker": "npc",
+      "tone_register": "hesitante, explicativo",
+      "intent": "Marinheiro explica que queria outro tipo de forca e propoe teste nos mastros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Bom...[0B]Nao era bem[01]isso que eu tinha[01]em mente...[02]Estou falando de[01]forca fisica mesmo...[02]Tipo, e se a gente[01]topar com piratas, e[02]voce tiver que lutar[01]no alto dos mastros[01]ou algo assim?[02]Acha que consegue[01]fazer isso?\""
+    },
+    "AREAS025.DAT:7:42": {
+      "speaker": "Nina",
+      "tone_register": "determinado, simples",
+      "intent": "Nina aceita o desafio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Tudo bem. Pode deixar.\""
+    },
+    "AREAS025.DAT:7:43": {
+      "speaker": "npc",
+      "tone_register": "surpreso, cedendo",
+      "intent": "Marinheiro reconhece a forca das mulheres apos o desafio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Bom...[0B]...[02]OK, OK, ponto pra voces.[01]Da pra ver que sao[01]fortes sim.\""
+    },
+    "AREAS025.DAT:7:44": {
+      "speaker": "npc",
+      "tone_register": "relutante, preocupado",
+      "intent": "Marinheiro ainda duvida que elas aguentem o mar aberto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Mas ainda acho que[01]voces nao aguentam[01]o mar aberto.[02]Quero dizer, voces nao[01]sabem como[01]e...\""
+    },
+    "AREAS025.DAT:7:45": {
+      "speaker": "npc",
+      "tone_register": "desafiador, impaciente",
+      "intent": "Personagem do grupo exige que o marinheiro mostre o desafio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][87]E\"Entao mostra! A gente[01]faz qualquer coisa![02]Pode falar -- o que for,[01]a gente da conta!\""
+    },
+    "AREAS025.DAT:7:46": {
+      "speaker": "npc",
+      "tone_register": "cedendo, pensativo",
+      "intent": "Marinheiro concorda em mostrar como e a vida no navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Bom...Se voces insistem...[02]Tenho um jeito de mostrar[01]como e a vida[01]num navio...\""
+    },
+    "AREAS025.DAT:7:47": {
+      "speaker": "npc",
+      "tone_register": "avisando, dramatico",
+      "intent": "Marinheiro avisa que nao vai ser agradavel",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Mas fica o aviso:[01]nao e nada bonito![02]Nao digam que eu[01]nao avisei!\""
+    },
+    "AREAS025.DAT:7:48": {
+      "speaker": "npc",
+      "tone_register": "desafiador, ironico",
+      "intent": "Marinheiro convida a voltar quando estiverem prontos e sugere desistir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Quando acharem que[01]estao prontas, voltem[01]falar comigo.[02]Se fosse eu, desistiria[01]agora mesmo...\""
+    },
+    "AREAS025.DAT:7:49": {
+      "speaker": "npc",
+      "tone_register": "incredulo, desafiador",
+      "intent": "Marinheiro questiona se ainda querem passar pelo teste",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"O que? Ainda querem[01]passar por isso?\"[12]"
+    },
+    "AREAS025.DAT:7:50": {
+      "speaker": "npc",
+      "tone_register": "ironico, aconselhando",
+      "intent": "Marinheiro repete o conselho de desistir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Como disse, eu desistiria[01]agora se fosse[01]voces...\""
+    },
+    "AREAS025.DAT:7:52": {
+      "speaker": "npc",
+      "tone_register": "casual, admirado/ironico",
+      "intent": "NPC comenta que nao tentaria entrar naquele navio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Com certeza nao vou ficar[01]tentando entrar num[01]navio desses!\""
+    },
+    "AREAS025.DAT:7:53": {
+      "speaker": "npc",
+      "tone_register": "infantil, animado",
+      "intent": "Crianca diz que quer ser marinheiro quando crescer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Quando eu crescer, quero[01]ser marinheiro!\""
+    },
+    "AREAS025.DAT:7:54": {
+      "speaker": "npc",
+      "tone_register": "reflexivo, casual",
+      "intent": "NPC questiona e reflete sobre a tradicao de proibir mulheres nos navios",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Por que mulher nao pode[01]navegar?[02]Hmm...Boa pergunta. Acho[01]que e so uma tradicao[01]antiga mesmo.\""
+    },
+    "AREAS025.DAT:7:55": {
+      "speaker": "npc",
+      "tone_register": "informativo, casual",
+      "intent": "NPC confirma que ha um teste para quem quer embarcar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Um teste pra embarcar[01]no navio?[02]E sim, eles fazem isso[01]com todo mundo que quer[01]navegar com eles.\""
+    },
+    "AREAS025.DAT:7:56": {
+      "speaker": "npc",
+      "tone_register": "curioso, informativo",
+      "intent": "NPC pergunta se conseguiram convencer os marinheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Entao, conseguiram[01]convencer a deixar[01]vocês embarcarem?\""
+    },
+    "AREAS025.DAT:7:57": {
+      "speaker": "npc",
+      "tone_register": "ironico, nao-surpreso",
+      "intent": "Marinheiro constata que ainda querem continuar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Entao ainda querem[01]passar por isso,[01]e?[02]Achei que seria assim.\""
+    },
+    "AREAS025.DAT:7:58": {
+      "speaker": "npc",
+      "tone_register": "direto, breve",
+      "intent": "Marinheiro manda seguir ele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Muito bem...[02]Venham comigo.\""
+    },
+    "AREAS025.DAT:7:59": {
+      "speaker": "Ryu",
+      "tone_register": "simples, preocupado",
+      "intent": "Ryu se pergunta como estao seus companheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"Sera que [04][01][01]e [04][04] estao[01]bem...\""
+    },
+    "AREAS025.DAT:7:60": {
+      "speaker": "Ryu",
+      "tone_register": "simples, proativo",
+      "intent": "Ryu sugere ir ver como estao os companheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"A gente devia ir[01]ver como eles estao...\""
+    },
+    "AREAS025.DAT:7:61": {
+      "speaker": "npc",
+      "tone_register": "curioso, tagarela",
+      "intent": "NPC comenta sobre barulhos estranhos vindos do navio a noite",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi uns barulhos estranhos[01]vindo daquele[02]navio la de noite...[02]O que sera que eles[01]estavam fazendo la?\""
+    },
+    "AREAS025.DAT:7:62": {
+      "speaker": "npc",
+      "tone_register": "contemplativo, informativo",
+      "intent": "NPC descreve o mar e onde ele encontra o Mar de Lama",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Esse mar se estende[01]em todas as direcoes.[02]La nas bordas, ele[01]vira o Mar de Lama.\""
+    },
+    "AREAS025.DAT:7:63": {
+      "speaker": "npc",
+      "tone_register": "tagarela, informativo",
+      "intent": "NPC apresenta tres irmaos marinheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Conhece aqueles tres caras[01]que estavam bebendo aqui[01]outro dia?[02]Os nomes sao Zig, Kryrik[01]e Iggy. Sao irmaos[01]e todos marinheiros.\""
+    },
+    "AREAS025.DAT:7:64": {
+      "speaker": "npc",
+      "tone_register": "surpreso, admirado",
+      "intent": "Marinheiro reconhece que as mulheres passaram a noite toda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Essas mocas sao mais[01]duras do que eu[01]pensava![02]Aguentaram a noite[01]toda.\""
+    },
+    "AREAS025.DAT:7:66": {
+      "speaker": "Ryu",
+      "tone_register": "simples, preocupado, irônico leve",
+      "intent": "Ryu comenta que o Capitao esta palido e pergunta se esta bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C2]@\"Voce ta um pouco[01]palido, Capitao.[02]Esta bem?\""
+    },
+    "AREAS025.DAT:7:67": {
+      "speaker": "npc",
+      "tone_register": "orgulhoso, nervoso",
+      "intent": "Capitao insiste que esta bem apesar de claramente nao estar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][88][07]\"Eu...[0B]Estou otimo!\""
+    },
+    "AREAS025.DAT:7:68": {
+      "speaker": "npc",
+      "tone_register": "impressionado, elogioso",
+      "intent": "Marinheiro elogia a coragem e forca das mulheres",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][82]B\"Bom, tenho que admitir[01]que fiquei impressionado.[02]Sao fortes...[01]Sao corajosas...[02]Voces sao demais, meninas!\""
+    },
+    "AREAS025.DAT:7:70": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota e que esperava que desistissem no porao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:71": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:72": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:73": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:74": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:75": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:76": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:77": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:78": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:79": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo",
+      "intent": "Marinheiro admite derrota (linha duplicada)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta bom, ta bom --[01]voces ganharam.[02]Achei que iam desistir[01]se passassem a[02]noite no porao, mas...\""
+    },
+    "AREAS025.DAT:7:80": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, surpresa",
+      "intent": "reação de incredulidade/pedido de confirmação",
+      "risk_level": "medium",
+      "risk_notes": "Budget apertado; cortado para forma mínima natural.",
+      "t": "[0C][06][14][C1]@\"Quer dizer...?\""
+    },
+    "AREAS025.DAT:7:81": {
+      "speaker": "npc",
+      "tone_register": "relutante, cedendo definitivamente",
+      "intent": "Marinheiro aceita as mulheres a bordo apesar da tradicao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"E...Se voces sao[01]assim tao decididas,[02]nao tem como dizer nao --[01]tradicao ou[01]nao tradicao!\""
+    },
+    "AREAS025.DAT:7:82": {
+      "speaker": "npc",
+      "tone_register": "pratico, amigavel",
+      "intent": "Marinheiro diz para avisar quando estiverem prontas para zarpar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Me avisem quando[01]estiverem prontos[01]pra partir.\""
+    },
+    "AREAS025.DAT:7:83": {
+      "speaker": "system",
+      "tone_register": "neutro, UI",
+      "intent": "Confirmar se o jogador está pronto para prosseguir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Pronto?\"[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAS025.DAT:7:84": {
+      "speaker": "npc",
+      "tone_register": "casual, aguardando",
+      "intent": "Marinheiro diz para voltar quando estiverem prontos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Tudo bem, voltem[01]quando estiverem prontos.\""
+    },
+    "AREAS025.DAT:7:87": {
+      "speaker": "npc",
+      "tone_register": "animado, ordenando",
+      "intent": "Marinheiro anuncia a partida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Muito bem,[01]vamos la!\""
+    },
+    "AREAS025.DAT:7:88": {
+      "speaker": "npc",
+      "tone_register": "autoritario, animado",
+      "intent": "Capitao ordena que os marujos içem as velas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Iggy! Kryrik![01]Içam as velas!\""
+    },
+    "AREAS025.DAT:7:89": {
+      "speaker": "npc",
+      "tone_register": "zombeteiro, triunfante",
+      "intent": "Marinheiro zomba da mulher dizendo que ela esta perdendo tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ta vendo?[02]Desiste, menina![01]Voce so ta[01]perdendo tempo!\""
+    },
+    "AREAS025.DAT:7:90": {
+      "speaker": "npc",
+      "tone_register": "satisfeito, didatico",
+      "intent": "Marinheiro acha que deu uma licao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Pronto! Isso vai[01]ensinar uma licao a ela.\""
+    },
+    "AREAS025.DAT:7:91": {
+      "speaker": "npc",
+      "tone_register": "surpreso, desafiador",
+      "intent": "Marinheiro pergunta se quer tentar de novo, com menu sim/nao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"O que? Quer[01]tentar de novo?\"[12][02][0C][82]Sim[01]Nao"
+    },
+    "AREAS025.DAT:7:92": {
+      "speaker": "npc",
+      "tone_register": "zombeteiro, aconselhando",
+      "intent": "Marinheiro acha que ela devia desistir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Era o que eu[01]pensava...Desiste,[01]menina!\""
+    },
+    "AREAS025.DAT:7:93": {
+      "speaker": "npc",
+      "tone_register": "resignado, ordenando",
+      "intent": "Marinheiro cede e ordena que Iggy se prepare",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Tudo bem, ja que[01]insiste...Iggy, se[01]prepare!\""
+    },
+    "AREAS025.DAT:7:96": {
+      "speaker": "npc",
+      "tone_register": "direto, curioso",
+      "intent": "Marinheiro pergunta se querem usar o navio, com menu sim/nao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"O que? Quer[01]usar o navio?\"[12][03][0C][82]Sim[01]Nao"
+    },
+    "AREAS025.DAT:7:99": {
+      "speaker": "npc",
+      "tone_register": "nostalgico, admirado",
+      "intent": "NPC comenta que o navio e velho mas bonito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"E velho, mas e bonito[01]assim mesmo, nao e?\""
+    },
+    "AREAS025.DAT:7:101": {
+      "speaker": "npc",
+      "tone_register": "educado, formal",
+      "intent": "NPC pede para usar o balcao para comprar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Desculpe, mas se quiser[01]comprar algo, use[01]o balcao, por favor.\""
+    },
+    "AREAS025.DAT:7:102": {
+      "speaker": "system",
+      "tone_register": "sistema, urgente",
+      "intent": "Mensagem de sistema pedindo ao jogador para verificar os companheiros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Va ver como [04][01] e [04][04] estao!"
+    },
+    "AREAS025.DAT:7:138": {
+      "speaker": "system",
+      "tone_register": "UI, item",
+      "intent": "Nome de item",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Megafone"
+    },
+    "AREAS025.DAT:7:139": {
+      "speaker": "system",
+      "tone_register": "UI, item",
+      "intent": "Nome de item",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Megafone"
+    },
+    "AREAS025.DAT:7:142": {
+      "speaker": "system",
+      "tone_register": "UI, habilidade",
+      "intent": "Nome de habilidade/ataque",
+      "risk_level": "medium",
+      "risk_notes": "Disembowel = estripar/eviscerar; nome de habilidade de combate. Optado por 'Eviscerar' por ser conciso e caber no budget de 15 bytes transliterado.",
+      "t": "Eviscerar"
+    },
+    "AREAS025.DAT:7:140": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "SpiritBlast"
+    }
+  },
+  "_meta": {
+    "model_id": "claude-sonnet-4-6",
+    "doctrine_hash": "2d9572e8185857ad",
+    "skills_revision": "18e77f41f0f4"
+  }
+}

@@ -1,0 +1,460 @@
+{
+  "lines": {
+    "AREAS019.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "neutral-commercial",
+      "intent": "inform-customer-shortage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpe, mas parece que voce esta um pouco curto de zenny."
+    },
+    "AREAS019.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "neutral-casual",
+      "intent": "self-identify",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora estou apenas um vendedor ambulante,[02]"
+    },
+    "AREAS019.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "neutral-reflective",
+      "intent": "express-concern",
+      "risk_level": "high",
+      "risk_notes": "Primeira mencao da Princesa em busca; estrutura de frase complexa com [02]; back-translation recomendada",
+      "t": "Ouvi dizer que a Princesa [04][01] partiu em busca de sua irma desaparecida...[02] O rei deve estar desesperado com ambas."
+    },
+    "AREAS019.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "casual-earnest",
+      "intent": "relate-empathetically",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se minha irma desaparecesse, eu tambem sairia procurá-la!"
+    },
+    "AREAS019.DAT:8:6": {
+      "speaker": "Nina",
+      "tone_register": "formal-warm-assuring",
+      "intent": "reassure-companion",
+      "risk_level": "high",
+      "risk_notes": "Voz Nina: tom formal mas caloroso, lideranca discreta; preservar firmeza. Critical voice.",
+      "t": "Nao se preocupe—nao vou desaparecer em lugar nenhum!"
+    },
+    "AREAS019.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "neutral-reflective",
+      "intent": "observe-setting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta e uma cidade pacifica... Ainda assim, ate aqui ha rumores de guerra."
+    },
+    "AREAS019.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual-nostalgic",
+      "intent": "compliment-reminisce",
+      "risk_level": "low",
+      "risk_notes": "[02] marca quebra de pagina; preservar exato",
+      "t": "As mulheres de Wyndia sao muito bonitas, nao sao?[02] Minha esposa era bonita naquele tempo tambem."
+    },
+    "AREAS019.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "casual-lighthearted",
+      "intent": "explain-preventive-action",
+      "risk_level": "medium",
+      "risk_notes": "Semantica comedia; comprimento elevado; [02] marca transicao; verificar byte_budget transliterado",
+      "t": "Para impedir que o jovem senhor engordasse ainda mais,[02] escondi todos os talheres! Agora ele nao consegue comer nada!"
+    },
+    "AREAS019.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "system-onomatopoeia",
+      "intent": "vocalize-sound-effect",
+      "risk_level": "low",
+      "risk_notes": "Onomatopeia localizada; [0A] preservado",
+      "t": "[0A][01] \"squeak\""
+    },
+    "AREAS019.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Onomatopeia Yawn localizada; tom imitativo/dramatico",
+      "t": "Bocejo...[01] Quero comer—agora!"
+    },
+    "AREAS019.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal-sympathetic",
+      "intent": "console-reassure",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; estrutura de reconforto/paciencia; tom formal servil; back-translation para validar sintaxe",
+      "t": "Compreendo como o senhor deve se sentir...[02] Por favor, seja paciente um pouco mais. Tenho certeza de que encontraremos os talheres em breve!"
+    },
+    "AREAS019.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "melancholic-frantic",
+      "intent": "lament-loss",
+      "risk_level": "high",
+      "risk_notes": "Linhas truncadas/incompletas no source ([09]M sem fechamento); tokenizacao de item UI quebrada; manter estrutura mas marcar incerteza para QA in-game",
+      "t": "Perdemos tudo...[02] Nossos [09][17][01], [09]O[03]s,[01][09]E[01]s, [09]6[03]...[01] ate nosso [09]M"
+    },
+    "AREAS019.DAT:8:15": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-item",
+      "risk_level": "low",
+      "risk_notes": "Texto UI descritivo; [09][17][01] token preservado (item ID)",
+      "t": "E um prato com macarrao.[01] Para come-lo, voce precisa de [09][17][01]."
+    },
+    "AREAS019.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-item",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; [09]6[03] preservado",
+      "t": "E um prato de frios.[01] Para come-los, voce precisa de um [09]6[03]."
+    },
+    "AREAS019.DAT:8:17": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-item",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; [09]E[01] preservado",
+      "t": "E um prato de espaguete.[01] Para come-lo, voce precisa de um [09]E[01]."
+    },
+    "AREAS019.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-item",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; [09]O[03] preservado",
+      "t": "E um prato com pudim.[01] Para come-lo, voce precisa de um [09]O[03]."
+    },
+    "AREAS019.DAT:8:19": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-item",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; [09]M preservado (item ID)",
+      "t": "E um refrigerante de creme. Para bebe-lo, precisa de um [09]M"
+    },
+    "AREAS019.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "formal-proud",
+      "intent": "express-child-behavior",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra de pagina; tom paternal/orgulho em educacao; verificar concisao para byte_budget",
+      "t": "Ensinei a meu filho a ter boas maneiras.[02] Ele nao toca sua comida com as maos—nunca!"
+    },
+    "AREAS019.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "neutral-relieved",
+      "intent": "report-return",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; mencao da Princesa voltando (evento narrativo importante); spoiler-adjacent se há reveal_timing",
+      "t": "Ouvi que a Princesa [04][01] voltou.[02] Os reis devem estar aliviados agora que ela esta em casa novamente!"
+    },
+    "AREAS019.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "casual-hopeful",
+      "intent": "express-parallel-wish",
+      "risk_level": "low",
+      "risk_notes": "Eco da linha 8:5 (irma); tom simples/esperancoso",
+      "t": "Eu ficaria feliz se minha irma tambem voltasse!"
+    },
+    "AREAS019.DAT:8:23": {
+      "speaker": "Nina",
+      "tone_register": "formal-amused-gentle",
+      "intent": "tease-reassure",
+      "risk_level": "high",
+      "risk_notes": "Voz Nina; tom de brincadeira leve com firmeza; critical voice; preservar warmth + leadership",
+      "t": "Que voce esta falando, menino tolo?[02] Nao fui para lugar nenhum!"
+    },
+    "AREAS019.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "neutral-concerned",
+      "intent": "report-troop-sighting",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; mencao de tropas Ludian (lore/conflito); verificar coerencia com mundo",
+      "t": "Vi algumas tropas Ludian se movimentando por aqui ultimamente...[02] Entao aqueles rumores eram verdadeiros..."
+    },
+    "AREAS019.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "neutral-hopeful",
+      "intent": "express-doubt",
+      "risk_level": "low",
+      "risk_notes": "Breve reflexao; tom de alivio incerto",
+      "t": "Talvez os rumores nao fossem verdadeiros afinal..."
+    },
+    "AREAS019.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "neutral-concerned",
+      "intent": "report-princess-search",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; segunda mencao de Princesa buscando irma (narrativa crescente); hope-tinged concern",
+      "t": "Dizem que a Princesa [04][01] [01] partiu em busca de sua irma novamente...[02] Espero muito que as encontrem desta vez!"
+    },
+    "AREAS019.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "casual-determined",
+      "intent": "self-state-intention",
+      "risk_level": "low",
+      "risk_notes": "Paralelo infantil a busca da Princesa; tom simples/determinado",
+      "t": "Vou procurar minha irma novamente tambem!"
+    },
+    "AREAS019.DAT:8:28": {
+      "speaker": "Nina",
+      "tone_register": "formal-exasperated",
+      "intent": "reiterate-assurance",
+      "risk_level": "high",
+      "risk_notes": "Voz Nina; tom firme mas levemente exasperado com repetir; preservar lideranca/paciencia",
+      "t": "Quantas vezes preciso te dizer? Nao vou em lugar nenhum!"
+    },
+    "AREAS019.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "casual-rueful",
+      "intent": "lament-wasted-effort",
+      "risk_level": "low",
+      "risk_notes": "Tom comico/frustrado; comprimento curto",
+      "t": "E depois que me dei ao trabalho de esconder os talheres!"
+    },
+    "AREAS019.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "neutral-surprised",
+      "intent": "question-item-identity",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; incompleto/truncado no source ([16] sem clausula); item query ambiguo; marcar para QA",
+      "t": "Espera...O que voce esta carregando ali...E isso um [02][16]"
+    },
+    "AREAS019.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "formal-grateful",
+      "intent": "make-request",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; tom formal/gentil; request estruturado; preservar polidez",
+      "t": "Entendo...[02] Bem, caso encontre mais pecas de talher, por favor traga-as aqui."
+    },
+    "AREAS019.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "formal-grateful",
+      "intent": "make-request",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; repeticao de 8:33; tom formal/gentil",
+      "t": "Entendo...[02] Bem, caso encontre mais pecas de talher, por favor traga-as aqui."
+    },
+    "AREAS019.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "formal-grateful",
+      "intent": "make-request",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; repeticao de 8:33; tom formal/gentil",
+      "t": "Entendo...[02] Bem, caso encontre mais pecas de talher, por favor traga-as aqui."
+    },
+    "AREAS019.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "formal-grateful",
+      "intent": "make-request",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; repeticao de 8:33; tom formal/gentil",
+      "t": "Entendo...[02] Bem, caso encontre mais pecas de talher, por favor traga-as aqui."
+    },
+    "AREAS019.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "formal-grateful",
+      "intent": "make-request",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca transicao; repeticao de 8:33; tom formal/gentil",
+      "t": "Entendo...[02] Bem, caso encontre mais pecas de talher, por favor traga-as aqui."
+    },
+    "AREAS019.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "formal-joyful",
+      "intent": "express-gratitude-joy",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra; tom de alivio/alegria paternal; preservar entusiasmo",
+      "t": "Muito obrigado![02] Agora o jovem senhor conseguira comer novamente!"
+    },
+    "AREAS019.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:12; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "casual-whimsical",
+      "intent": "express-hunger",
+      "risk_level": "low",
+      "risk_notes": "Repeticao; onomatopeia Yawn; tom dramatico infantil",
+      "t": "Bocejo...[01] E isto? Quero comer mais!"
+    },
+    "AREAS019.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "neutral-apologetic",
+      "intent": "state-limitation",
+      "risk_level": "low",
+      "risk_notes": "Tom desculpador/resignado; brevidade preservada",
+      "t": "Nao conseguimos fazer nada mais—ficamos completamente sem ingredientes!"
+    },
+    "AREAS019.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "formal-sympathetic",
+      "intent": "console-reassure-patience",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; eco de 8:13; tom formal servil; estrutura reconforto/paciencia; back-translation recomendada",
+      "t": "Compreendo como o senhor deve se sentir...[02] Por favor, seja paciente um pouco mais. Tenho certeza de que sua proxima refeicao estara pronta em breve!"
+    },
+    "AREAS019.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "neutral-mournful",
+      "intent": "express-regret",
+      "risk_level": "low",
+      "risk_notes": "Breve exclamacao; tom resignado",
+      "t": "Que infelicidade!"
+    },
+    "AREAS019.DAT:8:49": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; glossario 'Using Silverware' → 'Usar Talheres' (traduzir); preservar titulo em italico/quotes",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:50": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:51": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:52": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:53": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:54": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:55": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Repeticao de 8:49; texto UI",
+      "t": "Ha um livro intitulado \"Usar Talheres.\""
+    },
+    "AREAS019.DAT:8:56": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; glossario 'Table Manners' → 'Table Manners' (manter_original); titulo bilinear",
+      "t": "Ha um livro intitulado \"Table Manners for Children.\""
+    },
+    "AREAS019.DAT:8:57": {
+      "speaker": "system",
+      "tone_register": "neutral-descriptive",
+      "intent": "describe-book",
+      "risk_level": "low",
+      "risk_notes": "Texto UI; glossario 'Diet Hard' → 'Diet Hard' (manter_original); breve",
+      "t": "Ha um livro intitulado \"Diet Hard 3.\""
+    },
+    "AREAS019.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "casual-resigned",
+      "intent": "joke-about-wife",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra de pagina; tom humoristico/resignado; idiom 'gossiping' localizado naturalmente",
+      "t": "Procurando minha esposa?[02] Bem, ela esta provavelmente ali por perto fofocando com as amigas dela novamente!"
+    },
+    "AREAS019.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "casual-resigned",
+      "intent": "joke-about-wife",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra de pagina; repeticao de 8:58; tom humoristico/resignado",
+      "t": "Procurando minha esposa?[02] Bem, ela esta provavelmente ali por perto fofocando com as amigas dela novamente!"
+    },
+    "AREAS019.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "formal-concerned",
+      "intent": "express-worry-about-royalty",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; mencao dual de Princesas (lore importante); ton formal preocupado; back-translation para validar",
+      "t": "So desejo que ambas as Princesas voltem logo...[02] Seu pai, o Rei, esta tao preocupado com elas!"
+    },
+    "AREAS019.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "casual-surprised",
+      "intent": "recognize-accomplishment",
+      "risk_level": "high",
+      "risk_notes": "[14][02][02] triplo token critico (formatacao de dialogo + duplo page-break); dialectal 'as' (contraction of 'has'); preservar exato",
+      "t": "[14][02][02] \"Parece que alguem me venceu!\""
+    },
+    "AREAS019.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "formal-distressed",
+      "intent": "ask-for-help",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de pagina; procura por sibling (lore narrativo); estrutura pergunta complexa; tom formal desesperado; back-translation recomendada",
+      "t": "Nao viu meu irmao mais novo em lugar nenhum, viu?[02] Precisava fazer compras, e quando voltei, ele tinha desaparecido!"
+    }
+  }
+}

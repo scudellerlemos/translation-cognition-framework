@@ -1,0 +1,2284 @@
+{
+  "lines": {
+    "AREAD075.DAT:12:0": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que a linha ficou presa no fundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A linha prendeu no fundo!"
+    },
+    "AREAD075.DAT:12:1": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que a linha ficou presa no fundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A linha prendeu no fundo!"
+    },
+    "AREAD075.DAT:12:2": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que o peixe está se debatendo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O peixe esta se debatendo!"
+    },
+    "AREAD075.DAT:12:3": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que a linha arrebentou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A linha arrebentou!"
+    },
+    "AREAD075.DAT:12:4": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que o peixe fugiu com a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O peixe fugiu com a isca!"
+    },
+    "AREAD075.DAT:12:5": {
+      "speaker": "system",
+      "tone_register": "informativo",
+      "intent": "Avisar que o peixe se acalmou",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O peixe se acalmou."
+    },
+    "AREAD075.DAT:12:6": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que o lance foi longe demais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce lancou longe demais!"
+    },
+    "AREAD075.DAT:12:7": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar falta de equipamento de pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce nao tem o equipamento[01]necessario para pescar!"
+    },
+    "AREAD075.DAT:12:8": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar falta de equipamento de pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce nao tem o equipamento[01]necessario para pescar!"
+    },
+    "AREAD075.DAT:12:9": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar falta de equipamento de pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce nao tem o equipamento[01]necessario para pescar!"
+    },
+    "AREAD075.DAT:12:10": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar inventário cheio, impossível guardar peixe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Itens demais no inventario--[01]voce nao conseguira guardar[01]nenhum peixe capturado."
+    },
+    "AREAD075.DAT:12:11": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar inventário cheio, soltar peixe atual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Itens demais no inventario--[01]voce precisa soltar[01]este peixe."
+    },
+    "AREAD075.DAT:12:12": {
+      "speaker": "system",
+      "tone_register": "instrucional",
+      "intent": "Pedir ao jogador que escolha vara e isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Escolha uma vara e uma[01]isca para usar."
+    },
+    "AREAD075.DAT:12:13": {
+      "speaker": "system",
+      "tone_register": "sistema",
+      "intent": "Sem dados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "NO DATA"
+    },
+    "AREAD075.DAT:12:20": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Equipar vara e isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Equipar vara e isca."
+    },
+    "AREAD075.DAT:12:21": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Ver dados dos peixes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ver dados dos peixes."
+    },
+    "AREAD075.DAT:12:22": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Aprender a pescar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aprender a pescar."
+    },
+    "AREAD075.DAT:12:23": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Dicas para pescar melhor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dicas para pescar melhor."
+    },
+    "AREAD075.DAT:12:24": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar opcoes do jogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar opcoes do jogo."
+    },
+    "AREAD075.DAT:12:25": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Parar de pescar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parar de pescar."
+    },
+    "AREAD075.DAT:12:53": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar configuracoes do jogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar configuracoes do jogo"
+    },
+    "AREAD075.DAT:12:54": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar configuracoes do controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar configuracoes do controle."
+    },
+    "AREAD075.DAT:12:55": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Ajustar resolucao da tela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ajustar resolucao da tela."
+    },
+    "AREAD075.DAT:12:56": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Restaurar configuracoes padrao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Restaurar todas as[01]configuracoes padrao."
+    },
+    "AREAD075.DAT:12:57": {
+      "speaker": "system",
+      "tone_register": "UI/confirmacao",
+      "intent": "Confirmar restauracao de configuracoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deseja restaurar todas as[01]configuracoes para o padrao?"
+    },
+    "AREAD075.DAT:12:58": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Ativar/desativar vibracao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ativar/desativar vibracao.[01](Apenas para controle c/ força.)"
+    },
+    "AREAD075.DAT:12:59": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Explicar modos de corrida/caminhada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Manual=Correr, Auto=Andar ao[01]pressionar o botao de corrida."
+    },
+    "AREAD075.DAT:12:60": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar direcao de rotacao da camera",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar direcao de rotacao[01]da camera."
+    },
+    "AREAD075.DAT:12:61": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Mover na diagonal com os botoes direcionais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo e Dir./Esq. para[01]mover na diagonal."
+    },
+    "AREAD075.DAT:12:62": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar velocidade de exibicao de mensagens",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar velocidade das mensagens."
+    },
+    "AREAD075.DAT:12:63": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar configuracoes de som",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar configuracoes de som."
+    },
+    "AREAD075.DAT:12:64": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar volume da musica de fundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar volume da musica de fundo."
+    },
+    "AREAD075.DAT:12:65": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Alterar volume dos efeitos sonoros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alterar volume dos efeitos de som."
+    },
+    "AREAD075.DAT:12:66": {
+      "speaker": "system",
+      "tone_register": "UI/confirmacao",
+      "intent": "Confirmar restauracao das opcoes padrao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Opcoes restauradas para[01]o padrao."
+    },
+    "AREAD075.DAT:12:67": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Alterar classificacao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mudar Classe"
+    },
+    "AREAD075.DAT:12:69": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Botao de acao/cancelar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acao/Cancelar"
+    },
+    "AREAD075.DAT:12:70": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Girar camera para a esquerda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Girar Camera Esq."
+    },
+    "AREAD075.DAT:12:71": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Botao START pausa o jogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Botao START Pausa"
+    },
+    "AREAD075.DAT:12:72": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Botao SELECT exibe ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Botao SELECT Ajuda"
+    },
+    "AREAD075.DAT:12:73": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de configuracao de teclas/controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tecla/Controle Cima/Baixo:Selecionar[01]Enter:OK Esc:Cancelar"
+    },
+    "AREAD075.DAT:12:77": {
+      "speaker": "system",
+      "tone_register": "informativo/alerta",
+      "intent": "Avisar que a linha ficou presa no fundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A linha prendeu no fundo!"
+    },
+    "AREAD075.DAT:12:79": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Girar camera para a direita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Girar Camera Dir."
+    },
+    "AREAD075.DAT:12:80": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Falar/Confirmar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Falar/Confirmar"
+    },
+    "AREAD075.DAT:12:87": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Resolucao de tela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Resolucao"
+    },
+    "AREAD075.DAT:12:89": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Ajuste de tela com instrucoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ajuste de tela[01]~: Confirmar [7F]: Sair"
+    },
+    "AREAD075.DAT:12:90": {
+      "speaker": "system",
+      "tone_register": "UI neutro",
+      "intent": "Prompt de confirmação sim/não",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][8A][12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAD075.DAT:12:91": {
+      "speaker": "system",
+      "tone_register": "UI neutro",
+      "intent": "Prompt de confirmação sim/não",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][88][12][82][0C][82]Sim[01]Nao"
+    },
+    "AREAD075.DAT:12:92": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Equipar uma vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Equipar vara."
+    },
+    "AREAD075.DAT:12:93": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Equipar isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Equipar isca."
+    },
+    "AREAD075.DAT:12:94": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Escolher vara para equipar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Escolha uma vara para equipar."
+    },
+    "AREAD075.DAT:12:95": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Escolher isca para equipar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Escolha uma isca para equipar."
+    },
+    "AREAD075.DAT:12:96": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de navegacao na tela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]~: Confirmar [7F]: Sair da tela[01][81]: Sair de qualquer tela"
+    },
+    "AREAD075.DAT:12:97": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de navegacao na tela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]~: Confirmar [7F]: Sair da tela[01][81]: Sair de qualquer tela"
+    },
+    "AREAD075.DAT:12:98": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de navegacao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]~: Confirmar[01][7F]: Fechar tela"
+    },
+    "AREAD075.DAT:12:99": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de selecao de opcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]Dir./Esq.: Alterar opcao[01][80]: Cancelar"
+    },
+    "AREAD075.DAT:12:100": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de selecao de opcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]ENTER: Confirmar[01]ESC: Cancelar"
+    },
+    "AREAD075.DAT:12:101": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de alteracao de opcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dir./Esq.: Alterar opcao[01][01]~: Confirmar [7F]: Sair"
+    },
+    "AREAD075.DAT:12:102": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Para iniciantes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para Iniciantes"
+    },
+    "AREAD075.DAT:12:103": {
+      "speaker": "system",
+      "tone_register": "descritivo/tutorial",
+      "intent": "Descrever isca fácil de usar mas frágil, nível de força 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Facil de usar, mas quebra facilmente. Nivel de Forca: 1"
+    },
+    "AREAD075.DAT:12:104": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: vara de bambu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vara de bambu"
+    },
+    "AREAD075.DAT:12:105": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de vara de bambu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom alcance, mas dificil[01]de controlar.[01]Nivel de Forca: 2"
+    },
+    "AREAD075.DAT:12:106": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: vara sofisticada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vara chique"
+    },
+    "AREAD075.DAT:12:107": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de vara chique",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom equilibrio,[01]facil de controlar.[01]Nivel de Forca: 2"
+    },
+    "AREAD075.DAT:12:108": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao curta: bom alcance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom alcance"
+    },
+    "AREAD075.DAT:12:109": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de vara poderosa de longo alcance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vara poderosa[01]com longo alcance.[01]Nivel de Forca: MAX"
+    },
+    "AREAD075.DAT:12:110": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: super vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Super vara"
+    },
+    "AREAD075.DAT:12:111": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de vara artesanal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vara artesanal;[01]bom equilibrio.[01]Nivel de Forca: 3"
+    },
+    "AREAD075.DAT:12:112": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: vara suprema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vara Suprema"
+    },
+    "AREAD075.DAT:12:113": {
+      "speaker": "system",
+      "tone_register": "descritivo/tutorial",
+      "intent": "Descrever isca capaz de pegar qualquer coisa, nível máximo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode ser usada para capturar qualquer coisa. Nivel de Forca: MAX"
+    },
+    "AREAD075.DAT:12:114": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: isca suprema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isca Suprema"
+    },
+    "AREAD075.DAT:12:115": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de isca suprema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nenhum peixe resiste[01]a tentacao[01]desta isca."
+    },
+    "AREAD075.DAT:12:116": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: spinner nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Spinner Nv 1"
+    },
+    "AREAD075.DAT:12:117": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de spinner nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atrai peixes com[01]sua pele prateada.[01]Afunda rapido[01]ao ser recolhida."
+    },
+    "AREAD075.DAT:12:118": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: spinner nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Spinner Nv 2"
+    },
+    "AREAD075.DAT:12:119": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de spinner nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Afunda rapido e[01]sobe devagar.[01]Pele dourada[01]atrai peixes."
+    },
+    "AREAD075.DAT:12:120": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: spinner nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Spinner Nv 3"
+    },
+    "AREAD075.DAT:12:121": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de spinner nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Superficie metalica[01]brilhante atrai[01]humanos e peixes[01]igualmente."
+    },
+    "AREAD075.DAT:12:122": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: winder nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Winder Nv 1"
+    },
+    "AREAD075.DAT:12:123": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de winder nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Raramente prende,[01]ideal para pescar[01]no fundo."
+    },
+    "AREAD075.DAT:12:124": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: winder nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Winder Nv 2"
+    },
+    "AREAD075.DAT:12:125": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de winder nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem equilibrada;[01]atrai peixes[01]com seu movimento[01]flutuante."
+    },
+    "AREAD075.DAT:12:126": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: winder nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Winder Nv 3"
+    },
+    "AREAD075.DAT:12:127": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de winder nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pesada e afunda[01]rapido. Tem um[01]movimento[01]ritmico."
+    },
+    "AREAD075.DAT:12:128": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: topper nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Topper Nv 1"
+    },
+    "AREAD075.DAT:12:129": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de topper nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Faz barulho ao ser[01]recolhida. Nao[01]afunda mesmo se[01]movimentada."
+    },
+    "AREAD075.DAT:12:130": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: topper nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Topper Nv 2"
+    },
+    "AREAD075.DAT:12:131": {
+      "speaker": "system",
+      "tone_register": "descritivo/tutorial",
+      "intent": "Descrever movimento de isca imitando peixe de água rasa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Move-se como um peixe de aguas rasas."
+    },
+    "AREAD075.DAT:12:132": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: topper nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Topper Nv 3"
+    },
+    "AREAD075.DAT:12:133": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de topper nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atrai peixes com[01]uma helice que[01]agita a superficie."
+    },
+    "AREAD075.DAT:12:134": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: minnow nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Minnow Nv 1"
+    },
+    "AREAD075.DAT:12:135": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de minnow nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Em forma de peixe[01]pequeno; facil[01]de usar."
+    },
+    "AREAD075.DAT:12:136": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: minnow nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Minnow Nv 2"
+    },
+    "AREAD075.DAT:12:137": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de minnow nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Flutua ao recolher;[01]afunda se parada."
+    },
+    "AREAD075.DAT:12:138": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: minnow nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Minnow Nv 3"
+    },
+    "AREAD075.DAT:12:139": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de minnow nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Afunda rapido;[01]sobe devagar.[01]Ideal para peixes[01]de fundo."
+    },
+    "AREAD075.DAT:12:140": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: frogger nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Frogger Nv 1"
+    },
+    "AREAD075.DAT:12:141": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de frogger nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isca em forma de[01]ra; nao afunda[01]mesmo ao mover."
+    },
+    "AREAD075.DAT:12:142": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: frogger nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Frogger Nv 2"
+    },
+    "AREAD075.DAT:12:143": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de frogger nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Afunda devagar mas[01]sobe rapido.[01]Cor rosa[01]encantadora."
+    },
+    "AREAD075.DAT:12:144": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: frogger nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Frogger Nv 3"
+    },
+    "AREAD075.DAT:12:145": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de frogger nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O melhor frogger;[01]tem um ar quase[01]orgulhoso no[01]rosto."
+    },
+    "AREAD075.DAT:12:146": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: worm nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Worm Nv 1"
+    },
+    "AREAD075.DAT:12:147": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de worm nv1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isca em forma de[01]minhoca. Captura[01]varios tipos de[01]peixe."
+    },
+    "AREAD075.DAT:12:148": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: worm nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Worm Nv 2"
+    },
+    "AREAD075.DAT:12:149": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de worm nv2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom equilibrio;[01]longo alcance[01]e facil de usar."
+    },
+    "AREAD075.DAT:12:150": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: worm nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Worm Nv 3"
+    },
+    "AREAD075.DAT:12:151": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de worm nv3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sobe um pouco ao[01]recolher. Ideal[01]para capturar[01]peixes de fundo."
+    },
+    "AREAD075.DAT:12:152": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Nome de item: isca suprema (duplicata)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isca Suprema"
+    },
+    "AREAD075.DAT:12:153": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Descricao de isca suprema: atrai todos os peixes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Atrai todo tipo[01]de peixe."
+    },
+    "AREAD075.DAT:12:156": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de equipar vara e isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce pode equipar uma vara[01]e uma isca por vez.[01]Selecione um item para trocar.[02]Cima/Baixo: Selecionar[01]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:157": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de selecao de vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Selecione uma vara para equipar.[01]Cima/Baixo: Selecionar vara[01]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:158": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de selecao de isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Selecione uma isca para equipar.[02]Cima/Baixo: Selecionar isca[01][82]: Pagina anterior[01][83]: Proxima pagina[02]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:159": {
+      "speaker": "system",
+      "tone_register": "UI/confirmacao",
+      "intent": "Confirmar saida da pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parar de pescar?"
+    },
+    "AREAD075.DAT:12:160": {
+      "speaker": "system",
+      "tone_register": "UI/confirmacao",
+      "intent": "Confirmar saida da pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parar de pescar?"
+    },
+    "AREAD075.DAT:12:161": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de navegacao com saida de subtela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar[01]~: Confirmar [7F]: Cancelar[01][80]: Sair da subtela"
+    },
+    "AREAD075.DAT:12:162": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de mudanca de pagina",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Dir./Esq.: Mudar pagina[01][7F]: Cancelar[01][80]: Sair da subtela"
+    },
+    "AREAD075.DAT:12:163": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de troca de isca e confirmacao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[84]: Trocar isca[01]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:164": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de troca de isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[82]/[83] Trocar isca[01]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:165": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar onde comprar equipamentos e reposicao automatica de iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[10][02]Equipamentos de pesca podem[01]ser comprados em cidades e[01]vilarejos.[02]E uma boa ideia comprar[01]bastante com antecedencia[01]para estar sempre pronto![02]Se sua linha [05][02]prender[01]no fundo[06] ou [05][02]arrebentar[06],[01]voce perde uma isca, mas[02]se tiver mais de uma[01]igual, ela sera[01]reposta automaticamente![11]"
+    },
+    "AREAD075.DAT:12:167": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Dicas de onde lancar para pegar peixes melhores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[10][02]Mire em areas sombreadas[01]ou onde ver peixes[01]nadando.[02]Isso aumenta as chances[01]de pegar um peixe grande[01]ou raro.[02]Peixes diferentes vivem em[01]areas diferentes--alguns[01]nadam perto da superficie,[02]enquanto outros ficam[01]perto do fundo.[02]O segredo e fazer o peixe[01]notar sua isca.[02]Dependendo da area, alguns[01]peixes podem se esconder[01]atras de pedras ao[02]ser recolhidos--mas[01]cuidado para nao arrebentar[01]a linha![11]"
+    },
+    "AREAD075.DAT:12:168": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Dicas de recolhimento do peixe e controle de tensao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[10][02]Ao recolher um peixe,[01]quanto mais rapido puxar,[01]melhor.[02]Se recolher com tensao[01]fraca, a isca nao cai,[02]e se soltar a linha com[01]tensao alta, ela nao[01]arrebenta.[02]Para recolher o peixe,[01]mantenha a tensao na[01]faixa indicada na tela.[02]Voce cansa o peixe mais[01]rapido movendo a vara[02]de um lado para o outro[01]ou na direcao oposta[01]ao peixe.[11]"
+    },
+    "AREAD075.DAT:12:169": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar uso de peixes capturados e troca na loja Manillo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[10][02]Voce pode usar os peixes[01]capturados como itens,[02]ou troca-los na Loja[01]Manillo por itens raros[01]e dificeis de encontrar.[11]"
+    },
+    "AREAD075.DAT:12:170": {
+      "speaker": "system",
+      "tone_register": "dica/instrucional",
+      "intent": "Dica de ritmo para mover a vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tente sincronizar o movimento[01]da vara com o ritmo dos[01]tambores da musica."
+    },
+    "AREAD075.DAT:12:177": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe: vive em lagos e rios, aceita qualquer isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vive em lagos[01]e rios; aceita[01]qualquer tipo de[01]isca."
+    },
+    "AREAD075.DAT:12:178": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Location option: anywhere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qualquer"
+    },
+    "AREAD075.DAT:12:180": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe com dentes e escamas duras em cardumes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem dentes afiados[01]e escamas duras.[01]Vive em cardumes[01]em lagos."
+    },
+    "AREAD075.DAT:12:183": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe onivoro e seletivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Onivoro, mas[01]exigente. Evita[01]iscas que nao[01]lhe agradam."
+    },
+    "AREAD075.DAT:12:186": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe violento que ataca sem aviso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Natureza violenta;[01]pode atacar sem[01]aviso."
+    },
+    "AREAD075.DAT:12:187": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Location option: anywhere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qualquer"
+    },
+    "AREAD075.DAT:12:189": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe considerado iguaria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Considerado uma[01]iguaria em muitas[01]partes do mundo."
+    },
+    "AREAD075.DAT:12:192": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que muda de cor conforme habitat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Forma e cor mudam[01]conforme o habitat."
+    },
+    "AREAD075.DAT:12:195": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe com alto valor nutricional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao e bonito,[01]mas rico em[01]proteina e[01]nutricao."
+    },
+    "AREAD075.DAT:12:196": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Ilhas do Norte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ilhas do Norte"
+    },
+    "AREAD075.DAT:12:198": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe de lagos de montanha popular com criancas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Encontrado apenas[01]em lagos de[01]montanha. Popular[01]entre criancas."
+    },
+    "AREAD075.DAT:12:199": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Montanhas Zhinga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Serra Zhinga"
+    },
+    "AREAD075.DAT:12:201": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe muito alerta que luta para se defender",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito alerta ao[01]perigo; luta para[01]se defender."
+    },
+    "AREAD075.DAT:12:204": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe bonito de se ver nadando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lindo de se ver[01]nadando."
+    },
+    "AREAD075.DAT:12:205": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Location option: anywhere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qualquer"
+    },
+    "AREAD075.DAT:12:208": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Montanhas Zhinga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Serra Zhinga"
+    },
+    "AREAD075.DAT:12:210": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe de aguas rasas muito forte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vive em aguas[01]rasas. Dificil de[01]capturar por ser[01]muito forte."
+    },
+    "AREAD075.DAT:12:211": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Location option: anywhere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qualquer"
+    },
+    "AREAD075.DAT:12:213": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe grande demais para comer de uma vez",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tao grande que nao[01]da pra comer[01]de uma vez!"
+    },
+    "AREAD075.DAT:12:214": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Ilhas do Norte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ilhas do Norte"
+    },
+    "AREAD075.DAT:12:216": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que nada no mar mas pode ser pescado em rios",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Geralmente nada[01]em alto mar, mas[01]pode ser pescado[01]em rios."
+    },
+    "AREAD075.DAT:12:219": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe rei dos lagos com ar majestoso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Rei dos lagos,[01]tem um ar quase[01]majestoso."
+    },
+    "AREAD075.DAT:12:220": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Montanhas Zhinga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Serra Zhinga"
+    },
+    "AREAD075.DAT:12:222": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe chamado de joia viva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As vezes chamado[01]de \"joia viva.\""
+    },
+    "AREAD075.DAT:12:223": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Montanhas Zhinga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Serra Zhinga"
+    },
+    "AREAD075.DAT:12:225": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de agua-viva oceanica que aceita qualquer isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agua-viva oceanica;[01]aceita qualquer[01]isca."
+    },
+    "AREAD075.DAT:12:226": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Location option: anywhere",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Qualquer"
+    },
+    "AREAD075.DAT:12:228": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe agil que pula sobre as ondas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Salta sobre as[01]ondas. Muito[01]agil e dificil[01]de capturar."
+    },
+    "AREAD075.DAT:12:231": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que se defende com espinhos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se protege com[01]espinhos muito[01]afiados."
+    },
+    "AREAD075.DAT:12:234": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe popular com mulheres que parece voar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Popular entre[01]mulheres; parece[01]voar na agua."
+    },
+    "AREAD075.DAT:12:237": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que luta pouco, bom para iniciantes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Luta, mas nao[01]muito; bom para[01]iniciantes."
+    },
+    "AREAD075.DAT:12:238": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Mar Salgado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mar Salgado"
+    },
+    "AREAD075.DAT:12:240": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que nada no fundo com olhos voltados para esquerda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nada perto do[01]fundo. Seus olhos[01]sempre olham[01]para a esquerda."
+    },
+    "AREAD075.DAT:12:241": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Mar Salgado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mar Salgado"
+    },
+    "AREAD075.DAT:12:243": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe bonito e saboroso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bonito e[01]saboroso."
+    },
+    "AREAD075.DAT:12:246": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe chamado Peixe-Diabo que ninguem comeu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tambem chamado de[01]\"Peixe-Diabo.\"[01]Ninguem ainda[01]o comeu."
+    },
+    "AREAD075.DAT:12:247": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Mar Salgado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mar Salgado"
+    },
+    "AREAD075.DAT:12:249": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe rapido cuja captura e distintivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Um peixe veloz.[01]Captura-lo e[01]uma distincao."
+    },
+    "AREAD075.DAT:12:250": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Levante do Sul",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Levante Sul"
+    },
+    "AREAD075.DAT:12:252": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe dificil mas que vale a pena",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dificil de capturar,[01]mas vale a pena[01]o esforco."
+    },
+    "AREAD075.DAT:12:255": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe raro de aguas profundas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Peixe raro,[01]geralmente nas[01]profundezas."
+    },
+    "AREAD075.DAT:12:256": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Levante do Sul",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Levante Sul"
+    },
+    "AREAD075.DAT:12:258": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe que corta redes com os chifres",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Usa os chifres[01]para cortar e[01]escapar das redes."
+    },
+    "AREAD075.DAT:12:259": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Mar Salgado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mar Salgado"
+    },
+    "AREAD075.DAT:12:261": {
+      "speaker": "system",
+      "tone_register": "descritivo",
+      "intent": "Descricao de peixe rei do mar, captura maxima",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Rei do mar,[01]e a captura[01]suprema."
+    },
+    "AREAD075.DAT:12:262": {
+      "speaker": "system",
+      "tone_register": "descritivo/UI",
+      "intent": "Localidade: Mar Salgado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mar Salgado"
+    },
+    "AREAD075.DAT:12:264": {
+      "speaker": "system",
+      "tone_register": "descritivo/alerta",
+      "intent": "Descricao de peixe mutado por energia de maldicao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Peixe mutado por[01]energia de[01]maldicao.[01]Manuseie com cuidado!"
+    },
+    "AREAD075.DAT:12:280": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Menu de aprender a pescar com selecao de topico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02] Como Pescar[01] Selecione um topico:[01][16][19][01][12][88][0C][95]Lançar[01]Mover a isca[01]Fisgar[01]Recolher o peixe[01]Sair"
+    },
+    "AREAD075.DAT:12:281": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Lista de topicos do tutorial",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[12][88][0C][95]Lancar[01]Mover a isca[01]Fisgar[01]Recolher o peixe[01]Sair"
+    },
+    "AREAD075.DAT:12:282": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Introducao a pesca no jogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A pesca em Breath of Fire `[01]e feita em mapas chamados[01]\"pontos de pesca.\"[02]Para pescar, voce precisa[01]encontrar um ponto de pesca."
+    },
+    "AREAD075.DAT:12:283": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de como entrar na tela de pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Pressione ~ perto da agua[01]para entrar na tela[01]de pesca."
+    },
+    "AREAD075.DAT:12:284": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de rotacao de camera",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode girar o angulo[01]da camera pressionando [07]"
+    },
+    "AREAD075.DAT:12:285": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de mira com botoes direcionais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Use os botoes direcionais[01]para apontar a vara na[01]direcao desejada."
+    },
+    "AREAD075.DAT:12:286": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de uso da barra de forca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Entao, pressione ~.[01]A Barra de Forca comecara[01]a se mover."
+    },
+    "AREAD075.DAT:12:287": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de como lancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Pressione ~ novamente[01]para lancar."
+    },
+    "AREAD075.DAT:12:288": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar que o alcance varia conforme a vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A distancia do lance varia[01]conforme a vara usada."
+    },
+    "AREAD075.DAT:12:289": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Avisar que a isca pode cair em terra firme",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Dependendo de onde lancar,[01]a isca pode cair[01]em terra firme."
+    },
+    "AREAD075.DAT:12:290": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Avisar risco de perder isca em terra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Iscas prendem facilmente[01]em terra--se nao tomar[01]cuidado, pode perder a isca."
+    },
+    "AREAD075.DAT:12:291": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Informar que lancar alem da tela nao perde a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se lancar alem da borda[01]da tela, voce nao[01]perde a isca."
+    },
+    "AREAD075.DAT:12:292": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Dica de onde lancar e cuidado com a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Tente lancar onde acha[01]que os peixes estao,[02]mas cuidado para nao[01]prender ou perder a isca."
+    },
+    "AREAD075.DAT:12:295": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Introducao a movimentacao da isca apos o lance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode mover a isca[01]apos lanca-la:[01]"
+    },
+    "AREAD075.DAT:12:296": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Introducao a movimentacao da isca apos o lance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode mover a isca[01]apos lanca-la:[01]"
+    },
+    "AREAD075.DAT:12:297": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Introducao a movimentacao da isca apos o lance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode mover a isca[01]apos lanca-la:[01]"
+    },
+    "AREAD075.DAT:12:298": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Introducao a movimentacao da isca apos o lance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode mover a isca[01]apos lanca-la:[01]"
+    },
+    "AREAD075.DAT:12:299": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao do botao de recolher a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][01]Botao ~: Recolher a isca"
+    },
+    "AREAD075.DAT:12:300": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Mover isca para a direita",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Dir.: Mover a isca para a[01] direita"
+    },
+    "AREAD075.DAT:12:301": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Mover isca para a esquerda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Esq.: Mover a isca para a[01] esquerda"
+    },
+    "AREAD075.DAT:12:302": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Levantar a vara",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Baixo: Levantar a vara"
+    },
+    "AREAD075.DAT:12:303": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de como recolher a isca com o botao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode recolher a isca[01]a qualquer momento[01]pressionando [7F]."
+    },
+    "AREAD075.DAT:12:304": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao sobre o medidor de profundidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Verifique a profundidade[01]atual da isca no[01]Medidor de Profundidade."
+    },
+    "AREAD075.DAT:12:305": {
+      "speaker": "system",
+      "tone_register": "tutorial/descritivo",
+      "intent": "Explicar comportamento de iscas flutuantes ao fisgar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Algumas iscas flutuam[01]ao puxar,"
+    },
+    "AREAD075.DAT:12:306": {
+      "speaker": "system",
+      "tone_register": "tutorial/informativo",
+      "intent": "explicar comportamento de iscas que afundam ao ser recolhidas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]outras afundam ao[01]ser recolhidas."
+    },
+    "AREAD075.DAT:12:307": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Recolher isca no fundo pode prende-la",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Continuar recolhendo a isca[01]quando ela toca o fundo[01]pode prende-la."
+    },
+    "AREAD075.DAT:12:308": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Avisar que isca presa no fundo e perdida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se a isca prender no fundo,[01]voce a perde.[02]Tome cuidado para nao[01]prender a isca ao[01]recolhe-la."
+    },
+    "AREAD075.DAT:12:309": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Dica de pressionar o botao ritmicamente para atrair peixes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se pressionar ~ de forma[01]ritmica ao recolher[01]a isca,[02]ela ficara mais atraente[01]para os peixes."
+    },
+    "AREAD075.DAT:12:310": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Quanto mais atraente a isca, mais chance de pescar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Quanto mais atraente[01]a isca,[02]maior a chance de[01]capturar um peixe."
+    },
+    "AREAD075.DAT:12:311": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Peixe interessado aumenta tensao da linha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se um peixe se interessar[01]pela isca,[02]a tensao da linha[01]vai aumentar."
+    },
+    "AREAD075.DAT:12:312": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Peixe interessado aumenta tensao da linha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se um peixe se interessar[01]pela isca,[02]a tensao da linha[01]vai aumentar."
+    },
+    "AREAD075.DAT:12:313": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Peixe interessado aumenta tensao da linha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se um peixe se interessar[01]pela isca,[02]a tensao da linha[01]vai aumentar."
+    },
+    "AREAD075.DAT:12:314": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar picada e fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Isso se chama \"picada.\"[02]Porem, nao significa[01]que o peixe mordeu[01]a isca.[02]Voce precisa fazer o peixe[01]morder. Isso se chama[01]\"fisgada.\""
+    },
+    "AREAD075.DAT:12:315": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "O que e fisgar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]O que e fisgar?"
+    },
+    "AREAD075.DAT:12:316": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Quando ha picada na isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Quando houver uma picada[01]na isca,"
+    },
+    "AREAD075.DAT:12:317": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao aumenta e timing correto para fisgar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]a tensao da linha[01]vai aumentar.[02]Se pressionar o botao[01]no momento certo,[02]voce consegue fazer[01]o peixe morder a isca."
+    },
+    "AREAD075.DAT:12:318": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar o que e fisgada e como fazer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Isso se chama \"fisgada.\"[02]Voce pode pressionar[01]qualquer botao exceto ~[01]para tentar fisgar.[02]Ao sentir a picada, tente[01]fisgar o peixe o mais[01]rapido possivel."
+    },
+    "AREAD075.DAT:12:319": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Fisgada automatica as vezes ocorre",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]As vezes, o peixe e fisgado[01]automaticamente ao morder,[01]sem fazer nada."
+    },
+    "AREAD075.DAT:12:320": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Risco maior de perder isca em fisgada automatica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Nesses casos, o risco de[01]perder a isca e maior[01]que o normal.[02]Cuidado para nao deixar[01]o peixe fugir com[01]a isca."
+    },
+    "AREAD075.DAT:12:321": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:322": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:323": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:324": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:325": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:326": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao muda conforme movimento do peixe apos fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Apos fisgar o peixe,[02]a tensao da linha muda[01]conforme o movimento[01]do peixe."
+    },
+    "AREAD075.DAT:12:327": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar como ajustar tensao recolhendo a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Voce pode ajustar a tensao[01]recolhendo a isca[01](usando ~).[02]Recolher a isca aumenta[01]a tensao,"
+    },
+    "AREAD075.DAT:12:328": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Soltar a linha diminui a tensao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]e soltar a linha[01]diminui a tensao."
+    },
+    "AREAD075.DAT:12:329": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao alta demais pode arrebentar a linha",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se a tensao passar para[01]a direita da area alvo[01]ao recolher,[02]a linha pode arrebentar[01]sob a pressao."
+    },
+    "AREAD075.DAT:12:330": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Tensao baixa demais pode perder a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Por outro lado, se a tensao[01]for para a esquerda da[01]area alvo,[02]o peixe fuge com a isca[01]se voce nao recolher[01]a tempo."
+    },
+    "AREAD075.DAT:12:331": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Linha quebrada perde o peixe e a isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Se a linha arrebentar,[01]voce perde o peixe[01]e a isca tambem."
+    },
+    "AREAD075.DAT:12:332": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Cuidado para manter tensao na area alvo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]Cuidado para nao deixar[01]a tensao sair da[01]area alvo."
+    },
+    "AREAD075.DAT:12:333": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 1: Varas e Iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1: Varas e Iscas"
+    },
+    "AREAD075.DAT:12:334": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 1: Varas e Iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1: Varas e Iscas"
+    },
+    "AREAD075.DAT:12:335": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 1: Varas e Iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1: Varas e Iscas"
+    },
+    "AREAD075.DAT:12:336": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 1: Varas e Iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "1: Varas e Iscas"
+    },
+    "AREAD075.DAT:12:337": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 2: Tipos de Iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "2: Tipos de Iscas"
+    },
+    "AREAD075.DAT:12:338": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 3: Terreno e Alcance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "3: Terreno e Alcance"
+    },
+    "AREAD075.DAT:12:339": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 4: Fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "4: Fisgada"
+    },
+    "AREAD075.DAT:12:340": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 5: Uso dos Peixes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "5: Uso dos Peixes"
+    },
+    "AREAD075.DAT:12:341": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Topico 6: Movimentos da Isca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "6: Movimentos da Isca"
+    },
+    "AREAD075.DAT:12:342": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Onde encontrar varas e iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Onde encontrar varas e iscas"
+    },
+    "AREAD075.DAT:12:343": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Onde encontrar varas e iscas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Onde encontrar varas e iscas"
+    },
+    "AREAD075.DAT:12:344": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Ferramenta certa para o trabalho certo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A ferramenta certa para cada situacao"
+    },
+    "AREAD075.DAT:12:345": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Encontrar os melhores locais de pesca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como encontrar os melhores pontos"
+    },
+    "AREAD075.DAT:12:346": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "Dicas sobre fisgada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dicas e truques para fisgar"
+    },
+    "AREAD075.DAT:12:347": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial",
+      "intent": "O que fazer apos capturar um peixe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que fazer apos capturar um peixe"
+    },
+    "AREAD075.DAT:12:348": {
+      "speaker": "system",
+      "tone_register": "UI/dica",
+      "intent": "Incentivo a atingir tecnica nivel 4",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tente chegar ao Tec. 4!"
+    },
+    "AREAD075.DAT:12:349": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar que alcance varia e dica de onde lancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A distancia do lance varia[01]conforme a vara usada.[02]Escolha a vara com cuidado[01]e lance onde acha que[01]os peixes estao."
+    },
+    "AREAD075.DAT:12:350": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar que alcance varia e dica de onde lancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A distancia do lance varia[01]conforme a vara usada.[02]Escolha a vara com cuidado[01]e lance onde acha que[01]os peixes estao."
+    },
+    "AREAD075.DAT:12:351": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar que alcance varia e dica de onde lancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A distancia do lance varia[01]conforme a vara usada.[02]Escolha a vara com cuidado[01]e lance onde acha que[01]os peixes estao."
+    },
+    "AREAD075.DAT:12:352": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Explicar que alcance varia e dica de onde lancar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02]A distancia do lance varia[01]conforme a vara usada.[02]Escolha a vara com cuidado[01]e lance onde acha que[01]os peixes estao."
+    },
+    "AREAD075.DAT:12:353": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de selecao de peixe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecionar peixe[01][82]: Pagina anterior[01][83]: Proxima pagina[02]~: Confirmar [7F]: Cancelar"
+    },
+    "AREAD075.DAT:12:354": {
+      "speaker": "system",
+      "tone_register": "UI/instrucional",
+      "intent": "Instrucoes de mudanca de pagina e tela anterior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Botoes direcionais: Mudar[01] pagina[01][80]: Voltar a tela anterior"
+    },
+    "AREAD075.DAT:12:355": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Selecionar com cima/baixo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cima/Baixo: Selecao"
+    },
+    "AREAD075.DAT:12:356": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Ver dados com botao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[7F]: Ver dados em [07]"
+    },
+    "AREAD075.DAT:12:357": {
+      "speaker": "system",
+      "tone_register": "UI",
+      "intent": "Mudar pagina com botoes direcionais",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Botoes direcionais: Mudar pagina"
+    },
+    "AREAD075.DAT:12:358": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Rio 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Rio 1"
+    },
+    "AREAD075.DAT:12:359": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Rio 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Rio 1"
+    },
+    "AREAD075.DAT:12:360": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Rio 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Rio 1"
+    },
+    "AREAD075.DAT:12:361": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Rio 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Rio 2"
+    },
+    "AREAD075.DAT:12:362": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Rio 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Rio 3"
+    },
+    "AREAD075.DAT:12:363": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Oceano 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto Oceano 1"
+    },
+    "AREAD075.DAT:12:364": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Oceano 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto Oceano 3"
+    },
+    "AREAD075.DAT:12:365": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Lago 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Lago 1"
+    },
+    "AREAD075.DAT:12:366": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Lago 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Lago 1"
+    },
+    "AREAD075.DAT:12:367": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Lago 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Lago 2"
+    },
+    "AREAD075.DAT:12:368": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Lago 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto de Lago 3"
+    },
+    "AREAD075.DAT:12:369": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto Chamba",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto Chamba"
+    },
+    "AREAD075.DAT:12:370": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto Saldine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto Saldine"
+    },
+    "AREAD075.DAT:12:371": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Nome de local: Ponto de Oceano 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ponto Oceano 2"
+    },
+    "AREAD075.DAT:12:372": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica da cachoeira",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Os maiores peixes ficam[01]perto da base da[01]cachoeira!"
+    },
+    "AREAD075.DAT:12:373": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica da area pantanosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente pescar perto da[01]area pantanosa!"
+    },
+    "AREAD075.DAT:12:374": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica das pedras",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente pescar ao redor[01]das pedras!"
+    },
+    "AREAD075.DAT:12:375": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica das areas rochosas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente pescar perto das[01]areas rochosas!"
+    },
+    "AREAD075.DAT:12:376": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica do fundo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Os peixes maiores ficam[01]perto do fundo!"
+    },
+    "AREAD075.DAT:12:377": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica da enseada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Os peixes grandes ficam[01]na parte funda[01]da enseada."
+    },
+    "AREAD075.DAT:12:378": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica entre pedras e troncos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente mirar entre[01]as pedras e troncos!"
+    },
+    "AREAD075.DAT:12:379": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica das arvores",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente pescar perto[01]das arvores!"
+    },
+    "AREAD075.DAT:12:380": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica da area pantanosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Tente pescar perto da[01]area pantanosa!"
+    },
+    "AREAD075.DAT:12:381": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e dica da nevoa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Olhe na nevoa..."
+    },
+    "AREAD075.DAT:12:382": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e aviso de peixes exclusivos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Certos tipos de peixe so[01]sao encontrados aqui."
+    },
+    "AREAD075.DAT:12:383": {
+      "speaker": "system",
+      "tone_register": "tutorial/instrucional",
+      "intent": "Instrucao de inicio de pesca e aviso do rei do mar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01]Pressione ~ em um ponto onde[01]o marcador de pesca acender[01]para comecar a pescar.[02]Dizem que o rei do mar[01]e encontrado aqui..."
+    },
+    "AREAD075.DAT:12:384": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Rio 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Rio 1[02][07]"
+    },
+    "AREAD075.DAT:12:385": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Rio 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Rio 2[02][07]"
+    },
+    "AREAD075.DAT:12:386": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Rio 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Rio 3[02][07]"
+    },
+    "AREAD075.DAT:12:387": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Oceano 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Oceano 1[02][07]"
+    },
+    "AREAD075.DAT:12:388": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Oceano 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Oceano 3[02][07]"
+    },
+    "AREAD075.DAT:12:389": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Oceano 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Oceano 3[02][07]"
+    },
+    "AREAD075.DAT:12:390": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Lago 1",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Lago 1[02][07]"
+    },
+    "AREAD075.DAT:12:391": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Lago 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Lago 2[02][07]"
+    },
+    "AREAD075.DAT:12:392": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Lago 3",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Lago 3[02][07]"
+    },
+    "AREAD075.DAT:12:393": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto Chamba",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto Chamba[02][07]"
+    },
+    "AREAD075.DAT:12:394": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto Saldine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto Saldine[02][07]"
+    },
+    "AREAD075.DAT:12:395": {
+      "speaker": "system",
+      "tone_register": "UI/localizacao",
+      "intent": "Alvo de pesca - Ponto de Oceano 2",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]PEIXE ALVO[06][01] Ponto de Oceano 2[02][07]"
+    },
+    "AREAD075.DAT:12:68": {
+      "speaker": "",
+      "tone_register": "",
+      "intent": "rotulo_engine",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "SubScreen"
+    }
+  }
+}

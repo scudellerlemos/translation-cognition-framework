@@ -1,0 +1,172 @@
+{
+  "lines": {
+    "AREAS037.DAT:7:3": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "anúncio de estratégia militar com confiança",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu exige voz imperial e distante; '\\n' preservado; [02] marca paginação crítica — contagem deve ser 1 em source e 1 em target",
+      "t": "[14][C4]@\"Aguardaremos ate a escuridao, entao atacaremos.[02]Devemos conseguir lidar com os guardas facilmente.\""
+    },
+    "AREAS037.DAT:7:4": {
+      "speaker": "npc",
+      "tone_register": "hesitante, questionador",
+      "intent": "expressar dúvida sobre o plano",
+      "risk_level": "medium",
+      "risk_notes": "[01] preservado; personagem hesitante não identificado — se posterior emerja identidade, revisar tom",
+      "t": "[14][01][01]\"Ah...[0B][04][04]? Nao tenho certeza se e boa ideia.\""
+    },
+    "AREAS037.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "direto, ofensivo",
+      "intent": "questionar e defender tática de ataque noturno",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca paginação; 'strike in the dark' = vantagem tática, não conotação moral",
+      "t": "[14][82]B\"Por que nao?[02]Se atacarmos na escuridao, a vantagem e nossa.\""
+    },
+    "AREAS037.DAT:7:6": {
+      "speaker": "npc",
+      "tone_register": "moderado, pedindo contenção",
+      "intent": "pedir cautela e discrição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Vamos manter as coisas um pouco mais caladas, certo?[02][14]B"
+    },
+    "AREAS037.DAT:7:8": {
+      "speaker": "npc",
+      "tone_register": "chocado, reconhecedor",
+      "intent": "identificação súbita com reação de espanto",
+      "risk_level": "high",
+      "risk_notes": "[02] crítico (paginação); '\\n' preservado; reconhecimento de personagem importante — se 'Woren Chief' for revelação tardia, pode ser spoiler; marcado para back-translation",
+      "t": "[0C][02][14][04][04]\"Ha?[0B] Espera um minuto![02]Voce e [04][02], nao e? O Chefe dos Worens!?\""
+    },
+    "AREAS037.DAT:7:9": {
+      "speaker": "npc",
+      "tone_register": "alarme, oficialidade",
+      "intent": "reconhecer ameaça e risco político",
+      "risk_level": "high",
+      "risk_notes": "[02] x2 crítico; contagem de [02] = 2; 'wanted by Ludian Kingdom' estabelece contexto de fuga/perigo — manter formalidade",
+      "t": "[0C][02][14][05]E\"E mesmo ele![02]Ele e procurado pelo Reino Ludiano![02]Se o deixarmos passar, estaremos em apuros!\""
+    },
+    "AREAS037.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "urgência, ação",
+      "intent": "chamar para fuga imediata",
+      "risk_level": "medium",
+      "risk_notes": "'Come on' em contexto de urgência = 'Vamos!'; [01] preservado",
+      "t": "[0C][02][14][04][04]\"Sem brincadeira! Vamos tira-lo daqui!\""
+    },
+    "AREAS037.DAT:7:11": {
+      "speaker": "npc",
+      "tone_register": "susto breve",
+      "intent": "expressão instantânea de alarme físico",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][86]C\"Ops!\""
+    },
+    "AREAS037.DAT:7:13": {
+      "speaker": "Ryu",
+      "tone_register": "tranquilo, reflexivo",
+      "intent": "tentar acalmar, propor alternativa",
+      "risk_level": "high",
+      "risk_notes": "Ryu: voz simples, direta, poucas palavras — CONTRASTE com Fou-Lu obrigatório; [02] marca paginação; 'thinking' = reflexão de solução prática",
+      "t": "[14][81]A\"Ta bem...[02]Alem disso, eu estava pensando...\""
+    },
+    "AREAS037.DAT:7:14": {
+      "speaker": "npc",
+      "tone_register": "questionador, ideia",
+      "intent": "propor solução criativa com os carros",
+      "risk_level": "medium",
+      "risk_notes": "'use those wagons to get over the gate' = ideia tática; 'somehow' = incerteza; preservar [01]",
+      "t": "[0C][03][14][07][01]\"Nao conseguiriamos usar aqueles carros para passar pelo portao?\""
+    },
+    "AREAS037.DAT:7:17": {
+      "speaker": "npc",
+      "tone_register": "acusador, confrontacional",
+      "intent": "confrontar por ato anterior (traição/crimes)",
+      "risk_level": "high",
+      "risk_notes": "'what you did' = ato específico não nomeado — sem antecipar; [01] preservado; contexto de confronto",
+      "t": "[14][04][04]\"Nao pense que consegue se safar do que fez!\""
+    },
+    "AREAS037.DAT:7:18": {
+      "speaker": "npc",
+      "tone_register": "determinado, bloqueio absoluto",
+      "intent": "negar passagem com fineza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Nao tem como voce passar daqui! Nunca!\""
+    },
+    "AREAS037.DAT:7:19": {
+      "speaker": "system",
+      "tone_register": "instrucional, narrativo",
+      "intent": "indicar possibilidade de ação (empurrar carro)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que voce conseguiria empurrar este carro..."
+    },
+    "AREAS037.DAT:7:20": {
+      "speaker": "system",
+      "tone_register": "instrucional, negativo",
+      "intent": "indicar impossibilidade de ação nesta direção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao da pra empurrar deste lado!"
+    },
+    "AREAS037.DAT:7:21": {
+      "speaker": "npc",
+      "tone_register": "casual, narrativo",
+      "intent": "introduzir lore sobre Árvore da Sabedoria",
+      "risk_level": "medium",
+      "risk_notes": "[12] preservado (formatação); 'Tree of Wisdom' = termo lore; sem spoiler; marcado para consistência glossário",
+      "t": "\"Voce ja ouviu falar da Arvore da Sabedoria?\"[12]"
+    },
+    "AREAS037.DAT:7:22": {
+      "speaker": "npc",
+      "tone_register": "frustrado, coloquial",
+      "intent": "expressar decepção por não poder visitar destino",
+      "risk_level": "low",
+      "risk_notes": "'Figures! Just my luck!' = expressão idiomática de má sorte; [02] marca paginação",
+      "t": "\"Percorri todo este caminho para ve-la, mas fecharam a estrada![02]E obvio! Que azar o meu!\""
+    },
+    "AREAS037.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "narrativo, maravilhado",
+      "intent": "descrever propriedade lendária da árvore",
+      "risk_level": "high",
+      "risk_notes": "[02] x2 crítico (paginação); 'tree that can talk' = lore central; 'aware because alive so long' = filosofia da árvore; [01] múltiplos — preservar exatos; sem antecipar se árvore = personagem revelado",
+      "t": "\"Bem, dizem que em algum lugar na floresta na estrada para Shikk,[02]existe uma arvore que consegue falar! Igual voce ou eu![02]Ouvi dizer que ela ficou consciente porque esteve viva por muito tempo!\""
+    },
+    "AREAS037.DAT:7:24": {
+      "speaker": "npc",
+      "tone_register": "aconselhador, paternal",
+      "intent": "oferecer repouso e sugerir calma",
+      "risk_level": "low",
+      "risk_notes": "[12] preservado; [86][0C][93] formatação de menu — preservar literal; menu options (Rest/Diary/Never mind) são tokens UI, não traduzir neste passo",
+      "t": "\"Nao sei qual e sua pressa,[02]mas nao vai doer voce descansar um pouco.\"[12][86][0C][93]Descansar[01]Diario[01]Nao, obrigado"
+    },
+    "AREAS037.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "defesa, resistência física",
+      "intent": "ameaçar que mesmo inconsciente não permitirá passagem",
+      "risk_level": "high",
+      "risk_notes": "'kn-knock me out' = gagueira fisica (stress) — preservar efeito em pt-BR como 'b-bater'; [02] crítico (paginação); 'g-go away' = gagueira emocional; [01] múltiplos preservados",
+      "t": "[14][08][05]\"Mesmo que voce me b-bata,[02]voce ainda nao conseguira passar pelo portao![02]Agora sum-suma e me deixa em paz...[01]Por favor?\""
+    },
+    "AREAS037.DAT:7:26": {
+      "speaker": "npc",
+      "tone_register": "comercial, orgulhoso",
+      "intent": "declarar mottos da raça Manillo",
+      "risk_level": "medium",
+      "risk_notes": "'Manillo' = manter_original (glossário); \"'ave\" = dialeto EN (have reduzido) — traduzir como português natural, nao replicar dialeto estrangeiro; [02] crítico; [12] preservado; [85][0C][93] formatação menu",
+      "t": "[14][08][05]\"Nos Manillo temos dois lemas--[02]'Tempo eh dinheiro' e 'O mundo eh nosso cliente'!\"[12][85][0C][93]Comprar itens[01]Trocar cartao[01]Nao, obrigado"
+    },
+    "AREAS037.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "ressentido, frustrado",
+      "intent": "reclamar de esforço perdido por bloqueio de portão",
+      "risk_level": "medium",
+      "risk_notes": "'sandflier' = termo lore tech — manter_original se glossário assim indica; 'Figures' = resignação; [02] crítico (paginação x2); [01] múltiplos preservados",
+      "t": "[14][0A][07]\"Que pena...Fiz de tudo para[02]te convencer a deixar eu andar em teu sandflier,[02]e agora nao consigo passar pelo portao!\""
+    }
+  }
+}

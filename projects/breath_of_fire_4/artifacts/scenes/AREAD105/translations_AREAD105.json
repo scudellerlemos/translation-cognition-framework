@@ -1,0 +1,116 @@
+{
+  "lines": {
+    "AREAD105.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "casual, colloquial, rustic",
+      "intent": "warning about volcanic activity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"A montanha ali começou [02]a fumar...[02]Parece que está se [02]preparando pra explodir...\""
+    },
+    "AREAD105.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "casual, colloquial, rustic",
+      "intent": "warning about volcanic activity (repeat)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"A montanha ali começou [02]a fumar...[02]Parece que está se [02]preparando pra explodir...\""
+    },
+    "AREAD105.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "neutral, brief",
+      "intent": "surprised realization",
+      "risk_level": "medium",
+      "risk_notes": "character identity unclear; [0B] token preserved; output must fit 27 bytes",
+      "t": "[14][C6]@\"...[0B]Um deus, hã?\""
+    },
+    "AREAD105.DAT:8:3": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, imperial, elevated vocabulary",
+      "intent": "confrontation; questioning divinity claim",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu voice critically high: archaic pronouns (Tu és), no modernization; character identity/revelation risk; back-translation required",
+      "t": "[0C][06][14][C6]@\"Tu és aquele que [01]reclama ser um deus?\""
+    },
+    "AREAD105.DAT:8:4": {
+      "speaker": "unknown",
+      "tone_register": "broken speech, primitive, defiant",
+      "intent": "self-assertion; simple power claim",
+      "risk_level": "medium",
+      "risk_notes": "non-human/broken speech pattern preserved; identity unclear but likely god-entity",
+      "t": "[0C][05][14][01][01]\"Eu deus. Quem você, [01]homem pequeno?\""
+    },
+    "AREAD105.DAT:8:5": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, imperial, eloquent, didactic",
+      "intent": "teaching truth about false divinity; condescension mixed with sadness",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu archaic voice non-negotiable (Tu não és, hath=tenha); token [82] preserved; multiple [02] breaks (count=4 in source, must match in t); long line, manage byte budget via conciseness; back-translation required",
+      "t": "[0C][06][14][C6]@\"Tu não és um deus. [02][14][82]BTu não és senão uma [01]sombra...Algo que [01]bebeu dos resíduos [02]do poder divino e [01]crê que assim te [02]tornas deus. [02]Tu foste afetado [01]por nosso poder [02]e dos outros; nada [01]mais.\""
+    },
+    "AREAD105.DAT:8:6": {
+      "speaker": "unknown",
+      "tone_register": "broken speech, stubborn, aggressive",
+      "intent": "rejection of logic; threat",
+      "risk_level": "medium",
+      "risk_notes": "non-human broken English preserved (Me not understand); aggressive tone; identity uncertain",
+      "t": "[0C][05][14][01][01]\"Eu nao entendo [01]homem pequeno. Fala [01]engraçado. [02]Homem pequeno [01]acha que sou burro?\""
+    },
+    "AREAD105.DAT:8:7": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, philosophical, tentative/questioning",
+      "intent": "philosophical proposition; existential doubt",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu archaic (Talvez...o mundo não necessite deuses); token [83] preserved; philosophical depth must survive; back-translation required",
+      "t": "[0C][06][14][83]C\"Talvez...Talvez o [01]mundo não necessite [01]deuses? [02]O que dizes?\""
+    },
+    "AREAD105.DAT:8:8": {
+      "speaker": "unknown",
+      "tone_register": "broken speech, hostile, simple, final",
+      "intent": "threat; refusal to understand; murder declaration",
+      "risk_level": "medium",
+      "risk_notes": "non-human broken logic (Me not understand); escalation to violence; identity remains ambiguous",
+      "t": "[0C][05][14][01][01]\"Homem pequeno não [01]faz sentido. Eu nao [01]entendo. [02]Eu mato homem [01]pequeno.\""
+    },
+    "AREAD105.DAT:8:9": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, narrative, explanatory",
+      "intent": "exposition of lore about Endless summoning and false divinity",
+      "risk_level": "high",
+      "risk_notes": "Glossary term 'Endless'→'Eternos' (traduzir); archaic voice (são convocados, inunda); lore-critical explanation; token [02] count=3 must match; lengthy line requires byte management; back-translation required",
+      "t": "[14][C6]@\"Os Eternos são [01]convocados para este [01]mundo...[02]Isto muda o próprio [01]equilíbrio da Natureza, [02]inundando o cosmos [01]com energias poderosas [02]e perigosas, [02]e faz com que seres [01]facilmente influenciados [02]creiam-se deuses...\""
+    },
+    "AREAD105.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "archaic, questioning",
+      "intent": "philosophical inquiry",
+      "risk_level": "medium",
+      "risk_notes": "token [02] count=2 must be exact; archaic 'pensam' (pensais); brief line, tight budget (50 bytes)",
+      "t": "[14][02][02]\"O que então pensam [01]os mortais?\""
+    },
+    "AREAD105.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "shocked, accusatory, colloquial",
+      "intent": "shocked reaction to apparent divine action",
+      "risk_level": "low",
+      "risk_notes": "token [84] preserved; [0B] break preserved; exclamation of surprise",
+      "t": "[14][84]D\"Que...[0B]Você! [02]O que você fez!?\""
+    },
+    "AREAD105.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "colloquial, rustic, accusatory",
+      "intent": "angry accusation",
+      "risk_level": "low",
+      "risk_notes": "rustic/casual speech (fez/t'god); token [02] preserved; short budget (63 bytes)",
+      "t": "[14][84]D\"O que você fez [01]pro deus da montanha!?\""
+    },
+    "AREAD105.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "colloquial, shocked, suspicious, rustic",
+      "intent": "shock and suspicion about identity/nature of party",
+      "risk_level": "medium",
+      "risk_notes": "token [02] count=2 must match source; identity question signals mystery; rustic register preserved; budget 134 bytes allows full expression",
+      "t": "[14][84]D\"Gente normal não anda [01]fazendo coisa assim, [02]não...[02]Quem são vocês? Não— [01]o que são vocês?\""
+    }
+  }
+}

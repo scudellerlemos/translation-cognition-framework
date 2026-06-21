@@ -1,0 +1,89 @@
+{
+  "scene": "AREAD170",
+  "scene_group": "AREAD170",
+  "lines": [
+    {
+      "offset": "AREAD170.DAT:8:0",
+      "text_source": "\"This is the way to[01]the shrine of the[01]God of the Sea.[02]This here place is[01]sacred to sailors...[02]I'm sorry, but I can't[01]let just anybody go[01]there.\"",
+      "speaker": "npc",
+      "tone_register": "formal-respectful",
+      "intent": "explain sacred location and deny entry",
+      "risk_level": "low",
+      "base_translation": "Este eh o caminho para o santuario do Deus do Mar. [02]Este lugar eh sagrado para os marinheiros... [02]Desculpe, mas nao posso deixar qualquer um ir la.",
+      "byte_budget": 202,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAD170.DAT:8:1",
+      "text_source": "\"This is the way to[01]the shrine of the[01]God of the Sea.[02]This here place is[01]sacred to sailors...[02]I'm sorry, but I can't[01]let just anybody go[01]there.\"",
+      "speaker": "npc",
+      "tone_register": "formal-respectful",
+      "intent": "explain sacred location and deny entry",
+      "risk_level": "low",
+      "base_translation": "Este eh o caminho para o santuario do Deus do Mar. [02]Este lugar eh sagrado para os marinheiros... [02]Desculpe, mas nao posso deixar qualquer um ir la.",
+      "byte_budget": 202,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAD170.DAT:8:2",
+      "text_source": "\"What!?[02]You want the blessing[01]of the God of the Sea[02]so you can become[01]sailors yourselves!?[02]Well then, that's a[01]different story, now[01]isn't it?[02]Go on ahead.\"",
+      "speaker": "npc",
+      "tone_register": "formal-respectful",
+      "intent": "grant permission when purpose is revealed",
+      "risk_level": "medium",
+      "base_translation": "O que!? [02]Voces querem a benção do Deus do Mar [02]para se tornarem marujos vos mesmos!? [02]Bem entao, isso eh outra historia, nao eh!? [02]Podem ir adiante.",
+      "byte_budget": 218,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Exclamatory tone shift requires emphasis preservation; [02] page breaks critical for pacing."
+    },
+    {
+      "offset": "AREAD170.DAT:8:3",
+      "text_source": "\"There's an old[01]superstition that[01]says if you go to[02]sea without the Sea[01]God's blessing,[02]the journey will[01]end in disaster.\"",
+      "speaker": "npc",
+      "tone_register": "expository-cautionary",
+      "intent": "explain maritime superstition and danger",
+      "risk_level": "low",
+      "base_translation": "Ha uma antiga supersticao que diz que se voce vai para [02]o mar sem a benção do Deus do Mar, [02]a jornada terminara em desastre.",
+      "byte_budget": 171,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAD170.DAT:8:4",
+      "text_source": "Thou who wouldst wake the[01]Lord of the Sea, wakest[01]first the sea",
+      "speaker": "system",
+      "tone_register": "arcane-ritual",
+      "intent": "ritual incantation or magical inscription",
+      "risk_level": "high",
+      "base_translation": "Aquele que despertaria o Senhor do Mar, desperta primeiro o mar",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Archaic/ritual register; thou/wakest forms suggest formal invocation; context suggests supernatural/game mechanic; preserve solemnity and archaic tone in pt-BR—consider 'Aquele que despertaria o Senhor do Mar, desperta primeiro o mar' or similar formal construction."
+    },
+    {
+      "offset": "AREAD170.DAT:8:5",
+      "text_source": "[01]        [09][13][05]",
+      "speaker": "system",
+      "tone_register": "ui-spacing",
+      "intent": "display formatting/spacing",
+      "risk_level": "low",
+      "base_translation": "[01] [09][13][05]",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "bof4-AREAD170-v1"
+}

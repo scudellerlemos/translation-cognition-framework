@@ -1,0 +1,92 @@
+{
+  "lines": {
+    "AREAD012.DAT:10:0": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, calor, liderança discreta",
+      "intent": "questionar sobre um som estranho ouvido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Alguém mais ouviu[01]esse som estranho?\""
+    },
+    "AREAD012.DAT:10:1": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, calor, liderança discreta",
+      "intent": "repetição enfática da questão anterior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Alguém mais ouviu[01]esse som estranho?\""
+    },
+    "AREAD012.DAT:10:6": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio com firmeza e preocupação",
+      "intent": "questionar a reação calma diante do perigo",
+      "risk_level": "medium",
+      "risk_notes": "preservar firmeza característica de Nina; tom realista mas determinado; nao ficar friá",
+      "t": "[14][C1]@\"Se é perigoso,[01]por que está rindo?[02]Não devemos sair[01]daqui logo?\""
+    },
+    "AREAD012.DAT:10:9": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "observação de ameaça iminente",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu CRÍTICO - registro arcaico/solene INEGOCIÁVEL; nunca modernizar ou aproximar de Ryu; 'it is following' = observação majestosa de perigo",
+      "t": "[14][81][01]\"Parece que nos[01]persegue.\""
+    },
+    "AREAD012.DAT:10:11": {
+      "speaker": "system",
+      "tone_register": "instrucional, imperativo",
+      "intent": "tutorial/instrução de controle de jogo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]!Pressione o botão ~ rapidamente[01]para correr!"
+    },
+    "AREAD012.DAT:10:12": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, honesto, alívio",
+      "intent": "expressar alívio após fuga",
+      "risk_level": "low",
+      "risk_notes": "Ryu conciso; 'Whew' localizado naturalmente em pt-BR",
+      "t": "[14][80]@\"Ufa! [0B]Bem![02]Conseguimos!...\"[13]0[0C][03][14]A"
+    },
+    "AREAD012.DAT:10:14": {
+      "speaker": "npc",
+      "tone_register": "exclamação de surpresa",
+      "intent": "reação de sobressalto",
+      "risk_level": "low",
+      "risk_notes": "NPC sem perfil definido; interjeição localizada",
+      "t": "[14][82]@\"Opa![01][04]"
+    },
+    "AREAD012.DAT:10:15": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, explicativo, amargo",
+      "intent": "explicação magistral sobre natureza mágica da maldição e seu crescimento",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu CRÍTICO - registro arcaico/elevado mantido rigorosamente; vocabulário majestoso ('dissipada', 'reforma'); tom distante e poderoso; preservar estrutura complexa; back-translation obrigatória",
+      "t": "[0C][06][14][C5]@\"A malícia contida[01]na maldição não pode ser[01]tão facilmente dissipada.[02]Ainda que tenha sido[01]golpeada, crescerá[02]lentamente na região[01]afetada pela maldição[01]até ficar forte[02]o bastante para se reformar. Pelo menos,[01]isto é o que[01][04][05] diz.\""
+    },
+    "AREAD012.DAT:10:17": {
+      "speaker": "npc",
+      "tone_register": "narrativo, acusatório, determinado",
+      "intent": "acusar humanos pela criação da maldição e indicar justiça merecida",
+      "risk_level": "medium",
+      "risk_notes": "NPC faz afirmação sobre justiça cósmica; preservar tom acusatório sem ser prolixo; [04][05] refere-se a personagem nomeado",
+      "t": "[0C][06][14][84]B\"Foram humanos que[01]criaram a maldição.[02][04][05] diz que colhem[01]o que plantaram.\""
+    },
+    "AREAD012.DAT:10:18": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, imperativo",
+      "intent": "comando para avançar e indicar rota de fuga",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu CRÍTICO - registro arcaico/majestoso preservado; tom distante e autoridade; 'must move on' = comando solene",
+      "t": "[0C][06][14][C5]@\"Devemos prosseguir.[02]Usai a escada ali.\""
+    },
+    "AREAD012.DAT:10:19": {
+      "speaker": "npc",
+      "tone_register": "narrativo, alerta urgente",
+      "intent": "informar sobre piora ambiental e impossibilidade de retorno",
+      "risk_level": "medium",
+      "risk_notes": "NPC reporta observação crítica; [04][05] = personagem; tom de urgência mantido",
+      "t": "[14][04][02]\"[04][05] diz que a bruma[01]da maldição cresceu.[02]Não conseguimos voltar.\""
+    }
+  }
+}

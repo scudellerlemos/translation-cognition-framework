@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD040.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, majestoso",
+      "intent": "desafio, alerta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem vai ali!?"
+    },
+    "AREAD040.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, majestado",
+      "intent": "desafio, alerta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem vai ali!?"
+    },
+    "AREAD040.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, solene",
+      "intent": "desafio protetor",
+      "risk_level": "medium",
+      "risk_notes": "Voz de guardiao arcaico; manter 'lugar sagrado' e reverencia a 'mestre'",
+      "t": "Quem ousa entrar no sagrado repouso de meu mestre?"
+    },
+    "AREAD040.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, assombro",
+      "intent": "reconhecimento, dúvida",
+      "risk_level": "high",
+      "risk_notes": "Referencia aos 'Eternos' (glossario); 'Thou' arcaico = 'tu/vós'; evitar antecipar identidade de Fou-Lu; manter ambiguidade",
+      "t": "Aguarda... Tu tambem és um dos Eternos...?"
+    },
+    "AREAD040.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, resoluto",
+      "intent": "recusa absoluta, lealdade",
+      "risk_level": "medium",
+      "risk_notes": "Tokens [02] devem estar presentes (2 quebras de pagina no source = 2 no target); 'e'en' = 'mesmo se'; manter arcaísmo; 'irmao' pode sugerir revelacao — ser cuidadoso mas fiel ao source",
+      "t": "Nao importa! Ninguem,[02]nem mesmo se fosse irmao de meu mestre,[02]pode ser permitido entrar!"
+    },
+    "AREAD040.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutro, ui",
+      "intent": "confirmacao de acao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deseja subir?"
+    },
+    "AREAD040.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "neutro, ui",
+      "intent": "oferecimento de opcao",
+      "risk_level": "low",
+      "risk_notes": "Token [12] preservado; opcoes binarias",
+      "t": "Deseja descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD040.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico, mistico",
+      "intent": "enigma, condicao",
+      "risk_level": "low",
+      "risk_notes": "'Ye wouldst' = 'vós que desejasseis'; tom enigmatico preservado",
+      "t": "Vos que caminhardes nesta senda, buscai primeiro a chave"
+    },
+    "AREAD040.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutro, ui",
+      "intent": "solicitacao de direcao",
+      "risk_level": "low",
+      "risk_notes": "Token [12] e [02] preservados; glossario 'Move' = 'Mover'",
+      "t": "Para onde deseja ir?[12][02][0C][93]Mover adiante[01]Subir[01]Nunca"
+    },
+    "AREAD040.DAT:8:12": {
+      "speaker": "system",
+      "tone_register": "neutro, ui",
+      "intent": "solicitacao de direcao (repetida)",
+      "risk_level": "low",
+      "risk_notes": "Identica a 8:11",
+      "t": "Para onde deseja ir?[12][02][0C][93]Mover adiante[01]Subir[01]Nunca"
+    },
+    "AREAD040.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutro, ui",
+      "intent": "solicitacao de acao",
+      "risk_level": "medium",
+      "risk_notes": "'Tomb' = 'Mausoléu' (glossario); 'Emperor's Tomb' pode sugerir Fou-Lu — nao resolver; manter 'Mausoléu do Imperador' como traduçao do nome/local",
+      "t": "O que deseja fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Nunca"
+    },
+    "AREAD040.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutro, tutorial",
+      "intent": "instrucao de mecanica",
+      "risk_level": "medium",
+      "risk_notes": "Tokens [10], [02], [05], [06], [7F] preservados exatos; 'switch' nao em glossario — nao tem regra, traduzir natural; contagem de [02] = 3 no source (preservar); 'cube' = bloco; 'path' = caminho; 'Mind' em glossario = 'Mental' mas aqui é mecanica de jogo — verificar contexto (neste caso, 'bloco' é a traducao correta, nao 'Mental')",
+      "t": "[10][02]Ficar na frente de um [05][02]interruptor[06] faz o chao iluminar.[02]Voce pode empurrar um bloco para frente pressionando o botao ~,[02]e para tras pressionando o botao [7F].[02]Alinhe tres blocos da mesma cor para criar um caminho."
+    },
+    "AREAD040.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "formal-arcaico, aviso",
+      "intent": "alerta mistico",
+      "risk_level": "low",
+      "risk_notes": "Tokens [05], [02] preservados; 'Red Eye' é nome/conceito — manter maiuscula; interjeicao 'Beware' = 'Cuidado' ou 'Tomai cuidado' (arcaico)",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

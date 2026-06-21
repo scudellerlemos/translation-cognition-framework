@@ -1,0 +1,52 @@
+{
+  "lines": {
+    "AREAD116.DAT:8:5": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "gratidão e reconhecimento formal",
+      "risk_level": "high",
+      "risk_notes": "Voz Fou-Lu crítica: manter registro arcaico (imperativo 'Sou vosso devedor'), não modernizar para 'devo favor'. Pronome 'vosso' marca majestade. Bunyan é nome — preservar.",
+      "t": "[0C][04][14][01][01]\"Então... sou vosso devedor... Bunyan, sim?\""
+    },
+    "AREAD116.DAT:8:13": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, poderoso com amargor crescente",
+      "intent": "despedida triste; reconhecimento do dever de partir",
+      "risk_level": "high",
+      "risk_notes": "Crítico: 'ministrations' → 'ministações' é erudito demais; usar 'cuidados' ou 'atençoes'. 'Quit this place' = 'abandonar/deixar este lugar' (use 'Sair' conforme glossário para UI, mas aqui é fala — 'partir' é mais solemne). Manter tom de despedida majestosa. 'The time has come' → 'chegou a hora' (solene, sem 'tem'). Testar byte: 141 permite a extensão pt-BR.",
+      "t": "[0C][06][14][C6]@\"Obrigado pelas vossas atencoes, Bunyan. [02]Chegou a hora de eu partir deste lugar.\""
+    },
+    "AREAD116.DAT:8:17": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, interrogativo, traço de curiosidade majestosa",
+      "intent": "pergunta sobre identidade/passado de Bunyan",
+      "risk_level": "medium",
+      "risk_notes": "'Thou wert' = 'Eras' ou 'Fostes' (arcaico pt-BR). Manter inversão: 'Tu eras...'. Byte 41 é curto — usar forma concisa. 'Soldier' = 'soldado'.",
+      "t": "[0C][06][14][C6]@\"Tu eras... um soldado?\""
+    },
+    "AREAD116.DAT:8:20": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, distante, cético",
+      "intent": "lamento contemplativo sobre incompreensão mortal",
+      "risk_level": "high",
+      "risk_notes": "Voz Fou-Lu crítica: 'mortals...They understand not' é inversão poética — manter ordem/sintaxe arcaica ('Os mortais... Nao compreendem'). Não soar moderno ('mortais não entendem'). Ellipsis inicial marca pausa melancólica.",
+      "t": "[0C][06][14][81]A\"Os mortais...[02]Nao compreendem...\""
+    },
+    "AREAD116.DAT:8:21": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, melancólico, desculpante",
+      "intent": "pedir desculpas; saudação final",
+      "risk_level": "high",
+      "risk_notes": "Crítico: 'mine thoughts' = 'meus pensamentos' (arcaico 'meus', não 'meus mesmos'). 'Merely spoke aloud' = 'simplesmente falei em voz alta'. 'Farewell' = 'Adeus' (solene). Manter tom de despedida triste do Fou-Lu — não soar apressado.",
+      "t": "[0C][06][14][C6]@\"Perdoai-me... Apenas falei meus pensamentos em voz alta. [02]Adeus.\""
+    },
+    "AREAD116.DAT:8:23": {
+      "speaker": "system",
+      "tone_register": "neutro, UI narrativo",
+      "intent": "oferecer opções de repouso/menu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que voce poderia descansar aqui... [12][8B][0C][93]Descansar Diario Nunca mente"
+    }
+  }
+}

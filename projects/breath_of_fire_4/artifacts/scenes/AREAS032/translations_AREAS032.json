@@ -1,0 +1,476 @@
+{
+  "lines": {
+    "AREAS032.DAT:8:0": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "boas-vindas confiante",
+      "risk_level": "high",
+      "risk_notes": "Voz Fou-Lu crítica: manter arcaísmo e tom imperial; não moderar",
+      "t": "[0C][02][14][80]@\"Pois bem! Eu vos[01]estava esperando.\""
+    },
+    "AREAS032.DAT:8:1": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "boas-vindas confiante",
+      "risk_level": "high",
+      "risk_notes": "Repetição de 8:0 — manter voz imperial consistente",
+      "t": "[0C][02][14][80]@\"Pois bem! Eu vos[01]estava esperando.\""
+    },
+    "AREAS032.DAT:8:2": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, determinado, charged",
+      "intent": "confrontação urgente",
+      "risk_level": "high",
+      "risk_notes": "Nina: tom forte, não frio; demanda respostas diretas; 'Elina' = spoiler candidato até reveal",
+      "t": "[0C][04][14][81]A\"Você...! O que[01]fez com Elina!?\""
+    },
+    "AREAS032.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "formal, neutro",
+      "intent": "pergunta informativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][03][14][02][02]\"Onde está o General[01]Rhun?\""
+    },
+    "AREAS032.DAT:8:5": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, informativo",
+      "intent": "explicação cortês mas significativa",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: 'Captain [04][04]' = título + nome token; manter formalidade imperial; 'General left for capital' = contexto lore",
+      "t": "[0C][02][14][80]@\"Ah, Capitão [04][04].[02]Receio que o tenha[01]perdido.[02]O General partiu[01]para a capital.\""
+    },
+    "AREAS032.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "formal, neutro, surpreso",
+      "intent": "pergunta urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][03][14][02][02]\"Como? Por que?\""
+    },
+    "AREAS032.DAT:8:7": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, distante",
+      "intent": "explicação velada, filosófica",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu: 'would not be able to appreciate what I'm trying to do' = núcleo de spoiler/trama; manter ambiguidade e majestade da voz; anti-spoiler construção obrigatória",
+      "t": "[0C][02][14][80]@\"Receio que o General[01]e outros como ele[02]não pudessem[01]compreender o que[01]intento realizar...\""
+    },
+    "AREAS032.DAT:8:8": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, dominante, angry",
+      "intent": "desafio passional",
+      "risk_level": "high",
+      "risk_notes": "Nina: forte, não passiva; 'Elina isn't here' = revelação motriz; exclamação dupla '!!' → tom elevado",
+      "t": "[0C][04][14][83]A\"Não me importa com o[01]General ou o que ele[01]pensa!![02]O que quis dizer[01]quando disse que[01]Elina não está aqui!?\""
+    },
+    "AREAS032.DAT:8:10": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, urgente",
+      "intent": "chamada de atenção",
+      "risk_level": "medium",
+      "risk_notes": "Ryu: registroSimples; 'Wait!' interjeição → localizar; byte_budget 17 é apertado",
+      "t": "[0C][04][14][C2]@\"Espera!\""
+    },
+    "AREAS032.DAT:8:11": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, emocional, esperançoso",
+      "intent": "reconhecimento de vinda profetizado",
+      "risk_level": "critical",
+      "risk_notes": "Voz de Elina (identidade oculta até moment): tom sobrenatural; 'You came...Just as I'd prayed' = spoiler de conhecimento prévio; sem nome até aqui",
+      "t": "[14][84][03]\"[04][02]...[0B]Você[01]veio...Como eu[01]havia rezado...\""
+    },
+    "AREAS032.DAT:8:12": {
+      "speaker": "Ryu",
+      "tone_register": "simples, caloroso, honest",
+      "intent": "expressão de alívio e alegria",
+      "risk_level": "high",
+      "risk_notes": "Ryu: 'You don't know how glad' = Ryu expressa emoção simples mas genuína; manter tom direto; 'to see you' = ternura sem verbosidade",
+      "t": "[0C][06][14][C2]@\"Elina! Não sabe[01]como fico feliz em[01]vê-la!\""
+    },
+    "AREAS032.DAT:8:13": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, compassivo, determinado",
+      "intent": "convite à fuga",
+      "risk_level": "medium",
+      "risk_notes": "Voz feminina (personagem secundário forte); 'all go home together' = esperança de resolução simples que será frustrada",
+      "t": "[0C][06][14][85]D\"Vamos, Elina--[01]podemos ir para casa[01]todos juntos agora.\""
+    },
+    "AREAS032.DAT:8:14": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, emotivo, contido",
+      "intent": "gratidão com ressalva trágica",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'But...' = inflexão que sinaliza impossibilidade próxima; spoiler de conflito; manter tom esperançoso antes da virada",
+      "t": "[14][06][05]\"Obrigada por virem[01]por mim, [04][02]...[01][04][01]...[02]Mas...\""
+    },
+    "AREAS032.DAT:8:15": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, resignado",
+      "intent": "revelação de impedimento",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'I can't leave here' = ponto de virada trágica; manter tom calmo/resignado, não desespero",
+      "t": "[14][06][05]\"Receio que não possa[01]sair daqui...\""
+    },
+    "AREAS032.DAT:8:16": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, urgente, frustrated",
+      "intent": "apelo lógico para escapar",
+      "risk_level": "high",
+      "risk_notes": "Personagem feminino (provavelmente Jean): 'Empire is distracted' = lore contextual; 'could get away' = esperança que será falha",
+      "t": "[0C][06][14][87]D\"Por que não!?[02]A capital foi[01]atacada--o Império[01]está distraído![02]Poderíamos fugir[01]antes que percebessem!\""
+    },
+    "AREAS032.DAT:8:17": {
+      "speaker": "Ryu",
+      "tone_register": "simples, resoluto, protetor",
+      "intent": "apoio direto e promessa",
+      "risk_level": "high",
+      "risk_notes": "Ryu: 'I swear it!' = Ryu expressa promessa genuína; tom jovem/honesto, não calculista; manter contraste com Fou-Lu",
+      "t": "[0C][06][14][C2]@\"Ela está certa. Vamos,[01]Elina.[02]Vou protegê-la--[01]juro!\""
+    },
+    "AREAS032.DAT:8:18": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, profético, trágico",
+      "intent": "revelação de destino interconectado",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'world is changing' = lore profundo (Endless/grande mudança); 'path that is causing that change' = anti-spoiler: manter ambiguidade sobre papel de Ryu/Fou-Lu; 'You're part of it' = duplicidade hint (Ryu=Fou-Lu?)",
+      "t": "[14][86][05]\"O mundo está[01]mudando...Sinto[01]isso...[02][14][84][03]E você, [04][02], e[01][04][01] e os[01]demais...[02]Estão todos[01]envolvidos no[01]caminho que causa[01]essa mudança.[02]Fazem parte dela.\""
+    },
+    "AREAS032.DAT:8:19": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, confuso",
+      "intent": "chamada incerteza",
+      "risk_level": "medium",
+      "risk_notes": "Nina: 'Elina...?' = entonação de dúvida; manter tom questionador",
+      "t": "[0C][06][14][83]A\"Elina...?\""
+    },
+    "AREAS032.DAT:8:20": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, urgente, profético",
+      "intent": "mandato de destino",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'certain place, at certain time' = anti-spoiler: ambiguidade de profecia; manter tom místico/sobrenatural; 'You must be there!' = imperativo",
+      "t": "[14][86][05]\"Você deve continuar[01]sua jornada...[02]É necessário em um[01]lugar específico, em[01]um momento exato...[02]Você precisa estar lá!\""
+    },
+    "AREAS032.DAT:8:21": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, emotivo",
+      "intent": "sussurro de solidariedade",
+      "risk_level": "medium",
+      "risk_notes": "Personagem feminino: 'Elina...' = tom reconfortante/triste",
+      "t": "[0C][06][14][88]D\"Elina...\""
+    },
+    "AREAS032.DAT:8:22": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, controlado",
+      "intent": "pedido de privacidade",
+      "risk_level": "high",
+      "risk_notes": "Elina: 'Could you leave us alone' = momento privado antes de revelação trágica; manter tons quieto/formal",
+      "t": "[14][06][05]\"[04][01]...[02]Poderiam nos deixar[01]sozinhos por um momento?\""
+    },
+    "AREAS032.DAT:8:23": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, educado",
+      "intent": "agradecimento parcial",
+      "risk_level": "medium",
+      "risk_notes": "NPC: text truncado em '[04]'; manter formalidade simples; byte_budget 40 restringe",
+      "t": "[14][04][03]\"Obrigada, [04][01].[01]E, [04]\""
+    },
+    "AREAS032.DAT:8:25": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, contido",
+      "intent": "agradecimento simples",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84][03]\"Obrigada.\""
+    },
+    "AREAS032.DAT:8:27": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, confuso, questionador",
+      "intent": "pergunta de conexão misteriosa",
+      "risk_level": "critical",
+      "risk_notes": "Nina: 'How did Elina know your name' = anti-spoiler questão central; Elina conhece identidade de Ryu (=Fou-Lu?); manter tom de confusão genuína, não resolver",
+      "t": "[0C][06][14][C1]@\"Espera um momento...[02][14][89]DComo Elina sabia[01]seu nome, [04]\""
+    },
+    "AREAS032.DAT:8:29": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, incerteza",
+      "intent": "repetição de confusão",
+      "risk_level": "medium",
+      "risk_notes": "Nina: eco de dúvida; reforça mistério",
+      "t": "[0C][06][14][83]A\"Elina...?\""
+    },
+    "AREAS032.DAT:8:30": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, profético, explicativo",
+      "intent": "elucidação de destino",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'powerful stream carrying you along' = lore de fluxo/destino; 'caught up in' = tema de ser carregado por forças maiores; manter tom sobrenatural/inevitável",
+      "t": "[14][86][05]\"[04][02]...[02]Já lhe disse[01]como você faz parte[02]da grande mudança[01]que vem...[02]Como está envolvido[01]em uma corrente[01]poderosa que o leva.\""
+    },
+    "AREAS032.DAT:8:31": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, enigmático",
+      "intent": "revelação de duas forças",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'One of the streams' = duas entidades mencionadas implicitamente (Ryu/Fou-Lu?); anti-spoiler: não resolver identidade; manter ambiguidade",
+      "t": "[14][86][05]\"Uma das correntes[01]que move o mundo é [04]\""
+    },
+    "AREAS032.DAT:8:32": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, profético",
+      "intent": "promessa de revelação futura",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'When these two streams meet' = plot de duplicidade; 'true meaning of your journey' = anti-spoiler: verdade futura; manter tom místico",
+      "t": "[14][86][05]\"Quando essas duas[01]correntes encontrarem,[02]você saberá o[01]verdadeiro sentido[01]de sua jornada.\""
+    },
+    "AREAS032.DAT:8:33": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, insistente",
+      "intent": "demanda de explicação",
+      "risk_level": "high",
+      "risk_notes": "Nina: 'How can you know these things' = liderança questionadora; tom firme, não passivo; múltiplas perguntas, mantém pressão",
+      "t": "[0C][06][14][83]A\"O que quer dizer,[01]Elina?[02]Como pode saber[01]essas coisas?[02]E por que não pode[01]sair daqui?\""
+    },
+    "AREAS032.DAT:8:34": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, hesitante, trágico",
+      "intent": "preparação para revelação terrível",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'It's because...Because I'm...' = pausa antes de transformação; tom quebrado/hesitante; spoiler imediato",
+      "t": "[14][86][05]\"[04][02]...É[01]porque...[02]Porque eu...\""
+    },
+    "AREAS032.DAT:8:37": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, shocked",
+      "intent": "rejeição de revelação",
+      "risk_level": "high",
+      "risk_notes": "Nina: 'Transformed...?' = horror; interjeição de dúvida-rejeição; exclamação dupla exige energia",
+      "t": "[0C][06][14][83]A\"Transformada...?[02]Do que está falando!?\""
+    },
+    "AREAS032.DAT:8:39": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, horrified",
+      "intent": "rejeição de sacrifício",
+      "risk_level": "high",
+      "risk_notes": "Personagem feminino: 'A sacrifice!?' = horror absoluto; interjeição dupla",
+      "t": "[0C][06][14][81]A\"Um sacrifício!?\""
+    },
+    "AREAS032.DAT:8:44": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, narrativo, melancólico",
+      "intent": "narração de consequência",
+      "risk_level": "high",
+      "risk_notes": "Nina (narradora): 'And so, Elina became engaged' = consequência; 'if [04][02] had stopped them' = contrafáctico de remorso; manter tom narrativo-formal",
+      "t": "[0C][06][14][8C]A\"Não...\"[13]0[0C][02][14][C1]@\"...[0B]...[0B]...[02]E assim, Elina se[01]viu noiva do[01]Príncipe de Ludia.[02][14][8D]DCerto, se [04][02][01]os tivesse[01]detido, neste[01]momento...\""
+    },
+    "AREAS032.DAT:8:45": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, narrativo, melancólico",
+      "intent": "narração de consequência",
+      "risk_level": "high",
+      "risk_notes": "Repetição narrativa; manter tom reflexivo",
+      "t": "[0C][02][14][C1]@\"...[0B]...[0B]...[02]E assim, Elina se[01]viu noiva do[01]Príncipe de Ludia.[02][14][8D]DCerto, se [04][02][01]os tivesse[01]detido, neste[01]momento...\""
+    },
+    "AREAS032.DAT:8:46": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, intrigued",
+      "intent": "especulação sobre conversa privada",
+      "risk_level": "medium",
+      "risk_notes": "Nina: 'what could they be talking about' = tom curioso/preocupado; frase longa requer concisão (budget 135 apertado)",
+      "t": "[0C][02][14][C1]@\"[04][02] está lá há[01]muito tempo...[02]Sobre o que[01]estarão conversando[01]tão demoradamente?\""
+    },
+    "AREAS032.DAT:8:47": {
+      "speaker": "unknown",
+      "tone_register": "emoção extrema",
+      "intent": "grito de desespero",
+      "risk_level": "high",
+      "risk_notes": "Grito (personagem desconhecido): 'NOOOOOO!' = onomatopeia emocional; localizar como exclamação em pt-BR; byte_budget 26 restringe",
+      "t": "[14][8C]A\"NÃO!\"[13]@[0C][05][14]\""
+    },
+    "AREAS032.DAT:8:52": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, furioso, determinado",
+      "intent": "ameaça de morte",
+      "risk_level": "high",
+      "risk_notes": "Personagem (provavelmente Ryu): 'You...You...Maniac!Monster!' = repetição de incredulidade/fúria; 'bare hands' = tom visceral; interjeição dupla",
+      "t": "[0C][06][14][81]A\"Você...Você...Maníaco![01]Monstro![02]Vou matar com[01]minhas próprias mãos!!\""
+    },
+    "AREAS032.DAT:8:53": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, indignado",
+      "intent": "rejeição de ameaça, afirmação de poder",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu: 'You would kill me!?' = indignação imperial; 'I can create gods!' = pretensão de divindade (spoiler lore); manter arcaísmo majestático",
+      "t": "[0C][06][14][80]@\"Matareis...[01]a mim!?[02]A mim...que posso[01]criar deuses! Não[01]podeis matar-me!\""
+    },
+    "AREAS032.DAT:8:54": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, determinado",
+      "intent": "declaração de propósito divino",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: 'I have a destiny!' = declaração de fado imperial; 'use my knowledge to change the world' = ambição total; manter tom solene/imperial",
+      "t": "[0C][06][14][80]@\"Tenho um destino![02]Hei de usar meu[01]saber para[01]transformar o mundo!\""
+    },
+    "AREAS032.DAT:8:55": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, débil",
+      "intent": "sussurro final",
+      "risk_level": "medium",
+      "risk_notes": "Elina: último sussurro; nome token [04][02]",
+      "t": "[14][86]E\"[04][02]...\""
+    },
+    "AREAS032.DAT:8:56": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, resignado, trágico",
+      "intent": "aceitação de destino terminal",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'It's too late for me' = momento de morte iminente; tom calmo/aceito, não pânico; 'too late' = finitude",
+      "t": "[14][86]E\"[04][02]...[02]É...[0B]É muito[01]tarde para mim.\""
+    },
+    "AREAS032.DAT:8:57": {
+      "speaker": "Ryu",
+      "tone_register": "simples, devastado, culpado",
+      "intent": "remorso e confissão",
+      "risk_level": "high",
+      "risk_notes": "Ryu: 'I'm sorry...If I'd only gotten here sooner' = remorso genuíno; tom quebrado/magoado; contraste com Fou-Lu crítico",
+      "t": "[0C][05][14][C2]@\"Elina...Eu...[02]Desculpe...Se eu[01]tivesse chegado[01]antes...Eu...\""
+    },
+    "AREAS032.DAT:8:58": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, fragmentado",
+      "intent": "último pensamento incompleto",
+      "risk_level": "medium",
+      "risk_notes": "Elina: frase truncada; 'I had [04]' = nome token incompleto; manter fragmentação",
+      "t": "[14][86]E\"[04][02]...[02]Eu tinha [04]\""
+    },
+    "AREAS032.DAT:8:59": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, implorador, desesperado",
+      "intent": "pedido de libertação",
+      "risk_level": "critical",
+      "risk_notes": "Elina: 'Don't let me suffer any more' = pedido de eutanásia; 'forever like this' = horror de transformação eterna; tom de desespero controlado",
+      "t": "[14][86]E\"Não quero viver[01]para sempre assim,[01][04][02].[02]Por favor, [04][02]...[01]Não me deixe[01]sofrer mais.\""
+    },
+    "AREAS032.DAT:8:60": {
+      "speaker": "Ryu",
+      "tone_register": "simples, emocionado extremamente",
+      "intent": "confissão de amor e conflito moral",
+      "risk_level": "critical",
+      "risk_notes": "Ryu: 'I love you' = confissão central; 'I can't do it!' = dilema moral (matar amada); tom quebrado/hesitante; pausas [0B] = silêncios",
+      "t": "[0C][05][14][03][01]\"Eu...[0B][0B]Não consigo![02]Elina...[0B]Eu...[0B]Eu[01]a amo, Elina!\""
+    },
+    "AREAS032.DAT:8:61": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, pacífico, resignado",
+      "intent": "afirmação e pedido final",
+      "risk_level": "high",
+      "risk_notes": "Elina: 'That's why I'm asking you' = lógica de amor/libertação; 'only one I can ask' = privilégio/responsabilidade; tom calmo/aceito",
+      "t": "[14][84]C\"Eu sei.[02]Por isso estou[01]pedindo a você, [04][02].[02]Você é o único[01]a quem posso pedir[01]isso.\""
+    },
+    "AREAS032.DAT:8:62": {
+      "speaker": "unknown",
+      "tone_register": "etéreo, sereno, amoroso",
+      "intent": "confirmação final de amor",
+      "risk_level": "high",
+      "risk_notes": "Elina: 'last I'll see' = despedida visual; 'I'm happy knowing' = aceitação de morte; tom de paz/ternura",
+      "t": "[14][84]C\"Fico feliz sabendo[01]que seu rosto será[01]o último que verei.\""
+    },
+    "AREAS032.DAT:8:63": {
+      "speaker": "system",
+      "tone_register": "narrativo, simples",
+      "intent": "transição narrativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando ele voltou..."
+    },
+    "AREAS032.DAT:8:64": {
+      "speaker": "system",
+      "tone_register": "narrativo, simples",
+      "intent": "descrição de silêncio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele nada disse a[01]nós..."
+    },
+    "AREAS032.DAT:8:65": {
+      "speaker": "system",
+      "tone_register": "narrativo, reflexivo",
+      "intent": "transição contemplativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ainda..."
+    },
+    "AREAS032.DAT:8:66": {
+      "speaker": "system",
+      "tone_register": "narrativo, reflexivo",
+      "intent": "revelação de compreensão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu soube então"
+    },
+    "AREAS032.DAT:8:67": {
+      "speaker": "system",
+      "tone_register": "narrativo, melancólico",
+      "intent": "confirmação de perda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "que nunca mais veria minha[01]irmã."
+    },
+    "AREAS032.DAT:8:68": {
+      "speaker": "system",
+      "tone_register": "narrativo, transicional",
+      "intent": "transição de capítulo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E assim começamos"
+    },
+    "AREAS032.DAT:8:69": {
+      "speaker": "system",
+      "tone_register": "narrativo, simples",
+      "intent": "descrição de jornada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "a última etapa de nossa[01]jornada,"
+    },
+    "AREAS032.DAT:8:70": {
+      "speaker": "system",
+      "tone_register": "narrativo, solene, lúgubre",
+      "intent": "declaração de sombra inevitável",
+      "risk_level": "medium",
+      "risk_notes": "The Endless = term do glossário (tradução: 'Eternos'); manter tom solene",
+      "t": "sempre, à sombra dos[01]Eternos."
+    },
+    "AREAS032.DAT:8:71": {
+      "speaker": "system",
+      "tone_register": "narrativo, reflexivo, culpado",
+      "intent": "lamento de arrogância",
+      "risk_level": "medium",
+      "risk_notes": "Narrador (provável Nina/Ryu adulto): 'our pride that doomed us' = tema de hybris; tom melancólico",
+      "t": "[14][0E][08]\"Foi nosso orgulho[01]que nos condenou...\""
+    },
+    "AREAS032.DAT:8:72": {
+      "speaker": "system",
+      "tone_register": "narrativo, reflexivo, erudito",
+      "intent": "elucidação de erro",
+      "risk_level": "medium",
+      "risk_notes": "Narrador: 'To make a god...attempt to destroy the ancient gods' = lore de Empire/divindade/Endless; tom solene",
+      "t": "[14][0E][08]\"Criar um deus...[02]E tentar[01]destruir os deuses[01]antigos...\""
+    },
+    "AREAS032.DAT:8:73": {
+      "speaker": "system",
+      "tone_register": "narrativo, reflexivo, retórico",
+      "intent": "pergunta retórica de lamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Que estávamos pensando?\""
+    },
+    "AREAS032.DAT:8:74": {
+      "speaker": "system",
+      "tone_register": "narrativo, aviso, sombreado",
+      "intent": "conselho de não-retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Provavelmente é melhor não[01]voltarem para lá..."
+    }
+  }
+}

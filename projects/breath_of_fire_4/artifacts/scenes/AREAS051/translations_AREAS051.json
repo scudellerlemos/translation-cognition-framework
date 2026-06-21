@@ -1,0 +1,372 @@
+{
+  "lines": {
+    "AREAS051.DAT:7:2": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, determinada",
+      "intent": "Explicar plano para encontrar P'ung Ryong via dispositivo na Torre do Vento",
+      "risk_level": "medium",
+      "risk_notes": "Referência a lore (Torre do Vento, P'ung Ryong); preservar o tom esperançoso mas realista de Nina. Byte budget: 208.",
+      "t": "[14][C1]@\"Isso mesmo. [02]Existe um dispositivo na [01]Torre do Vento que nos [01]levara muito acima da terra. [02]Se o usarmos, conseguiremos [01]encontrar P'ung Ryong.\""
+    },
+    "AREAS051.DAT:7:3": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, curto",
+      "intent": "Questionar sobre o paradeiro de alguém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Espere um pouco... [01]Onde esta [04][03]?\""
+    },
+    "AREAS051.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "surpresa, breve",
+      "intent": "Expressar choque/incredulidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Como assim!? Mas eu [01]achava...\""
+    },
+    "AREAS051.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "reflexivo, ponderado",
+      "intent": "Reconhecer dificuldade da jornada a pé",
+      "risk_level": "medium",
+      "risk_notes": "Referência a Planícies Douradas; preservar dúvida razoável do NPC. Byte budget apertado (121).",
+      "t": "[14][01][01]\"Pode ser verdade... [02]Mas as Planicies Douradas [01]sao grandes demais para [01]procurar a pe. [02][04]"
+    },
+    "AREAS051.DAT:7:11": {
+      "speaker": "npc",
+      "tone_register": "despedida formal, breve",
+      "intent": "Desejo de sorte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][01]\"Boa sorte, [04]"
+    },
+    "AREAS051.DAT:7:12": {
+      "speaker": "npc",
+      "tone_register": "despedida formal, breve",
+      "intent": "Desejo de sorte",
+      "risk_level": "low",
+      "risk_notes": "Linha duplicada do offset anterior.",
+      "t": "[14][02][01]\"Boa sorte, [04]"
+    },
+    "AREAS051.DAT:7:15": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, reflexiva",
+      "intent": "Reconhecer que talvez não haja vantagem para eles",
+      "risk_level": "medium",
+      "risk_notes": "Ambiguidade de benefício; tom realista de Nina. Byte budget: 96.",
+      "t": "[14][C1]@\"Bem, voce tem razao... [02][14][82]ADetalhe que talvez nao [01]haja beneficio para nos.\""
+    },
+    "AREAS051.DAT:7:16": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, honesta",
+      "intent": "Admitir incerteza do plano mas manter determinação",
+      "risk_level": "medium",
+      "risk_notes": "Transição para resolução moral; preservar firmeza de liderança de Nina.",
+      "t": "[14][C1]@\"E e verdade que nao [01]sabemos se nosso plano vai [01]funcionar... [02]Ainda assim...\""
+    },
+    "AREAS051.DAT:7:17": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, determinada",
+      "intent": "Expressar que ação é certa mesmo com incerteza",
+      "risk_level": "medium",
+      "risk_notes": "Pico moral de determinação; essencial manter a voz firme de liderança. Byte budget: 92.",
+      "t": "[14][C1]@\"Nao seria certo [02][14][83]Aficar aqui e nao fazer [01]nada.\""
+    },
+    "AREAS051.DAT:7:18": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, esperançosa",
+      "intent": "Marcar chegada próxima a Wyndia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Em breve estaremos em [05][02]Wyndia[06], [04]"
+    },
+    "AREAS051.DAT:7:19": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, esperançosa",
+      "intent": "Marcar chegada próxima a Wyndia",
+      "risk_level": "low",
+      "risk_notes": "Duplicata.",
+      "t": "[14][C1]@\"Em breve estaremos em [05][02]Wyndia[06], [04]"
+    },
+    "AREAS051.DAT:7:20": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, esperançosa",
+      "intent": "Marcar chegada próxima a Wyndia",
+      "risk_level": "low",
+      "risk_notes": "Duplicata.",
+      "t": "[14][C1]@\"Em breve estaremos em [05][02]Wyndia[06], [04]"
+    },
+    "AREAS051.DAT:7:21": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, nostálgica",
+      "intent": "Compartilhar origem pessoal em Castelo Wyndia",
+      "risk_level": "medium",
+      "risk_notes": "Lore crítico (Castelo Wyndia, Elina); identity/voz de Nina deve manter calor nostálgico sem perder firmeza. Byte budget: 86.",
+      "t": "[14][C1]@\"Elina e eu nascemos e [01]crescemos dentro do Castelo [02]Wyndia...\""
+    },
+    "AREAS051.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "urgência, preocupação",
+      "intent": "Justificar ação desesperada para evitar captura",
+      "risk_level": "high",
+      "risk_notes": "Spoiler potencial (captura/Ludia/Elina); alto risco emocional. Verificar naturalidade da justificativa. Back-translation exigida.",
+      "t": "[14][81]A\"Mas tivemos que ir! Se [01]voce for capturado por Ludia [01]de novo, [02]nunca conseguiremos [01]encontrar Elina.\""
+    },
+    "AREAS051.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "alívio, urgência",
+      "intent": "Expressar alívio ao encontrar alguém buscado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][02]\"La esta voce! [01]Finalmente! [02]Procurei por voce em [01]todos os lugares!\""
+    },
+    "AREAS051.DAT:7:26": {
+      "speaker": "npc",
+      "tone_register": "urgência, apelo",
+      "intent": "Pedir ajuda de Dragon Boy para voltar para casa",
+      "risk_level": "medium",
+      "risk_notes": "Referência a 'Dragon Boy' (identidade de Ryu); preservar tom de apelo infantil/desesperado. Byte budget: 118.",
+      "t": "[14][04][02]\"Precisa nos ajudar, Garoto [01]Dragao! [02]Conseguimos voltar para [01]casa, mas...\""
+    },
+    "AREAS051.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "urgência, infantil",
+      "intent": "Apelo direto por ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][02]\"Precisamos de sua ajuda! [01]Voce vem nos ajudar?\"[12]"
+    },
+    "AREAS051.DAT:7:28": {
+      "speaker": "npc",
+      "tone_register": "reclamação, infantil",
+      "intent": "Reclamar sobre falta de ajuda com tom criança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][02]\"Voce nao esta sendo [01]legal! [02]Por favor vem nos ajudar!\"[12]"
+    },
+    "AREAS051.DAT:7:29": {
+      "speaker": "npc",
+      "tone_register": "bravata, infantil",
+      "intent": "Chamar de chato e pedir ajuda com desleixo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][02]\"Nao seja mauzinho! Vem [01]nos ajudar!\"[12]"
+    },
+    "AREAS051.DAT:7:30": {
+      "speaker": "npc",
+      "tone_register": "queixa, infantil, sarcástico",
+      "intent": "Comparar a pessoa com monstros e pedir ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][02]\"Voce e chato igual [01]àqueles pesadelos! [02]Vem nos ajudar--por [01]favorzinho?\"[12]"
+    },
+    "AREAS051.DAT:7:31": {
+      "speaker": "npc",
+      "tone_register": "alegria, gratidão",
+      "intent": "Expressar alívio e gratidão pela aceitação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][02]\"Mesmo!? Eba! [01]Obrigado!\""
+    },
+    "AREAS051.DAT:7:32": {
+      "speaker": "npc",
+      "tone_register": "desamparo, infantil",
+      "intent": "Expressar confusão após longa ausência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][02]\"Ficamos longe de casa [01]por tanto tempo, [02]que nao sabemos mais [01]o que fazer!\""
+    },
+    "AREAS051.DAT:7:45": {
+      "speaker": "npc",
+      "tone_register": "onomatopeia, exclamação",
+      "intent": "Som de personagem/criatura (Pippiki)",
+      "risk_level": "low",
+      "risk_notes": "Localizado: onomatopeia = som; manter como interjeição pt-BR equivalente.",
+      "t": "[14][08][03][0A][01]\"Pippiki!\""
+    },
+    "AREAS051.DAT:7:51": {
+      "speaker": "system",
+      "tone_register": "neutro, menu",
+      "intent": "Menu de seleção de destino (UI)",
+      "risk_level": "low",
+      "risk_notes": "Texto de menu; preservar estrutura exata. Byte budget apertado (100).",
+      "t": "Para onde voce quer ir?[12][01][0C][93]Para as Planicies Douradas[01]Sair das Planicies[01]Nenhum lugar"
+    },
+    "AREAS051.DAT:7:52": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, reflexivo",
+      "intent": "Estimar tempo para chegar à aldeia abandonada",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Ryu deve ser lacônica e simples; preservar ingenuidade otimista. Byte budget: 100. Verificar 'abandonada' (typo EN: 'abandonded').",
+      "t": "[14][C2]@\"No ritmo que vamos, [01]devemos chegar na [02]aldeia abandonada [01]amanha...\""
+    },
+    "AREAS051.DAT:7:53": {
+      "speaker": "Ryu",
+      "tone_register": "simples, preocupação contida",
+      "intent": "Expressar esperança de que Império não tenha capturado ninguém",
+      "risk_level": "medium",
+      "risk_notes": "Voz Ryu: direto, sem palavras desnecessárias. Referência Império (lore). Byte budget: 78.",
+      "t": "[14][C2]@\"Espero que o Imperio [01]nao tenha achado ninguem [01]ainda...\""
+    },
+    "AREAS051.DAT:7:55": {
+      "speaker": "Nina",
+      "tone_register": "confusão, perturbação existencial",
+      "intent": "Questionar identidade de Ryu/Fou-Lu",
+      "risk_level": "critical",
+      "risk_notes": "SPOILER CRÍTICO: ambiguidade de identidade (Ryu vs Fou-Lu) NÃO pode ser resolvida. Gênero em pt-BR forçaria concordância ('ele'); manter construção neutra max. Back-translation obrigatória. Byte budget: 107.",
+      "t": "[0C][04][14][C1]@\"O que isso significa, [04][02]? [02]Isso quer dizer que o [04][05] que conhecemos nunca [01]existiu?\""
+    },
+    "AREAS051.DAT:7:56": {
+      "speaker": "npc",
+      "tone_register": "negação emocional",
+      "intent": "Recusar aceitar revelação",
+      "risk_level": "high",
+      "risk_notes": "Resposta emocional a spoiler anterior; alto risco. Preservar rejeição sincera.",
+      "t": "[0C][04][14][89]A\"Nao consigo acreditar... [01]Nao quero acreditar...\""
+    },
+    "AREAS051.DAT:7:57": {
+      "speaker": "Nina",
+      "tone_register": "auto-correção, volta ao foco prático",
+      "intent": "Desculpar-se por pensamentos pessoais e refocalizar no povo da aldeia",
+      "risk_level": "high",
+      "risk_notes": "Transição crítica; Nina mostra liderança e empatia. Byte budget: 143 (mais folgado). Back-translation.",
+      "t": "[0C][04][14][C1]@\"Desculpe... Por que estou [01]falando isso? [02][14][82]APrecisamos pensar no povo [01]da aldeia agora...\""
+    },
+    "AREAS051.DAT:7:61": {
+      "speaker": "system",
+      "tone_register": "narração, aconselhamento",
+      "intent": "Sugerir descanso ao jogador",
+      "risk_level": "low",
+      "risk_notes": "Mensagem de sistema; tom gentil/neutro.",
+      "t": "Voce deveria descansar..."
+    },
+    "AREAS051.DAT:7:62": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, imperativo",
+      "intent": "Afirmação de identidade (Yorae Dragon)",
+      "risk_level": "critical",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu DEVE soar arcaico/majestoso/distante. Nunca moderno/casual. Referência identidade Yorae Dragon (spoiler futuro). Byte budget: 17 (EXTREMAMENTE curto). Back-translation.",
+      "t": "[14][C4]@\"Tu es [04]"
+    },
+    "AREAS051.DAT:7:63": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, imperativo absoluto",
+      "intent": "Declarar conhecimento e exigir submissão",
+      "risk_level": "critical",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu majestático; 'Yorae Dragon' é termo lore revelação-futura. NUNCA soar como Ryu. Byte budget: 93. Back-translation.",
+      "t": "[14][C4]@\"Sabemos que tu es o [01]Dragao Yorae. [02]Viraras conosco agora.\""
+    },
+    "AREAS051.DAT:7:66": {
+      "speaker": "npc",
+      "tone_register": "confusão, questionamento",
+      "intent": "Pedir esclarecimento sobre afirmação anterior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][8A]D\"Do que voce esta [01]falando?\""
+    },
+    "AREAS051.DAT:7:69": {
+      "speaker": "npc",
+      "tone_register": "apelo, urgência emocional",
+      "intent": "Rogar permissão para verificar bem-estar de pessoas",
+      "risk_level": "medium",
+      "risk_notes": "Lore (aldeia/capital); tom apelativo intenso. Byte budget: 96.",
+      "t": "[0C][05][14][01][01]\"Deixa a gente ir la [01]e confirmar que estao [01]bem! Por favor!\""
+    },
+    "AREAS051.DAT:7:70": {
+      "speaker": "npc",
+      "tone_register": "questionamento, preocupação",
+      "intent": "Conectar monstro da capital a Ryu/Fou-Lu",
+      "risk_level": "critical",
+      "risk_notes": "SPOILER: conecta monstro à identidade dual (Ryu/Fou-Lu/outro Ryu). Não pode resolver ambiguidade. Alto risco. Byte budget: 157 (folgado). Back-translation.",
+      "t": "[0C][06][14][81]A\"Voce acha que... [02]Voce acha que o [01]monstro que apareceu [01]na capital [02]tem algo a ver [01]com o outro [04]"
+    },
+    "AREAS051.DAT:7:73": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, lógica hierárquica",
+      "intent": "Rejeitar noção de plano pessoal; afirmar obediência militar",
+      "risk_level": "high",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu distante/lógico/imperial. Referência 'general' (lore militar). Byte budget: 187 (folgado). Back-translation.",
+      "t": "[0C][06][14][8A]D\"Nao tenho 'plano'. [02]Simplesmente vou [01]encontrar o general [02]que me deu meus comandos [02]e te colocarei sob sua [01]custoda. [01]Eh tudo.\""
+    },
+    "AREAS051.DAT:7:75": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, confiança majestosa",
+      "intent": "Afirmar que General Rhun sobreviverá a monstros",
+      "risk_level": "high",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu solene. Referência General Rhun (lore militar). Byte budget: 215 (folgado). Back-translation.",
+      "t": "[0C][06][14][8C]E\"O General Rhun eh [01]veterano de muitas [01]campanhas! [02]Levara mais que [01]uns monstros para [01]mata-lo! [02]Tenho certeza que [01]ele me espera na [02]Sede do Exercito.\""
+    },
+    "AREAS051.DAT:7:77": {
+      "speaker": "npc",
+      "tone_register": "confusão emocional, introspecção",
+      "intent": "Expressar dificuldade em nomear emoção sobre irmã",
+      "risk_level": "high",
+      "risk_notes": "Morte de irmã (Elina); emoção profunda. Gênero: manter 'irmã' sem forçar concordância no falante. Back-translation.",
+      "t": "[14][89][01]\"Nao sei como descrever [01]o que sinto... [02]Minha irma...\""
+    },
+    "AREAS051.DAT:7:78": {
+      "speaker": "npc",
+      "tone_register": "dor, desespero, revelação trágica",
+      "intent": "Narrar esperança perdida e notícia de morte",
+      "risk_level": "critical",
+      "risk_notes": "MORTE (Elina); emoção extrema. Spoiler emocional crítico. Gênero pt-BR: construir neutralidade onde possível. Byte budget: 166. Back-translation obrigatória.",
+      "t": "[14][89][01]\"Quando nao a achamos [01]no comeco, [02]pessoas diziam pra [01]desistir... Mas eu [01]ainda tinha esperanca... [02]Depois, ouvir que [01]ela esta morta...\""
+    },
+    "AREAS051.DAT:7:79": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, vulnerabilidade trágica",
+      "intent": "Expressar vazio deixado por partida de Deis (deusa)",
+      "risk_level": "critical",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu arcaico MESMO em vulnerabilidade. Referência Deis (spoiler: deusa/relacionamento). Gênero 'deixou' neutro. Byte budget: 131. Back-translation.",
+      "t": "[0C][06][14][8D]F\"Quando [04][05] ... Quando [01]Deis partiu de mim... [02]Nao sei como expressar... [02]Senti um vazio. [01]Mas...\""
+    },
+    "AREAS051.DAT:7:80": {
+      "speaker": "npc",
+      "tone_register": "pergunta suave, reconhecimento",
+      "intent": "Reconhecer tentativa de conforto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][8E][01]\"Voce esta tentando [01]me confortar, [01]nao eh, [04][05]?\""
+    },
+    "AREAS051.DAT:7:81": {
+      "speaker": "npc",
+      "tone_register": "aceitação, solidariedade, crescimento",
+      "intent": "Reconhecer não estar sozinho; ter amigos/companheiros",
+      "risk_level": "medium",
+      "risk_notes": "Arco emocional de aceitação; preservar tom de alívio sincero. Byte budget: 149.",
+      "t": "[14][8E][01]\"Acho que entendo o que [01]voce quer dizer... [02]Posso me sentir sozinho, [01]mas nao estou -- tenho [01]todos voces... [02]Todos os meus amigos.\""
+    },
+    "AREAS051.DAT:7:82": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, interrupção, emoção contida",
+      "intent": "Começar a responder/expressar sentimento",
+      "risk_level": "critical",
+      "risk_notes": "VOZ CRÍTICA: 'Eu' em arcaísmo (Fou-Lu). Byte budget extremamente curto (16). Back-translation.",
+      "t": "[0C][06][14][C4]@\"Eu...\""
+    },
+    "AREAS051.DAT:7:83": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, revelação emocional",
+      "intent": "Dizer que teria pedido o mesmo à companheira",
+      "risk_level": "high",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu arcaico em momento emocional (não perder registro). Gênero 'no meu lugar' neutro. Back-translation.",
+      "t": "[0C][06][14][C4]@\"Se eu estivesse no lugar [01]dela... [02]Teria te pedido para [01]fazer a mesma coisa.\""
+    },
+    "AREAS051.DAT:7:84": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, absolvição moral",
+      "intent": "Afirmar que ação foi correta moralmente",
+      "risk_level": "high",
+      "risk_notes": "VOZ CRÍTICA: Fou-Lu majestoso em julgamento moral. Preservar distância/autoridade. Byte budget: 113. Back-translation.",
+      "t": "[14][C4]@\"O que voce fez... [02][14][8C]E\"Pelo que vale... [0B]Acho que voce [01]fez a coisa certa.\""
+    },
+    "AREAS051.DAT:7:86": {
+      "speaker": "npc",
+      "tone_register": "preocupação gentil, observação",
+      "intent": "Notar mudança de comportamento em Ryu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][02]\"Ha algo errado, [01]Garoto Dragao? [02]Voce nao esta [01]brincando hoje...\""
+    }
+  }
+}

@@ -1,0 +1,660 @@
+{
+  "lines": {
+    "AREAS027.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "explicar fonte de energia do elevador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obtemos a força que precisa mos para operar este elevador de todos os moinhos de vento."
+    },
+    "AREAS027.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "explicar fonte de energia do elevador (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obtemos a força que precisa mos para operar este elevador de todos os moinhos de vento."
+    },
+    "AREAS027.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "conversacional-admirado",
+      "intent": "admirar vista e mencionar Dragão do Vento",
+      "risk_level": "medium",
+      "risk_notes": "[02] preservado; 'Wind Dragon' traduzido como 'Dragão do Vento' por glossário",
+      "t": "Que vista linda, não é?[02]Se tiver sorte, talvez veja o Dragão do Vento voando daqui."
+    },
+    "AREAS027.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "questionador-casual",
+      "intent": "questionar medo de altura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As pessoas não ficam assusta das vivendo tão alto?"
+    },
+    "AREAS027.DAT:8:4": {
+      "speaker": "Nina",
+      "tone_register": "formal-firme",
+      "intent": "explicar confiança Wynd iana em alturas",
+      "risk_level": "high",
+      "risk_notes": "Voz de Nina: formal, determinada, líder. [02] preservado; 'Wyndians' traduzido como 'Wyndians' (mantém lore)",
+      "t": "Nós Wyndians não tememos altura.[02]Ao contrário, adoramos lugares altos."
+    },
+    "AREAS027.DAT:8:5": {
+      "speaker": "Ryu",
+      "tone_register": "simples-destemido",
+      "intent": "afirmar falta de medo de altura",
+      "risk_level": "high",
+      "risk_notes": "Voz de Ryu: direto, honesto, poucas palavras. Não é verbose.",
+      "t": "Eu não tenho medo de altura!"
+    },
+    "AREAS027.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro",
+      "intent": "descrever calabouço sem interesse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este é o calabouço. Não há muito de interesse a ver aqui."
+    },
+    "AREAS027.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "leviano-sonhador",
+      "intent": "fantasiar sobre princesas e amor",
+      "risk_level": "high",
+      "risk_notes": "[02] contagem preservada (4x); personagem masculino fantasioso; tokens [04][01] mantidos para nome da Princesa",
+      "t": "Ah, Princesa Elina![02]E Princesa [04][01]![02]Ambas são tão formosas![02]O que eu faria se ambas professassem amor por mim?[02]Como eu poderia escolher entre elas!?"
+    },
+    "AREAS027.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "formal-desculpador",
+      "intent": "recusar passagem a cidadão ordinário",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpe, mas cidadãos ordina ários não podem passar além deste ponto."
+    },
+    "AREAS027.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "formal-surpreso",
+      "intent": "reconhecer a Princesa apesar da recusa inicial",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado; reconhecimento dramático; tokens [04][01] mantidos",
+      "t": "Desculpe, mas ordina ários...[02]...Princesa [04][01]!?"
+    },
+    "AREAS027.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "formal-chocado",
+      "intent": "corrigir posição ao ver a Princesa",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado; 'Ordinay' é typo em source ('Orinary'); traduzir como está; [0B] (pausa) preservado",
+      "t": "Cidadãos ordinários não podem...[0B]Huh?[02]Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "formal-caloroso",
+      "intent": "saudar retorno da Princesa",
+      "risk_level": "medium",
+      "risk_notes": "tokens [04][01] mantidos; tom caloroso mas respeitoso (servidor/guarda)",
+      "t": "É bom tê-la de volta, Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "formal-entusiasmado",
+      "intent": "boas-vindas ao retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem-vinda para casa, Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "informar que o Rei a espera",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Rei está esperando por você."
+    },
+    "AREAS027.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "formal-caloroso",
+      "intent": "expressar alívio coletivo pelo retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos estavam preocupados com você."
+    },
+    "AREAS027.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "descrever ansiedade do Rei e povo",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; 'Majesty' traduzido por 'Majestade'",
+      "t": "Sua Majestade o Rei, assim como todos nós, aguardava [02]ansiosamente o retorno seguro da Princesa."
+    },
+    "AREAS027.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "entusiasmado-aliviado",
+      "intent": "expressar alegria com retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fico tão feliz que a Princesa tenha voltado!"
+    },
+    "AREAS027.DAT:8:17": {
+      "speaker": "npc",
+      "tone_register": "formal-austero",
+      "intent": "pedir retirada do recinto real",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este é a câmara de audiência do Rei. Por favor, se retirem."
+    },
+    "AREAS027.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "chocado-gaguejante",
+      "intent": "reconhecer a Princesa com surpresa",
+      "risk_level": "high",
+      "risk_notes": "[0B] (pausa dramática) preservado; tokens [04][01] mantidos; impacto do reconhecimento",
+      "t": "É...[0B]É a Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "formal-permissivo",
+      "intent": "permitir entrada ao salão do Rei",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado",
+      "t": "Vá em frente, Princesa--pode ver o Rei [02]a qualquer momento!"
+    },
+    "AREAS027.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "questionador-neutro",
+      "intent": "questionar identidade do visitante",
+      "risk_level": "low",
+      "risk_notes": "Muito curto (UI-like); byte_budget apertado",
+      "t": "Quem é você?"
+    },
+    "AREAS027.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "formal-surpreso",
+      "intent": "expressar surpresa com retorno inesperado",
+      "risk_level": "high",
+      "risk_notes": "tokens [04][01] mantidos; reconhecimento tardio",
+      "t": "Princesa [04][01]! Não sabíamos que tinha voltado!"
+    },
+    "AREAS027.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "questionador-preocupado",
+      "intent": "questionar retorno da Princesa Elina",
+      "risk_level": "high",
+      "risk_notes": "Mentira de Princesa Elina não retornando é plot point sensível; manter ambiguidade",
+      "t": "Isso quer dizer que Princesa Elina não volta?"
+    },
+    "AREAS027.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "militar-neutro",
+      "intent": "relato negativo de guarda/sentinela",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nada a reportar!"
+    },
+    "AREAS027.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "conversacional-aliviado",
+      "intent": "expressar alívio pós-guerra e esperança por paz",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado",
+      "t": "Sessões de estratégia aconteciam aqui todo dia durante a guerra.[02]Fico feliz que a guerra acabou! Espero que nunca tenhamos outra!"
+    },
+    "AREAS027.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "formal-austero",
+      "intent": "bloquear passagem sem permissão real",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ninguém pode passar daqui sem permissão do Rei."
+    },
+    "AREAS027.DAT:8:26": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "expressar inquietação ao receber notícia de captura",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu: voz arcaica, solene, majestosa — NUNCA casual. [02] preservado. 'word from Ludia' = notícia de Ludia. Manter distância e poder.",
+      "t": "Não soube o que pensar quando recebi notícia de [02]Ludia de que fostes capturado."
+    },
+    "AREAS027.DAT:8:27": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-angustiado",
+      "intent": "questionar circunstâncias da captura da filha",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu absolutamente em voz arcaica ('fostes', 'como isto sucedeu'). [02] preservado (3x). Emoção sob formalidade.",
+      "t": "O que estava eu para pensar?[02]Minha filha sai em busca de sua irmã desaparecida,[02]apenas para ser apanhada trespassando em terra [02]inimiga... Como isto sucedeu?"
+    },
+    "AREAS027.DAT:8:28": {
+      "speaker": "Nina",
+      "tone_register": "formal-humilde",
+      "intent": "pedir desculpas ao Rei pela captura",
+      "risk_level": "high",
+      "risk_notes": "Nina: formal mas com calor; [02] preservado. Assumir culpa é coerente com caráter de liderança e responsabilidade.",
+      "t": "Peço vosso perdão, Majestade.[02]É toda culpa minha. Se não fosse por mim..."
+    },
+    "AREAS027.DAT:8:30": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-explicativo",
+      "intent": "explicar preocupação de Ludia com o Império vs. ajuda ao Rei",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico. [02] preservado (2x). 'ally Ludia' = aliado Ludia; lore crítico sobre fações.",
+      "t": "Como decerto descobristes,[02]nosso vizinho e suposto aliado Ludia está mais preocupado [02]com suas relações com o Império do que em me ajudar a procurar minha filha."
+    },
+    "AREAS027.DAT:8:32": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-estratégico",
+      "intent": "questionar plano de ação e avisar sobre risco Ludiano",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico solene. [02] preservado (3x). Avisar sobre risco é função de protetor/rei. Manter poder e distância.",
+      "t": "Então, que pretendeis fazer agora?[02]Mais cedo ou mais tarde, os Ludianos decerto [02]descobrirão que estais aqui.[02]Naturalmente, faremos tudo que pudermos para vos proteger..."
+    },
+    "AREAS027.DAT:8:35": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-constrangido",
+      "intent": "reconhecer limitação de poder sobre dragão",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico. [02] preservado (2x). Admissão de fraqueza mantém tom solene/amargo (não nega poder, reconhece limite legítimo).",
+      "t": "Compreendo...Mas...[02]Ainda que eu seja rei de Wyndia, nenhum [02]controle tenho sobre o dragão...Sabeis disso."
+    },
+    "AREAS027.DAT:8:37": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-diretivo",
+      "intent": "instruir busca ao Oráculo dos Ventos na floresta",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico. [02] preservado (2x). [05][06] = tokens de formatação do nome; '[05]Oracle of Wind[06]' traduzido mas preservando [05][02]Oráculo do Vento[06].",
+      "t": "Hmm...Compreendo...[01]Muito bem.[02]Ide à floresta a leste daqui.[02]Lá encontrareis a [05][02]Oráculo dos Ventos[06],[02]uma sacerdotisa que serve o Dragão do Vento."
+    },
+    "AREAS027.DAT:8:38": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-diretivo",
+      "intent": "informar sobre repouso noturno antes da jornada",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico. [02] preservado (2x). Instrução clara e solene.",
+      "t": "Informá-la-ei de vossa vinda.[02]Descansai esta noite--podeis iniciar vossa jornada [02]pela manhã."
+    },
+    "AREAS027.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "fornecer instrução de localização e aviso de vigilância",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado (2x); referência ao Oráculo e à ameaça Ludiana",
+      "t": "O Oráculo vive na floresta a leste de Wyndia.[02]Não se preocupem--caso os Ludianos perguntem sobre [02]vocês, pensaremos em algo para distraí-los."
+    },
+    "AREAS027.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "narrativo-reflexivo",
+      "intent": "refletir sobre dilema do Rei entre proteger filha e manter relações diplomáticas",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); análise de conflito político; tokens [04][01] mantidos para nome da Princesa",
+      "t": "O Rei está em posição extremamente delicada...[02]Por um lado, precisa proteger sua filha, Princesa [04][01],[02]e por outro manter nossas relações com Ludia."
+    },
+    "AREAS027.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "narrativo-comiserativo",
+      "intent": "expressar simpatia pela situação emocional do Rei",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); tokens [04][01] mantidos; tom compassivo sobre sofrimento silencioso",
+      "t": "Tenho pena do pobre Rei...[02]Embora se preocupe com Princesa Elina mais que ninguém,[02]não discute o assunto com ninguém em público.[02]Dói meu coração vê-lo..."
+    },
+    "AREAS027.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "narrativo-histórico",
+      "intent": "explicar lore sobre artefato sagrado e Torre do Vento",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); [09][07][05] = tokens; '[09][07][05] is an ancient' traduzido mas tokens mantidos; lore crítico sobre relíquia sagrada",
+      "t": "O [09][07][05] é uma antiga relíquia sagrada, necessária para entrar na Torre do Vento,[02]que é sagrada para o Dragão do Vento.[02]É guardada em lugar seguro [05][02]sob o Castelo[06]."
+    },
+    "AREAS027.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "narrativo-informativo",
+      "intent": "descrever singularidade do Dragão do Vento em relação a outros dragões",
+      "risk_level": "medium",
+      "risk_notes": "[02] preservado (2x); 'P'ung Ryong' = nome próprio do Dragão (manter transliteração); 'interacts with mortals' = relação com mortais",
+      "t": "P'ung Ryong, o Dragão do Vento, é incomum entre sua espécie por ainda [02]interagir com mortais e falar com eles de tempos em tempos."
+    },
+    "AREAS027.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "casual-encorajador",
+      "intent": "desejar sorte ao visitante",
+      "risk_level": "low",
+      "risk_notes": "Muito curto; byte_budget confortável",
+      "t": "Soube que viriam. Boa sorte!"
+    },
+    "AREAS027.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "admirado-invejoso",
+      "intent": "expressar admiração pela Torre do Vento e desejo de visitá-la",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; referência à Torre do Vento (lore local)",
+      "t": "Ouço dizer que a Torre do Vento é ainda mais alta que o Castelo![02]Adoraria ir lá, apenas uma vez!"
+    },
+    "AREAS027.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "narrativo-histórico",
+      "intent": "descrever história e hábitos do Oráculo",
+      "risk_level": "medium",
+      "risk_notes": "[02] preservado (2x); 'Kasq Woods' = nome próprio (transliteração); isolamento do Oráculo é lore crítico",
+      "t": "O Oráculo do Vento vive na Floresta Kasq [02]há mais tempo que qualquer pessoa se lembra...[02]Ela quase nunca sai exceto para falar com o Dragão do Vento."
+    },
+    "AREAS027.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "urgente-alarmado",
+      "intent": "avisar sobre tropas Ludianas e pressão de tempo",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado; ameaça iminente cria urgência; sensibilidade de localização inimiga",
+      "t": "Temos relatos de que tropas Ludianas foram vistas perto do Castelo.[02]Vocês devem se apressar, antes que descubram que estão aqui!"
+    },
+    "AREAS027.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "narrativo-contemplativo",
+      "intent": "referir última visita do Oráculo ao Castelo durante nascimento da Princesa",
+      "risk_level": "high",
+      "risk_notes": "tokens [04][01] mantidos; referência ao nascimento da Princesa é momento narrativo importante",
+      "t": "A última vez que o Oráculo veio ao Castelo foi quando Princesa [04][01] nasceu."
+    },
+    "AREAS027.DAT:8:52": {
+      "speaker": "npc",
+      "tone_register": "narrativo-especulativo",
+      "intent": "descrever método lendário para ver Dragão do Vento de perto",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); especulação sobre alcançar altura maior que a Torre; fantasia/impossibilidade aparente",
+      "t": "Dizem que a única forma de ver o Dragão do Vento de perto é [02]ir ainda mais alto que a Torre do Vento, para o norte.[02]Mas como alguém conseguiria fazer isso?"
+    },
+    "AREAS027.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "narrativo-angustiado",
+      "intent": "refletir sobre dilema de escolha entre amor proibido e amor impossível",
+      "risk_level": "critical",
+      "risk_notes": "[02] preservado (2x); conflito moral/pessoal profundo (identidade de falante desconhecida, tom introspectivo extremamente vulnerável); spoiler-sensível (noivado de Princesa Elina, linhagem de sucessão)",
+      "t": "Princesa Elina é noiva para casar com o Príncipe de Ludia...[02]Princesa [04][01] é a próxima na linha de sucessão...[02]O que escolher--um amor que é errado, ou um amor que não pode ser?"
+    },
+    "AREAS027.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "narrativo-temeroso",
+      "intent": "questionar capacidade de lidar com responsabilidade real se casar com a Princesa",
+      "risk_level": "critical",
+      "risk_notes": "[02] preservado (2x); identidade de falante potencialmente Ryu; preocupação sobre responsabilidade de rei (peso narrativo extremo); spoiler de casamento",
+      "t": "Espera...Se Princesa [04][01][01] e eu fomos unidos,[02]isso quer dizer que um dia serei Rei de Wyndia...[02]Conseguirei lidar com a responsabilidade?"
+    },
+    "AREAS027.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "narrativo-temeroso",
+      "intent": "questionar capacidade de proteger Princesa se casar com ela contra Ludia",
+      "risk_level": "critical",
+      "risk_notes": "[02] preservado (2x); proteção de Princesa; consequências do casamento (inimizade com Ludia); peso moral/pessoal; spoiler de casamento",
+      "t": "Se eu casar com Princesa Elina, isso quer dizer que o país inteiro [02]de Ludia estará atrás de nós...[02]Conseguirei protegê-la contra eles?"
+    },
+    "AREAS027.DAT:8:58": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solemne",
+      "intent": "reconhecer Ryu como outra metade do Primeiro Imperador e desejar-lhe sorte",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu: arcaico majestoso. [02] preservado (3x). CRÍTICO: revelação de identidade de Ryu ('outro meio do Primeiro Imperador'); Fou-Lu reconhece significância cósmica. Manter distância, peso, formalidade arcaica.",
+      "t": "Hmm...[02]A outra metade do Primeiro Imperador, dizeis?[02]Compreendo agora por que tanto Ludia quanto o [02]Império vos procuravam![02]Carregais um fardo pesado... Desejo-vos a melhor das sortes."
+    },
+    "AREAS027.DAT:8:59": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solemne",
+      "intent": "reconhecer Ryu como outra metade do Primeiro Imperador e desejar-lhe sorte (repetição)",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu: arcaico majestoso. [02] preservado (3x). Repetição de 8:58.",
+      "t": "Hmm...[02]A outra metade do Primeiro Imperador, dizeis?[02]Compreendo agora por que tanto Ludia quanto o [02]Império vos procuravam![02]Carregais um fardo pesado... Desejo-vos a melhor das sortes."
+    },
+    "AREAS027.DAT:8:60": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-paternal",
+      "intent": "reconhecer crescimento de Nina e expressar orgulho",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu: arcaico. [02] preservado (3x). tokens [04][01] mantidos. Paternalismo solene e respeitoso (não condescendente); reconhecimento de força.",
+      "t": "[04][01]...[02]Pouco posso fazer por vós agora.[02]Crescestes muito, minha filha.[02]Sois forte o bastante para lutar vossas próprias batalhas. [02]Tenho muito orgulho de vós!"
+    },
+    "AREAS027.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "conversacional-curioso",
+      "intent": "perguntar se conseguiram encontrar o Dragão do Vento",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; pergunta direta sobre resultado da jornada",
+      "t": "Quando não voltaram, começamos a nos preocupar.[02]Conseguiram encontrar o Dragão do Vento?"
+    },
+    "AREAS027.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "formal-confidencial",
+      "intent": "advertir a Princesa sobre preocupação silenciosa do Rei e pedir cautela",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); confidência entre servidor e Princesa; reconhecimento de conflito entre fachada pública e emoção privada",
+      "t": "Sei o que Sua Majestade o Rei disse, mas também sei que em seu coração, [02]ele ainda se preocupa com você, Princesa. Cuide-se, e [02]volte para casa logo!"
+    },
+    "AREAS027.DAT:8:63": {
+      "speaker": "npc",
+      "tone_register": "formal-caloroso",
+      "intent": "rogar proteção à Princesa",
+      "risk_level": "low",
+      "risk_notes": "tokens [04][01] mantidos; brevidade; tom de servo/guardião",
+      "t": "Por favor, cuide bem da Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:64": {
+      "speaker": "npc",
+      "tone_register": "narrativo-preocupado",
+      "intent": "expressar preocupação com retorno da Princesa Elina e esperança pela segurança da outra",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado (2x); tokens [04][01] mantidos; referência a Princesa Elina desaparecida (plot-point); preocupação genuína",
+      "t": "Princesa Elina ainda não voltou...[02]Só rezo que nada aconteça à Princesa [04][01]...!"
+    },
+    "AREAS027.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "conversacional-dedicado",
+      "intent": "descrever cuidados regulares com quartos das Princesas",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; tom doméstico; dedicação servil",
+      "t": "Não sabemos quando voltarão, mas trabalhamos duro para [02]manter os quartos de ambas as Princesas limpos e arrumados."
+    },
+    "AREAS027.DAT:8:66": {
+      "speaker": "npc",
+      "tone_register": "conversacional-admirado",
+      "intent": "comentar sobre natureza estranha dos dragões e capacidade de voo",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; admiração simples; referência a Dragão do Vento",
+      "t": "Aqueles dragões são criaturas estranhas, não são?[02]Quer dizer, veja o Dragão do Vento--como algo tão grande pode voar assim?"
+    },
+    "AREAS027.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "conversacional-aliviado",
+      "intent": "expressar alívio por desaparecimento aparente de vigilância Ludiana",
+      "risk_level": "low",
+      "risk_notes": "[02] preservado; esperança de redução de ameaça",
+      "t": "Talvez aqueles Ludianos finalmente tenham desistido...[02]Não vemos nenhum deles por aqui há um tempo."
+    },
+    "AREAS027.DAT:8:68": {
+      "speaker": "npc",
+      "tone_register": "observador-compassivo",
+      "intent": "comentar sobre isolamento/tristeza do Rei e sua falta de conexão com filhas",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado; observação empática sobre estado emocional do Rei; sensibilidade emocional do personagem",
+      "t": "O Rei parece tão solitário ultimamente...[02]Acho que sente falta de jantar com suas filhas."
+    },
+    "AREAS027.DAT:8:69": {
+      "speaker": "npc",
+      "tone_register": "observador-compassivo",
+      "intent": "comentar sobre isolamento/tristeza do Rei e sua falta de conexão com filhas (repetição)",
+      "risk_level": "high",
+      "risk_notes": "[02] preservado; repetição de 8:68; observação empática",
+      "t": "O Rei parece tão solitário ultimamente...[02]Acho que sente falta de jantar com suas filhas."
+    },
+    "AREAS027.DAT:8:70": {
+      "speaker": "npc",
+      "tone_register": "casual_friendly",
+      "intent": "shopkeeper_greeting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voltou? Tem algo que[01]posso fazer por voce?"
+    },
+    "AREAS027.DAT:8:71": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico_solene_majestoso",
+      "intent": "ambition_dark_revelation",
+      "risk_level": "critical",
+      "risk_notes": "Identidade Fou-Lu — voz imperativa, elevada, contrastando fortemente com Ryu. Riso maníaco deve soar majestático e aterrador, não comum. [02] marca quebra de página (contagem: 1 no source, 1 em t). Preservar tom ominoso e controle imperial.",
+      "t": "Se eu desposar a Princesa[01][04], tudo isto...A cidade, o povo...[02]Sera meu! Ha ha...Bwah ha ha ha ha!"
+    },
+    "AREAS027.DAT:8:72": {
+      "speaker": "Nina",
+      "tone_register": "formal_caloroso_lideranca",
+      "intent": "curiosity_wistful_regret",
+      "risk_level": "medium",
+      "risk_notes": "Nina deseja ter acompanhado — sentimento de responsabilidade e arrependimento. Tom esperançoso mas realista. [02] marca quebra (contagem: 2 no source, 2 em t). Manter firmeza de liderança discretamente.",
+      "t": "Voce foi a Torre do[01]Vento?[02]O que achou? E bem[01]alta, nao e?[02]Queria ter ido com voce..."
+    },
+    "AREAS027.DAT:8:73": {
+      "speaker": "npc",
+      "tone_register": "casual_cansado",
+      "intent": "fatigue_relief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deixa eu descansar um[01]pouco...O ar aqui e tao[01]rarefeito...Ufa!"
+    },
+    "AREAS027.DAT:8:74": {
+      "speaker": "npc",
+      "tone_register": "casual_explicativo",
+      "intent": "education_wonder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alimenta os elevadores,[01]traz agua para ca...[02]Nao e incrivel o que o[01]poder do vento consegue?"
+    },
+    "AREAS027.DAT:8:75": {
+      "speaker": "npc",
+      "tone_register": "casual_informativo",
+      "intent": "directions_helpful",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce ja sabe, mas este e o[01]caminho para as masmorras."
+    },
+    "AREAS027.DAT:8:76": {
+      "speaker": "npc",
+      "tone_register": "casual_admirado",
+      "intent": "appreciation_beauty",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O ar e fresco e limpo, e a[01]paisagem e tao linda...[02]Eu podia ficar aqui[01]para sempre!"
+    },
+    "AREAS027.DAT:8:80": {
+      "speaker": "npc",
+      "tone_register": "formal_reflexivo",
+      "intent": "observation_concern",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra (contagem: 1 no source, 1 em t). NPC reflete sobre mudanças globais — tom contemplativo, aviso subtil de perigo.",
+      "t": "Nao dou muita atencao ao que[01]nao afeta Wyndia,[02]mas ate eu vejo que o[01]mundo esta mudando..."
+    },
+    "AREAS027.DAT:8:81": {
+      "speaker": "npc",
+      "tone_register": "formal_reflexivo",
+      "intent": "observation_concern",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra (contagem: 1 no source, 1 em t). NPC reflete sobre mudanças globais — tom contemplativo, aviso subtil de perigo.",
+      "t": "Nao dou muita atencao ao que[01]acontece fora do castelo,[02]mas ate eu vejo que o[01]mundo esta mudando..."
+    },
+    "AREAS027.DAT:8:82": {
+      "speaker": "npc",
+      "tone_register": "formal_deferente",
+      "intent": "request_protection",
+      "risk_level": "low",
+      "risk_notes": "Preservar formalidade ao pedir proteção da Princesa. [04] é placeholder de nome.",
+      "t": "Por favor, cuide bem da Princesa [04][01]!"
+    },
+    "AREAS027.DAT:8:83": {
+      "speaker": "npc",
+      "tone_register": "formal_admiracao",
+      "intent": "compliment_growth",
+      "risk_level": "high",
+      "risk_notes": "[02] marca quebra de página (contagem: 2 no source, 2 em t). Referência indireta à irmã de Nina (Leah) ainda não revelada em plenitude — evitar resolver identidade. Admiração genuína pela maturidade. Registro formal elevado.",
+      "t": "Ora, Princesa [04]![02]Por um momento quase a[01]confundi com sua irma.[02]Voce se parece muito mais[01]com ela nas ultimas[01]semanas—mais confiante, mais[01]madura. Se ela apenas[01]estivesse aqui para ver!"
+    },
+    "AREAS027.DAT:8:84": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico_solene_majestoso",
+      "intent": "contempt_power_delight",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu vê multidão como inferior — tom arrogante, majestático, maníaco. [02] marca quebra (contagem: 1 no source, 1 em t). Riso é expressão de poder supremo, não hysteria comum. Contraste com Ryu obrigatório.",
+      "t": "Ha ha...Bwah ha ha ha![02]Veja o povo la embaixo![01]Parecem formigas! Insetos![01]Bwah ha ha ha ha!"
+    },
+    "AREAS027.DAT:8:85": {
+      "speaker": "npc",
+      "tone_register": "casual_aviso",
+      "intent": "warning_caution",
+      "risk_level": "medium",
+      "risk_notes": "[02] marca quebra (contagem: 1 no source, 1 em t). Alerta sobre invasor — tom de cuidado, não ameaça direta.",
+      "t": "Pegamos alguem tentando[01]entrar no castelo.[02]Eu mantinha distancia se[01]fosse voce!"
+    },
+    "AREAS027.DAT:8:88": {
+      "speaker": "npc",
+      "tone_register": "casual_informativo",
+      "intent": "trivia_historical",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi dizer que pertencia[01]ao Rei em pessoa!"
+    },
+    "AREAS027.DAT:8:90": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:91": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:92": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:93": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:94": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:95": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:96": {
+      "speaker": "system",
+      "tone_register": "narrativo",
+      "intent": "environmental_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento sopra pelas[01]cavernas fazendo os[01]moinhos girarem."
+    },
+    "AREAS027.DAT:8:97": {
+      "speaker": "system",
+      "tone_register": "narrativo_alerta",
+      "intent": "mechanic_warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce nao consegue se mover[01]contra o vento! Espere nas[01]cavidades da parede ate[01]parar!"
+    }
+  }
+}

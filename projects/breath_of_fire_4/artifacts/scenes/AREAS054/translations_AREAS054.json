@@ -1,0 +1,132 @@
+{
+  "lines": {
+    "AREAS054.DAT:8:0": {
+      "speaker": "unknown",
+      "tone_register": "exclamation",
+      "intent": "frustration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Droga!\""
+    },
+    "AREAS054.DAT:8:1": {
+      "speaker": "unknown",
+      "tone_register": "exclamation",
+      "intent": "frustration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Droga!\""
+    },
+    "AREAS054.DAT:8:2": {
+      "speaker": "unknown",
+      "tone_register": "irritated_casual",
+      "intent": "complaint_about_interruption",
+      "risk_level": "medium",
+      "risk_notes": "speaker unclear from context; tone suggests goddess/divine entity; preserving casual/irritated register",
+      "t": "[14][80]@\"Eu estava tendo um[01]sonho bom, e voce[01]aparece assim![02]Voces humanos nao[01]tem educacao...!\""
+    },
+    "AREAS054.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "apologetic_formal",
+      "intent": "apology",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Desculpe,[01][04][05].[02][14]A"
+    },
+    "AREAS054.DAT:8:4": {
+      "speaker": "unknown",
+      "tone_register": "sarcastic_irritated",
+      "intent": "mockery_of_typical_plea",
+      "risk_level": "medium",
+      "risk_notes": "speaker identity same as 8:2; sarcastic tone requires naturalness check",
+      "t": "[14][80]@\"Suspiro...[02]Deixa eu adivinhar--'Oh,[01]deusa poderosa,[02]diga-nos o que[01]devemos fazer!'[01]Acertei?\""
+    },
+    "AREAS054.DAT:8:5": {
+      "speaker": "unknown",
+      "tone_register": "exasperated_sarcastic",
+      "intent": "complaint_about_human_dependence",
+      "risk_level": "medium",
+      "risk_notes": "same speaker; maintaining exasperation; concise to fit byte budget",
+      "t": "[14][80]@\"Humph![02]Sempre a mesma coisa,[01]nao eh? Nao conseguem[01]resolver sozinhos, ai[01]vem nos amolar!\""
+    },
+    "AREAS054.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "apologetic_subdued",
+      "intent": "earnest_apology",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][01]\"Eu...[0B]Desculpe...\""
+    },
+    "AREAS054.DAT:8:7": {
+      "speaker": "unknown",
+      "tone_register": "frustrated_contemplative",
+      "intent": "complaint_about_world_dynamics",
+      "risk_level": "medium",
+      "risk_notes": "same divine entity; expresses disdain for mortal reliance on gods; maintaining register",
+      "t": "[14][80]@\"Que mundo estranho[01]eh este, enfim?[02]Nunca ouvi falar de[01]um mundo onde eles[02]precisassem invocar[01]deuses assim...\""
+    },
+    "AREAS054.DAT:8:9": {
+      "speaker": "Ryu",
+      "tone_register": "apologetic_earnest",
+      "intent": "acknowledge_difficulty_admit_helplessness",
+      "risk_level": "medium",
+      "risk_notes": "Ryu's simple, direct register; honest vulnerability without being verbose; risk from contextual match needed",
+      "t": "[14][C2]@\"Nao eh que a gente nao[01]entenda como voce[01]se sente...[02]Eh que nao sabemos[01]direito o que fazer,[02]sabe?\""
+    },
+    "AREAS054.DAT:8:13": {
+      "speaker": "Nina",
+      "tone_register": "formal_urgent",
+      "intent": "warn_of_empire_threat",
+      "risk_level": "high",
+      "risk_notes": "Nina's criticality=high; formal leadership tone; glossary term 'Empire'=Império; risk from lore/spoiler content (god control); back-translation required",
+      "t": "[14][83]B\"Se o Imperio conseguir[01]controlar uma deusa,[02]isso significa outra[01]guerra![02][14][84]BNao podemos deixar[01]eles terem esse poder!\""
+    },
+    "AREAS054.DAT:8:15": {
+      "speaker": "unknown",
+      "tone_register": "mysterious_grave",
+      "intent": "cryptic_reference_to_fou_lu_duality",
+      "risk_level": "critical",
+      "risk_notes": "divine entity revealing Fou-Lu/Ryu connection; SPOILER CONTENT (identity duality); ambiguity must be preserved; cannot resolve 'Emperor' reference prematurely",
+      "t": "[14][80]@\"Se parte do Imperador[01]esta em [04]"
+    },
+    "AREAS054.DAT:8:16": {
+      "speaker": "unknown",
+      "tone_register": "mysterious_grave",
+      "intent": "explain_destiny_and_choice",
+      "risk_level": "critical",
+      "risk_notes": "continuation of identity revelation; SPOILER (destiny/duality); must not resolve ambiguity; preserve mysterious register",
+      "t": "[14][80]@\"Os dois halves se encontrarao[01]--esse destino nao pode ser[01]mudado.[02]Porem, se [04]"
+    },
+    "AREAS054.DAT:8:18": {
+      "speaker": "unknown",
+      "tone_register": "mysterious_condescending",
+      "intent": "acknowledge_guess_with_mild_dismissal",
+      "risk_level": "medium",
+      "risk_notes": "divine entity; 'little bird' = term of address; maintain mysterious/archaic undertone",
+      "t": "[14][80]@\"Algo assim,[01]passarinhos.\""
+    },
+    "AREAS054.DAT:8:20": {
+      "speaker": "unknown",
+      "tone_register": "mysterious_reassuring",
+      "intent": "offer_solution_with_condition",
+      "risk_level": "medium",
+      "risk_notes": "divine entity providing path forward; mysterious register preserved; conditional reassurance",
+      "t": "[14][80]@\"Nao se preocupem--[01]existe um jeito.[02]Pra isso, porem,[01]preciso acordar.\""
+    },
+    "AREAS054.DAT:8:22": {
+      "speaker": "unknown",
+      "tone_register": "laughter_mysterious",
+      "intent": "mirthful_ominous_laugh",
+      "risk_level": "low",
+      "risk_notes": "onomatopoeia localized; no direct speech content",
+      "t": "\"Ha ha ha ha ha!\""
+    },
+    "AREAS054.DAT:8:23": {
+      "speaker": "unknown",
+      "tone_register": "laughter_girlish",
+      "intent": "light_amused_laugh",
+      "risk_level": "low",
+      "risk_notes": "onomatopoeia localized; girlish tone",
+      "t": "[0C][02]\"Hehe hehe hehe...\""
+    }
+  }
+}

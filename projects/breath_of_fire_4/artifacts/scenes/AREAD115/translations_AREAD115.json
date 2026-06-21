@@ -1,0 +1,52 @@
+{
+  "lines": {
+    "AREAD115.DAT:9:0": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "desafiador; questiona de posicao de poder supremo",
+      "risk_level": "critical",
+      "risk_notes": "Voz Fou-Lu com pronome arcaico 'tu'; alterego distinto de Ryu; contraste identidade dupla exige back-translation. Arcaísmo inegociável.",
+      "t": "[14][C6]@\"Como... Por quais meios me encontrastes?\""
+    },
+    "AREAD115.DAT:9:1": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestado",
+      "intent": "desafiador; questiona de posicao de poder supremo",
+      "risk_level": "critical",
+      "risk_notes": "Duplicata do offset anterior (9:0) — mesma linha. Voz Fou-Lu arcaica; críticality=high. Back-translation obrigatória.",
+      "t": "[14][C6]@\"Como... Por quais meios me encontrastes?\""
+    },
+    "AREAD115.DAT:9:4": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, amargo",
+      "intent": "aceita derrota com desdém; revela plano de ocupar a Capital",
+      "risk_level": "high",
+      "risk_notes": "Vocabulário elevado ('persuasão'); pronomes imperiais; byte_budget apertado (125) — forma concisa sem perder majestade. 'Parece' vs 'Aparenta-se' — escolhido 'Parece' por economia. Back-translation requerida.",
+      "t": "[14][81]A\"Parece... [02]Que nao nos permitiras entrar na[02]Capital por nenhuma[01]persuasao.\""
+    },
+    "AREAD115.DAT:9:7": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, contemplativo",
+      "intent": "admite recuperacao parcial de poder; tom realista mas firme",
+      "risk_level": "high",
+      "risk_notes": "Construcao arcaica 'e verdade que' → '`tis true' preserva Tom. Byte_budget 103; conciso mas natural. Pronome arcaico mantido. Back-translation requerida.",
+      "t": "[14][C6]@\"E verdade que[01]recobramso tao-somente[02]uma porcao do nosso[01]poder...\""
+    },
+    "AREAD115.DAT:9:8": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, prepotente/amargo",
+      "intent": "menospreza Ryu como mortal fraco; afirma invulnerabilidade",
+      "risk_level": "critical",
+      "risk_notes": "Identidade dupla crítica: Fou-Lu soberano vs Ryu fraco — contraste máximo. Arcaísmo extremo ('Deves saber'; 'tu, mero mortal'; 'nao pode ser vencido por alguém como tu'). Byte_budget 183; quebra em [02] exige precisão. Back-translation OBRIGATÓRIA — disambiguar poder/identidade sem spoilar.",
+      "t": "[14][C6]@\"Deves saber que tu, mero mortal,[02]nenhum perigo nos poes.[02]Um ser como eu nao pode ser vencido por um ser como tu.\""
+    },
+    "AREAD115.DAT:9:12": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, trágico/determinado",
+      "intent": "reconhece derrota inevitável; toma resolução desesperada de chegar à Capital antes",
+      "risk_level": "critical",
+      "risk_notes": "IDENTIDADE DUPLA máxima: Fou-Lu desiste de honra, busca ação desesperada. 'Verdaderamente' + concessão ('ainda que a isso repugnasse') revela amadurecimento amargo. Arcaísmo crítico ('hasteio' vs 'devo apressar'; 'antes que tu o encontres'). Byte_budget 199; quebraem [01] e [02]. Back-translation ESSENCIAL — resolver tom trágico + intenção desesperada sem sugarcoat. Spoiler: 'Capital' já conhecido; 'ele' refere-se a Ryu (ambig. intencional preservada).",
+      "t": "[0C][06][14][C6]@\"Verdade seja dita... Ainda que a isto meu orgulho repugne,[02]fala verdade.[02]Meu caminho esta claro--[02]Devo apressar-me a Capital antes que tu lo encontres!\""
+    }
+  }
+}

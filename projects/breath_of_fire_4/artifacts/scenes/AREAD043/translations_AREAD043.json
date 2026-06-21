@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD043.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "arcaico, alarmado",
+      "intent": "desafiar intruso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai ali!?\""
+    },
+    "AREAD043.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "arcaico, alarmado",
+      "intent": "desafiar intruso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai ali!?\""
+    },
+    "AREAD043.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "arcaico, solene, protetor",
+      "intent": "questionar entrada profana",
+      "risk_level": "medium",
+      "risk_notes": "Voz NPCg arcaica; 'sacred resting place' -> 'repouso sagrado'; preservar majestade/solenidade",
+      "t": "[14][80]@\"Quem ousa entrar no[01]repouso sagrado[01]do meu mestre?\""
+    },
+    "AREAD043.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "arcaico, surpreso, desconcertado",
+      "intent": "reconhecer pertença de mesmo tipo",
+      "risk_level": "high",
+      "risk_notes": "Referência a 'Endless' (Eternos); identidade/lore crítica; 'Thou also are one of The Endless' é arcaico e refere entidade cósmica não revelada; manter ambiguidade, não resolver. Manter 'tu' arcaico.",
+      "t": "[14][80]@\"Espera... Tu tambem[01]e um dos Eternos...?\""
+    },
+    "AREAD043.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "arcaico, resoluto, majestoso",
+      "intent": "negar acesso absolutamente",
+      "risk_level": "high",
+      "risk_notes": "Nenhum pode entrar, nem irmão do mestre; 'nay e'en though they be brother' = arcaísmo extremo com 'nem sequer se'; presença de [02] (page break) crítica — contar: 2x no source, 2x no target. Preservar solenidade e negativa absoluta.",
+      "t": "[14][80]@\"Nao importa! Ninguem,[02]nem sequer se fosse[01]irmao do meu[01]mestre,[02]pode entrar!\""
+    },
+    "AREAD043.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "prompt UI de direcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer subir?[12]"
+    },
+    "AREAD043.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "prompt UI de direcao com opcoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD043.DAT:8:7": {
+      "speaker": "system",
+      "tone_register": "arcaico, enigmatico",
+      "intent": "dica/tutorial em voz poética",
+      "risk_level": "medium",
+      "risk_notes": "Voz arcaica (Ye wouldst, seek ye); mantém arcaísmo; 'path' = caminho (lore); 'key' = chave (mecânica/lore). Preservar tom de profecia/puzzle.",
+      "t": "Vos que quereis trilhar o[01]caminho, buscai primeiro a[01]chave"
+    },
+    "AREAD043.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "prompt UI de movimento com opcoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde quer ir?[12][02][0C][93]Avancar[01]Subir[01]Cancelar"
+    },
+    "AREAD043.DAT:8:12": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "prompt UI de movimento com opcoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde quer ir?[12][02][0C][93]Avancar[01]Subir[01]Cancelar"
+    },
+    "AREAD043.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "prompt UI de acao com opcoes",
+      "risk_level": "medium",
+      "risk_notes": "Glossario: 'Emperor's Tomb' -> 'Mausoléu do Imperador' (regra traduzir + lore de Fou-Lu/entidade imperial); nao abbreviar; byte_budget 82 adequado.",
+      "t": "Oque quer fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Cancelar"
+    },
+    "AREAD043.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutro, instructivo",
+      "intent": "tutorial de mecanica de jogo",
+      "risk_level": "low",
+      "risk_notes": "Tutorial em prosa; glossario: 'switch' = switch (mecanica); preservar [02] (2x source = 2x target); tokens [05][06] e [7F] = formatacao (preservar verbatim); 'three blocks of the same color' = 'tres blocos da mesma cor'; conciso.",
+      "t": "[10][02]Ficar em frente a um[01][05][02]switch[06] faz o chao iluminar. [02]Voce pode empurrar um cubo para frente[01]pressionando o botao ~,[02]e para tras pressionando o [7F]. [02]Alinhe tres blocos da[01]mesma cor para criar[01]um caminho."
+    },
+    "AREAD043.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "arcaico, advertencia",
+      "intent": "aviso/pista enigmatica",
+      "risk_level": "medium",
+      "risk_notes": "Voz arcaica (Beware the); 'Red Eye' = mecanica/inimigo com nome (preservar capitalizacao EN ou localizar contexto); aqui = avisoPoético; manter tom de alerta solenidade; tokens [05][02][06] preservados.",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

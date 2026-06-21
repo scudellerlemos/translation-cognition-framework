@@ -1,0 +1,444 @@
+{
+  "lines": {
+    "AREAD152.DAT:14:0": {
+      "speaker": "system",
+      "tone_register": "neutral-UI",
+      "intent": "confirm-action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer voltar para o Castelo?[12]"
+    },
+    "AREAD152.DAT:14:1": {
+      "speaker": "system",
+      "tone_register": "neutral-UI",
+      "intent": "confirm-action",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer voltar para o Castelo?[12]"
+    },
+    "AREAD152.DAT:14:2": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "recount-history",
+      "risk_level": "high",
+      "risk_notes": "Registro arcaico imperativo para Fou-Lu; 'Seis seculos' marca tempo imenso.",
+      "t": "[14][80]@\"Ha seis seculos... Atras...\""
+    },
+    "AREAD152.DAT:14:3": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "explain-time-perception",
+      "risk_level": "high",
+      "risk_notes": "Vocabulario elevado; distancia temporal; tom soberbo mas contemplativo. Preservar majestade.",
+      "t": "[14][80]@\"Um lapso interminavel de tempo aos olhos dos mortais,[02]mas um breve instante para nos...\""
+    },
+    "AREAD152.DAT:14:6": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "express-dissonance",
+      "risk_level": "critical",
+      "risk_notes": "Encontro com Ryu (alter-ego); ambiguidade de identidade CRITICA — nunca resolver. Arcaismo inegociavel.",
+      "t": "[14][01][01]\"Estranha coisa eh esta...[02]Encontrar a si mesmo desta forma...\""
+    },
+    "AREAD152.DAT:14:11": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "challenge-taunt",
+      "risk_level": "high",
+      "risk_notes": "Desafio em duel; 'thee/thyself' = arcaico 2ª pessoa; tom imperial-arrogante.",
+      "t": "[0C][05][14][01][01]\"Por quanto tempo ainda podes defender-te contra mim?\""
+    },
+    "AREAD152.DAT:14:19": {
+      "speaker": "Ryu",
+      "tone_register": "simples-honesto",
+      "intent": "doubt-uncertainty",
+      "risk_level": "medium",
+      "risk_notes": "Ryu = registro simples, poucas palavras; duvida existencial. Contrastar com Fou-Lu.",
+      "t": "[0C][04][12][01][0C]\"[14][C0]@Talvez...[01]Nao sei...\""
+    },
+    "AREAD152.DAT:14:21": {
+      "speaker": "Ryu",
+      "tone_register": "simples-honesto",
+      "intent": "doubt-uncertainty",
+      "risk_level": "medium",
+      "risk_notes": "Repeticao de duvida; manter concisao de Ryu.",
+      "t": "[0C][04][12][02][0C]\"[14][C0]@Talvez...[01]Nao sei...\""
+    },
+    "AREAD152.DAT:14:23": {
+      "speaker": "Ryu",
+      "tone_register": "simples-honesto",
+      "intent": "doubt-uncertainty",
+      "risk_level": "medium",
+      "risk_notes": "Terceira repeticao; ainda simples e incerto.",
+      "t": "[0C][04][12][03][0C]\"[14][C0]@Talvez...[01]Nao sei...\""
+    },
+    "AREAD152.DAT:14:27": {
+      "speaker": "Nina",
+      "tone_register": "formal-determinado",
+      "intent": "affirm-belief",
+      "risk_level": "high",
+      "risk_notes": "Nina = lideranca firme com calor; crenca no mundo apesar dos problemas. Tom esperancoso-realista.",
+      "t": "[0C][06][14][C1]@\"Apesar de todos os problemas, de tudo o que esta errado,[02]eu quero acreditar no meu mundo!\""
+    },
+    "AREAD152.DAT:14:28": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "dismissive-taunt",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = 'ye' (vos arcaico); desdenhoso da resistencia. Arcaismo inegociavel.",
+      "t": "[0C][05][14][01][01]\"E o melhor que podes fazer?\""
+    },
+    "AREAD152.DAT:14:34": {
+      "speaker": "system",
+      "tone_register": "narrative-action",
+      "intent": "describe-despair",
+      "risk_level": "high",
+      "risk_notes": "Sistema relata desespero de Fou-Lu permeando pensamentos; transicao narrativa. Marca divisor entre fala/acao.",
+      "t": "[0C][04][14][C0]@Sentes o despero de [04][06] a permear teus pensamentos...[02][12][04][0C]\"Talvez...[01]Nao sei...\""
+    },
+    "AREAD152.DAT:14:35": {
+      "speaker": "system",
+      "tone_register": "narrative-action",
+      "intent": "describe-despair-refusal",
+      "risk_level": "high",
+      "risk_notes": "Continuacao da acao narrativa + objecao ('You're wrong!'). Marca transicao Fou-Lu para recusa.",
+      "t": "[0C][04][14][C0]@Sentes o despero de [04][06] a permear teus pensamentos...[02][12][05][0C]\"Nao sei...[01]Voce esta errado!\""
+    },
+    "AREAD152.DAT:14:37": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "confirm-identity",
+      "risk_level": "critical",
+      "risk_notes": "Revelacao incompleta: 'que foi uma vez [04]' — nome truncado por design. Nunca completar.",
+      "t": "[0C][05][14][04][03]\"Sim...[02]Sou aquilo que foi uma vez [04]\""
+    },
+    "AREAD152.DAT:14:38": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-irreverencia",
+      "intent": "question-dominance",
+      "risk_level": "high",
+      "risk_notes": "Deis = ironia sofisticada; questiona qual identidade eh dominante (Ryu vs Fou-Lu). Spoiler latente.",
+      "t": "[0C][06][14][85]D\"Mas qual eh o dominante?[02]Era [04]\""
+    },
+    "AREAD152.DAT:14:39": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "deflect-rhetorical",
+      "risk_level": "medium",
+      "risk_notes": "Fou-Lu = questao retorica arcaica; lacunar por design ('Was [04]' truncado).",
+      "t": "[0C][05][14][04][03]\"Se ele era?\""
+    },
+    "AREAD152.DAT:14:40": {
+      "speaker": "Ryu",
+      "tone_register": "simples-determinado",
+      "intent": "resist-threaten",
+      "risk_level": "medium",
+      "risk_notes": "Ryu = registro simples; promessa de resistencia. Sem artificios.",
+      "t": "[0C][04][14][86]D\"Nao vamos deixar voe fazer isso![01]Voce nao sai daqui!\""
+    },
+    "AREAD152.DAT:14:41": {
+      "speaker": "Nina",
+      "tone_register": "formal-esperancoso",
+      "intent": "appeal-humanity",
+      "risk_level": "high",
+      "risk_notes": "Nina = apelo a humanidade residual em Fou-Lu; refracao esperanca (se [04] ainda nele). Spoiler latente.",
+      "t": "[0C][04][14][C1]@\"Se ha ainda um pouco do que foi [04]\""
+    },
+    "AREAD152.DAT:14:42": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "dismiss-futile",
+      "risk_level": "medium",
+      "risk_notes": "Fou-Lu = dismissao arcaica de esperanca como futilidade. Tom desdenho.",
+      "t": "[0C][05][14][07][05]\"Uma empresa futil.\""
+    },
+    "AREAD152.DAT:14:43": {
+      "speaker": "system",
+      "tone_register": "narrative-voiceover",
+      "intent": "affirm-path",
+      "risk_level": "low",
+      "risk_notes": "Narrador (Fou-Lu em flashback?); tom solene de certeza.",
+      "t": "Conheco meu caminho..."
+    },
+    "AREAD152.DAT:14:44": {
+      "speaker": "system",
+      "tone_register": "narrative-voiceover",
+      "intent": "affirm-correctness",
+      "risk_level": "low",
+      "risk_notes": "Continuacao narrativa; reafirmar retidao de caminho.",
+      "t": "eh o caminho correto."
+    },
+    "AREAD152.DAT:14:54": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-curioso",
+      "intent": "mock-world",
+      "risk_level": "medium",
+      "risk_notes": "Deis = ironia sofisticada; menosprezo velado ao mundo mortal.",
+      "t": "[0C][06][14][88]F\"Este mundo de vocês...\""
+    },
+    "AREAD152.DAT:14:55": {
+      "speaker": "system",
+      "tone_register": "narrative-mixed",
+      "intent": "offer-perspective",
+      "risk_level": "medium",
+      "risk_notes": "Mistura narrativa + direcao (Deis interjeta); tom comedido vs sarcasmo de Deis.",
+      "t": "[14][08][06]\"Talvez nao seja tao\\ruim quanto voce pensa.[02][14][09][07]\"Diz Deis.\""
+    },
+    "AREAD152.DAT:14:57": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "acknowledge-weakness",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu reconhece fraqueza humana com tons arcaicos; mas nega a totalidade (not everyone). Frase longa; cuidado byte.",
+      "t": "[0C][05][14][03][02]\"Mortais sao por vezes fracos e tolidos...[02]Por vezes fazem o errado...[02]Mas nao todos sao desta forma!\""
+    },
+    "AREAD152.DAT:14:59": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "accuse-hypocrisy",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = 'They that called me' = arcaico; registra acusacao hipocrita contra mortais que o invocaram.",
+      "t": "[0C][06][14][81]A\"Aqueles que me chamaram aqui disseram muto a mesma coisa que tu.\""
+    },
+    "AREAD152.DAT:14:60": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "condemn-betrayal",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu = arcaismo EXTREMO ('didst/liveth/professed'); revela rejeicao aos mortais por traicao. Frase muito longa (byte 267). Fragmentar com cuidado.",
+      "t": "[0C][06][14][C6]@\"Mas os feitos deles ao resistiram a promessa do[01]discurso floreado[01]das linguas que professaram![02]Buscavam usar meu poder para fazer guerra contra os seus, para matar os inimigos!\""
+    },
+    "AREAD152.DAT:14:61": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "command-end",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = comando imperativo arcaico para terminar (Enow = enough). Tom final, solene.",
+      "t": "[0C][06][14][80]@\"Basta. Que isto termine agora.\""
+    },
+    "AREAD152.DAT:14:64": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "remember-realization",
+      "risk_level": "low",
+      "risk_notes": "Narrador (Ryu em reflecao) = momento introspectivo; tom calmo.",
+      "t": "Percebi entao"
+    },
+    "AREAD152.DAT:14:65": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "remember-identity-loss",
+      "risk_level": "medium",
+      "risk_notes": "Continuacao; revelacao lacunar ('que [04]') — nunca completar identidade perdida.",
+      "t": "que aquele [04]"
+    },
+    "AREAD152.DAT:14:66": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "finalize-loss",
+      "risk_level": "low",
+      "risk_notes": "Conclusao de perda; tom resignado.",
+      "t": "ja nao estava com a gente."
+    },
+    "AREAD152.DAT:14:68": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "express-paradox",
+      "risk_level": "low",
+      "risk_notes": "Narrador = viragem paralela ('But at the same time'); tom de paradoxo.",
+      "t": "Mas ao mesmo tempo,"
+    },
+    "AREAD152.DAT:14:69": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "affirm-inner-truth",
+      "risk_level": "low",
+      "risk_notes": "Narrador = verdade interior; tom de certeza silenciosa.",
+      "t": "sabia em meu coracao"
+    },
+    "AREAD152.DAT:14:70": {
+      "speaker": "system",
+      "tone_register": "narrative-introspection",
+      "intent": "affirm-continued-presence",
+      "risk_level": "medium",
+      "risk_notes": "Continuacao paradoxal; '[04]' = lacunar (Fou-Lu ainda nele?). Nunca resolver.",
+      "t": "que ainda era [04]"
+    },
+    "AREAD152.DAT:14:71": {
+      "speaker": "Nina",
+      "tone_register": "formal-reconhecimento",
+      "intent": "affirm-identity",
+      "risk_level": "critical",
+      "risk_notes": "Nina = reconhece Ryu + lacuna critica ('[04]' = nome/Fou-Lu?). NUNCA completar. Ambiguidade preservada.",
+      "t": "[0C][06][14][C1]@\"Voce eh [04]\""
+    },
+    "AREAD152.DAT:14:72": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "confirm-fusion",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu = confirma identidade dupla de forma lacunar ('[04][01]' = names). CRITICO: nunca resolver ambiguidade. Arcaismo inegociavel.",
+      "t": "[0C][05][14][0A][08]\"Sim, [04][01]. Sou [04]\""
+    },
+    "AREAD152.DAT:14:73": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-curiosidade",
+      "intent": "question-future",
+      "risk_level": "medium",
+      "risk_notes": "Deis = ironia sofisticada; questiona proximos passos. Tom de diversao disfarçada.",
+      "t": "[0C][06][14][85]D\"Entao, o que agora?[02]O que vai acontecer com o mundo?\""
+    },
+    "AREAD152.DAT:14:74": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-reflexivo",
+      "intent": "express-understanding",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = compreensao existencial; tom arcaico mas contemplativo (menos imperial).",
+      "t": "[0C][05][14][0A][08]\"Agora entendo o que [04][06] tentava me dizer.\""
+    },
+    "AREAD152.DAT:14:75": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-reflexivo",
+      "intent": "reveal-truth",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = revelacao central (mundo nao precisa deuses). Arcaismo elevado mas introspectivo.",
+      "t": "[0C][05][14][0A][08]\"O que ele realmente queria dizer eh[02]que este mundo nao precisa de deuses.\""
+    },
+    "AREAD152.DAT:14:77": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-reflexivo",
+      "intent": "announce-exile",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu = anuncio de expulsao dos deuses; tom solene. '[0B]' = pausa significativa.",
+      "t": "[14][0A][08]\"Por isso...[0B]...[0B][02]Vou banir os deuses.\""
+    },
+    "AREAD152.DAT:14:78": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico-solene",
+      "intent": "address-deis",
+      "risk_level": "medium",
+      "risk_notes": "Fou-Lu = referencia a Deis (pedido dela). Tom de resolucao ironica.",
+      "t": "[14][8A]H\"Exatamente como voce pediu, Deis.\""
+    },
+    "AREAD152.DAT:14:80": {
+      "speaker": "system",
+      "tone_register": "narrative-voiceover",
+      "intent": "describe-plan",
+      "risk_level": "low",
+      "risk_notes": "Narrador = descreve plano (expulsao de deuses). Tom neutro-factual.",
+      "t": "ele ia banir os deuses."
+    },
+    "AREAD152.DAT:14:81": {
+      "speaker": "system",
+      "tone_register": "narrative-voiceover",
+      "intent": "describe-consequence",
+      "risk_level": "low",
+      "risk_notes": "Narrador = consequencia (perda de poder). Tom de inevitabilidade.",
+      "t": "Perderiam seu poder,"
+    },
+    "AREAD152.DAT:14:82": {
+      "speaker": "system",
+      "tone_register": "narrative-voiceover",
+      "intent": "describe-transformation",
+      "risk_level": "low",
+      "risk_notes": "Narrador = transformacao final (deuses como mortais). Tom conclusivo.",
+      "t": "e viveriam como mortais comuns."
+    },
+    "AREAD152.DAT:14:83": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-surpresa",
+      "intent": "express-shock",
+      "risk_level": "medium",
+      "risk_notes": "Deis = surpresa comedida (sarcastica). 'What is this?' = interrogacao retorica.",
+      "t": "Ah, isso eh uma novidade?"
+    },
+    "AREAD152.DAT:14:84": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-observacao",
+      "intent": "observe-fading",
+      "risk_level": "medium",
+      "risk_notes": "Deis = observa deuses 'Eternos' desaparecendo. 'Endless' = glossario (Eternos).",
+      "t": "Os Eternos estao desaparecendo."
+    },
+    "AREAD152.DAT:14:85": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-constatacao",
+      "intent": "affirm-death",
+      "risk_level": "medium",
+      "risk_notes": "Deis = morte dos deuses como fato consumado. Tom de ironia sofisticada.",
+      "t": "Parece que os deuses morreram."
+    },
+    "AREAD152.DAT:14:86": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-tranquilizacao",
+      "intent": "downplay-concern",
+      "risk_level": "low",
+      "risk_notes": "Deis = minimize preocupacao. Tom de irreverencia caracteristico.",
+      "t": "Mas nao precisamos nos preocupar com isso..."
+    },
+    "AREAD152.DAT:14:87": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-proposicao",
+      "intent": "offer-replacement",
+      "risk_level": "medium",
+      "risk_notes": "Deis = oferece substituicao de deuses. Tom ironica-sedutora; perigo latente.",
+      "t": "Posso criar deuses quantos quisermos... Ou precisarmos."
+    },
+    "AREAD152.DAT:14:88": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-reflexao",
+      "intent": "assess-radicality",
+      "risk_level": "medium",
+      "risk_notes": "Deis = reflexao ironica sobre radicalidade do ato.",
+      "t": "Banir todos os deuses do mundo..."
+    },
+    "AREAD152.DAT:14:89": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-avalicao",
+      "intent": "judge-solution",
+      "risk_level": "low",
+      "risk_notes": "Deis = julgamento irreverente de solucao radical.",
+      "t": "Eh uma solucao bastante radical."
+    },
+    "AREAD152.DAT:14:90": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-transicao",
+      "intent": "address-protagonist",
+      "risk_level": "medium",
+      "risk_notes": "Deis = volta para Ryu ('[04]' = nome). Tom de finalizacao.",
+      "t": "Agora, voce [04]"
+    },
+    "AREAD152.DAT:14:91": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-consequencia",
+      "intent": "describe-mortality",
+      "risk_level": "medium",
+      "risk_notes": "Deis = descreve mortalidade de Fou-Lu/Ryu. Tom ironica-contemplativa.",
+      "t": "eh tambem um mortal, que envelhecerah e um dia morrera."
+    },
+    "AREAD152.DAT:14:93": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-despreocupacao",
+      "intent": "dismiss-finality",
+      "risk_level": "low",
+      "risk_notes": "Deis = desprezo pela morte propria. 'I'd stick around' = casual mas ironica.",
+      "t": "Ah, decidi que fico por aqui."
+    },
+    "AREAD152.DAT:14:94": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-curiosidade",
+      "intent": "express-interest",
+      "risk_level": "low",
+      "risk_notes": "Deis = curiosidade mascarada de tedio. Tom de observadora eternamente entediada.",
+      "t": "Me interessa ver o que acontece depois disso."
+    },
+    "AREAD152.DAT:14:95": {
+      "speaker": "Deis",
+      "tone_register": "sarcasmo-resignacao",
+      "intent": "affirm-acceptance",
+      "risk_level": "low",
+      "risk_notes": "Deis = aceita condicao de aprisionamento em armadura. Ironia sofisticada de conclusao.",
+      "t": "Acho que ficar dentro desta armadura nao eh tao ruim assim..."
+    }
+  }
+}

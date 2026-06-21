@@ -1,0 +1,260 @@
+{
+  "lines": {
+    "AREAD076.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "casual, frustrated",
+      "intent": "complain about Marlok's frequent trips and profit obsession",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][01][01]\"De novo o Marlok... Quantas vezes este mês ja? [02]Nunca vi ninguém tao obcecado em lucro quanto ele!\""
+    },
+    "AREAD076.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "casual, emphatic",
+      "intent": "agree and point out the large crates",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][82]B\"É mesmo! Só veja o tamanho [02]daqueles engradados que ele traz!\""
+    },
+    "AREAD076.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "casual, matter-of-fact",
+      "intent": "acknowledge the business reality and opposing sides",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][01][01]\"É, pois é... Suponho que tem que ser assim [02]pra fazer os negócios dele...[02]Afinal, estamos em lados opostos, né?\""
+    },
+    "AREAD076.DAT:8:5": {
+      "speaker": "Nina",
+      "tone_register": "formal, relieved",
+      "intent": "express satisfaction that the plan is working",
+      "risk_level": "medium",
+      "risk_notes": "Nina voice must be formal-warm; criticality high; ensure contrast with casual NPCs",
+      "t": "[14][C1]@\"Parece que tudo correu conforme planejado.\""
+    },
+    "AREAD076.DAT:8:6": {
+      "speaker": "Ryu",
+      "tone_register": "simple, determined",
+      "intent": "affirm commitment to rescue Elina despite progress made",
+      "risk_level": "high",
+      "risk_notes": "Ryu voice criticality high - keep simple/direct, no verbose phrasing; must contrast with Fou-Lu; capture honesty and determination",
+      "t": "[0C][02][14][03][03]\"Sim...[0B][02]Agora que chegamos até aqui, não [02]voltamos sem a Elina!\""
+    },
+    "AREAD076.DAT:8:7": {
+      "speaker": "Ryu",
+      "tone_register": "simple, cautious",
+      "intent": "observe that the area appears safe to proceed",
+      "risk_level": "medium",
+      "risk_notes": "Ryu - keep short/direct; tone should be observational, calm",
+      "t": "[0C][02][14][03][03]\"...[0B]...[0B]Parece que está [01]seguro.\""
+    },
+    "AREAD076.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual, curious",
+      "intent": "question ownership of the sandflier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ei--[0B]isso é seu [01]sandflier?\"[12]"
+    },
+    "AREAD076.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "casual, curious",
+      "intent": "question ownership of the sandflier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ei--[0B]isso é seu [01]sandflier?\"[12]"
+    },
+    "AREAD076.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "casual, curious",
+      "intent": "question ownership of the sandflier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ei--[0B]isso é seu [01]sandflier?\"[12]"
+    },
+    "AREAD076.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "casual, curious",
+      "intent": "question ownership of the sandflier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ei--[0B]isso é seu [01]sandflier?\"[12]"
+    },
+    "AREAD076.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "casual, puzzled",
+      "intent": "express uncertainty about the sandflier's ownership",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ah...[02]Me pergunto de quem é [01]então...\""
+    },
+    "AREAD076.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "casual, hopeful",
+      "intent": "ask for a ride to Shikk (formatted destination)",
+      "risk_level": "medium",
+      "risk_notes": "Glossary entry: Shikk (proper noun, keep original). Lore location - spoiler risk low but destination context critical",
+      "t": "[14][04][04]\"Verdade? Olha, preciso [01]chegar em [05]Shikk[06].[02]Você poderia me levar?\""
+    },
+    "AREAD076.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "casual, informative",
+      "intent": "explain the route problem with the Causeway",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Causeway (Passagem), Hesperia (keep original). These are lore-critical locations tied to plot mechanics - ensure exact glossary terms; spoiler risk medium (Causeway dysfunction is core quest mechanic)",
+      "t": "[14][04][04]\"Preciso chegar em [01]Hesperia, mas a [02]Passagem não está [01]funcionando, certo?\""
+    },
+    "AREAD076.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "casual, explanatory",
+      "intent": "propose an alternate route via lake near Shikk to reach western continent and Hesperia",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Hesperia (keep original), Western (Ocidental but here 'continente ocidental'); long line (355 bytes) requires concision - compress redundancy while preserving geography logic; spoiler: route mechanics are plot-critical; ensure [02] count matches source (2 instances)",
+      "t": "[14][04][04]\"Ouvi dizer que tem um [01]grande lago perto de [02]Shikk que vai até o [01]continente ocidental.[02]Então pensei que, se chegar [01]em Shikk,[02]consigo chegar em Hesperia [01]de um jeito ou outro.[02]Então, o que acha? [01]Você me leva lá?\"[12][01][0C][82]Sim[01]Não"
+    },
+    "AREAD076.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "casual, grateful",
+      "intent": "express gratitude for agreeing to help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Muito obrigado!\""
+    },
+    "AREAD076.DAT:8:17": {
+      "speaker": "npc",
+      "tone_register": "casual, informative",
+      "intent": "provide directional guidance to Shikk",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Shikk fica a nordeste [01]daqui...[02]Do outro lado do [01]Grande Deserto.\""
+    },
+    "AREAD076.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "casual, persuasive",
+      "intent": "offer payment/incentive to reconsider",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Vem lá...Vou te dar [01]algo pelo incômodo...\"[12][02][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "casual, persuasive",
+      "intent": "minimize the distance to convince",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"É só do outro lado [01]do deserto...\"[12][03][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "casual, reassuring",
+      "intent": "promise not to be disruptive",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Não faço barulho [01]nem incomodo, tá?\"[12][04][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "casual, pleading",
+      "intent": "make an earnest appeal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Ah, vem lá...[01]Por favor?\"[12][05][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "casual, desperate",
+      "intent": "beg earnestly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Vem lá--estou [01]implorando!\"[12][06][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "casual, desperate-playful",
+      "intent": "make a final exaggerated plea",
+      "risk_level": "medium",
+      "risk_notes": "Source has split letters in 'please' (p[0B]l[0B]e[0B]a[0B]s[0B]e) - stylistic emphasis; translate as drawn-out word preserving [0B] pattern",
+      "t": "[14][04][04]\"Sê bacana e me [01]leva--p[0B]o[0B]r f[0B]a[0B]v[0B]o[0B]r?\"[12][07][0C][82]OK[01]Não"
+    },
+    "AREAD076.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "casual, frustrated",
+      "intent": "withdraw the request in annoyance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Tudo bem! Esquece! [01]Desculpa até ter pedido!\""
+    },
+    "AREAD076.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "casual, surprised",
+      "intent": "express amazement at changed decision",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Você mudou de ideia? [01]Você vai me levar?\"[12][01][0C][82]Sim[01]Não"
+    },
+    "AREAD076.DAT:8:26": {
+      "speaker": "unknown",
+      "tone_register": "shocked, accusatory",
+      "intent": "express alarm",
+      "risk_level": "medium",
+      "risk_notes": "Speaker abruptly changes to accusatory tone with [85] marker; identity unclear in isolation - mark 'unknown' pending context",
+      "t": "[14][85][05]\"O quê!?\""
+    },
+    "AREAD076.DAT:8:27": {
+      "speaker": "unknown",
+      "tone_register": "accusatory, angry",
+      "intent": "accuse of starting a fight at the Causeway",
+      "risk_level": "high",
+      "risk_notes": "Speaker [85][05] continues accusation; Causeway is lore-critical; [02] page break must be preserved; spoiler risk: reveals PC involvement in past event - back-translation required",
+      "t": "[14][85][05]\"Você foi quem entrou [01]na Passagem e [02]começou aquela grande [01]briga lá!?\""
+    },
+    "AREAD076.DAT:8:28": {
+      "speaker": "unknown",
+      "tone_register": "accusatory then remorseful",
+      "intent": "point out consequences on gateway device; express regret",
+      "risk_level": "high",
+      "risk_notes": "[02] page break preserved; dual voice (speaker [05] and [06]); lore-critical (gateway device mechanics); high spoiler on consequences - back-translation required; ensure [02] count = 1",
+      "t": "[14][05][05]\"Você nem parou pra [01]pensar no efeito [02]que isso teria no [01]dispositivo da Passagem, [01]né?[02][14][06][06]\"Não sei o que dizer...\""
+    },
+    "AREAD076.DAT:8:29": {
+      "speaker": "unknown",
+      "tone_register": "confused, alert",
+      "intent": "notice and question an unidentified presence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][85][05]\"Hã? Quem está aí!?\""
+    },
+    "AREAD076.DAT:8:30": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "present navigation choice menu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aonde você quer ir no sandflier?[12][08][0C][93]Shyde[01]Fora da cidade[01]Nunca mind"
+    },
+    "AREAD076.DAT:8:31": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "present navigation choice menu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aonde você quer ir no sandflier?[12][08][0C][93]Shyde[01]Fora da cidade[01]Nunca mind"
+    },
+    "AREAD076.DAT:8:32": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "present navigation choice menu with additional region option",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aonde você quer ir no sandflier?[12][09][0C][94]Região de Shikk[01]Shyde[01]Fora da cidade[01]Nunca mind"
+    },
+    "AREAD076.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "casual, matter-of-fact",
+      "intent": "inform that the sandflier is gone and party is stranded",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"O sandflier que você [01]veio? Ah, já foi embora [02]faz tempo. Parece que você [01]fica aqui um tempo, ué?\""
+    }
+  }
+}

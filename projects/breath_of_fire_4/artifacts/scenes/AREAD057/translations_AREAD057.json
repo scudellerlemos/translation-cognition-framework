@@ -1,0 +1,84 @@
+{
+  "lines": {
+    "AREAD057.DAT:10:2": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "questionar com autoridade imperial",
+      "risk_level": "high",
+      "risk_notes": "Voz crítica (criticality: high). Registro arcaico 'What be ye' exige 'Que fazeis' ou similar em pt-BR arcaico. Pronomes imperiais ('thy', 'ye') mapeiam para 2ª pessoa formal/arcaica. Byte budget 65 é apertado para estrutura arcaica; transliteração sem acentos deve caber.",
+      "t": "[0C][06][14][C6]@\"Que fazeis[01]vos neste lugar?\""
+    },
+    "AREAD057.DAT:10:4": {
+      "speaker": "npc",
+      "tone_register": "coloquial, informativo",
+      "intent": "explicar a situação de guarda; tom neutro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][01][01]\"Dizem que um dragao ou algo assim vai aparecer[01]hoje a noite...[0B][02]Por isso nos pediram para[01]vigiar esta area.\""
+    },
+    "AREAD057.DAT:10:6": {
+      "speaker": "npc",
+      "tone_register": "coloquial, engrandecedor, com urgência",
+      "intent": "reforçar a importância/perigo da ameaça",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][01][01]\"E verdade--e nao e um dragao[01]qualquer, nao![02]Dizem que e o lendario Dragao da[01]Perdição, que vai[02]trazer ruína ao Imperio!\""
+    },
+    "AREAD057.DAT:10:7": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, interrogativo",
+      "intent": "questionar o propósito dos mortais contra o dragão",
+      "risk_level": "high",
+      "risk_notes": "Voz crítica (Fou-Lu). 'thy design'/'thy' exige forma arcaica pt-BR (teu/tua/vosso). Byte budget 68; conciso mas mantendo majestade.",
+      "t": "[0C][06][14][C6]@\"E...Qual e vosso[01]proposito contra este[01]dragao?\""
+    },
+    "AREAD057.DAT:10:9": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, condescendente, absolutista",
+      "intent": "desafiar a capacidade de mortais; expressar superioridade",
+      "risk_level": "critical",
+      "risk_notes": "Voz crítica (Fou-Lu). Estrutura arcaica 'Thou believest...Thou art but mere mortals' requer 'Credes...Sois apenas mortais'. Pronomes imperiais (thou/thy) em arcaico pt-BR. Tom de Fou-Lu deve soar indiferente, quase apiedado. Back-translation obrigatória.",
+      "t": "[0C][06][14][82]B\"Credes que podeis[01]fazer tal coisa?[02]Sois apenas mortais.\""
+    },
+    "AREAD057.DAT:10:11": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, épico, transcendente",
+      "intent": "revelar a verdadeira natureza dos dragões; comparação com força cósmica; tom de lição inevitável",
+      "risk_level": "critical",
+      "risk_notes": "Voz crítica (Fou-Lu). Bloco épico-arcaico ('A dragon 'tis', 'Thou mayest', 'taketh', 'verily'). Estrutura paralela/rimada em EN precisa soar majestosa em pt-BR arcaico sem quebrar ritmo. Byte budget 365 é generoso. Transição para revelação 'In thy terms...[0B]They art gods' é climática — marcar bem. Back-translation obrigatória para coerência com Fou-Lu.",
+      "t": "[0C][03][14][C6]@\"Um dragao e uma[01]força da natureza[01]em si mesma.[02]Podeis tentar lutar[02]contra um vulcao ou a[01]propria terra![02]Dragoes dao a luz[01]ao vosso povo,[02]vos concedem vida,[01]e certamente a tomam.[02]Para vos sao como[01]vos sois para um[02]inseto.[02]Em vossos termos...[0B]\""
+    },
+    "AREAD057.DAT:10:12": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, absoluto, final",
+      "intent": "revelar que dragões são deuses; conclusão épica",
+      "risk_level": "critical",
+      "risk_notes": "Voz crítica (Fou-Lu). Uma linha única: 'They art gods.' Byte budget 27 é curto; 'Sao deuses' cabe perfeitamente. Tom final, sem dúvida. Preservar a força absoluta.",
+      "t": "[14][C6]@\"Sao deuses.\""
+    },
+    "AREAD057.DAT:10:13": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, retórico, levemente irônico",
+      "intent": "desafiar retoricamente; questionar a coragem dos mortais",
+      "risk_level": "high",
+      "risk_notes": "Voz crítica (Fou-Lu). Retórica arcaica 'Wouldst thou fight a god?' = 'Lutarias contra um deus?'. Byte budget 51; conciso.",
+      "t": "[0C][03][14][C6]@\"...[0B]Lutarias tu[01]contra um deus?\""
+    },
+    "AREAD057.DAT:10:14": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, resignado, melancólico, reflexivo",
+      "intent": "observação sobre a natureza imutável dos mortais; aceitação fatalista",
+      "risk_level": "high",
+      "risk_notes": "Voz crítica (Fou-Lu). ''Tis as I thought' = 'E como supunha'. Conclusão melancólica sobre a incapacidade dos mortais de mudar. Byte budget 115; preservar tom de resignação poderosa.",
+      "t": "[14][83]C\"'E como eu supunha...[02]Nao e natureza de[01]mortais mudar seus[01]caminhos...[0B]\""
+    },
+    "AREAD057.DAT:10:10": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, revelador",
+      "intent": "instruir mortais sobre a ignorância deles; tom majestoso-amargo",
+      "risk_level": "high",
+      "risk_notes": "Voz crítica (Fou-Lu). 'Thou dost not ken' = 'Nao compreendeis'. Estrutura arcaica dupla (thou/that which). Byte budget 119; preservar solenidade sem ser truncado.",
+      "t": "[0C][05][14][C6]@\"Nao compreendeis[01]o poder daquilo que[02]procurarías destruir.[02]Isto e um dragao.\""
+    }
+  }
+}

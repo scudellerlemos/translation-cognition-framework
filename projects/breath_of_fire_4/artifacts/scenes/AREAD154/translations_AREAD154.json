@@ -1,0 +1,380 @@
+{
+  "lines": {
+    "AREAD154.DAT:10:0": {
+      "speaker": "npc",
+      "tone_register": "formal-medium, warning",
+      "intent": "warn intruders away from castle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Oi! Este é o Castelo Imperial! [02]Não é um lugar para pessoas como voces estarem aqui!\""
+    },
+    "AREAD154.DAT:10:1": {
+      "speaker": "npc",
+      "tone_register": "formal-medium, warning",
+      "intent": "warn intruders away from castle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Oi! Este é o Castelo Imperial! [02]Não é um lugar para pessoas como voces estarem aqui!\""
+    },
+    "AREAD154.DAT:10:2": {
+      "speaker": "Ryu",
+      "tone_register": "simple, direct, slightly ingenu",
+      "intent": "confirm identity of location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Este é o Castelo do Imperador?\""
+    },
+    "AREAD154.DAT:10:3": {
+      "speaker": "npc",
+      "tone_register": "formal, official",
+      "intent": "confirm and identify emperor",
+      "risk_level": "medium",
+      "risk_notes": "Glossary: Thirteenth (Décimo Terceiro), Fou Empire (Império Fou), Majesty (Majestade) - preserve formal register",
+      "t": "[0C][06][14][82]@\"Sim -- este é o castelo [02]do Décimo Terceiro Imperador do Império Fou, [02]Sua Majestade o Imperador Soniel. [02]Agora saiam daqui...\""
+    },
+    "AREAD154.DAT:10:4": {
+      "speaker": "system",
+      "tone_register": "narrative",
+      "intent": "location label transition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][81] [05][08]Dentro do Castelo[06][13][90]Este não é o caminho para o castelo...[01]"
+    },
+    "AREAD154.DAT:10:5": {
+      "speaker": "system",
+      "tone_register": "narrative, warning",
+      "intent": "inform wrong direction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este não é o caminho para o castelo...[01]"
+    },
+    "AREAD154.DAT:10:6": {
+      "speaker": "unknown",
+      "tone_register": "archaic, commanding",
+      "intent": "challenge/demand identification",
+      "risk_level": "medium",
+      "risk_notes": "archaic 'dares' - translated to archaic pt-BR; likely Fou-Lu's guardian",
+      "t": "[0C][02][14][03][02]\"Quem ousa?\""
+    },
+    "AREAD154.DAT:10:7": {
+      "speaker": "unknown",
+      "tone_register": "archaic, solemn, protective",
+      "intent": "protect sacred grounds",
+      "risk_level": "high",
+      "risk_notes": "archaic register (thee, thy, sacred); likely guardian entity - maintain elevated tone",
+      "t": "[14][83]B\"Quem ousa entrar nos [01]domínios sagrados de meu Senhor?\""
+    },
+    "AREAD154.DAT:10:8": {
+      "speaker": "unknown",
+      "tone_register": "archaic, formal, commanding",
+      "intent": "declare authority and threaten",
+      "risk_level": "high",
+      "risk_notes": "archaic pronouns (thee, thy, forfeit) - preserve solemn register; guardian persona",
+      "t": "[0C][06][14][83]B\"Sou o guardião deste lugar. [02]Ordeno-te que partas, intruso, [01]antes que tua vida pague o preço.\""
+    },
+    "AREAD154.DAT:10:10": {
+      "speaker": "unknown",
+      "tone_register": "archaic, stunned realization",
+      "intent": "recognize returning master",
+      "risk_level": "high",
+      "risk_notes": "shift to recognition - archaic (eyes, truth); identity of Fou-Lu returning",
+      "t": "[0C][06][14][83]B\"Pode ser? Será que meus [01]olhos veem verdade?\""
+    },
+    "AREAD154.DAT:10:11": {
+      "speaker": "unknown",
+      "tone_register": "archaic, reverent, joyful",
+      "intent": "greet returning lord",
+      "risk_level": "high",
+      "risk_notes": "archaic 'Thou hast returned' - Fou-Lu identity recognition; maintain archaic register",
+      "t": "[0C][06][14][83]B\"Majestade! Regressastes!\""
+    },
+    "AREAD154.DAT:10:12": {
+      "speaker": "unknown",
+      "tone_register": "archaic, mournful report",
+      "intent": "inform of mortals' betrayal",
+      "risk_level": "critical",
+      "risk_notes": "archaic (hath, thy, disparage); guardian speaks to Fou-Lu about followers' decline; maintain archaic throughout",
+      "t": "[0C][06][14][83]B\"Senhor meu... Os mortais que [02]vos seguiram no trono... [02]Degradam-vos a cada geração que passa...\""
+    },
+    "AREAD154.DAT:10:13": {
+      "speaker": "unknown",
+      "tone_register": "archaic, grateful reverence",
+      "intent": "express joy at master's restoration",
+      "risk_level": "critical",
+      "risk_notes": "archaic (didst, wouldst, thy); long sentence about promise fulfilled; maintain solemn archaic tone",
+      "t": "[0C][06][14][83]B\"Verdadeiramente temei que nao [01]cumprissem sua promessa. [02]Alegra meu coração ver-vos [02]restaurado ao vosso lugar, senhor meu.\""
+    },
+    "AREAD154.DAT:10:14": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, majestic, determined",
+      "intent": "declare intent to ascend to godhood",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu voice established (archaic, imperial, majestic); 'ascend to godhood' is major theme - preserve elevated register",
+      "t": "[14][04][03]\"A promessa deve ser cumprida. [02]Novamente ascenderei à divindade [01]sobre este mundo...\""
+    },
+    "AREAD154.DAT:10:17": {
+      "speaker": "unknown",
+      "tone_register": "archaic, deferential questioning",
+      "intent": "seek clarification",
+      "risk_level": "medium",
+      "risk_notes": "archaic (dost, thou, meanest); guardian asks about 'city' - likely capital",
+      "t": "[0C][06][14][83]B\"A cidade...? [01]Referes-te à capital, senhor?\""
+    },
+    "AREAD154.DAT:10:19": {
+      "speaker": "unknown",
+      "tone_register": "archaic, obedient",
+      "intent": "acknowledge command",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][83]B\"Conforme ordenais!\""
+    },
+    "AREAD154.DAT:10:20": {
+      "speaker": "system",
+      "tone_register": "narrative, dramatic",
+      "intent": "transition and reaction to presence",
+      "risk_level": "medium",
+      "risk_notes": "location shift + stunned recognition of Majesty; maintain emotional impact",
+      "t": "[0C][81] [05][08]O Castelo Imperial[06][13][90][0C][05][14][05][04]\"M... [0B]Majestade!?\""
+    },
+    "AREAD154.DAT:10:21": {
+      "speaker": "unknown",
+      "tone_register": "shocked, formal",
+      "intent": "express shock at majesty's presence",
+      "risk_level": "high",
+      "risk_notes": "stutter-recognition of Majesty; likely subordinate encountering Fou-Lu",
+      "t": "[0C][05][14][05][04]\"M... [0B]Majestade!?\""
+    },
+    "AREAD154.DAT:10:22": {
+      "speaker": "unknown",
+      "tone_register": "shocked, amazed",
+      "intent": "express disbelief at survival",
+      "risk_level": "high",
+      "risk_notes": "Carronade (weapon) survived - major plot point; preserve shock",
+      "t": "[0C][05][14][05][04]\"Voce... [0B]Sobreviveu até da Carronade!?\""
+    },
+    "AREAD154.DAT:10:23": {
+      "speaker": "unknown",
+      "tone_register": "battle cry",
+      "intent": "attack cry",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][04]\"Hiaaaah!\""
+    },
+    "AREAD154.DAT:10:24": {
+      "speaker": "unknown",
+      "tone_register": "battle cry",
+      "intent": "attack cry",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][04]\"Haaaaa!!\""
+    },
+    "AREAD154.DAT:10:25": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, dismissive majesty",
+      "intent": "taunt opponent",
+      "risk_level": "medium",
+      "risk_notes": "archaic (Art thou) - Fou-Lu contempt; maintain elevated register",
+      "t": "[14][C6]@\"Terminou?\""
+    },
+    "AREAD154.DAT:10:26": {
+      "speaker": "unknown",
+      "tone_register": "formal, submissive realization",
+      "intent": "acknowledge defeat and master's power",
+      "risk_level": "high",
+      "risk_notes": "subordinate recognizes Fou-Lu's superior power now restored",
+      "t": "[0C][05][14][05][04]\"Eu... Agora que vosso poder retornou, [01]Majestade, [02]nenhum de nos consegue se equiparar a voces.\""
+    },
+    "AREAD154.DAT:10:27": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, divine mockery",
+      "intent": "mock opponent's presumption",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu archaic voice (didst, couldst, god); maintains divine status - preserve register",
+      "t": "[14][84]C\"Pensavas verdadeiramente que [01]poderias me derrotar? [02]Que conseguirias matar um deus?\""
+    },
+    "AREAD154.DAT:10:28": {
+      "speaker": "unknown",
+      "tone_register": "formal, respectful apology",
+      "intent": "apologize and raise concern about current emperor",
+      "risk_level": "high",
+      "risk_notes": "subordinate speaks of Emperor Soniel; possible conflict with Fou-Lu's return",
+      "t": "[0C][05][14][05][04]\"Perdoai minhas palavras, [01]Majestade, [02]mas o Imperador atual, Soniel...\""
+    },
+    "AREAD154.DAT:10:29": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, contemptuous",
+      "intent": "respond to claim that gods not needed",
+      "risk_level": "medium",
+      "risk_notes": "archaic (Thinketh, yes, Humph) - Fou-Lu's disdain for modern emperor",
+      "t": "[14][81]A\"Pensa que deuses não são necessarios, sim? Humph!\""
+    },
+    "AREAD154.DAT:10:30": {
+      "speaker": "unknown",
+      "tone_register": "formal, grave acceptance",
+      "intent": "acknowledge heavy cost of mission against god",
+      "risk_level": "critical",
+      "risk_notes": "old man soldier reflects on burden of attempting to kill a god; preserve gravitas and formal register",
+      "t": "[0C][05][14][05][04]\"Eu sabia quando aceitei esta [01]missão [02]que haveria um preco elevado. [02]Não se empreende levianamente tal tarefa [01]de matar um deus.\""
+    },
+    "AREAD154.DAT:10:31": {
+      "speaker": "unknown",
+      "tone_register": "formal, resigned, honorable",
+      "intent": "offer life as atonement",
+      "risk_level": "high",
+      "risk_notes": "old soldier's noble surrender; preserve formal, accepting tone",
+      "t": "[0C][05][14][05][04]\"Embora a vida de um velho homem [02]talvez nao seja suficiente para expiar [01]o que fizemos, ainda assim a ofereço.\""
+    },
+    "AREAD154.DAT:10:32": {
+      "speaker": "unknown",
+      "tone_register": "archaic, philosophical",
+      "intent": "reflect on mortality and choice",
+      "risk_level": "critical",
+      "risk_notes": "archaic language (nature of mortals, pass quickly); profound philosophical moment - maintain elevated register",
+      "t": "[14][05][04]\"Pois é da natureza dos mortais [02]que passem rapidamente por este mundo. [02]Este tempo vem a todos nos -- [02]cabe apenas a nos escolher quando e como.\""
+    },
+    "AREAD154.DAT:10:33": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, contemplative",
+      "intent": "reflect on mortality",
+      "risk_level": "medium",
+      "risk_notes": "Fou-Lu archaic voice (Mortals, They Who Pass); moment of dark reflection",
+      "t": "[14][81]A\"Mortais... Eles que Passam...\""
+    },
+    "AREAD154.DAT:10:34": {
+      "speaker": "system",
+      "tone_register": "game UI prompt",
+      "intent": "offer warp choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer se teletransportar para o [01]santuario interno do Castelo?[12]"
+    },
+    "AREAD154.DAT:10:35": {
+      "speaker": "unknown",
+      "tone_register": "formal, apologetic",
+      "intent": "apologize for earlier actions",
+      "risk_level": "medium",
+      "risk_notes": "guardian apologizes; archaic register maintained",
+      "t": "[0C][06][14][83]B\"Por favor, perdoai minhas [01]acoes anteriores.\""
+    },
+    "AREAD154.DAT:10:36": {
+      "speaker": "unknown",
+      "tone_register": "archaic, understanding",
+      "intent": "recognize Ryu as Fou-Lu's other half",
+      "risk_level": "critical",
+      "risk_notes": "major plot revelation - guardian recognizes Ryu as 'other half' of Fou-Lu; preserve archaic register",
+      "t": "[0C][06][14][83]B\"Vejo agora que sois [01]a outra metade [01]de meu senhor.\""
+    },
+    "AREAD154.DAT:10:37": {
+      "speaker": "unknown",
+      "tone_register": "archaic, formal offer",
+      "intent": "offer to carry to castle",
+      "risk_level": "high",
+      "risk_notes": "archaic (shall, thee); guardian escorts player to castle",
+      "t": "[0C][04][14][83][02]Vos levarei ao Castelo, onde [01]meu senhor vos aguarda.\""
+    },
+    "AREAD154.DAT:10:38": {
+      "speaker": "unknown",
+      "tone_register": "formal, limitation statement",
+      "intent": "inform of movement limit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Posso vos levar apenas ate aqui.\""
+    },
+    "AREAD154.DAT:10:39": {
+      "speaker": "unknown",
+      "tone_register": "archaic, formal blessing",
+      "intent": "bid farewell respectfully",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Caminhai em seguranca, jovem senhor.\""
+    },
+    "AREAD154.DAT:10:40": {
+      "speaker": "system",
+      "tone_register": "game UI prompt",
+      "intent": "offer castle entrance choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer entrar no Castelo?[12][01][0C]SIm[01]Não"
+    },
+    "AREAD154.DAT:10:41": {
+      "speaker": "system",
+      "tone_register": "game UI prompt",
+      "intent": "offer castle exit choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer sair do Castelo?[12][02][0C]SIm[01]Não"
+    },
+    "AREAD154.DAT:10:42": {
+      "speaker": "system",
+      "tone_register": "game UI prompt",
+      "intent": "offer rest options",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que voce pode descansar aqui...[12][8B][0C][93]Descansar[01]Diário[01]Nao fazer nada"
+    },
+    "AREAD154.DAT:10:43": {
+      "speaker": "system",
+      "tone_register": "game message",
+      "intent": "inform door locked",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta trancado..."
+    },
+    "AREAD154.DAT:10:44": {
+      "speaker": "npc",
+      "tone_register": "conversational, casual",
+      "intent": "explain night watch room and monster situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Este é o quarto da guarda noturna. [02]Claro, o castelo esta cheio de monstros, entao nao saímos muito.\""
+    },
+    "AREAD154.DAT:10:45": {
+      "speaker": "npc",
+      "tone_register": "conversational, casual",
+      "intent": "hint about key location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Pensando bem, a chave das escadas [01]deve estar por aqui em algum lugar...\""
+    },
+    "AREAD154.DAT:10:47": {
+      "speaker": "npc",
+      "tone_register": "conversational, puzzled",
+      "intent": "wonder about monster origins",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Me pergunto de onde vieram todos [01]esses monstros? [02]Bem estranho, não é?\""
+    },
+    "AREAD154.DAT:10:54": {
+      "speaker": "system",
+      "tone_register": "game message, urgent",
+      "intent": "inform of seal and key requirement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A entrada foi selada! Para abri-la, [01]voce precisa de um [05][06][09][16][05][06]!"
+    },
+    "AREAD154.DAT:10:55": {
+      "speaker": "system",
+      "tone_register": "game message, urgent",
+      "intent": "inform of seal and key requirement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A entrada foi selada! Para abri-la, [01]voce precisa de um [05][02][09][17][05][06]!"
+    },
+    "AREAD154.DAT:10:57": {
+      "speaker": "system",
+      "tone_register": "game message, reward",
+      "intent": "inform of item obtained",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce obteve: [01][05][06][09][16][05][06]! [02]Voce pode usa-lo para destravar [01]portas trancadas com [01][05][06]Selagem Amarela[06]."
+    },
+    "AREAD154.DAT:10:58": {
+      "speaker": "system",
+      "tone_register": "game message, reward",
+      "intent": "inform of item obtained",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce obteve: [01][05][02][09][17][05][06]! [02]Voce pode usa-lo para destravar [01]portas trancadas com [01][05][02]Selagem Vermelha[06]."
+    }
+  }
+}

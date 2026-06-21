@@ -1,0 +1,121 @@
+{
+  "lines": {
+    "AREAD013.DAT:9:0": {
+      "speaker": "npc",
+      "tone_register": "desesperado, angustiado",
+      "intent": "Pedido de socorro urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][80]@\"Alguem...Alguem,[01]me ajude!!\"[13]@[0C][06][14]A"
+    },
+    "AREAD013.DAT:9:1": {
+      "speaker": "npc",
+      "tone_register": "desesperado, angustiado",
+      "intent": "Pedido de socorro urgente (repetido)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][80]@\"Alguem...Alguem,[01]me ajude!!\"[13]@[0C][06][14]A"
+    },
+    "AREAD013.DAT:9:4": {
+      "speaker": "npc",
+      "tone_register": "neutro, demonstrativo",
+      "intent": "Mostrar algo ao interlocutor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][01]A\"...[0B]Assim.\""
+    },
+    "AREAD013.DAT:9:10": {
+      "speaker": "unknown",
+      "tone_register": "exclamativo, surpresa",
+      "intent": "expressar espanto/susto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]@[14][02][01]\"[0D]Ufa![0E][0F][02]\""
+    },
+    "AREAD013.DAT:9:11": {
+      "speaker": "npc",
+      "tone_register": "hesitante, embaracado",
+      "intent": "Pausa desconfortavel antes de falar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82][01]\"...[0B]...[0B]Hm....\""
+    },
+    "AREAD013.DAT:9:12": {
+      "speaker": "npc",
+      "tone_register": "delicado, levemente embaracado",
+      "intent": "Pedir educadamente que a pessoa se vista",
+      "risk_level": "medium",
+      "risk_notes": "Linha longa; transliteracao sem acentos deve caber em 171 bytes. Verificar tamanho.",
+      "t": "[14][82][01]\"Se nao se importar,[01]voce poderia se[02]vestir, por favor?[02]Tenho certeza que ha[01]roupas na carrocinha[01]ali...\""
+    },
+    "AREAD013.DAT:9:16": {
+      "speaker": "Nina",
+      "tone_register": "formal-medio, caloroso, apresentacao",
+      "intent": "Nina se apresenta e pergunta o nome do interlocutor",
+      "risk_level": "medium",
+      "risk_notes": "Apresentacao de nome: usar 'Meu nome e' conforme Carta. Verificar byte budget apos transliteracao.",
+      "t": "[0C][04][14][C1]@\"Meu nome e [04][01].[01]Sou de Wyndia.[02]Qual e o seu nome?\""
+    },
+    "AREAD013.DAT:9:17": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, minimalista",
+      "intent": "Ryu responde com seu nome, linha cortada pelo sistema",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][83]A\"...[0B][04]"
+    },
+    "AREAD013.DAT:9:18": {
+      "speaker": "Nina",
+      "tone_register": "caloroso, reconfirmando",
+      "intent": "Nina repete o nome de Ryu de forma afetuosa/confirmativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C1]@\"Entao, [04]"
+    },
+    "AREAD013.DAT:9:19": {
+      "speaker": "Nina",
+      "tone_register": "direto, levemente surpreso",
+      "intent": "Nina constata que Ryu esta perdido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C1]@\"Nao sabe? Entao[01]isso significa que[01]voce esta perdido.\""
+    },
+    "AREAD013.DAT:9:20": {
+      "speaker": "Nina",
+      "tone_register": "firme mas acolhedor, com leveza",
+      "intent": "Nina confirma que ele esta perdido e o tranquiliza compartilhando experiencia propria",
+      "risk_level": "medium",
+      "risk_notes": "Linha longa; verificar bytes apos transliteracao. Tom de lideranca acolhedora de Nina preservado.",
+      "t": "[0C][06][14][C1]@\"Exato. Admita--[01]voce esta perdido.[02][14][81]ANao ha nada de[01]errado nisso.[02]Eu me perdi muito[01]quando era menor.\""
+    },
+    "AREAD013.DAT:9:21": {
+      "speaker": "Nina",
+      "tone_register": "resolutivo, leve, liderando",
+      "intent": "Nina decide levar Ryu junto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C1]@\"Muito bem, [04]"
+    },
+    "AREAD013.DAT:9:23": {
+      "speaker": "Nina",
+      "tone_register": "pratico, aviso de perigo",
+      "intent": "Nina avisa que o caminho ate a cidade passa por areas com monstros",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C1]@\"Pode ser util--[01]para chegar a cidade,[02]temos que passar por[01]areas com[01]monstros.\""
+    },
+    "AREAD013.DAT:9:24": {
+      "speaker": "npc",
+      "tone_register": "animado, convidativo",
+      "intent": "Convidar o grupo a partir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14]A@\"Entao vamos,[01]que tal?\""
+    }
+  },
+  "_meta": {
+    "model_id": "claude-sonnet-4-6",
+    "doctrine_hash": "2d9572e8185857ad",
+    "skills_revision": "18e77f41f0f4"
+  }
+}

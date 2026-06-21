@@ -1,0 +1,332 @@
+{
+  "lines": {
+    "AREAS029.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "greeting_hospitality",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao recebemos muitos visitantes por aqui,[01]mas sempre ficamos felizes em ve-los!"
+    },
+    "AREAS029.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "greeting_hospitality",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao recebemos muitos visitantes por aqui,[01]mas sempre ficamos felizes em ve-los!"
+    },
+    "AREAS029.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "concerned_informative",
+      "intent": "share_rumor_inquire",
+      "risk_level": "medium",
+      "risk_notes": "Capital attack = lore spoiler (early); maintain uncertainty",
+      "t": "Ouvimos rumores de que a capital foi[01]atacada por alguma criatura...[02]Voce sabe algo sobre isso?"
+    },
+    "AREAS029.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "casual_informative",
+      "intent": "provide_direction_introduce_npc",
+      "risk_level": "high",
+      "risk_notes": "Gramps intro; glossary term consistency; [02] count must equal source",
+      "t": "Voce quer ir para a capital?[02]O unico por aqui que ja foi la e o Velhinho.[02]E assim que todos o chamam.[02]Ele mora na barraca ali."
+    },
+    "AREAS029.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "proud_informative",
+      "intent": "explain_occupation_income",
+      "risk_level": "medium",
+      "risk_notes": "Glossary: 'Catch'->Capturar, 'Empire'->Império; tone pride but not boastful",
+      "t": "Voce conhece os cavalos e os moluscos que as Tropas Imperiais[01]usam em batalha?[02]A gente captura e vende pro Império! E assim que ganhamos dinheiro.[02]De vez em quando a gente caça[01]monstros tambem."
+    },
+    "AREAS029.DAT:8:6": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "bird_cry",
+      "risk_level": "low",
+      "risk_notes": "Onomatopoeia; localized to PT-BR convention",
+      "t": "[14][01][01][0A][02]\"Piu-piu!\""
+    },
+    "AREAS029.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "casual_questioning",
+      "intent": "acknowledge_confirm_goal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Viajantes, e isso?[02]Voces querem ir para a capital?"
+    },
+    "AREAS029.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "serious_cautionary",
+      "intent": "introduce_problem",
+      "risk_level": "medium",
+      "risk_notes": "Problem setup; maintain suspense",
+      "t": "Nesse caso, voces precisam falar com o Velhinho...Mas ha um pequeno problema."
+    },
+    "AREAS029.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "sympathetic_explanatory",
+      "intent": "explain_obstacle",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 1; Tak character intro; emotion preservation",
+      "t": "Ha pouco tempo, a galinha de estimacao dele, a Tak, fugiu,[02]e desde entao ele esta desanimado--nao fala com ninguem."
+    },
+    "AREAS029.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "pleading_distressed",
+      "intent": "call_lost_pet",
+      "risk_level": "low",
+      "risk_notes": "[02] count = 1; Gramps voice intro",
+      "t": "[14][02][02]\"Onde voce esta, minha[01]pequena Tak? Vem ca,[01]Tak Tak!\""
+    },
+    "AREAS029.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "grateful_warm",
+      "intent": "express_gratitude",
+      "risk_level": "low",
+      "risk_notes": "[02] count = 1",
+      "t": "[14][03][02]\"Muito obrigado por encontrar[01]minha Tak!\""
+    },
+    "AREAS029.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "formal_polite",
+      "intent": "confirm_destination",
+      "risk_level": "low",
+      "risk_notes": "[02] count = 1",
+      "t": "[14][03][02]\"Voces querem ir para a capital,[01]e isso?\""
+    },
+    "AREAS029.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "thoughtful_cautionary",
+      "intent": "provide_route_with_caveat",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Kwanso + [05][02] formatting; [02] count = 3; route info potentially spoilery",
+      "t": "[14][03][02]\"Hmm...Nesse caso, o caminho mais rapido[02]e ir para leste e passar pelo portao em[01][05][02]Kwanso[06]...[02]Mas voces talvez nao consigam passar agora...\""
+    },
+    "AREAS029.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "concerned_informative",
+      "intent": "warn_of_gate_closure",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 2; capital danger = spoiler context",
+      "t": "[14][03][02]\"Ouvi dizer que ha algo acontecendo[01]na capital,[02]e que vao fechar todos[01]os portoes.\""
+    },
+    "AREAS029.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "questioning_hopeful",
+      "intent": "ask_alternative",
+      "risk_level": "low",
+      "risk_notes": "[02] count = 1",
+      "t": "[14][04][03]\"Nao ha outro jeito de chegar[01]na capital?\""
+    },
+    "AREAS029.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "hesitant_reflective",
+      "intent": "suggest_alternative_route",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Tomb->Mausoléu + [05][02] formatting + glyph color codes; [02] count = 1; Tomb first mention = lore intro",
+      "t": "[14][03][02]\"Bom...[02]Tem o [05][02]Mausoléu do Primeiro[01]Imperador[06] para o nordeste...\""
+    },
+    "AREAS029.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "affirmative_informative",
+      "intent": "confirm_route_leads_to_astana",
+      "risk_level": "low",
+      "risk_notes": "[02] count = 1",
+      "t": "[14][03][02]\"E verdade...[02]Ha uma estrada por la[01]que vai ate Astana.\""
+    },
+    "AREAS029.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "polite_curious",
+      "intent": "thank_inquire_familiarity",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 1; identity/relationship setup (anti-spoiler); preserve ambiguity",
+      "t": "[14][02][02]\"De nada.[02]Por falar nisso, senhorita...[01]Ja nos conhecemos antes?\""
+    },
+    "AREAS029.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "cautionary_protective",
+      "intent": "warn_tomb_danger",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Tomb + [05][02] formatting; [02] count = 2; monster lore; atmosphere preservation",
+      "t": "[14][03][02]\"Hmm...Tudo bem, nao importa.[02]Mas cuidado--o [05][02]Mausoléu[06] e[01]assombrado![02]Ninguem sabe que tipos de[01]monstros tem por la!\""
+    },
+    "AREAS029.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "remembering_conversational",
+      "intent": "recall_past_journey",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 2; lore consistency (Astana trade reference)",
+      "t": "Como? A estrada que sai do mausoléu?[02]Yeah, ja ouvi falar.[02]Lembro que ouvi sobre ela quando fui para Astana[02]com o Velhinho para vender alguns[01]monstros que a gente tinha capturado."
+    },
+    "AREAS029.DAT:8:26": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_vocalization",
+      "risk_level": "low",
+      "risk_notes": "Animal sound; localize",
+      "t": "Pu-pu!"
+    },
+    "AREAS029.DAT:8:27": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_vocalization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][04][0A][04]\"Pu pu!\""
+    },
+    "AREAS029.DAT:8:28": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_distress_call",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][04][0A][05]\"P-piu!\""
+    },
+    "AREAS029.DAT:8:29": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_vocalization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][04][0A][03]\"P-pu\""
+    },
+    "AREAS029.DAT:8:30": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "sleeping_sound",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][08][05][0A][01]\"Zzzzz...\""
+    },
+    "AREAS029.DAT:8:31": {
+      "speaker": "npc",
+      "tone_register": "apologetic_explanatory",
+      "intent": "explain_chicken_escape_request_help",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Western->Ocidental + Plains + [05][02] formatting; [02] count = 2; location name consistency",
+      "t": "Eu tentava fazer uma cerca para manter as galinhas do Velhinho[02]presas, mas elas eram muito rapidas e fugiram...[02]Se voces forem para as [05][02]Planícies Ocidentais[06], voces provavelmente conseguem alcanca-las."
+    },
+    "AREAS029.DAT:8:32": {
+      "speaker": "npc",
+      "tone_register": "grateful_accent",
+      "intent": "thank_reward_offer",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 1; accent/dialect marker ('Tanks'='Thanks' colloquial); preserve tone flavor",
+      "t": "Obrigado por ajudar, agora o passarinho tem um amigo.[02]Obrigado--voce pode ficar com isso!"
+    },
+    "AREAS029.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "grateful_accent",
+      "intent": "thank_reward_offer",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 1; repeat of 8:32 for game flow",
+      "t": "Obrigado por ajudar, agora o passarinho tem um amigo.[02]Obrigado--voce pode ficar com isso!"
+    },
+    "AREAS029.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "grateful_brief",
+      "intent": "thank_simple",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigado por ajudar, agora o passarinho tem um amigo."
+    },
+    "AREAS029.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "informative_urgent",
+      "intent": "report_fire_incident",
+      "risk_level": "medium",
+      "risk_notes": "Emperor's Tomb reference = lore connection; atmosphere",
+      "t": "Ha pouco tempo, houve um grande incendio na floresta perto do Mausoléu do Imperador!"
+    },
+    "AREAS029.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "questioning_puzzled",
+      "intent": "express_confusion_about_goal",
+      "risk_level": "medium",
+      "risk_notes": "[02] count = 1; verify motivation consistency",
+      "t": "Voces vao visitar o tumulo do Imperador?[02]Achei que voces queriam ir para a capital?"
+    },
+    "AREAS029.DAT:8:38": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_vocalization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][04][0A][06]\"Pu!\""
+    },
+    "AREAS029.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "nostalgic_explanatory",
+      "intent": "recall_tomb_journey_discovery",
+      "risk_level": "high",
+      "risk_notes": "Glossary: Emperor's Tomb + [05][02] formatting; [02] count = 2; backstory lore connection",
+      "t": "[14][03][02]\"Eu lembro que tinha ido[01]pro [05][02]Mausoléu do Imperador[06][02]para capturar alguns[01]monstros para vender[01]em Astana...[02]Foi la que encontrei[01]aquela estrada.\""
+    },
+    "AREAS029.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "grateful_warm",
+      "intent": "thank_celebrate_resolution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito obrigado. Gracas a sua ajuda, o Velhinho voltou ao normal!"
+    },
+    "AREAS029.DAT:8:41": {
+      "speaker": "unknown",
+      "tone_register": "sound_effect",
+      "intent": "chicken_vocalization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][09][06][0A][01]\"Pu!\""
+    },
+    "AREAS029.DAT:8:43": {
+      "speaker": "system",
+      "tone_register": "neutral_formal",
+      "intent": "confirm_exit_game",
+      "risk_level": "low",
+      "risk_notes": "[12] separator preserved",
+      "t": "Voce quer parar o jogo e sair?[12][01][0C][C2]Sim[01]Nao"
+    },
+    "AREAS029.DAT:8:44": {
+      "speaker": "system",
+      "tone_register": "neutral_celebratory",
+      "intent": "capture_notification",
+      "risk_level": "low",
+      "risk_notes": "[05][02] formatting preserved; Tak name = glossary item",
+      "t": "[01] Voce capturou [05][02]Tak[06]!"
+    },
+    "AREAS029.DAT:8:45": {
+      "speaker": "system",
+      "tone_register": "neutral_celebratory",
+      "intent": "bonus_notification",
+      "risk_level": "low",
+      "risk_notes": "[07] token preserved",
+      "t": "BONUS![01] [05][02][07]"
+    },
+    "AREAS029.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "humble_hospitable",
+      "intent": "offer_lodging",
+      "risk_level": "low",
+      "risk_notes": "[19] token preserved",
+      "t": "Nao tem muita coisa por aqui, mas voces sao bem-vindos.[02][19]"
+    },
+    "AREAS029.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "apologetic_regretful",
+      "intent": "deny_insufficient_funds",
+      "risk_level": "low",
+      "risk_notes": "Budget 90 bytes; concise economic explanation",
+      "t": "Desculpe, mas parece que voces estao um pouco curtos de zenny."
+    },
+    "AREAS029.DAT:8:49": {
+      "speaker": "system",
+      "tone_register": "neutral_celebratory",
+      "intent": "capture_mother_pig_notification",
+      "risk_level": "low",
+      "risk_notes": "[05][02] formatting preserved",
+      "t": "Voce capturou[01] [05][02]mae-porco[06]!"
+    }
+  }
+}

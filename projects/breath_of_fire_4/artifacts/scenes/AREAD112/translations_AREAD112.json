@@ -1,0 +1,476 @@
+{
+  "lines": {
+    "AREAD112.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "welcoming_and_teasing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Bem...[0B]E aí, o que acha de estar tão alto assim?[02]Bem assustador, né? Você ainda pode desistir se quiser!"
+    },
+    "AREAD112.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "casual, friendly",
+      "intent": "welcoming_and_teasing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Bem...[0B]E aí, o que acha de estar tão alto assim?[02]Bem assustador, né? Você ainda pode desistir se quiser!"
+    },
+    "AREAD112.DAT:8:4": {
+      "speaker": "system",
+      "tone_register": "instructional",
+      "intent": "tutorial_mechanic",
+      "risk_level": "medium",
+      "risk_notes": "UI tutorial; verify button prompt transliteration in-game",
+      "t": "[0C]!Desvie dos ataques do Iggy pulando com o botão ~.[02]Se conseguir derrubá-lo do mastro, você vence!"
+    },
+    "AREAD112.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "observational",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Como acha a sensação da brisa do mar no rosto?"
+    },
+    "AREAD112.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "directive_friendly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Então, qual é nosso rumo?"
+    },
+    "AREAD112.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "informational",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"O Continente Ocidental, é?[02]Bom, não podemos levar você lá direto de navio."
+    },
+    "AREAD112.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "explanatory",
+      "intent": "informational_helpful",
+      "risk_level": "medium",
+      "risk_notes": "Complex navigation info; verify 'planícies de maré' fits byte budget",
+      "t": "[14][82]B\"Mas podemos levar a uma das ilhas próximas.[02]Ouvi dizer que dá pra caminhar sobre as planícies de maré [02]de lá até o continente.[02]Não sei se é verdade, mas você deve achar um jeito."
+    },
+    "AREAD112.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "reassuring",
+      "intent": "encouraging",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Vai levar alguns dias, então relaxa[02], aproveita e curte a viagem!"
+    },
+    "AREAD112.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "affirmative",
+      "intent": "confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Tudo limpo!"
+    },
+    "AREAD112.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "nostalgic, content",
+      "intent": "observational",
+      "risk_level": "low",
+      "risk_notes": "Incomplete speaker ref [04]; context suggests NPC commentary",
+      "t": "[14][01][01]\"Que sensação boa estar assim no oceano,[02]não é, [04]"
+    },
+    "AREAD112.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "alarmed",
+      "intent": "warning",
+      "risk_level": "high",
+      "risk_notes": "Critical story beat (Kahn encounter); verify continuity with combat scene identity",
+      "t": "[0C][05][14][04][05]\"Tem algo nos perseguindo...[02]Parece que tá batendo no navio."
+    },
+    "AREAD112.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "confused, escalating",
+      "intent": "questioning_urgent",
+      "risk_level": "high",
+      "risk_notes": "Creature identification; maintain tension; verify transliteration of creature types",
+      "t": "[0C][04][14][82]B\"Uma baleia?...Golfinho?[02]Não, é muito pequeno...[01]O que é isso!?"
+    },
+    "AREAD112.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "menacing, boastful",
+      "intent": "taunting_defiant",
+      "risk_level": "critical",
+      "risk_notes": "Major antagonist reveal (Kahn); register must be aggressive/proud; identity consistency critical; back-translation required",
+      "t": "[0C][05][14][05][06]\"Ha ha ha ha![02]Achava que eu desistiria tão fácil!?[02]Leva mais que isso pra se livrar de Kahn!"
+    },
+    "AREAD112.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "confident, menacing",
+      "intent": "threatening_battle_start",
+      "risk_level": "critical",
+      "risk_notes": "Antagonist speech (Kahn combat); escalation from line 20; maintain dominance register; back-translation required",
+      "t": "[0C][05][14][05][06]\"Podem ter me vencido antes, mas se acham que sou o mesmo [02]que enfrentaram no passado, vão se surpreender![02]Hrraaaarrrrh![01]Preparem-se!"
+    },
+    "AREAD112.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "anguished",
+      "intent": "exclamation_pain",
+      "risk_level": "low",
+      "risk_notes": "Combat impact vocalization; onomatopoeia localized",
+      "t": "[0C][8B][14][05][06]\"Aaaaaaah!\"[13]0[0C][03][14]A"
+    },
+    "AREAD112.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "conversational, slightly amused",
+      "intent": "exposition_character_context",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][82]B\"Ele chegou faz um tempo dizendo que queria aprender a ser [02]marinheiro...[02]Mas como vê, tudo que ele queria era se meter em briga."
+    },
+    "AREAD112.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "casual, satisfied",
+      "intent": "commentary_approval",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][82]B\"Levar uma surra sua é exatamente o que ele precisava, [02]se quer saber."
+    },
+    "AREAD112.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "reassuring, lighthearted",
+      "intent": "closure_comforting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][82]B\"Não se preocupa com ele...[02]Algum dos golfinhos provavelmente ajuda ele e leva de volta [02]pra cidade..."
+    },
+    "AREAD112.DAT:8:27": {
+      "speaker": "system",
+      "tone_register": "narrative",
+      "intent": "transition_storytelling",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Assim, por algum tempo depois,"
+    },
+    "AREAD112.DAT:8:28": {
+      "speaker": "system",
+      "tone_register": "narrative",
+      "intent": "continuation_storytelling",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "nossa viagem no mar"
+    },
+    "AREAD112.DAT:8:29": {
+      "speaker": "system",
+      "tone_register": "narrative",
+      "intent": "continuation_storytelling",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "prosseguiu sem incidentes."
+    },
+    "AREAD112.DAT:8:31": {
+      "speaker": "npc",
+      "tone_register": "troubled, ominous",
+      "intent": "warning_concern",
+      "risk_level": "high",
+      "risk_notes": "Unnatural event foreshadowing (Endless influence); register conveys unease; maintains narrative tension",
+      "t": "[14][02][02]\"Gostaria de poder dizer que não tem nada a se preocupar,[02]mas o vento parou.[02]Não deveria ter parado aqui, não..."
+    },
+    "AREAD112.DAT:8:33": {
+      "speaker": "Nina",
+      "tone_register": "urgent, hopeful",
+      "intent": "excited_announcement",
+      "risk_level": "medium",
+      "risk_notes": "Nina (high criticality); maintain formal-warm register and leadership tone; validate voice consistency",
+      "t": "[0C][02][14][C1]@\"Zig! Consigo ver uma ilha à frente!"
+    },
+    "AREAD112.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "questioning, apprehensive",
+      "intent": "query_concern",
+      "risk_level": "high",
+      "risk_notes": "Ominous context (cursed island); register shifts to dread; presage of danger",
+      "t": "[0C][06][14][80]@\"Ilha? Você quer dizer...?"
+    },
+    "AREAD112.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "resigned, frustrated",
+      "intent": "realization_regret",
+      "risk_level": "medium",
+      "risk_notes": "Captain's worry about navigation; conveys responsibility weight; verify register naturalness",
+      "t": "[14][02][02]\"É isso...[02]Parece que acabamos exatamente onde não queríamos estar... [02]Maldição! Como deixei isso acontecer!?"
+    },
+    "AREAD112.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "expository, somber",
+      "intent": "exposition_warning",
+      "risk_level": "medium",
+      "risk_notes": "Lore exposition (Island of Fire); verify glossary term; foreshadow danger register",
+      "t": "[14][82][02]\"Chegamos perto de uma ilha chamada [05]Ilha de Fogo[06].[02]Dizem que o mar daqui é assombrado por algum tipo de monstro..."
+    },
+    "AREAD112.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "grave, cautionary",
+      "intent": "exposition_legend",
+      "risk_level": "high",
+      "risk_notes": "Supernatural lore critical to plot (spirit/god island); register conveys gravity; avoid modern tone",
+      "t": "[14][80]@\"Falam que há um espírito poderoso que vive na ilha.[02]E ele consegue parar o vento ou causar maremotos.[02]Muitos navios já foram perdidos aqui!"
+    },
+    "AREAD112.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "resigned, matter-of-fact",
+      "intent": "exposition_conclusion",
+      "risk_level": "medium",
+      "risk_notes": "Consequence statement; maintains somber register from line 37",
+      "t": "[14][02][02]\"Então, até que o deus da ilha mude de ideia e deixe o vento [02]soprar de novo, estamos presos aqui."
+    },
+    "AREAD112.DAT:8:39": {
+      "speaker": "Nina",
+      "tone_register": "curious, seeking_guidance",
+      "intent": "inquiry_consulting",
+      "risk_level": "high",
+      "risk_notes": "Nina high criticality; formal-warm register; leadership inquiry tone; [04] ref to party member",
+      "t": "[0C][06][14][C1]@\"Espírito? Deus da ilha?[02]O que você acha, [04]"
+    },
+    "AREAD112.DAT:8:40": {
+      "speaker": "Nina",
+      "tone_register": "polite, direct",
+      "intent": "request_permission",
+      "risk_level": "high",
+      "risk_notes": "Nina voice; formal courtesy + decisiveness; verify register consistency",
+      "t": "[0C][06][14][C1]@\"Desculpe, Zig? [02]Será que poderíamos ir até essa ilha?"
+    },
+    "AREAD112.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "cautious, concerned",
+      "intent": "exposition_advisory",
+      "risk_level": "medium",
+      "risk_notes": "NPC concern validated; warning register; byte budget tight—avoid redundancy",
+      "t": "[14][02][02]\"Bem, não vejo por que não, mas tem certeza?[02]Quero dizer, ouviu o que a gente disse, certo?[02]Acho que não é um lugar tão seguro assim, sabe?"
+    },
+    "AREAD112.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "matter-of-fact, directive",
+      "intent": "conditional_approval_instruction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Se quer mesmo ir, podemos deixar você usar o bote.[02]Iggy![01]Vai com eles e rema o bote!"
+    },
+    "AREAD112.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "efficient, friendly",
+      "intent": "directional_helpful",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Vem falar comigo quando estiver pronto pra ir pra ilha.[02]Eu tiro o bote de lá pra você."
+    },
+    "AREAD112.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "mystical, dismissive",
+      "intent": "exposition_skeptical",
+      "risk_level": "critical",
+      "risk_notes": "Deis speech (high criticality); sarcastic/superior tone essential; [04] is Ryu; 'Avatar' is spiritual concept—must maintain ironic distance; verify identity non-reveal; back-translation required",
+      "t": "[14][03][04]\"Avatar?[02]Não sinto nada disso não...\"[02][14][06][07]\"Diz a Deis."
+    },
+    "AREAD112.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "directive, routine",
+      "intent": "instructional_reminder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Se quer ir pra ilha, usa o bote.[02]Iggy vai remar pra você."
+    },
+    "AREAD112.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "informational",
+      "intent": "location_guidance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Você consegue desembarcar daqui nessa enseada."
+    },
+    "AREAD112.DAT:8:49": {
+      "speaker": "npc",
+      "tone_register": "reassuring, informational",
+      "intent": "waiting_instruction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Eu fico aqui esperando.[02]Volta aqui quando estiver pronto pra voltar ao navio."
+    },
+    "AREAD112.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "questioning",
+      "intent": "confirmation_query",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quer voltar pra Ilha de Fogo?\"[12]"
+    },
+    "AREAD112.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "primitive, simple",
+      "intent": "questioning_ritual",
+      "risk_level": "high",
+      "risk_notes": "Creature (sea god/monster) speech; broken register (non-native speaker/primal intelligence); maintain otherness; avoid overcomplicating",
+      "t": "[0C][05][14][07][08]\"Humanos trazem sacrifício pro deus?"
+    },
+    "AREAD112.DAT:8:55": {
+      "speaker": "Nina",
+      "tone_register": "nervous, formal",
+      "intent": "greeting_uncertain",
+      "risk_level": "critical",
+      "risk_notes": "Nina high criticality; first contact with creature; nervousness breaks formal register briefly; maintain underlying dignity; ambiguity (Dragon identity) must survive; back-translation required",
+      "t": "[0C][06][14][88]A\"Um...[0B]O-olá...[02]Você é, um, o Dragão do Mar?"
+    },
+    "AREAD112.DAT:8:56": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal, elevated",
+      "intent": "exposition_wonder",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu ultra-high criticality; arcaico/solene register NON-NEGOTIABLE; differs radically from Ryu; reports Deis observation; maintain majesty; verify back-translation",
+      "t": "[0C][06][14][C5]@\"Deis interroga-se se isso é sequer um dos Eternos..."
+    },
+    "AREAD112.DAT:8:57": {
+      "speaker": "npc",
+      "tone_register": "mystical, conclusive",
+      "intent": "exposition_assessment",
+      "risk_level": "high",
+      "risk_notes": "Deis conclusion on creature type (lore-critical); maintain mystical register; [04] ref to Ryu",
+      "t": "[0C][06][14][03][04]\"Nope...Não é um dos Eternos.[02]Não tem a sensação correta.\"[02][14][09][09]\"Diz a Deis."
+    },
+    "AREAD112.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "hostile, primal",
+      "intent": "accusation_threat",
+      "risk_level": "high",
+      "risk_notes": "Creature aggression escalates; maintain primitive register and hostility; prepare for combat intent",
+      "t": "[0C][05][14][07][08]\"Hom? Humano sem sacrifício?[02]Você fala engraçado--você faz graça de mim!?[02]Eu mato humanos!"
+    },
+    "AREAD112.DAT:8:59": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal, elevated, explanatory",
+      "intent": "exposition_lore",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu explains Endless influence on creatures (lore-critical); maintain arcaico/solemn register throughout; [04] is Ryu; verify back-translation for register consistency",
+      "t": "[0C][06][14][83][04]\"Quando o poder dos Eternos aumenta no mundo,[02]começa a afetar criaturas sensíveis à sua aura,[01]como essa.[02]Absorvem parte desse poder e acreditam-se deuses."
+    },
+    "AREAD112.DAT:8:60": {
+      "speaker": "Fou-Lu",
+      "tone_register": "formal, elevated",
+      "intent": "exposition_continuation",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu continued speech; arcaico register; [04] is Ryu; line is incomplete in source—maintain register",
+      "t": "[0C][06][14][83][04]\"E como [04]"
+    },
+    "AREAD112.DAT:8:61": {
+      "speaker": "system",
+      "tone_register": "narrative, observational",
+      "intent": "description_setting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece apenas uma rocha."
+    },
+    "AREAD112.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "relieved, observational",
+      "intent": "observation_positive",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Parece que o vento voltou a soprar."
+    },
+    "AREAD112.DAT:8:63": {
+      "speaker": "npc",
+      "tone_register": "mystical, warning",
+      "intent": "exposition_caution",
+      "risk_level": "high",
+      "risk_notes": "Deis caution on Endless influence (lore-critical); maintain mystical register; identity consistency",
+      "t": "[0C][05][14][C5]@\"Deis diz,\"[02][14][83]D\"Tudo que é afetado pela aura dos Eternos como [02]aquela criatura da ilha é só problema!"
+    },
+    "AREAD112.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "matter-of-fact, explanatory",
+      "intent": "exposition_lore",
+      "risk_level": "medium",
+      "risk_notes": "Lore on sentience/Endless influence; verify register naturalness; maintain factual tone",
+      "t": "[14][03][04]\"Até uma rocha simples consegue ganhar sentência e se mover [02]se exposta à aura dos Eternos por tempo suficiente.\"[02][14]E"
+    },
+    "AREAD112.DAT:8:68": {
+      "speaker": "system",
+      "tone_register": "instructional, formal",
+      "intent": "tutorial_rules",
+      "risk_level": "high",
+      "risk_notes": "Game rules/mechanics; [7F],[81] are button codes (preserve verbatim); UI critical; back-translation required to verify clarity",
+      "t": "[0C]!Você vence se conseguir derrubar Iggy do mastro antes do tempo acabar.[02]Pressione o botão [7F] pra pular.[01]Se pular na cabeça dele, ele fica atordoado.[02]Use o botão [81] pra ganhar velocidade e bater nele![02]Quer ler as instruções de novo?[12][02][0C][82]Sim[01]Não"
+    },
+    "AREAD112.DAT:8:69": {
+      "speaker": "system",
+      "tone_register": "instructional, formal",
+      "intent": "tutorial_rules",
+      "risk_level": "high",
+      "risk_notes": "Duplicate of 8:68; preserve identity; verify button codes [7F],[81] match conector spec",
+      "t": "[0C]!Você vence se conseguir derrubar Iggy do mastro antes do tempo acabar.[02]Pressione o botão [7F] pra pular.[01]Se pular na cabeça dele, ele fica atordoado.[02]Use o botão [81] pra ganhar velocidade e bater nele![02]Quer ler as instruções de novo?[12][02][0C][82]Sim[01]Não"
+    },
+    "AREAD112.DAT:8:70": {
+      "speaker": "system",
+      "tone_register": "instructional, formal",
+      "intent": "tutorial_rules",
+      "risk_level": "high",
+      "risk_notes": "Duplicate of 8:68; preserve identity; verify button codes [7F],[81] match conector spec",
+      "t": "[0C]!Você vence se conseguir derrubar Iggy do mastro antes do tempo acabar.[02]Pressione o botão [7F] pra pular.[01]Se pular na cabeça dele, ele fica atordoado.[02]Use o botão [81] pra ganhar velocidade e bater nele![02]Quer ler as instruções de novo?[12][02][0C][82]Sim[01]Não"
+    },
+    "AREAD112.DAT:8:71": {
+      "speaker": "system",
+      "tone_register": "instructional, celebratory",
+      "intent": "ui_bonus_display",
+      "risk_level": "medium",
+      "risk_notes": "Game UI reward screen; [10],[02],[05],[07] are format tokens; verify spacing/alignment; transliteration safe",
+      "t": "[0C]![10][02] BONUS DE TEMPO![01] [05][02][07]"
+    },
+    "AREAD112.DAT:8:77": {
+      "speaker": "npc",
+      "tone_register": "conversational, nostalgic",
+      "intent": "observation_longing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][08][01]\"Não consigo acreditar como esse ar de mar é salgado![02]O que eu não daria por um banho quente!"
+    },
+    "AREAD112.DAT:8:78": {
+      "speaker": "npc",
+      "tone_register": "casual, positive",
+      "intent": "announcement_imminent",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Devemos ver Lyp em qualquer momento agora!"
+    },
+    "AREAD112.DAT:8:79": {
+      "speaker": "system",
+      "tone_register": "narrative, mysterious",
+      "intent": "narrative_exposition",
+      "risk_level": "high",
+      "risk_notes": "Narrative fragment about Endless (incomplete sentence); maintains ominous tone; identity of subject unclear (spoiler); do not resolve; back-translation required",
+      "t": "Eles perderiam seu poder,"
+    },
+    "AREAD112.DAT:8:80": {
+      "speaker": "system",
+      "tone_register": "narrative, mysterious",
+      "intent": "narrative_exposition",
+      "risk_level": "high",
+      "risk_notes": "Duplicate of 8:79; narrative fragment (spoiler-sensitive); maintain ambiguity",
+      "t": "Eles perderiam seu poder,"
+    },
+    "AREAD112.DAT:8:81": {
+      "speaker": "system",
+      "tone_register": "narrative, mysterious",
+      "intent": "narrative_exposition",
+      "risk_level": "high",
+      "risk_notes": "Duplicate of 8:79; narrative fragment (spoiler-sensitive); maintain ambiguity",
+      "t": "Eles perderiam seu poder,"
+    },
+    "AREAD112.DAT:8:82": {
+      "speaker": "system",
+      "tone_register": "narrative, somber",
+      "intent": "narrative_conclusion",
+      "risk_level": "high",
+      "risk_notes": "Narrative fragment (spoiler context); complete thought on mortality/power loss; maintain gravity; back-translation required",
+      "t": "e viveriam suas vidas como mortais comuns."
+    }
+  }
+}
