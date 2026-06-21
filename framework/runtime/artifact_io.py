@@ -24,13 +24,13 @@ def scene_chapter(scene: str) -> str:
 
 
 def scenes(root, chapter=None) -> list[str]:
-    """Nomes das cenas (dirs `ch_*` em artifacts/) que tenham dialogs.csv, ordenados.
+    """Nomes das cenas (dirs `ch_*` em artifacts/scenes/) que tenham dialogs.csv, ordenados.
     chapter=None varre tudo; senao filtra pelo capitulo (ex.: '19').
     Dirs sem dialogs.csv (experimentos, cenas deletadas a metade) sao silenciosamente ignorados
     — evita metricas erradas e linhas fantasma no XLSX de revisao."""
     chap = str(chapter) if chapter is not None else None
     out = []
-    for sc_dir in sorted(paths.artifacts(Path(root)).glob("ch_*")):
+    for sc_dir in sorted(paths.scenes_dir(Path(root)).glob("ch_*")):
         if not sc_dir.is_dir():
             continue
         if not (sc_dir / "dialogs.csv").is_file():   # exige dialogs.csv — sem ele a cena e incompleta

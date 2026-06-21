@@ -38,7 +38,7 @@ def load_dialogs(p):
 def main():
     if len(sys.argv) < 2:
         sys.exit("uso: python build_plan_chapter.py <chapter_dir>  (ex.: ch_11_04)")
-    chdir = ROOT / "artifacts" / sys.argv[1]
+    chdir = ROOT / "artifacts" / "scenes" / sys.argv[1]
     if not chdir.is_dir():
         sys.exit(f"ERRO: diretorio nao encontrado: {chdir}")
     trans_files = sorted(chdir.glob("translations_*.json"))
