@@ -779,19 +779,23 @@ def main():
         rows = export(a.project, a.chapter)
         scope = f"cap_{a.chapter}" if a.chapter else "all"
         ext = "csv" if a.csv else "xlsx"
+        root_p = Path(a.project)
+        outbox = paths.qa_outbox(root_p)
+        inbox  = paths.qa_inbox(root_p)
+        tester = paths.qa_tester(root_p)
+        for d in (outbox, inbox, tester):          # garante estrutura completa antes de qualquer arquivo
+            d.mkdir(parents=True, exist_ok=True)
         if a.out:
             out = a.out
         else:
-            outbox = paths.qa_outbox(Path(a.project))      # OUTBOX: disponibiliza p/ o humano ler
-            outbox.mkdir(parents=True, exist_ok=True)
             out = str(outbox / f"review_{scope}.{ext}")
         (write_csv if a.csv else write_xlsx)(rows, out)
         marked = sum(1 for r in rows if r["revisar"])
         label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
         print(f"[export] {label}: {len(rows)} linha(s) -> {out}")
         print(f"         {marked} marcada(s) p/ avaliar; abra no Excel/LibreOffice, filtre a coluna "
-              f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva no inbox "
-              f"({paths.qa_inbox(Path(a.project))}).")
+              f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva em "
+              f"{inbox} (ou em {tester}/relato_tester.csv para relatos in-game).")
         sys.exit(0)
     files = returned_files(Path(a.project), a.returned)
     if not files:
