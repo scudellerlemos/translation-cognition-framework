@@ -42,21 +42,31 @@
 ### Evolução do Motor (pós-produção BoF4)
 
 - [x] **B1. Validation leve.** ✅ `framework/validation/validate.py` — genérico, ERROR/WARN, 7 testes pytest.
-- [ ] **B2. Memory leve** — glossário + character state consultável entre lotes, no lugar de re-ler CSV ad-hoc.
+- [ ] **B2. Memory leve** — TM, glossário e KB consultáveis entre lotes via busca por relevância, no lugar de passar o CSV inteiro no contexto.
 
-  #### Stack de ML local (zero custo de API, zero servidor, empacotável em .exe)
+  #### Abordagem: SQLite FTS5 (jun/2026)
 
-  > Decisões tomadas em jun/2026 com benchmark real (MTEB, SIFT1M, TREC DL).
-  > Todos os modelos baixados on-demand no primeiro uso; o .exe base fica ~250 MB.
+  > Decisão reavaliada em jun/2026. A stack anterior (bi-encoder + reranker + sqlite-vec) foi descartada por
+  > superdimensionamento: o corpus atual (6–100k entradas) não justifica 500 MB de modelo nem extensão C nativa.
+  > Gatilho para reavaliar: hit rate insatisfatório medido em ≥3 jogos OU corpus >500k entradas.
 
-  | Componente | Modelo escolhido | Tamanho | Função |
-  |---|---|---|---|
-  | **Bi-encoder** | `paraphrase-multilingual-MiniLM-L12-v2` | ~470 MB | Embedding de TM, KB e glossário |
-  | **Reranker** | FlashRank (`ms-marco-MiniLM-L-12-v2` quantizado) | ~4 MB | Reordena top-N do bi-encoder por relevância real |
-  | **NER** | `spaCy xx_ent_wiki_sm` | ~31 MB | Extração de entidades no Passo 01 (PT+EN, sem LLM) |
-  | **Vector DB** | `sqlite-vec` | extensão C | Índice vetorial com filtros SQL (byte_budget, game, chapter) |
+  **Solução:** `sqlite3` stdlib do Python com extensão FTS5 (inclusa por padrão desde Python 3.x).
 
-  Upgrades documentados: bi-encoder → `multilingual-e5-small` se hit rate insatisfatório; reranker → `bge-reranker-v2-m3` quando PT reranking for crítico; NER → GLiNER zero-shot quando vocabulário de entidades do jogo estiver mapeado; vector DB → LanceDB acima de 500k vetores.
+  | Propriedade | Valor |
+  |---|---|
+  | Deps extras | **zero** — stdlib |
+  | Tamanho de modelo | **zero** — sem download |
+  | Query em 100k entradas | <5 ms |
+  | Filtros por metadata | SQL nativo (`WHERE game=? AND chapter<=?`) |
+  | Ranking | BM25 nativo do FTS5 |
+  | PyInstaller | ✅ (Python built-in) |
+  | Artefatos novos | zero — índice gerado on-demand a partir do `translation_memory.jsonl` existente |
+
+  **Impacto de custo:** context_pack hoje passa o TM inteiro (~200 tokens/entrada × 6046 = >1M tokens extras/cena).
+  Com FTS5 top-10, cai para ~2k tokens de TM por cena — redução de ~99% nos tokens de contexto de memória.
+
+  **Upgrade path** (só quando o gatilho for atingido): `sqlite-vec` (extensão C) para busca vetorial sem mudar a API;
+  depois `multilingual-e5-small` como bi-encoder se similaridade léxica não bastar.
 - [ ] **B3. Kernel simples** — runtime que orquestra os passos usando Validation + Memory. Compensa com ≥2 projetos.
   - As primitivas (`run_scene`, `validate`, `context_pack`) devem expor contratos Python limpos e tipados — chamáveis por qualquer agente, CLI ou orquestrador externo sem depender do Claude ou de MCP. MCP tools ficam como conveniência de desenvolvimento apenas, nunca entram no produto.
 - [ ] **B4. Skill DSL** — forma declarativa dos passos 00–08. Por último: só vale com o Kernel existente e 2–3 projetos.
@@ -158,7 +168,7 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 - [ ] **E1. CLI instalável** — entrypoint `tcf` via `pyproject.toml` (`tcf translate`, `tcf extract`, `tcf verify`).
 - [ ] **E2. README de produto** — reescrever o README raiz como "você instala e usa" em vez de tour pela árvore.
 - [ ] **E3. Consolidar documentação** — mover `.md` puramente documentais para `docs/`; os `.md` de runtime (skills, schemas) ficam onde estão.
-- [ ] **E4. Distribuição como `.exe`** — PyInstaller ou Nuitka empacotam CLI + runtime Python em binário standalone para usuários sem Python. Modelo de embedding (~470MB) baixado on-demand no primeiro uso.
+- [ ] **E4. Distribuição como `.exe`** — PyInstaller ou Nuitka empacotam CLI + runtime Python em binário standalone para usuários sem Python. Zero modelo de embedding necessário (SQLite FTS5 é stdlib).
 
 ---
 
