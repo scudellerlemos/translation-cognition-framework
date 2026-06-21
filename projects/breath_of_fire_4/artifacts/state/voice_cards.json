@@ -1,0 +1,115 @@
+{
+  "Cray": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Guerreiro Woren; companheiro de Nina desde a infância.",
+      "Registro: direto, protetor, levemente bruto. Frases curtas; poucas palavras longas.",
+      "Tom: leal, pragmático; afeto por Nina mantido contido.",
+      "Red flags: floreios verbais; soar filosófico; expor emoção abertamente."
+    ]
+  },
+  "Deis": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Deusa aprisionada; tom irônico e levemente superior.",
+      "Registro: sarcástico, irreverente, divertido com a ingenuidade dos mortais.",
+      "Tom: poderosa mas entediada; curiosidade genuína disfarçada de desdém.",
+      "Red flags: soar agressiva; perder o humor sofisticado; tratar personagens com seriedade excessiva."
+    ]
+  },
+  "Fou-Lu": {
+    "aliases": [],
+    "criticality": "high",
+    "lines": [
+      "Primeiro Imperador ressurgido; alter-ego de Ryu.",
+      "Registro: arcaico, solene, majestoso. Pronomes imperiais; vocabulário elevado.",
+      "Tom: distante, poderoso, eventualmente amargo e trágico.",
+      "Red flags: soar casual ou moderno; aproximar o registro do Ryu; resolver a ambiguidade do personagem.",
+      "CRITICAL: voz completamente distinta de Ryu — nunca moderar o arcaísmo."
+    ]
+  },
+  "Nina": {
+    "aliases": [],
+    "criticality": "high",
+    "lines": [
+      "Princesa de Wyndia buscando noivo desaparecido.",
+      "Registro: formal-médio com calor. Liderança discreta; determinada.",
+      "Tom: esperançosa mas realista; forte senso de responsabilidade.",
+      "Red flags: soar fria ou passiva; perder a firmeza que a caracteriza como líder do grupo."
+    ]
+  },
+  "Ryu": {
+    "aliases": [],
+    "criticality": "high",
+    "lines": [
+      "Protagonista; jovem caído do céu sem memórias.",
+      "Registro: simples, direto, honesto. Poucas palavras; expressa-se por ação.",
+      "Tom: tranquilo, levemente ingênuo; cresce em determinação ao longo da história.",
+      "Red flags: verbose demais; soar adulto/calculista; resolver dúvidas que o personagem não resolveria.",
+      "Contraste obrigatório com Fou-Lu: mesma entidade, voz completamente oposta."
+    ]
+  },
+  "Scias": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Mercenário felino (Khán); fala com gaguejo característico.",
+      "Registro: hesitante, com gaguejos, linguagem simples.",
+      "Tom: leal apesar da aparência desleixada; humor involuntário.",
+      "Red flags: perder o gaguejo (é traço identitário central); soar articulado ou fluente.",
+      "Convenção de gaguejo em pt-BR: a definir no decision_log.md após cenas com Scias."
+    ]
+  },
+  "Ursula": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Oficial do Exército Imperial.",
+      "Registro: formal-militar. Ordens curtas. Evolui para tom mais pessoal conforme confia no grupo.",
+      "Tom: rígida no início; gradualmente mais humana.",
+      "Red flags: soar casual desde o início; perder a progressão de confiança."
+    ]
+  },
+  "Yuna": {
+    "aliases": [],
+    "criticality": "medium",
+    "lines": [
+      "Antagonista principal; cientista imperial; manipulador refinado.",
+      "Registro: educado, preciso, ligeiramente condescendente. Nunca grita; nunca perde a compostura.",
+      "Tom: frio-intelectual; entusiasmo contido ao descrever seus experimentos.",
+      "Red flags: soar raivoso ou passional; perder a polidez superficial que mascara a crueldade."
+    ]
+  },
+  "npc": {
+    "aliases": [],
+    "criticality": "low",
+    "lines": [
+      "NPC sem perfil de voz dedicado (personagens secundários, aldeões, guardas, mercadores genéricos).",
+      "Registro: neutro-médio; adaptar ao contexto imediato da cena (hostil, amigável, comercial).",
+      "Tom: sem traço fixo de voz — cada fala é independente do grupo.",
+      "Red flags: impor voz de personagem conhecido; forçar consistência entre npcs de cenas distintas."
+    ]
+  },
+  "system": {
+    "aliases": [],
+    "criticality": "low",
+    "lines": [
+      "Mensagens do sistema de jogo: tutoriais, confirmações de menu, avisos de interface.",
+      "Registro: neutro, impessoal, imperativo quando necessário.",
+      "Tom: informativo; sem personalidade de personagem.",
+      "Red flags: adicionar voz de personagem; usar registro informal."
+    ]
+  },
+  "unknown": {
+    "aliases": [],
+    "criticality": "low",
+    "lines": [
+      "Falante não identificado no corpus: NPCs genéricos, vozes de multidão, textos sem speaker_code.",
+      "Registro: neutro-médio; adaptar ao contexto da cena.",
+      "Tom: sem traço de voz fixo — cada fala é independente.",
+      "Red flags: impor voz específica de personagem conhecido; forçar consistência entre falas de 'unknown'."
+    ]
+  }
+}
