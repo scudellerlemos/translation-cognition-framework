@@ -50,6 +50,9 @@ def check(root, scene) -> dict:
         # tolera markdown: "**Status:** reconciled", "status : reconciled", etc.
         if not re.search(r"status[:*\s]+reconciled", txt, re.I):
             problems.append("research_log.md sem 'status: reconciled' — reconcilie a pesquisa IA+humano.")
+        elif re.search(r"human_input\s*:\s*pending", txt, re.I):
+            warnings.append("research_log.md: status=reconciled mas human_input=pending — "
+                            "atualize para 'confirmed' ou 'declined' (proveniência incompleta).")
 
     for name in _KB_ARTIFACTS:
         f = art / name

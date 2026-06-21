@@ -87,6 +87,12 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, 
         if max_usd is not None and c > max_usd:
             import warnings
             warnings.warn(f"translate({scene}): custo ${c:.4f} excedeu max_usd=${max_usd:.4f}.", stacklevel=2)
+        # V1: proveniência — doctrine/modelo gravados junto com a tradução para auditoria posterior
+        data["_meta"] = {
+            "model_id": m,
+            "doctrine_hash": pack.get("doctrine_hash", ""),
+            "skills_revision": pack.get("skills_revision", ""),
+        }
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}

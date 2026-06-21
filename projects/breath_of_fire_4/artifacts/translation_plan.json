@@ -1,0 +1,83 @@
+{
+  "project": "breath_of_fire_4",
+  "plan_date": "2026-06-20",
+  "status": "pronto_para_piloto",
+
+  "corpus": {
+    "total_strings": 6046,
+    "total_files": 125,
+    "scope": "AREAD + AREAS (diálogo de personagem com speaker_code)",
+    "dialogs_csv": "artifacts/dialogs.csv",
+    "note": "Extração via connector/extract.py — escopo restrito a famílias de diálogo (Fase 0 concluída)"
+  },
+
+  "kb_artifacts": {
+    "entities": "artifacts/entities.csv",
+    "glossary": "artifacts/glossary.csv",
+    "research_log": "artifacts/research_log.md",
+    "kb_status": "reconciled — gate kb_phase all --check verde (2026-06-20)"
+  },
+
+  "model_config": {
+    "batch_model": "claude-haiku-4-5-20251001",
+    "review_model": "claude-sonnet-4-6",
+    "note": "Haiku para tradução em escala; Sonnet para back-translation de linhas risk=high e revisão de voz de personagem"
+  },
+
+  "batch_config": {
+    "batch_size": 50,
+    "context_per_batch": ["glossary relevante", "entities presentes", "speaker_code do arquivo"],
+    "id_column": "offset",
+    "text_column": "text_en",
+    "output_column": "text_pt",
+    "note": "Batch de 50 strings por arquivo-fonte (DAT) mantém contexto de personagem coeso; arquivos grandes (>200 strings) subdivididos em blocos de 50"
+  },
+
+  "length_constraints": {
+    "mode": "byte_space",
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110,
+    "charset": "ascii_only",
+    "diacritic_strategy": "nfd_transliteration",
+    "note": "PC port usa fonte ASCII. Diacríticos PT-BR (ã, ç, é) precisam de transliteração NFD antes de exportar. Validar in-game no piloto se a fonte foi expandida — se sim, rever charset."
+  },
+
+  "pilot": {
+    "scope": "AREAD001.DAT + AREAD004.DAT",
+    "strings": 102,
+    "rationale": "Primeiros dois arquivos de diálogo em ordem narrativa — abertura do jogo. Validar: prompt, byte_budget, encoding/diacríticos, reinsert live",
+    "estimated_cost_brl": "~R$0.30 (Haiku) | ~R$1.20 (Sonnet)",
+    "gate": "round-trip do arquivo reescrito byte-idêntico nas strings não traduzidas; strings traduzidas dentro do byte_budget"
+  },
+
+  "full_game_estimate": {
+    "strings": 6046,
+    "batches_approx": 125,
+    "estimated_cost_brl": "~R$8 (Haiku) | ~R$40 (Sonnet)",
+    "note": "Estimativa baseada em ~50 tokens/string + overhead de contexto por batch. Custo real depende do tamanho médio das strings e do contexto injetado."
+  },
+
+  "risk_policy": {
+    "low": "aceito sem revisão manual",
+    "medium": "revisão spot (5% das linhas por arquivo)",
+    "high": "back-translation obrigatória via Sonnet; aprovação manual antes de gravar no approved.csv"
+  },
+
+  "order": "narrativa — AREAD ordenado numericamente, depois AREAS pelo mesmo número de área",
+
+  "connector_scripts": {
+    "extract": "connector/extract.py",
+    "reinsert": "connector/reinsert.py",
+    "build_plan": "connector/build_plan_chapter.py",
+    "verify": "connector/verify_chapter.py",
+    "note": "build_plan_chapter.py e verify_chapter.py ainda não implementados — pré-requisito para Fase 2"
+  },
+
+  "next_steps": [
+    "1. Implementar connector/build_plan_chapter.py (gera translation_plan por arquivo)",
+    "2. Rodar piloto AREAD001 + AREAD004 via model.translate",
+    "3. Validar diacríticos in-game (confirmar charset expandido ou aplicar NFD)",
+    "4. Ajustar byte_budget se overflow > 10% das strings do piloto",
+    "5. Escalar para o corpus completo via run_scene.py (backend api, batch)"
+  ]
+}

@@ -74,6 +74,7 @@ def decision_index(root) -> Path:       return state_dir(root) / "decision_index
 
 
 # ---- por cena (artifacts/<scene>/) ----
+def dialogs_flat(root) -> Path:         return artifacts(root) / "dialogs.csv"
 def dialogs(root, scene) -> Path:       return scene_dir(root, scene) / "dialogs.csv"
 def pack(root, scene) -> Path:          return scene_dir(root, scene) / "pack.json"
 def scene_prompt(root, scene) -> Path:  return scene_dir(root, scene) / "scene_prompt.md"
