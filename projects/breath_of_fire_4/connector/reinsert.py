@@ -23,6 +23,12 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK = _HERE.parent.parent.parent / "framework" / "runtime"
+if str(_FRAMEWORK) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK))
+import paths as _paths  # noqa: E402
+
 from extract import (
     decode_string,
     encode_string,
@@ -201,15 +207,18 @@ def main(project_json: Path, source_override: str | None = None) -> None:
                 'byte_budget': int(row['byte_budget']),
             }
 
-    # Carrega traduções aprovadas
-    approved_csv = root / 'artifacts' / 'approved_translations.csv'
+    # Carrega traduções aprovadas dos approved_*.csv por cena (artifacts/scenes/<scene>/)
     translations: dict[str, str] = {}  # offset_id -> text_target
-    if approved_csv.exists():
-        with approved_csv.open(encoding='utf-8') as f:
-            for row in csv.DictReader(f):
-                target = row.get('text_target', '').strip()
-                if target:
-                    translations[row['offset']] = target
+    scenes_dir = _paths.scenes_dir(root)
+    for scene_dir in sorted(scenes_dir.iterdir()):
+        if not scene_dir.is_dir():
+            continue
+        for appr in sorted(scene_dir.glob("approved_*.csv")):
+            with appr.open(encoding='utf-8') as f:
+                for row in csv.DictReader(f):
+                    target = row.get('text_target', '').strip()
+                    if target:
+                        translations[row['offset']] = target
 
     # Agrupa por arquivo: {fname: {ptr_idx: text_decoded}}
     per_file: dict[str, dict[int, str]] = defaultdict(dict)
@@ -227,7 +236,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
             per_file[fname][ptr_idx] = meta['text_en']
 
     # Processa cada arquivo com traduções
-    out_dir = root / 'output'
+    out_dir = _paths.output_dir(root)   # nunca escreve na instalação do jogo
     out_dir.mkdir(parents=True, exist_ok=True)
 
     report: list[str] = []
