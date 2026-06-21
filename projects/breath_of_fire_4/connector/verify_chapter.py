@@ -58,7 +58,7 @@ def main() -> None:
         sys.exit("uso: python verify_chapter.py <scene>  (ex.: AREAD001)")
 
     scene = sys.argv[1]
-    chdir = ROOT / "artifacts" / scene
+    chdir = ROOT / "artifacts" / "scenes" / scene
     if not chdir.is_dir():
         sys.exit(f"ERRO: diretório não encontrado: {chdir}")
 
