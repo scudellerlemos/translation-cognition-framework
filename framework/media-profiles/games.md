@@ -9,6 +9,33 @@
 
 ---
 
+## 0. ESCOPO DE EXTRAÇÃO (Passo 00)
+
+**Regra:** o extrator de Fase 0 inclui SOMENTE diálogo de história com identificação de falante.
+UI, itens, batalha e outros textos de sistema ficam para fases futuras separadas.
+
+| Categoria | Fase 0 | Fase futura |
+|-----------|--------|-------------|
+| Diálogo de personagem com falante identificado | ✅ | — |
+| Narração / texto de evento (cutscene) | ✅ | — |
+| Descrições de item e equipamento | ❌ | ✅ |
+| Texto de batalha (habilidades, status) | ❌ | ✅ |
+| Menus e UI de sistema | ❌ | ✅ |
+| Nomes de local sem fala associada | ❌ | ✅ |
+
+**Por quê:** o valor central de uma tradução narrativa está na voz dos personagens e na história.
+UI/itens/batalha na Fase 0 poluem a KB de entidades e sobrecarregam o worklist de descoberta
+sem gerar valor imediato. O escopo reduzido também torna o round-trip mais preciso e o harness
+de QA mais focado. Validado empiricamente: Utawarerumono usou escopo de cena (naturalmente
+limitado a diálogo) e BoF4 confirmou a regra ao incluir itens/UI acidentalmente na primeira
+extração.
+
+**No conector:** `extract.py` declara `_DIALOGUE_FAMILIES` e `_ITEM_DESC_RE`. O `dialogs.csv`
+de saída inclui coluna `speaker_code` ([14][XX] no início da string) para identificar o falante
+— necessário para voice cards e QA de voz consistente.
+
+---
+
 ## 1. FORMATO DA FONTE
 
 Jogos expõem texto como **strings indexadas** — cada linha tem um identificador estável
