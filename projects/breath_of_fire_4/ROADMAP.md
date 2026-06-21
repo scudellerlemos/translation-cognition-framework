@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
 > Última atualização: 2026-06-20
-> Status atual: **FASE 01 — PIPELINE COGNITIVO (passo 1.5 pendente — plano de tradução)**
+> Status atual: **FASE 02 — TRADUÇÃO EM ESCALA (piloto pendente)**
 
 ---
 
@@ -75,13 +75,14 @@ Os dois maiores gaps que BoF4 precisa fechar:
 - [x] **1.2. Passo 02 — Resolução de Entidades:** nomes canônicos PT-BR + handling rules em `entities.csv` e `glossary.csv`
 - [x] **1.3. Passo 03 — Knowledge Building:** `artifacts/research_log.md` status `reconciled`; gate `kb_phase all --check` verde; fonte T1 Wikipedia PT (humano) + T2 corpus (IA)
 - [x] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com 101 termos e handling rules formais
-- [ ] **1.5. Passo 05 — Plano de tradução:** `translation_plan.json`, configuração de batch piloto
+- [x] **1.5. Passo 05 — Plano de tradução:** `artifacts/translation_plan.json` — escopo, modelo (Haiku+Sonnet), piloto AREAD001+004 (~R$0.30), estimativa full game (~R$8 Haiku), `project.json` TBDs preenchidos
 
 ---
 
 ### Fase 2 — Tradução em escala (Passos 06–07)
 
-- [ ] **2.1. Traduzir cenas iniciais** (~1 cena piloto a ~R$ 1,50 para validar batch + conector live)
+- [ ] **2.1. Traduzir cenas iniciais** (~AREAD001+004, ~R$0.30 Haiku; validar: prompt, diacríticos in-game, reinsert live)
+  - Pré-req: implementar `connector/build_plan_chapter.py` + `connector/verify_chapter.py`
 - [ ] **2.2. Loop por capítulo** via `run_chapter.py` com `--max-usd`
 - [ ] **2.3. Back-translation** de linhas `risk≥high` por capítulo
 
