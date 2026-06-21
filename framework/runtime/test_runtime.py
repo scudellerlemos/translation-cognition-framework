@@ -25,6 +25,7 @@ import context_pack          # noqa: E402
 import state_index           # noqa: E402
 import run_chapter           # noqa: E402
 import run_scene             # noqa: E402
+import connector_mgr         # noqa: E402
 import kb_gate               # noqa: E402
 import model                 # noqa: E402
 import back_translate        # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
@@ -218,6 +219,105 @@ def test_kb_gate_frontier_blocks_beyond(tmp_path):
     assert kb_gate.check(root, "ch_13_01")["problems"], "capitulo seguinte deve bloquear"
 
 
+def test_kb_gate_warns_human_input_pending_when_reconciled(tmp_path):
+    """status=reconciled + human_input=pending deve gerar WARNING (não block): estado inconsistente."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "research_log.md").write_text(
+        "# Research\n**Status:** reconciled\n\nhuman_input: pending\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+    (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
+    (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
+    (tmp_path / "project.json").write_text(json.dumps({"kb_frontier": "12_17"}), encoding="utf-8")
+    r = kb_gate.check(tmp_path, "ch_12_03")
+    assert r["problems"] == [], "human_input=pending nao deve bloquear (gate passa)"
+    assert any("human_input" in w for w in r["warnings"]), "deve gerar warning de proveniência incompleta"
+
+
+def test_kb_gate_no_warning_human_input_confirmed(tmp_path):
+    """human_input=confirmed não deve gerar warning."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    (art / "research_log.md").write_text(
+        "# Research\n**Status:** reconciled\n\nhuman_input: confirmed\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+    (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
+    (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
+    (tmp_path / "project.json").write_text(json.dumps({"kb_frontier": "12_17"}), encoding="utf-8")
+    r = kb_gate.check(tmp_path, "ch_12_03")
+    assert r["problems"] == []
+    assert not any("human_input" in w for w in r["warnings"])
+
+
+# --- A4: validate_dialogs_csv ---
+
+def test_validate_dialogs_csv_ok(tmp_path):
+    p = tmp_path / "dialogs.csv"
+    p.write_text("offset,text_source,byte_budget\n0x1,Hello,20\n", encoding="utf-8")
+    assert context_pack.validate_dialogs_csv(p) == []
+
+
+def test_validate_dialogs_csv_missing_column(tmp_path):
+    p = tmp_path / "dialogs.csv"
+    p.write_text("offset,text_source\n0x1,Hello\n", encoding="utf-8")  # sem byte_budget
+    probs = context_pack.validate_dialogs_csv(p)
+    assert any("byte_budget" in pr for pr in probs)
+
+
+def test_validate_dialogs_csv_no_text_column(tmp_path):
+    p = tmp_path / "dialogs.csv"
+    p.write_text("offset,byte_budget\n0x1,20\n", encoding="utf-8")  # sem text_source nem text_en
+    probs = context_pack.validate_dialogs_csv(p)
+    assert any("texto" in pr for pr in probs)
+
+
+def test_validate_dialogs_csv_non_numeric_budget(tmp_path):
+    p = tmp_path / "dialogs.csv"
+    p.write_text("offset,text_source,byte_budget\n0x1,Hello,NaN\n", encoding="utf-8")
+    probs = context_pack.validate_dialogs_csv(p)
+    assert any("não-numérico" in pr for pr in probs)
+
+
+# --- G4: prune_discontinued ---
+
+def test_prune_discontinued_removes_old(tmp_path):
+    disc = tmp_path / "artifacts" / "discontinued" / "ch_01_01"
+    disc.mkdir(parents=True)
+    (disc / "old.txt").write_text("x")
+    import os, time as _time
+    # simula mtime 40 dias atrás
+    old_ts = _time.time() - 40 * 86400
+    os.utime(disc, (old_ts, old_ts))
+    removed = run_scene.prune_discontinued(tmp_path, older_than_days=30)
+    assert len(removed) == 1
+    assert not disc.exists()
+
+
+def test_prune_discontinued_keeps_recent(tmp_path):
+    disc = tmp_path / "artifacts" / "discontinued" / "ch_01_02"
+    disc.mkdir(parents=True)
+    (disc / "new.txt").write_text("x")
+    removed = run_scene.prune_discontinued(tmp_path, older_than_days=30)
+    assert removed == []
+    assert disc.exists()
+
+
+def test_prune_discontinued_noop_when_absent(tmp_path):
+    removed = run_scene.prune_discontinued(tmp_path, older_than_days=1)
+    assert removed == []
+
+
+# --- G5: cost_report --summary ---
+
+def test_cost_report_summary_line():
+    import cost_report as cr
+    rep = {"total_usd": 3.14, "verified_scenes": 7, "n_calls": 42}
+    line = cr.summary_line(rep)
+    assert "$3.14" in line
+    assert "7" in line
+    assert "42" in line
+
+
 # ------------------------------- run_chapter ----------------------------------
 # Driver de capitulo: ordem das cenas, resume (skip de verified) e para-na-falha.
 # Sem rede — run_scene e mockado (a unica parte de IA fica isolada em model.py).
@@ -304,6 +404,9 @@ def test_batch_smoke_evaluate():
     # (c) Haiku sumiu (regressao tipo 400-do-effort) — so Sonnet no ledger
     ok, probs = batch_smoke.evaluate({sc: "written"}, [healthy[1]], sc)
     assert not ok and any("Haiku" in p for p in probs)
+    # (c) Sonnet sumiu — so Haiku no ledger
+    ok, probs = batch_smoke.evaluate({sc: "written"}, [healthy[0]], sc)
+    assert not ok and any("Sonnet" in p for p in probs)
     # (d) caiu pro interativo full-price
     fell = healthy + [{"kind": "translate", "model": "claude-sonnet-4-6", "batch": False, "cost_usd": 0.5}]
     ok, probs = batch_smoke.evaluate({sc: "written"}, fell, sc)
@@ -315,10 +418,10 @@ def test_verify_status_parses_structured_line():
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
            'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo_t4": 2, "out_of_file": 0, "n_fails": 1}\n'
            "\nFALHAS:\n  - resíduo T4 = 2 (esperado 0)\n")
-    st = run_scene._verify_status(out)
+    st = connector_mgr._verify_status(out)
     assert st["fitting_failure"] is True and st["residuo_t4"] == 2
-    assert run_scene._verify_status("sem status aqui") == {}          # conector legado -> {}
-    assert run_scene._verify_status("VERIFY_STATUS: {quebrado") == {}  # json invalido -> {} (nao explode)
+    assert connector_mgr._verify_status("sem status aqui") == {}          # conector legado -> {}
+    assert connector_mgr._verify_status("VERIFY_STATUS: {quebrado") == {}  # json invalido -> {} (nao explode)
 
 
 def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
@@ -340,7 +443,7 @@ def test_run_survives_non_utf8_subprocess_output():
     # a thread leitora do subprocess — era isso que derrubava o run_chapter no meio da run e deixava o
     # chip da UI preso (sem saida limpa). _run usa errors='replace' -> nunca quebra; ASCII fica intacto.
     code = r"import sys; sys.stdout.buffer.write(b'fora do arquivo \xed\n')"
-    rc, out = run_scene._run([sys.executable, "-c", code])
+    rc, out = connector_mgr._run([sys.executable, "-c", code])
     assert rc == 0
     assert "fora do arquivo" in out.lower(), "match ASCII deve sobreviver; byte ruim vira replacement"
 
@@ -558,20 +661,17 @@ class _FakeBatches:
         return iter(out)
 
 
-def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path):
+def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path, fake_pack_ctx):
     # 3 cenas: 99_01 cobre na 1a; 99_02 DROPA 1 linha na 1a e cobre na 2a (ACUMULA -> nao cai p/
     # interativo); 99_03 nunca cobre -> coverage_failed apos as rodadas.
     for s in ("ch_99_01", "ch_99_02", "ch_99_03"):
         (tmp_path / "artifacts" / s).mkdir(parents=True)
-    packs = {
+    fake_pack_ctx.update({
         "ch_99_01": {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
         "ch_99_02": {"scene_id": "99_02", "tm_exact": [],
                      "lines": [{"offset": "0x9", "source": "A"}, {"offset": "0xa", "source": "B"}]},
         "ch_99_03": {"scene_id": "99_03", "tm_exact": [], "lines": [{"offset": "0xb", "source": "C"}]},
-    }
-    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
-    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    })
     fake = _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_FakeBatches({
         "ch_99_01": [_btext(["0x1"])],                       # cobre na rodada 0
         "ch_99_02": [_btext(["0x9"]), _btext(["0xa"])],      # rodada 0 dropa 0xa; rodada 1 completa
@@ -610,16 +710,13 @@ def test_tier_of_routes_by_break_token():
     assert model._tier_of("") == "cheap"
 
 
-def test_batch_tiering_routes_models(monkeypatch, tmp_path):
+def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
     # cena com 1 linha single-line (-> Haiku) e 1 multi-linha (-> Sonnet): 2 requests, 2 modelos
     tok = context_pack.TOKEN
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
-    packs = {"ch_99_01": {"scene_id": "99_01", "tm_exact": [],
-                          "lines": [{"offset": "0x1", "source": "simples"},
-                                    {"offset": "0x2", "source": f"tem{tok}quebra"}]}}
-    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
-    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    fake_pack_ctx["ch_99_01"] = {"scene_id": "99_01", "tm_exact": [],
+                                  "lines": [{"offset": "0x1", "source": "simples"},
+                                            {"offset": "0x2", "source": f"tem{tok}quebra"}]}
     fb = _FakeBatches({"ch_99_01": [_btext(["0x1"]) ]})      # rodada 0 nao importa o conteudo exato aqui
     # texto que cobre cada offset com paridade certa
     good = json.dumps({"lines": [
@@ -668,18 +765,17 @@ class _FakeTruncating:
         return iter(out)
 
 
-def test_batch_chunking_beats_truncation(monkeypatch, tmp_path):
+def test_batch_chunking_beats_truncation(monkeypatch, tmp_path, fake_pack_ctx):
     # REGRESSAO (causa-raiz cap.15, medida no 15_06): o endpoint de batch TRUNCA a saida estruturada
     # longa (~100 linhas/resposta, deterministico -> 120/221 sempre faltando, re-mandar nao adianta).
     # Fix: CHUNKING — quebrar a cena em requests <= _BATCH_CHUNK; cada um volta completo -> converge.
     tok = context_pack.TOKEN
     (tmp_path / "artifacts" / "ch_96_01").mkdir(parents=True)
     lines = [{"offset": f"0x{i:02x}", "source": f"L{i}{tok}x"} for i in range(20)]   # 20 multi-linha
-    packs = {"ch_96_01": {"scene_id": "96_01", "tm_exact": [], "lines": lines}}
-    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
+    fake_pack_ctx["ch_96_01"] = {"scene_id": "96_01", "tm_exact": [], "lines": lines}
+    # override: render_prompt precisa embutir offsets para o _FakeTruncating saber o que foi pedido
     monkeypatch.setattr(context_pack, "render_prompt",
                         lambda pack, carta="": "P " + " ".join("o:" + r["offset"] for r in pack["lines"]))
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
     trunc = _FakeTruncating(5)        # o "modelo" so devolve 5 linhas por resposta
 
     # SEM chunking (chunk grande): 1 request de 20 -> volta 5; em 2 rodadas nao alcança as 20 -> falha
@@ -701,17 +797,14 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path):
     assert len(d["lines"]) == 20, "todas as 20 linhas cobertas via chunks"
 
 
-def test_batch_retries_transient_network(monkeypatch, tmp_path):
+def test_batch_retries_transient_network(monkeypatch, tmp_path, fake_pack_ctx):
     # REGRESSAO (cap.18): o back-batch morreu por TIMEOUT DE REDE — as chamadas de batch (create/results)
     # nao tinham backoff (so o caminho interativo/_stream_final tinha). Agora _with_backoff cobre TODOS
     # os pontos de rede do batch. Fake levanta erro transitorio 1x em create E em results -> deve re-tentar.
     import httpx
     monkeypatch.setattr(model.time, "sleep", lambda *a, **k: None)   # nao espera o backoff no teste
     (tmp_path / "artifacts" / "ch_98_01").mkdir(parents=True)
-    packs = {"ch_98_01": {"scene_id": "98_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
-    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
-    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "P")
-    monkeypatch.setattr(model, "_carta_text", lambda: "C")
+    fake_pack_ctx["ch_98_01"] = {"scene_id": "98_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}
     n = {"create": 0, "results": 0}
 
     class _Flaky(_FakeBatches):
@@ -857,13 +950,10 @@ def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
         "retry manda SO a linha quebrada (recuperacao por-linha)"
 
 
-def test_batch_translate_resumes_existing(monkeypatch, tmp_path):
+def test_batch_translate_resumes_existing(monkeypatch, tmp_path, fake_pack_ctx):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
     (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
-    packs = {"ch_99_01": {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}}
-    monkeypatch.setattr(context_pack, "write_pack", lambda r, s: packs[s])
-    monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    fake_pack_ctx["ch_99_01"] = {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}
     model._write_translations(tmp_path, "ch_99_01", {"lines": {"0x1": {"t": "Oi"}}})   # traducao previa
 
     class _Exploding:                                    # qualquer submissao = falha o teste
@@ -1552,16 +1642,16 @@ def test_integration_roundtrip_real_scene(scene):
     src_bin = PROJECT / cfg.get("connector", {}).get("source_binary", "")
     if src_bin and not src_bin.is_file():
         pytest.skip(f"binario do conector nao disponivel: {src_bin.name}")
-    bp = run_scene._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
-    vf = run_scene._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
+    bp = connector_mgr._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
+    vf = connector_mgr._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
     if not (bp.is_file() and vf.is_file()):
         pytest.skip("conector nao disponivel")
     # reusa run_scene._run (stdin=DEVNULL + encoding robusto) — evita WinError 50 do subprocess sob captura
-    code1, out1 = run_scene._run([sys.executable, str(bp), scene])
+    code1, out1 = connector_mgr._run([sys.executable, str(bp), scene])
     assert code1 == 0, f"{scene}: build_plan_chapter falhou:\n{out1[-700:]}"
-    code2, out2 = run_scene._run([sys.executable, str(vf), scene])
+    code2, out2 = connector_mgr._run([sys.executable, str(vf), scene])
     assert code2 == 0, f"{scene}: verify_chapter falhou:\n{out2[-700:]}"
-    st = run_scene._verify_status(out2)               # protocolo estruturado de saida
+    st = connector_mgr._verify_status(out2)               # protocolo estruturado de saida
     assert st.get("ok") is True, f"{scene}: VERIFY_STATUS nao-ok: {st}"
     assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
 
@@ -1944,13 +2034,13 @@ def test_connector_hash_is_deterministic(tmp_path):
     bp.write_bytes(b"# build_plan v1\n")
     vf.write_bytes(b"# verify v1\n")
     cfg: dict = {}
-    h1 = run_scene._connector_hash(tmp_path, cfg)
-    h2 = run_scene._connector_hash(tmp_path, cfg)
+    h1 = connector_mgr._connector_hash(tmp_path, cfg)
+    h2 = connector_mgr._connector_hash(tmp_path, cfg)
     assert h1 == h2, "mesmo conteúdo deve produzir o mesmo hash"
     assert len(h1) == 12, "hash deve ter 12 caracteres (SHA1[:12])"
 
     bp.write_bytes(b"# build_plan v2\n")  # muda o conteúdo
-    h3 = run_scene._connector_hash(tmp_path, cfg)
+    h3 = connector_mgr._connector_hash(tmp_path, cfg)
     assert h3 != h1, "conteúdo diferente deve produzir hash diferente"
 
 
@@ -1959,7 +2049,7 @@ def test_connector_hash_absent_scripts(tmp_path):
     (tmp_path / "connector").mkdir()
     cfg: dict = {}
     # nenhum script criado → hash de strings vazias, mas não deve levantar exceção
-    h = run_scene._connector_hash(tmp_path, cfg)
+    h = connector_mgr._connector_hash(tmp_path, cfg)
     assert isinstance(h, str) and len(h) == 12
 
 
@@ -1968,14 +2058,14 @@ def test_connector_sandbox_blocks_external_path(tmp_path):
     evil_override = "../../etc/passwd"
     cfg = {"connector": {"verify_script": evil_override}}
     with pytest.raises(ValueError, match="fora do projeto"):
-        run_scene._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
+        connector_mgr._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
 
 
 def test_connector_sandbox_accepts_internal_override(tmp_path):
     """Override dentro do root deve ser aceito sem exceção."""
     (tmp_path / "connector").mkdir()
     cfg = {"connector": {"verify_script": "connector/verify_chapter.py"}}
-    p = run_scene._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
+    p = connector_mgr._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
     assert p == tmp_path / "connector" / "verify_chapter.py"
 
 

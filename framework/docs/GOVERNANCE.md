@@ -113,6 +113,8 @@ flowchart LR
 
 - **Fonte (hard):** sem citação no `research_log.md`, `kb_phase --check` reprova. Toda decisão de lore
   fica rastreável a uma fonte (wiki/corpus autorizados).
+- **Consistência de proveniência:** `kb_gate.py` avisa quando `status: reconciled` mas `human_input: pending`
+  co-existem — indica que o humano forneceu input mas não atualizou o campo. Prevenção de inconsistência silenciosa.
 - **Ratificação humana (`--strict`):** antes do build, exige que **você** marque a entidade em
   `kb_ratified.csv` (só o humano edita) com gênero confirmado. É o seu "segundo par de olhos" real.
 - **Gênero:** marcado como spoiler (`gender_quarantine`) **só com fonte confiável** — nunca fabricado.

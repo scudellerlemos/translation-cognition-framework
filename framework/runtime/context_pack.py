@@ -21,6 +21,7 @@ Uso:  python context_pack.py <dir-do-projeto> <scene>     ex.: python context_pa
 """
 from __future__ import annotations
 import csv
+import hashlib
 import json
 import re
 import sys
@@ -40,12 +41,59 @@ MAX_DECISIONS = 12          # universal + matched, teto p/ manter o pacote limit
 MAX_TM_VOICE_PER_SPEAKER = 3  # exemplos de "voz estabelecida" por falante presente
 
 
+def _doctrine_hash(root: Path) -> str:
+    """SHA1 curto dos artefatos de doutrina — detecta se a carta ou o KB mudou desde a última tradução."""
+    h = hashlib.sha1()
+    art = Path(root) / "artifacts"
+    for p in [CARTA_PATH, art / "glossary.csv", art / "decision_log.md", art / "tone_analysis.md"]:
+        if p.is_file():
+            h.update(p.read_bytes())
+    return h.hexdigest()[:16]
+
+
+def _skills_revision() -> str:
+    """SHA1 curto de todos os .md em framework/skills/ — versão das skills e da Carta."""
+    h = hashlib.sha1()
+    for p in sorted(FRAMEWORK.glob("skills/**/*.md")):
+        h.update(p.read_bytes())
+    return h.hexdigest()[:12]
+
+
 def scene_id_of(scene: str) -> str:
     return scene[3:] if scene.startswith("ch_") else scene
 
 
 def _read(p: Path) -> str:
     return p.read_text(encoding="utf-8") if p.is_file() else ""
+
+
+_DIALOGS_TEXT_COLS = ("text_source", "text_en")
+
+
+def validate_dialogs_csv(path: Path) -> list:
+    """A4: valida schema do dialogs.csv — retorna lista de problemas (vazia = OK).
+    Chamada em build_pack() antes de load_dialogs() para erros antecipados e legíveis."""
+    problems = []
+    try:
+        with path.open(encoding="utf-8") as fh:
+            rdr = csv.DictReader(fh)
+            fields = frozenset(rdr.fieldnames or [])
+            for col in ("offset", "byte_budget"):
+                if col not in fields:
+                    problems.append(f"coluna obrigatória ausente: '{col}'")
+            if not any(c in fields for c in _DIALOGS_TEXT_COLS):
+                problems.append(f"coluna de texto ausente — esperada uma de: {_DIALOGS_TEXT_COLS}")
+            if problems:
+                return problems
+            for i, row in enumerate(rdr, start=2):
+                if not (row.get("offset") or "").strip():
+                    problems.append(f"linha {i}: offset vazio")
+                bv = (row.get("byte_budget") or "").strip()
+                if bv and not bv.lstrip("-").isdigit():
+                    problems.append(f"linha {i}: byte_budget não-numérico: {bv!r}")
+    except (OSError, csv.Error) as e:
+        problems.append(f"erro ao ler: {e}")
+    return problems
 
 
 def load_dialogs(p: Path):
@@ -215,6 +263,8 @@ def build_pack(root: Path, scene: str) -> dict:
     scene_dir = art / scene
     if not (scene_dir / "dialogs.csv").is_file():
         raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
+    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
+        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
     state = paths.state_dir(root)
     if not (paths.translation_memory(root)).is_file():
         state_index.build(root)               # auto-constroi os indices se faltarem
@@ -250,6 +300,8 @@ def build_pack(root: Path, scene: str) -> dict:
     return {
         "scene": scene, "scene_id": scene_id_of(scene), "n_lines": len(rows),
         "doctrine": "framework/skills/translation_governance.md",
+        "doctrine_hash": _doctrine_hash(root),
+        "skills_revision": _skills_revision(),
         "project_constraints": project_constraints(cfg),
         "glossary_subset": gsub,
         "voice_cards": voices,
@@ -387,6 +439,7 @@ def main():
     print(f"  glossario: {len(pack['glossary_subset'])} termos | vozes: {len(pack['voice_cards'])} "
           f"| decisoes: {len(pack['decisions'])} | TM exato: {len(pack['tm_exact'])} "
           f"| TM voz: {len(pack['tm_voice'])}")
+    print(f"  doctrine_hash: {pack['doctrine_hash']} | skills_revision: {pack['skills_revision']}")
     print(f"  -> artifacts/{scene}/scene_prompt.md + pack.json")
 
 

@@ -122,16 +122,28 @@ def _fmt(rep: dict, by_scene: bool) -> str:
     return "\n".join(L)
 
 
+def summary_line(rep: dict) -> str:
+    """G5: linha única para embutir em READMEs — substitui valores hardcoded nos docs.
+    Uso: python cost_report.py <projeto> --summary"""
+    return (f"custo real: ${rep['total_usd']:.2f} "
+            f"({rep['verified_scenes']} cenas verified, "
+            f"{rep['n_calls']} chamadas)")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Contabilidade real de gasto de API (ledger).")
     ap.add_argument("project")
     ap.add_argument("--chapter", help='delta de UM capitulo (ex.: "15" -> so cenas ch_15_*)')
     ap.add_argument("--by-scene", action="store_true", help="detalha custo por cena")
     ap.add_argument("--json", action="store_true", help="saida JSON crua")
+    ap.add_argument("--summary", action="store_true",
+                    help="G5: linha única para substituir valores hardcoded em READMEs")
     a = ap.parse_args()
     rep = report(a.project, chapter=a.chapter)
     if a.json:
         print(json.dumps(rep, ensure_ascii=False, indent=2))
+    elif a.summary:
+        print(summary_line(rep))
     else:
         print(_fmt(rep, a.by_scene))
     sys.exit(0)
