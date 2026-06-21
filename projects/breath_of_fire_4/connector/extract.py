@@ -15,6 +15,7 @@ Regras:
 
 import csv
 import json
+import os
 import re
 import struct
 import sys
@@ -225,17 +226,23 @@ def extract_section_strings(section: bytes) -> list[tuple[int, int, bytes]]:
 def main(project_json: Path, source_override: str | None = None) -> None:
     cfg = json.loads(project_json.read_text(encoding='utf-8'))
     root = project_json.parent
+    max_pct = cfg.get('length_constraints', {}).get('dialogue_max_pct', 100) / 100
 
-    # Resolve diretório DAT do jogo
+    # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
     if source_override:
         game_dat_dir = Path(source_override)
+    elif os.environ.get("BOF4_DAT_DIR"):
+        game_dat_dir = Path(os.environ["BOF4_DAT_DIR"])
     else:
-        game_dat_dir = Path(cfg['connector'].get('game_dat_dir', ''))
+        game_dat_dir = Path("")
 
     if not game_dat_dir.is_dir():
         raise SystemExit(
-            f"Diretório DAT não encontrado: {game_dat_dir}\n"
-            "Passe o caminho como CLI: python extract.py project.json <DAT_DIR>"
+            "Diretório DAT não configurado.\n"
+            "Opções:\n"
+            "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
+            "  2. CLI: python extract.py project.json <DAT_DIR>\n"
+            "Ver projects/breath_of_fire_4/.env.example"
         )
 
     rows: list[dict] = []
@@ -305,7 +312,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
                 'entry_idx': entry_idx,
                 'ptr_idx': ptr_idx,
                 'text_en': text,
-                'byte_budget': len(raw) + 1,
+                'byte_budget': int(len(raw) * max_pct) + 1,
                 'speaker_code': _extract_speaker(text),
             })
 

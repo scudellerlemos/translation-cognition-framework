@@ -46,14 +46,14 @@
     "scope": "AREAD001.DAT + AREAD004.DAT",
     "strings": 102,
     "rationale": "Primeiros dois arquivos de diálogo em ordem narrativa — abertura do jogo. Validar: prompt, byte_budget, encoding/diacríticos, reinsert live",
-    "estimated_cost_brl": "~R$0.30 (Haiku) | ~R$1.20 (Sonnet)",
+    "estimated_cost_usd": "~$0.30 (Haiku) | ~$1.20 (Sonnet)",
     "gate": "round-trip do arquivo reescrito byte-idêntico nas strings não traduzidas; strings traduzidas dentro do byte_budget"
   },
 
   "full_game_estimate": {
     "strings": 6046,
     "batches_approx": 125,
-    "estimated_cost_brl": "~R$8 (Haiku) | ~R$40 (Sonnet)",
+    "estimated_cost_usd": "~$8 (Haiku) | ~$40 (Sonnet)",
     "note": "Estimativa baseada em ~50 tokens/string + overhead de contexto por batch. Custo real depende do tamanho médio das strings e do contexto injetado."
   },
 
