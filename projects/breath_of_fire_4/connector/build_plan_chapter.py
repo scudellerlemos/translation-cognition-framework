@@ -66,7 +66,7 @@ def load_dialogs(p: Path) -> tuple[dict, list]:
 def main() -> None:
     if len(sys.argv) < 2:
         sys.exit("uso: python build_plan_chapter.py <scene>  (ex.: AREAD001)")
-    chdir = ROOT / "artifacts" / sys.argv[1]
+    chdir = ROOT / "artifacts" / "scenes" / sys.argv[1]
     if not chdir.is_dir():
         sys.exit(f"ERRO: diretório não encontrado: {chdir}")
 
