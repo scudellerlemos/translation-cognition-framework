@@ -1,0 +1,33 @@
+name: API Smoke
+
+on:
+  workflow_dispatch:   # disparo manual (antes de iniciar tradução de capítulo novo)
+  schedule:
+    - cron: '0 4 * * 0'   # domingo 04:00 UTC — detecta breaking changes na Batch API
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Check API key present
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY não configurada — adicione em Settings > Secrets > Actions"
+            exit 1
+          fi
+          echo "API key presente"
+
+      - name: Batch API smoke (~$0.002)
+        run: python framework/runtime/batch_smoke.py
