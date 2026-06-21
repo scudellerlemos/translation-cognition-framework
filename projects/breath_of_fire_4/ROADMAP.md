@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
 > Última atualização: 2026-06-20
-> Status atual: **FASE 01 — PIPELINE COGNITIVO (passo 1.1 pendente)**
+> Status atual: **FASE 01 — PIPELINE COGNITIVO (passo 1.5 pendente — plano de tradução)**
 
 ---
 
@@ -71,11 +71,11 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 > Iniciar somente após round-trip verde e `pytest` passando.
 
-- [ ] **1.1. Passo 01 — Descoberta de Entidades:** varrer corpus, listar personagens/locais/termos únicos
-- [ ] **1.2. Passo 02 — Resolução de Entidades:** confirmar nomes canônicos pt-BR, handling rules, pares de identidade
-- [ ] **1.3. Passo 03 — Knowledge Building:** pesquisa de lore, ratificação humana (`kb_ratified.csv`), gate KB
-- [ ] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com handling rules formais
-- [ ] **1.5. Passo 05 — Plano de tradução:** `translation_plan.json`, corpus de teste sintético
+- [x] **1.1. Passo 01 — Descoberta de Entidades:** `artifacts/entities.csv` (78 entidades), `kb_phase discover` OK
+- [x] **1.2. Passo 02 — Resolução de Entidades:** nomes canônicos PT-BR + handling rules em `entities.csv` e `glossary.csv`
+- [x] **1.3. Passo 03 — Knowledge Building:** `artifacts/research_log.md` status `reconciled`; gate `kb_phase all --check` verde; fonte T1 Wikipedia PT (humano) + T2 corpus (IA)
+- [x] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com 101 termos e handling rules formais
+- [ ] **1.5. Passo 05 — Plano de tradução:** `translation_plan.json`, configuração de batch piloto
 
 ---
 
