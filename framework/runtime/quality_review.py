@@ -171,6 +171,26 @@ WIDTH_MAX = 62
 _VISIBLE_RX = re.compile(r"\{c-?\d*\}|\{W\d+\}|\{COLOR\}|\{END\}")   # tokens que NAO ocupam largura visual
 
 
+# BoF4: detecta codigos de controle do DAT no formato [XX] (hex 1-2 chars)
+_BOF4_HEX_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\]")
+# par: codigo de controle + byte de face (@=0x40, A=0x41, B=0x42 ... G=0x47)
+_BOF4_FACE_PAIR_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\][@A-G]")
+
+
+def _display_text(s: str) -> str:
+    """Limpa codigos de controle BoF4 para exibicao no Excel (nao altera dados armazenados).
+    Detectado automaticamente pela presenca de [XX] — nao precisa de config por projeto.
+    [01] -> newline, [02] -> ' // ' (page break), demais codigos e bytes-de-face removidos."""
+    if not s or not _BOF4_HEX_RX.search(s):
+        return s
+    s = s.replace("[01]", "\n").replace("[02]", " // ")
+    s = _BOF4_FACE_PAIR_RX.sub("", s)           # remove [XX] + byte de face juntos
+    s = _BOF4_HEX_RX.sub("", s)                 # remove codigos remanescentes
+    s = re.sub(r"[ \t]+", " ", s)               # normaliza espacos (sem destruir \n)
+    s = re.sub(r"(^\s*(//\s*)+|(//\s*)*\s*$)", "", s)  # strip page-break markers nas bordas
+    return s.strip()
+
+
 def _norm_cmp(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace("\\n", " ")).strip().lower()
 
@@ -249,7 +269,8 @@ def export(root, chapter) -> list[dict]:
             rows.append({"scene": scene, "offset": off, "speaker": ln.get("speaker", ""),
                          "risk": risk,
                          "revisar": _flags(src, tgt, risk, off in sampled, off in revise),
-                         "source_en": src, "target_pt": tgt, "caixa": _box_verdict(src, tgt),
+                         "source_en": _display_text(src), "target_pt": _display_text(tgt),
+                         "caixa": _box_verdict(src, tgt),
                          "marcar": "", "correcao": "", "nota": ""})
     return rows
 
