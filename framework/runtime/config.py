@@ -158,6 +158,54 @@ CONNECTOR_REGISTRY: tuple = (
     ConnectorSlot("verify_script",     "verify_chapter.py"),
 )
 
+# A2: todas as chaves válidas em project.json connector.{} — inclui as de script
+# (CONNECTOR_REGISTRY) + as de metadados/configuração de cada conector.
+# _validate_connector_cfg avisa sobre chaves fora desta allowlist (typo guard).
+CONNECTOR_KNOWN_KEYS: frozenset = frozenset({
+    # — slots executáveis (harness) —
+    "build_plan_script", "verify_script",
+    # — metadados de tipo e formato —
+    "type", "container_format", "table_schema", "encoding",
+    # — scripts de conector (não executados pelo harness, mas declarados no manifesto) —
+    "extract_script", "reinsert_script",
+    # — estratégia de espaço e patch —
+    "space_strategy", "patch_format",
+    # — charset —
+    "target_charset_supported", "charset_note",
+    # — tabela de ponteiros (binários com ponteiro central) —
+    "pointer_table",
+    # — control codes —
+    "control_codes",
+    # — localização do DAT/arquivo de jogo (nunca persistido, passado via CLI) —
+    "game_dat_dir", "game_dat_dir_note",
+    # — rastreabilidade de mapeamento —
+    "mapping_status", "mapping_note",
+})
+
+
+class ConnectorConfig(TypedDict, total=False):
+    """A3: forma esperada de project.json connector.{}. Documentação + suporte a mypy/Pylance.
+    Todos os campos são opcionais no TypedDict (total=False); o harness valida 'build_plan_script'
+    e 'verify_script' em tempo de execução via CONNECTOR_REGISTRY."""
+    type: str                       # "hex_binary" | "sdat" | ...
+    container_format: str           # "capcom_dat_toc" | "sdat_v4" | ...
+    table_schema: str               # caminho relativo ao schema da tabela de ponteiros
+    encoding: str                   # "ascii_with_ctrl_codes" | "utf-8" | ...
+    extract_script: str
+    reinsert_script: str
+    build_plan_script: str          # override do default em CONNECTOR_REGISTRY
+    verify_script: str              # override do default em CONNECTOR_REGISTRY
+    space_strategy: str             # "reconstrucao_secao" | "truncate" | ...
+    patch_format: str               # "full_file" | "delta" | ...
+    target_charset_supported: bool
+    charset_note: str
+    pointer_table: dict
+    control_codes: dict
+    game_dat_dir: str               # TBD — passado via CLI; nunca persistir aqui
+    game_dat_dir_note: str
+    mapping_status: str
+    mapping_note: str
+
 
 @dataclass
 class RunSceneOptions:

@@ -1,6 +1,6 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
-> Última atualização: 2026-06-20
+> Última atualização: 2026-06-21
 > Status atual: **FASE 02 — TRADUÇÃO EM ESCALA (piloto pendente)**
 
 ---
@@ -9,7 +9,7 @@
 
 > Por que este projeto existe além da tradução em si.
 
-O framework foi avaliado em **81/100 como projeto de AI engineering (jun/2026) — top 10–15% do espaço**.
+O framework foi avaliado em **86/100 como projeto de AI engineering (jun/2026, pós-gap-closure) — top 10–15% do espaço**.
 Os dois maiores gaps que BoF4 precisa fechar:
 
 | Gap | Nota atual | O que BoF4 prova |
@@ -17,7 +17,7 @@ Os dois maiores gaps que BoF4 precisa fechar:
 | Generalização | 62/100 | T2 do Generic Connector funcionando num engine Capcom desconhecido |
 | Autonomia | 52/100 | Bootstrap de conector via descoberta de diretório sem intervenção manual |
 
-**Se BoF4 validar T2:** nota sobe para ~86. É o maior salto único disponível no roadmap.
+**Se BoF4 validar T2:** nota sobe para ~92. É o maior salto único disponível no roadmap — Portabilidade (dim 10) passa de 6 para 9+.
 
 ### Insights do projeto anterior que se aplicam aqui
 

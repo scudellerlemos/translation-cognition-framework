@@ -1,7 +1,7 @@
 # Breath of Fire IV — Tradução PT-BR
 
 > Framework SDD — segunda instância. Piloto de portabilidade multi-engine.
-> Status: **FASE 01 — PIPELINE COGNITIVO (passo 1.1 pendente)**
+> Status: **FASE 02 — TRADUÇÃO EM ESCALA (piloto pendente)**
 
 ## O que é este projeto
 

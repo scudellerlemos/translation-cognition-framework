@@ -1,6 +1,6 @@
 # Roadmap — Translation Cognition Framework (SDD)
 
-> Última atualização: 2026-06-20
+> Última atualização: 2026-06-21
 > Histórico do projeto piloto Utawarerumono em `projects/utawarerumono/ROADMAP_history.md`.
 
 ---
@@ -32,10 +32,10 @@
 
 > **Por quê:** sem proveniência, qualquer melhoria de doutrina é retroativamente cega — não há como saber quais cenas foram traduzidas com instrução obsoleta.
 
-- [ ] **V1. Proveniência nos artefatos** — `translations_*.json` e TM registram `doctrine_hash`, `model_id`, `skills_revision`.
-- [ ] **V2. Prompt como artefato versionado** — `scene_prompt.md` passa de saída descartável para entrada auditável; hash gravado no `run_state.json`.
-- [ ] **V3. Detecção de stale** — `context_pack` expõe seu hash; pipeline sinaliza (`--check-stale`) se doutrina mudou desde a última tradução.
-- [ ] **V4. Invalidação seletiva via TM** — cada entrada de TM carrega `doctrine_version`; `tm_correct --check-sync` lista só as cenas afetadas pela mudança.
+- [x] **V1. Proveniência nos artefatos** — `translations_*.json` recebe `_meta` com `doctrine_hash`, `model_id`, `skills_revision`; `pack.json` expõe `doctrine_hash` e `skills_revision`.
+- [x] **V2. Prompt como artefato versionado** — `scene_prompt.md` auditável; `prompt_hash` gravado no `run_state.json` por cena via `_pack_and_translate`.
+- [x] **V3. Detecção de stale** — `_doctrine_hash()` em `context_pack.py`; `run_scene.py --check-stale` lista cenas desatualizadas por projeto.
+- [x] **V4. Invalidação seletiva via TM** — cada entrada de TM carrega `doctrine_version`; `state_index.py --check-sync` lista cenas afetadas pela mudança de doutrina.
 
 ---
 
@@ -88,7 +88,7 @@
 ### Fase D — Generic Connector System
 
 > Jogo-piloto: **Breath of Fire IV** — ver `projects/breath_of_fire_4/ROADMAP.md`.
-> Score do conceito: **81/100** → alvo após D4: **97/100**.
+> Score do framework: **86/100** (jun/2026, pós-gap-closure) → alvo após D4: **97/100**.
 
 **Visão:** quando o framework encontra um novo jogo, descobre automaticamente os arquivos de diálogo, entende a estrutura, gera um conector determinístico, valida via round-trip. O LLM participa **apenas no bootstrap** — após aprovação, o conector roda sem IA.
 
@@ -167,6 +167,6 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** framework estável com ≥2 projetos ativos.
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
-- [ ] **F1. CI offline** — GitHub Actions rodando `pytest` nos 135 testes a cada push. Zero custo (runner público, sem chamada de API).
+- [ ] **F1. CI offline** — GitHub Actions rodando `pytest` nos 161 testes a cada push. Zero custo (runner público, sem chamada de API).
 - [ ] **F2. CI de packaging** — após `pytest` passar, PyInstaller builda o `.exe` e um smoke test valida o binário gerado.
 - [ ] **F3. LLM judge** — segundo modelo avalia fidelidade + naturalidade + aderência ao personagem com score numérico por linha; complementa o back-translate e prioriza o QA humano melhor que o risco heurístico atual.
