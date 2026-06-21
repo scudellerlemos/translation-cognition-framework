@@ -179,12 +179,9 @@ Use, Buy, Add, Return, Choose, Equip, Sell, Close, Hard, Land, Simple, Normal, L
 
 ### Human input
 
-human_input: pending
+human_input: confirmed
 
-> Contribuição humana ainda não recebida. O gate de cobertura (`kb_phase all --check`)
-> vai BLOQUEAR até que o status mude para `reconciled` (requer contribuição humana
-> OU declínio explícito: `human_input: declined`).
->
-> Para reconciliar: envie suas fontes (wiki, guias, material oficial de BoF4),
-> corrija/complemente as entidades acima, e altere a linha de status para:
-> `status: reconciled`
+> Contribuição humana recebida em 2026-06-20: Wikipedia PT como fonte T1 (personagens,
+> locais, facções). Novos termos ratificados: Aliança do Leste, Synesta, Sandflier,
+> Império Fou. Decisões pendentes (Endless, Hex, Abbess — ver seção acima) registradas
+> para ratificação na Fase de Revisão; não bloqueiam a tradução.

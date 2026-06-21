@@ -338,7 +338,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
 - **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim (R$ 0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Qualidade travada:** **151 testes** (106 runtime + 29 validação + 16 conector), determinismo/
+- **Qualidade travada:** **161 testes** (116 runtime + 29 validação + 16 conector), determinismo/
   idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 
