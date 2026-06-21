@@ -11,7 +11,7 @@
 |---|---|
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Harness de escala (`framework/runtime/`) | 🟢 **em produção** — cena = job stateless O(cena); recuperação por-linha + teto previsível; 125 testes |
-| Instância Utawarerumono | 🟢 **JOGO COMPLETO — 16 capítulos, 146 cenas, ~45.100 linhas** traduzidos e verificados (round-trip + back-translation), **validado in-game**; **~R$ 65,9 gastos, R$ 0 desperdiçado** |
+| Instância Utawarerumono | 🟢 **JOGO COMPLETO — 16 capítulos, 146 cenas, ~45.100 linhas** traduzidos e verificados (round-trip + back-translation), **validado in-game**; **~R$ 338,46 gastos, R$ 0 desperdiçado** |
 | Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack**; **transliteração NFD**; **pytest** (16 testes) |
 
 **Pendente (pós-produção):**

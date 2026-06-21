@@ -108,7 +108,7 @@ def load_dialogs(p: Path):
 
 
 def load_glossary(p: Path):
-    out = []
+    out: list[dict] = []
     if not p.is_file():
         return out
     with p.open(encoding="utf-8") as fh:
@@ -183,7 +183,7 @@ def select_decisions(decisions, present_terms, present_speakers):
 
 
 def load_tm(p: Path):
-    tm = []
+    tm: list[dict] = []
     if not p.is_file():
         return tm
     for line in p.read_text(encoding="utf-8").splitlines():
@@ -195,7 +195,7 @@ def load_tm(p: Path):
 
 def select_tm(tm, scene_rows, present_speakers):
     """Hits exatos (mesma fala ja traduzida antes) + amostra de voz estabelecida por falante presente."""
-    by_key = {}
+    by_key: dict[str, dict] = {}
     for e in tm:
         by_key.setdefault(e["src_key"], e)
     exact = []
@@ -209,7 +209,7 @@ def select_tm(tm, scene_rows, present_speakers):
             seen_keys.add(k)
     voice = []
     speakers_low = {s.lower() for s in present_speakers}
-    per = {}
+    per: dict[str, int] = {}
     for e in tm:                              # ordem estavel (TM ja vem ordenada)
         sp = (e.get("speaker") or "").lower()
         if sp in speakers_low and per.get(sp, 0) < MAX_TM_VOICE_PER_SPEAKER:
