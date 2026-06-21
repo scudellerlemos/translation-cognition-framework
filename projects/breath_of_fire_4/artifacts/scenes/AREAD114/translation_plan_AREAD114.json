@@ -1,0 +1,76 @@
+{
+  "scene": "AREAD114",
+  "scene_group": "AREAD114",
+  "lines": [
+    {
+      "offset": "AREAD114.DAT:8:0",
+      "text_source": "[14][C2]@\"So what you're[01]saying is...[02]That was all yours[01]to begin with?\"",
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, ingênuo",
+      "intent": "questionar, buscar clareza",
+      "risk_level": "medium",
+      "base_translation": "[14][C2]@\"Entao voce esta dizendo que... [02]Tudo isso era seu desde o comeco?\"",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ryu questionando Fou-Lu; risco de soar adulto/calculista demais — mantém tom ingênuo/direto"
+    },
+    {
+      "offset": "AREAD114.DAT:8:1",
+      "text_source": "[14][C2]@\"So what you're[01]saying is...[02]That was all yours[01]to begin with?\"",
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, ingênuo",
+      "intent": "questionar, buscar clareza",
+      "risk_level": "medium",
+      "base_translation": "[14][C2]@\"Entao voce esta dizendo que... [02]Tudo isso era seu desde o comeco?\"",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Duplicado do offset anterior; mesma linha, mesmo risco"
+    },
+    {
+      "offset": "AREAD114.DAT:8:6",
+      "text_source": "[0C]!Do you want to read the[01]instructions?[12]",
+      "speaker": "system",
+      "tone_register": "neutro, tutorial",
+      "intent": "oferecer instrucoes",
+      "risk_level": "low",
+      "base_translation": "[0C]!Voce quer ler as instrucoes?[12]",
+      "byte_budget": 57,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAD114.DAT:8:7",
+      "text_source": "[0C]![01]     Catch the Thief![02]To catch the thief, get[01]close to him and press the[01]~ button.[02]He's fast and hard to[01]catch. Try blocking the[01]passageways![02]Do you want to read the[01]instructions again?[12]",
+      "speaker": "system",
+      "tone_register": "neutro, tutorial, instructivo",
+      "intent": "instruir mecanica de jogo",
+      "risk_level": "low",
+      "base_translation": "[0C]![01] Capture o Ladrao! [02]Para capturar o ladrao, chegue perto dele e pressione o botao ~. [02]Ele e rapido e dificil de capturar. Tente bloquear as passagens! [02]Quer ler as instrucoes novamente?[12]",
+      "byte_budget": 265,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAD114.DAT:8:37",
+      "text_source": "Stoll the Thief[01]\"Don't think I know[01]you...[02]I'd appreciate it[01]if you didn't hang[01]around here, OK?\"",
+      "speaker": "npc",
+      "tone_register": "casual, desconfiado, direto",
+      "intent": "afastar visitantes, desconfiança",
+      "risk_level": "low",
+      "base_translation": "Stoll o Ladrao \"Nao acho que nos conhecemos... [02]Eu apreciaria se voce nao ficasse rondando por aqui, tudo bem?\"",
+      "byte_budget": 136,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "bof4-AREAD114-v1"
+}

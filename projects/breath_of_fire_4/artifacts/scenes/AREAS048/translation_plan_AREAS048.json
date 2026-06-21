@@ -1,0 +1,37 @@
+{
+  "scene": "AREAS048",
+  "scene_group": "AREAS048",
+  "lines": [
+    {
+      "offset": "AREAS048.DAT:7:9",
+      "text_source": "[14][C1]@\"You mean...[04]",
+      "speaker": "Nina",
+      "tone_register": "formal-médio com calor, determinada",
+      "intent": "confirmação com revelação de intenção adversária",
+      "risk_level": "high",
+      "base_translation": "[14][C1]@\"Quer dizer...[04]",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade/intenção de Fou-Lu em discussão; Nina reage a revelação crítica do Império. Requer naturalidade de líder responsável reconhecendo ameaça. Back-translation obrigatória."
+    },
+    {
+      "offset": "AREAS048.DAT:7:10",
+      "text_source": "[14][C2]@\"So that's what the[01]Empire's after...[02]They must want the[01]Yorae Dragon's power[01]for themselves!\"",
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, honesto; crescente determinação",
+      "intent": "compreensão + indignação pela ameaça do Império ao Dragão Yorae",
+      "risk_level": "high",
+      "base_translation": "[14][C2]@\"Então eh isso que o[01]Império quer...[02]Eles devem querer o [01]poder do Dragao Yorae[01]para si mesmos!\"",
+      "byte_budget": 136,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore crítico (Dragão Yorae, poder do Império, mecânica de conflito). Ryu identifica a motivação adversária — marca transição de sua compreensão. Registro deve permanecer direto (nunca verbose), mas com peso emocional de descoberta. Back-translation obrigatória. Byte budget: transliteração sem acentos deve caber em 136 bytes."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 2,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "bof4-AREAS048-v1"
+}

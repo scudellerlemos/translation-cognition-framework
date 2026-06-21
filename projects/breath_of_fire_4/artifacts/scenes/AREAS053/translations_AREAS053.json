@@ -1,0 +1,516 @@
+{
+  "lines": {
+    "AREAS053.DAT:8:81": {
+      "speaker": "npc",
+      "tone_register": "colloquial, rural, suspicious",
+      "intent": "challenge stranger; express wariness of outsiders",
+      "risk_level": "medium",
+      "risk_notes": "Dialect/colloquial speech ('ye', ''im', 'yer', 'don'') must be localized to rural pt-BR register without archaic overreach; preserve suspicion and gruff tone; token [02] count = 3, verify in output",
+      "t": "[14][03][03]\"Oi... Você de novo!? O que cê tá fazendo...!?[02]...[0B]...Nao, voce nao é aquela pessoa.[02]Nao gostamos de estranho por aqui...[02]Cê tá só passando, né?\""
+    },
+    "AREAS053.DAT:8:82": {
+      "speaker": "npc",
+      "tone_register": "colloquial, rural, gossipy",
+      "intent": "share rumor about capital attack; express concern for world state",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Falam que a capital foi atacada por algum tipo de monstro...[02]Pra onde é que tá indo o mundo, né?\""
+    },
+    "AREAS053.DAT:8:83": {
+      "speaker": "npc",
+      "tone_register": "colloquial, rural, observant",
+      "intent": "remark on increased foot traffic; note recent military presence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Muita gente tá passando por aqui ultimamente...[02]Faz pouco tempo teve um bando de soldados por aqui também.\""
+    },
+    "AREAS053.DAT:8:84": {
+      "speaker": "npc",
+      "tone_register": "colloquial, rural, hesitant",
+      "intent": "near-recognition; uncertainty and second-guessing",
+      "risk_level": "medium",
+      "risk_notes": "Moment of near-recognition must preserve ambiguity without resolving identity; tone shifts from suspicion to doubt; [02] count = 1, verify in output",
+      "t": "\"Espera...[0B]Nao é voce...?[02]Nao, acho que nao é.\""
+    },
+    "AREAS053.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "casual, exclamatory",
+      "intent": "surprise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Meu Deus!\""
+    },
+    "AREAS053.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, apologetic",
+      "intent": "apology and explanation",
+      "risk_level": "medium",
+      "risk_notes": "rustic dialect (Mami's mother) — preserva 'fumaçada' e tom desculpado; contagem [02] = 1 mantida",
+      "t": "[0C][04][14][80]@\"Desculpe... Ficou bem fumacento aqui, né?[02][14][81]AO meu fogao nao é mais o que era, temo...\""
+    },
+    "AREAS053.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, warning",
+      "intent": "warning about property damage",
+      "risk_level": "medium",
+      "risk_notes": "rustic 'ain't/got' → 'tem/nao tem'; preserva tom coloquial de aviso; [02] = 1",
+      "t": "\"Uma das paredes da casa da Mami tem uma grande rachadura. Melhor contar [02]pra ela pra ela consertar antes do inverno...\""
+    },
+    "AREAS053.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "casual, proud, rustic",
+      "intent": "boast/affirmation of village work ethic",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Todo mundo aqui trabalha duro pra viver! Nao é como aquela garotada nas cidades!\""
+    },
+    "AREAS053.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "brusque, casual",
+      "intent": "dismissal/busy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Opa! [02]Nao fale comigo agora — tou contando esses feijoes!\""
+    },
+    "AREAS053.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual, curious, teasing",
+      "intent": "gossip/curiosity",
+      "risk_level": "high",
+      "risk_notes": "spoiler risk — 'shackin' up' refere ao romance de Mami com Ryu (oculto). Nao resolver o termo coloquial; manter ambiguidade. Traduzir mantendo dúvida — 'arrumacao' ou 'caso' soa resoluto demais. Escolha: 'vivendo junto' com entonacao curiosa. [02] = 1",
+      "t": "\"Eu te conheço — minha mae diz que voce é aquele fela que ta vivendo junto com a Mami! [02]Que quer dizer 'vivendo junto mesmo', por falar nisso?\""
+    },
+    "AREAS053.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "system, onomatopoeia",
+      "intent": "sound effect (whine)",
+      "risk_level": "low",
+      "risk_notes": "onomatopeia localizada — 'gemido' ou som de reclamacao; [02] = 2 preservado",
+      "t": "[14][02][02][0A][06]\"Gemido\""
+    },
+    "AREAS053.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, content",
+      "intent": "leisure comment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Nada melhor que pescar numa tarde de sol, né?\""
+    },
+    "AREAS053.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, informative",
+      "intent": "answer question about location",
+      "risk_level": "medium",
+      "risk_notes": "Sonne Village is glossary term (manter_original). 'Capital' must stay generic (spoiler: reveals world geography). [02] = 1; 'tis' → 'é'; 'odd' → 'estranho'",
+      "t": "\"Hein? Que pergunta estranha, meu. [02]Esse aqui é a [05][02]Sonne Village[06]. Capitale? Ah, fica longe lá pro leste, amigo.\""
+    },
+    "AREAS053.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, teasing",
+      "intent": "gossip/recognition",
+      "risk_level": "high",
+      "risk_notes": "'fella that Mami's been takin' care of' — spoiler ellipsis, refere ao romance oculto. Nao resolver. Manter ambiguidade com traducao que sugere cuidado/abrigo sem confirmar relacao. [02] = 1",
+      "t": "[14][03][03]\"Opa! Voce é aquele fela que a Mami [02]ta cuidando, certo?\""
+    },
+    "AREAS053.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal, cautious, rustic",
+      "intent": "interrogation/suspicion",
+      "risk_level": "high",
+      "risk_notes": "'We don' take kindly t'strangers' — xenophobia/danger signal. Preserva firmeza sem ser agressivo; [15][0E] tokens preservados",
+      "t": "[0C][04][14][03][03]\"Quem e voce? De onde vem? [02]A gente nao é de receber bem estranho por aqui...\"[15][0E]"
+    },
+    "AREAS053.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, surprised",
+      "intent": "questioning Mami's actions",
+      "risk_level": "high",
+      "risk_notes": "'this 'ere...' (vaga referencia ao Ryu oculto). Nao nomear Ryu. Manter o ponto de interrogacao/duvida. Voz de personagem crianca/jovem.",
+      "t": "[0C][04][14][83][03]\"Mami... Que cê ta fazendo com essa coisa...\""
+    },
+    "AREAS053.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "anxious, apologetic, rustic",
+      "intent": "regret/worry about landlord discovery",
+      "risk_level": "high",
+      "risk_notes": "spoiler: 'didn't mean for landlord to find out about you' refere a Ryu oculto em casa. Nao nomear; manter construcao vaga. [02] = 1. Emocao: ansiedade/arrependimento.",
+      "t": "[0C][06][14][80]@\"Ah, nao... eu nao queria que o dono [02]descobrisse de voce...\""
+    },
+    "AREAS053.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "tender, anxious, rustic",
+      "intent": "reassurance mixed with worry about Ryu's wound",
+      "risk_level": "high",
+      "risk_notes": "Mami confessa romance/abrigo oculto (spoiler); 'keep pretendin' ye be m' cousin' — identidade falsa. Preserva [02] = 3 e [14][81]A. Tom: ternura + preocupacao. Nao resolver o romance nem a ferida; deixar a duvida nativa. Byte budget 310 é folgado.",
+      "t": "[0C][06][14][80]@\"Bem...[0B]Vai ficar tudo bem, [02]desde que a gente continue fingindo que voce é meu [02]primo...[02][14][81]AVoce deveria se preocupar mais com voce do que comigo! [02]A sua ferida ainda nao cicatrizou completamente! [02]Voce nao deveria nem estar caminhando por aqui!\""
+    },
+    "AREAS053.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "tender, hesitant, rustic",
+      "intent": "realization/awkwardness about truth",
+      "risk_level": "high",
+      "risk_notes": "Mami struggling with the lie; 'But ye really be...' — spoiler: confession that she loves him / knows his secret. Nao resolver. Manter suspense. [02] = 1",
+      "t": "[0C][06][14][80]@\"Chamar voce de primo foi a primeira coisa que me veio a cabeca... [02]Mas voce realmente é...\""
+    },
+    "AREAS053.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "resigned, gentle, rustic",
+      "intent": "backing off from confession",
+      "risk_level": "medium",
+      "risk_notes": "Mami stops herself from revealing secret. 'Ne'er mind' → 'Tudo bem'; tome arcaico leve, mas moderno no pt-BR.",
+      "t": "[0C][06][14][80]@\"Tudo bem... Esquece que eu perguntei.\""
+    },
+    "AREAS053.DAT:8:26": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, imperial",
+      "intent": "historical narration",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu's monologue: archaic en ('nations didst make terrible war') → archaic pt-BR ('nações fizeram terrível guerra'). Voz crítica alta — NUNCA moderar o arcaísmo. 'Endless' glossário → 'Eternos'. [02] = 1",
+      "t": "[0C][03][14][04][04]\"Muitas foram as nacoes do mundo entao, [02]e elas fizeram terrível guerra umas contra as outras.\""
+    },
+    "AREAS053.DAT:8:30": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, introspective",
+      "intent": "revelation of harsh truth",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu's realization. 'dreamed' = hope; '[04][06]' is placeholder (nome do imperador anterior). Preserva [02] = 1. Arcaismo alto ('realized' → 'vislumbrou' ou 'compreendeu').",
+      "t": "[0C][03][14][04][04]\"Porem, mesmo enquanto sonhava, [04][06] [02]vislumbrou uma terrível verdade.\""
+    },
+    "AREAS053.DAT:8:31": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, bitter",
+      "intent": "impossibility of fulfilling all desires",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu's lament: 'Even were he complete, he wouldst not be able...' Preserva [02] = 2; arcaísmo crítico ('wouldst' → 'nao poderia'). Amargura no tom.",
+      "t": "[0C][03][14][04][04]\"Mesmo estando completo, [02]nao poderia satisfazer todos [02]os desejos do povo!\""
+    },
+    "AREAS053.DAT:8:32": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, questioning",
+      "intent": "rhetorical challenge",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu and companion dialogue. '[15]!' token preservado. Arcaísmo: 'For people are...' → frame vago propositalmente (spoiler). Manter incompletude.",
+      "t": "[0C][03][14][05][05]\"De fato. E por que nao? Porque as pessoas sao...\"[15]!"
+    },
+    "AREAS053.DAT:8:36": {
+      "speaker": "system",
+      "tone_register": "UI, neutral",
+      "intent": "game menu prompt",
+      "risk_level": "low",
+      "risk_notes": "[12][86][0C][93] tokens preservados; UI formatting. Opcoes: 'Descansar / Diario / Nunc nunca'.",
+      "t": "Quer descansar? [12][86][0C][93]Descansar[01]Diario[01]Nunca"
+    },
+    "AREAS053.DAT:8:37": {
+      "speaker": "system",
+      "tone_register": "UI, neutral",
+      "intent": "game prompt (rest on bed)",
+      "risk_level": "low",
+      "risk_notes": "[12][8A][0C][82] tokens preservados; UI option.",
+      "t": "Quer descansar na cama? [12][8A][0C][82]Sim[01]Nao"
+    },
+    "AREAS053.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, helpful",
+      "intent": "direction/admiration of Mami's work",
+      "risk_level": "low",
+      "risk_notes": "'Ain't nobody works as hard' → 'Ninguem trabalha tao duro'; preserva admiracao.",
+      "t": "\"Se tá procurando a Mami, ela ta trabalhando no outro campo, naquele lado. [02]Ninguem trabalha tao duro quanto essa menina...\""
+    },
+    "AREAS053.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "casual, teasing, rustic",
+      "intent": "gossip/recognition",
+      "risk_level": "high",
+      "risk_notes": "'You be Mami's man' — spoiler romance. Corrige para 'cousin' mas tom da crianca sugere ela sabe a verdade. Manter ambiguidade; 'man' nao é 'namorado' explicito aqui, preserva duvida.",
+      "t": "\"Eu te conheço! Voce é o cara da Mami! [02]Quer dizer, primo, certo!?\""
+    },
+    "AREAS053.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, interrogative",
+      "intent": "question with menu option",
+      "risk_level": "low",
+      "risk_notes": "[12][01][0C][82] tokens preservados; simple dialogue with choice.",
+      "t": "\"Voce ja pescou antes?\" [12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAS053.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, knowing",
+      "intent": "observation/experience reading",
+      "risk_level": "low",
+      "risk_notes": "'got th' look in yer eyes' — natureza/experiencia. Preserva tom de conhecedor.",
+      "t": "\"Já imaginava... Voce tem aquele brilho nos olhos...\""
+    },
+    "AREAS053.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, matter-of-fact",
+      "intent": "observation/assumption",
+      "risk_level": "low",
+      "risk_notes": "'don' look like th' type' — nao é tipo pescador. Simples e direto.",
+      "t": "\"Nao, nao achei que fosse... Voce nao tem cara de quem pesca...\""
+    },
+    "AREAS053.DAT:8:43": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, alarmed, mystical",
+      "intent": "detection of powerful presence",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu senses Ryu's presence ('one of the Endless' = 'um dos Eternos'). Arcaísmo critico: ''Tis like unto' → 'É como se fosse'. [02] = 1; [04][04] tokens preservados.",
+      "t": "[14][04][04]\"Que é isto!? Sinto uma presenca... [02]É como se fosse um dos Eternos...\""
+    },
+    "AREAS053.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, uncertain",
+      "intent": "reaction to tremor/supernatural event",
+      "risk_level": "low",
+      "risk_notes": "'tremor' = tremor terrestre. Preserva incerteza do NPC.",
+      "t": "\"Sentiu aquilo? Foi como um tremor...\""
+    },
+    "AREAS053.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, routine",
+      "intent": "assumption/guessing where Mami is",
+      "risk_level": "low",
+      "risk_notes": "routine comment; 'always' suporta habito de Mami.",
+      "t": "\"Hein? [02]Aposto que a Mami ta naquele campo, como sempre...\""
+    },
+    "AREAS053.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "accusatory, rustic, stern",
+      "intent": "challenge/accusation of laziness",
+      "risk_level": "medium",
+      "risk_notes": "'earn their keep' — expectativa de trabalho. Preserva tom de acusacao; 'If'n' → 'Se'; byte budget 190 é folgado. [02] = 1",
+      "t": "\"Se cê ta bem o bastante pra andar por aí, por que nao ta trabalhando como todo mundo? [02]Todo mundo por aqui precisa ganhar o seu po, sabe?\""
+    },
+    "AREAS053.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "system, onomatopoeia",
+      "intent": "sound effect (sigh)",
+      "risk_level": "low",
+      "risk_notes": "onomatopeia localizada; [14][02][02][0A][06] tokens preservados.",
+      "t": "[14][02][02][0A][06]\"Suspiro\""
+    },
+    "AREAS053.DAT:8:49": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, encouraging",
+      "intent": "suggestion/encouragement to fish",
+      "risk_level": "low",
+      "risk_notes": "'mighty relaxin'' → 'bem relaxante'; tom amigavel.",
+      "t": "\"Se voce nao tem nada pra fazer, deveria experimentar pescar, rapaz. [02]É bem relaxante!\""
+    },
+    "AREAS053.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "anxious, superstitious, rustic",
+      "intent": "omen/foreboding",
+      "risk_level": "medium",
+      "risk_notes": "'It be an omen' — superstição; 'Sumthin' bad' → 'algo ruim'. Preserva apreensao. [02] = 2",
+      "t": "\"Sentiu aquele tremor de um tempo atras? [02]É um mau agouro, eu tenho certeza! [02]Algo ruim vai acontecer!\""
+    },
+    "AREAS053.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "casual, confused, rustic",
+      "intent": "question about earthquake",
+      "risk_level": "low",
+      "risk_notes": "'rumblin'' → 'barulho/tremor'; tom confuso.",
+      "t": "\"Que foi aquele barulho de um tempo atras?\""
+    },
+    "AREAS053.DAT:8:52": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, disapproving, solemn",
+      "intent": "moral warning about relationship with Mami",
+      "risk_level": "critical",
+      "risk_notes": "CRITICAL SPOILER & ARCHAISM: Fou-Lu (via Ryu connection) warns against the relationship. 'Methinks it not be wise that thee... That we persist in this...relationship.' — archaic; implies Fou-Lu is aware of Ryu+Mami bond. 'Thou' = formal address; 'Methinks' = archaic. [02] = 1. NEVER modernize. Nao nome a relacao; deixa vaga.",
+      "t": "[14][04][04]\"Julgo nao ser sábio que tu... [02]Que continuemos nesta... relacao.\""
+    },
+    "AREAS053.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "tender, whispered, rustic",
+      "intent": "emotional address to Ryu (Ryong)",
+      "risk_level": "high",
+      "risk_notes": "Mami addresses Ryu by name (spoiler). 'Ryong' = alternate/affectionate name. Tone: love/tenderness. Preserve emotionality. [0C][06][14][80]@",
+      "t": "[0C][06][14][80]@\"Ryong...\""
+    },
+    "AREAS053.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "tender, reassuring, rustic",
+      "intent": "comfort/reassurance to Ryu after landlord confrontation",
+      "risk_level": "high",
+      "risk_notes": "Mami's love confession implicit ('so am I'). 'All the folks... thankful' + 'And so am I' — romantic. Preserva [02] = 2; [14][81]A token. Emocao: ternura e gratidao. Manter vaguidade em 'thankful for what ye did' (spoiler: Ryu salvou aldeia).",
+      "t": "[0C][06][14][80]@\"Nao deixa o que o dono falou te incomodar... [02]Toda a galera da aldeia ta grata pelo que voce fez... [02][14][81]AE eu tambem...\""
+    },
+    "AREAS053.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "formal, servile, rustic",
+      "intent": "guide/direction",
+      "risk_level": "low",
+      "risk_notes": "'sirrah' = formal address (arcaico em EN); em pt-BR, traduza como 'senhor' formal. Preserva [0C][04][14][83][03].",
+      "t": "[0C][04][14][83][03]\"Ele... Ele fica por aqui, senhor.\""
+    },
+    "AREAS053.DAT:8:56": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, strategic, conflicted",
+      "intent": "military dilemma / hesitation about violence",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu's internal monologue: choices between combat or stealth escape. 'T'would appear / must needs / yon soldiers' — archaic critical. 'Nay... Mayhap' = contradiction/doubt. [02] = 1; [0B] token; [14][C6] preserved. ARCHAISM INVIOLABLE. Emocao: conflito estratégico e incerteza (prefigura sua eventual escolha de nao lutar por causa de Ryu/Mami).",
+      "t": "[14][C6]@\"Parece que preciso lutar para me livrar... [02]Nao... Talvez eu ainda consiga escapar [02]despercebido desses soldados...\""
+    },
+    "AREAS053.DAT:8:57": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, questioning, introspective",
+      "intent": "internal conflict / hesitation about abandoning the village",
+      "risk_level": "critical",
+      "risk_notes": "CRITICAL: Fou-Lu's pivotal moment — questions why he hesitates ('Why dost I hesitate?'). Spoiler: foreshadows his eventual decision to STAY and help (contradicts his mission). 'My path be clear-- Defeat yon troops and make mine way to Chedo... And yet...' — unresolved choice. [02] = 3; [14][85]E token; [14][C6] preserved. ARCHAIC FORM INVIOLABLE. Never resolve the 'and yet' — leave it hanging.",
+      "t": "[14][C6]@\"Que é isto? [02][14][85]EQue importancia tem essa aldeia para mim? [02]Por que eu hesite? Meu caminho é claro — [02]Derrote os soldados e vá para Chedo... [02]E no entanto...\""
+    },
+    "AREAS053.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "accusatory, menacing",
+      "intent": "confrontation / accusation",
+      "risk_level": "high",
+      "risk_notes": "Soldier/authority figure (not Fou-Lu) accuses Mami of hiding Ryu. 'hiding him' — spoiler. Tone: harsh/threatening. [14][06][06] tokens.",
+      "t": "[14][06][06]\"Entao é aqui que voce ta escondendo ele, hein?\""
+    },
+    "AREAS053.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "panicked, defensive, rustic",
+      "intent": "denial/alarm",
+      "risk_level": "high",
+      "risk_notes": "Mami denies/panics. 'H-hiding' — stutter shows fear. 'We didn' know' — lie/defense. Preserva [0C][02][14][83]C e [02] = 1. Emocao: panico.",
+      "t": "[0C][02][14][83]C\"E-escondendo!? [02]A gente nao sabia que ele era procurado!\""
+    },
+    "AREAS053.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "desperate, apologetic, rustic",
+      "intent": "capitulation / betrayal (under pressure)",
+      "risk_level": "critical",
+      "risk_notes": "CRITICAL MORAL MOMENT: Mami capitulates and offers to help capture Ryu to save herself (spoiler: moral failure). 'Get anything that could be used as a weapon / capture him' — betrayal. Tone: desperate/accommodating but guilt-ridden ('Heh heh' = nervous laugh). [0C][02][14][83]C; [02] = 2; [14][81]A. Byte budget 206. NEVER soften the betrayal — keep it brutal.",
+      "t": "[0C][02][14][83]C\"Eu... Eu disse pra todo mundo da aldeia [02]arrumar o que pudesse ser usado como arma... [02]A gente vai te ajudar a capturar ele, certo? He he...\""
+    },
+    "AREAS053.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "shocked, accusatory, archaic",
+      "intent": "accusation of betrayal / moral outrage",
+      "risk_level": "critical",
+      "risk_notes": "Ryu (shocked) confronts Mami's betrayal. Then Fou-Lu (archaic) poses moral question. [0C][04][14][03][03]; [13]0; [14][85]E tokens. 'Thou wouldst do such a thing?' — archaic challenge; tone: betrayal-shock. [02] = 1 (implicit in [13]0 break).",
+      "t": "[0C][04][14][03][03]\"Mami!?\" [13]0 [14][85]E\"Tu farias tal coisa?\""
+    },
+    "AREAS053.DAT:8:62": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, accusatory, solemn",
+      "intent": "moral accusation / rhetorical question",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu's archaic moral challenge continues. 'Thou wouldst do such a thing?' — same line, repeated for emphasis. Tone: disappointment/condemnation. Preserva [14][85]E.",
+      "t": "[14][85]E\"Tu farias tal coisa?\""
+    },
+    "AREAS053.DAT:8:63": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic, solemn, questioning",
+      "intent": "test of loyalty / moral stakes",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu acknowledges Mami's choice to protect him; questions her willingness to risk communal rejection. 'Thou art taking a great risk / What whilst thy fellows think of thee?' — archaic moral interrogative. [0C][02][14][84][04]; [02] = 2; 'whilst' = archaic 'while'. PRESERVE ARCHAIC FORM FULLY.",
+      "t": "[0C][02][14][84][04]\"Tu me protegeria — impedirias suas tentativas de me aprisionar? [02]Tu estas tomando um grande risco. [02]E quanto ao que teus companheiros pensarao de ti?\""
+    },
+    "AREAS053.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "tender, wistful, rustic",
+      "intent": "love confession / fantasy of normalcy",
+      "risk_level": "critical",
+      "risk_notes": "CRITICAL SPOILER: Mami confesses romantic fantasy ('maybe if'n ye hid out here, with me... Ye might be able t'live a normal life...With me'). Preserva [0C][02][14][80]@; [02] = 1. Tone: tender/wistful. NEVER soften or resolve the sadness — 'normal life' will never happen. Emocao: love + futility.",
+      "t": "[0C][02][14][80]@\"E eu pensei, talvez se voce ficasse aqui escondido, comigo... [02]Voce conseguisse viver uma vida normal... Comigo...\""
+    },
+    "AREAS053.DAT:8:66": {
+      "speaker": "npc",
+      "tone_register": "tender, regretful, rustic",
+      "intent": "acknowledgment of impossible dream",
+      "risk_level": "critical",
+      "risk_notes": "Mami admits her love is impossible/delusional. 'I know it's silly / it canno' be / But I wished so hard it would!' — contradiction between wish and reality. [0C][02][14][81]A; [02] = 1; [0B] token. Emocao: resigned sadness. Byte budget 104 é apertado — conciso mas inteiro.",
+      "t": "[0C][02][14][81]A\"Eu sei que é bobagem — nao pode ser... [0B] [02]Mas eu desejei tanto que fosse!\""
+    },
+    "AREAS053.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "remorseful, tender, rustic",
+      "intent": "apology / regret for keeping Ryu hidden",
+      "risk_level": "high",
+      "risk_notes": "Mami apologizes for forcing Ryu to hide. 'ne'er shoulda made ye stay here' — regret. Tone: gentle remorse. [0C][02][14][80]@; preserva emotividade.",
+      "t": "[0C][02][14][80]@\"Perdoa-me... Eu nunca deveria ter te mantido aqui...!\""
+    },
+    "AREAS053.DAT:8:68": {
+      "speaker": "npc",
+      "tone_register": "panicked, urgent, rustic",
+      "intent": "alarm / pleading",
+      "risk_level": "medium",
+      "risk_notes": "Unidentified NPC (possibly village boy) pleads with Mami to open door. 'Mami! What ye be doin'!? Open the door!!' — alarm/desperation. [0C][02][14][83]C; preserva urgencia.",
+      "t": "[0C][02][14][83]C\"Mami! Que cê ta fazendo!? Abre a porta!!\""
+    },
+    "AREAS053.DAT:8:72": {
+      "speaker": "npc",
+      "tone_register": "amused, rustic, triumphant",
+      "intent": "clever escape/success",
+      "risk_level": "low",
+      "risk_notes": "Village NPC comments on the escape through the cracked oven wall. 'Heh heh... cracked wall'd come in handy' — satisfied/clever. [14][01][01] tokens; [02] = 1. Byte budget 115 é confortavel.",
+      "t": "[14][01][01]\"He he... [02]Quem diria que aquela rachadura na parede seria útil assim, hein?\""
+    },
+    "AREAS053.DAT:8:73": {
+      "speaker": "system",
+      "tone_register": "descriptive, neutral",
+      "intent": "environment description / mechanic explanation",
+      "risk_level": "low",
+      "risk_notes": "System narration: 'The crack in the oven wall... you can probably fit through.' Simples descricao mecanica. Byte budget 110.",
+      "t": "A rachadura na parede do fogao nao é muito grande, mas provavelmente voce consegue passar."
+    },
+    "AREAS053.DAT:8:74": {
+      "speaker": "npc",
+      "tone_register": "surprised, curt, military",
+      "intent": "report of empty house",
+      "risk_level": "low",
+      "risk_notes": "Soldier reporting to superiors. 'There was only this woman inside!' — brief/matter-of-fact. [14][07][07] tokens.",
+      "t": "[14][07][07]\"Tinha so essa mulher aqui dentro!\""
+    },
+    "AREAS053.DAT:8:75": {
+      "speaker": "npc",
+      "tone_register": "accusatory, military, menacing",
+      "intent": "interrogation",
+      "risk_level": "high",
+      "risk_notes": "Soldier interrogates Mami. 'You were hiding [placeholder], weren't you? Did you...live with him?' — accusatory/sexual implication. [14][08][08] tokens; [02] = 1. Never soften the accusation — keep the shame/danger tone.",
+      "t": "[14][08][08]\"Voce tava escondendo [04][06], nao é? [02]Voce... vivia com ele?\""
+    },
+    "AREAS053.DAT:8:76": {
+      "speaker": "npc",
+      "tone_register": "cold, military, menacing",
+      "intent": "command / threat (use Mami in Carronade weapon)",
+      "risk_level": "critical",
+      "risk_notes": "CRITICAL SPOILER/HORROR: Soldier orders Mami to be taken to Astana and used in the 'Carronade' (glossary: manter_original — it's a weapon). Implication: torture/sacrifice. 'Take her back' — kidnapping/threat. [14][88][08] tokens. Byte budget 103. NEVER soften — this is a threat/horror moment.",
+      "t": "[14][88][08]\"Leva ela de volta pra Astana. [02]A gente pode usar ela na Carronade.\""
+    },
+    "AREAS053.DAT:8:77": {
+      "speaker": "npc",
+      "tone_register": "sullen, guilt-ridden, rustic",
+      "intent": "self-pitying blame shift",
+      "risk_level": "medium",
+      "risk_notes": "Village boy (earlier) shifts blame to Mami for the disaster. 'It ain't me fault... It's yer fault, Mami... Ye shouldn'ta done tha'' — cowardice/guilt. [14][03][03]; [0B] tokens; tone: ashamed. Byte budget 119.",
+      "t": "[14][03][03]\"Nao é minha culpa... [0B]... [0B] [02]É tua culpa, Mami... Tu nao deveria ter feito isso...\""
+    },
+    "AREAS053.DAT:8:78": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, interrogative",
+      "intent": "question with menu option",
+      "risk_level": "low",
+      "risk_notes": "Repeat of earlier fishing question. [12][01][0C][82] tokens; UI formatting.",
+      "t": "\"Voce ja pescou antes?\" [12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAS053.DAT:8:79": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, knowing",
+      "intent": "observation/experience reading",
+      "risk_level": "low",
+      "risk_notes": "Repeat of earlier observation. Preserva tom de conhecedor.",
+      "t": "\"Já imaginava... Voce tem aquele brilho nos olhos...\""
+    },
+    "AREAS053.DAT:8:80": {
+      "speaker": "npc",
+      "tone_register": "casual, rustic, appraising",
+      "intent": "assessment / mild encouragement",
+      "risk_level": "low",
+      "risk_notes": "'Hmmm... neither, eh? Ye look like ye'd like it, though... Humph.' — thoughtful/encouraging. [02] = 1. Byte budget 96 é confortavel.",
+      "t": "\"Hmm... voce tambem nao, hein? [02]Mas voce parece que gostaria... Hmph.\""
+    }
+  }
+}

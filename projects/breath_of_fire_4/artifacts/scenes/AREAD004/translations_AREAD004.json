@@ -1,0 +1,385 @@
+{
+  "lines": {
+    "AREAD004.DAT:8:2": {
+      "speaker": "NPC",
+      "tone_register": "casual, preocupado",
+      "intent": "NPC explica que está vigiando o dragão e que tocará o sino se as coisas piorarem, esperando ter tempo de fugir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Estou de olho no dragao. [02]Se as coisas ficarem ruins de verdade, [02]devo tocar esse sino aqui... [02]So espero que a gente tenha tempo de [02]sair daqui quando isso acontecer!\""
+    },
+    "AREAD004.DAT:8:3": {
+      "speaker": "NPC",
+      "tone_register": "casual",
+      "intent": "NPC menciona um metal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Tem um metal chamado [09]#"
+    },
+    "AREAD004.DAT:8:4": {
+      "speaker": "NPC",
+      "tone_register": "casual, orgulhoso",
+      "intent": "NPC se gaba do tubo que usa como proteção caso a represa quebre",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"O que achou do meu tubo? [02]Assim sei que estou seguro mesmo se a represa quebrar!\""
+    },
+    "AREAD004.DAT:8:5": {
+      "speaker": "NPC",
+      "tone_register": "neutro, direto",
+      "intent": "NPC pergunta quem são os jogadores e o que procuram",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][04][04]\"Quem e voce? Procurando alguma coisa?\""
+    },
+    "AREAD004.DAT:8:6": {
+      "speaker": "Nina",
+      "tone_register": "formal-educado, determinado",
+      "intent": "Nina pede desculpas por incomodar e solicita ajuda para atravessar para o outro lado",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Nina: formal com calor; verificar que nao soa fria nem passiva.",
+      "t": "[0C][06][14][C1]@\"Desculpe incomodar, mas eu e meus [02]amigos queremos atravessar para o outro lado. [02]Pode nos ajudar?\""
+    },
+    "AREAD004.DAT:8:7": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto",
+      "intent": "Ryu pede indicação de como chegar ao outro lado",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Ryu: simples e direta; nao pode soar adulto ou calculista.",
+      "t": "[0C][06][14]B@\"Desculpe incomodar, mas precisamos chegar ao outro lado. [02]Como a gente faz isso?\""
+    },
+    "AREAD004.DAT:8:8": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, formal",
+      "intent": "Fou-Lu pede com formalidade arcaica que o NPC indique como traversar a margem",
+      "risk_level": "high",
+      "risk_notes": "Voz de Fou-Lu: arcaica e solene; pronomens imperiais; contraste com Ryu obrigatorio.",
+      "t": "[0C][06][14]E@\"Perdoai-me. [0B][04][05] diz que desejamos [02]atravessar para a outra margem. [02]Como [04][05] pode chegar la, por favor?\""
+    },
+    "AREAD004.DAT:8:9": {
+      "speaker": "NPC",
+      "tone_register": "surpreso, depois indiferente",
+      "intent": "NPC se pergunta por que vieram até aqui para isso, mas decide que não é problema dele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][04][04]\"A outra margem? [02]Por que viriam ate aqui so pra isso?[0B][0B] [02]Bom, acho que nao e da minha conta.\""
+    },
+    "AREAD004.DAT:8:10": {
+      "speaker": "NPC",
+      "tone_register": "neutro, explicativo",
+      "intent": "NPC explica que é preciso fechar a comporta e depois atravessar o rio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][84][04]\"Bom, se quiser chegar ao outro lado, [02][14][FF][FF][14][04][04]primeiro feche a comporta la em cima, [02]depois cruze o rio.\""
+    },
+    "AREAD004.DAT:8:11": {
+      "speaker": "NPC",
+      "tone_register": "neutro, explicativo",
+      "intent": "NPC explica que do outro lado há um elevador para subir o penhasco",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][04][04]\"Quando estiver do outro lado, [02]use aquele elevador ali pra subir o penhasco.\""
+    },
+    "AREAD004.DAT:8:12": {
+      "speaker": "NPC",
+      "tone_register": "neutro, informativo",
+      "intent": "NPC diz que Rhoppe tem a chave da comporta e indica que falem com ele",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][04][04]\"[05] [02]Rhoppe[06] tem a chave da comporta-- va falar com ele. [02]E o que esta com o tubo.\""
+    },
+    "AREAD004.DAT:8:14": {
+      "speaker": "NPC",
+      "tone_register": "neutro, colaborativo",
+      "intent": "NPC confirma que receberam a chave de Rhoppe e pede que a devolvam após o uso para operar o elevador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Pegou a [09] [05] de Rhoppe? [02]OK, quando terminar, traga a chave pra mim, [02]e eu opero o elevador, certo?\""
+    },
+    "AREAD004.DAT:8:16": {
+      "speaker": "NPC",
+      "tone_register": "casual, levemente preocupado",
+      "intent": "NPC pergunta para que querem a chave, aceita e pede cuidado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Pra que a chave? [02]...[0B]Quer ir pra outra margem? Oh... [02]OK, mas tome cuidado, ta?\""
+    },
+    "AREAD004.DAT:8:17": {
+      "speaker": "NPC",
+      "tone_register": "casual, lembrança",
+      "intent": "NPC lembra que devem fechar o portão e devolver a chave",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Ah, nao esqueca de fechar o portao [02]e devolver a chave, OK?\""
+    },
+    "AREAD004.DAT:8:18": {
+      "speaker": "NPC",
+      "tone_register": "casual, resmungando",
+      "intent": "NPC reclama que só há dragões e criaturas estranhas na lama em vez de coisas normais como minhocas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Por que so tem dragoes [02]e coisas esquisitas vivendo na lama? [02]Por que nao tem coisas normais, tipo minhocas?\""
+    },
+    "AREAD004.DAT:8:19": {
+      "speaker": "NPC",
+      "tone_register": "fanfarrao, desafiador",
+      "intent": "NPC prospector afirma que não tem medo de dragão nenhum",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Dragao? [02]Hah![0B] Nao tenho medo de dragao! [02]Que tipo de garimpeiro eu seria se deixasse um dragao [02]me afastar do [09]#"
+    },
+    "AREAD004.DAT:8:20": {
+      "speaker": "NPC",
+      "tone_register": "neutro, instrucional",
+      "intent": "NPC instrui que devolvam a chave ao contramestre quando terminar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Se terminou, devolva a chave ao contramestre ali.\""
+    },
+    "AREAD004.DAT:8:22": {
+      "speaker": "NPC",
+      "tone_register": "neutro, instrucional",
+      "intent": "NPC explica que além da chave é preciso abaixar a ponte para chegar ao elevador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Conseguir a chave e otimo, [02]mas pra chegar onde fica o elevador, [02]voce tambem tem que baixar aquela ponte ali.\""
+    },
+    "AREAD004.DAT:8:23": {
+      "speaker": "NPC",
+      "tone_register": "neutro, colaborativo",
+      "intent": "NPC confirma que vai operar o elevador mas pede a chave de volta primeiro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][04][04]\"Ah, voltou, ne? [02]Certo, vou operar o elevador, [02]mas primeiro me devolva a chave, certo?\""
+    },
+    "AREAD004.DAT:8:24": {
+      "speaker": "NPC",
+      "tone_register": "neutro, imperativo",
+      "intent": "NPC manda Rhoppe abrir a comporta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][04][04]\"Ei, Rhoppe! [02]Va abrir a comporta, OK?\"[15][19]"
+    },
+    "AREAD004.DAT:8:25": {
+      "speaker": "NPC (Rhoppe)",
+      "tone_register": "casual, animado",
+      "intent": "Rhoppe confirma a ordem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]@[14][03][03]\"Entendido!\""
+    },
+    "AREAD004.DAT:8:26": {
+      "speaker": "NPC",
+      "tone_register": "explicativo, ligeiramente frustrado",
+      "intent": "NPC explica que precisam abrir a comporta para trabalhar e estavam esperando o grupo sair",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][04][04]\"Ve...[0B] Se nao abrirmos a comporta, nao da pra trabalhar. [02]Por isso estamos esperando voces [02]saírem pra gente voltar ao trabalho!\""
+    },
+    "AREAD004.DAT:8:27": {
+      "speaker": "NPC",
+      "tone_register": "neutro, acao",
+      "intent": "NPC vai operar o elevador mas é interrompido",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][04][04]\"Certo, entao... Deixa eu operar o elevador p...\""
+    },
+    "AREAD004.DAT:8:28": {
+      "speaker": "Narrador/sistema",
+      "tone_register": "urgente, alarmante",
+      "intent": "Aviso de emergência: comporta quebrou e lama transbordando",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01]A\"A comporta quebrou! A lama esta transbordando!!\""
+    },
+    "AREAD004.DAT:8:29": {
+      "speaker": "NPC",
+      "tone_register": "urgente, apologetico",
+      "intent": "NPC diz que ia operar o elevador mas tem coisas mais importantes agora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][04]D\"Bom...[0B] Eu ia operar o elevador pra voce, [02]mas parece que tenho coisas mais urgentes agora!\""
+    },
+    "AREAD004.DAT:8:34": {
+      "speaker": "NPC",
+      "tone_register": "instrucional, urgente",
+      "intent": "NPC instrui como usar o mecanismo do elevador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][04]D\"So prenda isso na caixa na frente do elevador [02]e puxe algumas vezes.\""
+    },
+    "AREAD004.DAT:8:35": {
+      "speaker": "NPC",
+      "tone_register": "urgente, avisando",
+      "intent": "NPC sugere que o grupo também fuja",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][04]D\"Eu pensaria em sair daqui tambem se fosse voce!\""
+    },
+    "AREAD004.DAT:8:36": {
+      "speaker": "NPC",
+      "tone_register": "despedida rapida",
+      "intent": "NPC deseja boa sorte e se despede",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][04]D\"Boa sorte! Ate logo!\""
+    },
+    "AREAD004.DAT:8:37": {
+      "speaker": "NPC",
+      "tone_register": "urgente, alertando",
+      "intent": "NPC aponta o elevador e pede pressa antes que a lama transborde",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"O elevador esta ali! [02]Corra antes que a lama transborde a represa!\""
+    },
+    "AREAD004.DAT:8:38": {
+      "speaker": "Sistema",
+      "tone_register": "sistema, neutro",
+      "intent": "Mensagem de sistema indicando caminho errado para o elevador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este nao e o caminho para o elevador!"
+    },
+    "AREAD004.DAT:8:39": {
+      "speaker": "Sistema",
+      "tone_register": "sistema, neutro",
+      "intent": "Mensagem de uso de item",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[03] usou [09][09][05]."
+    },
+    "AREAD004.DAT:8:40": {
+      "speaker": "NPC/personagem",
+      "tone_register": "esforco, frustrado",
+      "intent": "Personagem nota que não está se movendo e sugere mexer mais na alavanca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"...[0B]...[0B]Nao esta se movendo! [02]Talvez precise mover mais a alavanca?\""
+    },
+    "AREAD004.DAT:8:41": {
+      "speaker": "NPC/personagem",
+      "tone_register": "urgente, exasperado",
+      "intent": "Personagem exige que movam mais a alavanca",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][07]\"O que foi!? [02]Mexa mais a alavanca!\""
+    },
+    "AREAD004.DAT:8:43": {
+      "speaker": "NPC/personagem",
+      "tone_register": "urgente, impaciente",
+      "intent": "Personagem pede pressa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][07]\"Vai logo![0B] Apresse-se!\""
+    },
+    "AREAD004.DAT:8:44": {
+      "speaker": "NPC/personagem",
+      "tone_register": "urgente",
+      "intent": "Pedido urgente de pressa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][08][06]\"Rapido!\""
+    },
+    "AREAD004.DAT:8:45": {
+      "speaker": "Vilao/NPC",
+      "tone_register": "ameacador, gozacao",
+      "intent": "Personagem antagonista ri e anuncia a chegada da lama",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][09][08]\"Ha ha ha ha ha! A lama vem ai!\""
+    },
+    "AREAD004.DAT:8:46": {
+      "speaker": "Personagem",
+      "tone_register": "alivio",
+      "intent": "Personagem expressa alívio por terem conseguido escapar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][8A]F\"Ufa...! Conseguimos!\""
+    },
+    "AREAD004.DAT:8:47": {
+      "speaker": "Nina",
+      "tone_register": "preocupada, empática",
+      "intent": "Nina expressa preocupação com os trabalhadores que estavam lá",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Nina: calor e responsabilidade; nao pode soar fria.",
+      "t": "[0C][06][14][C1]@\"Espero que todos que [02]trabalhavam ali estejam bem...\""
+    },
+    "AREAD004.DAT:8:48": {
+      "speaker": "Ryu",
+      "tone_register": "alivio, simples",
+      "intent": "Ryu expressa alívio pela situação ter se resolvido",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Ryu: simples e direto.",
+      "t": "[0C][06][14][C2]@\"Ufa! Por pouco!\""
+    },
+    "AREAD004.DAT:8:49": {
+      "speaker": "NPC/personagem",
+      "tone_register": "esperancoso",
+      "intent": "Personagem espera que todos tenham saído a tempo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][8B]G\"Espero que eles todos tenham saido a tempo!\""
+    },
+    "AREAD004.DAT:8:50": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene",
+      "intent": "Fou-Lu constata com distanciamento solene que sobreviveram",
+      "risk_level": "high",
+      "risk_notes": "Voz de Fou-Lu arcaica e solene; contraste com Ryu; pronomes imperiais.",
+      "t": "[0C][06][14][C5]@\"Parece que sobrevivemos.\""
+    },
+    "AREAD004.DAT:8:51": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, amargo, ironico",
+      "intent": "Fou-Lu assume friamente que os trabalhadores escaparam e expressa desapontamento disso",
+      "risk_level": "high",
+      "risk_notes": "Tom amargo/tragico de Fou-Lu; distanciamento calculado; nao suavizar o amargor.",
+      "t": "[0C][06][14][C5]@\"Devemos supor que os operarios tambem escaparam. [02]Que decepcionante...\""
+    },
+    "AREAD004.DAT:8:52": {
+      "speaker": "NPC (Rhoppe)",
+      "tone_register": "casual, eufórico",
+      "intent": "Rhoppe comemora animado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Iuhuuu!\""
+    },
+    "AREAD004.DAT:8:55": {
+      "speaker": "Nina",
+      "tone_register": "suave, reassurando",
+      "intent": "Nina diz ao personagem que não precisava ter ficado tão perturbado",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Nina: calor e liderança discreta.",
+      "t": "[0C][06][14][C1]@\"...[0B]Ta vendo, [04][05]? Nao precisava ficar tao abalado assim.\""
+    },
+    "AREAD004.DAT:8:57": {
+      "speaker": "Personagem",
+      "tone_register": "casual, encerrando",
+      "intent": "Personagem sugere que sigam em frente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][8C]F\"Hem...[0B] De qualquer forma, vamos embora, ta?\""
+    },
+    "AREAD004.DAT:8:59": {
+      "speaker": "NPC/personagem",
+      "tone_register": "confuso, indiferente",
+      "intent": "Personagem não entende por que alguém está perturbado se todos saíram bem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][8B]G\"Por que ela esta assim? Todos saíram bem...\""
+    },
+    "AREAD004.DAT:8:60": {
+      "speaker": "Ryu",
+      "tone_register": "direto, pratico",
+      "intent": "Ryu diz para não perder tempo se preocupando e sugere que partam",
+      "risk_level": "medium",
+      "risk_notes": "Voz de Ryu: simples e direto; nao verbose.",
+      "t": "[0C][06][14][C2]@\"Nao se preocupe tanto com isso.[0B] Vamos!\""
+    }
+  },
+  "_meta": {
+    "model_id": "claude-sonnet-4-6",
+    "doctrine_hash": "13515512c2543cde",
+    "skills_revision": "18e77f41f0f4"
+  }
+}

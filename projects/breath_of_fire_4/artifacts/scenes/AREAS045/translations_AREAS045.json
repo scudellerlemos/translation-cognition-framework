@@ -1,0 +1,60 @@
+{
+  "lines": {
+    "AREAS045.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "informal-colloquial",
+      "intent": "informative/explanatory",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"A proposito, este e [04][03].[02]Foi designado para[01]nos vigiar para que[01]nao fugissemos.\""
+    },
+    "AREAS045.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "neutral-polite",
+      "intent": "interrogative",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer esperar pelo[01]anoitecer aqui?[12]"
+    },
+    "AREAS045.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "informative",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que voce poderia[01]descansar aqui.[12][8B][0C][93]Descansar[01]Diario[01]Nunca"
+    },
+    "AREAS045.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "informal-relieved",
+      "intent": "expressive",
+      "risk_level": "medium",
+      "risk_notes": "Dialeto/sotaque ('zat zere' -> 'que havia') preservado em tom; escolha de registro informal evita super-formalizar NPC menor.",
+      "t": "[14][02][01]\"Fico feliz que havia[01]um quarto vazio aqui[01]mesmo.[02][19]"
+    },
+    "AREAS045.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "gossip-colloquial",
+      "intent": "narrative/rumor",
+      "risk_level": "high",
+      "risk_notes": "Menção critica de fuga do chefe Woren do Castelo para Wyndia — potencial revelacao de trama/alianca. Identidade dupla (chefe Woren) e ligacao com Nina/Wyndia nao explorada; risco de antecipacao de plot. Back-translation obrigatoria. Termo 'Woren' mantido (glossario). Decidido: nao expandir/resolver ambiguidade.",
+      "t": "[14][03][02]\"Ouviu falar que o chefe[02]dos Worens conseguiu[01]escapar do Castelo?[02][14][FF][FF][14][84]CContam que ele chegou[01]ate Wyndia!\""
+    },
+    "AREAS045.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "scandalized-gossipy",
+      "intent": "narrative/rumor",
+      "risk_level": "critical",
+      "risk_notes": "CRITICO: menciona 'Princesa Wyndiana' ajudando chefe Woren a escapar. Nina (Princesa de Wyndia) esta no grupo — spoiler potencial/revelacao de alianca futura. Construcao evita nome; dialogo NPC usa 'such a thing' generico. Preservado: ambiguidade de identidade (nao diz QUAL princesa). Back-translation OBRIGATORIA. Risco de comprometimento de reveal_timing.",
+      "t": "[14][04][03]\"Contam que uma das[02]princesas Wyndianas[01]ajudou aquele chefe[01]Woren a escapar![02][14][FF][FF][14][83]BVoce imagina uma[01]coisa dessas? Que[01]escandalo!\""
+    },
+    "AREAS045.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "childish-plaintive",
+      "intent": "expressive/emotional",
+      "risk_level": "low",
+      "risk_notes": "Crianca pequena; linguagem simples, direta, emocional. Traducao soa natural/infantil; interjeicao preservada em intencao (fome, lamento).",
+      "t": "\"Mamae...Tenho fome!\""
+    }
+  }
+}

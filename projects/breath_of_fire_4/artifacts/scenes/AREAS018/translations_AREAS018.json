@@ -1,0 +1,460 @@
+{
+  "lines": {
+    "AREAS018.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "neutral-informal",
+      "intent": "explain_situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpe, mas parece que voce esta um pouco curto de zenny."
+    },
+    "AREAS018.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "neutral-informal",
+      "intent": "self_introduction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "No momento, sou apenas um mercador ambulante,[02]"
+    },
+    "AREAS018.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "neutral-informal",
+      "intent": "gossip_concern",
+      "risk_level": "medium",
+      "risk_notes": "Princess [04][01] é metareferência — nao resolver a identidade antes do reveal_timing; manter generica a referencia em pt-BR.",
+      "t": "Ouvi dizer que a Princesa [04][01] saiu em busca da irma desaparecida...[02]O rei deve estar muito preocupado com elas."
+    },
+    "AREAS018.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "neutral-informal",
+      "intent": "empathy_declaration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se minha irma desaparecesse, eu tambem iria procura-la!"
+    },
+    "AREAS018.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "neutral-reassuring",
+      "intent": "reassurance_playful",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao se preocupe -- nao vou desaparecer para lugar algum!"
+    },
+    "AREAS018.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "neutral-reflective",
+      "intent": "observation_concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta e uma cidade pacifica...[01]Mesmo assim, ate aqui ha rumores de guerra."
+    },
+    "AREAS018.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual-informal",
+      "intent": "compliment_nostalgia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As mulheres de Wyndia sao mesmo bonitas, nao sao?[02]Minha esposa tambem era bonita em seu tempo."
+    },
+    "AREAS018.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "neutral-humorous",
+      "intent": "explanation_self_justification",
+      "risk_level": "medium",
+      "risk_notes": "Referencia a 'silverware' mappeia para 'Usar Talheres' (glossario); manter contexto de esconder talheres para evitar que o jovem coma.",
+      "t": "Para impedir que o jovem fique ainda mais gordo,[02]escondi todo os talheres! Agora ele nao consegue comer nada!"
+    },
+    "AREAS018.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "onomatopoeia",
+      "intent": "sound_effect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0A][01]\"squeak\""
+    },
+    "AREAS018.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Quero comer -- agora!"
+    },
+    "AREAS018.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal-reassuring",
+      "intent": "comfort_promise",
+      "risk_level": "medium",
+      "risk_notes": "Comprimento e estilo sugerem NPC servil/tutor; manter tom formal de compreensao e paciencia.",
+      "t": "Compreendo bem como se sente, mestre... Por favor, tenha um pouco mais de paciencia.[02]Tenho certeza de que em breve encontraremos os talheres!"
+    },
+    "AREAS018.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "mournful-listing",
+      "intent": "lament_inventory",
+      "risk_level": "high",
+      "risk_notes": "Linha incompleta (truncada em source com [09]M); estrutura de listagem com tokens [09] para placeholders de items. Risco alto por ambiguidade na completude da frase e identificacao de items.",
+      "t": "Perdemos tudo...[02]Nossos [09][17][01], [09]O[03]s, [09]E[01]s, [09]6[03]...[01]ate mesmo nosso [09]M"
+    },
+    "AREAS018.DAT:8:15": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um prato com macarrao. Para come-lo, voce precisa de [09][17][01]."
+    },
+    "AREAS018.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um prato de frios. Para come-los, voce precisa de um [09]6[03]."
+    },
+    "AREAS018.DAT:8:17": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um prato de espaguete. Para come-lo, voce precisa de um [09]E[01]."
+    },
+    "AREAS018.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um prato com pudim. Para come-lo, voce precisa de um [09]O[03]."
+    },
+    "AREAS018.DAT:8:19": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um refrigerante de creme.[01]Para bebe-lo, precisa de um [09]M"
+    },
+    "AREAS018.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "formal-proud",
+      "intent": "boast_discipline",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ensinei meu filho a ter boas maneiras.[02]Ele nunca toca na comida com as maos -- nunca!"
+    },
+    "AREAS018.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "casual-relieved",
+      "intent": "report_return",
+      "risk_level": "medium",
+      "risk_notes": "Princess [04][01] reference — nao resolver identidade; manter generica.",
+      "t": "Ouvi dizer que a Princesa [04][01] voltou.[02]Os reis devem estar alividados agora que ela esta de volta!"
+    },
+    "AREAS018.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "hopeful-naive",
+      "intent": "wish_sibling",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu ficaria feliz se minha irma tambem voltasse!"
+    },
+    "AREAS018.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "exasperated-teasing",
+      "intent": "mock_reassurance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Do que voce esta falando, moleque tolo?[02]Eu nao fui para lugar nenhum!"
+    },
+    "AREAS018.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "concerned-gossipy",
+      "intent": "report_threat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vi tropas ludian se movendo por aqui ultimamente...[02]Acho que aqueles rumores erao verdadeiros..."
+    },
+    "AREAS018.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "hopeful-doubtful",
+      "intent": "reconsider_rumor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Talvez os rumores nao sejam verdadeiros afinal..."
+    },
+    "AREAS018.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "neutral-hopeful",
+      "intent": "report_hope",
+      "risk_level": "medium",
+      "risk_notes": "Princess [04][01][01] — estrutura repetida de token; nao resolver identidade antes do timing. Manter generica referencia.",
+      "t": "Dizem que a Princesa [04][01][01] saiu procurando pela irma de novo...[02]Espero que desta vez elas a encontrem!"
+    },
+    "AREAS018.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "determined-naive",
+      "intent": "echo_declaration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou procurar por minha irma de novo tambem!"
+    },
+    "AREAS018.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "exasperated-firm",
+      "intent": "reiterate_denial",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quantas vezes eu tenho que lhe dizer? Nao vou para lugar nenhum!"
+    },
+    "AREAS018.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "exasperated-rueful",
+      "intent": "lament_wasted_effort",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E depois de tudo que me dei ao trabalho de esconder os talheres!"
+    },
+    "AREAS018.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "curious-suspicious",
+      "intent": "question_item",
+      "risk_level": "high",
+      "risk_notes": "Linha truncada em source ([16] no final); possivelmente pergunta sobre item especifico. Alto risco por incompletude da frase.",
+      "t": "Espera... O que voce esta carregando ali... E isso um [02][16]"
+    },
+    "AREAS018.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "neutral-formal",
+      "intent": "request_collection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de talheres, por favor traga para aqui."
+    },
+    "AREAS018.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "neutral-formal",
+      "intent": "request_collection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de talheres, por favor traga para aqui."
+    },
+    "AREAS018.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "neutral-formal",
+      "intent": "request_collection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de talheres, por favor traga para aqui."
+    },
+    "AREAS018.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "neutral-formal",
+      "intent": "request_collection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de talheres, por favor traga para aqui."
+    },
+    "AREAS018.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "neutral-formal",
+      "intent": "request_collection",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de talheres, por favor traga para aqui."
+    },
+    "AREAS018.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "grateful-relieved",
+      "intent": "thank_and_celebrate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito obrigado![02]Agora o jovem mestre podra comer de novo!"
+    },
+    "AREAS018.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "sleepy-demanding",
+      "intent": "hunger_complaint_repeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]E tudo? Quero mais comida!"
+    },
+    "AREAS018.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "apologetic-resigned",
+      "intent": "explain_shortage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao conseguimos fazer mais nada -- estamos completamente sem ingredientes!"
+    },
+    "AREAS018.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "formal-reassuring",
+      "intent": "comfort_patience",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Compreendo bem como se sente, mestre... Por favor, tenha um pouco mais de paciencia.[02]Tenho certeza de que sua proxima refeicao estara pronta em breve!"
+    },
+    "AREAS018.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "formal-sympathy",
+      "intent": "express_regret",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que infeliz!"
+    },
+    "AREAS018.DAT:8:49": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:50": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:51": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:52": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:53": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:54": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:55": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Usar Talheres\"."
+    },
+    "AREAS018.DAT:8:56": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Maneiras a Mesa para Criancas\"."
+    },
+    "AREAS018.DAT:8:57": {
+      "speaker": "system",
+      "tone_register": "descriptive-tutorial",
+      "intent": "item_identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um livro intitulado \"Diet Hard 3\"."
+    },
+    "AREAS018.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "casual-humorous",
+      "intent": "gossip_speculation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Procurando pela minha esposa?[02]Bem, ela provavelmente esta la fora em algum lugar fofocando com as amigas!"
+    },
+    "AREAS018.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "casual-humorous",
+      "intent": "gossip_speculation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Procurando pela minha esposa?[02]Bem, ela provavelmente esta la fora em algum lugar fofocando com as amigas!"
+    },
+    "AREAS018.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "formal-concerned",
+      "intent": "express_worry",
+      "risk_level": "medium",
+      "risk_notes": "Referencia a 'Princesses' (plural) e 'King' — estrutura de poder familiar; nao antecipar revelacoes de identidade/parentesco alem do que ja e publico no corpus.",
+      "t": "So desejo que as duas Princesas voltem logo...[02]Seu pai, o Rei, esta muito preocupado com elas!"
+    },
+    "AREAS018.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "triumphant-surprised",
+      "intent": "react_competition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Parece que alguem jaBLANKou antes de mim!\""
+    },
+    "AREAS018.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "concerned-searching",
+      "intent": "ask_for_help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce nao viu meu irmao menor em lugar nenhum, viu?[02]Tive que sair para comprar algumas coisas, e quando voltei, ele tinha sumido!"
+    }
+  }
+}

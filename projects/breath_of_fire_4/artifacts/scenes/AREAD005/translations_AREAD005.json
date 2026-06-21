@@ -1,0 +1,204 @@
+{
+  "lines": {
+    "AREAD005.DAT:8:0": {
+      "speaker": "system",
+      "tone_register": "formal/ui",
+      "intent": "warning/prohibition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]Painel de Controle de Comporta[06][01]Acesso nao autorizado[01]proibido!"
+    },
+    "AREAD005.DAT:8:1": {
+      "speaker": "system",
+      "tone_register": "formal/ui",
+      "intent": "warning/prohibition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]Painel de Controle de Comporta[06][01]Acesso nao autorizado[01]proibido!"
+    },
+    "AREAD005.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "surprised/direct",
+      "intent": "exclamation/realization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Parou!...[0B]Parou!\""
+    },
+    "AREAD005.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "confused/direct",
+      "intent": "question/demand",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][01][14][02][02]\"Quem esta mexendo na[01]comporta?\""
+    },
+    "AREAD005.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "formal/direct",
+      "intent": "question/offer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Vcs querem fechar[01]a comporta?\""
+    },
+    "AREAD005.DAT:8:8": {
+      "speaker": "Ryu",
+      "tone_register": "hesitant/simple",
+      "intent": "affirmation/explanation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14]B@\"Uh...Sim...Sim, queremos,[01]mas essa maquina[01]aqui...\""
+    },
+    "AREAD005.DAT:8:9": {
+      "speaker": "unknown",
+      "tone_register": "formal/hesitant",
+      "intent": "affirmation/explanation",
+      "risk_level": "medium",
+      "risk_notes": "speaker nao identificavel; possivelmente Nina ou NPC feminino; tom formal sugere lideranca",
+      "t": "[0C][04][14][C1]@\"E, isso mesmo...[01]Mas essa maquina...\""
+    },
+    "AREAD005.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "casual/explanatory",
+      "intent": "information/problem-description",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][82][02]\"Parou mesmo, sabe?[02]Tem travado ultimamente...[02]Vcs tem que virar[01]bem rapido para[01]fazer funcionar.\""
+    },
+    "AREAD005.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "helpful/direct",
+      "intent": "information/instruction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Olhem so...[0B]Vou explicar[01]o que vcs tem que fazer.\""
+    },
+    "AREAD005.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "instructional/direct",
+      "intent": "instruction/direction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Primeiro, vcs precisam[01]virar esse [05][02]volante[06][01]aqui, na mao.\""
+    },
+    "AREAD005.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "instructional/direct",
+      "intent": "instruction/sequence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Depois, quando o[01]volante estiver[01]bem rapido,[02]puxem essa alavanca[01]aqui.\""
+    },
+    "AREAD005.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "instructional/casual",
+      "intent": "instruction/advice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Se vcs so querem[01][05][02]fechar[06] a comporta,[02]nao precisa girar tao[01]rapido nao.[02]Mas quanto mais rapido,[01]mais facil fica, sabe?[02]Entao nada de[01]relaxar na [05][04]forca[06] nao.\""
+    },
+    "AREAD005.DAT:8:15": {
+      "speaker": "system",
+      "tone_register": "formal/ui",
+      "intent": "query/offer-help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]!Quer ler as instrucoes?[12]"
+    },
+    "AREAD005.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "formal/ui",
+      "intent": "instruction/direction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]!Use os botoes direcionais[01]para mover [04]"
+    },
+    "AREAD005.DAT:8:17": {
+      "speaker": "system",
+      "tone_register": "instructional/formal",
+      "intent": "instruction/detailed-guide",
+      "risk_level": "medium",
+      "risk_notes": "linha incompleta no source; truncada em \"If [04]\"; presenca de [04] indica placeholder de personagem; preservar exato",
+      "t": "[0C]!O segredo eh comecar devagar[01]e depois acelerar.[02]Vcs podem girar o volante[01]nos dois sentidos.[02]Quando o som fica agudo,[02]eh hora de ligar a maquina[01]apertando o ~ botao.[02]Mas pode ser interessante[01]ver o que acontece se[02]nao apertar e deixar[01]acelerar mais um pouco.[02]Se [04]"
+    },
+    "AREAD005.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "casual/direct",
+      "intent": "instruction/assignment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Certo entao,[01]vamos comecar.[02]Um de vcs tem que[01]virar o volante,[01]enquanto outro[02]vem puxar essa alavanca[01]aqui.\""
+    },
+    "AREAD005.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "neutral/direct",
+      "intent": "feedback/failure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Parece que nao timing[01]certo.[02]Precisam girar[01]um pouco mais rapido[01]que isso.\""
+    },
+    "AREAD005.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "neutral/ui",
+      "intent": "query/retry",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Quer tentar[01]de novo?\"[12][02][0C][82]Sim[01]Nao"
+    },
+    "AREAD005.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "neutral/ui",
+      "intent": "query/offer-help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Quer que eu explique[01]como funciona?\"[12][03][0C][82]Sim[01]Nao"
+    },
+    "AREAD005.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "neutral/direct",
+      "intent": "feedback/success",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Parece que fechou...\""
+    },
+    "AREAD005.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "casual/encouraging",
+      "intent": "information/congratulation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Agora vcs conseguem[01]passar sobre a comporta.[02]Nao sei pra onde vcs[01]vao, mas boa sorte![01]Boa jornada!\""
+    },
+    "AREAD005.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "grateful/casual",
+      "intent": "acknowledgment/thanks",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Agora vcs conseguem[01]passar sobre a comporta.[02]E vcs consertaram ela[01]direitinho.[02]Muito obrigado!\""
+    },
+    "AREAD005.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "generous/casual",
+      "intent": "offer/reward",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Quero dar algo pra[01]vcs pelo trabalho.[02]Peguem so...[01]Espero que sirvam![01]\""
+    },
+    "AREAD005.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "polite/formal",
+      "intent": "farewell/blessing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Tenham uma[01]boa jornada.\""
+    },
+    "AREAD005.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "urgent/warning",
+      "intent": "advice/caution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Se fosse vcs, cruzava[01]logo.[02]O dragao ta[01]estranho de novo.\""
+    }
+  }
+}

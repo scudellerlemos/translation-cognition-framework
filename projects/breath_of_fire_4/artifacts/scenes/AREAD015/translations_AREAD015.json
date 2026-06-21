@@ -1,0 +1,388 @@
+{
+  "lines": {
+    "AREAD015.DAT:8:0": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, excitado",
+      "intent": "revelação urgente; encontrou o local",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"É aqui...! [02]Este é o lugar [01]onde estão segurando [01]a Elina!\""
+    },
+    "AREAD015.DAT:8:1": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, excitado",
+      "intent": "repetição enfática da descoberta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"É aqui...! [02]Este é o lugar [01]onde estão segurando [01]a Elina!\""
+    },
+    "AREAD015.DAT:8:3": {
+      "speaker": "Ryu",
+      "tone_register": "simples, contido, realista",
+      "intent": "advertência cautelosa; manter esperança mas realismo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"Nao levante esperanças demais—ainda [01]precisamos encontrá-la. [02]Vamos!\""
+    },
+    "AREAD015.DAT:8:4": {
+      "speaker": "system",
+      "tone_register": "neutro/sistema",
+      "intent": "Prompt de interação com objeto — diário — oferecendo opções ao jogador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um diario aqui.[12][8B][0C][93]Descansar[01]Diario[01]Cancelar"
+    },
+    "AREAD015.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutro/sistema",
+      "intent": "Prompt de interação com objeto — diário — oferecendo opções ao jogador",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ha um diario aqui.[12][8B][0C][93]Descansar[01]Diario[01]Cancelar"
+    },
+    "AREAD015.DAT:8:6": {
+      "speaker": "unknown",
+      "tone_register": "peculiar, onomatopaico, grato",
+      "intent": "expressão aquática; agradecimento",
+      "risk_level": "high",
+      "risk_notes": "personagem aquático com voz não-humana; 'blub blub' é onomatopeia (traduzir por som aquático BR); [04][05] é placeholder de nome/título; sem memória de voz clara, risco de tom artificioso",
+      "t": "[0C][04][14][C5]@\"pluft pluft... [02][04][05] não precisa [01]respirar. [02]Mesmo assim, ela diz que [01]agradece sua [01]ajuda.\""
+    },
+    "AREAD015.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "alarme, direto",
+      "intent": "alerta de perigo iminente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Alguém está vindo!\""
+    },
+    "AREAD015.DAT:8:8": {
+      "speaker": "Yuna",
+      "tone_register": "formal, polidez calculada, condescendente",
+      "intent": "pergunta formal sobre status do experimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Qual é então o [01]Status do [01]sacrifício?\""
+    },
+    "AREAD015.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "submisso, respeitoso",
+      "intent": "relato de andamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05]\"Continua a... [01]crescer, Lorde Yuna.\""
+    },
+    "AREAD015.DAT:8:10": {
+      "speaker": "unknown",
+      "tone_register": "formal, solene",
+      "intent": "Expressar satisfação elevada com o resultado",
+      "risk_level": "medium",
+      "risk_notes": "Speaker não identificado; registro solene mantido. Transliterado: '[14][02][02]Excelente.[0B] Estou\nmto satisfeito.' — verificar budget ~53b",
+      "t": "[14][02][02]\"Excelente.[0B] Estou muito satisfeito.\""
+    },
+    "AREAD015.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutra, aviso funcional",
+      "intent": "instrução de sigilo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se sair de trás da [01]cortina, você será visto!"
+    },
+    "AREAD015.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "submisso, preciso",
+      "intent": "confirmação de status em andamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][0C]\"Sim, Lorde Yuna. No [01]ritmo atual...\""
+    },
+    "AREAD015.DAT:8:15": {
+      "speaker": "Ryu",
+      "tone_register": "aliviado, direto",
+      "intent": "alívio; confirmação de que não foram vistos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Ufa![0B] Parece que [01]não nos viram...[15][10]\""
+    },
+    "AREAD015.DAT:8:16": {
+      "speaker": "unknown",
+      "tone_register": "frio, confirmativo",
+      "intent": "Confirmar que algo aconteceu, contradizendo expectativa",
+      "risk_level": "medium",
+      "risk_notes": "Speaker não identificado; resposta curta e direta",
+      "t": "[0C][03][14][02][02]\"Ah, mas fizemos.\""
+    },
+    "AREAD015.DAT:8:17": {
+      "speaker": "Yuna",
+      "tone_register": "condescendente, formal, ameaçador",
+      "intent": "desafio velado; asserção de autoridade imperial",
+      "risk_level": "medium",
+      "risk_notes": "Yuna revela conhecimento e poder; tom deve ser refinado, nunca agressivo. 'Fou Empire' é manter_original; 'Easterners' = 'Orientais'",
+      "t": "[0C][03][14][02][02]\"Bem agora, nós não [01]podemos permitir isso,[0B] podemos? [02]Este edifício pertence [01]ao Império Fou. [02]E vocês são [01]Orientais, [01]não são?\""
+    },
+    "AREAD015.DAT:8:18": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto",
+      "intent": "Explicar que o grupo procura alguém",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][C2]@\"Estamos... procurando alguém.\""
+    },
+    "AREAD015.DAT:8:19": {
+      "speaker": "Nina",
+      "tone_register": "formal, determinada, esperançosa",
+      "intent": "revelação urgente; busca pela irmã",
+      "risk_level": "high",
+      "risk_notes": "Nina com voz criticality:high — formal, firme, liderança discreta. Menciona 'sister' (spoiler de relação?); Elina é nome próprio (manter); 'told' = 'disseram'; preservar tom esperançoso mas realista",
+      "t": "[0C][04][14][83]@\"Sim—estamos procurando [01]minha irmã. [02]O nome dela é Elina. [01]Nos disseram que ela [01]tinha vindo aqui...\""
+    },
+    "AREAD015.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "confrontador, urgente",
+      "intent": "desafio agressivo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][81]A\"O que você sabe [01]sobre ela!?\""
+    },
+    "AREAD015.DAT:8:21": {
+      "speaker": "Yuna",
+      "tone_register": "educado, condescendente, suave",
+      "intent": "Advertir gentilmente para não se aproximar, mantendo compostura fria",
+      "risk_level": "medium",
+      "risk_notes": "Transliterado: '[0C][03][14][02][02]Ora, ora...[0B]\nNao chegue muito perto,\ncerto?' ~67b aprox.",
+      "t": "[0C][03][14][02][02]\"Ora, ora...[0B] Não chegue muito perto, certo?\""
+    },
+    "AREAD015.DAT:8:22": {
+      "speaker": "Yuna",
+      "tone_register": "formal, preciso, levemente condescendente",
+      "intent": "Yuna confirma que conhece a Princesa Elina e que ela esteve ali",
+      "risk_level": "high",
+      "risk_notes": "Menciona Princesa Elina — nome de personagem relevante; verificar glossário: 'Princesa' = traduzir. Preservar ambiguidade sobre o estado atual de Elina.",
+      "t": "[0C][03][14][02][02]\"A Princesa[01]Elina, sim?[02]Sim, ela esteve aqui.\""
+    },
+    "AREAD015.DAT:8:23": {
+      "speaker": "Yuna",
+      "tone_register": "formal, narrativo, frio",
+      "intent": "Yuna descreve Elina com aparente respeito antes de introduzir um 'porém' ominoso",
+      "risk_level": "high",
+      "risk_notes": "'However...' deixa destino de Elina em aberto — não resolver. Manter suspense; verificar budget (linha longa, 178 bytes).",
+      "t": "[0C][03][14][02][02]\"Ela era uma pessoa[01]muito gentil--disse[02]que vinha em visita[01]de boa vontade ver[02]os feridos[01]da guerra.[01]Porem...\""
+    },
+    "AREAD015.DAT:8:24": {
+      "speaker": "unknown",
+      "tone_register": "frio, neutro",
+      "intent": "Informar que alguém morreu ou desapareceu",
+      "risk_level": "high",
+      "risk_notes": "Informação de morte/ausência de personagem não identificado; risco de spoiler",
+      "t": "[0C][05][14][02][02]\"Ela não está mais conosco.\""
+    },
+    "AREAD015.DAT:8:25": {
+      "speaker": "unknown",
+      "tone_register": "frio, assertivo",
+      "intent": "Confirmar a verdade e encerrar o assunto",
+      "risk_level": "medium",
+      "risk_notes": "Mudança abrupta de assunto após revelação grave",
+      "t": "[0C][05][14][02][02]\"Me temo que é verdade.[02]Muito bem!\""
+    },
+    "AREAD015.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "condescendência elegante",
+      "intent": "expulsão velada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][02][02]\"Acho que é hora de [01]vocês seguirem em frente, [02]meus amigos [01]Orientais.\""
+    },
+    "AREAD015.DAT:8:27": {
+      "speaker": "unknown",
+      "tone_register": "chocado, epifania",
+      "intent": "reconhecimento do local; confirmação de Ryu",
+      "risk_level": "medium",
+      "risk_notes": "[04][02] é placeholder (nome/título); 'Isn't it' = construção de reconhecimento. Risco: dialogação entre dois falantes no mesmo offset exige clareza. Preservar continuidade com offset 8:28",
+      "t": "[0C][06][14][84]@\"[04][02]! Este lugar... [01]Não é...?\"[13]@[14][C2]@\"Sim... É onde a [01]gente procurou por [01]Elina antes...\""
+    },
+    "AREAD015.DAT:8:28": {
+      "speaker": "Ryu",
+      "tone_register": "simples, confirmação",
+      "intent": "eco da revelação anterior",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"Sim... É onde a [01]gente procurou por [01]Elina antes...\""
+    },
+    "AREAD015.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "dubioso, chocado",
+      "intent": "observação irônica; gatilho de suspense",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Não parece exatamente [01]com a sede do [02]Exército Imperial, [01]não é? ... [01]Espera!\""
+    },
+    "AREAD015.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "alarmado, investigativo",
+      "intent": "pergunta sobre monstro inesperado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][81]A\"O que um monstro [01]como esse estaria fazendo [01]num lugar assim?\""
+    },
+    "AREAD015.DAT:8:32": {
+      "speaker": "npc",
+      "tone_register": "traumatizado, fraco",
+      "intent": "relato de invasão; desespero",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Monstros... Muitos deles... [01]Eles simplesmente não [01]paravam de vir...\""
+    },
+    "AREAD015.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "gemido, agonia",
+      "intent": "expressão de dor/morte iminente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Uuuuhhhhh...\""
+    },
+    "AREAD015.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "fraco, descritivo, trágico",
+      "intent": "testemunho de ataque e desaparecimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Estes monstros apareceram [01]do nada e nos atacaram... [02]O General Rhun levou alguns [01]soldados e foi caçá-los...\""
+    },
+    "AREAD015.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "definitivo, morte",
+      "intent": "confirmação de morte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ele morreu..."
+    },
+    "AREAD015.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "raiva contida, acusatório",
+      "intent": "culpar Yuna pelos monstros",
+      "risk_level": "medium",
+      "risk_notes": "'Hex' = maldição (glossário: traduzir). Yuna responsável por 'blasted hex experiments' = experimentos amaldiçoados. Tone: raiva mas contida (personagem está fraco)",
+      "t": "\"Monstros! Estão em [01]todo lugar! [02]É tudo culpa de Yuna [01]e seus malditos experimentos [01]com maldições!\""
+    },
+    "AREAD015.DAT:8:37": {
+      "speaker": "Ryu",
+      "tone_register": "chocado, investigativo, ingênuo",
+      "intent": "descoberta horrorizada; especulação curiosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"O que... [0B]O que é [01]isso? [02]Parece uma [01]espécie de... de órgão.\""
+    },
+    "AREAD015.DAT:8:38": {
+      "speaker": "system",
+      "tone_register": "descritivo, especulativo",
+      "intent": "sugestão de ação/pensamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É mole e borrachudo... [01]Talvez fosse cortável com [01]uma espada ou faca?"
+    },
+    "AREAD015.DAT:8:39": {
+      "speaker": "unknown",
+      "tone_register": "solene, aviso",
+      "intent": "revelação: objeto imune a armas convencionais",
+      "risk_level": "high",
+      "risk_notes": "Speaker desconhecido (talvez forma revelada de Elina ou entidade). Tone solene/superior; [04][05] placeholder. 'You will not be able' = negação de ação — manter solenidade arcaizante",
+      "t": "[14][85]C\"Você não conseguirá [01]cortar isso... Não [01]com sua lâmina.\""
+    },
+    "AREAD015.DAT:8:40": {
+      "speaker": "unknown",
+      "tone_register": "chocado, emocional",
+      "intent": "Reconhecimento súbito e chocado de uma pessoa (Elina)",
+      "risk_level": "medium",
+      "risk_notes": "Interjeição localizada. Transliterado: '[14][06]\nE...[0B]Elina!?' ~22b",
+      "t": "[14][06] \"E...[0B]Elina!?\""
+    },
+    "AREAD015.DAT:8:42": {
+      "speaker": "unknown",
+      "tone_register": "atônito, sem palavras",
+      "intent": "Reação de choque total, sem palavras",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][85]C\"[04][02]... [04] ...!?\""
+    },
+    "AREAD015.DAT:8:46": {
+      "speaker": "unknown",
+      "tone_register": "solene, instrucional",
+      "intent": "revelar localização de Yuna e do artefato",
+      "risk_level": "medium",
+      "risk_notes": "Elina/entidade revela verdade. 'courtier named Yuna' = 'cortesão chamado Yuna' (manter formalidade arcaica). 'holds it' = 'segura/possui' (artefato). Tone solenidade com urgência",
+      "t": "[0C][06][14][85]C\"O cortesão chamado [01]Yuna o segura. [02]Você deve encontrá-lo.\""
+    },
+    "AREAD015.DAT:8:47": {
+      "speaker": "unknown",
+      "tone_register": "grave, tenso",
+      "intent": "Pronunciar o nome de Yuna com peso emocional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01] \"Yuna...\""
+    },
+    "AREAD015.DAT:8:50": {
+      "speaker": "Ryu",
+      "tone_register": "simples, determinado, contido",
+      "intent": "Ryu reconhece a situação dolorosa mas foca no próximo passo — encontrar Yuna",
+      "risk_level": "medium",
+      "risk_notes": "Ryu deve soar direto e enxuto, não frio. Equilíbrio entre empatia implícita e determinação.",
+      "t": "[14][C2]@\"Eu sei.[02]Mesmo assim, so podemos[01]encontrar esse[01]Yuna agora...\""
+    },
+    "AREAD015.DAT:8:51": {
+      "speaker": "Ryu",
+      "tone_register": "simples, ação",
+      "intent": "plano de ação; urgência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C2]@\"E conseguir o [01][09]V[01] dele. [02]Vamos! Não vamos [01]perder tempo.\""
+    },
+    "AREAD015.DAT:8:52": {
+      "speaker": "system",
+      "tone_register": "neutro/sistema, informativo",
+      "intent": "Texto de sistema explicando mecânica — lâmina não corta, precisa encontrar Yuna e o item V",
+      "risk_level": "medium",
+      "risk_notes": "'[09]V[01]' — token de item desconhecido; preservar exato. 'cut it' refere-se a cortar algo específico — manter vago conforme original.",
+      "t": "Esta lâmina nao pode cortar...[01]Para cortar, encontre[01]Yuna e o [09]V[01]."
+    },
+    "AREAD015.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "acusatório, revelador",
+      "intent": "conexão: Yuna + Carronade + monstros",
+      "risk_level": "medium",
+      "risk_notes": "'experiement' = typo source (experiment). 'Carronade' = manter_original (item/arma). Tone: acusação direta, conectar causalidade de horror",
+      "t": "\"Hã? Yuna? [02]É ele quem estava fazendo [01]algum tipo de experimento [01]com a Carronade. [02]É por causa dele que [01]todos estes monstros estão [01]aqui!\""
+    },
+    "AREAD015.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "sensing, investigativo",
+      "intent": "detectar presença maléfica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]@\"A sensação de mal [01]é mais forte aqui...!\""
+    },
+    "AREAD015.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "investigativo, constativo",
+      "intent": "detecção ambiental do mal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Consegue sentir? [01]A sensação de mal [01]é mais forte aqui.\""
+    },
+    "AREAD015.DAT:8:56": {
+      "speaker": "npc",
+      "tone_register": "desconforto, sensorial",
+      "intent": "reação visceral ao ambiente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][88]D\"A presença do mal... [01]Sinto mais forte [01]aqui...!\""
+    },
+    "AREAD015.DAT:8:57": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, levemente irônico",
+      "intent": "Fou-Lu descreve com distância majestosa um sentimento desconfortável, na 3ª pessoa via token",
+      "risk_level": "high",
+      "risk_notes": "Voz de Fou-Lu: arcaico, 3ª pessoa via token [04][05]. 'Says [04][05]' — Fou-Lu referindo-se a si mesmo em 3ª pessoa (mecânica de nome). Preservar registro solene e a atribuição em 3ª pessoa.",
+      "t": "[14][89]E\"E um sentimento[01]muito incomodo...[02][14][C5]@Diz [04][05].\""
+    }
+  }
+}

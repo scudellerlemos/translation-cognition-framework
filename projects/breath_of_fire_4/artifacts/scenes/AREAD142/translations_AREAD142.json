@@ -1,0 +1,340 @@
+{
+  "lines": {
+    "AREAD142.DAT:7:0": {
+      "speaker": "npc",
+      "tone_register": "formal-indignant",
+      "intent": "rebuke for recklessness and diplomatic breach",
+      "risk_level": "high",
+      "risk_notes": "Multiple cultural/factional references (Empire, Alliance, Woren); tone must convey authority and disappointment; budget tight (334 bytes) with tokens; transliteration of proper names critical",
+      "t": "[0C][04][14][80]@\"Voce nao so infiltrou o[01]Imperio--[02]com quem temos[01]uma trégua, deixe eu[01]esclarecer--[02]mas foi pego[01]no ato e deportado.[02]Pergunto-lhe, é essa[01]a conduta digna[01]de um guerreiro,[02]alguém que se diz[01]líder da poderosa[01]nação Woren!?\""
+    },
+    "AREAD142.DAT:7:1": {
+      "speaker": "npc",
+      "tone_register": "formal-indignant",
+      "intent": "rebuke for recklessness and diplomatic breach",
+      "risk_level": "high",
+      "risk_notes": "Duplicate of 7:0; same constraints apply",
+      "t": "[0C][04][14][80]@\"Voce nao so infiltrou o[01]Imperio--[02]com quem temos[01]uma trégua, deixe eu[01]esclarecer--[02]mas foi pego[01]no ato e deportado.[02]Pergunto-lhe, é essa[01]a conduta digna[01]de um guerreiro,[02]alguém que se diz[01]líder da poderosa[01]nação Woren!?\""
+    },
+    "AREAD142.DAT:7:3": {
+      "speaker": "npc",
+      "tone_register": "formal-stern",
+      "intent": "express alarm at diplomatic consequences",
+      "risk_level": "high",
+      "risk_notes": "Alliance/Empire treaty implications; maintains formal register; tight budget (199 bytes); transliteration preserves key terms",
+      "t": "[0C][04][14][80]@\"Tem ideia do que seus[01]atos imprudentes e[02]irrefletidos nos[01]custarao a nos e a[01]toda Aliança[02]nas negociacoes com[01]o Imperio? Tem!?\""
+    },
+    "AREAD142.DAT:7:5": {
+      "speaker": "npc",
+      "tone_register": "formal-emotional",
+      "intent": "challenge passivity during crisis",
+      "risk_level": "high",
+      "risk_notes": "Mix of two speakers in one line (format code [14][02] marks shift); Elina identity/kidnapping plot; preserves emotional escalation; budget 216 bytes",
+      "t": "[0C][03][14][01][01]\"Mas como voce consegue[01]ficar ai assim,[02]quando um membro de[01]uma das familias[01]reais da Aliança...[02][14][02][01]Quando Elina foi[01]raptada pelo Imperio!?\""
+    },
+    "AREAD142.DAT:7:6": {
+      "speaker": "npc",
+      "tone_register": "formal-resolute",
+      "intent": "justify prioritizing collective duty over individual",
+      "risk_level": "medium",
+      "risk_notes": "References princess/royal status; formal register maintained; budget 231 bytes allows full expression",
+      "t": "[0C][04][14][80]@\"Temos uma[01]responsabilidade maior[01]de proteger os membros[02]de toda a Aliança![02]Nao podemos nos[01]permitir nos preocupar[02]com uma pessoa,[01]mesmo que seja[01]uma princesa!\""
+    },
+    "AREAD142.DAT:7:7": {
+      "speaker": "npc",
+      "tone_register": "formal-bureaucratic",
+      "intent": "block access per official inquiry",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Desculpe, mas esta[01]area está em inquérito[02]do Chefe [04][02].[02]Ninguém pode[01]entrar.\""
+    },
+    "AREAD142.DAT:7:8": {
+      "speaker": "npc",
+      "tone_register": "urgent-direct",
+      "intent": "attempt to interrupt with critical information",
+      "risk_level": "medium",
+      "risk_notes": "Token [09] marks plot-critical object (presumably weapon or artifact); transliteration of ellipsis ([15][09]) must be preserved; urgency in tone",
+      "t": "[14][04][03]\"Tenho informacoes[01]vitais sobre [04][02]![02]É sobre o[01][09][01][01]...\"[15][09]"
+    },
+    "AREAD142.DAT:7:9": {
+      "speaker": "npc",
+      "tone_register": "casual-confident",
+      "intent": "reveal surprise possession",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"O [09]?[01]Está aqui comigo!\""
+    },
+    "AREAD142.DAT:7:10": {
+      "speaker": "npc",
+      "tone_register": "formal-neutral",
+      "intent": "state recent diplomatic return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Foi-nos devolvido[01]pouco tempo atras[01]pelo Imperio.\""
+    },
+    "AREAD142.DAT:7:11": {
+      "speaker": "npc",
+      "tone_register": "formal-grave",
+      "intent": "explain heavy political price for return",
+      "risk_level": "medium",
+      "risk_notes": "Treaty changes imply loss/concession; formal register conveys gravity; budget 241 bytes adequate",
+      "t": "[0C][06][14][80]@\"Em troca de sua[01]devolucao...[02]Fizeram varias[01]exigências dificeis...[02]Entre elas, mudancas[01]em nosso tratado--[02]mudancas que temos[01]pouca escolha a nao[01]ser aceitar!\""
+    },
+    "AREAD142.DAT:7:12": {
+      "speaker": "npc",
+      "tone_register": "emotional-resigned",
+      "intent": "lament interrupted plan",
+      "risk_level": "medium",
+      "risk_notes": "Sister reference (Elina plot); emotional register; short budget (63 bytes) requires concision",
+      "t": "[0C][03][14][04][03]\"Mas...Minha irma...[01]A gente ia...\""
+    },
+    "AREAD142.DAT:7:13": {
+      "speaker": "npc",
+      "tone_register": "formal-commanding",
+      "intent": "silence subordinate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Silência![02]Isso nao é mais[01]assunto seu![02]\""
+    },
+    "AREAD142.DAT:7:15": {
+      "speaker": "npc",
+      "tone_register": "emotional-resigned",
+      "intent": "acknowledge dismissal with sorrow",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][03][14][04][03]\"Oh, [04][02]...\""
+    },
+    "AREAD142.DAT:7:16": {
+      "speaker": "npc",
+      "tone_register": "angry-accusatory",
+      "intent": "blame for lack of supervision",
+      "risk_level": "high",
+      "risk_notes": "Fake sword creation suggests Ryu/party circumvented authority; weapon fabrication is plot point; tone conveys frustration and negligence accusation; budget 174 bytes",
+      "t": "[0C][03][14][05][04]\"[04][03]! Nao consegue[01]ficar de olho[01]neles!?[02]Deixou sairem e[01]fazer uma espada falsa[01]assim...[02]O que voce estava[01]pensando!?\""
+    },
+    "AREAD142.DAT:7:17": {
+      "speaker": "npc",
+      "tone_register": "nervous-stuttering",
+      "intent": "begin excuse/justification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C3]@\"Voce pediu p...p...\""
+    },
+    "AREAD142.DAT:7:18": {
+      "speaker": "npc",
+      "tone_register": "defensive-flustered",
+      "intent": "clarify misunderstood orders",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C3]@\"Para vigia-los...[02]Voce nao falou[01]nada sobre[01]p-parar eles.\""
+    },
+    "AREAD142.DAT:7:19": {
+      "speaker": "npc",
+      "tone_register": "commanding-stern",
+      "intent": "issue corrective orders",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][03][14][05][04]\"Grrr....[02]Proxima vez que[01]tentarem fazer algo,[02]me avise[01]imediatamente![01]Entendeu?\""
+    },
+    "AREAD142.DAT:7:20": {
+      "speaker": "npc",
+      "tone_register": "formal-bureaucratic",
+      "intent": "enforce access restriction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][03][02]\"O prisioneiro está[01]sob investigacao.[02]Nenhum visitante[01]permitido!\""
+    },
+    "AREAD142.DAT:7:21": {
+      "speaker": "npc",
+      "tone_register": "formal-sympathetic",
+      "intent": "deliver regrettable but firm refusal",
+      "risk_level": "medium",
+      "risk_notes": "Fou-Lu (imprisoned chief) is treated with respect despite captivity; formal apology (Perdoai) reinforces hierarchical courtesy; budget 83 bytes",
+      "t": "[0C][03][14][85]D\"Receio que seja preciso[01]assim, Princesa [04][01].\""
+    },
+    "AREAD142.DAT:7:22": {
+      "speaker": "npc",
+      "tone_register": "formal-respectful",
+      "intent": "explain special security for leader",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu identified as leader of Woren; Fou-Lu identity/status plot-critical; formal honorific register; contrast with regular prisoner treatment",
+      "t": "[0C][03][14][85]D\"O Mestre [04][02][01]é o líder da nação[01]Woren...[02]Ao contrario de voce,[01]ele deve ser mantido[01]sob guarda rigorosa.\""
+    },
+    "AREAD142.DAT:7:23": {
+      "speaker": "npc",
+      "tone_register": "formal-apologetic",
+      "intent": "escort away with courtesy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][85]D\"Desculpe, mas[01]preciso pedir que[01]saia.[02][04][03], vigie[01]eles!\""
+    },
+    "AREAD142.DAT:7:24": {
+      "speaker": "npc",
+      "tone_register": "formal-bureaucratic",
+      "intent": "prohibit passage, then provide timeline",
+      "risk_level": "high",
+      "risk_notes": "Two speaker blocks merged (format [14][FF][FF] separator); Fou-Lu inquiry details; dismissal tone shifts to patient information; budget 237 bytes; transliteration critical for city reference",
+      "t": "[14][03][02]\"Desculpe, nao posso[01]permitir passagem.\"[02][14][FF][FF][14][86]E\"O inquérito sobre as[01]acoes do Chefe[02][04][02] pode levar[01]varios dias.[02]Voce deveria[01]esperar em seu[01]aposento na cidade.\""
+    },
+    "AREAD142.DAT:7:25": {
+      "speaker": "npc",
+      "tone_register": "formal-informative",
+      "intent": "provide timeline for inquiry conclusion",
+      "risk_level": "medium",
+      "risk_notes": "Continuation of 7:24 (second speaker block); Fou-Lu investigation timeline; informative but patient tone; budget 166 bytes",
+      "t": "[14][86]E\"O inquérito sobre as[01]acoes do Chefe[02][04][02] pode levar[01]varios dias.[02]Voce deveria[01]esperar em seu[01]aposento na cidade.\""
+    },
+    "AREAD142.DAT:7:26": {
+      "speaker": "npc",
+      "tone_register": "conversational-concerned",
+      "intent": "express bewilderment at Ryu's passivity",
+      "risk_level": "high",
+      "risk_notes": "References Ryu's fiancée (Elina) kidnapping; Ryu expected to react emotionally but doesn't (contrasts his character); 'fiancée' preserves romantic/political bond; observer gossip tone; budget 206 bytes",
+      "t": "[14][03][02]\"Nao consigo entender[01]o que eles pensam![02]Quer dizer, afinal,[01]a noiva do principe[01]está desaparecida, né?[02]Como ele consegue[01]ficar ai assim?\""
+    },
+    "AREAD142.DAT:7:27": {
+      "speaker": "npc",
+      "tone_register": "casual-sympathetic",
+      "intent": "invite empathy for Ryu's situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][86]E\"Da uma pena do [04][02], nao é?\""
+    },
+    "AREAD142.DAT:7:28": {
+      "speaker": "npc",
+      "tone_register": "formal-resolute",
+      "intent": "maintain blockade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Desculpe, nao posso[01]deixar voce passar.\""
+    },
+    "AREAD142.DAT:7:29": {
+      "speaker": "Ryu",
+      "tone_register": "calm-observant",
+      "intent": "note guard vigilance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][C1]@\"Ele com certeza está[01]nos vigiando, nao é?\""
+    },
+    "AREAD142.DAT:7:30": {
+      "speaker": "npc",
+      "tone_register": "resigned-doubtful",
+      "intent": "suggest futility of persuasion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]C\"Acho que nao[01]adiantaria muito[02]conversar com[01]ele, acho?\""
+    },
+    "AREAD142.DAT:7:31": {
+      "speaker": "npc",
+      "tone_register": "sleepy-groggy",
+      "intent": "portrayal of deep sleep with yawn",
+      "risk_level": "low",
+      "risk_notes": "Onomatopoeia; zzz/fuwaaahhh localized to pt-BR sleep sounds",
+      "t": "[14][86]E\"Nnnnn....zzzz...[0B][01]huaaaahhh...\""
+    },
+    "AREAD142.DAT:7:32": {
+      "speaker": "system",
+      "tone_register": "instructional-urgent",
+      "intent": "battle tutorial directive",
+      "risk_level": "high",
+      "risk_notes": "Tutorial/UI text; action-oriented; token [05] marks color/emphasis code; combo attack mechanic explanation; turn limit critical to gameplay; budget 178 bytes tight for tutorial",
+      "t": "[0C] Derrote os [05][02]Guardas[06]![02]Voce tem apenas [05][02]1 turno[06] antes[01]dos guardas pedirem[01]reforço![02]Use ataques combo[01]para derrota-los[01]rapido!"
+    },
+    "AREAD142.DAT:7:33": {
+      "speaker": "npc",
+      "tone_register": "pained-groggy",
+      "intent": "expression of pain/daze upon waking",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][07][02]\"Uhhh...Ai...\""
+    },
+    "AREAD142.DAT:7:34": {
+      "speaker": "npc",
+      "tone_register": "alarmed-urgent",
+      "intent": "alarm call to fellow guards",
+      "risk_level": "low",
+      "risk_notes": "Localized exclamation; emphasis codes [0D][0F][02] and [0E] preserved exactly",
+      "t": "[14][07][02]\"[0D][0F][02]Uh[0E] oh![02]Intrusos!\""
+    },
+    "AREAD142.DAT:7:35": {
+      "speaker": "npc",
+      "tone_register": "confused-drowsy",
+      "intent": "expression of grogginess",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"uhhh...\""
+    },
+    "AREAD142.DAT:7:36": {
+      "speaker": "npc",
+      "tone_register": "panicked-desperate",
+      "intent": "shout for help",
+      "risk_level": "low",
+      "risk_notes": "Emphasis codes [0D][0F][02] and [0E] preserved; panic escalation",
+      "t": "[14][03][02]\"[0D][0F][02]O[0E]-oh não![02]Ajuda!\""
+    },
+    "AREAD142.DAT:7:37": {
+      "speaker": "npc",
+      "tone_register": "sleepy-fading",
+      "intent": "continuation of sleep/fainting",
+      "risk_level": "low",
+      "risk_notes": "Emphasis code [0D][0F][08] and [0E] preserved; zzz localized",
+      "t": "[14][03][02]\"[0D][0F][08]Zzzzzz[0E]...\""
+    },
+    "AREAD142.DAT:7:38": {
+      "speaker": "npc",
+      "tone_register": "terrified-urgent",
+      "intent": "desperate call for aid",
+      "risk_level": "low",
+      "risk_notes": "Emphasis codes preserved; escalated terror vs 7:34",
+      "t": "[14][03][02]\"[0D][0F][02]A[0E]-ajuda![02]Alguém! Socorro!\""
+    },
+    "AREAD142.DAT:7:39": {
+      "speaker": "npc",
+      "tone_register": "sleeping-peaceful",
+      "intent": "continuation of sleep state",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Zzz...zzz...[0B]zzz...\""
+    },
+    "AREAD142.DAT:7:40": {
+      "speaker": "Ryu",
+      "tone_register": "calm-direct",
+      "intent": "challenge guard's duty",
+      "risk_level": "medium",
+      "risk_notes": "Ryu's simple, direct speech pattern established; tests whether NPC will act; Ryu characterization (actionable, straightforward) preserved; budget 63 bytes",
+      "t": "[14][C1]@\"Nao vai tentar nos[01]parar, [04][03]?\""
+    },
+    "AREAD142.DAT:7:42": {
+      "speaker": "Ryu",
+      "tone_register": "grateful-simple",
+      "intent": "thank guard for letting them pass",
+      "risk_level": "medium",
+      "risk_notes": "Format code [14][FF][FF] separates two speaker blocks; Ryu expresses gratitude with humility; 'good guys' reflects simple moral understanding; budget 100 bytes; transliteration of [04][03]",
+      "t": "[14][C1]@\"...[0B]...[0B][02][14][FF][FF][14][88]CObrigado, [04][03].[01]Acho que voce é um[01]dos bons.\""
+    },
+    "AREAD142.DAT:7:43": {
+      "speaker": "npc",
+      "tone_register": "concerned-analytical",
+      "intent": "express worry about factional conflict",
+      "risk_level": "high",
+      "risk_notes": "Alliance quarreling = civil conflict risk; political analysis register; risk of war escalation; glossary terms (Alliance) must be exact; budget 160 bytes",
+      "t": "[14][03][02]\"Parece que alguns[01]membros da Aliança[01]estão brigando...[02]Se uma guerra[01]comeca agora,[01]podemos estar em[01]apuros.\""
+    },
+    "AREAD142.DAT:7:44": {
+      "speaker": "npc",
+      "tone_register": "sympathetic-resolute",
+      "intent": "apologize while enforcing restriction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][86]E\"Muita coisa[01]acontecendo agora...[02]Receio nao poder[01]deixar voce passar.\""
+    },
+    "AREAD142.DAT:7:45": {
+      "speaker": "npc",
+      "tone_register": "formal-emphatic",
+      "intent": "declare castle access prohibition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02][14][86]E\"Entrada no[01]castelo é[01]proibida!\""
+    }
+  }
+}

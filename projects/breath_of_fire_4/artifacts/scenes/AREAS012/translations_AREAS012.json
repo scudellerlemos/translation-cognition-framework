@@ -1,0 +1,444 @@
+{
+  "lines": {
+    "AREAS012.DAT:8:0": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você foi expulso..."
+    },
+    "AREAS012.DAT:8:1": {
+      "speaker": "system",
+      "tone_register": "neutral",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você foi expulso..."
+    },
+    "AREAS012.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "colloquial_foreign",
+      "intent": "alarm",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Temi, não![01]Topu, pomi!!\""
+    },
+    "AREAS012.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "colloquial_foreign",
+      "intent": "warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Koh, purechi.[01]Temi, não!\""
+    },
+    "AREAS012.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][01][01]\"Qual é esse barulho?[01]Poko, é você?\""
+    },
+    "AREAS012.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "welcome",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][01][01]\"Que surpresa![01]Visitantes! Entrem,[02]entrem, por favor!\""
+    },
+    "AREAS012.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "casual_inquisitive",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Entendi... Vocês querem[01]chegar ao continente,[01]e isso?\""
+    },
+    "AREAS012.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "nostalgic",
+      "intent": "share_background",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][81]A\"Agora estou mais[01]calmo, mas antigamente[02]era bem aventureiro.[02]Vim do continente[01]para cá alguns[01]anos atrás.\""
+    },
+    "AREAS012.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "warm",
+      "intent": "share_background",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][81]A\"Depois conheci[01]minha esposa,[02]e acabei ficando[01]por aqui.\""
+    },
+    "AREAS012.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "warm_apologetic",
+      "intent": "introduce",
+      "risk_level": "medium",
+      "risk_notes": "Múltiplos nomes próprios a preservar; quebra [02] em posição crítica para paginação",
+      "t": "[0C][06][14][81]A\"Desculpem—não me[01]apresentei direito![01]Que falta de educação![02]Sou o Beyd, e esses[01]aqui são Sen, Shami,[01]Rinpo, Poske e Peso.[02]Queriam ver vocês—[02]não recebemos muitos[01]visitantes por aqui,[01]sabem...\""
+    },
+    "AREAS012.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "affectionate",
+      "intent": "introduce",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][81]A\"E esta é Poko,[01]minha esposa.[02]Bonita, né?\""
+    },
+    "AREAS012.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "colloquial_foreign",
+      "intent": "comment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Pokko, pyuui![02]Ni, waama poto[01]pyuui!\""
+    },
+    "AREAS012.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "translate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][81]A\"Ela diz que sua[01]esposa também[01]é muito bela.\""
+    },
+    "AREAS012.DAT:8:13": {
+      "speaker": "Nina",
+      "tone_register": "formal_direct",
+      "intent": "question",
+      "risk_level": "high",
+      "risk_notes": "Nina (criticality high): manter tom formal-firme de liderança. [02] em posição crítica",
+      "t": "[0C][05][14][02][02]\"Bem... De qualquer forma,[02]como chegamos ao[01]continente daqui?\""
+    },
+    "AREAS012.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "casual_apologetic",
+      "intent": "acknowledge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][81]A\"Ah, é verdade![01]Desculpe!\""
+    },
+    "AREAS012.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "casual_informative",
+      "intent": "explain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][81]A\"Bem, quem disse que[01]dá para ir daqui[02]atravessando os pântanos[01]estava certo—dá sim.\""
+    },
+    "AREAS012.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "cautionary",
+      "intent": "explain",
+      "risk_level": "medium",
+      "risk_notes": "Informação crítica sobre mecânica de jogo (maré); manter clareza",
+      "t": "[14][81]A\"Porém, só dá quando[01]a maré muda e[02]expõe a passagem nos[01]pântanos.[02]Tem que ser no[01]tempo certo, antes que[01]a estrada desapareça.\""
+    },
+    "AREAS012.DAT:8:17": {
+      "speaker": "unknown",
+      "tone_register": "direct",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"E quando é isso?\""
+    },
+    "AREAS012.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "colloquial_foreign",
+      "intent": "respond",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Purechi, suru ko![02]Taan, kalu.[01]Pokko kairu ni.\""
+    },
+    "AREAS012.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "translate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Ela diz que vocês devem[01]ficar aqui um tempo.[02]Ela avisa quando[01]chegar a hora e[01]leva vocês.\""
+    },
+    "AREAS012.DAT:8:20": {
+      "speaker": "system",
+      "tone_register": "informative",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Os Pabpab parecem saber[01]quando dá para atravessar[02]os pântanos. Não sei[01]como, mas sabem.[02]Não se preocupem—quando[01]chegar a hora,[01]eles levam vocês.\""
+    },
+    "AREAS012.DAT:8:28": {
+      "speaker": "system",
+      "tone_register": "descriptive",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que são anotações do Beyd sobre a língua[01]Pabpab.[12]"
+    },
+    "AREAS012.DAT:8:29": {
+      "speaker": "system",
+      "tone_register": "reference",
+      "intent": "educate",
+      "risk_level": "medium",
+      "risk_notes": "Glossário de língua Pabpab; [02] e [05][02]...[06] tokens críticos para formatação",
+      "t": "[05][02]ain[06] -- durante, período[01][05][02]ishi[06] -- leste[01][05][02]kairu[06] -- guia, ensinar[02][05][02]ko[06] -- aqui, isto[01][05][02]michu[06] -- segredo[01][05][02]nah[06] -- peixe[02][05][02]ni[06] -- você, aquilo[01][05][02]no[06] -- errado, mau"
+    },
+    "AREAS012.DAT:8:30": {
+      "speaker": "system",
+      "tone_register": "reference",
+      "intent": "educate",
+      "risk_level": "medium",
+      "risk_notes": "Glossário continuação; preservar [02] e formatação de tokens",
+      "t": "[05][02]nosta[06] -- norte[01][05][02]pabpab[06] -- nós[01][05][02]paketo[06] -- mas, ainda[02][05][02]poto[06] -- mais, incrível[01][05][02]purechi[06] -- amigo[02][05][02]pukapuka[06] -- devagar, tranquilo[01](também significa[01]\"O que há de vir, virá\")[02][05][02]rikuku[06] -- remédio[01][05][02]roi[06] -- rocha, pedra"
+    },
+    "AREAS012.DAT:8:31": {
+      "speaker": "system",
+      "tone_register": "reference",
+      "intent": "educate",
+      "risk_level": "medium",
+      "risk_notes": "Glossário conclusão; preservar [02] e formatação exata",
+      "t": "[05][02]sanami[06] -- sul[01][05][02]santo[06] -- obrigado[01][05][02]sonna[06] -- desculpe[02][05][02]taan[06] -- hora[01][05][02]tatoru[06] -- dançar[01][05][02]temi[06] -- inimigo, má pessoa[02][05][02]treja[06] -- tesouro[01][05][02]ueshi[06] -- oeste"
+    },
+    "AREAS012.DAT:8:32": {
+      "speaker": "unknown",
+      "tone_register": "alarmed",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Quê!? Alguém está[01]doente?\""
+    },
+    "AREAS012.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "casual_concerned",
+      "intent": "report",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]G\"Sim, naquele quarto[01]ali.[02]Um dos Pabpabs[01]estava caído[01]gemendo.\""
+    },
+    "AREAS012.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "serious_apologetic",
+      "intent": "confess",
+      "risk_level": "medium",
+      "risk_notes": "Informação importante para quest; manter tom sincero de quem tentou ajudar",
+      "t": "[14][01][01]\"A verdade é...[02]Nenhuma erva daqui[01]consegue curar essa[02]doença.[02]Tentei tudo,[01]mas...\""
+    },
+    "AREAS012.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "alarmed",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]G\"Então... O que vai[01]acontecer com ele!?\""
+    },
+    "AREAS012.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "philosophical",
+      "intent": "share_wisdom",
+      "risk_level": "high",
+      "risk_notes": "Filosofia Pabpab (pukapuka) é central; preservar [02] e [05][02]...[06]; evitar spoiler de morte",
+      "t": "[14][01][01]\"Além disso, os Pabpab[01]falam '[05][02]pukapuka[06]'...[02]'[05][02]O que há de vir,[01]virá[06]'...[02]É o jeito deles...[02]Morrer não parece[01]incomodá-los muito.\""
+    },
+    "AREAS012.DAT:8:37": {
+      "speaker": "Nina",
+      "tone_register": "resolute_commanding",
+      "intent": "refuse_acceptance",
+      "risk_level": "high",
+      "risk_notes": "Nina: tom firme de liderança e determinação; recusa aceitar morte sem lutar. Manter força",
+      "t": "[14][C1]@\"Bem, me incomoda![01]Não podemos deixar[01]ele morrer![02]Vamos buscar as[01]ervas que você precisa![02]Onde a gente acha\""
+    },
+    "AREAS012.DAT:8:38": {
+      "speaker": "Ryu",
+      "tone_register": "direct_simple",
+      "intent": "agree_action",
+      "risk_level": "high",
+      "risk_notes": "Ryu: registro simples, direto, honesto. Ação não palavras. Contraste com Fou-Lu obrigatório",
+      "t": "[0C][06][14][C2]@\"Não dá ficar aqui[01]esperando, sem fazer[01]nada.[02]Deixa a gente ajudar[01]a devolver sua[01]hospitalidade.\""
+    },
+    "AREAS012.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "casual_guiding",
+      "intent": "direct",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Tudo bem então...[02]Primeiro, vocês[01]precisam ir a [05][02]Lyp[06].\""
+    },
+    "AREAS012.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "informative",
+      "intent": "explain",
+      "risk_level": "medium",
+      "risk_notes": "Dica de quest importante; manter clareza sobre localização de ervas",
+      "t": "[14][01][01]\"A erva que precisamos[01]está em algum lugar[02]no oceano.[02]Alguém em Lyp[01]deve saber onde[02]encontrá-la.\""
+    },
+    "AREAS012.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "grateful",
+      "intent": "thank",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Vocês devem achar algo[02]sobre as ervas em[01]Lyp.[02]Obrigado pela ajuda.\""
+    },
+    "AREAS012.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "grateful_warm",
+      "intent": "welcome_return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][81]A\"Acharam as ervas?[01]Muito obrigado![02]Venham—vamos dar[01]a ele e ver o que[01]acontece.\""
+    },
+    "AREAS012.DAT:8:44": {
+      "speaker": "system",
+      "tone_register": "narrative",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[03] deu a erva lunar[01]ao Pabpab..."
+    },
+    "AREAS012.DAT:8:46": {
+      "speaker": "system",
+      "tone_register": "questioning",
+      "intent": "express_doubt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está funcionando...?"
+    },
+    "AREAS012.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "grateful_humble",
+      "intent": "thank",
+      "risk_level": "medium",
+      "risk_notes": "[02] em posição crítica; pukapuka filosofia; preservar tom esperançoso",
+      "t": "[0C][02][14][01][01]\"Bem...[0B]Obrigado.[02]Não sei se vai dar,[01]mas pukapuka...[02]Teremos que esperar,[01]né?\""
+    },
+    "AREAS012.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "practical_kind",
+      "intent": "dismiss_kindly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][01][01]\"É tarde. Vocês[01]precisam descansar.[02]Vemos como ele está[01]amanhã de manhã.\""
+    },
+    "AREAS012.DAT:8:49": {
+      "speaker": "Nina",
+      "tone_register": "pleased_satisfied",
+      "intent": "celebrate",
+      "risk_level": "high",
+      "risk_notes": "Nina: celebração da vitória; manter tom firme de liderança mesmo na alegria",
+      "t": "[0C][06][14][C1]@\"Olha! Parece que[01]as ervas funcionaram!\""
+    },
+    "AREAS012.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "informative_grateful",
+      "intent": "translate_gratitude",
+      "risk_level": "medium",
+      "risk_notes": "Tradução de fala Pabpab; manter tom caloroso e grato",
+      "t": "[14][01][01]\"Ele diz que talvez[01]tivesse melhorado[02]só dançando, mas tem[01]certeza que as ervas[01]ajudaram,[02]então quer muito[01]agradecer vocês.\""
+    },
+    "AREAS012.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "philosophical",
+      "intent": "explain_philosophy",
+      "risk_level": "high",
+      "risk_notes": "Pukapuka é central para filosofia Pabpab e tema narrativo; preservar [02] exato",
+      "t": "[14][01][01]\"Como eu dizia,[01]'pukapuka' é o jeito[01]deles.[02]Significa o que há de[01]vir, virá...[02]Mas também quer dizer[02]que tudo dá um[01]jeito no final.\""
+    },
+    "AREAS012.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "casual_warm",
+      "intent": "express_relief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]G\"Bem, a gente fica[01]feliz que ele melhorou.[02][14][85]GUm...Ele está feliz[01]que melhorou, né?\""
+    },
+    "AREAS012.DAT:8:57": {
+      "speaker": "npc",
+      "tone_register": "grateful",
+      "intent": "thank",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Obrigado—todos vocês—[01]pela ajuda.\""
+    },
+    "AREAS012.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "affectionate_foreign",
+      "intent": "farewell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Purechi! Purechi!\""
+    },
+    "AREAS012.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "informative",
+      "intent": "announce_opportunity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][81]A\"Parece que a maré[01]está abaixando.[02]Vocês conseguem[01]atravessar os pântanos[01]em breve.\""
+    },
+    "AREAS012.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "urgent",
+      "intent": "warn",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][01][01]\"Por favor, vocês devem[01]correr.[02]A passagem nos pântanos[02]só fica exposta[01]pouco tempo!\""
+    },
+    "AREAS012.DAT:8:63": {
+      "speaker": "Nina",
+      "tone_register": "warm_grateful",
+      "intent": "thank",
+      "risk_level": "high",
+      "risk_notes": "Nina: gratidão cordial de liderança; manter tom cálido mas firme",
+      "t": "[0C][06][14][C1]@\"Obrigada por deixar[01]a gente ficar aqui,[01]Sr. Beyd!\""
+    },
+    "AREAS012.DAT:8:64": {
+      "speaker": "Ryu",
+      "tone_register": "simple_brief",
+      "intent": "thank",
+      "risk_level": "high",
+      "risk_notes": "Ryu: gratidão minimalista, poucas palavras, deixa ação falar",
+      "t": "[0C][06][14][C2]@\"Valeu.\""
+    },
+    "AREAS012.DAT:8:65": {
+      "speaker": "Fou-Lu",
+      "tone_register": "archaic_formal_imperial",
+      "intent": "affirm",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu (criticality CRITICAL): voz completamente arcaica/solene/imperial. NUNCA moderno. Contraste obrigatório com Ryu. Pronunciamento formal",
+      "t": "[0C][06][14][C5]@\"[04][05] diz que nos apressaremos.\""
+    },
+    "AREAS012.DAT:8:66": {
+      "speaker": "npc",
+      "tone_register": "reassuring",
+      "intent": "encourage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C4]@\"Não se preocupem—a gente[01]consegue.\""
+    },
+    "AREAS012.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "warm_farewell",
+      "intent": "guide_and_bless",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][01][01]\"Poko vai mostrar o[01]caminho até os pântanos.[02]Boa sorte! Purechi[01]pukapuka!\""
+    },
+    "AREAS012.DAT:8:68": {
+      "speaker": "system",
+      "tone_register": "urgent_reminder",
+      "intent": "pressure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"E aí, ainda tá aqui?[02]Corre se quiser[01]atravessar os pântanos!\""
+    },
+    "AREAS012.DAT:8:69": {
+      "speaker": "npc",
+      "tone_register": "casual_curious",
+      "intent": "greet_question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Opa! De novo![02]Conseguiram atravessar[01]os pântanos?\""
+    }
+  }
+}

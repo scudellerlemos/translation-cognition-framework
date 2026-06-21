@@ -1,0 +1,116 @@
+{
+  "lines": {
+    "AREAD140.DAT:11:5": {
+      "speaker": "unknown",
+      "tone_register": "neutral-inquiry",
+      "intent": "ask_confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer voltar para o mundo externo?"
+    },
+    "AREAD140.DAT:11:6": {
+      "speaker": "unknown",
+      "tone_register": "descriptive",
+      "intent": "explain_observation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que esses pilares sao o que esta mantendo quem quer que seja aqui."
+    },
+    "AREAD140.DAT:11:7": {
+      "speaker": "unknown",
+      "tone_register": "desperate-formal",
+      "intent": "request_help",
+      "risk_level": "medium",
+      "risk_notes": "Identity ambiguity preserved; speaker trapped, role unclear until later reveal. Maintain formal register without resolving who this is.",
+      "t": "[14][01][01]\"Como voce pode ver, estou preso aqui.[02]Eu realmente agradeceria se voce pudesse me tirar daqui.\""
+    },
+    "AREAD140.DAT:11:8": {
+      "speaker": "unknown",
+      "tone_register": "uncertain-cautious",
+      "intent": "ask_identity",
+      "risk_level": "high",
+      "risk_notes": "Gênero/identidade oculta. Evitar concordância de gênero; usar construção neutra. Speaker questioning identity of trapped entity. Critical: nao revelar identidade antes do reveal_timing.",
+      "t": "[14][02][02]\"Um... Voce e [04][05]...?\""
+    },
+    "AREAD140.DAT:11:9": {
+      "speaker": "unknown",
+      "tone_register": "casual-challenging",
+      "intent": "confirm_identity",
+      "risk_level": "high",
+      "risk_notes": "Gênero/identidade oculta do interpelado. Usar construção que nao force concordância de gênero; evitar ele/ela.",
+      "t": "[14][03][03]\"Entao voce e [04][05], hein?\""
+    },
+    "AREAD140.DAT:11:10": {
+      "speaker": "unknown",
+      "tone_register": "indignant-commanding",
+      "intent": "affirm_and_demand",
+      "risk_level": "high",
+      "risk_notes": "Identity confirmed but tone urgent/angry. Gênero ambíguo mantém-se. Exclamação de indignação; preserve tom imperativo. Byte budget 153 tight; concisao importante sem perder força.",
+      "t": "[14][01][01]\"Quem mais voce acha que seria!? Claro que sou! [02]Agora se livre desses pilares e me tire daqui!\""
+    },
+    "AREAD140.DAT:11:11": {
+      "speaker": "unknown",
+      "tone_register": "instructive-urgent",
+      "intent": "explain_condition",
+      "risk_level": "medium",
+      "risk_notes": "Instruction to destroy pillars as condition for escape. Tone remains commanding but pragmatic.",
+      "t": "[14][01][01]\"Se voce quer me tirar daqui, vai[02]ter que destruir esses pilares.\""
+    },
+    "AREAD140.DAT:11:12": {
+      "speaker": "unknown",
+      "tone_register": "relieved-exclamatory",
+      "intent": "express_relief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Finalmente! [02]Pensei que nunca sairia de la!\""
+    },
+    "AREAD140.DAT:11:13": {
+      "speaker": "unknown",
+      "tone_register": "grateful-formal",
+      "intent": "thank_and_warn",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Primeiro, deixa eu agradecer por me[02]ajudar. Mas tem um probleminha ainda...\""
+    },
+    "AREAD140.DAT:11:14": {
+      "speaker": "unknown",
+      "tone_register": "somber-direct",
+      "intent": "reveal_problem",
+      "risk_level": "critical",
+      "risk_notes": "Revelation: speaker has no physical body. Critical identity/lore moment — major spoiler. Preserve flatness of reveal (understated, matter-of-fact) — do NOT emphasize or add emotion.",
+      "t": "[14][01][01]\"Veja bem, eu nao tenho um corpo.\""
+    },
+    "AREAD140.DAT:11:15": {
+      "speaker": "unknown",
+      "tone_register": "matter-of-fact",
+      "intent": "state_consequence",
+      "risk_level": "high",
+      "risk_notes": "Direct consequence of bodylessness. Maintain understated tone; no addition of sympathy or drama.",
+      "t": "[14][01][01]\"O que significa que nao posso sair daqui.\""
+    },
+    "AREAD140.DAT:11:16": {
+      "speaker": "unknown",
+      "tone_register": "requesting-formal",
+      "intent": "ask_favor",
+      "risk_level": "medium",
+      "risk_notes": "Request to find a medium. Word 'medium' translates as 'medium' (lore term, not spoiler). Budget 104: concisao.",
+      "t": "[14][01][01]\"Por isso quero que voce ache um[02]medium que possa me emprestar um corpo, ta bem?\""
+    },
+    "AREAD140.DAT:11:17": {
+      "speaker": "unknown",
+      "tone_register": "optimistic-explanatory",
+      "intent": "encourage_search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][01][01]\"Nao se preocupe -- e aqui que[02]eles invocam deuses e tudo mais! [02]Tem que ter muitos mediums por perto!\""
+    },
+    "AREAD140.DAT:11:18": {
+      "speaker": "unknown",
+      "tone_register": "casual-imperative",
+      "intent": "give_final_instruction",
+      "risk_level": "medium",
+      "risk_notes": "Tone shift to playful/casual at end ('good-looking one') — contrast with earlier solemnity. Preserves character's levity. 'Try' from glossary = 'Tentar' but here it's imperative/encouraging context ('do try').",
+      "t": "[14][01][01]\"Lembra, uma vez que saia daqui,[02]voce precisa achar um medium. [02]Ah, e... tenta achar um[02]que seja bonito, se conseguir, ta?\""
+    }
+  }
+}

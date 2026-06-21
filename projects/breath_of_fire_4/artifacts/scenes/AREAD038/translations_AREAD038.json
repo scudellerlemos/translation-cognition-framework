@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD038.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "desafio/confronto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai la?!\""
+    },
+    "AREAD038.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "desafio/confronto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai la?!\""
+    },
+    "AREAD038.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "desafio/protecao",
+      "risk_level": "medium",
+      "risk_notes": "'sacred resting place' = mausoléu; 'master' = figura arcaica/respeitada; tom de guarda solene",
+      "t": "[14][80]@\"Quem ousa entrar no[01]sagrado repouso[01]de meu senhor?\""
+    },
+    "AREAD038.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "reconhecimento/duvida",
+      "risk_level": "critical",
+      "risk_notes": "'Thou' e 'Endless' = lore crítica + identidade não revelada; guarda reconhece alguém de poder divino; NÃO resolver a ambiguidade (Fou-Lu/Ryu); manter a estranheza arquetípica",
+      "t": "[14][80]@\"Aguarda...Tu tambem[01]és um dos Eternos...?\""
+    },
+    "AREAD038.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "recusa-determinada",
+      "risk_level": "high",
+      "risk_notes": "'nay' = negação arcaica enfática; 'e'en' = contração poética 'even'; 'brother to my master' = não revelar quem é; tom de guarda inabalável—lealdade suprema",
+      "t": "[14][80]@\"Importa nao! Ninguem,[02]nem sequer aquele que[01]seja irmaao de meu[01]senhor,[02]pode ser permitido[01]entrada!\""
+    },
+    "AREAD038.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutro-inquiridor",
+      "intent": "pergunta-acao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer subir?[12]"
+    },
+    "AREAD038.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "neutro-inquiridor",
+      "intent": "pergunta-acao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD038.DAT:8:7": {
+      "speaker": "system",
+      "tone_register": "formal-arcaico",
+      "intent": "instrucao-cifrada",
+      "risk_level": "medium",
+      "risk_notes": "'Ye' e 'wouldst' = arcaísmo de inscrição/lore; 'seek ye first the key' = quebra-cabeça narrativo; manter tom misterioso/solene de tabuleta",
+      "t": "Vos que trilhais o[01]caminho, buscai primeiro[01]a chave"
+    },
+    "AREAD038.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutro-inquiridor",
+      "intent": "pergunta-multipla",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avancar[01]Subir[01]Desistir"
+    },
+    "AREAD038.DAT:8:12": {
+      "speaker": "system",
+      "tone_register": "neutro-inquiridor",
+      "intent": "pergunta-multipla",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avancar[01]Subir[01]Desistir"
+    },
+    "AREAD038.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutro-inquiridor",
+      "intent": "pergunta-acao",
+      "risk_level": "medium",
+      "risk_notes": "'Emperor's Tomb' = Mausoléu do Imperador (glossário 'Tomb'→'Mausoléu'); referência a Fou-Lu—não revelar identidade aqui; UI concisa",
+      "t": "O que voce quer fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Desistir"
+    },
+    "AREAD038.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutro-instrucional",
+      "intent": "tutorial-mecanica",
+      "risk_level": "medium",
+      "risk_notes": "tutorial longo (306 bytes); 'push a cube' / 'switch' = mecânicas UI (glossário: Move→Mover, Standing→Posição); 'three blocks' = puzzle; 'light up' = iluminar; manter clareza sem redundância; transliteração NFD para ascii_only",
+      "t": "[10][02]Ficar em frente a um[01][05][02]botao[06] faz o chao[01]iluminar.[02]Voce pode empurrar um[01]cubo pressionando o ~ botao,[02]e puxa-lo pressionando o[01][7F] botao.[02]Alinhe tres blocos[01]da mesma cor para criar[01]um caminho."
+    },
+    "AREAD038.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "warning, ominous",
+      "intent": "Alertar o jogador sobre o Red Eye",
+      "risk_level": "medium",
+      "risk_notes": "Token [02] deve ser preservado; [05]/[06] sao tokens de formatacao; budget 34 bytes — transliteracao: 'Cuidado com o [05][02]Olho Vermelho[06]...' = ok",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

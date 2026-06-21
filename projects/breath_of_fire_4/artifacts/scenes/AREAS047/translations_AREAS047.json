@@ -1,0 +1,60 @@
+{
+  "lines": {
+    "AREAS047.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "casual, descriptive",
+      "intent": "introduce a guardian figure to the party",
+      "risk_level": "medium",
+      "risk_notes": "[04][03] is a placeholder name; ensure consistent reference to character across scene. Preserving token structure.",
+      "t": "[14][C1]@\"Aliás, este é [04][03]. [02]Ele foi designado para nos [01]vigiar para que nao fujamos.\""
+    },
+    "AREAS047.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "casual, interrogative",
+      "intent": "offer choice of resting or waiting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você quer esperar a noite cair aqui?[12]"
+    },
+    "AREAS047.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "present menu options for player action",
+      "risk_level": "low",
+      "risk_notes": "UI text; menu labels must remain concise and clear.",
+      "t": "Parece que você pode descansar aqui.[12][8B][0C][93]Descansar[01]Diário[01]Deixar para depois"
+    },
+    "AREAS047.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "casual, relieved, accent/dialect",
+      "intent": "express gratitude for finding shelter",
+      "risk_level": "medium",
+      "risk_notes": "Source contains non-standard spelling ('zat', ''ere') indicating accent/dialect. Translated with informal register to match tone; [19] token preserved.",
+      "t": "[14][02][01]\"Fico feliz que tinha um quarto vazio 'qui. [02][19]"
+    },
+    "AREAS047.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "gossipy, conversational",
+      "intent": "share rumor about Woren chief's escape",
+      "risk_level": "high",
+      "risk_notes": "Mentions 'Worens' (manter_original per glossary) and 'castle' (Castelo). Dialogue involves potential spoiler about escape route to Wyndia. Token sequence [14][FF][FF][14][84]C must be preserved exactly. Back-translation required.",
+      "t": "[14][03][02]\"Você ouviu falar de como o chefe [02]dos Worens escapou do Castelo? [02][14][FF][FF][14][84]CDizem que ele conseguiu chegar até Wyndia!\""
+    },
+    "AREAS047.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "scandalized, gossipy",
+      "intent": "express shock at rumor of princess helping Woren chief",
+      "risk_level": "critical",
+      "risk_notes": "Spoiler potential: reveals involvement of 'Wyndian princess' in Woren chief's escape. This is major plot revelation. 'Princess' translates to 'Princesa' (glossary). Identity of princess (Nina?) not yet confirmed in scene context — translating as written without anticipating. Token sequence [14][FF][FF][14][83]B must be preserved exactly. High-value back-translation mandatory.",
+      "t": "[14][04][03]\"Dizem que uma das Princesas [02]de Wyndia ajudou aquele chefe Woren a escapar! [02][14][FF][FF][14][83]BCom você imagina uma coisa assim? Que escândalo!\""
+    },
+    "AREAS047.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "childlike, pleading",
+      "intent": "child expressing hunger",
+      "risk_level": "low",
+      "risk_notes": "Simple exclamation; natural contemporary Portuguese for child speech.",
+      "t": "\"Mamãe... estou com fome!\""
+    }
+  }
+}

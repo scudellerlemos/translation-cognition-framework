@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD078.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "alarmed, authoritative",
+      "intent": "challenge; demand identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai la!?\""
+    },
+    "AREAD078.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "alarmed, authoritative",
+      "intent": "challenge; demand identification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai la!?\""
+    },
+    "AREAD078.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "alarmed, formal, threatening",
+      "intent": "defend sacred space; challenge intruder",
+      "risk_level": "medium",
+      "risk_notes": "archaic register in source ('dares enter'); NPC guardian of sacred tomb — maintain solemn tone without overreach into Fou-Lu's voice",
+      "t": "[14][80]@\"Quem ousa profanar o[01]repouso sagrado[01]de meu senhor?\""
+    },
+    "AREAD078.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "shocked, formal, archaic",
+      "intent": "recognition; surprise at discovering visitor is Endless",
+      "risk_level": "high",
+      "risk_notes": "archaic 'Thou' in source signals old-register NPC; 'Endless' is lore term (glossary: 'Eternos'); recognition moment is character-defining — preserve shock and formal register; risk of conflating with Fou-Lu's voice",
+      "t": "[14][80]@\"Espera...Tu tambem[01]es um dos Eternos...?\""
+    },
+    "AREAD078.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "resolute, formal, archaic",
+      "intent": "refusal to grant passage; defiance despite new knowledge",
+      "risk_level": "high",
+      "risk_notes": "archaic negatives ('nay e'en'); complex subordination; NPC's loyalty absolute — tone must stay firm and old-register, NOT shift to modern concession; preserve 'brother to my master' lore reference without spoiling Ryu/Fou-Lu identity",
+      "t": "[14][80]@\"Nao importa! Ninguem,[02]nem sequer se fosse[01]irmaio de meu[01]senhor,[02]pode ser[01]permitido entrar!\""
+    },
+    "AREAD078.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutral, formal",
+      "intent": "UI menu prompt; player choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer subir?[12]"
+    },
+    "AREAD078.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "neutral, formal",
+      "intent": "UI menu prompt; binary choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD078.DAT:8:7": {
+      "speaker": "system",
+      "tone_register": "archaic, solemn, riddling",
+      "intent": "inscription; riddle or warning on monument",
+      "risk_level": "medium",
+      "risk_notes": "archaic 'wouldst' and 'seek ye' — system text (inscription) must preserve formal/archaic register; 'key' is lore/puzzle hint; translation preserves mystery without spoiler",
+      "t": "Aquele que trilharia[01]a vereda, primeiro[01]busque a chave"
+    },
+    "AREAD078.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutral, formal",
+      "intent": "UI menu prompt; navigation choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde voce quer ir?[12][02][0C][93]Avancar[01]Subir[01]Nunca"
+    },
+    "AREAD078.DAT:8:12": {
+      "speaker": "system",
+      "tone_register": "neutral, formal",
+      "intent": "UI menu prompt; navigation choice",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde voce quer ir?[12][02][0C][93]Avancar[01]Subir[01]Nunca"
+    },
+    "AREAD078.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutral, formal",
+      "intent": "UI menu prompt; action choice",
+      "risk_level": "medium",
+      "risk_notes": "glossary: 'Tomb' → 'Mausoléu'; 'Emperor's Tomb' is lore location reference (Fou-Lu's resting place) — must use exact glossary form; early mention, potential spoiler if player hasn't learned about Emperor yet; tone: UI formal, no flavor",
+      "t": "O que voce quer fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Nunca"
+    },
+    "AREAD078.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "tutorial explanation; game mechanic description",
+      "risk_level": "high",
+      "risk_notes": "long technical text (306 bytes); glossary terms: 'Standing' → 'Posição', 'Move' → 'Mover'; clarity critical for player comprehension; button references ([7F], ~) must be preserved verbatim; 'three blocks of the same color' is puzzle mechanic — must be clear and concise; byte budget is tight (~1.7x source length in pt-BR); heavy truncation/simplification needed without losing essential meaning; back-translation required",
+      "t": "[10][02]Ficar em frente de um[01][05][02]botao[06] acende o chao.[02]Pressione ~ para mover um[01]cubo para frente, e [7F][02]para mover para tras.[02]Alinhe tres blocos[01]da mesma cor para[01]criar um caminho."
+    },
+    "AREAD078.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "ominous, archaic",
+      "intent": "warning; lore/creature reference (Red Eye enemy)",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'Red Eye' — proper name, capitalized, likely enemy/creature (not translated per lore convention); archaic/poetic tone ('Beware') signals danger warning; short byte budget (34) leaves ~25 bytes — tight fit; 'the [05][02]Red Eye[06]' has formatting tokens that consume space; tone must be ominous/warning, not casual",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

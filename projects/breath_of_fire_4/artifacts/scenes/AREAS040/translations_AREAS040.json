@@ -1,0 +1,52 @@
+{
+  "lines": {
+    "AREAS040.DAT:8:5": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "agradecimento formal com reconhecimento de divida",
+      "risk_level": "high",
+      "risk_notes": "Voz Fou-Lu crítica: manter registro imperial/arcaico ('estou em vossa dívida'), não modernizar. Identidade de Fou-Lu vs Ryu deve estar clara pela solenidade extrema.",
+      "t": "[0C][04][14][01][01]\"Entao... estou em vossa divida... Bunyan, sim?\""
+    },
+    "AREAS040.DAT:8:13": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, ritual de despedida",
+      "intent": "agradecimento cerimonioso + anúncio de partida iminente",
+      "risk_level": "high",
+      "risk_notes": "Crítico: 'quit' = 'deixar/abandonar este lugar' (mecânica + narrativa). Manter tom de cerimônia fúnebre/despedida imperial. 'ministrations' = cuidados/atos de devoção (manter peso solene). Risco de soar moderno se usar 'obrigado simples'.",
+      "t": "[0C][06][14][C6]@\"Agradeco vossos devotos cuidados, Bunyan. [02]Chegou a hora de eu deixar este lugar.\""
+    },
+    "AREAS040.DAT:8:17": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, interrogativo delicado",
+      "intent": "questão respeitosa sobre passado do NPC",
+      "risk_level": "medium",
+      "risk_notes": "'Thou wert' = 2ª pessoa arcaica (tu eras/foste). Manter inversão solene. Risco: soar afetado se forçar muito; equilibrar com naturalidade pt-BR arcaica.",
+      "t": "[0C][06][14][C6]@\"Tu... eras um soldado?\""
+    },
+    "AREAS040.DAT:8:20": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, contemplativos, melancólico",
+      "intent": "reflexão/lamento sobre incompreensão mortal",
+      "risk_level": "high",
+      "risk_notes": "Identidade revelada implícita: 'os mortais' = Fou-Lu fala como ser não-mortal (spoiler estrutural). Manter distância/alienação. Não resolver ambiguidade. Risco crítico de antecipar natureza sobrenatural.",
+      "t": "[0C][06][14][81]A\"Os mortais... [02]Nao compreendem...\""
+    },
+    "AREAS040.DAT:8:21": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, desculpas formais, despedida trágica",
+      "intent": "pedido de perdão + encerramento ritual",
+      "risk_level": "medium",
+      "risk_notes": "'mine thoughts' = pensamentos meus (arcaico possessivo). Farewell = encerramento final. Tom: tristeza resignada, não dramaticidade. Manter solenidade.",
+      "t": "[0C][06][14][C6]@\"Perdoai-me... Apenas pronunciei meus pensamentos en voz alta. [02]Adeus.\""
+    },
+    "AREAS040.DAT:8:23": {
+      "speaker": "system",
+      "tone_register": "neutra, UI/mecânica de jogo",
+      "intent": "prompt de ação ao jogador (menu de repouso)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que voce poderia descansar aqui... [12][8B][0C][93]Descansar Diario Nunca"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD039.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "challenge/warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai lá!?\""
+    },
+    "AREAD039.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "challenge/warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai lá!?\""
+    },
+    "AREAD039.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "interrogative-menacing",
+      "risk_level": "medium",
+      "risk_notes": "token [01] preservado; 'resting place' = 'repouso' (foco no sagrado); 'sacred' = 'sagrado' em registro arcaico",
+      "t": "[14][80]@\"Quem ousa entrar no[01]sagrado repouso[01]de meu senhor?\""
+    },
+    "AREAD039.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "recognition-shock",
+      "risk_level": "high",
+      "risk_notes": "'Thou also are one of The Endless' = identidade de Fou-Lu/Ryu como Eternos; nao resolver ambiguidade; 'Thou' = vós/tu arcaico; preservar distancia",
+      "t": "[14][80]@\"Espera... Tu tambem[01]és um dos Eternos...?\""
+    },
+    "AREAD039.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "defiant-absolute",
+      "risk_level": "high",
+      "risk_notes": "'nay e'en' = 'nem mesmo'; 'brother to my master' preserva ambiguidade (Ryu=Fou-Lu?); tokens [02] x2 obrigatorios; 'allowed entrance' = permissao de entrada",
+      "t": "[14][80]@\"Importa nao! Ninguem,[02]nem mesmo se fosse irm[aum] de[01]meu senhor,[02]pode ter[01]entrada!\""
+    },
+    "AREAD039.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-confirm",
+      "risk_level": "low",
+      "risk_notes": "UI; byte_budget 31; construcao neutra; [12] preservado",
+      "t": "Deseja subir?[12]"
+    },
+    "AREAD039.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-confirm",
+      "risk_level": "low",
+      "risk_notes": "UI; [12][01][0C] e opcoes preservadas; 'Yes/No' em menu",
+      "t": "Deseja descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD039.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "formal-arcaico",
+      "intent": "riddle-instruction",
+      "risk_level": "low",
+      "risk_notes": "'wouldst walk' = subjonti; 'seek ye first the key' = buscar chave; tom oracular/solene",
+      "t": "Vos que andareis neste[01]caminho, buscai primeiro a[01]chave"
+    },
+    "AREAD039.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-navigation",
+      "risk_level": "low",
+      "risk_notes": "UI; tokens [12][02][0C] preservados; 'Move ahead' (Glossario: Move=Mover); byte_budget 78",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avancar[01]Subir[01]Cancelar"
+    },
+    "AREAD039.DAT:8:12": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-navigation",
+      "risk_level": "low",
+      "risk_notes": "ID duplicada (8:11 e 8:12); mesmo conteudo; preservar consistencia de UI",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avancar[01]Subir[01]Cancelar"
+    },
+    "AREAD039.DAT:8:13": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-action",
+      "risk_level": "medium",
+      "risk_notes": "Glossario: 'Emperor's Tomb' = 'Mausoléu do Imperador' (ou 'Tumulo' se mais conciso); Fou-Lu é imperador ressurgido → spoiler potencial se muito esplicito; aqui apenas UI, risco medio",
+      "t": "O que deseja fazer?[12][03][0C][92]Ir para Mausoléu do Imperador[01]Cancelar"
+    },
+    "AREAD039.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutral-instructional",
+      "intent": "tutorial-mechanic",
+      "risk_level": "medium",
+      "risk_notes": "Tokens [10][02] x3, [05][02] x2, [06] x2 obrigatorios; instrucao de mecanica (blocos, cores, botoes); 'switch' = 'chave' ou 'alavanca'; linha longa (306 bytes) = concisao critica; 'three blocks same color' = alinhar 3 blocos mesma cor; '~ button' e '[7F] button' = botoes especificos do controle, preservar notacao",
+      "t": "[10][02]Ficar na frente de uma[01][05][02]alavanca[06] acende o chao.[02]Pressione o botao ~ para[01]empurrar cubo para frente[02]e [7F] para tras.[02]Alinhe 3 blocos da mesma cor[01]para criar um caminho."
+    },
+    "AREAD039.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "formal-warning",
+      "intent": "warning-lore",
+      "risk_level": "high",
+      "risk_notes": "'Red Eye' = nome proprio (Glossario: se nao incluido, manter EN); '[05][02]' e '[06]' tokens obrigatorios; 'Beware' = aviso solene; pode referenciar inimigo/mecanica spoiler",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

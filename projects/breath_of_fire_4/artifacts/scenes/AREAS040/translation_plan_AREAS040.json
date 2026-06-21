@@ -1,0 +1,89 @@
+{
+  "scene": "AREAS040",
+  "scene_group": "AREAS040",
+  "lines": [
+    {
+      "offset": "AREAS040.DAT:8:5",
+      "text_source": "[0C][04][14][01][01]\"Then w...I am in[01]your debt...Bunyan,[01]yes?\"",
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "agradecimento formal com reconhecimento de divida",
+      "risk_level": "high",
+      "base_translation": "[0C][04][14][01][01]\"Entao... estou em vossa divida... Bunyan, sim?\"",
+      "byte_budget": 68,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz Fou-Lu crítica: manter registro imperial/arcaico ('estou em vossa dívida'), não modernizar. Identidade de Fou-Lu vs Ryu deve estar clara pela solenidade extrema."
+    },
+    {
+      "offset": "AREAS040.DAT:8:13",
+      "text_source": "[0C][06][14][C6]@\"Thank you for your[01]caring ministrations,[01]Bunyan.[02]The time has come[01]for me to quit this[01]place.\"",
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, ritual de despedida",
+      "intent": "agradecimento cerimonioso + anúncio de partida iminente",
+      "risk_level": "high",
+      "base_translation": "[0C][06][14][C6]@\"Agradeco vossos devotos cuidados, Bunyan. [02]Chegou a hora de eu deixar este lugar.\"",
+      "byte_budget": 141,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Crítico: 'quit' = 'deixar/abandonar este lugar' (mecânica + narrativa). Manter tom de cerimônia fúnebre/despedida imperial. 'ministrations' = cuidados/atos de devoção (manter peso solene). Risco de soar moderno se usar 'obrigado simples'."
+    },
+    {
+      "offset": "AREAS040.DAT:8:17",
+      "text_source": "[0C][06][14][C6]@\"Thou...wert a[01]soldier?\"",
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, interrogativo delicado",
+      "intent": "questão respeitosa sobre passado do NPC",
+      "risk_level": "medium",
+      "base_translation": "[0C][06][14][C6]@\"Tu... eras um soldado?\"",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Thou wert' = 2ª pessoa arcaica (tu eras/foste). Manter inversão solene. Risco: soar afetado se forçar muito; equilibrar com naturalidade pt-BR arcaica."
+    },
+    {
+      "offset": "AREAS040.DAT:8:20",
+      "text_source": "[0C][06][14][81]A\"The mortals...[02]They understand[01]not...\"",
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, contemplativos, melancólico",
+      "intent": "reflexão/lamento sobre incompreensão mortal",
+      "risk_level": "high",
+      "base_translation": "[0C][06][14][81]A\"Os mortais... [02]Nao compreendem...\"",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade revelada implícita: 'os mortais' = Fou-Lu fala como ser não-mortal (spoiler estrutural). Manter distância/alienação. Não resolver ambiguidade. Risco crítico de antecipar natureza sobrenatural."
+    },
+    {
+      "offset": "AREAS040.DAT:8:21",
+      "text_source": "[0C][06][14][C6]@\"Forgive me...I[01]merely spoke aloud[01]mine thoughts.[02]Farewell.\"",
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, desculpas formais, despedida trágica",
+      "intent": "pedido de perdão + encerramento ritual",
+      "risk_level": "medium",
+      "base_translation": "[0C][06][14][C6]@\"Perdoai-me... Apenas pronunciei meus pensamentos en voz alta. [02]Adeus.\"",
+      "byte_budget": 92,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'mine thoughts' = pensamentos meus (arcaico possessivo). Farewell = encerramento final. Tom: tristeza resignada, não dramaticidade. Manter solenidade."
+    },
+    {
+      "offset": "AREAS040.DAT:8:23",
+      "text_source": "It looks like you could[01]rest here...[12][8B][0C][93]Rest[01]Diary[01]Never mind",
+      "speaker": "system",
+      "tone_register": "neutra, UI/mecânica de jogo",
+      "intent": "prompt de ação ao jogador (menu de repouso)",
+      "risk_level": "low",
+      "base_translation": "Parece que voce poderia descansar aqui... [12][8B][0C][93]Descansar Diario Nunca",
+      "byte_budget": 86,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 3,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "bof4-AREAS040-v1"
+}

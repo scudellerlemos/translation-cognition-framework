@@ -1,0 +1,740 @@
+{
+  "lines": {
+    "AREAS004.DAT:8:63": {
+      "speaker": "npc",
+      "tone_register": "casual, cajoling",
+      "intent": "persuade player to buy food by appealing to attitude/manners",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Hmm... munch munch [02]Olha, se voce quer [01]algo de alguem, [02]tem que ter a atitude [01]certa, sabe?\"[12][01][0C][92]OK, vou te comprar [08]comida. Que voce quer dizer?"
+    },
+    "AREAS004.DAT:8:64": {
+      "speaker": "npc",
+      "tone_register": "casual, slightly annoyed",
+      "intent": "dismiss player; set condition for information",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Volta quando tiver [01]aprendido boas maneiras... [01]munch!\""
+    },
+    "AREAS004.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "humble, grateful",
+      "intent": "express thanks, reassure about obligation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"E serio? Obrigado... [02]Nao quero que voce se [01]sinta obrigado de jeito [01]nenhum.\""
+    },
+    "AREAS004.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "cheerful, then satisfied, then informative",
+      "intent": "celebrate fullness; deliver promised information about information broker",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"...[0B]...[0B]...[02][0D]Buuuuurp![0E][0F][09][01]Pow, to cheio! Foi bom! [02]Tudo bem, vou te contar [01]o que voce quer saber! [02]Se ta procurando algo, [02]conversa com o corretor [01]de informacoes em frente [01]a hospedaria! [02]Ele pode te dizer onde [01]achar o que ta procurando! [02]burp!\""
+    },
+    "AREAS004.DAT:8:68": {
+      "speaker": "npc",
+      "tone_register": "cheerful, then satisfied, then informative",
+      "intent": "celebrate fullness; deliver promised information about information broker (repeat)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"...[0B]...[0B]...[02][0D]Buuuuurp![0E][0F][09][01]Pow, to cheio! Foi bom! [02]Tudo bem, vou te contar [01]o que voce quer saber! [02]Se ta procurando algo, [02]conversa com o corretor [01]de informacoes em frente [01]a hospedaria! [02]Ele pode te dizer onde [01]achar o que ta procurando! [02]burp!\""
+    },
+    "AREAS004.DAT:8:69": {
+      "speaker": "npc",
+      "tone_register": "distressed, pained",
+      "intent": "regret overeating; express stomach pain",
+      "risk_level": "low",
+      "risk_notes": "onomatopoeia 'Uuuhhhhh' localized as phonetic complaint",
+      "t": "[14][02][02]\"[0D]Uuuhhhhh...[0E][0F][02][02]Acho que comi muito... [01]Meu estomago... [02]Dói[0B]...[0B]...[0B]...[0B]...\""
+    },
+    "AREAS004.DAT:8:70": {
+      "speaker": "npc",
+      "tone_register": "drunk, slurred, regretful",
+      "intent": "regret overdrinking; vocalize nausea",
+      "risk_level": "medium",
+      "risk_notes": "slurred speech ('baaaarrrrfff', 'Ih thinkh') requires phonetic approximation; 'Ih drankh' -> 'bebi' (slurred register)",
+      "t": "[14][02][02]\"[0D]baaaarrrrfff![01]Acho... acho que bebi [01]demais![0E][0F][01]\""
+    },
+    "AREAS004.DAT:8:71": {
+      "speaker": "npc",
+      "tone_register": "casual, expectant",
+      "intent": "prompt: ask if player will buy more food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"munch munch... E ai? [02]Vai me comprar mais [01]algo?\"[12][01][0C][82]Sim [01]Nao"
+    },
+    "AREAS004.DAT:8:72": {
+      "speaker": "npc",
+      "tone_register": "eager, cheerful",
+      "intent": "express eagerness to proceed; urge haste",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Vai sim! Entao nao vamos [01]perder tempo!\""
+    },
+    "AREAS004.DAT:8:73": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "ask player confirmation to read game instructions",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]Voce quer ler as [01]instrucoes?[12][02][0C][82]Sim [01]Nao"
+    },
+    "AREAS004.DAT:8:74": {
+      "speaker": "npc",
+      "tone_register": "casual, impatient, munching",
+      "intent": "prompt: pressure player to commit to buying food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"munch munch crunch [02]Vai me comprar algo ou [01]nao?\"[12][01][0C][82]Sim [01]Nao"
+    },
+    "AREAS004.DAT:8:75": {
+      "speaker": "npc",
+      "tone_register": "disappointed, instructive",
+      "intent": "scold player for poor manners in asking favor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Hmm... [02]Nao e assim que se pede [01]favor pra alguem!\""
+    },
+    "AREAS004.DAT:8:76": {
+      "speaker": "npc",
+      "tone_register": "casual, informative",
+      "intent": "remind/guide player to information broker",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ja conversou com o [01]corretor de informacoes? [02]Voce acha ele em frente [01]a hospedaria, sabe.\""
+    },
+    "AREAS004.DAT:8:77": {
+      "speaker": "npc",
+      "tone_register": "approving, generous, warm",
+      "intent": "praise player's generosity; offer reward",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"To impressionado! Nao [01]vejo muita gente jovem [01]tao generosa assim! [02]Aqui -- tenho algo pra [01]voce!\""
+    },
+    "AREAS004.DAT:8:80": {
+      "speaker": "system",
+      "tone_register": "neutral, affirmative",
+      "intent": "status message: confirm positive emotional state",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[05][02]Feliz[06]"
+    },
+    "AREAS004.DAT:8:92": {
+      "speaker": "npc",
+      "tone_register": "surprised, incredulous",
+      "intent": "express disbelief that player has money; prompt for confirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"De verdade? Voce tem grana [01]suficiente pra me comprar [01]comida?\"[12][03][0C][82]Sim [01]Nao"
+    },
+    "AREAS004.DAT:8:95": {
+      "speaker": "npc",
+      "tone_register": "worried, reflective",
+      "intent": "express concern about fragile peace; dread renewed war",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Falam que tem um armisticio [01]agora... [02]Nao quero nem pensar no [01]que aconteceria se a guerra [02]voltasse...\""
+    },
+    "AREAS004.DAT:8:96": {
+      "speaker": "npc",
+      "tone_register": "alarmed, gossip-like",
+      "intent": "spread rumor about Imperial troop movements; fuel suspicion of war",
+      "risk_level": "medium",
+      "risk_notes": "glossary: 'Imperial' = manter_original; lore tie-in (Empire/war mechanics); foreshadowing (Carronade/hex reveal later)",
+      "t": "\"Tem gente falando que viu [01]tropas do Imperio [02]mexendo por ai na cidade... [02]Faz a gente se perguntar [01]se nao vao tentar come-ar [01]outra guerra...\""
+    },
+    "AREAS004.DAT:8:99": {
+      "speaker": "npc",
+      "tone_register": "matter-of-fact, dismissive",
+      "intent": "inform player of insufficient funds; block transaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Huh? Parece que voce nao [01]tem grana suficiente.\""
+    },
+    "AREAS004.DAT:8:100": {
+      "speaker": "npc",
+      "tone_register": "fearful, anxious",
+      "intent": "express dread of Carronade hex; recall prior war atrocities (Chamba/Synesta)",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'hex' = maldição; 'Carronade' = manter_original (weapon/item name); spoiler risk: mentions Chamba/Synesta conflict (lore tie-in); emotional beat: fear of weapon mechanics. Back-translation required.",
+      "t": "\"Fico pensando se eles iam [01]usar uma maldicao contra [01]gente se a guerra voltasse, [02]como fizeram com Chamba [01]e Synesta. [02]So de pensar ja tenho [01]medo!\""
+    },
+    "AREAS004.DAT:8:101": {
+      "speaker": "npc",
+      "tone_register": "anxious, gossip-like",
+      "intent": "spread rumor of Imperial troop arrival; infer war renewal",
+      "risk_level": "medium",
+      "risk_notes": "glossary: 'Imperial' = manter_original; war anxiety motif (established in AREAS004.DAT:8:95-96)",
+      "t": "\"Falam que tropas do Imperio [01]chegaram na cidade. [02]Sera que significa que [01]a gente ta em guerra de novo?\""
+    },
+    "AREAS004.DAT:8:102": {
+      "speaker": "npc",
+      "tone_register": "drowsy, then self-aware",
+      "intent": "vocalize yawn; playfully defend against embarrassment",
+      "risk_level": "low",
+      "risk_notes": "onomatopoeia 'Hmmmmmmmmmm' localized as yawn vocalic; narrative beat (npc is tired)",
+      "t": "[14][0B][0A]\"[0D][0F][08]Aiiiiiiiiii![0E][02][0B]...[0B]...[0B]Foi um bocejo. [01]Hmm...\""
+    },
+    "AREAS004.DAT:8:103": {
+      "speaker": "npc",
+      "tone_register": "frightened squeak",
+      "intent": "react with fear/surprise to mouse",
+      "risk_level": "low",
+      "risk_notes": "onomatopoeia 'squeek' = phonetic vocalization; localized as pitched squeak convention in pt-BR",
+      "t": "[0A][02]\"squik!\""
+    },
+    "AREAS004.DAT:8:104": {
+      "speaker": "npc",
+      "tone_register": "nervous, fearful, defensive",
+      "intent": "deny fear of mice; make excuses for not descending; stammer",
+      "risk_level": "low",
+      "risk_notes": "stammer/hesitation ('af-afraid', 'I-I', 'c-come') preserved via repeated phonetic breaks; stuttering register in pt-BR: 'nao... nao tenho medo'",
+      "t": "\"[0D][0F][01]Nao... nao tenho medo [01]de mouse![0E][02][0D][0F][01]E-e que nao quero [01]d-descer... [01][0B][0B][0B]E so isso![0E]\""
+    },
+    "AREAS004.DAT:8:105": {
+      "speaker": "npc",
+      "tone_register": "matter-of-fact, slightly dejected",
+      "intent": "lament business downturn due to Imperial troop conflict",
+      "risk_level": "low",
+      "risk_notes": "glossary: 'Imperial' = manter_original; reference to established war anxiety motif",
+      "t": "[14][03][03]\"Nao tenho tantos [01]clientes desde aquele [02]problema com as tropas [01]do Imperio...\""
+    },
+    "AREAS004.DAT:8:106": {
+      "speaker": "npc",
+      "tone_register": "casual, approving, familiar",
+      "intent": "compliment player on physical maturation/growth",
+      "risk_level": "low",
+      "risk_notes": "'manly' -> 'viril' or 'crescido' (context: observation of player's growth/maturity); register: friendly, non-flirtatious",
+      "t": "\"Voce ficou mais crescido [01]desde que era aqui a ultima [01]vez.\""
+    },
+    "AREAS004.DAT:8:107": {
+      "speaker": "npc",
+      "tone_register": "gossip-like, curious, skeptical",
+      "intent": "relay rumor about Carronade weapon; ask for confirmation",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'Carronade' = manter_original (weapon name); 'hex' = maldição; lore tie-in (Empire tech/weapon mechanics); introduces Carronade name and hex concept (critical later). Back-translation required.",
+      "t": "\"Ouvi um cara passando [01]falar que o Imperio usa [02]algo chamado Carronade pra [01]botar uma maldicao nos [02]inimigos... [02]E verdade?\""
+    },
+    "AREAS004.DAT:8:108": {
+      "speaker": "npc",
+      "tone_register": "alarmed, connecting-dots",
+      "intent": "tie troop presence to Carronade rumors; predict war resumption",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'Carronade' = manter_original; causal chain: troops + weapon = war renewal (lore/foreshadowing); emotional escalation (fear motif). Back-translation required.",
+      "t": "\"Primeiro tropas do Imperio [01]na cidade, [02]depois aquele Carronade [01]deles... [02]Acho que e verdade o que [01]falam-- [02]que outra guerra ta [01]comecando...\""
+    },
+    "AREAS004.DAT:8:109": {
+      "speaker": "npc",
+      "tone_register": "casual, informative, slightly amused",
+      "intent": "confirm people fled; note their fear reaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Tava procurando as pessoas [01]que ficavam aqui? [02]Todas tiveram medo e [01]sairao correndo!\""
+    },
+    "AREAS004.DAT:8:110": {
+      "speaker": "npc",
+      "tone_register": "gossipy, impressed, observational",
+      "intent": "describe Imperial officer's striking appearance (scar)",
+      "risk_level": "medium",
+      "risk_notes": "description of Imperial official with facial scar; foreshadowing (potential Fou-Lu/identity hint); avoid over-interpreting scar significance at this stage",
+      "t": "\"Aquele Imperial fancy [01]foi uma vista com aquele [02]corte grande no rosto!\""
+    },
+    "AREAS004.DAT:8:111": {
+      "speaker": "npc",
+      "tone_register": "relieved, reflective",
+      "intent": "report rumor of troop dragon-hunt; express relief it's not war-focused",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'dragon' = Dragão (traduzir); foreshadowing (Fou-Lu's dragon form/nature); spoiler risk: dragon-hunt sets up later reveals; emotional beat: relief (misplaced). Back-translation required.",
+      "t": "\"Ouvi dizer que essas tropas [01]tavam procurando um Dragao... [02]So fico feliz que nao [01]vieram pra start uma [01]outra guerra!\""
+    },
+    "AREAS004.DAT:8:112": {
+      "speaker": "npc",
+      "tone_register": "wish-list, defensive",
+      "intent": "express hope Imperial troops focus on dragons and leave town alone",
+      "risk_level": "high",
+      "risk_notes": "glossary: 'dragon' = Dragão (traduzir); thematic tie to dragon-hunt rumor (AREAS004.DAT:8:111); emotional: self-protective wish; supports lore thread. Back-translation required.",
+      "t": "\"Queria que aquelas tropas [01]gastassem toda energia [01]procurando pelos Dragoes e [02]deixassem a gente em paz!\""
+    },
+    "AREAS004.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "informal, conversational",
+      "intent": "provide helpful information about the tavern and local rumors",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce ouve de tudo em lugares[01]assim...[02]Se esta procurando algo,[02]pode ser uma boa ideia[01]conversar com a galera[01]que fica aqui."
+    },
+    "AREAS004.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "informal, conversational",
+      "intent": "provide helpful information about the tavern and local rumors",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce ouve de tudo em lugares[01]assim...[02]Se esta procurando algo,[02]pode ser uma boa ideia[01]conversar com a galera[01]que fica aqui."
+    },
+    "AREAS004.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "informal, conversational",
+      "intent": "provide helpful information about the tavern and local rumors",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce ouve de tudo em lugares[01]assim...[02]Se esta procurando algo,[02]pode ser uma boa ideia[01]conversar com a galera[01]que fica aqui."
+    },
+    "AREAS004.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "informal, narrative",
+      "intent": "recount a story of misfortune with ironic humor",
+      "risk_level": "medium",
+      "risk_notes": "dialogue switch mid-line [14][FF][FF][14][80]; preserve exact token positions",
+      "t": "[14][01][01]\"Eu tava vindo pra ca,[01]sabe, quando vi esse[02]buraco gigante no chao...\"[02][14][FF][FF][14][80]@\"E voce caiu nele[01]e perdeu tudo que tinha,[01]certo?\""
+    },
+    "AREAS004.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "polite, welcoming",
+      "intent": "greet newcomer; ask if first visit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem-vindo, forasteiro.[01]Primeira vez em[01]Sarai?"
+    },
+    "AREAS004.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "onomatopoeia; non-verbal",
+      "intent": "express eating sounds",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"nhac nhac nhac\""
+    },
+    "AREAS004.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "cautious, worldly",
+      "intent": "warn about pickpockets and theft in tavern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu guardaria bem a bolsa[01]se fosse voce...[02]Nao ha nada que a galera[02]daqui nao faria por uns[01]trocados ou dois."
+    },
+    "AREAS004.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "pragmatic, cynical",
+      "intent": "explain that information is transactional; advise buying drinks",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nada neste mundo e de graca.[02]Se quer perguntar algo pra[01]alguem aqui, tente[01]comprar uma bebida[02]ou duas."
+    },
+    "AREAS004.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "gruff, dismissive",
+      "intent": "deny knowledge of sandflier parts; defend tavern's function",
+      "risk_level": "medium",
+      "risk_notes": "dialogue tag [14][03][03]; preserve exact token; maintain crude speech pattern",
+      "t": "[14][03][03]\"Huh? Pecas de Arenador?[01]Nao sei de nada disso.[02]Caso nao tenha percebido,[02]isso aqui e um bar,[01]nao uma loja.\""
+    },
+    "AREAS004.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "worried, reflective",
+      "intent": "express anxiety about ceasefire and war's return",
+      "risk_level": "medium",
+      "risk_notes": "glossary: cease-fire = cessacao de fogo; Empire = Imperio; risk from translation of political terms",
+      "t": "Dizem que tem uma cessacao[01]de fogo agora...[02]Nao quero nem pensar no que[02]aconteceria se a guerra[01]voltasse..."
+    },
+    "AREAS004.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "gossipy, apprehensive",
+      "intent": "share rumor of Imperial troops in town; speculate about war",
+      "risk_level": "medium",
+      "risk_notes": "glossary: Imperial troops = tropas Imperiais; maintain gossip register",
+      "t": "Alguns falam que ja viram[01]tropas Imperiais[02]andando pela cidade[01]ultimamente...[02]Faz a gente ficar pensando[01]se vao tentar comecas[01]outra guerra..."
+    },
+    "AREAS004.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "informal, advisory",
+      "intent": "suggest tavern as info source; express concern about women there",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se esta procurando algo,[01]deveria tentar perguntar[02]no bar...[02]Mas eu nao iria la[01]se fosse uma rapariga..."
+    },
+    "AREAS004.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "casual, surprised",
+      "intent": "comment on seeing women in tavern (unusual)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem bem... O que temos aqui?[02]Nao vejo muitas mulheres[01]num bar."
+    },
+    "AREAS004.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "gruff, dismissive",
+      "intent": "refuse to help; deny what they're seeking is here",
+      "risk_level": "medium",
+      "risk_notes": "dialogue tag [14][03][03]; hostile register; preserve exact token",
+      "t": "[14][03][03]\"Nao sei por que voce[01]esta procurando[02]o que esta procurando e[01]nem me importa...[02]Mas nao vai achar[01]o que procura aqui,[02]rapariga...\""
+    },
+    "AREAS004.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "enthusiastic, reassuring",
+      "intent": "thank customer; insist on deal's legitimacy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Obrigado![02]Nao se preocupe—e de verdade![01]Eu nao tentaria enganar[01]ninguem!\""
+    },
+    "AREAS004.DAT:8:17": {
+      "speaker": "npc",
+      "tone_register": "persuasive",
+      "intent": "emphasize good deal quality",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Digo serio—e um[01]otimo negocio!\""
+    },
+    "AREAS004.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "mocking, dismissive",
+      "intent": "point out customer lacks funds",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Oi! Parece que voce[01]nem tem grana[01]suficiente!\""
+    },
+    "AREAS004.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "casual, checking in",
+      "intent": "ask if customer found what sought",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ja achou o que procurava?"
+    },
+    "AREAS004.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "distressed narrative, then reassuring response",
+      "intent": "recount loss in crater; receive consolation",
+      "risk_level": "medium",
+      "risk_notes": "dialogue switch [14][FF][FF][14][80]; preserve exact token positions",
+      "t": "[14][01][01]\"Perdi tudo que tinha quando[01]caí naquele buraco![02][14][FF][FF][14][80]@\"Nao se preocupe com isso.[02]Quer dizer, era so roupa[01]e coisas assim,[01]certo?\""
+    },
+    "AREAS004.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "gossipy, informative",
+      "intent": "point out merchant with story; comment on misfortune",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ve aquele comerciante ali?[02]Diz que perdeu tudo[01]quando caiu num buraco[01]em algum lugar!"
+    },
+    "AREAS004.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "onomatopoeia; eating/distracted",
+      "intent": "express still eating; minimal acknowledgment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Ainda nao to cheio![01]nhac nhac nhac\""
+    },
+    "AREAS004.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "philosophical, resigned",
+      "intent": "reflect on lesser of evils (cheating vs violence)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, acho que ser enganado[01]nao e tao ruim assim...[02]Quer dizer, podia ser pior...[02]Pelo menos ninguem[01]se machuca ou morre,[01]certo?"
+    },
+    "AREAS004.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "observational, reflective",
+      "intent": "describe old man's long presence; suggest he knows stories",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aquele velho esta aqui ha[01]uma eternidade,[02]só sentado ali comendo...[02]Ele provavelmente[01]ja ouviu praticamente[02]toda historia de quem[01]entra aqui."
+    },
+    "AREAS004.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "gruff, dismissive",
+      "intent": "deny availability of sought item; clarify tavern function",
+      "risk_level": "medium",
+      "risk_notes": "dialogue tag [14][03][03]; preserve exact token; incomplete final line",
+      "t": "[14][03][03]\"Nao va achar o que[01]procura aqui.[02]Isso aqui e um bar,[01]nao um...\""
+    },
+    "AREAS004.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "intrigued, shifting",
+      "intent": "recognize customer knows about something; change stance",
+      "risk_level": "medium",
+      "risk_notes": "dialogue tag [14][03][03]; preserve exact token; tone shift indicates suspicion/intrigue",
+      "t": "[14][03][03]\"Ah, voce sabe disso?[02]Bem agora, isso muda[01]as coisas, nao e?\""
+    },
+    "AREAS004.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "directive, formal",
+      "intent": "invite to follow; lead somewhere private",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Venha pra ca.\""
+    },
+    "AREAS004.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "cautionary, worldly",
+      "intent": "explain need for secrecy in contraband dealing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Quando se mexe com[01]contrabando, nao se pode[01]ser muito cuidadoso, ne?\""
+    },
+    "AREAS004.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "rhetorical, knowing",
+      "intent": "ask if customer wonders about the precautions",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Voce provavelmente se[02]pergunta por que a gente[02]faz todo esse trabalho,[01]nao e?\""
+    },
+    "AREAS004.DAT:8:31": {
+      "speaker": "npc",
+      "tone_register": "explanatory, serious",
+      "intent": "state reason for secrecy: danger of sandflier trade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][05]\"Porque vender arenadores[02]e um negocio perigoso.\""
+    },
+    "AREAS004.DAT:8:32": {
+      "speaker": "npc",
+      "tone_register": "explanatory, cautious",
+      "intent": "reveal sandfliers are war machines; explain Empire threat",
+      "risk_level": "medium",
+      "risk_notes": "glossary: Empire = Imperio, sandfliers = arenadores, war machines = maquinas de guerra; lore-critical",
+      "t": "[0C][05][14][05][05]\"Ve, arenadores foram[01]originalmente criados[01]como maquinas de guerra.[02]Se o Imperio descobrisse[01]que estamos vendendo[01]eles,[02]da proxima vez que uma[01]guerra comeca, eles vem[01]atras da gente!\""
+    },
+    "AREAS004.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "worried, emphatic",
+      "intent": "express fear of hexing/curse; reference other towns",
+      "risk_level": "high",
+      "risk_notes": "glossary: hex = maldicao, Chamba/Synesta = proper nouns (no translate); spoiler risk—references curse mechanics and town fates not yet revealed to party",
+      "t": "[0C][05][14][05][05]\"Nao quero que esse lugar[01]acabe com uma maldicao,[02]como Chamba ou Synesta—[01]de jeito nenhum!\""
+    },
+    "AREAS004.DAT:8:34": {
+      "speaker": "Nina",
+      "tone_register": "formal, direct, surprised",
+      "intent": "express dismay at lack of sandflier parts",
+      "risk_level": "high",
+      "risk_notes": "Nina criticality=high; voice must be formal-medium, leader-like, determined; maintain formal intonation even in surprise",
+      "t": "[0C][06][14][C1]@\"Isso significa que voce[01]nao tem pecas de[01]arenador!?\""
+    },
+    "AREAS004.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "explanatory, knowingly",
+      "intent": "clarify sandflier junkyard exists; explain where to find parts",
+      "risk_level": "medium",
+      "risk_notes": "glossary: Sandflier Valley = Vale dos Arenadores (localization check); junkyard = ferro-velho; preserve [05][02]...[06] formatting tokens",
+      "t": "[0C][05][14][05][05]\"Nao exatamente...[02]Tem um lugar que chamam[01]de [05][02]Vale dos[01]Arenadores[06] perto daqui.[02]E um ferro-velho, cheio[01]de arenadores velhos[01]e quebrados.\""
+    },
+    "AREAS004.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "transactional, direct",
+      "intent": "propose deal: bring usable material, receive sandflier parts",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][05][14][05][05]\"Se voce for la[01]e trazer algum material[02]que presta, eu faco[01]as pecas de arenador[01]pra voce. Combinado?\""
+    },
+    "AREAS004.DAT:8:37": {
+      "speaker": "Nina",
+      "tone_register": "formal, determined",
+      "intent": "accept deal; confirm intent to gather materials from valley",
+      "risk_level": "high",
+      "risk_notes": "Nina criticality=high; maintain formal leadership tone; preserve [05][02]...[06] formatting tokens for location name",
+      "t": "[0C][06][14][C1]@\"Tudo bem entao, a gente[01]vai pra esse [05][02]Vale dos[02]Arenadores[06], e traz[01]o material que voce[01]precisa.\""
+    },
+    "AREAS004.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "apologetic, understanding",
+      "intent": "apologize for secrecy; justify caution in business",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][05][05]\"Desculpa pelo sigilo,[01]mas nesse negocio[02]nao se pode ser muito[01]cuidadoso...\""
+    },
+    "AREAS004.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "informative, casual",
+      "intent": "provide directions to valley",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"O vale fica ao sul[01]da cidade.\""
+    },
+    "AREAS004.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "worried, hopeful",
+      "intent": "express anxiety about war; hope it doesn't return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sera que vai ter outra[01]guerra... Espero que nao!"
+    },
+    "AREAS004.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "gossipy, concerned",
+      "intent": "mention rumors of Imperial troop presence",
+      "risk_level": "medium",
+      "risk_notes": "glossary: Imperial troops = tropas Imperiais; maintain rumor register",
+      "t": "Ja ouvi boatos de que[01]tem tropas Imperiais[02]aqui na cidade..."
+    },
+    "AREAS004.DAT:8:42": {
+      "speaker": "Ryu",
+      "tone_register": "startled, cut off",
+      "intent": "express sudden shock/alarm; incomplete",
+      "risk_level": "high",
+      "risk_notes": "Ryu criticality=high; simple, direct expression of surprise; preserve exact token sequence [0C][06][14][81]A\"[0D]Wha-[0E][0F] as is",
+      "t": "[0C][06][14][81]A\"[0D]O qu-[0E][0F]"
+    },
+    "AREAS004.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "threatening, formal",
+      "intent": "try to coerce information about monster; intimidate calmly",
+      "risk_level": "high",
+      "risk_notes": "dialogue tag [14][03][03]; voice tag [0C][03][14][07][07]; threatening context; spoiler risk—references unrevealed monster/encounter; preserve exact tokens",
+      "t": "[0C][03][14][07][07]\"Nao tenha medo...[02]Soh quero algumas[01]informacoes, e tudo.[02]Quero que voce conte[01]tudo sobre o[02]monstro que diz ter visto.\""
+    },
+    "AREAS004.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "defiant, crude",
+      "intent": "refuse to talk; dismiss threat",
+      "risk_level": "medium",
+      "risk_notes": "dialogue tag [0C][04][14][81]A; crude register; preserve exact tokens",
+      "t": "[0C][04][14][81]A\"Bah![02]Nao tenho nada a te[01]contar! Cai fora!\""
+    },
+    "AREAS004.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "menacing, formal",
+      "intent": "escalate threat; suggest cooperation via intimidation",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][03][14][07][07]; threatening/coercive tone; maintain formal menace; preserve [0B] and [02] tokens",
+      "t": "[0C][03][14][07][07]\"Bem!...[0B][02]Eu tentaria ser[01]um pouco mais[02]cooperativo se fosse[01]voce...\""
+    },
+    "AREAS004.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "menacing, ominous",
+      "intent": "deliver explicit threat; imply violence/suffering",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][0B][14][07][07]; severe threat; maintain ominous register; preserve [0B] and [02] tokens",
+      "t": "[0C][0B][14][07][07]\"Caso contrario...[0B]As coisas[01]podem ficar um pouco[01]desconfortaveis...[02]E nao e isso que a[01]gente quer, pois nao?\""
+    },
+    "AREAS004.DAT:8:47": {
+      "speaker": "Ryu",
+      "tone_register": "shocked, outraged",
+      "intent": "protest/interrupt violent coercion",
+      "risk_level": "high",
+      "risk_notes": "Ryu criticality=high; simple, direct outrage at violence; voice tag [0C][0C][14][88][08]; preserve exact tokens",
+      "t": "[0C][0C][14][88][08]\"Que voce pensa que[01]esta fazendo!?\""
+    },
+    "AREAS004.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "panicked, confused",
+      "intent": "cry out in shock; question why war is happening if supposedly over",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][06][14][89]H; shocked register; spoiler risk—references war status/ceasefire mechanics; preserve [0B] and exact tokens",
+      "t": "[0C][06][14][89]H\"Po...[0B]Por que voces[01]estao fazendo isso!?[02]Eu pensei que a guerra[01]tava supostamente[01]acabada!\""
+    },
+    "AREAS004.DAT:8:49": {
+      "speaker": "npc",
+      "tone_register": "hostile, explaining",
+      "intent": "explain motivation: dislikes hidden things; reveal 'besides' hint",
+      "risk_level": "medium",
+      "risk_notes": "voice tag [0C][05][14][07][07]; maintain hostile-explanatory tone; preserve exact tokens",
+      "t": "[0C][05][14][07][07]\"Por que? Porque nao gosto[01]de gente que tenta esconder[02]as coisas. Alem disso...\""
+    },
+    "AREAS004.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "cold, educating",
+      "intent": "distinguish cease-fire from true peace; emphasize difference",
+      "risk_level": "critical",
+      "risk_notes": "voice tag [0C][03][14][07][07]; spoiler CRITICAL—references key lore distinction (cease-fire ≠ peace); preserve [05][02]...[06] formatting for terms; maintain imperious educational tone",
+      "t": "[0C][03][14][07][07]\"A guerra nao esta [05][02]acabada[06].[02]Teve uma [05][02]cessacao[01]de fogo[06] decretada, e tudo.[02]Voce entende a[01]diferenca, rapariga...\""
+    },
+    "AREAS004.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "dawning realization, then menacing",
+      "intent": "recognize Wyndian; make ominous comment about princess",
+      "risk_level": "critical",
+      "risk_notes": "voice tag [0C][03][14][07][07] then [14][0A][09]; spoiler CRITICAL—identifies Nina as princess before revelation; dialogue switch [14][0A][09]; preserve exact tokens",
+      "t": "[0C][03][14][07][07]\"Espera...[0B]Voce e uma[01]Wyndiana...[02][14][0A][09]\"Bem bem, se nao e a[01]princesinha!\""
+    },
+    "AREAS004.DAT:8:52": {
+      "speaker": "npc",
+      "tone_register": "menacing, triumphant",
+      "intent": "gloat over finding dragon and princess; order capture",
+      "risk_level": "critical",
+      "risk_notes": "voice tag [0C][03][14][07][07] then [14][0A][09]; spoiler CRITICAL—references dragon-hunt mission and unintended capture of princess; dialogue switch [14][0A][09]; preserve exact tokens",
+      "t": "[0C][03][14][07][07]\"Fomos mandados procurar[01]um dragao, mas achamos[02]um passarinho no lugar![02][14][0A][09]Peguem ela, rapazes—nao[01]ha razao pra nao levar[01]ela tambem!\""
+    },
+    "AREAS004.DAT:8:53": {
+      "speaker": "Nina",
+      "tone_register": "desperate, questioning",
+      "intent": "cry out in alarm; ask if they know about missing sister",
+      "risk_level": "critical",
+      "risk_notes": "Nina criticality=high; voice tag [0C][06][14][C1]@; desperate but leader-like tone; spoiler CRITICAL—references missing sister (major plot point); preserve exact tokens",
+      "t": "[0C][06][14][C1]@\"Po...Espera![02]Voces sabem algo sobre[01]minha irma...!?\""
+    },
+    "AREAS004.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "commanding, arcane",
+      "intent": "invoke/summon warrior spirit via magical formula",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][03][14][07][07]; arcane/formal invocation register; maintain archaic/imperative tone for spell-casting; spoiler risk—reveals magic system",
+      "t": "[0C][03][14][07][07]\"Pelo poder que me foi[01]concedido, eu te comando![02]Espirito guerreiro![01]Tu es invocado!\""
+    },
+    "AREAS004.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "commanding, brutal",
+      "intent": "order summon to capture Nina; caveat about not killing her",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][03][14][07][07]; direct command register; sinister caveat 'Too much' implies torture-proximity; maintain menace while naming summon",
+      "t": "[0C][03][14][07][07]\"Joh...Quero que voce[01]capture aquela rapariga.[02]Cuidado pra nao[01]machucar ela... Demais.\""
+    },
+    "AREAS004.DAT:8:56": {
+      "speaker": "npc",
+      "tone_register": "mocking, surprise",
+      "intent": "comment on opponent's unexpected strength",
+      "risk_level": "medium",
+      "risk_notes": "voice tag [0C][03][14][07][07]; battle banter; maintain mocking register",
+      "t": "[0C][03][14][07][07]\"Oi! Voce e mais forte[01]do que aparenta!\""
+    },
+    "AREAS004.DAT:8:57": {
+      "speaker": "npc",
+      "tone_register": "mocking, theatrical",
+      "intent": "comment sarcastically on 'dashing knight' saving princess",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][03][14][07][07]; sarcastic nobility; spoiler risk—confirms prince/princess dynamics; preserve exact tokens",
+      "t": "[0C][03][14][07][07]\"Ho...Que tal isso?[02]Um cavaleiro valente,[01]vindo salvar a[01]Princesa?\""
+    },
+    "AREAS004.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "mocking, then surprised/accusatory (dialogue switch)",
+      "intent": "lecture on chivalry duty; then switch to character accusing knight of cowardice",
+      "risk_level": "critical",
+      "risk_notes": "voice tag [0C][03][14][07][07] then [14][0A][09]; dialogue switch [14][0A][09] mid-line—two speakers; spoiler CRITICAL—references prince identity/relationship; preserve exact token sequence",
+      "t": "[0C][03][14][07][07]\"Que galante.[02]Sabe que e dever[01]do cavaleiro[02]proteger sua dama,[01]certo?[02][14][0A][09]\"Onde voce tava[01]todo esse tempo?[02]Com medo, escondido em[01]algum armario ou...\""
+    },
+    "AREAS004.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "outraged, cut off",
+      "intent": "express shock/horror before insult",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][03][14][07][07]; cut-off rage; preserve exact token sequence [0D]dare[0E][0F]; incomplete insult",
+      "t": "[0C][03][14][07][07]\"Po...[0B][0B]Como [0D]ousa[0E][0F][02][01]voce!? Seu porcalhao[01]imundo...\""
+    },
+    "AREAS004.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "panicked, urgent",
+      "intent": "urge escape; express fear/shock",
+      "risk_level": "high",
+      "risk_notes": "voice tag [0C][04][14][89]H; panicked register; preserve exact tokens; incomplete line suggests urgency",
+      "t": "[0C][04][14][89]H\"Po...[0B]Vamos sair daqui!...\""
+    },
+    "AREAS004.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "commanding, aggressive",
+      "intent": "order subordinates to pursue fleeing enemies",
+      "risk_level": "medium",
+      "risk_notes": "voice tag [0C][05][14][07][07]; commanding battle register; preserve exact tokens",
+      "t": "[0C][05][14][07][07]\"Por que voces esto[01]parados!?[02]Vao atras deles!!\""
+    },
+    "AREAS004.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "onomatopoeia then casual acknowledgment",
+      "intent": "express eating sounds; respond to interrupt",
+      "risk_level": "low",
+      "risk_notes": "dialogue tag [14][02][02]; eating sounds localized; preserve exact token",
+      "t": "[14][02][02]\"nhac nhac nhac... Huh?[01]Voce quer conversar[01]comigo?\""
+    }
+  }
+}

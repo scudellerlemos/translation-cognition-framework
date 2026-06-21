@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD041.DAT:10:0": {
+      "speaker": "npc",
+      "tone_register": "formal, desafiador",
+      "intent": "alertar, confrontar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai ali!?\""
+    },
+    "AREAD041.DAT:10:1": {
+      "speaker": "npc",
+      "tone_register": "formal, desafiador",
+      "intent": "alertar, confrontar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"Quem vai ali!?\""
+    },
+    "AREAD041.DAT:10:2": {
+      "speaker": "npc",
+      "tone_register": "formal, solene, protetor",
+      "intent": "desafiar, defender",
+      "risk_level": "medium",
+      "risk_notes": "NPC guardião; registro formal-elevado mantido. 'Sacred resting place' -> 'sagrado repouso'; 'master' -> 'amo' (arcaísmo leve, coerente com tom do guardião).",
+      "t": "[14][80]@\"Quem ousa entrar no[01]sagrado repouso[01]de meu amo?\""
+    },
+    "AREAD041.DAT:10:3": {
+      "speaker": "npc",
+      "tone_register": "formal, surpreso",
+      "intent": "reconhecer, questionar",
+      "risk_level": "high",
+      "risk_notes": "Referência a 'The Endless' (Eternos); 'Thou' (thou/thee arcaico); 'one of' implica identidade compartilhada com mestre. Preservar surpresa e reverência. Risco: spoiler de lore (identidade de Fou-Lu). Back-translation obrigatória.",
+      "t": "[14][80]@\"Espera... Tu tambem[01]es um dos Eternos...?\""
+    },
+    "AREAD041.DAT:10:4": {
+      "speaker": "npc",
+      "tone_register": "formal, resoluto, arcaico",
+      "intent": "negar, impedir",
+      "risk_level": "high",
+      "risk_notes": "Arcaísmo forte ('nay e'en', 'brother'); repetição de 'No matter'/'No one'. Preservar tom de guardião inabalável. 'be allowed entrance' -> 'ser permitida a entrada'. Byte budget 132 apertado com tokens. Back-translation exigida (voz muito específica).",
+      "t": "[14][80]@\"Nao importa! Ninguem,[02]nem mesmo se fosse[01]irmaio do meu amo,[02]pode ser permitido[01]entrar!\""
+    },
+    "AREAD041.DAT:10:5": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "oferecer opcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer subir?[12]"
+    },
+    "AREAD041.DAT:10:6": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "oferecer opcao",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer descer?[12][01][0C][82]Sim[01]Nao"
+    },
+    "AREAD041.DAT:10:7": {
+      "speaker": "npc",
+      "tone_register": "formal, arcaico, enigmatico",
+      "intent": "aconselhamento, aviso",
+      "risk_level": "medium",
+      "risk_notes": "'Ye wouldst' (arcaísmo). Traduzir com tom enigmatico/solemne. 'seek ye first the key' -> 'procurai antes a chave'. Preservar ritmo arcaico (verb-subject inversion em pt-BR formal é raro, mas 'procurai' mantém solenidade).",
+      "t": "Vos que caminhardes a jornada,[01]procurai antes a chave"
+    },
+    "AREAD041.DAT:10:11": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "oferecer opcoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde voce quer ir?[12][02][0C][93]Seguir adiante[01]Subir[01]Desistir"
+    },
+    "AREAD041.DAT:10:12": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "oferecer opcoes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Para onde voce quer ir?[12][02][0C][93]Seguir adiante[01]Subir[01]Desistir"
+    },
+    "AREAD041.DAT:10:13": {
+      "speaker": "system",
+      "tone_register": "neutro, interrogativo",
+      "intent": "oferecer opcoes",
+      "risk_level": "low",
+      "risk_notes": "Glossário: 'Emperor's Tomb' -> 'Mausoléu do Imperador' (lore de Fou-Lu). Cabe no budget.",
+      "t": "O que voce quer fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Desistir"
+    },
+    "AREAD041.DAT:10:16": {
+      "speaker": "system",
+      "tone_register": "neutro, instructivo",
+      "intent": "explicar mecanica",
+      "risk_level": "medium",
+      "risk_notes": "Texto longo de tutorial/mecanica. 'switch' -> 'alavanca' (glossário: transliterar como 'chave de contato' é sobrecarga; 'alavanca' é direto). 'push a cube forward/back' -> 'empurrar cubo para frente/tras'. 'Line three blocks' -> 'Alinhe tres blocos'. Preservar sequencia logica. Budget 306: deveria caber. Byte contagem critical.",
+      "t": "[10][02]Ficar em frente de uma[01][05][02]alavanca[06] faz o chao brilhar.[02]Voce pode empurrar um cubo para frente[01]pressionando o botao ~,[02]e para tras pressionando[01]o botao [7F].[02]Alinhe tres blocos da[01]mesma cor para criar[01]um caminho."
+    },
+    "AREAD041.DAT:10:18": {
+      "speaker": "npc",
+      "tone_register": "formal, advertencia",
+      "intent": "avisar, impressionar",
+      "risk_level": "medium",
+      "risk_notes": "'Beware the [05][02]Red Eye[06]' tem tokens de formatacao. 'Red Eye' pode ser nome proprio (lore) ou descricao. Preservar mistério/tom de aviso. Ponto triplo (...) mantém tensao.",
+      "t": "Cuidado com o [05][02]Olho Vermelho[06]..."
+    }
+  }
+}

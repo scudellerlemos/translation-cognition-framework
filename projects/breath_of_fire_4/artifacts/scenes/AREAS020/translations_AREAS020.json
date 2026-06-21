@@ -1,0 +1,548 @@
+{
+  "lines": {
+    "AREAS020.DAT:8:111": {
+      "speaker": "npc",
+      "tone_register": "friendly, informative",
+      "intent": "greet and reassure players that NPC will help despite location change",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Bem, ola novamente,[01]pessoal![02]Parece que nos acontecemos de novo![02]Pode ser um lugar diferente,[02]mas eu ainda vou responder qualquer pergunta que voces tenham!\"[12]"
+    },
+    "AREAS020.DAT:8:112": {
+      "speaker": "npc",
+      "tone_register": "friendly, instructional",
+      "intent": "explain combo mechanics and elemental chain reactions",
+      "risk_level": "medium",
+      "risk_notes": "Tutorial mechanics require precise terminology matching glossary (Fire/Wind/Water/Earth); preserve instructional tone and avoid casual phrasing that would diminish clarity for gameplay.",
+      "t": "[14][06][06]\"Bem, ola novamente,[01]pessoal![02]Parece que nos acontecemos de novo![02]Pode ser um lugar diferente,[02]mas eu ainda vou responder qualquer pergunta que voces tenham!\"[12]"
+    },
+    "AREAS020.DAT:8:113": {
+      "speaker": "npc",
+      "tone_register": "instructional, encouraging",
+      "intent": "teach combo hit mechanics with multiple enemies and property matching",
+      "risk_level": "medium",
+      "risk_notes": "Tutorial content; must maintain clarity of 'same property' rule and encourage experimentation without ambiguity. Terminology: 'combo hits' = numero de acertos no combo.",
+      "t": "\"Quanto mais inimigos aparecem,[02]mais facil fica conseguir um numero[01]alto de acertos![02]O numero de acertos do combo[01]tambem aumenta se voces combinam[02]ataques da mesma propriedade!\"[02][16]v"
+    },
+    "AREAS020.DAT:8:114": {
+      "speaker": "npc",
+      "tone_register": "informative, practical",
+      "intent": "explain healing and status effect combo interactions with defensive bonus example",
+      "risk_level": "high",
+      "risk_notes": "Complex game mechanic explanation with bracketed placeholders [05][02][09],[04][06][01],[05][02][09][04][06] representing item/ability names. Must preserve token structure exactly. Back-translation required: 'restore HP + raise defense' mechanic must be unambiguous in PT-BR.",
+      "t": "\"Se voces combinam ataques que curam[01]ou afetam o Status,[02]os efeitos de cada um sao aumentados[01]tambem![02]Por exemplo, se voces combinam[02][05][02][09],[04][06],[01]e [05][02][09][04][06],[02]vao poder restaurar HP[01]enquanto aumentam sua[02]defesa![02]Que negocio, ha!\"[02][16]v"
+    },
+    "AREAS020.DAT:8:115": {
+      "speaker": "npc",
+      "tone_register": "informative, strategic",
+      "intent": "warn about special enemies empowered by fire attacks but offering EXP reward for defeating them",
+      "risk_level": "high",
+      "risk_notes": "Bracketed placeholders [05][02]Wyd[06] and [05][02]Drake[06] are creature names; token structure [05][02]...[06] must be preserved exactly. Mechanic explanation (Fire powers them up, but you get more EXP) requires clear cause-effect. Back-translation mandatory.",
+      "t": "\"Viram um [05][02]Wyd[06] ou um[01][05][02]Drake[06]?[02]Se voces usam Fogo contra eles,[01]ficam mais fortes![02]Mas isso tambem significa que[01]se vencerem, ganham mais EXP![02]Existem outros monstros que[01]ficam fortes com certos ataques--[02]veem se conseguem achar todos!\"[02][16]v"
+    },
+    "AREAS020.DAT:8:116": {
+      "speaker": "npc",
+      "tone_register": "warm, encouraging farewell",
+      "intent": "wish players luck in their quest",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ah[02][02].[02]..Bem, entao[02], boa sorte [02]para [02]voces[02]!\"[02]"
+    },
+    "AREAS020.DAT:8:117": {
+      "speaker": "npc",
+      "tone_register": "polite, open-ended inquiry",
+      "intent": "offer continued assistance; prompt for additional questions",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Mais alguma coisa que queiram saber?\"[12]"
+    },
+    "AREAS020.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "relay_gossip",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi dizer que o Chefe [04][02] está em algum tipo de problema."
+    },
+    "AREAS020.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "share_rumor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi dizer que o Chefe [04][02] foi capturado espionando em territorio inimigo.[02]Acho que isso significa que tera outra guerra, ne?"
+    },
+    "AREAS020.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "comment_romantic",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce ouviu como o Chefe [04][02] saiu em busca da princesa Wyndiana desaparecida?[02]Que romantico!"
+    },
+    "AREAS020.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "colloquial_accent",
+      "intent": "explain_species",
+      "risk_level": "medium",
+      "risk_notes": "Non-standard accent (zat/ave) requires consistent handling; transliteration for ASCII may affect phonetic quality",
+      "t": "[14][01][01]\"Eh? Voces dizem que ja viram outros como eu em outros lugares?[02]E porque nos Manillo planejamos tomar[02][19]"
+    },
+    "AREAS020.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "colloquial_accent",
+      "intent": "explain_species",
+      "risk_level": "medium",
+      "risk_notes": "Duplicate of 8:4; non-standard accent; incomplete line in source",
+      "t": "[14][01][01]\"Eh? Voces dizem que ja viram outros como eu em outros lugares?[02]E porque nos Manillo planejamos tomar[02][19]"
+    },
+    "AREAS020.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "formal_proud",
+      "intent": "boast_cultural_strength",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como nos Woren somos famosos em todo o mundo como guerreiros fortes,[02]pessoas viajam para aqui para estudar nossos metodos e aprender conosco."
+    },
+    "AREAS020.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual_concern",
+      "intent": "express_worry",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Hmmmm...[02]Parece que [04][02] se meteu numa confusao bem grande!\""
+    },
+    "AREAS020.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "outraged_formal",
+      "intent": "denounce_ludia",
+      "risk_level": "medium",
+      "risk_notes": "National honor/war declaration context; ensure gravity preserved",
+      "t": "[14][83]C\"Como ousa Ludia trata-lo assim![02]Isto e uma insulto a toda acao Woren![02]Isto significa guerra!\""
+    },
+    "AREAS020.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "aggressive_affirmative",
+      "intent": "support_war",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"E verdade! Vamos mostrar que nao podem nos tratar assim!\""
+    },
+    "AREAS020.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "calm_cautionary",
+      "intent": "temper_anger",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Espera! Espera![01]Nao deixem a raiva dominar![02]Esse sempre foi o problema conosco Woren--[02]muita gente com o sangue muito quente!\""
+    },
+    "AREAS020.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "affirmative",
+      "intent": "agree",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"E verdade!\""
+    },
+    "AREAS020.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal_questioning",
+      "intent": "ask_for_guidance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]C\"Humph...E entao, o que devemos fazer?[02]Quer dizer, a Sra. [04][01][01] veio ate aqui[02]para nos contar sobre o problema que aquele filhote[02]se meteu.\""
+    },
+    "AREAS020.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "warm_nostalgic",
+      "intent": "greet_fondly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"E verdade![02]Faz muito tempo que nao ve voce, pequeno(a) [04][01].[02]Voce cresceu![02]Lembro quando voce era dessa altura...\""
+    },
+    "AREAS020.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "firm_practical",
+      "intent": "refocus_discussion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Chega disso![01]Teremos tempo para isso mais tarde![02]Precisamos pensar no que fazer!\""
+    },
+    "AREAS020.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "wistful_formal",
+      "intent": "wish_for_counsel",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]C\"Hmmm...Se ao menos [05][02]Tarhn[06][01]estivesse aqui! Ela saberia o que fazer!\""
+    },
+    "AREAS020.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "explanatory",
+      "intent": "clarify_relation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"E a esposa do chefe anterior, descanse sua alma.[02]Em outras palavras, ela e a mae de [04][02].\""
+    },
+    "AREAS020.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "narrative",
+      "intent": "explain_departure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][83]C\"Quando [04][02] virou Chefe, ela decidiu sair da aldeia...[02]Foi morar nas [05][02]Planicies Douradas[06].\""
+    },
+    "AREAS020.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "casual",
+      "intent": "add_detail",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"Decidiu viver uma vida de nomade, disse ela.\""
+    },
+    "AREAS020.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "regretful",
+      "intent": "express_helplessness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][82]B\"Tarhn poderia ter thought pensado em algo,[02]mas tenho medo que nao ha nada que possamos fazer...\""
+    },
+    "AREAS020.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "reflective_aged",
+      "intent": "lament_old_age",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][84]D\"Se eu fosse mais jovem,[01]eu cavalgaria[02]e procuraria por Tarhn eu mesmo, mas[02]sou velho demais para isso agora...\""
+    },
+    "AREAS020.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "hopeful",
+      "intent": "suggest_solution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Aposto que Tarhn seria capaz de pensar em alguma maneira de salvar [04][02].\""
+    },
+    "AREAS020.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "informative",
+      "intent": "provide_location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Tarhn esta viajando em algum lugar das [05][02]Planicies Douradas[06].[02]Se voces querem procura-la,[02]vao precisar de um cavalo!\""
+    },
+    "AREAS020.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "humble_confident",
+      "intent": "acknowledge_limitation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"So sabemos lutar...[02]Nao Tarhn, porem![01]Ela pensaria em algo, com certeza!\""
+    },
+    "AREAS020.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "welcoming",
+      "intent": "offer_service_menu",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Bem-vindo(a), viajante.[01]Quer descansar um pouco?\"[12][86][0C][93]Descansar[01]Diario[01]Nunca"
+    },
+    "AREAS020.DAT:8:27": {
+      "speaker": "system",
+      "tone_register": "neutral_functional",
+      "intent": "inform_resource_lack",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Voce nao tem zeny suficiente.\""
+    },
+    "AREAS020.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "impressed_surprised",
+      "intent": "praise_ingenuity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Hmmm...Entendi...[02]Agora voces entendem por que dissemos para conversar com Tarhn?[02]Nunca teriamos pensado nisso![02]Fazer um falso [09][01][01]! Agora sim e inteligente!\""
+    },
+    "AREAS020.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "wish_luck",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Acho que depende de voces para salvar [04][02].[02]Boa sorte para voces!\""
+    },
+    "AREAS020.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "instructional_clear",
+      "intent": "give_directions",
+      "risk_level": "medium",
+      "risk_notes": "Multiple [02] tokens and glossary terms; byte budget is generous but directional clarity critical",
+      "t": "[14][02][02]\"Para chegar a [05][02]Mt. Glom[06],[01]primeiro voces precisam[02]ir [05][02]leste[06] pelas Planicies.[02]Quando chegarem a grande pedra, precisam virar para o [05][02]sul[06].[02]Verao uma montanha com fumo saindo dela--[02]essa e [05][02]Mt. Glom[06].\""
+    },
+    "AREAS020.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "shocked_doubting",
+      "intent": "question_weakness",
+      "risk_level": "medium",
+      "risk_notes": "Existential doubt/identity crisis; ensure emotional weight preserved",
+      "t": "[14][85]E\"Huh!?[02]M-mas Mestre...Voce...[01]Voce quer dizer...[0B]Eu sou fraco?\""
+    },
+    "AREAS020.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "grateful_resolute",
+      "intent": "thank_and_counsel",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Obrigado(a) por tudo.[02]Ajudaremos voces o quanto pudermos,[02]mas acho que voces devem conversar com Tarhn sobre o que fazer.\""
+    },
+    "AREAS020.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "stern_relieved",
+      "intent": "rebuke_and_comfort",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"[04][02]...Como voce pôde fazer isso?[02]Voce deveria ser o chefe dos Woren![02]De qualquer forma...[0B]E bom te-lo em seguranca de novo.[02]Certifique-se de conversar com Tarhn sobre o que aconteceu, tudo bem?\""
+    },
+    "AREAS020.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "indignant_fierce",
+      "intent": "condemn_enemy",
+      "risk_level": "medium",
+      "risk_notes": "Strong political/military sentiment; preserve national pride",
+      "t": "[14][03][03]\"Como ousa aqueles Ludianos![02]Nao me importa se ele eh lider da Alianca ou rei do mundo![02]Quem ele pensa que e, prendendo o chefe dos Woren assim!\""
+    },
+    "AREAS020.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "loyal_vengeful",
+      "intent": "pledge_support",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"[04][02]...Se voces querem se vingar de Ludia pelo que fizeram,[02]eu estarei do seu lado!\""
+    },
+    "AREAS020.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "relieved_thoughtful",
+      "intent": "assess_situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Entao, voces conseguiram resgatar [04][02]...[02]Agora o unico problema e o que Ludia fara a seguir...[02]Mesmo assim, e bom ter [04][02] de volta.\""
+    },
+    "AREAS020.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "warm_joyful",
+      "intent": "express_happiness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"[04][02]![02]Que bom te ver de novo!\""
+    },
+    "AREAS020.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "formal_courteous",
+      "intent": "greet_leader",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"E bom te-lo em seguranca em casa de novo, Chefe [04][02].[02]Aquele problema em que voce se envolveu foi resolvido?\""
+    },
+    "AREAS020.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "hopeful_casual",
+      "intent": "speculate_peace",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Vejo que o Chefe [04][02] voltou.[02]Talvez isso signifique que nao teremos que ir a guerra.\""
+    },
+    "AREAS020.DAT:8:49": {
+      "speaker": "npc",
+      "tone_register": "gossipy_impressed",
+      "intent": "comment_dramatic",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi como o Chefe foi resgatado de Ludia pelos seus amigos.[02]Que dramatico!\""
+    },
+    "AREAS020.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "curious_cautious",
+      "intent": "observe_stranger",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Vi um humano realmente grande com uma face assustadora ha pouco...[02]Sera que ele veio treinar?\""
+    },
+    "AREAS020.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "formal_pragmatic",
+      "intent": "assess_plan",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][02][02]\"Hmmm...[02]Entao, voces planejam ir para Wyndia encontrar o dragao, eh?[02]Bem, suponho que seja mais seguro do que ficar aqui...\""
+    },
+    "AREAS020.DAT:8:52": {
+      "speaker": "npc",
+      "tone_register": "musing_supportive",
+      "intent": "acknowledge_dual_purpose",
+      "risk_level": "high",
+      "risk_notes": "Wyndia/dragon context + identity questions; ensure no premature revelation",
+      "t": "[14][02][02]\"Indo para Wyndia para encontrar o dragao, hm?[02]Bem, acho que eh matar dois coelhos com uma cajadada, ne?[02]Voces podem descobrir algo sobre [04]"
+    },
+    "AREAS020.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "defiant_fierce",
+      "intent": "reject_compromise",
+      "risk_level": "medium",
+      "risk_notes": "Political/territorial stance; preserve intensity",
+      "t": "[14][03][03]\"Deixa eles tentarem fazer desse territorio neutro por tratado![02]Nunca permitiremos isso! Pelos nossos corpos mortos!\""
+    },
+    "AREAS020.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "solemn_protective",
+      "intent": "pledge_defense",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Descansa tranquilo, [04][02]![02]Enquanto houver respiro em nossos corpos,[02]protegeremos essa aldeia de qualquer um que ameace,[02]seja Ludia ou ate o Imperio!\""
+    },
+    "AREAS020.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "narrative_helpful",
+      "intent": "provide_location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Hmmm...Entao planejam usar as ruinas para chegar a Wyndia, eh?[02]Voces podem encontrar as ruinas perto da borda[02]oriental das planicies.\""
+    },
+    "AREAS020.DAT:8:56": {
+      "speaker": "npc",
+      "tone_register": "narrative_helpful",
+      "intent": "provide_location",
+      "risk_level": "low",
+      "risk_notes": "Identical to 8:55; duplicate line",
+      "t": "\"Hmmm...Entao planejam usar as ruinas para chegar a Wyndia, eh?[02]Voces podem encontrar as ruinas perto da borda[02]oriental das planicies.\""
+    },
+    "AREAS020.DAT:8:57": {
+      "speaker": "npc",
+      "tone_register": "awed_humble",
+      "intent": "acknowledge_scale",
+      "risk_level": "medium",
+      "risk_notes": "Gods/Yorae Dragon; ensure reverence without resolving cosmic ambiguity",
+      "t": "[14][02][02]\"Hmmm...Deuses, voces dizem? Dragao Yorae?[02]Agora voces estao sozinhos... Isso e muito grande para nos, tenho medo.\""
+    },
+    "AREAS020.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "awed_humble",
+      "intent": "acknowledge_scale",
+      "risk_level": "medium",
+      "risk_notes": "Gods/Yorae Dragon; duplicate of 8:57",
+      "t": "[14][02][02]\"Hmmm...Deuses, voces dizem? Dragao Yorae?[02]Agora voces estao sozinhos... Isso e muito grande para nos, tenho medo.\""
+    },
+    "AREAS020.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "thoughtful_hesitant",
+      "intent": "share_knowledge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][03]\"Dragao...?[02]Hmmm...[0B]Ha um dragao nas planicies, o Dragao de Grama.\""
+    },
+    "AREAS020.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "thoughtful_hesitant",
+      "intent": "share_knowledge",
+      "risk_level": "low",
+      "risk_notes": "Identical to 8:59; duplicate line",
+      "t": "[14][03][03]\"Dragao...?[02]Hmmm...[0B]Ha um dragao nas planicies, o Dragao de Grama.\""
+    },
+    "AREAS020.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "puzzled_concerned",
+      "intent": "infer_danger",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][04][04]\"Deuses gemeos? Dragao Yorae?[02]Nao sei o que e tudo isso,[02]mas significa que voces estao lutando contra um inimigo forte, certo?\""
+    },
+    "AREAS020.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "puzzled_concerned",
+      "intent": "infer_danger",
+      "risk_level": "low",
+      "risk_notes": "Identical to 8:61; duplicate line",
+      "t": "[14][04][04]\"Deuses gemeos? Dragao Yorae?[02]Nao sei o que e tudo isso,[02]mas significa que voces estao lutando contra um inimigo forte, certo?\""
+    },
+    "AREAS020.DAT:8:63": {
+      "speaker": "npc",
+      "tone_register": "gossipy_reflective",
+      "intent": "comment_busyness",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi dizer que o Chefe [04][02] partiu para Wyndia agora...[02]Deve ser cansativo ser chefe...\""
+    },
+    "AREAS020.DAT:8:64": {
+      "speaker": "npc",
+      "tone_register": "curious_questioning",
+      "intent": "wonder_motive",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Por que o Imperio quereria impedir alguem de procurar pelo seu amigo?\""
+    },
+    "AREAS020.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "gossipy_concerned",
+      "intent": "relay_rumor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ouvi dizer que o Imperio enviou tropas procurando pelo Chefe [04][02]...[02]Parece que ele se meteu numa confusao bem grande!\""
+    },
+    "AREAS020.DAT:8:66": {
+      "speaker": "npc",
+      "tone_register": "gruff_defensive",
+      "intent": "explain_action_and_offer_service",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Voce procura pelo comerciante que estava aqui?[02]Ele tentou montar loja aqui entao o expulsei![02]Isso e uma hospedaria, nao uma loja![02]Entao, quer descansar?\"[12][86][0C][93]Descansar[01]Diario[01]Nunca"
+    },
+    "AREAS020.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "irritated",
+      "intent": "warn",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Ei![02]Nao pise na minha cauda.\""
+    },
+    "AREAS020.DAT:8:68": {
+      "speaker": "npc",
+      "tone_register": "tired_sleepy",
+      "intent": "lament_journey",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Foi uma viagem longa e difficil de Synesta...[01][0D][0F][08]bocejoooo...[0E]\""
+    },
+    "AREAS020.DAT:8:69": {
+      "speaker": "npc",
+      "tone_register": "colloquial_evasive",
+      "intent": "deflect_question",
+      "risk_level": "high",
+      "risk_notes": "Incomplete line; non-standard accent (zat/ere/arder); identity/purpose concealment critical",
+      "t": "[14][01][01]\"Huh? O que eu estou fazendo aqui, voces perguntam?[02]Bem, digamos que e mais dificil [19]"
+    },
+    "AREAS020.DAT:8:108": {
+      "speaker": "system",
+      "tone_register": "ui_label",
+      "intent": "display_move_name",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Super Combo"
+    },
+    "AREAS020.DAT:8:110": {
+      "speaker": "npc",
+      "tone_register": "friendly_welcoming",
+      "intent": "greet_repeat_and_offer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][06][06]\"Bem, ola novamente,[01]pessoal![02]Parece que nos acontecemos de novo![02]Pode ser um lugar diferente,[02]mas eu ainda vou responder qualquer pergunta que voces tenham!\"[12]"
+    },
+    "AREAS020.DAT:8:118": {
+      "speaker": "unknown",
+      "tone_register": "casual-inquiry",
+      "intent": "prompt-for-additional-information",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que mais você quer saber?[12]"
+    }
+  }
+}

@@ -1,0 +1,460 @@
+{
+  "lines": {
+    "AREAS002.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "neutral, commercial",
+      "intent": "inform customer of insufficient funds",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Desculpe, mas parece que voce nao tem zenny o bastante aqui."
+    },
+    "AREAS002.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "neutral, casual",
+      "intent": "clarify current status as traveling merchant",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora mesmo, sou apenas um mercador ambulante,[02]"
+    },
+    "AREAS002.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "neutral, concerned",
+      "intent": "express worry about princess and missing sister",
+      "risk_level": "medium",
+      "risk_notes": "Princess identity placeholder [04][01]; potential spoiler if not handled carefully",
+      "t": "Ouvi dizer que a Princesa [04][01] saiu em busca [01]de sua irma desaparecida...[02]O rei deve estar muito preocupado com elas."
+    },
+    "AREAS002.DAT:8:5": {
+      "speaker": "npc",
+      "tone_register": "neutral, sympathetic",
+      "intent": "express hypothetical concern for sister",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se minha irma desaparecesse, eu tambem[01]iria procurar por ela!"
+    },
+    "AREAS002.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "neutral, reassuring",
+      "intent": "provide comfort to worried companion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao se preocupe -- nao vou desaparecer[01]em lugar nenhum!"
+    },
+    "AREAS002.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "neutral, contemplative",
+      "intent": "contrast peaceful city with rumors of war",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta eh uma cidade pacifica...[01]Ainda assim, mesmo aqui ha boatos[01]de guerra."
+    },
+    "AREAS002.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "casual, familiar",
+      "intent": "compliment wyndian women and reflect on own wife",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As mulheres de Wyndia sao lindas mesmo,[02]nao eh? Minha esposa tambem foi linda[01]em seu tempo."
+    },
+    "AREAS002.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "neutral, exasperated",
+      "intent": "explain drastic measure to control young master's weight",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference 'Using Silverware'; ensure consistency with glossary handling",
+      "t": "Para evitar que o jovem senhor fique[01]ainda mais gordo,[02]escondi todo o talher! Agora ele nao[01]consegue comer nada!"
+    },
+    "AREAS002.DAT:8:11": {
+      "speaker": "system",
+      "tone_register": "onomatopoeia",
+      "intent": "represent sound effect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0A][01]\"squeak\""
+    },
+    "AREAS002.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express hunger while yawning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Quero comer -- agora!"
+    },
+    "AREAS002.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal, patient, sympathetic",
+      "intent": "console master while promising resolution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo como o senhor deve se sentir...[01]Por favor, tenha um pouco mais de paciencia.[02]Tenho certeza de que logo encontraremos[01]o talher!"
+    },
+    "AREAS002.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "distressed, resigned",
+      "intent": "lament loss of silverware pieces",
+      "risk_level": "medium",
+      "risk_notes": "Incomplete source line with [09] tokens; unclear referents; treating as UI/system text about silverware types",
+      "t": "Perdemos tudo...[02]Nossas [09][17][01], [09]O[03]s,[01][09]E[01]s, [09]6[03]...[01]ate mesmo nossos [09]M"
+    },
+    "AREAS002.DAT:8:15": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "describe food item and required silverware",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference [09][17][01]; must preserve exact token sequence",
+      "t": "E um prato com macarrao.[01]Para comer, voce precisa [09][17][01]."
+    },
+    "AREAS002.DAT:8:16": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "describe food item and required silverware",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference [09]6[03]; must preserve exact token sequence",
+      "t": "E um prato de frios.[01]Para comer, voce precisa [09]6[03]."
+    },
+    "AREAS002.DAT:8:17": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "describe food item and required silverware",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference [09]E[01]; must preserve exact token sequence",
+      "t": "E um prato de espaguete.[01]Para comer, voce precisa [09]E[01]."
+    },
+    "AREAS002.DAT:8:18": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "describe food item and required silverware",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference [09]O[03]; must preserve exact token sequence",
+      "t": "E um prato com pudim.[01]Para comer, voce precisa [09]O[03]."
+    },
+    "AREAS002.DAT:8:19": {
+      "speaker": "system",
+      "tone_register": "neutral, instructional",
+      "intent": "describe beverage and required silverware",
+      "risk_level": "medium",
+      "risk_notes": "Mechanic reference [09]M; must preserve exact token sequence",
+      "t": "E um refrigerante de creme. Para beber,[01]voce precisa [09]M"
+    },
+    "AREAS002.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "neutral, proud",
+      "intent": "express pride in son's manners training",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ensinei meu filho a ter boas maneiras.[02]Ele nunca toca sua comida com as maos[01]-- nunca!"
+    },
+    "AREAS002.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "neutral, relieved",
+      "intent": "express relief at princess's return",
+      "risk_level": "medium",
+      "risk_notes": "Princess identity placeholder [04][01]; potential relief/closure aspect",
+      "t": "Ouvi dizer que a Princesa [04][01][02]voltou. Os reis devem estar aliviados[01]agora que ela esta de volta!"
+    },
+    "AREAS002.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "neutral, wistful",
+      "intent": "express wish for own sister's return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu ficaria feliz se minha irma[01]voltasse tambem!"
+    },
+    "AREAS002.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "exasperated, patient",
+      "intent": "respond with mild irritation and reassurance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sobre o que voce esta falando,[01]garotinho? Nao [02]fui para lugar nenhum!"
+    },
+    "AREAS002.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "neutral, cautious",
+      "intent": "express concern about troop movements and war rumors",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vi tropas de Ludian se movimentando[01]por aqui ultimamente...[02]Acho que aqueles boatos[01]eram verdade..."
+    },
+    "AREAS002.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "neutral, hopeful",
+      "intent": "express hope that war rumors are false",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Talvez os boatos nao fossem[01]verdade afinal..."
+    },
+    "AREAS002.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "neutral, concerned",
+      "intent": "relay rumor of princess's search and express hope",
+      "risk_level": "medium",
+      "risk_notes": "Princess identity placeholder [04][01]; convoy context",
+      "t": "Dizem que a Princesa [04][01] saiu[01]procurando sua irma novamente...[02]Espero que encontrem desta vez!"
+    },
+    "AREAS002.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "neutral, determined",
+      "intent": "express intention to search for sister again",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu vou procurar minha irma[01]de novo tambem!"
+    },
+    "AREAS002.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "exasperated, firm",
+      "intent": "reiterate reassurance about not disappearing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quantas vezes eu tenho que dizer? Nao vou[01]desaparecer em lugar nenhum!"
+    },
+    "AREAS002.DAT:8:29": {
+      "speaker": "npc",
+      "tone_register": "exasperated, resigned",
+      "intent": "lament effort of hiding silverware in vain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E depois de todo o trabalho para[01]esconder o talher!"
+    },
+    "AREAS002.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "surprised, questioning",
+      "intent": "notice item player is carrying",
+      "risk_level": "medium",
+      "risk_notes": "Reference to [16] unknown item; potential game mechanic placeholder",
+      "t": "Espera... O que voce esta[01]carregando ali... Eh um[02][16]"
+    },
+    "AREAS002.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "neutral, appreciative",
+      "intent": "acknowledge discovery and request continued search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de[01]talher, por favor, traga aqui."
+    },
+    "AREAS002.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "neutral, appreciative",
+      "intent": "acknowledge discovery and request continued search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de[01]talher, por favor, traga aqui."
+    },
+    "AREAS002.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "neutral, appreciative",
+      "intent": "acknowledge discovery and request continued search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de[01]talher, por favor, traga aqui."
+    },
+    "AREAS002.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "neutral, appreciative",
+      "intent": "acknowledge discovery and request continued search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de[01]talher, por favor, traga aqui."
+    },
+    "AREAS002.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "neutral, appreciative",
+      "intent": "acknowledge discovery and request continued search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo...[02]Bem, se encontrar mais pecas de[01]talher, por favor, traga aqui."
+    },
+    "AREAS002.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "neutral, grateful",
+      "intent": "express gratitude for recovered silverware",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito obrigado![02]Agora o jovem senhor conseguira[01]comer de novo!"
+    },
+    "AREAS002.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:42": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "drowsy, demanding",
+      "intent": "express continued hunger despite food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bocejo...[01]Eh tudo? Quero mais comida!"
+    },
+    "AREAS002.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "neutral, apologetic",
+      "intent": "explain lack of ingredients for more food",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao conseguimos fazer mais nada --[01]estamos completamente sem ingredientes!"
+    },
+    "AREAS002.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "formal, patient, sympathetic",
+      "intent": "console master with promise of next meal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo como o senhor deve se sentir...[01]Por favor, tenha um pouco mais de paciencia.[02]Tenho certeza de que sua proxima refeicao[01]estara pronta em breve!"
+    },
+    "AREAS002.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "neutral, disappointed",
+      "intent": "express disappointment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que desfortunado!"
+    },
+    "AREAS002.DAT:8:49": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:50": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:51": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:52": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:53": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:54": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:55": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Usar Talheres\"."
+    },
+    "AREAS002.DAT:8:56": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Boas Maneiras a Mesa[01]para Criancas\"."
+    },
+    "AREAS002.DAT:8:57": {
+      "speaker": "system",
+      "tone_register": "neutral, descriptive",
+      "intent": "describe book title",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E um livro intitulado[01]\"Diet Hard 3\"."
+    },
+    "AREAS002.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "casual, familiar",
+      "intent": "respond to question about wife with humorous resignation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Procurando minha esposa?[02]Bem, ela provavelmente esta por ai[01]fofocando com as amigas de novo!"
+    },
+    "AREAS002.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "casual, familiar",
+      "intent": "respond to question about wife with humorous resignation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Procurando minha esposa?[02]Bem, ela provavelmente esta por ai[01]fofocando com as amigas de novo!"
+    },
+    "AREAS002.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "neutral, concerned",
+      "intent": "express wish for princesses' return and father's worry",
+      "risk_level": "medium",
+      "risk_notes": "Plural 'Princesses' suggests secondary princess; identity not yet fully revealed; spoiler caution",
+      "t": "So gostaria que ambas as Princesas[01]voltassem logo...[02]Seu pai, o Rei, esta[01]muito preocupado com elas!"
+    },
+    "AREAS002.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "colloquial, self-deprecating",
+      "intent": "express dismay at being beaten to discovery",
+      "risk_level": "medium",
+      "risk_notes": "Non-standard spelling 'as' instead of 'has' suggests dialect/accent; maintain casual tone",
+      "t": "[14][02][02]\"Parece que alguem[01]me ganhou na frente!\""
+    },
+    "AREAS002.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "neutral, concerned",
+      "intent": "ask if player has seen missing little brother",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao teria visto meu irmaozinho[01]em lugar nenhum, teria?[02]Precisava fazer compras,[01]e quando voltei, ele tinha[01]desaparecido!"
+    }
+  }
+}

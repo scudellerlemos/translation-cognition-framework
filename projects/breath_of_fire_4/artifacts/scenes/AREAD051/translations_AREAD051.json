@@ -1,0 +1,92 @@
+{
+  "lines": {
+    "AREAD051.DAT:8:3": {
+      "speaker": "Nina",
+      "tone_register": "formal-medium, hopeful but realistic",
+      "intent": "seeking confirmation about crossing despite danger",
+      "risk_level": "medium",
+      "risk_notes": "Nina's voice: determinada mas realista; preservar tom de liderança discreto. Contraction 'we'll' expande em pt-BR; byte budget apertado (92).",
+      "t": "[0C][06][14][80]@\"Tem certeza que conseguimos atravessar assim?\""
+    },
+    "AREAD051.DAT:8:5": {
+      "speaker": "system",
+      "tone_register": "UI instruction, neutral",
+      "intent": "movement command instruction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C]!Mover [04]"
+    },
+    "AREAD051.DAT:8:6": {
+      "speaker": "system",
+      "tone_register": "UI instruction, neutral",
+      "intent": "explain button control for character switching",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C] Para alternar entre [04][05] e [04]"
+    },
+    "AREAD051.DAT:8:10": {
+      "speaker": "unknown",
+      "tone_register": "descriptive, ominous",
+      "intent": "warn player of environmental danger",
+      "risk_level": "medium",
+      "risk_notes": "Narrador/sistema descrevendo ambiente perigoso. 'thickened' = ficou mais denso. Byte budget 87; preservar urgência.",
+      "t": "A neblina ficou mais densa -- é perigoso demais descer agora."
+    },
+    "AREAD051.DAT:8:14": {
+      "speaker": "Nina",
+      "tone_register": "formal-medium, confident",
+      "intent": "confirm location of lever and agree to action",
+      "risk_level": "medium",
+      "risk_notes": "Nina: liderança discreta, firmeza. 'You mean' reformulado como confirmação natural em pt-BR. Byte budget 71.",
+      "t": "[14][C1]@\"Voce quer dizer ali onde esta a alavanca, certo? OK!\""
+    },
+    "AREAD051.DAT:8:15": {
+      "speaker": "system",
+      "tone_register": "UI prompt, neutral",
+      "intent": "ask player confirmation to rejoin group and exit area",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voce quer se reunir com [04][05] e sair?[12]"
+    },
+    "AREAD051.DAT:8:18": {
+      "speaker": "Ryu",
+      "tone_register": "simple, direct, slightly uncertain",
+      "intent": "ask for guidance in uncertain situation",
+      "risk_level": "high",
+      "risk_notes": "Ryu: simples, direto, ingênuo. Poucas palavras. Contraste obrigatório com Fou-Lu. Byte budget 41 é MUITO apertado para pt-BR; 'What should we do' = pergunta que Ryu faria com hesitação natural -- mantém ingenuidade mas cabe.",
+      "t": "[0C][0C][14][81]@\"E agora, [04][05]?\""
+    },
+    "AREAD051.DAT:8:20": {
+      "speaker": "Nina",
+      "tone_register": "formal-medium, hopeful",
+      "intent": "confirm that crossing will now be possible",
+      "risk_level": "medium",
+      "risk_notes": "Nina: tom esperançoso. 'we'll be able to get through' = conseguiremos atravessar. Byte budget 80; tradução concisa preserva firmeza.",
+      "t": "[0C][0C][14][C1]@\"Isso quer dizer que conseguimos atravessar, certo?\""
+    },
+    "AREAD051.DAT:8:24": {
+      "speaker": "system",
+      "tone_register": "UI instruction, technical",
+      "intent": "explain game mechanic for group switching and container interaction",
+      "risk_level": "low",
+      "risk_notes": "Sistema/tutorial. 'SELECT button' = botão SELECT (convenção do jogo). Byte budget 164 permite forma completa.",
+      "t": "Alterne entre grupos[01]usando o botao [05][02]SELECT[06].[02]Ficar sobre um recipiente[01]o fara descer e[01]permanecer no lugar."
+    },
+    "AREAD051.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "urgent, warning",
+      "intent": "warn player about contamination danger from staying in polluted area",
+      "risk_level": "medium",
+      "risk_notes": "NPC sem perfil de voz registrado (não é personagem crítico). Urgência e aviso claros. 'haven't cleaned...out' = ainda não limpamos; 'contaminated' = contaminado. Byte budget 148.",
+      "t": "\"Ainda nao limpamos este lugar![02]Se voce ficar aqui muito tempo,[01]vai ficar contaminado!\""
+    },
+    "AREAD051.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "casual, familiar",
+      "intent": "greet player and ask if they came to work",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "\"Oi, [04][05]![01]Veio trabalhar?[02]Nao? Ah...\""
+    }
+  }
+}

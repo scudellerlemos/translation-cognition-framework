@@ -1,0 +1,102 @@
+{
+  "scene": "AREAS045",
+  "scene_group": "AREAS045",
+  "lines": [
+    {
+      "offset": "AREAS045.DAT:8:4",
+      "text_source": "[14][C1]@\"By the way, this is[01][04][03].[02]He's been assigned to[01]watch over us so we[01]don't run off.\"",
+      "speaker": "npc",
+      "tone_register": "informal-colloquial",
+      "intent": "informative/explanatory",
+      "risk_level": "low",
+      "base_translation": "[14][C1]@\"A proposito, este e [04][03].[02]Foi designado para[01]nos vigiar para que[01]nao fugissemos.\"",
+      "byte_budget": 119,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAS045.DAT:8:9",
+      "text_source": "Do you want to wait for[01]nightfall here?[12]",
+      "speaker": "npc",
+      "tone_register": "neutral-polite",
+      "intent": "interrogative",
+      "risk_level": "low",
+      "base_translation": "Voce quer esperar pelo[01]anoitecer aqui?[12]",
+      "byte_budget": 57,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAS045.DAT:8:11",
+      "text_source": "It looks like you could[01]rest here.[12][8B][0C][93]Rest[01]Diary[01]Never mind",
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "informative",
+      "risk_level": "low",
+      "base_translation": "Parece que voce poderia[01]descansar aqui.[12][8B][0C][93]Descansar[01]Diario[01]Nunca",
+      "byte_budget": 83,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "AREAS045.DAT:8:12",
+      "text_source": "[14][02][01]\"I just glad zat zere[01]was an empty room[01]'ere.[02][19]",
+      "speaker": "npc",
+      "tone_register": "informal-relieved",
+      "intent": "expressive",
+      "risk_level": "medium",
+      "base_translation": "[14][02][01]\"Fico feliz que havia[01]um quarto vazio aqui[01]mesmo.[02][19]",
+      "byte_budget": 71,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Dialeto/sotaque ('zat zere' -> 'que havia') preservado em tom; escolha de registro informal evita super-formalizar NPC menor."
+    },
+    {
+      "offset": "AREAS045.DAT:8:13",
+      "text_source": "[14][03][02]\"Did you hear about[01]how the chief of the[02]Worens escaped the[01]castle?[02][14][FF][FF][14][84]CThey say he managed[01]to get all the way[01]to Wyndia!\"",
+      "speaker": "npc",
+      "tone_register": "gossip-colloquial",
+      "intent": "narrative/rumor",
+      "risk_level": "high",
+      "base_translation": "[14][03][02]\"Ouviu falar que o chefe[02]dos Worens conseguiu[01]escapar do Castelo?[02][14][FF][FF][14][84]CContam que ele chegou[01]ate Wyndia!\"",
+      "byte_budget": 178,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção critica de fuga do chefe Woren do Castelo para Wyndia — potencial revelacao de trama/alianca. Identidade dupla (chefe Woren) e ligacao com Nina/Wyndia nao explorada; risco de antecipacao de plot. Back-translation obrigatoria. Termo 'Woren' mantido (glossario). Decidido: nao expandir/resolver ambiguidade."
+    },
+    {
+      "offset": "AREAS045.DAT:8:14",
+      "text_source": "[14][04][03]\"They say one of the[01]Wyndian princesses[02]helped that Woren[01]chief escape![02][14][FF][FF][14][83]BCan you imagine[01]such a thing? How[01]scandalous!\"",
+      "speaker": "npc",
+      "tone_register": "scandalized-gossipy",
+      "intent": "narrative/rumor",
+      "risk_level": "critical",
+      "base_translation": "[14][04][03]\"Contam que uma das[02]princesas Wyndianas[01]ajudou aquele chefe[01]Woren a escapar![02][14][FF][FF][14][83]BVoce imagina uma[01]coisa dessas? Que[01]escandalo!\"",
+      "byte_budget": 178,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "CRITICO: menciona 'Princesa Wyndiana' ajudando chefe Woren a escapar. Nina (Princesa de Wyndia) esta no grupo — spoiler potencial/revelacao de alianca futura. Construcao evita nome; dialogo NPC usa 'such a thing' generico. Preservado: ambiguidade de identidade (nao diz QUAL princesa). Back-translation OBRIGATORIA. Risco de comprometimento de reveal_timing."
+    },
+    {
+      "offset": "AREAS045.DAT:8:15",
+      "text_source": "\"Mommy...I'm hungry!\"",
+      "speaker": "npc",
+      "tone_register": "childish-plaintive",
+      "intent": "expressive/emotional",
+      "risk_level": "low",
+      "base_translation": "\"Mamae...Tenho fome!\"",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Crianca pequena; linguagem simples, direta, emocional. Traducao soa natural/infantil; interjeicao preservada em intencao (fome, lamento)."
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "bof4-AREAS045-v1"
+}

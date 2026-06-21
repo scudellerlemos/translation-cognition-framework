@@ -1,0 +1,340 @@
+{
+  "lines": {
+    "AREAD119.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "formal-formal, autoridade",
+      "intent": "acusação stern de conduta imprópria",
+      "risk_level": "medium",
+      "risk_notes": "Tradutor de nomes/termos politicos: 'Woren' mantém original (glossario); 'truce/Empire/Alliance' traduzir; tom de repreensão deve soar solene, não moderno.",
+      "t": "[0C][04][14][80]@\"Nao so voce se infiltra no[01]Imperio--[02]com quem atualmente temos[01]uma trégua, devo dizer--[02]mas e descoberto[01]fazendo-o e deportado.[02]Pergunto-lhe, é esta[01]a conduta adequada[01]de um guerreiro,[02]aquele que afirma[01]liderar a poderosa[01]nacao Woren!?\""
+    },
+    "AREAD119.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "formal-formal, autoridade (repetido)",
+      "intent": "acusação stern (duplicado)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"Nao so voce se infiltra no[01]Imperio--[02]com quem atualmente temos[01]uma trégua, devo dizer--[02]mas e descoberto[01]fazendo-o e deportado.[02]Pergunto-lhe, é esta[01]a conduta adequada[01]de um guerreiro,[02]aquele que afirma[01]liderar a poderosa[01]nacao Woren!?\""
+    },
+    "AREAD119.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "formal-alto, preocupação politica",
+      "intent": "questionar consequências diplomaticas",
+      "risk_level": "medium",
+      "risk_notes": "'rash/thoughtless actions' → 'atos impulsivos/irrefletidos'; orçamento 199 bytes — confirmar transliteração cabe.",
+      "t": "[0C][04][14][80]@\"Sabe qual será o custo[01]de seus atos irrefletidos[02]para nos e para toda[01]a Alianca[02]em nossas negociacoes com[01]o Imperio? Sabe!?\""
+    },
+    "AREAD119.DAT:8:5": {
+      "speaker": "Nina",
+      "tone_register": "formal-meio, liderança com calor",
+      "intent": "desespero/determinação — confrontar prioridades",
+      "risk_level": "high",
+      "risk_notes": "Nina alta criticidade; 'Elina' é o nome da fiancée (spoiler timing crítico — já pode ser nomeado?). Preservar firmeza de liderança; 'sit there like that' = passividade culposa. Risk alto por mudança de tom e identidade dupla do dilema.",
+      "t": "[0C][03][14][01][01]\"Mas como voce consegue[01]ficar assim sentado,[02]quando um membro de uma[01]das familias reais[01]da Alianca...[02][14][02][01]Quando Elina foi[01]sequestrada pelo[01]Imperio!?\""
+    },
+    "AREAD119.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "formal-alto, autoridade",
+      "intent": "prioridade coletiva vs. individual — hierarquizar",
+      "risk_level": "medium",
+      "risk_notes": "'We can't afford' → 'nao podemos nos permitir'; 'one person, even if she is a princess' — tom de sacrifício politico necessário. Soar firme, nao cruel.",
+      "t": "[0C][04][14][80]@\"Temos responsabilidade maior[01]de proteger todos os[01]membros[02]da Alianca![02]Nao podemos nos permitir[01]preocupacao com[02]uma pessoa, ainda que[01]seja uma princesa!\""
+    },
+    "AREAD119.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "formal-baixo, procedimento",
+      "intent": "bloquear acesso — protocolo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"Desculpe, mas esta[01]area e usada[02]para o depoimento do[01]Chefe [04][02].[02]Ninguem pode[01]entrar.\""
+    },
+    "AREAD119.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "urgente, ênfase",
+      "intent": "chamar atenção — informação vital",
+      "risk_level": "low",
+      "risk_notes": "Onomatopeia de pausa/incerteza '[15][09]' — manter verbatim. 'vital information regarding' → 'informacao crucial sobre'; [09] é placeholder de termo/objeto.",
+      "t": "[14][04][03]\"Tenho informacao crucial[01]sobre [04][02]![02]E sobre o[01][09][01][01]...\"[15][09]"
+    },
+    "AREAD119.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "casual-entusiasmado",
+      "intent": "revelar localização — surpresa positiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][04][14][80]@\"O [09]?[01]Por que, esta[01]bem aqui!\""
+    },
+    "AREAD119.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro, relatório",
+      "intent": "informar devolução",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Foi nos devolvido[01]pelo Imperio.\""
+    },
+    "AREAD119.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "formal-alto, tensão diplomatica",
+      "intent": "explicar custo politico — resignação",
+      "risk_level": "medium",
+      "risk_notes": "'changes to our treaty' = mudancas ao tratado; 'little choice but to accept' = pouquissima opcao senao aceitar. Preservar tom de fardo necessário, nao frieza.",
+      "t": "[0C][06][14][80]@\"Em troca de sua[01]devolucao...[02]Fizeram[01]varias exigencias[01]dificeis...[02]Entre elas, mudancas[01]em nosso tratado--[02]mudancas que temos[01]pouca opcao senao[01]aceitar!\""
+    },
+    "AREAD119.DAT:8:12": {
+      "speaker": "Nina",
+      "tone_register": "formal-baixo, voz quebrada",
+      "intent": "desespero — esperança desfeita",
+      "risk_level": "high",
+      "risk_notes": "Nina alta criticidade; 'My sister...We were going to...' = incompletude + luto. Som de esperança cortada. Nao resolver a frase — deixar ambiguidade de 'vamos fazer'.",
+      "t": "[0C][03][14][04][03]\"Mas...Minha irma...[01]Iamos fazer...\""
+    },
+    "AREAD119.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal-alto, corte final",
+      "intent": "silenciar — apagar assunto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Silencio![02]Este assunto nao e mais[01]de sua[02]preocupacao.\""
+    },
+    "AREAD119.DAT:8:15": {
+      "speaker": "Nina",
+      "tone_register": "formal-baixo, voz fraca",
+      "intent": "aceitação resignada — dor contida",
+      "risk_level": "high",
+      "risk_notes": "Uma unica frase de lamento. Nina critica — preservar isolamento emocional; nao soar passiva, soar silenciada/controlada.",
+      "t": "[0C][03][14][04][03]\"Ah, [04][02]...\""
+    },
+    "AREAD119.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "colérico, liderança frustrada",
+      "intent": "repreensão — controlar subordinados",
+      "risk_level": "low",
+      "risk_notes": "'fake sword' = espada falsa; 'keep your eye on them' = vigia-los; tom de raiva contida (nao explosivo).",
+      "t": "[0C][03][14][05][04]\"[04][03]! Nao consegue[01]ficar de olho neles!?[02]Voce deixou-os ir e[01]fazer uma espada falsa[01]assim...[02]Em que estava[01]pensando!?\""
+    },
+    "AREAD119.DAT:8:17": {
+      "speaker": "npc",
+      "tone_register": "hesitante, medo",
+      "intent": "justificar — stammering",
+      "risk_level": "low",
+      "risk_notes": "'You said to w...w...' = 'Voce disse para v...v...'; onomatopeia de gagueira — localizar.",
+      "t": "[0C][06][14][C3]@\"Voce disse para v...[01]v...\""
+    },
+    "AREAD119.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "defensivo, nervoso",
+      "intent": "explicar limitação de instrução",
+      "risk_level": "low",
+      "risk_notes": "'You didn't say anything about s-stopping them' = 'Nao falou nada sobre p-para-los'; gagueira + defesa.",
+      "t": "[0C][06][14][C3]@\"Para vigiar...[02]Voce nao falou[01]nada sobre[01]p-para-los.\""
+    },
+    "AREAD119.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "irritado, ordem direta",
+      "intent": "reforçar comando — ameaca velada",
+      "risk_level": "low",
+      "risk_notes": "'Grr' = rosnado (onomatopeia); 'let me know immediately' = me avise na hora; 'Understand?' = Entendido?",
+      "t": "[0C][03][14][05][04]\"Grrr....[02]Na proxima vez que[01]tentarem fazer algo,[02]me avise[01]na hora![01]Entendido?\""
+    },
+    "AREAD119.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "formal-baixo, protocolo",
+      "intent": "bloquear visitação — regra",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][02][14][03][02]\"O prisioneiro esta[01]sob investigacao.[02]Nao sao permitidas[01]visitas!\""
+    },
+    "AREAD119.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "formal-respectoso, lamento",
+      "intent": "negar acesso — empatia velada",
+      "risk_level": "low",
+      "risk_notes": "'Princess [04][01]' = Princesa [token]; 'I'm afraid' = receio/desculpa formal.",
+      "t": "[0C][03][14][85]D\"Receio que deva ser[01]assim, Princesa [04][01].\""
+    },
+    "AREAD119.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "formal-respeitoso, explicação",
+      "intent": "justificar segurança estrita",
+      "risk_level": "medium",
+      "risk_notes": "'Master [04][02] is the leader of the Woren nation' = Chefe é lider da nacao Woren; 'Unlike you' = 'Diferentemente de voce' (contraste—leader de nacao vs. princesa); 'must be kept under strict guard' = manter sob vigilancia rigorosa.",
+      "t": "[0C][03][14][85]D\"Chefe [04][02] e[01]o lider da[01]nacao Woren...[02]Diferentemente de voce,[01]ele deve ser mantido[01]sob vigilancia[01]rigorosa.\""
+    },
+    "AREAD119.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "formal-apologético, comando",
+      "intent": "pedir saída — ordem velada",
+      "risk_level": "low",
+      "risk_notes": "'ask you to leave' = pedi-lo que saia; '[04][03], keep your eye on them!' = nome + ordem.",
+      "t": "[0C][06][14][85]D\"Sinto muito, mas tenho[01]que pedi-lo que saia.[02][04][03], fique de olho[01]neles!\""
+    },
+    "AREAD119.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "formal-baixo (bloqueur) + formal-alto (official)",
+      "intent": "negar passage + informar espera",
+      "risk_level": "medium",
+      "risk_notes": "Cambio de speaker mid-line ([14][FF][FF] = transição). Primeiro: 'I cannot allow you to pass'; segundo: 'It may take several days...You should wait in your room'. Dois turnos, separar por clareza visual no risco.",
+      "t": "[14][03][02]\"Sinto muito, mas[01]nao posso permitir[01]que voce passe.\"[02][14][FF][FF][14][86]E\"Pode levar varios[01]dias para terminar o[02]depoimento sobre as[01]acoes do Chefe[01][04][02]. Voce deveria[01]esperar em seu[01]quarto na cidade.\""
+    },
+    "AREAD119.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "formal-respeitoso, instrução",
+      "intent": "informar cronograma — sugerir espera",
+      "risk_level": "low",
+      "risk_notes": "Repetição/continuação de 8:24 (segundo turno apenas). Mesmo conteúdo.",
+      "t": "[14][86]E\"Pode levar varios[01]dias para terminar o[02]depoimento sobre as[01]acoes do Chefe[01][04][02]. Voce deveria[01]esperar em seu[01]quarto na cidade.\""
+    },
+    "AREAD119.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "informal-coloquial, medo politico",
+      "intent": "especular sobre crise — preocupação coletiva",
+      "risk_level": "low",
+      "risk_notes": "'I just can't understand' = 'Simplesmente nao consigo entender'; 'fiancee' = noiva; 'How can he just sit there like that?' = repetição de tema (passividade culposa).",
+      "t": "[14][03][02]\"Simplesmente nao consigo[01]entender o que[01]estao pensando![02]Quer dizer, afinal,[01]a noiva do principe[01]esta desaparecida, certo?[02]Como ele consegue[01]ficar ali assim?\""
+    },
+    "AREAD119.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "coloquial-reflexivo",
+      "intent": "empatia com situação do chefe",
+      "risk_level": "low",
+      "risk_notes": "'Makes you feel sorry for' = inspira pena/solidariedade.",
+      "t": "[14][86]E\"Faz voce sentir[01]pena de [04][02], nao[01]é?\""
+    },
+    "AREAD119.DAT:8:28": {
+      "speaker": "npc",
+      "tone_register": "formal-baixo, protocolo",
+      "intent": "bloquear passage (terceira repetição de tema)",
+      "risk_level": "low",
+      "risk_notes": "Repetição do bloqueio de acesso.",
+      "t": "[14][03][02]\"Desculpe, mas nao[01]posso deixa-lo passar.\""
+    },
+    "AREAD119.DAT:8:29": {
+      "speaker": "Ryu",
+      "tone_register": "simples, direto, observação neutra",
+      "intent": "notar vigilancia — aceitação passiva",
+      "risk_level": "high",
+      "risk_notes": "Ryu criticidade alta — voz simples, honesta, sem intelectualismo. 'keeping an eye on us' = vigiando a gente; 'isn't he?' = nao é? Confirmar que Ryu soa diferente de Fou-Lu (majestade vs. humildade).",
+      "t": "[14][C1]@\"Ele certamente esta[01]vigiando a gente,[01]nao é?\""
+    },
+    "AREAD119.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "formal-cético, reflexão",
+      "intent": "questionar eficácia de confronto",
+      "risk_level": "low",
+      "risk_notes": "'Wouldn't do much good' = nao faria muito bem; tom pessimista/realista.",
+      "t": "[14][84]C\"Acho que nao[01]adiantaria muito[02]tentar falar com[01]ele, nao é?\""
+    },
+    "AREAD119.DAT:8:31": {
+      "speaker": "npc",
+      "tone_register": "sonolento, onomatopeia",
+      "intent": "despertar — sons de sono",
+      "risk_level": "low",
+      "risk_notes": "'Nnnn....zzzz...[0B]fuwaaahhh...' = ronco + boceijo. Localizar à convenção PT-BR (roncar/bocejar).",
+      "t": "[14][86]E\"Nnnnn....zzzzz...[0B]Fuaaaahhh...\""
+    },
+    "AREAD119.DAT:8:32": {
+      "speaker": "system",
+      "tone_register": "UI/tutorial, imperativo",
+      "intent": "instruir jogador — mecânica de combate",
+      "risk_level": "medium",
+      "risk_notes": "Instrução de jogo: 'Defeat...guards' (derrote guardas); '[05][02]' = placeholder cor; 'combo attacks' = ataques combo. Preservar tokens de formatação exatamente.",
+      "t": "[0C] Derrote os [05][02]Guardas[06]![02]Voce tem apenas [05][02]1 turno[06] antes[01]os guardas pedirem ajuda![02]Use ataques combo para[01]derrota-los rapidamente!"
+    },
+    "AREAD119.DAT:8:33": {
+      "speaker": "npc",
+      "tone_register": "dor, sofrimento",
+      "intent": "despertar com dor — onomatopeia",
+      "risk_level": "low",
+      "risk_notes": "'Uuhhhh...Ow...' = gemido de dor ao acordar.",
+      "t": "[14][07][02]\"Uuhhh...Ai...\""
+    },
+    "AREAD119.DAT:8:34": {
+      "speaker": "npc",
+      "tone_register": "surpresa/alarme, onomatopeia",
+      "intent": "notar intrusão — alertar",
+      "risk_level": "low",
+      "risk_notes": "'[0D][0F][02]Uh[0E]' = efeito de som/realce (preservar tokens); 'oh!Intruders!' = 'Uh oh! Intrusos!'",
+      "t": "[14][07][02]\"[0D][0F][02]Uh[0E] oh![02]Intrusos!\""
+    },
+    "AREAD119.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "confuso, meio-acordado",
+      "intent": "vagueza — incerteza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][03][02]\"uhhh...\""
+    },
+    "AREAD119.DAT:8:36": {
+      "speaker": "npc",
+      "tone_register": "alarme, grito",
+      "intent": "chamar ajuda — pânico",
+      "risk_level": "low",
+      "risk_notes": "'[0D][0F][02]Wh[0E]-whoa!' = efeito + gagueira de choque; 'Help!' = 'Ajuda!'.",
+      "t": "[14][03][02]\"[0D][0F][02]Uh[0E]-uau![02]Ajuda!\""
+    },
+    "AREAD119.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "ronco, dormindo",
+      "intent": "sono profundo — dormindo através do combate",
+      "risk_level": "low",
+      "risk_notes": "'[0D][0F][08]Zzzzzz[0E]' = ronco com efeito (preservar tokens).",
+      "t": "[14][03][02]\"[0D][0F][08]Zzzzz[0E]...\""
+    },
+    "AREAD119.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "medo, grito",
+      "intent": "despertar com pânico — chamar ajuda",
+      "risk_level": "low",
+      "risk_notes": "'[0D][0F][02]Y[0E]-yikes!' = efeito + exclamação; 'Somebody! Help!' = multiplos apelos.",
+      "t": "[14][03][02]\"[0D][0F][02]A[0E]-aia![02]Alguem! Ajuda!\""
+    },
+    "AREAD119.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "ronco, dormindo",
+      "intent": "roncar continuamente",
+      "risk_level": "low",
+      "risk_notes": "Continuação de sono profundo.",
+      "t": "[14][03][02]\"Zzz...zzz...[0B]zzz...\""
+    },
+    "AREAD119.DAT:8:40": {
+      "speaker": "Ryu",
+      "tone_register": "simples, honesto, levemente irônico",
+      "intent": "questionar inação — chamar atenção para escolha moral",
+      "risk_level": "high",
+      "risk_notes": "Ryu criticidade alta; 'Aren't you going to try and stop us' = 'Nao vai tentar nos parar'. Tom simples + carga moral. Preservar honestidade de Ryu (nao calculista); contrastar com Fou-Lu se fosse ele falar.",
+      "t": "[14][C1]@\"Voce nao vai[01]tentar nos parar,[01][04][03]?\""
+    },
+    "AREAD119.DAT:8:42": {
+      "speaker": "Ryu",
+      "tone_register": "simples, grato, alívio",
+      "intent": "agradecer cumplicidade — reconhecer bom caráter",
+      "risk_level": "high",
+      "risk_notes": "Ryu: 'Thank you...one of the good guys' = gratidão sem condescendência. Voz simples; '[14][FF][FF]' = transição (preservar); [14][88]C = speaker change. Ryu confiante/respeitoso mas nao verboso.",
+      "t": "[14][C1]@\"...[0B]...[02][14][FF][FF][14][88]CObrigado, [04][03].[01]Voce e um cara[01]do bem mesmo.\""
+    },
+    "AREAD119.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "preocupado, política",
+      "intent": "especular crise geopolítica — medo de guerra",
+      "risk_level": "low",
+      "risk_notes": "'Looks like...Alliance are quarreling' = 'Parece que membros da Alianca estao em conflito'; 'might be in trouble' = 'podemos estar em apuros'.",
+      "t": "[14][03][02]\"Parece que alguns[01]membros da[02]Alianca estao em[01]conflito...[02]Se uma guerra[01]comeca agora,[01]podemos estar em[01]apuros.\""
+    },
+    "AREAD119.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "cansado, desculpa",
+      "intent": "bloquear mas com empatia",
+      "risk_level": "low",
+      "risk_notes": "'There's a lot going on' = 'Muita coisa acontecendo'; 'I'm afraid I can't let you pass' = formatula de bloqueio com lamento.",
+      "t": "[14][86]E\"Muita coisa acontecendo[01]agora...[02]Receio que nao[01]posso deixa-lo passar.\""
+    },
+    "AREAD119.DAT:8:45": {
+      "speaker": "npc",
+      "tone_register": "formal-alto, proibição",
+      "intent": "bloquear entrada — ordem",
+      "risk_level": "low",
+      "risk_notes": "'Entry into the castle is prohibited!' = 'A entrada no castelo e proibida!'; tom solene/oficial.",
+      "t": "[14][03][02][14][86]E\"A entrada no[01]castelo e[01]proibida!\""
+    }
+  }
+}

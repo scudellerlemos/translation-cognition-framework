@@ -1,0 +1,84 @@
+{
+  "lines": {
+    "AREAD026.DAT:10:2": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, majestoso",
+      "intent": "questionar com autoridade a presença de intrusos",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu criticality=high; registro arcaico inegociável ('be ye', 'thy'); preservar distância majestosa; verificar que não soa casual ou moderno",
+      "t": "[0C][06][14][C6]@\"O que... [0B]O que fazeis vós [01]neste lugar?\""
+    },
+    "AREAD026.DAT:10:4": {
+      "speaker": "npc",
+      "tone_register": "formal, informativo, leve deferência",
+      "intent": "explicar a razão da vigília noturna",
+      "risk_level": "medium",
+      "risk_notes": "mecanismo de cena; 'supposed to appear' requer registro direto; preservar tom de serviço militar/guarda",
+      "t": "[0C][05][14][01][01]\"Dizem que um dragão ou [01]algo assim deve aparecer [01]esta noite... [0B][02]Assim nos foi ordenado [01]vigiar esta área.\""
+    },
+    "AREAD026.DAT:10:6": {
+      "speaker": "npc",
+      "tone_register": "formal, enfático, revelatório",
+      "intent": "elevar o risco da ameaça; mencionar a lore do Dragão da Perdição",
+      "risk_level": "high",
+      "risk_notes": "primeira menção do 'Dragão da Perdição' (lore crítica); 'Dragon of Doom' é termo de glossário; 'ruin to the Empire' toca lore; verificar que não antecipa spoilers; manter tom formal-reverente",
+      "t": "[0C][05][14][01][01]\"É verdade mesmo—e não é [01]qualquer dragão, não! [02]Dizem que é o lendário [01]Dragão da Perdição, [02]que trará ruína ao [01]Império!\""
+    },
+    "AREAD026.DAT:10:7": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, solene, interrogativo",
+      "intent": "questionar o propósito/plano dos mortais contra o dragão",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu criticality=high; 'thy design' = intenção/plano; manter 'thy' (teu/vosso arcaico) e estrutura SVO arcaica; verificar que não moderniza",
+      "t": "[0C][06][14][C6]@\"E...Qual é vosso [01]intento com este [01]dragão?\""
+    },
+    "AREAD026.DAT:10:9": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, desafiador, condescendente",
+      "intent": "duvidar da capacidade de mortais enfrentarem um dragão",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu criticality=high; 'Thou believest' = forma arcaica 2ª pessoa; 'mere mortals' = tom distante/superior; registro DEVE manter 'tu' arcaico (teu, és, podes); este é o ponto de identidade de Fou-Lu vs Ryu; back-translation obrigatória",
+      "t": "[0C][06][14][82]B\"Crês que podes fazer tal [01]coisa? Tu és apenas um [02]mortal insignificante.\""
+    },
+    "AREAD026.DAT:10:10": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, pedagógico, sombrio",
+      "intent": "avisar que não compreendem o poder real do dragão",
+      "risk_level": "high",
+      "risk_notes": "'ken' (conhecer/compreender arcaico); 'that which you would destroy' = o que pretendem destruir; manter contraste entre 'thou dost not ken' (tú arcaico) e 'you' (pronome genérico); preservar tom de lição sombria",
+      "t": "[0C][02][14][C6]@\"Não compreendeis o poder [01]daquilo que ousariais [02]destruir. [02]Este é um dragão.\""
+    },
+    "AREAD026.DAT:10:11": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, sublime, épico",
+      "intent": "explicar cosmicamente por que dragões são incomparavelmente superiores aos mortais",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu criticality=high; discurso épico com múltiplas linhas e metáforas (vulcão, terra, nascimento/morte); 'force of nature', 'volcano', 'earth itself', 'birth', 'life', 'taketh away' = tudo deve soar arcaico e elevado; risco de byte_budget=365 é alto; back-translation obrigatória para preservar grandiosidade",
+      "t": "[0C][03][14][C6]@\"Um dragão é uma força [01]da natureza em si mesma. [02]Podes tanto querer lutar contra [02]um vulcão ou a própria terra! [02]Dragões dão à vossa gente [02]nascimento, concedem vida, [01]e verdadeiramente a tiram. [02]São para vós como vós [01]sois para um inseto. [02]Em vossos termos... [0B]\""
+    },
+    "AREAD026.DAT:10:12": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, definitivo, solene",
+      "intent": "pronunciar a verdade final sobre a natureza dos dragões",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu criticality=high; conclusão épica; 'art' (sois); 'gods' deve soar como verdade absoluta; tom majestoso/inevitável",
+      "t": "[14][C6]@\"Eles são deuses.\""
+    },
+    "AREAD026.DAT:10:13": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, retórico, desafiador",
+      "intent": "questionar retoricamente se alguém ousaria combater um deus",
+      "risk_level": "high",
+      "risk_notes": "Fou-Lu criticality=high; 'Wouldst thou' = forma arcaica 2ª pessoa do subjuntivo; tom retórico que espera resposta negativa; preservar grandiosidade da sequência anterior",
+      "t": "[0C][03][14][C6]@\"... [0B]Ousariais lutar contra [01]um deus?\""
+    },
+    "AREAD026.DAT:10:14": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, contemplativo, trágico",
+      "intent": "refletir que a natureza dos mortais é não mudar, apesar da verdade revelada",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu criticality=high; conclusão de arco de pensamento; 'tis' (é), 'not the nature of mortals' = filosofia de Fou-Lu; tom transita de épico para amargo/resignado; byte_budget=115; back-translation obrigatória",
+      "t": "[14][83]C\"'É como supunha... [02]Não é natureza dos mortais [01]mudar seus caminhos... [0B]\""
+    }
+  }
+}

@@ -1,0 +1,660 @@
+{
+  "lines": {
+    "AREAD123.DAT:8:70": {
+      "speaker": "npc",
+      "tone_register": "casual, amigavel",
+      "intent": "saudacao simples, oferecer ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voltou? Tem algo em que eu possa ajudar?"
+    },
+    "AREAD123.DAT:8:71": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, majestoso, obsessivo",
+      "intent": "fantasia de poder, riso maníaco",
+      "risk_level": "critical",
+      "risk_notes": "Voz Fou-Lu criticality=high — registro arcaico/imperial obrigatório; riso maníaco localizado; risco crítico por identidade/vilania — back-translation exigida; preservar obsessão sem soar casual",
+      "t": "Se eu casar com a Princesa [04][01], tudo isto... A cidade, o povo... [02]Tudo sera meu! Ha ha... Bwah ha ha ha ha!"
+    },
+    "AREAD123.DAT:8:72": {
+      "speaker": "Nina",
+      "tone_register": "formal-médio, caloroso, nostalgico",
+      "intent": "pergunta genuína sobre experiência na Torre; lamento de não ter ido",
+      "risk_level": "high",
+      "risk_notes": "Voz Nina criticality=high — manter firmeza/liderança discreta; sentimento nostálgico verdadeiro, não infantil; [02] presente no source — validar contagem exata no campo 't'",
+      "t": "Voces foram a Torre do[01]Vento? [02]O que acharam? [01]Bastante alta, nao e? [02]Gostaria de ter ido[01]com voces..."
+    },
+    "AREAD123.DAT:8:73": {
+      "speaker": "npc",
+      "tone_register": "cansado, vulnerável",
+      "intent": "manifestar cansaço físico, sufocamento por altitude",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deixa eu descansar so um[01]minuto... O ar daqui e tao[01]fino... Ufa!"
+    },
+    "AREAD123.DAT:8:74": {
+      "speaker": "npc",
+      "tone_register": "entusiasmado, admirativo",
+      "intent": "explicar mecânica da Torre (vento como força); gerar admiração",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alimenta os elevadores,[01]traz agua pra ca... [02]Nao e incrivel o que o[01]poder do Vento consegue fazer?"
+    },
+    "AREAD123.DAT:8:75": {
+      "speaker": "npc",
+      "tone_register": "informativo, desculpador",
+      "intent": "instruir sobre rota para cadeias",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voces ja sabem disso, mas[01]este e o caminho para os[01]calaboucos."
+    },
+    "AREAD123.DAT:8:76": {
+      "speaker": "npc",
+      "tone_register": "poético, sereno, apaixonado",
+      "intent": "admiração pela beleza natural; desejo de permanência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O ar e fresco e limpo, e a[01]paisagem e tao bela... [02]Eu podia ficar aqui[01]para sempre!"
+    },
+    "AREAD123.DAT:8:80": {
+      "speaker": "npc",
+      "tone_register": "formal, pensativo, preocupado",
+      "intent": "revelar percepção de mudanças mundiais; isolamento de Wyndia",
+      "risk_level": "medium",
+      "risk_notes": "Referência a mundo em mudança — possível lore sensível; garantir que não antecipa spoilers; manter tom de inteligência política discreta",
+      "t": "Nao dou muita atencao ao que[01]nao afeta Wyndia, [02]mas ate eu vejo que o[01]mundo esta mudando..."
+    },
+    "AREAD123.DAT:8:81": {
+      "speaker": "npc",
+      "tone_register": "formal, pensativo, preocupado",
+      "intent": "revelação de isolamento do castelo; percepção de mudanças globais",
+      "risk_level": "medium",
+      "risk_notes": "Paralelo a 8:80 mas ênfase em castelo (mais isolado); validar variedade semântica; risco médio por lore",
+      "t": "Nao dou muita atencao ao que[01]acontece fora do castelo, [02]mas ate eu vejo que o[01]mundo esta mudando..."
+    },
+    "AREAD123.DAT:8:82": {
+      "speaker": "npc",
+      "tone_register": "respeitoso, urgente",
+      "intent": "pedido sincero de proteção à Princesa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, cuide bem da[01]Princesa [04][01]!"
+    },
+    "AREAD123.DAT:8:83": {
+      "speaker": "npc",
+      "tone_register": "formal-caloroso, admirativo, nostálgico",
+      "intent": "elogio à maturidade de Nina; lamento pela irmã ausente; reconhecimento de crescimento",
+      "risk_level": "high",
+      "risk_notes": "Referência a irmã (identidade/relação sensível); crescimento de Nina é tema narrativo; [02] presente múltiplas vezes — validar contagem exata; cuidado com spoilers sobre irmã (reveal_timing)",
+      "t": "Ora, Princesa [04][01]! [02]Por um momento, quase a[01]confundi com sua [01]irma. [02]Voce cresceu muito, ficou[01]muito mais parecida com ela[01]nos ultimos tempos -- [02]mais confiante, mais[01]madura. Se ao menos ela[01]estivesse aqui para ver voce agora!"
+    },
+    "AREAD123.DAT:8:84": {
+      "speaker": "Fou-Lu",
+      "tone_register": "arcaico, maníaco, desumano",
+      "intent": "riso vilão; desprezo pela humanidade; gosto de poder",
+      "risk_level": "critical",
+      "risk_notes": "Voz Fou-Lu criticality=high — manter arcaísmo/majestade mesmo em riso maníaco; [02] presente — validar contagem; desprezo traduzido como 'formiguinhas/insetos' para impacto; back-translation obrigatória",
+      "t": "Ha ha... Bwah ha ha ha! [02]Olha so a galera la embaixo![01]Parecem formigas! Insetos![01]Bwah ha ha ha ha!"
+    },
+    "AREAD123.DAT:8:85": {
+      "speaker": "npc",
+      "tone_register": "alerta, formal, protetor",
+      "intent": "aviso sobre intruso capturado; recomendação de cautela",
+      "risk_level": "medium",
+      "risk_notes": "'sneak into the castle' — intruso crítico para lore/segurança; possível spoiler se revelado cedo; manter tom de cautela literal sem resolver identidade",
+      "t": "Capturamos alguem tentando[01]entrar no castelo. [02]Eu tomaria cuidado se[01]fosse voce!"
+    },
+    "AREAD123.DAT:8:88": {
+      "speaker": "npc",
+      "tone_register": "respeitoso, impressionado",
+      "intent": "compartilhar informação histórica/prestigiosa sobre objeto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi dizer que pertencia[01]ao proprio Rei!"
+    },
+    "AREAD123.DAT:8:90": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:91": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:92": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:93": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:94": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:95": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:96": {
+      "speaker": "system",
+      "tone_register": "descritivo, objetivo",
+      "intent": "descrição ambiental mecânica (repetição)",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O vento assopando pelas[01]cavernas faz os moinhos[01]de vento girar."
+    },
+    "AREAD123.DAT:8:97": {
+      "speaker": "system",
+      "tone_register": "instrucional, urgente",
+      "intent": "tutorial mecânico — instruir sobre dinâmica de vento; estratégia de sobrevivência",
+      "risk_level": "low",
+      "risk_notes": "Token [13] preservado exatamente; instrução clara e concisa para caber no budget",
+      "t": "Voce nao consegue se mover contra o[01]vento! Espere nas cavidades[01]na parede ate ele parar![13]"
+    },
+    "AREAD123.DAT:8:0": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "explain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A energia que precisamos para operar este elevador vem de todos os [01]moinhos de vento."
+    },
+    "AREAD123.DAT:8:1": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "explain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A energia que precisamos para operar este elevador vem de todos os [01]moinhos de vento."
+    },
+    "AREAD123.DAT:8:2": {
+      "speaker": "npc",
+      "tone_register": "conversational",
+      "intent": "admire",
+      "risk_level": "medium",
+      "risk_notes": "Wind Dragon é lore critico; preservar como 'Dragão do Vento'",
+      "t": "Que vista linda, nao e? [02]Se voce tiver sorte, talvez ate veja o Dragao do Vento [01]voando daqui."
+    },
+    "AREAD123.DAT:8:3": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As pessoas nao ficam assustadas [01]morando tao alto assim?"
+    },
+    "AREAD123.DAT:8:4": {
+      "speaker": "npc",
+      "tone_register": "proud",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nos Windianos nao temos medo de [01]altura. [02]Pelo contrario, adoramos [01]lugares altos."
+    },
+    "AREAD123.DAT:8:5": {
+      "speaker": "Ryu",
+      "tone_register": "confident",
+      "intent": "boast",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu nao tenho medo de [01]alturas!"
+    },
+    "AREAD123.DAT:8:6": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este eh o calabouco. [01]Nao ha muito de [01]interesse aqui para ver."
+    },
+    "AREAD123.DAT:8:7": {
+      "speaker": "npc",
+      "tone_register": "fawning",
+      "intent": "fantasize",
+      "risk_level": "high",
+      "risk_notes": "Elina is spoiler (identity concealed); use placeholder reference only; preserve comic intent",
+      "t": "Ah, Princesa Elina! [02]E Princesa [04] [01]! [02]Sao ambas tao [01]lindas! [02]O que eu faria se ambas [01]confessassem seu [01]amor por mim? [02]Como eu poderia escolher [01]entre elas!?"
+    },
+    "AREAD123.DAT:8:8": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "refuse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Peço desculpas, mas cidadaos comuns nao [01]podem passar deste ponto."
+    },
+    "AREAD123.DAT:8:9": {
+      "speaker": "npc",
+      "tone_register": "surprised",
+      "intent": "recognize",
+      "risk_level": "high",
+      "risk_notes": "Princesa identity reveal moment; preserve shock/dramatic beat; ellipsis indicates sudden realization",
+      "t": "Peço desculpas, mas cidadaos comuns... [02]...Princesa [04] [01]!?"
+    },
+    "AREAD123.DAT:8:10": {
+      "speaker": "npc",
+      "tone_register": "confused",
+      "intent": "recognize",
+      "risk_level": "high",
+      "risk_notes": "Recognition beat; typo in source ('Orinary') corrected to 'Ordinary'; preserve pause/shock",
+      "t": "Cidadaos comuns nao... [0B]Hã? [02]Princesa [04] [01]!"
+    },
+    "AREAD123.DAT:8:11": {
+      "speaker": "npc",
+      "tone_register": "warm",
+      "intent": "greet",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É bom tê-la de volta, Princesa [04] [01]!"
+    },
+    "AREAD123.DAT:8:12": {
+      "speaker": "npc",
+      "tone_register": "warm",
+      "intent": "welcome",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem-vinda em casa, Princesa [04] [01]!"
+    },
+    "AREAD123.DAT:8:13": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Rei está a sua espera."
+    },
+    "AREAD123.DAT:8:14": {
+      "speaker": "npc",
+      "tone_register": "concerned",
+      "intent": "empathize",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Todos estavam preocupados [01]com você."
+    },
+    "AREAD123.DAT:8:15": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "report",
+      "risk_level": "medium",
+      "risk_notes": "Majestade = formal honorific; preserve deference tone",
+      "t": "Sua Majestade o Rei, assim como todos nos, [02]aguardava ansiosamente o retorno [01]seguro da Princesa."
+    },
+    "AREAD123.DAT:8:16": {
+      "speaker": "npc",
+      "tone_register": "joyful",
+      "intent": "celebrate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fico tao feliz que a Princesa [01]esteja de volta!"
+    },
+    "AREAD123.DAT:8:17": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "redirect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esta eh a sala de audiencia do Rei. [01]Por favor se retire."
+    },
+    "AREAD123.DAT:8:18": {
+      "speaker": "npc",
+      "tone_register": "shocked",
+      "intent": "recognize",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É... [0B]É a Princesa [01][04] [01]!"
+    },
+    "AREAD123.DAT:8:19": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "permit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Pode entrar, Princesa-- voce [02]pode ver o Rei a qualquer hora!"
+    },
+    "AREAD123.DAT:8:20": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "question",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem é você?"
+    },
+    "AREAD123.DAT:8:21": {
+      "speaker": "npc",
+      "tone_register": "surprised",
+      "intent": "recognize",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Princesa [04] [01]! Nao sabiamos que [01]voce havia [01]retornado!"
+    },
+    "AREAD123.DAT:8:22": {
+      "speaker": "npc",
+      "tone_register": "concerned",
+      "intent": "question",
+      "risk_level": "high",
+      "risk_notes": "Elina absence is plot-critical; preserve worry/implication without spoiling her fate",
+      "t": "Isto significa que a Princesa [01]Elina nao vai voltar?"
+    },
+    "AREAD123.DAT:8:23": {
+      "speaker": "npc",
+      "tone_register": "neutral",
+      "intent": "report",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nada a relatar!"
+    },
+    "AREAD123.DAT:8:24": {
+      "speaker": "npc",
+      "tone_register": "relieved",
+      "intent": "reflect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sessoes de estrategia eram [01]realizadas todos os dias aqui durante [01]a guerra. [02]Fico feliz que a guerra acabou! Espero [01]que nunca tenhamos outra!"
+    },
+    "AREAD123.DAT:8:25": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "refuse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ninguem pode passar por este ponto [01]sem permissao do [01]Rei."
+    },
+    "AREAD123.DAT:8:26": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "confess_concern",
+      "risk_level": "medium",
+      "risk_notes": "Ludia = political faction; King speaking to captured princess; formal register maintained",
+      "t": "[0C][04][14][80]@\"Nao sabia o que pensar quando [01]recebi noticia de [01]Ludia que voce havia [02]sido capturada.\""
+    },
+    "AREAD123.DAT:8:27": {
+      "speaker": "npc",
+      "tone_register": "anguished",
+      "intent": "rebuke",
+      "risk_level": "high",
+      "risk_notes": "King's emotional conflict (protecting daughter vs. political necessity); preserve gravity and anger",
+      "t": "[0C][04][14][80]@\"O que eu deveria pensar? [02]Minha filha sai em busca de sua [01]irma desaparecida, [02]apenas para ser apanhada [01]invadindo territorio [01]inimigo... [02]Como isto aconteceu?\""
+    },
+    "AREAD123.DAT:8:28": {
+      "speaker": "Ryu",
+      "tone_register": "humble",
+      "intent": "apologize",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][C2]@\"Imploro seu perdao, [01]Majestade. [02]É tudo culpa minha. [01]Se nao fosse por mim...\""
+    },
+    "AREAD123.DAT:8:30": {
+      "speaker": "npc",
+      "tone_register": "bitter",
+      "intent": "explain",
+      "risk_level": "medium",
+      "risk_notes": "Empire/Ludia political dynamic; preserve King's diplomatic frustration",
+      "t": "[0C][04][14][80]@\"Como voce provavelmente [01]ja descobriu, [02]nosso vizinho e [01]suposto aliado [01]Ludia se preocupa mais [02]com suas relacoes [01]com o Imperio do que [02]em me ajudar a procurar [01]por minha filha.\""
+    },
+    "AREAD123.DAT:8:32": {
+      "speaker": "npc",
+      "tone_register": "grave",
+      "intent": "warn_and_promise",
+      "risk_level": "high",
+      "risk_notes": "King's protective tension; Ludian discovery threat; preserve formal register and careful tone",
+      "t": "[0C][04][14][80]@\"Entao, o que voce [01]pretende fazer agora? [02]Mais cedo ou mais tarde, os [01]Ludianos sao obrigados a [02]descobrir que voce esta [01]aqui. [02]Faremos claro que podemos [01]fazer tudo para [01]protege-lo...\""
+    },
+    "AREAD123.DAT:8:35": {
+      "speaker": "npc",
+      "tone_register": "measured",
+      "intent": "acknowledge_limit",
+      "risk_level": "medium",
+      "risk_notes": "King admits inability to control dragon; preserve resignation and kingly distance",
+      "t": "[0C][06][14][80]@\"Entendo... Mas... [02]Mesmo sendo rei de Wyndia, nao [01]tenho controle sobre o [02]dragao... Voce sabe [01]disso.\""
+    },
+    "AREAD123.DAT:8:37": {
+      "speaker": "npc",
+      "tone_register": "deliberate",
+      "intent": "direct",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Hmm... Entendo... [01]Muito bem. [02]Va para a floresta a leste [01]daqui. [02]La, voce encontrara [01]a [05] [02]Oracle do Vento [06], [02]uma sacerdotisa que [01]serve o Dragao [01]do Vento.\""
+    },
+    "AREAD123.DAT:8:38": {
+      "speaker": "npc",
+      "tone_register": "formal",
+      "intent": "prepare",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[0C][06][14][80]@\"Vou avisá-la de sua [01]chegada. [02]Descanse hoje--pode [01]comcar sua jornada pela [01]manhã.\""
+    },
+    "AREAD123.DAT:8:39": {
+      "speaker": "npc",
+      "tone_register": "reassuring",
+      "intent": "guide_and_protect",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "[14][80]@\"A Oracle vive na floresta a [01]leste de Wyndia. [02]Nao se preocupe--se os [01]Ludianos perguntarem [01]sobre voce, [02]pensaremos em algo [01]para distrair [01]eles.\""
+    },
+    "AREAD123.DAT:8:40": {
+      "speaker": "npc",
+      "tone_register": "sympathetic",
+      "intent": "reflect",
+      "risk_level": "high",
+      "risk_notes": "Political and emotional conflict; King's dilemma preserves tension between duty and love",
+      "t": "O Rei foi colocado em uma posicao muito dificil... [02]Por um lado, ele deve [01]proteger sua filha, [01]a Princesa [04], [02]e por outro deve [01]manter nossas relacoes [01]com Ludia."
+    },
+    "AREAD123.DAT:8:41": {
+      "speaker": "npc",
+      "tone_register": "sympathetic",
+      "intent": "observe",
+      "risk_level": "high",
+      "risk_notes": "King's hidden grief; emotional subtext; preserve dignity and heartbreak balance",
+      "t": "Tenho pena do pobre Rei... [02]Embora esteja preocupado [01]com a Princesa Elina mais [01]que ninguem, [02]nao discute o [01]assunto com ninguem em [01]publico. [02]Dói meu coracao ao ve-lo...\""
+    },
+    "AREAD123.DAT:8:43": {
+      "speaker": "npc",
+      "tone_register": "reverent",
+      "intent": "explain_lore",
+      "risk_level": "medium",
+      "risk_notes": "Sacred relic/Tower of Wind are lore-critical; preserve formality and religious tone",
+      "t": "O [09][07][05] eh uma [01]reliquia sagrada antiga, necessaria [01]para entrar na Torre do Vento, [02]que eh sagrada para o [01]Dragao do Vento. [02]É mantida em um lugar seguro [01][05] [02]abaixo do castelo [06]."
+    },
+    "AREAD123.DAT:8:44": {
+      "speaker": "npc",
+      "tone_register": "informative",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "P'ung Ryong, o Dragao do Vento, eh incomum entre [01]seus pares em que ainda [02]interage com mortais e [01]fala com eles de tempos [01]em tempos."
+    },
+    "AREAD123.DAT:8:46": {
+      "speaker": "npc",
+      "tone_register": "encouraging",
+      "intent": "send_off",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Disseram que voce viria. Boa sorte!"
+    },
+    "AREAD123.DAT:8:47": {
+      "speaker": "npc",
+      "tone_register": "wistful",
+      "intent": "admire",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouvi dizer que a Torre do Vento [01]eh ainda mais alta que o [01]castelo! [02]Eu adoraria ir la, [01]pelo menos uma vez!"
+    },
+    "AREAD123.DAT:8:48": {
+      "speaker": "npc",
+      "tone_register": "reverent",
+      "intent": "inform",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A Oracle do Vento vive na Floresta Kasq [02]ha quanto tempo qualquer um se lembra... [02]Ela quase nunca sai [01]exceto para falar com o [01]Dragao do Vento."
+    },
+    "AREAD123.DAT:8:50": {
+      "speaker": "npc",
+      "tone_register": "urgent",
+      "intent": "warn",
+      "risk_level": "high",
+      "risk_notes": "Ludian threat imminent; preserve urgency and danger",
+      "t": "Recebemos relatorios que [01]tropas Ludianas foram avistadas perto do castelo. [02]Voce deve se apressar, antes que [01]descubram que esta aqui!"
+    },
+    "AREAD123.DAT:8:51": {
+      "speaker": "npc",
+      "tone_register": "nostalgic",
+      "intent": "recall",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A ultima vez que a Oracle [01]veio ao castelo foi quando [01]a Princesa [04] nasceu."
+    },
+    "AREAD123.DAT:8:52": {
+      "speaker": "npc",
+      "tone_register": "wondering",
+      "intent": "speculate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dizem que a unica forma de ver o Dragao [01]do Vento de perto eh ir [02]ainda mais alto que a Torre [01]do Vento, para o norte. [02]Mas como alguem pode fazer [01]isto?"
+    },
+    "AREAD123.DAT:8:53": {
+      "speaker": "npc",
+      "tone_register": "conflicted",
+      "intent": "anguish",
+      "risk_level": "high",
+      "risk_notes": "Love triangle (spoiler identity of princess); romantic paradox; preserve emotional stakes",
+      "t": "A Princesa Elina eh noiva para casar com o Principe [01]de Ludia... [02]A Princesa [04] eh a proxima na linha [01]do trono... [02]Qual devo escolher-- [01]um amor que eh errado, [01]ou um amor que nao pode ser?"
+    },
+    "AREAD123.DAT:8:54": {
+      "speaker": "npc",
+      "tone_register": "anxious",
+      "intent": "doubt",
+      "risk_level": "high",
+      "risk_notes": "Royalty marriage implication; royal responsibility burden; preserve doubt and weight",
+      "t": "Espera... Se a Princesa [04] [01]e eu nos unirmos, [02]isto significa que serei [01]Rei de Wyndia um dia... [02]Poderei lidar com [01]a responsabilidade?"
+    },
+    "AREAD123.DAT:8:55": {
+      "speaker": "npc",
+      "tone_register": "fearful",
+      "intent": "worry",
+      "risk_level": "high",
+      "risk_notes": "Protection of spouse from enemy faction; preserve romantic and political danger",
+      "t": "Se eu casar com a Princesa Elina, [01]isto significa que todo o [02]pais de Ludia estara atrás de nos... [02]Poderei protege-la [01]deles?"
+    },
+    "AREAD123.DAT:8:58": {
+      "speaker": "npc",
+      "tone_register": "solemn",
+      "intent": "acknowledge",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu identity reveal (First Emperor); archaic register mandatory (see voice_cards); existential burden",
+      "t": "[14][80]@\"Hmm... [02]A outra metade do [01]Primeiro Imperador, [01]diz? [02]Agora entendo por que [02]tanto Ludia quanto o [02]Imperio procuravam [01]por voce! [02]Voce carrega um fardo [01]pesado... Desejo a voce [01]a melhor sorte.\""
+    },
+    "AREAD123.DAT:8:59": {
+      "speaker": "npc",
+      "tone_register": "solemn",
+      "intent": "acknowledge",
+      "risk_level": "critical",
+      "risk_notes": "Fou-Lu duplicate line; archaic register mandatory; existential burden repeated for emphasis",
+      "t": "[14][80]@\"Hmm... [02]A outra metade do [01]Primeiro Imperador, [01]diz? [02]Agora entendo por que [02]tanto Ludia quanto o [02]Imperio procuravam [01]por voce! [02]Voce carrega um fardo [01]pesado... Desejo a voce [01]a melhor sorte.\""
+    },
+    "AREAD123.DAT:8:60": {
+      "speaker": "npc",
+      "tone_register": "proud",
+      "intent": "bless",
+      "risk_level": "high",
+      "risk_notes": "King's final farewell to daughter; pride and resignation mixed; preserve dignity",
+      "t": "[14][80]@\"[04]... [02]Ha pouco que posso [01]fazer agora. [02]Voce cresceu muito, [01]minha filha. [02]Voce eh forte o suficiente [01]para lutar suas proprias [01]batalhas agora. [02]Tenho muito orgulho [01]de voce!\""
+    },
+    "AREAD123.DAT:8:61": {
+      "speaker": "npc",
+      "tone_register": "concerned",
+      "intent": "inquire",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quando voce nao retornou, [01]começamos a nos preocupar. [02]Voce conseguiu conhecer o [01]Dragao do Vento?"
+    },
+    "AREAD123.DAT:8:62": {
+      "speaker": "npc",
+      "tone_register": "protective",
+      "intent": "counsel",
+      "risk_level": "medium",
+      "risk_notes": "Servant's loyalty and concern; King's hidden worry; preserve caring subtext",
+      "t": "Sei o que Sua Majestade [01]o Rei disse, mas tambem [01]sei que em seu coracao, [02]ainda esta preocupado com voce, [01]Princesa. Tenha cuidado, [01]e retorne para casa em breve!"
+    },
+    "AREAD123.DAT:8:63": {
+      "speaker": "npc",
+      "tone_register": "earnest",
+      "intent": "request",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por favor, cuide bem da [01]Princesa [04]!"
+    },
+    "AREAD123.DAT:8:64": {
+      "speaker": "npc",
+      "tone_register": "anxious",
+      "intent": "pray",
+      "risk_level": "medium",
+      "risk_notes": "Elina's absence creates secondary worry; servant's emotional state; preserve concern",
+      "t": "A Princesa Elina ainda nao [01]retornou... [02]Apenas rezo para que nada [01]aconteca com a Princesa [04]...!"
+    },
+    "AREAD123.DAT:8:65": {
+      "speaker": "npc",
+      "tone_register": "dutiful",
+      "intent": "report",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nao sabemos quando voltarao, mas trabalhamos duro [02]para manter os quartos de ambas as Princesas [01]limpos e arrumados."
+    },
+    "AREAD123.DAT:8:66": {
+      "speaker": "npc",
+      "tone_register": "amazed",
+      "intent": "wonder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Esses dragoes sao criaturas estranhas, nao sao? [02]Quer dizer, olhe para o Dragao [01]do Vento--como algo [01]tao grande pode voar assim?"
+    },
+    "AREAD123.DAT:8:67": {
+      "speaker": "npc",
+      "tone_register": "hopeful",
+      "intent": "observe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Talvez esses Ludianos tenham [01]finalmente desistido... [02]Nao vemos nenhum por aqui [01]ha um tempo."
+    },
+    "AREAD123.DAT:8:68": {
+      "speaker": "npc",
+      "tone_register": "sympathetic",
+      "intent": "observe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Rei parece tao sozinho [01]ultimamente... [02]Acho que sente falta de [01]jantar com suas filhas."
+    },
+    "AREAD123.DAT:8:69": {
+      "speaker": "npc",
+      "tone_register": "sympathetic",
+      "intent": "observe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O Rei parece tao sozinho [01]ultimamente... [02]Acho que sente falta de [01]jantar com suas filhas."
+    }
+  }
+}

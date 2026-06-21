@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "AREAD117.DAT:14:0": {
+      "speaker": "unknown",
+      "tone_register": "formal-archaic",
+      "intent": "challenge-threatening",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem vai ali!?"
+    },
+    "AREAD117.DAT:14:1": {
+      "speaker": "unknown",
+      "tone_register": "formal-archaic",
+      "intent": "challenge-threatening",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem vai ali!?"
+    },
+    "AREAD117.DAT:14:2": {
+      "speaker": "unknown",
+      "tone_register": "formal-archaic",
+      "intent": "protective-solemn",
+      "risk_level": "medium",
+      "risk_notes": "Guarda de mausoléu; preservar tom arcaico 'lugar sagrado' sem soar moderno",
+      "t": "Quem ousa entrar no sagrado repouso do meu senhor?"
+    },
+    "AREAD117.DAT:14:3": {
+      "speaker": "unknown",
+      "tone_register": "formal-archaic",
+      "intent": "surprised-suspicious",
+      "risk_level": "high",
+      "risk_notes": "Referência a 'Eternos' (glossário: Endless→Eternos); identidade dos Eternos é lore oculta até reveal — traduzir sem resolver ambiguidade; 'Thou also' reforça tom arcaico com pronome elevado",
+      "t": "Espera... Tu também sés um dos Eternos...?"
+    },
+    "AREAD117.DAT:14:4": {
+      "speaker": "unknown",
+      "tone_register": "formal-archaic",
+      "intent": "defiant-absolute",
+      "risk_level": "high",
+      "risk_notes": "Dupla [02] marca duas quebras de página; contar e preservar posição exata. Léxico arcaico (nay=não, e'en=até mesmo) traduzir por equivalente majestoso; preservar tom de recusa inabalável",
+      "t": "Nao importa! Ninguém, [02]nem que sejam irmão do meu senhor, [02]pode ser autorizado a entrar!"
+    },
+    "AREAD117.DAT:14:5": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-binary",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deseja subir?[12]"
+    },
+    "AREAD117.DAT:14:6": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-binary",
+      "risk_level": "low",
+      "risk_notes": "Preservar [12][01][0C][82] exatos; opcoes 'Sim/Não' em forma breve para UI",
+      "t": "Deseja descer?[12][01][0C][82]Sim[01]Não"
+    },
+    "AREAD117.DAT:14:7": {
+      "speaker": "system",
+      "tone_register": "formal-archaic",
+      "intent": "cryptic-guidance",
+      "risk_level": "medium",
+      "risk_notes": "Modo arcaico 'Ye...wouldst' = 'Aqueles que...desejarem'; tom de enigma/profecia; manter elevado sem ser incompreensível",
+      "t": "Vós que percorrereis a senda, buscai primeiro a chave"
+    },
+    "AREAD117.DAT:14:11": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-multiple-choice",
+      "risk_level": "low",
+      "risk_notes": "Preservar [12][02][0C][93] exatos; 'Move ahead' = glossário 'Move'→'Mover', aqui 'Avançar' é mais natural em UI; glossário 'Go up'→já é 'subir'",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avançar[01]Subir[01]Desistir"
+    },
+    "AREAD117.DAT:14:12": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-multiple-choice",
+      "risk_level": "low",
+      "risk_notes": "Idêntico ao offset 14:11 — duplicação do source; tradução idêntica esperada",
+      "t": "Para onde deseja ir?[12][02][0C][93]Avançar[01]Subir[01]Desistir"
+    },
+    "AREAD117.DAT:14:13": {
+      "speaker": "system",
+      "tone_register": "neutral-ui",
+      "intent": "query-binary",
+      "risk_level": "low",
+      "risk_notes": "Glossário 'Tomb'→'Mausoléu'; 'Emperor's Tomb'→'Mausoléu do Imperador'; formato UI compacto",
+      "t": "O que deseja fazer?[12][03][0C][92]Ir ao Mausoléu do Imperador[01]Desistir"
+    },
+    "AREAD117.DAT:14:16": {
+      "speaker": "system",
+      "tone_register": "neutral-tutorial",
+      "intent": "mechanic-explanation",
+      "risk_level": "high",
+      "risk_notes": "Seção [10][02] = tutorial crítico com múltiplas [02] (page breaks). Contar: source tem 4x [02] — tradução deve ter 4x [02] na mesma posição lógica. Glossário: 'switch'→preservar 'switch' em token [05][02]switch[06], 'Move'→'empurrar' em contexto mecânico. Tokens [7F] button (placeholder)→preservar. Byte budget 306: tutorial pode ser longo, mas checar transliteração sem diacríticos.",
+      "t": "[10][02]Ficar em frente a um [02][05]switch[06] faz o chão luminar. [02]Voce pode empurrar um cubo para frente pressionando o botao ~, [02]e para trás pressionando o [7F] botao. [02]Alinhe tres blocos da mesma cor para criar um caminho."
+    },
+    "AREAD117.DAT:14:18": {
+      "speaker": "system",
+      "tone_register": "formal-archaic",
+      "intent": "warning-ominous",
+      "risk_level": "medium",
+      "risk_notes": "Token [05][02]Red Eye[06] — manter 'Olho Vermelho' dentro dos marcadores; tom arcaico 'Beware'→'Tende cuidado' ou 'Guardai-vos'; léxico elevado sem exagero",
+      "t": "Cuidado com o [05][02]Olho Ruivo[06]..."
+    }
+  }
+}
