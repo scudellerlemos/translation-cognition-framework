@@ -212,7 +212,7 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
     if slen and (tlen > slen * 3 or (slen > 8 and tlen < slen * 0.4)):
         fl.append("tamanho")                              # outlier de comprimento
     if any(model._translit_len(_VISIBLE_RX.sub("", seg)) > WIDTH_MAX     # so glifos VISIVEIS (sem tokens)
-           for seg in (target or "").split(context_pack.TOKEN)):
+           for seg in re.split(re.escape(context_pack.TOKEN) + r"|\\n|\n| // ", target or "")):
         fl.append("largura")                              # segmento estoura a largura do balao (in-game)
     if _PTPT.search(target or ""):
         fl.append("pt-PT?")
@@ -224,7 +224,7 @@ def _flags(source: str, target: str, risk: str, sampled: bool, bt_revise: bool =
 def _envelope(s):
     """(maior largura de segmento VISIVEL, nº de segmentos) de uma string. Quebra por TOKEN (\\n) OU
     '\\n' literal; desconta tokens de formatacao (nao renderizam). Monospace -> chars = pixels."""
-    parts = re.split(re.escape(context_pack.TOKEN) + r"|\\n", s or "")
+    parts = re.split(re.escape(context_pack.TOKEN) + r"|\\n|\n| // ", s or "")
     widths = [model._translit_len(_VISIBLE_RX.sub("", p)) for p in parts]
     nseg = sum(1 for p in parts if p.strip())
     return (max(widths) if widths else 0), max(nseg, 1)
@@ -262,14 +262,16 @@ def export(root, chapter) -> list[dict]:
         revise = _bt_revise_offsets(root, scene)          # micro-QA da IA JA pago ($0 ler)
         for ln in plan_lines:
             off = ln.get("offset", "")
-            src = ln.get("text_source", "")
-            tgt = (tmap.get(off) or {}).get("t", "") if isinstance(tmap.get(off), dict) \
+            src = _display_text(ln.get("text_source", ""))
+            tgt = _display_text(
+                (tmap.get(off) or {}).get("t", "") if isinstance(tmap.get(off), dict)
                 else ln.get("base_translation", "")
+            )
             risk = ln.get("risk_level", "")
             rows.append({"scene": scene, "offset": off, "speaker": ln.get("speaker", ""),
                          "risk": risk,
                          "revisar": _flags(src, tgt, risk, off in sampled, off in revise),
-                         "source_en": _display_text(src), "target_pt": _display_text(tgt),
+                         "source_en": src, "target_pt": tgt,
                          "caixa": _box_verdict(src, tgt),
                          "marcar": "", "correcao": "", "nota": ""})
     return rows
