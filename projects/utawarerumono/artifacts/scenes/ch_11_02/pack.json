@@ -1,0 +1,6527 @@
+{
+  "scene": "ch_11_02",
+  "scene_id": "11_02",
+  "n_lines": 557,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "aperyu",
+      "category": "Item",
+      "target_translation": "aperyu",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Vestimenta de ombros. Termo do mundo — manter (cursivar se possível)."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Guardian",
+      "category": "Titulo",
+      "target_translation": "Guardia",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Epiteto da Munechika (FEMININO): 'the Guardian'->'a Guardia'."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Kujyuri",
+      "category": "Local",
+      "target_translation": "Kujyuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Topônimo. Manter."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Munechika",
+      "category": "Personagem",
+      "target_translation": "Munechika",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "General-Pilar, 'a Guardia'. FEMININO. 'the Guardian'->'a Guardia'."
+    },
+    {
+      "term": "Shishiri",
+      "category": "Local",
+      "target_translation": "Shishiri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Topônimo (Província de Shishiri). 'Província' traduz; 'Shishiri' mantém."
+    },
+    {
+      "term": "Tatari",
+      "category": "Criatura",
+      "target_translation": "Tatari",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Criatura imortal do subsolo. Nome próprio do mundo — manter."
+    },
+    {
+      "term": "Utawarerumono",
+      "category": "Título",
+      "target_translation": "Utawarerumono",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Origem do nome 'Haku'; título da obra. Manter."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Upon returning to the tent, the girl starts\\n",
+      "target": "Ao voltarmos para a tenda, a garota começa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "digging through her bags.",
+      "target": "a remexer nas bolsas dela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Girl",
+      "target": "Garota",
+      "speaker": "sistema",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Hmm, I'm sure I put it somewhere back here...",
+      "target": "Hmm, tenho certeza de que guardei em algum lugar aqui...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Aha! There we go.",
+      "target": "Aha! Achei.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I was wondering what to do with these...\\n",
+      "target": "Eu estava sem saber o que fazer com isto...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I certainly didn't think they'd come in handy\\n",
+      "target": "Realmente não imaginei que fosse ser útil\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "like this.",
+      "target": "dessas.",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "With those words, the girl holds out some\\n",
+      "target": "Com essas palavras, a garota estende uns\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "folded fabrics.",
+      "target": "tecidos dobrados.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Here, a change of clothes. If you keep walking\\n",
+      "target": "Aqui, uma muda de roupa. Se continuar andando\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "around like that, you'll catch a cold.",
+      "target": "por aí desse jeito, vai pegar um resfriado.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hm...?",
+      "target": "Hum...?",
+      "speaker": "Kuon",
+      "from_scene": "13_02"
+    },
+    {
+      "source": "They definitely seem sturdier than the clothes\\n",
+      "target": "Parecem bem mais resistentes que as roupas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I had on, but...",
+      "target": "que eu tinha, mas...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ahaha, don't make that face! They're men's\\n",
+      "target": "Ahaha, não faz essa cara! São roupas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "clothes.",
+      "target": "masculinas.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "O-Oh...",
+      "target": "A-Ah...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, I'm going to go draw some water.",
+      "target": "Bem, vou buscar um pouco de água.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh, she's trying to give me some privacy.\\n",
+      "target": "Ah, ela está tentando me dar privacidade.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's kind of her.",
+      "target": "Que gentileza dela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yikes--",
+      "target": "Eita--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "A burst of cold air streams in as the girl\\n",
+      "target": "Uma rajada de ar gelado entra quando a garota\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "makes her exit.",
+      "target": "sai.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "G-God, that's cold... OK, if I stay in this\\n",
+      "target": "C-Caramba, que frio... Tá, se eu ficar nessa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "any longer, I'm gonna come down with something...",
+      "target": "por mais tempo, vou acabar pegando alguma coisa...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I spread out the clothes she gave me.",
+      "target": "Estendo as roupas que ela me deu.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "But... something's missing. One crucial,\\n",
+      "target": "Mas... está faltando algo. Uma coisa crucial,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "important thing. I stare uncertainly,\\n",
+      "target": "importante. Encaro, incerto,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "head tilted.",
+      "target": "a cabeça inclinada.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Where's the underwear...?",
+      "target": "...Cadê a roupa de baixo...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I turn the clothes inside out, right-side out,\\n",
+      "target": "Viro as roupas do avesso, do lado certo,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "even shake them around... but no underpants.",
+      "target": "até sacudo elas... mas nada de cueca.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Figures. She wouldn't miraculously just happen\\n",
+      "target": "Lógico. Ela não teria milagrosamente uma\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to have spare men's underwear around the place...  ",
+      "target": "cueca masculina sobrando por aí...  ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Which means... I have no choice...",
+      "target": "O que significa... que não tenho escolha...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Because I have no choice, because I am a slave\\n",
+      "target": "Como não tenho escolha, como sou um escravo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to the whims of fate, I'll have to go commando.",
+      "target": "dos caprichos do destino, vou ter que ir sem nada.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I-It's not like this is something I WANT to do! ",
+      "target": "N-Não é como se isto fosse algo que eu QUEIRA fazer! ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Primitive man was naked to start with, so don't\\n",
+      "target": "O homem primitivo já começou pelado, então não\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "freak out. It'll just be more... brisk than usual.",
+      "target": "surte. Vai ser só mais... arejado que o normal.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Trying to reassure myself, I start putting\\n",
+      "target": "Tentando me tranquilizar, começo a vestir\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "on the clothes provided. But...",
+      "target": "as roupas que ela deu. Mas...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "OK, let's see these pants... There's a hole\\n",
+      "target": "Tá, vamos ver essa calça... Tem um buraco\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "here, so this must be the front...?",
+      "target": "aqui, então isto deve ser a frente...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Shuffle*...",
+      "target": "*Vish*...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ho-kay... Hm. Doesn't feel all that comfortable...",
+      "target": "Bele... Hm. Não parece nada confortável...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah, whatever. Next, I get this top on...\\n",
+      "target": "Ah, tanto faz. Agora visto essa parte de cima...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and I just tie it off with this sash?",
+      "target": "e amarro com esta faixa?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Swoosh*",
+      "target": "*Vum*",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "There we go...",
+      "target": "Pronto...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Honestly, though, this thing's pretty\\n",
+      "target": "Sinceramente, essa coisa é bem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "uncomfortable...",
+      "target": "desconfortável...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The top's a little off, but the bottom just\\n",
+      "target": "A parte de cima está meio torta, mas a de baixo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "has way too many things wrong with it.",
+      "target": "tem coisa errada demais.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The way it's stretching can't be good for it,\\n",
+      "target": "O jeito que está esticando não pode ser bom,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and it's... getting a little drafty downstairs.",
+      "target": "e está... ficando meio arejado lá embaixo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Since the fly opens so wide, it's pretty\\n",
+      "target": "Como a braguilha abre tão larga, está bem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "well-ventilated. Well, more like it's letting\\n",
+      "target": "ventilado. Bem, mais como se deixasse\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "the wind right in.",
+      "target": "o vento entrar direto.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The real problem here is how I'm going to make\\n",
+      "target": "O verdadeiro problema é como vou fazer\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "sure I don't accidentally flash anyone...",
+      "target": "pra não mostrar tudo pra alguém sem querer...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "There are some serious issues with these clothes.\\n",
+      "target": "Tem problemas sérios com estas roupas.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm a gust of wind away from becoming a streaker.",
+      "target": "Estou a uma rajada de virar um exibicionista.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Something tells me this isn't going to work.",
+      "target": "Algo me diz que isto não vai dar certo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Maybe I should just explain and ask to borrow\\n",
+      "target": "Talvez eu deva só explicar e pedir uma\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "some underwear...? No, no, can't do that.",
+      "target": "cueca emprestada...? Não, não, não dá.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Even if it's a perfectly innocent and honest\\n",
+      "target": "Mesmo sendo um pedido perfeitamente inocente e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "request, a guy can't ask a girl for underpants.",
+      "target": "honesto, um cara não pode pedir cueca pra uma garota.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And she's lending these out of the kindness of\\n",
+      "target": "E ela está emprestando isto por pura\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "her heart! I can't go begging for more.",
+      "target": "bondade! Não posso ficar implorando por mais.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I don't need to bother her with this.\\n",
+      "target": "Não preciso incomodá-la com isto.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Just gotta get a little creative.",
+      "target": "Só preciso de um pouco de criatividade.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Having settled on a course of action, I fumble\\n",
+      "target": "Decidido o plano, fico mexendo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "with the fabric for a little longer.",
+      "target": "no tecido mais um tempo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh, got it. I can use this heavier fabric as\\n",
+      "target": "Ah, achei. Posso usar este tecido mais grosso como\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a kind of apron, and now this can be... Hm?",
+      "target": "uma espécie de avental, e agora isto pode ser... Hm?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...uh...",
+      "target": "...Ãh...",
+      "speaker": "Kuon",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "I feel eyes on me, and glance up. She's standing\\n",
+      "target": "Sinto olhos em mim e ergo a vista. Ela está\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "there, staring... amazed, concerned, and\\n",
+      "target": "ali, encarando... espantada, preocupada e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "exasperated.",
+      "target": "exasperada.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "You aren't... messing around, are you?",
+      "target": "Você não está... de brincadeira, está?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I see something in her expression twitch\\n",
+      "target": "Vejo algo na expressão dela estremecer\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "as she awaits my response.",
+      "target": "enquanto ela aguarda minha resposta.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh... that look in her eyes... It's like\\n",
+      "target": "Argh... aquele olhar dela... É como\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a parent saying \"I'm not mad, just\\n",
+      "target": "um pai dizendo \"não estou bravo, só\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "disappointed in you.\"",
+      "target": "decepcionado com você\".",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "N-No, look, I can explain! I'm only dressed\\n",
+      "target": "N-Não, olha, eu explico! Só estou vestido\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "like this 'cause there wasn't any underwear!",
+      "target": "assim porque não tinha nenhuma roupa de baixo!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...The thing you have wrapped around your\\n",
+      "target": "...A coisa que você enrolou na\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "waist right now is an aperyu. It goes on\\n",
+      "target": "cintura agora é um aperyu. Vai\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "your shoulders.",
+      "target": "nos ombros.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "You've got everything on the wrong sides for\\n",
+      "target": "Você pôs tudo no lado errado para\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "the top, too... and I think the pants are on\\n",
+      "target": "a parte de cima, também... e acho que a calça está\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "backwards.",
+      "target": "do avesso.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Backwards...? Hold on, the fly's here.\\n",
+      "target": "Do avesso...? Espera, a braguilha está aqui.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "So that makes it the front, right?",
+      "target": "Então isto é a frente, né?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's where the tail's supposed to run\\n",
+      "target": "É por aí que a cauda deveria\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "through...",
+      "target": "passar...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Huh...? Tail...?",
+      "target": "Hã...? Cauda...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm caught off guard. A tail's not exactly\\n",
+      "target": "Sou pego de surpresa. Cauda não é exatamente\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "something you expect to come up in normal\\n",
+      "target": "algo que se espera ouvir numa conversa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "conversation.",
+      "target": "normal.",
+      "speaker": "Kuon",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "I glance over, and notice something swaying\\n",
+      "target": "Dou uma olhada e noto algo balançando\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "behind her.",
+      "target": "atrás dela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Something ropelike, extending from just above\\n",
+      "target": "Algo como uma corda, saindo logo acima\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "her rear. Something covered in fur, almost\\n",
+      "target": "do traseiro dela. Algo coberto de pelo, quase\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "like...",
+      "target": "como...",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "...a tail?",
+      "target": "...uma cauda?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Come to think of it, I think I saw it behind\\n",
+      "target": "Pensando bem, acho que vi isto atrás\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "her while we were running in the caves...",
+      "target": "dela enquanto corríamos nas cavernas...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "But I dismissed the thought, of course.\\n",
+      "target": "Mas descartei a ideia, é claro.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Common sense says that's ridiculous.",
+      "target": "O bom senso diz que isso é ridículo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, no, no. There's just no way. It must be\\n",
+      "target": "Não, não, não. Não tem como. Deve ser\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "some kind of accessory or something...",
+      "target": "algum tipo de acessório ou coisa assim...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "As I ponder the possibilities, I reach out\\n",
+      "target": "Enquanto pondero as possibilidades, estendo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and grasp the swaying tail.",
+      "target": "a mão e agarro a cauda que balança.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "H-Hgh!",
+      "target": "Hngh!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wow, this is really something. It looks and\\n",
+      "target": "Nossa, isto é impressionante. Parece e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "feels like it's an actual tail...",
+      "target": "tem o toque de uma cauda de verdade...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And this texture! It's even soft to the touch.",
+      "target": "E essa textura! É até macia ao toque.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "H-Haah! Ah... Wh... Wha...",
+      "target": "H-Hã! Ah... Q... Quê...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Fluffy, soft, and silky smooth. It feels\\n",
+      "target": "Fofa, macia e sedosa. É uma sensação\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "amazing... It'd make a perfect scarf.",
+      "target": "incrível... Daria um cachecol perfeito.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And it's even wriggling, but I can't work\\n",
+      "target": "E até se contorce, mas não consigo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "out if there's some mechanism moving it...",
+      "target": "descobrir se há algum mecanismo movendo isto...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Floof*",
+      "target": "*Pluf*",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hm?",
+      "target": "Hum?",
+      "speaker": "Kuon",
+      "from_scene": "11_04"
+    },
+    {
+      "source": "Ngh... Ghh... Hngh!",
+      "target": "Nnh... Argh... Hngh!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What's this? It's even getting all fluffed\\n",
+      "target": "O que é isto? Está até ficando todo arrepiado\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "up now...",
+      "target": "agora...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "As I run my hands over the soft fur, it\\n",
+      "target": "Enquanto passo as mãos pelo pelo macio, ele\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "suddenly puffs up, like its hairs are\\n",
+      "target": "de repente se infla, como se os pelos\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "standing on end.",
+      "target": "ficassem em pé.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The heck...?",
+      "target": "Mas que...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Curiosity getting the better of me, I grab it\\n",
+      "target": "A curiosidade falando mais alto, agarro com\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "with both hands. And at that moment...",
+      "target": "as duas mãos. E nesse momento...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah...!",
+      "target": "Ah...!",
+      "speaker": "Man",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "...Waaaaaaaaaah!",
+      "target": "...Aaaaaah!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Gah! Wh-What the--",
+      "target": "...Gah! Q-Que diabos--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Her outburst surprises me, and I instinctively\\n",
+      "target": "O grito dela me assusta, e instintivamente\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "let go of the tail.",
+      "target": "solto a cauda.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I look back to her, uncertain of what just\\n",
+      "target": "Olho de volta pra ela, sem saber o que\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "happened.",
+      "target": "acabou de acontecer.",
+      "speaker": "Kuon",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "As I meet her eyes, I see her shoulders\\n",
+      "target": "Quando encontro o olhar dela, vejo os ombros\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "trembling... and she's glaring at me?",
+      "target": "tremendo... e ela está me encarando furiosa?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "H-Hey, what's wrong...?",
+      "target": "E-Ei, o que foi...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What's... wrong...?",
+      "target": "O que... foi...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Staring icily, the girl steps towards me.",
+      "target": "Encarando friamente, a garota dá um passo na minha direção.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What... do you think you're doing?",
+      "target": "O que... você pensa que está fazendo?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What do I... what?",
+      "target": "O que eu... quê?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "You heard me!",
+      "target": "Você ouviu!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What are you doing, grabbing a girl's tail like\\n",
+      "target": "O que você está fazendo, agarrando a cauda de uma\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "that? I was quite clear, I think!",
+      "target": "garota assim? Acho que fui bem clara!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Grabbing a...? No, that was only...",
+      "target": "Agarrando uma...? Não, aquilo foi só...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wait, you don't mean that's... that's real?",
+      "target": "Espera, você não quer dizer que isso é... é de verdade?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Of course it is! If this beautiful tail of mine\\n",
+      "target": "Claro que é! Se esta minha linda cauda\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "isn't real, then what is?",
+      "target": "não é de verdade, então o que é?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "N-No, it's just...",
+      "target": "N-Não, é só que...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh--",
+      "target": "Argh--",
+      "speaker": "Man",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "I stagger backwards, feeling a sense of power\\n",
+      "target": "Cambaleio pra trás, sentindo uma força\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "from her completely at odds with her cute\\n",
+      "target": "vinda dela totalmente em desacordo com a aparência\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "looks.",
+      "target": "fofa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She strokes her tail lovingly, as if she's\\n",
+      "target": "Ela acaricia a cauda com carinho, como se\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "trying to soothe the thing after my picking\\n",
+      "target": "tentasse consolar a coisa depois de eu\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "at it.",
+      "target": "mexer nela.",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "But even still, just grabbing my tail without\\n",
+      "target": "Mas mesmo assim, agarrar minha cauda sem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "even a warning...",
+      "target": "nem um aviso...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No... well, I mean... how do I put it...",
+      "target": "Não... bem, quer dizer... como eu explico...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She lets out a deep sigh.",
+      "target": "Ela solta um suspiro fundo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...It looks like you honestly didn't know,\\n",
+      "target": "...Parece que você honestamente não sabia,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "so I suppose it can't be helped. I'll let\\n",
+      "target": "então acho que não tem jeito. Vou deixar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "it go for now.",
+      "target": "passar por enquanto.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well... sorry.",
+      "target": "Bem... desculpa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "But it's not like you would expect anyone to\\n",
+      "target": "Mas não é como se a gente esperasse alguém\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "have a real tail.",
+      "target": "ter uma cauda de verdade.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I mean, humans did evolve from apes, and I\\n",
+      "target": "Quer dizer, os humanos evoluíram dos macacos, e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "guess there's been cases of reverse evolution...",
+      "target": "acho que houve casos de evolução reversa...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl looks at me strangely, as if she wants\\n",
+      "target": "A garota me olha estranho, como se quisesse\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to respond to my belated attempt at excuses.",
+      "target": "responder à minha tentativa atrasada de desculpa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Hm?",
+      "target": "...Hum?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "...Am I seeing things?",
+      "target": "...Será que estou vendo coisas?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "A beautiful face, elegant facial features,\\n",
+      "target": "Um rosto lindo, traços elegantes,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and shiny black hair. Yep. No problems here.",
+      "target": "e cabelo preto brilhante. É. Nada de errado aqui.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She's definitely cute, but that's not really\\n",
+      "target": "Ela é uma graça, sem dúvida, mas não é bem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "the issue right now. The problem is...",
+      "target": "essa a questão agora. O problema é...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...I-I didn't notice in all the commotion,\\n",
+      "target": "...E-Eu não tinha notado em meio à confusão,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "but... are those furry tufts on her head?",
+      "target": "mas... aquilo são tufos de pelo na cabeça dela?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What's wrong now?",
+      "target": "O que foi agora?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Those big ears... big, furry ears... twitch\\n",
+      "target": "Aquelas orelhas grandes... grandes e peludas... se mexem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "for a moment.",
+      "target": "por um instante.",
+      "speaker": "Kuon",
+      "from_scene": "14_03"
+    },
+    {
+      "source": "Oh... uh... well, that's... um.",
+      "target": "Ah... é... bem, isso é... hum.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ears and a tail... She looks human, but is she\\n",
+      "target": "Orelhas e cauda... Ela parece humana, mas será\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "something else?",
+      "target": "que é outra coisa?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, wait. I can't afford for her to leave me\\n",
+      "target": "Não, espera. Não posso deixar ela me abandonar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "behind for asking too many dumb questions...",
+      "target": "por eu fazer perguntas idiotas demais...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...It's nothing.",
+      "target": "...Não é nada.",
+      "speaker": "Haku",
+      "from_scene": "12_08"
+    },
+    {
+      "source": "Best to just act like I didn't see anything.",
+      "target": "Melhor agir como se eu não tivesse visto nada.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Uhh, I'm not too familiar with the customs and\\n",
+      "target": "Ãh, é que eu não conheço muito bem os costumes\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "etiquette around these parts, is the thing.",
+      "target": "e a etiqueta destas bandas, sabe.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's plain enough just from looking at you.\\n",
+      "target": "Isso é bem evidente só de olhar pra você.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What are you doing with these clothes...?",
+      "target": "O que você está fazendo com essas roupas...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl lets out a small sigh at my excuse.",
+      "target": "A garota solta um suspirinho diante da minha desculpa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Anyhow, we may as well get you properly dressed.",
+      "target": "De todo jeito, é melhor te vestir direito.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Y-Yeah...",
+      "target": "É-É...",
+      "speaker": "Kuon",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "At her words, I hastily start working on\\n",
+      "target": "Diante das palavras dela, me apresso a desfazer\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "undoing the strings. Maybe I made the knots\\n",
+      "target": "os nós. Talvez eu tenha apertado os nós\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "too tight...",
+      "target": "demais...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "There... we go. Phew... That's one untied.\\n",
+      "target": "Pronto... Ufa... Esse já desatou.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Next, I'll... Ngh... This one's knotted\\n",
+      "target": "Agora vou... Ngh... Este também está\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "pretty tight too...",
+      "target": "bem apertado...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "As I fumble, the girl kneels, and patiently\\n",
+      "target": "Enquanto me atrapalho, a garota se ajoelha e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "starts undoing the knots herself with\\n",
+      "target": "começa a desatar os nós com\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "easy deftness.",
+      "target": "destreza tranquila.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hold still.",
+      "target": "Fica quieto.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "A-All right. Thanks.",
+      "target": "T-Tá bom. Obrigado.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Swish*",
+      "target": "*Vuf*",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I never imagined you'd use this as a sash...",
+      "target": "Nunca imaginei que você usaria isto como faixa...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She murmurs with an odd wryness, setting her\\n",
+      "target": "Ela murmura com uma ironia esquisita, voltando a\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "attentions on the sash holding up my pants.",
+      "target": "atenção pra faixa que segura minha calça.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Really? Well, it's long and narrow, so I just\\n",
+      "target": "Sério? Bem, é comprido e estreito, então eu só\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "figured.",
+      "target": "imaginei.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I almost miss her muttered reply.",
+      "target": "Quase não escuto a resposta murmurada dela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's underwear.",
+      "target": "É roupa de baixo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Like I said... underwear.",
+      "target": "Como eu disse... roupa de baixo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Underwear...? This long strip of cloth is\\n",
+      "target": "Roupa de baixo...? Esta tira comprida de pano\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "supposed to be...?",
+      "target": "deveria ser...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "How is something this long supposed to cover...\\n",
+      "target": "Como uma coisa tão comprida deveria cobrir...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wait. Is it one of those loincloth things!?",
+      "target": "Espera. É uma daquelas tangas de tira!?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I suppose you can say that.",
+      "target": "Pode-se dizer que sim.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm sure you didn't know, but still, the fact\\n",
+      "target": "Tenho certeza de que você não sabia, mas ainda assim, o fato\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "that you decided to use it as a sash instead...",
+      "target": "de você ter decidido usar como faixa...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hrngh...",
+      "target": "Hrgh...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hee hee...",
+      "target": "Hehe...",
+      "speaker": "Kuon",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "The girl giggles at my visible dismay, but\\n",
+      "target": "A garota dá uma risadinha do meu desânimo visível, mas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "keeps working, hands darting over the cloth.",
+      "target": "continua trabalhando, as mãos correndo pelo pano.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "All that's left is...",
+      "target": "Só falta...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She pulls the cloth strip off my waist in one\\n",
+      "target": "Ela puxa a tira de pano da minha cintura num\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "smooth tug. But...",
+      "target": "puxão só. Mas...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...*Flump*",
+      "target": "...*Paf*",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Uh--",
+      "target": "Ãh--",
+      "speaker": "Kuon",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "That loincloth-sash was the only thing holding\\n",
+      "target": "Aquela faixa-tanga era a única coisa segurando\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "up my trousers. If that came off, then\\n",
+      "target": "minha calça. Se aquilo saiu, então\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "naturally--",
+      "target": "naturalmente--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The pants hit the floor... and \"It\" flops before\\n",
+      "target": "A calça cai no chão... e \"Aquilo\" balança diante\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "her eyes, swaying jauntily despite the lack\\n",
+      "target": "dos olhos dela, oscilando alegremente apesar da falta\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "of wind.",
+      "target": "de vento.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl freezes at the visual ambush, unable\\n",
+      "target": "A garota congela diante da emboscada visual, incapaz\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to tear her eyes from the strange intruder.",
+      "target": "de tirar os olhos do estranho intruso.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hello...?",
+      "target": "Olá...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl's face, neck, hands and body slowly\\n",
+      "target": "O rosto, o pescoço, as mãos e o corpo da garota aos poucos\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "flush bright red, like she's boiling whole.\\n",
+      "target": "ficam vermelhos vivos, como se ela fervesse inteira.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and then...",
+      "target": "e depois...",
+      "speaker": "Kuon",
+      "from_scene": "11_09"
+    },
+    {
+      "source": "Ee.",
+      "target": "Ii.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ee?",
+      "target": "Ii?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "EEEEEEEEYAAAAAGH!",
+      "target": "IIIIIIIIAAAAAAH!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hk--",
+      "target": "Hgh--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "How is that scream coming out of her!?\\n",
+      "target": "Como esse grito sai dela!?\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I feel faint for a moment, overcome by\\n",
+      "target": "Fico tonto por um momento, dominado por\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "ultrasonic distress.",
+      "target": "aflição ultrassônica.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And just as I put my hands over my ears,\\n",
+      "target": "E bem quando ponho as mãos sobre os ouvidos,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "trying to block out the piercing shriek--",
+      "target": "tentando bloquear o grito agudo--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*THUD*",
+      "target": "*BAQUE*",
+      "speaker": "Kuon",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "NNNAAARRGH!",
+      "target": "NNNAAARGH!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "A terrible, vengeful force hits me below,\\n",
+      "target": "Uma força terrível e vingativa me atinge embaixo,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and my world is pain. ",
+      "target": "e meu mundo é só dor. ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That should be everything!",
+      "target": "Pronto, isso deve ser tudo!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl nods in satisfaction, giving me a\\n",
+      "target": "A garota acena satisfeita, me dando um\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "gentle and encouraging pat on the back.",
+      "target": "tapinha gentil e encorajador nas costas.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I-I get it. So this is how it's actually worn...",
+      "target": "E-Entendi. Então é assim que se veste de verdade...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "There's another gap in my memory, but I managed\\n",
+      "target": "Tem outra lacuna na minha memória, mas consegui\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to survive whatever happened, at least. Must be\\n",
+      "target": "sobreviver ao que quer que tenha acontecido, ao menos. Deve ser\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "thanks to all that good karma.",
+      "target": "graças a todo aquele bom karma.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "So this is what it's supposed to feel like...\\n",
+      "target": "Então é assim que deve ser a sensação...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's easy to move in. Much different from\\n",
+      "target": "É fácil de me mexer. Bem diferente de\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "earlier.",
+      "target": "antes.",
+      "speaker": "Kuon",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "I spin in place, trying to get a sense of how\\n",
+      "target": "Giro no lugar, tentando ter uma noção de como\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "the clothes fit.",
+      "target": "as roupas servem.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Compared to this, the first try was like\\n",
+      "target": "Comparada a isto, a primeira tentativa foi como\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "getting myself into a straitjacket.",
+      "target": "me enfiar numa camisa de força.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "With no tail to speak of, and no intention\\n",
+      "target": "Sem cauda alguma, e sem intenção\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to show off my ass, we agreed to sew the\\n",
+      "target": "de mostrar minha bunda, concordamos em costurar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "tail hole shut.",
+      "target": "o buraco da cauda.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She talks about having a tail like it's\\n",
+      "target": "Ela fala em ter uma cauda como se fosse\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "natural, but she seems fine with me not\\n",
+      "target": "natural, mas parece tranquila com eu não\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "having one.",
+      "target": "ter uma.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I was a bit curious about that... but I guess\\n",
+      "target": "Fiquei meio curioso sobre isso... mas acho que\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "everyone's different.",
+      "target": "cada um é de um jeito.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Thanks for everything.",
+      "target": "Obrigado por tudo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I turn towards her, formally expressing\\n",
+      "target": "Viro-me pra ela, expressando formalmente\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "my gratitude.",
+      "target": "minha gratidão.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh no, I don't mind. And we did have a few\\n",
+      "target": "Ah, não, imagina. E a gente teve uns\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "misunderstandings, so...",
+      "target": "mal-entendidos, então...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Now then...",
+      "target": "Bom, então...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl sits up straight, turns to me, and\\n",
+      "target": "A garota se senta ereta, vira-se pra mim e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "announces in a clear, forthright tone. ",
+      "target": "anuncia num tom claro e franco. ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon.",
+      "target": "Kuon.",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "My name. I haven't told you yet, I think.",
+      "target": "Meu nome. Acho que ainda não te disse.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon. That is my name.",
+      "target": "Kuon. Esse é o meu nome.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "O-Oh, your name, huh?",
+      "target": "A-Ah, seu nome, é?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon...",
+      "target": "Kuon...",
+      "speaker": "Kuon",
+      "from_scene": "13_02"
+    },
+    {
+      "source": "And what do they call you?",
+      "target": "E como te chamam?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "My name...",
+      "target": "Meu nome...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yes, your name.",
+      "target": "Sim, seu nome.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon's words stir something in my mind--\\n",
+      "target": "As palavras de Kuon mexem com algo na minha mente--\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "something important.",
+      "target": "algo importante.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "O-Oh right, I'm--",
+      "target": "A-Ah, é, eu sou--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm...?",
+      "target": "Eu sou...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I... am...",
+      "target": "Eu... sou...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wait... Hold on...",
+      "target": "Espera... Calma...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I bury my face in my hands, and try to dredge\\n",
+      "target": "Enterro o rosto nas mãos e tento resgatar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "up any memories. There's bound to be\\n",
+      "target": "qualquer memória. Tem que haver\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "something, anything...",
+      "target": "alguma coisa, qualquer coisa...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I am... I am...",
+      "target": "Eu sou... Eu sou...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "But for some reason... nothing came.\\n",
+      "target": "Mas por algum motivo... nada veio.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No ending to the sentence.",
+      "target": "Nenhum fim pra frase.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "W-Well, where did you come from? Or perhaps...\\n",
+      "target": "B-Bem, de onde você veio? Ou talvez...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "what have you been doing until now?",
+      "target": "o que você andou fazendo até agora?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Where... am I from?",
+      "target": "De onde... eu venho?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Where am I from... Where am I from...\\n",
+      "target": "De onde eu venho... De onde eu venho...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Where am I from...",
+      "target": "De onde eu venho...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The words repeat in my mind like an incantation,\\n",
+      "target": "As palavras se repetem na minha mente como um mantra,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "but... nothing. I can't think past the haze.",
+      "target": "mas... nada. Não consigo pensar além da névoa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I see...",
+      "target": "Entendo...",
+      "speaker": "Haku",
+      "from_scene": "12_04"
+    },
+    {
+      "source": "I can tell Kuon's also troubled, now that my\\n",
+      "target": "Dá pra ver que Kuon também está preocupada, agora que minha\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "memory loss doesn't seem so temporary.",
+      "target": "perda de memória não parece tão passageira.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What have I been doing until now...?",
+      "target": "O que eu andei fazendo até agora...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "As the thought crosses my mind, I raise my\\n",
+      "target": "Conforme o pensamento me ocorre, ergo a\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "head again, my gaze falling on her.",
+      "target": "cabeça de novo, e meu olhar recai sobre ela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's right, she was...",
+      "target": "É verdade, ela estava...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I don't remember much, but if she was the one\\n",
+      "target": "Não lembro de muita coisa, mas se foi ela quem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "taking care of me, then maybe...",
+      "target": "cuidou de mim, então talvez...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "It looks like she's noticed my look of anticipation.\\n",
+      "target": "Parece que ela notou meu olhar de expectativa.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "When she speaks, her voice is quiet.",
+      "target": "Quando fala, a voz dela é baixa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "You were... passed out, alone in these remote\\n",
+      "target": "Você estava... desmaiado, sozinho nestas montanhas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "mountains.",
+      "target": "remotas.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "alone?",
+      "target": "Sozinho?",
+      "speaker": "Kuon",
+      "from_scene": "19_02"
+    },
+    {
+      "source": "Mhm. And... I'd never sleep well at night again\\n",
+      "target": "Mhm. E... eu nunca mais dormiria bem à noite\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "if I just left you, so... I took care of you.",
+      "target": "se simplesmente te deixasse, então... cuidei de você.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "So I'm sorry to get your hopes up, but I think\\n",
+      "target": "Então sinto muito por criar esperança, mas acho\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "that's really all I know about you for sure.",
+      "target": "que é tudo o que sei sobre você ao certo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I... see...",
+      "target": "Eu... entendo...",
+      "speaker": "Kuon",
+      "from_scene": "13_05"
+    },
+    {
+      "source": "I'm sorry.",
+      "target": "Desculpa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, it's my fault for getting my hopes up.",
+      "target": "Não, a culpa é minha por criar esperança.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's kind of you to say, but... this is a mess,\\n",
+      "target": "É gentileza sua dizer isso, mas... isto é uma confusão,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "isn't it? I didn't think it'd turn out like this...",
+      "target": "não é? Não pensei que fosse acabar assim...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Muttering, Kuon presses her hand to her\\n",
+      "target": "Resmungando, Kuon pressiona a mão na\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "forehead and rubs her temples with her\\n",
+      "target": "testa e esfrega as têmporas com os\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "fingers.",
+      "target": "dedos.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yeah, this is a mess all right. Great... what am\\n",
+      "target": "É, isto é uma baita confusão. Ótimo... o que\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I supposed to do in a situation like this?",
+      "target": "é que eu faço numa situação dessas?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "All I found out was that I have no idea who I am.",
+      "target": "Tudo o que descobri foi que não faço ideia de quem sou.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "By the way... Where am I?",
+      "target": "A propósito... Onde estou?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Would you understand if I said we're west of\\n",
+      "target": "Você entenderia se eu dissesse que estamos a oeste de\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kujyuri...? Deep in the Shishiri Province?",
+      "target": "Kujyuri...? Bem no fundo da Província de Shishiri?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I see.",
+      "target": "Sim.",
+      "speaker": "Haku",
+      "from_scene": "12_17"
+    },
+    {
+      "source": "...No. No idea.",
+      "target": "...Não. Nenhuma ideia.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Ah.",
+      "target": "...Ah.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Finding out the name of this place doesn't\\n",
+      "target": "Descobrir o nome deste lugar não\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "help me one bit, since I still have no clue\\n",
+      "target": "me ajuda nem um pouco, já que ainda não faço ideia\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "where I am.",
+      "target": "de onde estou.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is there anything else...?\\n",
+      "target": "Tem mais alguma coisa...?\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Something else I can ask her...",
+      "target": "Algo mais que eu possa perguntar a ela...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Right, that huge thing!",
+      "target": "Isso, aquela coisa enorme!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Huge thing?",
+      "target": "Coisa enorme?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yeah, that's right! That wriggly, slimy...\\n",
+      "target": "É, isso mesmo! Aquela coisa de limo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "slime thing that attacked me. What was that!?",
+      "target": "viscosa que me atacou. O que era aquilo!?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Slime?",
+      "target": "...Limo?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon cocks her head at first, bewildered, but\\n",
+      "target": "Kuon inclina a cabeça a princípio, confusa, mas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "then something seems to dawn on her.",
+      "target": "então algo parece lhe ocorrer.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh, perhaps you're talking about the Tatari?",
+      "target": "Ah, talvez você esteja falando do Tatari?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Tatari...?",
+      "target": "Tatari...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's what it's called. It's a type of...\\n",
+      "target": "É assim que se chama. É um tipo de...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "creature? I suppose?",
+      "target": "criatura? Eu acho?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon replies, uncertainty clear in her tone\\n",
+      "target": "Kuon responde, a incerteza clara no tom\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and expression.",
+      "target": "e na expressão.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "If you asked me what it is, I wouldn't have\\n",
+      "target": "Se você me perguntasse o que é, eu não teria\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a solid answer for you, to be honest.",
+      "target": "uma resposta certa pra te dar, pra ser sincera.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "All I know is that it lives deep underground,\\n",
+      "target": "Só sei que vive bem no fundo da terra,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "where the sun doesn't reach.",
+      "target": "onde o sol não alcança.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And it'll attack and eat living creatures that\\n",
+      "target": "E ataca e devora criaturas vivas que\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "wander inside its lair--for sustenance.",
+      "target": "entram no covil dele--pra se alimentar.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Also, it never dies... and I think that's all.",
+      "target": "Além disso, ele nunca morre... e acho que é só.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Never dies...?",
+      "target": "Nunca morre...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Right. It just can't.",
+      "target": "Isso. Simplesmente não pode.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Burn it, cut it, beat it, but it still revives\\n",
+      "target": "Queime, corte, espanque, mas ele ainda revive\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "instantly. No matter what you do, you can't\\n",
+      "target": "na hora. Não importa o que faça, não dá pra\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "kill it.",
+      "target": "matar.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, come on. No living creature could actually\\n",
+      "target": "Não, qual é. Nenhuma criatura viva poderia de fato\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "be immortal.",
+      "target": "ser imortal.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Maybe its body and mind are just that resilient,\\n",
+      "target": "Talvez o corpo e a mente dele sejam só muito resistentes,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and that makes it harder to kill it?",
+      "target": "e isso torne mais difícil matá-lo?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, it's true. No matter what we do to it,\\n",
+      "target": "Não, é verdade. Não importa o que façamos com ele,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "it never dies. Doesn't matter what's done,\\n",
+      "target": "ele nunca morre. Não importa o que se faça,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "or how...",
+      "target": "nem como...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "We just fight to drive it off, or scare it off\\n",
+      "target": "A gente só luta pra afugentá-lo, ou assustá-lo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "with lights and loud sounds. Those seem to work\\n",
+      "target": "com luzes e barulhos altos. Isso parece funcionar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "well.",
+      "target": "bem.",
+      "speaker": "Kuon",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "So we don't even know how many there are.\\n",
+      "target": "Então nem sabemos quantos existem.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Or much about it at all, really.",
+      "target": "Nem muito sobre ele, na verdade.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What kind of monster is that? That's way\\n",
+      "target": "Que tipo de monstro é esse? Isso é assustador\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "too spooky...",
+      "target": "demais...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "So you were really lucky. If I'd arrived just\\n",
+      "target": "Então você teve muita sorte. Se eu tivesse chegado só\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a bit later, there'd be nothing left of you,\\n",
+      "target": "um pouco mais tarde, não sobraria nada de você,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Right?",
+      "target": "né?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Her words bring to mind the huge insect,\\n",
+      "target": "As palavras dela me trazem à mente o inseto enorme,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "swallowed whole and melted away in the\\n",
+      "target": "engolido inteiro e derretido dentro do\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "thing's body.",
+      "target": "corpo daquela coisa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon laughs, maybe at the sudden paleness in\\n",
+      "target": "Kuon ri, talvez da palidez súbita no\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "my expression, and continues.",
+      "target": "meu rosto, e continua.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Don't worry. Stay away from its habitat, and\\n",
+      "target": "Não se preocupe. Fique longe do habitat dele e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "keep to the paths when you travel in the wilds.",
+      "target": "se mantenha nas trilhas quando viajar pelo mato.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "As long as you keep these rules in mind, you'll\\n",
+      "target": "Desde que tenha essas regras em mente, você\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "rarely run into any trouble.",
+      "target": "raramente vai ter problema.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "R-Rarely, huh...?",
+      "target": "R-Raramente, é...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "So everything I went through--all that was just\\n",
+      "target": "Então tudo o que passei--aquilo tudo foi só\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "ridiculously improbable bad luck!",
+      "target": "um azar absurdamente improvável!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, you never know. It'd be best to just\\n",
+      "target": "Bem, nunca se sabe. O melhor é só\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "accept that these things happen, and deal\\n",
+      "target": "aceitar que essas coisas acontecem e lidar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "with it, I think.",
+      "target": "com elas, eu acho.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "After all, a gust of wind at the worst time\\n",
+      "target": "Afinal, uma rajada de vento na hora errada\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "could be all it takes to end someone's life.",
+      "target": "pode ser tudo o que precisa pra acabar com uma vida.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She says it almost casually.",
+      "target": "Ela diz isso quase com naturalidade.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Not sure if that matter-of-fact tone is\\n",
+      "target": "Não sei se esse tom prático é\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "because that whole mess is behind us, or...",
+      "target": "porque toda aquela confusão ficou pra trás, ou...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, what do you plan to do now?",
+      "target": "Bem, o que você pretende fazer agora?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "now...",
+      "target": "agora...",
+      "speaker": "Haku",
+      "from_scene": "12_03"
+    },
+    {
+      "source": "What CAN I do...?",
+      "target": "O que EU posso fazer...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah, sorry. I suppose that's a bit of an unfair\\n",
+      "target": "Ah, desculpa. Acho que essa é uma pergunta\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "question.",
+      "target": "meio injusta.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "How are you supposed to answer a question like\\n",
+      "target": "Como é que você vai responder uma pergunta dessas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "that when you don't even remember your own\\n",
+      "target": "quando nem lembra do próprio\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "name?",
+      "target": "nome?",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Yeah, that about sums it up.",
+      "target": "É, isso resume bem.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hmm. Well, if that's the case...",
+      "target": "Hmm. Bem, se é esse o caso...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Something occurs to her, and she offers a\\n",
+      "target": "Algo lhe ocorre, e ela faz uma\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "gentle suggestion.",
+      "target": "sugestão gentil.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Perhaps this is some kind of fate. Why don't\\n",
+      "target": "Talvez isto seja algum tipo de destino. Por que você\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "you let me look after you for a little while?",
+      "target": "não me deixa cuidar de você por um tempo?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The bizarre idea has me at a brief loss\\n",
+      "target": "A ideia bizarra me deixa por um instante sem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "for words.",
+      "target": "palavras.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "This girl's going to take care of me?",
+      "target": "Esta garota vai cuidar de mim?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh, no, I couldn't. But I do appreciate the...",
+      "target": "Ah, não, eu não poderia. Mas agradeço a...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...No, wait.",
+      "target": "...Não, espera.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "If I go off on my own here, I'm either going\\n",
+      "target": "Se eu sair por conta própria aqui, ou vou\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to get lost, or end up as some monster's\\n",
+      "target": "me perder, ou virar o jantar de algum\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "dinner.",
+      "target": "monstro.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm still unsure, but she's done a lot for me.\\n",
+      "target": "Ainda estou inseguro, mas ela fez muito por mim.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She wouldn't turn on me now--not after all this.",
+      "target": "Ela não me trairia agora--não depois de tudo isso.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can at least rely on her until I understand\\n",
+      "target": "Posso ao menos contar com ela até entender\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "what's going on. I'll just accept this as some\\n",
+      "target": "o que está havendo. Vou só aceitar isto como uma\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "good fortune.",
+      "target": "boa sorte.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Understood. I'll be relying on you, at\\n",
+      "target": "...Entendido. Vou contar com você, pelo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "least for a bit.",
+      "target": "menos por um tempo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon smiles gently as I bow my head to her.",
+      "target": "Kuon sorri gentilmente enquanto inclino a cabeça pra ela.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yes, I think that's a wise choice. Obedience is\\n",
+      "target": "Sim, acho que é uma escolha sábia. Obediência é\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "always a good thing.",
+      "target": "sempre uma coisa boa.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She looks relieved... It's pretty clear if I had\\n",
+      "target": "Ela parece aliviada... Está bem claro que se eu\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "refused, I probably wouldn't have made it on\\n",
+      "target": "tivesse recusado, provavelmente não teria me virado\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "my own...",
+      "target": "sozinho...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, now that that's settled, we should\\n",
+      "target": "Bem, agora que isso está resolvido, a gente deveria\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "at least decide on a name for you.",
+      "target": "ao menos decidir um nome pra você.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...A name?",
+      "target": "...Um nome?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, you can't stay nameless forever. You\\n",
+      "target": "Bem, você não pode ficar sem nome pra sempre. Você\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "can't remember what you're called, right?",
+      "target": "não lembra como te chamam, certo?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yeah...",
+      "target": "É...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She has a point. Not having a name could get\\n",
+      "target": "Ela tem razão. Não ter um nome poderia ficar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "inconvenient, especially when we get to town.",
+      "target": "inconveniente, principalmente quando chegarmos à cidade.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "OK, anything's probably...",
+      "target": "Tá, qualquer coisa provavelmente serve...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hold on.",
+      "target": "Espera aí.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Maybe... this is a golden opportunity?",
+      "target": "Talvez... esta seja uma oportunidade de ouro?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm not happy about having no memories, but\\n",
+      "target": "Não estou feliz por não ter memórias, mas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "it DOES mean I've basically got a clean slate.",
+      "target": "ISSO significa que tenho basicamente uma folha em branco.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Which brings us to this... I can pick myself\\n",
+      "target": "O que nos leva a isto... Posso escolher\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a really cool and mysterious name!",
+      "target": "um nome bem legal e misterioso!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Maybe my name was something bland and dull,\\n",
+      "target": "Talvez meu nome fosse algo sem graça e chato,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "before all this.",
+      "target": "antes de tudo isso.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, that's not so bad. Could just as easily\\n",
+      "target": "Bem, isso não é tão ruim. Podia facilmente\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "have been something ridiculous and\\n",
+      "target": "ter sido algo ridículo e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "embarrassing...",
+      "target": "vergonhoso...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "You know what, amnesia's not so bad. It's\\n",
+      "target": "Quer saber, amnésia não é tão ruim. É\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "awesome, even! Gotta make the best of a bad\\n",
+      "target": "até demais! Tenho que tirar o melhor de uma situação\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "situation.",
+      "target": "ruim.",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "So this is a real opportunity. Can't just\\n",
+      "target": "Então esta é uma oportunidade de verdade. Não dá pra\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "go with some random name.",
+      "target": "escolher um nome qualquer.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Just have to think of a name cool enough to\\n",
+      "target": "Só tenho que pensar num nome legal o bastante pra\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "make people jealous, but not something I'd\\n",
+      "target": "deixar todo mundo com inveja, mas nada de que eu\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "regret later...",
+      "target": "me arrependa depois...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "OK! My name is--",
+      "target": "Tá! Meu nome é--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hmm. What kind of name would suit you best?",
+      "target": "Hmm. Que tipo de nome combinaria mais com você?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon seems unconcerned by my dramatically\\n",
+      "target": "Kuon parece indiferente ao meu braço\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "outstretched arm, pondering to herself.",
+      "target": "dramaticamente estendido, ponderando consigo mesma.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "An uneasy feeling rises, and I nervously ask\\n",
+      "target": "Uma sensação ruim surge, e nervoso pergunto\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "her.",
+      "target": "a ela.",
+      "speaker": "Kuon",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Um... you aren't... planning to think about\\n",
+      "target": "Ãh... você não está... pensando em decidir\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "my new name too, are you?",
+      "target": "o meu novo nome também, está?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She looks surprised, like she has no idea\\n",
+      "target": "Ela parece surpresa, como se não fizesse ideia\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "what I'm asking.",
+      "target": "do que estou perguntando.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Planning to? It's my duty.",
+      "target": "Pensando em? É meu dever.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Y-Your duty?",
+      "target": "S-Seu dever?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "A guardian is essentially a parent. Since I am\\n",
+      "target": "Um guardião é essencialmente um pai. Já que agora\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "now your guardian, it's my duty to give you\\n",
+      "target": "sou sua guardiã, é meu dever te dar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "a name.",
+      "target": "um nome.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "No, that's...",
+      "target": "Não, isso é...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Come on... This tiny girl can't honestly think\\n",
+      "target": "Qual é... Esta garotinha não pode honestamente se achar\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "of herself as my parent, right...?",
+      "target": "minha mãe, pode...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Though if you'd prefer to go on your own without\\n",
+      "target": "Embora, se você preferir seguir por conta própria sem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "me, then by all means, make your own decisions.",
+      "target": "mim, então fique à vontade, tome suas próprias decisões.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "U... Urgh...",
+      "target": "Nnh... Argh...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "How can I argue with that...? Kuon smiles\\n",
+      "target": "Como discutir com isso...? Kuon sorri\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "brightly as I sag in defeat, and claps her\\n",
+      "target": "radiante enquanto eu desabo derrotado, e bate\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "hands.",
+      "target": "as mãos.",
+      "speaker": "Kuon",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "Then I think it's decided!",
+      "target": "Então acho que está decidido!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Sigh*... So much for the whole \"awesome name\"\\n",
+      "target": "*Suspiro*... Lá se foi a ideia toda do \"nome\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "idea...",
+      "target": "incrível\"...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "In the end, I guess I still have no say in\\n",
+      "target": "No fim, acho que ainda não tenho voz em\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "anything--not even my own name.",
+      "target": "nada--nem no meu próprio nome.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Now, let's see. Your new name is...",
+      "target": "Bom, vejamos. Seu novo nome é...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Kuon cocks her head, looking thoughtfully\\n",
+      "target": "Kuon inclina a cabeça, olhando pensativa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "to the ceiling.",
+      "target": "para o teto.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "After a moment of silence, she mutters a couple\\n",
+      "target": "Após um momento de silêncio, ela murmura algumas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "syllables.",
+      "target": "sílabas.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ha... ku...",
+      "target": "Ha... ku...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Haku...?",
+      "target": "Haku...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's right. Haku.",
+      "target": "Isso mesmo. Haku.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She seems pretty proud of it. Having said it,\\n",
+      "target": "Ela parece bem orgulhosa disso. Tendo dito,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "she smiles confidently.",
+      "target": "ela sorri confiante.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I think you should call yourself Haku from\\n",
+      "target": "Acho que você deveria se chamar Haku de\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "now on.",
+      "target": "agora em diante.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Haku...",
+      "target": "Haku...",
+      "speaker": "Kuon",
+      "from_scene": "14_09"
+    },
+    {
+      "source": "I ruminate over this name she's given me. ",
+      "target": "Rumino o nome que ela me deu. ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...It's not that cool...",
+      "target": "...Não é lá tão legal...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Did you say something?",
+      "target": "...Você disse alguma coisa?",
+      "speaker": "Kuon",
+      "from_scene": "14_03"
+    },
+    {
+      "source": "*Shudder*",
+      "target": "*Tremor*",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "A slight shiver runs through me, and a chill\\n",
+      "target": "Um leve arrepio me percorre, e um frio\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "runs down my spine.",
+      "target": "desce pela minha espinha.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Though Kuon is smiling as sweetly as ever at me,\\n",
+      "target": "Embora Kuon esteja sorrindo tão docemente quanto sempre pra mim,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "my blood runs cold for a moment.",
+      "target": "meu sangue gela por um momento.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Erk! N-Nope, didn't say a word...",
+      "target": "Erk! N-Não, não disse nada...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "In response to my reaction, Kuon clears her\\n",
+      "target": "Em resposta à minha reação, Kuon limpa a\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "throat with a delicate little cough,\\n",
+      "target": "garganta com uma tossezinha delicada,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "speaking seriously.",
+      "target": "falando sério.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's a very distinguished name.",
+      "target": "É um nome muito ilustre.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "It comes from the name of one celebrated in\\n",
+      "target": "Vem do nome de alguém celebrado em\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "ancient legends and stories.",
+      "target": "lendas e histórias antigas.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Legends...",
+      "target": "Lendas...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yes... from the Utawarerumono.",
+      "target": "Sim... do Utawarerumono.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Without any memories or context, I can't really\\n",
+      "target": "Sem memórias nem contexto, não consigo bem\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "appreciate or understand the significance.",
+      "target": "apreciar ou entender o significado.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "But something about the faraway affection in her\\n",
+      "target": "Mas algo no afeto distante na expressão\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "expression tells me it's an important name.",
+      "target": "dela me diz que é um nome importante.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "All right...",
+      "target": "Tudo bem...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "From now on, then, I'm Haku.\\n",
+      "target": "De agora em diante, então, sou Haku.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Please call me that from now on.",
+      "target": "Que me chame assim de agora em diante.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Mhm. Glad to hear it, I think.",
+      "target": "Mhm. Fico feliz em ouvir isso, eu acho.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0xe192",
+      "source": "Upon returning to the tent, the girl starts\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xe1c0",
+      "source": "digging through her bags.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xe1da",
+      "source": "Girl",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0xe1df",
+      "source": "Hmm, I'm sure I put it somewhere back here...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xe20d",
+      "source": "Aha! There we go.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xe21f",
+      "source": "I was wondering what to do with these...\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xe24a",
+      "source": "I certainly didn't think they'd come in handy\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xe27a",
+      "source": "like this.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xe285",
+      "source": "With those words, the girl holds out some\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xe2b1",
+      "source": "folded fabrics.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xe2c1",
+      "source": "Here, a change of clothes. If you keep walking\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe2f2",
+      "source": "around like that, you'll catch a cold.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xe319",
+      "source": "Hm...?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xe320",
+      "source": "They definitely seem sturdier than the clothes\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe351",
+      "source": "I had on, but...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xe362",
+      "source": "Ahaha, don't make that face! They're men's\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xe38f",
+      "source": "clothes.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xe398",
+      "source": "O-Oh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xe3a0",
+      "source": "Well, I'm going to go draw some water.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xe3c7",
+      "source": "Oh, she's trying to give me some privacy.\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xe3f3",
+      "source": "That's kind of her.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xe407",
+      "source": "Yikes--",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xe40f",
+      "source": "A burst of cold air streams in as the girl\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xe43c",
+      "source": "makes her exit.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xe44c",
+      "source": "G-God, that's cold... OK, if I stay in this\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xe47a",
+      "source": "any longer, I'm gonna come down with something...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xe4ac",
+      "source": "I spread out the clothes she gave me.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0xe4d2",
+      "source": "But... something's missing. One crucial,\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xe4fd",
+      "source": "important thing. I stare uncertainly,\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xe525",
+      "source": "head tilted.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xe532",
+      "source": "...Where's the underwear...?",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0xe54f",
+      "source": "I turn the clothes inside out, right-side out,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe580",
+      "source": "even shake them around... but no underpants.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xe5ad",
+      "source": "Figures. She wouldn't miraculously just happen\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe5de",
+      "source": "to have spare men's underwear around the place...  ",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0xe612",
+      "source": "Which means... I have no choice...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xe635",
+      "source": "Because I have no choice, because I am a slave\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe666",
+      "source": "to the whims of fate, I'll have to go commando.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xe696",
+      "source": "I-It's not like this is something I WANT to do! ",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xe6c7",
+      "source": "Primitive man was naked to start with, so don't\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xe6f9",
+      "source": "freak out. It'll just be more... brisk than usual.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0xe72c",
+      "source": "Trying to reassure myself, I start putting\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xe759",
+      "source": "on the clothes provided. But...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0xe779",
+      "source": "OK, let's see these pants... There's a hole\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xe7a7",
+      "source": "here, so this must be the front...?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0xe7cb",
+      "source": "*Shuffle*...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xe7d8",
+      "source": "Ho-kay... Hm. Doesn't feel all that comfortable...",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0xe80b",
+      "source": "Ah, whatever. Next, I get this top on...\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xe836",
+      "source": "and I just tie it off with this sash?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0xe85c",
+      "source": "*Swoosh*",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xe865",
+      "source": "There we go...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0xe874",
+      "source": "Honestly, though, this thing's pretty\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xe89c",
+      "source": "uncomfortable...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xe8ad",
+      "source": "The top's a little off, but the bottom just\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xe8db",
+      "source": "has way too many things wrong with it.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xe902",
+      "source": "The way it's stretching can't be good for it,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xe932",
+      "source": "and it's... getting a little drafty downstairs.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xe962",
+      "source": "Since the fly opens so wide, it's pretty\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xe98d",
+      "source": "well-ventilated. Well, more like it's letting\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xe9bd",
+      "source": "the wind right in.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xe9d0",
+      "source": "The real problem here is how I'm going to make\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xea01",
+      "source": "sure I don't accidentally flash anyone...",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xea2b",
+      "source": "There are some serious issues with these clothes.\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0xea5f",
+      "source": "I'm a gust of wind away from becoming a streaker.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xea91",
+      "source": "Something tells me this isn't going to work.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xeabe",
+      "source": "Maybe I should just explain and ask to borrow\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xeaee",
+      "source": "some underwear...? No, no, can't do that.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xeb18",
+      "source": "Even if it's a perfectly innocent and honest\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xeb47",
+      "source": "request, a guy can't ask a girl for underpants.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xeb77",
+      "source": "And she's lending these out of the kindness of\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xeba8",
+      "source": "her heart! I can't go begging for more.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xebd0",
+      "source": "I don't need to bother her with this.\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xebf8",
+      "source": "Just gotta get a little creative.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xec1a",
+      "source": "Having settled on a course of action, I fumble\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xec4b",
+      "source": "with the fabric for a little longer.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xec70",
+      "source": "Oh, got it. I can use this heavier fabric as\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xec9f",
+      "source": "a kind of apron, and now this can be... Hm?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xeccb",
+      "source": "...Uh...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xecd4",
+      "source": "I feel eyes on me, and glance up. She's standing\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0xed07",
+      "source": "there, staring... amazed, concerned, and\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xed32",
+      "source": "exasperated.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xed3f",
+      "source": "You aren't... messing around, are you?",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xed66",
+      "source": "I see something in her expression twitch\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xed91",
+      "source": "as she awaits my response.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0xedac",
+      "source": "Urgh... that look in her eyes... It's like\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xedd9",
+      "source": "a parent saying \"I'm not mad, just\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xedfe",
+      "source": "disappointed in you.\"",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0xee14",
+      "source": "N-No, look, I can explain! I'm only dressed\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xee42",
+      "source": "like this 'cause there wasn't any underwear!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xee6f",
+      "source": "...The thing you have wrapped around your\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xee9b",
+      "source": "waist right now is an aperyu. It goes on\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xeec6",
+      "source": "your shoulders.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xeed6",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0xeedb",
+      "source": "You've got everything on the wrong sides for\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xef0a",
+      "source": "the top, too... and I think the pants are on\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xef39",
+      "source": "backwards.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xef44",
+      "source": "Backwards...? Hold on, the fly's here.\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0xef6d",
+      "source": "So that makes it the front, right?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xef90",
+      "source": "That's where the tail's supposed to run\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xefba",
+      "source": "through...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xefc5",
+      "source": "Huh...? Tail...?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xefd6",
+      "source": "I'm caught off guard. A tail's not exactly\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf003",
+      "source": "something you expect to come up in normal\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xf02f",
+      "source": "conversation.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xf03d",
+      "source": "I glance over, and notice something swaying\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xf06b",
+      "source": "behind her.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0xf077",
+      "source": "Something ropelike, extending from just above\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xf0a7",
+      "source": "her rear. Something covered in fur, almost\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf0d4",
+      "source": "like...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xf0dc",
+      "source": "...a tail?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xf0e7",
+      "source": "Come to think of it, I think I saw it behind\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xf116",
+      "source": "her while we were running in the caves...",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xf140",
+      "source": "But I dismissed the thought, of course.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xf16a",
+      "source": "Common sense says that's ridiculous.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xf18f",
+      "source": "No, no, no. There's just no way. It must be\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xf1bd",
+      "source": "some kind of accessory or something...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xf1e4",
+      "source": "As I ponder the possibilities, I reach out\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf211",
+      "source": "and grasp the swaying tail.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0xf22d",
+      "source": "H-Hgh!",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xf234",
+      "source": "Wow, this is really something. It looks and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xf262",
+      "source": "feels like it's an actual tail...",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xf284",
+      "source": "And this texture! It's even soft to the touch.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xf2b3",
+      "source": "H-Haah! Ah... Wh... Wha...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0xf2ce",
+      "source": "Fluffy, soft, and silky smooth. It feels\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xf2f9",
+      "source": "amazing... It'd make a perfect scarf.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0xf31f",
+      "source": "And it's even wriggling, but I can't work\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xf34b",
+      "source": "out if there's some mechanism moving it...",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xf376",
+      "source": "*Floof*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xf37e",
+      "source": "Hm?",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0xf382",
+      "source": "Ngh... Ghh... Hngh!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xf396",
+      "source": "What's this? It's even getting all fluffed\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf3c3",
+      "source": "up now...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xf3cd",
+      "source": "As I run my hands over the soft fur, it\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xf3f7",
+      "source": "suddenly puffs up, like its hairs are\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xf41f",
+      "source": "standing on end.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xf430",
+      "source": "The heck...?",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xf43d",
+      "source": "Curiosity getting the better of me, I grab it\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xf46d",
+      "source": "with both hands. And at that moment...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xf494",
+      "source": "Ah...!\\n",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xf49d",
+      "source": "...Waaaaaaaaaah!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xf4ae",
+      "source": "...Gah! Wh-What the--",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0xf4c4",
+      "source": "Her outburst surprises me, and I instinctively\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xf4f5",
+      "source": "let go of the tail.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xf509",
+      "source": "I look back to her, uncertain of what just\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf536",
+      "source": "happened.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xf549",
+      "source": "As I meet her eyes, I see her shoulders\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xf573",
+      "source": "trembling... and she's glaring at me?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0xf599",
+      "source": "H-Hey, what's wrong...?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0xf5b1",
+      "source": "What's... wrong...?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xf5c5",
+      "source": "Staring icily, the girl steps towards me.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xf5ef",
+      "source": "What... do you think you're doing?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xf612",
+      "source": "What do I... what?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xf625",
+      "source": "You heard me!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xf633",
+      "source": "What are you doing, grabbing a girl's tail like\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xf665",
+      "source": "that? I was quite clear, I think!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xf687",
+      "source": "Grabbing a...? No, that was only...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0xf6ab",
+      "source": "Wait, you don't mean that's... that's real?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xf6d7",
+      "source": "Of course it is! If this beautiful tail of mine\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xf709",
+      "source": "isn't real, then what is?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xf723",
+      "source": "N-No, it's just...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xf736",
+      "source": "Urgh--",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xf73d",
+      "source": "I stagger backwards, feeling a sense of power\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xf76d",
+      "source": "from her completely at odds with her cute\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xf799",
+      "source": "looks.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xf7a0",
+      "source": "She strokes her tail lovingly, as if she's\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf7cd",
+      "source": "trying to soothe the thing after my picking\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xf7fb",
+      "source": "at it.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xf802",
+      "source": "But even still, just grabbing my tail without\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xf832",
+      "source": "even a warning...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xf844",
+      "source": "No... well, I mean... how do I put it...",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0xf86d",
+      "source": "She lets out a deep sigh.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xf887",
+      "source": "...It looks like you honestly didn't know,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf8b4",
+      "source": "so I suppose it can't be helped. I'll let\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xf8e0",
+      "source": "it go for now.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0xf8ef",
+      "source": "Well... sorry.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0xf8fe",
+      "source": "But it's not like you would expect anyone to\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xf92d",
+      "source": "have a real tail.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xf93f",
+      "source": "I mean, humans did evolve from apes, and I\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf96c",
+      "source": "guess there's been cases of reverse evolution...",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xf99d",
+      "source": "The girl looks at me strangely, as if she wants\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xf9cf",
+      "source": "to respond to my belated attempt at excuses.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xf9fc",
+      "source": "...Hm?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xfa03",
+      "source": "...Am I seeing things?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0xfa1a",
+      "source": "A beautiful face, elegant facial features,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfa47",
+      "source": "and shiny black hair. Yep. No problems here.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfa74",
+      "source": "She's definitely cute, but that's not really\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xfaa3",
+      "source": "the issue right now. The problem is...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xfaca",
+      "source": "...I-I didn't notice in all the commotion,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfaf7",
+      "source": "but... are those furry tufts on her head?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xfb21",
+      "source": "What's wrong now?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xfb33",
+      "source": "Those big ears... big, furry ears... twitch\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xfb61",
+      "source": "for a moment.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xfb6f",
+      "source": "Oh... uh... well, that's... um.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0xfb8f",
+      "source": "Ears and a tail... She looks human, but is she\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xfbc0",
+      "source": "something else?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xfbd0",
+      "source": "No, wait. I can't afford for her to leave me\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xfbff",
+      "source": "behind for asking too many dumb questions...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfc2c",
+      "source": "...It's nothing.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xfc3d",
+      "source": "Best to just act like I didn't see anything.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfc6a",
+      "source": "Uhh, I'm not too familiar with the customs and\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xfc9b",
+      "source": "etiquette around these parts, is the thing.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xfcc7",
+      "source": "That's plain enough just from looking at you.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xfcf7",
+      "source": "What are you doing with these clothes...?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xfd21",
+      "source": "The girl lets out a small sigh at my excuse.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfd4e",
+      "source": "Anyhow, we may as well get you properly dressed.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xfd7f",
+      "source": "Y-Yeah...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xfd89",
+      "source": "At her words, I hastily start working on\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xfdb4",
+      "source": "undoing the strings. Maybe I made the knots\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xfde2",
+      "source": "too tight...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xfdef",
+      "source": "There... we go. Phew... That's one untied.\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xfe1c",
+      "source": "Next, I'll... Ngh... This one's knotted\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xfe46",
+      "source": "pretty tight too...",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xfe5a",
+      "source": "As I fumble, the girl kneels, and patiently\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xfe88",
+      "source": "starts undoing the knots herself with\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xfeb0",
+      "source": "easy deftness.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0xfebf",
+      "source": "Hold still.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0xfecb",
+      "source": "A-All right. Thanks.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0xfee0",
+      "source": "*Swish*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xfee8",
+      "source": "I never imagined you'd use this as a sash...",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xff15",
+      "source": "She murmurs with an odd wryness, setting her\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xff44",
+      "source": "attentions on the sash holding up my pants.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xff70",
+      "source": "Really? Well, it's long and narrow, so I just\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xffa0",
+      "source": "figured.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xffa9",
+      "source": "I almost miss her muttered reply.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xffcb",
+      "source": "It's underwear.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xffdb",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xffe3",
+      "source": "Like I said... underwear.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xfffd",
+      "source": "Underwear...? This long strip of cloth is\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x10029",
+      "source": "supposed to be...?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1003c",
+      "source": "How is something this long supposed to cover...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1006e",
+      "source": "Wait. Is it one of those loincloth things!?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1009a",
+      "source": "I suppose you can say that.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x100b6",
+      "source": "I'm sure you didn't know, but still, the fact\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x100e6",
+      "source": "that you decided to use it as a sash instead...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10116",
+      "source": "Hrngh...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1011f",
+      "source": "Hee hee...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1012a",
+      "source": "The girl giggles at my visible dismay, but\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10157",
+      "source": "keeps working, hands darting over the cloth.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10184",
+      "source": "All that's left is...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1019a",
+      "source": "She pulls the cloth strip off my waist in one\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x101ca",
+      "source": "smooth tug. But...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x101dd",
+      "source": "...*Flump*",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x101e8",
+      "source": "Uh--",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x101ed",
+      "source": "That loincloth-sash was the only thing holding\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1021e",
+      "source": "up my trousers. If that came off, then\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x10247",
+      "source": "naturally--",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x10253",
+      "source": "The pants hit the floor... and \"It\" flops before\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x10286",
+      "source": "her eyes, swaying jauntily despite the lack\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x102b4",
+      "source": "of wind.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x102bd",
+      "source": "The girl freezes at the visual ambush, unable\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x102ed",
+      "source": "to tear her eyes from the strange intruder.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x10319",
+      "source": "Hello...?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x10323",
+      "source": "The girl's face, neck, hands and body slowly\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x10352",
+      "source": "flush bright red, like she's boiling whole.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x10380",
+      "source": "And then...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1038c",
+      "source": "Ee.",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x10390",
+      "source": "Ee?",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x10394",
+      "source": "EEEEEEEEYAAAAAGH!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x103a6",
+      "source": "Hk--",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x103ab",
+      "source": "How is that scream coming out of her!?\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x103d4",
+      "source": "I feel faint for a moment, overcome by\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x103fd",
+      "source": "ultrasonic distress.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x10412",
+      "source": "And just as I put my hands over my ears,\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1043d",
+      "source": "trying to block out the piercing shriek--",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x10467",
+      "source": "*THUD*",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1046e",
+      "source": "NNNAAARRGH!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1047a",
+      "source": "A terrible, vengeful force hits me below,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x104a6",
+      "source": "and my world is pain. ",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x104bd",
+      "source": "That should be everything!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x104d8",
+      "source": "The girl nods in satisfaction, giving me a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10505",
+      "source": "gentle and encouraging pat on the back.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1052d",
+      "source": "I-I get it. So this is how it's actually worn...",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1055e",
+      "source": "There's another gap in my memory, but I managed\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x10590",
+      "source": "to survive whatever happened, at least. Must be\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x105c2",
+      "source": "thanks to all that good karma.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x105e1",
+      "source": "So this is what it's supposed to feel like...\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10611",
+      "source": "It's easy to move in. Much different from\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1063d",
+      "source": "earlier.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x10646",
+      "source": "I spin in place, trying to get a sense of how\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10676",
+      "source": "the clothes fit.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x10687",
+      "source": "Compared to this, the first try was like\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x106b2",
+      "source": "getting myself into a straitjacket.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x106d6",
+      "source": "With no tail to speak of, and no intention\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10703",
+      "source": "to show off my ass, we agreed to sew the\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1072e",
+      "source": "tail hole shut.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1073e",
+      "source": "She talks about having a tail like it's\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x10768",
+      "source": "natural, but she seems fine with me not\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x10792",
+      "source": "having one.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1079e",
+      "source": "I was a bit curious about that... but I guess\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x107ce",
+      "source": "everyone's different.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x107e4",
+      "source": "Thanks for everything.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x107fb",
+      "source": "I turn towards her, formally expressing\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x10825",
+      "source": "my gratitude.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x10833",
+      "source": "Oh no, I don't mind. And we did have a few\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10860",
+      "source": "misunderstandings, so...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x10879",
+      "source": "Now then...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x10885",
+      "source": "The girl sits up straight, turns to me, and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x108b3",
+      "source": "announces in a clear, forthright tone. ",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x108db",
+      "source": "Kuon.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x108e1",
+      "source": "My name. I haven't told you yet, I think.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x1090b",
+      "source": "Kuon. That is my name.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x10922",
+      "source": "O-Oh, your name, huh?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x10938",
+      "source": "Kuon...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x10940",
+      "source": "And what do they call you?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x1095b",
+      "source": "My name...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x10966",
+      "source": "Yes, your name.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x10976",
+      "source": "Kuon's words stir something in my mind--\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x109a1",
+      "source": "something important.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x109b6",
+      "source": "O-Oh right, I'm--",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x109c8",
+      "source": "I'm...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x109d0",
+      "source": "I... am...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x109db",
+      "source": "Wait... Hold on...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x109ee",
+      "source": "I bury my face in my hands, and try to dredge\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10a1e",
+      "source": "up any memories. There's bound to be\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x10a45",
+      "source": "something, anything...",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x10a5c",
+      "source": "I am... I am...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x10a6c",
+      "source": "But for some reason... nothing came.\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x10a93",
+      "source": "No ending to the sentence.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x10aae",
+      "source": "W-Well, where did you come from? Or perhaps...\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x10adf",
+      "source": "what have you been doing until now?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x10b03",
+      "source": "Where... am I from?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x10b17",
+      "source": "Where am I from... Where am I from...\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x10b3f",
+      "source": "Where am I from...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x10b52",
+      "source": "The words repeat in my mind like an incantation,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x10b85",
+      "source": "but... nothing. I can't think past the haze.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10bb2",
+      "source": "I see...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x10bbb",
+      "source": "I can tell Kuon's also troubled, now that my\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x10bea",
+      "source": "memory loss doesn't seem so temporary.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x10c11",
+      "source": "What have I been doing until now...?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x10c36",
+      "source": "As the thought crosses my mind, I raise my\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10c63",
+      "source": "head again, my gaze falling on her.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x10c87",
+      "source": "That's right, she was...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x10ca0",
+      "source": "I don't remember much, but if she was the one\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10cd0",
+      "source": "taking care of me, then maybe...",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x10cf1",
+      "source": "It looks like she's noticed my look of anticipation.\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x10d28",
+      "source": "When she speaks, her voice is quiet.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x10d4d",
+      "source": "You were... passed out, alone in these remote\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x10d7d",
+      "source": "mountains.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x10d88",
+      "source": "Alone?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x10d8f",
+      "source": "Mhm. And... I'd never sleep well at night again\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x10dc1",
+      "source": "if I just left you, so... I took care of you.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x10def",
+      "source": "So I'm sorry to get your hopes up, but I think\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x10e20",
+      "source": "that's really all I know about you for sure.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x10e4d",
+      "source": "I... see...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x10e59",
+      "source": "I'm sorry.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x10e64",
+      "source": "No, it's my fault for getting my hopes up.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x10e8f",
+      "source": "That's kind of you to say, but... this is a mess,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x10ec3",
+      "source": "isn't it? I didn't think it'd turn out like this...",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x10ef7",
+      "source": "Muttering, Kuon presses her hand to her\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x10f21",
+      "source": "forehead and rubs her temples with her\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x10f4a",
+      "source": "fingers.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x10f53",
+      "source": "Yeah, this is a mess all right. Great... what am\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x10f86",
+      "source": "I supposed to do in a situation like this?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x10fb1",
+      "source": "All I found out was that I have no idea who I am.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x10fe3",
+      "source": "By the way... Where am I?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x10ffd",
+      "source": "Would you understand if I said we're west of\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1102c",
+      "source": "Kujyuri...? Deep in the Shishiri Province?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x11057",
+      "source": "I see.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1105e",
+      "source": "...No. No idea.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1106e",
+      "source": "...Ah.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x11075",
+      "source": "Finding out the name of this place doesn't\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x110a2",
+      "source": "help me one bit, since I still have no clue\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x110d0",
+      "source": "where I am.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x110dc",
+      "source": "Is there anything else...?\\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x110f9",
+      "source": "Something else I can ask her...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x11119",
+      "source": "Right, that huge thing!",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x11131",
+      "source": "Huge thing?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x1113d",
+      "source": "Yeah, that's right! That wriggly, slimy...\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1116a",
+      "source": "slime thing that attacked me. What was that!?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x11198",
+      "source": "...Slime?",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x111a2",
+      "source": "Kuon cocks her head at first, bewildered, but\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x111d2",
+      "source": "then something seems to dawn on her.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x111f7",
+      "source": "Oh, perhaps you're talking about the Tatari?",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x11224",
+      "source": "Tatari...?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1122f",
+      "source": "That's what it's called. It's a type of...\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1125c",
+      "source": "creature? I suppose?",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x11271",
+      "source": "Kuon replies, uncertainty clear in her tone\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1129f",
+      "source": "and expression.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x112af",
+      "source": "If you asked me what it is, I wouldn't have\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x112dd",
+      "source": "a solid answer for you, to be honest.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x11303",
+      "source": "All I know is that it lives deep underground,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x11333",
+      "source": "where the sun doesn't reach.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x11350",
+      "source": "And it'll attack and eat living creatures that\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11381",
+      "source": "wander inside its lair--for sustenance.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x113a9",
+      "source": "Also, it never dies... and I think that's all.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x113d8",
+      "source": "Never dies...?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x113e7",
+      "source": "Right. It just can't.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x113fd",
+      "source": "Burn it, cut it, beat it, but it still revives\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1142e",
+      "source": "instantly. No matter what you do, you can't\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1145c",
+      "source": "kill it.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x11465",
+      "source": "No, come on. No living creature could actually\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11496",
+      "source": "be immortal.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x114a3",
+      "source": "Maybe its body and mind are just that resilient,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x114d6",
+      "source": "and that makes it harder to kill it?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x114fb",
+      "source": "No, it's true. No matter what we do to it,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x11528",
+      "source": "it never dies. Doesn't matter what's done,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x11555",
+      "source": "or how...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1155f",
+      "source": "We just fight to drive it off, or scare it off\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11590",
+      "source": "with lights and loud sounds. Those seem to work\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x115c2",
+      "source": "well.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x115c8",
+      "source": "So we don't even know how many there are.\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x115f4",
+      "source": "Or much about it at all, really.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x11615",
+      "source": "What kind of monster is that? That's way\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x11640",
+      "source": "too spooky...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1164e",
+      "source": "So you were really lucky. If I'd arrived just\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1167e",
+      "source": "a bit later, there'd be nothing left of you,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x116ad",
+      "source": "right?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x116b4",
+      "source": "Her words bring to mind the huge insect,\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x116df",
+      "source": "swallowed whole and melted away in the\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x11708",
+      "source": "thing's body.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x11716",
+      "source": "Kuon laughs, maybe at the sudden paleness in\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11745",
+      "source": "my expression, and continues.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x11763",
+      "source": "Don't worry. Stay away from its habitat, and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11792",
+      "source": "keep to the paths when you travel in the wilds.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x117c2",
+      "source": "As long as you keep these rules in mind, you'll\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x117f4",
+      "source": "rarely run into any trouble.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x11811",
+      "source": "R-Rarely, huh...?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x11823",
+      "source": "So everything I went through--all that was just\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x11855",
+      "source": "ridiculously improbable bad luck!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x11877",
+      "source": "Well, you never know. It'd be best to just\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x118a4",
+      "source": "accept that these things happen, and deal\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x118d0",
+      "source": "with it, I think.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x118e2",
+      "source": "After all, a gust of wind at the worst time\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x11910",
+      "source": "could be all it takes to end someone's life.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1193d",
+      "source": "She says it almost casually.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x1195a",
+      "source": "Not sure if that matter-of-fact tone is\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x11984",
+      "source": "because that whole mess is behind us, or...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x119b0",
+      "source": "Well, what do you plan to do now?",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x119d2",
+      "source": "Now...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x119d9",
+      "source": "What CAN I do...?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x119eb",
+      "source": "Ah, sorry. I suppose that's a bit of an unfair\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11a1c",
+      "source": "question.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x11a26",
+      "source": "How are you supposed to answer a question like\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11a57",
+      "source": "that when you don't even remember your own\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x11a84",
+      "source": "name?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x11a8a",
+      "source": "Yeah, that about sums it up.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x11aa7",
+      "source": "Hmm. Well, if that's the case...",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x11ac8",
+      "source": "Something occurs to her, and she offers a\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x11af4",
+      "source": "gentle suggestion.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x11b07",
+      "source": "Perhaps this is some kind of fate. Why don't\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11b36",
+      "source": "you let me look after you for a little while?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x11b64",
+      "source": "The bizarre idea has me at a brief loss\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x11b8e",
+      "source": "for words.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x11b99",
+      "source": "This girl's going to take care of me?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x11bbf",
+      "source": "Oh, no, I couldn't. But I do appreciate the...",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11bee",
+      "source": "...No, wait.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x11bfb",
+      "source": "If I go off on my own here, I'm either going\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11c2a",
+      "source": "to get lost, or end up as some monster's\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x11c55",
+      "source": "dinner.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x11c5d",
+      "source": "I'm still unsure, but she's done a lot for me.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11c8e",
+      "source": "She wouldn't turn on me now--not after all this.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11cbf",
+      "source": "I can at least rely on her until I understand\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x11cef",
+      "source": "what's going on. I'll just accept this as some\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x11d20",
+      "source": "good fortune.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x11d2e",
+      "source": "...Understood. I'll be relying on you, at\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x11d5a",
+      "source": "least for a bit.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x11d6b",
+      "source": "Kuon smiles gently as I bow my head to her.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x11d97",
+      "source": "Yes, I think that's a wise choice. Obedience is\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x11dc9",
+      "source": "always a good thing.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x11dde",
+      "source": "She looks relieved... It's pretty clear if I had\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x11e11",
+      "source": "refused, I probably wouldn't have made it on\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11e40",
+      "source": "my own...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x11e4a",
+      "source": "Well, now that that's settled, we should\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x11e75",
+      "source": "at least decide on a name for you.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x11e98",
+      "source": "...A name?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x11ea3",
+      "source": "Well, you can't stay nameless forever. You\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x11ed0",
+      "source": "can't remember what you're called, right?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x11efa",
+      "source": "Yeah...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x11f02",
+      "source": "She has a point. Not having a name could get\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x11f31",
+      "source": "inconvenient, especially when we get to town.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x11f5f",
+      "source": "OK, anything's probably...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x11f7a",
+      "source": "Hold on.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x11f83",
+      "source": "Maybe... this is a golden opportunity?",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x11faa",
+      "source": "I'm not happy about having no memories, but\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x11fd8",
+      "source": "it DOES mean I've basically got a clean slate.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x12007",
+      "source": "Which brings us to this... I can pick myself\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x12036",
+      "source": "a really cool and mysterious name!",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x12059",
+      "source": "Maybe my name was something bland and dull,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x12087",
+      "source": "before all this.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x12098",
+      "source": "Well, that's not so bad. Could just as easily\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x120c8",
+      "source": "have been something ridiculous and\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x120ed",
+      "source": "embarrassing...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x120fd",
+      "source": "You know what, amnesia's not so bad. It's\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x12129",
+      "source": "awesome, even! Gotta make the best of a bad\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x12157",
+      "source": "situation.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x12162",
+      "source": "So this is a real opportunity. Can't just\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1218e",
+      "source": "go with some random name.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x121a8",
+      "source": "Just have to think of a name cool enough to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x121d6",
+      "source": "make people jealous, but not something I'd\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x12203",
+      "source": "regret later...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x12213",
+      "source": "OK! My name is--",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x12224",
+      "source": "Hmm. What kind of name would suit you best?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x12250",
+      "source": "Kuon seems unconcerned by my dramatically\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1227c",
+      "source": "outstretched arm, pondering to herself.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x122a4",
+      "source": "An uneasy feeling rises, and I nervously ask\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x122d3",
+      "source": "her.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x122d8",
+      "source": "Um... you aren't... planning to think about\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x12306",
+      "source": "my new name too, are you?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x12320",
+      "source": "She looks surprised, like she has no idea\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1234c",
+      "source": "what I'm asking.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1235d",
+      "source": "Planning to? It's my duty.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x12378",
+      "source": "Y-Your duty?",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x12385",
+      "source": "A guardian is essentially a parent. Since I am\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x123b6",
+      "source": "now your guardian, it's my duty to give you\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x123e4",
+      "source": "a name.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x123ec",
+      "source": "No, that's...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x123fa",
+      "source": "Come on... This tiny girl can't honestly think\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1242b",
+      "source": "of herself as my parent, right...?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1244e",
+      "source": "Though if you'd prefer to go on your own without\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x12481",
+      "source": "me, then by all means, make your own decisions.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x124b1",
+      "source": "U... Urgh...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x124be",
+      "source": "How can I argue with that...? Kuon smiles\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x124ea",
+      "source": "brightly as I sag in defeat, and claps her\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x12517",
+      "source": "hands.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x1251e",
+      "source": "Then I think it's decided!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x12539",
+      "source": "*Sigh*... So much for the whole \"awesome name\"\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1256a",
+      "source": "idea...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x12572",
+      "source": "In the end, I guess I still have no say in\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x1259f",
+      "source": "anything--not even my own name.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x125bf",
+      "source": "Now, let's see. Your new name is...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x125e3",
+      "source": "Kuon cocks her head, looking thoughtfully\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1260f",
+      "source": "to the ceiling.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1261f",
+      "source": "After a moment of silence, she mutters a couple\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x12651",
+      "source": "syllables.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1265c",
+      "source": "Ha... ku...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x12668",
+      "source": "Haku...?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x12671",
+      "source": "That's right. Haku.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x12685",
+      "source": "She seems pretty proud of it. Having said it,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x126b5",
+      "source": "she smiles confidently.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x126cd",
+      "source": "I think you should call yourself Haku from\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x126fa",
+      "source": "now on.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x12702",
+      "source": "Haku...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1270a",
+      "source": "I ruminate over this name she's given me. ",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x12735",
+      "source": "...It's not that cool...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1274e",
+      "source": "...Did you say something?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x12768",
+      "source": "*Shudder*",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x12772",
+      "source": "A slight shiver runs through me, and a chill\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x127a1",
+      "source": "runs down my spine.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x127b5",
+      "source": "Though Kuon is smiling as sweetly as ever at me,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x127e8",
+      "source": "my blood runs cold for a moment.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x12809",
+      "source": "Erk! N-Nope, didn't say a word...",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x1282b",
+      "source": "In response to my reaction, Kuon clears her\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x12859",
+      "source": "throat with a delicate little cough,\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x12880",
+      "source": "speaking seriously.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x12894",
+      "source": "It's a very distinguished name.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x128b4",
+      "source": "It comes from the name of one celebrated in\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x128e2",
+      "source": "ancient legends and stories.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x128ff",
+      "source": "Legends...",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1290a",
+      "source": "Yes... from the Utawarerumono.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x12929",
+      "source": "Without any memories or context, I can't really\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1295b",
+      "source": "appreciate or understand the significance.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x12986",
+      "source": "But something about the faraway affection in her\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x129b9",
+      "source": "expression tells me it's an important name.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x129e5",
+      "source": "All right...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x129f2",
+      "source": "From now on, then, I'm Haku.\\n",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x12a11",
+      "source": "Please call me that from now on.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x12a32",
+      "source": "Mhm. Glad to hear it, I think.",
+      "byte_budget": 30
+    }
+  ]
+}

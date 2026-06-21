@@ -1,0 +1,5517 @@
+{
+  "scene": "ch_11_01",
+  "scene_id": "11_01",
+  "n_lines": 468,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Awakening Process",
+      "category": "Conceito",
+      "target_translation": "Processo de Despertar",
+      "handling_rule": "traduzir",
+      "spoiler_level": "moderate",
+      "notes": "Voz de sistema (CAPS). Natureza completa = spoiler."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Uncle",
+      "category": "Cultural",
+      "target_translation": "Tio",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorífico afetivo da figura de memória (11_01_000S)."
+    },
+    {
+      "term": "Woman",
+      "category": "UI",
+      "target_translation": "Mulher",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Anomalia 0x33f9 — reclassificada (binário-fonte está íntegro)",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "reclassificada",
+        "binário",
+        "fonte",
+        "está",
+        "íntegro"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Reclassificar: o binário-fonte **não está corrompido**. A extração limpa do arco mostra em `0x33f9` o texto inglês íntegro **\"INITIALIZING AWAKENING PROCESS.\"** (31 bytes) e, separada, `0x3419` **\"SYSTEMS YELLOW. RESTARTING IN 5 SECONDS.\"** (40 bytes)."
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Nn...",
+      "target": "Nnh...",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "It's... warm...?",
+      "target": "Está... quente...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Nh?",
+      "target": "Hein?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wh-Who...",
+      "target": "Q-Quem...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "...calls... to me...?",
+      "target": "...me chama...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wait... I'm still...!",
+      "target": "Espera... eu ainda...!",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "INITIALIZING AWAKENING PROCESS.",
+      "target": "INICIANDO PROCESSO DE DESPERTAR.",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "SYSTEMS YELLOW. RESTARTING IN 5 SECONDS.",
+      "target": "SISTEMAS EM ALERTA. REINICIANDO EM 5 SEGUNDOS.",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "SYSTEM ERROR.",
+      "target": "ERRO DE SISTEMA.",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "PROBLEM DETECTED IN AWAKENING PROCESS.\\n",
+      "target": "PROBLEMA DETECTADO NO PROCESSO DE DESPERTAR.\\n",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "SUBJECT SEVERELY AFFECTED.",
+      "target": "SUJEITO GRAVEMENTE AFETADO.",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "ABORT COMMAND: CANCELLED. \\n",
+      "target": "COMANDO DE ABORTAR: CANCELADO. \\n",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "PROCESS UNABLE TO BE TERMINATED.\\n",
+      "target": "IMPOSSÍVEL ENCERRAR O PROCESSO.\\n",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "COMMENCING COUNTDOWN.",
+      "target": "INICIANDO CONTAGEM REGRESSIVA.",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "5, {W75}4, {W75}3, {W80}2, {W80}1...",
+      "target": "5, {W75}4, {W75}3, {W80}2, {W80}1...",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "H{W10}A{W10}V{W10}E {W10}A{W10} P{W10}L{W10}E{W10}A{W10}S{W10}A{W10}N{W10}T{W10} A{W10}W{W10}A{W10}K{W10}E{W10}N{W10}I{W10}N{W10}G{W10}--",
+      "target": "T{W10}E{W10}N{W10}H{W10}A{W10} {W10}U{W10}M{W10} {W10}B{W10}O{W10}M{W10} {W10}D{W10}E{W10}S{W10}P{W10}E{W10}R{W10}T{W10}A{W10}R{W10}--",
+      "speaker": "Sistema",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wh... Where...?",
+      "target": "On... Onde...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Where... am I...?",
+      "target": "Onde... estou...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Above me... some kind of... cloth ceiling...?",
+      "target": "Acima de mim... uma espécie de... teto de pano...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Barely any light...... Or is it just dark out...?",
+      "target": "Quase nenhuma luz...... Ou só está escuro lá fora...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Noise... Sounds like... fire?",
+      "target": "...Barulho... Parece... fogo?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "U... Urgh... Everything's... distorted...",
+      "target": "Nnh... Argh... Está tudo... distorcido...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why... am I...?",
+      "target": "Por que... eu...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Are you awake?",
+      "target": "Você acordou?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ngh... hh...?",
+      "target": "Nnh... hn...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "What...?",
+      "target": "O quê...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Girl",
+      "target": "Garota",
+      "speaker": "sistema",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "How are you feeling? I didn't see any injuries,\\n",
+      "target": "Como você está se sentindo? Não vi ferimentos,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "but do you feel any pain anywhere?",
+      "target": "mas sente dor em algum lugar?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...I suppose you might still be delirious...?",
+      "target": "...Acho que você ainda pode estar delirando...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Who... are you...?",
+      "target": "Quem... é você...?",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh...",
+      "target": "Ah...",
+      "speaker": "Kuon",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "That's... Well, how do I put it...? I think that\\n",
+      "target": "Isso... Bem, como eu explico...? Acho que isso\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "might be a bit too hard to explain right now.",
+      "target": "pode ser difícil demais de explicar agora.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, anyway... do you remember anything about\\n",
+      "target": "Bom, enfim... você lembra de alguma coisa sobre\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "what happened to you?",
+      "target": "o que aconteceu com você?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Me...?",
+      "target": "Eu...?",
+      "speaker": "Protagonista",
+      "from_scene": "15_01"
+    },
+    {
+      "source": "Urgh...",
+      "target": "Argh...",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "Oh--just try to relax...",
+      "target": "Ah--apenas tente relaxar...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can tell you everything you want to know later.",
+      "target": "Depois eu te conto tudo o que quiser saber.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah... I get it...",
+      "target": "Ah... entendi...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "This is... all just... a dream...",
+      "target": "Isso é... tudo só... um sonho...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Just relax for now... and rest.",
+      "target": "Por ora, relaxe... e descanse.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Nn... hh...",
+      "target": "Nnh... hn...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Good night...",
+      "target": "Boa noite...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Woman",
+      "target": "Mulher",
+      "speaker": "sistema",
+      "from_scene": "14_07"
+    },
+    {
+      "source": "Oh dear, your room is a mess again...",
+      "target": "Ai, ai, seu quarto está uma bagunça de novo...",
+      "speaker": "Mulher (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hey, hey, Uncle! I'm here to visit!",
+      "target": "Ei, ei, Tio! Vim te visitar!",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "Heh heh... You better be really happy! Cause today,\\n",
+      "target": "Hehe... É bom você ficar bem feliz! Porque hoje,\\n",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm gonna cook you your favorite      !",
+      "target": "vou cozinhar o seu favorito      !",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hmmm... Then if you still aren't married even\\n",
+      "target": "Hmmm... Então se você ainda não casou nem\\n",
+      "speaker": "Garota (memória)",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "when you're really old, I can marry you, OK?",
+      "target": "quando estiver bem velho, eu caso com você, tá?",
+      "speaker": "Garota (memória)",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "I really do worry... You don't have to stay here.\\n",
+      "target": "Eu me preocupo mesmo... Você não precisa ficar aqui.\\n",
+      "speaker": "Mulher (memória)",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "You can always...",
+      "target": "Você sempre pode...",
+      "speaker": "Mulher (memória)",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "...You know you can come back anytime.",
+      "target": "...Sabe que pode voltar quando quiser.",
+      "speaker": "Mulher (memória)",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "...You seem so distant, these days.",
+      "target": "...Você anda tão distante esses dias.",
+      "speaker": "Mulher (memória)",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "Back then, it felt like you were always trailing\\n",
+      "target": "Antes, parecia que você vivia atrás\\n",
+      "speaker": "Mulher (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "around after the two of us... ",
+      "target": "de nós dois o tempo todo... ",
+      "speaker": "Mulher (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "Man",
+      "target": "Hom",
+      "speaker": "Sistema",
+      "from_scene": "12_04"
+    },
+    {
+      "source": "...You took the medicine, then?",
+      "target": "...Então você tomou o remédio?",
+      "speaker": "Homem (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "There'll be a whole new world waiting for you\\n",
+      "target": "Um mundo totalmente novo te aguarda\\n",
+      "speaker": "Homem (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "when you wake up... Hmhmhm.",
+      "target": "quando você acordar... Hmhmhm.",
+      "speaker": "Homem (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "Yes... You are the first... and the last...",
+      "target": "Sim... Você é o primeiro... e o último...",
+      "speaker": "Homem (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm not gonna make it for you anymore.",
+      "target": "Eu não vou mais poder fazer isso por você.",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "right?",
+      "target": "né?",
+      "speaker": "Haku",
+      "from_scene": "12_03"
+    },
+    {
+      "source": "Hee hee, OK.",
+      "target": "Hehe, tá bom.",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "You better come. Pinky swear! Cross your heart\\n",
+      "target": "É bom você vir. Promessa de mindinho! Jura\\n",
+      "speaker": "Garota (memória)",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "and hope to die!",
+      "target": "e que morra se mentir!",
+      "speaker": "Garota (memória)",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's a promise.",
+      "target": "É uma promessa.",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "That's... right...",
+      "target": "É... verdade...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "The promise...",
+      "target": "A promessa...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "Have to... go...",
+      "target": "Tenho que... ir...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "She's waiting...",
+      "target": "Ela está esperando...",
+      "speaker": "Protagonista",
+      "from_scene": "root"
+    },
+    {
+      "source": "She's... waiting... for...",
+      "target": "Ela está esperando... por...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah...hah...",
+      "target": "Ah...há...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "HA-CHOO!",
+      "target": "ATCHIM!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh... S-So cold...",
+      "target": "Argh... Q-Que frio...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I blink at the unfamiliar sight.",
+      "target": "Pisco diante da cena desconhecida.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wh-Where... am I?",
+      "target": "O-Onde... estou?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I glance around. Trees, trees, and more trees.\\n",
+      "target": "Olho ao redor. Árvores, árvores e mais árvores.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's a forest, and a pretty dense one at that.",
+      "target": "É uma floresta, e bem densa ainda por cima.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It feels like the endless trees are swallowing\\n",
+      "target": "Parece que as árvores sem fim engolem\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "everything else up... even sound.",
+      "target": "todo o resto... até o som.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Where... exactly am I...?",
+      "target": "Onde... exatamente eu estou...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "How did I end up in a place like this...?",
+      "target": "Como fui parar num lugar assim...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why...? Why...",
+      "target": "Por quê...? Por quê...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I frantically search my memories.",
+      "target": "Vasculho minhas memórias freneticamente.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ngh... It's no use. Can't remember. What was\\n",
+      "target": "Ngh... Não adianta. Não lembro. O que eu\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I doing up until now...?",
+      "target": "estava fazendo até agora...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Gah!",
+      "target": "Ai!",
+      "speaker": "Man",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "A sudden pain in my foot interrupts my thoughts.\\n",
+      "target": "Uma dor súbita no pé interrompe meus pensamentos.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I look down and realize... I'm barefoot.",
+      "target": "Olho para baixo e percebo... estou descalço.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why...?",
+      "target": "Por quê...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Gah, it's freezing...",
+      "target": "Ai, que frio de congelar...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why am I... No, hold on.",
+      "target": "Por que eu... Não, espera.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why am I dressed like this...?",
+      "target": "Por que estou vestido assim...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Out in this cold, in just a flimsy gown...?",
+      "target": "Nesse frio, só com uma camisola fininha...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Not even any underpants...",
+      "target": "Sem nem roupa de baixo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "H-Hurgh... \"Chilly\"... d-doesn't even begin\\n",
+      "target": "A-Argh... \"Friozinho\"... nem chega\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to describe it.",
+      "target": "perto de descrever.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I look around, desperate for some way to get out\\n",
+      "target": "Olho em volta, desesperado por um jeito de fugir\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "of this cold.",
+      "target": "deste frio.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Not a single house or a signpost anywhere...  ",
+      "target": "Nenhuma casa, nenhuma placa em lugar nenhum...  ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Gah... Urgh...",
+      "target": "Gah... Argh...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My head is splitting, too... Probably related\\n",
+      "target": "Minha cabeça também está latejando... Deve ser\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to the empty stomach.",
+      "target": "do estômago vazio.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah, right. This is all just a dream...",
+      "target": "Ah, claro. Isso é tudo só um sonho...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Dammit, it's no use. I can't fool myself here.",
+      "target": "...Droga, não adianta. Não dá pra me enganar aqui.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Somehow, I pull myself together and get back\\n",
+      "target": "De algum jeito, me recomponho e volto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to my feet.",
+      "target": "a ficar de pé.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "No matter how I look at it, this is no dream.",
+      "target": "Por mais que eu tente, isto não é sonho nenhum.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Ha-choo! Bwa-CHOO!",
+      "target": "...Atchim! Aaa-TCHIM!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hurgh... Stuck out in this cold with nothing\\n",
+      "target": "Argh... Preso neste frio sem nada\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "but a robe, and totally naked underneath it.",
+      "target": "além de um robe, e pelado por baixo dele.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm still holding up, but once the sun goes down,\\n",
+      "target": "Ainda aguento, mas quando o sol se puser,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'll catch cold for sure. Worst-case scenario,\\n",
+      "target": "vou pegar um resfriado na certa. Na pior das hipóteses,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'll freeze to death.",
+      "target": "morro congelado.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "If this isn't a dream, then that tent where I was\\n",
+      "target": "Se isto não é sonho, então aquela tenda onde eu\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "resting has to be out here somewhere.",
+      "target": "estava deve estar em algum lugar por aqui.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "All things considered, that's probably my best\\n",
+      "target": "Pensando bem, essa é provavelmente minha melhor\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "shot here...",
+      "target": "aposta aqui...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I want to go back the way I came, but I've got\\n",
+      "target": "Quero voltar pelo caminho que vim, mas não faço\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "no idea which way that even is.",
+      "target": "ideia de qual é.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What do I do? Should I just... follow some road\\n",
+      "target": "O que eu faço? Sigo alguma trilha\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "and hope for the best? Or wait here for help?",
+      "target": "e torço pelo melhor? Ou espero ajuda aqui?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "If you get lost, rule one is to stay still and\\n",
+      "target": "Quando se perde, a regra um é ficar parado e\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "wait for help. But the thing is...",
+      "target": "esperar ajuda. Mas o problema é...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I don't even know if anyone's coming for me... ",
+      "target": "Não sei nem se alguém vem me procurar... ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Can't really expect a search party when I don't\\n",
+      "target": "Não dá pra esperar um grupo de busca quando nem\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "even know what the hell I'm doing here myself.",
+      "target": "eu sei o que diabos faço aqui.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I guess I'll have to risk it if I want to\\n",
+      "target": "Acho que vou ter que arriscar se quiser\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "get out of here.",
+      "target": "sair daqui.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I should get moving before it gets any darker.",
+      "target": "Melhor me mexer antes que escureça mais.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_06"
+    },
+    {
+      "source": "I feel a shiver run down my spine... but this\\n",
+      "target": "Sinto um arrepio na espinha... mas desta\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "time it's not the cold.",
+      "target": "vez não é do frio.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What...? Something felt... weird...",
+      "target": "O quê...? Senti algo... estranho...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Whoa! Wh-What the--",
+      "target": "...Uou! Q-Que diabos--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oh... just a bird... Phew. Geez, almost gave me\\n",
+      "target": "Ah... é só um pássaro... Ufa. Quase me deu\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "a heart attack.",
+      "target": "um ataque do coração.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Nothing serious. What a relief...",
+      "target": "Nada de grave. Que alívio...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Overhead, the birds are still screeching.\\n",
+      "target": "Lá em cima, os pássaros ainda grasnam.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "They seem pretty worked up about something...",
+      "target": "Parecem bem agitados com alguma coisa...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...These birds just won't shut up. What's got\\n",
+      "target": "...Esses pássaros não calam a boca. O que os\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "them so freaked out...?",
+      "target": "deixou tão assustados...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Shiver*",
+      "target": "*Arrepio*",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...There it is again.",
+      "target": "...Lá está de novo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It feels like... something's watching me.",
+      "target": "Sinto como se... algo estivesse me observando.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh... I... feel sick...",
+      "target": "Argh... Estou... passando mal...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My vision blurs, and I lose my balance.\\n",
+      "target": "Minha visão embaça e perco o equilíbrio.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I trip on my own feet, and stumble forward. ",
+      "target": "Tropeço nos próprios pés e caio pra frente. ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "And in that instant--",
+      "target": "E nesse instante--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Whoa--",
+      "target": "Uou--",
+      "speaker": "Man",
+      "from_scene": "16_01"
+    },
+    {
+      "source": "*Slash!*",
+      "target": "*Zás!*",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I hear it just above my head.\\n",
+      "target": "Ouço logo acima da minha cabeça.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "A jarring, violent sound, like metal on metal.",
+      "target": "Um som violento e estridente, como metal contra metal.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wh... Wh-Wha...",
+      "target": "Q... Q-Quê...",
+      "speaker": "Man",
+      "from_scene": "15_01"
+    },
+    {
+      "source": "Fallen to one knee, I shift around cautiously\\n",
+      "target": "Caído de joelhos, me viro com cautela\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to look back.",
+      "target": "para olhar pra trás.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What... is... this...?",
+      "target": "O que... é... isto...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "A row of sharp jags and points, like honed\\n",
+      "target": "Uma fileira de pontas e gumes afiados, como\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "blades, gleams in the cold air.",
+      "target": "lâminas, reluz no ar gelado.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "They're like scissors... or maybe a saw?",
+      "target": "São como tesouras... ou talvez um serrote?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "But saws and scissors can't compare to THAT.\\n",
+      "target": "Mas serrotes e tesouras não chegam perto DAQUILO.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's bigger than a human arm...",
+      "target": "É maior que um braço humano...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What the...",
+      "target": "Mas que...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What... is THAT!?",
+      "target": "O que... é AQUILO!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Whatever it is, it's definitely insectoid.",
+      "target": "Seja lá o que for, é definitivamente um inseto.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "But... this thing doesn't look like any bug\\n",
+      "target": "Mas... essa coisa não parece nenhum inseto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I've ever seen.",
+      "target": "que eu já vi.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's at least ten times... no, a hundred\\n",
+      "target": "É no mínimo dez vezes... não, cem\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "times bigger.",
+      "target": "vezes maior.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What is... going on...?",
+      "target": "O que está... acontecendo...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Revulsion wells up inside me, and my skin crawls.\\n",
+      "target": "A repulsa cresce dentro de mim, e minha pele se arrepia.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I just want to look away from this thing.",
+      "target": "Só quero desviar o olhar dessa coisa.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What do I do...? What should I do...?",
+      "target": "O que eu faço...? O que eu devo fazer...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hh... Ah... Aaah--",
+      "target": "Hn... Ah... Aaah--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Without looking away, I jump off the cliffside\\n",
+      "target": "Sem desviar o olhar, salto do penhasco\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "in front of me.",
+      "target": "à minha frente.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I feel that unnatural sharpness cut through\\n",
+      "target": "Sinto aquele corte sobrenatural rasgar\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "the air just behind me as I leap.",
+      "target": "o ar logo atrás de mim enquanto pulo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Aaaaah!",
+      "target": "Aaaaah!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm... flying!?",
+      "target": "Estou... voando!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "For a moment, I'm soaring through the air.",
+      "target": "Por um momento, deslizo pelo ar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I feel myself hit the slope, and tumble down\\n",
+      "target": "Sinto-me bater na encosta e rolar\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "the snowy cliffside.",
+      "target": "pela ladeira nevada.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Guh--",
+      "target": "Agh--",
+      "speaker": "Man",
+      "from_scene": "13_03"
+    },
+    {
+      "source": "My back hits the ground hard. The impact knocks\\n",
+      "target": "Minhas costas batem com força no chão. O impacto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "the wind out of me, and I choke.",
+      "target": "me tira o fôlego, e eu engasgo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh... Ghh...",
+      "target": "Argh... Ghh...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ghh!",
+      "target": "Agh!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My body's screaming in agony, but I don't have\\n",
+      "target": "Meu corpo grita de dor, mas não tenho\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "time. I stagger to my feet and start running.",
+      "target": "tempo. Cambaleio de pé e começo a correr.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What was that, what was that, what was that...",
+      "target": "O que era aquilo, o que era aquilo, o que era aquilo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "WHAT THE HELL WAS THAT!?",
+      "target": "QUE DIABOS ERA AQUILO!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "An insect that massive doesn't exist...\\n",
+      "target": "Um inseto tão imenso não existe...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "There's no way it COULD exist!",
+      "target": "Não tem como existir!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "So this has to be a dream! That was all just\\n",
+      "target": "Então isto só pode ser um sonho! Aquilo foi tudo\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "some illusion!",
+      "target": "uma ilusão!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I just have to turn and look... and I'll see\\n",
+      "target": "Basta eu me virar e olhar... e vou ver\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "everyone smiling, waiting for me--",
+      "target": "todo mundo sorrindo, esperando por mim--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "And I look back.",
+      "target": "E olho pra trás.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Aaaaaargh! I-I-I-It's gonna...\\n",
+      "target": "Aaaaargh! V-V-V-Vai...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's gonna EAT me!!",
+      "target": "Vai me DEVORAR!!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I start zigzagging right and left, serpentine,\\n",
+      "target": "Começo a ziguezaguear pra direita e esquerda,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "trying to keep it guessing.",
+      "target": "tentando despistá-lo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hh... hh... H-How far do I have to run!?",
+      "target": "Hh... hh... Q-Quanto eu ainda tenho que correr!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I-I can't... keep this up...",
+      "target": "E-Eu não... aguento mais...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I keep running straight ahead. \\n",
+      "target": "Continuo correndo em frente. \\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "but...",
+      "target": "mas...",
+      "speaker": "Kuon",
+      "from_scene": "12_16"
+    },
+    {
+      "source": "Wha--",
+      "target": "Quê--",
+      "speaker": "Man",
+      "from_scene": "15_01"
+    },
+    {
+      "source": "Something gives way under my heel.",
+      "target": "Algo cede sob meu calcanhar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Aaaaaaaaagghh!",
+      "target": "Aaaaaaaaagh!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ghh...",
+      "target": "Argh...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Agh... Did I fall again...? Everything... hurts...",
+      "target": "Argh... Caí de novo...? Tudo... dói...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I shade my eyes with my hand, peering up at the\\n",
+      "target": "Protejo os olhos com a mão, espiando a\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "light shining from above. Looks like a hole...",
+      "target": "luz que vem de cima. Parece um buraco...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "If that's where I fell from... Must've been\\n",
+      "target": "Se foi de lá que caí... Deve ter sido\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "a bush or something hiding it...",
+      "target": "um arbusto ou algo escondendo o buraco...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It'll be tough, but if I climb the wall here,\\n",
+      "target": "Vai ser difícil, mas se eu escalar a parede aqui,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "maybe I can get back above ground...?",
+      "target": "talvez consiga voltar pra superfície...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "But even if I could get back up, that thing's\\n",
+      "target": "Mas mesmo se eu subir, aquela coisa\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "just going to eat me. So...",
+      "target": "vai só me comer. Então...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Strangely enough, the walls are giving off\\n",
+      "target": "Estranhamente, as paredes emitem\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "a faint glow. It's dim, but it's helping me\\n",
+      "target": "um brilho fraco. É tênue, mas me ajuda\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "see the place.",
+      "target": "a enxergar o lugar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It looks like some kind of cavern. There's a\\n",
+      "target": "Parece algum tipo de caverna. Há um\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "tunnel that seems like it goes on for a while.",
+      "target": "túnel que parece seguir por um bom tempo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Well, if I can't go up, then I might as well\\n",
+      "target": "Bem, se não posso subir, é melhor\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "go forward...",
+      "target": "seguir em frente...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Still, even with this dim glow, I can't really\\n",
+      "target": "Ainda assim, mesmo com esse brilho fraco, não dá\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "tell what it's like further inside.",
+      "target": "pra ver bem como é mais pra dentro.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Maybe it'd be safer to just wait here quietly\\n",
+      "target": "Talvez seja mais seguro só esperar aqui quieto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "after all...",
+      "target": "afinal...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah...!",
+      "target": "Ah...!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...That noise... It's getting closer.",
+      "target": "...Aquele barulho... Está chegando mais perto.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "If I hang around here, it'll only hunt me down...\\n",
+      "target": "Se eu ficar por aqui, vai só me caçar...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can't stop now.",
+      "target": "Não posso parar agora.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "With my decision made, I step forth into\\n",
+      "target": "Decisão tomada, avanço para dentro\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "the tunnel.",
+      "target": "do túnel.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Rrrgh... Why is this happening to me!?",
+      "target": "Rrgh... Por que isso está acontecendo comigo!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ngh, hah... phew... hah...\\n",
+      "target": "Ngh, há... ufa... há...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I don't feel it... chasing after me...",
+      "target": "Não sinto ela... vindo atrás de mim...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I finally let myself sit, exhaustion and relief\\n",
+      "target": "Finalmente me deixo sentar, exaustão e alívio\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "settling in.",
+      "target": "tomando conta.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hahh... I'm safe now... Th-This... should be\\n",
+      "target": "Hã... Estou a salvo agora... I-Isto... deve ser\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "far... enough... ",
+      "target": "longe... o bastante... ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Shudder*",
+      "target": "*Tremor*",
+      "speaker": "Kuon",
+      "from_scene": "19_07"
+    },
+    {
+      "source": "I cringe instinctively. A sudden chill,\\n",
+      "target": "Me encolho por instinto. Um frio súbito,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "unpleasantly familiar, runs down my spine.",
+      "target": "desagradavelmente familiar, desce pela espinha.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My body freezes. I can't move, confronted\\n",
+      "target": "Meu corpo congela. Não consigo me mexer, diante\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "with something beyond understanding.",
+      "target": "de algo além da compreensão.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wh... Wh-Wh-Why...",
+      "target": "Q... P-P-Por...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Why is it HERE!?",
+      "target": "Por que está AQUI!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The colossal insect is right in front of me.",
+      "target": "O inseto colossal está bem na minha frente.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Did this thing set me up!?",
+      "target": "Será que essa coisa me armou!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "But the specifics... don't really matter\\n",
+      "target": "Mas os detalhes... já não importam\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "anymore.",
+      "target": "mais.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Urgh--",
+      "target": "Argh--",
+      "speaker": "Man",
+      "from_scene": "13_05"
+    },
+    {
+      "source": "It happens in an instant. My back's to the\\n",
+      "target": "Acontece num instante. Estou de costas pra\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "wall, and any escape is blocked by its\\n",
+      "target": "parede, e qualquer fuga é bloqueada pelo\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "sinuous body.",
+      "target": "corpo sinuoso dele.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I... can't escape.",
+      "target": "Eu... não tenho como fugir.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It creeps forward warily, as if it's learned\\n",
+      "target": "Ele rasteja pra frente com cautela, como se\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "its lesson from its failed attempts earlier.",
+      "target": "tivesse aprendido a lição das tentativas falhas.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It leans in, close enough to pull me in with\\n",
+      "target": "Ele se inclina, perto o bastante pra me agarrar\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "a single snap of its jaws... and stops.",
+      "target": "com um só estalo das mandíbulas... e para.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Drip*",
+      "target": "*Pingo*",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Something like saliva is dripping from its jaws.",
+      "target": "Algo como saliva pinga das mandíbulas dele.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is this... where I die...?",
+      "target": "É aqui... que eu morro...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Like this... in this senseless situation...\\n",
+      "target": "Assim... nesta situação sem sentido...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "eaten by whatever the hell this thing is...",
+      "target": "devorado por seja lá o que for essa coisa...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The insect's jaws finally click open, gaping\\n",
+      "target": "As mandíbulas do inseto enfim se abrem, escancaradas\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to devour me. ",
+      "target": "pra me devorar. ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I'm dead--",
+      "target": "Estou morto--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "*Drip*... *Drip*... *Drip*...",
+      "target": "*Pingo*... *Pingo*... *Pingo*...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The insect suddenly darts aside without biting\\n",
+      "target": "O inseto de repente se lança pro lado sem morder,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "me, like it's trying to escape something...",
+      "target": "como se tentasse escapar de algo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...and something descends from far above,\\n",
+      "target": "...e algo desce lá do alto,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "translucent and massive, as if to crush\\n",
+      "target": "translúcido e imenso, como que pra esmagar\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "whatever's below.",
+      "target": "tudo o que houver embaixo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It engulfs the massive insect effortlessly.",
+      "target": "Engole o inseto colossal sem esforço.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What... the...",
+      "target": "Mas que...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What is that...? Wh-What's... going on now...?",
+      "target": "O que é aquilo...? Q-Que está... acontecendo agora...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can see the insect writhing and thrashing,\\n",
+      "target": "Vejo o inseto se contorcendo e debatendo,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "trapped inside its slick, gelatinous body.",
+      "target": "preso dentro do corpo gelatinoso e viscoso.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The insect was already beyond comprehension,\\n",
+      "target": "O inseto já estava além da compreensão,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "but this thing... defies all reason. And...",
+      "target": "mas essa coisa... desafia toda lógica. E...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's melting...?",
+      "target": "Está derretendo...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "This enormous insect's shell, hard as metal,\\n",
+      "target": "A carapaça desse inseto enorme, dura feito metal,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "is bubbling like it's being dissolved.\\n",
+      "target": "borbulha como se estivesse sendo dissolvida.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's coming apart inside the slime.",
+      "target": "Está se desfazendo dentro do limo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is it... eating the...?",
+      "target": "Será que está... comendo o...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The insect struggles desperately inside this\\n",
+      "target": "O inseto luta desesperadamente dentro dessa\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "amorphous creature, but its body is almost\\n",
+      "target": "criatura amorfa, mas o corpo dele está quase\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "completely digested.",
+      "target": "completamente digerido.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "All I can do is stare blankly, still in shock.",
+      "target": "Só consigo encarar, atônito, ainda em choque.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The insect's face surfaces for an instant,\\n",
+      "target": "O rosto do inseto vem à tona por um instante,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "but it has no power left. The viscous red\\n",
+      "target": "mas não tem mais força. O vermelho viscoso\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "swallows it up.",
+      "target": "o engole de vez.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Am I... safe?",
+      "target": "...Estou... a salvo?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I whisper, in sheer gratitude for still being\\n",
+      "target": "Sussurro, em pura gratidão por ainda estar\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "alive.",
+      "target": "vivo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I... surviv--!",
+      "target": "Eu... sobrevi--!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can't keep myself from letting out a cheer\\n",
+      "target": "Não consigo conter um grito\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "of relief... until I realize. ",
+      "target": "de alívio... até perceber. ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The amorphous creature swells and heaves,\\n",
+      "target": "A criatura amorfa incha e se agita,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "a short distance away.",
+      "target": "a pouca distância.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "If it's somehow still hungry after that huge\\n",
+      "target": "Se ainda estiver com fome depois daquele inseto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "insect, there's no reason it won't go for me\\n",
+      "target": "enorme, não há razão pra não vir atrás de mim\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "next.",
+      "target": "em seguida.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I need to get out of here, before--",
+      "target": "Preciso sair daqui, antes que--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Ah!",
+      "target": "...Ah!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The amorphous creature begins oozing forward...\\n",
+      "target": "A criatura amorfa começa a escorrer pra frente...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "towards me.",
+      "target": "na minha direção.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It stops. Just waiting... like it's curious\\n",
+      "target": "Ela para. Só esperando... como se tivesse curiosidade\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to see what I do next.",
+      "target": "de ver o que faço em seguida.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ngh...",
+      "target": "Ngh...",
+      "speaker": "Haku",
+      "from_scene": "12_04"
+    },
+    {
+      "source": "Can it hear me? Is it going off vibrations in\\n",
+      "target": "Será que me ouve? Será que sente vibrações\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "the ground? Any sudden movements, and I'm dead.",
+      "target": "no chão? Qualquer movimento brusco, e eu morro.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "No motion. I keep perfectly still, holding\\n",
+      "target": "Sem me mexer. Fico perfeitamente imóvel, prendendo\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "my breath.",
+      "target": "a respiração.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Its viscous surface begins rippling...",
+      "target": "A superfície viscosa começa a ondular...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...and little by little, reforms into a\\n",
+      "target": "...e aos poucos se remodela numa\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "familiar shape.",
+      "target": "forma familiar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wha--?",
+      "target": "Quê--?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My voice dies in my throat.",
+      "target": "Minha voz morre na garganta.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The face that appears before me is misshapen, glutinous,\\n",
+      "target": "O rosto que surge diante de mim é disforme, viscoso,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "horrifying... but unmistakably human.",
+      "target": "horrendo... mas inconfundivelmente humano.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Unfocused eyes fixate on me. Its mouth gasps\\n",
+      "target": "Olhos perdidos se fixam em mim. A boca arqueja\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "and gapes soundlessly, like a fish drowning\\n",
+      "target": "e se abre sem som, como um peixe se afogando\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "in air.",
+      "target": "no ar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "What... are... you...?",
+      "target": "O que... é... você...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...hh... yh...",
+      "target": "...hh... ih...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is it... trying to talk...? It just sounds\\n",
+      "target": "Será que... está tentando falar...? Só soa\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "like air escaping--I can't make out what\\n",
+      "target": "como ar escapando--não consigo entender o\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "it's saying.",
+      "target": "que diz.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...khh... yh...",
+      "target": "...kh... ih...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "By reflex or by curiosity, I move closer to\\n",
+      "target": "Por reflexo ou curiosidade, me aproximo pra\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "hear what it's saying... and another voice\\n",
+      "target": "ouvir o que diz... e outra voz\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "rings out.",
+      "target": "ressoa.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Cover your eyes and ears!",
+      "target": "Cubra os olhos e os ouvidos!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The sharp command is followed by a cylindrical\\n",
+      "target": "O comando ríspido é seguido por um objeto\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "object bouncing on the stone between us.\\n",
+      "target": "cilíndrico quicando na pedra entre nós.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Looks like--",
+      "target": "Parece--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "A grenade...? Gah!?",
+      "target": "Uma granada...? Gah!?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I instinctively shut my eyes, and clap my hands\\n",
+      "target": "Por instinto, fecho os olhos e tapo\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "over my ears.",
+      "target": "os ouvidos com as mãos.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "------------------gghhh------!",
+      "target": "------------------gghh------!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's too bright to make anything out, but\\n",
+      "target": "Está claro demais pra ver qualquer coisa, mas\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I feel the ground shake as if the creature's\\n",
+      "target": "sinto o chão tremer como se a criatura\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "writhing.",
+      "target": "se contorcesse.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is... Is this...?",
+      "target": "Será... Será que é...?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "A sudden grasp.",
+      "target": "Um agarrão súbito.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Huh...?",
+      "target": "Hein...?",
+      "speaker": "Haku",
+      "from_scene": "11_03"
+    },
+    {
+      "source": "Someone grabs my hand with an incredible force,\\n",
+      "target": "Alguém agarra minha mão com uma força incrível,\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "and when I try to pull away, I get yelled at.",
+      "target": "e quando tento me soltar, levo uma bronca.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "You can freeze up later!",
+      "target": "Você congela depois!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My body's floating in the air...\\n",
+      "target": "Meu corpo está flutuando no ar...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It feels like I'm flying again.",
+      "target": "É como se eu estivesse voando de novo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I nervously open my eyes, and see someone\\n",
+      "target": "Abro os olhos, nervoso, e vejo alguém\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "bounding forward, my hand in theirs.",
+      "target": "saltando à frente, minha mão na dela.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's so fast...\\n",
+      "target": "É tão rápido...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's like we're the wind.",
+      "target": "É como se fôssemos o vento.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "We cut through the air, and the wind roars\\n",
+      "target": "Cortamos o ar, e o vento ruge\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "past my ears.",
+      "target": "passando pelos meus ouvidos.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My rescuer glances back to me, as if checking\\n",
+      "target": "Minha salvadora olha pra trás, como que\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "on me. ",
+      "target": "checando se estou bem. ",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "A... woman?",
+      "target": "Uma... mulher?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "No... more like a young lady?",
+      "target": "Não... mais pra uma moça?",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Her face is beautiful, though oddly childish.\\n",
+      "target": "O rosto dela é lindo, embora curiosamente infantil.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Oversized ears... And a fluffy tail.",
+      "target": "Orelhas grandes demais... E uma cauda peluda.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "There's something... ethereal about her.\\n",
+      "target": "Há algo... etéreo nela.\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I can't look away.",
+      "target": "Não consigo desviar o olhar.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Even in this incredible situation, it feels\\n",
+      "target": "Mesmo nesta situação absurda, parece\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "like time's stopped.",
+      "target": "que o tempo parou.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Then, suddenly, her brow furrows.",
+      "target": "Então, de repente, ela franze a testa.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I glance back, unsure of what she's looking at...",
+      "target": "Olho pra trás, sem saber o que ela está vendo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Aaagh--",
+      "target": "Aaagh--",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "That amorphous creature surges forward, closing\\n",
+      "target": "Aquela criatura amorfa avança, se aproximando\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "in on us like some kind of predatory wave.",
+      "target": "de nós como uma onda predadora.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "In this linear cavern, there's nowhere else\\n",
+      "target": "Nesta caverna estreita, não há pra onde\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "to run.",
+      "target": "fugir.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "It's gonna catch up--!",
+      "target": "Vai nos alcançar--!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "But the girl's already seen it. She whips\\n",
+      "target": "Mas a garota já viu. Ela saca\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "another cylinder from her waist, and\\n",
+      "target": "outro cilindro da cintura e o\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "throws it behind us.",
+      "target": "joga atrás de nós.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The blinding flash and the explosion follow\\n",
+      "target": "O clarão ofuscante e a explosão vêm\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "almost instantly.",
+      "target": "quase no mesmo instante.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "------------------rngghh------!",
+      "target": "------------------rngh------!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Gyaaaagh!",
+      "target": "Gyaaagh!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Now's our chance!",
+      "target": "Agora é nossa chance!",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hahh... hh... hahh...",
+      "target": "Há... hh... há...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "We're outside... I-I'm finally safe...",
+      "target": "Estamos do lado de fora... E-Estou enfim a salvo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "My legs give out. I collapse onto the snowy\\n",
+      "target": "Minhas pernas cedem. Desabo na neve\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "ground.",
+      "target": "do chão.",
+      "speaker": "Man",
+      "from_scene": "19_08"
+    },
+    {
+      "source": "I can barely even believe I was able to run\\n",
+      "target": "Mal acredito que consegui correr\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "as much as I did.",
+      "target": "tudo aquilo.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "I guess humans really can do anything when\\n",
+      "target": "Acho que humanos conseguem qualquer coisa quando\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "their lives are on the line...",
+      "target": "a vida está em jogo...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl's exhausted too--can't blame her--\\n",
+      "target": "A garota também está exausta--não dá pra culpá-la--\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "and she takes a seat, catching her breath.",
+      "target": "e se senta, recuperando o fôlego.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "...She saved my life... I should at least\\n",
+      "target": "...Ela salvou minha vida... Eu deveria pelo menos\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "thank her properly.",
+      "target": "agradecer direito.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Th-Thank you so much for saving me...",
+      "target": "M-Muito obrigado por me salvar...",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Did she even hear me? My throat is raspy and\\n",
+      "target": "Será que ela me ouviu? Minha garganta está rouca e\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "raw, and I can't speak up that well.",
+      "target": "áspera, e não consigo falar muito alto.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "She notices, and turns towards me.",
+      "target": "Ela percebe e se vira pra mim.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "She has a strange look on her face, like she's\\n",
+      "target": "Tem uma expressão estranha no rosto, como se\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "seen something she wasn't expecting to.",
+      "target": "tivesse visto algo que não esperava.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ah... Seeing her face again like this...\\n",
+      "target": "Ah... Vendo o rosto dela assim de novo...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "There really is something beautiful about her.",
+      "target": "Tem mesmo algo de bonito nela.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "That slightly confused expression, too...\\n",
+      "target": "Aquela expressão um tanto confusa, também...\\n",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Wow, she's cute.",
+      "target": "Nossa, ela é uma graça.",
+      "speaker": "Man",
+      "from_scene": "root"
+    },
+    {
+      "source": "Is there something wrong with my face?",
+      "target": "Tem algo de errado com meu rosto?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "O-Oh, no, not really... ",
+      "target": "A-Ah, não, nada não... ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Still, though.",
+      "target": "Mesmo assim.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I take my eyes off you for just a moment and\\n",
+      "target": "Tiro os olhos de você por um só instante e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "you disappear, but I never imagined something\\n",
+      "target": "você some, mas nunca imaginei uma coisa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "like this.",
+      "target": "dessas.",
+      "speaker": "Kuon",
+      "from_scene": "17_04"
+    },
+    {
+      "source": "I'm glad I made it in time, but in the future...\\n",
+      "target": "Ainda bem que cheguei a tempo, mas no futuro...\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I think I'd prefer you don't cause me so much\\n",
+      "target": "acho que prefiro que você não me dê tanto\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "trouble.",
+      "target": "de verdade.",
+      "speaker": "Haku",
+      "from_scene": "12_04"
+    },
+    {
+      "source": "Urgh... I'm sorry.",
+      "target": "Argh... Me desculpe.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Hm?",
+      "target": "...Hum?",
+      "speaker": "Haku",
+      "from_scene": "11_05"
+    },
+    {
+      "source": "Wait, take her eyes off me...?\\n",
+      "target": "Espera, tirar os olhos de mim...?\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "And I disappeared?",
+      "target": "E eu sumi?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "What does she mean by that? She seems somehow...\\n",
+      "target": "O que ela quer dizer com isso? Ela parece de algum\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "familiar, too...",
+      "target": "jeito... familiar, também...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Does that mean you know who I am...?",
+      "target": "Quer dizer que você sabe quem eu sou...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "If you know who I am, where I'm from, please--\\n",
+      "target": "Se você sabe quem eu sou, de onde venho, por favor--\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "tell me.",
+      "target": "me diga.",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Huh...? Oh...",
+      "target": "Hã...? Ah...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Who am I? Where am I? What was that thing\\n",
+      "target": "Quem sou eu? Onde estou? O que era aquela coisa\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "that attacked me? What was--I mean, how--",
+      "target": "que me atacou? O que era--quer dizer, como--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Ngh... I'm trying to ask all my questions\\n",
+      "target": "Ngh... Tento fazer todas as perguntas\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "at once, and none of them are coming out\\n",
+      "target": "de uma vez, e nenhuma sai\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Right.",
+      "target": "direito.",
+      "speaker": "Kuon",
+      "from_scene": "15_01"
+    },
+    {
+      "source": "I'm--",
+      "target": "Eu sou--",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The girl stands with a troubled smile on her\\n",
+      "target": "A garota fica de pé com um sorriso aflito no\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "face, and extends her hand to me.",
+      "target": "rosto e estende a mão pra mim.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "We should head back for now.",
+      "target": "É melhor voltarmos por enquanto.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "If you stay out here dressed like that,\\n",
+      "target": "Se você ficar aqui fora vestido assim,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "you're going to end up with a cold.",
+      "target": "vai acabar pegando um resfriado.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Dressed...?",
+      "target": "Vestido...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "The cold air hits me all at once again, and\\n",
+      "target": "O ar gelado me atinge de novo de uma vez, e\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "I finally remember the state I'm in.",
+      "target": "finalmente lembro o estado em que estou.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Come to think of it, have I really been\\n",
+      "target": "Pensando bem, será que andei mesmo\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "flailing around this whole forest in this\\n",
+      "target": "perambulando por toda esta floresta nesta\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "flimsy thing...?",
+      "target": "coisinha fina...?",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Hah... Ha-CHOO!",
+      "target": "Hã... Aaa-TCHIM!",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...Hee hee.",
+      "target": "...Hehe.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "She lets out a laugh, clear as a bell, at the\\n",
+      "target": "Ela solta uma risada, clara como um sino, com o\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "sound of my sneeze echoing through the forest.",
+      "target": "som do meu espirro ecoando pela floresta.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Here.",
+      "target": "Aqui.",
+      "speaker": "Kuon",
+      "from_scene": "11_09"
+    },
+    {
+      "source": "She takes my hand with her pale, delicate fingers,\\n",
+      "target": "Ela toma minha mão com seus dedos pálidos e delicados,\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "and pulls me to my feet. ",
+      "target": "e me ajuda a ficar de pé. ",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "Let's go.",
+      "target": "Vamos.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "H-Hey...",
+      "target": "E-Ei...",
+      "speaker": "Kuon",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "I shift my hand slightly, squeezing back at her\\n",
+      "target": "Movo a mão de leve, apertando de volta o\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "grip. That lone touch of warmth...",
+      "target": "aperto dela. Aquele único toque de calor...",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "...I couldn't have known what lay ahead of us.\\n",
+      "target": "...Eu não tinha como saber o que nos aguardava.\\n",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    },
+    {
+      "source": "That this was only the beginning.",
+      "target": "Que aquilo era só o começo.",
+      "speaker": "Kuon",
+      "from_scene": "root"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Haku",
+      "source": "Geez...! Too bright out here...",
+      "target": "Aff...! Claridade demais aqui fora..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Well, guess the sun still rises no matter where\\n",
+      "target": "Enfim, o sol nasce em qualquer lugar, pelo visto\\n"
+    },
+    {
+      "speaker": "Haku",
+      "source": "I am. Still... What am I supposed to do now...?",
+      "target": "Pois é. Mesmo assim... O que é que eu faço agora...?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Where... am I?",
+      "target": "Onde... estou?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "No one else around, or...?",
+      "target": "Não tem ninguém... ou...?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Unh... urgh...",
+      "target": "Nnh... argh..."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Figuras de memoria (Woman/Man)",
+      "fact": "As identidades das figuras de memoria/sonho ('Woman'/'Man', 'Mestre').",
+      "spoiler_level": "major",
+      "guard": "Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)"
+    },
+    {
+      "entity": "Processo de Despertar",
+      "fact": "A natureza completa do 'processo de despertar' / enquadramento sci-fi.",
+      "spoiler_level": "moderate",
+      "guard": "Mantenha o enquadramento ambiguo e tecnico (CAPS p/ Sistema). NAO explique a natureza sci-fi nem conecte ao enredo maior. (Obs.: 'system of gears'/engrenagens do moinho NAO e isto.)"
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x3398",
+      "source": "Ngh... ghh...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x33a6",
+      "source": "Nn...\\n",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x33ae",
+      "source": "It's... warm...?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x33bf",
+      "source": "Nh?",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x33c3",
+      "source": "Wh-Who...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x33cd",
+      "source": "...calls... to me...?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x33e3",
+      "source": "Wait... I'm still...!",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x33f9",
+      "source": "INITIALIZING AWAKENING PROCESS.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x3419",
+      "source": "SYSTEMS YELLOW. RESTARTING IN 5 SECONDS.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x3442",
+      "source": "SYSTEM ERROR.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x3450",
+      "source": "PROBLEM DETECTED IN AWAKENING PROCESS.\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x3479",
+      "source": "SUBJECT SEVERELY AFFECTED.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x3494",
+      "source": "ABORT COMMAND: CANCELLED. \\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x34b1",
+      "source": "PROCESS UNABLE TO BE TERMINATED.\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x34d4",
+      "source": "COMMENCING COUNTDOWN.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x34ea",
+      "source": "5, {W75}4, {W75}3, {W80}2, {W80}1...",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x350f",
+      "source": "H{W10}A{W10}V{W10}E {W10}A{W10} P{W10}L{W10}E{W10}A{W10}S{W10}A{W10}N{W10}T{W10} A{W10}W{W10}A{W10}K{W10}E{W10}N{W10}I{W10}N{W10}G{W10}--",
+      "byte_budget": 137
+    },
+    {
+      "offset": "0x359d",
+      "source": "Wh... Where...?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x35ad",
+      "source": "Where... am I...?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x35bf",
+      "source": "Above me... some kind of... cloth ceiling...?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x35ed",
+      "source": "Barely any light...... Or is it just dark out...?",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x361f",
+      "source": "...Noise... Sounds like... fire?",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x3640",
+      "source": "U... Urgh... Everything's... distorted...",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x366a",
+      "source": "Why... am I...?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x367a",
+      "source": "Are you awake?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x3689",
+      "source": "Ngh... hh...?",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x3697",
+      "source": "What...?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x36a0",
+      "source": "Girl",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x36a5",
+      "source": "How are you feeling? I didn't see any injuries,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x36d7",
+      "source": "but do you feel any pain anywhere?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x36fa",
+      "source": "...I suppose you might still be delirious...?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x3728",
+      "source": "Who... are you...?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x373b",
+      "source": "Oh...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x3741",
+      "source": "That's... Well, how do I put it...? I think that\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x3774",
+      "source": "might be a bit too hard to explain right now.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x37a2",
+      "source": "Well, anyway... do you remember anything about\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x37d3",
+      "source": "what happened to you?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x37e9",
+      "source": "Me...?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x37f0",
+      "source": "Urgh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x37f8",
+      "source": "Oh--just try to relax...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x3811",
+      "source": "I can tell you everything you want to know later.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x3843",
+      "source": "Ah... I get it...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x3855",
+      "source": "This is... all just... a dream...",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x3877",
+      "source": "Just relax for now... and rest.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x3897",
+      "source": "Nn... hh...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x38a3",
+      "source": "Good night...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x38b1",
+      "source": "Woman",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x38b7",
+      "source": "Oh dear, your room is a mess again...",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x38dd",
+      "source": "Hey, hey, Uncle! I'm here to visit!",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x3901",
+      "source": "Heh heh... You better be really happy! Cause today,\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x3937",
+      "source": "I'm gonna cook you your favorite      !",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x395f",
+      "source": "Hmmm... Then if you still aren't married even\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x398f",
+      "source": "when you're really old, I can marry you, OK?",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x39bc",
+      "source": "I really do worry... You don't have to stay here.\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x39f0",
+      "source": "You can always...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x3a02",
+      "source": "...You know you can come back anytime.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x3a29",
+      "source": "...You seem so distant, these days.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x3a4d",
+      "source": "Back then, it felt like you were always trailing\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x3a80",
+      "source": "around after the two of us... ",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x3a9f",
+      "source": "Man",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x3aa3",
+      "source": "...You took the medicine, then?",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x3ac3",
+      "source": "There'll be a whole new world waiting for you\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x3af3",
+      "source": "when you wake up... Hmhmhm.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x3b0f",
+      "source": "Yes... You are the first... and the last...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x3b3b",
+      "source": "I'm not gonna make it for you anymore.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x3b62",
+      "source": "Right?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x3b69",
+      "source": "Hee hee, OK.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x3b76",
+      "source": "You better come. Pinky swear! Cross your heart\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x3ba7",
+      "source": "and hope to die!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x3bb8",
+      "source": "It's a promise.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x3bc8",
+      "source": "Nn...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x3bce",
+      "source": "That's... right...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x3be1",
+      "source": "The promise...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x3bf0",
+      "source": "Have to... go...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x3c01",
+      "source": "She's waiting...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x7da5",
+      "source": "She's... waiting... for...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x7dc0",
+      "source": "Ah...hah...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x7dcc",
+      "source": "HA-CHOO!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x7dd5",
+      "source": "Urgh... S-So cold...",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x7dee",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x7df6",
+      "source": "I blink at the unfamiliar sight.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x7e17",
+      "source": "Wh-Where... am I?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x7e29",
+      "source": "I glance around. Trees, trees, and more trees.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x7e5a",
+      "source": "It's a forest, and a pretty dense one at that.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x7e89",
+      "source": "It feels like the endless trees are swallowing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x7eba",
+      "source": "everything else up... even sound.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x7edc",
+      "source": "Where... exactly am I...?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x7ef6",
+      "source": "How did I end up in a place like this...?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x7f20",
+      "source": "Why...? Why...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x7f2f",
+      "source": "I frantically search my memories.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x7f51",
+      "source": "Ngh... It's no use. Can't remember. What was\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x7f80",
+      "source": "I doing up until now...?",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x7f99",
+      "source": "Gah!",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x7f9e",
+      "source": "A sudden pain in my foot interrupts my thoughts.\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x7fd1",
+      "source": "I look down and realize... I'm barefoot.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x7ffa",
+      "source": "Why...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x8002",
+      "source": "Ha-choo!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x800b",
+      "source": "Gah, it's freezing...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x8021",
+      "source": "Why am I... No, hold on.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x803a",
+      "source": "Why am I dressed like this...?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x8059",
+      "source": "Out in this cold, in just a flimsy gown...?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x8085",
+      "source": "Not even any underpants...",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x80a0",
+      "source": "H-Hurgh... \"Chilly\"... d-doesn't even begin\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x80ce",
+      "source": "to describe it.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x80de",
+      "source": "I look around, desperate for some way to get out\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x8111",
+      "source": "of this cold.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x811f",
+      "source": "Not a single house or a signpost anywhere...  ",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x814e",
+      "source": "Gah... Urgh...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x815d",
+      "source": "My head is splitting, too... Probably related\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x818d",
+      "source": "to the empty stomach.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x81a3",
+      "source": "Ah, right. This is all just a dream...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x81ca",
+      "source": "...Dammit, it's no use. I can't fool myself here.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x81fc",
+      "source": "Somehow, I pull myself together and get back\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x822b",
+      "source": "to my feet.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x8237",
+      "source": "No matter how I look at it, this is no dream.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x8265",
+      "source": "...Ha-choo! Bwa-CHOO!",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x827b",
+      "source": "Hurgh... Stuck out in this cold with nothing\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x82aa",
+      "source": "but a robe, and totally naked underneath it.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x82d7",
+      "source": "I'm still holding up, but once the sun goes down,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x830b",
+      "source": "I'll catch cold for sure. Worst-case scenario,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x833c",
+      "source": "I'll freeze to death.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x8352",
+      "source": "If this isn't a dream, then that tent where I was\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x8386",
+      "source": "resting has to be out here somewhere.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x83ac",
+      "source": "All things considered, that's probably my best\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x83dd",
+      "source": "shot here...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x83ea",
+      "source": "I want to go back the way I came, but I've got\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x841b",
+      "source": "no idea which way that even is.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x843b",
+      "source": "What do I do? Should I just... follow some road\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x846d",
+      "source": "and hope for the best? Or wait here for help?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x849b",
+      "source": "If you get lost, rule one is to stay still and\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x84cc",
+      "source": "wait for help. But the thing is...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x84ef",
+      "source": "I don't even know if anyone's coming for me... ",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x851f",
+      "source": "Can't really expect a search party when I don't\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x8551",
+      "source": "even know what the hell I'm doing here myself.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x8580",
+      "source": "I guess I'll have to risk it if I want to\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x85ac",
+      "source": "get out of here.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x85bd",
+      "source": "I should get moving before it gets any darker.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x85ec",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x85f1",
+      "source": "I feel a shiver run down my spine... but this\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x8621",
+      "source": "time it's not the cold.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x8639",
+      "source": "What...? Something felt... weird...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x865d",
+      "source": "...Whoa! Wh-What the--",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x8674",
+      "source": "Oh... just a bird... Phew. Geez, almost gave me\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x86a6",
+      "source": "a heart attack.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x86b6",
+      "source": "Nothing serious. What a relief...",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x86d8",
+      "source": "Overhead, the birds are still screeching.\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x8704",
+      "source": "They seem pretty worked up about something...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x8732",
+      "source": "...These birds just won't shut up. What's got\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x8762",
+      "source": "them so freaked out...?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x877a",
+      "source": "*Shiver*",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x8783",
+      "source": "...There it is again.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x8799",
+      "source": "It feels like... something's watching me.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x87c3",
+      "source": "Urgh... I... feel sick...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x87dd",
+      "source": "My vision blurs, and I lose my balance.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x8807",
+      "source": "I trip on my own feet, and stumble forward. ",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x8834",
+      "source": "And in that instant--",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x884a",
+      "source": "Whoa--",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x8851",
+      "source": "*Slash!*",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x885a",
+      "source": "I hear it just above my head.\\n",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x887a",
+      "source": "A jarring, violent sound, like metal on metal.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x88a9",
+      "source": "Wh... Wh-Wha...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x88b9",
+      "source": "Fallen to one knee, I shift around cautiously\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x88e9",
+      "source": "to look back.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x88fa",
+      "source": "What... is... this...?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x8911",
+      "source": "A row of sharp jags and points, like honed\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x893e",
+      "source": "blades, gleams in the cold air.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x895e",
+      "source": "They're like scissors... or maybe a saw?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x8987",
+      "source": "But saws and scissors can't compare to THAT.\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x89b6",
+      "source": "It's bigger than a human arm...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x89d6",
+      "source": "What the...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x89e2",
+      "source": "What... is THAT!?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x89f4",
+      "source": "Whatever it is, it's definitely insectoid.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x8a1f",
+      "source": "But... this thing doesn't look like any bug\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x8a4d",
+      "source": "I've ever seen.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x8a5d",
+      "source": "It's at least ten times... no, a hundred\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x8a88",
+      "source": "times bigger.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x8a96",
+      "source": "What is... going on...?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x8aae",
+      "source": "Revulsion wells up inside me, and my skin crawls.\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x8ae2",
+      "source": "I just want to look away from this thing.",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x8b0c",
+      "source": "What do I do...? What should I do...?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x8b32",
+      "source": "Hh... Ah... Aaah--",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x8b45",
+      "source": "Without looking away, I jump off the cliffside\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x8b76",
+      "source": "in front of me.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x8b86",
+      "source": "I feel that unnatural sharpness cut through\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x8bb4",
+      "source": "the air just behind me as I leap.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x8bd6",
+      "source": "Aaaaah!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x8bde",
+      "source": "I'm... flying!?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x8bee",
+      "source": "For a moment, I'm soaring through the air.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x8c19",
+      "source": "I feel myself hit the slope, and tumble down\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x8c48",
+      "source": "the snowy cliffside.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x8c5d",
+      "source": "Guh--",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x8c63",
+      "source": "My back hits the ground hard. The impact knocks\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x8c95",
+      "source": "the wind out of me, and I choke.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x8cb6",
+      "source": "Urgh... Ghh...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x8cc5",
+      "source": "Ghh!",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x8cca",
+      "source": "My body's screaming in agony, but I don't have\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x8cfb",
+      "source": "time. I stagger to my feet and start running.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x8d29",
+      "source": "What was that, what was that, what was that...",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x8d58",
+      "source": "WHAT THE HELL WAS THAT!?",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x8d71",
+      "source": "An insect that massive doesn't exist...\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x8d9b",
+      "source": "There's no way it COULD exist!",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x8dba",
+      "source": "So this has to be a dream! That was all just\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x8de9",
+      "source": "some illusion!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x8df8",
+      "source": "I just have to turn and look... and I'll see\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x8e27",
+      "source": "everyone smiling, waiting for me--",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x8e4a",
+      "source": "And I look back.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x8e5b",
+      "source": "Aaaaaargh! I-I-I-It's gonna...\\n",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x8e7c",
+      "source": "It's gonna EAT me!!",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x8e90",
+      "source": "I start zigzagging right and left, serpentine,\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x8ec1",
+      "source": "trying to keep it guessing.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x8edd",
+      "source": "Hh... hh... H-How far do I have to run!?",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x8f06",
+      "source": "I-I can't... keep this up...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x8f23",
+      "source": "I keep running straight ahead. \\n",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x8f45",
+      "source": "But...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x8f4c",
+      "source": "Wha--",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x8f52",
+      "source": "Something gives way under my heel.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x8f75",
+      "source": "Aaaaaaaaagghh!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x8f84",
+      "source": "Ghh...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x8f8b",
+      "source": "Agh... Did I fall again...? Everything... hurts...",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x8fbe",
+      "source": "I shade my eyes with my hand, peering up at the\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x8ff0",
+      "source": "light shining from above. Looks like a hole...",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x901f",
+      "source": "If that's where I fell from... Must've been\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x904d",
+      "source": "a bush or something hiding it...",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x906e",
+      "source": "It'll be tough, but if I climb the wall here,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x909e",
+      "source": "maybe I can get back above ground...?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x90c4",
+      "source": "But even if I could get back up, that thing's\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x90f4",
+      "source": "just going to eat me. So...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x9110",
+      "source": "Strangely enough, the walls are giving off\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x913d",
+      "source": "a faint glow. It's dim, but it's helping me\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x916b",
+      "source": "see the place.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x917a",
+      "source": "It looks like some kind of cavern. There's a\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x91a9",
+      "source": "tunnel that seems like it goes on for a while.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x91d8",
+      "source": "Well, if I can't go up, then I might as well\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9207",
+      "source": "go forward...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x9215",
+      "source": "Still, even with this dim glow, I can't really\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x9246",
+      "source": "tell what it's like further inside.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x926a",
+      "source": "Maybe it'd be safer to just wait here quietly\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x929a",
+      "source": "after all...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x92a7",
+      "source": "Ah...!",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x92ae",
+      "source": "...That noise... It's getting closer.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x92d4",
+      "source": "If I hang around here, it'll only hunt me down...\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x9308",
+      "source": "I can't stop now.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x931a",
+      "source": "With my decision made, I step forth into\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x9345",
+      "source": "the tunnel.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x9351",
+      "source": "Rrrgh... Why is this happening to me!?",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x9378",
+      "source": "Ngh, hah... phew... hah...\\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x9395",
+      "source": "I don't feel it... chasing after me...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x93bc",
+      "source": "I finally let myself sit, exhaustion and relief\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x93ee",
+      "source": "settling in.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x93fb",
+      "source": "Hahh... I'm safe now... Th-This... should be\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x942a",
+      "source": "far... enough... ",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x943c",
+      "source": "*Shudder*",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x9446",
+      "source": "I cringe instinctively. A sudden chill,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x9470",
+      "source": "unpleasantly familiar, runs down my spine.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x949b",
+      "source": "My body freezes. I can't move, confronted\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x94c7",
+      "source": "with something beyond understanding.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x94ec",
+      "source": "Wh... Wh-Wh-Why...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x94ff",
+      "source": "Why is it HERE!?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x9510",
+      "source": "The colossal insect is right in front of me.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x953d",
+      "source": "Did this thing set me up!?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x9558",
+      "source": "But the specifics... don't really matter\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x9583",
+      "source": "anymore.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x958c",
+      "source": "Urgh--",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x9593",
+      "source": "It happens in an instant. My back's to the\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x95c0",
+      "source": "wall, and any escape is blocked by its\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x95e9",
+      "source": "sinuous body.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x95f7",
+      "source": "I... can't escape.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x960a",
+      "source": "It creeps forward warily, as if it's learned\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9639",
+      "source": "its lesson from its failed attempts earlier.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x9666",
+      "source": "It leans in, close enough to pull me in with\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9695",
+      "source": "a single snap of its jaws... and stops.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x96bd",
+      "source": "*Drip*",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x96c4",
+      "source": "Something like saliva is dripping from its jaws.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x96f5",
+      "source": "Is this... where I die...?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x9710",
+      "source": "Like this... in this senseless situation...\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x973e",
+      "source": "eaten by whatever the hell this thing is...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x976a",
+      "source": "The insect's jaws finally click open, gaping\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9799",
+      "source": "to devour me. ",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x97a8",
+      "source": "I'm dead--",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x97b3",
+      "source": "*Drip*... *Drip*... *Drip*...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x97d6",
+      "source": "The insect suddenly darts aside without biting\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x9807",
+      "source": "me, like it's trying to escape something...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x9833",
+      "source": "...and something descends from far above,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x985f",
+      "source": "translucent and massive, as if to crush\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x9889",
+      "source": "whatever's below.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x989b",
+      "source": "It engulfs the massive insect effortlessly.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x98c7",
+      "source": "What... the...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x98d6",
+      "source": "What is that...? Wh-What's... going on now...?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9905",
+      "source": "I can see the insect writhing and thrashing,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9934",
+      "source": "trapped inside its slick, gelatinous body.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x995f",
+      "source": "The insect was already beyond comprehension,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x998e",
+      "source": "but this thing... defies all reason. And...",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x99ba",
+      "source": "It's melting...?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x99cb",
+      "source": "This enormous insect's shell, hard as metal,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x99fa",
+      "source": "is bubbling like it's being dissolved.\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x9a23",
+      "source": "It's coming apart inside the slime.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x9a47",
+      "source": "Is it... eating the...?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x9a5f",
+      "source": "The insect struggles desperately inside this\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9a8e",
+      "source": "amorphous creature, but its body is almost\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x9abb",
+      "source": "completely digested.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x9ad0",
+      "source": "All I can do is stare blankly, still in shock.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9aff",
+      "source": "The insect's face surfaces for an instant,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x9b2c",
+      "source": "but it has no power left. The viscous red\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x9b58",
+      "source": "swallows it up.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x9b68",
+      "source": "...Am I... safe?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x9b79",
+      "source": "I whisper, in sheer gratitude for still being\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x9ba9",
+      "source": "alive.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x9bb0",
+      "source": "I... surviv--!",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x9bbf",
+      "source": "I can't keep myself from letting out a cheer\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9bee",
+      "source": "of relief... until I realize. ",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x9c0d",
+      "source": "The amorphous creature swells and heaves,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x9c39",
+      "source": "a short distance away.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x9c50",
+      "source": "If it's somehow still hungry after that huge\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9c7f",
+      "source": "insect, there's no reason it won't go for me\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9cae",
+      "source": "next.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x9cb4",
+      "source": "I need to get out of here, before--",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x9cd8",
+      "source": "...Ah!",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x9cdf",
+      "source": "The amorphous creature begins oozing forward...\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x9d11",
+      "source": "towards me.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x9d1d",
+      "source": "It stops. Just waiting... like it's curious\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x9d4b",
+      "source": "to see what I do next.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x9d62",
+      "source": "Ngh...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x9d69",
+      "source": "Can it hear me? Is it going off vibrations in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x9d99",
+      "source": "the ground? Any sudden movements, and I'm dead.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x9dc9",
+      "source": "No motion. I keep perfectly still, holding\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x9df6",
+      "source": "my breath.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x9e03",
+      "source": "Its viscous surface begins rippling...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x9e2a",
+      "source": "...and little by little, reforms into a\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x9e54",
+      "source": "familiar shape.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x9e64",
+      "source": "Wha--?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x9e6b",
+      "source": "My voice dies in my throat.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x9e87",
+      "source": "The face that appears before me is misshapen, glutinous,\\n",
+      "byte_budget": 58
+    },
+    {
+      "offset": "0x9ec2",
+      "source": "horrifying... but unmistakably human.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x9ee8",
+      "source": "Unfocused eyes fixate on me. Its mouth gasps\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x9f17",
+      "source": "and gapes soundlessly, like a fish drowning\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x9f45",
+      "source": "in air.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x9f4d",
+      "source": "What... are... you...?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x9f64",
+      "source": "...hh... yh...",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x9f73",
+      "source": "Is it... trying to talk...? It just sounds\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x9fa0",
+      "source": "like air escaping--I can't make out what\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x9fcb",
+      "source": "it's saying.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x9fd8",
+      "source": "...khh... yh...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x9fe8",
+      "source": "By reflex or by curiosity, I move closer to\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa016",
+      "source": "hear what it's saying... and another voice\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xa043",
+      "source": "rings out.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xa04e",
+      "source": "Cover your eyes and ears!",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xa068",
+      "source": "The sharp command is followed by a cylindrical\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xa099",
+      "source": "object bouncing on the stone between us.\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xa0c4",
+      "source": "Looks like--",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0xa0d1",
+      "source": "A grenade...? Gah!?",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xa0e5",
+      "source": "I instinctively shut my eyes, and clap my hands\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xa117",
+      "source": "over my ears.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xa125",
+      "source": "------------------gghhh------!",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0xa144",
+      "source": "It's too bright to make anything out, but\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xa170",
+      "source": "I feel the ground shake as if the creature's\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xa19f",
+      "source": "writhing.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xa1a9",
+      "source": "Is... Is this...?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xa1bb",
+      "source": "A sudden grasp.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xa1cb",
+      "source": "Huh...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xa1d3",
+      "source": "Someone grabs my hand with an incredible force,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xa205",
+      "source": "and when I try to pull away, I get yelled at.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa233",
+      "source": "You can freeze up later!",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0xa24c",
+      "source": "My body's floating in the air...\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xa26f",
+      "source": "It feels like I'm flying again.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0xa28f",
+      "source": "I nervously open my eyes, and see someone\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xa2bb",
+      "source": "bounding forward, my hand in theirs.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xa2e0",
+      "source": "It's so fast...\\n",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xa2f2",
+      "source": "It's like we're the wind.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xa30c",
+      "source": "We cut through the air, and the wind roars\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xa339",
+      "source": "past my ears.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xa347",
+      "source": "My rescuer glances back to me, as if checking\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xa377",
+      "source": "on me. ",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xa37f",
+      "source": "A... woman?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0xa38b",
+      "source": "No... more like a young lady?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0xa3a9",
+      "source": "Her face is beautiful, though oddly childish.\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xa3d9",
+      "source": "Oversized ears... And a fluffy tail.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xa3fe",
+      "source": "There's something... ethereal about her.\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xa429",
+      "source": "I can't look away.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xa43c",
+      "source": "Even in this incredible situation, it feels\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa46a",
+      "source": "like time's stopped.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0xa47f",
+      "source": "Then, suddenly, her brow furrows.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xa4a1",
+      "source": "I glance back, unsure of what she's looking at...",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xa4d3",
+      "source": "Aaagh--",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xa4db",
+      "source": "That amorphous creature surges forward, closing\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xa50d",
+      "source": "in on us like some kind of predatory wave.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xa538",
+      "source": "In this linear cavern, there's nowhere else\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa566",
+      "source": "to run.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xa56e",
+      "source": "It's gonna catch up--!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0xa585",
+      "source": "But the girl's already seen it. She whips\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xa5b1",
+      "source": "another cylinder from her waist, and\\n",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xa5d8",
+      "source": "throws it behind us.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0xa5ed",
+      "source": "The blinding flash and the explosion follow\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa61b",
+      "source": "almost instantly.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xa62d",
+      "source": "------------------rngghh------!",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0xa64d",
+      "source": "Gyaaaagh!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xa657",
+      "source": "Now's our chance!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xa669",
+      "source": "Hahh... hh... hahh...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0xa67f",
+      "source": "We're outside... I-I'm finally safe...",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xa6a6",
+      "source": "My legs give out. I collapse onto the snowy\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa6d4",
+      "source": "ground.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0xa6dc",
+      "source": "I can barely even believe I was able to run\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa70a",
+      "source": "as much as I did.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0xa71c",
+      "source": "I guess humans really can do anything when\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0xa749",
+      "source": "their lives are on the line...",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0xa768",
+      "source": "The girl's exhausted too--can't blame her--\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xa796",
+      "source": "and she takes a seat, catching her breath.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xa7c1",
+      "source": "...She saved my life... I should at least\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xa7ed",
+      "source": "thank her properly.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0xa801",
+      "source": "Th-Thank you so much for saving me...",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0xa827",
+      "source": "Did she even hear me? My throat is raspy and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xa856",
+      "source": "raw, and I can't speak up that well.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xa87b",
+      "source": "She notices, and turns towards me.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xa89e",
+      "source": "She has a strange look on her face, like she's\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xa8cf",
+      "source": "seen something she wasn't expecting to.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0xa8f7",
+      "source": "Ah... Seeing her face again like this...\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xa922",
+      "source": "There really is something beautiful about her.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xa951",
+      "source": "That slightly confused expression, too...\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xa97d",
+      "source": "Wow, she's cute.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xa98e",
+      "source": "Girl",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0xa993",
+      "source": "Is there something wrong with my face?",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0xa9ba",
+      "source": "O-Oh, no, not really... ",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0xa9d3",
+      "source": "Still, though.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0xa9e2",
+      "source": "I take my eyes off you for just a moment and\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xaa11",
+      "source": "you disappear, but I never imagined something\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xaa41",
+      "source": "like this.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0xaa4c",
+      "source": "I'm glad I made it in time, but in the future...\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0xaa7f",
+      "source": "I think I'd prefer you don't cause me so much\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xaaaf",
+      "source": "trouble. ",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xaab9",
+      "source": "Urgh... I'm sorry.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xaacc",
+      "source": "...Hm?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xaad3",
+      "source": "Wait, take her eyes off me...?\\n",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0xaaf4",
+      "source": "And I disappeared?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0xab07",
+      "source": "What does she mean by that? She seems somehow...\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0xab3a",
+      "source": "familiar, too...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xab4b",
+      "source": "Does that mean you know who I am...?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xab70",
+      "source": "If you know who I am, where I'm from, please--\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xaba1",
+      "source": "tell me.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xabaa",
+      "source": "Huh...? Oh...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0xabb8",
+      "source": "Who am I? Where am I? What was that thing\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xabe4",
+      "source": "that attacked me? What was--I mean, how--",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xac0e",
+      "source": "Ngh... I'm trying to ask all my questions\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xac3a",
+      "source": "at once, and none of them are coming out\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0xac65",
+      "source": "right.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0xac6c",
+      "source": "I'm--",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0xac72",
+      "source": "The girl stands with a troubled smile on her\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xaca1",
+      "source": "face, and extends her hand to me.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0xacc3",
+      "source": "We should head back for now.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0xace0",
+      "source": "If you stay out here dressed like that,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xad0a",
+      "source": "you're going to end up with a cold.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0xad2e",
+      "source": "Dressed...?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0xad3a",
+      "source": "The cold air hits me all at once again, and\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0xad68",
+      "source": "I finally remember the state I'm in.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0xad8d",
+      "source": "Come to think of it, have I really been\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0xadb7",
+      "source": "flailing around this whole forest in this\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0xade3",
+      "source": "flimsy thing...?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0xadf4",
+      "source": "Hah... Ha-CHOO!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0xae04",
+      "source": "...Hee hee.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0xae10",
+      "source": "She lets out a laugh, clear as a bell, at the\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0xae40",
+      "source": "sound of my sneeze echoing through the forest.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0xae6f",
+      "source": "Here.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0xae75",
+      "source": "She takes my hand with her pale, delicate fingers,\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0xaeaa",
+      "source": "and pulls me to my feet. ",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0xaec4",
+      "source": "Let's go.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0xaece",
+      "source": "H-Hey...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0xaed7",
+      "source": "I shift my hand slightly, squeezing back at her\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0xaf09",
+      "source": "grip. That lone touch of warmth...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0xaf2c",
+      "source": "...I couldn't have known what lay ahead of us.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0xaf5d",
+      "source": "That this was only the beginning.",
+      "byte_budget": 33
+    }
+  ]
+}

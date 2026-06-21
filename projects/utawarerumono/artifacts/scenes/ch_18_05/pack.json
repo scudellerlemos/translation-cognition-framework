@@ -1,0 +1,1392 @@
+{
+  "scene": "ch_18_05",
+  "scene_id": "18_05",
+  "n_lines": 163,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Anju",
+      "category": "Personagem",
+      "target_translation": "Anju",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Princesa de Yamato, sucessora do Mikado. FEMININO. 'Her Highness Princess Anju'->'Sua Alteza, a Princesa Anju'. Origem = spoiler beyond_frontier (quarentena)."
+    },
+    {
+      "term": "Divine Scion",
+      "category": "Titulo",
+      "target_translation": "Descendente Divino",
+      "handling_rule": "traduzir",
+      "spoiler_level": "moderate",
+      "notes": "Titulo do herdeiro divino do Mikado; refere a Anju -> concordar no FEMININO ('Descendente Divina'). Ligado a quarentena da origem da Anju."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Guardian",
+      "category": "Titulo",
+      "target_translation": "Guardia",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Epiteto da Munechika (FEMININO): 'the Guardian'->'a Guardia'."
+    },
+    {
+      "term": "Highness",
+      "category": "Titulo",
+      "target_translation": "Alteza",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "'Your Highness'->'Vossa Alteza'/'Alteza'. Refere a Princesa Anju."
+    },
+    {
+      "term": "Imperial Guard",
+      "category": "Organizacao",
+      "target_translation": "Guarda Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Guarda Imperial de Yamato; Oshtor e seu general (General da Direita)."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Mikado",
+      "category": "Titulo",
+      "target_translation": "Mikado",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "Soberano de Yamato ('o grande Mikado'); presenteou o moinho a vila. No cap.12 = o imperador/titulo. SPOILER: identidade pessoal e reveal posterior — NAO antecipar. reveal_timing: alem do cap.12."
+    },
+    {
+      "term": "Nosuri",
+      "category": "Personagem",
+      "target_translation": "Nosuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, 'aliada da justica'. Irma de Ougi. Trabalhou com Oshtor/Haku."
+    },
+    {
+      "term": "Oshtor",
+      "category": "Personagem",
+      "target_translation": "Oshtor",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "= Ukon (reveal 13_08; ver spoiler_ledger). General da Direita / Imperial Guard. Twist final em quarentena (beyond_frontier)."
+    },
+    {
+      "term": "Ougi",
+      "category": "Personagem",
+      "target_translation": "Ougi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, irmao de Nosuri."
+    },
+    {
+      "term": "Woman",
+      "category": "UI",
+      "target_translation": "Mulher",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Yamato",
+      "category": "Local",
+      "target_translation": "Yamato",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nacao/estado onde se passa o cap.12; composta de muitas provincias; capital = sede do Mikado. Manter."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Nosuri": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Nosuri — `voice_criticality: medium`. Fora-da-lei atrevida e malandra; \"aliada da justiça\" irônica; oportunista. Registro coloquial/esperto."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Ougi": {
+      "aliases": [],
+      "criticality": "low",
+      "lines": [
+        "Ougi — `voice_criticality: low`. Irmão da Nosuri; pragmático, parceria com a irmã."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "*Sigh*...",
+      "target": "*Suspiro*...",
+      "speaker": "Homem",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "What!?",
+      "target": "O quê!?",
+      "speaker": "Haku",
+      "from_scene": "12_03"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "him.",
+      "target": "dele.",
+      "speaker": "Nekone",
+      "from_scene": "15_02"
+    },
+    {
+      "source": "Wh-What...?",
+      "target": "Q-Que...?",
+      "speaker": "Nekone",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "Hm?",
+      "target": "Hum?",
+      "speaker": "Kuon",
+      "from_scene": "11_04"
+    },
+    {
+      "source": "Oshtor...",
+      "target": "Oshtor...",
+      "speaker": "Haku",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "you...?",
+      "target": "você...?",
+      "speaker": "Kuon",
+      "from_scene": "14_09"
+    },
+    {
+      "source": "Wh-What are you talking about?",
+      "target": "O-O que você quer dizer?",
+      "speaker": "Rulutieh",
+      "from_scene": "18_02"
+    },
+    {
+      "source": "a bit.",
+      "target": "um bit.",
+      "speaker": "Haku",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "Head",
+      "target": "Head",
+      "speaker": "rotulo",
+      "from_scene": "11_03"
+    },
+    {
+      "source": "S-Stop! Desist! I-I'll apologize, so--",
+      "target": "P-Para! Desista! Eu me p-peço desculpas, então--",
+      "speaker": "Anju",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "unison.",
+      "target": "em uníssono.",
+      "speaker": "SISTEMA",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "RightFoot",
+      "target": "RightFoot",
+      "speaker": "system",
+      "from_scene": "13_06"
+    },
+    {
+      "source": "LeftFoot",
+      "target": "LeftFoot",
+      "speaker": "system",
+      "from_scene": "13_06"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Haku",
+      "source": "Geez...! Too bright out here...",
+      "target": "Aff...! Claridade demais aqui fora..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Well, guess the sun still rises no matter where\\n",
+      "target": "Enfim, o sol nasce em qualquer lugar, pelo visto\\n"
+    },
+    {
+      "speaker": "Haku",
+      "source": "I am. Still... What am I supposed to do now...?",
+      "target": "Pois é. Mesmo assim... O que é que eu faço agora...?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Where... am I?",
+      "target": "Onde... estou?"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "No one else around, or...?",
+      "target": "Não tem ninguém... ou...?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Unh... urgh...",
+      "target": "Nnh... argh..."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "Moznu, enough. If you're going to be working with\\n",
+      "target": "Moznu, chega. Se vai trabalhar com os Ladrões\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "the Nosuri Thieves from now on, you abide by our\\n",
+      "target": "de Nosuri de agora em diante, segue nossas\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "rules, not yours.",
+      "target": "regras, não as suas."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "Truly most impressive, dearest sister. Your\\n",
+      "target": "Muito impressionante, querida irmã. Seu charme\\n"
+    },
+    {
+      "speaker": "Ougi",
+      "source": "feminine charms dazzle, as ever.",
+      "target": "feminino encanta, como sempre."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "How positively boorish. A good MAN simply\\n",
+      "target": "Que grosseria. Um bom HOMEM simplesmente\\n"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Oshtor (twist final)",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "spoiler_level": "critical",
+      "guard": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho."
+    },
+    {
+      "entity": "Mikado",
+      "fact": "A identidade pessoal do Mikado por tras do titulo.",
+      "spoiler_level": "major",
+      "guard": "Trate o Mikado apenas como o soberano/titulo, a distancia. NAO antecipe vinculo pessoal com nenhum personagem."
+    },
+    {
+      "entity": "Figuras de memoria (Woman/Man)",
+      "fact": "As identidades das figuras de memoria/sonho ('Woman'/'Man', 'Mestre').",
+      "spoiler_level": "major",
+      "guard": "Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)"
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x16be66",
+      "source": "Urk... This... this isn't good...",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x16be88",
+      "source": "Satisfied? Come on. We're going back.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x16beae",
+      "source": "No, no, NO! I will stay here until my Oshtor\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16bedd",
+      "source": "comes for me!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x16beeb",
+      "source": "You little brat. I told you, Oshtor doesn't\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16bf19",
+      "source": "know a thing about any of this.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x16bf39",
+      "source": "He'll come! Oshtor will come! He'll save me!",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x16bf66",
+      "source": "*Sigh*...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16bf70",
+      "source": "I know how she feels. That princess really is\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16bfa0",
+      "source": "just a girl head-over-heels...",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x16bfbf",
+      "source": "This entire affair is becoming a tiresome farce.",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16bff0",
+      "source": "...Something has been bothering me for some\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16c01e",
+      "source": "time, now. This Oshtor you keep mentioning...",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16c04c",
+      "source": "I have returned, my sister.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x16c068",
+      "source": "You're late, Ougi. What kept you?",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x16c08a",
+      "source": "I made a small detour. This whole ordeal would\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16c0bb",
+      "source": "be pointless without its star, wouldn't you\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16c0e9",
+      "source": "agree?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x16c0f0",
+      "source": "Just as planned, he is presently on his way here.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c122",
+      "source": "WHAT!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x16c129",
+      "source": "You speak true? Oshtor is coming!?",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x16c14c",
+      "source": "I see. Chin up, men! We just have to hang in\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c17b",
+      "source": "there a little longer until the princess's love\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c1ad",
+      "source": "arrives!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x16c1b6",
+      "source": "Heh, that's right. A good woman always fulfills\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c1e8",
+      "source": "her promises!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x16c1f6",
+      "source": "Now hold on a minute! You--What do you mean, you\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x16c229",
+      "source": "informed Oshtor? What the hell were you\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x16c253",
+      "source": "thinking!?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x16c25e",
+      "source": "Do you understand what's going to happen now\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c28d",
+      "source": "that he knows?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x16c29c",
+      "source": "I haven't the slightest idea.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x16c2ba",
+      "source": "This guy's out of his damn mind. Of course\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x16c2e7",
+      "source": "he knows.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16c2f1",
+      "source": "If this blows up any further, it's not just\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16c31f",
+      "source": "going to be disastrous for us, but for these\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c34e",
+      "source": "bandits too.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x16c35b",
+      "source": "Ah, it seems he's arrived.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x16c376",
+      "source": "Wha--Wh-Wh-Wh--!?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x16c388",
+      "source": "Ah, Oshtor! Oshtor! Over here! Your Anju\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x16c3b3",
+      "source": "awaits you right here!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x16c3ca",
+      "source": "It... can't be. Osh...tor...",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x16c3e7",
+      "source": "Indeed! My most loyal retainer, Oshtor,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x16c411",
+      "source": "Imperial Guard of the Right!",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x16c42e",
+      "source": "Regardless of how loyal he is to you, he's\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x16c45b",
+      "source": "definitely not YOUR retainer...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x16c47b",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x16c483",
+      "source": "Oshtor... loyal retainer... Anju...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x16c4a7",
+      "source": "Anju... the princess?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x16c4bd",
+      "source": "I-It can't--You CAN'T be...",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x16c4d9",
+      "source": "I cannot be what?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x16c4eb",
+      "source": "Pardon me for asking, but... could you be Anju,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c51d",
+      "source": "the imperial princess?",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x16c534",
+      "source": "Hm? Ah, indeed. I am the Divine Scion Anju,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16c562",
+      "source": "heiress to the Mikado and future ruler\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x16c58b",
+      "source": "of all Yamato.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x16c59a",
+      "source": "Have I not mentioned this?",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x16c5b5",
+      "source": "I-I hadn't heard it spoken of even once!\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x16c5e0",
+      "source": "Please, Your Highness, f-forgive any disrespect\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c612",
+      "source": "I may ha--",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x16c61d",
+      "source": "Bah, worry not over such trivial things.\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x16c648",
+      "source": "We are friends, are we not?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x16c664",
+      "source": "Th-Thank you... Such words are wasted on the\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c693",
+      "source": "likes of me!",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x16c6a0",
+      "source": "Look to your role, now. Oshtor is here.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x16c6ca",
+      "source": "I am counting upon you, Nosuri.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x16c6ea",
+      "source": "Huh? Counting on... me?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x16c702",
+      "source": "Of course. Do you not remember? You shall play\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16c733",
+      "source": "the part of the villain and face off against\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c762",
+      "source": "him.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x16c767",
+      "source": "You mean... fight... Oshtor?",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x16c784",
+      "source": "Yes, just so!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x16c792",
+      "source": "I-It would appear he's brought his subordinates\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c7c4",
+      "source": "with him... All of them, in fact...",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x16c7e8",
+      "source": "Good! Now you shall be evenly matched.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x16c80f",
+      "source": "Um... but... I...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x16c821",
+      "source": "I pity you...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x16c82f",
+      "source": "Well. Now that Her Highness's escort has arrived\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x16c862",
+      "source": "to pick her up, we'd best be on our way.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x16c88b",
+      "source": "Shall we be off, my sister?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x16c8a7",
+      "source": "Wh-What...?",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x16c8b3",
+      "source": "I've secured our escape. Now that the man she\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16c8e3",
+      "source": "loves is here, it behooves us not to interfere,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c915",
+      "source": "hm?",
+      "byte_budget": 3
+    },
+    {
+      "offset": "0x16c919",
+      "source": "Y--Yes, of course. You're right. We should get\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16c94a",
+      "source": "out of her way at once...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x16c964",
+      "source": "We shall take our leave immediately. Farewell!",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16c993",
+      "source": "Wh--Where are you going!? You have to challenge\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16c9c5",
+      "source": "Oshtor to a fateful duel for my hand!",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x16c9eb",
+      "source": "I fail to comprehend. Why were they so desperate\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x16ca1e",
+      "source": "to leave...? {W480}Ah, but now it matters not.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16ca4f",
+      "source": "Oshtor...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16ca59",
+      "source": "Princess Anju...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x16ca6a",
+      "source": "You've done well to fly to my rescue, Oshtor!\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16ca9a",
+      "source": "Truly, you are my most devoted retainer.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x16cac7",
+      "source": "Is something the matter? Why are you so quiet?",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16caf6",
+      "source": "I am sorry. If not for my own negligence, your\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16cb27",
+      "source": "judgement would never have become so clouded...",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cb57",
+      "source": "Do not be so serious. See? No harm has come to\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16cb88",
+      "source": "me. Nary a scratch.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x16cb9c",
+      "source": "Were it not for these people who came to your\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cbcc",
+      "source": "aid, who knows what might have happened to\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x16cbf9",
+      "source": "you...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x16cc01",
+      "source": "For the princess to be so easily abducted is a\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16cc32",
+      "source": "product of my own inattention, punishable by\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16cc61",
+      "source": "death.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x16cc68",
+      "source": "Wh-What are you talking about?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x16cc87",
+      "source": "I accept full responsibility for this lapse,\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16ccb6",
+      "source": "and hereby resign from my post. I... apologize.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cce6",
+      "source": "W-Wait--No, I cannot allow that!",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x16cd07",
+      "source": "This evening was my fault alone. I-I won't do\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cd37",
+      "source": "anything of this sort again. Please!",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x16cd5c",
+      "source": "What am I to tell Father, if I am to lose our\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cd8c",
+      "source": "most devoted retainer to a childish prank?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x16cdb7",
+      "source": "Please, I beg of you. P-Please remain at my\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16cde5",
+      "source": "side and aid me.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x16cdf6",
+      "source": "Looks like she's finally starting to grasp the\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16ce27",
+      "source": "gravity of her actions...",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x16ce41",
+      "source": "She may go overboard way too much, but at least\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x16ce73",
+      "source": "she knows when to say sorry. I can respect that,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x16cea6",
+      "source": "a bit.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x16cead",
+      "source": "Your Highness... Please, no more tears.\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x16ced7",
+      "source": "Raise your head.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x16cee8",
+      "source": "I thank you for your kindness in allowing me\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x16cf17",
+      "source": "another chance despite this grave blunder\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x16cf43",
+      "source": "I have made.",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x16cf50",
+      "source": "I, Oshtor, hereby swear that I shall continue\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16cf80",
+      "source": "to uphold the peace of Yamato for you.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x16cfa7",
+      "source": "S-So you will not resign? Oh, Oshtor, I've\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x16cfd4",
+      "source": "never been so relieved...!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x16cfef",
+      "source": "Man. Everything seems to have worked out in\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16d01d",
+      "source": "the end, but God...",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x16d031",
+      "source": "Ah, one thing I neglected to mention.",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x16d057",
+      "source": "Bwuh--You're still here!? Aren't you supposed\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x16d087",
+      "source": "to, y'know, be making your timely escape?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x16d0b1",
+      "source": "Yes, but I thought of something I felt it\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x16d0dd",
+      "source": "important to mention.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x16d0f3",
+      "source": "Your Highness, I took the liberty of informing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x16d124",
+      "source": "your guardian of the evening's events on my\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16d152",
+      "source": "\"detour.\"",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16d15c",
+      "source": "Head",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x16d161",
+      "source": "...My guardian?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x16d171",
+      "source": "Indeed. If you'll excuse me, she appears to have\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x16d1a4",
+      "source": "arrived just now.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x16d1b7",
+      "source": "AAAAACK!!",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16d1c1",
+      "source": "And just where do you think you're going,\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x16d1ed",
+      "source": "Your Highness?",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x16d1fc",
+      "source": "I seem to recall advising you not to follow\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16d22a",
+      "source": "through with this foolish idea.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x16d24a",
+      "source": "I believe some punishment is in order for\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x16d276",
+      "source": "causing such a disturbance, wouldn't you\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x16d2a1",
+      "source": "No, please, anything but--",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x16d2bc",
+      "source": "NOOOOO!!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x16d2c5",
+      "source": "Cover your ears, everyone.",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x16d2e0",
+      "source": "Wait, why exactly do we need to cover our...?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16d30e",
+      "source": "S-Stop! Desist! I-I'll apologize, so--",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x16d335",
+      "source": "AAAAAAAGH!!",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x16d341",
+      "source": "I am sorry! I'm sorry! I'M SORRY!",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x16d363",
+      "source": "Ow! Ow! OOOWWOWOW OW OW!",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x16d37c",
+      "source": "We all share a look, then cover our ears in\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x16d3aa",
+      "source": "unison.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x16d3b2",
+      "source": "RightFoot",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x16d3bc",
+      "source": "LeftFoot",
+      "byte_budget": 8
+    }
+  ]
+}

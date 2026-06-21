@@ -1,0 +1,1510 @@
+{
+  "scene": "ch_11_07",
+  "scene_id": "11_07",
+  "n_lines": 106,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "amam",
+      "category": "Item",
+      "target_translation": "amam",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Grao do mundo (os sacos do 11_07; revelado 11_09). Moido vira farinha -> 'pele de amam' (folha tipo pao achatado). Manter nome proprio."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Innkeeper",
+      "category": "UI",
+      "target_translation": "Estalajadeira",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rotulo de falante (53 00) da dona da estalagem da vila (descoberto em 11_06, 0x18eb8). Feminino. Voz calorosa, trata por 'querida'. Como Garota/Mulher/Homem: rotulo exibido in-game."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "Kuon leads me to a squat stone building near the\\n",
+      "target": "A Kuon me leva até um prédio baixo de pedra perto da\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "edge of town...",
+      "target": "saída da vila...",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "It seems to be a storehouse--multiple bags are\\n",
+      "target": "Parece ser um depósito--vários sacos estão\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "stacked high inside.",
+      "target": "empilhados bem alto lá dentro.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "A few lie open, seemingly full of tiny, seed-like\\n",
+      "target": "Alguns estão abertos, aparentemente cheios de pequenos\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "grains...",
+      "target": "grãos parecidos com sementes...",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "The innkeeper wants eight of these bags carried\\n",
+      "target": "A estalajadeira quer oito desses sacos levados\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "over to the mill.",
+      "target": "até o moinho.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I see. These, huh?",
+      "target": "Saquei. Esses aqui, né?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "That's right.",
+      "target": "Isso mesmo.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "She says that like it's nothing, but each sack looks\\n",
+      "target": "Ela fala como se não fosse nada, mas cada saco parece\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "like it weighs a ton...",
+      "target": "pesar uma tonelada...",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I'm surprised she wants to work after walking all\\n",
+      "target": "Me surpreende ela querer trabalhar depois de andar o dia\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "day. I wouldn't be able to even if I tried.",
+      "target": "todo. Eu não conseguiria nem se tentasse.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Yep. Eight of these. Over to the mill.",
+      "target": "Isso. Oito desses. Até o moinho.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Urgh, she wants me to help her? I'm exhausted. I can\\n",
+      "target": "Argh, ela quer que eu ajude? Tô exausto. Mal\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "barely move, for crying out loud.",
+      "target": "consigo me mexer, pelo amor de Deus.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "But I AM indebted to her, and it'd be bad form to\\n",
+      "target": "Mas eu DEVO a ela, e seria falta de educação\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "just stand and watch... She's taking care of me,\\n",
+      "target": "só ficar parado olhando... Ela está cuidando de mim,\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "after all.",
+      "target": "afinal.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "All right, let me help you out a bit, then.",
+      "target": "Tá bom, deixa eu te ajudar um pouco, então.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "...Huh?",
+      "target": "...Hein?",
+      "speaker": "Kuon",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Kuon has an astonished look on her face. Was she not\\n",
+      "target": "A Kuon fica com uma cara de espanto. Será que ela não\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "expecting me to offer to help?",
+      "target": "esperava que eu me oferecesse pra ajudar?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I said, let me help you out a bit.",
+      "target": "Eu disse: deixa eu te ajudar um pouco.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Kuon just stares in amazement for a moment, then\\n",
+      "target": "A Kuon fica me encarando pasma por um instante, então\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "smiles and nods.",
+      "target": "sorri e acena.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Mm, thanks. I appreciate it. Could you take eight\\n",
+      "target": "Hum, obrigada. Agradeço. Você pode levar oito\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "of these bags over to the mill, then?",
+      "target": "desses sacos até o moinho, então?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Sure. Just eight?",
+      "target": "Claro. Só oito?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "If you'd please.",
+      "target": "Se não se importar.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Eight... That's... actually quite a few.",
+      "target": "Oito... Isso é... bastante coisa, na real.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "...Wait a sec. Eight?",
+      "target": "...Pera um pouco. Oito?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Wait... You mean all of them!?",
+      "target": "Espera... Você quer dizer todos eles!?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Best of luck.",
+      "target": "Boa sorte.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Wait, wait, hold up. Don't give me a \"best of luck\"\\n",
+      "target": "Espera, espera, calma. Não me vem com \"boa sorte\"\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "and bail. You're making me do all the work?",
+      "target": "e cai fora. Você vai me fazer fazer tudo?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Huh?",
+      "target": "Hein?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Don't \"huh?\" me! I said I'd help, not do all the\\n",
+      "target": "Não me venha com \"hein?\"! Eu disse que ajudaria, não que faria todo o\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "work for you!",
+      "target": "trabalho pra você!",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Um... Haku, I accepted this job for your sake.\\n",
+      "target": "Ahn... Haku, eu aceitei esse trabalho por você.\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I'm not too keen on taking that away from you.",
+      "target": "Não quero muito tirar isso de você.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "...What?",
+      "target": "...Quê?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "\"For my sake?\" What does she mean by THAT?",
+      "target": "\"Por mim?\" O que ela quer dizer com ISSO?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I thought that being taken care of all the time\\n",
+      "target": "Achei que ser cuidado o tempo todo\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "might be weighing on you, so I wanted to help.",
+      "target": "talvez estivesse te pesando, então quis ajudar.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "If you had some work to do and earn your keep with,\\n",
+      "target": "Se você tivesse algum trabalho pra fazer e se sustentar,\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "you wouldn't have to feel that way. Right?",
+      "target": "não precisaria se sentir assim. Né?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Wh--",
+      "target": "Q--",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "That was... completely unnecessary.",
+      "target": "Isso foi... completamente desnecessário.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "It's not like I feel emasculated or guilty or\\n",
+      "target": "Não é como se eu me sentisse menos homem ou culpado nem\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "anything like that.",
+      "target": "nada do tipo.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Either way, there's no way I'm going to be able to\\n",
+      "target": "De todo jeito, não tem como eu conseguir\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "do this on my own. I'm gonna need her help.",
+      "target": "fazer isso sozinho. Vou precisar da ajuda dela.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "The only jobs the innkeeper had left were children's\\n",
+      "target": "Os únicos trabalhos que sobraram com a estalajadeira eram tarefas\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "chores, but it's better than nothing...",
+      "target": "de criança, mas é melhor que nada...",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Children's... chores?",
+      "target": "Tarefas... de criança?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I look over at the huge, heavy bags, each sack an\\n",
+      "target": "Olho pros sacos enormes e pesados, cada um um\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "armful, filled to the brim.",
+      "target": "braçado, cheio até a boca.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Something wrong?",
+      "target": "Algum problema?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "KIDS carry these?",
+      "target": "CRIANÇAS carregam isso?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Huh? Yeah, when they want to work for a little\\n",
+      "target": "Hein? Sim, quando querem trabalhar por um\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "pocket money, sure.",
+      "target": "trocado, claro.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I... I don't mean anything by it. I just wanted you\\n",
+      "target": "Eu... Não quis dizer nada com isso. Só queria que você\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "to know why it's the only job left.",
+      "target": "soubesse por que é o único trabalho que sobrou.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Kuon adds that last part pretty quickly. I get the\\n",
+      "target": "A Kuon acrescenta essa última parte bem rápido. Tenho a\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "feeling she thinks she's hurt my masculinity.",
+      "target": "impressão de que ela acha que feriu minha masculinidade.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Come on, though. If this is just a kids' chore, the\\n",
+      "target": "Mas qual é. Se isso é só tarefa de criança, os\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "bags must be way lighter than they look.",
+      "target": "sacos devem ser bem mais leves do que parecem.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "It can't be that bad. I guess I'd better just get\\n",
+      "target": "Não pode ser tão ruim. Acho melhor só\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "it over with.",
+      "target": "acabar logo com isso.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Urgh... HURGH--!!",
+      "target": "Argh... NGHHH--!!",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "*WHUMP*",
+      "target": "*BAM*",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I stand corrected. They are not light.",
+      "target": "Me corrijo. Não são leves.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "The mill isn't far from here, but it's not close,\\n",
+      "target": "O moinho não é longe daqui, mas também não é perto,\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "either. And I have to make the trip eight times?",
+      "target": "não. E eu tenho que fazer o trajeto oito vezes?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "With bags this heavy, that doesn't seem like work a\\n",
+      "target": "Com sacos tão pesados, isso não parece trabalho que\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "child could help with, let alone do on their own.",
+      "target": "uma criança ajudaria a fazer, quanto mais sozinha.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Haku?",
+      "target": "Haku?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Kuon, how exactly is this a chore for children?\\n",
+      "target": "Kuon, como exatamente isso é tarefa pra criança?\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Are you pulling my leg?",
+      "target": "Você tá me zoando?",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Um...",
+      "target": "Ahn...",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Kuon gives an ambiguous reply and averts her eyes.",
+      "target": "A Kuon dá uma resposta ambígua e desvia o olhar.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Why, y--I knew it.",
+      "target": "Ora, vo--Eu sabia.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "...He's probably still recovering, yeah... doesn't\\n",
+      "target": "...Ele ainda deve estar se recuperando, é... não\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "have his full strength back. That must be it.",
+      "target": "recuperou a força toda. Deve ser isso.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Hey, don't avoid the question.",
+      "target": "Ei, não foge da pergunta.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "We can't have you overexerting yourself, so sit\\n",
+      "target": "A gente não pode deixar você se esforçar demais, então senta\\n",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "there while I carry them, OK?",
+      "target": "ali enquanto eu carrego, tá?",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Hey, I'm talking to y--",
+      "target": "Ei, eu tô falando com vo--",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "And she's already gone. Geez. I won't say no to a\\n",
+      "target": "E ela já foi. Aff. Não vou recusar uma\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "sit-down, but I can't say I'm not annoyed.",
+      "target": "sentada, mas não posso dizer que não tô irritado.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "I manage to rouse myself and chase after her.",
+      "target": "Consigo me levantar e vou atrás dela.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "The sight of Kuon stacking multiple enormous bags\\n",
+      "target": "A cena da Kuon empilhando vários sacos enormes\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "onto her shoulders greets me inside the storehouse.",
+      "target": "nos ombros me recebe dentro do depósito.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Hup.",
+      "target": "Upa.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "*WHUMP, WHUMP, WHUMP*",
+      "target": "*BAM, BAM, BAM*",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "She tosses sack after sack onto a pile on her\\n",
+      "target": "Ela joga saco após saco numa pilha nos\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "shoulders, as though they were as light as beanbags.",
+      "target": "ombros, como se fossem leves feito almofadas.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Coming through.",
+      "target": "Com licença.",
+      "speaker": "Kuon",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "Kuon, the remaining seven bags piled high on her\\n",
+      "target": "A Kuon, com os sete sacos restantes empilhados nos\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "shoulders, bounces effortlessly past me and out the\\n",
+      "target": "ombros, passa saltitando por mim sem esforço e sai pela\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "door.",
+      "target": "porta.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "A children's... chore...",
+      "target": "Uma tarefa... de criança...",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "OK. Right. I'm just... I'm gonna act like I didn't\\n",
+      "target": "Tá. Certo. Eu vou só... vou fingir que não\\n",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    },
+    {
+      "source": "see that.",
+      "target": "vi aquilo.",
+      "speaker": "Haku",
+      "from_scene": "11_07"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [],
+  "lines": [
+    {
+      "offset": "0x1a6d4",
+      "source": "Kuon leads me to a squat stone building near the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1a707",
+      "source": "edge of town...",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1a717",
+      "source": "It seems to be a storehouse--multiple bags are\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1a748",
+      "source": "stacked high inside.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x1a75d",
+      "source": "A few lie open, seemingly full of tiny, seed-like\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1a791",
+      "source": "grains...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x1a79b",
+      "source": "The innkeeper wants eight of these bags carried\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1a7cd",
+      "source": "over to the mill.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1a7df",
+      "source": "I see. These, huh?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1a7f2",
+      "source": "That's right.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1a800",
+      "source": "She says that like it's nothing, but each sack looks\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x1a837",
+      "source": "like it weighs a ton...",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1a84f",
+      "source": "I'm surprised she wants to work after walking all\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1a883",
+      "source": "day. I wouldn't be able to even if I tried.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1a8b3",
+      "source": "Yep. Eight of these. Over to the mill.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x1a8da",
+      "source": "Urgh, she wants me to help her? I'm exhausted. I can\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x1a911",
+      "source": "barely move, for crying out loud.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x1a933",
+      "source": "But I AM indebted to her, and it'd be bad form to\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1a967",
+      "source": "just stand and watch... She's taking care of me,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1a99a",
+      "source": "after all.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x1a9a5",
+      "source": "All right, let me help you out a bit, then.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1a9d1",
+      "source": "...Huh?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1a9d9",
+      "source": "Kuon has an astonished look on her face. Was she not\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x1aa10",
+      "source": "expecting me to offer to help?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1aa2f",
+      "source": "I said, let me help you out a bit.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x1aa52",
+      "source": "Kuon just stares in amazement for a moment, then\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1aa85",
+      "source": "smiles and nods.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1aa96",
+      "source": "Mm, thanks. I appreciate it. Could you take eight\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1aaca",
+      "source": "of these bags over to the mill, then?",
+      "byte_budget": 37
+    },
+    {
+      "offset": "0x1aaf0",
+      "source": "Sure. Just eight?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1ab02",
+      "source": "If you'd please.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1ab13",
+      "source": "Eight... That's... actually quite a few.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1ab3c",
+      "source": "...Wait a sec. Eight?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1ab52",
+      "source": "Wait... You mean all of them!?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1ab71",
+      "source": "Best of luck.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1ab7f",
+      "source": "Wait, wait, hold up. Don't give me a \"best of luck\"\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1abb5",
+      "source": "and bail. You're making me do all the work?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1abe1",
+      "source": "Huh?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1abe6",
+      "source": "Don't \"huh?\" me! I said I'd help, not do all the\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1ac19",
+      "source": "work for you!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1ac27",
+      "source": "Um... Haku, I accepted this job for your sake.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1ac58",
+      "source": "I'm not too keen on taking that away from you.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1ac87",
+      "source": "...What?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x1ac90",
+      "source": "\"For my sake?\" What does she mean by THAT?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1acbb",
+      "source": "I thought that being taken care of all the time\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1aced",
+      "source": "might be weighing on you, so I wanted to help.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x1ad1c",
+      "source": "If you had some work to do and earn your keep with,\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1ad52",
+      "source": "you wouldn't have to feel that way. Right?",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1ad7d",
+      "source": "Wh--",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1ad82",
+      "source": "That was... completely unnecessary.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1ada6",
+      "source": "It's not like I feel emasculated or guilty or\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1add6",
+      "source": "anything like that.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1adea",
+      "source": "Either way, there's no way I'm going to be able to\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x1ae1f",
+      "source": "do this on my own. I'm gonna need her help.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x1ae4b",
+      "source": "The only jobs the innkeeper had left were children's\\n",
+      "byte_budget": 54
+    },
+    {
+      "offset": "0x1ae82",
+      "source": "chores, but it's better than nothing...",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x1aeaa",
+      "source": "Children's... chores?",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1aec0",
+      "source": "I look over at the huge, heavy bags, each sack an\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1aef4",
+      "source": "armful, filled to the brim.",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x1af10",
+      "source": "Something wrong?",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x1af21",
+      "source": "KIDS carry these?",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1af33",
+      "source": "Huh? Yeah, when they want to work for a little\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1af64",
+      "source": "pocket money, sure.",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x1af78",
+      "source": "I... I don't mean anything by it. I just wanted you\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1afae",
+      "source": "to know why it's the only job left.",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x1afd2",
+      "source": "Kuon adds that last part pretty quickly. I get the\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x1b007",
+      "source": "feeling she thinks she's hurt my masculinity.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1b035",
+      "source": "Come on, though. If this is just a kids' chore, the\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1b06b",
+      "source": "bags must be way lighter than they look.",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x1b094",
+      "source": "It can't be that bad. I guess I'd better just get\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1b0c8",
+      "source": "it over with.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x1b0d6",
+      "source": "Urgh... HURGH--!!",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x1b0e8",
+      "source": "*WHUMP*",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x1b0f0",
+      "source": "I stand corrected. They are not light.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x1b117",
+      "source": "The mill isn't far from here, but it's not close,\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1b14b",
+      "source": "either. And I have to make the trip eight times?",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x1b17c",
+      "source": "With bags this heavy, that doesn't seem like work a\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1b1b2",
+      "source": "child could help with, let alone do on their own.",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1b1e4",
+      "source": "Haku?",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1b1ea",
+      "source": "Kuon, how exactly is this a chore for children?\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1b21c",
+      "source": "Are you pulling my leg?",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1b234",
+      "source": "Um...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1b23a",
+      "source": "Kuon gives an ambiguous reply and averts her eyes.",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1b26d",
+      "source": "Why, y--I knew it.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x1b280",
+      "source": "...He's probably still recovering, yeah... doesn't\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x1b2b5",
+      "source": "have his full strength back. That must be it.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1b2e3",
+      "source": "Hey, don't avoid the question.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x1b302",
+      "source": "We can't have you overexerting yourself, so sit\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x1b334",
+      "source": "there while I carry them, OK?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x1b352",
+      "source": "Hey, I'm talking to y--",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x1b36a",
+      "source": "And she's already gone. Geez. I won't say no to a\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1b39e",
+      "source": "sit-down, but I can't say I'm not annoyed.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x1b3c9",
+      "source": "I manage to rouse myself and chase after her.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x1b3f7",
+      "source": "The sight of Kuon stacking multiple enormous bags\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1b42b",
+      "source": "onto her shoulders greets me inside the storehouse.",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x1b45f",
+      "source": "Hup.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x1b464",
+      "source": "*WHUMP, WHUMP, WHUMP*",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x1b47a",
+      "source": "She tosses sack after sack onto a pile on her\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x1b4aa",
+      "source": "shoulders, as though they were as light as beanbags.",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x1b4df",
+      "source": "Coming through.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x1b4ef",
+      "source": "Kuon, the remaining seven bags piled high on her\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x1b522",
+      "source": "shoulders, bounces effortlessly past me and out the\\n",
+      "byte_budget": 53
+    },
+    {
+      "offset": "0x1b558",
+      "source": "door.",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x1b55e",
+      "source": "A children's... chore...",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x1b577",
+      "source": "OK. Right. I'm just... I'm gonna act like I didn't\\n",
+      "byte_budget": 52
+    },
+    {
+      "offset": "0x1b5ac",
+      "source": "see that.",
+      "byte_budget": 9
+    }
+  ]
+}

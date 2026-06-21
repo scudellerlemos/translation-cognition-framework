@@ -1,0 +1,2065 @@
+{
+  "scene": "ch_30_08",
+  "scene_id": "30_08",
+  "n_lines": 258,
+  "doctrine": "framework/skills/translation_governance.md",
+  "project_constraints": {
+    "formatting_tokens": [
+      "{W75}",
+      "{W80}",
+      "{W10}",
+      "{COLOR}",
+      "{END}"
+    ],
+    "formatting_token_patterns": [
+      "\\{c-?\\d*\\}"
+    ],
+    "system_line_convention": "all_caps",
+    "length_constraints": {
+      "mode": "byte_space",
+      "dialogue_max_pct": 140,
+      "ui_max_pct": 110
+    },
+    "newline_token": "\\n",
+    "target_charset_supported": false,
+    "charset_note": "Gate FALHOU: a fonte do jogo não tem diacríticos — pangrama pt-BR renderiza como '@' (evidência in-game: artifacts/evidence/char1.png, char2.png). Estratégia adotada: TRANSLITERAÇÃO na gravação (acento→ASCII) no reinsert.py; a tradução canônica mantém os acentos. Ver decision_log.md.",
+    "space_strategy": "in_place + reloc_intra_arquivo"
+  },
+  "glossary_subset": [
+    {
+      "term": "Akuruka",
+      "category": "Objeto",
+      "target_translation": "Akuruka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Mascaras amaldicoadas que concedem poder; 'Akuruka do Raio' e de Mikazuchi. Lore central do arco."
+    },
+    {
+      "term": "Akuruturuka",
+      "category": "Termo",
+      "target_translation": "Akuruturuka",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'homem mascarado' / forma do guerreiro mascarado. manter_original + glosar. Lore profunda (mascaras/Oshtor) = beyond_frontier. Fonte: wiki+corpus."
+    },
+    {
+      "term": "Anju",
+      "category": "Personagem",
+      "target_translation": "Anju",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Princesa de Yamato, sucessora do Mikado. FEMININO. 'Her Highness Princess Anju'->'Sua Alteza, a Princesa Anju'. Origem = spoiler beyond_frontier (quarentena)."
+    },
+    {
+      "term": "Atuy",
+      "category": "Personagem",
+      "target_translation": "Atuy",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Princesa de Shyahoro. FEMININO."
+    },
+    {
+      "term": "Eight Pillar Generals",
+      "category": "Termo",
+      "target_translation": "Oito Generais-Pilar",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Os oito generais de Yamato. Ozen e um deles."
+    },
+    {
+      "term": "Girl",
+      "category": "UI",
+      "target_translation": "Garota",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (Kuon antes do nome). Onde o budget não permite (órfão 0xe1da), usar 'Moça'."
+    },
+    {
+      "term": "Haku",
+      "category": "Personagem",
+      "target_translation": "Haku",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Nome dado ao protagonista por Kuon em 11_02 (0x12668). reveal_timing: cena 11_02. Antes disso ele é sem nome."
+    },
+    {
+      "term": "Highness",
+      "category": "Titulo",
+      "target_translation": "Alteza",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "'Your Highness'->'Vossa Alteza'/'Alteza'. Refere a Princesa Anju."
+    },
+    {
+      "term": "Imperial Guard",
+      "category": "Organizacao",
+      "target_translation": "Guarda Imperial",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Guarda Imperial de Yamato; Oshtor e seu general (General da Direita)."
+    },
+    {
+      "term": "Jachdwalt",
+      "category": "Personagem",
+      "target_translation": "Jachdwalt",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "(cap.20) Espadachim 'a Lamina Miragem'; pai adotivo de Shinonon; lado Uzurusha. MASCULINO. manter nome; traduzir epiteto. Fonte: wiki."
+    },
+    {
+      "term": "Kiwru",
+      "category": "Personagem",
+      "target_translation": "Kiwru",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Principe de Ennakamuy; arqueiro. MASCULINO. Concordancia de genero no masculino."
+    },
+    {
+      "term": "Kuon",
+      "category": "Personagem",
+      "target_translation": "Kuon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nome revelado em 11_02 (0x108db). Romanização oficial."
+    },
+    {
+      "term": "Man",
+      "category": "UI",
+      "target_translation": "Homem",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Master",
+      "category": "Cultural",
+      "target_translation": "Mestre",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Honorifico (Maroro -> 'Master Ukon' = 'Mestre Ukon'). Traduzir."
+    },
+    {
+      "term": "Nekone",
+      "category": "Personagem",
+      "target_translation": "Nekone",
+      "handling_rule": "manter_original",
+      "spoiler_level": "moderate",
+      "notes": "Irma cacula de Oshtor/Ukon; prodigio (passou no exame da corte muito jovem), mandona mas apegada ao irmao. Papel profundo (encobrir o disfarce de Haku) e beyond_frontier (Mask of Truth) - quarentenado."
+    },
+    {
+      "term": "Nosuri",
+      "category": "Personagem",
+      "target_translation": "Nosuri",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, 'aliada da justica'. Irma de Ougi. Trabalhou com Oshtor/Haku."
+    },
+    {
+      "term": "Oshtor",
+      "category": "Personagem",
+      "target_translation": "Oshtor",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "= Ukon (reveal 13_08; ver spoiler_ledger). General da Direita / Imperial Guard. Twist final em quarentena (beyond_frontier)."
+    },
+    {
+      "term": "Ougi",
+      "category": "Personagem",
+      "target_translation": "Ougi",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Fora-da-lei, irmao de Nosuri."
+    },
+    {
+      "term": "Rulie",
+      "category": "Personagem",
+      "target_translation": "Rulie",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido de Rulutieh (Atuy a chama 'Rulie'). NAO e entidade nova; manter consistente com Rulutieh."
+    },
+    {
+      "term": "Rulu",
+      "category": "Personagem",
+      "target_translation": "Rulu",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Apelido de Rulutieh (variante de 'Rulie'). NAO entidade nova."
+    },
+    {
+      "term": "Rulutieh",
+      "category": "Personagem",
+      "target_translation": "Rulutieh",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Princesa de Kujyuri, filha de Ozen. Timida; gosta de BL; desenha e cozinha bem. Anda com a ave Cocopo. Fonte: corpus cap.13 + wiki."
+    },
+    {
+      "term": "Saraana",
+      "category": "Personagem",
+      "target_translation": "Saraana",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.19) Sacerdotisa Kamunagi gemea, irma MAIS NOVA de Uruuru, filha de Honoka. FEMININO. Fala longa/formal; pele morena."
+    },
+    {
+      "term": "Shinonon",
+      "category": "Personagem",
+      "target_translation": "Shinonon",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.20) MENINA, filha adotiva de Jachdwalt; refem da horda. FEMININO. Fonte: wiki."
+    },
+    {
+      "term": "Uruuru",
+      "category": "Personagem",
+      "target_translation": "Uruuru",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "(cap.19) Sacerdotisa Kamunagi gemea, irma MAIS VELHA de Saraana, filha de Honoka. FEMININO. Fala curta/informal/girias; pele clara. Dada a Haku p/ servi-lo."
+    },
+    {
+      "term": "Vurai",
+      "category": "Personagem",
+      "target_translation": "Vurai",
+      "handling_rule": "manter_original",
+      "spoiler_level": "major",
+      "notes": "(cap.20) 'a Vanguarda'; um dos Oito Generais-Pilar (mascarado), a lanca de Yamato. MASCULINO. manter nome; traduzir epiteto 'the Vanguard'->'a Vanguarda'. Desfecho (final boss/Oshtor) = beyond_frontier (quarentena). Fonte: wiki."
+    },
+    {
+      "term": "Woman",
+      "category": "UI",
+      "target_translation": "Mulher",
+      "handling_rule": "traduzir",
+      "spoiler_level": "none",
+      "notes": "Rótulo de falante (memória); identidade não revelada — genérico."
+    },
+    {
+      "term": "Yamato",
+      "category": "Local",
+      "target_translation": "Yamato",
+      "handling_rule": "manter_original",
+      "spoiler_level": "none",
+      "notes": "Nacao/estado onde se passa o cap.12; composta de muitas provincias; capital = sede do Mikado. Manter."
+    }
+  ],
+  "voice_cards": {
+    "Garota": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: cotidiano gentil; cuidadora.",
+        "Características: acolhe sem pressionar (\"Apenas relaxe...\"); curiosa mas paciente; calor humano.",
+        "Red flags: soar fria, clínica ou impaciente; formalidade excessiva."
+      ]
+    },
+    "Haku": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Haku (protagonista, narração 1ª pessoa) — `voice_criticality: high`. Predomina nas 2 cenas:"
+      ]
+    },
+    "Homem": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: enigmático, profético, frio.",
+        "Características: sentenças curtas e definitivas; duplo sentido (\"um mundo totalmente novo te espera\"); ambiguidade ameaçadora.",
+        "Red flags: soar caloroso/paternal; resolver a ambiguidade (a fala deve permanecer dúbia)."
+      ]
+    },
+    "Maroro": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: erudito cômico, pomposo e arcaico; bajulador do Ukon; alívio cômico.",
+        "Características: fala arcaica/empolada (equivalente a \"vós/peço-vos/meus olhos não me enganam\") + gag de cicio (s→sh, ex.: \"SHEEKETH\"/\"shir\"); melodramático; gruda no Haku como \"benfeitor\".",
+        "Red flags: perder o arcaísmo ou o cicio (são a piada); soar moderno/neutro; explicar a comédia. Manter o contraste entre a pompa do vocabulário e a fragilidade do personagem."
+      ]
+    },
+    "Nosuri": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Nosuri — `voice_criticality: medium`. Fora-da-lei atrevida e malandra; \"aliada da justiça\" irônica; oportunista. Registro coloquial/esperto."
+      ]
+    },
+    "Oshtor": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Oshtor — `voice_criticality: high`. = Ukon até 13_08 (ver spoiler_ledger). Registro formal, nobre, comedido; General da Direita. Antes do reveal, traduzir como o mercenário \"Ukon\" (espirituoso, informal) — NÃO antecipar a pompa de general"
+      ]
+    },
+    "Ougi": {
+      "aliases": [],
+      "criticality": "low",
+      "lines": [
+        "Ougi — `voice_criticality: low`. Irmão da Nosuri; pragmático, parceria com a irmã."
+      ]
+    },
+    "Protagonista": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: confuso, desorientado, semi-consciente.",
+        "Características: frases quebradas por reticências; perguntas curtas (\"Quem... é você...?\"); pouca pontuação forte.",
+        "Red flags: falas fluentes/articuladas demais; perder o tom de torpor; pontuação \"limpa\" que apaga a fragmentação."
+      ]
+    },
+    "Rulutieh": {
+      "aliases": [],
+      "criticality": "medium",
+      "lines": [
+        "Rulutieh — `voice_criticality: medium`. Princesa tímida e gentil; hesitante (gagueja quando nervosa: \"P-Princesa...\"), educada, se anima ao falar de arte/BL. Não soar arrogante apesar de princesa."
+      ]
+    },
+    "Ukon": {
+      "aliases": [],
+      "criticality": "high",
+      "lines": [
+        "Registro: guerreiro carismático, espirituoso, caloroso e informal; líder nato que trata Haku como um irmão mais novo.",
+        "Características: desembaraçado, brincalhão, generoso; fala direta e cativante; autoridade leve (lidera a Coorte) sem arrogância.",
+        "Red flags: soar rígido/formal/militar demais (a graça é justamente o contraste com a patente); frieza. SPOILER: não deixar a tradução insinuar a identidade verdadeira — no cap.12 ele é só \"Ukon\"."
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "title": "Opcode de RÓTULO DE FALANTE `53 00` + reconcile de speaker (data-driven)",
+      "tags": [
+        "opcode",
+        "rótulo",
+        "falante",
+        "reconcile",
+        "speaker",
+        "driven"
+      ],
+      "universal": true,
+      "summary": "**Problema:** in-game, o rótulo de falante aparecia em **inglês** (\"Girl\") mesmo com a tradução (\"Garota\") aprovada e gravada. RE: o nome do falante usa um **2º opcode de ponteiro, `53 00`** (mesmo formato file-relativo do `50 00` de diálogo), que o conector ignorava. Resultado: \"Girl\"→\"Garota\""
+    },
+    {
+      "title": "Gate de charset pt-BR — método e veredito",
+      "tags": [
+        "gate",
+        "charset",
+        "método",
+        "veredito"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: likely` e exigir confirmação in-game antes de produção. **Alternativas consideradas:** - Confirmar por presença no texto-fonte — **insuficiente**: o fonte é inglês e quase não usa acentos (só `õ` e `À` aparecem em texto real)."
+    },
+    {
+      "title": "Anomalia 0x33f9 — texto PT/EN corrompido na fonte",
+      "tags": [
+        "anomalia",
+        "0x33f9",
+        "texto",
+        "corrompido",
+        "fonte"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar a linha `0x33f9` como anomalia de fonte (não traduzir em cima do lixo; tratar como linha de sistema reescrita). **Razão:** A string original já vem misturada PT/EN e truncada (\"...SISTEMAS AM . RESTARTING...\") no próprio jogo. Não é erro de extração. O conector deve sinali"
+    },
+    {
+      "title": "Charset — transliteração na gravação (gate FALHOU)",
+      "tags": [
+        "charset",
+        "transliteração",
+        "gravação",
+        "gate",
+        "falhou"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Marcar `target_charset_supported: false` e **transliterar** (acento → ASCII) na gravação do binário. A tradução canônica (`approved_translations.csv`, `translation_plan.json`) **mantém os acentos** (correta para QA/revisão); apenas os bytes escritos no jogo são dobrados para ASCI"
+    },
+    {
+      "title": "Escopo cognitivo — 75 → 1025 linhas (cenas 11_01 + 11_02); reveal de Haku in-corpus",
+      "tags": [
+        "escopo",
+        "cognitivo",
+        "1025",
+        "linhas",
+        "cenas",
+        "11_01",
+        "11_02",
+        "reveal",
+        "haku",
+        "corpus"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Re-rodar o pipeline completo em escala (cenas 11_01 + 11_02 = 1025 linhas). Novos termos canônicos: **Kuon** (nome revelado em 0x108db), **Haku** (nome dado ao protagonista em 0x12668 — reveal agora **dentro do corpus**), **Tatari** (criatura imortal), **aperyu** (vestimenta), **"
+    },
+    {
+      "title": "CORREÇÃO CRÍTICA — ponteiros são FILE-RELATIVOS, não absolutos",
+      "tags": [
+        "correção",
+        "crítica",
+        "ponteiros",
+        "file",
+        "relativos",
+        "absolutos"
+      ],
+      "universal": true,
+      "summary": "**Decisão tomada:** Ao investigar o \"opcode de início de bloco\", descobri que **`50 00`+uint32 é um offset RELATIVO ao início do arquivo (Pack)**, não absoluto. Endereço da string = `file_start_do_site + uint32`. Prova: dos ~47k sites, **42.101** só apontam para string como file-relativos vs **63** "
+    },
+    {
+      "title": "Escopo do teste cognitivo — 20 linhas soltas → arco 11_01_000S (75 linhas)",
+      "tags": [
+        "escopo",
+        "teste",
+        "cognitivo",
+        "linhas",
+        "soltas",
+        "arco",
+        "11_01_000s"
+      ],
+      "universal": false,
+      "summary": "**Decisão tomada:** Trocar o corpus de teste das \"20 primeiras linhas\" para o **1º script do 1º arco** (`11_01_000S`, 75 linhas) — cena de abertura completa e autocontida (despertar → Kuon → sonho/memória → promessa). **Razão:** rodar o pipeline cognitivo (01→07) de verdade num arco coerente, não em"
+    },
+    {
+      "title": "Incremento: cap. 11_04 (45 linhas, batalha/tutorial) — modo padrão (2026-06-08)",
+      "tags": [
+        "incremento",
+        "11_04",
+        "linhas",
+        "batalha",
+        "tutorial",
+        "modo",
+        "padrão",
+        "2026"
+      ],
+      "universal": false,
+      "summary": "Cena do tutorial de combate: pose chuuni do Haku, bronca da Kuon, e o gag do \"exemplo negativo\" (bicho mole) com **duplo-sentido proposital**. **Decisões de tradução não-óbvias:** - **Duplo-sentido preservado num único termo:** `screwing around` → **`sacanagem`** (BR carrega os 2"
+    }
+  ],
+  "tm_exact": [
+    {
+      "source": "darkness.",
+      "target": "escuridão.",
+      "speaker": "Narrator",
+      "from_scene": "31_02"
+    },
+    {
+      "source": "Huh...?",
+      "target": "Hein...?",
+      "speaker": "Haku",
+      "from_scene": "11_01"
+    },
+    {
+      "source": "Vurai...",
+      "target": "Vurai...",
+      "speaker": "Haku",
+      "from_scene": "30_01"
+    },
+    {
+      "source": "Father...",
+      "target": "Pai...",
+      "speaker": "Garota",
+      "from_scene": "20_21"
+    },
+    {
+      "source": "I... I...",
+      "target": "E-E...",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "I...",
+      "target": "Eu...",
+      "speaker": "Nekone",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "Yamato.",
+      "target": "Yamato.",
+      "speaker": "Haku",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "now.",
+      "target": "já.",
+      "speaker": "Kuon",
+      "from_scene": "14_04"
+    },
+    {
+      "source": "her back.",
+      "target": "para trás.",
+      "speaker": "Narrador",
+      "from_scene": "23_14"
+    },
+    {
+      "source": "Oshtor...",
+      "target": "Oshtor...",
+      "speaker": "Haku",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Ah...",
+      "target": "Ah...",
+      "speaker": "Haku",
+      "from_scene": "13_01"
+    },
+    {
+      "source": "Rrrgh...",
+      "target": "Agh...",
+      "speaker": "Kuon",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "Soldier",
+      "target": "SOLDADO",
+      "speaker": "SOLDIER",
+      "from_scene": "20_01"
+    },
+    {
+      "source": "Silence!",
+      "target": "Silêncio!",
+      "speaker": "Maroro",
+      "from_scene": "19_05"
+    },
+    {
+      "source": "instantly.",
+      "target": "de imediato.",
+      "speaker": "Narrador",
+      "from_scene": "23_14"
+    },
+    {
+      "source": "others.",
+      "target": "outros.",
+      "speaker": "Haku",
+      "from_scene": "23_09"
+    },
+    {
+      "source": "Nngh...",
+      "target": "Nnh...",
+      "speaker": "Haku",
+      "from_scene": "11_08"
+    },
+    {
+      "source": "Eep...",
+      "target": "Uih...",
+      "speaker": "Haku",
+      "from_scene": "20_05"
+    },
+    {
+      "source": "woman.",
+      "target": "mulher.",
+      "speaker": "Mulher",
+      "from_scene": "17_01"
+    },
+    {
+      "source": "Wh--!?",
+      "target": "Q-Quê!?",
+      "speaker": "Haku",
+      "from_scene": "18_01"
+    },
+    {
+      "source": "forward.",
+      "target": "adiante.",
+      "speaker": "Oshtor",
+      "from_scene": "19_01"
+    },
+    {
+      "source": "mask",
+      "target": "mask",
+      "speaker": "SYSTEM",
+      "from_scene": "20_14"
+    },
+    {
+      "source": "Haku...",
+      "target": "Haku...",
+      "speaker": "Kuon",
+      "from_scene": "11_02"
+    },
+    {
+      "source": "Yeah, I know.",
+      "target": "Sim, eu sei.",
+      "speaker": "Protagonista",
+      "from_scene": "14_07"
+    },
+    {
+      "source": "Lady-in-waiting",
+      "target": "Dama de companhia",
+      "speaker": "Ukon",
+      "from_scene": "30_04"
+    },
+    {
+      "source": "U-Understood!",
+      "target": "Eu- Entendi!",
+      "speaker": "Garota",
+      "from_scene": "30_01"
+    },
+    {
+      "source": "your judgement.",
+      "target": "seu julgamento.",
+      "speaker": "Ougi",
+      "from_scene": "13_05"
+    },
+    {
+      "source": "attention.",
+      "target": "muita atenção.",
+      "speaker": "Ukon",
+      "from_scene": "15_01"
+    }
+  ],
+  "tm_voice": [
+    {
+      "speaker": "Protagonista",
+      "source": "Ngh... ghh...",
+      "target": "Nnh... aagh..."
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "Nn...\\n",
+      "target": "Nnh...\\n"
+    },
+    {
+      "speaker": "Protagonista",
+      "source": "It's... warm...?",
+      "target": "Está... quente...?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Urgh...",
+      "target": "Argh..."
+    },
+    {
+      "speaker": "Haku",
+      "source": "Right?",
+      "target": "né?"
+    },
+    {
+      "speaker": "Haku",
+      "source": "Nn...",
+      "target": "Nnh..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Huh? Someone's over there...",
+      "target": "Hein? Tem alguém ali..."
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, you there! Could you spare a moment?",
+      "target": "Ei, você aí! Pode me dar um momento?"
+    },
+    {
+      "speaker": "Garota",
+      "source": "Hey, I'm sorry for bothering you, but could I ask\\n",
+      "target": "Ei, me desculpe, posso fazer\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "Master Ukon! It pleaseth my heart to report my\\n",
+      "target": "Mestre Ukon! É com grande satisfação que reporto que meus\\n"
+    },
+    {
+      "speaker": "Maroro",
+      "source": "belongings lay duly unpack'd, and await porters.",
+      "target": "meus pertences estão desfeitos e aguardam os carregadores."
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Ah. Well done.",
+      "target": "Ah. Bom trabalho."
+    },
+    {
+      "speaker": "Maroro",
+      "source": "I am VERY tired, sir. Naught more now do I desire\\n",
+      "target": "Estou MUITO cansado, senhor. Nada mais desejo agora\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "Really, Maroro? Seems like you get tired quicker\\n",
+      "target": "É sério, Maroro? Parece que você se cansa mais rápido\\n"
+    },
+    {
+      "speaker": "Ukon",
+      "source": "and quicker these days...",
+      "target": "a cada dia que passa..."
+    },
+    {
+      "speaker": "Homem",
+      "source": "The way you were carrying on, you got us all\\n",
+      "target": "Do jeito que você estava, nos deixou todos\\n"
+    },
+    {
+      "speaker": "Homem",
+      "source": "anxious, too!",
+      "target": "ansiosos também!"
+    },
+    {
+      "speaker": "Homem",
+      "source": "Wahahahaha!!",
+      "target": "Wahahahaha!!"
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "Oh, pardon me.",
+      "target": "Ah, com licença."
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "I'm... sorry about, um...",
+      "target": "Eu... desculpe, é que..."
+    },
+    {
+      "speaker": "Rulutieh",
+      "source": "That's a relief... Come on, Cocopo. We'll just be\\n",
+      "target": "Ainda bem... Vamos, Cocopo. Só estamos\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "Moznu, enough. If you're going to be working with\\n",
+      "target": "Moznu, chega. Se vai trabalhar com os Ladrões\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "the Nosuri Thieves from now on, you abide by our\\n",
+      "target": "de Nosuri de agora em diante, segue nossas\\n"
+    },
+    {
+      "speaker": "Nosuri",
+      "source": "rules, not yours.",
+      "target": "regras, não as suas."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "Truly most impressive, dearest sister. Your\\n",
+      "target": "Muito impressionante, querida irmã. Seu charme\\n"
+    },
+    {
+      "speaker": "Ougi",
+      "source": "feminine charms dazzle, as ever.",
+      "target": "feminino encanta, como sempre."
+    },
+    {
+      "speaker": "Ougi",
+      "source": "How positively boorish. A good MAN simply\\n",
+      "target": "Que grosseria. Um bom HOMEM simplesmente\\n"
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Enter.",
+      "target": "Entre."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "How good of you to come.",
+      "target": "Que bom que vieram."
+    },
+    {
+      "speaker": "Oshtor",
+      "source": "Lord Haku. Lady Kuon. Thank you for your aid\\n",
+      "target": "Senhor Haku. Senhora Kuon. Obrigado pela ajuda\\n"
+    }
+  ],
+  "spoiler_guards": [
+    {
+      "entity": "Oshtor (twist final)",
+      "fact": "O destino de Oshtor e a transferencia de sua mascara/identidade (fim do jogo). Mantido em QUARENTENA (ratificado pelo usuario).",
+      "spoiler_level": "critical",
+      "guard": "Trate Oshtor como o General da Direita vivo e atuante. NAO antecipe morte, sacrificio, heranca de mascara, nem que outro personagem assumira sua identidade. Sem foreshadowing desse desfecho."
+    },
+    {
+      "entity": "Figuras de memoria (Woman/Man)",
+      "fact": "As identidades das figuras de memoria/sonho ('Woman'/'Man', 'Mestre').",
+      "spoiler_level": "major",
+      "guard": "Use rotulos genericos (Mulher/Homem/Mestre). NAO resolva quem sao nem o vinculo com Haku. Preserve o tom enigmatico. (Obs.: 'Master Ukon' do Maroro NAO e isto — e so o honorifico do Ukon.)"
+    }
+  ],
+  "lines": [
+    {
+      "offset": "0x2e6b96",
+      "source": "Within the confines of a lonely room, faintly\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e6bc6",
+      "source": "illuminated in the dim air...",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e6be4",
+      "source": "Anju sits alone, staring blankly into space.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e6c11",
+      "source": "Her eyes, once so full of energy, are devoid\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e6c40",
+      "source": "of life. All that now remains is reflected\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e6c6d",
+      "source": "darkness.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e6c7b",
+      "source": "Her mind feels clouded, weighed down by a heavy\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e6cad",
+      "source": "mist... as though adrift in a dream.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2e6cd2",
+      "source": "What... What am I doing...?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2e6cee",
+      "source": "Why... does my body refuse to move...?",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2e6d15",
+      "source": "From time to time, questions rise in her mind.",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e6d44",
+      "source": "But before they can solidify, they are engulfed\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e6d76",
+      "source": "by darkness, vanishing like popped bubbles.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e6da2",
+      "source": "Is... Is there anyone here...?",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2e6dc1",
+      "source": "Anyone...?",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e6dcc",
+      "source": "Suddenly, the door opens with a slam.\\n",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2e6df4",
+      "source": "A shadow falls over Anju's vision, darkening\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e6e23",
+      "source": "the room further.",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2e6e35",
+      "source": "Huh...?",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e6e3d",
+      "source": "She slowly raises her head to see a large,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e6e6a",
+      "source": "cold-eyed man looking down at her.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2e6e8d",
+      "source": "Ah... hhhh...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e6e9b",
+      "source": "Vurai...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e6ea4",
+      "source": "Her lifeless eyes cloud over, ever so slightly,\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e6ed6",
+      "source": "with a hint of fear.",
+      "byte_budget": 20
+    },
+    {
+      "offset": "0x2e6eeb",
+      "source": "Princess... No, Anju.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2e6f01",
+      "source": "Vurai continues to stare down at Anju, but he\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e6f31",
+      "source": "soon speaks, rumbling voice pitying and\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e6f5b",
+      "source": "disdainful.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e6f67",
+      "source": "You are yet far too small, and far too weak.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e6f94",
+      "source": "What can you protect, with those feeble arms?\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e6fc4",
+      "source": "What can you kill? What can you accomplish?",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e6ff0",
+      "source": "The answer... is nothing. You are pitiful,\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e701d",
+      "source": "you are powerless, and that is all you are.",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e7049",
+      "source": "What... What is he saying...?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e7067",
+      "source": "Our liege has passed. However, there are none\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e7097",
+      "source": "left to take his place.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2e70af",
+      "source": "What are you saying...? I... I am to succeed\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e70de",
+      "source": "Father...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e70e8",
+      "source": "Do you think you... you, of all people, can\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7116",
+      "source": "stand and lead us? The Eight Pillar Generals?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7144",
+      "source": "I... I...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e714e",
+      "source": "What can you possibly show us to earn our\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e717a",
+      "source": "loyalty?",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e7183",
+      "source": "Your frail arms, that could snap under the most\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e71b5",
+      "source": "meager of weights?",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e71c8",
+      "source": "Your radiance, barely that of a dying firefly's\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e71fa",
+      "source": "flickering ass?",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2e720a",
+      "source": "I...",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2e720f",
+      "source": "Ludicrous.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e721a",
+      "source": "As Vurai extends his fist, Anju can only stare\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e724b",
+      "source": "blankly, her focus drifting in and out.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2e7273",
+      "source": "You have no right to stand above me.",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2e7298",
+      "source": "The only one that does... is one who has proven\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e72ca",
+      "source": "their absolute power.",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2e72e0",
+      "source": "A new era of war now dawns on our land of\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e730c",
+      "source": "Yamato.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e7314",
+      "source": "This is the will of the heavens.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2e7335",
+      "source": "Only one who can conquer all else may rise to\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e7365",
+      "source": "Yamato's summit. One chosen by the heavens!",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e7391",
+      "source": "Ah... hh...",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e739d",
+      "source": "And I... I, Vurai, shall be the one to ascend\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e73cd",
+      "source": "victorious in this war!",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2e73e5",
+      "source": "Anju. You will bow before me.",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e7403",
+      "source": "For that is the only path left for one as\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e742f",
+      "source": "feeble as you.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2e743e",
+      "source": "You shall become my puppet, and shall serve\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e746c",
+      "source": "as a sacrifice on my road to conquest.",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2e7493",
+      "source": "Nh... hh... hhh...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e74a6",
+      "source": "No... I will not...",
+      "byte_budget": 19
+    },
+    {
+      "offset": "0x2e74ba",
+      "source": "I... I do not wish for Yamato...",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2e74db",
+      "source": "...to become... such a place...",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2e74fb",
+      "source": "Through the mental fog and hazy vision,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e7525",
+      "source": "Anju weakly shakes her head.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2e7542",
+      "source": "Oh? Your pride as the imperial princess will\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7571",
+      "source": "not allow such submission, then?",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2e7592",
+      "source": "Very well. For that, you shall have my mercy.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e75c0",
+      "source": "Vurai tosses a single dagger at Anju's feet.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e75ed",
+      "source": "Use it.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e75f5",
+      "source": "If you truly do not wish to live a life of\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e7622",
+      "source": "shame, then end your life with your own hands.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e7653",
+      "source": "Now.",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2e7658",
+      "source": "Anju picks up the blade with shaking hands,\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7686",
+      "source": "and slowly unsheathes it.",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x2e76a0",
+      "source": "Ah... hhh...",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2e76ad",
+      "source": "The cold glint of the blade reflects in her\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e76db",
+      "source": "empty eyes.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e76e7",
+      "source": "N-No... I... do not wish to...",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2e7706",
+      "source": "Her whole body shivers as sweat trickles down\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e7736",
+      "source": "her back.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e7740",
+      "source": "I do not... want to die...\\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2e775d",
+      "source": "I am so afraid...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2e776f",
+      "source": "She can hear a part of her crying out, but her\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e77a0",
+      "source": "body refuses to obey, as if she is no longer\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e77cf",
+      "source": "in control.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e77db",
+      "source": "Please... someone... help...!",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e77f9",
+      "source": "The dagger held in her hands slowly inches\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e7826",
+      "source": "toward her neck.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2e7837",
+      "source": "Please save me... Father...\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e7855",
+      "source": "Oshtor...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e785f",
+      "source": "The blade's tip slips against her throat almost\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e7891",
+      "source": "gently, a trickle of blood trailing down her\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e78c0",
+      "source": "pale skin.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e78cb",
+      "source": "Help me... Haku!",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2e78dc",
+      "source": "Princess! You all right!?",
+      "byte_budget": 25
+    },
+    {
+      "offset": "0x2e78f6",
+      "source": "Ah...",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2e78fc",
+      "source": "Rrrgh...",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e7905",
+      "source": "Vurai slowly turns to face us.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2e7924",
+      "source": "Your Highness, are you hurt!?",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e7942",
+      "source": "Looks like we made it just in time, yeah?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e796c",
+      "source": "Despite our bursting in, Anju only stares\\n",
+      "byte_budget": 43
+    },
+    {
+      "offset": "0x2e7998",
+      "source": "blankly ahead, showing no sign of having\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2e79c3",
+      "source": "noticed us...",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e79d1",
+      "source": "But looking closer, we can see her eyes\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e79fb",
+      "source": "welling up with tears.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2e7a12",
+      "source": "In her hand she holds a dagger, pointed directly\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2e7a45",
+      "source": "at her own throat.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e7a58",
+      "source": "Nh... ah... hhh...",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e7a6b",
+      "source": "Anju--",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2e7a72",
+      "source": "Shit, we barely made it in time...",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2e7a95",
+      "source": "And there's something wrong with the princess.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e7ac6",
+      "source": "We have to do something, quick--",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2e7ae7",
+      "source": "What have you done to Her Highness!?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2e7b0c",
+      "source": "Soldier",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e7b14",
+      "source": "Lord Vurai! What was that sound just... Huh!?",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7b45",
+      "source": "Intruders! How did you enter this place!?",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e7b6f",
+      "source": "SILENCE!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e7b78",
+      "source": "S-Sir!!",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e7b80",
+      "source": "Vurai roars at the flustered soldiers,\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2e7ba9",
+      "source": "then fixes his gaze on Oshtor.",
+      "byte_budget": 30
+    },
+    {
+      "offset": "0x2e7bc8",
+      "source": "...Vurai.",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e7bd2",
+      "source": "So you came after all... Oshtor.\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2e7bf5",
+      "source": "This is it. This is what I had hoped to see.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e7c22",
+      "source": "But what will you do now? However powerful you\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e7c53",
+      "source": "may be, you can barely stand as you are now.",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e7c80",
+      "source": "That will be none of your concern.",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2e7ca3",
+      "source": "Hrm?",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2e7ca8",
+      "source": "Sorry to disappoint, but your opponent's\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2e7cd3",
+      "source": "over here.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e7cde",
+      "source": "Vurai's gaze flickers momentarily to me, but\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7d0d",
+      "source": "his hard glare returns to Oshtor almost\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e7d37",
+      "source": "instantly.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e7d42",
+      "source": "Even now, you still mock me, Oshtor?",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2e7d67",
+      "source": "Looks like he doesn't think we're worth his\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7d95",
+      "source": "time. I wasn't expecting him to take us this\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7dc4",
+      "source": "lightly.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e7dcd",
+      "source": "Well, well, look at the big macho Akuruturuka\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e7dfd",
+      "source": "over here. He's so full of himself, it's kinda\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e7e2e",
+      "source": "refreshing.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e7e3a",
+      "source": "Is that so...? You don't think we'll even be\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7e69",
+      "source": "a match, eh? Oh, that's just precious...",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2e7e92",
+      "source": "Rrgh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e7e9a",
+      "source": "You never change, Vurai. You take such pride\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7ec9",
+      "source": "in your might, and deem all without power to\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e7ef8",
+      "source": "be worthless.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e7f06",
+      "source": "Rule is won through strength. Our liege ruled\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e7f36",
+      "source": "this land of Yamato with absolute and ineffable\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e7f68",
+      "source": "power.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2e7f6f",
+      "source": "I do not deny it. Yet regardless of his\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e7f99",
+      "source": "strength, our liege never looked down upon\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e7fc6",
+      "source": "others.",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e7fce",
+      "source": "By all means, test if this is mere mockery.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e7ffc",
+      "source": "Or do you fear you will taste defeat for a\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e8029",
+      "source": "second time?",
+      "byte_budget": 12
+    },
+    {
+      "offset": "0x2e8036",
+      "source": "You dare--",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e8041",
+      "source": "Ahah...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e8049",
+      "source": "Indeed... Maybe that is why you lost to Oshtor.",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e8079",
+      "source": "*Crk*",
+      "byte_budget": 5
+    },
+    {
+      "offset": "0x2e807f",
+      "source": "Something snaps at her words. A deadly pressure\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e80b1",
+      "source": "falls over us, like Vurai holds our hearts in\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e80e1",
+      "source": "his clenched fist.",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e80f4",
+      "source": "Nngh...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e80fc",
+      "source": "...Woman. Do you mean to insult me?",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2e8120",
+      "source": "Eep...",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2e8127",
+      "source": "Hm? I was just commenting that perhaps that\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e8155",
+      "source": "is why you lost.",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2e8166",
+      "source": "Strong or not, you will fail if you underestimate\\n",
+      "byte_budget": 51
+    },
+    {
+      "offset": "0x2e819a",
+      "source": "your opponent. It seems only natural that he\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e81c9",
+      "source": "would win against you.",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2e81e0",
+      "source": "I will say only this: You will never be able\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e820f",
+      "source": "to defeat Oshtor. Ever.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2e8227",
+      "source": "Or us, for that matter.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2e823f",
+      "source": "...Such audacity... You run your mouth overmuch,\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2e8272",
+      "source": "woman.",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2e8279",
+      "source": "Wh--!?",
+      "byte_budget": 6
+    },
+    {
+      "offset": "0x2e8280",
+      "source": "Aha... Hee hee hee...",
+      "byte_budget": 21
+    },
+    {
+      "offset": "0x2e8296",
+      "source": "Oh, come on... Sure, the plan was to provoke him\\n",
+      "byte_budget": 50
+    },
+    {
+      "offset": "0x2e82c9",
+      "source": "so he goes all out, but you might be overdoing\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e82fa",
+      "source": "it here!",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e8303",
+      "source": "Insolent child...",
+      "byte_budget": 17
+    },
+    {
+      "offset": "0x2e8315",
+      "source": "Vurai mutters quietly, then takes a slow step\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e8345",
+      "source": "forward.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e834e",
+      "source": "mask",
+      "byte_budget": 4
+    },
+    {
+      "offset": "0x2e8354",
+      "source": "Very well. Then prove to me... your worth!",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2e837f",
+      "source": "Haku...",
+      "byte_budget": 7
+    },
+    {
+      "offset": "0x2e8387",
+      "source": "Yeah, I know.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e8395",
+      "source": "We have to make him activate his Akuruka's\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e83c2",
+      "source": "power, so we have a chance to finish him off.",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e83f0",
+      "source": "Stay back now, Shinonon.",
+      "byte_budget": 24
+    },
+    {
+      "offset": "0x2e8409",
+      "source": "What're you talkin' about?\\n",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2e8426",
+      "source": "I wanna fight too!",
+      "byte_budget": 18
+    },
+    {
+      "offset": "0x2e8439",
+      "source": "Thank you, Shinonon. But we need you to stay\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e8468",
+      "source": "with the nice lady and Oshtor so you can\\n",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2e8493",
+      "source": "protect them.",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e84a1",
+      "source": "You want me to protect Osh?",
+      "byte_budget": 27
+    },
+    {
+      "offset": "0x2e84bd",
+      "source": "Mhm. Can you do that for us?",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2e84da",
+      "source": "Hokay, got it. You can leave it to me!",
+      "byte_budget": 38
+    },
+    {
+      "offset": "0x2e8501",
+      "source": "That's my girl. Thanks, bosslady.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2e8523",
+      "source": "You need to stay back, too.\\n",
+      "byte_budget": 29
+    },
+    {
+      "offset": "0x2e8541",
+      "source": "Look after Shinonon and Oshtor.",
+      "byte_budget": 31
+    },
+    {
+      "offset": "0x2e8561",
+      "source": "Lady-in-waiting",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2e8571",
+      "source": "U-Understood. And... I wish you all the best\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e85a0",
+      "source": "of luck.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e85a9",
+      "source": "Jachdwalt, Ougi, I want you guys needling him.\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e85da",
+      "source": "Keep his attention on you!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2e85f5",
+      "source": "Very well. I must say, though, I never dreamed\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e8626",
+      "source": "I'd find myself in the thick of such an\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e8650",
+      "source": "insane scheme.",
+      "byte_budget": 14
+    },
+    {
+      "offset": "0x2e865f",
+      "source": "Got that right. I thought I was used to the\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e868d",
+      "source": "boss's crazy orders, and now we're up against\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e86bd",
+      "source": "Vurai himself...",
+      "byte_budget": 16
+    },
+    {
+      "offset": "0x2e86ce",
+      "source": "Doesn't get any better than this.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2e86f0",
+      "source": "Nosuri, Kiwru, I want you on crowd control.\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e871e",
+      "source": "Keep his backup at bay.",
+      "byte_budget": 23
+    },
+    {
+      "offset": "0x2e8736",
+      "source": "U-Understood!",
+      "byte_budget": 13
+    },
+    {
+      "offset": "0x2e8744",
+      "source": "You dare hurt Her Highness... Vurai, you are a\\n",
+      "byte_budget": 48
+    },
+    {
+      "offset": "0x2e8775",
+      "source": "villain, unfit for your title. I will deliver\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e87a5",
+      "source": "your judgement.",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2e87b5",
+      "source": "I... will not falter. I am my sworn brother's--\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e87e7",
+      "source": "no... the Imperial Guard of the Right,\\n",
+      "byte_budget": 40
+    },
+    {
+      "offset": "0x2e8810",
+      "source": "Oshtor's sword!",
+      "byte_budget": 15
+    },
+    {
+      "offset": "0x2e8820",
+      "source": "Nekone, Rulutieh, get the princess as soon as\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e8850",
+      "source": "you see an opening. We need to get her away\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e887e",
+      "source": "from Vurai.",
+      "byte_budget": 11
+    },
+    {
+      "offset": "0x2e888a",
+      "source": "I need no reminding. Make sure you keep his\\n",
+      "byte_budget": 45
+    },
+    {
+      "offset": "0x2e88b8",
+      "source": "attention.",
+      "byte_budget": 10
+    },
+    {
+      "offset": "0x2e88e8",
+      "source": "Miss Anju... I promise I will save you,\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e8912",
+      "source": "no matter what, so please wait a little\\n",
+      "byte_budget": 41
+    },
+    {
+      "offset": "0x2e893c",
+      "source": "longer...",
+      "byte_budget": 9
+    },
+    {
+      "offset": "0x2e8946",
+      "source": "Atuy... just do whatever you want.\\n",
+      "byte_budget": 36
+    },
+    {
+      "offset": "0x2e896b",
+      "source": "I'm not gonna stop you this time.\\n",
+      "byte_budget": 35
+    },
+    {
+      "offset": "0x2e898f",
+      "source": "Go nuts.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e8998",
+      "source": "Hee hee hee... music to my ears.\\n",
+      "byte_budget": 34
+    },
+    {
+      "offset": "0x2e89bb",
+      "source": "You're the BEST, love!",
+      "byte_budget": 22
+    },
+    {
+      "offset": "0x2e89d2",
+      "source": "...We can't afford to hold back. I promise I'll\\n",
+      "byte_budget": 49
+    },
+    {
+      "offset": "0x2e8a04",
+      "source": "do anything you two want me to later. Uruuru,\\n",
+      "byte_budget": 47
+    },
+    {
+      "offset": "0x2e8a34",
+      "source": "Saraana... we're counting on you.",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2e8a56",
+      "source": "We obey your call without fail.\\n",
+      "byte_budget": 33
+    },
+    {
+      "offset": "0x2e8a78",
+      "source": "We offer our all to you, Master.",
+      "byte_budget": 32
+    },
+    {
+      "offset": "0x2e8a99",
+      "source": "I expected their usual schtick when I said\\n",
+      "byte_budget": 44
+    },
+    {
+      "offset": "0x2e8ac6",
+      "source": "I'd do anything... The strain must be really\\n",
+      "byte_budget": 46
+    },
+    {
+      "offset": "0x2e8af5",
+      "source": "serious.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e8afe",
+      "source": "...Kuon.",
+      "byte_budget": 8
+    },
+    {
+      "offset": "0x2e8b07",
+      "source": "Don't worry. I've got everyone's backs.",
+      "byte_budget": 39
+    },
+    {
+      "offset": "0x2e8b2f",
+      "source": "You just concentrate on the tactics, Haku.",
+      "byte_budget": 42
+    },
+    {
+      "offset": "0x2e8b5a",
+      "source": "Thanks... I'll do just that.",
+      "byte_budget": 28
+    },
+    {
+      "offset": "0x2e8b77",
+      "source": "Everyone... Let's do this!",
+      "byte_budget": 26
+    },
+    {
+      "offset": "0x2e8b92",
+      "source": "Show me the power... of the Akuruturuka.",
+      "byte_budget": 40
+    }
+  ]
+}
