@@ -23,8 +23,23 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
-      - name: Type-check (mypy)
-        run: mypy framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py
+      # S5: .env nunca deve ser rastreado pelo git
+      - name: Verify .env is not tracked
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            echo "ERRO: .env rastreado — remova com: git rm --cached .env"
+            exit 1
+          fi
+          echo "OK: .env não rastreado"
 
-      - name: Run tests
-        run: python -m pytest framework/runtime/test_runtime.py -v --tb=short
+      - name: Type-check (mypy)
+        run: mypy framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py
+
+      # E3: coverage mínima (baseline; subir gradualmente)
+      - name: Run runtime tests with coverage
+        run: |
+          python -m pytest framework/runtime/test_runtime.py -v --tb=short \
+            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=60
+
+      - name: Run validation tests
+        run: python -m pytest framework/validation/ -v --tb=short

@@ -15,7 +15,7 @@
 | **A prova** | Um jogo real **100% traduzido** EN→pt-BR: 16 capítulos, ~45.100 linhas, **round-trip byte-idêntico**, **~R$ 65,9** com **R$ 0 desperdiçado**. |
 | **O diferencial** | A IA só **propõe** (tradução); **gates determinísticos julgam**; o **humano tem a palavra final**. Nada entra no dado canônico sem prova reproduzível. |
 
-> Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta-fase-0--jogando)
+> Quer ver o filme inteiro numa imagem? Vá direto ao [processo ponta a ponta](#o-processo-ponta-a-ponta)
 > e a [quem faz o quê](#papéis-quem-faz-o-quê-ia--gates--humano).
 
 Se você está chegando agora e nunca viu os conceitos, leia nesta ordem: **o problema** → **as 4
@@ -129,7 +129,7 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
   que mudou. Ver [ROADMAP — Prioridade #1](ROADMAP.md).
 - **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
   os arquivos de diálogo, gera um conector determinístico e valida via round-trip. O LLM participa
-  **apenas no bootstrap**; após aprovação, o conector roda sem IA. Piloto: *Breath of Fire IV* (Fase D).
+  **apenas no bootstrap**; após aprovação, o conector roda sem IA. Piloto: *Breath of Fire IV* (em andamento).
 
 ```mermaid
 flowchart LR
@@ -252,7 +252,7 @@ Nenhum nome de personagem, termo de lore ou idioma vive dentro de `framework/`.
 
 ---
 
-## O processo ponta a ponta (Fase 0 → jogando)
+## O processo ponta a ponta
 
 O filme inteiro, do binário do jogo até a pessoa jogando em pt-BR. As cores são as das 4 camadas; o
 loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem re-traduzir o jogo.
@@ -304,8 +304,8 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 3. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
    um jogo (visual novel), EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
 4. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
-   piloto do Generic Connector System (Fase D), novo engine Capcom.
-4. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
+   piloto de portabilidade para novo engine Capcom.
+5. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..08`.
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
@@ -338,7 +338,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
   **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
 - **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim (R$ 0)** ou nota
   cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Qualidade travada:** **151 testes** (106 runtime + 29 validação + 16 conector), determinismo/
+- **Qualidade travada:** **161 testes** (116 runtime + 29 validação + 16 conector), determinismo/
   idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
 - **Filmes / séries:** pontos de extensão documentados, ainda não validados.
 
