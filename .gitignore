@@ -13,8 +13,8 @@ __pycache__/
 # Regeneráveis 100% determinísticos do context_pack (saída de artifacts/<cena>/).
 # São reconstruídos a cada run; não são entregável nem estado durável → não versionar
 # (também elimina o churn de regeneração ao rodar os testes). Ver framework/docs/NAMING.md.
-projects/*/artifacts/*/pack.json
-projects/*/artifacts/*/scene_prompt.md
+projects/*/artifacts/**/pack.json
+projects/*/artifacts/**/scene_prompt.md
 
 # Saída do conector (binários remontados com copyright — nunca versionar)
 projects/*/output/
