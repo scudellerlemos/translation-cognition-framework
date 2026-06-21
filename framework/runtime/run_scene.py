@@ -23,8 +23,6 @@ Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [-
 from __future__ import annotations
 import argparse
 import json
-import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -36,7 +34,10 @@ import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminh
 import model as M      # noqa: E402
 import state_index     # noqa: E402
 import kb_gate         # noqa: E402
-from config import RunSceneResult, RunSceneOptions, CONNECTOR_REGISTRY  # noqa: E402
+from config import RunSceneResult, RunSceneOptions, CONNECTOR_REGISTRY, CONNECTOR_KNOWN_KEYS  # noqa: E402
+from connector_mgr import (                                                                    # noqa: E402
+    _connector_script, _connector_hash, _run, _verify_status, _warn_if_connector_stale,
+)
 
 
 def _validate_scene_arg(root: Path, scene: str) -> None:
@@ -50,74 +51,20 @@ def _validate_scene_arg(root: Path, scene: str) -> None:
 
 def _validate_connector_cfg(cfg: dict) -> list:
     """Retorna lista de avisos sobre chaves desconhecidas em project.json connector.{}."""
-    known = {s.key for s in CONNECTOR_REGISTRY}
+    known = CONNECTOR_KNOWN_KEYS | {s.key for s in CONNECTOR_REGISTRY}
     return [f"connector.{k!r} desconhecida — chaves validas: {sorted(known)}"
             for k in sorted(cfg.get("connector", {})) if k not in known]
 
 
-def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
-    override = cfg.get("connector", {}).get(key)
-    p = (root / override) if override else (root / "connector" / default)
-    if not p.resolve().is_relative_to(root.resolve()):
-        raise ValueError(f"conector fora do projeto: {p!r} (override={override!r})")
-    return p
-
-
-_CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) nao bloqueia o pipeline
-
-
-def _connector_hash(root: Path, cfg: dict) -> str:
-    """SHA1 do conteúdo dos scripts do conector — identifica a versão em uso no momento da verificação.
-    Gravado no run_state.json junto com 'verified=True': artefato sabe com qual conector foi gerado.
-    Conector ausente (em-desenvolvimento) = hash de string vazia por slot."""
-    import hashlib
-    h = hashlib.sha1()
-    for key, default in [("build_plan_script", "build_plan_chapter.py"),
-                          ("verify_script", "verify_chapter.py")]:
-        p = _connector_script(root, cfg, key, default)
-        if p.is_file():
-            h.update(p.read_bytes())
-    return h.hexdigest()[:12]
-
-
-def _run(cmd, timeout=_CONNECTOR_TIMEOUT) -> tuple[int, str]:
-    # ROBUSTEZ (Windows): o filho (build_plan/verify) pode imprimir bytes nao-utf-8 (acentos cp1252 no
-    # console). Sem protecao, a thread leitora do subprocess quebrava com UnicodeDecodeError e derrubava
-    # o run_chapter NO MEIO da run (em background isso deixava o chip da UI preso, sem saida limpa).
-    # Dupla defesa: (1) PYTHONIOENCODING/PYTHONUTF8 forcam o filho a EMITIR utf-8; (2) errors='replace'
-    # como rede de seguranca -> nunca quebra. Os matches do run_scene ('fora do arquivo' etc.) sao ASCII.
-    env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
-    # stdin=DEVNULL: os connectors nao leem stdin; evita herdar o stdin do pai (sob captura de
-    # pytest/headless o stdin nao tem handle de OS -> DuplicateHandle falharia no Windows).
-    try:
-        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
-                           errors="replace", env=env, stdin=subprocess.DEVNULL,
-                           timeout=timeout)
-        return r.returncode, (r.stdout or "") + (r.stderr or "")
-    except subprocess.TimeoutExpired:
-        return 1, f"[timeout] conector nao respondeu em {timeout}s — verifique o script e rode novamente."
-
-
-def _verify_status(out: str) -> dict:
-    """Protocolo estruturado de saida do conector: le a 1 linha 'VERIFY_STATUS: {json}' que o conector emite. Fallback do
-    exit-code — conector legado sem a linha -> {} (run_scene usa o exit-code 3 como sinal primario)."""
-    for line in out.splitlines():
-        line = line.strip()
-        if line.startswith("VERIFY_STATUS:"):
-            try:
-                return json.loads(line[len("VERIFY_STATUS:"):].strip())
-            except Exception:
-                return {}
-    return {}
-
-
 def _checkpoint(root: Path, scene: str, patch: dict):
+    import time as _time
     p = paths.run_state(root)
     state = {}
     if p.is_file():
         state = json.loads(p.read_text(encoding="utf-8"))
     scenes = state.setdefault("scenes", {})
-    scenes[scene] = {**scenes.get(scene, {}), **patch}
+    # S4: _ts = epoch do último checkpoint desta cena (audit trail temporal)
+    scenes[scene] = {**scenes.get(scene, {}), **patch, "_ts": round(_time.time(), 3)}
     state["scenes"] = dict(sorted(scenes.items()))
     state["managed_by"] = "framework/runtime/run_scene.py"
     p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -208,6 +155,14 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
               f"(nao re-traduzidas; {tr.get('novel', 0)} novas ao modelo)")
     _checkpoint(root, scene, {"scene_id": scene_id, "n_lines": tr["n_lines"], "status": "packed"})
 
+    # V2/V3: registra doctrine_hash e prompt_hash no checkpoint — computados direto das fontes
+    import hashlib as _hl
+    _cp_hash = context_pack._doctrine_hash(root)
+    _sp = paths.scene_prompt(root, scene)
+    _pr_hash = _hl.sha1(_sp.read_bytes()).hexdigest()[:16] if _sp.is_file() else ""
+    if _cp_hash or _pr_hash:
+        _checkpoint(root, scene, {"doctrine_hash": _cp_hash, "prompt_hash": _pr_hash})
+
     if tr["status"] == M.AWAITING:
         print(f"[2/6] AGUARDANDO traducao (caminho assinatura): responda o prompt limitado")
         print(f"      prompt : {tr['prompt']}")
@@ -228,6 +183,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     """
     build_plan_script = _connector_script(root, cfg, "build_plan_script", "build_plan_chapter.py")
     verify_script = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
+    _warn_if_connector_stale(root, scene, cfg)   # S3: integridade pre-execução
     # ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a verify falha por fitting
     # (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION) e repete. Cenas
     # normais passam de primeira (sem custo extra); so as apertadas escalam.
@@ -416,14 +372,63 @@ def clean_failed_scene(root, scene) -> list[str]:
     return moved
 
 
+def prune_discontinued(root: Path, older_than_days: int = 30) -> list:
+    """G4: remove cenas de artifacts/discontinued/ mais antigas que older_than_days dias.
+    Retorna lista de paths removidos. Idempotente — rodar 2x não levanta exceção."""
+    import shutil
+    import time as _time
+    disc = paths.discontinued_dir(root)
+    if not disc.is_dir():
+        return []
+    cutoff = _time.time() - older_than_days * 86400
+    removed = []
+    for scene_dir in sorted(disc.iterdir()):
+        if scene_dir.is_dir() and scene_dir.stat().st_mtime < cutoff:
+            shutil.rmtree(scene_dir)
+            removed.append(str(scene_dir))
+    return removed
+
+
 def _indent(s: str) -> str:
     return "\n".join("      " + ln for ln in s.strip().splitlines() if ln.strip())
+
+
+def _check_stale(project: str) -> None:
+    """V3: compara doctrine_hash atual vs o salvo em run_state.json por cena."""
+    root = Path(project)
+    current = context_pack._doctrine_hash(root)
+    rs = paths.run_state(root)
+    if not rs.is_file():
+        print("run_state.json nao encontrado — nenhuma cena traduzida.")
+        return
+    state = json.loads(rs.read_text(encoding="utf-8"))
+    scenes = state.get("scenes", {})
+    stale, fresh, no_data = [], [], []
+    for scene_name, data in scenes.items():
+        saved = data.get("doctrine_hash")
+        if not saved:
+            no_data.append(scene_name)
+        elif saved != current:
+            stale.append(scene_name)
+        else:
+            fresh.append(scene_name)
+    print(f"Doutrina atual:     {current}")
+    if stale:
+        print(f"Desatualizadas ({len(stale)}):")
+        for s in sorted(stale):
+            print(f"  {s}")
+    if no_data:
+        print(f"Sem doctrine_hash ({len(no_data)}) — rodadas antes do versionamento:")
+        for s in sorted(no_data):
+            print(f"  {s}")
+    if fresh:
+        print(f"OK sincronizadas: {len(fresh)} cena(s).")
 
 
 def main():
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
-    ap.add_argument("scene")
+    ap.add_argument("scene", nargs="?", default=None)
     ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--require-back", action="store_true",
                     help="bloqueia se a back-translation de alto risco faltar")
@@ -432,7 +437,22 @@ def main():
                     help="ignora o gate de cobertura de KB (nao recomendado)")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
+    ap.add_argument("--check-stale", action="store_true",
+                    help="V3: lista cenas com doctrine_hash diferente do atual (sem rodar traducao)")
+    ap.add_argument("--purge-discontinued", type=int, metavar="DAYS",
+                    help="G4: remove dirs de artifacts/discontinued/ mais antigos que DAYS dias")
     a = ap.parse_args()
+    if a.check_stale:
+        if not a.project:
+            ap.error("--check-stale requer <project>")
+        _check_stale(a.project)
+        return
+    if a.purge_discontinued is not None:
+        removed = prune_discontinued(Path(a.project), a.purge_discontinued)
+        print(f"[prune] {len(removed)} dir(s) removido(s) de discontinued/.")
+        return
+    if not a.scene:
+        ap.error("scene e obrigatorio (exceto com --check-stale)")
     if a.clean:
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")

@@ -117,11 +117,11 @@ propaga a versão certa para conteúdo futuro.
 ## Custo (resumo)
 | Ação | Custo |
 |---|---|
-| Gates determinísticos (round-trip, caixa, width) | **$0** |
-| Gerar o relatório de revisão (export) | **$0** |
-| Correção **verbatim** (texto certo do humano) | **$0** |
+| Gates determinísticos (round-trip, caixa, width) | **R$ 0** |
+| Gerar o relatório de revisão (export) | **R$ 0** |
+| Correção **verbatim** (texto certo do humano) | **R$ 0** |
 | **Nota** (instrução → IA reescreve 1 linha) | só aquela linha |
-| Localizar relato do TESTER (texto→offset) | **$0** |
+| Localizar relato do TESTER (texto→offset) | **R$ 0** |
 
 > Regra de ouro: **nunca** re-traduzir o jogo todo após o QA. Corrige-se **por linha**, e só o que o
 > humano marcou.

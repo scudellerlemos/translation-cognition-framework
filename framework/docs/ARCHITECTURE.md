@@ -104,6 +104,7 @@ flowchart LR
 |---|---|---|
 | Parser / extração / reinserção | Determinístico | `connector/` |
 | Orquestração / controle de fluxo | Determinístico | `runtime/run_scene.py` |
+| Interface do conector (subprocess, hash, stale) | Determinístico | `runtime/connector_mgr.py` |
 | Montagem de contexto | Determinístico | `runtime/context_pack.py` |
 | Memória / consistência (TM, vozes, decisões) | Determinístico | `runtime/state_index.py` |
 | Checkpoints | Determinístico | `run_state.json` |
@@ -143,7 +144,7 @@ comprovado vivo, além do alvo acima:
 - **Estouro de sessão morto:** o contexto por execução é O(cena); a sessão de chat só lança o driver
   (`run_chapter.py`) e lê o resumo — footprint constante, independente do nº de capítulos.
 - **Custo medido e controlado:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
-  gasto real acumulado **~$65,9** (Sonnet $50,6 · Opus $7,8 · Haiku $7,5), **$0 desperdiçado**.
+  gasto real acumulado **~R$ 65,9** (Sonnet R$ 50,6 · Opus R$ 7,8 · Haiku R$ 7,5), **R$ 0 desperdiçado**.
   Alavancas codadas: Batch API **−50%**, **tiering** por complexidade (Haiku simples, Sonnet multi-linha,
   Opus só back-translation), **dedup por TM**, **back-translation em batch**.
 - **Custo PREVISÍVEL (a engenharia que fecha o caso p/ orçamento baixo):**
@@ -167,12 +168,13 @@ comprovado vivo, além do alvo acima:
   corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **125 testes** (80 runtime + 29 validação + 16 conector); determinismo,
+- **Travas de qualidade:** **161 testes** (116 runtime + 29 validação + 16 conector); determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
 
 ## Documentos relacionados
 
 - `GOVERNANCE.md` — quem propõe, quem aprova, quem aplica; gates, fonte de KB e loop humano/TM (com desenhos).
+- `SECURITY.md` — modelo de ameaças (API key, path traversal, conector, binário, supply chain) + resposta a incidentes.
 - `STATE_MANAGEMENT.md` — conhecimento permanente vs temporário; substrato de estado.
 - `MODEL_INTERFACE.md` — contrato `translate`/`back_translate`; caminhos assinatura vs API.
 - `TRANSLATION_PIPELINE.md` — o fluxo de 1 cena ponta-a-ponta; checkpoint/resume.

@@ -82,6 +82,15 @@ def build_tm(art: Path) -> list[dict]:
             lines = [{"offset": k, **v} for k, v in lines.items()]
         scene = data.get("scene_group") or pf.stem.replace("translation_plan_", "").replace(
             "translation_plan", "root")
+        # V4: tenta ler pack.json da cena para registrar doctrine_version por entrada de TM
+        scene_pack = art / pf.parent.name / "pack.json" if pf.parent != art else None
+        doctrine_version = ""
+        if scene_pack and scene_pack.is_file():
+            try:
+                doctrine_version = json.loads(
+                    scene_pack.read_text(encoding="utf-8")).get("doctrine_hash", "")
+            except Exception:
+                pass
         for ln in lines:
             src = ln.get("text_source", "")
             tgt = ln.get("base_translation", ln.get("t", ""))
@@ -95,6 +104,7 @@ def build_tm(art: Path) -> list[dict]:
                 "source": src,
                 "target": tgt,
                 "src_key": _key(src),
+                "doctrine_version": doctrine_version,
             }
             # dedup por (scene, offset); ultimo plano vence (planos de capitulo > raiz)
             entries[f"{scene}|{off}"] = ent
@@ -295,7 +305,43 @@ def _read(p: Path) -> str:
     return p.read_text(encoding="utf-8") if p.is_file() else ""
 
 
+def _check_sync(root: Path) -> None:
+    """V4: lista cenas com doctrine_version diferente da doutrina atual."""
+    import importlib
+    rt_dir = str(Path(__file__).resolve().parent)
+    if rt_dir not in sys.path:
+        sys.path.insert(0, rt_dir)
+    cp = importlib.import_module("context_pack")
+    current = cp._doctrine_hash(root)
+    tm_path = paths.translation_memory(root)
+    if not tm_path.is_file():
+        print("TM vazia — nenhuma cena traduzida.")
+        return
+    entries = [json.loads(ln) for ln in tm_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    stale = {e["scene"] for e in entries
+             if e.get("doctrine_version") and e["doctrine_version"] != current}
+    no_ver = {e["scene"] for e in entries if not e.get("doctrine_version")}
+    print(f"Doutrina atual: {current}")
+    if stale:
+        print(f"{len(stale)} cena(s) com doutrina desatualizada:")
+        for s in sorted(stale):
+            print(f"  {s}")
+    if no_ver:
+        print(f"{len(no_ver)} cena(s) sem doctrine_version (traduzidas antes do versionamento):")
+        for s in sorted(no_ver):
+            print(f"  {s}")
+    if not stale and not no_ver:
+        print("OK: todas as cenas sincronizadas com a doutrina atual.")
+
+
 def main():
+    if "--check-sync" in sys.argv:
+        flags = [a for a in sys.argv[1:] if not a.startswith("--")]
+        root = Path(flags[0]) if flags else Path(".")
+        if not (root / "project.json").is_file():
+            sys.exit(f"ERRO: project.json nao encontrado em {root}")
+        _check_sync(root)
+        sys.exit(0)
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     root = Path(args[0]) if args else Path(".")
     if not (root / "project.json").is_file():

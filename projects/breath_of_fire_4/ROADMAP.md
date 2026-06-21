@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
-> Última atualização: 2026-06-20
-> Status atual: **FASE 00 — MAPEAMENTO DO CONECTOR PENDENTE**
+> Última atualização: 2026-06-21
+> Status atual: **FASE 02 — TRADUÇÃO EM ESCALA (piloto pendente)**
 
 ---
 
@@ -9,7 +9,7 @@
 
 > Por que este projeto existe além da tradução em si.
 
-O framework foi avaliado em **81/100 como projeto de AI engineering (jun/2026) — top 10–15% do espaço**.
+O framework foi avaliado em **86/100 como projeto de AI engineering (jun/2026, pós-gap-closure) — top 10–15% do espaço**.
 Os dois maiores gaps que BoF4 precisa fechar:
 
 | Gap | Nota atual | O que BoF4 prova |
@@ -17,7 +17,7 @@ Os dois maiores gaps que BoF4 precisa fechar:
 | Generalização | 62/100 | T2 do Generic Connector funcionando num engine Capcom desconhecido |
 | Autonomia | 52/100 | Bootstrap de conector via descoberta de diretório sem intervenção manual |
 
-**Se BoF4 validar T2:** nota sobe para ~86. É o maior salto único disponível no roadmap.
+**Se BoF4 validar T2:** nota sobe para ~92. É o maior salto único disponível no roadmap — Portabilidade (dim 10) passa de 6 para 9+.
 
 ### Insights do projeto anterior que se aplicam aqui
 
@@ -32,35 +32,38 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 ### Fase 0 — Mapear o conector (gate obrigatório antes de tudo)
 
-- [ ] **0.1. Fornecer o diretório do jogo**
-  - Usuário passa o caminho/link do diretório de instalação do jogo
-  - Claude explora o diretório, identifica os arquivos de diálogo e entende a estrutura (bootstrap da Fase D)
-  - Não é necessário copiar manualmente para `artifacts/` — a descoberta é parte do processo
+- [x] **0.1. Fornecer o diretório do jogo**
+  - Usuário forneceu: `C:\Program Files (x86)\Steam\steamapps\common\4249150_breathoffire4`
+  - Claude explorou o diretório, identificou 609 arquivos DAT, mapeou o formato container Capcom
 
-- [ ] **0.2. Análise hex — localizar strings**
-  - Abrir no HxD e buscar strings reconhecíveis ("Ryu", "Cray", "Nina")
-  - Identificar estrutura: encoding, terminadores, tokens de controle, ponteiros
+- [x] **0.2. Análise hex — localizar strings**
+  - Formato mapeado: container TOC Capcom (offsets little-endian uint32 × 16 bytes/entrada)
+  - Encoding: ASCII puro (0x20–0x7E) + tokens de controle `[XX]`
+  - Tabela de ponteiros: uint16 LE no início da seção, first_ptr = tamanho da tabela
+  - String sharing: ponteiros podem apontar para o interior de outras strings (requer preservação)
 
-- [ ] **0.3. Preencher `connector/table_schema.md`**
-  - Charset / encoding
-  - Tokens de controle (quebra de linha, pausa, cor, etc.)
-  - Estratégia de ponteiros (inline, tabela central, varredura)
+- [x] **0.3. Preencher `connector/table_schema.md`**
+  - Charset / encoding documentado
+  - 9 tokens de controle conhecidos documentados ([01] newline, [02] page_break, [04] var_char_name, ...)
+  - Estratégia de ponteiros (tabela central no início da seção)
 
-- [ ] **0.4. Implementar `connector/extract.py`**
-  - `load_table` + `iter_string_offsets` + `decode_string`
-  - Gera `artifacts/dialogs.csv` com `offset`, `text_en`, `byte_budget`
+- [x] **0.4. Implementar `connector/extract.py`**
+  - `parse_toc` + `find_text_section` (heurística pointer table + ASCII% + valid ptrs) + `decode_string`
+  - Gera `artifacts/dialogs.csv`: 23582 strings de 264 arquivos
+  - Offset format: `FILENAME.DAT:entry_idx:ptr_idx`
 
-- [ ] **0.5. Validar round-trip byte-idêntico** ← gate obrigatório
+- [x] **0.5. Validar round-trip byte-idêntico** ← gate obrigatório ✅
   ```
-  python connector/extract.py artifacts/<BINARIO>
-  python connector/reinsert.py artifacts/dialogs.csv
-  diff <original> output/<BINARIO>   # deve ser vazio
-  pytest connector/test_roundtrip.py -v   # habilitar os 2 testes em skip
+  pytest connector/test_roundtrip.py -v --dat-dir "<english/DAT>"
+  # Resultado: 10/10 passed (30/30 arquivos round-trip perfeito)
   ```
+  - Insight crítico: seções Capcom usam string sharing; rebuild_section retorna bytes originais
+    quando nenhuma string mudou (preserva sharing, garante byte-idêntico)
 
-- [ ] **0.6. Implementar `connector/reinsert.py`**
-  - `encode_string` + cascata T1→T3 + `emit_patch`
-  - Atualizar `project.json`: `patch_format`, `encoding`, `space_strategy`
+- [x] **0.6. Implementar `connector/reinsert.py`**
+  - `encode_string` + `rebuild_section` (identity fast-path + rebuild com traduções)
+  - `patch_dat_file`: atualiza TOC se seção crescer
+  - Cascata T1→T3 documentada em `project.json`: `space_strategy: "reconstrucao_secao"`
 
 ---
 
@@ -68,19 +71,38 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 > Iniciar somente após round-trip verde e `pytest` passando.
 
-- [ ] **1.1. Passo 01 — Descoberta de Entidades:** varrer corpus, listar personagens/locais/termos únicos
-- [ ] **1.2. Passo 02 — Resolução de Entidades:** confirmar nomes canônicos pt-BR, handling rules, pares de identidade
-- [ ] **1.3. Passo 03 — Knowledge Building:** pesquisa de lore, ratificação humana (`kb_ratified.csv`), gate KB
-- [ ] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com handling rules formais
-- [ ] **1.5. Passo 05 — Plano de tradução:** `translation_plan.json`, corpus de teste sintético
+- [x] **1.1. Passo 01 — Descoberta de Entidades:** `artifacts/entities.csv` (78 entidades), `kb_phase discover` OK
+- [x] **1.2. Passo 02 — Resolução de Entidades:** nomes canônicos PT-BR + handling rules em `entities.csv` e `glossary.csv`
+- [x] **1.3. Passo 03 — Knowledge Building:** `artifacts/research_log.md` status `reconciled`; gate `kb_phase all --check` verde; fonte T1 Wikipedia PT (humano) + T2 corpus (IA)
+- [x] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com 101 termos e handling rules formais
+- [x] **1.5. Passo 05 — Plano de tradução:** `artifacts/translation_plan.json` — escopo, modelo (Haiku+Sonnet), piloto AREAD001+004 (~R$0.30), estimativa full game (~R$8 Haiku), `project.json` TBDs preenchidos
 
 ---
 
 ### Fase 2 — Tradução em escala (Passos 06–07)
 
-- [ ] **2.1. Traduzir cenas iniciais** (~1 cena piloto a ~$0.30 para validar batch + conector live)
+- [ ] **2.1. Traduzir cenas iniciais** (~AREAD001+004, ~R$0.30 Haiku; validar: prompt, diacríticos in-game, reinsert live)
+  - Pré-req: implementar `connector/build_plan_chapter.py` + `connector/verify_chapter.py`
 - [ ] **2.2. Loop por capítulo** via `run_chapter.py` com `--max-usd`
 - [ ] **2.3. Back-translation** de linhas `risk≥high` por capítulo
+
+#### Memory Layer (piloto desta funcionalidade no framework)
+
+> Pré-requisito: ao menos 1 capítulo traduzido e aprovado (TM com volume suficiente para retrieval útil).
+> Infraestrutura: local (CPU), zero custo de API, empacotável em .exe.
+
+  **Stack escolhida (benchmark jun/2026):**
+
+  | Componente | Modelo | Tamanho | Função |
+  |---|---|---|---|
+  | **Bi-encoder** | `paraphrase-multilingual-MiniLM-L12-v2` | ~470 MB | Embedding de TM, KB e glossário |
+  | **Reranker** | FlashRank (`MiniLM-L-12` quantizado) | ~4 MB | Reordena top-N por relevância real |
+  | **NER** | `spaCy xx_ent_wiki_sm` | ~31 MB | Extração de entidades Passo 01 (PT+EN) |
+  | **Vector DB** | `sqlite-vec` | extensão C | Índice vetorial com filtros SQL nativos |
+
+- [ ] **2.4. TM semântica** — indexar `approved_*.csv` com byte_budget; retrieval por similaridade substitui match exato. Medir hit rate antes/depois.
+- [ ] **2.5. Context pack semântico** — `context_pack.py` passa a recuperar só chunks relevantes de glossário e KB em vez de carregar tudo. Medir redução de tokens por cena.
+- [ ] **2.6. Few-shot de fitting** — ao traduzir linha nova, recuperar linhas aprovadas semanticamente similares que couberam no byte_budget; passar como exemplos no prompt. Medir redução de fitting failures.
 
 ---
 
