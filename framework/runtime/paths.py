@@ -107,3 +107,10 @@ def back_prompt(root, scene, scene_id) -> Path:
 
 def qa_effectiveness(root) -> Path:
     return artifacts(root) / "qa_effectiveness.jsonl"
+
+
+# ---- saída do conector (NUNCA escrever na instalação do jogo) ----
+# Todo reinsert DEVE usar este caminho. Regra do framework: não interferimos
+# nos arquivos de terceiros — saída vai sempre para output/ dentro do projeto.
+def output_dir(root) -> Path:
+    return Path(root) / "output"
