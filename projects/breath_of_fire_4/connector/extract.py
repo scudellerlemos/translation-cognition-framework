@@ -27,6 +27,37 @@ from pathlib import Path
 _ASCII_RANGE = range(0x20, 0x7F)
 _CTRL_RE = re.compile(r'\[([0-9A-Fa-f]{2})\]')
 
+# ---------------------------------------------------------------------------
+# Escopo de extração — Fase 0: apenas diálogo de história
+#
+# Regra do framework (games.md): o Passo 00 extrai SOMENTE diálogo de
+# personagem + falante. UI, itens, batalha = fase futura separada.
+#
+# Famílias incluídas:
+#   AREAD = scripts de diálogo principal (field events)
+#   AREAS = scripts de área (cutscenes, NPCs com fala)
+#
+# Filtros de conteúdo:
+#   • [05][03]...[06] = formato de descrição de item → excluir
+#   • strings < 8 bytes = labels de UI/menu → excluir
+# ---------------------------------------------------------------------------
+_DIALOGUE_FAMILIES = {'AREAD', 'AREAS'}
+_FAMILY_RE = re.compile(r'^([A-Z]+?)\d', re.IGNORECASE)
+_ITEM_DESC_RE = re.compile(r'\[05\]\[03\]')
+
+# Speaker: [14][XX] no início da string identifica o falante por código de cor
+_SPEAKER_RE = re.compile(r'^\[14\]\[([0-9A-Fa-f]{2})\]')
+
+
+def _file_family(fname: str) -> str:
+    m = _FAMILY_RE.match(fname.upper())
+    return m.group(1) if m else ''
+
+
+def _extract_speaker(text: str) -> str:
+    m = _SPEAKER_RE.match(text)
+    return f'[14][{m.group(1).upper()}]' if m else ''
+
 
 # ---------------------------------------------------------------------------
 # 1. ENCODE / DECODE  (round-trip perfeito)
@@ -210,12 +241,12 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     rows: list[dict] = []
     files_processed = 0
     files_with_text = 0
+    skipped_family = 0
+    skipped_item_desc = 0
+    skipped_short = 0
 
-    # Ordem narrativa: agrupa por número de área (001, 002…) e dentro de cada área
-    # prioriza família de diálogo principal (AREAD > AREAS > AREAE > AREAM > outros).
-    # Isso garante que dialogs.csv preserve a sequência da história — o pipeline
-    # processa lotes na ordem das linhas do CSV, não pelo valor do id_column.
-    _FAMILY_PRI = {'AREAD': 0, 'AREAS': 1, 'AREAE': 2, 'AREAM': 3}
+    # Ordem narrativa: AREAD antes de AREAS dentro do mesmo número de área.
+    _FAMILY_PRI = {'AREAD': 0, 'AREAS': 1}
 
     def _narrative_key(p: Path) -> tuple:
         import re as _re
@@ -226,6 +257,12 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
     for dat_path in sorted(game_dat_dir.glob('*.DAT'), key=_narrative_key):
         fname = dat_path.name
+
+        # Filtra por família: só famílias de diálogo de história
+        if _file_family(fname) not in _DIALOGUE_FAMILIES:
+            skipped_family += 1
+            continue
+
         data = dat_path.read_bytes()
         if len(data) < 64:
             continue
@@ -247,6 +284,19 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         for ptr_idx, _ptr, raw in strings:
             if not any(b in _ASCII_RANGE for b in raw):
                 continue
+
+            # Filtro de comprimento mínimo (labels de UI/menu)
+            if len(raw) < 8:
+                skipped_short += 1
+                continue
+
+            text = decode_string(raw)
+
+            # Filtro de descrição de item: [05][03]texto[06] = item desc, não diálogo
+            if _ITEM_DESC_RE.search(text):
+                skipped_item_desc += 1
+                continue
+
             file_has_text = True
             string_id = f"{fname}:{entry_idx}:{ptr_idx}"
             rows.append({
@@ -254,8 +304,9 @@ def main(project_json: Path, source_override: str | None = None) -> None:
                 'file': fname,
                 'entry_idx': entry_idx,
                 'ptr_idx': ptr_idx,
-                'text_en': decode_string(raw),
+                'text_en': text,
                 'byte_budget': len(raw) + 1,
+                'speaker_code': _extract_speaker(text),
             })
 
         if file_has_text:
@@ -264,7 +315,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     # Grava dialogs.csv
     out_csv = root / cfg['source']['file']
     out_csv.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ['offset', 'file', 'entry_idx', 'ptr_idx', 'text_en', 'byte_budget']
+    fieldnames = ['offset', 'file', 'entry_idx', 'ptr_idx', 'text_en', 'byte_budget', 'speaker_code']
     with out_csv.open('w', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
@@ -276,13 +327,18 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     log.write_text(
         f"# Extraction Log — Breath of Fire IV\n\n"
         f"- Diretório DAT: `{game_dat_dir}`\n"
-        f"- Arquivos com seção de texto: {files_with_text}\n"
-        f"- Total de strings extraídas: {len(rows)}\n"
+        f"- Escopo: famílias de diálogo ({', '.join(sorted(_DIALOGUE_FAMILIES))})\n"
+        f"- Arquivos com diálogo: {files_with_text}\n"
+        f"- Strings extraídas: {len(rows)}\n"
+        f"- Excluídas por família fora do escopo: {skipped_family} arquivos\n"
+        f"- Excluídas por descrição de item ([05][03]): {skipped_item_desc} strings\n"
+        f"- Excluídas por comprimento < 8 bytes: {skipped_short} strings\n"
         f"- Container: Capcom DAT (TOC + seções)\n"
-        f"- Encoding: ASCII com escapes hex `[XX]`\n",
+        f"- Encoding: ASCII com escapes hex `[XX]`\n"
+        f"- Speaker: coluna speaker_code = [14][XX] do início da string\n",
         encoding='utf-8',
     )
-    print(f"Extraídas {len(rows)} strings de {files_with_text} arquivos -> {out_csv}")
+    print(f"Extraídas {len(rows)} strings de diálogo de {files_with_text} arquivos -> {out_csv}")
 
 
 if __name__ == '__main__':
