@@ -15,7 +15,7 @@
 | Conector hex_binary | 🟢 formato mapeado; **ponteiros FILE-RELATIVOS**; **relocação INTRA-ARQUIVO + rebuild do Pack**; **transliteração NFD**; **pytest** (16 testes) |
 
 **Pendente (pós-produção):**
-- [ ] **Fase 3 — Fechamento:** passe global de consistência de glossário → `reinsert` do jogo inteiro + `pytest` + patch IPS final + gate visual in-game.
+- ~~**Fase 3 — Fechamento:** passe global de consistência de glossário → `reinsert` do jogo inteiro + `pytest` + patch IPS final + gate visual in-game.~~ **ENCERRADO (2026-06-21) — não retornar.** Projeto cumpriu seu papel como piloto do framework; foco migrou para BoF4.
 
 ---
 

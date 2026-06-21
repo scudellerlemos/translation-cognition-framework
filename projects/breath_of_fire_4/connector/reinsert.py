@@ -17,6 +17,7 @@ Regras:
 
 import csv
 import json
+import os
 import struct
 import sys
 from collections import defaultdict
@@ -170,16 +171,21 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     cfg = json.loads(project_json.read_text(encoding='utf-8'))
     root = project_json.parent
 
-    # Resolve diretório DAT do jogo
+    # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
     if source_override:
         game_dat_dir = Path(source_override)
+    elif os.environ.get("BOF4_DAT_DIR"):
+        game_dat_dir = Path(os.environ["BOF4_DAT_DIR"])
     else:
-        game_dat_dir = Path(cfg['connector'].get('game_dat_dir', ''))
+        game_dat_dir = Path("")
 
     if not game_dat_dir.is_dir():
         raise SystemExit(
-            f"Diretório DAT não encontrado: {game_dat_dir}\n"
-            "Passe como CLI: python reinsert.py project.json <DAT_DIR>"
+            "Diretório DAT não configurado.\n"
+            "Opções:\n"
+            "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
+            "  2. CLI: python reinsert.py project.json <DAT_DIR>\n"
+            "Ver projects/breath_of_fire_4/.env.example"
         )
 
     # Carrega dialogs.csv para saber entry_idx por string

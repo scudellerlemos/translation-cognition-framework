@@ -259,8 +259,7 @@ def project_constraints(cfg: dict) -> dict:
 
 def build_pack(root: Path, scene: str) -> dict:
     root = Path(root)
-    art = paths.artifacts(root)
-    scene_dir = art / scene
+    scene_dir = paths.scene_dir(root, scene)
     if not (scene_dir / "dialogs.csv").is_file():
         raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
     for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
@@ -273,7 +272,7 @@ def build_pack(root: Path, scene: str) -> dict:
     rows = load_dialogs(scene_dir / "dialogs.csv")
     blob_low = "\n".join(r["source"] for r in rows).lower()
 
-    glossary = load_glossary(art / "glossary.csv")
+    glossary = load_glossary(paths.glossary(root))
     voice_cards = json.loads(_read(state / "voice_cards.json") or "{}")
     decisions = json.loads(_read(state / "decision_index.json") or "[]")
     tm = load_tm(paths.translation_memory(root))
@@ -285,7 +284,7 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
 
-    ledger_path = art / "spoiler_ledger.json"
+    ledger_path = paths.spoiler_ledger(root)
     if not ledger_path.is_file():
         import warnings
         warnings.warn(
@@ -336,6 +335,11 @@ def render_prompt(pack: dict, carta: str) -> str:
     L.append(f"- Token de quebra de linha: `{pc['newline_token']}` (literal; preservar EXATO, mesma posicao).")
     L.append(f"- Tokens de formatacao a preservar verbatim: {pc['formatting_tokens']} "
              f"+ padroes {pc['formatting_token_patterns']}.")
+    L.append("- CRITICO — token `[02]` e QUEBRA DE PAGINA (page break do jogo): "
+             "quando o source tem `[02]`, o campo `t` DEVE ter o mesmo numero de `[02]` "
+             "na posicao equivalente. Omitir `[02]` causa falha de validacao e texto sem paginacao. "
+             "Nao confunda com `[01]` (quebra de linha dentro da mesma pagina). "
+             "Regra: contagem de `[02]` em `t` == contagem de `[02]` no texto source.")
     if pc.get("system_line_convention"):
         L.append(f"- Convencao de linha de sistema: {pc['system_line_convention']}.")
     lc = pc.get("length_constraints", {})
@@ -404,9 +408,15 @@ def render_prompt(pack: dict, carta: str) -> str:
     L.append("")
     L.append("## 8. Formato de saida EXIGIDO")
     L.append(f"Escreva `translations_{pack['scene_id']}.json` com a forma:")
+    _known_voices = sorted(pack.get("voice_cards", {}).keys())
+    _voice_hint = (", ".join(f"'{v}'" for v in _known_voices) + " ") if _known_voices else ""
+    L.append(f"**Campo `speaker`:** use o nome EN exato da secao 4 para personagens conhecidos "
+             f"({_voice_hint}); `'npc'` para NPCs sem perfil de voz; `'system'` para "
+             f"narrador/sistema/tutorial; `'unknown'` se nao identificavel. "
+             f"NAO use descricoes em portugues (ex.: NAO escreva 'Personagem' ou 'Vilao/NPC').")
     L.append("```json")
     L.append('{ "lines": {')
-    L.append('  "<offset>": {"speaker": "...", "tone_register": "...", "intent": "...",')
+    L.append('  "<offset>": {"speaker": "<nome EN da sec4 | npc | system | unknown>", "tone_register": "...", "intent": "...",')
     L.append('    "risk_level": "low|medium|high|critical", "risk_notes": "(se >= medium)",')
     L.append('    "t": "<traducao pt-BR canonica, com acentos, com o token de quebra exato>"},')
     L.append("  ... 1 entrada por offset acima ...")
@@ -440,7 +450,7 @@ def main():
           f"| decisoes: {len(pack['decisions'])} | TM exato: {len(pack['tm_exact'])} "
           f"| TM voz: {len(pack['tm_voice'])}")
     print(f"  doctrine_hash: {pack['doctrine_hash']} | skills_revision: {pack['skills_revision']}")
-    print(f"  -> artifacts/{scene}/scene_prompt.md + pack.json")
+    print(f"  -> artifacts/scenes/{scene}/scene_prompt.md + pack.json")
 
 
 if __name__ == "__main__":

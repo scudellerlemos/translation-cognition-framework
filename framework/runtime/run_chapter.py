@@ -9,7 +9,7 @@ entao o footprint de sessao e constante, independente do nº de cenas/capitulos.
 Propriedades:
   - RESUMIVEL: pula cenas ja `verified` em run_state.json (a menos de --redo).
   - PARA NA 1ª FALHA: build_plan/verify/api falhou -> interrompe e reporta (nao mascara erro).
-  - Determinista: descobre as cenas por glob de artifacts/ch_<cap>_*/dialogs.csv (ordem por scene_id).
+  - Determinista: descobre as cenas por glob de artifacts/scenes/ch_<cap>_*/dialogs.csv (ordem por scene_id).
   - Reusa run_scene + state_index; nada de logica de IA aqui.
 
 Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--require-back] [--redo] [--no-verify]
@@ -96,8 +96,21 @@ def _validate_chapter_arg(root: Path, chap: str) -> None:
 
 def _scenes_of(root: Path, chap: str) -> list[str]:
     art = paths.artifacts(root)
-    names = [p.parent.name for p in art.glob(f"ch_{chap}_*/dialogs.csv")]
+    names = [p.parent.name for p in (art / "scenes").glob(f"ch_{chap}_*/dialogs.csv")]
     return sorted(set(names), key=context_pack.scene_id_of)
+
+
+def _scenes_of_glob(root: Path, globs: str) -> list[str]:
+    """Discovery via glob(s) customizados (ex: 'AREAD*,AREAS*') para projetos com estrutura flat.
+    Aceita multiplos padroes separados por virgula. Alternativa a ch_<chap>_* do Utawarerumono."""
+    art = paths.artifacts(root)
+    names: set[str] = set()
+    for pat in globs.split(","):
+        pat = pat.strip()
+        if pat:
+            for p in (art / "scenes").glob(f"{pat}/dialogs.csv"):
+                names.add(p.parent.name)
+    return sorted(names)
 
 
 def _verified(root: Path, scene: str) -> bool:
@@ -160,12 +173,18 @@ def _chapter_cost(root, chap) -> float:
 
 
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False, batch=False, max_usd=None):
+                skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None):
     root = Path(root)
-    _validate_chapter_arg(root, chap)
-    scenes = _scenes_of(root, chap)
+    if scenes_glob:
+        scenes = _scenes_of_glob(root, scenes_glob)
+        cost_chap = None   # sem filtro ch_* — reporta ledger completo do projeto
+    else:
+        _validate_chapter_arg(root, chap)
+        scenes = _scenes_of(root, chap)
+        cost_chap = chap
     if not scenes:
-        print(f"nenhuma cena encontrada p/ cap {chap} (esperado artifacts/ch_{chap}_*/dialogs.csv)")
+        hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
+        print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
         return {"chapter": chap, "scenes": [], "status": "empty"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
@@ -211,12 +230,12 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
         # salvas; rode de novo p/ continuar de onde parou.
         if max_usd is not None:
-            spent = _chapter_cost(root, chap)
+            spent = _chapter_cost(root, cost_chap)
             if spent >= max_usd:
-                print(f"\nABORTADO por teto de gasto: cap.{chap} ja custou ${spent:.2f} >= "
+                print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} >= "
                       f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
                       f"salvas — rode de novo p/ continuar).")
-                _print_cost(root, chap)
+                _print_cost(root, cost_chap)
                 return {"chapter": chap, "scenes": results, "status": "stopped_budget",
                         "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
@@ -230,21 +249,21 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
-            _print_cost(root, chap)
+            _print_cost(root, cost_chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) das cenas verificadas, se modo batch.
     if batch and backend == "api":
-        if max_usd is not None and _chapter_cost(root, chap) >= max_usd:
+        if max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
-                  f"(${_chapter_cost(root, chap):.2f} >= ${max_usd:.2f}).")
+                  f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
         else:
             _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
-    print(f"\nOK capitulo {chap}: {done}/{len(scenes)} cena(s) prontas."
+    print(f"\nOK {chap}: {done}/{len(scenes)} cena(s) prontas."
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
              if budget_excluded else ""))
-    _print_cost(root, chap)
-    _export_qa(root, chap)        # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
+    _print_cost(root, cost_chap)
+    _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
@@ -258,6 +277,7 @@ def _export_qa(root: Path, chap: str):
         rows = quality_review.export(root, chap)
         outbox = paths.qa_outbox(root)
         outbox.mkdir(parents=True, exist_ok=True)
+        paths.qa_inbox(root).mkdir(parents=True, exist_ok=True)
         out = outbox / f"review_cap_{chap}.xlsx"
         quality_review.write_xlsx(rows, str(out))
         marked = sum(1 for r in rows if r.get("revisar"))
@@ -295,10 +315,13 @@ def main():
     ap.add_argument("--max-usd", type=float, default=None,
                     help="teto de gasto: aborta antes da proxima cena se o custo do capitulo passar deste "
                          "valor (cenas verified seguem salvas; rode de novo p/ continuar)")
+    ap.add_argument("--scenes-glob", default=None,
+                    help="glob(s) customizados para projetos com estrutura flat (ex: 'AREAD*,AREAS*'). "
+                         "Substitui o padrao ch_<chapter>_*. <chapter> vira so um rotulo de display.")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
                     redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch,
-                    max_usd=a.max_usd)
+                    max_usd=a.max_usd, scenes_glob=a.scenes_glob)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

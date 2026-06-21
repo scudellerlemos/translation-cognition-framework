@@ -28,7 +28,9 @@ if str(_HERE) not in sys.path:
 import context_pack  # noqa: E402
 import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
-_KB_ARTIFACTS = ("glossary.csv", "universe_knowledge_base.md")
+# Artefatos de KB: hard = NUNCA bypassavel (nem com --skip-kb-gate); skip = bypassavel
+_KB_HARD = ("universe_knowledge_base.md",)
+_KB_ARTIFACTS = ("glossary.csv",)
 
 
 def _pos(scene_id: str):
@@ -36,12 +38,48 @@ def _pos(scene_id: str):
     return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
 
 
+def _parse_pending_decisions(txt: str) -> list[str]:
+    """Extrai itens numerados da secao 'Decisoes pendentes' do research_log.md."""
+    # Localiza a secao pelo heading (tolerante a acentos e parenteticos)
+    m = re.search(r"^#{1,4}\s+Decis[oõ]es? pendentes[^\n]*$", txt, re.I | re.M)
+    if not m:
+        return []
+    block = txt[m.end():]
+    # Corta no proximo heading de mesmo nivel ou superior
+    next_head = re.search(r"^#{1,4}\s", block, re.M)
+    if next_head:
+        block = block[: next_head.start()]
+    items = []
+    for line in block.splitlines():
+        # Linha numerada: "1. **texto**" ou "1. texto"
+        lm = re.match(r"^\s*\d+\.\s+(.+)", line)
+        if lm:
+            # Remove marcadores de negrito e limpa espacos
+            item = re.sub(r"\*+", "", lm.group(1)).strip()
+            items.append(item)
+    return items
+
+
 def check(root, scene) -> dict:
-    """Retorna {problems: [...], warnings: [...]}. problems != [] => bloquear traducao."""
+    """Retorna {hard_problems: [...], problems: [...], warnings: [...], pending_decisions: [...]}.
+    hard_problems != []    => bloquear sempre (nao bypassavel).
+    problems != []         => bloquear salvo --skip-kb-gate.
+    pending_decisions != [] => sempre exibido ao usuario (nao bloqueia, mas obrigatorio informar).
+    """
     root = Path(root)
     art = paths.artifacts(root)
-    problems, warnings = [], []
+    hard_problems, problems, warnings = [], [], []
 
+    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate
+    for name in _KB_HARD:
+        f = art / name
+        if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+            hard_problems.append(
+                f"{name} ausente/vazio — sintetize a KB (skill 03/04) antes de traduzir. "
+                f"Este gate nao pode ser pulado."
+            )
+
+    pending_decisions: list[str] = []
     rl = art / "research_log.md"
     if not rl.is_file():
         problems.append("research_log.md ausente — rode a Fase 0 (skill 03, pesquisa IA+humano).")
@@ -53,14 +91,41 @@ def check(root, scene) -> dict:
         elif re.search(r"human_input\s*:\s*pending", txt, re.I):
             warnings.append("research_log.md: status=reconciled mas human_input=pending — "
                             "atualize para 'confirmed' ou 'declined' (proveniência incompleta).")
+        # Decisoes pendentes: sempre extraidas e reportadas ao usuario (nao bloqueiam)
+        pending_decisions = _parse_pending_decisions(txt)
 
     for name in _KB_ARTIFACTS:
         f = art / name
         if not f.is_file() or not f.read_text(encoding="utf-8").strip():
             problems.append(f"{name} ausente/vazio — KB incompleta (skills 03/04).")
     vc = paths.voice_cards(root)
-    if not vc.is_file() or not vc.read_text(encoding="utf-8").strip():
+    if not vc.is_file():
         problems.append("voice_cards.json ausente — rode state_index (deriva do tone_analysis.md).")
+    else:
+        try:
+            vc_data = json.loads(vc.read_text(encoding="utf-8"))
+            if not vc_data:
+                problems.append(
+                    "voice_cards.json vazio ({}) — tone_analysis.md precisa de perfis de personagem "
+                    "no formato '### Nome — `voice_criticality: X`'. Rode state_index apos criar."
+                )
+        except (json.JSONDecodeError, OSError):
+            problems.append("voice_cards.json invalido — rode state_index apos corrigir tone_analysis.md.")
+
+    # Glossario: updated_date e gate obrigatorio (nao so aviso de state_index)
+    gp = paths.glossary(root)
+    if gp.is_file():
+        import csv as _csv
+        try:
+            with gp.open(encoding="utf-8-sig", newline="") as fh:
+                hdr = next(_csv.reader(fh), [])
+            if "updated_date" not in [h.strip() for h in hdr]:
+                problems.append(
+                    "glossary.csv sem coluna 'updated_date' — adicione a coluna com a data da "
+                    "ultima revisao de cada termo antes de traduzir."
+                )
+        except Exception:
+            pass
 
     # fronteira: declarada em project.json (machine-readable) tem prioridade; senao, so reporta a do log
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
@@ -99,7 +164,12 @@ def check(root, scene) -> dict:
         except Exception:
             pass
 
-    return {"problems": problems, "warnings": warnings}
+    return {
+        "hard_problems": hard_problems,
+        "problems": problems,
+        "warnings": warnings,
+        "pending_decisions": pending_decisions,
+    }
 
 
 def main():
@@ -111,11 +181,18 @@ def main():
     r = check(a.project, a.scene)
     for w in r["warnings"]:
         print(f"[warn] {w}")
+    for p in r.get("hard_problems", []):
+        print(f"[HARD-BLOCK] {p}")
     for p in r["problems"]:
         print(f"[BLOCK] {p}")
-    print("OK: cobertura de KB suficiente." if not r["problems"] else
-          f"\nBLOQUEADO: {len(r['problems'])} problema(s) de cobertura.")
-    sys.exit(1 if r["problems"] else 0)
+    if r.get("pending_decisions"):
+        print(f"\n[DECISOES PENDENTES — {len(r['pending_decisions'])} item(ns) aguardam revisao humana]")
+        for i, d in enumerate(r["pending_decisions"], 1):
+            print(f"  {i}. {d}")
+    all_problems = r.get("hard_problems", []) + r["problems"]
+    print("\nOK: cobertura de KB suficiente." if not all_problems else
+          f"\nBLOQUEADO: {len(all_problems)} problema(s) de cobertura.")
+    sys.exit(1 if all_problems else 0)
 
 
 if __name__ == "__main__":
