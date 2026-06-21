@@ -30,6 +30,7 @@ import kb_gate               # noqa: E402
 import model                 # noqa: E402
 import back_translate        # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
 import cost_report           # noqa: E402
+import paths                 # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -83,7 +84,7 @@ def test_voice_cards_present(built):
 
 def test_context_pack_deterministic(built):
     context_pack.write_pack(PROJECT, SCENE)
-    p = PROJECT / "artifacts" / SCENE / "pack.json"
+    p = PROJECT / "artifacts" / "scenes" / SCENE / "pack.json"
     first = p.read_bytes()
     context_pack.write_pack(PROJECT, SCENE)
     assert p.read_bytes() == first, "pack.json mudou entre execucoes (nao determinista)"
@@ -100,13 +101,13 @@ def test_context_pack_bounded(built):
                            .read_text(encoding="utf-8"))
     assert set(pack["voice_cards"]) <= set(all_cards)
     # cobre exatamente as linhas da cena
-    dialogs = context_pack.load_dialogs(PROJECT / "artifacts" / SCENE / "dialogs.csv")
+    dialogs = context_pack.load_dialogs(PROJECT / "artifacts" / "scenes" / SCENE / "dialogs.csv")
     assert pack["n_lines"] == len(dialogs) == len(pack["lines"])
 
 
 def test_scene_prompt_self_contained(built):
     context_pack.write_pack(PROJECT, SCENE)
-    txt = (PROJECT / "artifacts" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
+    txt = (PROJECT / "artifacts" / "scenes" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
     # contem a doutrina (Carta), as linhas e o formato de saida exigido
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
@@ -179,7 +180,8 @@ def _kb_project(tmp_path, *, reconciled=True, frontier=None, with_kb=True):
     (art / "research_log.md").write_text(
         f"# Research\n{status}\n**Fronteira de spoiler:** Cap. 11\n", encoding="utf-8")
     if with_kb:
-        (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+        (art / "glossary.csv").write_text(
+            "term,target_translation,updated_date\nHaku,Haku,2026-01-01\n", encoding="utf-8")
         (art / "universe_knowledge_base.md").write_text("# KB\n## Haku\n", encoding="utf-8")
         (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
     cfg = {"source": {"file": "x"}}
@@ -225,7 +227,8 @@ def test_kb_gate_warns_human_input_pending_when_reconciled(tmp_path):
     (art / "state").mkdir(parents=True)
     (art / "research_log.md").write_text(
         "# Research\n**Status:** reconciled\n\nhuman_input: pending\n", encoding="utf-8")
-    (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+    (art / "glossary.csv").write_text(
+        "term,target_translation,updated_date\nHaku,Haku,2026-01-01\n", encoding="utf-8")
     (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
     (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
     (tmp_path / "project.json").write_text(json.dumps({"kb_frontier": "12_17"}), encoding="utf-8")
@@ -240,7 +243,8 @@ def test_kb_gate_no_warning_human_input_confirmed(tmp_path):
     (art / "state").mkdir(parents=True)
     (art / "research_log.md").write_text(
         "# Research\n**Status:** reconciled\n\nhuman_input: confirmed\n", encoding="utf-8")
-    (art / "glossary.csv").write_text("term,target_translation\nHaku,Haku\n", encoding="utf-8")
+    (art / "glossary.csv").write_text(
+        "term,target_translation,updated_date\nHaku,Haku,2026-01-01\n", encoding="utf-8")
     (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
     (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
     (tmp_path / "project.json").write_text(json.dumps({"kb_frontier": "12_17"}), encoding="utf-8")
@@ -323,9 +327,8 @@ def test_cost_report_summary_line():
 # Sem rede — run_scene e mockado (a unica parte de IA fica isolada em model.py).
 
 def _fake_chapter(tmp_path, scenes):
-    art = tmp_path / "artifacts"
     for s in scenes:
-        d = art / f"ch_{s}"
+        d = paths.scene_dir(tmp_path, f"ch_{s}")
         d.mkdir(parents=True, exist_ok=True)
         (d / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x1,Hi,5\n", encoding="utf-8")
     return tmp_path
@@ -346,22 +349,22 @@ def test_paths_contract():
     assert rel(paths.translation_memory(r)) == "artifacts/state/translation_memory.jsonl"
     assert rel(paths.voice_cards(r)) == "artifacts/state/voice_cards.json"
     assert rel(paths.decision_index(r)) == "artifacts/state/decision_index.json"
-    assert rel(paths.dialogs(r, "ch_16_01")) == "artifacts/ch_16_01/dialogs.csv"
-    assert rel(paths.pack(r, "ch_16_01")) == "artifacts/ch_16_01/pack.json"
-    assert rel(paths.translations(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translations_16_01.json"
-    assert rel(paths.translation_plan(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/translation_plan_16_01.json"
-    assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/back_translation_16_01.json"
-    assert rel(paths.approved(r, "ch_16_01", "16_01")) == "artifacts/ch_16_01/approved_16_01.csv"
+    assert rel(paths.dialogs(r, "ch_16_01")) == "artifacts/scenes/ch_16_01/dialogs.csv"
+    assert rel(paths.pack(r, "ch_16_01")) == "artifacts/scenes/ch_16_01/pack.json"
+    assert rel(paths.translations(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/translations_16_01.json"
+    assert rel(paths.translation_plan(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/translation_plan_16_01.json"
+    assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/back_translation_16_01.json"
+    assert rel(paths.approved(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/approved_16_01.csv"
 
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
     # nao-vazamento de spoiler: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
     import spoiler_check, paths
-    (tmp_path / "artifacts" / "ch_50_01").mkdir(parents=True)
-    (tmp_path / "artifacts" / "ch_50_09").mkdir(parents=True)
+    paths.scene_dir(tmp_path, "ch_50_01").mkdir(parents=True)
+    paths.scene_dir(tmp_path, "ch_50_09").mkdir(parents=True)
     # artifact_io.scenes() exige dialogs.csv para considerar o diretorio como cena valida
-    (tmp_path / "artifacts" / "ch_50_01" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
-    (tmp_path / "artifacts" / "ch_50_09" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (paths.scene_dir(tmp_path, "ch_50_01") / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (paths.scene_dir(tmp_path, "ch_50_09") / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     led = {"entries": [{"id": "x", "entity": "Ukon", "reveal": "50_05",
                         "forbidden_pre_reveal": ["Oshtor"]}]}
     paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
@@ -665,7 +668,7 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path, fake_p
     # 3 cenas: 99_01 cobre na 1a; 99_02 DROPA 1 linha na 1a e cobre na 2a (ACUMULA -> nao cai p/
     # interativo); 99_03 nunca cobre -> coverage_failed apos as rodadas.
     for s in ("ch_99_01", "ch_99_02", "ch_99_03"):
-        (tmp_path / "artifacts" / s).mkdir(parents=True)
+        paths.scene_dir(tmp_path, s).mkdir(parents=True)
     fake_pack_ctx.update({
         "ch_99_01": {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]},
         "ch_99_02": {"scene_id": "99_02", "tm_exact": [],
@@ -682,9 +685,9 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path, fake_p
                                poll_seconds=0, max_rounds=2)
     assert st == {"ch_99_01": "written", "ch_99_02": "written", "ch_99_03": "coverage_failed"}
     # 99_02 ACUMULOU as duas linhas (re-batch so do que faltou)
-    d = json.loads((tmp_path / "artifacts" / "ch_99_02" / "translations_99_02.json").read_text("utf-8"))
+    d = json.loads((paths.scene_dir(tmp_path, "ch_99_02") / "translations_99_02.json").read_text("utf-8"))
     assert set(d["lines"]) == {"0x9", "0xa"}
-    assert not (tmp_path / "artifacts" / "ch_99_03" / "translations_99_03.json").is_file()
+    assert not (paths.scene_dir(tmp_path, "ch_99_03") / "translations_99_03.json").is_file()
     # FEEDBACK CORRETIVO: a re-rodada (rnd>0) de 99_02 leva a nota com o offset que faltou (0xa) — sem
     # isso o batch repetia o erro e cenas de narracao caiam pro interativo full-price (coverage_failed).
     fb = fake.messages.batches
@@ -713,7 +716,7 @@ def test_tier_of_routes_by_break_token():
 def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
     # cena com 1 linha single-line (-> Haiku) e 1 multi-linha (-> Sonnet): 2 requests, 2 modelos
     tok = context_pack.TOKEN
-    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_99_01")).mkdir(parents=True)
     fake_pack_ctx["ch_99_01"] = {"scene_id": "99_01", "tm_exact": [],
                                   "lines": [{"offset": "0x1", "source": "simples"},
                                             {"offset": "0x2", "source": f"tem{tok}quebra"}]}
@@ -735,7 +738,7 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
     model._write_translations(tmp_path, "ch_99_01", {"lines": {}})   # limpa p/ re-rodar
-    (tmp_path / "artifacts" / "ch_99_01" / "translations_99_01.json").unlink()
+    (paths.scene_dir(tmp_path, "ch_99_01") / "translations_99_01.json").unlink()
     model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1, tiered=False)
     assert model.MODEL_TRANSLATE_CHEAP not in fb2.models
 
@@ -770,7 +773,7 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path, fake_pack_ctx):
     # longa (~100 linhas/resposta, deterministico -> 120/221 sempre faltando, re-mandar nao adianta).
     # Fix: CHUNKING — quebrar a cena em requests <= _BATCH_CHUNK; cada um volta completo -> converge.
     tok = context_pack.TOKEN
-    (tmp_path / "artifacts" / "ch_96_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_96_01")).mkdir(parents=True)
     lines = [{"offset": f"0x{i:02x}", "source": f"L{i}{tok}x"} for i in range(20)]   # 20 multi-linha
     fake_pack_ctx["ch_96_01"] = {"scene_id": "96_01", "tm_exact": [], "lines": lines}
     # override: render_prompt precisa embutir offsets para o _FakeTruncating saber o que foi pedido
@@ -786,14 +789,14 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path, fake_pack_ctx):
     assert st["ch_96_01"] == "coverage_failed", "sem chunking, a truncação impede a cobertura no orçamento de rodadas"
 
     # COM chunking (5 linhas/chunk <= teto de truncação): cada chunk volta completo -> converge na rodada 0
-    (tmp_path / "artifacts" / "ch_96_01" / "translations_96_01.json").unlink(missing_ok=True)
+    (paths.scene_dir(tmp_path, "ch_96_01") / "translations_96_01.json").unlink(missing_ok=True)
     trunc2 = _FakeTruncating(5)
     monkeypatch.setattr(model, "_BATCH_CHUNK", 5)
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=trunc2)))
     st = model.batch_translate(tmp_path, ["ch_96_01"], poll_seconds=0, max_rounds=2)
     assert st["ch_96_01"] == "written", "com chunking (<= teto) a cena CONVERGE no batch (-50% capturado)"
-    d = json.loads((tmp_path / "artifacts" / "ch_96_01" / "translations_96_01.json").read_text("utf-8"))
+    d = json.loads((paths.scene_dir(tmp_path, "ch_96_01") / "translations_96_01.json").read_text("utf-8"))
     assert len(d["lines"]) == 20, "todas as 20 linhas cobertas via chunks"
 
 
@@ -803,7 +806,7 @@ def test_batch_retries_transient_network(monkeypatch, tmp_path, fake_pack_ctx):
     # os pontos de rede do batch. Fake levanta erro transitorio 1x em create E em results -> deve re-tentar.
     import httpx
     monkeypatch.setattr(model.time, "sleep", lambda *a, **k: None)   # nao espera o backoff no teste
-    (tmp_path / "artifacts" / "ch_98_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_98_01")).mkdir(parents=True)
     fake_pack_ctx["ch_98_01"] = {"scene_id": "98_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}
     n = {"create": 0, "results": 0}
 
@@ -853,18 +856,20 @@ def test_glossary_lint_consistency(tmp_path):
     # consistencia de glossario: termo presente no EN mas forma canonica ausente no pt-BR -> candidato.
     import glossary_lint
     art = tmp_path / "artifacts"
-    (art / "ch_50_01").mkdir(parents=True)
+    art.mkdir(parents=True, exist_ok=True)
+    sc = paths.scene_dir(tmp_path, "ch_50_01")
+    sc.mkdir(parents=True)
     (art / "glossary.csv").write_text(
-        "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n"
-        "Kuon,Personagem,Kuon,manter_original,none,,\n"
-        "Warmaster,Titulo,Mestre de Guerra,traduzir,none,,\n", encoding="utf-8")
-    (art / "ch_50_01" / "dialogs.csv").write_text(
+        "term,category,target_translation,handling_rule,spoiler_level,aliases,notes,updated_date\n"
+        "Kuon,Personagem,Kuon,manter_original,none,,,2026-01-01\n"
+        "Warmaster,Titulo,Mestre de Guerra,traduzir,none,,,2026-01-01\n", encoding="utf-8")
+    (sc / "dialogs.csv").write_text(
         "offset,text_source,byte_budget\n"
         "0x1,Kuon sorriu.,20\n"            # nome preservado -> OK
         "0x2,The Warmaster arrived.,30\n"  # traducao do glossario NAO usada -> candidato
         "0x3,Kuon left.,20\n"              # nome ausente no pt-BR -> candidato
         "0x4,Hello there.,20\n", encoding="utf-8")  # sem termo -> ignora
-    (art / "ch_50_01" / "translations_50_01.json").write_text(json.dumps({"lines": {
+    (sc / "translations_50_01.json").write_text(json.dumps({"lines": {
         "0x1": {"t": "Kuon sorriu."}, "0x2": {"t": "O comandante chegou."},
         "0x3": {"t": "Ela partiu."}, "0x4": {"t": "Ola."}}}), encoding="utf-8")
     found = glossary_lint.lint(tmp_path)
@@ -916,7 +921,7 @@ def test_qa_returned_files_resolution(tmp_path):
 def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
     # PREVISIBILIDADE (recuperacao por-linha): o retry interativo manda SO as linhas quebradas, nunca a
     # cena inteira de novo -> custo de retry ∝ linhas com defeito, nao ∝ tamanho da cena.
-    (tmp_path / "artifacts" / "ch_95_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_95_01")).mkdir(parents=True)
     pack = {"scene_id": "95_01", "tm_exact": [],
             "lines": [{"offset": "0x1", "source": "Hello"},
                       {"offset": "0x2", "source": "World"},
@@ -952,7 +957,7 @@ def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
 
 def test_batch_translate_resumes_existing(monkeypatch, tmp_path, fake_pack_ctx):
     # cena ja com translations completas em disco -> NAO re-batcha (idempotente; nao re-gasta o pago)
-    (tmp_path / "artifacts" / "ch_99_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_99_01")).mkdir(parents=True)
     fake_pack_ctx["ch_99_01"] = {"scene_id": "99_01", "tm_exact": [], "lines": [{"offset": "0x1", "source": "Hi"}]}
     model._write_translations(tmp_path, "ch_99_01", {"lines": {"0x1": {"t": "Oi"}}})   # traducao previa
 
@@ -1012,7 +1017,7 @@ def _backtext(offsets):
 
 
 def test_high_risk_lines_reads_plan(tmp_path):
-    d = tmp_path / "artifacts" / "ch_77_01"
+    d = paths.scene_dir(tmp_path, "ch_77_01")
     d.mkdir(parents=True)
     (d / "translation_plan_77_01.json").write_text(
         json.dumps(_plan([("0x1", "low"), ("0x2", "high"), ("0x3", "critical")])), encoding="utf-8")
@@ -1034,7 +1039,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
     for s, plan in (("ch_77_01", _plan([("0x1", "high"), ("0x2", "low")])),
                     ("ch_77_02", _plan([("0x9", "critical")])),
                     ("ch_77_03", _plan([("0xb", "low")]))):
-        d = tmp_path / "artifacts" / s
+        d = paths.scene_dir(tmp_path, s)
         d.mkdir(parents=True)
         (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(json.dumps(plan), encoding="utf-8")
     fb = _FakeBatches({"ch_77_01": [_backtext(["0x1"])], "ch_77_02": [_backtext(["0x9"])]})
@@ -1044,7 +1049,7 @@ def test_batch_back_translate(monkeypatch, tmp_path):
                                     sample_rate=0)   # isola o caminho high/critical (sem amostra)
     assert st == {"ch_77_01": "reviewed", "ch_77_02": "reviewed", "ch_77_03": "no_high"}
     assert fb.models == [model.MODEL_BACK, model.MODEL_BACK]   # so as 2 com high foram submetidas, Opus
-    bt = json.loads((tmp_path / "artifacts" / "ch_77_01" / "back_translation_77_01.json").read_text("utf-8"))
+    bt = json.loads((paths.scene_dir(tmp_path, "ch_77_01") / "back_translation_77_01.json").read_text("utf-8"))
     assert bt["reviewed"] == 1 and bt["entries"][0]["offset"] == "0x1"
     rows = [json.loads(l) for l in
             (tmp_path / "artifacts" / "api_ledger.jsonl").read_text("utf-8").splitlines()]
@@ -1064,10 +1069,11 @@ import kb_phase  # noqa: E402
 
 def _kb_phase_proj(tmp_path, scenes, glossary_terms=(), entities=(), *, reconciled=True, frontier="00_00"):
     art = tmp_path / "artifacts"
+    art.mkdir(parents=True, exist_ok=True)
     import csv as _csv
     import io as _io
     for scene, lines in scenes.items():
-        d = art / scene
+        d = paths.scene_dir(tmp_path, scene)
         d.mkdir(parents=True)
         buf = _io.StringIO()
         w = _csv.writer(buf)
@@ -1160,7 +1166,7 @@ def test_quality_gate_flags_revise_and_uncovered(tmp_path):
     # cap.19: 19_01 com back (0x1 pass, 0x2 revise); 19_02 com high SEM back (uncovered).
     for s, pl in (("ch_19_01", _plan([("0x1", "high"), ("0x2", "critical"), ("0x3", "low")])),
                   ("ch_19_02", _plan([("0x9", "high")]))):
-        d = tmp_path / "artifacts" / s
+        d = paths.scene_dir(tmp_path, s)
         d.mkdir(parents=True)
         (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
         (d / f"translation_plan_{context_pack.scene_id_of(s)}.json").write_text(
@@ -1168,7 +1174,7 @@ def test_quality_gate_flags_revise_and_uncovered(tmp_path):
     paths.back_translation(tmp_path, "ch_19_01", "19_01").write_text(
         _back([("0x1", "pass", ""), ("0x2", "revise", "voz divergiu")]), encoding="utf-8")
     # cap.20: back presente mas SEM o offset da linha critical -> uncovered "offset ausente"
-    d = tmp_path / "artifacts" / "ch_20_01"
+    d = paths.scene_dir(tmp_path, "ch_20_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_20_01.json").write_text(
@@ -1229,7 +1235,7 @@ def _trans(lines_map):
 
 def test_tm_correct_dryrun_apply_and_word_boundary(tmp_path):
     import paths
-    d = tmp_path / "artifacts" / "ch_30_01"
+    d = paths.scene_dir(tmp_path, "ch_30_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     # 0x1: 'Ukon' como palavra (deve casar). 0x2: 'Ukonometro' (substring -> NAO casa).
@@ -1263,7 +1269,7 @@ def test_tm_correct_dryrun_apply_and_word_boundary(tmp_path):
 
 def test_tm_correct_literal_mode(tmp_path):
     import paths
-    d = tmp_path / "artifacts" / "ch_31_01"
+    d = paths.scene_dir(tmp_path, "ch_31_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_31_01", "31_01").write_text(
@@ -1280,7 +1286,7 @@ def test_tm_correct_keeps_approved_coherent(tmp_path):
     # coerencia entre artefatos: tm_correct corrige os TRES — translations, plan E approved_<id>.csv. Esquecer o
     # approved deixava a correcao invisivel pro conector/jogo.
     import paths
-    d = tmp_path / "artifacts" / "ch_30_02"; d.mkdir(parents=True)
+    d = paths.scene_dir(tmp_path, "ch_30_02"); d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_30_02", "30_02").write_text(
         _trans({"0x1": {"t": "Ola, Ukon!"}}), encoding="utf-8")
@@ -1300,7 +1306,7 @@ def test_tm_correct_keeps_approved_coherent(tmp_path):
 def test_tm_correct_sync_gate_detects_drift(tmp_path):
     # gate de coerencia: approved divergente de translations e detectado.
     import paths
-    d = tmp_path / "artifacts" / "ch_30_03"; d.mkdir(parents=True)
+    d = paths.scene_dir(tmp_path, "ch_30_03"); d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.translations(tmp_path, "ch_30_03", "30_03").write_text(
         _trans({"0x1": {"t": "novo texto"}}), encoding="utf-8")
@@ -1313,7 +1319,7 @@ def test_tm_correct_sync_gate_detects_drift(tmp_path):
 # ----------------- piso de qualidade do tier barato (risco #1) ----------------
 
 def test_sample_low_risk_deterministic_and_excludes_high(tmp_path):
-    d = tmp_path / "artifacts" / "ch_88_01"
+    d = paths.scene_dir(tmp_path, "ch_88_01")
     d.mkdir(parents=True)
     offs = [(f"0x{i}", "low") for i in range(200)] + [("0xH", "high")]
     (d / "translation_plan_88_01.json").write_text(json.dumps(_plan(offs)), encoding="utf-8")
@@ -1352,7 +1358,7 @@ def test_label_passthrough_blocks_engine_labels_not_dialogue():
 
 def test_quality_gate_coverage_and_export(tmp_path):
     import quality_gate, paths, csv as _csv
-    d = tmp_path / "artifacts" / "ch_89_01"
+    d = paths.scene_dir(tmp_path, "ch_89_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_89_01.json").write_text(
@@ -1373,7 +1379,7 @@ def test_quality_gate_coverage_and_export(tmp_path):
 
 def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatch):
     import quality_fix, paths
-    d = tmp_path / "artifacts" / "ch_90_01"
+    d = paths.scene_dir(tmp_path, "ch_90_01")
     d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_90_01", "90_01").write_text(
         json.dumps({"lines": {"0x1": {"t": "ruim"}, "0x2": {"t": "ok"}}}), encoding="utf-8")
@@ -1415,10 +1421,10 @@ def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
     led = {"entries": [
         {"id": "g1", "entity": "Mizura", "reveal": "60_05", "triggers": ["Mizura"], "gender_quarantine": True},
         {"id": "g2", "entity": "Bezno", "reveal": "60_01", "triggers": ["Bezno"]}]}   # sem quarentena
-    (tmp_path / "artifacts" / "ch_60_02").mkdir(parents=True)
-    (tmp_path / "artifacts" / "ch_60_09").mkdir(parents=True)
-    (tmp_path / "artifacts" / "ch_60_02" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
-    (tmp_path / "artifacts" / "ch_60_09" / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (paths.scene_dir(tmp_path, "ch_60_02")).mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_60_09")).mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_60_02") / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
+    (paths.scene_dir(tmp_path, "ch_60_09") / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     paths.spoiler_ledger(tmp_path).write_text(json.dumps(led), encoding="utf-8")
     # 60_02 (pré-reveal de Mizura): linha cita Mizura + 'ela' -> flag
     paths.translations(tmp_path, "ch_60_02", "60_02").write_text(
@@ -1481,7 +1487,7 @@ import quality_review  # noqa: E402
 
 def test_quality_review_export_marks_lines(tmp_path):
     import paths
-    d = tmp_path / "artifacts" / "ch_70_01"
+    d = paths.scene_dir(tmp_path, "ch_70_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     plan = {"lines": [
@@ -1514,7 +1520,7 @@ def test_quality_review_export_marks_lines(tmp_path):
 
 def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
     import paths
-    d = tmp_path / "artifacts" / "ch_71_01"
+    d = paths.scene_dir(tmp_path, "ch_71_01")
     d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_71_01", "71_01").write_text(
         json.dumps({"lines": {"0x1": {"t": "ruim"}, "0x2": {"t": "longo demais"}}}), encoding="utf-8")
@@ -1550,7 +1556,7 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
 
 def test_invalidate_back_translation_marks_stale(tmp_path):
     import paths
-    (tmp_path / "artifacts" / "ch_72_01").mkdir(parents=True)
+    (paths.scene_dir(tmp_path, "ch_72_01")).mkdir(parents=True)
     paths.back_translation(tmp_path, "ch_72_01", "72_01").write_text(
         _back([("0x1", "revise", "x"), ("0x2", "pass", "")]), encoding="utf-8")
     n = model.invalidate_back_translation(tmp_path, "ch_72_01", ["0x1"])
@@ -1563,7 +1569,7 @@ def test_invalidate_back_translation_marks_stale(tmp_path):
 
 def test_quality_gate_treats_stale_as_uncovered(tmp_path):
     import quality_gate, paths
-    d = tmp_path / "artifacts" / "ch_73_01"
+    d = paths.scene_dir(tmp_path, "ch_73_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     (d / "translation_plan_73_01.json").write_text(json.dumps(_plan([("0x1", "high")])), encoding="utf-8")
@@ -1595,7 +1601,7 @@ def test_artifact_io_readers(tmp_path):
     import paths
     assert artifact_io.scene_chapter("ch_19_03") == "19" and artifact_io.scene_chapter("x") == ""
     for s in ("ch_19_01", "ch_19_02", "ch_20_01"):
-        d = tmp_path / "artifacts" / s
+        d = paths.scene_dir(tmp_path, s)
         d.mkdir(parents=True)
         (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
     assert artifact_io.scenes(tmp_path) == ["ch_19_01", "ch_19_02", "ch_20_01"]
@@ -1617,7 +1623,7 @@ def test_artifact_io_readers(tmp_path):
 
 def _first_translated_scenes(n=5):
     """As n primeiras cenas (ordem por nome = scene_id) com translations em disco — alvo da integracao."""
-    art = PROJECT / "artifacts"
+    art = PROJECT / "artifacts" / "scenes"
     if not art.is_dir():
         return []
     out = [d.name for d in sorted(art.glob("ch_*"))
@@ -1662,7 +1668,7 @@ def test_no_work_text_in_runtime_scripts():
     """Nenhuma fala/traducao do corpus pode estar hardcoded nos .py do runtime."""
     phrases = set()
     art = PROJECT / "artifacts"
-    csvs = list(art.glob("approved_*.csv")) + list(art.glob("*/approved_*.csv"))
+    csvs = list(art.glob("approved_*.csv")) + list(art.glob("scenes/*/approved_*.csv"))
     import csv as _csv
     for f in csvs:
         with f.open(encoding="utf-8") as fh:
@@ -1797,7 +1803,7 @@ def test_kb_gate_warns_ratified_without_date_column(tmp_path):
     art = tmp_path / "artifacts"
     art.mkdir(parents=True)
     (art / "research_log.md").write_text("**Status:** reconciled\n", encoding="utf-8")
-    (art / "glossary.csv").write_text("term\nKuon\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term,updated_date\nKuon,2026-01-01\n", encoding="utf-8")
     (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
     (art / "state").mkdir()
     (art / "state" / "voice_cards.json").write_text('{"Haku": {"criticality": "high"}}',
@@ -1816,7 +1822,7 @@ def test_kb_gate_warns_ratified_entries_undated(tmp_path):
     art = tmp_path / "artifacts"
     art.mkdir(parents=True)
     (art / "research_log.md").write_text("**Status:** reconciled\n", encoding="utf-8")
-    (art / "glossary.csv").write_text("term\nKuon\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term,updated_date\nKuon,2026-01-01\n", encoding="utf-8")
     (art / "universe_knowledge_base.md").write_text("# KB\n", encoding="utf-8")
     (art / "state").mkdir()
     (art / "state" / "voice_cards.json").write_text('{"Haku": {}}', encoding="utf-8")
@@ -1874,7 +1880,7 @@ def test_clean_failed_scene_moves_to_discontinued(tmp_path):
     import paths
     scene = "ch_50_01"
     scene_id = "50_01"
-    d = tmp_path / "artifacts" / scene
+    d = paths.scene_dir(tmp_path, scene)
     d.mkdir(parents=True)
 
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")

@@ -20,8 +20,12 @@ def artifacts(root) -> Path:
     return Path(root) / "artifacts"
 
 
+def scenes_dir(root) -> Path:
+    return artifacts(root) / "scenes"
+
+
 def scene_dir(root, scene) -> Path:
-    return artifacts(root) / scene
+    return scenes_dir(root) / scene
 
 
 def state_dir(root) -> Path:

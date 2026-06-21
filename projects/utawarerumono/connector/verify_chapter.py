@@ -31,7 +31,7 @@ def load_csv(p):
 def main():
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <chapter_dir>  (ex.: ch_11_04)")
-    chdir = ROOT / "artifacts" / sys.argv[1]
+    chdir = ROOT / "artifacts" / "scenes" / sys.argv[1]
     appr_files = sorted(chdir.glob("approved_*.csv"))
     if len(appr_files) != 1:
         sys.exit(f"ERRO: esperado 1 approved_*.csv em {chdir}, achei {len(appr_files)}")
