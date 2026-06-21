@@ -75,16 +75,32 @@ Os dois maiores gaps que BoF4 precisa fechar:
 - [x] **1.2. Passo 02 — Resolução de Entidades:** nomes canônicos PT-BR + handling rules em `entities.csv` e `glossary.csv`
 - [x] **1.3. Passo 03 — Knowledge Building:** `artifacts/research_log.md` status `reconciled`; gate `kb_phase all --check` verde; fonte T1 Wikipedia PT (humano) + T2 corpus (IA)
 - [x] **1.4. Passo 04 — Glossário:** `artifacts/glossary.csv` com 101 termos e handling rules formais
-- [x] **1.5. Passo 05 — Plano de tradução:** `artifacts/translation_plan.json` — escopo, modelo (Haiku+Sonnet), piloto AREAD001+004 (~R$0.30), estimativa full game (~R$8 Haiku), `project.json` TBDs preenchidos
+- [x] **1.5. Passo 05 — Plano de tradução:** `artifacts/translation_plan.json` — escopo, modelo (Haiku+Sonnet), piloto AREAD001+004 (~$0.30), estimativa full game (~$8 Haiku), `project.json` TBDs preenchidos
 
 ---
 
 ### Fase 2 — Tradução em escala (Passos 06–07)
 
-- [ ] **2.1. Traduzir cenas iniciais** (~AREAD001+004, ~R$0.30 Haiku; validar: prompt, diacríticos in-game, reinsert live)
+- [ ] **2.1. Traduzir cenas iniciais** (~AREAD001+004, ~$0.30 Haiku; validar: prompt, diacríticos in-game, reinsert live)
   - Pré-req: implementar `connector/build_plan_chapter.py` + `connector/verify_chapter.py`
 - [ ] **2.2. Loop por capítulo** via `run_chapter.py` com `--max-usd`
 - [ ] **2.3. Back-translation** de linhas `risk≥high` por capítulo
+
+#### P1 — Bugs ativos (identificados na tradução em escala, jun/2026)
+
+> Tratar antes de avançar para Fase 3. Causa raiz conhecida ou parcialmente conhecida.
+
+- [ ] **P1-A. T4 fitting sistemático** — strings com `byte_budget < ~20` não têm margem para PT-BR (naturalmente ~10–15% mais longo que EN). O retighten automático falha porque não há espaço físico.
+  - Causa raiz: byte_budget apertado + ausência de tradução alternativa mais curta no prompt.
+  - Fix proposto: pré-scan pré-batch de strings com `byte_budget ≤ 20`; gerar prompt adicional pedindo variante ultra-compacta; ou aceitar truncamento forçado com aviso.
+  - Exemplo: `"He's dead..."` budget=17 → `Ele está morto...` = 18 bytes; fix manual = `Ele morreu...`.
+
+- [ ] **P1-B. Encoding corrompido em cenas isoladas** — AREAD013 retornou `�` (replacement chars) e `[0B]`→`B` em múltiplas strings. Causa raiz não investigada.
+  - Hipóteses: (a) batch response com encoding corrompido para aquela cena; (b) bug no `batch_translate` ao desserializar JSON com caracteres especiais; (c) Haiku gerando output com codepoints inválidos.
+  - Fix necessário: inspecionar `batch_translate` — como valida encoding UTF-8 do response antes de salvar.
+
+- [ ] **P1-C. `coverage_failed` em 6 cenas** — AREAD075, AREAS011, AREAS025, AREAS031, AREAS032, AREAS046 não passaram no KB gate durante o batch. Causa não investigada.
+  - Fix necessário: inspecionar o que dispara o gate nessas cenas; pode ser conteúdo legítimo fora do glossário (KB precisa crescer) ou falso positivo no gate.
 
 #### Memory Layer (piloto desta funcionalidade no framework)
 
