@@ -32,6 +32,7 @@ import json
 import re
 import sys
 import unicodedata
+from collections import Counter
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -45,7 +46,7 @@ import paths          # noqa: E402
 # 'marcar' = a COLUNA DE DECISÃO do humano: ele escreve CORRIGIR (ou corrigir) na linha que quer mudar.
 # O apply lê SÓ as linhas marcadas. 'revisar' é só DICA ($0, micro-QA da IA) de onde olhar — não decide nada.
 COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt",
-        "caixa", "marcar", "correcao", "nota"]
+        "caixa", "marcar", "correcao", "nota", "repete"]
 
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
 _PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
@@ -273,7 +274,10 @@ def export(root, chapter) -> list[dict]:
                          "revisar": _flags(src, tgt, risk, off in sampled, off in revise),
                          "source_en": src, "target_pt": tgt,
                          "caixa": _box_verdict(src, tgt),
-                         "marcar": "", "correcao": "", "nota": ""})
+                         "marcar": "", "correcao": "", "nota": "", "repete": 1})
+    pair_cnt = Counter((r["source_en"], r["target_pt"]) for r in rows)
+    for r in rows:
+        r["repete"] = pair_cnt[(r["source_en"], r["target_pt"])]
     return rows
 
 
@@ -311,7 +315,7 @@ def write_csv(rows, out_path):
 # rotulos amigaveis (PT) p/ o XLSX, na MESMA ordem de COLS (a leitura mapeia por posicao)
 _XLSX_HEAD = ["Cena", "Offset", "Falante", "Risco", "Revisar (onde olhar)", "Ingles (fonte)",
               "Portugues (atual)", "Caixa (cresceu vs EN?)", "Corrigir? (escreva CORRIGIR)",
-              "Correcao (texto certo)", "Nota (instrucao p/ IA)"]
+              "Correcao (texto certo)", "Nota (instrucao p/ IA)", "Repete (N vezes no jogo)"]
 # severidade -> cor da linha (a 1a tag presente vence; ordem = mais grave primeiro)
 _XLSX_SEV = [("micro-qa", "F4CCCC"), ("critical", "FFC7CE"), ("high", "FFE2C7"),
              ("expr-cultural", "D5F5E3"),
@@ -324,7 +328,6 @@ def write_xlsx(rows, out_path):
     """Relatorio AMIGAVEL p/ o revisor humano (Excel/LibreOffice): aba 'Leia-me' (instrucoes+legenda+
     contagem) + aba 'Revisao' com cabecalho congelado, autofiltro, cor por tipo de erro, colunas de
     input em amarelo e EN/PT com quebra de linha. O `apply` le este xlsx de volta (mapeado por posicao)."""
-    from collections import Counter
     try:
         from openpyxl import Workbook
         from openpyxl.styles import Font, PatternFill, Alignment
@@ -417,6 +420,30 @@ def write_xlsx(rows, out_path):
          "Marcador de portugues de Portugal detectado (tens/estás/podes...) — adaptar para pt-BR"); r += 1
     r += 1; intro.row_dimensions[r].height = 6; r += 1
 
+    # Secao: legenda coluna CAIXA
+    _sec(r, "LEGENDA DA COLUNA 'CAIXA (cresceu vs EN?)'"); r += 1
+    _leg(r, "FFFFFF", "(vazio)",
+         "CABE: o envelope pt-BR e <= ingles — a mesma caixa ja exibiu esse texto em jogo"); r += 1
+    _leg(r, "FFE2C7", "rever +Nc",
+         "Traducao N caracteres MAIS LARGA que o ingles nessa linha (mas ainda dentro do maior "
+         "dialogo EN do jogo) — PODE caber usando a folga da caixa; verifique em jogo antes de encurtar"); r += 1
+    _leg(r, "FFE2C7", "rever +NL",
+         "Traducao tem N linhas a mais que o ingles — mesma logica; verifique em jogo"); r += 1
+    _leg(r, "FFC7CE", "ESTOUROU +Nc",
+         "Traducao N caracteres mais larga que o MAIOR dialogo ingles ja mostrado no jogo (limite: "
+         f"{WIDTH_MAX} chars) — provavelmente sai da caixa; encurte e re-exporte para confirmar"); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
+    # Secao: legenda coluna REPETE
+    _sec(r, "LEGENDA DA COLUNA 'REPETE (N vezes no jogo)'"); r += 1
+    _leg(r, "FFFFFF", "1",
+         "Esta linha e unica — revise normalmente"); r += 1
+    _leg(r, "E8D5F5", "> 1",
+         "Este par (ingles + portugues) aparece N vezes no jogo (NPCs com mesmo dialogo, menus "
+         "repetidos, etc.). Basta revisar UMA ocorrencia — se precisar corrigir, marque CORRIGIR "
+         "em TODAS as linhas com o mesmo texto (cada offset e um ponto de reinsercao independente)."); r += 1
+    r += 1; intro.row_dimensions[r].height = 6; r += 1
+
     # Secao: resumo
     _sec(r, "RESUMO DO ARQUIVO"); r += 1
     _kv(r, "Total de linhas", len(rows)); r += 1
@@ -440,8 +467,10 @@ def write_xlsx(rows, out_path):
     top = Alignment(vertical="top")
     inputfill = PatternFill("solid", fgColor=_XLSX_INPUT)
     cx = COLS.index("caixa") + 1                           # coluna 'caixa' (1-indexed)
+    rx = COLS.index("repete") + 1                          # coluna 'repete' (1-indexed)
     box_red = PatternFill("solid", fgColor="FFC7CE")       # ESTOUROU (passou do maior EN)
     box_org = PatternFill("solid", fgColor="FFE2C7")       # rever (cresceu vs EN)
+    rep_fill = PatternFill("solid", fgColor="E8D5F5")      # repete > 1
     for r in rows:
         ws.append([r.get(c, "") for c in COLS])
         i = ws.max_row
@@ -463,9 +492,12 @@ def write_xlsx(rows, out_path):
                     cell.fill = box_red
                 elif cv:
                     cell.fill = box_org
+            elif col == rx:                                 # 'repete': destaque se > 1
+                if (r.get("repete") or 1) > 1:
+                    cell.fill = rep_fill
             elif fill is not None:
                 cell.fill = fill
-    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 50, 7: 50, 8: 18, 9: 16, 10: 42, 11: 28}
+    widths = {1: 10, 2: 11, 3: 14, 4: 9, 5: 22, 6: 50, 7: 50, 8: 18, 9: 16, 10: 42, 11: 28, 12: 12}
     for col, w in widths.items():
         ws.column_dimensions[ws.cell(row=1, column=col).column_letter].width = w
     ws.freeze_panes = "A2"                                 # cabecalho fixo ao rolar
