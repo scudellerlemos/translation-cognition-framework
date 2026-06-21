@@ -9,13 +9,25 @@
 O jogo usa um container binário com TOC (Table of Contents). O mesmo formato
 se aplica a todos os tipos:
 
-| Família | Conteúdo | Exemplo |
+| Família | Conteúdo | Escopo Fase 0 |
 |---|---|---|
-| `AREAD*.DAT` | Diálogo principal de cenas (field events) | `AREAD001.DAT` |
-| `AREAS*.DAT` | Scripts de área (cutscenes, NPCs avançados) | `AREAS001.DAT` |
-| `AREAE*.DAT` | Eventos de área (encuentros, interações) | `AREAE001.DAT` |
-| `AREAM*.DAT` | Mapas (NPC dialog de campo aberto) | `AREAM000.DAT` |
-| `SHOP.DAT`, `CAMP.DAT`, `DEMO.DAT` | UI de loja, menu camp, demo/intro | — |
+| `AREAD*.DAT` | Diálogo principal de cenas (field events) | ✅ **incluído** |
+| `AREAS*.DAT` | Scripts de área (cutscenes, NPCs com fala) | ✅ **incluído** |
+| `AREAE*.DAT` | Eventos de área (dados de mapa/trigger) | ❌ fase futura |
+| `AREAM*.DAT` | Mapas (nomes de local, NPC sem fala narrativa) | ❌ fase futura |
+| `SHOP.DAT`, `CAMP.DAT`, `DEMO.DAT`, `AB*.DAT` | UI, loja, batalha, menu | ❌ fase futura |
+
+> **Regra do framework (Fase 0):** o extrator inclui SOMENTE famílias com diálogo
+> de personagem identificado por falante. UI, itens e batalha são fases separadas.
+> Ver `framework/media-profiles/games.md` — seção "Escopo de extração".
+
+### Filtros de conteúdo aplicados dentro das famílias incluídas
+
+| Filtro | Critério | Motivo |
+|---|---|---|
+| Família | `AREAD` ou `AREAS` apenas | escopo de diálogo |
+| Descrição de item | string contém `[05][03]` | formato de item embutido em arquivo de diálogo |
+| Comprimento mínimo | `len(raw) >= 8 bytes` | labels de UI/menu de 1-2 palavras |
 
 ---
 
