@@ -167,13 +167,13 @@ Use, Buy, Add, Return, Choose, Equip, Sell, Close, Hard, Land, Simple, Normal, L
 
 ---
 
-### Decisões pendentes (aguardam revisão humana)
+### Decisões resolvidas (2026-06-21 — ratificação humana)
 
-1. **Endless → "Eternos" ou manter "Endless"?** — termo central da cosmologia. Proposta IA: "Eternos". Precisa de ratificação humana.
-2. **Hex → "maldição" ou manter "hex"?** — mecanismo de sistema (hex energy, hex attacks). Proposta IA: "maldição" para texto narrativo; considerar manter "hex" em menus de status. Precisa de ratificação.
-3. **Abbess → "Abadessa" ou manter "Abbess"?** — título religioso. Proposta IA: "Abadessa".
-4. **Gênero de Elina e Deis** — feminino confirmado pelo contexto corpus. Sem incerteza.
-5. **Nome do protagonista** — renomeável; "Ryu" é o nome padrão/canônico. A confirmar se manter "Ryu" como padrão PT-BR.
+1. **Endless → "Eternos"** ✓ — ratificado pelo usuário. Usar "Eternos" em todo o texto narrativo e diálogo.
+2. **Hex → "maldição"** ✓ — ratificado pelo usuário. Usar "maldição" em diálogos e narrativa.
+3. **Abbess → manter "Abbess"** ✓ — ratificado pelo usuário. Personagem NPC não jogável; nome próprio não traduzido.
+4. **Gênero de Elina e Deis** ✓ — feminino confirmado pelo corpus. Resolvido.
+5. **Nome do protagonista → "Ryu" (padrão)** ✓ — ratificado pelo usuário. Nome personalizável pelo jogador; padrão canônico é "Ryu". Aparece via control code `[04][01]`, nunca como texto literal — não requer tradução.
 
 ---
 
@@ -183,5 +183,6 @@ human_input: confirmed
 
 > Contribuição humana recebida em 2026-06-20: Wikipedia PT como fonte T1 (personagens,
 > locais, facções). Novos termos ratificados: Aliança do Leste, Synesta, Sandflier,
-> Império Fou. Decisões pendentes (Endless, Hex, Abbess — ver seção acima) registradas
-> para ratificação na Fase de Revisão; não bloqueiam a tradução.
+> Império Fou.
+>
+> Atualização 2026-06-21: todas as decisões pendentes ratificadas pelo usuário (ver seção acima).

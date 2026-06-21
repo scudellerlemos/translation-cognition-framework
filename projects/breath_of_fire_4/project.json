@@ -24,8 +24,6 @@
   "batch_size": 50,
   "connector": {
     "type": "hex_binary",
-    "game_dat_dir": "TBD — passar via CLI: python extract.py project.json <DAT_DIR>",
-    "game_dat_dir_note": "Caminho absoluto do diretório english/DAT do jogo (nunca persistir aqui). Passar via CLI ou variável de ambiente.",
     "container_format": "capcom_dat_toc",
     "table_schema": "connector/table_schema.md",
     "extract_script": "connector/extract.py",
