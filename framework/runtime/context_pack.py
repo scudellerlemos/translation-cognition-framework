@@ -364,7 +364,7 @@ def _load_sources(root: Path, cfg: dict):
 def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
-    Fallback gracioso: sem o stack de embeddings/sqlite-vec ou sem índice → [] (sem erro).
+    Fallback: sem o stack de embeddings/sqlite-vec ou sem índice → [] (sem erro).
     Determinismo: ordem estável (score desc, source) sobre vetores pré-computados no DB."""
     if not db_path:
         return []
