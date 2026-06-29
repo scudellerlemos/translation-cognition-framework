@@ -149,6 +149,16 @@ CREATE TABLE IF NOT EXISTS spoiler_entries (
     UNIQUE(project_id, entity, fact)
 );
 
+-- ── Knowledge base (lore/terminologia — universe_knowledge_base.md por seção) ──
+-- Corpus de lore p/ retrieval semântico por cena (RAG nº2), gated por spoiler.
+CREATE TABLE IF NOT EXISTS kb (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    section     TEXT NOT NULL,
+    content     TEXT,
+    UNIQUE(project_id, section)
+);
+
 -- ── Back-translation (verificação pt-BR → EN de linhas de alto risco) ─────────
 CREATE TABLE IF NOT EXISTS back_translations (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
