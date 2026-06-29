@@ -84,3 +84,4 @@ def test_db_tm_is_well_formed(bof4_migrated):
     assert dtm, "TM do DB vazia"
     needed = {"src_key", "source", "target", "speaker", "scene"}
     assert all(needed <= set(t) for t in dtm), "entradas de TM mal-formadas"
+    assert all(t["source"] and t["target"] for t in dtm), "TM com source/target vazio (migração quebrada)"

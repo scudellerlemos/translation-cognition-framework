@@ -39,7 +39,8 @@ def test_migrate_counts_roundtrip_to_store(bof4_migrated):
         summary = db.summary("bof4")
     assert summary["scenes"] == result["scenes"], (summary, result)
     assert summary["scene_lines"] == result["scene_lines"], (summary, result)
-    assert summary["tm_approved"] == result["translations"], (summary, result)
+    assert summary["translations"] == result["translations"], (summary, result)
+    assert summary["tm_approved"] == result["approved"], (summary, result)
     assert summary["glossary"] == result["glossary"], (summary, result)
     assert summary["entities"] == result["entities"], (summary, result)
     assert summary["voice_cards"] == result["voice_cards"], (summary, result)
@@ -73,5 +74,17 @@ def test_migrate_idempotent(tmp_path):
     migrate(BOF4, db_path, project_id="bof4")
     with Store(db_path) as db:
         summary = db.summary("bof4")
-    assert summary["tm_approved"] == first["translations"], (summary, first)
+    assert summary["translations"] == first["translations"], (summary, first)
+    assert summary["tm_approved"] == first["approved"], (summary, first)
     assert summary["scene_lines"] == first["scene_lines"], (summary, first)
+
+
+def test_migrate_translations_have_content(bof4_migrated):
+    """REGRESSÃO: translations migravam com source/target VAZIOS (o approved_*.csv só tem
+    offset,text_target — não tem as colunas lidas). Agora o conteúdo vem do translation_plan."""
+    db_path, _ = bof4_migrated
+    with Store(db_path) as db:
+        tm = db.get_translations("bof4", approved_only=False)
+    assert tm, "translations vazio"
+    empty = [t for t in tm if not (t.get("source") and t.get("target"))]
+    assert not empty, f"{len(empty)}/{len(tm)} translations com source/target vazio"
