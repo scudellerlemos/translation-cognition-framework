@@ -105,8 +105,9 @@ class Embedder:
         if not rows:
             return 0
 
+        from store import strip_codes  # noqa: E402  (forma limpa: vetor sem ruído dos códigos)
         ids = [r[0] for r in rows]
-        texts = [r[1] for r in rows]
+        texts = [strip_codes(r[1]) for r in rows]
         vecs = self.encode(texts)
 
         for tid, vec in zip(ids, vecs, strict=True):
@@ -127,8 +128,9 @@ class Embedder:
                project_id: str, k: int = 5,
                approved_only: bool = True) -> list[dict]:
         """Busca semântica na TM. Retorna top-k hits com score de similaridade."""
+        from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
-        q_vec = self.encode([query])[0]
+        q_vec = self.encode([strip_codes(query)])[0]
 
         rows = con.execute(
             f"""SELECT v.translation_id, v.distance,

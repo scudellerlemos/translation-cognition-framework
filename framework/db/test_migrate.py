@@ -68,6 +68,25 @@ def test_migrate_voice_cards_keep_lines(bof4_migrated):
     assert any(c.get("lines") for c in vc), "lines não migraram (formato context_pack perdido)"
 
 
+def test_strip_codes_clean_form():
+    """strip_codes remove os [XX] e normaliza espaços (forma limpa p/ leitura/semântica)."""
+    from store import strip_codes
+    faithful = '[14][C1]@"Voce[01]quer dizer?[02]Certo"'
+    clean = strip_codes(faithful)
+    assert "[01]" not in clean and "[14]" not in clean and "[02]" not in clean
+    assert "Voce quer dizer?" in clean and "Certo" in clean
+
+
+def test_get_translations_exposes_clean(bof4_migrated):
+    """get_translations expõe source_clean/target_clean sem códigos, mantendo o fiel."""
+    db_path, _ = bof4_migrated
+    with Store(db_path) as db:
+        tm = db.get_translations("bof4", approved_only=True)
+    assert tm
+    r = next(t for t in tm if "[" in (t.get("target") or ""))   # uma linha com códigos
+    assert "[" in r["target"] and "[" not in r["target_clean"]  # fiel tem, clean não
+
+
 def test_migrate_idempotent(tmp_path):
     """Rodar a migração 2x no mesmo banco não duplica (upsert, não insert)."""
     db_path = tmp_path / "t.db"
