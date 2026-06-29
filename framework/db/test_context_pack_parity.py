@@ -85,6 +85,40 @@ def test_tm_semantic_fallback_no_deps(bof4_migrated):
     assert isinstance(res, list)  # sem deps → []; nunca lança
 
 
+def _parse_kb_md(path):
+    """Mesmo split de seções do migrate (## / ###) — p/ validar select_kb sem migrar."""
+    entries, section, buf = [], None, []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith(("## ", "### ")):
+            if section and "\n".join(buf).strip():
+                entries.append({"section": section, "content": "\n".join(buf).strip()})
+            section, buf = line.lstrip("# ").strip(), []
+        elif section is not None:
+            buf.append(line)
+    if section and "\n".join(buf).strip():
+        entries.append({"section": section, "content": "\n".join(buf).strip()})
+    return entries
+
+
+def test_kb_spoiler_gate_never_leaks_future_reveal():
+    """RAG nº2: o gate de spoiler da KB NUNCA injeta seção com reveal futuro. Validado com
+    dado REAL do Utawarerumono (ledger: Ukon reveal=13_08, Oshtor=beyond_frontier; KB tem a
+    seção '## Oshtor (= Ukon; reveal ch_13_08)' = o twist)."""
+    import json
+    uta = ROOT / "projects" / "utawarerumono"
+    ledger = json.loads((uta / "artifacts" / "spoiler_ledger.json").read_text(encoding="utf-8"))
+    kb = _parse_kb_md(uta / "artifacts" / "universe_knowledge_base.md")
+    assert any("Oshtor" in s["section"] for s in kb), "fixture: KB do uta deveria ter seção Oshtor"
+    blob = "ukon e oshtor aparecem nesta cena"        # ambos citados
+    # cena 11_03 = ANTES do reveal 13_08. Valida o gate p/ spoiler MARCADO (trigger/quarentena).
+    # (Furo conhecido — spoiler pt sem marcador, ex. 'Mulher (figura de memória)' — é o motivo
+    #  de select_kb NÃO estar ligado no build_pack; ver docstring.)
+    sel = cp.select_kb(kb, blob, ledger, "11_03")
+    joined = " ".join((s["section"] + " " + s["content"]).lower() for s in sel)
+    assert "oshtor" not in joined, "VAZOU o trigger Oshtor (twist) pré-reveal!"
+    assert "= ukon" not in joined, "VAZOU a identidade Oshtor=Ukon pré-reveal!"
+
+
 def test_db_tm_is_well_formed(bof4_migrated):
     """TM do DB (proveniência = approved) não precisa igualar a flat, mas tem que ser
     bem-formada e não-vazia (não-degradação)."""
