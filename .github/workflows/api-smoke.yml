@@ -21,13 +21,19 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      # Sem o secret, o smoke é PULADO (run verde) em vez de falhar — o teste é opcional
+      # (custa ~$0.002 e depende de billing). Para ativá-lo: adicione ANTHROPIC_API_KEY em
+      # Settings > Secrets and variables > Actions.
       - name: Check API key present
+        id: key
         run: |
           if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "ANTHROPIC_API_KEY não configurada — adicione em Settings > Secrets > Actions"
-            exit 1
+            echo "::warning::ANTHROPIC_API_KEY não configurada — pulando o smoke (adicione em Settings > Secrets > Actions)"
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
           fi
-          echo "API key presente"
 
       - name: Batch API smoke (~$0.002)
+        if: steps.key.outputs.present == 'true'
         run: python framework/runtime/batch_smoke.py
