@@ -6,9 +6,9 @@ Saída: artifacts/dialogs.csv com n strings extraídas.
 
 Uso:
     skill = ExtractionSkill()
-    problems = skill.check_inputs("projects/bof4_software")
+    problems = skill.check_inputs("projects/translation_software")
     if not problems:
-        result = skill.run("projects/bof4_software", dat_dir="/path/to/DAT")
+        result = skill.run("projects/translation_software", dat_dir="/path/to/DAT")
 """
 from __future__ import annotations
 

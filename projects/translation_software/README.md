@@ -1,4 +1,4 @@
-# Breath of Fire IV — Software Architecture
+# Translation Software — Arquitetura limpa (piloto: BoF4)
 
 > Status: **EM DESENVOLVIMENTO — Fase 1 MVP**
 > Objetivo: pipeline end-to-end sem `.md` como fonte de dados em runtime; SQLite como fonte única de verdade.
@@ -73,19 +73,19 @@ CLI
 
 ### Migrar dados do BoF4 para SQLite
 ```bash
-python framework/cli.py db migrate projects/breath_of_fire_4 projects/bof4_software/bof4_software.db
-python framework/cli.py db summary projects/bof4_software/bof4_software.db bof4
+python framework/cli.py db migrate projects/breath_of_fire_4 projects/translation_software/translation_software.db
+python framework/cli.py db summary projects/translation_software/translation_software.db bof4
 ```
 
 ### Indexar TM semântica
 ```bash
 pip install sentence-transformers sqlite-vec flashrank
-python framework/cli.py db index projects/bof4_software/bof4_software.db bof4
+python framework/cli.py db index projects/translation_software/translation_software.db bof4
 ```
 
 ### Traduzir com backend local
 ```bash
-python framework/cli.py translate projects/bof4_software AREAD001 --backend ollama
+python framework/cli.py translate projects/translation_software AREAD001 --backend ollama
 ```
 
 ---
@@ -94,7 +94,7 @@ python framework/cli.py translate projects/bof4_software AREAD001 --backend olla
 
 ```
 project.json              ← manifesto com stack declarada
-bof4_software.db          ← banco SQLite (gerado por migrate_from_flat.py)
+translation_software.db          ← banco SQLite (gerado por migrate_from_flat.py)
 artifacts/                ← traduções e artefatos gerados pelo pipeline novo
   scenes/
 

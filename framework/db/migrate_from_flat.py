@@ -12,7 +12,7 @@ Grava em: <dest_db> (cria se não existir)
 
 Uso:
   python migrate_from_flat.py <bof4_root> <dest_db> [--project-id bof4]
-  python migrate_from_flat.py projects/breath_of_fire_4 projects/bof4_software/bof4.db
+  python migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db
 """
 from __future__ import annotations
 

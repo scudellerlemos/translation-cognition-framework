@@ -101,7 +101,7 @@ artifacts/            ← traduções geradas pelo Ollama (separadas do BoF4 apr
 3. **Medir delta de qualidade vs Sonnet** — cobertura, fitting, registro de voz (Fou-Lu arcaico)
 4. **Decidir modelo definitivo** — 14B (melhor qualidade) vs 7B (mais rápido, full VRAM)
 5. **Back-translation local** — substituir Opus ($) por Ollama ($0) no caminho de QA
-6. **Integrar com bof4_software** — usar SQLite como store em vez de flat files
+6. **Integrar com translation_software** — usar SQLite como store em vez de flat files
 
 ---
 
