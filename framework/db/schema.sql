@@ -1,4 +1,4 @@
--- schema.sql — schema SQLite do Translation Cognition Framework (bof4_software)
+-- schema.sql — schema SQLite do Translation Cognition Framework (translation_software)
 -- Versão 1.0 — junho 2026
 --
 -- Substitui os flat files dispersos (jsonl, csv, json) por uma fonte única
@@ -12,7 +12,7 @@ PRAGMA foreign_keys = ON;
 
 -- ── Projetos ──────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS projects (
-    id          TEXT PRIMARY KEY,          -- ex: bof4_software
+    id          TEXT PRIMARY KEY,          -- ex: translation_software
     title       TEXT NOT NULL,
     source_lang TEXT NOT NULL DEFAULT 'en',
     target_lang TEXT NOT NULL DEFAULT 'pt-BR',
