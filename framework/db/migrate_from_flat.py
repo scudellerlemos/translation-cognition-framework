@@ -99,6 +99,9 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                 translation=translation,
                 handling_rule=row.get("handling_rule"),
                 domain=row.get("domain") or row.get("category"),
+                category=row.get("category"),
+                aliases=row.get("aliases"),
+                spoiler_level=row.get("spoiler_level"),
                 notes=row.get("notes"),
             )
             n += 1
@@ -130,15 +133,36 @@ def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
 
 
 def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
-    # Tenta state/voice_cards.json primeiro, depois artifacts/tone_analysis.md (heurístico)
-    vc_path = root / "state" / "voice_cards.json"
-    if not vc_path.is_file():
-        vc_path = root / "artifacts" / "voice_cards.json"
-    if not vc_path.is_file():
+    # O context_pack lê voice_cards.json de artifacts/state/ (paths.state_dir); aceita também
+    # os locais legados. Formato canônico: {nome: {aliases, criticality, lines}}.
+    for cand in (root / "artifacts" / "state" / "voice_cards.json",
+                 root / "state" / "voice_cards.json",
+                 root / "artifacts" / "voice_cards.json"):
+        if cand.is_file():
+            vc_path = cand
+            break
+    else:
         return 0
     data = json.loads(vc_path.read_text(encoding="utf-8"))
-    cards = data if isinstance(data, list) else data.get("cards", [])
     n = 0
+    # Formato dict {nome: {...}} (context_pack) — chave é o falante.
+    if isinstance(data, dict) and "cards" not in data:
+        for name, card in data.items():
+            db.upsert_voice_card(
+                project_id=project_id,
+                speaker=name,
+                aliases=card.get("aliases", []),
+                lines=card.get("lines", []),
+                register=card.get("register"),
+                quirks=card.get("quirks", []),
+                example_src=card.get("example_src", card.get("examples_en", [])),
+                example_tgt=card.get("example_tgt", card.get("examples_pt", [])),
+                criticality=card.get("criticality", "medium"),
+            )
+            n += 1
+        return n
+    # Formato legado: lista ou {"cards": [...]}.
+    cards = data if isinstance(data, list) else data.get("cards", [])
     for card in cards:
         speaker = card.get("speaker") or card.get("name", "")
         if not speaker:
@@ -146,11 +170,59 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
         db.upsert_voice_card(
             project_id=project_id,
             speaker=speaker,
+            aliases=card.get("aliases", []),
+            lines=card.get("lines", []),
             register=card.get("register"),
             quirks=card.get("quirks", []),
             example_src=card.get("example_src", card.get("examples_en", [])),
             example_tgt=card.get("example_tgt", card.get("examples_pt", [])),
             criticality=card.get("criticality", "medium"),
+        )
+        n += 1
+    return n
+
+
+def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
+    p = root / "artifacts" / "state" / "decision_index.json"
+    if not p.is_file():
+        return 0
+    data = json.loads(p.read_text(encoding="utf-8"))
+    items = data if isinstance(data, list) else data.get("decisions", [])
+    n = 0
+    for d in items:
+        title = d.get("title")
+        if not title:
+            continue
+        db.upsert_decision(
+            project_id=project_id,
+            title=title,
+            summary=d.get("summary"),
+            universal=bool(d.get("universal", False)),
+            tags=d.get("tags", []),
+        )
+        n += 1
+    return n
+
+
+def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
+    p = root / "artifacts" / "spoiler_ledger.json"
+    if not p.is_file():
+        return 0
+    data = json.loads(p.read_text(encoding="utf-8"))
+    n = 0
+    for e in data.get("entries", []):
+        entity = e.get("entity")
+        if not entity:
+            continue
+        db.upsert_spoiler_entry(
+            project_id=project_id,
+            entity=entity,
+            fact=e.get("fact"),
+            spoiler_level=e.get("spoiler_level"),
+            reveal=e.get("reveal"),
+            scenes=e.get("scenes", []),
+            triggers=e.get("triggers", []),
+            pre_reveal=e.get("pre_reveal"),
         )
         n += 1
     return n
@@ -199,6 +271,8 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         glossary = _migrate_glossary(db, project_id, bof4_root)
         entities = _migrate_entities(db, project_id, bof4_root)
         voice_cards = _migrate_voice_cards(db, project_id, bof4_root)
+        decisions = _migrate_decisions(db, project_id, bof4_root)
+        spoiler = _migrate_spoiler(db, project_id, bof4_root)
         jobs = _migrate_jobs(db, project_id, bof4_root)
         return {
             "project_id": project_id,
@@ -207,6 +281,8 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             "glossary": glossary,
             "entities": entities,
             "voice_cards": voice_cards,
+            "decisions": decisions,
+            "spoiler": spoiler,
             "jobs": jobs,
             "db": str(dest_db),
         }

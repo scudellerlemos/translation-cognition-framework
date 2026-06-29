@@ -73,6 +73,9 @@ CREATE TABLE IF NOT EXISTS glossary (
     translation    TEXT NOT NULL,
     handling_rule  TEXT,                   -- preserve | translate | adapt | ...
     domain         TEXT,
+    category       TEXT,                   -- compat flat: coluna 'category' do glossary.csv
+    aliases        TEXT,                   -- ";"-separado (compat context_pack.select_glossary)
+    spoiler_level  TEXT,                   -- compat flat: 'spoiler_level' (renderizado no prompt)
     notes          TEXT,
     updated_at     REAL,
     UNIQUE(project_id, term)
@@ -96,12 +99,39 @@ CREATE TABLE IF NOT EXISTS voice_cards (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id   TEXT NOT NULL REFERENCES projects(id),
     speaker      TEXT NOT NULL,
+    aliases      TEXT,                     -- JSON array (compat context_pack.select_voices)
     register     TEXT,                     -- formal | informal | archaic | child | ...
     quirks       TEXT,                     -- JSON array de características de voz
     example_src  TEXT,                     -- JSON array de exemplos em inglês
     example_tgt  TEXT,                     -- JSON array de exemplos em pt-BR
+    lines        TEXT,                     -- JSON array de bullets de voz (formato context_pack)
     criticality  TEXT DEFAULT 'medium',    -- high | medium | low
     UNIQUE(project_id, speaker)
+);
+
+-- ── Decisões (decision_index — regras de tradução por tag/universal) ───────────
+CREATE TABLE IF NOT EXISTS decisions (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    title       TEXT NOT NULL,
+    summary     TEXT,
+    universal   INTEGER DEFAULT 0,         -- 0/1 — regra do conector aplicável sempre
+    tags        TEXT,                      -- JSON array
+    UNIQUE(project_id, title)
+);
+
+-- ── Spoiler ledger (filtro temporal de revelação) ─────────────────────────────
+CREATE TABLE IF NOT EXISTS spoiler_entries (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id    TEXT NOT NULL REFERENCES projects(id),
+    entity        TEXT,
+    fact          TEXT,
+    spoiler_level TEXT,
+    reveal        TEXT,                    -- beyond_frontier | <scene_id>
+    scenes        TEXT,                    -- JSON array
+    triggers      TEXT,                    -- JSON array
+    pre_reveal    TEXT,                    -- guard de ambiguidade pré-revelação
+    UNIQUE(project_id, entity, fact)
 );
 
 -- ── Jobs (ledger auditável) ───────────────────────────────────────────────────
