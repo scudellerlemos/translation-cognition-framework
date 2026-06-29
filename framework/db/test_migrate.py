@@ -30,6 +30,7 @@ def test_migrate_bof4_imports_all_present_artifacts(bof4_migrated):
     assert result["entities"] > 0, "entities.csv existe mas importou 0 — mismatch de coluna?"
     assert result["voice_cards"] > 0, "voice_cards.json existe (artifacts/state/) mas importou 0 — path errado?"
     assert result["back_translations"] > 0, "back_translation_*.json existe mas importou 0"
+    assert result["kb"] > 0, "universe_knowledge_base.md existe mas importou 0 seções"
     assert result["jobs"] > 0, result
     assert "decisions" in result and "spoiler" in result, result
 
@@ -47,6 +48,7 @@ def test_migrate_counts_roundtrip_to_store(bof4_migrated):
     assert summary["voice_cards"] == result["voice_cards"], (summary, result)
     assert summary["decisions"] == result["decisions"], (summary, result)
     assert summary["spoiler"] == result["spoiler"], (summary, result)
+    assert summary["kb"] == result["kb"], (summary, result)
 
 
 def test_migrate_glossary_lossless(bof4_migrated):

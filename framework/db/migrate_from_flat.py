@@ -146,6 +146,27 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     return total, approved_n
 
 
+def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
+    """universe_knowledge_base.md → tabela kb, uma entrada por seção (## / ###)."""
+    p = root / "artifacts" / "universe_knowledge_base.md"
+    if not p.is_file():
+        return 0
+    entries = []
+    section, buf = None, []
+    for line in p.read_text(encoding="utf-8").splitlines():
+        if line.startswith(("## ", "### ")):
+            if section and "\n".join(buf).strip():
+                entries.append({"section": section, "content": "\n".join(buf).strip()})
+            section, buf = line.lstrip("# ").strip(), []
+        elif section is not None:
+            buf.append(line)
+    if section and "\n".join(buf).strip():
+        entries.append({"section": section, "content": "\n".join(buf).strip()})
+    if entries:
+        db.upsert_kb(project_id, entries)
+    return len(entries)
+
+
 def _migrate_back_translations(db: Store, project_id: str, root: Path) -> int:
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
@@ -362,6 +383,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         decisions = _migrate_decisions(db, project_id, bof4_root)
         spoiler = _migrate_spoiler(db, project_id, bof4_root)
         back_translations = _migrate_back_translations(db, project_id, bof4_root)
+        kb = _migrate_kb(db, project_id, bof4_root)
         jobs = _migrate_jobs(db, project_id, bof4_root)
         return {
             "project_id": project_id,
@@ -375,6 +397,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             "decisions": decisions,
             "spoiler": spoiler,
             "back_translations": back_translations,
+            "kb": kb,
             "jobs": jobs,
             "db": str(dest_db),
         }
