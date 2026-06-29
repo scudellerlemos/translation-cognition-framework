@@ -22,6 +22,7 @@ estourar o byte_budget -> round-trip/charset/fitting tem que seguir verde) e `st
 Uso:  python quality_fix.py <projeto> <worklist.csv> [--apply] [--model M] [--json]
 """
 from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -32,8 +33,8 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import model          # noqa: E402
-import paths          # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
 
 
 def load_worklist(csv_path) -> dict:

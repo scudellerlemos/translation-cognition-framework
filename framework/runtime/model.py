@@ -19,39 +19,78 @@ GOVERNANCA: sem work-text hardcoded. O conteudo vem do pacote/artefatos. Determi
 do context_pack; a chamada de IA e a unica parte nao-determinista (por isso isolada aqui).
 """
 from __future__ import annotations
-import hashlib
+
 import json
-import os
 import re
 import sys
-import time
+import time  # noqa: F401  (re-exportado p/ test_batch_retries fazer monkeypatch de model.time.sleep)
 import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402  (camada de leitura compartilhada de artefatos)
 import context_pack  # noqa: E402
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-import state_index   # noqa: E402  (sibling; _key p/ dedup por TM)
-# Plumbing de API extraido p/ llm_client.py (re-exportado aqui p/ compat: model._client/_stream_final/...).
-from llm_client import (  # noqa: E402,F401
-    _MAX_BACKOFF, _load_dotenv, _client, _carta_text, _transient_errors, _with_backoff,
-    _stream_final, _await_batch, _text_of, _usage_of, _add_usage)
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
+
+# Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
+from back_translate import (  # noqa: E402,F401
+    _BACK_SCHEMA,
+    _api_back_translate,
+    _back_params,
+    _ln_entry,
+    _plan_lines,
+    _write_back_prompt,
+    back_translate,
+    back_translate_candidates,
+    batch_back_translate,
+    high_risk_lines,
+    invalidate_back_translation,
+    sample_low_risk_lines,
+)
 
 # Constantes de tier/custo/status extraidas p/ config.py (re-exportadas aqui p/ compat).
 from config import (  # noqa: E402,F401
-    MODEL_TRANSLATE, MODEL_BACK, MODEL_TRANSLATE_CHEAP, BACK_SAMPLE_RATE, MAX_OUTPUT_TOKENS,
-    _BATCH_CHUNK, _MAX_TRIES, EFFORT_TRANSLATE, THINK_TRANSLATE, BUDGET_TOLERANCE, BUDGET_ESCALATION,
-    AWAITING, READY, DONE,
-    TranslateResult, TranslateReady, TranslateAwaiting, TranslateDone,
-    BackTranslateResult, BackTranslateReady, BackTranslateAwaiting, BackTranslateDone, BackTranslateDoneApi)
-# Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
-from back_translate import (  # noqa: E402,F401
-    back_translate, _write_back_prompt, _BACK_SCHEMA, _back_params, _api_back_translate,
-    _plan_lines, _ln_entry, high_risk_lines, sample_low_risk_lines, back_translate_candidates,
-    invalidate_back_translation, batch_back_translate)
+    _BATCH_CHUNK,
+    _MAX_TRIES,
+    AWAITING,
+    BACK_SAMPLE_RATE,
+    BUDGET_ESCALATION,
+    BUDGET_TOLERANCE,
+    DONE,
+    EFFORT_TRANSLATE,
+    MAX_OUTPUT_TOKENS,
+    MODEL_BACK,
+    MODEL_TRANSLATE,
+    MODEL_TRANSLATE_CHEAP,
+    READY,
+    THINK_TRANSLATE,
+    BackTranslateAwaiting,
+    BackTranslateDone,
+    BackTranslateDoneApi,
+    BackTranslateReady,
+    BackTranslateResult,
+    TranslateAwaiting,
+    TranslateDone,
+    TranslateReady,
+    TranslateResult,
+)
+
+# Plumbing de API extraido p/ llm_client.py (re-exportado aqui p/ compat: model._client/_stream_final/...).
+from llm_client import (  # noqa: E402,F401
+    _MAX_BACKOFF,
+    _add_usage,
+    _await_batch,
+    _carta_text,
+    _client,
+    _load_dotenv,
+    _stream_final,
+    _text_of,
+    _transient_errors,
+    _usage_of,
+    _with_backoff,
+)
 
 
 def _no_effort_model(model: str) -> bool:
@@ -94,6 +133,16 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, 
             "skills_revision": pack.get("skills_revision", ""),
         }
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
+                "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
+    if backend == "ollama":
+        from ollama_client import OLLAMA_MODEL_DEFAULT  # import preguicoso — sem rede em import
+        m = model or OLLAMA_MODEL_DEFAULT
+        data, usage, meta = _ollama_translate(root, scene, pack, m)
+        data["_meta"] = {"model_id": m, "backend": "ollama",
+                         "doctrine_hash": pack.get("doctrine_hash", "")}
+        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        log_api_call(root, scene, "translate", f"ollama:{m}", usage)
         return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
     raise ValueError(f"backend desconhecido: {backend}")
@@ -146,7 +195,6 @@ _NL_RULE = (
 # _text_of / _usage_of / _add_usage -> llm_client.py (importados acima).
 # Preco/custo/ledger extraidos p/ cost.py (re-exportados aqui p/ compat: model.cost_of/log_api_call/_PRICE).
 from cost import _PRICE, cost_of, log_api_call  # noqa: E402,F401
-
 
 # _transient_errors / _with_backoff / _stream_final -> llm_client.py (importados acima).
 
@@ -422,6 +470,94 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                        f"faltam={last['missing']} paridade={last['bad_parity']}")
 
 
+# ------------------------------- OLLAMA backend -------------------------------
+# Backend local (zero custo de API). Usa a mesma prompt do API backend (doutrina + pack)
+# e o mesmo schema de saida (_TRANSLATION_SCHEMA). Sem cache nem batch — 1 request por cena.
+# Retry simples em cobertura/paridade (ate _MAX_TRIES tentativas).
+
+def _ollama_translate(root, scene, pack, model):
+    """Traduz uma cena usando Ollama local. Interface identica ao _api_translate.
+
+    Retorna (data, usage, meta). usage = {in, out, cache_read:0, cache_write:0}.
+    Custo = $0 (local). Sem tiering, sem batch — path simples e direto.
+    """
+    from ollama_client import _chat as _oc_chat
+    from ollama_client import _text_of as _oc_text
+    from ollama_client import _usage_of as _oc_usage
+
+    reuse = _select_reuse(pack, enabled=True)
+    reuse.update(_label_passthrough(pack))
+    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
+    meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
+    if not novel:
+        return {"lines": dict(reuse)}, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}, meta
+
+    tok = context_pack.TOKEN
+    offsets = [r["offset"] for r in novel]
+    offset_set = set(offsets)
+    srcmap = {r["offset"]: r.get("source", "") for r in novel}
+
+    system_text = _carta_text()
+    merged = {}
+    usage = {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
+    target, note = novel, ""
+
+    for attempt in range(_MAX_TRIES):
+        red = dict(pack); red["lines"] = target; red["n_lines"] = len(target)
+        user_text = context_pack.render_prompt(red, carta="") + _NL_RULE + note
+        messages = [
+            {"role": "system", "content": system_text},
+            {"role": "user",   "content": user_text},
+        ]
+        try:
+            resp = _oc_chat(model, messages, fmt=_TRANSLATION_SCHEMA)
+        except RuntimeError as e:
+            raise RuntimeError(f"_ollama_translate (tentativa {attempt+1}): {e}") from e
+
+        u = _oc_usage(resp)
+        _add_usage(usage, u)
+
+        try:
+            data = _to_map(json.loads(_oc_text(resp)))
+        except Exception:
+            if attempt < _MAX_TRIES - 1:
+                note = "\n\n## CORRECAO: resposta anterior era JSON invalido. Tente novamente.\n"
+                continue
+            break
+
+        novel_by_off = {r["offset"]: r for r in novel}
+        for off, v in data.get("lines", {}).items():
+            if off not in offset_set or not isinstance(v, dict):
+                continue
+            v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
+            if _is_blowup(srcmap.get(off, ""), v["t"]):
+                continue
+            if off not in merged:
+                merged[off] = v
+            else:
+                old_par = merged[off].get("t", "").count(tok) == srcmap.get(off, "").count(tok)
+                new_par = v.get("t", "").count(tok) == srcmap.get(off, "").count(tok)
+                if new_par and not old_par:
+                    merged[off] = v
+
+        missing = [o for o in offsets if o not in merged]
+        bad_par = [o for o in merged
+                   if merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
+        if not missing and not bad_par:
+            break
+
+        broken = set(missing) | set(bad_par)
+        target = [novel_by_off[o] for o in offsets if o in broken]
+        note = "\n\n## CORRECAO NECESSARIA (traduza SO as linhas acima)\n"
+        if missing:
+            note += f"- Faltam: {missing[:30]}\n"
+        if bad_par:
+            note += f"- Token de quebra errado: {bad_par[:20]}\n"
+
+    merged.update(reuse)
+    return {"lines": merged}, usage, meta
+
+
 # --------------------------- escalonamento CIRURGICO --------------------------
 # Quando a verify falha por fitting, NAO re-traduzir a cena inteira: so as linhas que ESTOURAM o budget.
 # Numa cena de 500 linhas com 2 estouros, re-traduz 2 (nao 500) -> corte de custo grande no caminho caro
@@ -674,13 +810,13 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                     reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
             break
-        batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
+        batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))  # noqa: B023  (_with_backoff invoca na hora)
         if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
             for scene in pending:
                 status.setdefault(scene, "timeout")
             return status
         # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
-        results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+        results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))  # noqa: B023  (_with_backoff invoca na hora)
         for result in results:
             cid = result.custom_id
             scene = cid.split("__", 1)[0]
@@ -716,7 +852,7 @@ def main():
     ap = argparse.ArgumentParser(description="Interface de modelo do harness (translate).")
     ap.add_argument("project")
     ap.add_argument("scene")
-    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api", "ollama"])
     ap.add_argument("--model", default=None)
     a = ap.parse_args()
     r = translate(a.project, a.scene, backend=a.backend, model=a.model)

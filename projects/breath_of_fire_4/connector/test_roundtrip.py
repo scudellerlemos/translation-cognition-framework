@@ -6,10 +6,8 @@ Rodar com jogo: pytest connector/test_roundtrip.py -v --dat-dir "C:/...english/D
 """
 
 import csv
-import hashlib
 import os
 import re
-import struct
 import sys
 from pathlib import Path
 
@@ -22,7 +20,13 @@ DIALOGS_CSV = PROJECT_ROOT / "artifacts" / "dialogs.csv"
 
 # Adiciona connector/ ao path para importar diretamente
 sys.path.insert(0, str(PROJECT_ROOT / "connector"))
-from extract import decode_string, encode_string, parse_toc, find_text_section, extract_section_strings
+from extract import (
+    decode_string,
+    encode_string,
+    extract_section_strings,
+    find_text_section,
+    parse_toc,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -165,7 +169,7 @@ def test_round_trip_byte_identical(dat_dir, tmp_path):
             for ptr_idx, _ptr, raw in strings
         }
 
-        from reinsert import rebuild_section, patch_dat_file
+        from reinsert import patch_dat_file, rebuild_section
         new_section = rebuild_section(section, identity_translations)
         new_data = patch_dat_file(original, entry_idx, new_section)
 
@@ -186,7 +190,7 @@ def test_round_trip_byte_identical(dat_dir, tmp_path):
 # ---------------------------------------------------------------------------
 def test_no_hardcoded_paths_in_connector_scripts():
     """Scripts do conector não devem ter caminhos absolutos hardcoded."""
-    abs_path_rx = re.compile(r'(?:[A-Za-z]:\\|/home/|/Users/|/root/)')
+    abs_path_rx = re.compile(r'(?<![A-Za-z])[A-Za-z]:\\|/home/|/Users/|/root/')
     connector_dir = PROJECT_ROOT / "connector"
     for py_file in connector_dir.glob("*.py"):
         if py_file.name.startswith("test_"):

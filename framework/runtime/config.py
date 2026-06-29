@@ -8,8 +8,8 @@ Tambem define os TypedDicts dos contratos de retorno das duas chamadas de IA (tr
 Tipar aqui (e nao em model.py) evita import circular: config <- back_translate <- model.
 """
 from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional, Union
 from typing import TypedDict
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
@@ -97,7 +97,7 @@ class TranslateDone(_TranslateBase):
     novel: int
 
 
-TranslateResult = Union[TranslateReady, TranslateAwaiting, TranslateDone]
+TranslateResult = TranslateReady | TranslateAwaiting | TranslateDone
 
 
 class _BackTranslateBase(TypedDict):
@@ -120,7 +120,7 @@ class BackTranslateAwaiting(_BackTranslateBase):
 class BackTranslateDone(_BackTranslateBase):
     """back_translate() concluida: reviewed=0 (sem linhas) ou backend api (status=DONE).
     `path` e None quando reviewed=0 (nenhuma linha de alto risco); str nos demais casos."""
-    path: Optional[str]
+    path: str | None
 
 
 class BackTranslateDoneApi(BackTranslateDone):
@@ -129,7 +129,7 @@ class BackTranslateDoneApi(BackTranslateDone):
     usage: dict    # {'in': int, 'out': int, 'cache_read': int, 'cache_write': int}
 
 
-BackTranslateResult = Union[BackTranslateReady, BackTranslateAwaiting, BackTranslateDone]
+BackTranslateResult = BackTranslateReady | BackTranslateAwaiting | BackTranslateDone
 
 
 class _RunSceneBase(TypedDict):
@@ -141,7 +141,7 @@ class _RunSceneBase(TypedDict):
 class RunSceneResult(_RunSceneBase, total=False):
     """Retorno de run_scene(). `status` e `scene` sempre presentes; demais por caminho."""
     high: int
-    verified: Optional[bool]
+    verified: bool | None
     problems: list
     error: str
 

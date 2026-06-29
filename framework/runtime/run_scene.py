@@ -21,6 +21,7 @@ as gates sobre cenas ja traduzidas (dry-run/dogfood).
 Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [--require-back] [--no-verify]
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -29,14 +30,23 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import context_pack   # noqa: E402
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-import model as M      # noqa: E402
-import state_index     # noqa: E402
-import kb_gate         # noqa: E402
-from config import RunSceneResult, RunSceneOptions, CONNECTOR_REGISTRY, CONNECTOR_KNOWN_KEYS  # noqa: E402
-from connector_mgr import (                                                                    # noqa: E402
-    _connector_script, _connector_hash, _run, _verify_status, _warn_if_connector_stale,
+import context_pack  # noqa: E402
+import kb_gate  # noqa: E402
+import model as M  # noqa: E402
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import state_index  # noqa: E402
+from config import (  # noqa: E402
+    CONNECTOR_KNOWN_KEYS,
+    CONNECTOR_REGISTRY,
+    RunSceneOptions,
+    RunSceneResult,
+)
+from connector_mgr import (  # noqa: E402
+    _connector_hash,
+    _connector_script,
+    _run,
+    _verify_status,
+    _warn_if_connector_stale,
 )
 
 
@@ -159,12 +169,12 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
     import hashlib as _hl
     _cp_hash = context_pack._doctrine_hash(root)
     _sp = paths.scene_prompt(root, scene)
-    _pr_hash = _hl.sha1(_sp.read_bytes()).hexdigest()[:16] if _sp.is_file() else ""
+    _pr_hash = _hl.sha1(_sp.read_bytes(), usedforsecurity=False).hexdigest()[:16] if _sp.is_file() else ""
     if _cp_hash or _pr_hash:
         _checkpoint(root, scene, {"doctrine_hash": _cp_hash, "prompt_hash": _pr_hash})
 
     if tr["status"] == M.AWAITING:
-        print(f"[2/6] AGUARDANDO traducao (caminho assinatura): responda o prompt limitado")
+        print("[2/6] AGUARDANDO traducao (caminho assinatura): responda o prompt limitado")
         print(f"      prompt : {tr['prompt']}")
         print(f"      saida  : {tr['expected_output']}")
         print("      -> rode novamente apos o arquivo aparecer. (checkpoint: 'packed')")
@@ -443,7 +453,7 @@ def main():
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene", nargs="?", default=None)
-    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api", "ollama"])
     ap.add_argument("--require-back", action="store_true",
                     help="bloqueia se a back-translation de alto risco faltar")
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")

@@ -17,6 +17,7 @@ Checagens (deterministas, sem rede):
 Uso (CLI):  python kb_gate.py <projeto> <scene>
 """
 from __future__ import annotations
+
 import json
 import re
 import sys
@@ -26,7 +27,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 # Artefatos de KB: hard = NUNCA bypassavel (nem com --skip-kb-gate); skip = bypassavel
 _KB_HARD = ("universe_knowledge_base.md",)

@@ -20,6 +20,7 @@ GOVERNANCA: cena descartavel em tempdir (NAO polui o projeto); requer ANTHROPIC_
 Uso:  python batch_smoke.py
 """
 from __future__ import annotations
+
 import json
 import sys
 import tempfile
@@ -29,8 +30,8 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import model          # noqa: E402
-import paths          # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
 
 
 def evaluate(status: dict, ledger_rows: list, scene: str) -> tuple[bool, list]:
@@ -80,7 +81,7 @@ def main():
 
     tmp = Path(tempfile.mkdtemp(prefix="batch_smoke_"))
     (tmp / "artifacts" / scene).mkdir(parents=True)
-    print(f"[smoke] cena minima (2 linhas: 1 Haiku + 1 Sonnet) -> API REAL de batch (~$0.02, minutos)...")
+    print("[smoke] cena minima (2 linhas: 1 Haiku + 1 Sonnet) -> API REAL de batch (~$0.02, minutos)...")
     try:
         status = model.batch_translate(tmp, [scene], poll_seconds=15, max_rounds=2)
     except Exception as e:
