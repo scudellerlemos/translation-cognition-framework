@@ -203,17 +203,20 @@ class Store:
     # ── Knowledge base (lore) ────────────────────────────────────────────────────
 
     def upsert_kb(self, project_id: str, entries: list):
-        """Seções da KB em LOTE (1 commit). entries: [{section, content}]."""
+        """Seções da KB em LOTE (1 commit). entries: [{section, content, reveal}]."""
         self._con.executemany(
-            """INSERT INTO kb(project_id, section, content) VALUES(?,?,?)
-               ON CONFLICT(project_id, section) DO UPDATE SET content=excluded.content""",
-            [(project_id, e.get("section", ""), e.get("content", "")) for e in entries],
+            """INSERT INTO kb(project_id, section, content, reveal) VALUES(?,?,?,?)
+               ON CONFLICT(project_id, section) DO UPDATE SET
+                   content=excluded.content, reveal=excluded.reveal""",
+            [(project_id, e.get("section", ""), e.get("content", ""), e.get("reveal"))
+             for e in entries],
         )
         self._con.commit()
 
     def get_kb(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
-            "SELECT section, content FROM kb WHERE project_id=? ORDER BY id", (project_id,)
+            "SELECT section, content, reveal FROM kb WHERE project_id=? ORDER BY id",
+            (project_id,),
         ).fetchall()
         return [dict(r) for r in rows]
 
