@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -146,22 +147,33 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     return total, approved_n
 
 
+_KB_REVEAL_RX = re.compile(r"<!--\s*reveal:\s*([^\s>]+)\s*-->", re.IGNORECASE)
+
+
 def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
-    """universe_knowledge_base.md → tabela kb, uma entrada por seção (## / ###)."""
+    """universe_knowledge_base.md → tabela kb, uma entrada por seção (## / ###). Lê o
+    reveal explícito da seção via `<!-- reveal: <scene>|beyond_frontier|safe -->` no cabeçalho;
+    sem tag → reveal=NULL (default-deny no context_pack: não injeta)."""
     p = root / "artifacts" / "universe_knowledge_base.md"
     if not p.is_file():
         return 0
     entries = []
-    section, buf = None, []
+    section, reveal, buf = None, None, []
+
+    def _flush():
+        if section and "\n".join(buf).strip():
+            entries.append({"section": section, "content": "\n".join(buf).strip(), "reveal": reveal})
+
     for line in p.read_text(encoding="utf-8").splitlines():
         if line.startswith(("## ", "### ")):
-            if section and "\n".join(buf).strip():
-                entries.append({"section": section, "content": "\n".join(buf).strip()})
-            section, buf = line.lstrip("# ").strip(), []
+            _flush()
+            m = _KB_REVEAL_RX.search(line)
+            reveal = m.group(1) if m else None
+            section = _KB_REVEAL_RX.sub("", line).lstrip("# ").strip()
+            buf = []
         elif section is not None:
             buf.append(line)
-    if section and "\n".join(buf).strip():
-        entries.append({"section": section, "content": "\n".join(buf).strip()})
+    _flush()
     if entries:
         db.upsert_kb(project_id, entries)
     return len(entries)

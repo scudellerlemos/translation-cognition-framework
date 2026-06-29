@@ -42,13 +42,16 @@ Depende da Fase 2 (corpus no DB), mas dá pra começar já com a TM aprovada que
 **🟢 nº2 — KB/lore (Fase 3).** `universe_knowledge_base.md` agora está no DB (tabela `kb`, por seção).
 Retrieval da KB por cena injetaria lore relevante. **Trava obrigatória:** filtro temporal de spoiler.
 
-**Status (jun/2026): migração feita; INJEÇÃO BLOQUEADA por segurança.** A validação com dado real do
-Utawarerumono (ledger: `Ukon` reveal 13_08, `Oshtor`/figuras-de-memória `beyond_frontier`) mostrou que um
-gate por **texto** não garante zero-leak: triggers do ledger são no idioma-fonte (EN) e a KB é pt-BR com
-acento; uma seção spoiler sem marcador nativo (ex.: "Mulher (figura de memória)", trigger "Woman") **passa
-o gate e vazaria**. `context_pack.select_kb` existe mas está **EXPERIMENTAL, NÃO ligado** no `build_pack`.
-**Pré-requisito p/ ligar:** reveal estruturado POR SEÇÃO da KB (linkagem KB↔ledger por entidade/reveal),
-não matching textual. Vira item junto da evolução de KB/conector.
+**Status (jun/2026): migração feita; injeção LIGADA com gate DEFAULT-DENY (seguro por construção).**
+A validação com dado real do Utawarerumono mostrou que um gate por **texto** não garante zero-leak
+(triggers do ledger em EN vs KB pt-BR com acento; seção spoiler sem marcador, ex.: "Mulher (figura de
+memória)", vazava). **Conserto:** a segurança deixou de depender de matching e passou a ser **fail-safe**:
+- a tabela `kb` tem coluna **`reveal`** (lida de `<!-- reveal: <scene>|beyond_frontier|safe -->` por seção);
+- `context_pack.select_kb` é **default-deny**: injeta uma seção SÓ se `reveal`='safe' ou `reveal` ≤ cena
+  atual; **sem tag / beyond_frontier / futuro → excluída**. Dado não-anotado nunca vaza.
+
+**Pré-requisito de UTILIDADE (não de segurança):** anotar as seções da KB com `<!-- reveal: ... -->`
+(curadoria humana, como o `spoiler_ledger`). Enquanto não anotar, o gate não injeta nada (seguro).
 
 **🟢 nº3 — Cross-game/franquia (Fase 7).** Quando houver 2+ jogos da mesma série: corpus de
 lore/terminologia compartilhado, recuperado por cena. É o caso onde RAG escala (corpus grande,
