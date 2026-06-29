@@ -1,5 +1,5 @@
 {
-  "title": "Breath of Fire IV — Local (Ollama POC)",
+  "title": "Translation Local — Inferência local (Ollama)",
   "media_type": "game",
   "media_profile": "games",
   "source_language": "en",
@@ -43,5 +43,5 @@
     "host": "http://localhost:11434",
     "note": "Hardware alvo: AMD RX 6650 XT 8GB (ROCm/RDNA2). Velocidade esperada: 10-15 tok/s (partial GPU offload). Alternativa: qwen2.5:7b para full VRAM (25-40 tok/s, menor qualidade)."
   },
-  "notes": "POC de inferência local — objetivo: validar que o pipeline funciona com backend Ollama (zero custo de API). Reutiliza conector e dados do BoF4. Benchmark: qualidade local vs baseline Sonnet aprovado. Usar: python run_scene.py projects/bof4_local AREAD001 --backend ollama"
+  "notes": "POC de inferência local — objetivo: validar que o pipeline funciona com backend Ollama (zero custo de API). Reutiliza conector e dados do BoF4. Benchmark: qualidade local vs baseline Sonnet aprovado. Usar: python run_scene.py projects/translation_local AREAD001 --backend ollama"
 }
