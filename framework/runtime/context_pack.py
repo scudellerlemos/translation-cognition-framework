@@ -259,33 +259,73 @@ def project_constraints(cfg: dict) -> dict:
     }
 
 
-def build_pack(root: Path, scene: str) -> dict:
-    root = Path(root)
-    scene_dir = paths.scene_dir(root, scene)
-    if not (scene_dir / "dialogs.csv").is_file():
-        raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
-    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
-        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
+def _db_path(root: Path, cfg: dict):
+    """(db_path, project_id) se o projeto declara um `db` populado; senão (None, None).
+    Com DB presente, o context_pack lê as fontes do SQLite; senão, dos flat files (BoF4)."""
+    db = cfg.get("db") or {}
+    rel = db.get("path")
+    if not rel:
+        return None, None
+    p = Path(root) / rel
+    if not p.is_file():
+        return None, None
+    return p, db.get("project_id", "")
+
+
+def _load_sources_db(db_path: Path, project_id: str):
+    """Lê glossary/voice_cards/decisions/tm/ledger do SQLite e ADAPTA para a MESMA forma
+    dos loaders flat (assim os select_* não precisam saber a origem)."""
+    _db_dir = str(FRAMEWORK / "db")
+    if _db_dir not in sys.path:
+        sys.path.insert(0, _db_dir)
+    from store import Store
+    with Store(db_path) as db:
+        g_rows = db.get_glossary(project_id)
+        vc_rows = db.get_voice_cards(project_id)
+        dec_rows = db.get_decisions(project_id)
+        sp_rows = db.get_spoiler_entries(project_id)
+        tm_rows = db.get_translations(project_id, approved_only=True)
+    glossary = [{
+        "term": r.get("term", ""), "aliases": r.get("aliases") or "",
+        "category": r.get("category") or "", "target_translation": r.get("translation") or "",
+        "handling_rule": r.get("handling_rule") or "", "spoiler_level": r.get("spoiler_level") or "",
+        "notes": r.get("notes") or "",
+    } for r in g_rows]
+    voice_cards = {r["speaker"]: {
+        "aliases": r.get("aliases") or [], "criticality": r.get("criticality") or "",
+        "lines": r.get("lines") or [],
+    } for r in vc_rows}
+    decisions = [{
+        "title": d.get("title", ""), "summary": d.get("summary") or "",
+        "universal": bool(d.get("universal")), "tags": d.get("tags") or [],
+    } for d in dec_rows]
+    tm = [{
+        "src_key": state_index._key(r.get("source", "")), "source": r.get("source", ""),
+        "target": r.get("target") or "", "speaker": r.get("speaker") or "",
+        "scene": r.get("scene_id") or "",
+    } for r in tm_rows]
+    ledger = {"entries": [{
+        "entity": e.get("entity", ""), "fact": e.get("fact") or "",
+        "spoiler_level": e.get("spoiler_level") or "", "reveal": e.get("reveal") or "beyond_frontier",
+        "scenes": e.get("scenes") or [], "triggers": e.get("triggers") or [],
+        "pre_reveal": e.get("pre_reveal") or "",
+    } for e in sp_rows]}
+    return glossary, voice_cards, decisions, tm, ledger
+
+
+def _load_sources(root: Path, cfg: dict):
+    """(glossary, voice_cards, decisions, tm, ledger) — do SQLite se o projeto tem `db`
+    populado; senão dos flat files (comportamento original; BoF4 intacto)."""
+    db_path, db_pid = _db_path(root, cfg)
+    if db_path:
+        return _load_sources_db(db_path, db_pid)
     state = paths.state_dir(root)
     if not (paths.translation_memory(root)).is_file():
         state_index.build(root)               # auto-constroi os indices se faltarem
-
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    rows = load_dialogs(scene_dir / "dialogs.csv")
-    blob_low = "\n".join(r["source"] for r in rows).lower()
-
     glossary = load_glossary(paths.glossary(root))
     voice_cards = json.loads(_read(state / "voice_cards.json") or "{}")
     decisions = json.loads(_read(state / "decision_index.json") or "[]")
     tm = load_tm(paths.translation_memory(root))
-
-    gsub = select_glossary(glossary, blob_low)
-    voices = select_voices(voice_cards, blob_low)
-    present_terms = [g["term"] for g in gsub]
-    present_speakers = list(voices.keys())
-    dsel = select_decisions(decisions, present_terms, present_speakers)
-    tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
-
     ledger_path = paths.spoiler_ledger(root)
     if not ledger_path.is_file():
         import warnings
@@ -296,6 +336,29 @@ def build_pack(root: Path, scene: str) -> dict:
         ledger = {}
     else:
         ledger = json.loads(_read(ledger_path) or "{}")
+    return glossary, voice_cards, decisions, tm, ledger
+
+
+def build_pack(root: Path, scene: str) -> dict:
+    root = Path(root)
+    scene_dir = paths.scene_dir(root, scene)
+    if not (scene_dir / "dialogs.csv").is_file():
+        raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
+    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
+        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
+    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    rows = load_dialogs(scene_dir / "dialogs.csv")
+    blob_low = "\n".join(r["source"] for r in rows).lower()
+
+    glossary, voice_cards, decisions, tm, ledger = _load_sources(root, cfg)
+
+    gsub = select_glossary(glossary, blob_low)
+    voices = select_voices(voice_cards, blob_low)
+    present_terms = [g["term"] for g in gsub]
+    present_speakers = list(voices.keys())
+    dsel = select_decisions(decisions, present_terms, present_speakers)
+    tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
+
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
     return {

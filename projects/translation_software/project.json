@@ -40,6 +40,7 @@
   },
   "db": {
     "path": "translation_software.db",
+    "project_id": "bof4",
     "schema": "framework/db/schema.sql",
     "note": "SQLite como fonte única de verdade. Migrar flat files com: python framework/db/migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db"
   },
