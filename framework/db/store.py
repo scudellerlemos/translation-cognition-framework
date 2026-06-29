@@ -141,18 +141,24 @@ class Store:
     # ── Glossário ────────────────────────────────────────────────────────────
 
     def upsert_glossary(self, project_id: str, term: str, translation: str,
-                        handling_rule: str = None, domain: str = None, notes: str = None):
+                        handling_rule: str = None, domain: str = None,
+                        category: str = None, aliases: str = None,
+                        spoiler_level: str = None, notes: str = None):
         self._con.execute(
             """INSERT INTO glossary(project_id, term, translation, handling_rule,
-                                    domain, notes, updated_at)
-               VALUES(?,?,?,?,?,?,?)
+                                    domain, category, aliases, spoiler_level, notes, updated_at)
+               VALUES(?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(project_id, term) DO UPDATE SET
                    translation=excluded.translation,
                    handling_rule=COALESCE(excluded.handling_rule, handling_rule),
                    domain=COALESCE(excluded.domain, domain),
+                   category=COALESCE(excluded.category, category),
+                   aliases=COALESCE(excluded.aliases, aliases),
+                   spoiler_level=COALESCE(excluded.spoiler_level, spoiler_level),
                    notes=COALESCE(excluded.notes, notes),
                    updated_at=excluded.updated_at""",
-            (project_id, term, translation, handling_rule, domain, notes, time.time()),
+            (project_id, term, translation, handling_rule, domain, category,
+             aliases, spoiler_level, notes, time.time()),
         )
         self._con.commit()
 
@@ -192,21 +198,27 @@ class Store:
     def upsert_voice_card(self, project_id: str, speaker: str,
                           register: str = None, quirks: list = None,
                           example_src: list = None, example_tgt: list = None,
-                          criticality: str = "medium"):
+                          criticality: str = "medium",
+                          aliases: list = None, lines: list = None):
         self._con.execute(
-            """INSERT INTO voice_cards(project_id, speaker, register, quirks,
-                                       example_src, example_tgt, criticality)
-               VALUES(?,?,?,?,?,?,?)
+            """INSERT INTO voice_cards(project_id, speaker, aliases, register, quirks,
+                                       example_src, example_tgt, lines, criticality)
+               VALUES(?,?,?,?,?,?,?,?,?)
                ON CONFLICT(project_id, speaker) DO UPDATE SET
+                   aliases=COALESCE(excluded.aliases, aliases),
                    register=COALESCE(excluded.register, register),
                    quirks=COALESCE(excluded.quirks, quirks),
                    example_src=COALESCE(excluded.example_src, example_src),
                    example_tgt=COALESCE(excluded.example_tgt, example_tgt),
+                   lines=COALESCE(excluded.lines, lines),
                    criticality=excluded.criticality""",
-            (project_id, speaker, register,
+            (project_id, speaker,
+             json.dumps(aliases or [], ensure_ascii=False),
+             register,
              json.dumps(quirks or [], ensure_ascii=False),
              json.dumps(example_src or [], ensure_ascii=False),
              json.dumps(example_tgt or [], ensure_ascii=False),
+             json.dumps(lines or [], ensure_ascii=False),
              criticality),
         )
         self._con.commit()
@@ -218,11 +230,76 @@ class Store:
         result = []
         for r in rows:
             d = dict(r)
+            d["aliases"] = json.loads(d.get("aliases") or "[]")
             d["quirks"] = json.loads(d.get("quirks") or "[]")
             d["example_src"] = json.loads(d.get("example_src") or "[]")
             d["example_tgt"] = json.loads(d.get("example_tgt") or "[]")
+            d["lines"] = json.loads(d.get("lines") or "[]")
             result.append(d)
         return result
+
+    # ── Decisões ───────────────────────────────────────────────────────────────
+
+    def upsert_decision(self, project_id: str, title: str, summary: str = None,
+                        universal: bool = False, tags: list = None):
+        self._con.execute(
+            """INSERT INTO decisions(project_id, title, summary, universal, tags)
+               VALUES(?,?,?,?,?)
+               ON CONFLICT(project_id, title) DO UPDATE SET
+                   summary=COALESCE(excluded.summary, summary),
+                   universal=excluded.universal,
+                   tags=COALESCE(excluded.tags, tags)""",
+            (project_id, title, summary, int(universal),
+             json.dumps(tags or [], ensure_ascii=False)),
+        )
+        self._con.commit()
+
+    def get_decisions(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT * FROM decisions WHERE project_id=? ORDER BY id", (project_id,)
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["universal"] = bool(d.get("universal"))
+            d["tags"] = json.loads(d.get("tags") or "[]")
+            out.append(d)
+        return out
+
+    # ── Spoiler ────────────────────────────────────────────────────────────────
+
+    def upsert_spoiler_entry(self, project_id: str, entity: str, fact: str = None,
+                             spoiler_level: str = None, reveal: str = None,
+                             scenes: list = None, triggers: list = None,
+                             pre_reveal: str = None):
+        self._con.execute(
+            """INSERT INTO spoiler_entries(project_id, entity, fact, spoiler_level,
+                                           reveal, scenes, triggers, pre_reveal)
+               VALUES(?,?,?,?,?,?,?,?)
+               ON CONFLICT(project_id, entity, fact) DO UPDATE SET
+                   spoiler_level=excluded.spoiler_level,
+                   reveal=excluded.reveal,
+                   scenes=excluded.scenes,
+                   triggers=excluded.triggers,
+                   pre_reveal=excluded.pre_reveal""",
+            (project_id, entity, fact, spoiler_level, reveal,
+             json.dumps(scenes or [], ensure_ascii=False),
+             json.dumps(triggers or [], ensure_ascii=False),
+             pre_reveal),
+        )
+        self._con.commit()
+
+    def get_spoiler_entries(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT * FROM spoiler_entries WHERE project_id=? ORDER BY id", (project_id,)
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["scenes"] = json.loads(d.get("scenes") or "[]")
+            d["triggers"] = json.loads(d.get("triggers") or "[]")
+            out.append(d)
+        return out
 
     # ── Jobs (ledger) ─────────────────────────────────────────────────────────
 
@@ -268,6 +345,12 @@ class Store:
         n_voice = self._con.execute(
             "SELECT COUNT(*) FROM voice_cards WHERE project_id=?", (project_id,)
         ).fetchone()[0]
+        n_dec = self._con.execute(
+            "SELECT COUNT(*) FROM decisions WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
+        n_spoil = self._con.execute(
+            "SELECT COUNT(*) FROM spoiler_entries WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
         return {
             "project_id": project_id,
             "scenes": len(scenes),
@@ -276,6 +359,8 @@ class Store:
             "glossary": n_gloss,
             "entities": n_ent,
             "voice_cards": n_voice,
+            "decisions": n_dec,
+            "spoiler": n_spoil,
             "cost_usd": round(cost["total"] or 0, 4),
             "api_calls": cost["n_calls"],
         }
