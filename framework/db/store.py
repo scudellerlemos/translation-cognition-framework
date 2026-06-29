@@ -140,6 +140,23 @@ class Store:
 
     # ── Glossário ────────────────────────────────────────────────────────────
 
+    def get_translations(self, project_id: str, approved_only: bool = True) -> list[dict]:
+        """Traduções da TM (scene_id/offset/source/target/speaker), ordenadas — fonte da
+        TM consumida pelo context_pack no modo DB. approved_only reflete a TM revisada."""
+        if approved_only:
+            rows = self._con.execute(
+                "SELECT scene_id, offset, source, target, speaker FROM translations "
+                "WHERE project_id=? AND approved=1 ORDER BY scene_id, offset",
+                (project_id,),
+            ).fetchall()
+        else:
+            rows = self._con.execute(
+                "SELECT scene_id, offset, source, target, speaker FROM translations "
+                "WHERE project_id=? ORDER BY scene_id, offset",
+                (project_id,),
+            ).fetchall()
+        return [dict(r) for r in rows]
+
     def upsert_glossary(self, project_id: str, term: str, translation: str,
                         handling_rule: str = None, domain: str = None,
                         category: str = None, aliases: str = None,
