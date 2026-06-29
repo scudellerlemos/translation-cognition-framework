@@ -181,6 +181,28 @@ class Store:
         return [{"offset": r["offset"], "source": r["source"],
                  "byte_budget": r["byte_budget"]} for r in rows]
 
+    # ── Back-translation ────────────────────────────────────────────────────────
+
+    def upsert_back_translations(self, project_id: str, scene_id: str, entries: list):
+        """Entradas de back-translation de uma cena em LOTE (1 commit)."""
+        self._con.executemany(
+            """INSERT INTO back_translations(project_id, scene_id, offset, back_en, verdict, note)
+               VALUES(?,?,?,?,?,?)
+               ON CONFLICT(project_id, scene_id, offset) DO UPDATE SET
+                   back_en=excluded.back_en, verdict=excluded.verdict, note=excluded.note""",
+            [(project_id, scene_id, e.get("offset", ""), e.get("back_en"),
+              e.get("verdict"), e.get("note")) for e in entries],
+        )
+        self._con.commit()
+
+    def get_back_translations(self, project_id: str, scene_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT offset, back_en, verdict, note FROM back_translations "
+            "WHERE project_id=? AND scene_id=? ORDER BY id",
+            (project_id, scene_id),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
     def upsert_glossary(self, project_id: str, term: str, translation: str,
                         handling_rule: str = None, domain: str = None,
                         category: str = None, aliases: str = None,

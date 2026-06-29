@@ -29,6 +29,7 @@ def test_migrate_bof4_imports_all_present_artifacts(bof4_migrated):
     assert result["glossary"] > 0, "glossary.csv existe mas importou 0 — mismatch de coluna?"
     assert result["entities"] > 0, "entities.csv existe mas importou 0 — mismatch de coluna?"
     assert result["voice_cards"] > 0, "voice_cards.json existe (artifacts/state/) mas importou 0 — path errado?"
+    assert result["back_translations"] > 0, "back_translation_*.json existe mas importou 0"
     assert result["jobs"] > 0, result
     assert "decisions" in result and "spoiler" in result, result
 
