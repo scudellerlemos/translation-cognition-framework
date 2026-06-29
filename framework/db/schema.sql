@@ -149,6 +149,18 @@ CREATE TABLE IF NOT EXISTS spoiler_entries (
     UNIQUE(project_id, entity, fact)
 );
 
+-- ── Back-translation (verificação pt-BR → EN de linhas de alto risco) ─────────
+CREATE TABLE IF NOT EXISTS back_translations (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    scene_id    TEXT NOT NULL,
+    offset      TEXT NOT NULL,
+    back_en     TEXT,
+    verdict     TEXT,                      -- pass | fail | ...
+    note        TEXT,
+    UNIQUE(project_id, scene_id, offset)
+);
+
 -- ── Jobs (ledger auditável) ───────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS jobs (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,

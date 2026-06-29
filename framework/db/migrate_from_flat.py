@@ -134,6 +134,27 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     return total, approved_n
 
 
+def _migrate_back_translations(db: Store, project_id: str, root: Path) -> int:
+    scenes_dir = root / "artifacts" / "scenes"
+    if not scenes_dir.is_dir():
+        return 0
+    n = 0
+    for scene_dir in sorted(scenes_dir.iterdir()):
+        if not scene_dir.is_dir():
+            continue
+        scene_id = scene_dir.name
+        for bt_path in sorted(scene_dir.glob("back_translation_*.json")):
+            try:
+                data = json.loads(bt_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            entries = [e for e in data.get("entries", []) if e.get("offset")]
+            if entries:
+                db.upsert_back_translations(project_id, scene_id, entries)
+                n += len(entries)
+    return n
+
+
 def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
     g_path = root / "artifacts" / "glossary.csv"
     if not g_path.is_file():
@@ -328,6 +349,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         voice_cards = _migrate_voice_cards(db, project_id, bof4_root)
         decisions = _migrate_decisions(db, project_id, bof4_root)
         spoiler = _migrate_spoiler(db, project_id, bof4_root)
+        back_translations = _migrate_back_translations(db, project_id, bof4_root)
         jobs = _migrate_jobs(db, project_id, bof4_root)
         return {
             "project_id": project_id,
@@ -340,6 +362,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             "voice_cards": voice_cards,
             "decisions": decisions,
             "spoiler": spoiler,
+            "back_translations": back_translations,
             "jobs": jobs,
             "db": str(dest_db),
         }

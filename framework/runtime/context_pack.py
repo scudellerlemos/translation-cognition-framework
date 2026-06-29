@@ -361,6 +361,39 @@ def _load_sources(root: Path, cfg: dict):
     return glossary, voice_cards, decisions, tm, ledger
 
 
+def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
+    """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
+    voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
+    Fallback gracioso: sem o stack de embeddings/sqlite-vec ou sem índice → [] (sem erro).
+    Determinismo: ordem estável (score desc, source) sobre vetores pré-computados no DB."""
+    if not db_path:
+        return []
+    try:
+        _db_dir = str(FRAMEWORK / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from embedder import Embedder
+        from store import Store
+        emb = Embedder()
+        out, seen = [], set()
+        with Store(db_path) as db:
+            for r in rows:
+                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k):
+                    if float(hit.get("score", 0)) >= 0.999:    # match exato já está em tm_exact
+                        continue
+                    key = (hit.get("source", ""), hit.get("target", ""))
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    out.append({"source": hit.get("source", ""), "target": hit.get("target", ""),
+                                "speaker": hit.get("speaker", ""),
+                                "score": round(float(hit.get("score", 0)), 3)})
+        out.sort(key=lambda h: (-h["score"], h["source"]))     # ordem estável (determinismo)
+        return out[:max_hits]
+    except Exception:
+        return []
+
+
 def build_pack(root: Path, scene: str) -> dict:
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
@@ -375,6 +408,8 @@ def build_pack(root: Path, scene: str) -> dict:
     present_speakers = list(voices.keys())
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
+    db_path, db_pid = _db_path(root, cfg)
+    tm_semantic = _load_tm_semantic(db_path, db_pid, rows) if db_path else []
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
@@ -389,6 +424,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "decisions": dsel,
         "tm_exact": tm_exact,
         "tm_voice": tm_voice,
+        "tm_semantic": tm_semantic,
         "spoiler_guards": spoiler_guards,
         "lines": rows,
     }
@@ -473,7 +509,11 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("**Voz estabelecida dos falantes (amostra):**")
         for e in pack["tm_voice"]:
             L.append(f"- {e['speaker']}: `{e['source']}` -> `{e['target']}`")
-    if not pack["tm_exact"] and not pack["tm_voice"]:
+    if pack.get("tm_semantic"):
+        L.append("**Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**")
+        for e in pack["tm_semantic"]:
+            L.append(f"- (~{e['score']}) `{e['source']}` -> `{e['target']}`")
+    if not pack["tm_exact"] and not pack["tm_voice"] and not pack.get("tm_semantic"):
         L.append("_(sem memoria previa para esta cena)_")
     L.append("")
     L.append("## 7. Linhas a traduzir")

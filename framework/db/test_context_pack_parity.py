@@ -76,6 +76,15 @@ def test_db_scene_lines_match_flat(bof4_migrated):
     assert dbrows == flat, "scene_lines do DB divergem do dialogs.csv flat"
 
 
+def test_tm_semantic_fallback_no_deps(bof4_migrated):
+    """RAG (Fase 2.5): sem o stack de embeddings (caso da CI), a TM semântica cai p/ []
+    sem erro. Com as deps + índice, retorna lista de vizinhos similares (validado local)."""
+    db_path, _ = bof4_migrated
+    rows = cp.load_dialogs(BOF4 / "artifacts" / "scenes" / "AREAD001" / "dialogs.csv")
+    res = cp._load_tm_semantic(db_path, "bof4", rows)
+    assert isinstance(res, list)  # sem deps → []; nunca lança
+
+
 def test_db_tm_is_well_formed(bof4_migrated):
     """TM do DB (proveniência = approved) não precisa igualar a flat, mas tem que ser
     bem-formada e não-vazia (não-degradação)."""
