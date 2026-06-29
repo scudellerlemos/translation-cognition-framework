@@ -100,23 +100,33 @@ def _parse_kb_md(path):
     return entries
 
 
-def test_kb_spoiler_gate_never_leaks_future_reveal():
-    """RAG nº2: o gate de spoiler da KB NUNCA injeta seção com reveal futuro. Validado com
-    dado REAL do Utawarerumono (ledger: Ukon reveal=13_08, Oshtor=beyond_frontier; KB tem a
-    seção '## Oshtor (= Ukon; reveal ch_13_08)' = o twist)."""
-    import json
+def test_kb_default_deny_unannotated_injects_nothing():
+    """RAG nº2 (default-deny): a KB do Uta NÃO tem tags `<!-- reveal -->`; logo NENHUMA seção é
+    injetada — inclui a seção-twist 'Oshtor (= Ukon)', que jamais pode aparecer pré-reveal.
+    Prova que dado não-anotado nunca vaza (a segurança não depende de matching de texto)."""
     uta = ROOT / "projects" / "utawarerumono"
-    ledger = json.loads((uta / "artifacts" / "spoiler_ledger.json").read_text(encoding="utf-8"))
     kb = _parse_kb_md(uta / "artifacts" / "universe_knowledge_base.md")
     assert any("Oshtor" in s["section"] for s in kb), "fixture: KB do uta deveria ter seção Oshtor"
-    blob = "ukon e oshtor aparecem nesta cena"        # ambos citados
-    # cena 11_03 = ANTES do reveal 13_08. Valida o gate p/ spoiler MARCADO (trigger/quarentena).
-    # (Furo conhecido — spoiler pt sem marcador, ex. 'Mulher (figura de memória)' — é o motivo
-    #  de select_kb NÃO estar ligado no build_pack; ver docstring.)
-    sel = cp.select_kb(kb, blob, ledger, "11_03")
-    joined = " ".join((s["section"] + " " + s["content"]).lower() for s in sel)
-    assert "oshtor" not in joined, "VAZOU o trigger Oshtor (twist) pré-reveal!"
-    assert "= ukon" not in joined, "VAZOU a identidade Oshtor=Ukon pré-reveal!"
+    blob = "ukon oshtor mulher kuon haku aperyu maroro"   # cita várias entidades
+    assert cp.select_kb(kb, blob, "11_03") == [], "default-deny: KB sem reveal anotado não injeta"
+
+
+def test_kb_default_deny_semantics():
+    """Gate por seção: 'safe' e reveal-passado ENTRAM; futuro/beyond_frontier/sem-tag NÃO."""
+    kb = [
+        {"section": "Kuon", "content": "x", "reveal": "11_01"},
+        {"section": "Glossario do mundo", "content": "x", "reveal": "safe"},
+        {"section": "Oshtor", "content": "x", "reveal": "13_08"},
+        {"section": "Mulher figura", "content": "x", "reveal": "beyond_frontier"},
+        {"section": "SemTag", "content": "x", "reveal": None},
+    ]
+    blob = "kuon oshtor mulher glossario semtag"
+    got = {s["section"] for s in cp.select_kb(kb, blob, "11_03")}
+    assert "Kuon" in got                       # reveal 11_01 <= 11_03
+    assert "Glossario do mundo" in got         # safe
+    assert "Oshtor" not in got                 # reveal 13_08 futuro
+    assert "Mulher figura" not in got          # beyond_frontier
+    assert "SemTag" not in got                 # sem tag → default-deny
 
 
 def test_db_tm_is_well_formed(bof4_migrated):

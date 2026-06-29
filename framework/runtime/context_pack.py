@@ -397,7 +397,6 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
 
 
 _KB_CAP = 5
-_KB_REVEAL_RX = re.compile(r"reveal\s+ch[_.]?(\d+[_.]\d+)", re.IGNORECASE)
 
 
 def _load_kb(db_path, project_id):
@@ -415,33 +414,29 @@ def _load_kb(db_path, project_id):
         return []
 
 
-def select_kb(kb, blob_low, ledger, scene_id, cap=_KB_CAP):
-    """EXPERIMENTAL — NÃO ligado no build_pack. Seções da KB relevantes à cena (cujo NOME/tema
-    aparece nas falas), com GATE de spoiler conservador: dropa a seção se contém (a) trigger de
-    reveal FUTURO, (b) marcador 'quarentena de spoiler', ou (c) 'reveal ch_<cena futura>'.
+_KB_SAFE = {"safe", "always", "sempre", "public", "publico"}
 
-    FURO CONHECIDO (por isso não está ligado): o matching é por texto e os triggers do ledger são
-    no idioma-fonte (EN), enquanto a KB é pt-BR com acento — uma seção spoiler em pt sem marcador
-    nativo (ex.: 'Mulher (figura de memória)', trigger 'Woman') PASSA o gate e vazaria. Só ligar
-    quando a KB tiver reveal estruturado POR SEÇÃO (linkagem KB↔ledger), não por texto."""
+
+def select_kb(kb, blob_low, scene_id, cap=_KB_CAP):
+    """Seções da KB relevantes à cena, com GATE de spoiler DEFAULT-DENY: uma seção só é injetada
+    se PROVADAMENTE segura — ou `reveal` marcado 'safe', ou `reveal` = uma cena JÁ passada
+    (≤ cena atual). Sem `reveal`, ou 'beyond_frontier', ou reveal FUTURO → EXCLUÍDA. A garantia
+    de não-vazamento vem do dado explícito por seção (não de matching de texto EN↔PT).
+    Relevância: o nome/tema da seção é citado nas falas. Determinístico, sem ML."""
     here = _pos(scene_id)
-    unsafe = []
-    for e in (ledger or {}).get("entries", []):
-        rev = e.get("reveal", "beyond_frontier")
-        future = True if rev == "beyond_frontier" else (_pos(rev) > here)
-        if future:
-            unsafe += [t for t in e.get("triggers", []) if t]
     out = []
     for sec in kb:
+        reveal = (sec.get("reveal") or "").strip().lower()
+        if reveal in _KB_SAFE:
+            allowed = True
+        elif reveal and reveal not in ("beyond_frontier", "bf"):
+            rp = _pos(reveal)
+            allowed = bool(rp) and rp <= here          # já revelado até esta cena
+        else:
+            allowed = False                            # sem tag / beyond_frontier → default-deny
+        if not allowed:
+            continue
         title = sec.get("section", "")
-        text = (title + "\n" + sec.get("content", "")).lower()
-        if any(_present(u, text) for u in unsafe):
-            continue                                  # SAFETY: trigger de reveal futuro
-        if "quarentena de spoiler" in text:
-            continue                                  # SAFETY: marcador nativo da KB
-        m = _KB_REVEAL_RX.search(text)
-        if m and _pos(m.group(1)) > here:
-            continue                                  # SAFETY: reveal declarado futuro
         toks = [w for w in re.split(r"[^\wçáàâãéêíóôõúü]+", title.lower()) if len(w) >= 4]
         if toks and any(_present(w, blob_low) for w in toks):  # relevância: tema citado na cena
             out.append({"section": title, "content": sec.get("content", "")})
@@ -466,9 +461,8 @@ def build_pack(root: Path, scene: str) -> dict:
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
     tm_semantic = _load_tm_semantic(db_path, db_pid, rows) if db_path else []
-    # KB NÃO é injetada ainda: o gate de spoiler por texto (select_kb) tem furos (acento/idioma
-    # EN↔PT, seções sem marcador) e poderia vazar reveal futuro. Só ligar quando a KB tiver
-    # reveal estruturado por seção (KB↔ledger). Ver framework/docs/DB_MIGRATION_ROADMAP.md.
+    # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
+    kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
@@ -484,6 +478,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "tm_exact": tm_exact,
         "tm_voice": tm_voice,
         "tm_semantic": tm_semantic,
+        "kb": kb,
         "spoiler_guards": spoiler_guards,
         "lines": rows,
     }
@@ -558,6 +553,12 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).")
         for g in guards:
             L.append(f"- **{g['entity']}** ({g['spoiler_level']}): {g['guard']}")
+        L.append("")
+    if pack.get("kb"):
+        L.append("## 5c. Lore relevante (KB — apenas fatos JA revelados ate esta cena)")
+        for s in pack["kb"]:
+            L.append(f"### {s['section']}")
+            L.append(s["content"])
         L.append("")
     L.append("## 6. Memoria de traducao (consistencia — nao reinventar)")
     if pack["tm_exact"]:

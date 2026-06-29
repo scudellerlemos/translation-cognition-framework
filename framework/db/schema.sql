@@ -156,6 +156,7 @@ CREATE TABLE IF NOT EXISTS kb (
     project_id  TEXT NOT NULL REFERENCES projects(id),
     section     TEXT NOT NULL,
     content     TEXT,
+    reveal      TEXT,                      -- <scene> | beyond_frontier | safe (default-deny: NULL = não injeta)
     UNIQUE(project_id, section)
 );
 
