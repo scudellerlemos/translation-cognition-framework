@@ -39,9 +39,16 @@ mas não está plugada** no pipeline (só via `cli db index`). Plugar no `contex
 seção separada e rotulada ataca o custo (re-tradução = 58% do gasto) e a consistência de voz.
 Depende da Fase 2 (corpus no DB), mas dá pra começar já com a TM aprovada que está migrada.
 
-**🟢 nº2 — KB/lore (Fase 3).** `universe_knowledge_base.md` não entra no pacote hoje. Retrieval
-semântico sobre a KB injeta lore relevante por cena. **Trava obrigatória:** filtro temporal de spoiler
-(o que já é "conhecido" naquela cena) — mesma disciplina do `spoiler_ledger`.
+**🟢 nº2 — KB/lore (Fase 3).** `universe_knowledge_base.md` agora está no DB (tabela `kb`, por seção).
+Retrieval da KB por cena injetaria lore relevante. **Trava obrigatória:** filtro temporal de spoiler.
+
+**Status (jun/2026): migração feita; INJEÇÃO BLOQUEADA por segurança.** A validação com dado real do
+Utawarerumono (ledger: `Ukon` reveal 13_08, `Oshtor`/figuras-de-memória `beyond_frontier`) mostrou que um
+gate por **texto** não garante zero-leak: triggers do ledger são no idioma-fonte (EN) e a KB é pt-BR com
+acento; uma seção spoiler sem marcador nativo (ex.: "Mulher (figura de memória)", trigger "Woman") **passa
+o gate e vazaria**. `context_pack.select_kb` existe mas está **EXPERIMENTAL, NÃO ligado** no `build_pack`.
+**Pré-requisito p/ ligar:** reveal estruturado POR SEÇÃO da KB (linkagem KB↔ledger por entidade/reveal),
+não matching textual. Vira item junto da evolução de KB/conector.
 
 **🟢 nº3 — Cross-game/franquia (Fase 7).** Quando houver 2+ jogos da mesma série: corpus de
 lore/terminologia compartilhado, recuperado por cena. É o caso onde RAG escala (corpus grande,
