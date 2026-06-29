@@ -373,7 +373,7 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
         if _db_dir not in sys.path:
             sys.path.insert(0, _db_dir)
         from embedder import Embedder
-        from store import Store
+        from store import Store, strip_codes
         emb = Embedder()
         out, seen = [], set()
         with Store(db_path) as db:
@@ -385,7 +385,9 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
                     if key in seen:
                         continue
                     seen.add(key)
-                    out.append({"source": hit.get("source", ""), "target": hit.get("target", ""),
+                    # exibe a forma LIMPA (sem códigos do jogo) — fiel fica no banco
+                    out.append({"source": strip_codes(hit.get("source", "")),
+                                "target": strip_codes(hit.get("target", "")),
                                 "speaker": hit.get("speaker", ""),
                                 "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["source"]))     # ordem estável (determinismo)

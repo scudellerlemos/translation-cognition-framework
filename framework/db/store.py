@@ -12,11 +12,23 @@ Uso:
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 import time
 from pathlib import Path
 
 _SCHEMA = Path(__file__).with_name("schema.sql")
+
+_CODE_RX = re.compile(r"\[[0-9A-Fa-f]{2}\]")
+
+
+def strip_codes(text: str) -> str:
+    """Forma LIMPA do texto: remove os códigos de controle do jogo (`[XX]`) e normaliza
+    espaços. Para LEITURA e EMBEDDING semântico — o `target` FIEL (com códigos) continua
+    intacto no banco (round-trip/conector dependem dele). Genérico (multi-game)."""
+    if not text:
+        return text or ""
+    return re.sub(r"\s+", " ", _CODE_RX.sub(" ", text)).strip()
 
 
 class Store:
@@ -155,7 +167,14 @@ class Store:
                 "WHERE project_id=? ORDER BY scene_id, offset",
                 (project_id,),
             ).fetchall()
-        return [dict(r) for r in rows]
+        out = []
+        for r in rows:
+            d = dict(r)
+            # forma limpa p/ leitura/semântica; o source/target fiel (com códigos) fica intacto
+            d["source_clean"] = strip_codes(d.get("source") or "")
+            d["target_clean"] = strip_codes(d.get("target") or "")
+            out.append(d)
+        return out
 
     # ── Linhas da cena (dialogs) ────────────────────────────────────────────────
 
