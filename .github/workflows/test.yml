@@ -43,3 +43,14 @@ jobs:
 
       - name: Run validation tests
         run: python -m pytest framework/validation/ -v --tb=short
+
+      # Testes de contrato do conector (round-trip byte-idêntico = oráculo).
+      # Passos SEPARADOS por projeto: test_roundtrip.py tem basename repetido entre
+      # bof4/uta e colidiria numa coleta única. Sem o binário do jogo (gitignored),
+      # os testes que o exigem fazem pytest.skip; codec/schema/governança rodam.
+      - name: Connector contract — BoF4
+        run: python -m pytest projects/breath_of_fire_4/connector/ -v --tb=short
+      - name: Connector contract — Utawarerumono
+        run: python -m pytest projects/utawarerumono/connector/ -v --tb=short
+      - name: Connector skeleton contract
+        run: python -m pytest framework/connectors/_skeleton/ -v --tb=short
