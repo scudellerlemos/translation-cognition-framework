@@ -1,3 +1,7 @@
+# API Smoke — verificação opcional de que a Batch API da Anthropic ainda responde como
+# esperado (detecta breaking changes no SDK/endpoint antes de iniciar um capítulo novo).
+# NÃO roda em push: só no cron semanal e por disparo manual, porque faz uma chamada de
+# rede real (~$0.002) e depende do secret ANTHROPIC_API_KEY.
 name: API Smoke
 
 on:
@@ -6,7 +10,10 @@ on:
     - cron: '0 4 * * 0'   # domingo 04:00 UTC — detecta breaking changes na Batch API
 
 jobs:
+  # SMOKE — instala deps, checa se a key existe e (se existir) roda o smoke da Batch API.
+  # Sem o secret ANTHROPIC_API_KEY o smoke é PULADO (run verde), não falha.
   smoke:
+    name: Smoke da Batch API (~$0.002; pula sem a key)
     runs-on: ubuntu-latest
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
