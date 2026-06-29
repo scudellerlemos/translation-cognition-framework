@@ -54,6 +54,22 @@ não indexável por regra). Pós-cutover.
 3. **Modelo pinado** — nome+versão gravados (`tm_embeddings.model_name`); trocar modelo = reindex explícito.
 4. **Seção semântica SEPARADA e rotulada** no pacote — nunca misturar no bloco de match exato. Núcleo determinístico intocado; RAG é suplemento auditável.
 
+## Limpeza de texto (códigos do jogo) — decisão
+
+O `target` da TM é **fiel** (com os códigos `[XX]` do engine; o round-trip/conector dependem disso).
+Para leitura e embedding semântico existe uma forma **limpa** derivada: `store.strip_codes()` —
+**genérico**, remove os `[XX]` (não-ASCII) e normaliza espaços. Cobre ~95% do ruído.
+
+Sobram artefatos **ASCII-controle** específicos do engine (ex.: `@` = 0x40, o `A` = 0x41 após
+`[14][XX]`) — o `decode_string` os renderiza como letra porque são ASCII, e não dá pra distinguir
+controle de texto **por valor** (`A` é letra normal no meio de palavra). Limpá-los exige a
+**gramática dos opcodes**, que é **conhecimento do conector**, não do framework.
+
+**Decisão (jun/2026):** o `strip_codes` genérico fica como está; a limpeza connector-aware
+(`to_plain()` por engine, mapeando a gramática completa de opcodes) é item da **evolução do
+conector** (pós-produção) — ver [[connector-evolution-vision]]. NÃO tentar remover `@`/`A` no
+helper genérico (risco de comer texto real).
+
 ## Pré-requisito atravessador
 
 A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Quanto mais corpus migrado
