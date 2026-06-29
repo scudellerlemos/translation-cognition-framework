@@ -17,8 +17,8 @@ import json
 import sys
 from pathlib import Path
 
-import sdat_format as S
 import reinsert as R
+import sdat_format as S
 
 ROOT = Path(__file__).resolve().parent.parent
 

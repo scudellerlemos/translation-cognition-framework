@@ -20,6 +20,7 @@ Governanca: read-only, sem rede, sem work-text. Uso:
   python kb_review.py <projeto> <capitulo> [--json]
 """
 from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -31,13 +32,13 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import paths          # noqa: E402
+import paths  # noqa: E402
 
 
 def _research_section(md: str, chap: str) -> str:
     """Texto da secao '## cap.<chap>' do research_log.md (ate o proximo '## '). '' se nao houver."""
     # casa '## cap.19' / '## cap.19 — ...' (limite em '.' p/ nao casar cap.1 com cap.19)
-    pat = re.compile(r"^##\s+cap\.%s\b.*$" % re.escape(chap), re.MULTILINE)
+    pat = re.compile(rf"^##\s+cap\.{re.escape(chap)}\b.*$", re.MULTILINE)
     m = pat.search(md)
     if not m:
         return ""

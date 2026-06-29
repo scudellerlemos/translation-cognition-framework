@@ -20,6 +20,7 @@ Preços (US$/Mtok, cache do skill claude-api em 2026-05-26):
 Uso:  python cost_model.py <dir-do-projeto> [--report]   (--report grava artifacts/cost_report.md)
 """
 from __future__ import annotations
+
 import csv
 import json
 import sys

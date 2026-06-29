@@ -18,6 +18,7 @@ Uso:  python naturalness_lint.py <dir-do-projeto>     (default: diretório atual
 Saída: imprime os achados + grava `<projeto>/artifacts/naturalness_lint.json`.
 """
 from __future__ import annotations
+
 import csv
 import json
 import re
