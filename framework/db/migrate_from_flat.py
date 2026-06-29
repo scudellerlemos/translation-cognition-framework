@@ -82,11 +82,11 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
 
 
 def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, int]:
-    """TM com CONTEÚDO: source/target/speaker/metadata vêm do translation_plan_*.json
-    (target = base_translation, a forma LEGÍVEL com acento). O approved_*.csv só diz QUAIS
-    offsets passaram pela revisão humana → marca `approved`. (O approved tem apenas
-    offset,text_target — a forma transliterada do conector — então NÃO serve de target da TM.)
-    Retorna (total, aprovadas)."""
+    """TM = traduções APROVADAS, completas e fiéis. `target` vem do approved_*.csv (a forma
+    FINAL que o jogo mostra — preserva os segmentos após [02] e os códigos de controle);
+    `source` (EN) vem do dialogs.csv; speaker/metadata do translation_plan. NÃO usa
+    base_translation/t: são rascunhos legíveis porém INCOMPLETOS em linhas multi-segmento
+    (largam o trecho após [02], ex.: "Certo, Poko?"). Retorna (total, aprovadas)."""
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
         return 0, 0
@@ -95,12 +95,19 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
         if not scene_dir.is_dir():
             continue
         scene_id = scene_dir.name
-        approved_offsets = set()
-        for csv_path in sorted(scene_dir.glob("approved_*.csv")):
-            with csv_path.open(encoding="utf-8", newline="") as f:
-                for row in csv.DictReader(f):
-                    if row.get("offset"):
-                        approved_offsets.add(row["offset"])
+        # source (EN) por offset — do dialogs.csv (extração completa da cena)
+        src_by = {}
+        dcsv = scene_dir / "dialogs.csv"
+        if dcsv.is_file():
+            with dcsv.open(encoding="utf-8", newline="") as f:
+                rdr = csv.DictReader(f)
+                cols = rdr.fieldnames or []
+                tc = "text_source" if "text_source" in cols else "text_en"
+                for r in rdr:
+                    if r.get("offset"):
+                        src_by[r["offset"]] = r.get(tc, "")
+        # metadata (speaker/tom/risco) por offset — do translation_plan
+        meta_by = {}
         for plan_path in sorted(scene_dir.glob("translation_plan_*.json")):
             try:
                 data = json.loads(plan_path.read_text(encoding="utf-8"))
@@ -110,27 +117,32 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
             if isinstance(lines, dict):
                 lines = [{"offset": k, **v} for k, v in lines.items()]
             for ln in lines:
-                off = ln.get("offset", "")
-                src = ln.get("text_source", "")
-                tgt = ln.get("base_translation", ln.get("t", ""))
-                if not off or not src or not tgt:
-                    continue
-                is_appr = off in approved_offsets
-                db.upsert_translation(
-                    project_id=project_id,
-                    scene_id=scene_id,
-                    offset=off,
-                    source=src,
-                    target=tgt,
-                    speaker=ln.get("speaker", ""),
-                    tone_register=ln.get("tone_register", ""),
-                    intent=ln.get("intent", ""),
-                    risk_level=ln.get("risk_level", "low"),
-                    risk_notes=ln.get("risk_notes", ""),
-                    approved=is_appr,
-                )
-                total += 1
-                approved_n += 1 if is_appr else 0
+                if ln.get("offset"):
+                    meta_by[ln["offset"]] = ln
+        # target (completo/fiel) — do approved_*.csv
+        for csv_path in sorted(scene_dir.glob("approved_*.csv")):
+            with csv_path.open(encoding="utf-8", newline="") as f:
+                for row in csv.DictReader(f):
+                    off = row.get("offset", "")
+                    tgt = row.get("text_target", "")
+                    if not off or not tgt:
+                        continue
+                    m = meta_by.get(off, {})
+                    db.upsert_translation(
+                        project_id=project_id,
+                        scene_id=scene_id,
+                        offset=off,
+                        source=src_by.get(off, ""),
+                        target=tgt,
+                        speaker=m.get("speaker", ""),
+                        tone_register=m.get("tone_register", ""),
+                        intent=m.get("intent", ""),
+                        risk_level=m.get("risk_level", "low"),
+                        risk_notes=m.get("risk_notes", ""),
+                        approved=True,
+                    )
+                    total += 1
+                    approved_n += 1
     return total, approved_n
 
 

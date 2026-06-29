@@ -81,8 +81,8 @@ def test_migrate_idempotent(tmp_path):
 
 
 def test_migrate_translations_have_content(bof4_migrated):
-    """REGRESSÃO: translations migravam com source/target VAZIOS (o approved_*.csv só tem
-    offset,text_target — não tem as colunas lidas). Agora o conteúdo vem do translation_plan."""
+    """REGRESSÃO: translations migravam com source/target VAZIOS (lia colunas inexistentes).
+    Agora target vem do approved_*.csv (completo/fiel) e source do dialogs.csv."""
     db_path, _ = bof4_migrated
     with Store(db_path) as db:
         tm = db.get_translations("bof4", approved_only=False)
