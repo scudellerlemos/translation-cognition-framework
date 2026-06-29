@@ -157,6 +157,30 @@ class Store:
             ).fetchall()
         return [dict(r) for r in rows]
 
+    # ── Linhas da cena (dialogs) ────────────────────────────────────────────────
+
+    def upsert_scene_lines(self, project_id: str, scene_id: str, lines: list):
+        """Insere/atualiza as linhas de uma cena em LOTE (1 commit) — dialogs.csv → DB."""
+        self._con.executemany(
+            """INSERT INTO scene_lines(project_id, scene_id, offset, source, byte_budget)
+               VALUES(?,?,?,?,?)
+               ON CONFLICT(project_id, scene_id, offset) DO UPDATE SET
+                   source=excluded.source, byte_budget=excluded.byte_budget""",
+            [(project_id, scene_id, ln.get("offset", ""), ln.get("source"),
+              ln.get("byte_budget")) for ln in lines],
+        )
+        self._con.commit()
+
+    def get_scene_lines(self, project_id: str, scene_id: str) -> list[dict]:
+        """Linhas da cena na MESMA forma de context_pack.load_dialogs (offset/source/byte_budget)."""
+        rows = self._con.execute(
+            "SELECT offset, source, byte_budget FROM scene_lines "
+            "WHERE project_id=? AND scene_id=? ORDER BY id",
+            (project_id, scene_id),
+        ).fetchall()
+        return [{"offset": r["offset"], "source": r["source"],
+                 "byte_budget": r["byte_budget"]} for r in rows]
+
     def upsert_glossary(self, project_id: str, term: str, translation: str,
                         handling_rule: str = None, domain: str = None,
                         category: str = None, aliases: str = None,
@@ -368,10 +392,14 @@ class Store:
         n_spoil = self._con.execute(
             "SELECT COUNT(*) FROM spoiler_entries WHERE project_id=?", (project_id,)
         ).fetchone()[0]
+        n_lines = self._con.execute(
+            "SELECT COUNT(*) FROM scene_lines WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
         return {
             "project_id": project_id,
             "scenes": len(scenes),
             "verified": sum(1 for s in scenes if s["verified"]),
+            "scene_lines": n_lines,
             "tm_approved": n_tm,
             "glossary": n_gloss,
             "entities": n_ent,

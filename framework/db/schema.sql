@@ -65,6 +65,21 @@ CREATE INDEX IF NOT EXISTS idx_translations_scene
 CREATE INDEX IF NOT EXISTS idx_translations_approved
     ON translations(project_id, approved);
 
+-- ── Linhas da cena (dialogs.csv — extração pré-tradução) ──────────────────────
+-- Fonte das "lines" que o context_pack monta no pacote (offset/source/byte_budget).
+CREATE TABLE IF NOT EXISTS scene_lines (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    scene_id    TEXT NOT NULL,
+    offset      TEXT NOT NULL,
+    source      TEXT,
+    byte_budget INTEGER,
+    UNIQUE(project_id, scene_id, offset)
+);
+
+CREATE INDEX IF NOT EXISTS idx_scene_lines_scene
+    ON scene_lines(project_id, scene_id);
+
 -- ── Glossário ─────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS glossary (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -313,6 +313,28 @@ def _load_sources_db(db_path: Path, project_id: str):
     return glossary, voice_cards, decisions, tm, ledger
 
 
+def _load_lines(root: Path, cfg: dict, scene: str):
+    """Linhas da cena (offset/source/byte_budget). Do SQLite se o projeto tem `db`;
+    senão de dialogs.csv (com a validação A4 original)."""
+    db_path, db_pid = _db_path(root, cfg)
+    if db_path:
+        _db_dir = str(FRAMEWORK / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            rows = db.get_scene_lines(db_pid, scene_id_of(scene))
+        if not rows:
+            raise SystemExit(f"ERRO: cena {scene} sem linhas no DB ({db_path})")
+        return rows
+    scene_dir = paths.scene_dir(root, scene)
+    if not (scene_dir / "dialogs.csv").is_file():
+        raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
+    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
+        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
+    return load_dialogs(scene_dir / "dialogs.csv")
+
+
 def _load_sources(root: Path, cfg: dict):
     """(glossary, voice_cards, decisions, tm, ledger) — do SQLite se o projeto tem `db`
     populado; senão dos flat files (comportamento original; BoF4 intacto)."""
@@ -341,13 +363,8 @@ def _load_sources(root: Path, cfg: dict):
 
 def build_pack(root: Path, scene: str) -> dict:
     root = Path(root)
-    scene_dir = paths.scene_dir(root, scene)
-    if not (scene_dir / "dialogs.csv").is_file():
-        raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
-    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
-        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    rows = load_dialogs(scene_dir / "dialogs.csv")
+    rows = _load_lines(root, cfg, scene)
     blob_low = "\n".join(r["source"] for r in rows).lower()
 
     glossary, voice_cards, decisions, tm, ledger = _load_sources(root, cfg)

@@ -1,15 +1,15 @@
 """test_context_pack_parity.py — oráculo do switch DB/flat do context_pack.
 
-Garante que ler as fontes do SQLite produz o MESMO resultado que ler dos flat files
-para as fontes DETERMINÍSTICAS (glossary, voice cards, decisions, spoiler). Se um dia o
-adaptador DB→pack divergir do flat, este teste falha — o switch só é confiável enquanto
-a paridade fechar.
+Garante que ler as fontes do SQLite produz o MESMO resultado que ler dos flat files para
+as fontes DETERMINÍSTICAS (scene_lines, glossary, voice cards, decisions, spoiler). Se o
+adaptador DB→pack divergir do flat, falha — o switch só é confiável enquanto a paridade
+fechar.
 
-TM fica de fora da paridade de propósito: a flat vem dos translation_plan*.json (base
-pré-revisão) e a do DB vem dos approved_*.csv (pós-revisão humana) — divergência legítima
-(o DB é a fonte melhor). Aqui a TM do DB é checada só quanto a não-degradação (bem-formada).
+A TM fica fora da paridade de propósito: a flat vem dos translation_plan*.json (base
+pré-revisão) e a do DB dos approved_*.csv (pós-revisão humana) — divergência legítima (o
+DB é a fonte melhor). Aqui a TM do DB é checada só quanto a não-degradação.
 
-Usa só stdlib — roda em CI sem deps de ML.
+Usa o fixture bof4_migrated (migração única por sessão). Só stdlib — roda em CI sem ML.
 """
 import json
 import sys
@@ -21,14 +21,12 @@ sys.path.insert(0, str(ROOT / "framework" / "runtime"))
 sys.path.insert(0, str(HERE))
 
 import context_pack as cp  # noqa: E402
-from migrate_from_flat import migrate  # noqa: E402
+from store import Store  # noqa: E402
 
 BOF4 = ROOT / "projects" / "breath_of_fire_4"
 
 
 def _flat_sources():
-    """Fontes flat lidas diretamente (sem passar pelo _load_sources, que tem efeito
-    colateral de reconstruir índices)."""
     import paths  # noqa: E402
     fg = cp.load_glossary(paths.glossary(BOF4))
     state = BOF4 / "artifacts" / "state"
@@ -49,33 +47,40 @@ def _blob(fg, fv):
     return " ".join(t.lower() for t in terms + names if t)
 
 
-def test_db_sources_match_flat_for_deterministic_fields(tmp_path):
-    migrate(BOF4, tmp_path / "t.db", project_id="bof4")
-    dg, dv, dd, dtm, dl = cp._load_sources_db(tmp_path / "t.db", "bof4")
+def test_db_sources_match_flat_for_deterministic_fields(bof4_migrated):
+    db_path, _ = bof4_migrated
+    dg, dv, dd, _dtm, dl = cp._load_sources_db(db_path, "bof4")
     fg, fv, fd, fl = _flat_sources()
     blob = _blob(fg, fv)
 
-    # Glossário e vozes: seleção do DB == seleção do flat (byte-a-byte na estrutura).
     assert cp.select_glossary(dg, blob) == cp.select_glossary(fg, blob)
     assert cp.select_voices(dv, blob) == cp.select_voices(fv, blob)
 
-    # Decisões: mesma seleção dados os mesmos termos/falantes presentes.
     fgsub = cp.select_glossary(fg, blob)
     fvsel = cp.select_voices(fv, blob)
     pt = [g["term"] for g in fgsub]
     ps = list(fvsel.keys())
     assert cp.select_decisions(dd, pt, ps) == cp.select_decisions(fd, pt, ps)
 
-    # Spoiler guards: mesma saída (BoF4: ledger vazio dos dois lados → []).
     sid = cp.scene_id_of("AREAD001")
     assert cp.select_spoiler_guards(dl, blob, sid) == cp.select_spoiler_guards(fl, blob, sid)
 
 
-def test_db_tm_is_well_formed(tmp_path):
+def test_db_scene_lines_match_flat(bof4_migrated):
+    """Linhas da cena no DB == dialogs.csv flat — o último pedaço que faltava pro
+    context_pack montar o pacote 100% do DB."""
+    db_path, _ = bof4_migrated
+    flat = cp.load_dialogs(BOF4 / "artifacts" / "scenes" / "AREAD001" / "dialogs.csv")
+    with Store(db_path) as db:
+        dbrows = db.get_scene_lines("bof4", "AREAD001")
+    assert dbrows == flat, "scene_lines do DB divergem do dialogs.csv flat"
+
+
+def test_db_tm_is_well_formed(bof4_migrated):
     """TM do DB (proveniência = approved) não precisa igualar a flat, mas tem que ser
     bem-formada e não-vazia (não-degradação)."""
-    migrate(BOF4, tmp_path / "t.db", project_id="bof4")
-    _g, _v, _d, dtm, _l = cp._load_sources_db(tmp_path / "t.db", "bof4")
+    db_path, _ = bof4_migrated
+    _g, _v, _d, dtm, _l = cp._load_sources_db(db_path, "bof4")
     assert dtm, "TM do DB vazia"
     needed = {"src_key", "source", "target", "speaker", "scene"}
     assert all(needed <= set(t) for t in dtm), "entradas de TM mal-formadas"
