@@ -1,4 +1,4 @@
-# Breath of Fire IV — Local (Ollama POC)
+# Translation Local — Inferência local (Ollama POC; piloto: BoF4)
 
 > Status: **EM DESENVOLVIMENTO — Fase 1 MVP**
 > Objetivo: inferência local a custo zero, arquitetura plugável de backend.
@@ -79,7 +79,7 @@ python framework/runtime/bench_local.py projects/breath_of_fire_4 AREAD001 --out
 
 ### Tradução completa via run_scene
 ```bash
-python framework/runtime/run_scene.py projects/bof4_local AREAD001 --backend ollama --no-verify
+python framework/runtime/run_scene.py projects/translation_local AREAD001 --backend ollama --no-verify
 ```
 
 ---
