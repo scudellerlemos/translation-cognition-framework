@@ -4,7 +4,7 @@ Substitui state_index.py (flat files → SQLite). Fonte única de verdade
 para TM, glossário, voice cards, entidades e ledger de jobs.
 
 Uso:
-    db = Store("projects/bof4_software/bof4_software.db")
+    db = Store("projects/translation_software/translation_software.db")
     db.upsert_translation(project_id="bof4", scene_id="AREAD001", offset="X:0:1",
                           source="Hello", target="Olá", speaker="Ryu")
     hits = db.search_tm_exact("Hello", project_id="bof4")

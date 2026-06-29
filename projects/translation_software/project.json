@@ -1,5 +1,5 @@
 {
-  "title": "Breath of Fire IV — Software Architecture",
+  "title": "Translation Software — Arquitetura limpa",
   "media_type": "game",
   "media_profile": "games",
   "source_language": "en",
@@ -39,9 +39,9 @@
     "terminology_seeds": "../breath_of_fire_4/profile/terminology_seeds.md"
   },
   "db": {
-    "path": "bof4_software.db",
+    "path": "translation_software.db",
     "schema": "framework/db/schema.sql",
-    "note": "SQLite como fonte única de verdade. Migrar flat files com: python framework/db/migrate_from_flat.py projects/breath_of_fire_4 projects/bof4_software/bof4_software.db"
+    "note": "SQLite como fonte única de verdade. Migrar flat files com: python framework/db/migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db"
   },
   "ollama": {
     "model": "qwen2.5:14b",
