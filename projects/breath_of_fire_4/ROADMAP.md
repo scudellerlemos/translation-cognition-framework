@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
 > Última atualização: 2026-06-21
-> Status atual: **FASE 02 — TRADUÇÃO EM ESCALA (piloto pendente)**
+> Status atual: **CICLO DE TRADUÇÃO COMPLETO**
 
 ---
 
@@ -79,28 +79,17 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 ---
 
-### Fase 2 — Tradução em escala (Passos 06–07)
+### Fase 2 — Tradução em escala (Passos 06–07) — CONCLUÍDA ✅
 
-- [ ] **2.1. Traduzir cenas iniciais** (~AREAD001+004, ~$0.30 Haiku; validar: prompt, diacríticos in-game, reinsert live)
-  - Pré-req: implementar `connector/build_plan_chapter.py` + `connector/verify_chapter.py`
-- [ ] **2.2. Loop por capítulo** via `run_chapter.py` com `--max-usd`
-- [ ] **2.3. Back-translation** de linhas `risk≥high` por capítulo
+- [x] **2.1. Traduzir cenas iniciais** (AREAD001+004 piloto; `build_plan_chapter.py` + `verify_chapter.py` implementados)
+- [x] **2.2. Loop por capítulo** via `run_chapter.py` — 125 cenas, todas `verified`
+- [x] **2.3. Back-translation** de linhas `risk≥high` por cena
 
-#### P1 — Bugs ativos (identificados na tradução em escala, jun/2026)
+#### P1 — Bugs ativos — TODOS RESOLVIDOS EM PRODUÇÃO ✅
 
-> Tratar antes de avançar para Fase 3. Causa raiz conhecida ou parcialmente conhecida.
-
-- [ ] **P1-A. T4 fitting sistemático** — strings com `byte_budget < ~20` não têm margem para PT-BR (naturalmente ~10–15% mais longo que EN). O retighten automático falha porque não há espaço físico.
-  - Causa raiz: byte_budget apertado + ausência de tradução alternativa mais curta no prompt.
-  - Fix proposto: pré-scan pré-batch de strings com `byte_budget ≤ 20`; gerar prompt adicional pedindo variante ultra-compacta; ou aceitar truncamento forçado com aviso.
-  - Exemplo: `"He's dead..."` budget=17 → `Ele está morto...` = 18 bytes; fix manual = `Ele morreu...`.
-
-- [ ] **P1-B. Encoding corrompido em cenas isoladas** — AREAD013 retornou `�` (replacement chars) e `[0B]`→`B` em múltiplas strings. Causa raiz não investigada.
-  - Hipóteses: (a) batch response com encoding corrompido para aquela cena; (b) bug no `batch_translate` ao desserializar JSON com caracteres especiais; (c) Haiku gerando output com codepoints inválidos.
-  - Fix necessário: inspecionar `batch_translate` — como valida encoding UTF-8 do response antes de salvar.
-
-- [ ] **P1-C. `coverage_failed` em 6 cenas** — AREAD075, AREAS011, AREAS025, AREAS031, AREAS032, AREAS046 não passaram no KB gate durante o batch. Causa não investigada.
-  - Fix necessário: inspecionar o que dispara o gate nessas cenas; pode ser conteúdo legítimo fora do glossário (KB precisa crescer) ou falso positivo no gate.
+- [x] **P1-A. T4 fitting** — resolvido durante a tradução em escala (run_state confirma T4=0 global)
+- [x] **P1-B. Encoding corrompido (AREAD013)** — resolvido; cena `verified` no estado final
+- [x] **P1-C. `coverage_failed` (6 cenas)** — resolvido; todas as 6 cenas `verified` no estado final
 
 #### Memory Layer (piloto desta funcionalidade no framework)
 
@@ -122,12 +111,16 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 ---
 
-### Fase 3 — Fechamento e pós-produção
+### Fase 3 — Fechamento e pós-produção — CONCLUÍDA ✅
 
-- [ ] **3.1. Passe global de consistência** (`glossary_lint`)
-- [ ] **3.2. `reinsert` do jogo inteiro** + `pytest` + patch final
-- [ ] **3.3. Gate visual in-game** (spot-check de cenas chave)
-- [ ] **3.4. QA humana** via `quality_review.py` (XLSX)
+- [x] **3.1. Passe global de consistência** (`glossary_lint`)
+- [x] **3.2. `reinsert` do jogo inteiro** — 125 DAT files em `output/`, T4=0
+- [x] **3.3. Gate visual in-game** — OK
+- [x] **3.4. QA humana** via `quality_review.py` (XLSX revisado e aplicado)
+
+### Próximos passos
+
+- [ ] **TM semântica (B2)** — quando corpus multi-game justificar (ver seção Memory Layer acima)
 
 ---
 

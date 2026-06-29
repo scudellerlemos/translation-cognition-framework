@@ -11,13 +11,14 @@ Funções públicas (usadas por run_scene):
   _warn_if_connector_stale — avisa se conector mudou desde o último verify (S3)
 """
 from __future__ import annotations
+
 import hashlib
 import json
 import os
 import subprocess
 from pathlib import Path
 
-import paths   # fonte única do contrato de caminhos de artefato
+import paths  # fonte única do contrato de caminhos de artefato
 
 _CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) não bloqueia o pipeline
 
@@ -34,7 +35,7 @@ def _connector_hash(root: Path, cfg: dict) -> str:
     """SHA1 do conteúdo dos scripts do conector — identifica a versão em uso no momento da verificação.
     Gravado no run_state.json junto com 'verified=True': artefato sabe com qual conector foi gerado.
     Conector ausente (em-desenvolvimento) = hash de string vazia por slot."""
-    h = hashlib.sha1()
+    h = hashlib.sha1(usedforsecurity=False)
     for key, default in [("build_plan_script", "build_plan_chapter.py"),
                           ("verify_script", "verify_chapter.py")]:
         p = _connector_script(root, cfg, key, default)

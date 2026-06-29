@@ -21,16 +21,16 @@ import pytest
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import context_pack          # noqa: E402
-import state_index           # noqa: E402
-import run_chapter           # noqa: E402
-import run_scene             # noqa: E402
-import connector_mgr         # noqa: E402
-import kb_gate               # noqa: E402
-import model                 # noqa: E402
-import back_translate        # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
-import cost_report           # noqa: E402
-import paths                 # noqa: E402
+import back_translate  # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
+import connector_mgr  # noqa: E402
+import context_pack  # noqa: E402
+import cost_report  # noqa: E402
+import kb_gate  # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
+import run_chapter  # noqa: E402
+import run_scene  # noqa: E402
+import state_index  # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -288,7 +288,8 @@ def test_prune_discontinued_removes_old(tmp_path):
     disc = tmp_path / "artifacts" / "discontinued" / "ch_01_01"
     disc.mkdir(parents=True)
     (disc / "old.txt").write_text("x")
-    import os, time as _time
+    import os
+    import time as _time
     # simula mtime 40 dias atrás
     old_ts = _time.time() - 40 * 86400
     os.utime(disc, (old_ts, old_ts))
@@ -359,7 +360,8 @@ def test_paths_contract():
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
     # nao-vazamento de spoiler: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
-    import spoiler_check, paths
+    import paths
+    import spoiler_check
     paths.scene_dir(tmp_path, "ch_50_01").mkdir(parents=True)
     paths.scene_dir(tmp_path, "ch_50_09").mkdir(parents=True)
     # artifact_io.scenes() exige dialogs.csv para considerar o diretorio como cena valida
@@ -575,7 +577,7 @@ def test_over_offsets_selects_only_overflowing():
 
 
 # ------------------------------- batch API (economia de custo, -50%) ----------
-import types as _types   # noqa: E402
+import types as _types  # noqa: E402
 
 
 def test_cost_of_batch_is_half():
@@ -730,7 +732,7 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
     fb.scene_rounds["ch_99_01"] = [good]
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
-    st = model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
+    model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
     # os DOIS modelos foram submetidos (Haiku p/ single-line, Sonnet p/ multi-linha)
     assert model.MODEL_TRANSLATE_CHEAP in fb.models and model.MODEL_TRANSLATE in fb.models
     # tiering desligado -> tudo no modelo principal
@@ -904,8 +906,8 @@ def test_qa_tester_locator(tmp_path, monkeypatch):
 
 def test_qa_returned_files_resolution(tmp_path):
     # QA: o apply resolve de onde ler a revisao devolvida — arquivo, pasta, ou INBOX padrao.
-    import quality_review as QR
     import paths
+    import quality_review as QR
     f = tmp_path / "x.xlsx"; f.write_text("", encoding="utf-8")
     assert QR.returned_files(tmp_path, str(f)) == [f]                       # arquivo explicito
     d = tmp_path / "ret"; d.mkdir()
@@ -1357,7 +1359,10 @@ def test_label_passthrough_blocks_engine_labels_not_dialogue():
 
 
 def test_quality_gate_coverage_and_export(tmp_path):
-    import quality_gate, paths, csv as _csv
+    import csv as _csv
+
+    import paths
+    import quality_gate
     d = paths.scene_dir(tmp_path, "ch_89_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
@@ -1378,7 +1383,8 @@ def test_quality_gate_coverage_and_export(tmp_path):
 
 
 def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatch):
-    import quality_fix, paths
+    import paths
+    import quality_fix
     d = paths.scene_dir(tmp_path, "ch_90_01")
     d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_90_01", "90_01").write_text(
@@ -1417,7 +1423,8 @@ def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatc
 # ------------------- vazamento de gênero pt-BR (risco #2) ---------------------
 
 def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
-    import spoiler_check, paths
+    import paths
+    import spoiler_check
     led = {"entries": [
         {"id": "g1", "entity": "Mizura", "reveal": "60_05", "triggers": ["Mizura"], "gender_quarantine": True},
         {"id": "g2", "entity": "Bezno", "reveal": "60_01", "triggers": ["Bezno"]}]}   # sem quarentena
@@ -1441,7 +1448,8 @@ def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
 # --------------------- digest de revisão de KB (risco #3) ---------------------
 
 def test_kb_review_digest_flags(tmp_path):
-    import kb_review, paths
+    import kb_review
+    import paths
     paths.artifacts(tmp_path).mkdir(parents=True)
     paths.glossary(tmp_path).write_text(
         "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n"
@@ -1568,7 +1576,8 @@ def test_invalidate_back_translation_marks_stale(tmp_path):
 
 
 def test_quality_gate_treats_stale_as_uncovered(tmp_path):
-    import quality_gate, paths
+    import paths
+    import quality_gate
     d = paths.scene_dir(tmp_path, "ch_73_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
@@ -1733,8 +1742,8 @@ def test_write_xlsx_roundtrip(tmp_path):
 def test_write_xlsx_quoteprefix_blocks_formula_injection(tmp_path):
     """Células com '=' no valor devem ter quotePrefix=True — Excel trata como texto, não fórmula."""
     pytest.importorskip("openpyxl")
-    from openpyxl import load_workbook
     import quality_review as QR
+    from openpyxl import load_workbook
     rows = [{"scene": "ch_01_01", "offset": "0x1", "speaker": "", "risk": "low",
              "revisar": "", "source_en": "=INJECT()", "target_pt": "=MALICIOUS",
              "caixa": "", "marcar": "", "correcao": "=formula", "nota": ""}]
@@ -2006,8 +2015,9 @@ def test_validate_chapter_arg_accepts_valid(tmp_path):
 
 def test_warn_ledger_size_emits_warning(tmp_path):
     """_warn_ledger_size emite RuntimeWarning quando ledger ultrapassa _MAX_LEDGER_MB."""
-    import cost
     import warnings as _warnings
+
+    import cost
     ledger = tmp_path / "ledger.jsonl"
     ledger.write_bytes(b"x" * int(cost._MAX_LEDGER_MB * 1024 * 1024 + 1))
     with _warnings.catch_warnings(record=True) as caught:
@@ -2019,8 +2029,9 @@ def test_warn_ledger_size_emits_warning(tmp_path):
 
 def test_warn_ledger_size_silent_below_limit(tmp_path):
     """_warn_ledger_size nao emite warning quando ledger esta abaixo do limite."""
-    import cost
     import warnings as _warnings
+
+    import cost
     ledger = tmp_path / "ledger.jsonl"
     ledger.write_bytes(b"x" * 100)
     with _warnings.catch_warnings(record=True) as caught:

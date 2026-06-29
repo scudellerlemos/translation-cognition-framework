@@ -23,12 +23,14 @@ Uso:  python state_index.py <dir-do-projeto> [--rebuild]
       (--rebuild apenas reescreve; o comportamento e o mesmo, idempotente.)
 """
 from __future__ import annotations
+
 import hashlib
 import json
 import re
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
@@ -52,7 +54,7 @@ def _norm(s: str) -> str:
 
 
 def _key(s: str) -> str:
-    return hashlib.sha1(_norm(s).encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha1(_norm(s).encode("utf-8"), usedforsecurity=False).hexdigest()[:16]
 
 
 def _slug_tags(title: str) -> list[str]:

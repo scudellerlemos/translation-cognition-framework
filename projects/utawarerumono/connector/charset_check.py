@@ -8,7 +8,6 @@ então a fonte tem o glifo. Para os que não aparecem no texto, reporta como "a 
 
 Code points definidos por valor (sem acentos no código → imune a problemas de encoding).
 """
-import os
 import sys
 
 # O caminho do .sdat é ENTREGUE pelo usuário no runtime (governança: nunca hardcoded).
@@ -26,6 +25,7 @@ PTBR = {
 }
 
 import re
+
 
 def textual_count(blob, ch):
     """Conta ocorrencias do acento DENTRO de palavra real (ladeado por letra ASCII),

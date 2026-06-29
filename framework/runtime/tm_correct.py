@@ -33,6 +33,7 @@ DEPOIS de --apply (loop governado, NAO automatizado aqui de proposito):
 Uso:  python tm_correct.py <projeto> <correcoes.csv> [--chapter 19] [--apply] [--json]
 """
 from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -43,9 +44,9 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
+import artifact_io  # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
 import context_pack  # noqa: E402
-import paths          # noqa: E402
+import paths  # noqa: E402
 
 
 def load_corrections(csv_path) -> list[dict]:
@@ -196,7 +197,7 @@ def apply(root, corrections, chapter=None) -> dict:
             except (json.JSONDecodeError, OSError):
                 continue
             changed = False
-            for off, v in iterator(data):
+            for _off, v in iterator(data):
                 before = v.get(field, "")
                 if not before:
                     continue

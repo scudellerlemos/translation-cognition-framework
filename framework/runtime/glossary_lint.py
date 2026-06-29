@@ -17,6 +17,7 @@ Uso:  python glossary_lint.py <projeto> [--json]
 Exit: 1 se houver candidatos (alimenta o loop "corrige -> re-roda ate zerar"); 0 se limpo.
 """
 from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -28,8 +29,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402
-import paths         # noqa: E402
+import artifact_io  # noqa: E402
+import paths  # noqa: E402
 
 
 def _fold(s: str) -> str:

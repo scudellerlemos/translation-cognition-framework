@@ -25,6 +25,7 @@ Convenções:
   de dados (após o bytecode). É o que o jogador lê naquele script.
 """
 from __future__ import annotations
+
 import struct
 from dataclasses import dataclass
 

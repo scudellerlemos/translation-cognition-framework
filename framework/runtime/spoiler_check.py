@@ -22,6 +22,7 @@ Governanca: read-only, sem rede, sem work-text.
 Uso:  python spoiler_check.py <projeto> [--json]   (exit 1 se houver vazamento; 0 se limpo)
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -35,9 +36,9 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402  (leitura compartilhada: scenes/translations_map)
+import artifact_io  # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
-import paths          # noqa: E402
+import paths  # noqa: E402
 
 
 def _future(reveal: str, scene_id: str) -> bool:

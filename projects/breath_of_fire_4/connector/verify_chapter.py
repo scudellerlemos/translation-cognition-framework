@@ -27,7 +27,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
-import extract as E   # noqa: E402
+import extract as E  # noqa: E402
 import reinsert as R  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent

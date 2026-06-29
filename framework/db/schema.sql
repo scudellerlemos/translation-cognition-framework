@@ -1,0 +1,133 @@
+-- schema.sql — schema SQLite do Translation Cognition Framework (bof4_software)
+-- Versão 1.0 — junho 2026
+--
+-- Substitui os flat files dispersos (jsonl, csv, json) por uma fonte única
+-- versionada e consultável. Cada tabela tem FOREIGN KEY implícita via scene_id.
+--
+-- Extensões opcionais (carregadas em runtime):
+--   sqlite-vec  → habilita busca semântica na TM via embeddings
+
+PRAGMA journal_mode = WAL;
+PRAGMA foreign_keys = ON;
+
+-- ── Projetos ──────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS projects (
+    id          TEXT PRIMARY KEY,          -- ex: bof4_software
+    title       TEXT NOT NULL,
+    source_lang TEXT NOT NULL DEFAULT 'en',
+    target_lang TEXT NOT NULL DEFAULT 'pt-BR',
+    media_type  TEXT,                      -- game | film | series
+    created_at  REAL NOT NULL
+);
+
+-- ── Cenas ─────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS scenes (
+    id          TEXT NOT NULL,             -- ex: AREAD001
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    status      TEXT NOT NULL DEFAULT 'pending',
+                                           -- pending | extracted | planned |
+                                           -- translated | verified | approved
+    n_lines     INTEGER,
+    n_high      INTEGER,
+    verified    INTEGER DEFAULT 0,         -- 0/1 bool
+    cost_usd    REAL DEFAULT 0.0,
+    backend     TEXT,                      -- api | ollama
+    model_id    TEXT,
+    created_at  REAL,
+    updated_at  REAL,
+    PRIMARY KEY (id, project_id)
+);
+
+-- ── Traduções (TM) ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS translations (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id    TEXT NOT NULL REFERENCES projects(id),
+    scene_id      TEXT NOT NULL,
+    offset        TEXT NOT NULL,           -- ex: AREAD001.DAT:0:3
+    source        TEXT NOT NULL,
+    target        TEXT,
+    speaker       TEXT,
+    tone_register TEXT,
+    intent        TEXT,
+    risk_level    TEXT,                    -- low | medium | high | critical
+    risk_notes    TEXT,
+    approved      INTEGER DEFAULT 0,       -- 0/1 revisão humana
+    backend       TEXT,
+    model_id      TEXT,
+    created_at    REAL,
+    UNIQUE(project_id, scene_id, offset)
+);
+
+CREATE INDEX IF NOT EXISTS idx_translations_source
+    ON translations(source);
+CREATE INDEX IF NOT EXISTS idx_translations_scene
+    ON translations(project_id, scene_id);
+CREATE INDEX IF NOT EXISTS idx_translations_approved
+    ON translations(project_id, approved);
+
+-- ── Glossário ─────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS glossary (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id     TEXT NOT NULL REFERENCES projects(id),
+    term           TEXT NOT NULL,
+    translation    TEXT NOT NULL,
+    handling_rule  TEXT,                   -- preserve | translate | adapt | ...
+    domain         TEXT,
+    notes          TEXT,
+    updated_at     REAL,
+    UNIQUE(project_id, term)
+);
+
+-- ── Entidades ─────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS entities (
+    id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id           TEXT NOT NULL REFERENCES projects(id),
+    name                 TEXT NOT NULL,
+    canonical_pt         TEXT,
+    entity_type          TEXT,             -- character | place | item | concept | faction
+    first_scene          TEXT,
+    spoiler_reveal_scene TEXT,
+    notes                TEXT,
+    UNIQUE(project_id, name)
+);
+
+-- ── Perfis de voz (voice cards) ───────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS voice_cards (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   TEXT NOT NULL REFERENCES projects(id),
+    speaker      TEXT NOT NULL,
+    register     TEXT,                     -- formal | informal | archaic | child | ...
+    quirks       TEXT,                     -- JSON array de características de voz
+    example_src  TEXT,                     -- JSON array de exemplos em inglês
+    example_tgt  TEXT,                     -- JSON array de exemplos em pt-BR
+    criticality  TEXT DEFAULT 'medium',    -- high | medium | low
+    UNIQUE(project_id, speaker)
+);
+
+-- ── Jobs (ledger auditável) ───────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS jobs (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    scene_id    TEXT,
+    kind        TEXT NOT NULL,             -- translate | back_translate | verify | embed
+    model_id    TEXT,
+    backend     TEXT,                      -- api | ollama | local
+    tokens_in   INTEGER DEFAULT 0,
+    tokens_out  INTEGER DEFAULT 0,
+    cost_usd    REAL DEFAULT 0.0,
+    batch       INTEGER DEFAULT 0,         -- 0/1
+    created_at  REAL NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_jobs_project ON jobs(project_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_scene ON jobs(project_id, scene_id);
+
+-- ── Embeddings (TM semântica) ─────────────────────────────────────────────────
+-- Criada via sqlite-vec se extensão disponível (embedder.py cria em runtime).
+-- Guardamos aqui só os metadados; os vetores ficam na tabela virtual vec0.
+CREATE TABLE IF NOT EXISTS tm_embeddings (
+    translation_id  INTEGER PRIMARY KEY REFERENCES translations(id),
+    model_name      TEXT NOT NULL,         -- paraphrase-multilingual-MiniLM-L12-v2
+    dim             INTEGER NOT NULL,      -- 384
+    indexed_at      REAL
+);

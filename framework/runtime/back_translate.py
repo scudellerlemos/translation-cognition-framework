@@ -7,18 +7,32 @@ e a invalidacao de sinal stale. Depende so de modulos JA extraidos (config/llm_c
 p/ compat (model.batch_back_translate / high_risk_lines / ... seguem funcionando).
 """
 from __future__ import annotations
+
 import hashlib
 import json
 from pathlib import Path
 
-import artifact_io   # noqa: E402
+import artifact_io  # noqa: E402
 import context_pack  # noqa: E402
-import paths          # noqa: E402
-from config import (MODEL_BACK, MAX_OUTPUT_TOKENS, BACK_SAMPLE_RATE, AWAITING, READY, DONE,  # noqa: E402
-                    BackTranslateResult)
+import paths  # noqa: E402
+from config import (  # noqa: E402
+    AWAITING,
+    BACK_SAMPLE_RATE,
+    DONE,
+    MAX_OUTPUT_TOKENS,
+    MODEL_BACK,
+    READY,
+    BackTranslateResult,
+)
 from cost import log_api_call  # noqa: E402
 from llm_client import (  # noqa: E402
-    _client, _stream_final, _await_batch, _with_backoff, _text_of, _usage_of)
+    _await_batch,
+    _client,
+    _stream_final,
+    _text_of,
+    _usage_of,
+    _with_backoff,
+)
 
 
 def back_translate(root, scene, high_lines, *, backend="api", model=None) -> BackTranslateResult:
@@ -133,7 +147,7 @@ def sample_low_risk_lines(root, scene, rate=BACK_SAMPLE_RATE, *, seed="bt"):
     for ln in _plan_lines(root, scene):
         if ln.get("risk_level") in ("high", "critical"):
             continue
-        h = hashlib.sha1(f"{seed}|{scene_id}|{ln.get('offset','')}".encode("utf-8")).hexdigest()
+        h = hashlib.sha1(f"{seed}|{scene_id}|{ln.get('offset','')}".encode(), usedforsecurity=False).hexdigest()
         if int(h[:8], 16) % 10000 < rate * 10000:
             out.append(_ln_entry(ln))
     return out

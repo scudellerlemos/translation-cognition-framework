@@ -28,9 +28,7 @@ _FRAMEWORK = _HERE.parent.parent.parent / "framework" / "runtime"
 if str(_FRAMEWORK) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK))
 import paths as _paths  # noqa: E402
-
 from extract import (
-    decode_string,
     encode_string,
     extract_section_strings,
     find_text_section,

@@ -332,30 +332,59 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ---
 
-## Status
+## Status — junho 2026
 
-> junho 2026 — **o jogo de referência (Utawarerumono) está 100% traduzido e verificado** (round-trip
-> byte-idêntico + back-translation de alto risco). A **QA humana literária** e a **pós-produção
-> (build/release)** seguem pendentes. O framework saiu do "valida em 2 cenas" e entregou uma obra
-> inteira de ponta a ponta, a custo medido e previsível. **Próximo:** *Breath of Fire IV* — piloto
-> do Generic Connector System. **Versão estável: [1.0.0](CHANGELOG.md).** Ver [ROADMAP](ROADMAP.md).
+**Versão estável: [1.0.0](CHANGELOG.md).** Ver [ROADMAP](ROADMAP.md) para o detalhamento técnico.
 
-- **Obra de referência COMPLETA:** *Utawarerumono: Mask of Deception*, EN→pt-BR — **16 capítulos
-  (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas**, todas com **round-trip byte-idêntico (resíduo 0)**
-  + **back-translation de alto risco**. Validado **in-game** (pt-BR renderiza na tela; conector `hex_binary`).
-- **Custo medido:** gasto real acumulado **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28),
-  **R$ 0 desperdiçado** (`api_ledger.jsonl` audita cada centavo, mesmo em falha). Batch API **−50%** vivo;
-  tiering Haiku/Sonnet/Opus, dedup por TM, recuperação **por-linha** e teto **previsível**.
-- **Custo previsível (engenharia desta fase):** estimativa **pré-voo** por capítulo, **teto duro** que
-  não estoura (gate de submissão do batch + por-cena), e **recuperação por-linha** (um defeito de 1
-  linha re-traduz ~1 linha, não a cena). Ver [Engenharia de custo](#engenharia-de-custo-e-previsibilidade).
-- **Cognição cabeada:** **gate de fonte de KB** (entidade nova sem fonte declarada BLOQUEIA);
-  **controle de spoiler/gênero** por ledger + filtro temporal (provado no reveal Ukon=Oshtor).
-- **Humano no loop:** revisão única por **XLSX amigável** → aplicação **verbatim (R$ 0)** ou nota
-  cirúrgica; **TM como coração** (o jogo não é re-traduzido inteiro após o QA).
-- **Qualidade travada:** **161 testes** (116 runtime + 29 validação + 16 conector), determinismo/
-  idempotência, testes de contrato do conector (hash, sandbox, protocolo VERIFY_STATUS) e um guard que barra texto da obra hardcoded em `.py`.
-- **Filmes / séries:** pontos de extensão documentados, ainda não validados.
+### Framework — objetivos alcançados
 
-> **Próximos passos e maturidade do framework:** ver [ROADMAP.md](ROADMAP.md).
+- Harness stateless em produção: cena = job isolado, contexto O(cena), sem estouro de sessão ✅
+- Batch API (−50%) + tiering Haiku/Sonnet/Opus validado em escala de capítulo ✅
+- Gates de cognição: KB-gate (entidade sem fonte BLOQUEIA), controle de spoiler e gênero ✅
+- Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica; TM como coração ✅
+- Ledger auditável (`api_ledger.jsonl`): toda chamada cobrada registrada, inclusive falhas ✅
+- Generic Connector System: dois engines distintos (Aquaplus + Capcom) com round-trip byte-idêntico ✅
+- Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
+- 145 testes passando (116 runtime + 29 validação)
+
+### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
+
+**16 capítulos (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas.** Traduzidas, verificadas, reinseridas. Projeto arquivado.
+
+- Round-trip byte-idêntico (resíduo T4=0) · back-translation de alto risco · controle de spoiler (reveal Ukon=Oshtor) ✅
+- Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
+- Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
+
+### Breath of Fire IV — ciclo de tradução completo, pendências em aberto
+
+**125 cenas (AREAD + AREAS), todas `verified`. Reinserção concluída** (125 DAT files em `output/`, T4=0).
+Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
+
+**Objetivos alcançados:**
+- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico ✅
+- Pipeline completo (Fases 00–08): KB, glossário, planejamento, 125 cenas traduzidas e reinseridas ✅
+- QA humana concluída; DAT files de output gerados ✅
+- Validação in-game: OK (foco do projeto era o pipeline, não QA in-game extensiva) ✅
+
+**Débito técnico:**
+
+| Item | Tipo |
+|---|---|
+| TM busca semântica (B2: `paraphrase-multilingual-MiniLM-L12-v2` local) — não implementada | débito técnico |
+
+**Próximos passos:**
+1. TM semântica (B2) — quando corpus multi-game justificar
+
+---
+
+### Dívidas do framework (independentes de projeto)
+
+| Dívida | Quando |
+|---|---|
+| `run_game` — driver ponta-a-ponta (capítulos + Fase 0 gating sem intervenção manual) | P2.5 — agora (barato) |
+| Observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) | P2.5 — agora (barato) |
+| `state_index` rebuild 1×/capítulo no batch (hoje por cena, redundante) | P2.5 — agora (barato) |
+| TM busca semântica (B2) — implementação pendente | pós-produção |
+| Evolução do conector: registry de detecção + síntese governada (round-trip como oráculo) | P4 (pós-produção) |
+| Filmes / séries: pontos de extensão documentados, sem validação em produção | futuro |
 

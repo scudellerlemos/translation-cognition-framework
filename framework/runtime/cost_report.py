@@ -17,11 +17,13 @@ GOVERNANCA: read-only (le ledger + run_state). Sem rede, sem work-text.
 Uso:  python cost_report.py <projeto> [--by-scene] [--json]
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 
 def _read_ledger(root: Path) -> list[dict]:

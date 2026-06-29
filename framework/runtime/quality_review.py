@@ -26,6 +26,7 @@ Uso:
   python quality_review.py apply  <projeto> <arquivo-devolvido>   # le XLSX ou CSV
 """
 from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -38,10 +39,10 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402  (leitura compartilhada: scenes/translations_map)
+import artifact_io  # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
-import model          # noqa: E402
-import paths          # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
 
 # 'marcar' = a COLUNA DE DECISÃO do humano: ele escreve CORRIGIR (ou corrigir) na linha que quer mudar.
 # O apply lê SÓ as linhas marcadas. 'revisar' é só DICA ($0, micro-QA da IA) de onde olhar — não decide nada.
@@ -330,7 +331,7 @@ def write_xlsx(rows, out_path):
     input em amarelo e EN/PT com quebra de linha. O `apply` le este xlsx de volta (mapeado por posicao)."""
     try:
         from openpyxl import Workbook
-        from openpyxl.styles import Font, PatternFill, Alignment
+        from openpyxl.styles import Alignment, Font, PatternFill
     except ImportError as e:
         raise RuntimeError("o relatorio XLSX amigavel requer 'openpyxl' (pip install openpyxl). "
                            "Ou use --csv p/ o CSV cru.") from e

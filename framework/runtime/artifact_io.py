@@ -10,11 +10,12 @@ resolve caminhos) e abaixo dos scripts. `model._plan_lines` delega aqui (fonte u
 Tolerante a arquivo ausente/ilegivel: retorna vazio em vez de estourar.
 """
 from __future__ import annotations
+
 import json
 from pathlib import Path
 
 import context_pack  # noqa: E402  (scene_id_of — fonte unica da derivacao do id de cena)
-import paths          # noqa: E402
+import paths  # noqa: E402
 
 
 def scene_chapter(scene: str) -> str:

@@ -20,13 +20,15 @@ de `state_index.py` (auto-constroi se faltarem).
 Uso:  python context_pack.py <dir-do-projeto> <scene>     ex.: python context_pack.py projects/utawarerumono ch_12_01
 """
 from __future__ import annotations
+
 import csv
 import hashlib
 import json
 import re
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
@@ -43,7 +45,7 @@ MAX_TM_VOICE_PER_SPEAKER = 3  # exemplos de "voz estabelecida" por falante prese
 
 def _doctrine_hash(root: Path) -> str:
     """SHA1 curto dos artefatos de doutrina — detecta se a carta ou o KB mudou desde a última tradução."""
-    h = hashlib.sha1()
+    h = hashlib.sha1(usedforsecurity=False)
     art = Path(root) / "artifacts"
     for p in [CARTA_PATH, art / "glossary.csv", art / "decision_log.md", art / "tone_analysis.md"]:
         if p.is_file():
@@ -53,7 +55,7 @@ def _doctrine_hash(root: Path) -> str:
 
 def _skills_revision() -> str:
     """SHA1 curto de todos os .md em framework/skills/ — versão das skills e da Carta."""
-    h = hashlib.sha1()
+    h = hashlib.sha1(usedforsecurity=False)
     for p in sorted(FRAMEWORK.glob("skills/**/*.md")):
         h.update(p.read_bytes())
     return h.hexdigest()[:12]
