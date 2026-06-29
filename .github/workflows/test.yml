@@ -53,6 +53,10 @@ jobs:
       - name: Run validation tests
         run: python -m pytest framework/validation/ -v --tb=short
 
+      # Contrato da migração flat-files → SQLite (só stdlib; guarda o "silent-zero")
+      - name: DB / migration contract
+        run: python -m pytest framework/db/ -v --tb=short
+
       # Contrato do conector (round-trip byte-idêntico = oráculo). Passos SEPARADOS por
       # projeto: test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa
       # coleta única. Sem o binário do jogo (gitignored), os testes que o exigem fazem

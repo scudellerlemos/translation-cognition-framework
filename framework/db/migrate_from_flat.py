@@ -89,7 +89,8 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
         reader = csv.DictReader(f)
         for row in reader:
             term = row.get("term") or row.get("source_term", "")
-            translation = row.get("translation") or row.get("target_term", "")
+            translation = (row.get("translation") or row.get("target_translation")
+                           or row.get("target_term", ""))
             if not term or not translation:
                 continue
             db.upsert_glossary(
@@ -97,7 +98,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                 term=term,
                 translation=translation,
                 handling_rule=row.get("handling_rule"),
-                domain=row.get("domain"),
+                domain=row.get("domain") or row.get("category"),
                 notes=row.get("notes"),
             )
             n += 1
@@ -112,14 +113,14 @@ def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
     with e_path.open(encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            name = row.get("name") or row.get("entity", "")
+            name = row.get("name") or row.get("entity") or row.get("canonical_name", "")
             if not name:
                 continue
             db.upsert_entity(
                 project_id=project_id,
                 name=name,
                 canonical_pt=row.get("canonical_pt") or row.get("translation"),
-                entity_type=row.get("type") or row.get("entity_type"),
+                entity_type=row.get("type") or row.get("entity_type") or row.get("category"),
                 first_scene=row.get("first_scene"),
                 spoiler_reveal_scene=row.get("spoiler_reveal_scene"),
                 notes=row.get("notes"),
