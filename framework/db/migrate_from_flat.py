@@ -81,34 +81,57 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
     return n
 
 
-def _migrate_translations(db: Store, project_id: str, root: Path) -> int:
+def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, int]:
+    """TM com CONTEÚDO: source/target/speaker/metadata vêm do translation_plan_*.json
+    (target = base_translation, a forma LEGÍVEL com acento). O approved_*.csv só diz QUAIS
+    offsets passaram pela revisão humana → marca `approved`. (O approved tem apenas
+    offset,text_target — a forma transliterada do conector — então NÃO serve de target da TM.)
+    Retorna (total, aprovadas)."""
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
-        return 0
-    n = 0
+        return 0, 0
+    total = approved_n = 0
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
         scene_id = scene_dir.name
+        approved_offsets = set()
         for csv_path in sorted(scene_dir.glob("approved_*.csv")):
             with csv_path.open(encoding="utf-8", newline="") as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    db.upsert_translation(
-                        project_id=project_id,
-                        scene_id=scene_id,
-                        offset=row.get("offset", ""),
-                        source=row.get("source", row.get("text_en", "")),
-                        target=row.get("target", row.get("text_pt", "")),
-                        speaker=row.get("speaker", ""),
-                        tone_register=row.get("tone_register", ""),
-                        intent=row.get("intent", ""),
-                        risk_level=row.get("risk_level", "low"),
-                        risk_notes=row.get("risk_notes", ""),
-                        approved=True,
-                    )
-                    n += 1
-    return n
+                for row in csv.DictReader(f):
+                    if row.get("offset"):
+                        approved_offsets.add(row["offset"])
+        for plan_path in sorted(scene_dir.glob("translation_plan_*.json")):
+            try:
+                data = json.loads(plan_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                continue
+            lines = data.get("lines", [])
+            if isinstance(lines, dict):
+                lines = [{"offset": k, **v} for k, v in lines.items()]
+            for ln in lines:
+                off = ln.get("offset", "")
+                src = ln.get("text_source", "")
+                tgt = ln.get("base_translation", ln.get("t", ""))
+                if not off or not src or not tgt:
+                    continue
+                is_appr = off in approved_offsets
+                db.upsert_translation(
+                    project_id=project_id,
+                    scene_id=scene_id,
+                    offset=off,
+                    source=src,
+                    target=tgt,
+                    speaker=ln.get("speaker", ""),
+                    tone_register=ln.get("tone_register", ""),
+                    intent=ln.get("intent", ""),
+                    risk_level=ln.get("risk_level", "low"),
+                    risk_notes=ln.get("risk_notes", ""),
+                    approved=is_appr,
+                )
+                total += 1
+                approved_n += 1 if is_appr else 0
+    return total, approved_n
 
 
 def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
@@ -299,7 +322,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         )
         scenes = _migrate_scenes(db, project_id, bof4_root)
         scene_lines = _migrate_scene_lines(db, project_id, bof4_root)
-        translations = _migrate_translations(db, project_id, bof4_root)
+        translations, approved = _migrate_translations(db, project_id, bof4_root)
         glossary = _migrate_glossary(db, project_id, bof4_root)
         entities = _migrate_entities(db, project_id, bof4_root)
         voice_cards = _migrate_voice_cards(db, project_id, bof4_root)
@@ -311,6 +334,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             "scenes": scenes,
             "scene_lines": scene_lines,
             "translations": translations,
+            "approved": approved,
             "glossary": glossary,
             "entities": entities,
             "voice_cards": voice_cards,
