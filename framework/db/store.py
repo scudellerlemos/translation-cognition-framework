@@ -375,6 +375,9 @@ class Store:
             "SELECT COUNT(*) FROM translations WHERE project_id=? AND approved=1",
             (project_id,),
         ).fetchone()[0]
+        n_tm_total = self._con.execute(
+            "SELECT COUNT(*) FROM translations WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
         # Contagens por tipo de artefato — expô-las torna o "silent-zero" da migração
         # visível (um 0 inesperado em glossary/entities salta no resumo).
         n_gloss = self._con.execute(
@@ -400,6 +403,7 @@ class Store:
             "scenes": len(scenes),
             "verified": sum(1 for s in scenes if s["verified"]),
             "scene_lines": n_lines,
+            "translations": n_tm_total,
             "tm_approved": n_tm,
             "glossary": n_gloss,
             "entities": n_ent,
