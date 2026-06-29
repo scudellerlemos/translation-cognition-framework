@@ -42,6 +42,9 @@ def test_migrate_counts_roundtrip_to_store(tmp_path):
         summary = db.summary("bof4")
     assert summary["scenes"] == result["scenes"], (summary, result)
     assert summary["tm_approved"] == result["translations"], (summary, result)
+    assert summary["glossary"] == result["glossary"], (summary, result)
+    assert summary["entities"] == result["entities"], (summary, result)
+    assert summary["voice_cards"] == result["voice_cards"], (summary, result)
 
 
 def test_migrate_idempotent(tmp_path):
