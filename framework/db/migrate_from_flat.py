@@ -50,6 +50,37 @@ def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
     return n
 
 
+def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
+    scenes_dir = root / "artifacts" / "scenes"
+    if not scenes_dir.is_dir():
+        return 0
+    n = 0
+    for scene_dir in sorted(scenes_dir.iterdir()):
+        if not scene_dir.is_dir():
+            continue
+        dcsv = scene_dir / "dialogs.csv"
+        if not dcsv.is_file():
+            continue
+        sid = scene_dir.name
+        sid = sid[3:] if sid.startswith("ch_") else sid   # scene_id_of: igual ao que o context_pack consulta
+        lines = []
+        with dcsv.open(encoding="utf-8", newline="") as f:
+            rdr = csv.DictReader(f)
+            cols = rdr.fieldnames or []
+            textcol = "text_source" if "text_source" in cols else "text_en"
+            for r in rdr:
+                bb = (r.get("byte_budget") or "").strip()
+                lines.append({
+                    "offset": r.get("offset", ""),
+                    "source": r.get(textcol, ""),
+                    "byte_budget": int(bb) if bb.lstrip("-").isdigit() else None,
+                })
+        if lines:
+            db.upsert_scene_lines(project_id, sid, lines)
+            n += len(lines)
+    return n
+
+
 def _migrate_translations(db: Store, project_id: str, root: Path) -> int:
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
@@ -267,6 +298,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             media_type="game",
         )
         scenes = _migrate_scenes(db, project_id, bof4_root)
+        scene_lines = _migrate_scene_lines(db, project_id, bof4_root)
         translations = _migrate_translations(db, project_id, bof4_root)
         glossary = _migrate_glossary(db, project_id, bof4_root)
         entities = _migrate_entities(db, project_id, bof4_root)
@@ -277,6 +309,7 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         return {
             "project_id": project_id,
             "scenes": scenes,
+            "scene_lines": scene_lines,
             "translations": translations,
             "glossary": glossary,
             "entities": entities,
