@@ -1,0 +1,59 @@
+name: Quality
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      # Lint curado (F/I/UP/B) no produto reusável. Scripts one-off de projects/*/connector
+      # ficam no pre-commit local; sua qualidade já é barrada pelos testes de round-trip.
+      - name: Ruff lint
+        run: ruff check framework
+
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      # Falha só em MEDIUM+; LOW (try/except/pass etc.) fica como aviso.
+      - name: Bandit (SAST)
+        run: bandit -r framework -c pyproject.toml --severity-level medium
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks varre o histórico do range do push/PR
+      # Conta pessoal: gitleaks-action é gratuito. Org exige secret GITLEAKS_LICENSE.
+      - name: Gitleaks (secret scan)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: pip-audit (CVEs)
+        run: pip-audit -r requirements-dev.txt
