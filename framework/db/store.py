@@ -71,8 +71,8 @@ class Store:
     # ── Cenas ────────────────────────────────────────────────────────────────
 
     def upsert_scene(self, project_id: str, scene_id: str, status: str,
-                     n_lines: int = None, n_high: int = None, verified: bool = False,
-                     cost_usd: float = 0.0, backend: str = None, model_id: str = None):
+                     n_lines: int | None = None, n_high: int | None = None, verified: bool = False,
+                     cost_usd: float = 0.0, backend: str | None = None, model_id: str | None = None):
         now = time.time()
         self._con.execute(
             """INSERT INTO scenes(id, project_id, status, n_lines, n_high, verified,
@@ -98,11 +98,11 @@ class Store:
     # ── Traduções (TM) ───────────────────────────────────────────────────────
 
     def upsert_translation(self, project_id: str, scene_id: str, offset: str,
-                           source: str, target: str = None, speaker: str = None,
-                           tone_register: str = None, intent: str = None,
+                           source: str, target: str | None = None, speaker: str | None = None,
+                           tone_register: str | None = None, intent: str | None = None,
                            risk_level: str = "low", risk_notes: str = "",
-                           approved: bool = False, backend: str = None,
-                           model_id: str = None):
+                           approved: bool = False, backend: str | None = None,
+                           model_id: str | None = None):
         self._con.execute(
             """INSERT INTO translations(project_id, scene_id, offset, source, target,
                    speaker, tone_register, intent, risk_level, risk_notes,
@@ -243,9 +243,9 @@ class Store:
         return [dict(r) for r in rows]
 
     def upsert_glossary(self, project_id: str, term: str, translation: str,
-                        handling_rule: str = None, domain: str = None,
-                        category: str = None, aliases: str = None,
-                        spoiler_level: str = None, notes: str = None):
+                        handling_rule: str | None = None, domain: str | None = None,
+                        category: str | None = None, aliases: str | None = None,
+                        spoiler_level: str | None = None, notes: str | None = None):
         self._con.execute(
             """INSERT INTO glossary(project_id, term, translation, handling_rule,
                                     domain, category, aliases, spoiler_level, notes, updated_at)
@@ -272,9 +272,9 @@ class Store:
 
     # ── Entidades ────────────────────────────────────────────────────────────
 
-    def upsert_entity(self, project_id: str, name: str, canonical_pt: str = None,
-                      entity_type: str = None, first_scene: str = None,
-                      spoiler_reveal_scene: str = None, notes: str = None):
+    def upsert_entity(self, project_id: str, name: str, canonical_pt: str | None = None,
+                      entity_type: str | None = None, first_scene: str | None = None,
+                      spoiler_reveal_scene: str | None = None, notes: str | None = None):
         self._con.execute(
             """INSERT INTO entities(project_id, name, canonical_pt, entity_type,
                                     first_scene, spoiler_reveal_scene, notes)
@@ -298,10 +298,10 @@ class Store:
     # ── Voice cards ──────────────────────────────────────────────────────────
 
     def upsert_voice_card(self, project_id: str, speaker: str,
-                          register: str = None, quirks: list = None,
-                          example_src: list = None, example_tgt: list = None,
+                          register: str | None = None, quirks: list | None = None,
+                          example_src: list | None = None, example_tgt: list | None = None,
                           criticality: str = "medium",
-                          aliases: list = None, lines: list = None):
+                          aliases: list | None = None, lines: list | None = None):
         self._con.execute(
             """INSERT INTO voice_cards(project_id, speaker, aliases, register, quirks,
                                        example_src, example_tgt, lines, criticality)
@@ -342,8 +342,8 @@ class Store:
 
     # ── Decisões ───────────────────────────────────────────────────────────────
 
-    def upsert_decision(self, project_id: str, title: str, summary: str = None,
-                        universal: bool = False, tags: list = None):
+    def upsert_decision(self, project_id: str, title: str, summary: str | None = None,
+                        universal: bool = False, tags: list | None = None):
         self._con.execute(
             """INSERT INTO decisions(project_id, title, summary, universal, tags)
                VALUES(?,?,?,?,?)
@@ -370,10 +370,10 @@ class Store:
 
     # ── Spoiler ────────────────────────────────────────────────────────────────
 
-    def upsert_spoiler_entry(self, project_id: str, entity: str, fact: str = None,
-                             spoiler_level: str = None, reveal: str = None,
-                             scenes: list = None, triggers: list = None,
-                             pre_reveal: str = None):
+    def upsert_spoiler_entry(self, project_id: str, entity: str, fact: str | None = None,
+                             spoiler_level: str | None = None, reveal: str | None = None,
+                             scenes: list | None = None, triggers: list | None = None,
+                             pre_reveal: str | None = None):
         self._con.execute(
             """INSERT INTO spoiler_entries(project_id, entity, fact, spoiler_level,
                                            reveal, scenes, triggers, pre_reveal)
@@ -405,8 +405,8 @@ class Store:
 
     # ── Jobs (ledger) ─────────────────────────────────────────────────────────
 
-    def log_job(self, project_id: str, kind: str, scene_id: str = None,
-                model_id: str = None, backend: str = None,
+    def log_job(self, project_id: str, kind: str, scene_id: str | None = None,
+                model_id: str | None = None, backend: str | None = None,
                 tokens_in: int = 0, tokens_out: int = 0,
                 cost_usd: float = 0.0, batch: bool = False):
         self._con.execute(
