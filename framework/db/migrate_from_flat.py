@@ -32,6 +32,13 @@ sys.path.insert(0, str(_HERE))
 from store import Store  # noqa: E402
 
 
+def _sid(name: str) -> str:
+    """scene_id canônico — igual a context_pack.scene_id_of (tira o prefixo 'ch_'). Usado em
+    TODA migração p/ chavear scene_id de forma consistente entre as tabelas (senão projetos
+    com prefixo 'ch_' divergiriam entre scene_lines e translations/back_translations/scenes)."""
+    return name[3:] if name.startswith("ch_") else name
+
+
 def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
     rs_path = root / "artifacts" / "run_state.json"
     if not rs_path.is_file():
@@ -41,7 +48,7 @@ def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
     for scene_id, data in state.get("scenes", {}).items():
         db.upsert_scene(
             project_id=project_id,
-            scene_id=scene_id,
+            scene_id=_sid(scene_id),
             status=data.get("status", "pending"),
             n_lines=data.get("n_lines"),
             n_high=data.get("high"),
@@ -62,8 +69,7 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
         dcsv = scene_dir / "dialogs.csv"
         if not dcsv.is_file():
             continue
-        sid = scene_dir.name
-        sid = sid[3:] if sid.startswith("ch_") else sid   # scene_id_of: igual ao que o context_pack consulta
+        sid = _sid(scene_dir.name)
         lines = []
         with dcsv.open(encoding="utf-8", newline="") as f:
             rdr = csv.DictReader(f)
@@ -95,7 +101,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
-        scene_id = scene_dir.name
+        scene_id = _sid(scene_dir.name)
         # source (EN) por offset — do dialogs.csv (extração completa da cena)
         src_by = {}
         dcsv = scene_dir / "dialogs.csv"
@@ -157,8 +163,10 @@ def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
     p = root / "artifacts" / "universe_knowledge_base.md"
     if not p.is_file():
         return 0
-    entries = []
-    section, reveal, buf = None, None, []
+    entries: list[dict] = []
+    section: str | None = None
+    reveal: str | None = None
+    buf: list[str] = []
 
     def _flush():
         if section and "\n".join(buf).strip():
@@ -187,7 +195,7 @@ def _migrate_back_translations(db: Store, project_id: str, root: Path) -> int:
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
-        scene_id = scene_dir.name
+        scene_id = _sid(scene_dir.name)
         for bt_path in sorted(scene_dir.glob("back_translation_*.json")):
             try:
                 data = json.loads(bt_path.read_text(encoding="utf-8"))
