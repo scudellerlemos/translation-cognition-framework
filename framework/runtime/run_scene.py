@@ -342,7 +342,9 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return early
 
     print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
-    si = state_index.build(root)
+    # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
+    # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
+    si = state_index.build(root, sync_db=False)
     print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
     for w in si.get("warnings", []):
         print(f"      [state_index] AVISO: {w}")
