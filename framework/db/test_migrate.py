@@ -32,6 +32,9 @@ def test_migrate_bof4_imports_all_present_artifacts(bof4_migrated):
     assert result["back_translations"] > 0, "back_translation_*.json existe mas importou 0"
     assert result["kb"] > 0, "universe_knowledge_base.md existe mas importou 0 seções"
     assert result["jobs"] > 0, result
+    assert result["metrics"] > 0, "metrics.jsonl existe mas importou 0 — mismatch?"
+    assert result["warnings"] > 0, "warnings.jsonl existe mas importou 0"
+    assert result["qa_effectiveness"] > 0, "qa_effectiveness.jsonl existe mas importou 0"
     assert "decisions" in result and "spoiler" in result, result
 
 
@@ -49,6 +52,9 @@ def test_migrate_counts_roundtrip_to_store(bof4_migrated):
     assert summary["decisions"] == result["decisions"], (summary, result)
     assert summary["spoiler"] == result["spoiler"], (summary, result)
     assert summary["kb"] == result["kb"], (summary, result)
+    assert summary["metrics"] == result["metrics"], (summary, result)
+    assert summary["warnings"] == result["warnings"], (summary, result)
+    assert summary["qa_effectiveness"] == result["qa_effectiveness"], (summary, result)
 
 
 def test_migrate_glossary_lossless(bof4_migrated):
@@ -99,6 +105,10 @@ def test_migrate_idempotent(tmp_path):
     assert summary["translations"] == first["translations"], (summary, first)
     assert summary["tm_approved"] == first["approved"], (summary, first)
     assert summary["scene_lines"] == first["scene_lines"], (summary, first)
+    # observabilidade: UNIQUE garante que re-migrar não duplica (ao contrário do jobs)
+    assert summary["metrics"] == first["metrics"], (summary, first)
+    assert summary["warnings"] == first["warnings"], (summary, first)
+    assert summary["qa_effectiveness"] == first["qa_effectiveness"], (summary, first)
 
 
 def test_migrate_translations_have_content(bof4_migrated):
@@ -110,3 +120,27 @@ def test_migrate_translations_have_content(bof4_migrated):
     assert tm, "translations vazio"
     empty = [t for t in tm if not (t.get("source") and t.get("target"))]
     assert not empty, f"{len(empty)}/{len(tm)} translations com source/target vazio"
+
+
+def test_migrate_metrics_content(bof4_migrated):
+    """metrics: 1 linha por cena, escalares preenchidos e `raw` (translate/back) preservado."""
+    db_path, result = bof4_migrated
+    with Store(db_path) as db:
+        m = db.get_metrics("bof4")
+    assert m, "metrics vazio"
+    assert len(m) == result["metrics"], "contagem de metrics diverge do reportado"
+    assert all(r.get("scene_id") for r in m), "metrics sem scene_id"
+    # `raw` reidrata p/ dict e mantém os blocos aninhados que não viram coluna
+    withraw = next((r for r in m if r.get("raw")), None)
+    assert withraw and isinstance(withraw["raw"], dict), "raw não reidratou p/ dict"
+    assert "translate" in withraw["raw"], "raw perdeu o bloco translate (lossy)"
+
+
+def test_migrate_warnings_content(bof4_migrated):
+    """warnings: lista de strings reidratada (não fica como string JSON crua)."""
+    db_path, _ = bof4_migrated
+    with Store(db_path) as db:
+        w = db.get_warnings("bof4")
+    assert w, "warnings vazio"
+    assert any(isinstance(r.get("warnings"), list) and r["warnings"] for r in w), \
+        "warnings não reidratou p/ lista"
