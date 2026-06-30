@@ -23,13 +23,33 @@
 | Fase | Migração (write/read path) | RAG encaixado | Status |
 |---|---|---|---|
 | **1** | `dialogs.csv` → `scene_lines`; pacote 100% do DB no modo DB | — | ✅ feito (205b8be) |
-| **2** | **write path**: `plan_lines`, `back_translations`, `translations(approved=0)`; rewire `build_plan`/`run_scene`/`back_translate`; export `approved_*.csv` | *(enche o corpus que o RAG usa)* | ⏳ |
+| **2** | **write path** (consolidado): espelho gated no `state_index.build()` reusa `migrate` → DB vira mirror fiel do estado flat após cada re-index. *(em vez de upsert inline por produtor)* | *(enche o corpus que o RAG usa)* | ✅ |
 | **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ⏳ |
-| **3** | derivados de `.md` gravam no DB (`state_index` → tabelas `decisions`/`voice_cards`); `kb_ratified.csv` → tabela; **tabela `kb`** p/ `universe_knowledge_base.md` | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ⏳ |
-| **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas | — | ✅ migração (read-path); write-path dos produtores deferido |
+| **3** | derivados de `.md` gravam no DB (`decisions`/`voice_cards`/`spoiler`/`kb`) — cobertos pelo mesmo espelho gated da Fase 2 | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ✅ |
+| **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas — cobertos pelo mesmo espelho gated | — | ✅ |
 | **5** | skills `s00–s08` como módulos lendo/gravando DB; CLI e2e | retrieval disponível às skills (reuso da infra) | ⏳ |
 | **6** | cutover: `approved_*.csv` e `translation_memory.jsonl` viram **export** do DB; remove leitura flat dos paths migrados | — | ⏳ |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
+
+## Write-path consolidado (Fases 2/3/4) — decisão de design
+
+**Decisão (jun/2026):** o write-path NÃO é upsert inline espalhado por
+`build_plan`/`run_scene`/`back_translate`/`cost`/`quality_review`. Em vez disso, há **um
+único hook gated** no `state_index.build()` — o passo determinístico/idempotente que já
+reconstrói o estado consolidado a partir dos artefatos por-cena (ADR 0003). Após gravar os
+flats, `state_index._sync_db()` chama `migrate_from_flat.migrate()` (idempotente, upsert) e
+o **DB vira mirror fiel** do estado flat completo (scenes, scene_lines, translations,
+glossary, entities, voice_cards, decisions, spoiler, back_translations, kb, jobs, metrics,
+warnings, qa_effectiveness). Por quê:
+
+- **Offline-testável** — o mirror lê flats → DB; não exige run vivo de API p/ validar (o
+  inline exigiria). Testes em `test_runtime.py` (gate-off no-op / gate-on popula).
+- **Risco zero ungated** — `project.json:db` ausente (BoF4/Uta hoje) → no-op total.
+- **DRY** — reusa o `migrate` já testado; idempotente (re-index não duplica).
+- **Determinismo intacto** — não toca o núcleo do `context_pack`.
+
+`migrate()` passou a ler `title`/`media_type`/langs do `project.json` (era hardcoded
+"Breath of Fire IV") — pré-requisito p/ o write-path ser multi-projeto.
 
 ## Detalhe das oportunidades de RAG
 

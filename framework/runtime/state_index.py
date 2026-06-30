@@ -225,6 +225,42 @@ def build_decision_index(log_md: str) -> list[dict]:
     return out
 
 
+# ----------------------------- write-path (DB mirror) -------------------------
+
+def _db_target(root: Path):
+    """(db_path, project_id) se project.json declara `db.path` + `db.project_id`; senão
+    (None, None). Diferente de context_pack._db_path: NÃO exige que o arquivo exista — o
+    write-path o cria no 1º espelhamento. project_id vazio também desliga (não dá p/ chavear)."""
+    pj = root / "project.json"
+    if not pj.is_file():
+        return None, None
+    try:
+        cfg = json.loads(pj.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None, None
+    db = cfg.get("db") or {}
+    rel, pid = db.get("path"), db.get("project_id")
+    if not rel or not pid:
+        return None, None
+    return Path(root) / rel, pid
+
+
+def _sync_db(root: Path):
+    """Write-path consolidado: espelha o estado flat COMPLETO no SQLite (gated por
+    project.json:db). Reusa migrate_from_flat.migrate (idempotente, upsert) — o DB vira
+    mirror fiel após o re-index. No-op quando o projeto não declara `db` (BoF4/Uta hoje).
+    Roda DEPOIS de gravar os flats (lê voice_cards/decision_index recém-escritos)."""
+    db_path, project_id = _db_target(root)
+    if not db_path:
+        return None
+    import importlib
+    db_dir = str(Path(__file__).resolve().parents[1] / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    migrate = importlib.import_module("migrate_from_flat").migrate
+    return migrate(root, db_path, project_id)
+
+
 # --------------------------------- driver -------------------------------------
 
 def build(root: Path) -> dict:
@@ -299,8 +335,11 @@ def build(root: Path) -> dict:
         except OSError:
             pass
 
+    # write-path: espelha o estado flat completo no DB (gated; no-op sem project.json:db)
+    db_synced = _sync_db(root)
+
     return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions),
-            "dir": state, "warnings": warnings}
+            "dir": state, "warnings": warnings, "db_synced": db_synced}
 
 
 def _read(p: Path) -> str:
@@ -353,6 +392,10 @@ def main():
     print(f"  translation_memory: {r['tm']} entradas")
     print(f"  voice_cards: {r['cards']} personagens")
     print(f"  decision_index: {r['decisions']} decisoes")
+    if r.get("db_synced"):
+        s = r["db_synced"]
+        print(f"  DB mirror -> {s.get('db')}: {s.get('translations', 0)} traducoes, "
+              f"{s.get('scene_lines', 0)} linhas, {s.get('kb', 0)} kb")
 
 
 if __name__ == "__main__":
