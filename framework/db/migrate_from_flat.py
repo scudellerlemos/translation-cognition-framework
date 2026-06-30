@@ -33,13 +33,7 @@ if str(_RUNTIME) not in sys.path:
 sys.path.insert(0, str(_HERE))
 
 from store import Store  # noqa: E402
-
-
-def _sid(name: str) -> str:
-    """scene_id canônico — igual a context_pack.scene_id_of (tira o prefixo 'ch_'). Usado em
-    TODA migração p/ chavear scene_id de forma consistente entre as tabelas (senão projetos
-    com prefixo 'ch_' divergiriam entre scene_lines e translations/back_translations/scenes)."""
-    return name[3:] if name.startswith("ch_") else name
+from text_ids import scene_id_of as _sid  # noqa: E402  (fonte única; chaveia scene_id consistente)
 
 
 def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
