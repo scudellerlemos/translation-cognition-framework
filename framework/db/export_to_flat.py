@@ -17,22 +17,17 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
-import re
 import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
+_RUNTIME = _HERE.parent / "runtime"
+for _p in (_HERE, _RUNTIME):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 from store import Store  # noqa: E402
-
-
-def _src_key(s: str) -> str:
-    """Chave de TM por source normalizado — espelha state_index._key (sha1[:16] do norm)."""
-    norm = re.sub(r"\s+", " ", (s or "").replace("\\n", " ").lower()).strip()
-    return hashlib.sha1(norm.encode("utf-8"), usedforsecurity=False).hexdigest()[:16]
+from text_ids import tm_key as _src_key  # noqa: E402  (fonte única da chave de TM)
 
 
 def export_approved(db: Store, project_id: str, out_csv: Path) -> int:
