@@ -263,7 +263,7 @@ def _sync_db(root: Path):
 
 # --------------------------------- driver -------------------------------------
 
-def build(root: Path) -> dict:
+def build(root: Path, *, sync_db: bool = True) -> dict:
     root = Path(root)
     art = paths.artifacts(root)
     state = paths.state_dir(root)
@@ -335,8 +335,11 @@ def build(root: Path) -> dict:
         except OSError:
             pass
 
-    # write-path: espelha o estado flat completo no DB (gated; no-op sem project.json:db)
-    db_synced = _sync_db(root)
+    # write-path: espelha o estado flat completo no DB (gated; no-op sem project.json:db).
+    # sync_db=False no checkpoint POR-CENA do run_scene — senao o migrate() completo (corpus
+    # inteiro + clear/reload do ledger) rodaria a CADA cena. O mirror roda no rebuild deliberado
+    # do indice (CLI state_index / fim de capitulo), nao no checkpoint de cada cena.
+    db_synced = _sync_db(root) if sync_db else None
 
     return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions),
             "dir": state, "warnings": warnings, "db_synced": db_synced}

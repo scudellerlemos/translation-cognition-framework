@@ -2131,5 +2131,45 @@ def test_state_index_syncs_db_when_gated(tmp_path):
     assert title == "Test Game", title   # não hardcoded "Breath of Fire IV"
 
 
+def test_state_index_sync_db_false_skips_mirror(tmp_path):
+    """#1 (perf): sync_db=False (checkpoint por-cena do run_scene) NÃO espelha no DB nem cria
+    banco, mesmo num projeto gated — o mirror só roda no rebuild deliberado (default True)."""
+    _tiny_project(tmp_path, with_db=True)
+    r = state_index.build(tmp_path, sync_db=False)
+    assert r["db_synced"] is None
+    assert not (tmp_path / "db" / "t.db").exists()
+
+
+# ---------------------- spoiler: filtro temporal default-SAFE -------------------
+
+def test_pos_extracts_digits_any_scheme():
+    """#2: _pos robusto a esquema sem '_' numérico (AREAD050) — extrai qualquer run de dígitos."""
+    assert context_pack._pos("AREAD050") == (50,)
+    assert context_pack._pos("12_03") == (12, 3)
+    assert context_pack._pos("AREAD001") == (1,)
+    assert context_pack._pos("PROLOGUE") == ()
+
+
+def test_spoiler_guard_temporal_with_non_underscore_ids():
+    """#2 REGRESSÃO: com scene_id estilo AREAD###, o guard de reveal FUTURO não pode ser pulado
+    (vazaria). Antes do fix _pos('AREAD050')==() fazia '()>()'=False → guard omitido na cena 001."""
+    ledger = {"entries": [{
+        "entity": "Fou-lu", "fact": "é o antagonista", "reveal": "AREAD050",
+        "triggers": ["dragon"], "pre_reveal": "trate como figura misteriosa"}]}
+    blob = "the dragon speaks here"
+    g_future = context_pack.select_spoiler_guards(ledger, blob, "AREAD001")
+    assert len(g_future) == 1 and g_future[0]["entity"] == "Fou-lu"   # reveal futuro → guarda
+    g_past = context_pack.select_spoiler_guards(ledger, blob, "AREAD060")
+    assert g_past == []                                               # reveal já passado → não guarda
+
+
+def test_spoiler_guard_incomparable_defaults_safe():
+    """#2: reveal sem dígito (incomparável) → default-SAFE = guarda (nunca pula por não ordenar)."""
+    ledger = {"entries": [{
+        "entity": "X", "fact": "f", "reveal": "PROLOGUE",
+        "triggers": ["dragon"], "pre_reveal": "guard"}]}
+    assert context_pack.select_spoiler_guards(ledger, "the dragon", "AREAD001")
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))

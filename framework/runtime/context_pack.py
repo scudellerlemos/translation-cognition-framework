@@ -221,8 +221,10 @@ def select_tm(tm, scene_rows, present_speakers):
 
 
 def _pos(scene_id: str):
-    """scene_id '12_03' -> (12, 3) p/ comparacao numerica de posicao narrativa."""
-    return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
+    """scene_id -> tupla numerica de posicao narrativa p/ comparacao. Extrai TODA sequencia de
+    digitos (robusto a esquemas sem '_': '12_03'->(12,3), 'AREAD050'->(50,), 'AREAD001'->(1,)).
+    Sem digito nenhum -> () (incomparavel); os callers tratam isso como default-SAFE/deny."""
+    return tuple(int(m) for m in re.findall(r"\d+", str(scene_id)))
 
 
 def select_spoiler_guards(ledger: dict, blob_low: str, scene_id: str) -> list:
@@ -234,7 +236,11 @@ def select_spoiler_guards(ledger: dict, blob_low: str, scene_id: str) -> list:
     here = _pos(scene_id)
     for e in (ledger or {}).get("entries", []):
         rev = e.get("reveal", "beyond_frontier")
-        future = True if rev == "beyond_frontier" else (_pos(rev) > here)
+        rp = _pos(rev)
+        # DEFAULT-SAFE: beyond_frontier, ou posicao incomparavel (reveal/cena sem numero), trata
+        # como FUTURO -> guarda. Nunca PULA o guard por nao conseguir ordenar (evita vazamento;
+        # espelha o default-deny da select_kb). So omite o guard quando PROVADAMENTE ja revelado.
+        future = True if (rev == "beyond_frontier" or not rp or not here) else (rp > here)
         if not future:
             continue
         in_scenes = scene_id in {scene_id_of(s) for s in e.get("scenes", [])}
