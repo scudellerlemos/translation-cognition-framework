@@ -363,6 +363,7 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
     ledger = root / "artifacts" / "api_ledger.jsonl"
     if not ledger.is_file():
         return 0
+    db.clear_jobs(project_id)   # mirror do ledger: clear+reload (jobs não tem UNIQUE)
     n = 0
     for line in ledger.read_text(encoding="utf-8").splitlines():
         line = line.strip()
@@ -448,14 +449,35 @@ def _migrate_qa_effectiveness(db: Store, project_id: str, root: Path) -> int:
     return len(rows)
 
 
+def _project_meta(root: Path) -> dict:
+    """Metadados do projeto (title/media_type/langs) lidos do project.json — write-path é
+    multi-projeto, então NÃO hardcoda. Fallback p/ defaults se ausente/ilegível."""
+    meta = {"title": "", "source_lang": "en", "target_lang": "pt-BR", "media_type": "game"}
+    pj = root / "project.json"
+    if pj.is_file():
+        try:
+            cfg = json.loads(pj.read_text(encoding="utf-8"))
+            # nomenclatura real do project.json: source_language/target_language (com fallback)
+            meta["title"] = cfg.get("title") or meta["title"]
+            meta["media_type"] = cfg.get("media_type") or meta["media_type"]
+            meta["source_lang"] = cfg.get("source_language") or cfg.get("source_lang") or meta["source_lang"]
+            meta["target_lang"] = cfg.get("target_language") or cfg.get("target_lang") or meta["target_lang"]
+        except (json.JSONDecodeError, OSError):
+            pass
+    if not meta["title"]:
+        meta["title"] = root.name
+    return meta
+
+
 def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
+    meta = _project_meta(bof4_root)
     with Store(dest_db) as db:
         db.upsert_project(
             project_id=project_id,
-            title="Breath of Fire IV",
-            source_lang="en",
-            target_lang="pt-BR",
-            media_type="game",
+            title=meta["title"],
+            source_lang=meta["source_lang"],
+            target_lang=meta["target_lang"],
+            media_type=meta["media_type"],
         )
         scenes = _migrate_scenes(db, project_id, bof4_root)
         scene_lines = _migrate_scene_lines(db, project_id, bof4_root)

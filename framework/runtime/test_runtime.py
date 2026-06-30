@@ -2086,5 +2086,50 @@ def test_connector_sandbox_accepts_internal_override(tmp_path):
     assert p == tmp_path / "connector" / "verify_chapter.py"
 
 
+# ------------------------- write-path (DB mirror, gated) ----------------------
+
+def _tiny_project(root: Path, with_db: bool):
+    """Projeto mínimo: 1 cena com dialogs+approved. with_db liga o gate (project.json:db)."""
+    cfg = {"title": "Test Game", "media_type": "game"}
+    if with_db:
+        cfg["db"] = {"path": "db/t.db", "project_id": "tg"}
+    (root / "project.json").write_text(json.dumps(cfg), encoding="utf-8")
+    sc = root / "artifacts" / "scenes" / "ch_1_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\nX.DAT:0:1,Hello,10\n", encoding="utf-8")
+    (sc / "approved_ch_1_01.csv").write_text(
+        "offset,text_target\nX.DAT:0:1,Olá\n", encoding="utf-8")
+
+
+def test_state_index_no_db_is_noop(tmp_path):
+    """Gate off (sem project.json:db): build NÃO cria banco e db_synced é None.
+    Garante que BoF4/Uta (db=None) seguem sem efeito colateral."""
+    _tiny_project(tmp_path, with_db=False)
+    r = state_index.build(tmp_path)
+    assert r["db_synced"] is None
+    assert not (tmp_path / "db" / "t.db").exists()
+
+
+def test_state_index_syncs_db_when_gated(tmp_path):
+    """Write-path: com project.json:db declarado, build espelha o estado flat no SQLite
+    (cria o banco, popula scene_lines/translations, título vem do project.json)."""
+    _tiny_project(tmp_path, with_db=True)
+    r = state_index.build(tmp_path)
+    assert r["db_synced"], "db_synced vazio — mirror não rodou"
+    dbp = tmp_path / "db" / "t.db"
+    assert dbp.is_file(), "banco não criado pelo write-path"
+    db_dir = str(REPO / "framework" / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    from store import Store
+    with Store(dbp) as db:
+        s = db.summary("tg")
+        title = db._con.execute("SELECT title FROM projects WHERE id='tg'").fetchone()[0]
+    assert s["scene_lines"] == 1, s
+    assert s["translations"] == 1, s
+    assert title == "Test Game", title   # não hardcoded "Breath of Fire IV"
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))

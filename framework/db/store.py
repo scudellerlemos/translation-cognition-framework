@@ -418,6 +418,13 @@ class Store:
         )
         self._con.commit()
 
+    def clear_jobs(self, project_id: str) -> None:
+        """Apaga os jobs do projeto. `jobs` é o mirror do api_ledger.jsonl (append-log sem
+        chave natural); o write-path reconstrói por clear+reload p/ não inflar o custo a cada
+        re-index (ao contrário das outras tabelas, que são idempotentes via UNIQUE upsert)."""
+        self._con.execute("DELETE FROM jobs WHERE project_id=?", (project_id,))
+        self._con.commit()
+
     def get_cost_summary(self, project_id: str) -> dict:
         row = self._con.execute(
             """SELECT SUM(cost_usd) as total, SUM(tokens_in) as tin,

@@ -109,6 +109,8 @@ def test_migrate_idempotent(tmp_path):
     assert summary["metrics"] == first["metrics"], (summary, first)
     assert summary["warnings"] == first["warnings"], (summary, first)
     assert summary["qa_effectiveness"] == first["qa_effectiveness"], (summary, first)
+    # jobs não tem UNIQUE; o mirror faz clear+reload p/ não inflar o custo a cada re-index
+    assert summary["api_calls"] == first["jobs"], (summary, first)
 
 
 def test_migrate_translations_have_content(bof4_migrated):
@@ -120,6 +122,17 @@ def test_migrate_translations_have_content(bof4_migrated):
     assert tm, "translations vazio"
     empty = [t for t in tm if not (t.get("source") and t.get("target"))]
     assert not empty, f"{len(empty)}/{len(tm)} translations com source/target vazio"
+
+
+def test_migrate_project_title_from_json(bof4_migrated):
+    """O título do projeto vem do project.json (não hardcoded) — pré-req do write-path multi-projeto."""
+    db_path, _ = bof4_migrated
+    with Store(db_path) as db:
+        row = db._con.execute(
+            "SELECT title, source_lang, target_lang FROM projects WHERE id='bof4'").fetchone()
+    assert row and row[0] == "Breath of Fire IV", row
+    # idiomas vêm de source_language/target_language do project.json (nomenclatura real)
+    assert (row[1], row[2]) == ("en", "pt-BR"), row
 
 
 def test_migrate_metrics_content(bof4_migrated):
