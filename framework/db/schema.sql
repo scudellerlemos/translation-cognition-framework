@@ -190,6 +190,54 @@ CREATE TABLE IF NOT EXISTS jobs (
 CREATE INDEX IF NOT EXISTS idx_jobs_project ON jobs(project_id);
 CREATE INDEX IF NOT EXISTS idx_jobs_scene ON jobs(project_id, scene_id);
 
+-- ── Observabilidade ───────────────────────────────────────────────────────────
+-- Métricas por cena (snapshot reescrito a cada run — 1 linha por cena). Os blocos
+-- aninhados translate/back ficam preservados em `raw` (JSON) p/ não perder nada;
+-- os escalares ficam em colunas próprias p/ consulta direta.
+CREATE TABLE IF NOT EXISTS metrics (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id      TEXT NOT NULL REFERENCES projects(id),
+    scene_id        TEXT NOT NULL,
+    n_lines         INTEGER,
+    n_high          INTEGER,
+    verified        INTEGER DEFAULT 0,         -- 0/1 bool
+    reused          INTEGER,
+    back_pass_rate  REAL,
+    cost_usd_last   REAL,
+    cost_usd        REAL,
+    raw             TEXT,                       -- JSON do registro completo (translate/back)
+    UNIQUE(project_id, scene_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_metrics_scene ON metrics(project_id, scene_id);
+
+-- Avisos do harness (append-log: state_index, validações). Chave (t, source) torna a
+-- re-migração idempotente sem perder histórico realista.
+CREATE TABLE IF NOT EXISTS warnings (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id  TEXT NOT NULL REFERENCES projects(id),
+    t           REAL,
+    source      TEXT,
+    warnings    TEXT,                           -- JSON array de strings
+    UNIQUE(project_id, t, source)
+);
+
+-- Efetividade do QA humano (quality_review apply): quanto do que foi marcado virou
+-- aplicação e a que custo. Append-log idempotente por (t, source).
+CREATE TABLE IF NOT EXISTS qa_effectiveness (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id         TEXT NOT NULL REFERENCES projects(id),
+    t                  REAL,
+    source             TEXT,
+    total_marked       INTEGER,
+    applied            INTEGER,
+    verbatim           INTEGER,
+    ai                 INTEGER,
+    effectiveness_rate REAL,
+    cost_usd           REAL,
+    UNIQUE(project_id, t, source)
+);
+
 -- ── Embeddings (TM semântica) ─────────────────────────────────────────────────
 -- Criada via sqlite-vec se extensão disponível (embedder.py cria em runtime).
 -- Guardamos aqui só os metadados; os vetores ficam na tabela virtual vec0.
