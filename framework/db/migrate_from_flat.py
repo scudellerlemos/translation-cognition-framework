@@ -360,20 +360,12 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
 
 
 def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
-    ledger = root / "artifacts" / "api_ledger.jsonl"
-    if not ledger.is_file():
+    recs = _read_jsonl(root / "artifacts" / "api_ledger.jsonl")   # leitor tolerante único
+    if not recs:
         return 0
     db.clear_jobs(project_id)   # mirror do ledger: clear+reload (jobs não tem UNIQUE)
-    n = 0
-    for line in ledger.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            rec = json.loads(line)
-        except Exception:
-            continue
-        u = rec.get("usage", {})
+    for rec in recs:
+        u = rec.get("usage") or {}   # 'usage': null aparece no ledger — não deref None
         db.log_job(
             project_id=project_id,
             scene_id=rec.get("scene"),
@@ -385,8 +377,7 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
             cost_usd=rec.get("cost_usd", 0.0),
             batch=rec.get("batch", False),
         )
-        n += 1
-    return n
+    return len(recs)
 
 
 def _read_jsonl(path: Path) -> list[dict]:
