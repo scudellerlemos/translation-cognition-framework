@@ -61,8 +61,7 @@ def _skills_revision() -> str:
     return h.hexdigest()[:12]
 
 
-def scene_id_of(scene: str) -> str:
-    return scene[3:] if scene.startswith("ch_") else scene
+from text_ids import scene_id_of  # noqa: E402,F401  (re-export: fonte única em text_ids)
 
 
 def _read(p: Path) -> str:

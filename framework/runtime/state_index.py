@@ -24,7 +24,6 @@ Uso:  python state_index.py <dir-do-projeto> [--rebuild]
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import sys
@@ -32,6 +31,8 @@ from pathlib import Path
 
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
+from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única)
+from text_ids import tm_key as _key
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -44,17 +45,6 @@ _STOP = {
     "um", "uma", "por", "para", "pra", "com", "sem", "em", "ao", "aos", "que", "the",
     "of", "+", "-", "medido", "real", "data", "tipo", "passo",
 }
-
-
-def _norm(s: str) -> str:
-    """Normaliza p/ chave de TM: minusculo, espacos colapsados, sem pontuacao de borda."""
-    s = (s or "").replace("\\n", " ").lower()
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-
-def _key(s: str) -> str:
-    return hashlib.sha1(_norm(s).encode("utf-8"), usedforsecurity=False).hexdigest()[:16]
 
 
 def _slug_tags(title: str) -> list[str]:
