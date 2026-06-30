@@ -7,6 +7,9 @@ Lê os artefatos existentes do BoF4:
   artifacts/entities.csv            → entities
   artifacts/api_ledger.jsonl        → jobs
   artifacts/run_state.json          → scenes (status)
+  artifacts/metrics.jsonl           → metrics (observabilidade)
+  artifacts/warnings.jsonl          → warnings
+  artifacts/qa_effectiveness.jsonl  → qa_effectiveness
 
 Grava em: <dest_db> (cria se não existir)
 
@@ -385,6 +388,66 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
     return n
 
 
+def _read_jsonl(path: Path) -> list[dict]:
+    """Lê um .jsonl tolerante a linhas em branco/corrompidas (mesma postura do ledger)."""
+    if not path.is_file():
+        return []
+    out: list[dict] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return out
+
+
+def _migrate_metrics(db: Store, project_id: str, root: Path) -> int:
+    """metrics.jsonl → tabela metrics. Snapshot 1-por-cena; escalares em colunas e o
+    registro completo (translate/back aninhados) preservado em `raw` (JSON)."""
+    recs = _read_jsonl(root / "artifacts" / "metrics.jsonl")
+    rows = []
+    for r in recs:
+        scene = r.get("scene")
+        if not scene:
+            continue
+        rows.append({
+            "scene_id": _sid(scene),
+            "n_lines": r.get("n_lines"),
+            "n_high": r.get("n_high"),
+            "verified": r.get("verified", False),
+            "reused": r.get("reused"),
+            "back_pass_rate": r.get("back_pass_rate"),
+            "cost_usd_last": r.get("cost_usd_last"),
+            "cost_usd": r.get("cost_usd"),
+            "raw": json.dumps(r, ensure_ascii=False),
+        })
+    if rows:
+        db.upsert_metrics(project_id, rows)
+    return len(rows)
+
+
+def _migrate_warnings(db: Store, project_id: str, root: Path) -> int:
+    """warnings.jsonl → tabela warnings (append-log; lista de strings em JSON)."""
+    recs = _read_jsonl(root / "artifacts" / "warnings.jsonl")
+    rows = [{"t": r.get("t"), "source": r.get("source"), "warnings": r.get("warnings", [])}
+            for r in recs if r.get("t") is not None]
+    if rows:
+        db.upsert_warnings(project_id, rows)
+    return len(rows)
+
+
+def _migrate_qa_effectiveness(db: Store, project_id: str, root: Path) -> int:
+    """qa_effectiveness.jsonl → tabela qa_effectiveness (append-log do QA humano)."""
+    recs = _read_jsonl(root / "artifacts" / "qa_effectiveness.jsonl")
+    rows = [r for r in recs if r.get("t") is not None]
+    if rows:
+        db.upsert_qa_effectiveness(project_id, rows)
+    return len(rows)
+
+
 def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
     with Store(dest_db) as db:
         db.upsert_project(
@@ -405,6 +468,9 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
         back_translations = _migrate_back_translations(db, project_id, bof4_root)
         kb = _migrate_kb(db, project_id, bof4_root)
         jobs = _migrate_jobs(db, project_id, bof4_root)
+        metrics = _migrate_metrics(db, project_id, bof4_root)
+        warnings = _migrate_warnings(db, project_id, bof4_root)
+        qa_effectiveness = _migrate_qa_effectiveness(db, project_id, bof4_root)
         return {
             "project_id": project_id,
             "scenes": scenes,
@@ -419,6 +485,9 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             "back_translations": back_translations,
             "kb": kb,
             "jobs": jobs,
+            "metrics": metrics,
+            "warnings": warnings,
+            "qa_effectiveness": qa_effectiveness,
             "db": str(dest_db),
         }
 

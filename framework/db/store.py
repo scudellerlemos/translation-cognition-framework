@@ -427,6 +427,84 @@ class Store:
         ).fetchone()
         return dict(row) if row else {"total": 0, "tin": 0, "tout": 0, "n_calls": 0}
 
+    # ── Observabilidade ──────────────────────────────────────────────────────
+
+    def upsert_metrics(self, project_id: str, rows: list) -> None:
+        """Métricas por cena em LOTE (1 commit). Snapshot 1-por-cena (upsert por scene_id).
+        rows: [{scene_id, n_lines, n_high, verified, reused, back_pass_rate,
+                cost_usd_last, cost_usd, raw}]. `raw` é a string JSON do registro completo."""
+        self._con.executemany(
+            """INSERT INTO metrics(project_id, scene_id, n_lines, n_high, verified,
+                                   reused, back_pass_rate, cost_usd_last, cost_usd, raw)
+               VALUES(?,?,?,?,?,?,?,?,?,?)
+               ON CONFLICT(project_id, scene_id) DO UPDATE SET
+                   n_lines=excluded.n_lines, n_high=excluded.n_high,
+                   verified=excluded.verified, reused=excluded.reused,
+                   back_pass_rate=excluded.back_pass_rate,
+                   cost_usd_last=excluded.cost_usd_last, cost_usd=excluded.cost_usd,
+                   raw=excluded.raw""",
+            [(project_id, r.get("scene_id", ""), r.get("n_lines"), r.get("n_high"),
+              int(bool(r.get("verified"))), r.get("reused"), r.get("back_pass_rate"),
+              r.get("cost_usd_last"), r.get("cost_usd"), r.get("raw")) for r in rows],
+        )
+        self._con.commit()
+
+    def get_metrics(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT * FROM metrics WHERE project_id=? ORDER BY scene_id", (project_id,)
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["verified"] = bool(d.get("verified"))
+            d["raw"] = json.loads(d["raw"]) if d.get("raw") else None
+            out.append(d)
+        return out
+
+    def upsert_warnings(self, project_id: str, rows: list) -> None:
+        """Avisos do harness em LOTE (1 commit). rows: [{t, source, warnings:[str]}]."""
+        self._con.executemany(
+            """INSERT INTO warnings(project_id, t, source, warnings) VALUES(?,?,?,?)
+               ON CONFLICT(project_id, t, source) DO UPDATE SET warnings=excluded.warnings""",
+            [(project_id, r.get("t"), r.get("source"),
+              json.dumps(r.get("warnings", []), ensure_ascii=False)) for r in rows],
+        )
+        self._con.commit()
+
+    def get_warnings(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT t, source, warnings FROM warnings WHERE project_id=? ORDER BY t", (project_id,)
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            d["warnings"] = json.loads(d.get("warnings") or "[]")
+            out.append(d)
+        return out
+
+    def upsert_qa_effectiveness(self, project_id: str, rows: list) -> None:
+        """Efetividade do QA humano em LOTE (1 commit). Append-log idempotente por (t, source)."""
+        self._con.executemany(
+            """INSERT INTO qa_effectiveness(project_id, t, source, total_marked, applied,
+                                            verbatim, ai, effectiveness_rate, cost_usd)
+               VALUES(?,?,?,?,?,?,?,?,?)
+               ON CONFLICT(project_id, t, source) DO UPDATE SET
+                   total_marked=excluded.total_marked, applied=excluded.applied,
+                   verbatim=excluded.verbatim, ai=excluded.ai,
+                   effectiveness_rate=excluded.effectiveness_rate, cost_usd=excluded.cost_usd""",
+            [(project_id, r.get("t"), r.get("source"), r.get("total_marked"),
+              r.get("applied"), r.get("verbatim"), r.get("ai"),
+              r.get("effectiveness_rate"), r.get("cost_usd")) for r in rows],
+        )
+        self._con.commit()
+
+    def get_qa_effectiveness(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT t, source, total_marked, applied, verbatim, ai, effectiveness_rate, "
+            "cost_usd FROM qa_effectiveness WHERE project_id=? ORDER BY t", (project_id,)
+        ).fetchall()
+        return [dict(r) for r in rows]
+
     # ── Stats ────────────────────────────────────────────────────────────────
 
     def summary(self, project_id: str) -> dict:
@@ -462,6 +540,15 @@ class Store:
         n_kb = self._con.execute(
             "SELECT COUNT(*) FROM kb WHERE project_id=?", (project_id,)
         ).fetchone()[0]
+        n_metrics = self._con.execute(
+            "SELECT COUNT(*) FROM metrics WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
+        n_warn = self._con.execute(
+            "SELECT COUNT(*) FROM warnings WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
+        n_qa = self._con.execute(
+            "SELECT COUNT(*) FROM qa_effectiveness WHERE project_id=?", (project_id,)
+        ).fetchone()[0]
         return {
             "project_id": project_id,
             "scenes": len(scenes),
@@ -475,6 +562,9 @@ class Store:
             "decisions": n_dec,
             "spoiler": n_spoil,
             "kb": n_kb,
+            "metrics": n_metrics,
+            "warnings": n_warn,
+            "qa_effectiveness": n_qa,
             "cost_usd": round(cost["total"] or 0, 4),
             "api_calls": cost["n_calls"],
         }

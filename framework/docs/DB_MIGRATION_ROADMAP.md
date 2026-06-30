@@ -26,7 +26,7 @@
 | **2** | **write path**: `plan_lines`, `back_translations`, `translations(approved=0)`; rewire `build_plan`/`run_scene`/`back_translate`; export `approved_*.csv` | *(enche o corpus que o RAG usa)* | ⏳ |
 | **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ⏳ |
 | **3** | derivados de `.md` gravam no DB (`state_index` → tabelas `decisions`/`voice_cards`); `kb_ratified.csv` → tabela; **tabela `kb`** p/ `universe_knowledge_base.md` | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ⏳ |
-| **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas | — | ⏳ |
+| **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas | — | ✅ migração (read-path); write-path dos produtores deferido |
 | **5** | skills `s00–s08` como módulos lendo/gravando DB; CLI e2e | retrieval disponível às skills (reuso da infra) | ⏳ |
 | **6** | cutover: `approved_*.csv` e `translation_memory.jsonl` viram **export** do DB; remove leitura flat dos paths migrados | — | ⏳ |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
