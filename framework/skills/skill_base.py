@@ -23,7 +23,19 @@ from pathlib import Path
 
 
 class Skill(ABC):
-    """Base class para skills 00–08 do pipeline SDD."""
+    """Base class para skills do pipeline SDD com código por trás.
+
+    FRONTEIRA cognitivo↔determinístico (valor central do framework): SÓ skills com
+    substância de código entram no registry Python. As puramente cognitivas
+    (01 discovery, 02 entity_resolution, 03 knowledge_building, 04 glossary, 04b, 05b,
+    06b, 06c) permanecem playbooks .md — a IA as executa; não há lógica determinística a
+    encapsular. O atributo `kind` torna a fronteira consultável:
+      - 'deterministic'        — sem IA (extract, qa-checks, reinsert): testável em CI sem rede.
+      - 'cognitive'            — harness determinístico com a IA ISOLADA no miolo (translate).
+    """
+
+    #: 'deterministic' | 'cognitive' — categoria da skill (ver docstring da classe).
+    kind: str = "deterministic"
 
     @property
     @abstractmethod
