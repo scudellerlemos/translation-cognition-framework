@@ -73,6 +73,15 @@ def cmd_db_summary(args):
     return 0
 
 
+def cmd_db_export(args):
+    """Exporta os flats de intercâmbio (approved_translations.csv + translation_memory.jsonl)
+    a partir do DB — Fase 6 (cutover): DB autoritativo, flat derivado."""
+    from export_to_flat import export
+    result = export(Path(args.db_path), args.project_id, Path(args.out_dir))
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def cmd_db_index(args):
     """Indexa embeddings da TM no banco SQLite."""
     import sqlite3
@@ -191,6 +200,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_sum.add_argument("db_path")
     p_sum.add_argument("project_id")
     p_sum.set_defaults(func=cmd_db_summary)
+
+    p_exp = db_sub.add_parser("export", help="Exporta flats de intercâmbio do DB (Fase 6)")
+    p_exp.add_argument("db_path")
+    p_exp.add_argument("project_id")
+    p_exp.add_argument("out_dir", help="Diretório de saída (ex.: projects/<x>/artifacts)")
+    p_exp.set_defaults(func=cmd_db_export)
 
     p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM")
     p_idx.add_argument("db_path")

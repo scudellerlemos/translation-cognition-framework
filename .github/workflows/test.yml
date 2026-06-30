@@ -41,7 +41,7 @@ jobs:
 
       # Type-check restrito ao núcleo já tipado (ampliar em lotes pequenos)
       - name: Type-check (mypy)
-        run: mypy framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py
+        run: mypy framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
       # E3: piso de cobertura do runtime (baseline 60%; subir gradualmente)
       - name: Run runtime tests with coverage
