@@ -367,6 +367,31 @@ def _load_sources(root: Path, cfg: dict):
     return glossary, voice_cards, decisions, tm, ledger
 
 
+_EMBEDDER = None
+_EMBEDDER_MISSING = False
+
+
+def _get_embedder():
+    """Embedder lazy + CACHEADO no módulo: o modelo (~470MB) é carregado UMA vez por processo,
+    não a cada build_pack. Retorna None se o stack de ML não está instalado (fallback esperado,
+    silencioso). Falha inesperada NA CONSTRUÇÃO propaga (não é o caso "sem deps")."""
+    global _EMBEDDER, _EMBEDDER_MISSING
+    if _EMBEDDER is not None or _EMBEDDER_MISSING:
+        return _EMBEDDER
+    _db_dir = str(FRAMEWORK / "db")
+    if _db_dir not in sys.path:
+        sys.path.insert(0, _db_dir)
+    try:
+        # sentence_transformers carrega lazy no Embedder.__init__ — o ImportError do stack
+        # ausente estoura na CONSTRUÇÃO, não no import do módulo; por isso ambos no try.
+        from embedder import Embedder
+        _EMBEDDER = Embedder()
+    except ImportError:
+        _EMBEDDER_MISSING = True       # stack de ML ausente (caso da CI) — fallback esperado
+        return None
+    return _EMBEDDER
+
+
 def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
@@ -375,12 +400,10 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
     if not db_path:
         return []
     try:
-        _db_dir = str(FRAMEWORK / "db")
-        if _db_dir not in sys.path:
-            sys.path.insert(0, _db_dir)
-        from embedder import Embedder
+        emb = _get_embedder()
+        if emb is None:
+            return []                  # stack de ML ausente → fallback silencioso (esperado)
         from store import Store, strip_codes
-        emb = Embedder()
         out, seen = [], set()
         with Store(db_path) as db:
             for r in rows:
@@ -398,7 +421,12 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
                                 "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["source"]))     # ordem estável (determinismo)
         return out[:max_hits]
-    except Exception:
+    except Exception as e:             # noqa: BLE001
+        # falha INESPERADA com o stack PRESENTE (índice ausente, sqlite-vec não carregou, OOM):
+        # NÃO mascarar como "sem vizinhos" — avisa (visível) e cai p/ [] sem derrubar o pacote.
+        import warnings as _w
+        _w.warn(f"TM semântica falhou (stack presente): {e!r} — pacote sem seção semântica.",
+                stacklevel=2)
         return []
 
 

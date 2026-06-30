@@ -100,7 +100,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
         return 0, 0
-    total = approved_n = 0
+    seen: set = set()   # (scene_id, offset) distintos — conta linhas do DB, não linhas de CSV
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
@@ -151,9 +151,9 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
                         risk_notes=m.get("risk_notes", ""),
                         approved=True,
                     )
-                    total += 1
-                    approved_n += 1
-    return total, approved_n
+                    seen.add((scene_id, off))
+    n = len(seen)   # todas migram como approved=True → total == approved
+    return n, n
 
 
 _KB_REVEAL_RX = re.compile(r"<!--\s*reveal:\s*([^\s>]+)\s*-->", re.IGNORECASE)

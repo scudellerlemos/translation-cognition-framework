@@ -135,6 +135,24 @@ def test_migrate_project_title_from_json(bof4_migrated):
     assert (row[1], row[2]) == ("en", "pt-BR"), row
 
 
+def test_migrate_translations_count_dedups_overlapping_csvs(tmp_path):
+    """#3 (review): offsets repetidos entre múltiplos approved_*.csv contam UMA vez (= linhas do
+    DB), não por linha de CSV — senão o result mente vs store.summary."""
+    proj = tmp_path / "p"
+    sc = proj / "artifacts" / "scenes" / "s1"
+    sc.mkdir(parents=True)
+    (proj / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
+    (sc / "dialogs.csv").write_text("offset,text_source\nX:0:1,Hi\n", encoding="utf-8")
+    (sc / "approved_a.csv").write_text("offset,text_target\nX:0:1,Oi\n", encoding="utf-8")
+    (sc / "approved_b.csv").write_text("offset,text_target\nX:0:1,Oi rev\n", encoding="utf-8")
+    db = tmp_path / "p.db"
+    result = migrate(proj, db, project_id="p")
+    with Store(db) as d:
+        summ = d.summary("p")
+    assert result["translations"] == 1, result       # 1 offset distinto, não 2 linhas
+    assert summ["translations"] == result["translations"], (summ, result)
+
+
 def test_migrate_metrics_content(bof4_migrated):
     """metrics: 1 linha por cena, escalares preenchidos e `raw` (translate/back) preservado."""
     db_path, result = bof4_migrated
