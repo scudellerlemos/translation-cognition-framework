@@ -21,10 +21,10 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 _RUNTIME = _HERE / "runtime"
 _DB = _HERE / "db"
-if str(_RUNTIME) not in sys.path:
-    sys.path.insert(0, str(_RUNTIME))
-if str(_DB) not in sys.path:
-    sys.path.insert(0, str(_DB))
+_SKILLS = _HERE / "skills"
+for _p in (_RUNTIME, _DB, _SKILLS):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
 
 # ── translate ──────────────────────────────────────────────────────────────────
@@ -87,6 +87,46 @@ def cmd_db_index(args):
         con.close()
     print(f"Indexados: {n} vetores para projeto '{args.project_id}'")
     return 0
+
+
+# ── skill ────────────────────────────────────────────────────────────────────────
+
+def cmd_skill_list(args):
+    import registry
+    for s in registry.all_skills():
+        print(f"{s.skill_id}  {s.kind:<14} {s.name}")
+    return 0
+
+
+def cmd_skill_check(args):
+    import registry
+    s = registry.get(args.skill_id)
+    if s is None:
+        print(f"skill desconhecida: {args.skill_id}", file=sys.stderr)
+        return 2
+    problems = s.check_inputs(Path(args.project))
+    if problems:
+        for p in problems:
+            print(f"GATE: {p}")
+        return 1
+    print(f"OK: gate de entrada da skill {s.skill_id} ({s.name}) satisfeito")
+    return 0
+
+
+def cmd_skill_run(args):
+    import registry
+    s = registry.get(args.skill_id)
+    if s is None:
+        print(f"skill desconhecida: {args.skill_id}", file=sys.stderr)
+        return 2
+    kwargs = {}
+    for k in ("scene", "chapter", "dat_dir", "backend"):
+        v = getattr(args, k, None)
+        if v is not None:
+            kwargs[k] = v
+    result = s.run(Path(args.project), **kwargs)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0 if result.get("status") in ("ok", "planned", "verified") else 1
 
 
 # ── ollama ─────────────────────────────────────────────────────────────────────
@@ -157,6 +197,27 @@ def build_parser() -> argparse.ArgumentParser:
     p_idx.add_argument("project_id")
     p_idx.add_argument("--force", action="store_true")
     p_idx.set_defaults(func=cmd_db_index)
+
+    # skill
+    p_sk = sub.add_parser("skill", help="Roda skills do pipeline (registry det./orquestração)")
+    sk_sub = p_sk.add_subparsers(dest="skill_command", required=True)
+
+    sk_sub.add_parser("list", help="Lista as skills registradas (id, kind, nome)").set_defaults(
+        func=cmd_skill_list
+    )
+    p_skc = sk_sub.add_parser("check", help="Roda só o gate de entrada de uma skill")
+    p_skc.add_argument("skill_id", help="ID da skill (ex: 00, 06, 07, 08)")
+    p_skc.add_argument("project", help="Diretório do projeto")
+    p_skc.set_defaults(func=cmd_skill_check)
+
+    p_skr = sk_sub.add_parser("run", help="Roda uma skill ponta-a-ponta")
+    p_skr.add_argument("skill_id", help="ID da skill (ex: 00, 06, 07, 08)")
+    p_skr.add_argument("project", help="Diretório do projeto")
+    p_skr.add_argument("--scene", default=None, help="cena (skills 06)")
+    p_skr.add_argument("--chapter", default=None, help="capítulo (skill 07)")
+    p_skr.add_argument("--dat-dir", dest="dat_dir", default=None, help="dir dos DATs (skills 00/08)")
+    p_skr.add_argument("--backend", default=None, choices=["in-session", "api", "ollama"])
+    p_skr.set_defaults(func=cmd_skill_run)
 
     # ollama
     p_ol = sub.add_parser("ollama", help="Gerencia o Ollama local")
