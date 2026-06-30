@@ -104,3 +104,21 @@ helper genérico (risco de comer texto real).
 
 A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Quanto mais corpus migrado
 (Fases 2–3), mais rico o retrieval. Por isso a ordem: encher o DB primeiro, ativar semântica em cima.
+
+## Como LIGAR a TM semântica (stack de ML) — projeto `translation_software`
+
+A migração de DADO está completa; ligar a busca semântica é **operacional**, não migração. O projeto
+alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 já migrado pra dentro dele:
+125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` é o POC de Ollama (LLM
+local), não embeddings.
+
+1. **Instalar a stack** (fora da CI, pesada): `pip install -r requirements-ml.txt`
+   (`sentence-transformers` + `sqlite-vec` + `flashrank`; ~700 MB–1,5 GB com torch + modelo MiniLM).
+2. **Construir os vetores** (compute único, ~minutos em CPU):
+   `python framework/cli.py db index projects/translation_software/translation_software.db bof4`
+   → popula `tm_embeddings` + a virtual table `vec0` na própria `.db`.
+3. **Pronto**: o `context_pack` em modo DB injeta a seção "falas SIMILARES (adapte)" sozinho
+   (o `_get_embedder` carrega o modelo 1×/processo). Sem a stack, cai p/ `[]` (fallback testado).
+
+**Validação ainda pendente:** `embedder.index_project`/`search` nunca rodaram com as deps reais (a CI
+usa o fallback de propósito). Ligar pela 1ª vez = confirmar que index+search produzem vizinhos de fato.
