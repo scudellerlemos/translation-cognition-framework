@@ -37,7 +37,8 @@ framework/
                        (kb_review, kb_phase, spoiler_check), qualidade (quality_review/gate/fix,
                        tm_correct), custo (cost, cost_report) — ~23 módulos. Ver runtime/README.md
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  docs/             ← ARCHITECTURE, GOVERNANCE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
+  docs/             ← ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE, STATE_MANAGEMENT,
+                       MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
 
@@ -142,6 +143,52 @@ Débitos técnicos em aberto: glossary coluna, NPC voice cards, TM semântica (B
 
 ---
 
+## CI — esteira de verificação (paralela, sem encadeamento)
+
+Cada push/PR dispara **3 workflows** do GitHub Actions. Todos os jobs rodam em paralelo, em
+runners isoladas, **sem nenhum `needs:`** — o tempo total é o do maior job, não a soma, e uma
+falha aparece nomeada por job no PR. (O único "sequencial" do projeto é o pipeline de tradução
+00→08, que é dependência real de dado do domínio, não CI.)
+
+```mermaid
+flowchart LR
+  subgraph quality["quality.yml — estilo & segurança (4 jobs)"]
+    direction TB
+    ql["lint — ruff (F/I/UP/B) em framework/"]
+    qs["sast — bandit (severidade medium+)"]
+    qc["secrets — gitleaks (diff + histórico)"]
+    qd["deps — pip-audit (CVEs em requirements-dev)"]
+  end
+  subgraph tests["test.yml — verificação funcional (6 jobs)"]
+    direction TB
+    te["env-guard — .env nunca rastreado no git"]
+    tm["mypy — type-check do núcleo já tipado"]
+    tcov["coverage — runtime+db+skills+validation ≥90% (matrix 3.11 · 3.12)"]
+    tb["connector-bof4 — contrato round-trip BoF4"]
+    tu["connector-uta — contrato round-trip Utawarerumono"]
+    tsk["connector-skeleton — contrato do template"]
+  end
+  subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
+    sm["batch smoke da Batch API (~$0.002; pula sem ANTHROPIC_API_KEY)"]
+  end
+  classDef qual fill:#e8dff5,stroke:#6a3d9b,color:#000;
+  classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+  classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
+  class quality,ql,qs,qc,qd qual;
+  class tests,te,tm,tcov,tb,tu,tsk test;
+  class smoke,sm smoke;
+```
+
+> **Por que 6 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
+> (guard → mypy → coverage → 3 conectores); qualquer falha cedo mascarava o resto e o tempo era a
+> soma. Divididos em jobs independentes, cada check falha isolado e o wall-clock cai para o do
+> maior job. Os conectores ficam em jobs separados porque `test_roundtrip.py` tem basename repetido
+> entre bof4/uta e colidiria numa coleta única do pytest. Números atuais: **316 passed / 21 skipped**
+> (os 21 skipped dependem do binário do jogo, que é gitignored) · cobertura do core **90.17%**.
+> Sem branch protection no `main` (repo solo dev): check vermelho é aviso, não bloqueio de merge.
+
+---
+
 ## STATUS DO FRAMEWORK — junho 2026
 
 ### Objetivos alcançados
@@ -152,7 +199,8 @@ Débitos técnicos em aberto: glossary coluna, NPC voice cards, TM semântica (B
 - Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica ✅
 - Ledger auditável: toda chamada cobrada registrada, inclusive falhas ✅
 - Generic Connector System: dois engines (Aquaplus + Capcom) com round-trip byte-idêntico ✅
-- 145 testes passando (116 runtime + 29 validação)
+- CI paralela reestruturada: 3 workflows, sem encadeamento (`needs:` = 0), falha nomeada por job ✅
+- 316 testes passando / 21 skipped · cobertura do core 90.17% (gate `--cov-fail-under=90`) ✅
 
 ### Dívidas técnicas do framework
 

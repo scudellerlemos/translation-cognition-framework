@@ -10,7 +10,7 @@ readme = "README.md"
 [project.optional-dependencies]
 dev = [
     "pytest~=9.0",
-    "pytest-cov~=6.0",
+    "pytest-cov>=6,<8",
     "openpyxl~=3.1",
     "mypy~=2.1",
     "anthropic~=0.109",
@@ -43,3 +43,4 @@ select = ["F", "I", "UP", "B"]
 [tool.bandit]
 # B101: assert é idiomático nos testes de contrato/round-trip deste repo.
 skips = ["B101"]
+# Config de cobertura vive no setup.cfg ([coverage:*]) — coverage.py lê o setup.cfg primeiro.
