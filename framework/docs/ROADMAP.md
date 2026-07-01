@@ -135,6 +135,23 @@ A verify agora subtrai o baseline → **12_15 verified (16/16 do cap.12)**. Não
 (realocação de conector). Caveat: a tradução da 12_15 ficou na tolerância 1.0 (mais justa que o normal)
 porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera naturalidade, opcional.
 
+### P1.7 — custo de onboarding de novo jogo (BACKLOG — pós-piloto Souldiers)
+
+> Observação medida no onboarding do Souldiers (jul/2026): ~40k tokens gastos só na Fase 0 —
+> investigação de arquivos, iterações no conector, correção de schema KB, debug do context_pack.
+> Nenhum token gerou tradução. O gasto é evitável com scaffolding + validação precoce.
+
+| # | Item | Impacto estimado | Status |
+|---|---|---|---|
+| A | **`scaffold_project.py`** — gera skeleton com schema correto (glossary.csv com colunas certas, tone_analysis.md com `### Speaker — voice_criticality:` placeholder, decision_log.md template). Zero iteração de "schema errado". | ~10k tok/jogo | ❌ |
+| B | **Validação early em `state_index.build()`** — se glossary/tone_analysis não tiverem o formato esperado, falhar com mensagem clara em vez de retornar silenciosamente 0 cards/0 decisões. | ~3k tok/jogo | ❌ |
+| C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. Somado ao D1 (`discover.py`) que classifica T1/T2/T3 antes de escrever uma linha. | ~15k tok/jogo | ❌ (D1 ✅) |
+| D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ❌ |
+
+> **Lição do Souldiers:** o maior gasto individual foi C (investigação de engine + iterações do conector).
+> D1 (`discover.py`) resolve a classificação; falta o template que usa o resultado.
+> O segundo maior foi A+B juntos (schema errado descoberto tarde = re-fazer o que deveria estar certo desde o início).
+
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 | # | Item | Nota |
 |---|---|---|
