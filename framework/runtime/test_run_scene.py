@@ -218,6 +218,7 @@ def test_clean_failed_scene_moves_artifacts(tmp_path):
 def test_prune_discontinued(tmp_path):
     import os
     import time as _t
+
     import paths
     disc = paths.discontinued_dir(tmp_path)
     old = disc / "old_scene"
