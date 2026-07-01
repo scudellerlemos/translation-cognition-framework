@@ -37,7 +37,8 @@ framework/
                        (kb_review, kb_phase, spoiler_check), qualidade (quality_review/gate/fix,
                        tm_correct), custo (cost, cost_report) — ~23 módulos. Ver runtime/README.md
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  docs/             ← ARCHITECTURE, GOVERNANCE, STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
+  docs/             ← ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE, STATE_MANAGEMENT,
+                       MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
 
