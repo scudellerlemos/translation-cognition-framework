@@ -1,6 +1,6 @@
 # Roadmap — Translation Cognition Framework (SDD)
 
-> Última atualização: 2026-06-21
+> Última atualização: 2026-07-01
 > Histórico do projeto piloto Utawarerumono em `projects/utawarerumono/ROADMAP_history.md`.
 
 ---
@@ -12,23 +12,35 @@
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
-| Generic Connector System (Fase D) | 🔴 não iniciado — BoF4 é o piloto |
+| Generic Connector System (Fase D) | 🟡 piloto concluído (BoF4) — automação D1–D5 pós-produção |
 | Perfis filme/série + subtitle_file | 🔴 stub / não iniciado |
 
 ---
 
-## Foco atual — Breath of Fire IV
+## BoF4 — CONCLUÍDO ✅
 
-> Piloto do Generic Connector System (Fase D).
-> Plano detalhado: `projects/breath_of_fire_4/ROADMAP.md`
+> 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, T4=0.
+> Custo: ~$11,04 USD. Plano detalhado: `projects/breath_of_fire_4/ROADMAP.md`.
 
-**Status:** Fase 0 — mapeamento do conector pendente.
+Débito remanescente: TM semântica (B2) — quando corpus multi-game justificar.
 
 ---
 
 ## Próximos passos do framework
 
-### ⚡ PRIORIDADE #1 — Versionamento de Artefatos e Prompts
+### ⚡ PRIORIDADE ATUAL — P2.5: Maturidade de execução (barato, agora)
+
+> Framework em produção e BoF4 concluído. Os três itens abaixo são orquestração
+> local (sem nova chamada de LLM) e desbloqueiam escala de múltiplos capítulos
+> sem intervenção manual.
+
+- [ ] **run_game** — driver ponta-a-ponta: roda todos os capítulos em sequência com Fase 0 gating + `--max-usd` + retomada automática. Elimina o "invocar cap-a-cap" manualmente.
+- [ ] **Observabilidade de progresso** — linhas/min, % do jogo, ETA, taxa de falha por capítulo. Hoje só custo delta existe (`cost_report.py`).
+- [ ] **`state_index` rebuild 1×/capítulo** — no batch, o rebuild por cena é redundante (tradução já concluída); mover para pós-capítulo reduz I/O sem perder consistência.
+
+---
+
+### ✅ PRIORIDADE #1 — Versionamento de Artefatos e Prompts (ENTREGUE)
 
 > **Por quê:** sem proveniência, qualquer melhoria de doutrina é retroativamente cega — não há como saber quais cenas foram traduzidas com instrução obsoleta.
 
@@ -179,6 +191,6 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** framework estável com ≥2 projetos ativos.
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
-- [ ] **F1. CI offline** — GitHub Actions rodando `pytest` nos 161 testes a cada push. Zero custo (runner público, sem chamada de API).
+- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12. ✅
 - [ ] **F2. CI de packaging** — após `pytest` passar, PyInstaller builda o `.exe` e um smoke test valida o binário gerado.
 - [ ] **F3. LLM judge** — segundo modelo avalia fidelidade + naturalidade + aderência ao personagem com score numérico por linha; complementa o back-translate e prioriza o QA humano melhor que o risco heurístico atual.
