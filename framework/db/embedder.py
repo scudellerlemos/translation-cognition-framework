@@ -33,22 +33,28 @@ def _load_sentence_transformers():
     try:
         from sentence_transformers import SentenceTransformer
         return SentenceTransformer
-    except ImportError as e:
+    except ModuleNotFoundError as e:
         raise ImportError(
-            "sentence-transformers não instalado. "
-            "Instale com: pip install sentence-transformers"
+            "sentence-transformers não instalado. Instale: pip install -r requirements-ml.txt"
         ) from e
+    # Outros ImportError (ex.: DLL nativa do torch BLOQUEADA por App Control/Smart App Control no
+    # Windows, ou wheel incompatível) propagam com a CAUSA REAL — não mascarar como "não instalado".
 
 
 def _load_sqlite_vec(con: sqlite3.Connection):
     try:
         import sqlite_vec
-        sqlite_vec.load(con)
-    except ImportError as e:
+    except ModuleNotFoundError as e:
         raise ImportError(
-            "sqlite-vec não instalado. "
-            "Instale com: pip install sqlite-vec"
+            "sqlite-vec não instalado. Instale: pip install -r requirements-ml.txt"
         ) from e
+    # O sqlite3 desabilita load de extensão por padrão (-> 'not authorized'). Habilita SÓ p/
+    # carregar o vec0 e desabilita de novo — não deixa a conexão aberta a extensões arbitrárias.
+    con.enable_load_extension(True)
+    try:
+        sqlite_vec.load(con)
+    finally:
+        con.enable_load_extension(False)
 
 
 class Embedder:
@@ -63,8 +69,10 @@ class Embedder:
         """Retorna lista de vetores (lista de floats de dim 384)."""
         if not texts:
             return []
-        vecs = self._model.encode(texts, convert_to_numpy=True,
-                                  batch_size=64, show_progress_bar=False)
+        # normalize_embeddings=True -> vetores unit-norm: com L2 do sqlite-vec, cos = 1 - L2²/2
+        # (ver search). Sem isso o score `1 - distance` em vetores crus dá similaridade negativa.
+        vecs = self._model.encode(texts, convert_to_numpy=True, batch_size=64,
+                                  show_progress_bar=False, normalize_embeddings=True)
         return vecs.tolist()
 
     def _ensure_vec_table(self, con: sqlite3.Connection):
@@ -90,6 +98,14 @@ class Embedder:
 
         # Seleciona traduções aprovadas ainda não indexadas
         if force:
+            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — limpa os vetores do
+            # projeto e reindexa do zero (ex.: ao trocar modelo ou a normalização).
+            tids = [r[0] for r in con.execute(
+                "SELECT id FROM translations WHERE project_id=? AND approved=1",
+                (project_id,)).fetchall()]
+            con.executemany("DELETE FROM tm_vectors WHERE translation_id=?", [(t,) for t in tids])
+            con.executemany("DELETE FROM tm_embeddings WHERE translation_id=?", [(t,) for t in tids])
+            con.commit()
             rows = con.execute(
                 "SELECT id, source FROM translations WHERE project_id=? AND approved=1",
                 (project_id,),
@@ -154,7 +170,9 @@ class Embedder:
                 r,
                 strict=True,
             ))
-            d["score"] = round(1.0 - float(d["distance"]), 4)
+            # vetores são unit-norm (encode normaliza) e a distância é L2 -> cos = 1 - L2²/2.
+            # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
+            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
             results.append(d)
 
         return self._rerank(query, results) if results else results
