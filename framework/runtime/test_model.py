@@ -128,3 +128,29 @@ def test_retranslate_offsets_mocked(tmp_path, monkeypatch):
     assert r["status"] == M.DONE and r["n_lines"] == 1
     data = json.loads(paths.translations(tmp_path, "S1", "S1").read_text(encoding="utf-8"))
     assert data["lines"]["X:0:1"]["t"] == "curto"              # merge aplicou a re-tradução
+
+
+def test_tier_of():
+    assert M._tier_of(f"a{TOK}b") == "main"                    # multi-linha -> Sonnet
+    assert M._tier_of("single line") == "cheap"               # single -> Haiku
+
+
+def test_parse_batch_lines():
+    pack = {"scene_id": "S1", "tm_exact": [], "lines": [{"offset": "o1", "source": "Hi"}]}
+    out = M._parse_batch_lines(pack, json.dumps({"lines": [{"offset": "o1", "t": "Oi"}]}))
+    assert out["o1"]["t"] == "Oi"
+    assert M._parse_batch_lines(pack, "json quebrado") == {}   # tolera parse-fail
+
+
+def test_merge_best_parity_prefers_good():
+    srcmap = {"o1": "sem token"}                              # 0 tokens = paridade boa é 0
+    dest = {"o1": {"t": f"x{TOK}y"}}                          # ruim (1 token)
+    M._merge_best_parity(dest, {"o1": {"t": "z"}}, srcmap)    # nova é boa (0 tokens)
+    assert dest["o1"]["t"] == "z"                             # boa substitui a ruim
+
+
+def test_batch_coverage_finds_missing():
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "a"}, {"offset": "o2", "source": "b"}]}
+    missing, bad = M._batch_coverage(pack, {"o1": {"t": "A"}})
+    assert "o2" in missing and bad == []
