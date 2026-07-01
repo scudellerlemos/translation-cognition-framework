@@ -21,16 +21,16 @@ import pytest
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import context_pack          # noqa: E402
-import state_index           # noqa: E402
-import run_chapter           # noqa: E402
-import run_scene             # noqa: E402
-import connector_mgr         # noqa: E402
-import kb_gate               # noqa: E402
-import model                 # noqa: E402
-import back_translate        # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
-import cost_report           # noqa: E402
-import paths                 # noqa: E402
+import back_translate  # noqa: E402  (concern extraido; monkeypatch mira o namespace dele)
+import connector_mgr  # noqa: E402
+import context_pack  # noqa: E402
+import cost_report  # noqa: E402
+import kb_gate  # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
+import run_chapter  # noqa: E402
+import run_scene  # noqa: E402
+import state_index  # noqa: E402
 
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
@@ -288,7 +288,8 @@ def test_prune_discontinued_removes_old(tmp_path):
     disc = tmp_path / "artifacts" / "discontinued" / "ch_01_01"
     disc.mkdir(parents=True)
     (disc / "old.txt").write_text("x")
-    import os, time as _time
+    import os
+    import time as _time
     # simula mtime 40 dias atrás
     old_ts = _time.time() - 40 * 86400
     os.utime(disc, (old_ts, old_ts))
@@ -359,7 +360,8 @@ def test_paths_contract():
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
     # nao-vazamento de spoiler: o checker pega nome/titulo pos-reveal vazando em cena ANTERIOR ao reveal; ignora pos-reveal.
-    import spoiler_check, paths
+    import paths
+    import spoiler_check
     paths.scene_dir(tmp_path, "ch_50_01").mkdir(parents=True)
     paths.scene_dir(tmp_path, "ch_50_09").mkdir(parents=True)
     # artifact_io.scenes() exige dialogs.csv para considerar o diretorio como cena valida
@@ -575,7 +577,7 @@ def test_over_offsets_selects_only_overflowing():
 
 
 # ------------------------------- batch API (economia de custo, -50%) ----------
-import types as _types   # noqa: E402
+import types as _types  # noqa: E402
 
 
 def test_cost_of_batch_is_half():
@@ -730,7 +732,7 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
     fb.scene_rounds["ch_99_01"] = [good]
     monkeypatch.setattr(model, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
-    st = model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
+    model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
     # os DOIS modelos foram submetidos (Haiku p/ single-line, Sonnet p/ multi-linha)
     assert model.MODEL_TRANSLATE_CHEAP in fb.models and model.MODEL_TRANSLATE in fb.models
     # tiering desligado -> tudo no modelo principal
@@ -904,8 +906,8 @@ def test_qa_tester_locator(tmp_path, monkeypatch):
 
 def test_qa_returned_files_resolution(tmp_path):
     # QA: o apply resolve de onde ler a revisao devolvida — arquivo, pasta, ou INBOX padrao.
-    import quality_review as QR
     import paths
+    import quality_review as QR
     f = tmp_path / "x.xlsx"; f.write_text("", encoding="utf-8")
     assert QR.returned_files(tmp_path, str(f)) == [f]                       # arquivo explicito
     d = tmp_path / "ret"; d.mkdir()
@@ -1357,7 +1359,10 @@ def test_label_passthrough_blocks_engine_labels_not_dialogue():
 
 
 def test_quality_gate_coverage_and_export(tmp_path):
-    import quality_gate, paths, csv as _csv
+    import csv as _csv
+
+    import paths
+    import quality_gate
     d = paths.scene_dir(tmp_path, "ch_89_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
@@ -1378,7 +1383,8 @@ def test_quality_gate_coverage_and_export(tmp_path):
 
 
 def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatch):
-    import quality_fix, paths
+    import paths
+    import quality_fix
     d = paths.scene_dir(tmp_path, "ch_90_01")
     d.mkdir(parents=True)
     paths.translations(tmp_path, "ch_90_01", "90_01").write_text(
@@ -1417,7 +1423,8 @@ def test_quality_fix_retranslates_worklist_and_updates_plan(tmp_path, monkeypatc
 # ------------------- vazamento de gênero pt-BR (risco #2) ---------------------
 
 def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
-    import spoiler_check, paths
+    import paths
+    import spoiler_check
     led = {"entries": [
         {"id": "g1", "entity": "Mizura", "reveal": "60_05", "triggers": ["Mizura"], "gender_quarantine": True},
         {"id": "g2", "entity": "Bezno", "reveal": "60_01", "triggers": ["Bezno"]}]}   # sem quarentena
@@ -1441,7 +1448,8 @@ def test_spoiler_check_gender_flags_pre_reveal(tmp_path):
 # --------------------- digest de revisão de KB (risco #3) ---------------------
 
 def test_kb_review_digest_flags(tmp_path):
-    import kb_review, paths
+    import kb_review
+    import paths
     paths.artifacts(tmp_path).mkdir(parents=True)
     paths.glossary(tmp_path).write_text(
         "term,category,target_translation,handling_rule,spoiler_level,aliases,notes\n"
@@ -1568,7 +1576,8 @@ def test_invalidate_back_translation_marks_stale(tmp_path):
 
 
 def test_quality_gate_treats_stale_as_uncovered(tmp_path):
-    import quality_gate, paths
+    import paths
+    import quality_gate
     d = paths.scene_dir(tmp_path, "ch_73_01")
     d.mkdir(parents=True)
     (d / "dialogs.csv").write_text("offset,text_source\n", encoding="utf-8")
@@ -1733,8 +1742,8 @@ def test_write_xlsx_roundtrip(tmp_path):
 def test_write_xlsx_quoteprefix_blocks_formula_injection(tmp_path):
     """Células com '=' no valor devem ter quotePrefix=True — Excel trata como texto, não fórmula."""
     pytest.importorskip("openpyxl")
-    from openpyxl import load_workbook
     import quality_review as QR
+    from openpyxl import load_workbook
     rows = [{"scene": "ch_01_01", "offset": "0x1", "speaker": "", "risk": "low",
              "revisar": "", "source_en": "=INJECT()", "target_pt": "=MALICIOUS",
              "caixa": "", "marcar": "", "correcao": "=formula", "nota": ""}]
@@ -2006,8 +2015,9 @@ def test_validate_chapter_arg_accepts_valid(tmp_path):
 
 def test_warn_ledger_size_emits_warning(tmp_path):
     """_warn_ledger_size emite RuntimeWarning quando ledger ultrapassa _MAX_LEDGER_MB."""
-    import cost
     import warnings as _warnings
+
+    import cost
     ledger = tmp_path / "ledger.jsonl"
     ledger.write_bytes(b"x" * int(cost._MAX_LEDGER_MB * 1024 * 1024 + 1))
     with _warnings.catch_warnings(record=True) as caught:
@@ -2019,8 +2029,9 @@ def test_warn_ledger_size_emits_warning(tmp_path):
 
 def test_warn_ledger_size_silent_below_limit(tmp_path):
     """_warn_ledger_size nao emite warning quando ledger esta abaixo do limite."""
-    import cost
     import warnings as _warnings
+
+    import cost
     ledger = tmp_path / "ledger.jsonl"
     ledger.write_bytes(b"x" * 100)
     with _warnings.catch_warnings(record=True) as caught:
@@ -2073,6 +2084,91 @@ def test_connector_sandbox_accepts_internal_override(tmp_path):
     cfg = {"connector": {"verify_script": "connector/verify_chapter.py"}}
     p = connector_mgr._connector_script(tmp_path, cfg, "verify_script", "verify_chapter.py")
     assert p == tmp_path / "connector" / "verify_chapter.py"
+
+
+# ------------------------- write-path (DB mirror, gated) ----------------------
+
+def _tiny_project(root: Path, with_db: bool):
+    """Projeto mínimo: 1 cena com dialogs+approved. with_db liga o gate (project.json:db)."""
+    cfg = {"title": "Test Game", "media_type": "game"}
+    if with_db:
+        cfg["db"] = {"path": "db/t.db", "project_id": "tg"}
+    (root / "project.json").write_text(json.dumps(cfg), encoding="utf-8")
+    sc = root / "artifacts" / "scenes" / "ch_1_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\nX.DAT:0:1,Hello,10\n", encoding="utf-8")
+    (sc / "approved_ch_1_01.csv").write_text(
+        "offset,text_target\nX.DAT:0:1,Olá\n", encoding="utf-8")
+
+
+def test_state_index_no_db_is_noop(tmp_path):
+    """Gate off (sem project.json:db): build NÃO cria banco e db_synced é None.
+    Garante que BoF4/Uta (db=None) seguem sem efeito colateral."""
+    _tiny_project(tmp_path, with_db=False)
+    r = state_index.build(tmp_path)
+    assert r["db_synced"] is None
+    assert not (tmp_path / "db" / "t.db").exists()
+
+
+def test_state_index_syncs_db_when_gated(tmp_path):
+    """Write-path: com project.json:db declarado, build espelha o estado flat no SQLite
+    (cria o banco, popula scene_lines/translations, título vem do project.json)."""
+    _tiny_project(tmp_path, with_db=True)
+    r = state_index.build(tmp_path)
+    assert r["db_synced"], "db_synced vazio — mirror não rodou"
+    dbp = tmp_path / "db" / "t.db"
+    assert dbp.is_file(), "banco não criado pelo write-path"
+    db_dir = str(REPO / "framework" / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    from store import Store
+    with Store(dbp) as db:
+        s = db.summary("tg")
+        title = db._con.execute("SELECT title FROM projects WHERE id='tg'").fetchone()[0]
+    assert s["scene_lines"] == 1, s
+    assert s["translations"] == 1, s
+    assert title == "Test Game", title   # não hardcoded "Breath of Fire IV"
+
+
+def test_state_index_sync_db_false_skips_mirror(tmp_path):
+    """#1 (perf): sync_db=False (checkpoint por-cena do run_scene) NÃO espelha no DB nem cria
+    banco, mesmo num projeto gated — o mirror só roda no rebuild deliberado (default True)."""
+    _tiny_project(tmp_path, with_db=True)
+    r = state_index.build(tmp_path, sync_db=False)
+    assert r["db_synced"] is None
+    assert not (tmp_path / "db" / "t.db").exists()
+
+
+# ---------------------- spoiler: filtro temporal default-SAFE -------------------
+
+def test_pos_extracts_digits_any_scheme():
+    """#2: _pos robusto a esquema sem '_' numérico (AREAD050) — extrai qualquer run de dígitos."""
+    assert context_pack._pos("AREAD050") == (50,)
+    assert context_pack._pos("12_03") == (12, 3)
+    assert context_pack._pos("AREAD001") == (1,)
+    assert context_pack._pos("PROLOGUE") == ()
+
+
+def test_spoiler_guard_temporal_with_non_underscore_ids():
+    """#2 REGRESSÃO: com scene_id estilo AREAD###, o guard de reveal FUTURO não pode ser pulado
+    (vazaria). Antes do fix _pos('AREAD050')==() fazia '()>()'=False → guard omitido na cena 001."""
+    ledger = {"entries": [{
+        "entity": "Fou-lu", "fact": "é o antagonista", "reveal": "AREAD050",
+        "triggers": ["dragon"], "pre_reveal": "trate como figura misteriosa"}]}
+    blob = "the dragon speaks here"
+    g_future = context_pack.select_spoiler_guards(ledger, blob, "AREAD001")
+    assert len(g_future) == 1 and g_future[0]["entity"] == "Fou-lu"   # reveal futuro → guarda
+    g_past = context_pack.select_spoiler_guards(ledger, blob, "AREAD060")
+    assert g_past == []                                               # reveal já passado → não guarda
+
+
+def test_spoiler_guard_incomparable_defaults_safe():
+    """#2: reveal sem dígito (incomparável) → default-SAFE = guarda (nunca pula por não ordenar)."""
+    ledger = {"entries": [{
+        "entity": "X", "fact": "f", "reveal": "PROLOGUE",
+        "triggers": ["dragon"], "pre_reveal": "guard"}]}
+    assert context_pack.select_spoiler_guards(ledger, "the dragon", "AREAD001")
 
 
 if __name__ == "__main__":

@@ -1,3 +1,7 @@
+# Tests — verificação funcional do harness em cada push/PR.
+# Roda a suíte em duas versões de Python (matriz 3.11/3.12). Cada execução faz, em ordem:
+# guard de .env, type-check (mypy), testes de runtime com piso de cobertura, testes de
+# validação e os testes de contrato (round-trip) de cada conector.
 name: Tests
 
 on:
@@ -7,23 +11,26 @@ on:
     branches: ["**"]
 
 jobs:
+  # Job único, paralelizado pela matriz de versões de Python. Faz a bateria completa:
+  # guard do .env -> tipos -> testes de runtime+cobertura -> validação -> contrato de conector.
   test:
+    name: Testes — mypy + cobertura + validação + contrato de conector (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
-      # S5: .env nunca deve ser rastreado pelo git
+      # S5: .env nunca deve ser rastreado pelo git (evita vazamento de credenciais no repo)
       - name: Verify .env is not tracked
         run: |
           if git ls-files --error-unmatch .env 2>/dev/null; then
@@ -32,14 +39,35 @@ jobs:
           fi
           echo "OK: .env não rastreado"
 
+      # Type-check restrito ao núcleo já tipado (ampliar em lotes pequenos)
       - name: Type-check (mypy)
-        run: mypy framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py
+        run: mypy framework/runtime/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
-      # E3: coverage mínima (baseline; subir gradualmente)
+      # E3: piso de cobertura do runtime (baseline 60%; subir gradualmente)
       - name: Run runtime tests with coverage
         run: |
           python -m pytest framework/runtime/test_runtime.py -v --tb=short \
             --cov=framework/runtime --cov-report=term-missing --cov-fail-under=60
 
+      # Regras de validação do harness (cost model, naturalness lint, validate)
       - name: Run validation tests
         run: python -m pytest framework/validation/ -v --tb=short
+
+      # Contrato da migração flat-files → SQLite (só stdlib; guarda o "silent-zero")
+      - name: DB / migration contract
+        run: python -m pytest framework/db/ -v --tb=short
+
+      # Contrato das skills como módulos + CLI e2e (determinísticas rodam sem rede)
+      - name: Skills / CLI contract
+        run: python -m pytest framework/skills/ -v --tb=short
+
+      # Contrato do conector (round-trip byte-idêntico = oráculo). Passos SEPARADOS por
+      # projeto: test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa
+      # coleta única. Sem o binário do jogo (gitignored), os testes que o exigem fazem
+      # pytest.skip; codec/schema/governança rodam sempre.
+      - name: Connector contract — BoF4
+        run: python -m pytest projects/breath_of_fire_4/connector/ -v --tb=short
+      - name: Connector contract — Utawarerumono
+        run: python -m pytest projects/utawarerumono/connector/ -v --tb=short
+      - name: Connector skeleton contract
+        run: python -m pytest framework/connectors/_skeleton/ -v --tb=short

@@ -9,6 +9,7 @@ Serve p/ comparar modelos (ex.: Sonnet vs Opus) e como smoke-test do caminho de 
 Uso:  python bench_translate.py <projeto> <scene> [--model claude-sonnet-4-6] [--tag sonnet]
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -19,7 +20,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import model as M     # noqa: E402
+import model as M  # noqa: E402
 
 
 def main():

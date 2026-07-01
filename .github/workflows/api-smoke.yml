@@ -1,3 +1,7 @@
+# API Smoke — verificação opcional de que a Batch API da Anthropic ainda responde como
+# esperado (detecta breaking changes no SDK/endpoint antes de iniciar um capítulo novo).
+# NÃO roda em push: só no cron semanal e por disparo manual, porque faz uma chamada de
+# rede real (~$0.002) e depende do secret ANTHROPIC_API_KEY.
 name: API Smoke
 
 on:
@@ -6,28 +10,37 @@ on:
     - cron: '0 4 * * 0'   # domingo 04:00 UTC — detecta breaking changes na Batch API
 
 jobs:
+  # SMOKE — instala deps, checa se a key existe e (se existir) roda o smoke da Batch API.
+  # Sem o secret ANTHROPIC_API_KEY o smoke é PULADO (run verde), não falha.
   smoke:
+    name: Smoke da Batch API (~$0.002; pula sem a key)
     runs-on: ubuntu-latest
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.11"
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      # Sem o secret, o smoke é PULADO (run verde) em vez de falhar — o teste é opcional
+      # (custa ~$0.002 e depende de billing). Para ativá-lo: adicione ANTHROPIC_API_KEY em
+      # Settings > Secrets and variables > Actions.
       - name: Check API key present
+        id: key
         run: |
           if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "ANTHROPIC_API_KEY não configurada — adicione em Settings > Secrets > Actions"
-            exit 1
+            echo "::warning::ANTHROPIC_API_KEY não configurada — pulando o smoke (adicione em Settings > Secrets > Actions)"
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
           fi
-          echo "API key presente"
 
       - name: Batch API smoke (~$0.002)
+        if: steps.key.outputs.present == 'true'
         run: python framework/runtime/batch_smoke.py
