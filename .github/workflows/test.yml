@@ -46,8 +46,8 @@ jobs:
       # E3: piso de cobertura do runtime (baseline 60%; subir gradualmente)
       - name: Run runtime tests with coverage
         run: |
-          python -m pytest framework/runtime/test_runtime.py -v --tb=short \
-            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=75
+          python -m pytest framework/runtime/ -v --tb=short \
+            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=80
 
       # Regras de validação do harness (cost model, naturalness lint, validate)
       - name: Run validation tests
