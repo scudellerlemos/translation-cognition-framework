@@ -49,7 +49,7 @@ def _count_lines(root: Path, scenes) -> int:
     import csv
     n = 0
     for s in scenes:
-        d = paths.artifacts(root) / s / "dialogs.csv"
+        d = paths.artifacts(root) / "scenes" / s / "dialogs.csv"   # cenas vivem em artifacts/scenes/
         if d.is_file():
             with d.open(encoding="utf-8") as f:
                 n += sum(1 for _ in csv.DictReader(f))
