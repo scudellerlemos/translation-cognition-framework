@@ -134,6 +134,19 @@ isoladas. Ver `MODEL_INTERFACE.md`.
 Resultado: Sonnet passa a ser o default de tradução com contexto pequeno e curado. Ver
 `adr/0004-model-agnostic-interface.md` e a seção *Sonnet Readiness* do `ROADMAP.md`.
 
+A alavanca de custo mais sutil é a **recuperação por-linha**: quando o `verify` reprova por 1 linha
+(cobertura, paridade de quebra, byte budget), re-traduzir a **cena inteira** transformava variância
+do LLM (aleatória) em custo aleatório. Agora o retry é ∝ linhas quebradas:
+
+```mermaid
+flowchart LR
+  v["verify falhou<br/>(1 linha quebrada)"]:::val --> q{recuperação}
+  q -->|"❌ antes: por CENA"| a["re-traduz 800 linhas<br/>custo aleatório"]:::cog
+  q -->|"✅ agora: por LINHA"| b["re-traduz 1 linha<br/>custo limitado"]:::cog
+  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+```
+
 ## Estado atual (junho 2026) — OBRA DE REFERÊNCIA COMPLETA
 
 O harness deixou de ser projeto e entregou uma obra inteira: **os 16 capítulos do jogo (11–23 + 30, 31,
@@ -168,8 +181,14 @@ comprovado vivo, além do alvo acima:
   corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **161 testes** (116 runtime + 29 validação + 16 conector); determinismo,
+- **Travas de qualidade:** **316 testes passando / 21 skipped**, cobertura do core **90.17%** (gate
+  `--cov-fail-under=90`): 302 no core (runtime + db + skills + validation) + 9 BoF4 + 4 Utawarerumono +
+  1 skeleton de conector; os 21 skipped dependem do binário do jogo (gitignored). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
+- **CI paralela:** 3 workflows GitHub Actions (`quality.yml` 4 jobs · `test.yml` 6 jobs ·
+  `api-smoke.yml`) sem nenhum `needs:` — checks independentes, falha nomeada por job, wall-clock =
+  maior job. Detalhe do desenho em
+  [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
 ## Documentos relacionados
 
