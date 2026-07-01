@@ -290,39 +290,11 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 ## A esteira de CI (paralela por desenho)
 
 O pipeline de tradução (00→08, acima) é sequencial porque é **dependência real de dado**. A
-esteira de **CI é o oposto**: todos os checks rodam em paralelo, cada um em runner isolada, sem
-nenhum `needs:` encadeando jobs — o tempo total é o do **maior** job, não a soma. Três workflows
-disparam a cada push/PR (o de smoke só em cron/manual):
-
-```mermaid
-flowchart TB
-  push(["push / pull_request"]) --> q & t
-  push -.->|"cron semanal · manual"| s
-  subgraph q["quality.yml — 4 jobs paralelos"]
-    direction LR
-    q1["lint<br/>ruff"] ~~~ q2["sast<br/>bandit"] ~~~ q3["secrets<br/>gitleaks"] ~~~ q4["deps<br/>pip-audit"]
-  end
-  subgraph t["test.yml — 6 jobs paralelos"]
-    direction LR
-    t1["env-guard"] ~~~ t2["mypy"] ~~~ t3["coverage<br/>≥90% · 3.11+3.12"] ~~~ t4["connector<br/>bof4 · uta · skeleton"]
-  end
-  subgraph s["api-smoke.yml — 1 job (opcional)"]
-    s1["batch smoke<br/>~$0.002 · pula sem key"]
-  end
-  classDef qual fill:#e8dff5,stroke:#6a3d9b,color:#000;
-  classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
-  classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
-  class q,q1,q2,q3,q4 qual;
-  class t,t1,t2,t3,t4 test;
-  class s,s1 smoke;
-```
-
-> 🟪 **Quality** (estilo + segurança: lint, SAST, secret-scan, CVEs) · 🟦 **Tests** (guard de
-> `.env`, type-check, cobertura ≥90% em 2 versões de Python, contrato round-trip dos 3 conectores) ·
-> ⬜ **API Smoke** (só cron/manual). Paleta própria de propósito — este é o eixo de **engenharia**,
-> não as 4 camadas do produto. **Zero `needs:` nos 3 workflows:** nenhum gargalo sequencial artificial.
-> Sem branch protection no `main` (repo solo dev): um check vermelho é aviso visual, não trava merge.
-> Detalhe job a job em [`framework/README.md`](framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+esteira de **CI é o oposto**: 3 workflows (`quality.yml` 4 jobs · `test.yml` 6 jobs ·
+`api-smoke.yml` 1 job), todos paralelos, **zero `needs:`** entre eles — o tempo total é o do
+**maior** job, não a soma, e uma falha aparece nomeada por job no PR. Sem branch protection no
+`main` (repo solo dev): check vermelho é aviso, não trava merge. Desenho job a job em
+[`framework/README.md`](framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
 ---
 
@@ -338,6 +310,7 @@ flowchart TB
    rode o pipeline `00..08`.
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
+[`STACK.md`](framework/docs/STACK.md) (modelo, embedding, RAG, execução) ·
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
 [`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
