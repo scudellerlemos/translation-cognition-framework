@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![testes](https://img.shields.io/badge/testes-316%20passing%20%2F%2021%20skipped-brightgreen) ![cobertura](https://img.shields.io/badge/cobertura%20core-90%25-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![316 testes](https://img.shields.io/badge/testes-316%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -181,13 +181,31 @@ e, acima de tudo, o **humano (juiz final do sentido, da voz e da tela)**.
 
 ## Engenharia de custo e previsibilidade
 
-A arquitetura diz *onde* a IA vive; a **engenharia** torna rodar uma obra inteira barato,
-previsível e auditável. Três alavancas sustentam isso: **custo de pior-caso conhecido antes
-de gastar** (estimativa pré-voo + teto duro `--max-usd`), **conserto por LINHA e não por cena**
-(retry ∝ linhas quebradas, não ∝ tamanho da cena) e **cada centavo auditável**
-(`api_ledger.jsonl` registra toda chamada, inclusive as que falham). O detalhe medido — com o
-diagrama de recuperação por-linha — está em
-[`framework/docs/ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md#por-que-isto-escala-e-roda-em-sonnet).
+A arquitetura diz *onde* a IA vive; a **engenharia** é o que torna rodar uma obra inteira **barato,
+previsível e auditável** — o requisito real de quem tem orçamento apertado. Três propriedades sustentam isso.
+
+**1. Custo de pior-caso conhecido ANTES de gastar.** Todo capítulo imprime uma **estimativa pré-voo**
+(linhas × faixa medida) e respeita um **teto duro**: o `--max-usd` não é só um corte no meio — o driver
+**só compromete ao batch as cenas cujo custo pessimista cabe no teto** e adia o resto (resumível). Você
+sabe o número antes de pagar, e ele não estoura.
+
+**2. O conserto é por LINHA, não por cena.** A causa nº1 de gasto imprevisível era: um defeito de **1
+linha** (cobertura, paridade de quebra, byte budget) re-traduzia a **cena inteira**. Como o gatilho é
+variância do LLM (aleatória), o custo virava aleatório. A recuperação agora re-traduz **só as linhas
+quebradas** — custo de retry ∝ linhas com defeito, não ∝ tamanho da cena.
+
+```mermaid
+flowchart LR
+  v["verify falhou<br/>(1 linha quebrada)"]:::val --> q{recuperação}
+  q -->|"❌ antes: por CENA"| a["re-traduz 800 linhas<br/>custo aleatório"]:::cog
+  q -->|"✅ agora: por LINHA"| b["re-traduz 1 linha<br/>custo limitado"]:::cog
+  classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
+```
+
+**3. Cada centavo é auditável.** O `api_ledger.jsonl` registra **toda** chamada (modelo, tokens, custo)
+**antes** de qualquer parse — inclusive as que falham. Isso permite responder, com dados, *onde* o
+dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `R$ 0 desperdiçado`.
 
 | Alavanca de custo | Mecanismo | Efeito |
 |---|---|---|
@@ -203,20 +221,27 @@ diagrama de recuperação por-linha — está em
 
 ---
 
-## Glossário (o mínimo antes de mergulhar)
+## Glossário (leia antes de mergulhar)
 
-Os 4 termos que aparecem em quase todo diagrama. O guia conceitual completo (com o
-"problema → solução → por que importa em IA") está em
-[`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md); os demais termos de domínio
-(KB, Voice Card, Round-Trip, Back-Translation, Conector, QA, ADR) são definidos ali e no
-corpo deste README na primeira vez que aparecem.
+Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual em
+[`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md).
 
 | Termo | O que é |
 |---|---|
-| **Scene as Stateless Job** | Cada cena é traduzida como função isolada: recebe um pacote de contexto, devolve a tradução, não guarda histórico. Contexto O(cena), não O(histórico). |
-| **Context Pack** | O pacote **mínimo** de contexto montado por cena (doutrina cacheável + glossário relevante + vozes dos falantes + linhas) — exatamente o que o LLM vê, nada além. |
-| **TM** (Translation Memory) | Banco *append-only* de traduções já decididas; reusadas de graça, mantêm consistência. É o "coração" — o jogo não é re-traduzido após o QA. |
+| **SDD** (Specification-Driven Development) | As regras de tradução viram especificações versionadas e checáveis, produzidas por etapas explícitas — não decisões soltas de chat. |
+| **Scene as Stateless Job** | Cada cena é traduzida como uma função isolada: recebe um pacote de contexto, devolve a tradução, não guarda histórico. |
+| **Context Pack** | O pacote **mínimo** de contexto montado por cena (doutrina cacheável + glossário relevante + vozes dos falantes + as linhas) — é exatamente o que o LLM vê, e nada além. |
+| **Estado externalizado** | A "memória" do sistema vive em arquivos (não na janela do LLM): TM, glossário, voice cards, decision index. |
+| **TM** (Translation Memory) | Banco *append-only* de traduções já decididas; reusadas de graça e mantêm consistência. É o "coração" — o jogo não é re-traduzido após o QA. |
+| **KB** (Knowledge Base) | Glossário + lore + vozes **reconciliados de fonte confiável** e congelados **antes** de traduzir. |
+| **Voice Card** | Ficha de voz de um personagem (registro, tiques, léxico) que mantém a fala consistente em todo o corpus. |
+| **Round-Trip** | Extrair → reinserir **sem mudar nada** deve regenerar o binário byte a byte. É a prova de que não corrompemos o jogo (prova **bytes**, não qualidade da tradução). |
+| **Back-Translation** | Traduzir o pt-BR de volta ao inglês com **outro** modelo, só em linhas de alto risco, para checar se o sentido sobreviveu. |
 | **Gate** | Verificação determinística que **bloqueia** o avanço se algo falha (round-trip, fonte de KB, spoiler, naturalidade). |
+| **Spoiler Ledger / frontier** | Registro de quando cada revelação acontece + uma "fronteira" que avança por capítulo, para nunca vazar nomes/fatos futuros. |
+| **Conector** | Código determinístico que extrai o texto do binário do jogo e o reinsere (round-trip). Específico por engine. |
+| **QA** | Quality Assurance — micro-QA por lote + revisão humana final. |
+| **ADR** | Architecture Decision Record — registro de uma decisão de arquitetura e seu porquê (em `framework/docs/adr/`). |
 
 ---
 
@@ -287,17 +312,6 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 
 ---
 
-## A esteira de CI (paralela por desenho)
-
-O pipeline de tradução (00→08, acima) é sequencial porque é **dependência real de dado**. A
-esteira de **CI é o oposto**: 3 workflows (`quality.yml` 4 jobs · `test.yml` 6 jobs ·
-`api-smoke.yml` 1 job), todos paralelos, **zero `needs:`** entre eles — o tempo total é o do
-**maior** job, não a soma, e uma falha aparece nomeada por job no PR. Sem branch protection no
-`main` (repo solo dev): check vermelho é aviso, não trava merge. Desenho job a job em
-[`framework/README.md`](framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
-
----
-
 ## Começar
 
 1. Leia [`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md) se os conceitos acima são novos.
@@ -310,7 +324,6 @@ esteira de **CI é o oposto**: 3 workflows (`quality.yml` 4 jobs · `test.yml` 6
    rode o pipeline `00..08`.
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
-[`STACK.md`](framework/docs/STACK.md) (modelo, embedding, RAG, execução) ·
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
 [`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
@@ -332,8 +345,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 - Ledger auditável (`api_ledger.jsonl`): toda chamada cobrada registrada, inclusive falhas ✅
 - Generic Connector System: dois engines distintos (Aquaplus + Capcom) com round-trip byte-idêntico ✅
 - Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
-- 316 testes passando / 21 skipped · cobertura do core 90.17% (gate `--cov-fail-under=90`) ✅
-- CI paralela: 3 workflows (quality 4 jobs · tests 6 jobs · api-smoke) sem encadeamento (`needs:` = 0) ✅
+- 145 testes passando (116 runtime + 29 validação)
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 
