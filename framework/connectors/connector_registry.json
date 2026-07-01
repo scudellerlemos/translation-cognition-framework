@@ -35,6 +35,24 @@
       "reference_project": "utawarerumono",
       "reference_connector": "projects/utawarerumono/connector",
       "notes": "Visual novel Aquaplus. Magic bytes: 'Filename' (0x46696c656e616d65). Encoding UTF-8. Estrutura: cabeçalho de seções com ponteiros para blocos de texto."
+    },
+    {
+      "id": "unity_addressables_csv",
+      "name": "Unity Addressables + CSV em TextAsset (tilde-delimited)",
+      "tier": "T1",
+      "family": "unity_addressables",
+      "signatures": {
+        "file_patterns": ["UnityPlayer.dll", "*.bundle"],
+        "magic_bytes": null,
+        "encoding": "binary",
+        "control_token_pattern": null,
+        "min_file_count": 10,
+        "string_density_min": 0.30,
+        "catalog_marker": "catalog.json"
+      },
+      "reference_project": "souldiers",
+      "reference_connector": "projects/souldiers/connector",
+      "notes": "Unity Addressables com localização em CSVs armazenados como TextAsset dentro de bundles. Delimitador ~. Colunas ::ID:: / ::EN:: / ::PT:: / etc. Ferramenta de extração: UnityPy. Tokens de timing _N_ e tags TMP <color=X> devem ser preservados verbatim. Catálogo em StreamingAssets/aa/catalog.json."
     }
   ]
 }
