@@ -266,6 +266,17 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
     # TM como JSONL ordenado e estavel
     tm_txt = "\n".join(json.dumps(e, ensure_ascii=False, sort_keys=True) for e in tm)
     (paths.translation_memory(root)).write_text(tm_txt + ("\n" if tm else ""), encoding="utf-8")
+
+    # índice semântico flat-file (opcional: pula silencioso se sem sentence-transformers)
+    try:
+        _rt_dir = str(Path(__file__).resolve().parent)
+        if _rt_dir not in sys.path:
+            sys.path.insert(0, _rt_dir)
+        import tm_search
+        tm_search.build_index(tm, state)
+    except ImportError:
+        pass  # stack de ML ausente — fallback esperado (CI)
+
     (paths.voice_cards(root)).write_text(
         json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
     (paths.decision_index(root)).write_text(
