@@ -47,7 +47,7 @@ jobs:
       - name: Run runtime tests with coverage
         run: |
           python -m pytest framework/runtime/test_runtime.py -v --tb=short \
-            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=60
+            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=75
 
       # Regras de validação do harness (cost model, naturalness lint, validate)
       - name: Run validation tests
