@@ -200,3 +200,52 @@ def test_clean_failed_scene_moves_and_is_idempotent(env):
     moved = rs.clean_failed_scene(root, scene)
     assert isinstance(moved, list)
     assert rs.clean_failed_scene(root, scene) == [] or isinstance(rs.clean_failed_scene(root, scene), list)
+
+
+def test_clean_failed_scene_moves_artifacts(tmp_path):
+    import paths
+    (tmp_path / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
+    scene = "AREAD002"
+    sid = context_pack.scene_id_of(scene)
+    paths.scene_dir(tmp_path, scene).mkdir(parents=True)
+    paths.translations(tmp_path, scene, sid).write_text("{}", encoding="utf-8")
+    paths.scene_prompt(tmp_path, scene).write_text("prompt", encoding="utf-8")
+    moved = rs.clean_failed_scene(tmp_path, scene)
+    assert len(moved) >= 2                            # translations + scene_prompt movidos
+    assert not paths.translations(tmp_path, scene, sid).is_file()   # saiu do lugar original
+
+
+def test_prune_discontinued(tmp_path):
+    import os
+    import time as _t
+    import paths
+    disc = paths.discontinued_dir(tmp_path)
+    old = disc / "old_scene"
+    old.mkdir(parents=True)
+    (old / "x.txt").write_text("x", encoding="utf-8")
+    ot = _t.time() - 40 * 86400
+    os.utime(old, (ot, ot))
+    new = disc / "new_scene"
+    new.mkdir(parents=True)
+    removed = rs.prune_discontinued(tmp_path, older_than_days=30)
+    assert any("old_scene" in r for r in removed) and not old.exists()
+    assert new.exists()                              # recente preservada
+    assert rs.prune_discontinued(tmp_path / "sem_disc") == []   # dir ausente -> []
+
+
+def test_check_stale_reports(tmp_path, monkeypatch, capsys):
+    import paths
+    (tmp_path / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
+    monkeypatch.setattr(context_pack, "_doctrine_hash", lambda r: "CUR")
+    rsp = paths.run_state(tmp_path)
+    rsp.parent.mkdir(parents=True, exist_ok=True)
+    rsp.write_text(json.dumps({"scenes": {
+        "s_fresh": {"doctrine_hash": "CUR"},
+        "s_stale": {"doctrine_hash": "OLD"},
+        "s_none": {}}}), encoding="utf-8")
+    rs._check_stale(str(tmp_path))
+    out = capsys.readouterr().out
+    assert "s_stale" in out and "s_none" in out and "CUR" in out
+    rsp.unlink()
+    rs._check_stale(str(tmp_path))
+    assert "nenhuma cena" in capsys.readouterr().out.lower()
