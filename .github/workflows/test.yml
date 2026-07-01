@@ -43,23 +43,14 @@ jobs:
       - name: Type-check (mypy)
         run: mypy framework/runtime/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
-      # E3: piso de cobertura do runtime (baseline 60%; subir gradualmente)
-      - name: Run runtime tests with coverage
+      # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
+      # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
+      # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
+      # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
+      - name: Run framework tests with coverage (90%)
         run: |
-          python -m pytest framework/runtime/ -v --tb=short \
-            --cov=framework/runtime --cov-report=term-missing --cov-fail-under=90
-
-      # Regras de validação do harness (cost model, naturalness lint, validate)
-      - name: Run validation tests
-        run: python -m pytest framework/validation/ -v --tb=short
-
-      # Contrato da migração flat-files → SQLite (só stdlib; guarda o "silent-zero")
-      - name: DB / migration contract
-        run: python -m pytest framework/db/ -v --tb=short
-
-      # Contrato das skills como módulos + CLI e2e (determinísticas rodam sem rede)
-      - name: Skills / CLI contract
-        run: python -m pytest framework/skills/ -v --tb=short
+          python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
+            -v --tb=short --cov=framework --cov-report=term-missing --cov-fail-under=90
 
       # Contrato do conector (round-trip byte-idêntico = oráculo). Passos SEPARADOS por
       # projeto: test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa
