@@ -29,9 +29,9 @@ Capitulo especial "all" (corpus flat — sem estrutura de cenas):
   A worklist e gerada normalmente; kb_frontier fica "all" quando coberto.
 """
 from __future__ import annotations
+
 import argparse
 import csv
-import json
 import re
 import sys
 from pathlib import Path
@@ -40,9 +40,9 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
-import kb_review      # noqa: E402  (gate de fonte/ratificacao do delta de KB)
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-from context_pack import scene_id_of, _present, _pos  # noqa: E402
+import kb_review  # noqa: E402  (gate de fonte/ratificacao do delta de KB)
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+from context_pack import _pos, _present, scene_id_of  # noqa: E402
 
 # sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").
 _CAP_RUN = re.compile(r"[A-Z][A-Za-z'’\-]+(?:\s+[A-Z][A-Za-z'’\-]+)*")
@@ -260,7 +260,7 @@ def discover(root, chap) -> dict:
             if not rec["example"]:
                 rec["example"] = _excerpt(text, m.start())
     gap, weak, covered = [], [], []
-    for low, rec in agg.items():
+    for _low, rec in agg.items():
         rec["scenes"] = sorted(rec["scenes"], key=_pos)
         if _covered(rec["cand"], kb_low):
             covered.append(rec)
@@ -347,7 +347,7 @@ def write_worklist(root, chap) -> Path:
          "> Gerado por `kb_phase.py` (deterministico). A IA descobriu candidatos de lore/nome que aparecem",
          "> no capitulo e que a KB reconciliada (glossary + entities) NAO cobre. **Governanca:** pesquise",
          "> + reconcilie cada item (skill 03 — IA+humano, por tier de fonte); se NAO for fornecer pesquisa",
-         "> p/ um item, registre o declinio explicito. Depois rode `kb_phase.py <projeto> {0} --check`.".format(chap),
+         f"> p/ um item, registre o declinio explicito. Depois rode `kb_phase.py <projeto> {chap} --check`.",
          "",
          f"- cenas do capitulo: {', '.join(d['scenes']) or '(nenhuma)'}",
          f"- research_log reconciliado: {'sim' if reconc else 'NAO — bloqueia o avanco'}",

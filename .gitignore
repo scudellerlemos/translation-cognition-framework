@@ -6,6 +6,16 @@
 __pycache__/
 *.pyc
 
+# Ambientes virtuais (ex.: .venv com a stack de ML opcional — requirements-ml.txt)
+.venv/
+venv/
+.coverage
+
+# Banco SQLite gerado por migrate_from_flat.py (fonte de verdade é regenerável dos flat files)
+*.db
+*.db-wal
+*.db-shm
+
 # Segredos — chave de API NUNCA versionada (use .env local; ver .env.example, esse SIM versionado)
 .env
 .env.local

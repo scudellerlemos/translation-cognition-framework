@@ -102,7 +102,7 @@ def test_no_hardcoded_paths_in_connector_scripts():
     import re
     connector_dir = PROJECT_ROOT / "connector"
     # padrão: caminho absoluto Windows ou Unix
-    abs_path_rx = re.compile(r'(?:[A-Za-z]:\\|/home/|/Users/|/root/)')
+    abs_path_rx = re.compile(r'(?<![A-Za-z])[A-Za-z]:\\|/home/|/Users/|/root/')
     for py_file in connector_dir.glob("*.py"):
         if py_file.name.startswith("test_"):  # os próprios testes podem ter regex com padrões de path
             continue

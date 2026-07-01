@@ -1,0 +1,60 @@
+{
+  "title": "Translation Software — Arquitetura limpa",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "../breath_of_fire_4/artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": ["[01]", "[02]", "[04]", "[05]", "[0A]", "[0B]", "[0C]", "[12]", "[14]"],
+  "formatting_token_patterns": ["\\[([0-9A-Fa-f]{2})\\]"],
+  "system_line_convention": "[01]",
+  "length_constraints": {
+    "mode": "byte_space",
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110,
+    "charset": "ascii_only",
+    "diacritic_strategy": "nfd_transliteration"
+  },
+  "batch_size": 50,
+  "connector": {
+    "type": "hex_binary",
+    "container_format": "capcom_dat_toc",
+    "table_schema": "../breath_of_fire_4/connector/table_schema.md",
+    "extract_script": "../breath_of_fire_4/connector/extract.py",
+    "reinsert_script": "../breath_of_fire_4/connector/reinsert.py",
+    "build_plan_script": "../breath_of_fire_4/connector/build_plan_chapter.py",
+    "verify_script": "../breath_of_fire_4/connector/verify_chapter.py",
+    "encoding": "ascii_with_ctrl_codes",
+    "space_strategy": "reconstrucao_secao",
+    "patch_format": "full_file"
+  },
+  "profile": {
+    "voice_profiles": "../breath_of_fire_4/profile/voice_profiles_reference.md",
+    "identity_pairs": "../breath_of_fire_4/profile/identity_pairs_reference.md",
+    "terminology_seeds": "../breath_of_fire_4/profile/terminology_seeds.md"
+  },
+  "db": {
+    "path": "translation_software.db",
+    "project_id": "bof4",
+    "schema": "framework/db/schema.sql",
+    "note": "SQLite como fonte única de verdade. Migrar flat files com: python framework/db/migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db"
+  },
+  "ollama": {
+    "model": "qwen2.5:14b",
+    "host": "http://localhost:11434"
+  },
+  "stack": {
+    "embeddings": "paraphrase-multilingual-MiniLM-L12-v2",
+    "vector_db": "sqlite-vec",
+    "reranker": "flashrank/MiniLM-L-12",
+    "ner": "spacy/xx_ent_wiki_sm",
+    "llm_local": "ollama/qwen2.5:14b",
+    "llm_api": "anthropic/claude-sonnet-4-6"
+  },
+  "notes": "Projeto de arquitetura limpa — objetivo: pipeline end-to-end sem .md como fonte de dados em runtime. SQLite como store central, skills como classes Python, backends plugáveis (API ou Ollama). Migrar dados do BoF4 antes de rodar."
+}

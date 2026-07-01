@@ -11,6 +11,7 @@ artefatos em `<projeto>/artifacts/`. Valida só o que existe (o pipeline é incr
 Uso:  python validate.py <dir-do-projeto>     (default: diretório atual)
 """
 from __future__ import annotations
+
 import csv
 import json
 import re

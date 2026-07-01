@@ -23,13 +23,16 @@ Uso:  python state_index.py <dir-do-projeto> [--rebuild]
       (--rebuild apenas reescreve; o comportamento e o mesmo, idempotente.)
 """
 from __future__ import annotations
-import hashlib
+
 import json
 import re
 import sys
 from pathlib import Path
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
+from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única)
+from text_ids import tm_key as _key
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -42,17 +45,6 @@ _STOP = {
     "um", "uma", "por", "para", "pra", "com", "sem", "em", "ao", "aos", "que", "the",
     "of", "+", "-", "medido", "real", "data", "tipo", "passo",
 }
-
-
-def _norm(s: str) -> str:
-    """Normaliza p/ chave de TM: minusculo, espacos colapsados, sem pontuacao de borda."""
-    s = (s or "").replace("\\n", " ").lower()
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-
-def _key(s: str) -> str:
-    return hashlib.sha1(_norm(s).encode("utf-8")).hexdigest()[:16]
 
 
 def _slug_tags(title: str) -> list[str]:
@@ -223,9 +215,45 @@ def build_decision_index(log_md: str) -> list[dict]:
     return out
 
 
+# ----------------------------- write-path (DB mirror) -------------------------
+
+def _db_target(root: Path):
+    """(db_path, project_id) se project.json declara `db.path` + `db.project_id`; senão
+    (None, None). Diferente de context_pack._db_path: NÃO exige que o arquivo exista — o
+    write-path o cria no 1º espelhamento. project_id vazio também desliga (não dá p/ chavear)."""
+    pj = root / "project.json"
+    if not pj.is_file():
+        return None, None
+    try:
+        cfg = json.loads(pj.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None, None
+    db = cfg.get("db") or {}
+    rel, pid = db.get("path"), db.get("project_id")
+    if not rel or not pid:
+        return None, None
+    return Path(root) / rel, pid
+
+
+def _sync_db(root: Path):
+    """Write-path consolidado: espelha o estado flat COMPLETO no SQLite (gated por
+    project.json:db). Reusa migrate_from_flat.migrate (idempotente, upsert) — o DB vira
+    mirror fiel após o re-index. No-op quando o projeto não declara `db` (BoF4/Uta hoje).
+    Roda DEPOIS de gravar os flats (lê voice_cards/decision_index recém-escritos)."""
+    db_path, project_id = _db_target(root)
+    if not db_path:
+        return None
+    import importlib
+    db_dir = str(Path(__file__).resolve().parents[1] / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    migrate = importlib.import_module("migrate_from_flat").migrate
+    return migrate(root, db_path, project_id)
+
+
 # --------------------------------- driver -------------------------------------
 
-def build(root: Path) -> dict:
+def build(root: Path, *, sync_db: bool = True) -> dict:
     root = Path(root)
     art = paths.artifacts(root)
     state = paths.state_dir(root)
@@ -297,8 +325,14 @@ def build(root: Path) -> dict:
         except OSError:
             pass
 
+    # write-path: espelha o estado flat completo no DB (gated; no-op sem project.json:db).
+    # sync_db=False no checkpoint POR-CENA do run_scene — senao o migrate() completo (corpus
+    # inteiro + clear/reload do ledger) rodaria a CADA cena. O mirror roda no rebuild deliberado
+    # do indice (CLI state_index / fim de capitulo), nao no checkpoint de cada cena.
+    db_synced = _sync_db(root) if sync_db else None
+
     return {"tm": len(tm), "cards": len(cards), "decisions": len(decisions),
-            "dir": state, "warnings": warnings}
+            "dir": state, "warnings": warnings, "db_synced": db_synced}
 
 
 def _read(p: Path) -> str:
@@ -351,6 +385,10 @@ def main():
     print(f"  translation_memory: {r['tm']} entradas")
     print(f"  voice_cards: {r['cards']} personagens")
     print(f"  decision_index: {r['decisions']} decisoes")
+    if r.get("db_synced"):
+        s = r["db_synced"]
+        print(f"  DB mirror -> {s.get('db')}: {s.get('translations', 0)} traducoes, "
+              f"{s.get('scene_lines', 0)} linhas, {s.get('kb', 0)} kb")
 
 
 if __name__ == "__main__":
