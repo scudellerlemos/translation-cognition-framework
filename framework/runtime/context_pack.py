@@ -391,13 +391,39 @@ def _get_embedder():
     return _EMBEDDER
 
 
-def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
+def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
+                      root: "Path | None" = None):
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
-    Fallback: sem o stack de embeddings/sqlite-vec ou sem índice → [] (sem erro).
-    Determinismo: ordem estável (score desc, source) sobre vetores pré-computados no DB."""
+
+    Dois caminhos:
+      - DB (projeto com SQLite): sqlite-vec + embedder.py (caminho original).
+      - Flat-file (sem DB): tm_search.py + numpy cosine (caminho novo para projetos sem DB).
+    Fallback: sem stack de ML ou sem índice → [] (sem erro).
+    Determinismo: ordem estável (score desc, source) sobre vetores pré-computados."""
     if not db_path:
-        return []
+        # caminho flat-file: numpy cosine via tm_search (opcional, pula se sem ML)
+        if root is None:
+            return []
+        try:
+            _rt = str(Path(__file__).resolve().parent)
+            if _rt not in sys.path:
+                sys.path.insert(0, _rt)
+            import tm_search
+            index = tm_search.load_index(paths.state_dir(root))
+            if index is None:
+                return []
+            exclude = {state_index._key(r.get("source", "")) for r in rows}
+            query = "\n".join(r.get("source", "") for r in rows)
+            return tm_search.search(query, index, top_k=k, max_hits=max_hits,
+                                    exclude_keys=exclude)
+        except ImportError:
+            return []
+        except Exception as e:
+            import warnings as _w
+            _w.warn(f"TM semântica flat falhou: {e!r} — pacote sem seção semântica.",
+                    stacklevel=2)
+            return []
     try:
         emb = _get_embedder()
         if emb is None:
@@ -493,7 +519,7 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
-    tm_semantic = _load_tm_semantic(db_path, db_pid, rows) if db_path else []
+    tm_semantic = _load_tm_semantic(db_path, db_pid, rows, root=root)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
 
