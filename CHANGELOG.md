@@ -5,6 +5,18 @@ Formato: [Semântico](https://semver.org/) — `[versão] — data`.
 
 ---
 
+## [Não versionado] — pós-1.0.0
+
+Trabalho incremental sobre a 1.0.0 (sem novo marco de release): cobertura de testes e reestruturação da CI.
+
+- Cobertura elevada a 90.17% (core: runtime+db+skills+validation) com gate `--cov-fail-under=90`;
+  316 testes passando / 21 skipped (302 core + 9 BoF4 + 4 Utawarerumono + 1 skeleton de conector)
+- CI reestruturada para paralelismo total: `test.yml` dividido em 6 jobs independentes (era 1 job de
+  5 passos sequenciais: guard → mypy → coverage → 3 conectores); zero `needs:` nos 3 workflows
+  (`quality.yml`, `test.yml`, `api-smoke.yml`)
+
+---
+
 ## [1.0.0] — 2026-06-16
 
 Primeira versão estável do harness. Framework em produção com Utawarerumono (cap. 11–20+).
