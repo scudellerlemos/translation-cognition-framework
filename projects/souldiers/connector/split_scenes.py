@@ -38,6 +38,15 @@ from pathlib import Path
 # Captura tudo entre STR_DIALOGS<opt_num>_ e _D\d+_ (greedy para o último _D\d+_)
 _DIALOG_SCENE_RE = re.compile(r"^STR_DIALOGS(.*)_D\d+_", re.IGNORECASE)
 _TRAILING_NUM_RE = re.compile(r"_\d+$")
+_TRAILING_SMALL_RE = re.compile(r"_(\d+)$")
+
+
+def _strip_small(s: str, threshold: int = 20) -> str:
+    """Strip trailing _N se N < threshold (número de linha/encontro, não parte do nome de área)."""
+    m = _TRAILING_SMALL_RE.search(s)
+    if m and int(m.group(1)) < threshold:
+        return s[:m.start()]
+    return s
 
 
 def _scene_dialogs(offset: str) -> str:
@@ -54,9 +63,23 @@ def _scene_dialogs(offset: str) -> str:
 
 
 def _scene_ingame(offset: str) -> str:
-    """STR_INGAME_DIALOGS_PIG_CAVE_23_4 → INGAME_PIG_CAVE_23"""
+    """Agrupa INGAME dialogs por área geográfica.
+
+    STR_INGAME_DIALOGS_PIG_CAVE_23_4  → INGAME_CAVE_23  (strip speaker + linha)
+    STR_INGAME_DIALOGS_FREE_SOLDIER_1 → INGAME_SOLDIER   (sem localização)
+    STR_INGAME_NOTE_SINKA             → INGAME_NOTE_SINKA
+    """
+    if re.match(r"^STR_INGAME_NOTE_", offset, re.IGNORECASE):
+        body = re.sub(r"^STR_INGAME_NOTE_", "", offset, flags=re.IGNORECASE)
+        body = _strip_small(body)
+        return f"INGAME_NOTE_{body.upper()}"
     stripped = re.sub(r"^STR_INGAME_DIALOGS_", "", offset, flags=re.IGNORECASE)
-    stripped = _TRAILING_NUM_RE.sub("", stripped)
+    stripped = _strip_small(stripped)          # strip número de linha
+    parts = stripped.split("_")
+    if len(parts) > 1:
+        loc = "_".join(parts[1:])             # descarta primeiro segmento (speaker)
+        loc = _strip_small(loc)               # strip número de encontro/sub-área
+        return f"INGAME_{loc.upper()}" if loc else f"INGAME_{stripped.upper()}"
     return f"INGAME_{stripped.upper()}"
 
 
