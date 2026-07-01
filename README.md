@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![145 testes](https://img.shields.io/badge/testes-145%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![316 testes](https://img.shields.io/badge/testes-316%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
