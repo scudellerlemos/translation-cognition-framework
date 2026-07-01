@@ -647,6 +647,7 @@ def render_prompt(pack: dict, carta: str) -> str:
 def write_pack(root: Path, scene: str) -> dict:
     pack = build_pack(root, scene)
     scene_dir = paths.scene_dir(root, scene)
+    scene_dir.mkdir(parents=True, exist_ok=True)   # projeto DB-only não tem o dir da cena em disco
     carta = _read(CARTA_PATH)
     (scene_dir / "scene_prompt.md").write_text(render_prompt(pack, carta), encoding="utf-8")
     (scene_dir / "pack.json").write_text(
