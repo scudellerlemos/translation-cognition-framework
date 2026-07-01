@@ -31,3 +31,7 @@ projects/*/output/
 
 # Arquivos de revisão devolvidos pelo humano (dados pessoais / fluxo local)
 projects/*/artifacts/qa_revisao/devolvido/
+
+# Índice semântico flat-file (tm_search.py): regenerável, pesado (~MB por projeto)
+**/state/tm_embeddings.npy
+**/state/tm_index.json
