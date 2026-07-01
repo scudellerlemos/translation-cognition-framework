@@ -130,6 +130,17 @@ com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de no
 
 ---
 
+## PROMPTS — engenharia de prompt
+
+O framework não faz fine-tuning: todo o comportamento da IA é controlado via prompt. As técnicas
+usadas são deliberadas — chain-of-thought só na back-translation (CoT em tradução comum
+custaria ~5× mais), role-based prompting na Doutrina cacheada que define o papel do tradutor,
+instruction tuning no `context_pack` que mantém o contexto em O(cena), e RAG em duas camadas
+(TM determinística + KB semântica com embeddings). Detalhes, custos reais e aprendizados de
+produção em [`docs/PROMPTS.md`](docs/PROMPTS.md).
+
+---
+
 ## INSTÂNCIAS
 
 **`projects/utawarerumono/`** — primeira instância de referência. Visual novel, EN→pt-BR, com múltiplos
