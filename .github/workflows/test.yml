@@ -1,7 +1,11 @@
-# Tests — verificação funcional do harness em cada push/PR.
-# Roda a suíte em duas versões de Python (matriz 3.11/3.12). Cada execução faz, em ordem:
-# guard de .env, type-check (mypy), testes de runtime com piso de cobertura, testes de
-# validação e os testes de contrato (round-trip) de cada conector.
+# Tests — verificação funcional do harness em cada push/PR (6 jobs paralelos, sem
+# dependência entre si — cada um roda em runner própria e falha aparece nomeada no PR).
+#   env-guard        : .env nunca rastreado pelo git
+#   mypy              : type-check do núcleo já tipado
+#   coverage          : testes de runtime/validation/db/skills com piso de 90% (matrix 3.11/3.12)
+#   connector-bof4    : contrato round-trip do conector BoF4
+#   connector-uta     : contrato round-trip do conector Utawarerumono
+#   connector-skeleton: contrato do template de conector
 name: Tests
 
 on:
@@ -11,26 +15,13 @@ on:
     branches: ["**"]
 
 jobs:
-  # Job único, paralelizado pela matriz de versões de Python. Faz a bateria completa:
-  # guard do .env -> tipos -> testes de runtime+cobertura -> validação -> contrato de conector.
-  test:
-    name: Testes — mypy + cobertura + validação + contrato de conector (py${{ matrix.python-version }})
+  # S5: .env nunca deve ser rastreado pelo git (evita vazamento de credenciais no repo).
+  # Não precisa de Python — só git, então roda isolado e rápido.
+  env-guard:
+    name: Guard — .env não rastreado
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12"]
-
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: pip install -r requirements-dev.txt
-
-      # S5: .env nunca deve ser rastreado pelo git (evita vazamento de credenciais no repo)
       - name: Verify .env is not tracked
         run: |
           if git ls-files --error-unmatch .env 2>/dev/null; then
@@ -39,26 +30,83 @@ jobs:
           fi
           echo "OK: .env não rastreado"
 
-      # Type-check restrito ao núcleo já tipado (ampliar em lotes pequenos)
+  # Type-check restrito ao núcleo já tipado (ampliar em lotes pequenos). Roda numa única
+  # versão de Python — comportamento de mypy não varia entre 3.11/3.12 aqui.
+  mypy:
+    name: Type-check (mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
         run: mypy framework/runtime/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
-      # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
-      # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
-      # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
-      # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
+  # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
+  # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
+  # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
+  # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
+  # Paralelizado pela matriz de versões de Python (2 runners).
+  coverage:
+    name: Coverage — runtime + db + skills + validation (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
       - name: Run framework tests with coverage (90%)
         run: |
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
             -v --tb=short --cov=framework --cov-report=term-missing --cov-fail-under=90
 
-      # Contrato do conector (round-trip byte-idêntico = oráculo). Passos SEPARADOS por
-      # projeto: test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa
-      # coleta única. Sem o binário do jogo (gitignored), os testes que o exigem fazem
-      # pytest.skip; codec/schema/governança rodam sempre.
+  # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
+  # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
+  # Sem o binário do jogo (gitignored), os testes que o exigem fazem pytest.skip;
+  # codec/schema/governança rodam sempre.
+  connector-bof4:
+    name: Connector contract — BoF4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
       - name: Connector contract — BoF4
         run: python -m pytest projects/breath_of_fire_4/connector/ -v --tb=short
+
+  connector-uta:
+    name: Connector contract — Utawarerumono
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
       - name: Connector contract — Utawarerumono
         run: python -m pytest projects/utawarerumono/connector/ -v --tb=short
+
+  connector-skeleton:
+    name: Connector skeleton contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
       - name: Connector skeleton contract
         run: python -m pytest framework/connectors/_skeleton/ -v --tb=short
