@@ -1,0 +1,72 @@
+# Quality — gates de qualidade e segurança em cada push/PR (4 jobs paralelos).
+# Adapta o padrão cicd-padrao-databricks sem a camada Databricks/deploy.
+#   lint   : estilo e bugs no código       sast   : vulnerabilidades de código
+#   secrets: credenciais vazadas           deps   : CVEs nas dependências
+name: Quality
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  # LINT — ruff (regras F/I/UP/B) no produto reusável framework/: imports/variáveis
+  # mortos, bugs do bugbear e ordenação de imports. Scripts one-off de projects/*/connector
+  # ficam no pre-commit local (já barrados pelos testes de round-trip), não na CI.
+  lint:
+    name: Lint (ruff) — estilo e bugs no framework
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Ruff lint
+        run: ruff check framework
+
+  # SAST — bandit varre o framework em busca de padrões inseguros (eval, subprocess shell,
+  # hash fraco, etc.). Falha só em MEDIUM+; LOW (ex.: try/except/pass) fica como aviso.
+  sast:
+    name: SAST (bandit) — vulnerabilidades de código
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Bandit (SAST)
+        run: bandit -r framework -c pyproject.toml --severity-level medium
+
+  # SECRETS — gitleaks procura credenciais/chaves vazadas no diff e no histórico.
+  # Conta pessoal: gratuito. Organização exige o secret GITLEAKS_LICENSE.
+  secrets:
+    name: Secret scan (gitleaks) — credenciais vazadas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0   # histórico completo para o scan varrer o range do push/PR
+      - name: Gitleaks (secret scan)
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # DEPS — pip-audit confere as dependências de requirements-dev.txt contra CVEs conhecidos
+  # (supply-chain). Falha se houver vulnerabilidade reportada sem fix aplicado.
+  deps:
+    name: Dependências (pip-audit) — CVEs conhecidos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: pip-audit (CVEs)
+        run: pip-audit -r requirements-dev.txt

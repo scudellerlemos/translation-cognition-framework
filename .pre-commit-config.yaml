@@ -1,0 +1,35 @@
+# Espelha os gates da CI para feedback local antes do push.
+# Após clonar: `pip install pre-commit && pre-commit install`
+# Revs fixadas nas versões validadas localmente; atualizar com `pre-commit autoupdate`.
+#
+# NOTA: ruff-format reescreve os arquivos de framework/ em que você mexer (o repo ainda
+# não está formatado). É intencional — format fica só aqui, não bloqueia a CI.
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.20
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^framework/
+      - id: ruff-format
+        files: ^framework/
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml", "--severity-level", "medium"]
+        files: ^framework/
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: env-not-tracked
+        name: .env nao rastreado pelo git
+        entry: "bash -c 'if git ls-files --error-unmatch .env 2>/dev/null; then echo \"ERRO .env rastreado (git rm --cached .env)\"; exit 1; fi'"
+        language: system
+        pass_filenames: false

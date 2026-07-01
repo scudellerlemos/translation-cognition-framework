@@ -5,6 +5,7 @@ custo de uma chamada, e o append ao api_ledger.jsonl. `model`/`run_scene`/`cost_
 (re-exportado por `model` p/ compatibilidade — sem mudar call sites). NAO importa model (camada abaixo).
 """
 from __future__ import annotations
+
 import json
 import os
 import time

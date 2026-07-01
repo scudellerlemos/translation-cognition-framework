@@ -5,14 +5,41 @@ description = "Harness determinístico de localização de jogos baseado em cogn
 requires-python = ">=3.11"
 readme = "README.md"
 
+# Fonte única de dependências dev: requirements-dev.txt (usado pela CI).
+# Este extra espelha aquele arquivo para `pip install -e .[dev]`.
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0",
-    "openpyxl>=3.1",
-    "mypy>=1.0",
+    "pytest~=9.0",
+    "pytest-cov~=6.0",
+    "openpyxl~=3.1",
+    "mypy~=2.1",
+    "anthropic~=0.109",
+    "httpx~=0.28",
+    "ruff~=0.15",
+    "bandit~=1.9",
+    "pip-audit>=2.7",
+    "pre-commit>=3.5",
 ]
 
 [tool.mypy]
 ignore_missing_imports = true
 check_untyped_defs = true
 warn_redundant_casts = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+# Curado: bugs reais (F/B) + import-sort (I) + modernização (UP).
+# Grupo E (pycodestyle/estilo) e o formatter ficam só no pre-commit, não na CI.
+select = ["F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/test_*.py" = ["B011"]
+# Template de conector: variáveis de scaffolding (tabelas a preencher ao copiar) são intencionais.
+"**/_skeleton/**" = ["F841"]
+
+[tool.bandit]
+# B101: assert é idiomático nos testes de contrato/round-trip deste repo.
+skips = ["B101"]

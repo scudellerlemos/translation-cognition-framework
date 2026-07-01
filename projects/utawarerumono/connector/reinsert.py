@@ -46,7 +46,7 @@ import unicodedata
 from pathlib import Path
 
 import sdat_format as S
-from sdat_format import read_cstr, find_pointers, is_head, read_run
+from sdat_format import find_pointers, is_head, read_cstr, read_run
 
 ROOT = Path(__file__).resolve().parent.parent          # raiz do projeto
 ART = ROOT / "artifacts"

@@ -1,0 +1,20 @@
+# requirements-ml.txt — stack OPCIONAL de TM semântica (RAG nº1). NÃO entra na CI nem é
+# requerida pelo runtime determinístico: sem ela o context_pack cai p/ [] (fallback testado).
+#
+# Instala SÓ quando for LIGAR a busca semântica num projeto com `db` (hoje: translation_software):
+#   pip install -r requirements-ml.txt
+#   python framework/cli.py db index projects/translation_software/translation_software.db bof4
+#
+# Pesado (~700 MB–1,5 GB): puxa torch + baixa o modelo MiniLM (~470 MB) no cache do HuggingFace
+# (~/.cache/huggingface). Os vetores ficam na própria <projeto>.db (tabela tm_embeddings + vec0).
+#
+# GPU: o torch default é CPU. Aceleração AMD via ROCm é Linux-only; no Windows fica CPU (ok p/
+# ~6k linhas, poucos minutos) — ou instale um torch-directml ANTES, à parte.
+#
+# Floors conservadores (deps pesadas, fora da CI). Depois do 1º install que funcionar, rode
+#   pip freeze | grep -Ei "sentence-transformers|sqlite-vec|flashrank|torch"
+# e troque os floors pelos == p/ travar as versões (padrão ~= do requirements-dev).
+
+sentence-transformers>=3.0     # encoder paraphrase-multilingual-MiniLM-L12-v2 (dim 384)
+sqlite-vec>=0.1.6              # índice vetorial (vec0) dentro do SQLite
+flashrank>=0.2.0              # reranker ms-marco-MiniLM-L-12-v2 (opcional, melhora o top-k)

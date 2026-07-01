@@ -16,6 +16,7 @@ Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--requir
       <cap> = "12" roda ch_12_01, ch_12_02, ... na ordem.
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -24,13 +25,13 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import context_pack   # noqa: E402
-import paths          # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-import run_scene as RS  # noqa: E402
-import cost_report     # noqa: E402
-import model as M      # noqa: E402
-import kb_gate         # noqa: E402
+import context_pack  # noqa: E402
+import cost_report  # noqa: E402
+import kb_gate  # noqa: E402
+import model as M  # noqa: E402
+import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
+import run_scene as RS  # noqa: E402
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)

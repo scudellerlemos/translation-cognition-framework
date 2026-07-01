@@ -30,8 +30,8 @@ import pytest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-import sdat_format as S          # noqa: E402
-import reinsert as R            # noqa: E402
+import reinsert as R  # noqa: E402
+import sdat_format as S  # noqa: E402
 
 ROOT = HERE.parent
 ART = ROOT / "artifacts"

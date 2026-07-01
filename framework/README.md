@@ -108,9 +108,10 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado **em produção** (Utawarerumono): **jogo COMPLETO — 16 capítulos, 146 cenas,
-  ~45.100 linhas** traduzidas e verificadas, pt-BR renderizando in-game. 🔄 *Breath of Fire IV* em
-  andamento — piloto do Generic Connector System (engine Capcom). Ver `media-profiles/games.md`.
+- **Jogos** — ✅ validado em dois engines distintos:
+  - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
+  - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 125 cenas, pipeline completo 00–08, QA + output gerados.
+  - Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
 
@@ -131,8 +132,41 @@ com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de no
 ## INSTÂNCIAS
 
 **`projects/utawarerumono/`** — primeira instância de referência. Visual novel, EN→pt-BR, com múltiplos
-pares de identidade dupla e gestão crítica de spoilers. **Jogo inteiro traduzido e verificado
-ponta-a-ponta** (16 capítulos, 146 cenas, ~45.100 linhas), saída renderizando in-game. Use como
-exemplo de manifesto e perfil.
+pares de identidade dupla e gestão crítica de spoilers. **CONCLUÍDO:** 16 capítulos, 146 cenas,
+~45.100 linhas, round-trip byte-idêntico, custo ~R$ 338,46, pt-BR in-game. Use como
+exemplo de manifesto, perfil e artefatos do pipeline.
 
-**`projects/breath_of_fire_4/`** — segunda instância. Valida a portabilidade do framework para um engine Capcom diferente. Conector mapeado e implementado (Fase 0 concluída, round-trip byte-idêntico). Ver `projects/breath_of_fire_4/ROADMAP.md`.
+**`projects/breath_of_fire_4/`** — segunda instância. Valida a portabilidade para engine Capcom. **CONCLUÍDO:**
+125 cenas, pipeline 00–08 completo, QA humana + output (125 DAT files) gerados, custo ~$11 USD.
+Débitos técnicos em aberto: glossary coluna, NPC voice cards, TM semântica (B2), release.
+
+---
+
+## STATUS DO FRAMEWORK — junho 2026
+
+### Objetivos alcançados
+
+- Harness stateless (cena = job isolado, contexto O(cena)): sem estouro de sessão ✅
+- Batch API (−50%) + tiering Haiku/Sonnet/Opus: validado em escala ✅
+- Gates de cognição: KB-gate, controle de spoiler, controle de gênero ✅
+- Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica ✅
+- Ledger auditável: toda chamada cobrada registrada, inclusive falhas ✅
+- Generic Connector System: dois engines (Aquaplus + Capcom) com round-trip byte-idêntico ✅
+- 145 testes passando (116 runtime + 29 validação)
+
+### Dívidas técnicas do framework
+
+| Dívida | Prioridade |
+|---|---|
+| `run_game` — driver ponta-a-ponta (todos os capítulos + Fase 0 gating automático) | P2.5 — agora |
+| Observabilidade de progresso (linhas/min, % do jogo, ETA) | P2.5 — agora |
+| `state_index` rebuild 1×/capítulo no batch (hoje por cena, redundante) | P2.5 — agora |
+| TM busca semântica (B2: `sentence-transformers` local) | pós-produção |
+| Evolução do conector: registry de detecção + síntese governada | P4 (pós-produção) |
+| Filmes / séries: pontos de extensão sem validação em produção | futuro |
+
+### Próximos passos
+
+1. `run_game` + observabilidade (P2.5 — barato, não requer novo modelo)
+2. TM semântica (B2) — implementação
+3. Piloto multi-game: questões abertas respondidas progressivamente (BoF4 como referência)

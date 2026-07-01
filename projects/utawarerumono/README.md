@@ -16,7 +16,7 @@ Este é o projeto de localização que originou o framework. Serve como **refer�
 
 ---
 
-## Estado: **JOGO COMPLETO** — 16 capítulos traduzidos e verificados ✅
+## Estado: **PROJETO CONCLUÍDO** — 16 capítulos traduzidos, verificados e reinseridos ✅
 
 O projeto evoluiu de "valida em 2 cenas" para **a obra inteira traduzida pelo harness stateless**
 (`framework/runtime/`). Cada cena roda como um **job isolado** (contexto O(cena)) via API headless; o

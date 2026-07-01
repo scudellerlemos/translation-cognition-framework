@@ -1,0 +1,47 @@
+{
+  "title": "Translation Local — Inferência local (Ollama)",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "../breath_of_fire_4/artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": ["[01]", "[02]", "[04]", "[05]", "[0A]", "[0B]", "[0C]", "[12]", "[14]"],
+  "formatting_token_patterns": ["\\[([0-9A-Fa-f]{2})\\]"],
+  "system_line_convention": "[01]",
+  "length_constraints": {
+    "mode": "byte_space",
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110,
+    "charset": "ascii_only",
+    "diacritic_strategy": "nfd_transliteration"
+  },
+  "batch_size": 50,
+  "connector": {
+    "type": "hex_binary",
+    "container_format": "capcom_dat_toc",
+    "table_schema": "../breath_of_fire_4/connector/table_schema.md",
+    "extract_script": "../breath_of_fire_4/connector/extract.py",
+    "reinsert_script": "../breath_of_fire_4/connector/reinsert.py",
+    "build_plan_script": "../breath_of_fire_4/connector/build_plan_chapter.py",
+    "verify_script": "../breath_of_fire_4/connector/verify_chapter.py",
+    "encoding": "ascii_with_ctrl_codes",
+    "space_strategy": "reconstrucao_secao",
+    "patch_format": "full_file"
+  },
+  "profile": {
+    "voice_profiles": "../breath_of_fire_4/profile/voice_profiles_reference.md",
+    "identity_pairs": "../breath_of_fire_4/profile/identity_pairs_reference.md",
+    "terminology_seeds": "../breath_of_fire_4/profile/terminology_seeds.md"
+  },
+  "ollama": {
+    "model": "qwen2.5:14b",
+    "host": "http://localhost:11434",
+    "note": "Hardware alvo: AMD RX 6650 XT 8GB (ROCm/RDNA2). Velocidade esperada: 10-15 tok/s (partial GPU offload). Alternativa: qwen2.5:7b para full VRAM (25-40 tok/s, menor qualidade)."
+  },
+  "notes": "POC de inferência local — objetivo: validar que o pipeline funciona com backend Ollama (zero custo de API). Reutiliza conector e dados do BoF4. Benchmark: qualidade local vs baseline Sonnet aprovado. Usar: python run_scene.py projects/translation_local AREAD001 --backend ollama"
+}

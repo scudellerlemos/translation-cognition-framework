@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import pytest
-import model
 import context_pack
+import model
+import pytest
 
 
 @pytest.fixture

@@ -22,10 +22,9 @@ import argparse
 import csv
 import json
 import sys
-from pathlib import Path
 
-import sdat_format as S
 import reinsert as R
+import sdat_format as S
 
 
 def load_game():

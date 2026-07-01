@@ -6,6 +6,7 @@ rede — sem nenhuma logica de traducao. `model`/`batch`/`back_translate` import
 testes do harness nao exigem o SDK. NAO importa model (camada abaixo).
 """
 from __future__ import annotations
+
 import os
 import time
 from pathlib import Path

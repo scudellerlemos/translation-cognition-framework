@@ -26,6 +26,7 @@ rede, sem work-text — le artefato ja pago.
 Uso:  python quality_gate.py <projeto> [<capitulo>] [--json]   (exit 1 se houver revise/uncovered)
 """
 from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -34,10 +35,10 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io   # noqa: E402  (leitura compartilhada: scenes/plan_lines/back_entries)
+import artifact_io  # noqa: E402  (leitura compartilhada: scenes/plan_lines/back_entries)
 import context_pack  # noqa: E402
-import model          # noqa: E402
-import paths          # noqa: E402
+import model  # noqa: E402
+import paths  # noqa: E402
 
 
 def check(root, chapter=None) -> dict:
