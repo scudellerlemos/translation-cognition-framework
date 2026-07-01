@@ -80,6 +80,43 @@ def test_select_glossary_and_voices_lexical():
     assert "Ryu" in voices                              # casa por alias 'Hero'
 
 
+def test_render_prompt_full_sections():
+    """Pacote com TODAS as seções + ramos opcionais (charset off, convenção de sistema, length)."""
+    pc = {"newline_token": "[NL]", "formatting_tokens": ["[01]"], "formatting_token_patterns": ["\\[..\\]"],
+          "system_line_convention": "sistema em maiúscula", "length_constraints": {"max": 40},
+          "target_charset_supported": False, "charset_note": "fonte sem acento"}
+    pack = {
+        "scene": "S1", "scene_id": "S1", "n_lines": 1, "doctrine": "d", "doctrine_hash": "h",
+        "skills_revision": "r", "project_constraints": pc,
+        "glossary_subset": [{"term": "Dragon", "category": "creature", "target_translation": "Dragão",
+                             "handling_rule": "preserve", "spoiler_level": ""}],
+        "voice_cards": {"Ryu": {"criticality": "high", "aliases": ["Hero"], "lines": ["fala curta"]}},
+        "decisions": [{"title": "Regra", "summary": "manter", "universal": True}],
+        "spoiler_guards": [{"entity": "Fou-lu", "spoiler_level": "high", "guard": "trate como mistério"}],
+        "kb": [{"section": "Lore", "content": "lore do mundo"}],
+        "tm_exact": [{"source": "Hi", "target": "Oi", "speaker": "Ryu", "from_scene": "S0"}],
+        "tm_voice": [{"speaker": "Ryu", "source": "Hi", "target": "Oi"}],
+        "tm_semantic": [{"score": 0.9, "source": "Hey", "target": "Ei"}],
+        "lines": [{"offset": "X:0:1", "source": "Hello | world", "byte_budget": 20}],
+    }
+    out = cp.render_prompt(pack, "CARTA DE TESTE")
+    for needle in ("Cena S1", "Dragon", "Ryu", "Fou-lu", "Lore", "SIMILARES", "charset", "Hello"):
+        assert needle in out, needle
+
+
+def test_render_prompt_empty_sections():
+    """Ramos vazios: sem glossário/TM/carta → mensagens de fallback."""
+    pc = {"newline_token": "[NL]", "formatting_tokens": [], "formatting_token_patterns": [],
+          "system_line_convention": "", "length_constraints": {}, "target_charset_supported": True,
+          "charset_note": ""}
+    pack = {"scene": "S1", "scene_id": "S1", "n_lines": 0, "doctrine": "d", "doctrine_hash": "",
+            "skills_revision": "", "project_constraints": pc, "glossary_subset": [], "voice_cards": {},
+            "decisions": [], "spoiler_guards": [], "kb": [], "tm_exact": [], "tm_voice": [],
+            "tm_semantic": [], "lines": []}
+    out = cp.render_prompt(pack, "")
+    assert "nenhum termo" in out and "sem memoria" in out
+
+
 def test_select_kb_default_deny_semantics():
     """Gate por seção: safe/past ENTRA; futuro/beyond_frontier/sem-tag NÃO (default-deny)."""
     kb = [
