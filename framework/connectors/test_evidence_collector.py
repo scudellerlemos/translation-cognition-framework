@@ -190,11 +190,20 @@ def test_script_generator_returns_string():
     assert "GERADO AUTOMATICAMENTE" in stub
 
 
-def test_script_generator_no_not_implemented_error():
+def test_script_generator_is_documented_stub():
+    """O stub gerado deve ter marcadores de 'precisa de ajuste' (TODO ou NotImplementedError).
+
+    O script_generator nunca produz código completamente finalizado — sempre há configuração
+    específica do jogo que só o dev/LLM pode preencher inspecionando o arquivo real.
+    """
     from script_generator import generate
     evidence = _unknown_evidence()
     stub = generate(evidence)
-    assert "NotImplementedError" in stub or "TODO" in stub  # é um stub documentado
+    has_marker = "NotImplementedError" in stub or "TODO" in stub
+    assert has_marker, (
+        "Stub deve conter TODO ou NotImplementedError indicando configuração pendente. "
+        f"Padrão linear_scan: verificar que CONFIG section tem '# TODO:'."
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -86,7 +86,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print(f"    (round-trip obrigatório antes de qualquer tradução)")
 
     elif tier == "T2":
-        print(f"  Engine: desconhecida — requer LLM ou implementação manual")
+        print(f"  Engine: desconhecida — requer implementação manual")
         print(f"\n  Evidências:")
         ev = result.get("evidence_summary", {})
         print(f"    • {ev.get('file_count', '?')} arquivos encontrados")
@@ -96,10 +96,15 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         if enc:
             print(f"    • encoding: {', '.join(f'{k}: {v:.0%}' for k, v in enc.items())}")
         print(f"\n  PRÓXIMOS PASSOS:")
-        print(f"    1. Inspecionar um arquivo representativo no HxD/010 Editor")
-        print(f"    2. Rodar com --generate-stub <output_dir> para um ponto de partida")
-        print(f"    3. Implementar load_table + iter_string_offsets no stub gerado")
-        print(f"    4. Rodar round-trip (obrigatório antes de avançar)")
+        print(f"    1. Inspecionar arquivo representativo no HxD/010 Editor")
+        print(f"    2. Gerar stub pré-preenchido (padrão escolhido pelas evidências):")
+        print(f"         python discover.py <game_dir> --generate-stub projects/<jogo>/connector/")
+        print(f"    3. Preencher as constantes de CONFIG no stub gerado")
+        print(f"    4. Validar cada iteração com o smoke test (exit 0 = invariantes OK):")
+        print(f"         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir]")
+        print(f"    5. Quando extract OK: implementar reinsert.py e testar round-trip:")
+        print(f"         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir] --roundtrip")
+        print(f"    6. Round-trip byte-idêntico = conector aprovado → registrar no registry")
 
     elif tier == "T3":
         print(f"  Bloqueado: dados cifrados ou comprimidos")
