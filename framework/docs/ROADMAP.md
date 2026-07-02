@@ -143,10 +143,24 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 
 | # | Item | Impacto estimado | Status |
 |---|---|---|---|
-| A | **`scaffold_project.py`** — gera skeleton com schema correto (glossary.csv com colunas certas, tone_analysis.md com `### Speaker — voice_criticality:` placeholder, decision_log.md template). Zero iteração de "schema errado". | ~10k tok/jogo | ❌ |
-| B | **Validação early em `state_index.build()`** — se glossary/tone_analysis não tiverem o formato esperado, falhar com mensagem clara em vez de retornar silenciosamente 0 cards/0 decisões. | ~3k tok/jogo | ❌ |
-| C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. Somado ao D1 (`discover.py`) que classifica T1/T2/T3 antes de escrever uma linha. | ~15k tok/jogo | ❌ (D1 ✅) |
-| D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ❌ |
+| A | **`scaffold_project.py`** — gera skeleton com schema correto (glossary.csv com colunas certas, tone_analysis.md com `### Speaker — voice_criticality:` placeholder, decision_log.md template). Zero iteração de "schema errado". | ~10k tok/jogo | ✅ |
+| B | **Validação early em `state_index.build()`** — se glossary/tone_analysis não tiverem o formato esperado, falhar com mensagem clara em vez de retornar silenciosamente 0 cards/0 decisões. | ~3k tok/jogo | ✅ |
+| C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. T2: `connector_smoke.py` (smoke test round-trip por iteração) + `script_generator.py` com 3 padrões de stub pré-preenchidos (linear_scan/token_table/pointer_table) baseados nas evidências do `discover.py`. | ~15k tok/jogo | ✅ |
+| D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ✅ (skill 04 atualizada) |
+| E | **`kb_fetch.py` + `kb_build_ollama.py`** — pipeline híbrido para KB sem custo de API: `kb_fetch.py` baixa fontes (urllib, sem LLM, sem API key) e `kb_build_ollama.py` usa Ollama local para raciocínio/extração. Elimina ~30k tokens de raciocínio da sessão Claude. Ver nota abaixo. | ~30k tok/jogo | ❌ |
+
+> **Nota E — fontes de KB aceitas pelo `kb_fetch.py`:**
+> O humano pode passar qualquer tipo de fonte — o fetch tool deve normalizar tudo para texto
+> plano antes de entregar ao Ollama:
+> - **URL de site/wiki** — urllib/requests + extração de texto (strip HTML)
+> - **PDF** — pdfplumber ou PyMuPDF → texto plano
+> - **Word (.docx)** — python-docx → texto plano
+> - **Excel (.xlsx)** — openpyxl → tabela CSV/texto plano
+> - **Arquivo local qualquer** — leitura direta se já for .txt/.md; conversão nos demais
+>
+> Interface: `python kb_fetch.py <fonte_1> [fonte_2] ...` onde `<fonte>` é URL ou caminho local.
+> Saída: `artifacts/research_cache/<hash_fonte>.md` (texto normalizado, um arquivo por fonte).
+> O `kb_build_ollama.py` lê o cache sem saber se a origem era web ou arquivo local.
 
 > **Lição do Souldiers:** o maior gasto individual foi C (investigação de engine + iterações do conector).
 > D1 (`discover.py`) resolve a classificação; falta o template que usa o resultado.
