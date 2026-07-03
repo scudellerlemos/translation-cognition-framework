@@ -1,0 +1,76 @@
+{
+  "scene": "ER_SUBMERGEDLAB_INTRO_MAKEREL",
+  "scene_group": "ER_SUBMERGEDLAB_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_MAKEREL_3",
+      "text_source": "Why don't you go?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pressionar/desafiar com tom de espanto",
+      "risk_level": "low",
+      "base_translation": "Por que você não vai?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_MAKEREL_5",
+      "text_source": "I haven't heard that one before...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "expressão de dúvida ou falta de familiaridade",
+      "risk_level": "low",
+      "base_translation": "Nunca ouvi essa antes...",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_MAKEREL_7",
+      "text_source": "Soldiers plural? He's practically the only one who's dealing with the local fauna. I doubt he needs me.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "justificativa lógica, minando argumento",
+      "risk_level": "medium",
+      "base_translation": "Soldados no plural? Ele é praticamente o único que lida com a fauna local. Duvido que precise de mim.",
+      "byte_budget": 103,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "comprimento próximo ao orçamento (92 chars + espaços); linha contém informação factual sobre fauna local — garantir clareza em back-translation"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_MAKEREL_9",
+      "text_source": "Yes...? No... I spose' not... But these are my orders and I don't plan on moving from this spot.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "resignação estóica; obediência ao dever apesar da hesitação",
+      "risk_level": "medium",
+      "base_translation": "Sim...? Não... Acho que não... Mas essas são minhas ordens e não pretendo sair deste ponto.",
+      "byte_budget": 96,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "oscilação (Sim/Não) deve preservar angústia; hesitação '...?' reflete dúvida antes de aceitação da ordem; risco: soar coloquial demais"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_MAKEREL_11",
+      "text_source": "...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "pausa silenciosa; ponderação",
+      "risk_level": "low",
+      "base_translation": "...",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_SUBMERGEDLAB_INTRO_MAKEREL-v1"
+}

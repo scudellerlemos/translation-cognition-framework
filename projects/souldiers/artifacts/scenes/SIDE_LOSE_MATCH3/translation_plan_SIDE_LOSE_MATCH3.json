@@ -1,0 +1,102 @@
+{
+  "scene": "SIDE_LOSE_MATCH3",
+  "scene_group": "SIDE_LOSE_MATCH3",
+  "lines": [
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_1",
+      "text_source": "Oh, well... You win some, you lose some.",
+      "speaker": "npc",
+      "tone_register": "informal coloquial",
+      "intent": "philosophical acceptance of loss",
+      "risk_level": "low",
+      "base_translation": "Bem... a gente ganha alguns, perde outros.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_2",
+      "text_source": "Ah! That's a tough one.",
+      "speaker": "npc",
+      "tone_register": "informal coloquial",
+      "intent": "sympathetic acknowledgment of difficulty",
+      "risk_level": "low",
+      "base_translation": "Ah! Essa foi difícil mesmo.",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_3",
+      "text_source": "Better luck next time!",
+      "speaker": "npc",
+      "tone_register": "informal encouraging",
+      "intent": "encouragement for next attempt",
+      "risk_level": "low",
+      "base_translation": "Boa sorte na próxima!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_4",
+      "text_source": "Dang! I really thought you were going to win that one!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hyperbolic excited",
+      "intent": "exaggerated disappointment with energetic empathy",
+      "risk_level": "medium",
+      "base_translation": "Eba! Juro que tinha tudo pra você vencer!",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof voice criticality high — hyperbolic excitement and exclamation marks essential. Translated exclamation preserves energy; checked against red flag (must not sound contained/serious)."
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_5",
+      "text_source": "Oh... so close, yet so far!",
+      "speaker": "npc",
+      "tone_register": "informal wistful",
+      "intent": "bittersweet near-miss empathy",
+      "risk_level": "low",
+      "base_translation": "Ah... tão perto e tão longe!",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_6",
+      "text_source": "You can do it! I believe in you!",
+      "speaker": "npc",
+      "tone_register": "informal encouraging emphatic",
+      "intent": "motivational support",
+      "risk_level": "low",
+      "base_translation": "Você consegue! Acredito em você!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_LOSE_MATCH3_7",
+      "text_source": "Don't give up!",
+      "speaker": "Brigard",
+      "tone_register": "formal military terse",
+      "intent": "direct encouragement as command",
+      "risk_level": "medium",
+      "base_translation": "Não desista!",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard voice criticality high — formal-military register, short sharp sentences, no flourish. 'Não desista!' maintains terseness and command tone; avoids colloquialisms and sentimentality."
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_LOSE_MATCH3-v1"
+}

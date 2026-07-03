@@ -1,0 +1,50 @@
+{
+  "scene": "CAVE_00",
+  "scene_group": "CAVE_00",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CAVE_00_D1_TREMBLINGSOLDIER_1",
+      "text_source": "You may wonder what I'm doing just standing here...",
+      "speaker": "npc",
+      "tone_register": "formal-military seco, estóico",
+      "intent": "explicar hesitação com frieza militar",
+      "risk_level": "low",
+      "base_translation": "Você pode se perguntar o que estou fazendo aqui parado...",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_00_D1_TREMBLINGSOLDIER_2",
+      "text_source": "It's not because I saw several horrid spiders drag our comrades into the darkness of this cave.",
+      "speaker": "npc",
+      "tone_register": "formal-military seco, estóico",
+      "intent": "relatar fato de perda sem emoção",
+      "risk_level": "medium",
+      "base_translation": "Não é porque vi várias aranhas horríveis arrastarem nossos camaradas para a escuridão desta caverna.",
+      "byte_budget": 95,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "contexto de perigo extremo (aranhas, comrades desaparecidos) — tom militar mantém distância; sem dramaticidade nem comoção"
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_00_D1_TREMBLINGSOLDIER_3",
+      "text_source": "I'm simply recovering my strength to go and save them. If you find them, please tell them that I'm looking for them too.",
+      "speaker": "npc",
+      "tone_register": "formal-military seco, estóico",
+      "intent": "firmar propósito de resgate com frieza",
+      "risk_level": "medium",
+      "base_translation": "Estou apenas recuperando forças para ir salvá-los. Se encontrá-los, diga-lhes que estou procurando também.",
+      "byte_budget": 120,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "promessa de ação — sem emoção exagerada, tom resoluto e conciso militar; 'please tell them' localizado para pt-BR sem suavizar a ordem"
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-CAVE_00-v1"
+}

@@ -1,0 +1,36 @@
+{
+  "lines": {
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "excitação/espanto com o ambiente luminoso",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Este lugar está brilhando!"
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento com tom sarcástico/contido",
+      "risk_level": "medium",
+      "risk_notes": "Tom sarcástico requer cuidado: manter secura militar sem soar gentil demais. Brigard não elogia genuinamente; reconhece competência com ironia. Verificar se 'excelente coletor' preserva a frieza.",
+      "t": "Bem, não é que você é um excelente coletor."
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "provocação/curiosidade controlada sobre o resultado do experimento",
+      "risk_level": "high",
+      "risk_notes": "Identidade/lore do experimento (essência de insetos, resultado desconhecido): a tradução não pode antecipar o que é ou revelar spoiler. 'Cook up' → 'preparar/inventar' (coloquial, mas compatível com Brigard seco? Revisar: talvez 'consegui fazer' seja mais militar). Back-translation obrigatória.",
+      "t": "Bem, imagino que você esteja morrendo de vontade de saber o que consegui preparar com a essência destes insetos."
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_4": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "aviso militar + provocação contida (exigência de ação perigosa)",
+      "risk_level": "high",
+      "risk_notes": "Risco alto: coção desconhecida/perigosa (spoiler de resultado); 'drink unknown and potentially dangerous concoction' deve preservar incerteza sem revelar efeito. Estrutura 'Go on...' é ordem + ironia seca — manter tom militar exigente. Linha longa (byte_budget=109): tradução compacta essencial. Back-translation obrigatória.",
+      "t": "Desculpe, mas mais uma vez você vai precisar beber uma beberagem completamente desconhecida e potencialmente perigosa. Vá em frente..."
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "scene": "SL_SECONDQUEST",
+  "scene_group": "SL_SECONDQUEST",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SL_SECONDQUEST_D1_MELIAN_1",
+      "text_source": "What?!",
+      "speaker": "npc",
+      "tone_register": "alarm_exclamation",
+      "intent": "shock_realization",
+      "risk_level": "low",
+      "base_translation": "O quê?!",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_SECONDQUEST_D1_MELIAN_2",
+      "text_source": "We've ended up in the same trap!",
+      "speaker": "npc",
+      "tone_register": "distress",
+      "intent": "realization_trapped",
+      "risk_level": "medium",
+      "base_translation": "Caímos na mesma armadilha!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade de Melian não revelada ainda neste ponto — evitada; pronome genérico mantém consistência"
+    },
+    {
+      "offset": "STR_DIALOGS_SL_SECONDQUEST_D2_MELIAN_1",
+      "text_source": "It's my fault. I should have found the way out of these ducts a while back.",
+      "speaker": "npc",
+      "tone_register": "guilt_determined",
+      "intent": "self_blame_commitment",
+      "risk_level": "high",
+      "base_translation": "É culpa minha. Deveria ter encontrado o caminho pra sair desses dutos faz tempo.",
+      "byte_budget": 75,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "responsabilidade pessoal e culpa — tom correto preservado; 'dutos' é transliteração comum em PT-BR para ducts em contexto tecnológico; back-translation validada"
+    },
+    {
+      "offset": "STR_DIALOGS_SL_SECONDQUEST_D2_MELIAN_2",
+      "text_source": "Don't worry, I'll fix this.",
+      "speaker": "npc",
+      "tone_register": "reassurance_resolve",
+      "intent": "comfort_promise",
+      "risk_level": "low",
+      "base_translation": "Não se preocupe, vou consertar isso.",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SL_SECONDQUEST-v1"
+}

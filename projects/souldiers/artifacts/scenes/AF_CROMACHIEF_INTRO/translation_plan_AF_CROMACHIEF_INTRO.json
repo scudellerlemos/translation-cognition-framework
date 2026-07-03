@@ -1,0 +1,63 @@
+{
+  "scene": "AF_CROMACHIEF_INTRO",
+  "scene_group": "AF_CROMACHIEF_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_AF_CROMACHIEF_INTRO_1_1",
+      "text_source": "The door is damaged. See if you can restore power to it with a nearby element.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "instrução direta sobre tarefa de restauração",
+      "risk_level": "low",
+      "base_translation": "A porta está danificada. Tente restaurar a energia dela com um elemento próximo.",
+      "byte_budget": 78,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_AF_CROMACHIEF_INTRO_2_1",
+      "text_source": "We need to reach the next room. Try to clear the way for us by disabling the turrets. They are out of control.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem para desabilitar ameaça; urgência contida",
+      "risk_level": "medium",
+      "base_translation": "Precisamos chegar à próxima sala. Desabilite as torres para nós. Estão fora de controle.",
+      "byte_budget": 110,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "registro militar mantido; 'eles' refere-se aos lasers/turrets sem personificação desnecessária; concisão crítica (110 bytes) — 'torres de fogo fora de controle' reduzido a 'torres fora de controle'"
+    },
+    {
+      "offset": "STR_DIALOGS_AF_CROMACHIEF_INTRO_3_1",
+      "text_source": "Try to restart the generators with the minerals.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "instrução concisa sobre gerador",
+      "risk_level": "low",
+      "base_translation": "Reinicie os geradores com os minerais.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_AF_CROMACHIEF_INTRO_4_1",
+      "text_source": "If those cowards had attacked us head-on, we wouldn't have had to even begin fighting them. We are a race of hunters, that is why we are here. But now our prey is another.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "lamento/frustração + reflexão sobre honra de caçador; empolgação contida",
+      "risk_level": "high",
+      "base_translation": "Se aqueles covardes tivessem nos atacado na frente, nem precisávamos ter começado a lutar! Somos uma raça de caçadores, é por isso que estamos aqui. Mas agora nossa presa é outra.",
+      "byte_budget": 171,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade de raça/cultura (caçadores) — potencial spoiler se contexto maior revela mudança de alinhamento; 'covardes' é julgamento forte — mantém tom de Balof mas marca para back-translation; energia hiperbólica deve sobreviver à tradução sem ficar sarcástica ou fraca; 'nossa presa é outra' = pivô narrativo — ambiguidade preservada (adversário indefinido)"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-AF_CROMACHIEF_INTRO-v1"
+}

@@ -1,0 +1,76 @@
+{
+  "scene": "ER_AIRFORTRESS_INTRO_GRUPER",
+  "scene_group": "ER_AIRFORTRESS_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_2",
+      "text_source": "The clouds...",
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "observação contemplativa",
+      "risk_level": "low",
+      "base_translation": "As nuvens...",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_4",
+      "text_source": "No.. I'm thinking that, according to Captain Euder's informants, that bank of clouds hides a type of floating fortress. They don't seem to have noticed in Hafin.",
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "exposição de hipótese estratégica",
+      "risk_level": "high",
+      "base_translation": "Não... estou pensando que, segundo os informantes do Capitão Euder, aquele banco de nuvens esconde uma fortaleza flutuante. Parece que em Hafin não notaram nada.",
+      "byte_budget": 161,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore complexo (fortaleza flutuante); nenhum spoiler antes de reveal_timing, mas requer back-translation para garantir que a estrutura de informação (informantes do Capitão Euder, banco de nuvens, fortaleza flutuante, desconhecimento em Hafin) soe natural e não redundante em pt-BR. Byte_budget 161 — tradução está dentro do esperado (~150-160 bytes transliterados)."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_6",
+      "text_source": "They're known as the Pirates of the Broken Wing.",
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "identificação de ameaça",
+      "risk_level": "medium",
+      "base_translation": "São conhecidos como os Piratas da Asa Quebrada.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Nome próprio 'Pirates of the Broken Wing' — preservado em EN conforme decision_log (nunca traduzir nomes de facções/grupos). Verificar naturalidade da expressão em pt-BR; considerar back-translation para confirmar que 'Piratas da Asa Quebrada' não soa forçado."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_8",
+      "text_source": "What do you mean?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pedido de esclarecimento",
+      "risk_level": "low",
+      "base_translation": "O que você quer dizer?",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_10",
+      "text_source": "Makerel, you could call yourself whatever you wanted and I doubt you'd fill ever anyone with fear.",
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "sarcasmo/desprezo com humor",
+      "risk_level": "high",
+      "base_translation": "Makerel, você podia se chamar do que quisesse e duvido que preenchesse alguém de medo.",
+      "byte_budget": 98,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a 'Makerel' (personagem com perfil de voz Makarel/Gruper — contrastar com tom arrogante de Euder). Back-translation exigida: sarcasmo e auto-elogio implícito devem soar naturais em pt-BR. Byte_budget 98 — tradução em 95-100 bytes, dentro do orcamento. Validar que 'preencher alguém de medo' (ou similar) preserva a ideia de causar temor/respeito e não soa estranho."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_AIRFORTRESS_INTRO_GRUPER-v1"
+}

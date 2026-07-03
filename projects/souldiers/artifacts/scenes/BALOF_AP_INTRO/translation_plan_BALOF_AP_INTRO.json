@@ -1,0 +1,24 @@
+{
+  "scene": "BALOF_AP_INTRO",
+  "scene_group": "BALOF_AP_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BALOF_AP_INTRO_1_1",
+      "text_source": "It's an honour to have you at the best item store._300_ Well, the only item store...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "receber/saudar com entusiasmo desproporcional e alívio exagerado",
+      "risk_level": "medium",
+      "base_translation": "Que honra ter você na melhor loja de itens._300_ Bem, a única loja de itens...",
+      "byte_budget": 84,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "token _300_ deve preservar posição exata; registro coloquial-hiperbólico requer energia/exclamação para não soar truncado; 'only item store' é humor pela contradição — tradução marca a ironia/alívio (não genérico)"
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-BALOF_AP_INTRO-v1"
+}

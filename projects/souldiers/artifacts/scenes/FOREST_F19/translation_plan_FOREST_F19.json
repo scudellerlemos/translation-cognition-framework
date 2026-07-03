@@ -1,0 +1,89 @@
+{
+  "scene": "FOREST_F19",
+  "scene_group": "FOREST_F19",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D1_LIANDRIS_1",
+      "text_source": "It seems you are ready, brave soldier.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "encouragement-affirmation",
+      "risk_level": "low",
+      "base_translation": "Parece que você está pronto, bravo soldado.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D1_LIANDRIS_2",
+      "text_source": "I cannot intervene, not in your battles nor that creature's, but I will open the temple door for you.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "conditional-assistance",
+      "risk_level": "medium",
+      "base_translation": "Não posso intervir, nem em suas batalhas nem na daquela criatura, mas abrirei a porta do templo para você.",
+      "byte_budget": 101,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Formal register requires careful phrasing; 'intervene' abstracted as 'não posso intervir' vs 'não devo intervir'; chose former to match source intent of inability rather than refusal. Creature reference (Ratatosk) not yet explicitly named to player at this point — maintains neutrality."
+    },
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D2_LIANDRIS_1",
+      "text_source": "It is done. Do not waste time, save this world and, with it, your own people.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "urgency-command",
+      "risk_level": "low",
+      "base_translation": "Está feito. Não desperdice tempo, salve este mundo e, com ele, seu próprio povo.",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D2_LIANDRIS_2",
+      "text_source": "You have gathered many souls and become stronger. If anyone can try to stop Ratatosk, it's you.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "acknowledgment-encouragement",
+      "risk_level": "medium",
+      "base_translation": "Você reuniu muitas almas e ficou mais forte. Se alguém conseguir tentar parar Ratatosk, é você.",
+      "byte_budget": 95,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ratatosk naming here is first explicit reference in dialogue; maintains lore consistency. 'Gathered many souls' → 'reuniu muitas almas' preserves metaphorical weight. Register stays formal-solemn matching character profile."
+    },
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D3_LIANDRIS_1",
+      "text_source": "I thought you wanted to save this world. You won't survive a minute in the heat here without proper equipment.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "warning-practical-advice",
+      "risk_level": "low",
+      "base_translation": "Pensei que você quisesse salvar este mundo. Você não sobreviverá um minuto no calor daqui sem equipamento adequado.",
+      "byte_budget": 110,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FOREST_F19_D3_LIANDRIS_2",
+      "text_source": "I won't open the door until you're suitably prepared.",
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "condition-refusal",
+      "risk_level": "low",
+      "base_translation": "Não abrirei a porta até que você esteja devidamente preparado.",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-FOREST_F19-v1"
+}

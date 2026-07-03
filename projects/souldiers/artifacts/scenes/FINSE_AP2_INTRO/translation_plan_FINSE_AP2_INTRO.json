@@ -1,0 +1,37 @@
+{
+  "scene": "FINSE_AP2_INTRO",
+  "scene_group": "FINSE_AP2_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_FINSE_AP2_INTRO_1_1",
+      "text_source": "Don't think about it too much and remove the flower. Be firm, but delicate.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "instrução firme e controlada",
+      "risk_level": "low",
+      "base_translation": "Não pense muito. Remova a flor. Seja firme, mas delicado.",
+      "byte_budget": 75,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AP2_INTRO_2_1",
+      "text_source": "Tell mister Jivan that, should he need anything at all, I'll be right here.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "oferecimento de disponibilidade profissional",
+      "risk_level": "medium",
+      "base_translation": "Diga ao senhor Jivan que, se precisar de algo, estarei aqui.",
+      "byte_budget": 75,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade do falante inferida de contexto de cena (Brigard em situação de apoio militar). Confirmação recomendada. Registro mantido seco e sem floreios conforme criticality high."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-FINSE_AP2_INTRO-v1"
+}

@@ -1,0 +1,36 @@
+{
+  "lines": {
+    "STR_DIALOGS_SINKA_ASL_INTRO_1_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pergunta casual com curiosidade amigável",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então, você já conquistou sua chave da cidade?"
+    },
+    "STR_DIALOGS_SINKA_ASL_INTRO_1_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "observação animada e com admiração exagerada",
+      "risk_level": "medium",
+      "risk_notes": "identidade de Melian como aprendiz deve estar clara no contexto; manter energia hiperbólica de Balof sem sobrecarregar o byte_budget (99 chars)",
+      "t": "Parece que aquele rapaz Melian tá aprendendo com você. Ultimamente ele não para de pular pela cidade!"
+    },
+    "STR_DIALOGS_SINKA_ASL_INTRO_1_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "contraste irónico entre perigo passado e nervosismo presente; queixa abafada",
+      "risk_level": "medium",
+      "risk_notes": "tom militar seco pode parecer contido — garantir que a ironia/alívio do contraste com terremotos se transmita; registro sem floreios mantido",
+      "t": "Eu estava menos nervoso quando terremotos nos balançavam."
+    },
+    "STR_DIALOGS_SINKA_ASL_INTRO_1_4": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem/aviso disfarçado de preocupação contida; reconhecimento relutante de valor",
+      "risk_level": "high",
+      "risk_notes": "linha longa (147 bytes) com tons múltiplos (aviso + admiração oculta); registro militar preservado; contração 'spose' → 'suponho/presumo' em tom seco; garantir que 'fragile for soldier' não soe pejorativo mas analítico; back-translation obrigatória para validar tom e naturalidade da sequência aviso+reconhecimento",
+      "t": "Ao menos tente garantir que ele não quebre nada. Aquele rapaz parece frágil demais pra soldado, mas presumo que mostre seu lado corajoso quando necessário."
+    }
+  }
+}

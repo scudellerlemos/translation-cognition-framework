@@ -1,0 +1,89 @@
+{
+  "scene": "DESTRAS_PRESENTATION",
+  "scene_group": "DESTRAS_PRESENTATION",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_1",
+      "text_source": "Welcome to my forge. I'm Destras, the blacksm...",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "presentation of self/establish dominance",
+      "risk_level": "low",
+      "base_translation": "Bem-vindo à minha forja. Sou Destras, o ferreiro...",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_2",
+      "text_source": "Hey, wait a second! What's that face for?",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "demand explanation for reaction",
+      "risk_level": "medium",
+      "base_translation": "Ei, espera aí! Por que essa cara?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tone shift from formal to confrontational; verify if Destras maintains stotic delivery or shows irritation"
+    },
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_3",
+      "text_source": "Not what you were expecting?",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "probe player expectation",
+      "risk_level": "low",
+      "base_translation": "Não era o que você esperava?",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_4",
+      "text_source": "You better not make me mad. I could mould you into a horse trough with this forge, you know!",
+      "speaker": "npc",
+      "tone_register": "formal-military seco with threat",
+      "intent": "intimidation veiled as capability display",
+      "risk_level": "high",
+      "base_translation": "Mais vale você não me irritar. Eu consigo moldá-lo num cocho de cavalo com essa forja, sabe?",
+      "byte_budget": 92,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Threat of violence; metaphor (mould into horse trough) must preserve menace and craft-mastery tone without sounding comedic. Back-translation required to verify menace > humor."
+    },
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_5",
+      "text_source": "Alright... Maybe I'm imagining things, but be careful. I've got my eye on you.",
+      "speaker": "npc",
+      "tone_register": "formal-military seco with suspicion",
+      "intent": "warning with barely-contained aggression",
+      "risk_level": "medium",
+      "base_translation": "Certo... Talvez eu esteja imaginando, mas cuidado. Estou de olho em você.",
+      "byte_budget": 78,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Shift to vigilance; 'imagining things' suggests paranoia or past trauma; maintain stoic delivery"
+    },
+    {
+      "offset": "STR_DIALOGS_DESTRAS_PRESENTATION_1_6",
+      "text_source": "My work is my passion, I can't refuse any assignment. Tell me, scrawny, what do you need?",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "request for job/assignment; backhanded insult (scrawny)",
+      "risk_level": "medium",
+      "base_translation": "Meu trabalho é minha paixão, não recuso tarefa. Fale, esqueleto, o que você precisa?",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Insult 'scrawny' is casual/contemptuous; verify Destras character doesn't soften here. Passion for work contradicts stoic archetype — check lore consistency."
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 1,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "souldiers-DESTRAS_PRESENTATION-v1"
+}

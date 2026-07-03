@@ -1,0 +1,63 @@
+{
+  "scene": "ER_FIRETEMPLE_INTRO_MAKEREL",
+  "scene_group": "ER_FIRETEMPLE_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_MAKEREL_3",
+      "text_source": "The lad idolises you more than he does General Brigard.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar admiração exagerada do menino por você; comparação com Brigard para enfatizar o contraste",
+      "risk_level": "high",
+      "base_translation": "O rapaz te idolatra muito mais do que ao General Brigard.",
+      "byte_budget": 57,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade de personagem dupla (Balof como narrador/observador); risco de soar pomposo ou perder o humor se não manter tom coloquial desproposital; back-translation obrigatória para validar registro hiperbólico em contexto"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_MAKEREL_5",
+      "text_source": "A monster that summons monsters! I don't even want to imagine it.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressão de horror/alarme exagerado; recusa de imaginar cenário; interjeição de espanto localizada",
+      "risk_level": "high",
+      "base_translation": "Um monstro que invoca monstros! Nem quero imaginar isso.",
+      "byte_budget": 65,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom exagerado e humor pela desproporcionalidade deve sobreviver; 'summons monsters' é conceito de lore — manter clareza; interjeição localizada para pt-BR contemporâneo (não 'não quero nem imaginar', mas forma brasileira natural)"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_MAKEREL_6",
+      "text_source": "Although it looks like you only get paid for the main one. Shame.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "queixa cômica sobre pagamento; desapontamento burlado; tom de ",
+      "risk_level": "medium",
+      "base_translation": "Parece que você só é pago pelo principal. Que pena.",
+      "byte_budget": 65,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "byte_budget apertado (65); 'shame' = tom leve de sarcasmo/desilusão — manter sem soar ressentido; 'only get paid for the main one' requer clareza sobre 'o principal' (missão? inimigo?)"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_MAKEREL_8",
+      "text_source": "Why do I even say anything?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressão de exasperação resignada; retórica de 'por que falo?'; interjeição implícita de frustração",
+      "risk_level": "low",
+      "base_translation": "Por que até falo isso?",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "byte_budget muito curto (27); tradução concisa; 'why do I even say anything?' = resignação — manter energia coloquial mesmo no desânimo"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_FIRETEMPLE_INTRO_MAKEREL-v1"
+}

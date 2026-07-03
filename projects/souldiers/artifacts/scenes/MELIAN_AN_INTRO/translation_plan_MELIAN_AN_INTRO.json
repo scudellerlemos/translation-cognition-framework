@@ -1,0 +1,76 @@
+{
+  "scene": "MELIAN_AN_INTRO",
+  "scene_group": "MELIAN_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MELIAN_AN_INTRO_1_1",
+      "text_source": "This is even more suspicious...",
+      "speaker": "unknown",
+      "tone_register": "formal-analytical",
+      "intent": "express suspicion",
+      "risk_level": "low",
+      "base_translation": "Isso é ainda mais suspeito...",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AN_INTRO_1_2",
+      "text_source": "The monster... Ratatosk? He told you where to find the Guardian?",
+      "speaker": "unknown",
+      "tone_register": "formal-analytical",
+      "intent": "question revelation",
+      "risk_level": "medium",
+      "base_translation": "O monstro... Ratatosk? Ele revelou onde encontrar o Guardião?",
+      "byte_budget": 64,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ratatosk é nome próprio (glossário); Guardian traduzido para Guardião conforme canonical. Back-translation: Ratatosk revelou a localização do Guardião?"
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AN_INTRO_1_3",
+      "text_source": "He went from wanting to destroy this world to revealing the location of what everyone is supposed to look for after they arrive here.",
+      "speaker": "unknown",
+      "tone_register": "formal-analytical",
+      "intent": "express logical contradiction",
+      "risk_level": "high",
+      "base_translation": "Ele foi de querer destruir este mundo a revelar o local do que todos supostamente devem procurar após chegar aqui.",
+      "byte_budget": 133,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentença complexa com mudança semântica crítica (destroy world → reveal location). Risco de distorção lógica. Back-translation obrigatória: Ele passou de querer destruir este mundo a revelar a localização do que todos devem procurar ao chegar aqui. Tone: perplexidade analítica mantida."
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AN_INTRO_1_4",
+      "text_source": "I'd love to put two and two together but it just doesn't add up.",
+      "speaker": "unknown",
+      "tone_register": "formal-analytical",
+      "intent": "express logical impossibility",
+      "risk_level": "low",
+      "base_translation": "Eu gostaria de juntar as peças, mas não faz sentido.",
+      "byte_budget": 64,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AN_INTRO_1_5",
+      "text_source": "Perhaps it's best not to think about it too much and just head straight to where he told you.",
+      "speaker": "unknown",
+      "tone_register": "formal-pragmatic",
+      "intent": "suggest action avoidance of overthinking",
+      "risk_level": "low",
+      "base_translation": "Talvez seja melhor não pensar muito sobre isso e seguir direto para o local indicado.",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MELIAN_AN_INTRO-v1"
+}

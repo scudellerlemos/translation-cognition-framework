@@ -1,0 +1,102 @@
+{
+  "scene": "EUDER_AP1_INTRO",
+  "scene_group": "EUDER_AP1_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_1",
+      "text_source": "Hey, is it really true that you and Adamont were trapped and escaped from a pyramid in the desert?",
+      "speaker": "npc",
+      "tone_register": "coloquial informal",
+      "intent": "curiosity/gossip",
+      "risk_level": "low",
+      "base_translation": "É verdade mesmo que você e o Adamont ficaram presos e escaparam de uma pirâmide no deserto?",
+      "byte_budget": 98,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_2",
+      "text_source": "Must've been tough...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "empathy with exaggeration",
+      "risk_level": "medium",
+      "base_translation": "Que inferno! Deve ter sido horrível...",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof (criticality:high) — assegurar tom de alívio exagerado, não seco. Interjeição esperada."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_3",
+      "text_source": "Putting up with Adamont, I mean.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "mockery/humor",
+      "risk_level": "medium",
+      "base_translation": "Ainda mais aguentar o Adamont, né?",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof — manter tom de brincadeira, não crítica séria. Energia preservada."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_4",
+      "text_source": "There's no captain in all of Zarga grumpier than him. He wouldn't know how to have fun if his life depended on it.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "exaggerated complaint/humor",
+      "risk_level": "high",
+      "base_translation": "Não tem capitão em toda Zarga mais ranzinza que ele. Esse cara não sabe se divertir nem se a vida dependesse disso!",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof (criticality:high) — hipérbole fundamental ao humor. Localização de 'grumpier' para tom de exagero brasileiro. Back-translation obrigatória."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_5",
+      "text_source": "Actually, sorry, I think there is one situation which I've seen him enjoy.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "correction/ironic setup",
+      "risk_level": "medium",
+      "base_translation": "Ué, na real, acho que tem sim uma situação em que o vi curtindo.",
+      "byte_budget": 74,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof — tom de 'na verdade...' com ironia. Preservar a brincadeira."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_6",
+      "text_source": "When he has to bash someone's head in.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "punchline/dark humor",
+      "risk_level": "high",
+      "base_translation": "Quando ele tem que bater na cabeça de alguém.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof (criticality:high) — punchline de humor negro sobre violência. Tom de descontração essencial; não soar sério. Back-translation obrigatória."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AP1_INTRO_1_7",
+      "text_source": "Basically, Adamont scares me.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confession/humor-deflection",
+      "risk_level": "medium",
+      "base_translation": "Basicamente, o Adamont me assusta, tá?",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof — confissão com tom leve, não medo genuíno. Humor para destensar."
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 2,
+  "medium_lines": 4,
+  "needs_review": [],
+  "plan_version": "souldiers-EUDER_AP1_INTRO-v1"
+}

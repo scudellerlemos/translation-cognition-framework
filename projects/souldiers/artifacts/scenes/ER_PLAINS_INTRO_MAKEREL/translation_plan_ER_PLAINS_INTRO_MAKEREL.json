@@ -1,0 +1,63 @@
+{
+  "scene": "ER_PLAINS_INTRO_MAKEREL",
+  "scene_group": "ER_PLAINS_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS_INTRO_MAKEREL_3",
+      "text_source": "What?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressão de espanto/incompreensão",
+      "risk_level": "low",
+      "base_translation": "O quê?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS_INTRO_MAKEREL_5",
+      "text_source": "What's strange about it? Until a moment ago you didn't know golems existed.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "argumentação lógica; dismissão do espanto",
+      "risk_level": "medium",
+      "base_translation": "O que há de estranho nisso? Até pouco tempo atrás você nem sabia que gólens existiam.",
+      "byte_budget": 75,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard mantém tom seco-militar (sem sentimentalismo) em réplica desafiadora; frase curta de ordem ou constatação. Verificar que 'você' (não 'tu') e registro seco sem floreios estejam preservados."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS_INTRO_MAKEREL_7",
+      "text_source": "Those were golems? I thought they were robots...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confissão de ignorância; espanto cômico",
+      "risk_level": "medium",
+      "base_translation": "Gólens? Eu pensei que fossem robôs...",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof deve soar empolgado/espantado (não contido). 'Thought' = suposição equivocada casual. Interjeição/tom de alívio/incredulidade exigido (energia não pode cair). Byte budget 48 exige concisão; evitar redundâncias."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS_INTRO_MAKEREL_9",
+      "text_source": "You spend the entire day thinking about this sort of thing, don't you?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "provocação/crítica velada ao hábito do outro",
+      "risk_level": "medium",
+      "base_translation": "Você passa o dia inteiro pensando em coisas assim, não é?",
+      "byte_budget": 70,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard mantém tom sarcástico mas estóico (sem mimos). 'spend the entire day thinking' = rotina obsessiva → tom de censura discreta, sem dramatismo. Registro militar/curto preservado."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_PLAINS_INTRO_MAKEREL-v1"
+}

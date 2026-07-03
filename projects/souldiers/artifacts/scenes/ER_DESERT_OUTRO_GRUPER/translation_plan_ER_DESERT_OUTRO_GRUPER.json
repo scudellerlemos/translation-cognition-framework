@@ -1,0 +1,24 @@
+{
+  "scene": "ER_DESERT_OUTRO_GRUPER",
+  "scene_group": "ER_DESERT_OUTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_DESERT_OUTRO_GRUPER_2",
+      "text_source": "Ignore him... Here you are. Have you ever thought about switching jobs?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dismissal + indirect advice about career change",
+      "risk_level": "medium",
+      "base_translation": "Ignore-o... Aqui está. Já pensou em mudar de profissão?",
+      "byte_budget": 71,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tone contrast: formal military voice (Brigard) giving informal life advice could sound incongruous; back-translation needed to confirm 'switching jobs' lands as natural suggestion, not jarring. Byte budget tight (71); concision critical."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_DESERT_OUTRO_GRUPER-v1"
+}

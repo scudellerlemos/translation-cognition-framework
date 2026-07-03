@@ -1,0 +1,63 @@
+{
+  "scene": "QS_SIRFIEL_FAIRY_TIER2_PART2",
+  "scene_group": "QS_SIRFIEL_FAIRY_TIER2_PART2",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_1",
+      "text_source": "This place is glowing!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "excitação/espanto com o ambiente luminoso",
+      "risk_level": "low",
+      "base_translation": "Este lugar está brilhando!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_2",
+      "text_source": "Well, aren't you just an excellent collector.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento com tom sarcástico/contido",
+      "risk_level": "medium",
+      "base_translation": "Bem, não é que você é um excelente coletor.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Tom sarcástico requer cuidado: manter secura militar sem soar gentil demais. Brigard não elogia genuinamente; reconhece competência com ironia. Verificar se 'excelente coletor' preserva a frieza."
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_3",
+      "text_source": "Well, I imagine you're dying to know what I've managed to cook up with the essence from these insects.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "provocação/curiosidade controlada sobre o resultado do experimento",
+      "risk_level": "high",
+      "base_translation": "Bem, imagino que você esteja morrendo de vontade de saber o que consegui preparar com a essência destes insetos.",
+      "byte_budget": 102,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade/lore do experimento (essência de insetos, resultado desconhecido): a tradução não pode antecipar o que é ou revelar spoiler. 'Cook up' → 'preparar/inventar' (coloquial, mas compatível com Brigard seco? Revisar: talvez 'consegui fazer' seja mais militar). Back-translation obrigatória."
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER2_PART2_4",
+      "text_source": "Sorry, but once again you'll need to drink a completely unknown and potentially dangerous concoction Go on...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "aviso militar + provocação contida (exigência de ação perigosa)",
+      "risk_level": "high",
+      "base_translation": "Desculpe, mas mais uma vez você vai precisar beber uma beberagem completamente desconhecida e potencialmente perigosa. Vá em frente...",
+      "byte_budget": 109,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Risco alto: coção desconhecida/perigosa (spoiler de resultado); 'drink unknown and potentially dangerous concoction' deve preservar incerteza sem revelar efeito. Estrutura 'Go on...' é ordem + ironia seca — manter tom militar exigente. Linha longa (byte_budget=109): tradução compacta essencial. Back-translation obrigatória."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-QS_SIRFIEL_FAIRY_TIER2_PART2-v1"
+}

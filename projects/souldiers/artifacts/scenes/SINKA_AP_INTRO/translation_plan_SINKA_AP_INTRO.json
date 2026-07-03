@@ -1,0 +1,76 @@
+{
+  "scene": "SINKA_AP_INTRO",
+  "scene_group": "SINKA_AP_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_INTRO_1_1",
+      "text_source": "I don't think they trust me very much. What's new, eh? Don't trust that shoplifter Sinka.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "queixa com humor exagerado sobre desconfiança",
+      "risk_level": "high",
+      "base_translation": "Não acho que confiam muito em mim. Nada de novo, né? Desconfiem do Sinka, que rouba em loja.",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz de Balof (high criticality) — hiperbólico, energético. 'Sinka' é nome próprio (verbatim). Necessário back-translation para confirmar tom de alívio exagerado e comédia. Byte budget apertado (89) — verificar transliteração sem acentos."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_INTRO_1_2",
+      "text_source": "Well, you know what?_100_ So be it.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "resignação com entusiasmo desproporcional",
+      "risk_level": "medium",
+      "base_translation": "Bem, sabe o quê?_100_ Tá bom então.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Token _100_ presente — preservado exato. Balof em alívio/resignação. Verificar se contração 'pra' cabe melhor ('Pra que?') vs. formal; mantém informal conforme perfil."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_INTRO_1_3",
+      "text_source": "Only Sendal treats me like a person...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal vulnerável",
+      "intent": "confidência melancólica",
+      "risk_level": "high",
+      "base_translation": "Só o Sendal me trata como gente...",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mudança de tom (vulnerabilidade/ternura) dentro de perfil de Balof. 'Sendal' é NPC — verificar se nomeado no lore. Back-translation obrigatória; alto risco emocional de truncar a sinceridade."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_INTRO_1_4",
+      "text_source": "Eh?_300_ Oh, don't mind me, I was thinking out loud.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "desculpa humorística por pensamento audível",
+      "risk_level": "medium",
+      "base_translation": "Eh?_300_ Ah, não ligo não, tava só pensando em voz alta.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Token _300_ preservado. Transição brusca de tímida para alívio — típica do perfil hiperbólico. Interjeição 'Eh?' localizada naturalmente."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_INTRO_1_5",
+      "text_source": "And don't spy on me!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "advertência defensiva com toque de humor",
+      "risk_level": "low",
+      "base_translation": "E não fica me espionando!",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Linha curta, byte budget baixo (20) — conciso, mantém energia de Balof. Sem complexidade contextual."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 2,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_AP_INTRO-v1"
+}

@@ -1,0 +1,50 @@
+{
+  "scene": "ER_PRES_INTRO_GRUPER",
+  "scene_group": "ER_PRES_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_PRES_INTRO_GRUPER_2",
+      "text_source": "It seems there's a few people in this city who have some jobs for his.",
+      "speaker": "npc",
+      "tone_register": "neutral formal",
+      "intent": "inform about job opportunities",
+      "risk_level": "low",
+      "base_translation": "Parece que há algumas pessoas nesta cidade com trabalhos pra ele.",
+      "byte_budget": 70,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PRES_INTRO_GRUPER_4",
+      "text_source": "Well, they know we're passing through, so it is what it is...",
+      "speaker": "Brigard",
+      "tone_register": "formal seco militar",
+      "intent": "acknowledge situation with resignation",
+      "risk_level": "medium",
+      "base_translation": "Bem, eles sabem que estamos passando. É o que é...",
+      "byte_budget": 61,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard requer registro militar estóico; validar que 'é o que é' soa natural e não coloquial demais para este personagem."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PRES_INTRO_GRUPER_6",
+      "text_source": "If you defeat one, talk to me. I'm the treasurer.",
+      "speaker": "npc",
+      "tone_register": "neutral formal",
+      "intent": "provide instruction about completing quest",
+      "risk_level": "low",
+      "base_translation": "Se você derrotar um, fale comigo. Sou o tesoureiro.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_PRES_INTRO_GRUPER-v1"
+}

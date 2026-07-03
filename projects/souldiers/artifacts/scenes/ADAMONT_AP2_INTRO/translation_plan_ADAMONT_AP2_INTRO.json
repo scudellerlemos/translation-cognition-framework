@@ -1,0 +1,102 @@
+{
+  "scene": "ADAMONT_AP2_INTRO",
+  "scene_group": "ADAMONT_AP2_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_1",
+      "text_source": "Are you alright?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "pergunta de preocupação funcional (verificar status)",
+      "risk_level": "low",
+      "base_translation": "Você está bem?",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_2",
+      "text_source": "It's such a shame what happened to that girl.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "lamento pela situação; declaração factual contida",
+      "risk_level": "low",
+      "base_translation": "É uma pena o que aconteceu com essa garota.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_3",
+      "text_source": "Those blasted things..._100_ They've affected many of our men, too.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "frustração contida; relatório de situação",
+      "risk_level": "medium",
+      "base_translation": "Essas malditas coisas..._100_ Afetaram muitos dos nossos também.",
+      "byte_budget": 67,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "token de formatação '_100_' preservado; verificar posicionamento em gravação para paginação"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_4",
+      "text_source": "I hope the owl can cure them.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "esperança restrita; declaração de esperança sem sentimentalismo",
+      "risk_level": "low",
+      "base_translation": "Espero que a coruja consiga curá-los.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_5",
+      "text_source": "AH!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "espanto/susto dramático; interjeição localizada",
+      "risk_level": "low",
+      "base_translation": "AH!",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_6",
+      "text_source": "...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pausa dramática; respiração/recomposição",
+      "risk_level": "low",
+      "base_translation": "...",
+      "byte_budget": 3,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP2_INTRO_1_7",
+      "text_source": "I hate having to wait without being able to do anything.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "frustração com inação; queixa empolgada",
+      "risk_level": "medium",
+      "base_translation": "Odeio ficar esperando sem poder fazer nada!",
+      "byte_budget": 56,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof = criticality high; verificar que empolgação/energia hiperbólica se mantenha na gravação (não soar contido)"
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ADAMONT_AP2_INTRO-v1"
+}

@@ -1,0 +1,76 @@
+{
+  "lines": {
+    "STR_DIALOGS_FOREST_1_D1_BRIGARD_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, ordem direta",
+      "intent": "command/warning, proteger soldados",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Recuem, soldado!_500_ É muito perigoso. Não deixarei ninguém mais morrer hoje."
+    },
+    "STR_DIALOGS_FOREST_1_D1_BRIGARD_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "command, assumir controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu cuido disso. Partam, por favor!"
+    },
+    "STR_DIALOGS_FOREST_1_D1_BRIGARD_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, resolução solene",
+      "intent": "aceitação dignificada de risco",
+      "risk_level": "medium",
+      "risk_notes": "tom solene/morte iminente — back-translation validar 'honra' mantém peso emocional",
+      "t": "Então sua decisão é firme?_500_ Bem..._100_ Como desejar. Será uma honra morrer ao lado seu nesta luta."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_0": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, reflexão pesada",
+      "intent": "confessar culpa/impotência perante morte",
+      "risk_level": "high",
+      "risk_notes": "cena de morte; tone crítico (impotência → remorso); back-translation obrigatória para 'não consegui fazer nada'; risco de soar genérico",
+      "t": "Não esperávamos que uma clareira assim fosse tão traiçoeira._100_ A criatura surgiu de repente, bloqueou nosso caminho e não consegui fazer nada por eles._500_ Eles são..._300_ soldados... Não tinham preparo para enfrentar essas bestas."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, respeito marcial",
+      "intent": "reconhecer façanha do jogador",
+      "risk_level": "medium",
+      "risk_notes": "marcador 'Soldier' — é vocação/pronome; 'made history' é idioma EN; validar se 'fez história' soa natural em pt-BR militar",
+      "t": "Soldado,_300_ não conheço estas terras,_300_ mas tenho certeza de que você acaba de fazer história nelas."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, reflexão pessoal/vulnerabilidade contida",
+      "intent": "agradecer esperança do jogador; inversão de papéis",
+      "risk_level": "medium",
+      "risk_notes": "vulnerabilidade em tom seco — risco de soar quebrado/incoerente; back-translation validar 'dar esperança' em voz Brigard",
+      "t": "Muitas vezes pensei que meu dever era lhes dar esperança. Mas, na verdade, são vocês quem a me dão._500_ Obrigado por me lembrar disso."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, determinação resoluta/juramento",
+      "intent": "juramento de fuga; recusa do destino",
+      "risk_level": "medium",
+      "risk_notes": "'reach the very limits' — idioma EN poético; 'I see it clearly now' — epifania; back-translation validar 'vejo com clareza' mantém peso sem soar poético demais",
+      "t": "Não sei quanto a você, mas nunca aceitarei esse destino. Juro que chegaremos aos limites deste mundo se for necessário sairmos deste lugar._500_ Agora vejo com clareza."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_4": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, ação prática após momento emocional",
+      "intent": "propor repouso; honrar mortos com ritual",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que nos aproximamos da cidadela._100_ Devemos descansar lá. Então garantirei que recebam um sepultamento apropriado."
+    },
+    "STR_DIALOGS_FOREST_1_D2_BRIGARD_5": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, determinação sombria",
+      "intent": "partir para honra/ritual dos mortos; proteção de corpos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vejo você depois._500_ Não quero deixar seus corpos ao relento por muito tempo, à mercê das bestas desta floresta."
+    }
+  }
+}

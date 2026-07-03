@@ -1,0 +1,20 @@
+{
+  "lines": {
+    "STR_DIALOGS_EUDER_AAF_QS_POS_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dar ordem final com autoridade; exigir excelência sem floreios",
+      "risk_level": "medium",
+      "risk_notes": "Personagem Brigard tem criticality high; registro formal-militar seco é inegociável. Frase curta como ordem ('Tudo bem... Não me decepcione') preserva estilo estóico. 'Alrighty' é coloquial EN; em pt-BR formal-militar, usar 'Certo' ou 'Muito bem'—escolhi 'Tudo bem' como ponte (menos coloquial que 'Beleza', mais natural que 'Afirmativo'). Byte budget: 32 bytes (transliterado: 'Tudo bem... Nao me decepcione' = 30 chars, dentro do limite). Sem interjeição excessiva ou floreio—respeitada a voz.",
+      "t": "Tudo bem... Não me decepcione."
+    },
+    "STR_DIALOGS_EUDER_AAF_QS_POS_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco, estóico",
+      "intent": "aviso conciso; exigência de competência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Certo... Não me decepcione."
+    }
+  }
+}

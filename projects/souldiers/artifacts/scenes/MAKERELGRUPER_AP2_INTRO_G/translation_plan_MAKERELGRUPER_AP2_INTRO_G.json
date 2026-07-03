@@ -1,0 +1,37 @@
+{
+  "scene": "MAKERELGRUPER_AP2_INTRO_G",
+  "scene_group": "MAKERELGRUPER_AP2_INTRO_G",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP2_INTRO_G_1_2",
+      "text_source": "Though, it's the first time I've seen you wield your sword... and you lived to tell the tale!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "surpresa admirada com alívio exagerado",
+      "risk_level": "medium",
+      "base_translation": "Mas é a primeira vez que te vejo brandir a espada... e você saiu vivo pra contar a história!",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom de empolgação/alívio deve soar desproporcional; interjeição localizada; preservar energia hiperbólica sem soar truncado"
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP2_INTRO_G_1_4",
+      "text_source": "Stop your whining. Act like a soldier, at least when Brigard's nearby.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem contida; reprovação estoica",
+      "risk_level": "high",
+      "base_translation": "Para de reclamar. Aja como soldado, pelo menos perto de Brigard.",
+      "byte_budget": 70,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "registro militar seco — risco de soar muito coloquial ou sentimental; frases curtas e sem floreios crítico; back-translation recomendada para validar frieza; byte_budget apertado (70) — concisão essencial"
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_AP2_INTRO_G-v1"
+}

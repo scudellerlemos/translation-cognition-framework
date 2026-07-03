@@ -1,0 +1,37 @@
+{
+  "scene": "MAKERELGRUPER_AC_INTRO_M",
+  "scene_group": "MAKERELGRUPER_AC_INTRO_M",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AC_INTRO_M_1_2",
+      "text_source": "Do you say that with excitement or fear?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionamento direto sobre o estado emocional do interlocutor",
+      "risk_level": "low",
+      "base_translation": "Você diz isso com entusiasmo ou medo?",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AC_INTRO_M_1_4",
+      "text_source": "Now that I've seen it, it seems pretty believable to me, but I prefer to stay in here, to be honest.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confissão de ceticismo inicial convertido em convencimento, com preferência de segurança",
+      "risk_level": "medium",
+      "base_translation": "Agora que vi, parece bem convincente pra mim, mas prefiro ficar aqui mesmo, sendo honesto.",
+      "byte_budget": 100,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preservar o tom de alívio exagerado e a energia de Balof apesar da restrição de byte_budget (100 bytes); 'pretty believable' deve soar como convencimento genuíno sem perder a hipérbole característica. Back-translation recomendada para validar naturalidade da contração."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_AC_INTRO_M-v1"
+}

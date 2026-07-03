@@ -1,0 +1,76 @@
+{
+  "scene": "SIRFIEL_ASL_INTRO",
+  "scene_group": "SIRFIEL_ASL_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_ASL_INTRO_1_1",
+      "text_source": "I read something curious about this city's construction.",
+      "speaker": "system",
+      "tone_register": "formal-assertivo",
+      "intent": "expor conhecimento lore sobre a fundação de Hafin",
+      "risk_level": "low",
+      "base_translation": "Li algo curioso sobre a construção desta cidade.",
+      "byte_budget": 56,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_ASL_INTRO_1_2",
+      "text_source": "Did you know who the founders were? Jivan, a person known as Lady Sibunier and no less than Baydral himself.",
+      "speaker": "system",
+      "tone_register": "formal-assertivo",
+      "intent": "questionar e revelar nomes dos fundadores (Jivan, Lady Sibunier, Baydral)",
+      "risk_level": "medium",
+      "base_translation": "Sabia quem foram os fundadores? Jivan, uma pessoa conhecida como Lady Sibunier e nada menos que o próprio Baydral.",
+      "byte_budget": 108,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Primeira menção dos nomes próprios fundadores; Jivan é personagem com card próprio (criticality: medium) — verificar consistência de registro em futuras falas de Jivan. Nenhum spoiler de identidade neste ponto."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_ASL_INTRO_1_3",
+      "text_source": "From what I can tell, these three were the highest authority in Hafin and took in anyone who decided to stay under their protection.",
+      "speaker": "system",
+      "tone_register": "formal-assertivo",
+      "intent": "explicar o papel de autoridade dos três fundadores e política de acolhimento de Hafin",
+      "risk_level": "low",
+      "base_translation": "Pelo que posso dizer, estes três eram a mais alta autoridade em Hafin e acolhiam qualquer um que decidisse ficar sob sua proteção.",
+      "byte_budget": 132,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_ASL_INTRO_1_4",
+      "text_source": "Unfortunately, Lady Sibunier disappeared and Baydral, with time, became unhinged. He lost the respect of much of Hafin's inhabitants, turning miserable and sullen.",
+      "speaker": "system",
+      "tone_register": "formal-lamentoso",
+      "intent": "revelar queda da ordem: desaparecimento de Lady Sibunier e degradação psicológica de Baydral",
+      "risk_level": "medium",
+      "base_translation": "Infelizmente, Lady Sibunier desapareceu e Baydral, com o tempo, se tornou perturbado. Perdeu o respeito de boa parte dos habitantes de Hafin, ficando miserável e taciturno.",
+      "byte_budget": 163,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Narrativa de decadência; Baydral sofre transformação (\"became unhinged\") — tom lamentoso mantém empatia com o personagem mesmo na crítica. Tradução do estado psicológico deve soar natural (\"perturbado\", \"desequilibrado\") sem dramatismo excessivo."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_ASL_INTRO_1_5",
+      "text_source": "Maybe living that long isn't as great as it seems. What would have to go through his head for him to spend the rest of his days cooking up who knows what sort of plans...",
+      "speaker": "system",
+      "tone_register": "formal-reflexivo-lamentoso",
+      "intent": "questionar filosoficamente o custo da longevidade; especular sobre degradação mental e obsessão de Baydral",
+      "risk_level": "high",
+      "base_translation": "Talvez viver tanto tempo não seja tão magnífico quanto parece. Que teria passado pela cabeça dele para gastar o resto dos seus dias tramando planos de quem sabe que natureza...",
+      "byte_budget": 170,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Reflexão existencial sobre longa vida e loucura; \"spending the rest of his days cooking up who knows what sort of plans\" é construção idiomática que precisa soar natural em pt-BR (evitar literalismo tipo \"cozinhando planos\"). Escolhida: \"tramando\"/\"arquitetando\" para preservar sentido de manipulação/maquinação sem absurdo. Identidade de Baydral como imortal/de longa vida já foi exposta nas linhas anteriores, então o risco aqui é apenas sobre registro/naturalidade reflexiva."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_ASL_INTRO-v1"
+}

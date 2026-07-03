@@ -1,0 +1,89 @@
+{
+  "scene": "ADAMONT_AN_INTRO",
+  "scene_group": "ADAMONT_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_1",
+      "text_source": "It's time that Guardian met Zarga's determination.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "asseverar compromisso do Guardião com determinação de Zarga",
+      "risk_level": "low",
+      "base_translation": "É hora do Guardião conhecer a determinação de Zarga.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_2",
+      "text_source": "This has to be it this time, and he better get us home... or else.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar urgência e confiança com tom de exigência alarmista",
+      "risk_level": "medium",
+      "base_translation": "Tem que ser dessa vez, e ele é melhor nos levar pra casa... ou então!",
+      "byte_budget": 66,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom hiperbólico ('or else') requer interjeição/ênfase brasileira; verificar se 'dessa vez' preserva a dramaticidade do original"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_3",
+      "text_source": "In fact, he's gonna spend a good while not being able to receive any more guests.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "antecipar castigo/consequência com alívio exagerado e humor",
+      "risk_level": "medium",
+      "base_translation": "Na verdade, ele vai passar um tempo bem longo sem conseguir receber mais visitas.",
+      "byte_budget": 81,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "hipérbole e tom de ameaça cômica; 'good while' → 'tempo' preserva o tom; verificar byte_budget (81) contra expansão pt-BR"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_4",
+      "text_source": "I'll personally make sure of it!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "reafirmar compromisso pessoal com exclamação enfática",
+      "risk_level": "low",
+      "base_translation": "Vou pessoalmente garantir isso!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_5",
+      "text_source": "You're one of a kind, soldier. Did you think about what I said? About coming over to my regiment?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecer habilidade e fazer proposta de alistamento direto",
+      "risk_level": "high",
+      "base_translation": "Você é um soldado único. Pensou no que eu disse? Sobre se juntar ao meu regimento?",
+      "byte_budget": 97,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade dupla possível; 'soldier' é tratamento militar formal; back-translation obrigatória para preservar tonalidade estóica de recrutamento; evitar coloquialismo em 'Think about it'"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AN_INTRO_1_6",
+      "text_source": "Hahahah. Alright, you think about it and let me know.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dar espaço para reflexão com despedida militar contida",
+      "risk_level": "medium",
+      "base_translation": "Haha. Tudo bem, você pensa e me avisa.",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Hahahah' não é interjeição de Brigard (contradiz voz formal-militar); fonte pode estar errada ou é sinal de emote; adotar tom seco compatível e traduzir riso como simples 'haha' ou incorporar ao texto; byte_budget (53) é apertado"
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 1,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "souldiers-ADAMONT_AN_INTRO-v1"
+}

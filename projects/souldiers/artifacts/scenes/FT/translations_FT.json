@@ -1,0 +1,764 @@
+{
+  "lines": {
+    "STR_DIALOGS_FT_D15_FTBOSS_LIANDRIS_1": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio, enciclopédico",
+      "intent": "expressão de preocupação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que visão desoladora... Não acredito que sejam capazes de destruir essas raízes agora."
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "formal-solene",
+      "intent": "observação cínica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Suponho que esses mortais não me seguiam à toa..."
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_LIANDRIS_3": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio",
+      "intent": "desafio/questionamento",
+      "risk_level": "medium",
+      "risk_notes": "múltiplas linhas de raciocínio; quebra de sintaxe pt-BR natural",
+      "t": "O que acontecerá com a praga se não destruírem a árvore? E por que deram a chave de Beigon ao Humano?"
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "formal-solene",
+      "intent": "exposição de ameaça iminente",
+      "risk_level": "medium",
+      "risk_notes": "registro formal elevado; preservar tom de gravidade",
+      "t": "Você sabe muito bem o que acontecerá. Já viu como é imparável. Neste ritmo, varrará tudo e será só uma questão de tempo até chegar ao Mar de Oberon."
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_LIANDRIS_5": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio",
+      "intent": "confirmação/surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Têm tanto medo assim?"
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_RATATOSK_6": {
+      "speaker": "unknown",
+      "tone_register": "formal-solene",
+      "intent": "responsabilização + revelação estratégica",
+      "risk_level": "high",
+      "risk_notes": "linha longa com múltiplas cláusulas; revisar naturalidade pt-BR; risco de spoiler em 'a origem da praga'",
+      "t": "Você inspirou tanta confiança nesses pequenos mortais, pelo menos leve-os até o fim. A origem da praga está lá. Por isso peguei a chave, para ninguém abrir a câmara do Guardião. Mas imagino que já sabia disso..."
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_LIANDRIS_7": {
+      "speaker": "unknown",
+      "tone_register": "formal-médio",
+      "intent": "dúvida/hesitação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem certeza disso?"
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_RATATOSK_8": {
+      "speaker": "unknown",
+      "tone_register": "formal-solene",
+      "intent": "convicção + responsabilização",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Meu olfato nunca me falha. Agora você precisa fazer algo."
+    },
+    "STR_DIALOGS_FT_D15_FTBOSS_LIANDRIS_9": {
+      "speaker": "unknown",
+      "tone_register": "silêncio",
+      "intent": "pausa reflexiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_FT_D16_FT6_DARK_RAZOR_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "espanto",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hã?"
+    },
+    "STR_DIALOGS_FT_D16_FT6_DARK_RAZOR_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "frustração/surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então ainda não acabou?"
+    },
+    "STR_DIALOGS_FT_D16_FT6_DARK_RAZOR_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "consentimento entediado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá certo, não quero decepcionar."
+    },
+    "STR_DIALOGS_FT_D17_FT6_DARK_RAZOR_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "frustração acumulada",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Primeiro aquele monstro e agora você."
+    },
+    "STR_DIALOGS_FT_D17_FT6_DARK_RAZOR_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "lamento/aceitação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Precisava terminar assim mesmo...?"
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "apelo confuso",
+      "risk_level": "medium",
+      "risk_notes": "entidade antiga com fala distorcida; localizar interjeição 'Soldado' em pt-BR sobrenatural",
+      "t": "Sooolddado... Sem... matar..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_2": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "proposição lúdica",
+      "risk_level": "medium",
+      "risk_notes": "ênfase em 'gaaame' → 'jogo' com prolongamento",
+      "t": "Almmma quer jooogar..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_3": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "explicação de mecânica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Adivinha o bauu com recompennsa..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_4": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "condição de vitória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se acertar muitas vezzzes... almmma dá donnnativo..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_5": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "promessa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Almmma dá donnnativo..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_6": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "ameaça de castigo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas se errrrrar... deve matar..."
+    },
+    "STR_DIALOGS_FT_D18_FT4_SUMMONERSOUL_7": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "oferta tentadora",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer donnnativo...?"
+    },
+    "STR_DIALOGS_FT_D19_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "advertência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Escolha com cuidado..."
+    },
+    "STR_DIALOGS_FT_D20_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "paciência sobrenatural",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Almmma espera até você mudar de ideia..."
+    },
+    "STR_DIALOGS_FT_D21_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "reiteração da mecânica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se acertar muitas vezzzes... almmma dá donnnativo..."
+    },
+    "STR_DIALOGS_FT_D21_FT4_SUMMONERSOUL_2": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "reiteração da ameaça",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas se errrrrar... deve matar..."
+    },
+    "STR_DIALOGS_FT_D21_FT4_SUMMONERSOUL_3": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "reiteração da oferta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quer donnnativo...?"
+    },
+    "STR_DIALOGS_FT_D22_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "imperativo hostil",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deve mataaaar..."
+    },
+    "STR_DIALOGS_FT_D23_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "proximidade da recompensa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Donnnativo maaais perto..."
+    },
+    "STR_DIALOGS_FT_D24_FT4_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "aprovação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Faz... muitooo bemmm..."
+    },
+    "STR_DIALOGS_FT_D24_FT4_SUMMONERSOUL_2": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "concessão da recompensa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aproveita donnnativo..."
+    },
+    "STR_DIALOGS_FT_D25_FT21_SUMMONERSOUL_1": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "reconhecimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei por que vieeeu..."
+    },
+    "STR_DIALOGS_FT_D25_FT21_SUMMONERSOUL_2": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "revelação",
+      "risk_level": "medium",
+      "risk_notes": "possível spoiler implícito",
+      "t": "Foi... surpreeesa?"
+    },
+    "STR_DIALOGS_FT_D25_FT21_SUMMONERSOUL_3": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "aceitação opcional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá bemmm se não quiser jogar desta veeeez..."
+    },
+    "STR_DIALOGS_FT_D25_FT21_SUMMONERSOUL_4": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "identidade revelada",
+      "risk_level": "high",
+      "risk_notes": "frase incompleta sugere revelação; risco de spoiler",
+      "t": "Almmma... é..."
+    },
+    "STR_DIALOGS_FT_D25_FT21_SUMMONERSOUL_5": {
+      "speaker": "unknown",
+      "tone_register": "gaguejante-étéreo",
+      "intent": "estado final",
+      "risk_level": "medium",
+      "risk_notes": "palavra incompleta; revisar se deve manter 'ready' ou interpretar contexto",
+      "t": "pronto..."
+    },
+    "STR_DIALOGS_FT_D1_FT7_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "angry/contemptuous",
+      "intent": "insult",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Praga maldita."
+    },
+    "STR_DIALOGS_FT_D1_FT7_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "angry/accusatory",
+      "intent": "confrontation",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk character; tone is menacing. Verify 'slipped behind' translates as intentional action, not physical movement.",
+      "t": "Pensou que eu ia ficar de braços cruzados enquanto você passava por trás de mim?"
+    },
+    "STR_DIALOGS_FT_D1_FT7_MELIAN_3": {
+      "speaker": "unknown",
+      "tone_register": "distressed",
+      "intent": "exclamation/pain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ugh..."
+    },
+    "STR_DIALOGS_FT_D1_FT7_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "arrogant/mocking",
+      "intent": "rhetorical_challenge",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk boasts; 'Valkyrie' references game lore (Valquíria). Tone must preserve scorn.",
+      "t": "Pareço uma Valquíria pra você? Uma tola tremulante presa à inação?"
+    },
+    "STR_DIALOGS_FT_D1_FT7_MELIAN_5": {
+      "speaker": "unknown",
+      "tone_register": "sarcastic/defiant",
+      "intent": "insult",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não... mais como um roedor gigante..."
+    },
+    "STR_DIALOGS_FT_D1_FT7_RATATOSK_6": {
+      "speaker": "unknown",
+      "tone_register": "indignant",
+      "intent": "outrage",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como ousa?!"
+    },
+    "STR_DIALOGS_FT_D2_FT7_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "contemptuous",
+      "intent": "dismissal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mais um chupa-sangue..."
+    },
+    "STR_DIALOGS_FT_D2_FT7_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "cold/determined",
+      "intent": "threat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Certo então, faço isso rápido."
+    },
+    "STR_DIALOGS_FT_D3_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/commanding",
+      "intent": "protection",
+      "risk_level": "medium",
+      "risk_notes": "Sirfiel criticality=low but commanding tone. Verify formal register without aggression.",
+      "t": "Afastem-se dela, criatura!"
+    },
+    "STR_DIALOGS_FT_D3_FT7_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "frustrated/menacing",
+      "intent": "escalation",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk escalates threat. Tone shifts from arrogance to irritation.",
+      "t": "Sabe... você está ficando muito irritante."
+    },
+    "STR_DIALOGS_FT_D3_FT7_SIRFIEL_3": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/stern",
+      "intent": "final_warning",
+      "risk_level": "high",
+      "risk_notes": "Formal register must convey resolve without becoming familiar. Back-translation check: 'touch them' = 'tocá-los' or 'mexer com eles' — choose form that feels protective, not aggressive.",
+      "t": "Fale o que quiser, mas se tocá-los, será a última coisa que fará."
+    },
+    "STR_DIALOGS_FT_D3_FT7_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "arrogant/dismissive",
+      "intent": "belittle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Palavras grandes para alguém tão insignificante."
+    },
+    "STR_DIALOGS_FT_D3_FT7_SIRFIEL_5": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/wise",
+      "intent": "philosophical_defiance",
+      "risk_level": "high",
+      "risk_notes": "Sirfiel responds with wisdom. 'Insignificance' must not sound weak — reinterpret as strength in humility. Back-translation: preserve paradox.",
+      "t": "Não subestime o poder da insignificância, monstro."
+    },
+    "STR_DIALOGS_FT_D3_FT7_RATATOSK_6": {
+      "speaker": "unknown",
+      "tone_register": "shocked",
+      "intent": "surprise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O quê...?"
+    },
+    "STR_DIALOGS_FT_D3_FT7_SIRFIEL_7": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/emphatic",
+      "intent": "reaffirmation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você— você ouviu sim!"
+    },
+    "STR_DIALOGS_FT_D3_FT7_RATATOSK_8": {
+      "speaker": "unknown",
+      "tone_register": "contemptuous/bitter",
+      "intent": "rant",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, como odeio vocês mortais, sempre lutando acima do seu próprio nível."
+    },
+    "STR_DIALOGS_FT_D3_FT7_RATATOSK_9": {
+      "speaker": "unknown",
+      "tone_register": "impatient",
+      "intent": "dismissal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não tenho tempo pro seu disparate."
+    },
+    "STR_DIALOGS_FT_D4_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/relieved",
+      "intent": "assessment",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bom, parece que ele foi embora."
+    },
+    "STR_DIALOGS_FT_D4_FT7_SIRFIEL_2": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/uncertain",
+      "intent": "reflection",
+      "risk_level": "medium",
+      "risk_notes": "Sirfiel questions shared capability. Tone must convey doubt without undermining character strength. Formal register maintained.",
+      "t": "Duvido que os dois juntos conseguíssemos enfrentar aquela coisa."
+    },
+    "STR_DIALOGS_FT_D5_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/urgent",
+      "intent": "call",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Melian!"
+    },
+    "STR_DIALOGS_FT_D6_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/urgent",
+      "intent": "call",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Melian!"
+    },
+    "STR_DIALOGS_FT_D6_FT7_SIRFIEL_2": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/desperate",
+      "intent": "plea",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Melian, você me ouve?!"
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/anguished",
+      "intent": "confrontation/concern",
+      "risk_level": "high",
+      "risk_notes": "Long emotional scene; lore-critical (death of parents revealed). 'volcanic pendant' = glossary term. Maintain formal tone while conveying passion. Back-translation mandatory.",
+      "t": "Eu sabia que você tinha pegado o outro pendente vulcânico. Melian, como pôde? Por que teve que se envolver nisso sozinha? Você não precisa provar nada!"
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_2": {
+      "speaker": "unknown",
+      "tone_register": "vulnerable/guilty",
+      "intent": "confession",
+      "risk_level": "high",
+      "risk_notes": "Melian reveals dependency and self-doubt. Tone must convey shame without becoming melodramatic. First major emotional moment for character.",
+      "t": "Heh... Olha pra mim... Sempre contando com você, como sempre. Você deve estar cansado disso. Você deveria me deixar aqui, serei menos fardo pra você e pros outros."
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_3": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/passionate",
+      "intent": "emotional_revelation",
+      "risk_level": "critical",
+      "risk_notes": "Core emotional beat — sister reveals fear of loss after parents' death. Major spoiler/identity moment. Formal tone + passion must balance. Back-translation + QA check mandatory.",
+      "t": "Nunca diga isso de novo! Você sabe que é tudo o que me sobrou depois que mãe e pai morreram. Eu não quero... Eu não quero que a mesma coisa aconteça com você. Você está me ouvindo?!"
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_4": {
+      "speaker": "unknown",
+      "tone_register": "melancholic/questioning",
+      "intent": "inquiry/regret",
+      "risk_level": "high",
+      "risk_notes": "Melian processes grief and asks why she's excluded. Tone must be soft, not bitter. Identity as younger/weaker sister implications — preserve ambiguity re: emotional state.",
+      "t": "Eu também sinto falta deles... É por isso que eles nunca me pedem pra participar? Pra que você cuide de mim?"
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_5": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/intimate",
+      "intent": "confession",
+      "risk_level": "high",
+      "risk_notes": "Sirfiel reveals emotional dependence on Melian. Tone shifts to vulnerability while maintaining formality. Back-translation: 'protected' must mean emotional security, not physical.",
+      "t": "Não, idiota... É porque só me sinto protegida quando você está perto, porque sei que ninguém se preocuparia comigo do jeito que você faz."
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_6": {
+      "speaker": "unknown",
+      "tone_register": "silence",
+      "intent": "processing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_7": {
+      "speaker": "unknown",
+      "tone_register": "reflective/accepting",
+      "intent": "understanding",
+      "risk_level": "high",
+      "risk_notes": "Melian accepts emotional truth. Tone shifts from guilt to acceptance. Must sound mature, not dismissive.",
+      "t": "Eu não sabia... Acho que é difícil falar sobre isso. Parece que só nos temos um ao outro, né?"
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_8": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/determined",
+      "intent": "bonding_vow",
+      "risk_level": "high",
+      "risk_notes": "Sisters make pact honoring parents' values. Formal tone must convey solemnity of promise. 'mum and dad want' = reference to parental guidance/ghost of values — preserve respect.",
+      "t": "Nunca mais faça isso comigo... De agora em diante, cuidaremos um do outro, como mãe e pai gostariam. Combinado?"
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_9": {
+      "speaker": "unknown",
+      "tone_register": "hopeful/determined",
+      "intent": "agreement/unity",
+      "risk_level": "medium",
+      "risk_notes": "Melian seals pact. Tone: determined but younger-sounding. 'Against the world' idiom localizes as 'você e eu contra o mundo'.",
+      "t": "Você e eu contra o mundo. Não soa tão ruim assim... Combinado."
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_10": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/practical",
+      "intent": "urgency",
+      "risk_level": "medium",
+      "risk_notes": "Sirfiel shifts to pragmatism after emotional scene. Tone: commanding but caring. 'wounds' must convey injury seriousness.",
+      "t": "Devemos voltar. Se não cuidarmos desses ferimentos logo, podem ficar sérios."
+    },
+    "STR_DIALOGS_FT_D7_FT7_SIRFIEL_11": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-military",
+      "intent": "command",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você também vem, soldado."
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_12": {
+      "speaker": "unknown",
+      "tone_register": "urgent/concerned",
+      "intent": "hold_request",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sirfiel, espera."
+    },
+    "STR_DIALOGS_FT_D7_FT7_MELIAN_13": {
+      "speaker": "unknown",
+      "tone_register": "grave/urgent",
+      "intent": "plea",
+      "risk_level": "high",
+      "risk_notes": "Melian addresses 'Friend' (player character). Mission-critical request — must convey urgency and weight of ask without melodrama.",
+      "t": "Amiga... Você precisa detê-lo."
+    },
+    "STR_DIALOGS_FT_D8_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/alarmed",
+      "intent": "disbelief",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você pirou?"
+    },
+    "STR_DIALOGS_FT_D8_FT7_SIRFIEL_2": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/questioning",
+      "intent": "clarification",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você quer ir atrás daquele monstro?"
+    },
+    "STR_DIALOGS_FT_D8_FT7_MELIAN_3": {
+      "speaker": "unknown",
+      "tone_register": "serious/determined",
+      "intent": "explanation",
+      "risk_level": "high",
+      "risk_notes": "Melian justifies dangerous mission. Tone: serious but not hysterical. 'something terrible' = vague foreshadowing — preserve ambiguity for pacing.",
+      "t": "Sirfiel, é importante. Algo terrível vai acontecer se ninguém detê-lo."
+    },
+    "STR_DIALOGS_FT_D9_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-military/concerned",
+      "intent": "warning",
+      "risk_level": "high",
+      "risk_notes": "Sirfiel briefs player on resource constraints and danger. Formal-military tone; must convey both limitation and support. 'reinforcements/amulets' = lore terms. Long line — verify byte budget.",
+      "t": "Não sei em que você se meteu, mas não posso mandar reforços aqui, também não tenho material suficiente pra mais amuletos. É melhor você ser bem cuidadoso se planeja enfrentar aquele monstro e voltar inteira."
+    },
+    "STR_DIALOGS_FT_D9_FT7_MELIAN_2": {
+      "speaker": "unknown",
+      "tone_register": "secretive/urgent",
+      "intent": "request",
+      "risk_level": "medium",
+      "risk_notes": "Melian asks to speak privately with player. Tone must convey trust and secrecy. Setup for major plot revelation.",
+      "t": "Chegue mais perto, amiga, preciso contar algo pra você..."
+    },
+    "STR_DIALOGS_FT_D9_FT7_MELIAN_3": {
+      "speaker": "unknown",
+      "tone_register": "grave/solemn",
+      "intent": "handover",
+      "risk_level": "critical",
+      "risk_notes": "Melian passes critical artifact/responsibility to player — mission-defining moment. Tone: solemn, not defeated. 'what we've started' = shared quest. Back-translation mandatory.",
+      "t": "Não posso mais usar isso. Gostaria que você ficasse com isso e continuasse o que começamos. Você sabe o que está em jogo..."
+    },
+    "STR_DIALOGS_FT_D10_FT7_SIRFIEL_1": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/uncertain",
+      "intent": "concern",
+      "risk_level": "high",
+      "risk_notes": "Sirfiel questions artifact's sufficiency to save someone. Tone: loving but doubtful. 'that orb' = lore term (volcanic orb?). Worry must be genuine.",
+      "t": "Você não soltou aquele orbe desde que encontrou. Isso será o suficiente pra salvá-lo?"
+    },
+    "STR_DIALOGS_FT_D10_FT7_MELIAN_2": {
+      "speaker": "unknown",
+      "tone_register": "calm/reassuring",
+      "intent": "reassurance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe, irmã. Ele sabe cuidar de si mesmo."
+    },
+    "STR_DIALOGS_FT_D10_FT7_SIRFIEL_3": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-medium/resigned",
+      "intent": "acceptance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Certo..."
+    },
+    "STR_DIALOGS_FT_D10_FT7_SIRFIEL_4": {
+      "speaker": "Sirfiel",
+      "tone_register": "formal-military/caring",
+      "intent": "farewell_warning",
+      "risk_level": "medium",
+      "risk_notes": "Sirfiel says goodbye with implicit concern (threat to worry Brigard = care metric). 'come back soon' = implied danger. Formal tone + concern balance.",
+      "t": "Estamos indo. Volte logo ou vou ter que preocupar o Brigard."
+    },
+    "STR_DIALOGS_FT_D11_FTBOSS_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "solemn/reverent",
+      "intent": "proclamation",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk enters boss-fight monologue mode. Tone shifts to grandiose/apocalyptic. 'Yggdrasil' = lore term (world tree). Preserve mythic weight.",
+      "t": "Veja só. O presente dos Deuses, Yggdrasil."
+    },
+    "STR_DIALOGS_FT_D11_FTBOSS_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "solemn/reverent",
+      "intent": "observation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alguns a adoram, outros a temem."
+    },
+    "STR_DIALOGS_FT_D11_FTBOSS_RATATOSK_3": {
+      "speaker": "unknown",
+      "tone_register": "solemn/apocalyptic",
+      "intent": "revelation",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk reveals stakes — world-changing power. Tone: grandiose/biblical. 'fate of the world' = ultimate consequence.",
+      "t": "Mas onde quer que esteja, essa árvore tem o poder de mudar o destino do mundo."
+    },
+    "STR_DIALOGS_FT_D11_FTBOSS_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "solemn/conspiratorial",
+      "intent": "revelation",
+      "risk_level": "high",
+      "risk_notes": "Ratatosk reveals location — Terragaya (lore term, glossary: verbatim). 'hidden for millennia' = suggests ancient conspiracy. Tone: secret keeper's gloat.",
+      "t": "Até em Terragaya, onde permaneceu oculta por milênios."
+    },
+    "STR_DIALOGS_FT_D12_FTBOSS_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "arrogant/mocking",
+      "intent": "taunt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que você faz aqui, mortal?"
+    },
+    "STR_DIALOGS_FT_D12_FTBOSS_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "contemptuous/menacing",
+      "intent": "threat",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk mocks player's urgency. 'dying' = suicide rush implication. Tone: villainous gloat.",
+      "t": "Está com tanta pressa de morrer que não consegue esperar até eu terminar com Yggdrasil?"
+    },
+    "STR_DIALOGS_FT_D12_FTBOSS_RATATOSK_3": {
+      "speaker": "unknown",
+      "tone_register": "solemn/grim",
+      "intent": "final_offer",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk grants player 'one chance.' Tone: magnanimous monster offering mercy.",
+      "t": "Certo. Se é isso que quer, terá uma chance de me deter."
+    },
+    "STR_DIALOGS_FT_D12_FTBOSS_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "apocalyptic/grim",
+      "intent": "ultimatum",
+      "risk_level": "medium",
+      "risk_notes": "Ratatosk states final action. 'bite its roots' = literal apocalyptic act. Tone: unstoppable force of nature.",
+      "t": "Depois disso, morderei suas raízes e tudo terminará."
+    },
+    "STR_DIALOGS_FT_D12_FTBOSS_RATATOSK_5": {
+      "speaker": "unknown",
+      "tone_register": "contemptuous/commanding",
+      "intent": "challenge",
+      "risk_level": "medium",
+      "risk_notes": "Boss battle line — Ratatosk taunts player to prove themselves. Tone: contemptuous but respecting opponent's arrival.",
+      "t": "Mostre-me a determinação que te trouxe aqui! Defenda-se!"
+    },
+    "STR_DIALOGS_FT_D13_FTBOSS_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "pained/exhausted",
+      "intent": "groan",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ugh..."
+    },
+    "STR_DIALOGS_FT_D13_FTBOSS_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "ominous/threatening",
+      "intent": "warning",
+      "risk_level": "high",
+      "risk_notes": "Ratatosk, defeated, warns of consequences. Tone: bitter, not apologetic. 'avoided here' = suggests larger threat deferred, not solved. Foreshadowing.",
+      "t": "Espero que você saiba as consequências do que evitou aqui..."
+    },
+    "STR_DIALOGS_FT_D13_FTBOSS_RATATOSK_3": {
+      "speaker": "unknown",
+      "tone_register": "contemptuous/condescending",
+      "intent": "offer",
+      "risk_level": "high",
+      "risk_notes": "Ratatosk offers information about Guardian (lore term). Tone: grudging respect + scorn.",
+      "t": "Se você é desesperada o suficiente pra procurar o Guardião, vou te contar onde ele está."
+    },
+    "STR_DIALOGS_FT_D13_FTBOSS_RATATOSK_4": {
+      "speaker": "unknown",
+      "tone_register": "instructional/solemn",
+      "intent": "directions",
+      "risk_level": "high",
+      "risk_notes": "Ratatosk gives crucial directions to Guardian. Long expository line. 'cube' = artifact term. Tone: matter-of-fact despite defeat. 'place' = ritual instruction.",
+      "t": "Vá leste até chegar a uma grande plataforma. Nela, coloque este cubo. É uma chave. Ela te levará ao lugar que procura."
+    },
+    "STR_DIALOGS_FT_D14_FTBOSS_RATATOSK_1": {
+      "speaker": "unknown",
+      "tone_register": "ominous/bitter",
+      "intent": "final_curse",
+      "risk_level": "high",
+      "risk_notes": "Ratatosk's final line — passes burden to player. Tone: resignation + dark prediction. 'fix this' = suggests damage beyond boss fight.",
+      "t": "Agora é com você consertar isso."
+    },
+    "STR_DIALOGS_FT_D14_FTBOSS_RATATOSK_2": {
+      "speaker": "unknown",
+      "tone_register": "silence",
+      "intent": "death/fade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    }
+  }
+}

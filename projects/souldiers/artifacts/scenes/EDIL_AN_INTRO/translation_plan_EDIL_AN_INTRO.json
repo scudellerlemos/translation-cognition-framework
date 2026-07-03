@@ -1,0 +1,50 @@
+{
+  "scene": "EDIL_AN_INTRO",
+  "scene_group": "EDIL_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EDIL_AN_INTRO_1_1",
+      "text_source": "Travel safe, soldiers.",
+      "speaker": "system",
+      "tone_register": "formal-military",
+      "intent": "farewell-blessing",
+      "risk_level": "low",
+      "base_translation": "Viajem em segurança, soldados.",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AN_INTRO_1_2",
+      "text_source": "I've decided to focus on my lessons. Maybe that way Jivan will start to trust me more.",
+      "speaker": "Jivan",
+      "tone_register": "formal-mysterious",
+      "intent": "introspection-resolve",
+      "risk_level": "medium",
+      "base_translation": "Decidi me concentrar em minhas lições. Talvez assim Jivan comece a confiar mais em mim.",
+      "byte_budget": 86,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "caractere identitário (propósito pessoal/confiança); assegurar assertividade sem coloquialismo; gênero/pronome neutro OK (foco no objetivo)"
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AN_INTRO_1_3",
+      "text_source": "Go on then, don't waste time talking to me and find that Guardian.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-hyperbolic",
+      "intent": "urge-dismiss-humor",
+      "risk_level": "low",
+      "base_translation": "Vai lá então, não perde tempo falando comigo e acha esse Guardião!",
+      "byte_budget": 66,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-EDIL_AN_INTRO-v1"
+}

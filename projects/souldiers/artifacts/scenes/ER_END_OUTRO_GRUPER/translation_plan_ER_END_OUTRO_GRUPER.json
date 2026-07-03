@@ -1,0 +1,102 @@
+{
+  "scene": "ER_END_OUTRO_GRUPER",
+  "scene_group": "ER_END_OUTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_1",
+      "text_source": "Oh... Would you look at that!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "exclamação de espanto/revelação",
+      "risk_level": "low",
+      "base_translation": "Ah! Olha só isso aí!",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_3",
+      "text_source": "The board. There's no more assignments!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "constatação de vazio/alívio",
+      "risk_level": "low",
+      "base_translation": "O painel. Não tem mais missões!",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_5",
+      "text_source": "All the ones that came with a reward attached, indeed. My coffers are empty.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "queixa exagerada com humor",
+      "risk_level": "medium",
+      "base_translation": "Todas as que vinham com recompensa, isso mesmo. Meu cofre tá vazio!",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof mantém tom de alívio/exagero; 'coffers' traduzido por 'cofre' (lore gaming comum); verificar naturalidade de 'Todas as que vinham com recompensa'"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_7",
+      "text_source": "Who needs to keep their hair on now? Anyone would say you're having a harder time than he is.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "repreensão contida; sarcasmo de ordem",
+      "risk_level": "high",
+      "base_translation": "Quem precisa ficar calmo agora? Qualquer um diria que você está sofrendo mais que ele.",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Brigard (militar, estóico) crítica; 'keep their hair on' (ideia: 'manter calma') deve localizar para pt-BR sem perder sarcasmo; 'Who needs' (retórica de ordem) precisa manter autoridade seca. Back-translation obrigatória para validar tom."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_9",
+      "text_source": "Well, we're not talking about you, Makerel.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "descarte confiante/humor",
+      "risk_level": "low",
+      "base_translation": "Bem, a gente não tá falando de você, Makarel.",
+      "byte_budget": 43,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_10",
+      "text_source": "General Brigard said that he had a special prize for the person who could rid us of more monsters, and that's you!",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "comunicação factual de recompensa; reconhecimento sem sentimentalismo",
+      "risk_level": "high",
+      "base_translation": "O General Brigard disse que tinha um prêmio especial para quem conseguisse eliminar mais monstros, e esse alguém é você!",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard mantém tom ordem/informação seca; 'special prize' = 'prêmio especial' (lore); estrutura 'disse que X e que Y' deve soar como enunciado militar, não conversinha. Back-translation obrigatória."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_GRUPER_12",
+      "text_source": "No idea. Give him the good news and find out, you've earnt it.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem lacônica; reconhecimento factual",
+      "risk_level": "medium",
+      "base_translation": "Sem ideia. Vá dar a boa notícia e descubra, você conquistou.",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard: 'No idea' sem floreios; 'Give him' = ordem direta; 'you've earnt it' = reconhecimento seco (não 'mereceu', som arcaico — 'conquistou' ou 'ganhou' naturais). Verificar tom curto sem sentimentalismo."
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 2,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_END_OUTRO_GRUPER-v1"
+}

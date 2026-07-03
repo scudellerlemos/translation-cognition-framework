@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_GYM",
+  "scene_group": "SIDE_GYM",
+  "lines": [
+    {
+      "offset": "GYM_01",
+      "text_source": "Attention! Exercizing causes health and happiness!",
+      "speaker": "system",
+      "tone_register": "instructional-emphatic",
+      "intent": "tutorial-announcement-energetic",
+      "risk_level": "low",
+      "base_translation": "Atenção! Exercitar melhora saúde e felicidade!",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "GYM_02",
+      "text_source": "I'm happy there's a gym on the liner!",
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-enthusiastic",
+      "intent": "joy-relief-exclamation",
+      "risk_level": "medium",
+      "base_translation": "Que legal ter academia aqui na nave!",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof high-criticality voice — coloquial empolgado deve soar natural; 'tem' vs 'há' escolhido para energia coloquial contemporânea"
+    },
+    {
+      "offset": "GYM_03",
+      "text_source": "91, 92, 93... Phew! This is hard.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-effort-exertion",
+      "intent": "physical-strain-accomplishment",
+      "risk_level": "low",
+      "base_translation": "91, 92, 93... Uf! Tá pesado mesmo.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_GYM-v1"
+}

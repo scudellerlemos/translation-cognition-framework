@@ -1,0 +1,76 @@
+{
+  "scene": "SWAMP_AFT",
+  "scene_group": "SWAMP_AFT",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SWAMP_AFT_D7_SKRIBLES_1",
+      "text_source": "Tin man... I hope I'm not prying into things I shouldn't, but I know these lands well enough to tell you what you'll find if you continue in that direction.",
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "avisar/aconselhar com seriedade",
+      "risk_level": "low",
+      "base_translation": "Homem de lata... Espero não estar me intrometendo em assuntos que não me dizem respeito, mas conheço bem essas terras o bastante para lhe dizer o que você encontrará se continuar naquela direção.",
+      "byte_budget": 156,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SWAMP_AFT_D7_SKRIBLES_2",
+      "text_source": "You believe me, right?",
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "buscar confirmação/consenso",
+      "risk_level": "low",
+      "base_translation": "Você acredita em mim, certo?",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SWAMP_AFT_D7_SKRIBLES_3",
+      "text_source": "Then believe when I tell you that, if you decide to head that way alone... Well, let's just say I doubt anyone would be able to find what's left of you.",
+      "speaker": "npc",
+      "tone_register": "formal-ameaçador",
+      "intent": "advertir com gravidade sobre perigo mortal",
+      "risk_level": "medium",
+      "base_translation": "Acredite quando lhe digo que, se você decidir ir sozinho por lá... Bem, vamos só dizer que duvido que alguém conseguisse encontrar o que restaria de você.",
+      "byte_budget": 152,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ameaça implícita de morte; tom sombrio deve ser preservado sem soar artificial ou exagerado em pt-BR"
+    },
+    {
+      "offset": "STR_DIALOGS_SWAMP_AFT_D7_SKRIBLES_4",
+      "text_source": "At least let your own people know where you're off to.",
+      "speaker": "npc",
+      "tone_register": "formal-aconselhador",
+      "intent": "sugerir prudência prática",
+      "risk_level": "low",
+      "base_translation": "Pelo menos avise seu povo para onde você vai.",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SWAMP_AFT_D7_SKRIBLES_5",
+      "text_source": "Be sensible and listen to the voice of experience, yes?",
+      "speaker": "npc",
+      "tone_register": "formal-aconselhador",
+      "intent": "persuadir com apelo à razão",
+      "risk_level": "low",
+      "base_translation": "Seja sensato e ouça a voz da experiência, sim?",
+      "byte_budget": 55,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SWAMP_AFT-v1"
+}

@@ -1,0 +1,37 @@
+{
+  "scene": "INGAME_MARQUISE",
+  "scene_group": "INGAME_MARQUISE",
+  "lines": [
+    {
+      "offset": "STR_INGAME_DIALOGS_AC_MARQUISE_1_1",
+      "text_source": "I hate your wars. The city is always full of soldiers.",
+      "speaker": "npc",
+      "tone_register": "coloquial informal reclamativo",
+      "intent": "expressar descontentamento com presença militar na cidade",
+      "risk_level": "low",
+      "base_translation": "Odeio suas guerras. A cidade sempre fica cheia de soldados.",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_AC_MARQUISE_1_2",
+      "text_source": "Try to behave, okay?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "aviso/ordem contida",
+      "risk_level": "medium",
+      "base_translation": "Tente se comportar, certo?",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard criticality high — verificar registro militar estóico; evitar coloquialismo. 'Try to behave' é construção de ordem sob velada ameaça; tom deve ser seco/direto."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-INGAME_MARQUISE-v1"
+}

@@ -1,0 +1,89 @@
+{
+  "scene": "FINSE_AAF_PRESENTATION",
+  "scene_group": "FINSE_AAF_PRESENTATION",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_1",
+      "text_source": "Please tell me that your friend is in good condition.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "pedir confirmação sobre estado do amigo",
+      "risk_level": "low",
+      "base_translation": "Por favor, me diga que seu amigo está em bom estado.",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_2",
+      "text_source": "I had to improvise a torniquet and splint the frame, but he seems to be stable, despite the fall.",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso assertivo",
+      "intent": "relatar ação médica de emergência com segurança",
+      "risk_level": "medium",
+      "base_translation": "Tive de improvisar um torniquete e uma tala para o membro, mas ele parece estável apesar da queda.",
+      "byte_budget": 97,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Terminologia médica (torniquete/tala); precisão factual importante para credibilidade do personagem"
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_3",
+      "text_source": "On a different subject...",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso assertivo",
+      "intent": "transição de assunto",
+      "risk_level": "low",
+      "base_translation": "Sobre outro assunto...",
+      "byte_budget": 25,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_4",
+      "text_source": "I hope the Lilis Radiantis will be of use to you.",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso assertivo",
+      "intent": "oferecer item com educação",
+      "risk_level": "low",
+      "base_translation": "Espero que o Lilis Radiantis seja útil para você.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_5",
+      "text_source": "The last thing I would want is to betray the trust mister Jivan has placed in me in caring for this orchard.",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso assertivo",
+      "intent": "expressar dever/confiança depositada",
+      "risk_level": "medium",
+      "base_translation": "A última coisa que eu gostaria é trair a confiança que o senhor Jivan depositou em mim ao cuidar deste pomar.",
+      "byte_budget": 108,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Formalidade e sintaxe elaborada são críticas para voz de Jivan; evitar colapso em coloquialismo"
+    },
+    {
+      "offset": "STR_DIALOGS_FINSE_AAF_PRESENTATION_2_6",
+      "text_source": "If there's nothing else I can do for you, I shall continue with my duties.",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso assertivo",
+      "intent": "encerrar conversa educadamente retornando ao trabalho",
+      "risk_level": "low",
+      "base_translation": "Se não há mais nada que eu possa fazer por você, continuarei com meus deveres.",
+      "byte_budget": 74,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-FINSE_AAF_PRESENTATION-v1"
+}

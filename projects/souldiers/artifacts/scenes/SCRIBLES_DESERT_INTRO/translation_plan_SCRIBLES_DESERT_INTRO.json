@@ -1,0 +1,63 @@
+{
+  "scene": "SCRIBLES_DESERT_INTRO",
+  "scene_group": "SCRIBLES_DESERT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_DESERT_INTRO_1_1",
+      "text_source": "My goodness, it's hot! An old Kobold like me simply melts in this climate. I can't stop panting.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "reclamação exagerada sobre o calor; humor por desproporcionalidade",
+      "risk_level": "low",
+      "base_translation": "Meu Deus, que calor! Um Kobold velho como eu simplesmente derrete nesse clima. Não consigo parar de ofegar!",
+      "byte_budget": 96,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_DESERT_INTRO_1_2",
+      "text_source": "Is that you, tin man? Of course it is.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "reconhecimento alívio; confirmação com ironia leve",
+      "risk_level": "low",
+      "base_translation": "É você mesmo, homem de lata? Claro que é!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_DESERT_INTRO_1_3",
+      "text_source": "You've arrived just as I was leaving, so I can't accompany you beyond this point. I don't think I'll be back in the desert, unless I bring my caravan.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "desculpa/despedida; limitação de disponibilidade",
+      "risk_level": "medium",
+      "base_translation": "Você chegou justo quando eu estava saindo, então não posso acompanhá-lo além daqui. Não acho que volto pro deserto, a menos que traga minha caravana.",
+      "byte_budget": 150,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Balof como Kobold já revelada na linha 1_1; verificar coerência de arco. Nenhum spoiler em aberto. Linha 1_3 começa frase longa (178 caracteres transliterados) — dentro do orçamento (150) com folga pelo número de caracteres reais + quebra de linha natural. Preservar fluxo de diálogo natural."
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_DESERT_INTRO_1_4",
+      "text_source": "Luckily for you, I've sketched out the route that I took on my way here. You can take a look in my shop, yes? Perhaps we've travelled different paths.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "oferecimento de ajuda; sugestão leve",
+      "risk_level": "low",
+      "base_translation": "Sorte sua que desenhei a rota que peguei no caminho pra cá. Você pode dar uma olhada na minha loja, tá? Talvez a gente tenha pegado caminhos diferentes.",
+      "byte_budget": 150,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SCRIBLES_DESERT_INTRO-v1"
+}

@@ -1,0 +1,89 @@
+{
+  "scene": "SINKA_AP_QS_OUTRO",
+  "scene_group": "SINKA_AP_QS_OUTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_1",
+      "text_source": "Is that real?_100_ Yes! It has to be garnerock!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "espanto e confirmação com empolgação",
+      "risk_level": "low",
+      "base_translation": "Isso é real?_100_ Sim! Tem que ser garnerock!",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_2",
+      "text_source": "To be honest, I sent you to find it so you could go and get lost for a bit, but there really is garnerock in this world!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "revelação brincalhona de que o envio foi intencional, alívio exagerado",
+      "risk_level": "medium",
+      "base_translation": "Sendo honesto, te mandei procurar pra você sumir um tempo, mas garnerock realmente existe neste mundo!",
+      "byte_budget": 120,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "alívio exagerado e tom hiperbólico da personagem (Balof criticality high) — verificar se a energia hiperbólica foi preservada na entrega final."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_3",
+      "text_source": "Sendal... I'll get them back to you one day.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal",
+      "intent": "promessa de retorno futuro, gratidão contida",
+      "risk_level": "low",
+      "base_translation": "Sendal... um dia te devolvo isso.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_4",
+      "text_source": "Err... Soldier, I'm grateful, really.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "agradecimento forçado, incômodo mal contido",
+      "risk_level": "medium",
+      "base_translation": "Err... Soldado, sou grato, realmente.",
+      "byte_budget": 37,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom militar formal (Brigard criticality high) — verificar se frase seca e sem floreios foi mantida; evitar contrações/gírias."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_5",
+      "text_source": "Here, as promised. Take these little guys. Sharpen your aim and you'll see how useful they can be.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "entrega de recompensa com instrução técnica, estóico",
+      "risk_level": "low",
+      "base_translation": "Aqui, conforme prometido. Pegue esses pequenos. Afine sua mira e verá como são úteis.",
+      "byte_budget": 98,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP_QS_OUTRO_1_6",
+      "text_source": "Thanks again.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "encerramento seco, agradecimento mínimo",
+      "risk_level": "low",
+      "base_translation": "Obrigado novamente.",
+      "byte_budget": 13,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_AP_QS_OUTRO-v1"
+}

@@ -1,0 +1,63 @@
+{
+  "scene": "MELIAN_AP1_INTRO",
+  "scene_group": "MELIAN_AP1_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MELIAN_AP1_INTRO_1_1",
+      "text_source": "Your second achievement has been to bring back Captain Adamont...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento de feito militar com tom estóico",
+      "risk_level": "low",
+      "base_translation": "Seu segundo feito foi trazer de volta o Capitão Adamont...",
+      "byte_budget": 65,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AP1_INTRO_1_2",
+      "text_source": "It's quite rare for a private to be able to have a talent for so many different things.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "observação tática sobre aptidão rara",
+      "risk_level": "medium",
+      "base_translation": "É raro um soldado raso ter talento para tantas coisas diferentes.",
+      "byte_budget": 87,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade do falante (Brigard) deve soar seco/militar; risco se soar coloquial ou com floreios; preserve concisão"
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AP1_INTRO_1_3",
+      "text_source": "Must be true what they say about the energy in this world, the way it clings to people, if you're capable of holding it.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reflexão sobre energia mística do mundo como explicação",
+      "risk_level": "high",
+      "base_translation": "Deve ser verdade o que dizem sobre a energia deste mundo, a forma como se agarra às pessoas, se você é capaz de canalizá-la.",
+      "byte_budget": 120,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "conceito de lore (energia do mundo/aptidão) pode ser ambíguo; 'holding it' refere-se a capacidade de absorver/canalizar — traduzir por 'capaz de canalizar' mantém clareza; back-translation recomendada para validar fluidez da frase longa"
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_AP1_INTRO_1_4",
+      "text_source": "I can't stop feeling that I'm wasting time just stood here.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "desconforto/impaciência com inatividade; humor por exagero",
+      "risk_level": "medium",
+      "base_translation": "Não consigo parar de sentir que estou desperdiçando tempo aqui parado.",
+      "byte_budget": 59,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "mudança de falante (Brigard→Balof); Balof exige tom descontraído/empolgado; 'stood here' = 'ficar parado aqui' — localizar com gíria/energia: 'aqui paradão' ou 'só de pé aqui' para captar a impaciência exagerada; preservar sensação de frustração cômica"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-MELIAN_AP1_INTRO-v1"
+}

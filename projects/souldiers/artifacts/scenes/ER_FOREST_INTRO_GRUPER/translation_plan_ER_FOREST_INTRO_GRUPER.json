@@ -1,0 +1,50 @@
+{
+  "scene": "ER_FOREST_INTRO_GRUPER",
+  "scene_group": "ER_FOREST_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_GRUPER_2",
+      "text_source": "A Reynis... scary!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar espanto exagerado sobre os Reynis",
+      "risk_level": "low",
+      "base_translation": "Um Reynis... assustador!",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_GRUPER_4",
+      "text_source": "Don't they scare you?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionar se o interlocutor tem medo",
+      "risk_level": "medium",
+      "base_translation": "Eles não asustam você?",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Ton militar: evitar contrações coloquiais; frase direta sem floreios. 'Eles' preserva distanciamento formal do Brigard."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_GRUPER_6",
+      "text_source": "Hey, friend, know why they call him “two-eyes”? It's very common for the more experienced Reynis to end up losing an eye. That lot are a dangerous bunch, but this is a Reynis that rose up through the ranks with both eyes intact, meaning he's basically a king in a one-eyed world.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "explicar a alcunha 'two-eyes' com empolgação e admiração exagerada",
+      "risk_level": "high",
+      "base_translation": "Sabe por que chamam ele de 'two-eyes'? É bem comum os Reynis mais experientes perderem um olho. Aquela turma é perigosa demais, mas esse é um Reynis que subiu de patente com os dois olhos intactos, ou seja, é praticamente um rei num mundo de cegos!",
+      "byte_budget": 283,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore + comprimento + voz Balof (empolgação hiperbólica). Tradução preserva estrutura de explicação (causa-efeito) e tom de admiração. Interjeição 'Hey' → omitida (fórmula, não traduz em contexto de narrativa); ritmo mantido pela exclamação final. Back-translation recomendada para validar tons de admiração/exagero."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_FOREST_INTRO_GRUPER-v1"
+}

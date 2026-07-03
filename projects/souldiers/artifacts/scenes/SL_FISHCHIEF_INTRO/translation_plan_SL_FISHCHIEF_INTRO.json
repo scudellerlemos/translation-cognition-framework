@@ -1,0 +1,63 @@
+{
+  "scene": "SL_FISHCHIEF_INTRO",
+  "scene_group": "SL_FISHCHIEF_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SL_FISHCHIEF_INTRO_1_1",
+      "text_source": "Go on, deal with that capsule. Let's see what happens.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "dar instrução com entusiasmo exagerado",
+      "risk_level": "low",
+      "base_translation": "Vai lá, cuida dessa cápsula! Vamos ver no que dá!",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FISHCHIEF_INTRO_2_1",
+      "text_source": "Now! That appears to be its energy source. Yank it out of there!",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dar ordem urgente e direta",
+      "risk_level": "low",
+      "base_translation": "Agora! Parece ser a fonte de energia. Tire isso daqui!",
+      "byte_budget": 64,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FISHCHIEF_INTRO_3_1",
+      "text_source": "I still don't know what he plans to do with the dam, but it doesn't look good. Can you check what that noise was while we try to figure this out?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "expressar preocupação contida e solicitar investigação",
+      "risk_level": "medium",
+      "base_translation": "Ainda não sei o que ele planeja fazer com a barragem, mas não parece bom. Você pode checar de onde veio esse barulho enquanto tentamos descobrir?",
+      "byte_budget": 145,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a 'the dam' — possivelmente spoiler de lore não revelado; mantida vaga como original. Comprimento adequado ao budget."
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FISHCHIEF_INTRO_5_1",
+      "text_source": "Mixing species, turning them into monsters, flooding the world... Baydral wasn't what we had hoped. It's a good thing you've put an end to all his schemes.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento contido de vitória; enumeração de ameaças evitadas",
+      "risk_level": "high",
+      "base_translation": "Cruzar espécies, transformá-las em monstros, inundar o mundo... Baydral não era o que esperávamos. É bom que você tenha posto fim a todos os seus planos.",
+      "byte_budget": 155,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção a 'Baydral' (personagem/vilão) e eventos finais — potencial spoiler. Back-translation necessária. Tom deve ser estóico, sem efusão, apesar da lista de atrocidades evitadas."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SL_FISHCHIEF_INTRO-v1"
+}

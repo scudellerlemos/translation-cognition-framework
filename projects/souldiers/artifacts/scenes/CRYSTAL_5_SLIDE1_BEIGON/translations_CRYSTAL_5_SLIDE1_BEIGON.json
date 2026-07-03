@@ -1,0 +1,36 @@
+{
+  "lines": {
+    "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_1": {
+      "speaker": "Beigon",
+      "tone_register": "formal-militar seco, tom de julgamento severo",
+      "intent": "confrontação moral; exigir reconhecimento de transformação degradante",
+      "risk_level": "high",
+      "risk_notes": "identidade dupla possível (Beigon em papel de autoridade/juiz); requer back-translation para validar que 'reconhecer algo' captura ambiguidade EN ('recognise anything at all' = nada do que eram antes). Registro deve ser seco e imperativo, sem sentimentalismo.",
+      "t": "Vejam só em que vocês se tornaram. Olhem para si mesmos e me digam se reconhecem algo — qualquer coisa."
+    },
+    "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_3": {
+      "speaker": "Beigon",
+      "tone_register": "formal-militar seco, rejeição categórica",
+      "intent": "recusa moral absoluta; simplicidade como força",
+      "risk_level": "medium",
+      "risk_notes": "frase curta e definitiva; registro correto = força. 'I refuse' traduzido por 'recuso' (não 'me recuso') para soar mais imperativo/militar. Verificar que soa categórico, não hesitante.",
+      "t": "Algo que recuso integrar."
+    },
+    "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_4": {
+      "speaker": "Beigon",
+      "tone_register": "formal-militar seco, tom de quem estabelece condições inegociáveis",
+      "intent": "renúncia ao poder; imposição de termos; transferência estratégica de recursos",
+      "risk_level": "high",
+      "risk_notes": "revelação de intenção política (abandono das guerras); 'firstborn' tem carga de lore (primogênito = status/poder). Back-translation necessária: validar que 'redirecionar almas' (souls → souls redirection de lore) preserva significado. Byte_budget=184 adequado. Registro militar imperativo em cada cláusula.",
+      "t": "Como primogênito, estou abandonando essas guerras ridículas. Concedo meus territórios e todos os meus discípulos, sob uma condição: redirecionem as almas para um planeta de minha escolha."
+    },
+    "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_5": {
+      "speaker": "Beigon",
+      "tone_register": "formal-militar seco, tom de legislador; precisão nas restrições",
+      "intent": "estabelecer protocolo de recrutamento; controle mantido via seleção rigorosa; delegação com salvaguardas",
+      "risk_level": "high",
+      "risk_notes": "longa e complexa (272 bytes disponíveis); estrutura condicional múltipla ('only if', 'only if they', 'only receive'). Risco: registro pode enfraquecer em floreios; manter seco e imperativo. 'Worthy' (digno/merecedor) deve soar como avaliação militar, não moral. Back-translation: validar paralelismo das três cláusulas finais ('you will receive... / I'll send... / how you use...'). Conector: zero quebras de página [02] no source.",
+      "t": "Podem continuar recebendo mercenários, mas apenas se eles mesmos escolherem vir. Não se preocupem, terão que passar por um teste para provar-se dignos. Receberão apenas soldados capazes de servir. Eu os enviarei; o que farão com eles é decisão de vocês."
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "scene": "MAKERELGRUPER_AP_INTRO_G",
+  "scene_group": "MAKERELGRUPER_AP_INTRO_G",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP_INTRO_G_1_1",
+      "text_source": "I heard that Galath, Dadelm's general, is also here. Is it true?",
+      "speaker": "npc",
+      "tone_register": "coloquial neutro",
+      "intent": "solicitar confirmação de informação estratégica",
+      "risk_level": "low",
+      "base_translation": "Ouvi dizer que Galath, general de Dadelm, também está aqui. É verdade?",
+      "byte_budget": 64,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP_INTRO_G_1_3",
+      "text_source": "He clearly doesn't hold Zarga in high esteem.",
+      "speaker": "npc",
+      "tone_register": "coloquial neutro",
+      "intent": "comentário crítico sobre atitude de personagem",
+      "risk_level": "low",
+      "base_translation": "Ele claramente não tem apreço por Zarga.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP_INTRO_G_1_4",
+      "text_source": "By the looks of things, he's got unfinished business with General Brigard leftover from the Dark War.",
+      "speaker": "npc",
+      "tone_register": "coloquial neutro",
+      "intent": "explicação de tensão histórica entre personagens",
+      "risk_level": "medium",
+      "base_translation": "Pela aparência, ele tem assuntos inacabados com o General Brigard desde a Guerra Escura.",
+      "byte_budget": 101,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção do general Brigard e da Dark War — verificar se é primeira menção ou se há lore anterior; back-translation recomendada para preservar contexto histórico."
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AP_INTRO_G_1_6",
+      "text_source": "You said it.",
+      "speaker": "npc",
+      "tone_register": "coloquial neutro",
+      "intent": "concordância/reafirmação enfática",
+      "risk_level": "low",
+      "base_translation": "Verdade.",
+      "byte_budget": 12,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_AP_INTRO_G-v1"
+}

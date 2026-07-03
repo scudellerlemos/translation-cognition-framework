@@ -1,0 +1,37 @@
+{
+  "scene": "EDIL_AAF_INTRO",
+  "scene_group": "EDIL_AAF_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EDIL_AAF_INTRO_1_1",
+      "text_source": "Thank you for everything, soldier. How was Jivan able to free us from these things using just flowers?",
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "reconhecimento solene da gratidão do soldado; questionamento implícito sobre os métodos do falante",
+      "risk_level": "high",
+      "base_translation": "Obrigado por tudo, soldado. Como Jivan conseguiu nos libertar dessas criaturas usando apenas flores?",
+      "byte_budget": 102,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade/relação: Jivan é figura de autoridade/conhecimento; linha marca inversão de expectativa (flores vs. força bruta). Registro formal-misterioso deve soar ponderado, nunca coloquial. Back-translation obrigatória para validar asserção e tom seco."
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AAF_INTRO_1_2",
+      "text_source": "I hate to admit it, but perhaps I should focus more on his lessons.",
+      "speaker": "unknown",
+      "tone_register": "formal-reflexivo, auto-crítico",
+      "intent": "admissão de falha pessoal; disposição de aprender; tom de seriedade",
+      "risk_level": "medium",
+      "base_translation": "Detesto admitir, mas talvez deva focar mais nos seus ensinamentos.",
+      "byte_budget": 67,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Speaker não identificado no contexto (nenhum nome associado nesta linha). Assunção: soldado Brigard ou personagem genérico? Registro formal sugere militar. Frase curta sem floreios = austeridade esperada. Byte_budget 67: 'focar mais nas lições' comprime bem vs. 'concentrar-se mais nos ensinamentos'."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-EDIL_AAF_INTRO-v1"
+}

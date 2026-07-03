@@ -1,0 +1,37 @@
+{
+  "scene": "BRIGARD_AP_TOPIC_GALATH",
+  "scene_group": "BRIGARD_AP_TOPIC_GALATH",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AP_TOPIC_GALATH_1_1",
+      "text_source": "I never expected Galath to fall in battle.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento sóbrio de uma perda inesperada",
+      "risk_level": "low",
+      "base_translation": "Nunca esperei que Galath caísse em batalha.",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AP_TOPIC_GALATH_1_2",
+      "text_source": "Still, the situation is the same. His army continues to outperform our own and in great numbers, too. Each second we spend here takes us further away from victory.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "análise tática crua; urgência contida",
+      "risk_level": "medium",
+      "base_translation": "Ainda assim, a situação permanece. Seu exército supera o nosso em desempenho e em números. Cada segundo aqui nos afasta da vitória.",
+      "byte_budget": 163,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Comprimento próximo ao limite (163 bytes); registro militar seco mantido com frases curtas e sem floreios. Back-translation recomendada para validar ritmo militar."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-BRIGARD_AP_TOPIC_GALATH-v1"
+}

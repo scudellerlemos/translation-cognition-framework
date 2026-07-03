@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_Rest_bar",
+  "scene_group": "SIDE_Rest_bar",
+  "lines": [
+    {
+      "offset": "Rest_bar_01",
+      "text_source": "Can I have a cocktail, please?",
+      "speaker": "npc",
+      "tone_register": "polite_casual",
+      "intent": "request",
+      "risk_level": "low",
+      "base_translation": "Posso pedir um coquetel, por favor?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "Rest_bar_02",
+      "text_source": "I love this cruise. It's amazing!",
+      "speaker": "Balof",
+      "tone_register": "coloquial_informal_hyperbolic",
+      "intent": "enthusiasm_appreciation",
+      "risk_level": "high",
+      "base_translation": "Eu amo esse cruzeiro! É incrível!",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof's voice criticality=high; must preserve exclamatory energy and hyperbolic enthusiasm characteristic of the speaker. Exclamation marks critical to convey personality."
+    },
+    {
+      "offset": "Rest_bar_03",
+      "text_source": "I just found my newest hobby: relaxing by the bar !",
+      "speaker": "Balof",
+      "tone_register": "coloquial_informal_hyperbolic",
+      "intent": "casual_discovery_relaxation",
+      "risk_level": "high",
+      "base_translation": "Acabei de descobrir meu novo hobby: relaxar na barra!",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof's voice criticality=high; exclamatory tone and exaggerated relief must shine through. 'Newest hobby' requires colloquial reframing to match Balof's informal hyperbolic register. Exclamation mark placement critical."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 2,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_Rest_bar-v1"
+}

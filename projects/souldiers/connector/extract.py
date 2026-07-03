@@ -113,7 +113,10 @@ def extract(project_root: Path, data_dir: Path) -> int:
             for row in reader:
                 row_id = row.get(_ID_COL, "").strip().strip('"')
                 text_en = row.get(_EN_COL, "").strip().strip('"')
-                if not row_id or not text_en:
+                # texts_* às vezes tem o ::EN:: igual ao ::ID:: — placeholder de dev/lorem ipsum
+                # nunca traduzido pelo estúdio, não é diálogo real (achado real: 73/2561 linhas,
+                # inclui uma cena literalmente chamada LOREM_IPSUM). Tratar como vazio.
+                if not row_id or not text_en or text_en == row_id:
                     skipped += 1
                     continue
                 speaker = _parse_speaker(row_id)

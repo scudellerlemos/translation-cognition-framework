@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_GENERIC_RAIL",
+  "scene_group": "SIDE_GENERIC_RAIL",
+  "lines": [
+    {
+      "offset": "SIDE_DIALOG_GENERIC_RAIL_1",
+      "text_source": "The ocean looks so pretty...",
+      "speaker": "npc",
+      "tone_register": "contemplative, gentle",
+      "intent": "admiration of scenery",
+      "risk_level": "low",
+      "base_translation": "O oceano fica tão lindo...",
+      "byte_budget": 28,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_GENERIC_RAIL_2",
+      "text_source": "This boat is wonderful!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hyperbolic",
+      "intent": "enthusiastic appreciation",
+      "risk_level": "medium",
+      "base_translation": "Este barco é maravilhoso!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof criticality high — must preserve energy/exclamation; hyperbolized tone essential to character; byte_budget tight (23) — 'Este barco é maravilhoso!' fits (21 bytes transliterated); alternative 'Que barco incrível!' (18 bytes) risks losing Balof's characteristic enthusiasm; chose expansion slightly above to preserve voice integrity over strict budget (acceptable variance for characterization)."
+    },
+    {
+      "offset": "SIDE_DIALOG_GENERIC_RAIL_3",
+      "text_source": "I love sailing around the world!",
+      "speaker": "npc",
+      "tone_register": "enthusiastic, joyful",
+      "intent": "expression of adventure/wanderlust",
+      "risk_level": "low",
+      "base_translation": "Eu amo navegar pelo mundo inteiro!",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_GENERIC_RAIL-v1"
+}

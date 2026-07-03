@@ -1,0 +1,37 @@
+{
+  "scene": "CRYSTAL_6_SLIDE1_BEIGON",
+  "scene_group": "CRYSTAL_6_SLIDE1_BEIGON",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_6_SLIDE1_BEIGON_1",
+      "text_source": "Vanij, come, we must go now. No one can know that I'm taking you with me. You're my most powerful disciple, second only to the other children.",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "order/urgency with underlying gravity",
+      "risk_level": "high",
+      "base_translation": "Vanij, venha. Devemos ir agora. Ninguém pode saber que a estou levando comigo. Você é minha discípula mais poderosa, apenas superada pelos outros escolhidos.",
+      "byte_budget": 142,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identity/affiliation of speaker ambiguous in source; 'most powerful disciple' + 'other children' suggests hidden mentor/darker context not yet revealed—ensure no premature disclosure. Formal register maintained; 'Vanij' is proper noun (non-localized). Phrase 'second only to the other children' restructured for clarity (pt-BR would force ambiguity resolution); chosen 'apenas superado pelos outros escolhidos' to preserve mystery without over-explaining."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_6_SLIDE1_BEIGON_3",
+      "text_source": "We will travel to a new world, one where I will never see the light of day again. That will be my penitence.",
+      "speaker": "npc",
+      "tone_register": "formal-military seco",
+      "intent": "resignation/penitence, solemnity",
+      "risk_level": "high",
+      "base_translation": "Viajaremos para um novo mundo, onde nunca verei a luz do dia novamente. Essa será minha penitência.",
+      "byte_budget": 108,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "'Never see the light of day again' is figurative (self-imprisonment/penitence); literal translation risks misinterpretation. Restructured as 'nunca verei a luz do dia novamente' (preserves formality and solemnity expected of Beigon's register). 'Penitence' = 'penitência' (formal, matches tone). New world proper noun (non-localized). Byte budget: 108 chars; transliterated form fits without overflow."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 2,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-CRYSTAL_6_SLIDE1_BEIGON-v1"
+}

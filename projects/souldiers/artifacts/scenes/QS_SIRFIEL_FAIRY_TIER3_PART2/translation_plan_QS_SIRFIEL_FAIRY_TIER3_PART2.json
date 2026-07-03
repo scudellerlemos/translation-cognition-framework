@@ -1,0 +1,50 @@
+{
+  "scene": "QS_SIRFIEL_FAIRY_TIER3_PART2",
+  "scene_group": "QS_SIRFIEL_FAIRY_TIER3_PART2",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER3_PART2_1",
+      "text_source": "They're so cute that they're starting to distract me.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressão de distração encantada; humor pela exageração",
+      "risk_level": "low",
+      "base_translation": "São tão fofinhos que tão me distraindo!",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER3_PART2_2",
+      "text_source": "It looks like you've collected the amount I need.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confirmação de êxito; transição para próxima etapa",
+      "risk_level": "low",
+      "base_translation": "Coletou a quantidade que preciso.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER3_PART2_3",
+      "text_source": "Alright, time for the last formula! Be good and drink this. Do try not to smell it.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco com nuance de instrução",
+      "intent": "ordem para consumir; advertência leve (não cheirar); tom imperativo sem sentimentalismo",
+      "risk_level": "medium",
+      "base_translation": "Pronto, última fórmula! Beba isto. E não cheira.",
+      "byte_budget": 83,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sequência de imperativo + humor (cheirar). Preservou tom militar seco de Brigard; 'não cheira' captura a restrição sem sentimentalismo. Verificar naturalidade de 'Beba' (imperativo solene) vs 'Tome' — Brigard prefere concisão, mantido 'Beba'."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-QS_SIRFIEL_FAIRY_TIER3_PART2-v1"
+}

@@ -1,0 +1,50 @@
+{
+  "scene": "JIVAN_AAF_TOPIC_CANNON",
+  "scene_group": "JIVAN_AAF_TOPIC_CANNON",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_JIVAN_AAF_TOPIC_CANNON_1_1",
+      "text_source": "Has the cannon at the city gate caught your attention?",
+      "speaker": "npc",
+      "tone_register": "formal-neutro inquiridor",
+      "intent": "chamar atenção para o canhão; iniciar conversa sobre o tema",
+      "risk_level": "low",
+      "base_translation": "O canhão no portão da cidade chamou sua atenção?",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AAF_TOPIC_CANNON_1_2",
+      "text_source": "Apparently, some time ago, word got around that, if we refused to find the Guardian, he would turn up here and destroy the city in revenge.",
+      "speaker": "npc",
+      "tone_register": "formal-expositivo",
+      "intent": "explicar a origem do canhão; descrever o boato e o medo que gerou",
+      "risk_level": "medium",
+      "base_translation": "Ao que parece, tempos atrás, correu a notícia de que, se recusássemos encontrar o Guardião, ele viria até aqui e destruiria a cidade em vingança.",
+      "byte_budget": 139,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção ao Guardião (spoiler potencial de identidade/relacionamento com essa entidade); presença de lore crítica (Guardião, vingança, destruição da cidade). Back-translation recomendada."
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AAF_TOPIC_CANNON_1_3",
+      "text_source": "I don't really know where that rumour came from, but many took it as truth and began constructing the “Godkiller”, as they call them. I can't say I approve, but neither will I deny people their desire to protect this city, whatever motives they may have.",
+      "speaker": "npc",
+      "tone_register": "formal-reflexivo ponderado",
+      "intent": "expressar incerteza sobre a origem do boato; reconhecer a construção do canhão e ambivalência moral sobre ele",
+      "risk_level": "medium",
+      "base_translation": "Não sei bem de onde surgiu esse rumor, mas muitos o tomaram por verdade e começaram a construir o que chamam de 'Matador de Deuses'. Não posso dizer que aprove, mas tampouco niego o desejo do povo de proteger esta cidade, quaisquer que sejam suas razões.",
+      "byte_budget": 258,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore sensível (origem do rumor, apelido 'Godkiller', dinâmica social de medo/proteção). Construção complexa de opinião moderada. Naturalidade pt-BR crítica para preservar o tom contemplatório sem parecer artificioso. Back-translation obrigatória."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-JIVAN_AAF_TOPIC_CANNON-v1"
+}

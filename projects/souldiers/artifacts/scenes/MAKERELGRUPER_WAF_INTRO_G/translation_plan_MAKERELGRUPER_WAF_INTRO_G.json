@@ -1,0 +1,63 @@
+{
+  "scene": "MAKERELGRUPER_WAF_INTRO_G",
+  "scene_group": "MAKERELGRUPER_WAF_INTRO_G",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_WAF_INTRO_G_1_1",
+      "text_source": "If you're looking for General Brigard, he's not here. He's gone out on a mission.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "informar com alívio exagerado e empolgação",
+      "risk_level": "medium",
+      "base_translation": "Se você procura pelo General Brigard, ele não está aqui! Saiu em uma missão!",
+      "byte_budget": 81,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz de Balof: criticality high — energia e exclamação são vetores de humor; risco de soar contido"
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_WAF_INTRO_G_1_2",
+      "text_source": "He picked a group of soldiers and left to investigate something after receiving some mysterious information.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "explicar com ênfase dramática e mistério",
+      "risk_level": "medium",
+      "base_translation": "Ele levou um grupo de soldados e saiu pra investigar algo depois de receber umas informações bem misteriosas!",
+      "byte_budget": 108,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manutenção de tom hiperbólico e suspense; nomes próprios (Brigard) em verbatim"
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_WAF_INTRO_G_1_3",
+      "text_source": "He left me behind because I have to stay with the bounty board, of course, but... why didn't he take you, Makerel?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico com dúvida sarcástica",
+      "intent": "questionar com perplexidade exagerada, dirigindo-se a Makerel",
+      "risk_level": "high",
+      "base_translation": "Ele me deixou aqui porque tenho que ficar de olho no mural de missões, óbvio, mas... por que ele não levou você, Makerel?",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade/relação de Makerel não revelada antes do reveal_timing; evitar antecipar contexto; tom de Balof (hiperbólico) preservado; nomes próprios (Makerel) verbatim; byte_budget 114 — conciso"
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_WAF_INTRO_G_1_5",
+      "text_source": "You like to think that, don't you?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco estóico",
+      "intent": "repreensão irónica contida; insinuar crítica sem emoção",
+      "risk_level": "medium",
+      "base_translation": "Você gosta de pensar assim, né?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Voz de Brigard: criticality high — frases curtas, sem floreios, estóico; risco de adicionar sentimentalismo ou gírias; byte_budget 34 (curto) exige concisão"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_WAF_INTRO_G-v1"
+}

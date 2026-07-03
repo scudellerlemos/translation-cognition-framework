@@ -1,0 +1,37 @@
+{
+  "scene": "INGAME_TOWN_WIZARD",
+  "scene_group": "INGAME_TOWN_WIZARD",
+  "lines": [
+    {
+      "offset": "STR_INGAME_DIALOGS_AC_TOWN_WIZARD_1_1",
+      "text_source": "I wonder when Captain Sirfiel plans to get out of there.",
+      "speaker": "npc",
+      "tone_register": "coloquial informal",
+      "intent": "reflexão especulativa sobre ações de um superior",
+      "risk_level": "low",
+      "base_translation": "Fico imaginando quando a Capitã Sirfiel planeja sair de lá.",
+      "byte_budget": 56,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_AC_TOWN_WIZARD_1_2",
+      "text_source": "Just because I'm a sorcerer doesn't mean I'm interested in all those stories.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "negação enfática com toque de humor; recusa de estereótipo",
+      "risk_level": "medium",
+      "base_translation": "Só porque sou um feiticeiro não quer dizer que me interesse por todas essas histórias!",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof (criticality: high) — energia e tom coloquial preservados; interjeição interna ('só porque') segue registro informal; sem arquivos excessivos; risco moderado por ser negação com potencial tonal em diálogo real."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-INGAME_TOWN_WIZARD-v1"
+}

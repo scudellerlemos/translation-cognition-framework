@@ -1,0 +1,76 @@
+{
+  "scene": "SIRFIEL_AN_INTRO",
+  "scene_group": "SIRFIEL_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AN_INTRO_1_1",
+      "text_source": "We've been through a lot, but it looks like everyone trusts the information you found on your last adventure.",
+      "speaker": "system",
+      "tone_register": "formal-narrativo",
+      "intent": "contextualizar aventura anterior e confiança do grupo",
+      "risk_level": "low",
+      "base_translation": "Passamos por muito, mas parece que todos confiam nas informações que você encontrou em sua última aventura.",
+      "byte_budget": 109,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AN_INTRO_1_2",
+      "text_source": "Once Brigard gives the order, we'll leave for the Guardian.",
+      "speaker": "system",
+      "tone_register": "formal-informativo",
+      "intent": "esclarecer próxima ação planejada",
+      "risk_level": "low",
+      "base_translation": "Assim que Brigard der a ordem, partiremos para o Guardião.",
+      "byte_budget": 59,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AN_INTRO_1_3",
+      "text_source": "I wonder if he's as powerful as the legend suggests...",
+      "speaker": "system",
+      "tone_register": "contemplativo",
+      "intent": "expressar curiosidade/dúvida sobre poder lendário",
+      "risk_level": "low",
+      "base_translation": "Fico me perguntando se ele é tão poderoso quanto a lenda sugere...",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AN_INTRO_1_4",
+      "text_source": "What... excited? You bet I am! I can't wait to see what he looks like.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "confirmar entusiasmo exagerado; energia alta",
+      "risk_level": "medium",
+      "base_translation": "O quê... animado? Claro que estou! Não aguento de vontade de ver como ele é!",
+      "byte_budget": 70,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof criticality=high; hipérbole e empolgação desproporcional são marca. Interjeição 'What...' localizada como 'O quê'. Registro coloquial com exclamações preserva energia."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AN_INTRO_1_5",
+      "text_source": "I hope I'm allowed to take a few things from here. There's still books I'd like to read.",
+      "speaker": "system",
+      "tone_register": "formal-pensativo",
+      "intent": "expressar esperança de levar itens; interesse em livros",
+      "risk_level": "low",
+      "base_translation": "Espero que me deixem levar algumas coisas daqui. Ainda há livros que gostaria de ler.",
+      "byte_budget": 88,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_AN_INTRO-v1"
+}

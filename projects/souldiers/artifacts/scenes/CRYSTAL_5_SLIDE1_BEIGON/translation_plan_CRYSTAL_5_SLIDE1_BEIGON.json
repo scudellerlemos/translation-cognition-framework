@@ -1,0 +1,63 @@
+{
+  "scene": "CRYSTAL_5_SLIDE1_BEIGON",
+  "scene_group": "CRYSTAL_5_SLIDE1_BEIGON",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_1",
+      "text_source": "Look what you've become. Look at yourselves and tell me if you recognise anything at all.",
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, tom de julgamento severo",
+      "intent": "confrontação moral; exigir reconhecimento de transformação degradante",
+      "risk_level": "high",
+      "base_translation": "Vejam só em que vocês se tornaram. Olhem para si mesmos e me digam se reconhecem algo — qualquer coisa.",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade dupla possível (Beigon em papel de autoridade/juiz); requer back-translation para validar que 'reconhecer algo' captura ambiguidade EN ('recognise anything at all' = nada do que eram antes). Registro deve ser seco e imperativo, sem sentimentalismo."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_3",
+      "text_source": "Something I refuse to be a part of.",
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, rejeição categórica",
+      "intent": "recusa moral absoluta; simplicidade como força",
+      "risk_level": "medium",
+      "base_translation": "Algo que recuso integrar.",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "frase curta e definitiva; registro correto = força. 'I refuse' traduzido por 'recuso' (não 'me recuso') para soar mais imperativo/militar. Verificar que soa categórico, não hesitante."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_4",
+      "text_source": "As firstborn, I'm walking away from these ridiculous wars. I'll grant you my territories, as well as all my disciples, on the condition you redirect the souls to a planet of my choice.",
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, tom de quem estabelece condições inegociáveis",
+      "intent": "renúncia ao poder; imposição de termos; transferência estratégica de recursos",
+      "risk_level": "high",
+      "base_translation": "Como primogênito, estou abandonando essas guerras ridículas. Concedo meus territórios e todos os meus discípulos, sob uma condição: redirecionem as almas para um planeta de minha escolha.",
+      "byte_budget": 184,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "revelação de intenção política (abandono das guerras); 'firstborn' tem carga de lore (primogênito = status/poder). Back-translation necessária: validar que 'redirecionar almas' (souls → souls redirection de lore) preserva significado. Byte_budget=184 adequado. Registro militar imperativo em cada cláusula."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_5_SLIDE1_BEIGON_5",
+      "text_source": "You can continue to receive mercenaries, but only if they themselves choose to come. Don't worry, they will have to pass a test to prove themselves worthy, so you will only receive soldiers capable of serving you. I'll send them myself, how you use them will be up to you.",
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, tom de legislador; precisão nas restrições",
+      "intent": "estabelecer protocolo de recrutamento; controle mantido via seleção rigorosa; delegação com salvaguardas",
+      "risk_level": "high",
+      "base_translation": "Podem continuar recebendo mercenários, mas apenas se eles mesmos escolherem vir. Não se preocupem, terão que passar por um teste para provar-se dignos. Receberão apenas soldados capazes de servir. Eu os enviarei; o que farão com eles é decisão de vocês.",
+      "byte_budget": 272,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "longa e complexa (272 bytes disponíveis); estrutura condicional múltipla ('only if', 'only if they', 'only receive'). Risco: registro pode enfraquecer em floreios; manter seco e imperativo. 'Worthy' (digno/merecedor) deve soar como avaliação militar, não moral. Back-translation: validar paralelismo das três cláusulas finais ('you will receive... / I'll send... / how you use...'). Conector: zero quebras de página [02] no source."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 3,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-CRYSTAL_5_SLIDE1_BEIGON-v1"
+}

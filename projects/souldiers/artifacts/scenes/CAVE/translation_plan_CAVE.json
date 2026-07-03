@@ -1,0 +1,89 @@
+{
+  "scene": "CAVE",
+  "scene_group": "CAVE",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_1",
+      "text_source": "I thought I was going to die in there._300_ I don't know how to thank you._300_ I'm getting out of here as soon as I can catch my breath.",
+      "speaker": "npc",
+      "tone_register": "coloquial gratidão alívio",
+      "intent": "expressar alívio e gratidão por sobrevivência iminente",
+      "risk_level": "low",
+      "base_translation": "Pensei que ia morrer lá dentro._300_ Não sei nem como te agradecer._300_ Vou sair daqui assim que recuperar o fôlego.",
+      "byte_budget": 137,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_2",
+      "text_source": "I was just about to break these webs, but thank you anyway._300_ I hope the others can be saved too.",
+      "speaker": "npc",
+      "tone_register": "coloquial pragmático",
+      "intent": "minimizar mérito alheio; exprimir preocupação com outros presos",
+      "risk_level": "low",
+      "base_translation": "Estava quase quebrando essas teias, mas obrigado mesmo assim._300_ Espero que os outros consigam se salvar também.",
+      "byte_budget": 100,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_3",
+      "text_source": "Thank you._300_ We expected to find spiders in this cave,_100_ but not this size!_300_ <color=CHA>Makerel</color> and <color=CHA>Gruper</color> must be desperate if they were caught too.",
+      "speaker": "npc",
+      "tone_register": "coloquial reflexivo preocupado",
+      "intent": "relatar o inesperado da situação; expressar inquietação sobre companheiros capturados",
+      "risk_level": "medium",
+      "base_translation": "Obrigado._300_ A gente esperava encontrar aranhas nessa caverna,_100_ mas não desse tamanho!_300_ <color=CHA>Makerel</color> e <color=CHA>Gruper</color> devem estar desesperados se foram pegos também.",
+      "byte_budget": 186,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Makerel é alias de Gruper — identidade não deve ser revelada aqui; usar <color=CHA>Makerel</color> verbatim como no source para manter sigilo."
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_4",
+      "text_source": "You?_300_ Thank the Gods!_100_ I thought that spider was coming back for me.",
+      "speaker": "npc",
+      "tone_register": "coloquial espanto alívio",
+      "intent": "expressar surpresa e alívio ao ser resgatado",
+      "risk_level": "low",
+      "base_translation": "Você?_300_ Graças aos deuses!_100_ Pensei que aquela aranha vinha voltar pra cima de mim.",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_5",
+      "text_source": "Thank you for saving me._300_ We weren't prepared for this. I don't even know how you managed to survive this far._100_ We better get out of this cave as soon as possible.",
+      "speaker": "npc",
+      "tone_register": "coloquial admiração preocupação",
+      "intent": "agradecer resgate; expressar espanto pela sobrevivência alheia; pressão por saída",
+      "risk_level": "low",
+      "base_translation": "Obrigado por me salvar._300_ A gente não tava preparado pra isso. Não faço ideia de como você conseguiu sobreviver até aqui._100_ É melhor a gente sair dessa caverna o quanto antes.",
+      "byte_budget": 171,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CAVE_D1_TRAPPEDSOLDIER_6",
+      "text_source": "Urgh..._100_ Was it you who got me out of there? Sorry if I'm not exactly celebrating, but what does it matter if we're still here?",
+      "speaker": "npc",
+      "tone_register": "coloquial sarcástico exaustão",
+      "intent": "agradecer com ressalva sarcástica; expressar desesperança pela situação contínua",
+      "risk_level": "low",
+      "base_translation": "Urgh..._100_ Foi você que me tirou de lá? Desculpa se não tô exatamente comemorando, mas que diferença faz se a gente ainda tá preso aqui?",
+      "byte_budget": 131,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-CAVE-v1"
+}

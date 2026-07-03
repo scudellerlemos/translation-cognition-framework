@@ -1,0 +1,76 @@
+{
+  "scene": "QS_SIRFIEL_FAIRY_TIER1_PART2",
+  "scene_group": "QS_SIRFIEL_FAIRY_TIER1_PART2",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_1",
+      "text_source": "Look how well they light up the library with their eerie glow.",
+      "speaker": "system",
+      "tone_register": "formal-observational",
+      "intent": "describe-magical-phenomenon",
+      "risk_level": "low",
+      "base_translation": "Veja como elas iluminam a biblioteca com seu brilho fantasmagórico.",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_2",
+      "text_source": "It's simply fantastic that you've managed to find fifteen subjects for our test.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-hyperbolic",
+      "intent": "express-excitement-approval",
+      "risk_level": "medium",
+      "base_translation": "É simplesmente fantástico que você tenha conseguido encontrar quinze sujeitos pra nosso teste!",
+      "byte_budget": 80,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof criticality=high; tom exagerado/exclamações essenciais à voz. Tradução preserva energia; 'simplesmente fantástico' + exclamação localiza a ênfase original."
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_3",
+      "text_source": "Thanks to your efforts and the essence extracted from these creatures, I've managed to create a formula.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military-staccato",
+      "intent": "acknowledge-achievement-factual",
+      "risk_level": "medium",
+      "base_translation": "Graças aos seus esforços e à essência extraída dessas criaturas, consegui formular uma fórmula.",
+      "byte_budget": 104,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard criticality=high; registro militar seco. Frases curtas, diretas. Sem floreios. Concisão respeitada (byte_budget=104)."
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_4",
+      "text_source": "To be quite honest, this is the first time I've tried to potion like this one, so one of two things could happen to you: either it works, or you die.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military-staccato",
+      "intent": "deliver-dire-warning-with-dry-humor",
+      "risk_level": "high",
+      "base_translation": "Para ser bem honesto, é a primeira vez que tento uma poção como essa, então uma de duas coisas pode acontecer com você: ou funciona, ou você morre.",
+      "byte_budget": 149,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Alto risco: Brigard entrega aviso mortal com tom seco/estóico (humor macabro). Tradução deve preservar: (1) formalidade 'ser bem honesto' sem contração; (2) estrutura condicional clara 'ou funciona, ou você morre' com paralelismo; (3) estilo lacônico sem sentimentalismo. Requer back-translation para validar tom vs. sentido."
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_5",
+      "text_source": "You think that smile on my face means I'm joking, don't you?",
+      "speaker": "Brigard",
+      "tone_register": "formal-military-sarcasm",
+      "intent": "rhetorical-dry-question",
+      "risk_level": "medium",
+      "base_translation": "Você acha que esse sorriso no meu rosto significa que estou brincando, não é?",
+      "byte_budget": 60,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard; sarcasmo seco. 'Você acha que...' mantém a estrutura retórica. Tom estóico preservado. Conciso (byte_budget=60)."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 1,
+  "medium_lines": 3,
+  "needs_review": [],
+  "plan_version": "souldiers-QS_SIRFIEL_FAIRY_TIER1_PART2-v1"
+}

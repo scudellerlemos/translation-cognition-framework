@@ -1,0 +1,364 @@
+{
+  "lines": {
+    "STR_DIALOGS_TOWN_AP_COMBAT_D1_EDIL_0": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "chamar atenção discretamente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Psiu..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D1_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "avisar sobre dificuldade do interlocutor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Veio conversar com o velho? _300_Boa sorte — ele teve um dia estranho. Fica difícil lidar com ele quando fica todo místico."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D2_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "pausa dramática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D2_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "pedir atenção urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ouça-me com cuidado..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D2_JIVAN_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "instruir sobre estratégia",
+      "risk_level": "medium",
+      "risk_notes": "estrutura formal mantida; 'alerta' é direto sem floreios",
+      "t": "É difícil explicar, então esteja preparado para alertar seus soldados quando eu der o sinal. Não temos muito tempo."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D3_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "expor situação crítica da cidade",
+      "risk_level": "medium",
+      "risk_notes": "'Hafin' é topônimo verbatim; 'hostile agents' → 'agentes hostis' (abstrato, mantém tom solene)",
+      "t": "Alguns dias antes de sua chegada, uma substância que identifiquei como agentes hostis caiu sobre Hafin."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D3_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "descrever proteção falhando",
+      "risk_level": "medium",
+      "risk_notes": "'barrier' → 'barreira' (formal); ritmo de frase mantido",
+      "t": "Para afastá-los, criei uma barreira envolvendo toda a cidade que nos manteve seguros. Esperava que eventualmente partissem, mas algo parece estar os retendo aqui."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D3_JIVAN_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "avisar sobre fraqueza iminente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Meu poder está enfraquecendo, não levará muito para chegarem."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D3_JIVAN_4": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "informar sobre anomalia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cuidado. Sejam o que forem, não foram trazidos pelas Valquírias."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D3_JIVAN_5": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "pedir ajuda urgente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não consigo mantê-la por muito mais tempo..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D4_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "questionamento preocupado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Velho...?"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D5_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "desespero físico",
+      "risk_level": "medium",
+      "risk_notes": "tokens _1000_ e _2000_ preservados exatamente; separação representa respiração entrecortada",
+      "t": "Eu... _1000_ não... _2000_ consigo..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D6_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "exclamação de choque",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quê?!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D7_SOLDIERS_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial alarmado",
+      "intent": "grito de alerta",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "AH! MONSTROS!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D8_BRIGARD_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem de defesa",
+      "risk_level": "high",
+      "risk_notes": "Brigard é criticality:high; tom militar imperativo; zero floreios; 'DEFEND' → 'DEFENDAM' (ordem direta, formal)",
+      "t": "SOLDADOS, DEFENDAM A CIDADE!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D9_ADAMONT_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem de formação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "INQUEBRANTÁVEIS, FORMEM FILEIRAS!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D10_EUDER_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem de prontidão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "SEGUINDO MINHAS ORDENS!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D10_BIS_SOLDIERS_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial alarmado",
+      "intent": "pedido de ajuda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "AJUDA!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D11_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "rejeição/negação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D11_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "decisão de agir",
+      "risk_level": "medium",
+      "risk_notes": "transição de negação para ação; 'must go' → 'devo ir' (obrigação pessoal)",
+      "t": "Toda a cidade está em perigo... Por minha culpa? Devo ir ajudá-los."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D12_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "chamado para ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos, Edil!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D12_EDIL_2": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "determinação heroica",
+      "risk_level": "medium",
+      "risk_notes": "tokens _100_ preservados (página/pausa); tom de Edil é entusiasmado mas aqui é sério; 'I'll defend' → 'Vou defender' (direto)",
+      "t": "Não! _100_ Vou defender nosso lar! _100_ Ele vai me ajudar!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D12_JIVAN_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "urgência + ceticismo",
+      "risk_level": "medium",
+      "risk_notes": "Jivan pleiteia cautela; Hafin é topônimo verbatim; 'faced anything like' → 'enfrentou algo assim' (concisão)",
+      "t": "Edil, não temos tempo! Hafin nunca enfrentou algo assim."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D12_EDIL_4": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "confiança em treinamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você me preparou para tudo, incluindo algo assim!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D12_JIVAN_4": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "resignação/ternura",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Edil..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D13_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "pedido de proteção emocional",
+      "risk_level": "high",
+      "risk_notes": "identidade dupla: Edil é filha (não revelado explicitamente aqui mas 'most precious thing' → vinculação emocional forte); spoiler em risco; back-translation necessária; 'soldier' é direto (formal)",
+      "t": "Soldado, por favor, não deixe nada acontecer com ela. Ela é o que tenho de mais precioso..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D13_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "promessa de retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Voltarei o mais rápido possível."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D14_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo empolgado",
+      "intent": "pergunta sobre fim do combate",
+      "risk_level": "medium",
+      "risk_notes": "tokens _500_ preservados; tom é alívio + empolgação de Edil (criticality high); registro coloquial leve",
+      "t": "Era só isso? _500_ Era todos eles?"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D14_EDIL_2": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo empolgado",
+      "intent": "celebração de vitória",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vencemos todos! Sim!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D14_EDIL_3": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo empolgado",
+      "intent": "admiração pela ação / traço de humor",
+      "risk_level": "medium",
+      "risk_notes": "Balof é 'hiperbólico' mas aqui é Edil; nuance: 'shame' → 'quase uma pena' (coloquial); riso é localizado ('he, he' → 'hehe' ou 'riso'); mantém leveza",
+      "t": "Embora seja quase uma pena, estava começando a me divertir, hehe..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D15_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "riso de alívio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hehe..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D15_EDIL_2": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo",
+      "intent": "pausa silenciosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D15_EDIL_3": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo confuso",
+      "intent": "questionamento assustado",
+      "risk_level": "medium",
+      "risk_notes": "token _200_ preservado; Edil começa a notar algo errado; tom muda para preocupação; 'What's ha' é truncado (incompleto) — manter truncamento",
+      "t": "Hã...? _200_ O que está acon...?"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D16_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene alarmado",
+      "intent": "grito de desespero",
+      "risk_level": "medium",
+      "risk_notes": "caps = urgência extrema; nome Edil é verbatim; emoção bruta (spoiler: preocupação com filha)",
+      "t": "EDIL!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D17_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene alarmado",
+      "intent": "chamado desesperado",
+      "risk_level": "high",
+      "risk_notes": "caps + exclamações múltiplas indicam emoção extrema; 'SAY SOMETHING' → imperativo; identidade dupla (pai/filha) em risco alto",
+      "t": "EDIL, ESTOU AQUI! POR FAVOR, DIGA ALGO!"
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D17_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene analítico",
+      "intent": "hipótese sobre ataque",
+      "risk_level": "medium",
+      "risk_notes": "transição de desespero para lógica; 'come into contact' → 'conseguiram tocá-la' (direto, menos abstrato)",
+      "t": "O que aconteceu? Aquelas coisas... Devem ter conseguido tocá-la."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D17_JIVAN_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene culpado",
+      "intent": "arrependimento",
+      "risk_level": "high",
+      "risk_notes": "identidade dupla em risco (pai culpando-se); 'shouldn't have left your side' → 'não deveria ter deixado seu lado' (formal, não coloquial)",
+      "t": "Sinto muito, Edil... Não deveria ter deixado seu lado."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D18_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene vulnerável",
+      "intent": "confissão de medo de perda",
+      "risk_level": "critical",
+      "risk_notes": "identidade dupla + emoção extrema; 'I can't lose you' é declaração de amor paternal/familiar — possível spoiler se contexto não revelado; tom mantém formalidade mas quebra em ternura; back-translation e validação humana obrigatórias",
+      "t": "Edil, eu não posso perdê-la..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene reflexivo",
+      "intent": "absolvição do soldado + autocrítica",
+      "risk_level": "medium",
+      "risk_notes": "'I don't hold you responsible' → direto e formal; 'years' refere-se à idade/experiência de Jivan (lore); tom é pesar + sabedoria",
+      "t": "Soldado, não o responsabilizo. É culpa minha. Apesar de meus anos, ainda cometo erros..."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene propositivo",
+      "intent": "oferecer caminho para ação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se quer ajudar tanto a ela quanto seus companheiros, há algo que pode fazer."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_JIVAN_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene descritivo",
+      "intent": "descrever localização de objetivo",
+      "risk_level": "high",
+      "risk_notes": "'Lilis Radiantis' é nome próprio de planta (verbatim); tags de cor HTML preservadas; 'east' → 'leste' (formal); 'green flowers' poderia ser ambíguo (cor ou descrição botânica) — manter 'flores verdes'; estrutura formal mantida; topônimos (Hafin, plains) verbatim",
+      "t": "A leste de Hafin, através das planícies, encontrará um pequeno pomar com flores verdes no centro: chama-se <color=OBJ>Lilis Radiantis</color>."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_JIVAN_4": {
+      "speaker": "npc",
+      "tone_register": "formal-solene revelador",
+      "intent": "explicar poder das flores",
+      "risk_level": "high",
+      "risk_notes": "token _100_ preservado; 'These are no simple flowers' é revelação de lore; 'agent' (abstrato/técnico) → 'agente' (mantém tom formal); back-translation recomendada para validar coesão com cena anterior",
+      "t": "Elas... _100_ Não são flores simples. Com elas, você conseguirá destruir o agente que a mantém neste estado."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_JIVAN_5": {
+      "speaker": "npc",
+      "tone_register": "formal-solene urgente",
+      "intent": "avisar sobre tempo limite e perigo",
+      "risk_level": "high",
+      "risk_notes": "token _100_ implícito em estrutura; 'managing to defend' → 'conseguindo defender' (direto); 'surrounding area' → 'região circundante' (formal); dupla ameaça (tempo + monstros) reforça urgência",
+      "t": "Apresse-se, não sabemos por quanto tempo permanecerão assim. E cuidado, estamos conseguindo defender a cidade, mas aquelas coisas certamente estarão perambulando na região circundante."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_BIS_JIVAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene",
+      "intent": "transição para informação adicional",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Há algo mais."
+    },
+    "STR_DIALOGS_TOWN_AP_COMBAT_D19_BIS_JIVAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene instrucional",
+      "intent": "fornecer instrução para obter as flores",
+      "risk_level": "medium",
+      "risk_notes": "tags HTML para cores preservadas (CHA, IMP); 'garden custodian' é NPC sem nome específico — 'custódio do jardim' (formal); 'Don't worry' → 'Não se preocupe' (reconfortante mas formal); 'present him with' → 'apresentar-lhe' (formal, não coloquial)",
+      "t": "Para colhê-las, você precisará pedir permissão ao <color=CHA>custódio do jardim</color>. Não se preocupe, ele atenderá seu pedido se você lhe apresentar <color=IMP>este selo</color>."
+    }
+  }
+}

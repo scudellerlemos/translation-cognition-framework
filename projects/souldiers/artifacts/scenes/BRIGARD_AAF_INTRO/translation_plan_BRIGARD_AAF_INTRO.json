@@ -1,0 +1,24 @@
+{
+  "scene": "BRIGARD_AAF_INTRO",
+  "scene_group": "BRIGARD_AAF_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AAF_INTRO_1_1",
+      "text_source": "Soldier, I... I'm sorry I attacked you earlier. The fact that I wasn't in control of my actions is no excuse. I do not deserve to be your general.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military seco",
+      "intent": "contrição e confissão de culpa; aceitação de consequências",
+      "risk_level": "high",
+      "base_translation": "Soldado, eu... Peço desculpas por tê-lo atacado antes. O fato de não estar no controle de minhas ações não é desculpa. Não mereço ser seu general.",
+      "byte_budget": 146,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Brigard (militar, estóico, formal) requer tom seco e conciso; risco de soar sentimentalista se contrações coloquiais ou floreios forem adicionados. Frase longa (4 orações) em EN; pt-BR mais conciso necessário para caber no byte_budget (146 bytes transliterado). Back-translation obrigatória para validar que a contricção não soa falsa ou coloquial."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 1,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-BRIGARD_AAF_INTRO-v1"
+}

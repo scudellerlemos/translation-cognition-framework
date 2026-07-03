@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_CUSTOMIZE_PIANOS",
+  "scene_group": "SIDE_CUSTOMIZE_PIANOS",
+  "lines": [
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_PIANOS_1",
+      "text_source": "This piano is amazing!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "admiração entusiasmada",
+      "risk_level": "low",
+      "base_translation": "Esse piano é incrível!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_PIANOS_2",
+      "text_source": "Good job with the piano! It's awesome!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "elogio exagerado e entusiasmo",
+      "risk_level": "low",
+      "base_translation": "Parabéns com o piano! Tá sensacional!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_PIANOS_3",
+      "text_source": "Aww, I wish I'd continued with my piano lessons! I wasn't half bad!",
+      "speaker": "unknown",
+      "tone_register": "coloquial reflexivo melancólico",
+      "intent": "arrependimento nostálgico com auto-valorização",
+      "risk_level": "medium",
+      "base_translation": "Ah, queria ter continuado com minhas aulas de piano! Eu não era nada ruim!",
+      "byte_budget": 67,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "mudança de speaker não explícita no source; intenção mista (lamento + autoelogio) requer tom de voz identificável — risco de soar contido se não for Balof; recomenda-se back-translation para confirmar naturalidade da transição emocional"
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_CUSTOMIZE_PIANOS-v1"
+}
