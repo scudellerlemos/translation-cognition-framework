@@ -13,6 +13,10 @@ Checagens (deterministas, sem rede):
   FRONTEIRA (bloqueia se declarada): project.json `kb_frontier` = scene_id max coberto pela pesquisa
     (ex.: "12_17"). Cena alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui.
     Se `kb_frontier` nao for declarado, a fronteira do research_log e so REPORTADA (warning), nao bloqueia.
+  PROFUNDIDADE (soft, P4 hardening): 'reconciled' sozinho e so um marcador -- toda entidade com
+    conteudo afirmado (nao-UNSOURCED) no universe_knowledge_base.md precisa de ratificacao humana
+    em kb_ratified.csv (mesmo mecanismo que kb_reconcile.py ja usa pro caminho draft_ollama, aqui
+    generalizado pro caminho manual/skill-03). Bypassavel via --skip-kb-gate como qualquer problem.
 
 Uso (CLI):  python kb_gate.py <projeto> <scene>
 """
@@ -89,9 +93,28 @@ def check(root, scene) -> dict:
         # tolera markdown: "**Status:** reconciled", "status : reconciled", etc.
         if not re.search(r"status[:*\s]+reconciled", txt, re.I):
             problems.append("research_log.md sem 'status: reconciled' — reconcilie a pesquisa IA+humano.")
-        elif re.search(r"human_input\s*:\s*pending", txt, re.I):
-            warnings.append("research_log.md: status=reconciled mas human_input=pending — "
-                            "atualize para 'confirmed' ou 'declined' (proveniência incompleta).")
+        else:
+            if re.search(r"human_input\s*:\s*pending", txt, re.I):
+                warnings.append("research_log.md: status=reconciled mas human_input=pending — "
+                                "atualize para 'confirmed' ou 'declined' (proveniência incompleta).")
+            # PROFUNDIDADE DA FASE 0 (P4 hardening — generalizado do kb_reconcile.py, que so cobria
+            # o caminho draft_ollama do kb_build_ollama.py): 'reconciled' sozinho e so um MARCADOR,
+            # nao garante que a reconciliacao teve profundidade de verdade. Exige tambem ratificacao
+            # humana por entidade (kb_ratified.csv) — seja o research_log.md escrito a mao (skill 03)
+            # ou promovido por kb_reconcile.py. NAO generalizamos o tripwire de "Conflitos Resolvidos"
+            # do kb_reconcile.py pra ca: la faz sentido pq o placeholder e um texto EXATO e conhecido
+            # (gerado por kb_build_ollama.py); aqui, um research_log.md sem NENHUM conflito de verdade
+            # (fonte unica, sem divergencia) e um caso legitimo — nao da pra distinguir isso de "nao
+            # revisado" so pelo tamanho do texto sem o placeholder conhecido como ancora.
+            import kb_reconcile  # noqa: E402  (import tardio: so precisa apos 'reconciled' confirmado)
+            found = kb_reconcile._kb_entities_found(root)
+            ratified = kb_reconcile._ratified_set(root)
+            pending = [n for n in found if n.lower() not in ratified]
+            if pending:
+                problems.append(
+                    f"{len(pending)} entidade(s) com conteudo na KB sem ratificacao humana "
+                    f"(kb_ratified.csv): {pending[:5]}{' ...' if len(pending) > 5 else ''}"
+                )
         # Decisoes pendentes: sempre extraidas e reportadas ao usuario (nao bloqueiam)
         pending_decisions = _parse_pending_decisions(txt)
 
@@ -133,7 +156,16 @@ def check(root, scene) -> dict:
     frontier = cfg.get("kb_frontier")
     scene_id = context_pack.scene_id_of(scene)
     if frontier:
-        if _pos(scene_id) > _pos(frontier):
+        frontier_pos = _pos(frontier)
+        # frontier_pos vazio => kb_frontier NAO e um scene_id parseavel (ex.: convencao de projeto
+        # flat "artifacts/kb_phase_worklist.md" — sem ordem narrativa, ver BoF4/Souldiers). Nesse
+        # caso nao ha posicao numerica p/ comparar — pular a checagem em vez de comparar contra
+        # tupla vazia. Bug real descoberto no Souldiers 2026-07-02: _pos() acha digito em QUALQUER
+        # segmento "_"-separado do scene_id (ex. "CAVE_00" -> (0,), "1_5" -> (1,5)), entao
+        # `_pos(scene_id) > _pos(frontier vazio)` dava True p/ quase toda cena com numero no nome —
+        # bloqueava 500+ cenas por engano. So funcionava por coincidencia no BoF4 (nomes de cena
+        # sem segmento puramente numerico).
+        if frontier_pos and _pos(scene_id) > frontier_pos:
             problems.append(f"cena {scene_id} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
     else:

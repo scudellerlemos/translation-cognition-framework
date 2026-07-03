@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![316 testes](https://img.shields.io/badge/testes-316%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![438 testes](https://img.shields.io/badge/testes-438%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -143,8 +143,12 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
   é cego: não há como saber quais cenas foram traduzidas com doutrina obsoleta nem re-traduzir só o
   que mudou. Ver [ROADMAP — Prioridade #1](ROADMAP.md).
 - **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
-  os arquivos de diálogo, gera um conector determinístico e valida via round-trip. O LLM participa
-  **apenas no bootstrap**; após aprovação, o conector roda sem IA. Piloto: *Breath of Fire IV* (em andamento).
+  os arquivos de diálogo (evidence collector + tier classifier), gera um conector candidato (LLM
+  **apenas no bootstrap**, T2), valida cobertura + consistência (coverage gate + adversarial
+  validator) e confirma via round-trip byte-idêntico. Após aprovação, o conector roda sem IA —
+  versionado por manifesto + fingerprint (detecta patch do jogo e drift de script). Validado em
+  três engines distintos: Aquaplus (Utawarerumono), Capcom DAT (Breath of Fire IV) e Unity
+  Addressables (Souldiers).
 
 ```mermaid
 flowchart LR
@@ -320,8 +324,11 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
    um jogo (visual novel), EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
 4. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
    piloto de portabilidade para novo engine Capcom.
-5. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
-   rode o pipeline `00..08`.
+5. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
+   pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
+6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
+   rode o pipeline `00..08` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
+   descoberta automática de engine (Generic Connector System).
 
 Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medido) ·
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
@@ -332,7 +339,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ---
 
-## Status — junho 2026
+## Status — julho 2026
 
 **Versão estável: [1.0.0](CHANGELOG.md).** Ver [ROADMAP](ROADMAP.md) para o detalhamento técnico.
 
@@ -340,12 +347,21 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 - Harness stateless em produção: cena = job isolado, contexto O(cena), sem estouro de sessão ✅
 - Batch API (−50%) + tiering Haiku/Sonnet/Opus validado em escala de capítulo ✅
-- Gates de cognição: KB-gate (entidade sem fonte BLOQUEIA), controle de spoiler e gênero ✅
+- Batch segmentado (translate + back-translation): blast radius de cancelamento reduzido ✅
+- Gates de cognição: KB-gate (entidade sem fonte BLOQUEIA + profundidade de ratificação por
+  entidade), gate de completude de conector, controle de spoiler e gênero (auditoria obrigatória) ✅
 - Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica; TM como coração ✅
 - Ledger auditável (`api_ledger.jsonl`): toda chamada cobrada registrada, inclusive falhas ✅
-- Generic Connector System: dois engines distintos (Aquaplus + Capcom) com round-trip byte-idêntico ✅
+- Generic Connector System **completo** (Fase D): descoberta automática + coverage/adversarial gates
+  + manifesto/fingerprint versionado + gates de autonomia AI-agnostic. Três engines distintos
+  (Aquaplus, Capcom, Unity Addressables) com round-trip byte-idêntico ✅
+- KB híbrida via Ollama local (zero custo de API) com ratificação humana obrigatória antes de
+  reconciliar — governança preservada mesmo com raciocínio fora da sessão Claude ✅
+- `run_game`: driver ponta-a-ponta (todos os capítulos, teto de gasto global, retomada automática)
+  + observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) ✅
+- TM por série: jogos da mesma franquia compartilham termos recorrentes, isolamento estrutural ✅
 - Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
-- 145 testes passando (116 runtime + 29 validação)
+- 438 testes passando
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 
@@ -366,14 +382,21 @@ Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
 - QA humana concluída; DAT files de output gerados ✅
 - Validação in-game: OK (foco do projeto era o pipeline, não QA in-game extensiva) ✅
 
-**Débito técnico:**
+**Débito técnico:** nenhum aberto — TM semântica (B2) foi implementada e integrada ao harness core
+(sqlite-vec + embedder, ver `framework/db/`), disponível a qualquer projeto com banco `.db` configurado.
 
-| Item | Tipo |
-|---|---|
-| TM busca semântica (B2: `paraphrase-multilingual-MiniLM-L12-v2` local) — não implementada | débito técnico |
+### Souldiers (Unity, terceiro jogo) — CONCLUÍDO ✅
 
-**Próximos passos:**
-1. TM semântica (B2) — quando corpus multi-game justificar
+**470/470 cenas verificadas (round-trip byte-idêntico), 100% cobertura de back-translation.**
+Custo: **~$3,06 USD**. Conector Unity Addressables (CSV tilde-delimited em bundle) — terceiro
+engine distinto validado pelo Generic Connector System.
+
+- KB reconstruída a partir de material já pesquisado (decision_log, tone_analysis, terminology
+  seeds) + evidência real do corpus; 22 entidades UNSOURCED resolvidas com fonte ou verbatim ✅
+- Batch −50% (translate + back-translation) segmentado em pacotes menores — descoberto e corrigido
+  nesta rodada que 1 batch gigante "trava" aparentemente (contador da API não reflete progresso
+  real durante `in_progress`) ✅
+- Revisão humana (XLSX) disponibilizada; aplicação fica para quando o humano priorizar
 
 ---
 
@@ -381,10 +404,7 @@ Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
 
 | Dívida | Quando |
 |---|---|
-| `run_game` — driver ponta-a-ponta (capítulos + Fase 0 gating sem intervenção manual) | P2.5 — agora (barato) |
-| Observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) | P2.5 — agora (barato) |
-| `state_index` rebuild 1×/capítulo no batch (hoje por cena, redundante) | P2.5 — agora (barato) |
-| TM busca semântica (B2) — implementação pendente | pós-produção |
-| Evolução do conector: registry de detecção + síntese governada (round-trip como oráculo) | P4 (pós-produção) |
-| Filmes / séries: pontos de extensão documentados, sem validação em produção | futuro |
+| Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
+| CLI instalável / packaging `.exe` / README de produto (E1-E4) | pós-validação, só se for publicar externamente |
+| Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 

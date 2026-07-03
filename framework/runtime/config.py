@@ -37,6 +37,13 @@ MAX_OUTPUT_TOKENS = 64000
 _BATCH_CHUNK = 60     # linhas por requisicao de batch (folga sob o teto ~100 medido)
 _MAX_TRIES = 3        # tentativas p/ corrigir saida invalida (cobertura / token de quebra)
 
+# SEGMENTACAO de submissao (diferente do _BATCH_CHUNK acima, que fatia LINHAS dentro de 1 requisicao):
+# aqui fatiamos quantas requisicoes vao em CADA batch submetido a API. Mesmo motivo do
+# `_BACK_CHUNK` em back_translate.py (ver feedback-segment-large-batches) — 1 batch com centenas de
+# requisicoes pode parecer travado por horas sem sinal confiavel de progresso; um chunk que trava so
+# afeta aquele chunk (a cobertura que faltar cai pra proxima rodada do batch_translate).
+_TRANSLATE_SUBMIT_CHUNK = 40
+
 # Tuning de custo da TRADUCAO (medido: effort:high + thinking estourou ~5x o cost_model — o thinking
 # conta como saida a $15/M). Traducao com contexto curado nao precisa de raciocinio profundo:
 # default sem thinking + effort baixo. back_translate (alto risco) mantem thinking (raciocinio importa).
@@ -180,6 +187,10 @@ CONNECTOR_KNOWN_KEYS: frozenset = frozenset({
     "game_dat_dir", "game_dat_dir_note",
     # — rastreabilidade de mapeamento —
     "mapping_status", "mapping_note",
+    # — conectores CSV/Unity Addressables (Souldiers) — allowlist nunca cobria este formato,
+    # descoberto no onboarding do Souldiers (2026-07-02); ver connector-evolution-vision —
+    "engine", "data_dir_env", "data_dir_note", "csv_delimiter", "id_column", "text_column",
+    "target_column", "target_column_note", "dialogue_tables", "dep",
 })
 
 
@@ -205,6 +216,16 @@ class ConnectorConfig(TypedDict, total=False):
     game_dat_dir_note: str
     mapping_status: str
     mapping_note: str
+    engine: str                     # "Unity 2021 (Mono, Addressables 1.x)" | ...
+    data_dir_env: str               # nome da env var (ex.: "SOULDIERS_DATA_DIR") — nunca o path
+    data_dir_note: str
+    csv_delimiter: str              # conectores CSV embutido (Unity Addressables)
+    id_column: str
+    text_column: str
+    target_column: str
+    target_column_note: str
+    dialogue_tables: list
+    dep: str                        # dependência Python do conector (ex.: "UnityPy>=1.9.6")
 
 
 @dataclass
@@ -221,3 +242,5 @@ class RunSceneOptions:
     skip_kb_gate: bool = False
     pretranslated: bool = False
     defer_back: bool = False
+    rebuild_index: bool = True
+    skip_connector_gate: bool = False

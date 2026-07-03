@@ -90,13 +90,27 @@ def _stream_final(client, **kwargs):
     return _with_backoff(_do)
 
 
+_LOG_EVERY_SECONDS = 300  # status a cada ~5min de espera — nao a cada poll (spam) nem silencio total
+
+
 def _await_batch(client, batch_id, poll_seconds, max_wait_seconds):
-    """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout."""
+    """Aguarda o batch terminar (processing_status='ended'). True=terminou; False=timeout.
+
+    Loga status a cada ~5min (nao a cada poll de 30s — spam; nem silencio total — foi o silencio
+    que fez um batch de 146 requests (92% ja pronto) parecer travado por 111min ao vivo, Souldiers
+    2026-07-03, quase levando a cancelar por engano. `request_counts.succeeded` NAO reflete
+    progresso real durante in_progress — o aviso vai no proprio log p/ quem estiver acompanhando
+    nao repetir o erro. Ver `anthropic-batch-progress-unreliable` (memory) e `batch_status.py`."""
     waited = 0
+    next_log = _LOG_EVERY_SECONDS
     while True:
         b = _with_backoff(lambda: client.messages.batches.retrieve(batch_id))   # poll resiliente a timeout
         if getattr(b, "processing_status", None) == "ended":
             return True
+        if waited >= next_log:
+            print(f"  [batch {batch_id}] ainda in_progress ({waited // 60}min) — {b.request_counts} "
+                  f"(succeeded pode estar defasado, nao e sinal de travado — ver batch_status.py)")
+            next_log += _LOG_EVERY_SECONDS
         if waited >= max_wait_seconds:
             return False
         time.sleep(poll_seconds)

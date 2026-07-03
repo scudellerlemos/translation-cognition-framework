@@ -54,6 +54,7 @@ from back_translate import (  # noqa: E402,F401
 from config import (  # noqa: E402,F401
     _BATCH_CHUNK,
     _MAX_TRIES,
+    _TRANSLATE_SUBMIT_CHUNK,
     AWAITING,
     BACK_SAMPLE_RATE,
     BUDGET_ESCALATION,
@@ -736,6 +737,32 @@ def _batch_coverage(pack, merged):
 # _await_batch -> llm_client.py (importado acima).
 
 
+def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, req_model, packs, merged,
+                            root, default_model):
+    """Submete e mescla UM chunk de requests de traducao (ate _TRANSLATE_SUBMIT_CHUNK requests por
+    batch). Isola a rodada inteira de virar tudo-ou-nada: um chunk que trava/estoura o timeout so fica
+    SEM cobertura dele agora -- a rodada seguinte (ou o coverage_failed final, se acabarem as rodadas)
+    trata o que faltar, exatamente como qualquer request perdido hoje (mesmo caminho do
+    _batch_coverage/_merge_best_parity). Ver feedback-segment-large-batches / _TRANSLATE_SUBMIT_CHUNK."""
+    batch = _with_backoff(lambda: client.messages.batches.create(requests=chunk_reqs))  # noqa: B023  (_with_backoff invoca na hora)
+    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
+        print(f"  [translate-batch] chunk {batch.id} nao concluiu em {max_wait_seconds}s "
+              f"({len(chunk_reqs)} requisicao(oes)) -- segue sem essa cobertura agora; "
+              f"a rodada seguinte re-tenta o que faltar.")
+        return
+    # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
+    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))  # noqa: B023  (_with_backoff invoca na hora)
+    for result in results:
+        cid = result.custom_id
+        scene = cid.split("__", 1)[0]
+        if getattr(result.result, "type", None) != "succeeded":
+            continue                                  # tier falho -> cobertura decide (re-batch/fallback)
+        msg = result.result.message
+        log_api_call(root, scene, "translate", req_model.get(cid, default_model), _usage_of(msg), batch=True)
+        srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
+        _merge_best_parity(merged[scene], _parse_batch_lines(packs[scene], _text_of(msg)), srcmap)
+
+
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
                     max_rounds=3, tiered=True):
     """Traduz VARIAS cenas em batches (50% off), ACUMULANDO cobertura entre RODADAS. O batch e 1-tiro
@@ -747,8 +774,12 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene__tier'
     (separador `__` — a Batch API rejeita custom_id fora de ^[a-zA-Z0-9_-]{1,64}$, ex.: '@' dá 400).
 
+    SEGMENTACAO (`_TRANSLATE_SUBMIT_CHUNK`, ver _submit_translate_chunk): as requisicoes de CADA rodada
+    sao submetidas em chunks (nao 1 batch gigante) — um chunk que trava so fica sem cobertura dele,
+    a rodada seguinte re-tenta o que faltar (ou vira coverage_failed apos max_rounds).
+
     Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
-    {all_reused, written, coverage_failed, errored:<tipo>, timeout}. Cenas != (written|all_reused) ainda
+    {all_reused, written, coverage_failed, errored:<tipo>}. Cenas != (written|all_reused) ainda
     caem p/ o caminho interativo (run_scene). NAO roda build_plan/verify (isso e por-cena)."""
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
@@ -813,22 +844,13 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                     reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
         if not reqs:
             break
-        batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))  # noqa: B023  (_with_backoff invoca na hora)
-        if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
-            for scene in pending:
-                status.setdefault(scene, "timeout")
-            return status
-        # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
-        results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))  # noqa: B023  (_with_backoff invoca na hora)
-        for result in results:
-            cid = result.custom_id
-            scene = cid.split("__", 1)[0]
-            if getattr(result.result, "type", None) != "succeeded":
-                continue                                  # tier falho -> cobertura decide (re-batch/fallback)
-            msg = result.result.message
-            log_api_call(root, scene, "translate", req_model.get(cid, m), _usage_of(msg), batch=True)
-            srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
-            _merge_best_parity(merged[scene], _parse_batch_lines(packs[scene], _text_of(msg)), srcmap)
+        # SEGMENTACAO: nao submete tudo num batch so -- fatia em chunks de _TRANSLATE_SUBMIT_CHUNK
+        # requests, cada 1 um batch SEPARADO (ver _submit_translate_chunk). Blast radius menor: um
+        # chunk lento/travado nao afeta os demais nem aborta a rodada inteira.
+        for i in range(0, len(reqs), _TRANSLATE_SUBMIT_CHUNK):
+            chunk = reqs[i:i + _TRANSLATE_SUBMIT_CHUNK]
+            _submit_translate_chunk(client, chunk, poll_seconds, max_wait_seconds, req_model, packs,
+                                    merged, root, m)
         still = []
         for scene in pending:
             if str(status.get(scene, "")).startswith("errored"):

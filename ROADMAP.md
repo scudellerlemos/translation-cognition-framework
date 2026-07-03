@@ -34,9 +34,9 @@ Débito remanescente: TM semântica (B2) — quando corpus multi-game justificar
 > local (sem nova chamada de LLM) e desbloqueiam escala de múltiplos capítulos
 > sem intervenção manual.
 
-- [ ] **run_game** — driver ponta-a-ponta: roda todos os capítulos em sequência com Fase 0 gating + `--max-usd` + retomada automática. Elimina o "invocar cap-a-cap" manualmente.
-- [ ] **Observabilidade de progresso** — linhas/min, % do jogo, ETA, taxa de falha por capítulo. Hoje só custo delta existe (`cost_report.py`).
-- [ ] **`state_index` rebuild 1×/capítulo** — no batch, o rebuild por cena é redundante (tradução já concluída); mover para pós-capítulo reduz I/O sem perder consistência.
+- [x] **run_game** — ✅ **feito (2026-07-03)** `framework/runtime/run_game.py`: driver ponta-a-ponta, descobre capítulos (`ch_<N>_*`) ou cai no modo flat (Souldiers-like, rótulo `"full"` + `--scenes-glob`); `--max-usd` é teto GLOBAL (encolhe entre capítulos); retomada automática de graça (reusa `run_state.json`, zero estado novo). Testes: `test_run_game.py` (5).
+- [x] **Observabilidade de progresso** — ✅ **feito** `framework/runtime/progress_report.py`: % do jogo, linhas/min, ETA, taxa de falha — puro/determinístico (elapsed_s passado pelo caller, sem `time.time()` interno). Impresso pelo `run_game` após cada capítulo. Testes: `test_progress_report.py` (5).
+- [x] **`state_index` rebuild 1×/capítulo** — ✅ **feito**: `run_scene.py` ganhou `rebuild_index` (default `True`, preserva o modo interativo); `run_chapter.py` passa `rebuild_index=False` em modo batch e faz 1 rebuild só para o capítulo inteiro após o loop (`_rebuild_index_phase`). Testes: `test_batch_mode_rebuilds_state_index_once_per_chapter` + 2 em `test_run_scene.py`.
 
 ---
 
@@ -54,36 +54,37 @@ Débito remanescente: TM semântica (B2) — quando corpus multi-game justificar
 ### Evolução do Motor (pós-produção BoF4)
 
 - [x] **B1. Validation leve.** ✅ `framework/validation/validate.py` — genérico, ERROR/WARN, 7 testes pytest.
-- [ ] **B2. Memory leve** — TM, glossário e KB consultáveis entre lotes via busca por relevância, no lugar de passar o CSV inteiro no contexto.
+- [x] **B2. Memory leve** — ✅ **feito (confirmado 2026-07-03, checkbox estava desatualizado)** — TM/KB
+  consultáveis por relevância via busca semântica, não o CSV inteiro no prompt.
 
-  #### Abordagem: sentence-transformers local (jun/2026)
+  #### Implementação real: sqlite-vec + embedder (não o tm_search.py documentado originalmente)
 
-  > Decisão final jun/2026: embedding semântico local com `paraphrase-multilingual-MiniLM-L12-v2`.
-  > Racional: FTS5 (BM25 léxico) não cobre paráfrases cross-game ("dragon spirit" ≠ "spirit energy");
-  > embedding captura significado independente de vocabulário — necessário quando o corpus crescer para 3+ jogos.
+  > A abordagem `tm_search.py` (cache `.npy` flat, `sentence-transformers` local) documentada abaixo
+  > foi **superada** por uma implementação DB-based mais integrada, sem nunca ter sido cabeada —
+  > ficou como código órfão (zero callers). **Removido em 2026-07-03** (`tm_search.py` +
+  > `test_tm_search.py`) para não deixar duas implementações concorrentes do mesmo conceito.
 
-  **Solução:** `sentence-transformers` local + numpy para cosine similarity. Cache em `.npy` (não commitado).
+  **Solução real, em produção:** `framework/runtime/context_pack.py::build_pack` chama
+  `_load_tm_semantic()` (linha 394) e `_load_kb()` (linha 437), que usam `framework/db/embedder.py` +
+  `framework/db/store.py` (SQLite + extensão `sqlite-vec`) — gated por `_db_path(root, cfg)`: só
+  ativa se o projeto tiver banco `.db` configurado (switch deliberado; sem `.db`, cai pro fallback de
+  sempre, testado). Validado com 6046 vetores no `translation_software` (busca exata → score 1.0,
+  variação de vocabulário → 0.944). Testes: `framework/db/test_context_pack_parity.py`,
+  `test_export.py`, `test_migrate.py`. Ver memória `semantic-stack-validated`.
 
-  | Propriedade | Valor |
-  |---|---|
-  | Modelo | `paraphrase-multilingual-MiniLM-L12-v2` |
-  | Tamanho | ~470 MB (download on-demand no primeiro uso) |
-  | Deps | `sentence-transformers` (puxa torch + transformers) |
-  | Query em 100k entradas | <50 ms (numpy cosine, CPU) |
-  | Filtros por metadata | pós-filtro em Python (`scene`, `game`) |
-  | Cache | `artifacts/state/tm_embeddings.npy` — regenerado se TM mudar |
-  | Artefatos commitados | zero — `.npy` no `.gitignore` |
-
-  **Impacto de custo:** context_pack hoje passa o TM inteiro no prompt. Com top-10 semântico, redução ~99%
-  nos tokens de TM por chamada — benefício independente da abordagem léxica vs semântica.
-
-  **Implementação:** `framework/runtime/tm_search.py` — `build_index()`, `load_index()`, `search(query, top_k, scene)`.
-
-  **Upgrade path:** SQLite FTS5 como complemento léxico (busca exata mais rápida) quando o corpus tiver
-  >500k entradas e a latência de numpy cosine virar gargalo.
-- [ ] **B3. Kernel simples** — runtime que orquestra os passos usando Validation + Memory. Compensa com ≥2 projetos.
-  - As primitivas (`run_scene`, `validate`, `context_pack`) devem expor contratos Python limpos e tipados — chamáveis por qualquer agente, CLI ou orquestrador externo sem depender do Claude ou de MCP. MCP tools ficam como conveniência de desenvolvimento apenas, nunca entram no produto.
-- [ ] **B4. Skill DSL** — forma declarativa dos passos 00–08. Por último: só vale com o Kernel existente e 2–3 projetos.
+  **Upgrade path (ainda válido):** SQLite FTS5 como complemento léxico quando o corpus tiver >500k
+  entradas e a latência de busca vetorial virar gargalo.
+- [x] **B3. Kernel simples** — ✅ **feito (2026-07-03, escopo reduzido: fachada, não reimplementação)**.
+  `run_scene.run_scene`/`run_chapter.run_chapter`/`run_game.run_game` (todos já tipados, sem
+  Claude/MCP) + `validate.validate_project` + `context_pack.write_pack` já formam o "runtime que
+  orquestra usando Validation + Memory" pedido — `framework/runtime/kernel.py` só consolida sob um
+  import único (fachada pura, testada por identidade — `test_kernel.py`). Reimplementar do zero
+  duplicaria 442+353+100 linhas já testadas (315+ testes) sem ganho real.
+- [x] **B4. Skill DSL** — ✅ **já feito, descoberto na auditoria (nenhum código novo necessário)**.
+  `framework/skills/skill_base.py` (`Skill` ABC: `skill_id`/`required_inputs`/`check_inputs`/`run`)
+  + `registry.py` (`get`/`all_skills`) já são a forma declarativa dos passos 00/06/07/08 (os com
+  substância de código). Cognitivas puras (01-04b/05b/06c) ficam `.md` por decisão deliberada — não
+  é lacuna, é a fronteira já documentada em `skills-registry-boundary`.
 
 ---
 
@@ -151,15 +152,86 @@ novo jogo
 - TM usada apenas na entrada; traduções aprovadas pelo QA alimentam a TM de volta
 - Retradução de um jogo: warning explícito + delete das entradas daquele jogo na TM da série
 
+> ✅ **Implementado (2026-07-03).** `tm_lookup.py`: série declarada via `project.json["series"]`
+> (opcional — fallback = slug do título, zero mudança de comportamento pros 3 projetos existentes
+> até um humano declarar a mesma série em 2+ `project.json`). `tm/<série>.json` fica na RAIZ do repo
+> (committed — acumula conhecimento cross-projeto, diferente do cache-por-projeto regenerável).
+> Isolamento estrutural: cada série tem seu próprio arquivo, impossível misturar por construção.
+> `tm_updater.py`: `sync_scenes()` faz upsert por `(source_game, src_key)` lendo
+> `translation_plan_<sid>.json` (não `approved_<sid>.csv` — esse é projeção do conector que o ciclo
+> de QA não regenera; achado real durante a implementação) das cenas VERIFIED tocadas pelo QA;
+> `reset_game()` remove só as entradas de 1 jogo (retradução), avisa explicitamente antes (ação
+> irreversível sem backup manual). Integração: `quality_review.apply()` chama `sync_scenes()` ao
+> final (best-effort, nunca derruba o apply); novo subcomando `quality_review.py sync-tm <projeto>
+> [<cap>]` força sync manual de capítulos já verified sem nenhuma correção (gap aceito: cena 100%
+> limpa nunca é "tocada" por `apply()`). `context_pack.py` ganhou `tm_series` no pack + seção "6b"
+> no prompt, só aparece se não-vazia. Testes: `test_tm_lookup.py` (8), `test_tm_updater.py` (5) +
+> 3 de integração em `context_pack`/`quality_review`.
+
 #### Implementação
 
-- [ ] **D1.** Evidence Collector + Registry T1 — `evidence_collector.py`, `tier_classifier.py`, `connector_registry.json`, `script_generator.py`. Score: **~87**
-- [ ] **D2.** Coverage Gate + Adversarial Validator — `coverage_gate.py`, `adversarial_validator.py`, interface T3. Score: **~92**
-- [ ] **D3.** Manifesto + Versionamento + Fingerprint — `connector_manifest.json`, `fingerprint_monitor.py`. Score: **~95**
-- [ ] **D4.** TM por série + integração QA — `tm_lookup.py`, `tm_updater.py`, integração com `quality_review.py`. Score: **~97**
-- [ ] **D5.** Gates de autonomia AI-agnostic:
-  - **Gate de existência:** verificar `connector_registry` antes de qualquer geração — se engine conhecida, usar diretamente sem acionar LLM.
-  - **Gate de leitura completa:** antes de editar conector existente, ler por inteiro e validar contra `connector_manifest.json`. Pipeline não deve depender do assistente de desenvolvimento para garantir isso.
+- [x] **D1.** ✅ **feito e testado** (confirmado 2026-07-03 — checkbox estava desatualizado)
+  Evidence Collector + Registry T1 — `evidence_collector.py`, `tier_classifier.py`,
+  `connector_registry.json`, `script_generator.py`. Testes: `test_evidence_collector.py`. Score: **~87**
+- [x] **D2.** ✅ **feito (2026-07-03)** Coverage Gate + Adversarial Validator —
+  `coverage_gate.py` (dry-run do candidato T2 contra os 3 maiores arquivos reais, sem subprocess —
+  importa `iter_string_offsets`/`decode_string` via `importlib`; piso 85% no MÍNIMO entre arquivos,
+  não na média) + `adversarial_validator.py` (arquivo zerado entre populados, variância >1.5 entre
+  arquivos, offsets sobrepostos). Interface T3: reusa os mesmos gates sem adaptação — dependem só
+  do contrato de função, não da origem do módulo. `discover.py` aponta pro gate no passo-a-passo T2,
+  antes do `connector_smoke.py`. Testes: `test_coverage_gate.py` (9), `test_adversarial_validator.py`
+  (5). Score: **~92**
+- [x] **D3.** ✅ **feito (2026-07-03)** Manifesto + Versionamento + Fingerprint —
+  `framework/runtime/fingerprint_monitor.py`: `connector_manifest.json` por projeto (tier, engine,
+  versão, `scripts_fingerprint` + `source_fingerprint`, `last_validated`), fingerprint de
+  ARQUIVOS-FONTE do jogo (novo — `_connector_hash` existente só cobria os scripts do conector, não
+  reimplementado, só reusado via `check_scripts_drift`). CLI standalone, não amarrado no hot path
+  de `run_scene`/`run_chapter` (exige `data_dir` da instalação real). Testes:
+  `test_fingerprint_monitor.py` (7). Score: **~95**
+- [x] **D4.** ✅ **feito (2026-07-03)** TM por série + integração QA — ver detalhe abaixo. Score: **~97**
+- [x] **D5.** ✅ **feito (2026-07-03)** Gates de autonomia AI-agnostic:
+  - **Gate de existência:** `tier_classifier.existence_gate()` — formaliza o que `discover.py` já
+    fazia via if/elif implícito; `must_generate=True` SÓ em T2 (T1 aponta pro conector de
+    referência, T3 fica bloqueado — geração via LLM estruturalmente impossível fora de T2).
+    `discover.py` refatorado pra usar. Testes: `test_tier_classifier_gate.py` (3).
+  - **Gate de leitura completa:** `connector_gate.assert_fresh_read(script_path, claimed_content)`
+    — interpretação operacional escolhida (mais codificável/testável): o caller passa o CONTEÚDO
+    INTEIRO que alega ter lido (não um path); o gate compara hash do alegado vs. hash do disco
+    agora — diverge = `StaleReadError` (arquivo mudou, ou conteúdo nunca foi lido de verdade).
+    Testes: 3 novos em `test_connector_gate.py`. **Honestidade de status**: a função existe e está
+    testada, mas NÃO tem nenhum caller em produção ainda (`run_scene.py`/`connector_mgr.py` não a
+    chamam) — não há um ponto natural no runtime determinístico pra isso, já que "editar um
+    conector existente" é ação humana/Claude durante onboarding/manutenção, não algo que acontece
+    dentro do loop de tradução por cena. Infraestrutura pronta, disponível pra quem for editar um
+    conector manualmente chamar antes de escrever — não uma garantia ativamente imposta hoje.
+
+#### D6 — Gate de completude de Fase 0/1 (`connector_gate.py`)
+
+> Descoberto no onboarding do Souldiers (2026-07-02): `project.json` declarava "Fase 0 concluída"
+> com só `extract.py`/`reinsert.py` prontos — `build_plan_chapter.py`/`verify_chapter.py`/
+> `test_roundtrip.py` nunca existiram, ou seja, round-trip NUNCA tinha sido validado de verdade.
+> Mesma classe de bug do gap de KB (ver `kb_gate.py` — [[onboarding-scaffold-kb-gate-drift]]):
+> "fase declarada concluída" sem nenhum gate automático checando o conjunto completo de artefatos
+> antes do primeiro gasto real em tradução. O piloto pago é que acabou achando os dois, tarde.
+
+- [x] **D6a.** ✅ **feito (2026-07-03)** `framework/runtime/connector_gate.py` (espelha `kb_gate.py`)
+  — hard-block se `build_plan_script`/`verify_script` (via `connector_mgr`) não existirem no disco;
+  soft-block (bypassável via `--skip-connector-gate`) se nenhuma cena do projeto tem `verified=True`
+  em `run_state.json` (reusa o estado que já existe — sem manifest/timestamp novo). `run_scene.py` e
+  `run_chapter.py` chamam ANTES do `kb_gate` (conector é pré-requisito mais fundamental). Testes:
+  `test_connector_gate.py` (6) + integração em `test_run_scene.py`/`test_run_chapter.py`.
+- [x] **D6b.** ✅ **feito** `script_generator.py` ganhou `generate_build_plan_chapter()`/
+  `generate_verify_chapter()` — lêem os esqueletos novos em `framework/connectors/_skeleton/`
+  (`build_plan_chapter.py`, `verify_chapter.py`), generalizados a partir dos 3 conectores reais
+  (BoF4/Utawarerumono/Souldiers). Diferente do `extract.py` (3 padrões por evidência), aqui não há
+  branching — é sempre o mesmo esqueleto com pontos `# ADAPTAR` (tokens estruturais do engine em
+  `build_plan_chapter.py`; a reconstrução byte-a-byte, 100% específica do formato, em
+  `verify_chapter.py`). O protocolo de SAÍDA (exit 0/1/3 + `VERIFY_STATUS:{json}`) é fixo/reusável.
+  Testes: `test_script_generator.py` (3).
+- [x] **D6c.** ✅ **feito** `scaffold_project.py` ganhou `_report_connector_gate_status()` (mesmo
+  padrão de `_report_kb_gate_status`) — reporta no fim do scaffold se os scripts estão ausentes,
+  visível no dia 1 do onboarding; nunca cria stub fake (mesma governança do KB). Testes: 2 novos em
+  `test_scaffold_kb_gate.py`.
 
 #### Teto dos 3 pontos (irredutível)
 

@@ -34,6 +34,34 @@ def test_good_project_passes(tmp_path):
     assert r["hard_problems"] == [] and r["problems"] == []
 
 
+def test_reconciled_with_unratified_entity_blocks(tmp_path):
+    # P4 hardening: 'reconciled' sozinho nao basta -- entidade com conteudo afirmado precisa de
+    # ratificacao humana (kb_ratified.csv), generalizado do kb_reconcile.py pro caminho MANUAL.
+    _good(tmp_path)
+    (paths.artifacts(tmp_path) / "universe_knowledge_base.md").write_text(
+        "## Ryu\n\n**Definicao:**\nProtagonista.\n\n**Status de confianca:**\nhigh\n", encoding="utf-8")
+    r = kb_gate.check(tmp_path, "12_01")
+    assert any("ratificacao humana" in p and "Ryu" in p for p in r["problems"])
+
+
+def test_reconciled_with_ratified_entity_passes(tmp_path):
+    _good(tmp_path)
+    (paths.artifacts(tmp_path) / "universe_knowledge_base.md").write_text(
+        "## Ryu\n\n**Definicao:**\nProtagonista.\n\n**Status de confianca:**\nhigh\n", encoding="utf-8")
+    paths.kb_ratified(tmp_path).write_text("name\nRyu\n", encoding="utf-8")
+    r = kb_gate.check(tmp_path, "12_01")
+    assert r["hard_problems"] == [] and r["problems"] == []
+
+
+def test_unsourced_entity_never_needs_ratification(tmp_path):
+    _good(tmp_path)
+    (paths.artifacts(tmp_path) / "universe_knowledge_base.md").write_text(
+        "## Fantasma\n\n**Definicao:**\nUNSOURCED -- nenhuma fonte menciona.\n\n"
+        "**Status de confianca:**\nUNSOURCED\n", encoding="utf-8")
+    r = kb_gate.check(tmp_path, "12_01")
+    assert r["hard_problems"] == [] and r["problems"] == []
+
+
 def test_missing_kb_is_hard(tmp_path):
     _good(tmp_path)
     (paths.artifacts(tmp_path) / "universe_knowledge_base.md").write_text("", encoding="utf-8")
@@ -98,6 +126,21 @@ def test_scene_beyond_frontier_blocks(tmp_path):
     _good(tmp_path)
     r = kb_gate.check(tmp_path, "13_01")   # 13 > fronteira 12_17
     assert any("ALEM da fronteira" in p for p in r["problems"])
+
+
+def test_path_style_frontier_never_blocks_numeric_scene(tmp_path):
+    """Regressao real (Souldiers, 2026-07-02): kb_frontier como path de projeto flat (convencao
+    ja usada no BoF4: "artifacts/kb_phase_worklist.md") nao e um scene_id parseavel — _pos()
+    retorna tupla vazia. Cena com segmento puramente numerico no nome (ex.: "CAVE_00" -> (0,))
+    tinha `_pos(scene) > _pos(frontier vazio)` = True e era bloqueada por engano — travou 500+
+    cenas do Souldiers antes do fix."""
+    _good(tmp_path)
+    (tmp_path / "project.json").write_text(json.dumps({
+        "title": "T", "media_type": "game", "kb_frontier": "artifacts/kb_phase_worklist.md",
+    }), encoding="utf-8")
+    for scene in ("CAVE_00", "1_5", "CRYSTAL_1_SLIDE1_NARRATOR"):
+        r = kb_gate.check(tmp_path, scene)
+        assert not any("ALEM da fronteira" in p for p in r["problems"]), (scene, r["problems"])
 
 
 def test_kb_ratified_without_date_col_warns(tmp_path):
