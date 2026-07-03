@@ -45,14 +45,21 @@ Colunas obrigatórias:
 | `term` | Termo no idioma-fonte |
 | `category` | Categoria da entidade |
 | `target_translation` | Forma final no idioma-alvo (`project.json → target_language`) |
-| `handling_rule` | `manter_original` / `traduzir` / `traduzir_parcial` |
+| `handling_rule` | `verbatim` / `translate` / `translate_partial` |
 | `spoiler_level` | none / moderate / major / critical |
-| `aliases` | Aliases do termo com nível de spoiler |
+| `aliases` | Aliases do termo (separados por `;`) |
 | `notes` | Instruções específicas de uso |
+
+> **ATENÇÃO — valores do runtime:** o CSV deve usar os valores em inglês exibidos acima
+> (`verbatim`, `translate`, `translate_partial`). Esses são os valores que
+> `context_pack.select_glossary()` e `state_index` leem. Usar os equivalentes em português
+> (`manter_original`, `traduzir`) produz `glossary_subset: 0` silenciosamente.
+> Rodar `python framework/runtime/state_index.py <projeto>` — se retornar aviso de coluna
+> faltando ou glossary=0 em cena que deveria ter hits, é sinal de schema errado.
 
 ### Regras de handling_rule
 
-**`manter_original`** — usar exatamente o termo no idioma-fonte (ou romanização). Aplica-se tipicamente a:
+**`verbatim`** — usar exatamente o termo no idioma-fonte (ou romanização). Aplica-se tipicamente a:
 - Nomes de personagens
 - Locais inventados
 - Títulos culturais
@@ -61,13 +68,13 @@ Colunas obrigatórias:
 - Mecânicas com nome próprio
 - Moeda inventada
 
-**`traduzir`** — usar a tradução no idioma-alvo. Aplica-se tipicamente a:
+**`translate`** — usar a tradução no idioma-alvo. Aplica-se tipicamente a:
 - UI (menus, modos, prompts)
 - Títulos políticos/militares descritivos
 - Facções com nome descritivo
 - Elementos descritivos genéricos de locais (Inn, River, Province)
 
-**`traduzir_parcial`** — manter o nome próprio, traduzir o elemento descritivo:
+**`translate_partial`** — manter o nome próprio, traduzir o elemento descritivo:
 - `[NomePróprio] Inn` → `Estalagem [NomePróprio]`
 - `[NomePróprio] River` → `Rio [NomePróprio]`
 
@@ -94,6 +101,40 @@ O documento deve cobrir obrigatoriamente (omitir seções não-aplicáveis à ob
 11. **Tratamento de Comédia** — tipos de comédia e suas regras específicas
 12. **Gestão de Spoilers** — classificação + regras práticas por nível + cenas de armadilha
 13. **Consistência entre Ocorrências** — processo de verificação + termos obrigatórios (formas exatas)
+
+---
+
+## TONE_ANALYSIS.MD — FORMATO DE VOICE CARDS (obrigatório para runtime)
+
+O `tone_analysis.md` é lido por `state_index.build_voice_cards()`. Para gerar voice cards
+utilizáveis pelo `context_pack`, **cada personagem relevante deve ter uma seção `###`** com
+o marcador `voice_criticality:` inline. Sem esse marcador, o state_index retorna 0 cards.
+
+### Formato obrigatório
+
+```markdown
+### NomePersonagem — `voice_criticality: high|medium|low`
+- **Registro:** (breve descrição do registro)
+- **Características:** (traços de voz mais marcantes)
+- **Red flags:** (erros típicos a evitar)
+```
+
+### Aliases (nomes alternativos / formas em múltiplos idiomas)
+
+Usar `/` entre os nomes no cabeçalho:
+
+```markdown
+### Valkirie/Valkyrie/Valquíria — `voice_criticality: medium`
+```
+
+O parser extrai todos os nomes separados por `/` como aliases. Isso é necessário quando
+o nome no corpus-fonte (EN) difere do nome no target (PT) — sem alias, `_present()` não
+encontra o personagem no texto-fonte e o card não aparece na cena.
+
+### Scaffold
+
+Rodar `python framework/runtime/scaffold_project.py <projeto>` gera o template com as
+seções `###` e o marcador `voice_criticality` no lugar certo.
 
 ---
 

@@ -356,6 +356,8 @@ def test_paths_contract():
     assert rel(paths.translation_plan(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/translation_plan_16_01.json"
     assert rel(paths.back_translation(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/back_translation_16_01.json"
     assert rel(paths.approved(r, "ch_16_01", "16_01")) == "artifacts/scenes/ch_16_01/approved_16_01.csv"
+    assert rel(paths.research_cache_dir(r)) == "artifacts/research_cache"
+    assert rel(paths.research_cache(r, "abc123")) == "artifacts/research_cache/abc123.md"
 
 
 def test_spoiler_check_detects_pre_reveal_leak(tmp_path):
@@ -431,6 +433,8 @@ def test_verify_status_parses_structured_line():
 
 def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     root = _fake_chapter(tmp_path, ("99_02", "99_01", "99_03"))   # fora de ordem de proposito
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     (root / "artifacts" / "run_state.json").write_text(
         json.dumps({"scenes": {"ch_99_01": {"status": "verified", "verified": True}}}),
         encoding="utf-8")
@@ -455,6 +459,8 @@ def test_run_survives_non_utf8_subprocess_output():
 
 def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
     root = _fake_chapter(tmp_path, ("99_01", "99_02"))
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(run_chapter.RS, "run_scene",
                         lambda r, scene, **kw:
                         {"status": "verify_failed" if scene == "ch_99_01" else "verified",
@@ -706,6 +712,33 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path, fake_p
         assert r["batch"] is True
         assert r["model"] == model.MODEL_TRANSLATE_CHEAP, "linhas single-line -> tier cheap (Haiku)"
     assert n == {"ch_99_01": 1, "ch_99_02": 2, "ch_99_03": 2}
+
+
+def test_batch_translate_segments_large_submissions(monkeypatch, tmp_path, fake_pack_ctx):
+    """Regressao do mesmo padrao do back-translate (Souldiers, 2026-07-03): a submissao do translate
+    tambem nao pode virar 1 batch gigante. 5 cenas single-line (1 request cada, tier cheap) com
+    _TRANSLATE_SUBMIT_CHUNK=2 -> 3 chamadas a create() (2+2+1); todas convergem 'written'."""
+    scenes = [f"ch_97_0{i}" for i in range(1, 6)]
+    for s in scenes:
+        paths.scene_dir(tmp_path, s).mkdir(parents=True)
+        fake_pack_ctx[s] = {"scene_id": context_pack.scene_id_of(s), "tm_exact": [],
+                            "lines": [{"offset": "0x1", "source": "Hi"}]}
+    fb = _FakeBatches({s: [_btext(["0x1"])] for s in scenes})
+    create_calls = []
+    orig_create = fb.create
+
+    def _counting_create(requests):
+        create_calls.append(len(requests))
+        return orig_create(requests)
+    monkeypatch.setattr(fb, "create", _counting_create)
+    monkeypatch.setattr(model, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+    monkeypatch.setattr(model, "_TRANSLATE_SUBMIT_CHUNK", 2)
+
+    st = model.batch_translate(tmp_path, scenes, poll_seconds=0, max_rounds=1)
+
+    assert create_calls == [2, 2, 1], "5 requests com _TRANSLATE_SUBMIT_CHUNK=2 devem virar 3 batches separados"
+    assert st == {s: "written" for s in scenes}
 
 
 def test_tier_of_routes_by_break_token():
@@ -979,6 +1012,8 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
     monkeypatch.setattr(run_chapter.M, "batch_translate",
                         lambda r, scenes, **kw: {s: "written" for s in scenes})
     monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     seen = {}
     monkeypatch.setattr(run_chapter.RS, "run_scene",
                         lambda r, scene, **kw: seen.__setitem__(scene, kw.get("pretranslated")) or
@@ -991,6 +1026,8 @@ def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
     # TETO DE GASTO: aborta ANTES da proxima cena quando o custo do capitulo passa de --max-usd.
     root = _fake_chapter(tmp_path, ("99_01", "99_02", "99_03"))
     monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
     ran = []
     monkeypatch.setattr(run_chapter.RS, "run_scene",
@@ -1063,6 +1100,38 @@ def test_batch_back_translate(monkeypatch, tmp_path):
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
     st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0, sample_rate=0)
     assert st2 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb2.models == []
+
+
+def test_batch_back_translate_segments_large_batches(monkeypatch, tmp_path):
+    """Regressao real (Souldiers, 2026-07-03): 1 batch gigante de back-translation pareceu travado por
+    horas; cancelar cedo demais perdeu requests genuinamente em voo. Fix: chunk_size divide requests em
+    varios batches SEPARADOS. Aqui: 5 cenas, chunk_size=2 -> 3 chunks (2+2+1), 3 chamadas a create()."""
+    scenes = [f"ch_88_0{i}" for i in range(1, 6)]
+    for s in scenes:
+        d = paths.scene_dir(tmp_path, s)
+        d.mkdir(parents=True)
+        sid = context_pack.scene_id_of(s)
+        (d / f"translation_plan_{sid}.json").write_text(
+            json.dumps(_plan([(f"0x{sid}", "high")])), encoding="utf-8")
+
+    fb = _FakeBatches({s: [_backtext([f"0x{context_pack.scene_id_of(s)}"])] for s in scenes})
+    create_calls = []
+    orig_create = fb.create
+
+    def _counting_create(requests):
+        create_calls.append(len(requests))
+        return orig_create(requests)
+    monkeypatch.setattr(fb, "create", _counting_create)
+    monkeypatch.setattr(back_translate, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
+
+    st = model.batch_back_translate(tmp_path, scenes, poll_seconds=0, sample_rate=0, chunk_size=2)
+
+    assert create_calls == [2, 2, 1], "5 requests com chunk_size=2 devem virar 3 batches separados"
+    assert st == {s: "reviewed" for s in scenes}
+    for s in scenes:
+        sid = context_pack.scene_id_of(s)
+        assert (paths.scene_dir(tmp_path, s) / f"back_translation_{sid}.json").is_file()
 
 
 # ----------------------------- driver de Fase 0 ------------------------------
@@ -1560,6 +1629,34 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
     assert called["offsets"] == ["0x2"] and "encurtar" in called["note"]   # só a nota foi p/ IA
 
 
+def test_quality_review_apply_syncs_series_tm(tmp_path, monkeypatch):
+    # D4: apply() alimenta a TM da SERIE de volta com as cenas TOCADAS (verified) nesta rodada.
+    import tm_lookup
+    monkeypatch.setattr(tm_lookup, "_REPO_ROOT", tmp_path / "_repo")
+    import paths
+    (tmp_path / "project.json").write_text(
+        json.dumps({"title": "T", "media_type": "game", "series": "minha_serie"}), encoding="utf-8")
+    d = paths.scene_dir(tmp_path, "ch_71_01")
+    d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_71_01", "71_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "ruim"}}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_71_01", "71_01").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "text_source": "A", "base_translation": "ruim"}]}),
+        encoding="utf-8")
+    rs = paths.run_state(tmp_path)
+    rs.parent.mkdir(parents=True, exist_ok=True)
+    rs.write_text(json.dumps({"scenes": {"ch_71_01": {"status": "verified", "verified": True}}}),
+                 encoding="utf-8")
+    csvp = tmp_path / "ret.csv"
+    csvp.write_text(
+        "scene,offset,speaker,risk,revisar,source_en,target_pt,marcar,correcao,nota\n"
+        "ch_71_01,0x1,X,high,risco:high,A,ruim,CORRIGIR,Corrigido pelo humano,\n", encoding="utf-8")
+    quality_review.apply(tmp_path, csvp)
+    tm = tm_lookup.load_series_tm("minha_serie")
+    assert len(tm) == 1
+    assert tm[0]["target"] == "Corrigido pelo humano"   # a TM reflete o valor VERBATIM ja aplicado
+
+
 # --------- teto de custo (#1) + invalidacao de sinal stale (#2) --------------
 
 def test_invalidate_back_translation_marks_stale(tmp_path):
@@ -1874,6 +1971,8 @@ def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
                 "prompt": "p", "expected_output": "e"}
 
     monkeypatch.setattr(run_scene.kb_gate, "check", fake_kb)
+    monkeypatch.setattr(run_scene.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(run_scene.M, "translate", fake_translate)
     (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
     (tmp_path / "artifacts").mkdir()
