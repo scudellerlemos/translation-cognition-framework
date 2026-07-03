@@ -1,0 +1,24 @@
+{
+  "scene": "INGAME_FARMER",
+  "scene_group": "INGAME_FARMER",
+  "lines": [
+    {
+      "offset": "STR_INGAME_DIALOGS_AC_FARMER_1_1",
+      "text_source": "If you'd like to be my assistant, give me a hand with this. Otherwise, don't distract me.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "proposta com ameaça implícita; tom de ordem disfarçada",
+      "risk_level": "medium",
+      "base_translation": "Se quer ser meu assistente, me ajude com isto. Senão, não me distraia.",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Personagem Brigard (criticality: high) exige registro estóico e frases curtas sem floreios. Risco de soar coloquial ou perder a autoridade. Back-translation necessária para validar tom seco."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-INGAME_FARMER-v1"
+}

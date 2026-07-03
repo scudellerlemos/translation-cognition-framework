@@ -1,0 +1,24 @@
+{
+  "scene": "JIVAN_AC_TOPIC_MISSION",
+  "scene_group": "JIVAN_AC_TOPIC_MISSION",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_JIVAN_AC_TOPIC_MISSION_1_1",
+      "text_source": "These Valkyries came up with the same contrived story for everyone but, you know what? We didn't die to be part of any war of the Gods. Your General Brigard seems like a sensible man. I believe he hopes to find the “Guardian” with another goal in mind. Do you really think it'll be able to take you back? To be quite honest with you, I very much doubt this Guardian even exists.",
+      "speaker": "unknown",
+      "tone_register": "formal-reflexivo, ceticismo pragmático",
+      "intent": "questionar a narrativa das Valquírias e expressar dúvida sobre a existência do Guardião; avaliar a competência de Brigard",
+      "risk_level": "high",
+      "base_translation": "Essas Valquírias inventaram a mesma história cansativa para todo mundo, mas, sabe de uma coisa? Não morremos para fazer parte de nenhuma guerra dos Deuses. Seu General Brigard parece ser um homem sensato. Acredito que ele tenha outro objetivo em mente ao procurar o",
+      "byte_budget": 382,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade do falante não mapeada em voice_cards.json (speaker != Balof/Brigard/Valkirie); conteúdo crítico (Guardião, guerra dos deuses, identidade de Brigard) próximo de potencial spoiler — requer back-translation para garantir neutralidade narrativa e não antecipar revelações. Tom reflexivo/cético deve evitar soar dismissivo ou profético (antipatia ao Guardião). Comprimento (382 bytes) comporta pt-BR natural com ~15-20% expansão."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 1,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-JIVAN_AC_TOPIC_MISSION-v1"
+}

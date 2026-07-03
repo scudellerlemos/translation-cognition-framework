@@ -1,0 +1,37 @@
+{
+  "scene": "SCRIBLES_TOWN_BRIDGE_INTRO",
+  "scene_group": "SCRIBLES_TOWN_BRIDGE_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_TOWN_BRIDGE_INTRO_1_1",
+      "text_source": "I'll never confuse your armour with another tin man's, yes?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "afirmação enfática com humor; reassegurar sobre identidade visual",
+      "risk_level": "low",
+      "base_translation": "Nunca vou confundir sua armadura com a de outro homem de lata, tá certo?",
+      "byte_budget": 59,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_TOWN_BRIDGE_INTRO_1_2",
+      "text_source": "Don't worry, I always keep several copies of all my maps. I shall keep them until you decide you're interested.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "tranquilizar com precisão; demonstrar preparação metódica",
+      "risk_level": "medium",
+      "base_translation": "Não se preocupe, sempre mantenho várias cópias de todos os meus mapas. Vou guardá-los até você decidir que está interessado.",
+      "byte_budget": 111,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard formal-militar exige tom seco e conciso; 'shall' indica solenidade; risco de soar muito arcaico em pt-BR. Reformulado para 'vou guardar' (mantém formalidade sem arcaísmo desnecessário). Back-translation recomendada."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SCRIBLES_TOWN_BRIDGE_INTRO-v1"
+}

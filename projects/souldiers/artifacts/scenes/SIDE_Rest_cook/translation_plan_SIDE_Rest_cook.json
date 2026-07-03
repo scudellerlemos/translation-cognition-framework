@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_Rest_cook",
+  "scene_group": "SIDE_Rest_cook",
+  "lines": [
+    {
+      "offset": "Rest_cook_01",
+      "text_source": "I love the food!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar entusiasmo exagerado pela comida",
+      "risk_level": "low",
+      "base_translation": "Amo essa comida!",
+      "byte_budget": 16,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "Rest_cook_02",
+      "text_source": "Mmmm... Delicious...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar deleite sensorial com a refeição",
+      "risk_level": "low",
+      "base_translation": "Mmm... Delicioso...",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "Rest_cook_03",
+      "text_source": "Do you have pizza?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionar disponibilidade de pizza com tom econômico",
+      "risk_level": "medium",
+      "base_translation": "Tem pizza?",
+      "byte_budget": 18,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard usa registro militar conciso; risco médio por potencial perda de estoque/formalidade se tonalidade descer para coloquial. Back-translation recomendada para validar secura mantida."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_Rest_cook-v1"
+}

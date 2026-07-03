@@ -1,0 +1,63 @@
+{
+  "scene": "ER_CAVE_INTRO_MAKEREL",
+  "scene_group": "ER_CAVE_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_MAKEREL_2",
+      "text_source": "Seriously? You read this and decide to return to that horrid cave, just like that?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "indignação exagerada, incredulidade cômica",
+      "risk_level": "medium",
+      "base_translation": "Sério?! Você lê isso e volta direto pra aquela caverna horrível, assim de boa?",
+      "byte_budget": 82,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Interjeição de espanto localizada; tom hiperbólico deve preservar energia de Balof"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_MAKEREL_4",
+      "text_source": "Gruper, at the very least they made human sacrifices!",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão medroso",
+      "intent": "argumentação alarmista em tom dramático",
+      "risk_level": "high",
+      "base_translation": "Gruper, no mínimo eles faziam sacrifícios humanos lá!",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade de Gruper/Makarel (alias oculto); passagem crítica de caracterização — tom pastelão de medo exagerado deve ser reconhecível; back-translation obrigatória"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_MAKEREL_6",
+      "text_source": "What?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionamento breve, desinteresse aparente",
+      "risk_level": "low",
+      "base_translation": "O quê?",
+      "byte_budget": 5,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_MAKEREL_8",
+      "text_source": "What about your belly? Is that half empty or half full?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "pergunta retórica sarcástica, pressão tática",
+      "risk_level": "medium",
+      "base_translation": "E sua barriga? Tá meia vazia ou meia cheia?",
+      "byte_budget": 55,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sarcasmo militar seco; risco de soar coloquial — manter tonalidade concisa e sem floreios; metaphor de barriga pode ser interpretada como hipótese sem resposta clara"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_CAVE_INTRO_MAKEREL-v1"
+}

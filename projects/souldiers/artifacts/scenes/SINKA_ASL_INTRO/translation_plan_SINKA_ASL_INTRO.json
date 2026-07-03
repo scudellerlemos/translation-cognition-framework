@@ -1,0 +1,63 @@
+{
+  "scene": "SINKA_ASL_INTRO",
+  "scene_group": "SINKA_ASL_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_ASL_INTRO_1_1",
+      "text_source": "So, have you won your key to the city yet?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pergunta casual com curiosidade amigável",
+      "risk_level": "low",
+      "base_translation": "Então, você já conquistou sua chave da cidade?",
+      "byte_budget": 42,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_ASL_INTRO_1_2",
+      "text_source": "Looks like that lad Melian is learning from you. Lately he hasn't stopped bouncing around the city.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "observação animada e com admiração exagerada",
+      "risk_level": "medium",
+      "base_translation": "Parece que aquele rapaz Melian tá aprendendo com você. Ultimamente ele não para de pular pela cidade!",
+      "byte_budget": 99,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade de Melian como aprendiz deve estar clara no contexto; manter energia hiperbólica de Balof sem sobrecarregar o byte_budget (99 chars)"
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_ASL_INTRO_1_3",
+      "text_source": "I was less nervous when we were being rocked by earthquakes.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "contraste irónico entre perigo passado e nervosismo presente; queixa abafada",
+      "risk_level": "medium",
+      "base_translation": "Eu estava menos nervoso quando terremotos nos balançavam.",
+      "byte_budget": 60,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom militar seco pode parecer contido — garantir que a ironia/alívio do contraste com terremotos se transmita; registro sem floreios mantido"
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_ASL_INTRO_1_4",
+      "text_source": "At least try to make sure he doesn't break anything. That lad seems a bit fragile for soldier, but I 'spose he shows his brave side when he has to.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem/aviso disfarçado de preocupação contida; reconhecimento relutante de valor",
+      "risk_level": "high",
+      "base_translation": "Ao menos tente garantir que ele não quebre nada. Aquele rapaz parece frágil demais pra soldado, mas presumo que mostre seu lado corajoso quando necessário.",
+      "byte_budget": 147,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "linha longa (147 bytes) com tons múltiplos (aviso + admiração oculta); registro militar preservado; contração 'spose' → 'suponho/presumo' em tom seco; garantir que 'fragile for soldier' não soe pejorativo mas analítico; back-translation obrigatória para validar tom e naturalidade da sequência aviso+reconhecimento"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_ASL_INTRO-v1"
+}

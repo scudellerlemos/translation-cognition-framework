@@ -1,0 +1,89 @@
+{
+  "scene": "ADAMONT_AP_INTRO",
+  "scene_group": "ADAMONT_AP_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_1",
+      "text_source": "General Brigard's being too much of a pessimist, if you ask me.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "dismissive criticism with exaggeration",
+      "risk_level": "low",
+      "base_translation": "O General Brigard tá sendo um pessimista demais, se me pergunta!",
+      "byte_budget": 63,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_2",
+      "text_source": "The Lion of Dadelm turning up here is a good omen.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "optimistic assertion about Dadelm's presence",
+      "risk_level": "low",
+      "base_translation": "O Leão de Dadelm aparecendo por aqui é sinal de sorte!",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_3",
+      "text_source": "You know, cut off the serpent's head and its body'll die too",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confident statement of strategy with exclamation",
+      "risk_level": "medium",
+      "base_translation": "Sabe como é, corta a cabeça da serpente e o corpo inteiro cai!",
+      "byte_budget": 60,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Metáfora de decapitação — verificar se é intencional ou simplificação demais; back-translation para confirmar tom hiperbólico preservado"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_4",
+      "text_source": "What?_300_ What do you mean it doesn't work like that?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dismissal of Balof's metaphor with dry pragmatism",
+      "risk_level": "medium",
+      "base_translation": "E quê?_300_ Que quer dizer que não funciona assim?",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mudança abrupta de personagem e tom; seco/militar deve contrastar com hipérbole anterior — verificar naturalidade da interrupção"
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_5",
+      "text_source": "Either way, the mangy cat's still around._100_ He'll be waiting for the slightest chance to pounce on us.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "warning about persistent threat with grim realism",
+      "risk_level": "high",
+      "base_translation": "De qualquer jeito, aquele gato sarnento ainda anda por aí._100_ Vai ficar à espreita da primeira chance pra pular em cima da gente.",
+      "byte_budget": 105,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Token _100_ em posição crítica; 'mangy cat' (referência a inimigo) requer verificação se é Brigard falando ou volta para Balof — risco de confusão de speaker. Assumido Brigard por continuidade de tom seco. Back-translation obrigatória para confirmar 'gato sarnento' soa adequado/insultuoso no português."
+    },
+    {
+      "offset": "STR_DIALOGS_ADAMONT_AP_INTRO_1_6",
+      "text_source": "We'll be ready.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confident affirmation of readiness",
+      "risk_level": "low",
+      "base_translation": "A gente tá pronto.",
+      "byte_budget": 15,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ADAMONT_AP_INTRO-v1"
+}

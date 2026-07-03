@@ -1,0 +1,52 @@
+{
+  "title": "Souldiers",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": ["_100_", "_200_", "_300_", "_500_"],
+  "formatting_token_patterns": ["_\\d+_"],
+  "formatting_token_patterns_note": "Tokens de timing do engine Unity: _100_ = pausa curta, _300_ = pausa média, _500_ = pausa longa. Valor exato (N) pode variar — regex cobre todos os casos. Preservar verbatim na tradução.",
+  "system_line_convention": "none",
+  "length_constraints": {
+    "mode": "none",
+    "note": "Unity TextMeshPro — sem limite de bytes; engine faz wrap automático. Revisar se texto muito longo vazar da caixa de diálogo no piloto."
+  },
+  "batch_size": 50,
+  "connector": {
+    "type": "unity_addressables_csv",
+    "engine": "Unity 2021 (Mono, Addressables 1.x)",
+    "data_dir_env": "SOULDIERS_DATA_DIR",
+    "data_dir_note": "Caminho para Souldiers_Data/StreamingAssets/aa/StandaloneWindows64/ — NUNCA commitado. Definir via env var ou arg CLI.",
+    "table_schema": "connector/table_schema.md",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "csv_delimiter": "~",
+    "id_column": "::ID::",
+    "text_column": "::EN::",
+    "target_column": "::PT::",
+    "target_column_note": "Descoberto rodando de verdade (2026-07-02): texts_SIDE_DIALOGS NAO tem coluna ::PT:: — usa ::BR:: (Brasil) em vez de Portugal. Mapeamento real por tabela em connector/reinsert.py:_PT_COL_BY_TABLE, nao neste campo unico.",
+    "encoding": "utf-8",
+    "dialogue_tables": ["texts_DIALOGS", "texts_INGAME_DIALOGS", "texts_SIDE_DIALOGS"],
+    "control_codes": {
+      "_N_": "token de timing (N = ms de pausa) — preservar verbatim",
+      "<color=X>...</color>": "tag TMP para nome de personagem — preservar verbatim",
+      "<b>...</b>": "negrito TMP — preservar verbatim"
+    },
+    "dep": "UnityPy>=1.9.6 (pip install UnityPy)"
+  },
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "Terceiro projeto do framework. Unity Addressables + CSV tilde-delimitado. 2561 linhas EN extraídas (Fase 0 concluída). Tradução EN→PT-BR do zero.",
+  "kb_frontier": "artifacts/kb_phase_worklist.md"
+}

@@ -1,0 +1,76 @@
+{
+  "scene": "EUDER_AN_INTRO",
+  "scene_group": "EUDER_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EUDER_AN_INTRO_1_1",
+      "text_source": "I knew it! I knew there had to be something on the other side of that swamp!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "celebração entusiasmada de descoberta",
+      "risk_level": "low",
+      "base_translation": "Eu sabia! Sabia que tinha algo do outro lado daquele pântano!",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AN_INTRO_1_2",
+      "text_source": "Okay, okay... I'll contain my excitement, but I have a hunch about the information you received. It just has to be true!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico com contenção fingida",
+      "intent": "contenção de entusiasmo enquanto reafirma convicção",
+      "risk_level": "medium",
+      "base_translation": "Tá bom, tá bom... vou controlar minha empolgação, mas tenho um palpite sobre a informação que vocês receberam. Tem que ser verdade!",
+      "byte_budget": 120,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "interjeição 'Okay, okay' localizada como pausa respiratória (reticências); preservar tom de alívio exagerado e energia hiperbólica de Balof; 'hunch' = intuição/palpite (não formal)"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AN_INTRO_1_3",
+      "text_source": "I see this captain's intuition's as sharp as ever.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confirmação estóica da astúcia do capitão (Balof)",
+      "risk_level": "high",
+      "base_translation": "Vejo que a intuição do capitão permanece tão aguçada quanto sempre.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "mudança de falante para Brigard (voz oposta: formal, seco, sem humor); 'captain's intuition' refere-se a Balof (que aparenta ser capitão); evitar familiaridade ou coloquialismo; 'as sharp as ever' = reconhecimento cortante, não elogio sentimental; verificar coerência de poder ser Brigard (militar/formal) respondendo a Balof (coloquial)"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AN_INTRO_1_4",
+      "text_source": "And you had your part to play, too, of course.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento breve do papel de terceiro (Euder)",
+      "risk_level": "medium",
+      "base_translation": "E você teve seu papel, também, é claro.",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard reconhece contribuição alheia (Euder) em tom seco, sem floreios; 'had your part to play' = participação militar/funcional (não sentimental); manter brevidade e formalidade"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AN_INTRO_1_5",
+      "text_source": "Let's not make the Guardian wait any longer.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem/urgência de prosseguir sem demora",
+      "risk_level": "high",
+      "base_translation": "Não façamos o Guardião esperar mais.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "spoiler potencial: 'Guardian' é traduzido como 'Guardião' (glossário); referência a entidade não-humana; Brigard emite ordem direta (típico); tom de comando/impaciência; verificar coerência no arco (por que precisam encontrar o Guardião?)"
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 2,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-EUDER_AN_INTRO-v1"
+}

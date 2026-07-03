@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_CUSTOMIZE_BEDS",
+  "scene_group": "SIDE_CUSTOMIZE_BEDS",
+  "lines": [
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_BEDS_1",
+      "text_source": "These beds are perfect! Good choice!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar entusiasmo exagerado e aprovação",
+      "risk_level": "low",
+      "base_translation": "Essas camas são perfeitas! Ótima escolha!",
+      "byte_budget": 36,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_BEDS_2",
+      "text_source": "Such lovely beds! The snuggle is real!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "exaltar a qualidade das camas com humor desproporcional",
+      "risk_level": "low",
+      "base_translation": "Que camas lindas! Conforto de verdade!",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_CUSTOMIZE_BEDS_3",
+      "text_source": "I want to slip into these bed…so bedly!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar desejo de deitar-se com entusiasmo absurdo",
+      "risk_level": "medium",
+      "base_translation": "Quero me deitar nessas camas... tão colchudas!",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Construção 'so bedly' é nonsense intencional (humor). Traduzido por 'tão colchuda' para preservar o tom absurdo e coloquial. Byte_budget: 35 chars (cabe em 41)."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_CUSTOMIZE_BEDS-v1"
+}

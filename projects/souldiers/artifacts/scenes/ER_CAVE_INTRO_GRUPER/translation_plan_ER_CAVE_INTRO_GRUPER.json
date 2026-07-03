@@ -1,0 +1,50 @@
+{
+  "scene": "ER_CAVE_INTRO_GRUPER",
+  "scene_group": "ER_CAVE_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_GRUPER_3",
+      "text_source": "It wasn't that bad... It was well decorated.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "minimizar situação com alívio exagerado e humor",
+      "risk_level": "medium",
+      "base_translation": "Não foi tão ruim assim... Tinha uma boa decoração.",
+      "byte_budget": 44,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Manter energia e exagero do registro; 'well decorated' é potencialmente irônico — traduzir como alívio literal (foco na decoração positiva) sem soar sarcástico demais"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_GRUPER_5",
+      "text_source": "Hmm...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "pensativo/reticente; resposta curta sem compromisso",
+      "risk_level": "low",
+      "base_translation": "Hmm...",
+      "byte_budget": 6,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_CAVE_INTRO_GRUPER_7",
+      "text_source": "The glass is always half empty for you.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "crítica sutil/observação cínica sobre a perspectiva pessimista de alguém",
+      "risk_level": "medium",
+      "base_translation": "O copo sempre está meio vazio pra você.",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Idioma 'glass is always half empty' → traduzir pelo equivalente português consolidado ('copo sempre meio vazio') preservando secura militar; risco de soar formalista demais em pt-BR coloquial, mas registro de Brigard justifica"
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_CAVE_INTRO_GRUPER-v1"
+}

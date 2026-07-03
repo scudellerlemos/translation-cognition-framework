@@ -1,0 +1,50 @@
+{
+  "scene": "INGAME_COMBAT",
+  "scene_group": "INGAME_COMBAT",
+  "lines": [
+    {
+      "offset": "STR_INGAME_DIALOGS_EDIL_COMBAT_1",
+      "text_source": "I'm ready!",
+      "speaker": "Edil",
+      "tone_register": "coloquial informal energético",
+      "intent": "declarar prontidão para o combate",
+      "risk_level": "low",
+      "base_translation": "Estou pronto!",
+      "byte_budget": 10,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_EDIL_COMBAT_2",
+      "text_source": "You're no match for us!",
+      "speaker": "Edil",
+      "tone_register": "coloquial informal confrontacional",
+      "intent": "intimidação/desafio ao inimigo",
+      "risk_level": "low",
+      "base_translation": "Vocês não têm chance!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_EDIL_COMBAT_3",
+      "text_source": "You've got the wrong city!",
+      "speaker": "Edil",
+      "tone_register": "coloquial informal confrontacional",
+      "intent": "declaração de superioridade local",
+      "risk_level": "low",
+      "base_translation": "Vocês entraram na cidade errada!",
+      "byte_budget": 26,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-INGAME_COMBAT-v1"
+}

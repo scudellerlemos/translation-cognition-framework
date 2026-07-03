@@ -1,0 +1,102 @@
+{
+  "scene": "SIRFIEL_AFT_INTRO",
+  "scene_group": "SIRFIEL_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_1",
+      "text_source": "My brother was right.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-reflexivo",
+      "intent": "concordância com decisão passada",
+      "risk_level": "low",
+      "base_translation": "Meu irmão tinha razão.",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_2",
+      "text_source": "You're back safe and sound. You don't the weight that's off my shoulders now.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-alívio",
+      "intent": "expressar alívio genuíno pelo retorno seguro",
+      "risk_level": "medium",
+      "base_translation": "Você voltou seguro e salvo. Você não faz ideia do alívio que sinto agora.",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "source tem erro gramatical ('don't the weight'); interpretação contextual: 'você não faz ideia do peso/alívio'. Preservar clareza em pt-BR."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_3",
+      "text_source": "It looks like those orbs are granting you some unusual powers.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-observador",
+      "intent": "notar mudança anômala",
+      "risk_level": "low",
+      "base_translation": "Parece que esses orbes estão lhe concedendo poderes inusitados.",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_4",
+      "text_source": "I hope they're not dangerous.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-preocupação",
+      "intent": "expressar dúvida/inquietação",
+      "risk_level": "low",
+      "base_translation": "Espero que não sejam perigosos.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_5",
+      "text_source": "Anyway, I'm glad you're here.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-caloroso",
+      "intent": "fechamento sincero",
+      "risk_level": "low",
+      "base_translation": "De qualquer forma, fico feliz que esteja aqui.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_6",
+      "text_source": "Go and see Brigard if you have information to share. Judging by what that squirrel thing said, I'd say he knows this world quite well.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-diretivo",
+      "intent": "orientação prática",
+      "risk_level": "medium",
+      "base_translation": "Vá conversar com Brigard se tiver informações para compartilhar. Pelo que aquela criatura-esquilo disse, diria que ele conhece bem este mundo.",
+      "byte_budget": 134,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "lore: 'squirrel thing' = Ratatosk (glossário); manter indefinição. 'knows this world quite well' = background/mundo exigem coerência."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AFT_INTRO_1_7",
+      "text_source": "Perhaps even better than its inhabitants.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-reflexivo",
+      "intent": "sugerir conhecimento superior",
+      "risk_level": "low",
+      "base_translation": "Talvez até melhor que seus habitantes.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_AFT_INTRO-v1"
+}

@@ -1,0 +1,76 @@
+{
+  "scene": "ER_END_OUTRO_BRIGARD",
+  "scene_group": "ER_END_OUTRO_BRIGARD",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_BRIGARD_1",
+      "text_source": "So it's true. You've completed the bounty board.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confirmação solene de realização",
+      "risk_level": "low",
+      "base_translation": "Então é verdade. Você completou o quadro de missões.",
+      "byte_budget": 48,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_BRIGARD_2",
+      "text_source": "It makes me proud that you've been willing to pay back Hafin's favour to us.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento de dever cumprido",
+      "risk_level": "low",
+      "base_translation": "Fico orgulhoso que tenha estado disposto a pagar a dívida de Hafin conosco.",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_BRIGARD_3",
+      "text_source": "You have settled our debt with this city, so I shall honour my promise.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "anúncio de honra de promessa",
+      "risk_level": "low",
+      "base_translation": "Liquidou nossa dívida com esta cidade, portanto honrarei minha promessa.",
+      "byte_budget": 71,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_BRIGARD_4",
+      "text_source": "Soldier of Zarga, as General of the kingdom's army, it is my honour to present you with the Shimmering Blade of Zarga.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "apresentação cerimoniosa de recompensa",
+      "risk_level": "medium",
+      "base_translation": "Soldado de Zarga, como General do exército do reino, é minha honra apresentar-lhe a Shimmering Blade of Zarga.",
+      "byte_budget": 118,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "lore-heavy: nomes próprios (Zarga, Shimmering Blade of Zarga) preservados verbatim; Brigard em modo cerimônia militar máxima — tom deve ser solene, direto, sem contrações"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_END_OUTRO_BRIGARD_5",
+      "text_source": "I know you'll put it to good use.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confiança no cumprimento do dever",
+      "risk_level": "low",
+      "base_translation": "Sei que a usará bem.",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_END_OUTRO_BRIGARD-v1"
+}

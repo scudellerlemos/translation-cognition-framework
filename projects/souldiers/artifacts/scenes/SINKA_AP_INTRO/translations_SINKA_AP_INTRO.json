@@ -1,0 +1,44 @@
+{
+  "lines": {
+    "STR_DIALOGS_SINKA_AP_INTRO_1_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "queixa com humor exagerado sobre desconfiança",
+      "risk_level": "high",
+      "risk_notes": "Voz de Balof (high criticality) — hiperbólico, energético. 'Sinka' é nome próprio (verbatim). Necessário back-translation para confirmar tom de alívio exagerado e comédia. Byte budget apertado (89) — verificar transliteração sem acentos.",
+      "t": "Não acho que confiam muito em mim. Nada de novo, né? Desconfiem do Sinka, que rouba em loja."
+    },
+    "STR_DIALOGS_SINKA_AP_INTRO_1_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "resignação com entusiasmo desproporcional",
+      "risk_level": "medium",
+      "risk_notes": "Token _100_ presente — preservado exato. Balof em alívio/resignação. Verificar se contração 'pra' cabe melhor ('Pra que?') vs. formal; mantém informal conforme perfil.",
+      "t": "Bem, sabe o quê?_100_ Tá bom então."
+    },
+    "STR_DIALOGS_SINKA_AP_INTRO_1_3": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal vulnerável",
+      "intent": "confidência melancólica",
+      "risk_level": "high",
+      "risk_notes": "Mudança de tom (vulnerabilidade/ternura) dentro de perfil de Balof. 'Sendal' é NPC — verificar se nomeado no lore. Back-translation obrigatória; alto risco emocional de truncar a sinceridade.",
+      "t": "Só o Sendal me trata como gente..."
+    },
+    "STR_DIALOGS_SINKA_AP_INTRO_1_4": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "desculpa humorística por pensamento audível",
+      "risk_level": "medium",
+      "risk_notes": "Token _300_ preservado. Transição brusca de tímida para alívio — típica do perfil hiperbólico. Interjeição 'Eh?' localizada naturalmente.",
+      "t": "Eh?_300_ Ah, não ligo não, tava só pensando em voz alta."
+    },
+    "STR_DIALOGS_SINKA_AP_INTRO_1_5": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "advertência defensiva com toque de humor",
+      "risk_level": "low",
+      "risk_notes": "Linha curta, byte budget baixo (20) — conciso, mantém energia de Balof. Sem complexidade contextual.",
+      "t": "E não fica me espionando!"
+    }
+  }
+}

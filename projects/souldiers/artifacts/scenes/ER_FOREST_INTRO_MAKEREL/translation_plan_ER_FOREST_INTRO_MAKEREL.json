@@ -1,0 +1,50 @@
+{
+  "scene": "ER_FOREST_INTRO_MAKEREL",
+  "scene_group": "ER_FOREST_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_MAKEREL_3",
+      "text_source": "You know you say the same thing every time someone comes along and picks up one of those, right?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "chacotar com humor; apontar repetição cíclica",
+      "risk_level": "medium",
+      "base_translation": "Você sabe que fala a mesma coisa toda vez que alguém chega e pega um desses, né?",
+      "byte_budget": 96,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom de humor hiperbólico/exagerado essencial; interjeição implícita na estrutura — garantir que 'sempre a mesma coisa' soe com desespero cômico, não crítica séria"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_MAKEREL_5",
+      "text_source": "Of course not, but we're on guard duty here in the tent, so I can't go anywhere without explicit orders from General Brigard.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "explicar restrição de movimento; ordem sem flexão",
+      "risk_level": "high",
+      "base_translation": "Claro que não. Estou de guarda aqui na tenda. Sem ordens explícitas do General Brigard, não saio daqui.",
+      "byte_budget": 125,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "voz militar estóica crítica — frases curtas, sem floreios, zero sentimentalismo; menção a 'General Brigard' (nome próprio verbatim); verificar que sooe como restrição militar, não desculpa pessoal"
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FOREST_INTRO_MAKEREL_7",
+      "text_source": "You look inspired...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "observação leve com tom de diversão/curiosidade",
+      "risk_level": "low",
+      "base_translation": "Você parece inspirado...",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_FOREST_INTRO_MAKEREL-v1"
+}

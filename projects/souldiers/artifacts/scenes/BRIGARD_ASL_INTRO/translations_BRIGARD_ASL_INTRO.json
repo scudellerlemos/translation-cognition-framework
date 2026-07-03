@@ -1,0 +1,36 @@
+{
+  "lines": {
+    "STR_DIALOGS_BRIGARD_ASL_INTRO_1_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "verificar sucesso da missão com tom estóico",
+      "risk_level": "medium",
+      "risk_notes": "Brigard criticality=high; registro formal-militar exige frases curtas e seco (sem floreios). Verificar que 'put a stop to' não vire sentimentalismo. Token _500_ preservado nas 2 posições.",
+      "t": "Como foi, soldado...?_500_ Conseguiu parar aqueles terremotos..._500_ Certo...?"
+    },
+    "STR_DIALOGS_BRIGARD_ASL_INTRO_1_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "relato de estado físico com confiança contida",
+      "risk_level": "medium",
+      "risk_notes": "Brigard criticality=high; 'muscles still stiff' em tom militar = fato, não queixa. 'It'll all will work itself out' = confiança contida (não entusiasmo). Orçamento 103 bytes — tradução concisa. Token _500_ preservado x2.",
+      "t": "Meus músculos ainda estão rígidos..._500_ Mas com um pouco de treinamento..._500_ Tudo funcionará..."
+    },
+    "STR_DIALOGS_BRIGARD_ASL_INTRO_1_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento de Edil como soldado em potencial",
+      "risk_level": "medium",
+      "risk_notes": "Brigard criticality=high; 'keen' (entusiasmada/zelosa) + 'learning to fence' = validação militar. Orçamento 111 bytes — preservar estrutura paralela ('helping'/'learning'). Token _500_ x3 preservados.",
+      "t": "Esta rapariga, Edil..._500_ Ela é muito zelosa..._500_ Está ajudando na minha recuperação..._500_ E aprendendo a esgrimir..."
+    },
+    "STR_DIALOGS_BRIGARD_ASL_INTRO_1_4": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "aprovação final concisa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ela será uma boa soldada..."
+    }
+  }
+}

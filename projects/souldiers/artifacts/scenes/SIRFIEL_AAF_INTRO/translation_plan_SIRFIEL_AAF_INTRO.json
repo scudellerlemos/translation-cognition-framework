@@ -1,0 +1,63 @@
+{
+  "scene": "SIRFIEL_AAF_INTRO",
+  "scene_group": "SIRFIEL_AAF_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AAF_INTRO_1_1",
+      "text_source": "Fascinating...",
+      "speaker": "unknown",
+      "tone_register": "contemplative-analytical",
+      "intent": "expression of intellectual curiosity and wonder",
+      "risk_level": "low",
+      "base_translation": "Fascinante...",
+      "byte_budget": 14,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AAF_INTRO_1_2",
+      "text_source": "The Croma you've met base all of their technology on vimana crystals.",
+      "speaker": "unknown",
+      "tone_register": "expository-formal",
+      "intent": "explanation of technological basis and cultural knowledge",
+      "risk_level": "low",
+      "base_translation": "Os Croma que você conheceu baseiam toda sua tecnologia em cristais vimana.",
+      "byte_budget": 69,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AAF_INTRO_1_3",
+      "text_source": "The electromagnetism they emit is in perfect harmony with their own bodies, allowing them to create all kinds of contraptions and gadgets that we could barely even imagine.",
+      "speaker": "unknown",
+      "tone_register": "expository-wonder",
+      "intent": "describing advanced capabilities and limitations of human understanding",
+      "risk_level": "medium",
+      "base_translation": "O eletromagnetismo que emanam está em perfeita harmonia com seus próprios corpos, permitindo que criem todo tipo de engenho e dispositivo que mal conseguiríamos imaginar.",
+      "byte_budget": 172,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore term 'vimana crystals' established in prior line; metaphorical complexity (electromagnetism/harmony/bodies) requires naturalness check to avoid awkwardness in pt-BR"
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AAF_INTRO_1_4",
+      "text_source": "They seem to be a highly advanced civilisation. I think I understand why they're not seen so much in Hafin. This city isn't bad, but its advances aren't so different to our own.",
+      "speaker": "unknown",
+      "tone_register": "analytical-reflective",
+      "intent": "comparative assessment of civilisation advancement and explanation of cultural/geographic disparity",
+      "risk_level": "medium",
+      "base_translation": "Eles parecem ser uma civilização altamente avançada. Acho que entendo por que não se veem muito em Hafin. A cidade não é ruim, mas seus avanços tecnológicos não são tão diferentes dos nossos.",
+      "byte_budget": 177,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Glossary term 'Hafin City' preserved as 'Hafin'; comparative reasoning about civilisation levels requires clarity in pt-BR to maintain logical flow; 'advances' (noun/verb) disambiguated as technological development"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_AAF_INTRO-v1"
+}

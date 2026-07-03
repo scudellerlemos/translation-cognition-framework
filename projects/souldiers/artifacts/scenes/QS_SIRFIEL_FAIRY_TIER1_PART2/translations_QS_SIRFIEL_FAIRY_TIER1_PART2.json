@@ -1,0 +1,44 @@
+{
+  "lines": {
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_1": {
+      "speaker": "system",
+      "tone_register": "formal-observational",
+      "intent": "describe-magical-phenomenon",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Veja como elas iluminam a biblioteca com seu brilho fantasmagórico."
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-hyperbolic",
+      "intent": "express-excitement-approval",
+      "risk_level": "medium",
+      "risk_notes": "Balof criticality=high; tom exagerado/exclamações essenciais à voz. Tradução preserva energia; 'simplesmente fantástico' + exclamação localiza a ênfase original.",
+      "t": "É simplesmente fantástico que você tenha conseguido encontrar quinze sujeitos pra nosso teste!"
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-military-staccato",
+      "intent": "acknowledge-achievement-factual",
+      "risk_level": "medium",
+      "risk_notes": "Brigard criticality=high; registro militar seco. Frases curtas, diretas. Sem floreios. Concisão respeitada (byte_budget=104).",
+      "t": "Graças aos seus esforços e à essência extraída dessas criaturas, consegui formular uma fórmula."
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_4": {
+      "speaker": "Brigard",
+      "tone_register": "formal-military-staccato",
+      "intent": "deliver-dire-warning-with-dry-humor",
+      "risk_level": "high",
+      "risk_notes": "Alto risco: Brigard entrega aviso mortal com tom seco/estóico (humor macabro). Tradução deve preservar: (1) formalidade 'ser bem honesto' sem contração; (2) estrutura condicional clara 'ou funciona, ou você morre' com paralelismo; (3) estilo lacônico sem sentimentalismo. Requer back-translation para validar tom vs. sentido.",
+      "t": "Para ser bem honesto, é a primeira vez que tento uma poção como essa, então uma de duas coisas pode acontecer com você: ou funciona, ou você morre."
+    },
+    "STR_DIALOGS_QS_SIRFIEL_FAIRY_TIER1_PART2_5": {
+      "speaker": "Brigard",
+      "tone_register": "formal-military-sarcasm",
+      "intent": "rhetorical-dry-question",
+      "risk_level": "medium",
+      "risk_notes": "Brigard; sarcasmo seco. 'Você acha que...' mantém a estrutura retórica. Tom estóico preservado. Conciso (byte_budget=60).",
+      "t": "Você acha que esse sorriso no meu rosto significa que estou brincando, não é?"
+    }
+  }
+}

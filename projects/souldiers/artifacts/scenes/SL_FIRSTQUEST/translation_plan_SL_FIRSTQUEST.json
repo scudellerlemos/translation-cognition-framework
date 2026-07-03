@@ -1,0 +1,89 @@
+{
+  "scene": "SL_FIRSTQUEST",
+  "scene_group": "SL_FIRSTQUEST",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D1_MELIAN_1",
+      "text_source": "Hey, soldier! Up here!",
+      "speaker": "npc",
+      "tone_register": "informal-amigável",
+      "intent": "chamar atenção, solicitar ajuda",
+      "risk_level": "low",
+      "base_translation": "Oi, soldado! Aqui em cima!",
+      "byte_budget": 22,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D2_MELIAN_1",
+      "text_source": "Don't look at me like that... It's embarrassing enough to have come further than you and then end up trapped here.",
+      "speaker": "npc",
+      "tone_register": "formal-desculpante, constrangido",
+      "intent": "explicar situação constrangedora, justificar presença",
+      "risk_level": "medium",
+      "base_translation": "Não me olhe assim... Já é embaraçoso o bastante ter chegado mais longe que você e acabar preso aqui.",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom de constrangimento deve preservar dignidade do personagem; evitar soar como autopiedade excessiva"
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D2_MELIAN_2",
+      "text_source": "I wanted to solve this on my own...",
+      "speaker": "npc",
+      "tone_register": "arrependido-reflexivo",
+      "intent": "expressar remorso por não ter resolvido sozinho",
+      "risk_level": "low",
+      "base_translation": "Eu queria resolver isso sozinho...",
+      "byte_budget": 35,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D2_MELIAN_3",
+      "text_source": "But hey, now that you're here, I'm glad to see a friendly face.",
+      "speaker": "npc",
+      "tone_register": "alívio-amigável",
+      "intent": "reconhecer presença positiva do aliado, mudar tom para cooperação",
+      "risk_level": "low",
+      "base_translation": "Mas ei, agora que você está aqui, fico feliz em ver um rosto amigo.",
+      "byte_budget": 63,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D2_MELIAN_4",
+      "text_source": "I've been wandering around this passage for a while now, so I think we can work together to clear a path for us.",
+      "speaker": "npc",
+      "tone_register": "prático-esperançoso",
+      "intent": "propor ação cooperativa, sugerir caminho adiante",
+      "risk_level": "low",
+      "base_translation": "Ando por essa passagem há um tempo, então acho que dá pra trabalharmos juntos e abrir um caminho.",
+      "byte_budget": 112,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SL_FIRSTQUEST_D2_MELIAN_5",
+      "text_source": "And you can see the <color=OBJ>wind orb</color> in action on the way. Let's go!",
+      "speaker": "npc",
+      "tone_register": "entusiasmado-animador",
+      "intent": "chamar atenção para objetivo (wind orb), motivar ação",
+      "risk_level": "medium",
+      "base_translation": "E você pode ver o <color=OBJ>orbe de vento</color> em ação no caminho. Vamos!",
+      "byte_budget": 79,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "necessário validar transliteração de 'orbe de vento' cabe em 79 bytes; back-translation: 'wind orb' ✓"
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SL_FIRSTQUEST-v1"
+}

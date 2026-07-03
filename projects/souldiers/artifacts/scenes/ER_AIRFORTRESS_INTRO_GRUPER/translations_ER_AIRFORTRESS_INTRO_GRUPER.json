@@ -1,0 +1,44 @@
+{
+  "lines": {
+    "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_2": {
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "observação contemplativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "As nuvens..."
+    },
+    "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_4": {
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "exposição de hipótese estratégica",
+      "risk_level": "high",
+      "risk_notes": "Lore complexo (fortaleza flutuante); nenhum spoiler antes de reveal_timing, mas requer back-translation para garantir que a estrutura de informação (informantes do Capitão Euder, banco de nuvens, fortaleza flutuante, desconhecimento em Hafin) soe natural e não redundante em pt-BR. Byte_budget 161 — tradução está dentro do esperado (~150-160 bytes transliterados).",
+      "t": "Não... estou pensando que, segundo os informantes do Capitão Euder, aquele banco de nuvens esconde uma fortaleza flutuante. Parece que em Hafin não notaram nada."
+    },
+    "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_6": {
+      "speaker": "Gruper",
+      "tone_register": "formal-militar seco",
+      "intent": "identificação de ameaça",
+      "risk_level": "medium",
+      "risk_notes": "Nome próprio 'Pirates of the Broken Wing' — preservado em EN conforme decision_log (nunca traduzir nomes de facções/grupos). Verificar naturalidade da expressão em pt-BR; considerar back-translation para confirmar que 'Piratas da Asa Quebrada' não soa forçado.",
+      "t": "São conhecidos como os Piratas da Asa Quebrada."
+    },
+    "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_8": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "pedido de esclarecimento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que você quer dizer?"
+    },
+    "STR_DIALOGS_ER_AIRFORTRESS_INTRO_GRUPER_10": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "sarcasmo/desprezo com humor",
+      "risk_level": "high",
+      "risk_notes": "Referência a 'Makerel' (personagem com perfil de voz Makarel/Gruper — contrastar com tom arrogante de Euder). Back-translation exigida: sarcasmo e auto-elogio implícito devem soar naturais em pt-BR. Byte_budget 98 — tradução em 95-100 bytes, dentro do orcamento. Validar que 'preencher alguém de medo' (ou similar) preserva a ideia de causar temor/respeito e não soa estranho.",
+      "t": "Makerel, você podia se chamar do que quisesse e duvido que preenchesse alguém de medo."
+    }
+  }
+}

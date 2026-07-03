@@ -1,0 +1,76 @@
+{
+  "scene": "EUDER_ASL_INTRO",
+  "scene_group": "EUDER_ASL_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EUDER_ASL_INTRO_1_1",
+      "text_source": "So even under this city you can find dangers...",
+      "speaker": "unknown",
+      "tone_register": "formal-narrativo",
+      "intent": "exposition-warning",
+      "risk_level": "low",
+      "base_translation": "Até mesmo sob esta cidade você encontra perigos...",
+      "byte_budget": 47,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_ASL_INTRO_1_2",
+      "text_source": "Once again the hero saves the day.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "praise-sarcastic",
+      "risk_level": "medium",
+      "base_translation": "Mais uma vez o herói salva o dia!",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom de alívio exagerado com sarcasmo; Balof usa exclamações e empolgação — cuidado para não soar contido"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_ASL_INTRO_1_3",
+      "text_source": "Are you alright? You're paler than usual.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar",
+      "intent": "concern-observation",
+      "risk_level": "high",
+      "base_translation": "Você está bem? Está mais pálido que o normal.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard: registro seco, militar, sem floreios — frases curtas como ordens. Cuidado com sentimentalismo ou coloquialismo"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_ASL_INTRO_1_4",
+      "text_source": "If I didn't know you better, I'd say something was seriously wrong.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar",
+      "intent": "subtle-warning",
+      "risk_level": "high",
+      "base_translation": "Se não o conhecesse tão bem, eu diria que algo está seriamente errado.",
+      "byte_budget": 67,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mantém tom seco e estóico de Brigard; condição contrafactual ('If I didn't know...') preserva a crítica velada sem sentimentalismo"
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_ASL_INTRO_1_5",
+      "text_source": "Take it easy, or you'll end up as serious as Brigard.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-hiperbólico",
+      "intent": "jest-warning",
+      "risk_level": "high",
+      "base_translation": "Relaxa, senão você acaba ficando tão sério quanto Brigard!",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof: humor exagerado e coloquialismo ('pra', 'acabe') — contraste intencional com Brigard; exclamação implícita. Verbo de encerramento naturalizante (sou e fico)"
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 3,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-EUDER_ASL_INTRO-v1"
+}

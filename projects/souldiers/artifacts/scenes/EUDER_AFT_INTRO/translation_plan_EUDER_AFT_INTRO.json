@@ -1,0 +1,63 @@
+{
+  "scene": "EUDER_AFT_INTRO",
+  "scene_group": "EUDER_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EUDER_AFT_INTRO_1_1",
+      "text_source": "You smell like you've been scorched. Where have you been?",
+      "speaker": "Euder",
+      "tone_register": "formal-militar seco, indagador",
+      "intent": "questionar o personagem sobre sua aparência queimada; tom seco mas não hostil",
+      "risk_level": "low",
+      "base_translation": "Você cheira a queimado. Onde esteve?",
+      "byte_budget": 57,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AFT_INTRO_1_2",
+      "text_source": "You know how much I like it when you come by here from time to time to tell me about your travels, but could  you perhaps come back when you've had a good, long shower?",
+      "speaker": "Euder",
+      "tone_register": "formal-militar seco com leve toque de humor cortês",
+      "intent": "expressar apreço pelas visitas mas pedir que o visitante se limpe antes; tom cordial-seco",
+      "risk_level": "low",
+      "base_translation": "Você sabe que aprecio suas visitas de tempos em tempos pra me contar sobre suas andanças, mas poderia voltar depois de um banho?",
+      "byte_budget": 168,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AFT_INTRO_1_3",
+      "text_source": "It's alright, my little friend. Don't take it the wrong way... I'm just ladding.",
+      "speaker": "Euder",
+      "tone_register": "formal-militar seco com tom reassegurador",
+      "intent": "acalmar o personagem; explicar que não havia má intenção no comentário anterior",
+      "risk_level": "medium",
+      "base_translation": "Tudo bem, amigo. Não leve para o lado ruim... Estava só brincando.",
+      "byte_budget": 80,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "palavra 'ladding' possivelmente typo/neologismo no source (possivelmente 'laughing' ou 'ragging'); traduzi como 'brincando' interpretando como tom leve/cômico — não há contexto precedente suficiente. Confirmar intenção original."
+    },
+    {
+      "offset": "STR_DIALOGS_EUDER_AFT_INTRO_1_4",
+      "text_source": "If you have valuable information, I recommend you share it with General Brigard.",
+      "speaker": "Euder",
+      "tone_register": "formal-militar seco, instrutivo",
+      "intent": "direcionar o personagem a reportar informação relevante ao General Brigard; tom de ordem clara",
+      "risk_level": "low",
+      "base_translation": "Se você tem informações valiosas, recomendo compartilhá-las com o General Brigard.",
+      "byte_budget": 80,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-EUDER_AFT_INTRO-v1"
+}

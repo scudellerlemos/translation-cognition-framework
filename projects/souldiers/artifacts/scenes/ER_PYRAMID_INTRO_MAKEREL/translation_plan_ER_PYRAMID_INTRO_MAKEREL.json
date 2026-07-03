@@ -1,0 +1,50 @@
+{
+  "scene": "ER_PYRAMID_INTRO_MAKEREL",
+  "scene_group": "ER_PYRAMID_INTRO_MAKEREL",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_PYRAMID_INTRO_MAKEREL_2",
+      "text_source": "Gruper, what do you know about those two?",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, bate-boca em dupla",
+      "intent": "informar com exagero dramático e medroso",
+      "risk_level": "medium",
+      "base_translation": "Gruper, o que você sabe sobre esses dois?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Gruper é dupla com Makarel; tom de pastelão deve preservar a dinâmica cômica. Evitar soar sério ou corajoso."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PYRAMID_INTRO_MAKEREL_4",
+      "text_source": "Weren't the Spider Acolytes the ones who ladnapped people to sacrifice?",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, medo exagerado",
+      "intent": "questionar/expressar horror pela lembrança de rituais sacrificiais",
+      "risk_level": "high",
+      "base_translation": "Não foram os Acolitos da Aranha aqueles que raptavam pessoas pra sacrificar?",
+      "byte_budget": 71,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade 'Spider Acolytes' é lore crítica; risco de spoiler se revelar contexto futuro. Back-translation obrigatória. Manter tom pastelão de susto, não fazer soar informativo/seco. 'ladnapped' é typo no source (kidnapped) — traduzir como 'raptar/sequestrar'."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PYRAMID_INTRO_MAKEREL_6",
+      "text_source": "How do they cope? So stressful...",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, empatia dramática",
+      "intent": "expressar preocupação emocional com ansiedade/estresse dos dois personagens",
+      "risk_level": "low",
+      "base_translation": "Como eles aguentam? Que stressante...",
+      "byte_budget": 33,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_PYRAMID_INTRO_MAKEREL-v1"
+}

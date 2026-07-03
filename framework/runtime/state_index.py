@@ -47,6 +47,49 @@ _STOP = {
 }
 
 
+def _validate_kb_format(root: Path) -> list[str]:
+    """Checa schemas dos artefatos KB antes do build. Retorna avisos acionáveis.
+
+    Roda no início de build() — erros de formato são detectados antes de produzir
+    state vazio/silencioso (0 voice_cards, 0 glossary_subset).
+    """
+    import csv as _csv
+    issues: list[str] = []
+
+    # 1. Glossary — colunas obrigatórias que context_pack.select_glossary() usa
+    gp = paths.glossary(root)
+    if gp.is_file():
+        try:
+            with gp.open(encoding="utf-8-sig", newline="") as fh:
+                hdr = [h.strip().lower() for h in (next(_csv.reader(fh), []))]
+            required = {"term", "target_translation", "handling_rule"}
+            missing = required - set(hdr)
+            if missing:
+                issues.append(
+                    f"glossary.csv: colunas faltando {sorted(missing)} "
+                    f"(esperado: term,category,target_translation,handling_rule,...). "
+                    f"Colunas encontradas: {hdr}. "
+                    f"Rodar 'python framework/runtime/scaffold_project.py <projeto>' p/ template correto."
+                )
+        except Exception:
+            pass
+
+    # 2. tone_analysis.md — voice cards precisam de '### Nome — `voice_criticality: X`'
+    tp = paths.tone_analysis(root)
+    if tp.is_file():
+        text = tp.read_text(encoding="utf-8")
+        has_h3 = "### " in text
+        has_crit = "voice_criticality:" in text
+        if has_h3 and not has_crit:
+            issues.append(
+                "tone_analysis.md tem seções '###' mas nenhuma com 'voice_criticality:' inline. "
+                "Formato esperado: '### NomePersonagem — `voice_criticality: high`'. "
+                "Sem esse marcador, build_voice_cards() retorna 0 cards."
+            )
+
+    return issues
+
+
 def _slug_tags(title: str) -> list[str]:
     words = re.findall(r"[0-9a-zA-ZçáàâãéêíóôõúüÇÁÀÂÃÉÊÍÓÔÕÚÜ_]+", title.lower())
     tags = []
@@ -259,6 +302,12 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
     state = paths.state_dir(root)
     state.mkdir(parents=True, exist_ok=True)
 
+    # Validação de schema antecipada: erros detectados antes de produzir state vazio
+    warnings: list[str] = _validate_kb_format(root)
+    if warnings:
+        for w in warnings:
+            print(f"AVISO state_index: {w}", file=__import__("sys").stderr)
+
     tm = build_tm(art)
     cards = build_voice_cards(_read(paths.tone_analysis(root)))
     decisions = build_decision_index(_read(paths.decision_log(root)))
@@ -266,11 +315,11 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
     # TM como JSONL ordenado e estavel
     tm_txt = "\n".join(json.dumps(e, ensure_ascii=False, sort_keys=True) for e in tm)
     (paths.translation_memory(root)).write_text(tm_txt + ("\n" if tm else ""), encoding="utf-8")
+
     (paths.voice_cards(root)).write_text(
         json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
     (paths.decision_index(root)).write_text(
         json.dumps(decisions, ensure_ascii=False, indent=2), encoding="utf-8")
-    warnings = []
 
     # Voice cards completeness: falantes com falas na TM mas sem card de voz
     tm_speakers = {e["speaker"] for e in tm if e.get("speaker")}

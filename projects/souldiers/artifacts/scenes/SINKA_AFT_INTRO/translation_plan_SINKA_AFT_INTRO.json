@@ -1,0 +1,63 @@
+{
+  "scene": "SINKA_AFT_INTRO",
+  "scene_group": "SINKA_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_AFT_INTRO_1_1",
+      "text_source": "You've got that look of wonder on your face again.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "observação direta, ligeiramente crítica",
+      "risk_level": "low",
+      "base_translation": "Você tem aquele olhar de admiração no rosto de novo.",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AFT_INTRO_1_2",
+      "text_source": "Tell me, is it something important this time or is gonna be another one of those discoveries that ends up taking you right back to where you started?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionamento cético, indiferença encoberta",
+      "risk_level": "medium",
+      "base_translation": "Diga-me, é algo importante desta vez ou vai ser mais uma daquelas descobertas que acaba levando você de volta para onde começou?",
+      "byte_budget": 149,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Comprimento acima da média (149 bytes); preservar estrutura sem floreios; Brigard não usa coloquialismos — manter tom seco e objetivo."
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AFT_INTRO_1_3",
+      "text_source": "Alright, I guess it's a good one this time, then.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "rendição relutante, aprovação contida",
+      "risk_level": "low",
+      "base_translation": "Certo, suponho que seja uma boa desta vez, então.",
+      "byte_budget": 49,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AFT_INTRO_1_4",
+      "text_source": "Nah... I'm joking, but you've got nothing to lose by trying.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "brincadeira com encorajamento subjacente",
+      "risk_level": "medium",
+      "base_translation": "Nah... Estou brincando, mas você não tem nada a perder em tentar.",
+      "byte_budget": 60,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mudança de personagem (Balof após Brigard); tom salta de seco para hiperbólico exagerado; 'joking' exige inflexão clara em pt-BR (interjeição ou reformulação para marcar a zombaria)."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_AFT_INTRO-v1"
+}

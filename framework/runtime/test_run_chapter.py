@@ -36,6 +36,8 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(rc.RS, "run_scene", fake_run_scene)
     monkeypatch.setattr(rc.kb_gate, "check",
                         lambda r, s: {"problems": [], "hard_problems": [], "warnings": [], "pending_decisions": []})
+    monkeypatch.setattr(rc.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(rc.cost_report, "report", lambda r, chapter=None: {"total_usd": 0.0, "n_calls": 0})
     monkeypatch.setattr(rc.quality_review, "export", lambda r, c: [{"revisar": ""}])
     monkeypatch.setattr(rc.quality_review, "write_xlsx",
@@ -66,6 +68,17 @@ def test_complete_with_qa_export(env):
     assert all(x["status"] == "verified" for x in r["scenes"])
     # QA obrigatório: XLSX gerado no outbox
     assert (paths.qa_outbox(root) / "review_cap_12.xlsx").is_file()
+
+
+def test_complete_persists_spoiler_audit(env):
+    root, _ = env
+    r = rc.run_chapter(root, "12", backend="in-session")
+    assert r["status"] == "complete"
+    # auditoria obrigatoria: roda SEMPRE (mesmo sem spoiler_ledger.json) e persiste o resultado
+    out = paths.spoiler_audit(root)
+    assert out.is_file()
+    rep = json.loads(out.read_text(encoding="utf-8"))
+    assert rep == {"name_leaks": [], "gender_flags": [], "clean": True}
 
 
 def test_resumable_skips_verified(env):
@@ -101,6 +114,18 @@ def test_batch_mode(env):
     root, _ = env
     r = rc.run_chapter(root, "12", backend="api", batch=True)
     assert r["status"] == "complete"
+
+
+def test_batch_mode_rebuilds_state_index_once_per_chapter(env, monkeypatch):
+    # modo batch: 1 rebuild pro capitulo INTEIRO (2 cenas), nao 1 por cena -- redundante no batch
+    # (a rodada de traducao ja terminou antes do rebuild ser util). Ver _rebuild_index_phase.
+    root, _ = env
+    calls = []
+    monkeypatch.setattr(rc.state_index, "build",
+                        lambda r, **k: calls.append(1) or {"tm": 0, "cards": 0, "decisions": 0, "warnings": []})
+    r = rc.run_chapter(root, "12", backend="api", batch=True)
+    assert r["status"] == "complete"
+    assert calls == [1]
 
 
 def test_scenes_glob_discovery(env):

@@ -1,0 +1,39 @@
+canonical_name,category,aliases,importance,confidence,notes
+Brigard,Personagem,General Brigard,main,high,Comandante do regimento; registro formal-militar seco. 102 linhas no corpus (speaker BRIGARD). Fonte: tone_analysis.md/decision_log.md (pesquisa Wikipedia/HandWiki/TheGamer).
+Euder,Personagem,,main,high,Soldado companheiro; coloquial informal arrogante. 101 linhas (speaker EUDER). Fonte: tone_analysis.md/decision_log.md.
+Jivan,Personagem,,main,high,Coruja fundadora de Hafin; formal-misterioso. 61 linhas (speaker JIVAN). Fonte: tone_analysis.md/decision_log.md.
+Balof,Personagem,,main,high,Mercador javali; principal vetor de humor. 60 linhas (speaker BALOF). Fonte: tone_analysis.md/decision_log.md.
+Sirfiel,Personagem,,secondary,high,"Capitã/estudiosa, irmã de Melian. 56 linhas (speaker SIRFIEL). Fonte: tone_analysis.md."
+Beigon,Personagem,,secondary,high,Guardião de Terragaya. 54 linhas (speaker BEIGON). Fonte: glossary.csv.
+Edil,Personagem,,secondary,high,Garota maga de Hafin; casual-positivo. 43 linhas (speaker EDIL). Fonte: tone_analysis.md.
+Melian,Personagem,,secondary,high,"Soldado sentinela, irmão de Sirfiel. 33 linhas (speaker MELIAN). Fonte: tone_analysis.md."
+Gartua,Personagem,,secondary,high,"Anão mecânico, upgrades. 24 linhas (speaker GARTUA). Fonte: tone_analysis.md."
+Makarel,Personagem,Makerel(none),secondary,high,Dupla cômica com Gruper. Corpus usa speaker code 'MAKEREL' (12 linhas + 1 GRUPERMAKEREL); decision_log.md grafa 'Makarel'. Decisão 2026-07-02: 'Makarel' é a grafia canônica (pesquisa externa); 'MAKEREL' fica só como ID interno do dev.
+Gruper,Personagem,,secondary,high,Dupla cômica com Makarel. 10 linhas + 1 GRUPERMAKEREL (speaker GRUPER). Fonte: tone_analysis.md.
+Valquíria,Entidade,Valkyrie;Valkirie,main,high,"Abre a história, leva almas a Terragaya; formal-solene. 17 linhas somadas (VALKIRIE/1/2). Fonte: tone_analysis.md + glossary.csv (tradução consagrada)."
+Arkzel,Personagem,,main,high,"Amigo de Brigard, par de estudos de Sirfiel; desaparecido desde um terremoto, suspeito de corrupção por parasita (diário de Brigard). Nunca fala diretamente no corpus extraído até agora — personagem ausente/referenciado, consistente com 'antagonista revelado tarde'. Grafia 'Arkzel' confirmada e consistente em todas as menções (STR_DIALOGS_BRIGARD_AC_TOPIC_ARKZEL_*, SIRFIEL_PRESENTATION, STR_INGAME_NOTE_BRIGARD_DIARY). Decisão 2026-07-02: resolvido, não bloqueia."
+Ratatosk,Criatura,,secondary,high,Criatura mitológica nórdica. 6 linhas (speaker RATATOSK). Fonte: glossary.csv.
+Terragaya,Local,,main,high,Mundo do além. 16 menções textuais. Fonte: terminology_seeds.md.
+Zarga,Local,,main,high,Nação do protagonista. 36 menções textuais. Fonte: terminology_seeds.md.
+Hafin City,Local,Hafin,main,high,Capital de Terragaya. 43 menções textuais. Fonte: terminology_seeds.md.
+Ascil,Local,,secondary,medium,Continente de origem. 0 menção textual direta na varredura atual (verificar grafia/variante no corpus ao escalar). Fonte: terminology_seeds.md.
+Dadelm,Facção,,secondary,high,Exército inimigo. 4 menções textuais. Fonte: terminology_seeds.md.
+Fyr Forest,Local,,secondary,medium,"Floresta com missões de tempo, ligada a Euder. 0 menção textual direta na varredura atual (pode estar só em tag <color=LOC>). Fonte: tone_analysis.md."
+Liandris,Personagem,,UNSOURCED,low,"80 linhas no corpus (speaker LIANDRIS) — mais que vários personagens já pesquisados. Sem cobertura em nenhuma das fontes usadas (Wikipedia/HandWiki/TheGamer/Steam Discussions). Pendente de pesquisa antes de escalar além do piloto. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Adamont,Personagem,,UNSOURCED,low,"70 linhas (speaker ADAMONT). Mesmo gap de Liandris — pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Galath,Personagem,,UNSOURCED,low,"43 linhas (speaker GALATH). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Cromachief,Personagem,,UNSOURCED,low,"53 linhas (speaker CROMACHIEF); provável chefe da facção 'Croma' (ver Cromaminion). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Fishchief,Personagem,,UNSOURCED,low,"53 linhas (speaker FISHCHIEF); provável chefe de facção aquática (ver Fishminion). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Sangrigor,Personagem,,UNSOURCED,low,"37 linhas (speaker SANGRIGOR). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Sinka,Personagem,,UNSOURCED,low,"34 linhas (speaker SINKA); também nome de cena (SINKA_AC_INTRO). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Cromaminion,NPC genérico,,background,low,"Minions da facção Croma. 33+7 linhas (CROMAMINION/CROMAMINIONB). UNSOURCED mas baixo risco (NPC genérico, não nomeado individualmente)."
+Fishminion,NPC genérico,,background,low,Minions da facção aquática. 18 linhas (FISHMINION). UNSOURCED mas baixo risco (NPC genérico).
+Birk,Personagem,,UNSOURCED,low,"24 linhas (speaker BIRK). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Freydin,Personagem,,UNSOURCED,low,"21 linhas (speaker FREYDIN). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Finse,Personagem,,UNSOURCED,low,"19 linhas (speaker FINSE); também nome de cena (AC_FINSE_HOUSE_DOOR). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Skribles,Personagem,,UNSOURCED,low,"18 linhas (speaker SKRIBLES). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Darksword,Personagem,,UNSOURCED,low,"17 linhas (speaker DARKSWORD); nome sugere boss. Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Anubis,Personagem,,UNSOURCED,low,"14 linhas (speaker ANUBIS) — referência mitológica egípcia, consistente com o tom do jogo (nórdico+egípcio). Pendente de pesquisa da lore específica. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Darkwarrior,NPC genérico,,background,low,"4 linhas (speaker DARKWARRIOR). UNSOURCED, baixo risco (NPC genérico)."
+Ironclad,Personagem,,UNSOURCED,low,"2 linhas (speaker IRONCLAD). Pendente de pesquisa. Decisão 2026-07-02: verbatim, não bloqueia escala."
+Esfinge,Personagem,,UNSOURCED,low,"2 linhas (speaker ESFINGE) — 'Esfinge' já é PT/ES para Sphinx; pode vir pré-localizado no dado fonte. Pendente de confirmação. Decisão 2026-07-02: verbatim, não bloqueia escala."

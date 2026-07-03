@@ -1,0 +1,52 @@
+{
+  "lines": {
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "asseverar compromisso do Guardião com determinação de Zarga",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É hora do Guardião conhecer a determinação de Zarga."
+    },
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar urgência e confiança com tom de exigência alarmista",
+      "risk_level": "medium",
+      "risk_notes": "tom hiperbólico ('or else') requer interjeição/ênfase brasileira; verificar se 'dessa vez' preserva a dramaticidade do original",
+      "t": "Tem que ser dessa vez, e ele é melhor nos levar pra casa... ou então!"
+    },
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_3": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "antecipar castigo/consequência com alívio exagerado e humor",
+      "risk_level": "medium",
+      "risk_notes": "hipérbole e tom de ameaça cômica; 'good while' → 'tempo' preserva o tom; verificar byte_budget (81) contra expansão pt-BR",
+      "t": "Na verdade, ele vai passar um tempo bem longo sem conseguir receber mais visitas."
+    },
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_4": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "reafirmar compromisso pessoal com exclamação enfática",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou pessoalmente garantir isso!"
+    },
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_5": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecer habilidade e fazer proposta de alistamento direto",
+      "risk_level": "high",
+      "risk_notes": "identidade dupla possível; 'soldier' é tratamento militar formal; back-translation obrigatória para preservar tonalidade estóica de recrutamento; evitar coloquialismo em 'Think about it'",
+      "t": "Você é um soldado único. Pensou no que eu disse? Sobre se juntar ao meu regimento?"
+    },
+    "STR_DIALOGS_ADAMONT_AN_INTRO_1_6": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "dar espaço para reflexão com despedida militar contida",
+      "risk_level": "medium",
+      "risk_notes": "'Hahahah' não é interjeição de Brigard (contradiz voz formal-militar); fonte pode estar errada ou é sinal de emote; adotar tom seco compatível e traduzir riso como simples 'haha' ou incorporar ao texto; byte_budget (53) é apertado",
+      "t": "Haha. Tudo bem, você pensa e me avisa."
+    }
+  }
+}

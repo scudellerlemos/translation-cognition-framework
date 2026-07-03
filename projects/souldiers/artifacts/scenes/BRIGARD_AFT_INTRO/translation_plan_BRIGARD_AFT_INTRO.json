@@ -1,0 +1,37 @@
+{
+  "scene": "BRIGARD_AFT_INTRO",
+  "scene_group": "BRIGARD_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AFT_INTRO_1_1",
+      "text_source": "I hope you've managed to rest, soldier. After finishing our preparations, we shall head towards Hel Swamp.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "verificar status do soldado e comunicar próximo objetivo",
+      "risk_level": "low",
+      "base_translation": "Espero que tenha conseguido descansar, soldado. Após terminarmos os preparativos, nos dirigiremos ao Pântano de Hel.",
+      "byte_budget": 106,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AFT_INTRO_1_2",
+      "text_source": "We'll be taking the fastest route.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "informar decisão sobre rota",
+      "risk_level": "low",
+      "base_translation": "Tomaremos a rota mais rápida.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-BRIGARD_AFT_INTRO-v1"
+}

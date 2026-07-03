@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D5_DARKSWORD_1": {
+      "speaker": "unknown",
+      "tone_register": "solene, obsessivo",
+      "intent": "confissão de propósito eterno; peso do destino",
+      "risk_level": "high",
+      "risk_notes": "Personagem sem card de voz no KB; identidade/motivação parcialmente oculta (dragão/renascimento). Tradução calibrada como monólogo introspectivo sério, sem dramatização excessiva. Back-translation necessária para validar tom de obsessão vs. determinação.",
+      "t": "O dragão à frente... Em breve renascerá, e serei eu quem o derrota novamente..."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D5_DARKSWORD_2": {
+      "speaker": "unknown",
+      "tone_register": "provocador, confrontador",
+      "intent": "acusação velada; teste de cumplicidade",
+      "risk_level": "medium",
+      "risk_notes": "Construção de culpa implícita ('drew you here') — traduzida como acusação direta mas não agressiva. Preserva ambiguidade de motivo do personagem-alvo.",
+      "t": "Esse poder te trouxe aqui também, admita..."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D5_DARKSWORD_3": {
+      "speaker": "unknown",
+      "tone_register": "lógico, cínico",
+      "intent": "justificar acúmulo de poder; expor necessidade",
+      "risk_level": "medium",
+      "risk_notes": "'choose' → 'escolha' (pt-BR natural). Frase longa (~70 bytes transliterado) cabe no orçamento. Sem registro arcaico; simplicidade militar mantida.",
+      "t": "Agora compreende por que não nos resta outra escolha senão acumular poder?"
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D5_DARKSWORD_4": {
+      "speaker": "unknown",
+      "tone_register": "retórico, seco",
+      "intent": "reforçar dependência de poder; inevitabilidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Do contrário, como teria chegado tão longe?"
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D6_DARKSWORD_1": {
+      "speaker": "unknown",
+      "tone_register": "hesitação, alarme contido",
+      "intent": "interrupção; presságio",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aguarde..."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D7_DARKSWORD_1": {
+      "speaker": "unknown",
+      "tone_register": "confusão, despertar",
+      "intent": "reconhecimento fragmentado; desorientação",
+      "risk_level": "high",
+      "risk_notes": "'Zar... ga?' com pausa — nome próprio (Zarga) transliterado. Pausa (`...`) preservada para manter efeito de lembrança confusa. Possível revelação de identidade/memória anterior — spoiler sensível. Translitera em ~10 bytes.",
+      "t": "Zar... ga?"
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D7_DARKSWORD_2": {
+      "speaker": "unknown",
+      "tone_register": "perplexo, inquieto",
+      "intent": "flashes de memória invadindo consciência",
+      "risk_level": "medium",
+      "risk_notes": "Simplicidade mantida; 'things' → 'coisas' (genérico, apropriado à nebulosidade da memória). Sem amplificação emocional.",
+      "t": "Lembro de coisas..."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D7_DARKSWORD_3": {
+      "speaker": "unknown",
+      "tone_register": "desconforto, rejeição",
+      "intent": "emoção negativa vs. fenômeno; angústia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É... perturbador."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D7_DARKSWORD_4": {
+      "speaker": "unknown",
+      "tone_register": "desespero, impotência",
+      "intent": "apelo; perda de controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quero que pare!"
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D8_DARKSWORD_1": {
+      "speaker": "unknown",
+      "tone_register": "filosófico, brutal",
+      "intent": "recontextualizar morte como ferramenta de existência",
+      "risk_level": "high",
+      "risk_notes": "'Killing' como axioma existencial — frase longa, estrutura conceitual densa. Traduzida mantendo paralelismo EN sem embelezamento. Risco elevado por natureza temática (glorificação de morte) mas necessário para lore/ideologia do personagem. Back-translation valida filosófico vs. propagandístico.",
+      "t": "Matar... Por ela, chegamos a este mundo e abrimos nosso caminho."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D8_DARKSWORD_2": {
+      "speaker": "unknown",
+      "tone_register": "confidencial, tentador",
+      "intent": "oferta velada; cumplicidade forçada",
+      "risk_level": "high",
+      "risk_notes": "'There's something here that seems to reward...' — entidade/força não nomeada ainda. Tradução mantém vagueza propositalmente (anti-spoiler). 'You've have noticed' (redundância EN) → 'também notou' (natural pt-BR). Risco elevado por manipulação subjacente e possível revelação futura de entidade.",
+      "t": "Há algo aqui que parece recompensar quem é como nós. Você também notou... não é?"
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D8_DARKSWORD_3": {
+      "speaker": "unknown",
+      "tone_register": "sublime, abdicação",
+      "intent": "dissolução de individualidade em poder coletivo; êxtase",
+      "risk_level": "critical",
+      "risk_notes": "Momento de transformação/revelação temática central. 'power that's been with you' — entidade cósmica ou coletiva (não nomeada, mantém ambiguidade). Estrutura longa mantida em pt-BR natural mas sem tornar-se prédica. 'becoming part of it' — abraço de dissolução identitária. CRÍTICO: possível antes/depois de identidade-reveal; necessária validação cross-arco de spoiler. Back-translation dupla exigida. Risco de soar fanático vs. resignado — tom calibrado como aceitação serena (nem desespero, nem exaltação). Byte budget 145 acomoda expansão natural do pt-BR.",
+      "t": "O poder que está com você desde que pisou aqui pertence a todos nós. Não poderia desejar um destino maior que me tornar parte dele."
+    },
+    "STR_DIALOGS_DRAGONSCASTLE_DCDS_D8_DARKSWORD_4": {
+      "speaker": "unknown",
+      "tone_register": "formal, despedida solene",
+      "intent": "encerramento; promessa implícita de reencontro/conflito",
+      "risk_level": "medium",
+      "risk_notes": "'Soldier of Zarga' — epíteto ou apelido? Zarga é local (glossário). Traduzido como tal. Título confere autoridade ao interlocutor. Byte budget apertado (33) — 'Até breve... Soldado de Zarga' cabe (27 transliterado).",
+      "t": "Até breve... Soldado de Zarga."
+    }
+  }
+}

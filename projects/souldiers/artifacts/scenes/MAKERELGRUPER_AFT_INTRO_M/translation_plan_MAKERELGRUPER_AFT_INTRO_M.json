@@ -1,0 +1,50 @@
+{
+  "scene": "MAKERELGRUPER_AFT_INTRO_M",
+  "scene_group": "MAKERELGRUPER_AFT_INTRO_M",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AFT_INTRO_M_1_1",
+      "text_source": "Gruper, if you could pick a regiment captain, who'd it be?",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, bate-boca",
+      "intent": "pergunta casual sobre preferência de capitão, tom amigável",
+      "risk_level": "low",
+      "base_translation": "Makarel, se você tivesse que escolher um capitão de regimento, quem seria?",
+      "byte_budget": 58,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AFT_INTRO_M_1_5",
+      "text_source": "Captain Sirfiel, no question.",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, decisivo",
+      "intent": "resposta convicta, sem dúvida",
+      "risk_level": "low",
+      "base_translation": "Capitã Sirfiel, sem questionamento.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AFT_INTRO_M_1_7",
+      "text_source": "What's the difference? Captains lead all kinds of regiments.",
+      "speaker": "Gruper",
+      "tone_register": "coloquial pastelão, questionador",
+      "intent": "retórica; desafia a lógica da resposta anterior",
+      "risk_level": "medium",
+      "base_translation": "Qual a diferença? Capitães comandam todo tipo de regimento.",
+      "byte_budget": 60,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "byte_budget apertado (60); preservado com concisão; risco médio por contexto de identidade dupla (Makarel/Gruper) — nenhuma revelação adiantada"
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_AFT_INTRO_M-v1"
+}

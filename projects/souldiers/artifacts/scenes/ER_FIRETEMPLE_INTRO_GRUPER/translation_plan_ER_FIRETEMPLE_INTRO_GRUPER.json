@@ -1,0 +1,63 @@
+{
+  "scene": "ER_FIRETEMPLE_INTRO_GRUPER",
+  "scene_group": "ER_FIRETEMPLE_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_GRUPER_1",
+      "text_source": "The sealed door of the Forest of Fyr...",
+      "speaker": "unknown",
+      "tone_register": "formal-neutral",
+      "intent": "exposition",
+      "risk_level": "low",
+      "base_translation": "A porta selada da Floresta de Fyr...",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_GRUPER_2",
+      "text_source": "This assignment must be an old one. I heard the brother of Captain Sirfiel say that you'd managed to get into that place.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military",
+      "intent": "exposition",
+      "risk_level": "medium",
+      "base_translation": "Essa missao deve ser antiga. Ouvi o irmao da Capitã Sirfiel dizer que você conseguiu entrar naquele lugar.",
+      "byte_budget": 121,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard formal-seco confirmado; 'brother of Captain Sirfiel' presume acesso a info do passado — confirmar nao eh spoiler antes reveal_timing. Mantido registro seco, sem floreios."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_GRUPER_4",
+      "text_source": "So, you going for the reward? With a name like that, sounds it could be one of the more dangerous ones.",
+      "speaker": "Balof",
+      "tone_register": "coloquial-informal-hiperbolico",
+      "intent": "levity-inquiry",
+      "risk_level": "medium",
+      "base_translation": "Então, você vai atrás da recompensa? Com um nome assim, parece que pode ser uma das mais perigosas!",
+      "byte_budget": 103,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof coloquial/hiperbolico exigido. 'one of the more dangerous ones' refere-se à recompensa/missao — preserva ambiguidade sem spoiler. Interjeição 'sounds' -> localizacao naturalizada. Energia/empolgacao mantida."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_FIRETEMPLE_INTRO_GRUPER_7",
+      "text_source": "I don't think he cares. Something tells me that our friend here isn't as greedy as you.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military",
+      "intent": "character-deflection",
+      "risk_level": "high",
+      "base_translation": "Não acho que ele se importe. Algo me diz que nosso amigo aqui não é tão ganancioso quanto você.",
+      "byte_budget": 87,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard respondendo sobre ganância vs altruismo — marca personagem. Back-translation necessaria: 'our friend' (referencia a terceiro, provavelmente jogador); 'greedy' contrasta Balof. Registro seco preservado; zero sentimentalismo. Referencia estrutural a dinamica do trio."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_FIRETEMPLE_INTRO_GRUPER-v1"
+}

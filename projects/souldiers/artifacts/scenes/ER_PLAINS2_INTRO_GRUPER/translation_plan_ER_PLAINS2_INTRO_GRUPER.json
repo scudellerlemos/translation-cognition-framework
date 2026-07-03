@@ -1,0 +1,50 @@
+{
+  "scene": "ER_PLAINS2_INTRO_GRUPER",
+  "scene_group": "ER_PLAINS2_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS2_INTRO_GRUPER_2",
+      "text_source": "Avalerions aren't just “vultures”. They're much, much bigger than a bird like, say, a  bald eagle, and this one in particular seems quite dangerous, too.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "explicar fato sobre Avalerions com precisão técnica",
+      "risk_level": "medium",
+      "base_translation": "Avalerions não são simples \"abutres\". São muito, muito maiores que uma ave comum, tipo uma águia-careca, e este em particular parece bastante perigoso também.",
+      "byte_budget": 157,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Lore específico (Avalerions); comprimento acima do padrão coloquial. Verificar naturalidade da comparação com águia-careca em contexto BR."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS2_INTRO_GRUPER_4",
+      "text_source": "I'll explain with an example: Did the spiders in that cave seem like simple arachnids to you?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "construir raciocínio por analogia; avisar sobre aparências enganosas",
+      "risk_level": "low",
+      "base_translation": "Explicarei com um exemplo: Os aracnídeos naquela caverna te pareciam simples aracnídeos?",
+      "byte_budget": 93,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_PLAINS2_INTRO_GRUPER_6",
+      "text_source": "Makerel? You've gone all white.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "observação direta sobre reação de Makarel; tom neutro-crítico",
+      "risk_level": "medium",
+      "base_translation": "Makerel? Você ficou branco.",
+      "byte_budget": 31,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a 'Makerel' — nome próprio ou variante de Makarel? Checklist: aparição sem contexto prévio neste segmento; preservar como está (verbatim EN). Emocional (palidez visível) — marcar para validação de continuidade de personagem."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_PLAINS2_INTRO_GRUPER-v1"
+}

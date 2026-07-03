@@ -1,0 +1,50 @@
+{
+  "scene": "BRIGARD_AP2_TOPIC_JIVAN",
+  "scene_group": "BRIGARD_AP2_TOPIC_JIVAN",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AP2_TOPIC_JIVAN_1_1",
+      "text_source": "That Jivan is incredible, and not just because he went around the city putting an end to those beasts as if it were nothing.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "expressar admiração pela competência de Jivan de forma contida e profissional",
+      "risk_level": "medium",
+      "base_translation": "Jivan é incrível, e não apenas por ter percorrido a cidade eliminando essas bestas como se fosse nada.",
+      "byte_budget": 124,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard é de criticality high; risco moderado pela necessidade de soar admirado sem perder a frieza estóica. Back-translation recomendada para validar tom seco mantido."
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AP2_TOPIC_JIVAN_1_2",
+      "text_source": "From what I can tell, he had the entire city surrounded by a magical shield for several days. Even when he spoke with us, he held enough focus to keep it intact.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "relatar informação estratégica sobre as capacidades de Jivan com admiração contida",
+      "risk_level": "high",
+      "base_translation": "Pelo que consigo determinar, ele mantinha um escudo mágico envolvendo toda a cidade há vários dias. Mesmo ao conversar conosco, conservava foco suficiente para preservá-lo intacto.",
+      "byte_budget": 161,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Criticality high (Brigard). Preservação de tom seco é crítica — frases curtas, sem floreios. A complexidade sintática do original (cláusulas múltiplas) pode comprometer o registro. Risco de soar formal demais ou muito coloquial. Back-translation obrigatória."
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AP2_TOPIC_JIVAN_1_3",
+      "text_source": "It's somewhat daunting to think that someone with that much power exists...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "expressar inquietação contida sobre a magnitude do poder de Jivan",
+      "risk_level": "medium",
+      "base_translation": "É perturbador reconhecer que existe alguém com tanto poder...",
+      "byte_budget": 75,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard em tom introspectivo mas mantendo frieza. 'Somewhat daunting' é emoção contida — traduzido como 'perturbador' ou 'inquietante' para preservar a sobriedade do personagem."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-BRIGARD_AP2_TOPIC_JIVAN-v1"
+}

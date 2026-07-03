@@ -1,0 +1,76 @@
+{
+  "scene": "SINKA_AP2_INTRO",
+  "scene_group": "SINKA_AP2_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_AP2_INTRO_1_1",
+      "text_source": "I know...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "reconhecimento resignado",
+      "risk_level": "low",
+      "base_translation": "Eu sei...",
+      "byte_budget": 9,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP2_INTRO_1_2",
+      "text_source": "You and I have seen this before.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "constatação factual de experiência compartilhada",
+      "risk_level": "low",
+      "base_translation": "Você e eu já vimos isso antes.",
+      "byte_budget": 32,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP2_INTRO_1_3",
+      "text_source": "Those things gave off the same aura we saw in the Spider Lair.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "análise tática de ameaça",
+      "risk_level": "medium",
+      "base_translation": "Aquelas coisas emanavam a mesma aura que vimos na Toca da Aranha.",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "referência a lore (Spider Lair); termo 'aura' mantém ambiguidade mágica/táctica conforme original"
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP2_INTRO_1_4",
+      "text_source": "What do you think their goal is, controlling the soldiers like that?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionamento tático direto",
+      "risk_level": "medium",
+      "base_translation": "Qual é o objetivo deles, controlando os soldados assim?",
+      "byte_budget": 68,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "interrogativa mantém tom estóico; evitado sentimentalismo ou especulação pessoal"
+    },
+    {
+      "offset": "STR_DIALOGS_SINKA_AP2_INTRO_1_5",
+      "text_source": "If I were you, I'd be very, very careful to make sure something like that didn't touch me.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "aviso tático severo",
+      "risk_level": "high",
+      "base_translation": "Se eu fosse você, teria muito cuidado para evitar contato com algo assim.",
+      "byte_budget": 90,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "ênfase duplicada ('very, very') traduzida para o registro formal-militar via repetição/asserção; risco de perder tom de severidade ou parecer leve — exige validação contextual que a reiteração ('muito, muito cuidado') soe como ordem militar, não coloquialismo"
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_AP2_INTRO-v1"
+}

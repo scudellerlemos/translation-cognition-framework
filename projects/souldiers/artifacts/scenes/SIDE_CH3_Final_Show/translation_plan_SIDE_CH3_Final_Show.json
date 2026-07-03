@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_CH3_Final_Show",
+  "scene_group": "SIDE_CH3_Final_Show",
+  "lines": [
+    {
+      "offset": "CH3_Final_Show_01",
+      "text_source": "What's going on here? Is the show going to start soon?",
+      "speaker": "npc",
+      "tone_register": "coloquial informal",
+      "intent": "curiosidade/antecipação",
+      "risk_level": "low",
+      "base_translation": "O que está acontecendo aqui? O show vai começar em breve?",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "CH3_Final_Show_02",
+      "text_source": "I heard The Three Mermaids will be doing a show here! Exciting!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "empolgação exagerada",
+      "risk_level": "high",
+      "base_translation": "Ouvi dizer que The Three Mermaids vão fazer um show aqui! Que emoção!",
+      "byte_budget": 63,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof requer energia/hipérbole máxima; exclamações são marca registrada. Back-translation obrigatória para verificar se 'The Three Mermaids' mantém expectativa de espanto."
+    },
+    {
+      "offset": "CH3_Final_Show_03",
+      "text_source": "When does the show start? I can't wait!",
+      "speaker": "npc",
+      "tone_register": "coloquial informal",
+      "intent": "impaciência/entusiasmo",
+      "risk_level": "low",
+      "base_translation": "Quando começa o show? Não aguento de esperar!",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 1,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_CH3_Final_Show-v1"
+}

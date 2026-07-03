@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_UPGRADE_PLANTS",
+  "scene_group": "SIDE_UPGRADE_PLANTS",
+  "lines": [
+    {
+      "offset": "SIDE_DIALOG_UPGRADE_PLANTS_1",
+      "text_source": "I love the new jungle feel!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "expressar entusiasmo exagerado pela nova decoração",
+      "risk_level": "low",
+      "base_translation": "Adorei o novo clima de selva!",
+      "byte_budget": 27,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_UPGRADE_PLANTS_2",
+      "text_source": "These plants bring some extra life to the ship. I love it!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "elogiar as plantas como melhoria do navio com empolgação",
+      "risk_level": "low",
+      "base_translation": "Essas plantas trazem mais vida pro navio. Amei!",
+      "byte_budget": 58,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "SIDE_DIALOG_UPGRADE_PLANTS_3",
+      "text_source": "I think I'll just plant myself close to these plants!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "fazer piada hiperbólica sobre ficar perto das plantas",
+      "risk_level": "medium",
+      "base_translation": "Acho que vou ficar plantado perto dessas plantas!",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "trocadilho 'plant myself' (ficar/plantar) pode não ser evidente; mantém tom lúdico em pt-BR com 'vou ficar plantado'"
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_UPGRADE_PLANTS-v1"
+}

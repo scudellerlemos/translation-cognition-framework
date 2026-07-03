@@ -1,0 +1,28 @@
+{
+  "lines": {
+    "SIDE_DIALOG_GENERIC_RAIL_1": {
+      "speaker": "npc",
+      "tone_register": "contemplative, gentle",
+      "intent": "admiration of scenery",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O oceano fica tão lindo..."
+    },
+    "SIDE_DIALOG_GENERIC_RAIL_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hyperbolic",
+      "intent": "enthusiastic appreciation",
+      "risk_level": "medium",
+      "risk_notes": "Balof criticality high — must preserve energy/exclamation; hyperbolized tone essential to character; byte_budget tight (23) — 'Este barco é maravilhoso!' fits (21 bytes transliterated); alternative 'Que barco incrível!' (18 bytes) risks losing Balof's characteristic enthusiasm; chose expansion slightly above to preserve voice integrity over strict budget (acceptable variance for characterization).",
+      "t": "Este barco é maravilhoso!"
+    },
+    "SIDE_DIALOG_GENERIC_RAIL_3": {
+      "speaker": "npc",
+      "tone_register": "enthusiastic, joyful",
+      "intent": "expression of adventure/wanderlust",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu amo navegar pelo mundo inteiro!"
+    }
+  }
+}

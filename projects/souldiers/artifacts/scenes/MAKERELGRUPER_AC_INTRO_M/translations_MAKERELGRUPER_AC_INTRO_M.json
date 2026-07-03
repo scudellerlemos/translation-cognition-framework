@@ -1,0 +1,20 @@
+{
+  "lines": {
+    "STR_DIALOGS_MAKERELGRUPER_AC_INTRO_M_1_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "questionamento direto sobre o estado emocional do interlocutor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você diz isso com entusiasmo ou medo?"
+    },
+    "STR_DIALOGS_MAKERELGRUPER_AC_INTRO_M_1_4": {
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "confissão de ceticismo inicial convertido em convencimento, com preferência de segurança",
+      "risk_level": "medium",
+      "risk_notes": "Preservar o tom de alívio exagerado e a energia de Balof apesar da restrição de byte_budget (100 bytes); 'pretty believable' deve soar como convencimento genuíno sem perder a hipérbole característica. Back-translation recomendada para validar naturalidade da contração.",
+      "t": "Agora que vi, parece bem convincente pra mim, mas prefiro ficar aqui mesmo, sendo honesto."
+    }
+  }
+}

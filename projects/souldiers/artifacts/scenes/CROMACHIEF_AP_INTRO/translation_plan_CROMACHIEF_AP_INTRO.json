@@ -1,0 +1,37 @@
+{
+  "scene": "CROMACHIEF_AP_INTRO",
+  "scene_group": "CROMACHIEF_AP_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CROMACHIEF_AP_INTRO_1_1",
+      "text_source": "To activate the orb, think of someone who has ample knowledge of the power you call 'magic'.",
+      "speaker": "system",
+      "tone_register": "instructional-neutral",
+      "intent": "explain_mechanic",
+      "risk_level": "low",
+      "base_translation": "Para ativar o orbe, pense em alguém que tenha amplo conhecimento do poder que você chama de 'magia'.",
+      "byte_budget": 92,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_CROMACHIEF_AP_INTRO_2_1",
+      "text_source": "Go on, use the <color=OBJ>Electric Orb with the generator</color> to restore power to the portal. That crystal up there. Then jump onto the transporter's beacon and activate it to travel to the Floating Module.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military-terse",
+      "intent": "give_orders",
+      "risk_level": "medium",
+      "base_translation": "Vá! Use o <color=OBJ>Orbe Elétrico no gerador</color> para restaurar energia ao portal. Aquele cristal lá acima. Depois pule no farol do transportador e ative-o para viajar ao Módulo Flutuante.",
+      "byte_budget": 210,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard (high criticality): formal-military register enforced; short clauses as commands; no colloquialisms. Color tag <color=OBJ>...</color> preserved verbatim. Multi-action sequence (use orb → jump → activate) demands clarity without fluff. pt-BR tendency to expand — kept concise (92→210 byte budget; within limits)."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-CROMACHIEF_AP_INTRO-v1"
+}

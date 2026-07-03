@@ -1,0 +1,37 @@
+{
+  "scene": "MAKERELGRUPER_AAF_INTRO_G",
+  "scene_group": "MAKERELGRUPER_AAF_INTRO_G",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AAF_INTRO_G_1_2",
+      "text_source": "Calm down, Makerel, one of the captains will take over his role, don't panic.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "conter pânico com autoridade; ordenar calma",
+      "risk_level": "medium",
+      "base_translation": "Fique calmo, Makerel. Um dos capitães assume o papel dele. Sem pânico.",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard exige tom seco/curtíssimo; 'Calm down' = ordem direta; risco de soar coloquial ou suavizar demais. Preservado: 'Fique calmo' (contido) + explicação breve sem floreios."
+    },
+    {
+      "offset": "STR_DIALOGS_MAKERELGRUPER_AAF_INTRO_G_1_3",
+      "text_source": "Though, you don't have any reason to worry. He's safe thanks to wise old Jivan and the help of our friend, right?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "tranquilizar com firmeza; invocar autoridade/confiança",
+      "risk_level": "high",
+      "base_translation": "Contudo, você não tem motivo para se preocupar. Ele está seguro graças ao sábio Jivan e à ajuda de nosso amigo, certo?",
+      "byte_budget": 113,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Alto risco: (1) 'wise old Jivan' = referência a personagem com criticality:medium — nome verbatim obrigatório, tom formal; (2) 'don't have any reason to worry' traduzido por negação seca (sem palavras desnecessárias) em linha já comprida (113 bytes); (3) estrutura 'Though' + 'He's safe thanks to' exige sintaxe mais elaborada em pt-BR mas mantendo estilo militar curto. Back-translation: 'Contudo, você não tem motivo para se preocupar. Ele está seguro graças ao sábio Jivan e à ajuda de nosso amigo, certo?' — preserva autoridade + peso."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-MAKERELGRUPER_AAF_INTRO_G-v1"
+}

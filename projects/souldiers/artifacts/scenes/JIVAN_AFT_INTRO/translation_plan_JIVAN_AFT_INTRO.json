@@ -1,0 +1,89 @@
+{
+  "scene": "JIVAN_AFT_INTRO",
+  "scene_group": "JIVAN_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_1",
+      "text_source": "The beast that both you and that other boy describe...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "solicitar confirmação sobre criatura descrita",
+      "risk_level": "low",
+      "base_translation": "A besta que você e aquele outro rapaz descrevem...",
+      "byte_budget": 54,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_2",
+      "text_source": "It seems to be a Feral, a creature whose energy rivals that of the Valkyries...",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "apresentar análise da ameaça",
+      "risk_level": "medium",
+      "base_translation": "Parece ser um Feral, criatura cuja energia rivaliza com a das Valquírias...",
+      "byte_budget": 79,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Feral é termo de lore; Valkyries deve ser Valquírias (plural canônico)"
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_3",
+      "text_source": "My suspicions proved correct. If that creature has been here, it can't have been for a good reason.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confirmar suspeita e indicar perigo",
+      "risk_level": "low",
+      "base_translation": "Minhas suspeitas se confirmaram. Se a criatura esteve aqui, não foi por um bom motivo.",
+      "byte_budget": 99,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_4",
+      "text_source": "It's important you tell me exactly where you faced him. I must see it with my own eyes.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordenar informação sobre localização",
+      "risk_level": "low",
+      "base_translation": "É importante que você me diga exatamente onde enfrentou. Preciso ver com meus próprios olhos.",
+      "byte_budget": 87,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_5",
+      "text_source": "No... Do not worry, I shall take care of it. If he really has revealed the location of the Guardian to you, you'd best take his word as truth.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "oferecer proteção e validar informação de lore",
+      "risk_level": "high",
+      "base_translation": "Não... Não se preocupe. Cuidarei disso. Se ele realmente revelou a localização do Guardião, tome a palavra dele como verdade.",
+      "byte_budget": 142,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção ao Guardião (Guardian) — termo de lore canônico; spoiler em potencial se contexto de revelação; Brigard confirma gravidade ao validar palavra do Feral; requer back-translation para verificar tom de confiança sem sentimentalismo"
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AFT_INTRO_1_6",
+      "text_source": "Lying doesn't come naturally to those beasts.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "afirmar confiabilidade de criaturas Feral",
+      "risk_level": "low",
+      "base_translation": "Mentira não vem naturalmente dessas bestas.",
+      "byte_budget": 45,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 1,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-JIVAN_AFT_INTRO-v1"
+}

@@ -1,0 +1,50 @@
+{
+  "scene": "SCRIBLES_SWAMP_INTRO",
+  "scene_group": "SCRIBLES_SWAMP_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_SWAMP_INTRO_1_1",
+      "text_source": "Yes! This old dog still has a good nose. How did you think I got around all that venom?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "demonstrar astúcia e tranquilidade apesar do perigo",
+      "risk_level": "low",
+      "base_translation": "Sim! Esse velho cão ainda tem um bom faro. Como você acha que consegui passar por todo aquele veneno?",
+      "byte_budget": 87,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_SWAMP_INTRO_1_2",
+      "text_source": "Of course I'm not talking to myself. I'm talking to you, tin man. You know? I've stopped being surprised at you turning up. You have the same adventurous spirit I did at your age. Well... and at mine.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "brincadeira descontraída sobre reconhecer o caráter aventureiro do jogador",
+      "risk_level": "medium",
+      "base_translation": "Claro que não estou falando comigo mesmo. Estou falando com você, homem de lata. Sabe? Parei de estranhar você aparecer por aí. Você tem o mesmo espírito aventureiro que eu tinha na sua idade. Bom... e na minha também.",
+      "byte_budget": 200,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "quebra de linha interna (\\n) marca pausa dramática antes da punchline; preservar ritmo de humor hiperbólico; verificar naturalidade da sequência 'parei de estranhar → mesmo espírito aventureiro → meu e seu'"
+    },
+    {
+      "offset": "STR_DIALOGS_SCRIBLES_SWAMP_INTRO_1_3",
+      "text_source": "Don't tell me, I'll guess, yes? You're looking for... New maps! Say no more. You'll find everything you need in my shop, yes?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "oferecer ajuda com entusiasmo exagerado e convicção cômca",
+      "risk_level": "low",
+      "base_translation": "Não me diga, vou adivinhar, sim? Você está procurando por... Novos mapas! Sem mais palavras. Você vai encontrar tudo que precisa na minha loja, sim?",
+      "byte_budget": 125,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SCRIBLES_SWAMP_INTRO-v1"
+}

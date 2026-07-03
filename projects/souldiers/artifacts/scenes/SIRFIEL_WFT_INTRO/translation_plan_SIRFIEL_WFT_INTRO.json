@@ -1,0 +1,89 @@
+{
+  "scene": "SIRFIEL_WFT_INTRO",
+  "scene_group": "SIRFIEL_WFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_1",
+      "text_source": "At my brother's request, I won't involve anyone else.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês",
+      "intent": "reafirmar compromisso de sigilo",
+      "risk_level": "low",
+      "base_translation": "A pedido do meu irmão, não envolverei ninguém mais.",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_2",
+      "text_source": "He trusts you completely, you see.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês",
+      "intent": "explicar confiança",
+      "risk_level": "low",
+      "base_translation": "Ele confia completamente em você, sabe.",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_3",
+      "text_source": "You best hurry back soon. I'm disobeying my orders to let General Brigard know about things like this for you.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês urgente",
+      "intent": "advertência com risco pessoal",
+      "risk_level": "medium",
+      "base_translation": "Será melhor voltar logo. Estou desobedecendo minhas ordens ao não avisar o General Brigard sobre coisas assim pra você.",
+      "byte_budget": 110,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "confiança em personagem não revelado; implicação de desobediência a ordem militar — verificar coerência com arco de Sirfiel/Brigard"
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_4",
+      "text_source": "Oh, by the way...",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês",
+      "intent": "transição suave para novo tópico",
+      "risk_level": "low",
+      "base_translation": "Ah, aliás...",
+      "byte_budget": 17,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_5",
+      "text_source": "I'm sorry about what happened earlier. I still haven't mastered this sort of spell, and I couldn't go back to my original form when I activated that trap.",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês envergonhado",
+      "intent": "pedir desculpas por incidente; revelar fraqueza de magia",
+      "risk_level": "medium",
+      "base_translation": "Peço desculpas pelo que aconteceu antes. Ainda não domino completamente esse tipo de magia, e não consegui voltar à minha forma original quando acionei aquela armadilha.",
+      "byte_budget": 154,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "expõe limitação mágica de Sirfiel — verificar se é spoiler ou revelação planejada no arco"
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_WFT_INTRO_1_6",
+      "text_source": "Don't hold it against me, alright?",
+      "speaker": "Sirfiel",
+      "tone_register": "formal-cortês conciliatório",
+      "intent": "pedir compreensão",
+      "risk_level": "low",
+      "base_translation": "Não me culpe por isso, está bem?",
+      "byte_budget": 34,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 6,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_WFT_INTRO-v1"
+}

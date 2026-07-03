@@ -1,0 +1,63 @@
+{
+  "scene": "MELIAN_WFT_INTRO",
+  "scene_group": "MELIAN_WFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MELIAN_WFT_INTRO_1_1",
+      "text_source": "Don't worry about me, I'll be alright.",
+      "speaker": "unknown",
+      "tone_register": "formal-médio, tranquilizador",
+      "intent": "reassurance, self-confidence",
+      "risk_level": "low",
+      "base_translation": "Não se preocupe comigo, ficarei bem.",
+      "byte_budget": 38,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_WFT_INTRO_1_2",
+      "text_source": "I promised my sister that I won't get up to mischief, at least until I've recovered.",
+      "speaker": "unknown",
+      "tone_register": "formal-médio, gentil",
+      "intent": "commitment, duty to sister",
+      "risk_level": "low",
+      "base_translation": "Prometi à minha irmã que não vou aprontar nada, até me recuperar completamente.",
+      "byte_budget": 84,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_WFT_INTRO_1_3",
+      "text_source": "You have to stop that giant squirrel before it reaches the tree the Valkyrie spoke about.",
+      "speaker": "unknown",
+      "tone_register": "formal-solene, urgência ritual",
+      "intent": "directive, mission-critical",
+      "risk_level": "medium",
+      "base_translation": "Você precisa parar o esquilo gigante antes que ele chegue à árvore de que a Valquíria falou.",
+      "byte_budget": 89,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a 'Valkyrie' (Valquíria) e Ratatosk (esquilo gigante) — termos críticos de lore; 'árvore' deve ser neutra de gênero conforme original; frase estruturada como decreto (registro formal-solene apropriado para cena épica)."
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_WFT_INTRO_1_4",
+      "text_source": "Hurry, I know you can do it. You're much more powerful now, even more than a Mage Captain like Sirfiel.",
+      "speaker": "unknown",
+      "tone_register": "formal-médio, encorajador",
+      "intent": "motivation, confidence in player power",
+      "risk_level": "medium",
+      "base_translation": "Rápido, sei que consegue. Você está muito mais forte agora, até mais que um Capitão Mago como Sirfiel.",
+      "byte_budget": 103,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção a 'Mage Captain' (Capitão Mago) e Sirfiel (personagem nomeado); 'more powerful' indica crescimento mecânico — crítico para narrativa de progressão; back-translation necessária para validar comparação de poder."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-MELIAN_WFT_INTRO-v1"
+}

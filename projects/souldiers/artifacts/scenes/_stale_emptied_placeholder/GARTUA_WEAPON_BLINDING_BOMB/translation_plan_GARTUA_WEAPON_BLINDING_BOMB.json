@@ -1,0 +1,37 @@
+{
+  "scene": "GARTUA_WEAPON_BLINDING_BOMB",
+  "scene_group": "GARTUA_WEAPON_BLINDING_BOMB",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_GARTUA_WEAPON_BLINDING_BOMB_1",
+      "text_source": "STR_DIALOGS_GARTUA_WEAPON_BLINDING_BOMB_1",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "express relief and excitement about weapon effect",
+      "risk_level": "medium",
+      "base_translation": "Que alívio! A bomba cega é tudo que precisava!",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof's voice criticality is high; must preserve hyperbolic excitement and Brazilian interjections. Verify exclamation register matches character."
+    },
+    {
+      "offset": "STR_DIALOGS_GARTUA_WEAPON_BLINDING_BOMB_2",
+      "text_source": "STR_DIALOGS_GARTUA_WEAPON_BLINDING_BOMB_2",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "acknowledge weapon readiness with military brevity",
+      "risk_level": "medium",
+      "base_translation": "Arma preparada. Prosseguimos.",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard's voice criticality is high; must maintain short, orders-like phrasing with zero sentimentality or colloquialisms. Ensure stony, terse delivery."
+    }
+  ],
+  "total_lines": 2,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-GARTUA_WEAPON_BLINDING_BOMB-v1"
+}

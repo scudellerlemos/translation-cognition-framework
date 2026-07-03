@@ -1,0 +1,63 @@
+{
+  "scene": "SIRFIEL_AP2_INTRO",
+  "scene_group": "SIRFIEL_AP2_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AP2_INTRO_1_1",
+      "text_source": "That girl..._100_ Edil._100_ Jivan's teaching her some very powerful magic, though it does put me a little on edge.",
+      "speaker": "system",
+      "tone_register": "formal-narrativo",
+      "intent": "observação-reflexiva",
+      "risk_level": "medium",
+      "base_translation": "Aquela garota..._100_ Edil._100_ Jivan está ensinando a ela magia muito poderosa, embora isso me deixe um pouco apreensivo.",
+      "byte_budget": 115,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção de Jivan (personagem), Edil (personagem), Arkzel (personagem) — verificar consistência com voice_criticality; Jivan é formal-misterioso (não coloquial). Registro deve ser neutro/formal para narrador."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AP2_INTRO_1_2",
+      "text_source": "She doesn't seem the slightest bit interested in the tutoring she's receiving.",
+      "speaker": "system",
+      "tone_register": "formal-observacional",
+      "intent": "constatação",
+      "risk_level": "low",
+      "base_translation": "Ela não parece nem um pouco interessada no treinamento que está recebendo.",
+      "byte_budget": 78,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AP2_INTRO_1_3",
+      "text_source": "I don't like to admit it, but, compared with him, Arkzel and I would look like complete novices.",
+      "speaker": "system",
+      "tone_register": "formal-reflexivo",
+      "intent": "comparação-modesta",
+      "risk_level": "medium",
+      "base_translation": "Não gosto de admitir, mas comparado com ele, Arkzel e eu pareceríamos aprendizes completos.",
+      "byte_budget": 96,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção de Arkzel (personagem) — verificar coerência com voz do narrador. 'complete novices' → 'aprendizes completos' (conciso para byte_budget=96)."
+    },
+    {
+      "offset": "STR_DIALOGS_SIRFIEL_AP2_INTRO_1_4",
+      "text_source": "Arkzel... I wonder where you are now...",
+      "speaker": "system",
+      "tone_register": "formal-melancólico",
+      "intent": "saudade-questionamento",
+      "risk_level": "low",
+      "base_translation": "Arkzel... Onde você estará agora...",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-SIRFIEL_AP2_INTRO-v1"
+}

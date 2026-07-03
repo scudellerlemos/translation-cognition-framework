@@ -1,0 +1,63 @@
+{
+  "scene": "PLAINS",
+  "scene_group": "PLAINS",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_PLAINS_D1_LIANDRIS_1",
+      "text_source": "Welcome, brave warrior._300_ I am <color=CHA>Liandris</color>,_500_ <color=CHA>Matriarch of the Valkyries.</color>",
+      "speaker": "Valkirie",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "Saudação solene; apresentação ritual da personagem como Matriarca das Valquírias",
+      "risk_level": "low",
+      "base_translation": "Bem-vindo, bravo guerreiro._300_ Sou <color=CHA>Liandris</color>,_500_ <color=CHA>Matriarca das Valquírias.</color>",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_PLAINS_D1_LIANDRIS_2",
+      "text_source": "Forget everything you thought you knew._300_ Your battles,_100_ your friends..._500_ You are now in a very different place from whence you came._300_\nThis world is ruled by a <color=CHA>worldly God, a Guardian</color> who awaits your arrival and that of your allies.",
+      "speaker": "Valkirie",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "Explicação do novo mundo; revelação de uma divindade (Guardião) que aguarda o guerreiro",
+      "risk_level": "high",
+      "base_translation": "Esqueça tudo o que julgava conhecer._300_ Suas batalhas,_100_ seus amigos..._500_ Você está agora em um lugar muito diferente daquele de onde veio._300_ Este mundo é governado por um <color=CHA>Deus mundano, um Guardião</color> que aguarda sua chegada e a de seus aliados.",
+      "byte_budget": 266,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Introduz entidade crítica (Guardian/Guardião) e mundo novo; requer back-translation para garantir solenidade sem arcaísmo excessivo; evitar contrações; preservar impessoalidade ritual."
+    },
+    {
+      "offset": "STR_DIALOGS_PLAINS_D1_LIANDRIS_5",
+      "text_source": "Your mission will be to find him,_100_ but it will not be easy.\nIf you succeed, you will pass into the next plane_100_ where you will be named a champion in the great battle of the Gods,_300_ <color=IMP>Ragnarok</color>,_100_ and be granted unimaginable powers.",
+      "speaker": "Valkirie",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "Descrição da missão; promessa de poder e reconhecimento divino (Ragnarok); tom de decreto grandioso",
+      "risk_level": "high",
+      "base_translation": "Sua missão será encontrá-lo,_100_ mas não será fácil. Se conseguir, passará ao próximo plano_100_ onde será nomeado campeão na grande batalha dos Deuses,_300_ <color=IMP>Ragnarok</color>,_100_ e receberá poderes inimagináveis.",
+      "byte_budget": 261,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção a Ragnarok (spoiler/lore crítico); tom de proclamação deve ser mantido; sintaxe formal sem contrações; back-translation recomendada."
+    },
+    {
+      "offset": "STR_DIALOGS_PLAINS_D1_LIANDRIS_6",
+      "text_source": "Tell me, soldier,_300_ are you ready to embrace glory beyond your life and this world?\nFind the <color=CHA>Guardian</color> and, with him, your place.",
+      "speaker": "Valkirie",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "Pergunta ritual final; confirmação de prontidão; invocação para encontrar o Guardião",
+      "risk_level": "medium",
+      "base_translation": "Diga-me, soldado,_300_ está pronto para abraçar a glória além de sua vida e deste mundo? Encontre o <color=CHA>Guardião</color> e, com ele, seu lugar.",
+      "byte_budget": 150,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Finalização de apresentação solene; tom de indagação ritualística; verificar que 'glória' transmita grandiosidade sem soar pomposo demais."
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-PLAINS-v1"
+}

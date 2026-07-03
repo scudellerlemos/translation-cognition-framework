@@ -1,0 +1,76 @@
+{
+  "scene": "JIVAN_ASL_INTRO",
+  "scene_group": "JIVAN_ASL_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_JIVAN_ASL_INTRO_1_1",
+      "text_source": "I see, so Baydral was behind everything.",
+      "speaker": "system",
+      "tone_register": "formal-reflexivo",
+      "intent": "realização; descoberta de conspiração",
+      "risk_level": "low",
+      "base_translation": "Entendo, então Baydral estava por trás de tudo.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_ASL_INTRO_1_2",
+      "text_source": "That explains a lot.",
+      "speaker": "system",
+      "tone_register": "formal-reflexivo",
+      "intent": "confirmação compreensiva",
+      "risk_level": "low",
+      "base_translation": "Isso explica muita coisa.",
+      "byte_budget": 20,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_ASL_INTRO_1_3",
+      "text_source": "The distance, the change in attitude...",
+      "speaker": "system",
+      "tone_register": "formal-reflexivo",
+      "intent": "enumeração de evidências; conexão de pistas",
+      "risk_level": "low",
+      "base_translation": "A distância, a mudança de postura...",
+      "byte_budget": 39,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_ASL_INTRO_1_4",
+      "text_source": "In another time, he was a good friend and a wise advisor who you could trust.",
+      "speaker": "system",
+      "tone_register": "formal-nostálgico",
+      "intent": "lamento; contraste passado/presente",
+      "risk_level": "medium",
+      "base_translation": "Antes, ele era um bom amigo e um conselheiro sábio em quem você podia confiar.",
+      "byte_budget": 77,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade dupla (Baydral/alterego). Contraste temporal e traição implícita exige naturalidade na nostalgia sem antecipar revelação futura. Verificar se expressão 'em outro tempo' não soa arcaica demais para registro contemporâneo."
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_ASL_INTRO_1_5",
+      "text_source": "It's a shame that not everyone is capable of finding peace here. Time always takes its toll in one way or another.",
+      "speaker": "system",
+      "tone_register": "formal-melancólico",
+      "intent": "reflexão filosófica; lamento universal sobre passagem do tempo e perdição",
+      "risk_level": "medium",
+      "base_translation": "É uma pena que nem todos consigam encontrar paz aqui. O tempo sempre cobra seu preço de um jeito ou de outro.",
+      "byte_budget": 114,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Sentimento melancólico e sabedoria existencial. Preservar ambiguidade sobre 'paz' (lore específica) sem resolver o mistério. Naturalidade em pt-BR moderno para reflexão profunda — não arcaísmo. Back-translation recomendada para 'não encontra paz' vs 'não consegue encontrar paz'."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-JIVAN_ASL_INTRO-v1"
+}

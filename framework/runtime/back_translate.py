@@ -189,12 +189,55 @@ def invalidate_back_translation(root, scene, offsets) -> int:
     return n
 
 
-def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
-                         sample_rate=BACK_SAMPLE_RATE):
-    """Back-translation de VARIAS cenas num UNICO batch (-50% sobre o Opus, o passo mais caro/linha).
-    A back-translation e report-only e roda DEPOIS do verify (precisa do translation_plan) -> e um
-    POS-PASSE natural: coleta os candidatos de cada cena (high/critical + amostra ~sample_rate das
-    low/medium, p/ dar piso de qualidade ao tier barato), monta 1 request por cena e submete em batch.
+_BACK_CHUNK = 40    # requests por batch — nao 1 batch gigante (ver feedback-segment-large-batches:
+                    # blast radius menor, progresso incremental, e cada chunk usa o timeout curto abaixo
+                    # em vez de 1 timeout unico gigante bloqueando tudo)
+
+
+def _submit_back_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, m, root):
+    """Submete e processa UM chunk de requests de back-translation. Retorna {scene: status} so
+    deste chunk. Isolado p/ _BACK_CHUNK nao virar 1 funcao monolitica e p/ ser testavel isolado."""
+    status = {}
+    batch = _with_backoff(lambda: client.messages.batches.create(requests=chunk_reqs))
+    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
+        for r in chunk_reqs:
+            status[r["custom_id"]] = "timeout"
+        return status
+    # materializa os resultados DENTRO do backoff (igual ao batch_translate; foi aqui que o cap.18 morreu)
+    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
+    for result in results:
+        scene = result.custom_id
+        if getattr(result.result, "type", None) != "succeeded":
+            status[scene] = "errored"
+            continue
+        msg = result.result.message
+        log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
+        try:
+            data = json.loads(_text_of(msg))
+            data["reviewed"] = len(data.get("entries", []))
+            scene_id = context_pack.scene_id_of(scene)
+            (paths.back_translation(root, scene, scene_id)).write_text(
+                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            status[scene] = "reviewed"
+        except Exception:
+            status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
+    return status
+
+
+def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=2 * 3600,
+                         sample_rate=BACK_SAMPLE_RATE, chunk_size=_BACK_CHUNK):
+    """Back-translation de VARIAS cenas em VARIOS batches pequenos (-50% sobre o Opus, o passo mais
+    caro/linha). A back-translation e report-only e roda DEPOIS do verify (precisa do translation_plan)
+    -> e um POS-PASSE natural: coleta os candidatos de cada cena (high/critical + amostra ~sample_rate
+    das low/medium, p/ dar piso de qualidade ao tier barato), monta 1 request por cena.
+
+    Requests sao divididos em chunks de `chunk_size` (default 40), cada 1 submetido como batch SEPARADO
+    e processado antes do proximo — nao 1 batch gigante. Why: um batch de 146 requests (Souldiers,
+    2026-07-03) ficou parecendo travado por horas; NAO E CRITICO esperar tanto por algo report-only, e
+    um chunk que trava so perde ESSE chunk, nao o resto. `max_wait_seconds` default caiu de 24h -> 2h
+    pelo mesmo motivo: back-translation nao bloqueia o pipeline, 24h de paciencia era desproporcional
+    pra QA opcional. Ver memory anthropic-batch-progress-unreliable + feedback-segment-large-batches.
+
     Grava back_translation_<scene_id>.json por cena. custom_id = scene.
 
     Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra). Cena sem
@@ -221,27 +264,7 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
     if not reqs:
         return status
     client = _client()
-    batch = _with_backoff(lambda: client.messages.batches.create(requests=reqs))
-    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
-        for scene in highs:
-            status.setdefault(scene, "timeout")
-        return status
-    # materializa os resultados DENTRO do backoff (igual ao batch_translate; foi aqui que o cap.18 morreu)
-    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))
-    for result in results:
-        scene = result.custom_id
-        if getattr(result.result, "type", None) != "succeeded":
-            status[scene] = "errored"
-            continue
-        msg = result.result.message
-        log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
-        try:
-            data = json.loads(_text_of(msg))
-            data["reviewed"] = len(data.get("entries", []))
-            scene_id = context_pack.scene_id_of(scene)
-            (paths.back_translation(root, scene, scene_id)).write_text(
-                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-            status[scene] = "reviewed"
-        except Exception:
-            status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
+    for i in range(0, len(reqs), chunk_size):
+        chunk = reqs[i:i + chunk_size]
+        status.update(_submit_back_chunk(client, chunk, poll_seconds, max_wait_seconds, m, root))
     return status

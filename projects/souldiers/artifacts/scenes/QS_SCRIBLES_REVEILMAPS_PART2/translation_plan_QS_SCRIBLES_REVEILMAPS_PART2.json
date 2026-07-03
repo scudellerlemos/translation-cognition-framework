@@ -1,0 +1,76 @@
+{
+  "scene": "QS_SCRIBLES_REVEILMAPS_PART2",
+  "scene_group": "QS_SCRIBLES_REVEILMAPS_PART2",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_QS_SCRIBLES_REVEILMAPS_PART2_1_1",
+      "text_source": "Tin man? Yes... yes... it is you... I'd never forget armour like that.",
+      "speaker": "unknown",
+      "tone_register": "surprised_recognition",
+      "intent": "recognize_player_by_armor",
+      "risk_level": "low",
+      "base_translation": "Homem de lata? Sim... sim... é você... nunca esqueceria de uma armadura assim.",
+      "byte_budget": 70,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SCRIBLES_REVEILMAPS_PART2_1_2",
+      "text_source": "Goodness me! I see you've been all over the place. Let's see now... the Sunken Laboratory... the Fire Temple... Dragon Castle...",
+      "speaker": "unknown",
+      "tone_register": "energetic_informal",
+      "intent": "comment_on_player_exploration",
+      "risk_level": "low",
+      "base_translation": "Meu Deus! Vejo que você andou por todo lado. Deixa eu ver... o Laboratório Submerso... o Templo do Fogo... o Castelo do Dragão...",
+      "byte_budget": 128,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SCRIBLES_REVEILMAPS_PART2_1_3",
+      "text_source": "But you haven't explored them very well... have you? Here's a suggestion: complete 100% of these maps and I'll reward you with something pretty.",
+      "speaker": "unknown",
+      "tone_register": "suggestive_playful",
+      "intent": "propose_quest_completion_reward",
+      "risk_level": "medium",
+      "base_translation": "Mas você não explorou muito bem... explorou? Tenho uma sugestão: complete 100% desses mapas e te dou algo bem legal.",
+      "byte_budget": 144,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "quest_proposal_semantics; ensure 100% map completion intent clear"
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SCRIBLES_REVEILMAPS_PART2_2_1",
+      "text_source": "Wow! You've managed to reveal all the areas I tasked you with!",
+      "speaker": "unknown",
+      "tone_register": "impressed_enthusiastic",
+      "intent": "praise_completion",
+      "risk_level": "low",
+      "base_translation": "Uau! Você conseguiu revelar todas as áreas que pedi!",
+      "byte_budget": 62,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_QS_SCRIBLES_REVEILMAPS_PART2_2_2",
+      "text_source": "You remind me of me in me youth, but with less hair.",
+      "speaker": "unknown",
+      "tone_register": "humorous_casual",
+      "intent": "joking_comparison_youth",
+      "risk_level": "low",
+      "base_translation": "Você me lembra eu na minha juventude, mas com mais cabelo.",
+      "byte_budget": 52,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-QS_SCRIBLES_REVEILMAPS_PART2-v1"
+}

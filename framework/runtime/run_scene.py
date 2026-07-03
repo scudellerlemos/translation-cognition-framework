@@ -30,6 +30,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import connector_gate  # noqa: E402  (D6: gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
@@ -47,6 +48,15 @@ from connector_mgr import (  # noqa: E402
     _run,
     _verify_status,
     _warn_if_connector_stale,
+)
+
+# Housekeeping/diagnostico (P4 hardening: extraido p/ scene_lifecycle.py quando cruzou o limiar de
+# leitura) — reimportado aqui p/ rs.clean_failed_scene(...)/etc. continuarem funcionando sem mudar
+# nenhum caller (mesmo padrao de re-export usado em model.py/back_translate.py).
+from scene_lifecycle import (  # noqa: E402,F401
+    _check_stale,
+    clean_failed_scene,
+    prune_discontinued,
 )
 
 
@@ -288,16 +298,38 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
 
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
-              pretranslated=False, defer_back=False, opts: RunSceneOptions = None) -> RunSceneResult:
+              pretranslated=False, defer_back=False, rebuild_index=True, skip_connector_gate=False,
+              opts: RunSceneOptions = None) -> RunSceneResult:
     if opts is not None:
         backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
         skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
+        rebuild_index = opts.rebuild_index
+        skip_connector_gate = opts.skip_connector_gate
     root = Path(root)
     _validate_scene_arg(root, scene)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     for w in _validate_connector_cfg(cfg):
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)
+
+    # GATE DE COMPLETUDE DE CONECTOR (D6): roda ANTES do kb_gate -- sem conector completo (scripts
+    # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
+    cg = connector_gate.check(root)
+    for w in cg["warnings"]:
+        print(f"[connector] aviso: {w}")
+    if cg["hard_problems"]:
+        print(f"[0/6] BLOQUEADO (conector, hard) — {len(cg['hard_problems'])} problema(s) sem bypass possivel:")
+        for p in cg["hard_problems"]:
+            print(f"      - {p}")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
+        return {"status": "connector_incomplete", "scene": scene, "problems": cg["hard_problems"]}
+    if cg["problems"] and not skip_connector_gate:
+        print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
+        for p in cg["problems"]:
+            print(f"      - {p}")
+        print("      -> rode build_plan+verify de 1 cena manualmente, ou use --skip-connector-gate p/ ignorar (nao recomendado).")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
+        return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
 
     # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
     kb = kb_gate.check(root, scene)
@@ -341,13 +373,18 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     if early is not None:
         return early
 
-    print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
-    # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
-    # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
-    si = state_index.build(root, sync_db=False)
-    print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
-    for w in si.get("warnings", []):
-        print(f"      [state_index] AVISO: {w}")
+    if rebuild_index:
+        print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
+        # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
+        # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
+        si = state_index.build(root, sync_db=False)
+        print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+        for w in si.get("warnings", []):
+            print(f"      [state_index] AVISO: {w}")
+    else:
+        # BATCH: o rebuild por-cena e redundante (a rodada de traducao ja terminou; TM so importa
+        # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
+        print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
@@ -358,97 +395,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             "high": len(highs), "verified": verified}
 
 
-def clean_failed_scene(root, scene) -> list[str]:
-    """Move artefatos de uma cena em estado de falha para artifacts/discontinued/<scene>/.
-
-    Move (nao apaga) artefatos DERIVADOS: translations, plan, approved, back_translation,
-    back_prompt, pack, scene_prompt. Preserva dialogs.csv (entrada) e api_ledger.jsonl
-    (auditoria — os tokens cobrados nao voltam). Remove o checkpoint da cena em run_state.json.
-    artifacts/discontinued/<scene>/ serve como historico de runs anteriores (nao e re-ingerido
-    pelo pipeline). Retorna lista de destinos (strs). Idempotente: rodar 2x nao levanta excecao."""
-    root = Path(root)
-    scene_id = context_pack.scene_id_of(scene)
-    to_move = [
-        paths.translations(root, scene, scene_id),
-        paths.translation_plan(root, scene, scene_id),
-        paths.approved(root, scene, scene_id),
-        paths.back_translation(root, scene, scene_id),
-        paths.back_prompt(root, scene, scene_id),
-        paths.pack(root, scene),
-        paths.scene_prompt(root, scene),
-    ]
-    disc = paths.discontinued_scene_dir(root, scene)
-    moved = []
-    for p in to_move:
-        if p.is_file():
-            disc.mkdir(parents=True, exist_ok=True)
-            dest = disc / p.name
-            p.rename(dest)
-            moved.append(str(dest))
-    # remove o checkpoint da cena do run_state.json (nao apaga o arquivo, so a chave)
-    rs = paths.run_state(root)
-    if rs.is_file():
-        try:
-            state = json.loads(rs.read_text(encoding="utf-8"))
-            if scene in state.get("scenes", {}):
-                del state["scenes"][scene]
-                rs.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        except (json.JSONDecodeError, OSError):
-            pass
-    return moved
-
-
-def prune_discontinued(root: Path, older_than_days: int = 30) -> list:
-    """G4: remove cenas de artifacts/discontinued/ mais antigas que older_than_days dias.
-    Retorna lista de paths removidos. Idempotente — rodar 2x não levanta exceção."""
-    import shutil
-    import time as _time
-    disc = paths.discontinued_dir(root)
-    if not disc.is_dir():
-        return []
-    cutoff = _time.time() - older_than_days * 86400
-    removed = []
-    for scene_dir in sorted(disc.iterdir()):
-        if scene_dir.is_dir() and scene_dir.stat().st_mtime < cutoff:
-            shutil.rmtree(scene_dir)
-            removed.append(str(scene_dir))
-    return removed
-
-
 def _indent(s: str) -> str:
     return "\n".join("      " + ln for ln in s.strip().splitlines() if ln.strip())
-
-
-def _check_stale(project: str) -> None:
-    """V3: compara doctrine_hash atual vs o salvo em run_state.json por cena."""
-    root = Path(project)
-    current = context_pack._doctrine_hash(root)
-    rs = paths.run_state(root)
-    if not rs.is_file():
-        print("run_state.json nao encontrado — nenhuma cena traduzida.")
-        return
-    state = json.loads(rs.read_text(encoding="utf-8"))
-    scenes = state.get("scenes", {})
-    stale, fresh, no_data = [], [], []
-    for scene_name, data in scenes.items():
-        saved = data.get("doctrine_hash")
-        if not saved:
-            no_data.append(scene_name)
-        elif saved != current:
-            stale.append(scene_name)
-        else:
-            fresh.append(scene_name)
-    print(f"Doutrina atual:     {current}")
-    if stale:
-        print(f"Desatualizadas ({len(stale)}):")
-        for s in sorted(stale):
-            print(f"  {s}")
-    if no_data:
-        print(f"Sem doctrine_hash ({len(no_data)}) — rodadas antes do versionamento:")
-        for s in sorted(no_data):
-            print(f"  {s}")
-    if fresh:
-        print(f"OK sincronizadas: {len(fresh)} cena(s).")
 
 
 def main():
@@ -461,6 +409,8 @@ def main():
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")
     ap.add_argument("--skip-kb-gate", action="store_true",
                     help="ignora o gate de cobertura de KB (nao recomendado)")
+    ap.add_argument("--skip-connector-gate", action="store_true",
+                    help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
     ap.add_argument("--check-stale", action="store_true",
@@ -483,7 +433,8 @@ def main():
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
-                  do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate)
+                  do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
+                  skip_connector_gate=a.skip_connector_gate)
     sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",
                                   "awaiting_back_translation") else 1)
 

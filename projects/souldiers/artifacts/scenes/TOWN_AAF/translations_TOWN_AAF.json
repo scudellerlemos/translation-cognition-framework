@@ -1,0 +1,1036 @@
+{
+  "lines": {
+    "STR_DIALOGS_TOWN_AAF_D24_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-assertive",
+      "intent": "confirmation with satisfaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Exatamente o que eu pensava. Humanos. Vocês sempre foram meus favoritos!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D25_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-pensive",
+      "intent": "uncertainty, preparing to explain",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por onde começar...?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D25_FISHMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-helpful",
+      "intent": "offering assistance, easing situation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que posso mostrar. Isso tornaria as coisas mais fáceis."
+    },
+    "STR_DIALOGS_TOWN_AAF_D25_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-directive",
+      "intent": "instructing, making demonstration easier",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acho que mostrar isso vai ajudar a facilitar as coisas. Vá, Baiyu, mostre a eles."
+    },
+    "STR_DIALOGS_TOWN_AAF_D25_FISHMINION_4": {
+      "speaker": "npc",
+      "tone_register": "formal-polite",
+      "intent": "request for space, preparation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você poderia ficar um pouco para trás? Vou precisar de espaço para isso."
+    },
+    "STR_DIALOGS_TOWN_AAF_D26_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-reassuring",
+      "intent": "allaying concerns about safety",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe, ele não consegue sair dessas correntes."
+    },
+    "STR_DIALOGS_TOWN_AAF_D26_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-explanatory",
+      "intent": "introducing creature, managing expectations",
+      "risk_level": "medium",
+      "risk_notes": "identity reveal context - creature is 'friend' but doesn't look it; consistency check needed",
+      "t": "A criatura que veem à sua frente é nossa amiga, embora não pareça no momento."
+    },
+    "STR_DIALOGS_TOWN_AAF_D26_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-revelatory",
+      "intent": "connecting cause of creature state to earthquakes",
+      "risk_level": "high",
+      "risk_notes": "spoiler-adjacent: reveals causal link between Baydral and earthquakes; critical plot point - requires back-translation verification",
+      "t": "E, acreditem se quiserem, a pessoa responsável pelo seu estado é a mesma que está causando esses terremotos."
+    },
+    "STR_DIALOGS_TOWN_AAF_D26_FISHMINION_4": {
+      "speaker": "npc",
+      "tone_register": "formal-urgent",
+      "intent": "safety recommendation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você deveria selá-lo novamente, chefe."
+    },
+    "STR_DIALOGS_TOWN_AAF_D26_FISHCHIEF_5": {
+      "speaker": "npc",
+      "tone_register": "formal-terse",
+      "intent": "dismissing obvious suggestion, issuing order",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Baiyu, não me interrompa com o óbvio e faça isso."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-narrative",
+      "intent": "preparing to explain backstory",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora que meu assistente parou de me interromper, suponho que vocês queiram saber por que ele está nesse estado."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solemn",
+      "intent": "introducing historical curse as central plot element",
+      "risk_level": "medium",
+      "risk_notes": "lore exposition - curse mechanics are core to world; verify terminology consistency (saltwater/freshwater Fise, braj)",
+      "t": "Nosso povo é vítima de uma maldição lançada sobre nós milhares de anos antes de eu nascer."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-legend-like",
+      "intent": "recounting historical narrative of curse origin",
+      "risk_level": "high",
+      "risk_notes": "proper noun 'Baydral' introduced as 'grand wizard'; critical lore figure; must maintain formal tone and exact name; spoiler: links Baydral to curse",
+      "t": "Dizem que um grande mago, chamado Baydral, amaldiçoou o planeta inteiro, que por séculos esteve em constante guerra entre clãs rivais pelos seus domínios marinhos."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-technical",
+      "intent": "explaining curse mechanics and monster transformation",
+      "risk_level": "high",
+      "risk_notes": "technical lore: saltwater vs. freshwater contact triggers transformation to 'braj'; terminology (Fise, braj) must be consistent; 'vacant monster' is key concept - preserve ambiguity in meaning",
+      "t": "Essa maldição significava que se um Fise de água salgada entrasse em contato com áreas predominantemente de água doce, ou vice-versa, se transformariam em um monstro vago que chamamos de braj."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_5": {
+      "speaker": "npc",
+      "tone_register": "formal-historic",
+      "intent": "framing curse as paradoxical solution, bringing peace",
+      "risk_level": "medium",
+      "risk_notes": "worldbuilding: curse brought peace for millennia; Neptus (world name) mentioned; era calculation ('until our final days on Neptus') implies knowledge of ending",
+      "t": "A maldição inaugurou uma era de paz que durou, até onde sabemos, até nossos últimos dias em Neptus."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_6": {
+      "speaker": "npc",
+      "tone_register": "formal-exposition",
+      "intent": "explaining recent change in Terragaya's water effect, crisis onset",
+      "risk_level": "high",
+      "risk_notes": "critical plot pivot: water on Terragaya suddenly triggers curse 'a few weeks ago'; implies external cause (Baydral); spoiler: explains why Fise began transforming",
+      "t": "Vocês conseguem imaginar o resto. A água em Terragaya não tinha efeito em nós... ou pelo menos não tinha até algumas semanas atrás. Nosso povo começou a se transformar em monstros, sendo um deles nosso amigo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_7": {
+      "speaker": "npc",
+      "tone_register": "formal-relief",
+      "intent": "discovery as turning point, investigation payoff",
+      "risk_level": "medium",
+      "risk_notes": "narrative beat: investigation yields unexpected discovery; emotion of relief + discovery; tone must reflect plot progress",
+      "t": "Desde então, tentamos encontrar uma forma de revertê-los e, finalmente, graças à nossa investigação, fizemos uma descoberta completamente inesperada."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_8": {
+      "speaker": "npc",
+      "tone_register": "formal-momentous",
+      "intent": "revelation that Baydral is on Terragaya, explaining journey from Waterfalls",
+      "risk_level": "high",
+      "risk_notes": "major spoiler: Baydral is present on Terragaya AND was founder of Hafin; explains motivation for journey; 'Land of the Waterfalls' is location name (preserve verbatim if in glossary, else translate semantically)",
+      "t": "Baydral está em Terragaya! Quando descobrimos que ele era um dos fundadores de Hafin, viajamos aqui da Terra das Cascatas, onde muitos de nós Fise se estabeleceram ao chegar neste mundo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_9": {
+      "speaker": "npc",
+      "tone_register": "formal-disappointed",
+      "intent": "encounter with Baydral was not as expected; leading to description of him as lunatic",
+      "risk_level": "high",
+      "risk_notes": "narrative tension: expects legend, finds lunatic; sentence structure stammers ('was more of a... a...') should be preserved to show emotional disruption; sets up for Baiyu's interjection",
+      "t": "Infelizmente, nosso encontro não correu conforme planejado. Pensávamos que encontraríamos o que nosso povo vê como uma lenda, mas o que encontramos... era mais de um... um..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHMINION_10": {
+      "speaker": "npc",
+      "tone_register": "formal-blunt",
+      "intent": "interjection completing chief's thought",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Um lunático..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_11": {
+      "speaker": "npc",
+      "tone_register": "formal-reproachful",
+      "intent": "chiding Baiyu for disrespect while acknowledging legend status",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenha respeito, Baiyu. Ele pode não ser o que esperávamos, mas ainda é uma lenda no nosso mundo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_12": {
+      "speaker": "npc",
+      "tone_register": "formal-frustrated",
+      "intent": "explaining Baydral's refusal and isolation",
+      "risk_level": "medium",
+      "risk_notes": "plot impediment: Baydral locked away despite listening; 'bunker' is descriptive term - may translate or preserve based on project convention",
+      "t": "Pior ainda, apesar de nos ouvir, ele ignorou nosso pedido e se trancou nesse tipo de bunker."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHMINION_13": {
+      "speaker": "npc",
+      "tone_register": "formal-subdued",
+      "intent": "agreeing, expressing dissatisfaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito desagradável..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D27_FISHCHIEF_14": {
+      "speaker": "npc",
+      "tone_register": "formal-analytical",
+      "intent": "enumerating two problems blocking access to Baydral",
+      "risk_level": "high",
+      "risk_notes": "critical plot obstacle: (1) outsiders won't get key; (2) interior is freshwater, Fise would transform; establishes why player must get key and enter alone; spoiler: reveals Fise vulnerability to freshwater environment",
+      "t": "Fazer isso nos deixou com dois problemas: Primeiro, não somos daqui, então, certamente, ninguém nos daria a chave para abrir essa porta. Segundo, parece que o interior é cheio de água doce. Mesmo que conseguíssemos abrir, não poderíamos entrar sem nos tornamos braj."
+    },
+    "STR_DIALOGS_TOWN_AAF_D28_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-impatient",
+      "intent": "interrupting long exposition, demanding clarity on objective",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês estão falando há um bom tempo agora, mas realmente não sabemos por onde vocês estão indo com isso."
+    },
+    "STR_DIALOGS_TOWN_AAF_D29_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-propositive",
+      "intent": "framing solution (get key, convince Baydral, solve earthquakes) as mutually beneficial",
+      "risk_level": "high",
+      "risk_notes": "core quest proposal: player must retrieve treatment plant key; connects to Baydral help AND earthquake cause; 'win-win' is idiom - translate naturally to pt-BR equivalent ('ganha-ganha' or equivalent solution)",
+      "t": "Se vocês conseguirem pegar a chave da estação de tratamento, podemos pedir ajuda a Baydral e, ao mesmo tempo, vocês podem descobrir o que está causando esses tremores e pará-los. É uma situação vantajosa para os dois lados."
+    },
+    "STR_DIALOGS_TOWN_AAF_D29_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-inquiry",
+      "intent": "asking if player knows engineer's location",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês sabem onde ele pode estar?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D29_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-explanatory",
+      "intent": "explaining why outsiders need player's help to get key",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sabemos que o engenheiro da cidade tem uma cópia da chave, mas, como dissemos, não vão confiar em um par de forasteiros como nós."
+    },
+    "STR_DIALOGS_TOWN_AAF_D29_FISHCHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-encouraging",
+      "intent": "appealing to player's reputation and influence in Hafin",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês, por outro lado, ajudaram a defender essa cidade. Tenho certeza de que estão na lista de favores deles."
+    },
+    "STR_DIALOGS_TOWN_AAF_D30_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "formal-direct",
+      "intent": "confirming player's prior meeting with engineer",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado, vocês já conhecem esse engenheiro, não é?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D30_MELIAN_2": {
+      "speaker": "npc",
+      "tone_register": "formal-directive",
+      "intent": "delegating key retrieval while preparing for descent",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês importariam de ir pegar a chave? Preciso fazer alguns preparativos antes de descermos lá."
+    },
+    "STR_DIALOGS_TOWN_AAF_D31_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-accepting",
+      "intent": "agreeing to wait for player's return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Concordado, esperaremos por vocês aqui."
+    },
+    "STR_DIALOGS_TOWN_AAF_D32_GARTUA_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-frustrated",
+      "intent": "surprised recognition, expressing inability to help due to earthquake damage",
+      "risk_level": "medium",
+      "risk_notes": "character Gartua (criticality medium): introduces casual/colloquial register; expresses frustration ('Darn setbacks'); needs to sound practical/pragmatic but not overly formal",
+      "t": "Opa, vocês de novo! Desculpa, se precisam dos nossos serviços em outro lugar, mas não conseguimos ir agora. Esses terremotos vão derrubar o canhão se não o apoiarmos. Que contratempo chato..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D32_GARTUA_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-incredulous",
+      "intent": "asking for clarification about investigation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês querem dizer que estão investigando?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D32_GARTUA_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial-resigned",
+      "intent": "relinquishing sewer valve while appealing to player to stop earthquakes",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim, claro, levem a válvula do esgoto se é isso que vocês querem, mas, por favor, parem com esses terremotos para o bem de Hafin."
+    },
+    "STR_DIALOGS_TOWN_AAF_D33_BALOF_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-enthusiastic",
+      "intent": "enthusiastic greeting, establishing friendly connection",
+      "risk_level": "high",
+      "risk_notes": "Balof criticality=high: must preserve hyperbolic informal energy, exclamations, Brazilian Portuguese enthusiasm; 'My friend' = colloquial greeting tone; this is key character voice introduction",
+      "t": "Meu amigo! Como vai?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D33_BALOF_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-emphatic",
+      "intent": "clarification, enthusiasm about sewers specifically",
+      "risk_level": "medium",
+      "risk_notes": "Balof voice: 'Down there, I mean...' is clarification with implicit excitement about sewers; tone must convey emphasis despite brevity; needs colloquial warmth",
+      "t": "Lá embaixo, quer dizer..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D33_BALOF_3": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-presumptuous",
+      "intent": "expressing mock offense/humor at being left out, self-promotion as 'best friend'",
+      "risk_level": "high",
+      "risk_notes": "Balof voice: hyperbolic humor, self-aggrandizing tone; 'your best friend' is comedic exaggeration; preserve presumptuous energy and exclamatory tone; line is setup for punchline in D33_BALOF_4",
+      "t": "Então, vocês foram encarregados de descobrir o que está causando esses terremotos? Como vocês poderiam pensar em ir lá embaixo sem a ajuda do seu melhor amigo?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D33_BALOF_4": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-comedic",
+      "intent": "punchline: clarifying he's talking about himself as 'best friend'",
+      "risk_level": "high",
+      "risk_notes": "Balof voice: self-referential comedic punchline; extreme presumption; must sound oblivious/funny, not arrogant; Brazilian pt-BR exclamation tone essential ('Claro que...')",
+      "t": "Claro que estou falando de mim!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D33_BALOF_5": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-self-deprecating",
+      "intent": "backing out while providing tool, maintaining humor despite not going",
+      "risk_level": "medium",
+      "risk_notes": "Balof voice: pivot from presumption to self-deprecation ('I won't be going'); maintains energy despite delivering 'but I have this tool'; 'luckily for you' is humorous; reference to 'little Balofina' is callback to personal detail",
+      "t": "Eh? Ah... não... Eu não vou lá embaixo, mas, felizmente para vocês, trabalhei muito na estação de tratamento durante meu tempo. Vocês vão precisar disso pra desbloquear o caminho."
+    },
+    "STR_DIALOGS_TOWN_AAF_D34_BALOF_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-exclamatory",
+      "intent": "explaining pig bombs with enthusiasm and sentimental attachment",
+      "risk_level": "high",
+      "risk_notes": "Balof voice: hyperbolic energy about 'pig bombs'; emotional attachment ('so cute', 'remind me of little Balofina'); must sound childlike-enthusiastic, not clinical; interjeition 'They're so cute...' needs warmth; 'little Balofina' is daughter/personal detail — maintain intimacy",
+      "t": "Eu as chamo de bombas-porco. Coloque-as no chão e elas correm como um leitão em um pântano. Elas são tão fofas... Elas me lembram da pequena Balofina. Elas conseguem até subir em paredes!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D34_BALOF_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-encouraging",
+      "intent": "directing player to use pig bombs on switch",
+      "risk_level": "low",
+      "risk_notes": "Balof voice: casual direction, anticipatory tone ('you'll see'); maintains friendly enthusiasm",
+      "t": "Tente alcançar aquele interruptor; você verá..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D35_BALOF_1": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-boastful",
+      "intent": "self-promotion through technology pride, contrast with flying fortress",
+      "risk_level": "medium",
+      "risk_notes": "Balof voice: boastful comparison (creativity > technology); needs to sound proud without arrogance; 'flying fortress' is lore reference (from earlier game context)",
+      "t": "Tenho certeza de que vocês não viram nada assim naquela fortaleza flutuante. A tecnologia é nada sem imaginação!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D35_BALOF_2": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-humorous",
+      "intent": "wrapping up, adding humor about earthquake source (confusing tremor with stomach)",
+      "risk_level": "high",
+      "risk_notes": "Balof voice: comedic relief moment; 'To tell ya the truth, I thought it was my gut at first' is personal humor; 'Ya' = contraction (allowed for Balof); tone must be light/self-deprecating; sets up for wife's reaction in next line",
+      "t": "Bom, é tudo que posso fazer por vocês agora. Boa sorte com esses terremotos. Pra ser honesto, no início pensei que era meu estômago."
+    },
+    "STR_DIALOGS_TOWN_AAF_D35_BALOF_3": {
+      "speaker": "Balof",
+      "tone_register": "silence",
+      "intent": "pause/ellipsis, awkward moment after joke",
+      "risk_level": "low",
+      "risk_notes": "literal ellipsis - preserve as-is; represents silence/awkwardness",
+      "t": "..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D35_BALOF_4": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-self-conscious",
+      "intent": "wife found joke funnier than others; self-aware humor",
+      "risk_level": "medium",
+      "risk_notes": "Balof voice: callback to wife's reaction; self-aware humor (joke fell flat); maintains hyperbolic tone despite social awkwardness; 'My wife found it funnier' needs warm/resigned tone",
+      "t": "Huh, bem... Minha esposa achou mais engraçado."
+    },
+    "STR_DIALOGS_TOWN_AAF_D35_BALOF_5": {
+      "speaker": "Balof",
+      "tone_register": "coloquial-hyperbolic-departing",
+      "intent": "leaving, expressing confidence in player, maintaining friendly energy",
+      "risk_level": "low",
+      "risk_notes": "Balof voice: exit line; maintains warmth and enthusiasm; 'We're counting on you!' is genuine despite comedic persona",
+      "t": "Estou voltando para a minha loja. Estamos contando com vocês!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D43_FISHMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-urgent",
+      "intent": "alerting chief to problem",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chefe..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D43_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-searching",
+      "intent": "looking for mechanism to open door/access point",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tem que haver algum tipo de abertura ou algo parecido por aqui..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D43_FISHMINION_3": {
+      "speaker": "npc",
+      "tone_register": "formal-urgent",
+      "intent": "repeated call for attention",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chefe..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D43_FISHCHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-polite-directive",
+      "intent": "requesting Baiyu's assistance in search",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Baiyu, acredito que nossas chances de sucesso aumentariam se você tentasse me ajudar. Topa?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D43_FISHMINION_5": {
+      "speaker": "npc",
+      "tone_register": "formal-alert",
+      "intent": "announcing player's arrival",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chefe, acho que temos companhia."
+    },
+    "STR_DIALOGS_TOWN_AAF_D44_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-surprised",
+      "intent": "acknowledgment of arrival",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hã?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D44_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-reproachful",
+      "intent": "questioning why information wasn't shared sooner",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Por que você não me disse antes?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D44_FISHMINION_3": {
+      "speaker": "npc",
+      "tone_register": "formal-apologetic",
+      "intent": "expressing regret, admitting fault",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Caramba, minha culpa..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D36_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-pleased",
+      "intent": "welcoming return, acknowledging key retrieval; _500_ token marks pause/beat",
+      "risk_level": "low",
+      "risk_notes": "token '_500_' preserved in exact position within dialogue; represents pause/emphasis beat",
+      "t": "Vocês voltaram._500_ E têm a chave!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D36_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-apologetic",
+      "intent": "expressing concern about engineer's demeanor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espero que não tenha sido muito incômodo. Aquele engenheiro me assusta..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D36_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-preparatory",
+      "intent": "confirming readiness for descent into sewers",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tudo bem, parece que está tudo pronto para descermos aos esgotos."
+    },
+    "STR_DIALOGS_TOWN_AAF_D36_FISHMINION_4": {
+      "speaker": "npc",
+      "tone_register": "formal-informative",
+      "intent": "noting that other human hasn't returned",
+      "risk_level": "medium",
+      "risk_notes": "'Other Human still has returned' likely means 'still hasn't returned'; ambiguous in source - preserve meaning (human hasn't come back yet); Melian presumably elsewhere",
+      "t": "Chefe, o outro Humano ainda não retornou."
+    },
+    "STR_DIALOGS_TOWN_AAF_D37_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-sarcastic",
+      "intent": "chiding Baiyu for stating obvious, then proceeding with plan anyway",
+      "risk_level": "high",
+      "risk_notes": "Baiyu's tendency to state obvious is running gag; chief's sarcasm must be sharp but not cruel; 'brilliant as stating the obvious' is awkward phrasing in EN (possibly 'brilliant at stating'), needs natural pt-BR equivalent with sarcasm intact",
+      "t": "Baiyu, você parece ser brilhante em afirmar o óbvio. Eu estava justamente chegando nisso."
+    },
+    "STR_DIALOGS_TOWN_AAF_D1_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "alívio e explicação sobre o custo de magia",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Que sorte o mensageiro ter te encontrado a tempo. Não creio conseguir usar este feitiço novamente tão cedo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D1_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "urgência e preocupação",
+      "risk_level": "medium",
+      "risk_notes": "pronome possessivo 'Edil' não revela spoiler — relação de protetor/tutelado já estabelecida na cena",
+      "t": "Mas não podemos esperar mais. Não posso perder a Edil."
+    },
+    "STR_DIALOGS_TOWN_AAF_D2_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "reflexão sobre exaustão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Consumiu mais energia do que imaginei. Tamanho poder..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D3_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, desorientado",
+      "intent": "confusão ao acordar",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Velhinho...?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D4_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "chamado reconfortante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Edil?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D4_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "chamado de urgência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Edil!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D5_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "reconforto e segurança",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você está segura agora, Edil. Não há nada a temer."
+    },
+    "STR_DIALOGS_TOWN_AAF_D5_EDIL_2": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, ansioso",
+      "intent": "pergunta sobre ferimento/posse",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Uma daquelas coisas me pegou, não foi?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D5_EDIL_3": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, determinado",
+      "intent": "descrição de resistência mental",
+      "risk_level": "medium",
+      "risk_notes": "tema de possessão/controle mental — importante preservar a nuance de resistência ativa da Edil",
+      "t": "Sentia que tentava me dominar, mas resisti. Às vezes conseguia até ouvir suas vozes."
+    },
+    "STR_DIALOGS_TOWN_AAF_D5_JIVAN_4": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "empatia e compaixão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não consigo nem imaginar o que você enfrentou, minha querida."
+    },
+    "STR_DIALOGS_TOWN_AAF_D5_EDIL_5": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, grato",
+      "intent": "gratidão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tive sorte de você estar lá."
+    },
+    "STR_DIALOGS_TOWN_AAF_D6_BRIGARD_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "ordem clara e defensiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "RECUEM, SOLDADO!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D6_BRIGARD_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confusão ao recuperar a consciência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hum... O quê? Onde estamos?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D7_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "tranquilização e orientação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está seguro, General. Estamos em Hafin, no meu observatório."
+    },
+    "STR_DIALOGS_TOWN_AAF_D7_BRIGARD_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "silêncio / processamento",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D7_BRIGARD_3": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "desculpas formais por ações sob controle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo... Peço desculpas por qualquer coisa que tenha feito."
+    },
+    "STR_DIALOGS_TOWN_AAF_D8_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "reconhecimento de reencontro",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Liandris... Faz tempo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D8_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "pergunta sobre motivos",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se está se mostrando em Hafin, deve ser por algo importante. O que está acontecendo?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D8_LIANDRIS_3": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "contrapergunta e demanda",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você que me diga. Estou aqui por respostas."
+    },
+    "STR_DIALOGS_TOWN_AAF_D8_LIANDRIS_4": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "demanda específica",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Preciso falar com o general humano."
+    },
+    "STR_DIALOGS_TOWN_AAF_D9_BRIGARD_1": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "surpresa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D10_LIANDRIS_1": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "demanda de testemunho",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você foi preso por uma daquelas coisas. Me diga o que aconteceu."
+    },
+    "STR_DIALOGS_TOWN_AAF_D10_BRIGARD_2": {
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "descrição de trauma e possessão",
+      "risk_level": "high",
+      "risk_notes": "tema crítico de possessão alienígena; preservar horror psicológico e a sensação de perda de identidade; importante manter o tom seco de Brigard mesmo descrevendo trauma",
+      "t": "Vi... Conseguia ver milhares de olhos nas sombras, olhando para mim e depois... só escuridão. Não consigo explicar... Você sente como se uma força avassaladora tomasse conta de dentro e, quando termina, você deixa de resistir porque agora faz parte de você..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D10_LIANDRIS_3": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "observação de discrepância",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "É só? Sangrigor viu bem mais que isso."
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "choque sobre revelação",
+      "risk_level": "high",
+      "risk_notes": "Valquíria contaminada é revelação importante da trama; o termo 'Valquíria' foi canonicamente traduzido conforme glossário",
+      "t": "Uma Valquíria foi infectada?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "oferta de ajuda com limite",
+      "risk_level": "medium",
+      "risk_notes": "preservar a hesitação e o oferecimento apesar da fraqueza",
+      "t": "Traga-a aqui. Embora não esteja totalmente recuperado, estou disposto a tentar..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_LIANDRIS_3": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "contradição e informação chocante",
+      "risk_level": "high",
+      "risk_notes": "reviração de expectativa — Valquíria removeu parasita sozinha; importante preservar o tom de constatação factual e a implicação de que algo anômalo ocorreu",
+      "t": "Poupe suas forças, sábio. Ela removeu o parasita sozinha, bem diante dos meus olhos, e nada aconteceu."
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_JIVAN_4": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "especulação esperançosa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Isso é possível? Ela deveria voltar ao normal, como os outros."
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_LIANDRIS_5": {
+      "speaker": "npc",
+      "tone_register": "formal-assertivo",
+      "intent": "urgência e determinação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não posso perder mais tempo. Preciso encontrá-la."
+    },
+    "STR_DIALOGS_TOWN_AAF_D11_BIS_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "presentimento negativo",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho um mau presságio sobre isto..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D12_EDIL_1": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, incentivador",
+      "intent": "reconhecimento e gratidão",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ei, você é o soldado que lutou comigo para defender Hafin. Sei que ajudou a Jivan a me recuperar."
+    },
+    "STR_DIALOGS_TOWN_AAF_D12_EDIL_2": {
+      "speaker": "Edil",
+      "tone_register": "casual-positivo, incentivador",
+      "intent": "agradecimento simples",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigada."
+    },
+    "STR_DIALOGS_TOWN_AAF_D13_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "pergunta sobre situação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que está acontecendo agora?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D13_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "instrução de permanência e promessa de retorno",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se mexe, Edil. Volto assim que descobrir o que está acontecendo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D14_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro",
+      "intent": "expressão de dor repetida",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ai! De novo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D15_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro",
+      "intent": "pergunta de desorientação",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Alguém sabe o que está acontecendo?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D15_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "resposta de incerteza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estava esperando descobrir, soldado."
+    },
+    "STR_DIALOGS_TOWN_AAF_D16_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, respeitoso",
+      "intent": "saudação formal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espere! O ilustre Jivan, suponho?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D16_JIVAN_2": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "rejeição de formalidades",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não há necessidade de formalidades."
+    },
+    "STR_DIALOGS_TOWN_AAF_D16_MELIAN_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro",
+      "intent": "sugestão perspicaz",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei. Talvez esteja pensando em pedir àquele soldado para investigar?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D17_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "assentimento hesitante",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Na verdade..."
+    },
+    "STR_DIALOGS_TOWN_AAF_D17_MELIAN_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, entusiasmado",
+      "intent": "oferecimento de ajuda e parceria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupe, sei exatamente do que ele é capaz, mas desta vez ele não irá sozinho. Estou pronto pra deixar meu posto e partir pra uma aventura."
+    },
+    "STR_DIALOGS_TOWN_AAF_D17_JIVAN_3": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "aceitação com explicação de fraqueza",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está bem... É verdade que não recuperei minha força após gastar tanta energia."
+    },
+    "STR_DIALOGS_TOWN_AAF_D18_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, humilde mas confiante",
+      "intent": "promessa de confiabilidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado, não sou capitão, mas prometo estar à altura. Você não se arrependerá de trabalhar comigo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D19_JIVAN_1": {
+      "speaker": "Jivan",
+      "tone_register": "formal-misterioso, assertivo",
+      "intent": "sugestão de pista de investigação e promessa de disponibilidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Acredito que a estação de tratamento de água que gerencia o fluxo da represa seria um bom lugar para começar a investigação. Se precisarem de mim, estarei aqui dentro, cuidando dos outros."
+    },
+    "STR_DIALOGS_TOWN_AAF_D20_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, entusiasmado",
+      "intent": "urgência e disposição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos lá, já esperamos de mais."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, confiante",
+      "intent": "leitura perspicaz de intenção",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei no que você está pensando."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, reflexivo",
+      "intent": "confissão pessoal sobre cansaço e ambição",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas tô cansado de ser esse soldado melancólico, paciente, que passa a vida toda reclamando de não ser nada mais."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, determinado",
+      "intent": "afirmação de propósito",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quero ajudar, como você faz."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_4": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, reflexivo",
+      "intent": "revelação de experiência paralela e epifania",
+      "risk_level": "medium",
+      "risk_notes": "linha longa; menciona orbes de energia que concedem poder — tema secundário mas importante para arco do Melian; preservar o tom de quem descobriu algo perturbador",
+      "t": "E mais... Enquanto você estava lá em cima com o Capitão Euder, eu fui em uma missão com o General Brigard e os outros. Não encontramos muito, mas cruzei com um daqueles preciosos orbes de energia que você tem."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_5": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, reflexivo",
+      "intent": "realização sobre a natureza viciante do poder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo agora... O poder que eles concedem faz você querer ainda mais."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_6": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, encorajador",
+      "intent": "promessa de força coletiva",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então não se preocupe. Juntos, seremos mais fortes."
+    },
+    "STR_DIALOGS_TOWN_AAF_D21_MELIAN_7": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro",
+      "intent": "estímulo para prosseguir",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Devemos continuar."
+    },
+    "STR_DIALOGS_TOWN_AAF_D22_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro, defensivo",
+      "intent": "negação de culpa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hm... Habitantes da terra de Hafin, sei como parece, mas não temos nada a ver com o que está acontecendo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D22_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro, reconhecedor",
+      "intent": "reconhecimento de identidade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Espere um momento... Vocês são aqueles soldados que defenderam a cidade contra a praga escura?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D23_FISHMINION_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, hesitante",
+      "intent": "sugestão hesitante ao chefe",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Chefe... Talvez pudéssemos...?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D23_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro, irritado",
+      "intent": "silenciamento irritado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você podia ficar quieto, Baiyu? Mal consigo me ouvir com seu barulho incessante."
+    },
+    "STR_DIALOGS_TOWN_AAF_D23_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro, propositor",
+      "intent": "oferta de parceria",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tenho uma proposta. Talvez pudéssemos nos ajudar mutuamente."
+    },
+    "STR_DIALOGS_TOWN_AAF_D24_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-neutro",
+      "intent": "pergunta ao minion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Baiyu, de que espécie são exatamente esses espécimes?"
+    },
+    "STR_DIALOGS_TOWN_AAF_D24_FISHMINION_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial-neutro, incerto",
+      "intent": "resposta hesitante e especulativa",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Bem, eu diria que são Humanos ou Elfos... Sim... Eu diria... Humanos."
+    },
+    "STR_DIALOGS_TOWN_AAF_D37_FISHMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "sugerir aumento de chances de sobrevivência",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Dois Humanos aumentariam nossas chances de sobreviver lá embaixo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D37_FISHCHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-respeitoso",
+      "intent": "deferir decisão ao protagonista",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosso amigo aqui deveria ser quem decide."
+    },
+    "STR_DIALOGS_TOWN_AAF_D38_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-consultivo",
+      "intent": "questionar capacidade e avaliar situação",
+      "risk_level": "medium",
+      "risk_notes": "referência a 'amigo' pode ser ambígua; preservar sem antecipar identidade do companheiro ausente",
+      "t": "O que você acha? Seu amigo ainda não voltou, mas você parece perfeitamente capaz de encontrar Baydral sozinho."
+    },
+    "STR_DIALOGS_TOWN_AAF_D38_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-urgente",
+      "intent": "pressionar pela ação imediata; alertar para risco crescente",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Além disso... Quanto mais tempo esperarmos, maior o risco de esses terremotos causarem algum tipo de desastre."
+    },
+    "STR_DIALOGS_TOWN_AAF_D39_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial-entusiasmado",
+      "intent": "manifestar aprovação com ênfase",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Perfeito! Perfeito!"
+    },
+    "STR_DIALOGS_TOWN_AAF_D40_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-seco",
+      "intent": "reafirmar ponto anterior com autoridade",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu avisei."
+    },
+    "STR_DIALOGS_TOWN_AAF_D41_FISHCHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-restritivo",
+      "intent": "proibir entrada; explicar perigo da transformação",
+      "risk_level": "medium",
+      "risk_notes": "referência a 'nosso amigo' como criatura transformada; preservar sem revelar identidade antes do timing",
+      "t": "Certo, não podemos entrar. Contato com a água nos transformará em monstros como nosso amigo."
+    },
+    "STR_DIALOGS_TOWN_AAF_D41_FISHCHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-informativo",
+      "intent": "explicar solução alternativa com cápsulas",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas não vamos abandoná-lo. Você nos transportará nessas cápsulas. Segure isto um momento."
+    },
+    "STR_DIALOGS_TOWN_AAF_D42_FISHMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-apoiador",
+      "intent": "desejar sorte e oferecer suporte",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Boa sorte, soldado Humano. Estaremos por perto se precisar de nós."
+    }
+  }
+}

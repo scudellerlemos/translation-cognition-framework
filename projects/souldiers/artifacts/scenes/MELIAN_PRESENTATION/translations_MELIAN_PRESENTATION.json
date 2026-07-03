@@ -1,0 +1,60 @@
+{
+  "lines": {
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_1": {
+      "speaker": "npc",
+      "tone_register": "neutral formal",
+      "intent": "question about recognition",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você é o soldado sobre quem todos falam ultimamente?"
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_2": {
+      "speaker": "npc",
+      "tone_register": "formal observational",
+      "intent": "compliment on growing reputation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Suas aventuras parecem estar ecoando por toda a cidade."
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_3": {
+      "speaker": "npc",
+      "tone_register": "formal inquisitive",
+      "intent": "probing question about emotion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como é receber reconhecimento dos outros?"
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_4": {
+      "speaker": "npc",
+      "tone_register": "melancholic",
+      "intent": "despair",
+      "risk_level": "medium",
+      "risk_notes": "",
+      "t": "É algo que começo a achar que nunca vou experimentar..."
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_5": {
+      "speaker": "npc",
+      "tone_register": "bitter resigned",
+      "intent": "confession of sibling rivalry and overshadowing",
+      "risk_level": "high",
+      "risk_notes": "CRITICAL LORE/CHARACTER: First explicit mention of sister shadow dynamic — core of Melian's conflict. Must preserve 'always left in shadow' metaphor intact; no spoiler of sister's identity. Tone must convey both frustration and resignation, not anger. Adequacy: 'sombra da irmã' is correct localisation but verify no name slip.",
+      "t": "Acham que não percebo, mas estou sempre na sombra da minha irmã."
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_6": {
+      "speaker": "npc",
+      "tone_register": "determined aspiring",
+      "intent": "expressing desire for agency and recognition",
+      "risk_level": "medium",
+      "risk_notes": "Transition to aspiration — tone shift from resignation to resolve. 'Show worth' must not sound grandiose; keep grounded. Byte budget tight (56): 'Quero mostrar meu valor mais que apenas estar de guarda' fits and preserves intent.",
+      "t": "Quero mostrar meu valor mais que apenas estar de guarda."
+    },
+    "STR_DIALOGS_MELIAN_PRESENTATION_1_7": {
+      "speaker": "npc",
+      "tone_register": "weary self-aware",
+      "intent": "resignation to perceived stereotype",
+      "risk_level": "high",
+      "risk_notes": "Closing vulnerability — character questions self-worth against stereotype of obedience. 'Obedient with no aspirations' is identity anchor; must preserve balance between acceptance and doubt. Negation ('que eles me veem') preserves the self-doubt register without confirming the stereotype as truth.",
+      "t": "Ou talvez eu deva aceitar que me veem como obediente, sem aspirações..."
+    }
+  }
+}

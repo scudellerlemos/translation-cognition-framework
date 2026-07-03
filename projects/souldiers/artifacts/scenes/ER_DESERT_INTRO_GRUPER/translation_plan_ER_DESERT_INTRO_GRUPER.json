@@ -1,0 +1,50 @@
+{
+  "scene": "ER_DESERT_INTRO_GRUPER",
+  "scene_group": "ER_DESERT_INTRO_GRUPER",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_DESERT_INTRO_GRUPER_2",
+      "text_source": "Harpies are half women half birds, right?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "questionamento entusiasmado sobre mitologia",
+      "risk_level": "low",
+      "base_translation": "Harpias sao metade mulher metade passaro, certo?",
+      "byte_budget": 41,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_ER_DESERT_INTRO_GRUPER_4",
+      "text_source": "Because I, unlike some, know how to listen. I'm always telling you.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "autopromocao exagerada; jactancia com tom de alívio",
+      "risk_level": "medium",
+      "base_translation": "Porque eu, diferente de certos alguem, sei ouvir. Fico sempre falando isso pra voce.",
+      "byte_budget": 67,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Jactancia + coparticipacao implicita (some=alguem); tom ironico-exagerado exige naturalidade coloquial; 'always telling you' = iteracao = preservar energia de exasperacao em tom positivo."
+    },
+    {
+      "offset": "STR_DIALOGS_ER_DESERT_INTRO_GRUPER_6",
+      "text_source": "Mahaha! Their upper half's from a woman and their legs are from a chicken.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "risada/alívio; descrição absurda com graça",
+      "risk_level": "medium",
+      "base_translation": "Mahaha! A metade de cima e de mulher e as pernas sao de galinha!",
+      "byte_budget": 74,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Mahaha! = interjeicao de riso — localizada conforme convencao pt-BR (gargalhada natural, nao copia EN). 'Upper half/legs' = anatomia hibrida; 'chicken' em pt-BR coloquial = 'galinha' (mantém disparate comico). Energia hiperbolica exagerada deve soar como gargalhada + respiro."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_DESERT_INTRO_GRUPER-v1"
+}

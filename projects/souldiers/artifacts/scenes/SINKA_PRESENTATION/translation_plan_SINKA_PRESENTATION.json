@@ -1,0 +1,24 @@
+{
+  "scene": "SINKA_PRESENTATION",
+  "scene_group": "SINKA_PRESENTATION",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_SINKA_PRESENTATION_1_1",
+      "text_source": "I'm amazed you got out of there alive. You know there were other ways out of that cave, right? But rest assured, your achievements in exploring that room have been recognised.",
+      "speaker": "Brigard",
+      "tone_register": "formal-military seco",
+      "intent": "reconhecimento de feito com tom estóico; informação tática sobre alternativas",
+      "risk_level": "medium",
+      "base_translation": "Fico impressionado que você saiu vivo de lá. Saiba que havia outras saídas naquela caverna, certo? Mas fique certo: seus feitos ao explorar aquele recinto foram reconhecidos.",
+      "byte_budget": 175,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade do falante (Brigard) inferida do contexto de apresentação militar; tom formal-seco deve preservar ordem direta e economia de palavras. Verificar se 'feitos' cabe no byte_budget (175 bytes) sem transliteração—contado: ~165 chars no máximo."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-SINKA_PRESENTATION-v1"
+}

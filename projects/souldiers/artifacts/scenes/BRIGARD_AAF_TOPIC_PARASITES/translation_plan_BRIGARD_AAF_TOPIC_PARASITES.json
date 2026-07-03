@@ -1,0 +1,63 @@
+{
+  "scene": "BRIGARD_AAF_TOPIC_PARASITES",
+  "scene_group": "BRIGARD_AAF_TOPIC_PARASITES",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AAF_TOPIC_PARASITES_1_1",
+      "text_source": "You've realised it too, right?",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "confirmar percepção compartilhada; reafirmar observação sobre ameaça",
+      "risk_level": "low",
+      "base_translation": "Você também percebeu, não é?",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AAF_TOPIC_PARASITES_1_2",
+      "text_source": "The threat that attacked the city and which pursues us outside these walls is not normal, nor is it from this world.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "informar sobre natureza anormal da ameaça; estabelecer gravidade",
+      "risk_level": "medium",
+      "base_translation": "A ameaça que atacou a cidade e nos persegue além desses muros não é normal, nem deste mundo.",
+      "byte_budget": 116,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Preserva tom militar-formal sem redundância; afirmação dupla de anormalidade mantida conforme original"
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AAF_TOPIC_PARASITES_1_3",
+      "text_source": "Even the Valkyries don't know how they arrived either or what they seek.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "comunicar incerteza estratégica mesmo entre aliados poderosos",
+      "risk_level": "high",
+      "base_translation": "Nem mesmo as Valquírias sabem como chegaram ou o que buscam.",
+      "byte_budget": 72,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção de 'Valkyries' (entidade de lore); back-translation necessária para confirmar que 'nem elas' mantém o tom de desconforto estratégico do original"
+    },
+    {
+      "offset": "STR_DIALOGS_BRIGARD_AAF_TOPIC_PARASITES_1_4",
+      "text_source": "I wonder if Jivan knows more about them.",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "conjetura sobre conhecimento de aliado; questão retórica",
+      "risk_level": "medium",
+      "base_translation": "Questiono se Jivan sabe mais sobre eles.",
+      "byte_budget": 40,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Menção de Jivan (personagem); utiliza condicional especulativo ('wonderif') — preservado como suspensão de conhecimento sem dramaticidade desnecessária"
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-BRIGARD_AAF_TOPIC_PARASITES-v1"
+}

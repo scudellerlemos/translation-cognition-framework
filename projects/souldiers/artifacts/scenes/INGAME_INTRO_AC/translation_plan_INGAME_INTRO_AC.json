@@ -1,0 +1,50 @@
+{
+  "scene": "INGAME_INTRO_AC",
+  "scene_group": "INGAME_INTRO_AC",
+  "lines": [
+    {
+      "offset": "STR_INGAME_DIALOGS_BALOF_INTRO_AC",
+      "text_source": "First-class material.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "exibir entusiasmo e admiração",
+      "risk_level": "low",
+      "base_translation": "Material de primeira!",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_SCRIBLES_INTRO_AC",
+      "text_source": "Take a look at my maps!",
+      "speaker": "npc",
+      "tone_register": "coloquial neutro",
+      "intent": "convite para observar mapas",
+      "risk_level": "medium",
+      "base_translation": "Vê meus mapas!",
+      "byte_budget": 23,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "speaker não identificado em voice_cards.json; 'Scribles' pode ser NPC sem perfil definido — usar pt-BR contemporâneo padrão; byte_budget apertado (23), escolha 'Vê meus mapas!' para economia"
+    },
+    {
+      "offset": "STR_INGAME_DIALOGS_GARTUA_INTRO_AC",
+      "text_source": "I just hit my finger!",
+      "speaker": "Gartua",
+      "tone_register": "coloquial lamentação",
+      "intent": "expressão de dor/frustração",
+      "risk_level": "low",
+      "base_translation": "Bati meu dedo!",
+      "byte_budget": 21,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-INGAME_INTRO_AC-v1"
+}

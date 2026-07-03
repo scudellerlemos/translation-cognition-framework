@@ -1,0 +1,76 @@
+{
+  "scene": "JIVAN_AN_INTRO",
+  "scene_group": "JIVAN_AN_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_JIVAN_AN_INTRO_1_1",
+      "text_source": "I see you are ready to leave.",
+      "speaker": "system",
+      "tone_register": "formal-observacional",
+      "intent": "constatar-preparacao",
+      "risk_level": "low",
+      "base_translation": "Vejo que você está pronto para partir.",
+      "byte_budget": 29,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AN_INTRO_1_2",
+      "text_source": "I must say, I have never seen a fallen army organise itself so well in order to achieve an objective proposed by the Valkyries.",
+      "speaker": "system",
+      "tone_register": "formal-admirativo",
+      "intent": "elogiar-organizacao",
+      "risk_level": "medium",
+      "base_translation": "Devo dizer, nunca vi um exército caído se organizar tão bem para alcançar um objetivo proposto pelas Valquírias.",
+      "byte_budget": 127,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a Valquírias — entidade de lore; verificar coerência com outros segmentos. Construção complexa; back-translation exigida."
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AN_INTRO_1_3",
+      "text_source": "Either way, it is best you do not forget everything that has happened to you, what you have experienced here has been anything but normal.",
+      "speaker": "system",
+      "tone_register": "formal-solene",
+      "intent": "advertir-nao-esquecer",
+      "risk_level": "medium",
+      "base_translation": "De qualquer forma, é melhor que você não esqueça tudo o que lhe aconteceu; o que viveu aqui foi tudo menos normal.",
+      "byte_budget": 138,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Referência a eventos precedentes (spoiler de arco). Sintaxe formal preservada. Back-translation necessária para validar coerência."
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AN_INTRO_1_4",
+      "text_source": "I hope you can continue on your path without those sort of setbacks.",
+      "speaker": "system",
+      "tone_register": "formal-esperancoso",
+      "intent": "desejar-sucesso",
+      "risk_level": "low",
+      "base_translation": "Espero que consiga seguir seu caminho sem esses tipo de contrariedades.",
+      "byte_budget": 68,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_JIVAN_AN_INTRO_1_5",
+      "text_source": "It's been a pleasure to have hosted you within Hafin's walls, Human army of Zarga. I hope you find what you seek.",
+      "speaker": "system",
+      "tone_register": "formal-solene",
+      "intent": "despedir-hospitaleiro",
+      "risk_level": "high",
+      "base_translation": "Foi um prazer tê-lo hospedado nas muralhas de Hafin, exército humano de Zarga. Espero que encontre o que busca.",
+      "byte_budget": 113,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Identidade do falante ambígua (pode ser Jivan ou autoridade ritual). Nomes próprios Hafin e Zarga verbatim. Estrutura dual (anfitrião + bênção); back-translation obrigatória para validar concordância e tom solene."
+    }
+  ],
+  "total_lines": 5,
+  "high_lines": 1,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-JIVAN_AN_INTRO-v1"
+}

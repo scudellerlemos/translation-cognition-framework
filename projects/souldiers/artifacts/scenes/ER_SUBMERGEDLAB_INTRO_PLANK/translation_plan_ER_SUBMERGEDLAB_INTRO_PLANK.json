@@ -1,0 +1,24 @@
+{
+  "scene": "ER_SUBMERGEDLAB_INTRO_PLANK",
+  "scene_group": "ER_SUBMERGEDLAB_INTRO_PLANK",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_ER_SUBMERGEDLAB_INTRO_PLANK_1",
+      "text_source": "A reward is offered for destroying my crea- a very evil monster who traipses uncontrollably around the <color=LOC>Sunken Laboratory</color>. Its name is Project 0.5 (pre-alpha).",
+      "speaker": "npc",
+      "tone_register": "formal-informative, slightly urgent",
+      "intent": "announce a bounty/quest for a dangerous creature",
+      "risk_level": "medium",
+      "base_translation": "Uma recompensa é oferecida por destruir minha cria- um monstro muito maligno que perambula descontroladamente pelo <color=LOC>Laboratório Submerso</color>. Seu nome é Projeto 0.5 (pré-alfa).",
+      "byte_budget": 177,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "hyphenated word break in source ('crea- a very'); must resolve naturally without losing meaning. 'Project 0.5 (pre-alpha)' is a proper name (monster designation) — keep verbatim. 'Sunken Laboratory' is a location tag with color markup — preserve LOC reference and translate location name."
+    }
+  ],
+  "total_lines": 1,
+  "high_lines": 0,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-ER_SUBMERGEDLAB_INTRO_PLANK-v1"
+}

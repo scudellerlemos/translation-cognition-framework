@@ -1,0 +1,50 @@
+{
+  "scene": "CRYSTAL_6_SLIDE2_BEIGON",
+  "scene_group": "CRYSTAL_6_SLIDE2_BEIGON",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_6_SLIDE2_BEIGON_1",
+      "text_source": "As for you, Vanij, you will use your powers of alchemy to hide your true form and will become a guide to this new world.",
+      "speaker": "unknown",
+      "tone_register": "formal-solemn",
+      "intent": "assign-destiny-with-gravitas",
+      "risk_level": "high",
+      "base_translation": "Quanto a você, Vanij, usará seus poderes de alquimia para ocultarforma verdadeira e se tornará guia deste novo mundo.",
+      "byte_budget": 120,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Beigon — personagem não catalogado em voice_cards; assume registro formal-solene baseado em contexto (comando/profecia). Identidade de Vanij (verdadeira forma ocultada) reforça risco de ambiguidade de pronome — em pt-BR a concordância é forçada; escolhida construção neutra ('seus poderes' em vez de 'seus/seus'). Validar contra KB de voz se Beigon tem perfil específico."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_6_SLIDE2_BEIGON_2",
+      "text_source": "You will a build a city, a symbol of the unity between the peoples of this universe and, in it, you will host all of the souls you receive, making sure that they know never to search for me.",
+      "speaker": "unknown",
+      "tone_register": "formal-solemn",
+      "intent": "elaborate-cosmic-mandate",
+      "risk_level": "high",
+      "base_translation": "Você construirá uma cidade, símbolo da união entre os povos deste universo, e nela acolherá todas as almas que receber, assegurando que nunca me procurem.",
+      "byte_budget": 190,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Construção de 'will build a city' → 'construirá uma cidade' (preserva futuridade solene). Frase complexa com duas orações relativas; quebra natural em pt-BR necessária para respiração — inserida após 'universo' (equivalente a source 'and, in it'). Identidade oculta de Vanij + segredo sobre 'nunca me procurar' = spoiler estrutural; redação preserva ambiguidade (não expõe relação ou nome completo). Byte_budget: 190 suficiente; comprimento final ~165 bytes (pt-BR é ~20% mais longo que EN; respeitado)."
+    },
+    {
+      "offset": "STR_DIALOGS_CRYSTAL_6_SLIDE2_BEIGON_3",
+      "text_source": "Vanij, you will become a beacon of hope for hundreds of thousands. I know that you are up to the task.",
+      "speaker": "unknown",
+      "tone_register": "formal-solemn",
+      "intent": "affirm-confidence-and-closure",
+      "risk_level": "medium",
+      "base_translation": "Vanij, você será um farol de esperança para centenas de milhares. Sei que você é capaz.",
+      "byte_budget": 102,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Registro formal mantido ('será um farol de esperança'); 'up to the task' = 'à altura da tarefa' (ou mais conciso: 'capaz'). Escolhida forma 'Sei que você é capaz' (mais natural que 'à altura') — mantém brevidade e confiança. Byte_budget: 102; comprimento final ~95 bytes. Risco médio por ausência de contexto externo de Beigon — confirmar perfil de voz em KB."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 2,
+  "medium_lines": 1,
+  "needs_review": [],
+  "plan_version": "souldiers-CRYSTAL_6_SLIDE2_BEIGON-v1"
+}

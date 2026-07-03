@@ -1,0 +1,1004 @@
+{
+  "lines": {
+    "STR_DIALOGS_AF_D34_CROMAMINION_2": {
+      "speaker": "system",
+      "tone_register": "neutral-instructional",
+      "intent": "provide_tactical_guidance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": ""
+    },
+    "STR_DIALOGS_AF_D35_CROMAMINION_1": {
+      "speaker": "system",
+      "tone_register": "formal-instructional",
+      "intent": "explain_objective",
+      "risk_level": "medium",
+      "risk_notes": "Geradores/Sala de Controle são conceitos do mundo; verificar consistência com glossário expandido se existir. 'Four generators' = 4 geradores confirmados.",
+      "t": "Preste atenção, Humano. O que você vê diante de si é um dos quatro geradores que precisamos reiniciar para acessar a sala de controle."
+    },
+    "STR_DIALOGS_AF_D35_CROMAMINION_2": {
+      "speaker": "system",
+      "tone_register": "formal-instructional",
+      "intent": "explain_constraint",
+      "risk_level": "medium",
+      "risk_notes": "Termos técnicos (positively polarised mineral, generator) mantêm semântica; reformulação concisa necessária para respeitar byte_budget de 130 (pt-BR ~20% maior que EN).",
+      "t": "Para inserir o <color=OBJ>mineral com polaridade positiva</color> no gerador, precisamos primeiro fornecer energia a ele."
+    },
+    "STR_DIALOGS_AF_D35_CROMAMINION_3": {
+      "speaker": "system",
+      "tone_register": "formal-instructional",
+      "intent": "issue_task",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tente restaurar a energia dele usando o <color=OBJ>Orbe Elétrico</color>."
+    },
+    "STR_DIALOGS_AF_D35_CROMAMINION_4": {
+      "speaker": "system",
+      "tone_register": "formal-military",
+      "intent": "sign_off",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Força, Humano. Fim da transmissão."
+    },
+    "STR_DIALOGS_AF_D1_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "inform about return and consequence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Finalmente estamos de volta... Esses piratas vão pagar caro por isso."
+    },
+    "STR_DIALOGS_AF_D1_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "express shock and wonder",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Um castelo de ferro voador! Como é possível?"
+    },
+    "STR_DIALOGS_AF_D1_CROMACHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "redirect focus to mission",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não temos tempo de explicar a história de nossa evolução, então concentre-se na missão."
+    },
+    "STR_DIALOGS_AF_D1_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "acknowledge",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro..."
+    },
+    "STR_DIALOGS_AF_D1_CROMACHIEF_5": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "give mission briefing with technical details",
+      "risk_level": "medium",
+      "risk_notes": "Technical jargon (orb, circuits, vimana minerals, generators) — maintain clarity for gameplay.",
+      "t": "Agora, escute bem. Os piratas desativaram quase todos os sistemas do módulo, mas, graças àquele orbe, você conseguirá abrir caminho recarregando diferentes circuitos. Porém, mesmo com o orbe, ainda haverá portas desativadas que só poderá abrir com minerais vimana carregados positivamente. Você precisará encontrar os quatro geradores."
+    },
+    "STR_DIALOGS_AF_D1_CROMACHIEF_6": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "give immediate objective",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Comece pela porta de entrada. Depois, vou lhe fornecer os minerais."
+    },
+    "STR_DIALOGS_AF_D1_EUDER_7": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "propose plan with self-promotion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cavalheiros, terminaram? Enquanto conversavam, tive uma ideia. Eu poderia explorar na frente com Irka e tentar encontrar as melhores rotas pro esses geradores."
+    },
+    "STR_DIALOGS_AF_D1_CROMACHIEF_8": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "state obstacle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você teria que ser capaz de voar pra nos dar acesso. Quase todos os condutos estão fechados agora."
+    },
+    "STR_DIALOGS_AF_D1_EUDER_9": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "express glee and self-satisfaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você não faz ideia de quanto isso me deixa feliz, hehe..."
+    },
+    "STR_DIALOGS_AF_D1_EUDER_10": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "build anticipation for reveal",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Prepáre-se para se surpreender. Guardei esse truque pra uma situação exatamente assim."
+    },
+    "STR_DIALOGS_AF_D2_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "explain magical ability",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nunca fui chegado em magia, mas Irka foi abençoada com esse poder quando chegamos aqui."
+    },
+    "STR_DIALOGS_AF_D2_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "taunt about others' reaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês estão sem palavras, né? Imaginei que seria assim..."
+    },
+    "STR_DIALOGS_AF_D2_CROMACHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "observe the unexpected",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, seu cachorro tem asas..."
+    },
+    "STR_DIALOGS_AF_D3_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "give reconnaissance order",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Seu cavalo tem asas. Prossiga com sua missão de reconhecimento. Nos avise se encontrar algo."
+    },
+    "STR_DIALOGS_AF_D3_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "express disappointment at reaction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Eu esperava por uma reação maior, pra ser honesto..."
+    },
+    "STR_DIALOGS_AF_D3_EUDER_3": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "announce departure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá bom, não vou ficar aqui perdendo tempo. Tou indo."
+    },
+    "STR_DIALOGS_AF_D3_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "assure and promise return",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Fiquem alertas, vou voltar pra avisar o que achei."
+    },
+    "STR_DIALOGS_AF_D4_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "report location and task",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estamos dentro. Aquele portão é acionado por código. Um momento..."
+    },
+    "STR_DIALOGS_AF_D5_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "confirm progress and enable next step",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Muito bem! Restauramos os sistemas básicos nesta área. Use o transportador pra prosseguir."
+    },
+    "STR_DIALOGS_AF_D5_CROMACHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "provide resources and repeat objective",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Aqui estão os minerais vimana carregados positivamente. Lembre-se, você deve colocá-los nos quatro geradores pra ganhar acesso à sala de controle principal."
+    },
+    "STR_DIALOGS_AF_D5_CROMACHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "encourage with formal blessing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Contamos com você. Força, humano!"
+    },
+    "STR_DIALOGS_AF_D6_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "announce self with bravado",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Lugar pra o grande Euder!"
+    },
+    "STR_DIALOGS_AF_D6_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "greet companion",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Oi de novo, meu pequeno amigo."
+    },
+    "STR_DIALOGS_AF_D6_EUDER_3": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "marvel at technology",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você viu como essa máquina é incrível? E falam que não usam magia! Fico imaginando como eles mantêm isso flutuando..."
+    },
+    "STR_DIALOGS_AF_D6_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "share discovery and request map",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ah, quase esqueci na empolgação. Localizei os geradores. Infelizmente, sem aquele brinquedo seu, ninguém consegue acessá-los. Me dá seu mapa, vou marcar onde eles estão."
+    },
+    "STR_DIALOGS_AF_D7_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "promise gratitude",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você me agradece quando voltarmos pra terra firme."
+    },
+    "STR_DIALOGS_AF_D7_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "announce reconnaissance and provide benefit",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como a gente tá no ar, vou aproveitar pra dar uma olhada boa na região. Tenho certeza que o General Brigard vai achar útil ter ideia do que nos rodeia nesse mundo."
+    },
+    "STR_DIALOGS_AF_D7_EUDER_3": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "warn about danger while departing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Comportem-se bem e, acima de tudo, fiquem atentos. Parece que esse negócio de pirata aéreo é coisa séria. Tem um navio voador que os tá mantendo ancorados."
+    },
+    "STR_DIALOGS_AF_D7_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal com bravatas",
+      "intent": "depart with exclamation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vamos! Anda, Irka!"
+    },
+    "STR_DIALOGS_AF_D8_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "celebrate achievement of energy grade",
+      "risk_level": "medium",
+      "risk_notes": "NPC 'Birk' appears to be antagonist; maintain formal-solene tone; preserve contempt/triumph.",
+      "t": "Cristal refinado, magnífico e brilhante... Levou três dias, mas finalmente você tem o grau de energia certo."
+    },
+    "STR_DIALOGS_AF_D8_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "express ambition and alliance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Com você, conquistaremos os céus, como sempre deveria ter sido."
+    },
+    "STR_DIALOGS_AF_D9_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "describe humans with disdain via enumeration",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Armadura de aço... Roupas esfarrapadas... Espadas, cajados e flechas..."
+    },
+    "STR_DIALOGS_AF_D9_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "insult humans as primitive",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês humanos são primitivos a ponto de ser entediante."
+    },
+    "STR_DIALOGS_AF_D9_BIRK_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "express confusion about alliance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não entendo como esses Croma conseguiram se aliar com algo tão desinteressante. Devem estar desesperados."
+    },
+    "STR_DIALOGS_AF_D9_BIRK_4": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "declare superiority and control",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sinto ter de dizer, mas enquanto conseguiram chegar até aqui, não há nada que possam fazer. Temos controle total do módulo."
+    },
+    "STR_DIALOGS_AF_D9_BIRK_5": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "pause before revelation",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Porém..."
+    },
+    "STR_DIALOGS_AF_D10_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "accuse and admire",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você pensava que eu não notaria que tinha isso com você? Seu brilho é hipnotizante, né?"
+    },
+    "STR_DIALOGS_AF_D10_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "seize object",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou pegar isso. Só pra garantir, sabe?"
+    },
+    "STR_DIALOGS_AF_D10_BIRK_3": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "warn with threat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Se fosse você, ia embora. Não é boa ideia ficar num lugar desse. Quem sabe quanto tempo falta pra isso cair?"
+    },
+    "STR_DIALOGS_AF_D10_BIRK_4": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "final warning to human",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Me escuta e volta pra sua aldeia, humano. Senão, as coisas vão acabar mal pra você."
+    },
+    "STR_DIALOGS_AF_D10_BIRK_5": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "parting statement",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você foi avisado."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "distorted communication attempt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "For... ça... Hum..."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "static/pause",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "test communication",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Humano, você consegue me ouvir? Tá funcionando?"
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_4": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "clarify communication method",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tou falando com você pelo comunicador."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_5": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "inform of encounter",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que você acabou de conhecer o líder dos piratas."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_6": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "lament loss of minerals",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Mas, sem esses minerais vimana, você não conseguirá reativar os diferentes setores do módulo. Droga... eram tudo que tínhamos à mão."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_7": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "ask about alternative resource",
+      "risk_level": "high",
+      "risk_notes": "Color tag <color=OBJ>negatively polarised minerals</color> must be preserved verbatim; critical gameplay instruction.",
+      "t": "Espera, me diz que você guardou os <color=OBJ>minerais polarizados negativamente</color>. Sim, os vermelhos que encontrou nos geradores."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_8": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "praise and surprise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ótimo! Vocês humanos são mais astutos do que o comandante esperava."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_9": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "explain solution",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Posso restaurar a polaridade original deles na sala de testes pra que voltem a gerar energia."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_10": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "give directions",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tou indo pra lá agora. Se você continuar, consegue achar."
+    },
+    "STR_DIALOGS_AF_D11_CROMAMINION_11": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "close communication",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vou te esperando lá. Fim."
+    },
+    "STR_DIALOGS_AF_D12_CROMAMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "acknowledge arrival without surprise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vejo que conseguiu chegar sem problemas, apesar de eu não estar particularmente surpreso nesse ponto."
+    },
+    "STR_DIALOGS_AF_D12_CROMAMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "urge haste and manage expectations",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Temos que nos apressar. Me dá os minerais que vou restaurá-los, mas devo avisar que o processo vai levar tempo. É bom ter paciência."
+    },
+    "STR_DIALOGS_AF_D13_CROMAMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "express uncertainty about procedure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como isso funciona...?"
+    },
+    "STR_DIALOGS_AF_D13_CROMAMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "reassure with experience",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não se preocupa, vi o processo mil vezes. Consigo, só preciso focar."
+    },
+    "STR_DIALOGS_AF_D14_DARK_CLAW_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "express satisfaction about catch",
+      "risk_level": "high",
+      "risk_notes": "Token _100_ appears twice; must preserve exact count and position. Mysterious 'Dark Claw' antagonist — maintain ominous, formal tone.",
+      "t": "Bem..._100_ feito._100_ Que captura esplêndida."
+    },
+    "STR_DIALOGS_AF_D14_DARK_CLAW_2": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "offer to share and entice",
+      "risk_level": "high",
+      "risk_notes": "Token _100_ appears twice; must preserve exact count and position. Ominous invitation — maintain sinister formality.",
+      "t": "Acho que vou compartilhar esse festim com você._100_ Você..._100_ gostaria?"
+    },
+    "STR_DIALOGS_AF_D15_DARK_CLAW_1": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "question of identity/ownership",
+      "risk_level": "high",
+      "risk_notes": "Token _300_ appears once; must preserve exact position. Philosophical/ominous question — maintain ambiguous, formal tone.",
+      "t": "Era você..._300_ ou eu...?"
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "celebrate completion with reassurance",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Ufa, consegui! Eu sabia que conseguia, você não tinha nada a temer!"
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "checking on player's condition with concern",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Hmmm?_100_ Você está bem?_100_ Parece exausto."
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "acknowledgment of player's training efforts",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Você vem treinando pra conseguir matar esse rato, certo?"
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_4": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "tactical warning about difficulty ahead",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conserve sua energia. Daqui pra frente não será fácil."
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_5": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "protecting valuable equipment with warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cuide deles. Não sabemos onde achar mais se perder."
+    },
+    "STR_DIALOGS_AF_D16_CROMAMINION_6": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "blessing/farewell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Força, Humano."
+    },
+    "STR_DIALOGS_AF_D17_CROMAMINIONB_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, medo",
+      "intent": "shocked recognition/suspicion of intruder",
+      "risk_level": "medium",
+      "risk_notes": "identity unclear—respond to tension, not reveal speaker identity",
+      "t": "Quem...? Quem é você...?"
+    },
+    "STR_DIALOGS_AF_D17_CROMAMINIONB_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, hostil",
+      "intent": "hostile assumption of enemy intent",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Veio nos rematar agora que estamos fracos?"
+    },
+    "STR_DIALOGS_AF_D18_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, autoridade",
+      "intent": "introducing and vouching for player to subordinate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Está tudo bem, não é um dos piratas. Está comigo. Chama-se Humano."
+    },
+    "STR_DIALOGS_AF_D18_CROMAMINIONB_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, respeito",
+      "intent": "acknowledgment of commander's authority",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Comandante..."
+    },
+    "STR_DIALOGS_AF_D19_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, persuasivo",
+      "intent": "defending player's worth to skeptical subordinate",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sei o que pensa. Sei que não parecem muito, mas provaram ser aliados ferozes. Acredite em mim."
+    },
+    "STR_DIALOGS_AF_D19_CROMAMINIONB_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, contrito",
+      "intent": "apologizing for module breach and tactical failure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não era isso, Comandante. Sinto que conseguiram tomar o Módulo tão fácil."
+    },
+    "STR_DIALOGS_AF_D19_CROMAMINIONB_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, arrogância ferida",
+      "intent": "expressing shame at needing primitive help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deve ter sido difícil recorrer a uma raça tão primitiva."
+    },
+    "STR_DIALOGS_AF_D19_CROMACHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, firme",
+      "intent": "dismissing apology, validating surprise attack",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem necessidade. O ataque covarde desses vermes nos pegou completamente de surpresa."
+    },
+    "STR_DIALOGS_AF_D19_CROMAMINIONB_5": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, urgência",
+      "intent": "explaining tactical situation and narrow escape",
+      "risk_level": "medium",
+      "risk_notes": "longer line; verify fit in byte_budget (227 vs transliterated length)",
+      "t": "Chegou na hora certa. Recuamos até aqui pra um contra-ataque de surpresa, mas esses pássaros são astutos. Nos cercaram e bloquearam os dutos de ar. Pensávamos não viver pra contar."
+    },
+    "STR_DIALOGS_AF_D19_CROMACHIEF_6": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, gravidade",
+      "intent": "asserting species survival imperative",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Conheces a situação em que nossa espécie se encontra. É imperativo que sobrevivamos a qualquer custo."
+    },
+    "STR_DIALOGS_AF_D19_CROMAMINIONB_7": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, alerta",
+      "intent": "warning about enemy leader plotting",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quem parece ser o líder deles está no convés de trás. Não sei o que anda fazendo, mas parece estar tramando algo."
+    },
+    "STR_DIALOGS_AF_D19_CROMACHIEF_8": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, comando",
+      "intent": "ordering subordinates to safety while blocking escape",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não vamos deixá-lo escapar, mas preciso que todos se coloquem em segurança primeiro."
+    },
+    "STR_DIALOGS_AF_D20_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, arrogância",
+      "intent": "mocking player for still being on the ship",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Então, ainda está aqui..."
+    },
+    "STR_DIALOGS_AF_D20_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, hiperbólico",
+      "intent": "reminding player of earlier warning with contempt",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não avisei que era perigoso ficar nesse ferro velho?"
+    },
+    "STR_DIALOGS_AF_D20_BIRK_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, empolgação",
+      "intent": "announcing theft complete and imminent departure",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "A festa acabou. Já levamos tudo que tinha valor pra gente, então não pretendo ficar mais um segundo nesse lixo."
+    },
+    "STR_DIALOGS_AF_D20_BIRK_4": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, ameaça leve",
+      "intent": "threatening to test new power on weakened player",
+      "risk_level": "medium",
+      "risk_notes": "threat context; 'blows' = golpes/pancadas",
+      "t": "Mas... você já levou uns bons golpes, talvez pudesse testar minha nova fonte de energia em você."
+    },
+    "STR_DIALOGS_AF_D20_BIRK_5": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, descaso falso",
+      "intent": "feigning casualness about attack",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não leve pra lado pessoal, Humano."
+    },
+    "STR_DIALOGS_AF_D21_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, gritaria exultante",
+      "intent": "exclaiming about newfound power with manic joy",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "PODER ILIMITADO!"
+    },
+    "STR_DIALOGS_AF_D21_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, euforia",
+      "intent": "celebrating infinite potential with hyperbole",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nosso potencial será infinito daqui pra frente!"
+    },
+    "STR_DIALOGS_AF_D22_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, calma maligna",
+      "intent": "menacing false reassurance before attack",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não tenha medo, vou ser rápido."
+    },
+    "STR_DIALOGS_AF_D23_BIRK_1": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, choque",
+      "intent": "shocked disbelief at defeat",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como é possível?"
+    },
+    "STR_DIALOGS_AF_D23_BIRK_2": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, incrédulo",
+      "intent": "expressing disbelief at player defeating pirate crew",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como alguém como você derrota os Piratas da Asa Quebrada?"
+    },
+    "STR_DIALOGS_AF_D23_BIRK_3": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, lamúria",
+      "intent": "mourning lost destiny with self-pity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Era pra ser o começo do nosso grande destino..."
+    },
+    "STR_DIALOGS_AF_D23_BIRK_4": {
+      "speaker": "npc",
+      "tone_register": "coloquial hostil, raiva contenida",
+      "intent": "swearing revenge while grudgingly accepting defeat",
+      "risk_level": "medium",
+      "risk_notes": "threat/revenge vow; 'bumpkin' is contempt—use 'caipira' or reformulate",
+      "t": "Grr... Seu povo entrou na nossa lista de inimigos. Um dia vamos saquear e pilhar vocês, só pela zoação. Aproveita a vitória, caipira."
+    },
+    "STR_DIALOGS_AF_D24_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, empolgação heroica",
+      "intent": "arriving triumphantly with grandstanding humor",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não tenham medo, a cavalaria chegou!"
+    },
+    "STR_DIALOGS_AF_D25_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, auto-elogio leve",
+      "intent": "asking for agreement/validation of witty remark",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Nunca foi dito melhor, né?"
+    },
+    "STR_DIALOGS_AF_D25_CROMACHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, urgência",
+      "intent": "asking what happened and where enemy went",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "O que aconteceu? Onde está esse verme?"
+    },
+    "STR_DIALOGS_AF_D25_CROMACHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, pausa contemplativa",
+      "intent": "moment of silent realization",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "..."
+    },
+    "STR_DIALOGS_AF_D25_CROMACHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, satisfação contida",
+      "intent": "observing cowardly retreat while prioritizing repairs",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Entendo, fugiu com a raba entre as pernas. Sorte que agora nossa prioridade é reparar os sistemas."
+    },
+    "STR_DIALOGS_AF_D25_CROMACHIEF_5": {
+      "speaker": "npc",
+      "tone_register": "formal-solene, proclamação ritual",
+      "intent": "formally pledging eternal alliance with Zarga",
+      "risk_level": "medium",
+      "risk_notes": "formal ceremony language; long line—verify fit; 'hunt shall be our hunt' idiom",
+      "t": "Em nome dos sobreviventes Croma do Módulo Flutuante Gama, somos eternamente gratos aos soldados de Zarga. De agora em diante, vossa caça será nossa caça."
+    },
+    "STR_DIALOGS_AF_D25_CROMACHIEF_6": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "confirming loot reward as agreed",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como combinado, podem ficar com o orbe de raio."
+    },
+    "STR_DIALOGS_AF_D26_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "granting electric orb as reward",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Podem ficar com o orbe elétrico."
+    },
+    "STR_DIALOGS_AF_D27_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, pacificador",
+      "intent": "calming exaggerated formal tension with levity",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Cavalheiros, cavalheiros..."
+    },
+    "STR_DIALOGS_AF_D27_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, modéstia falsa",
+      "intent": "deflecting thanks while promoting Zarga ideology",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sem necessidade de agradecer. Zarga sempre enfrenta o perigo em nome da justiça... mas celebração é bem-vinda."
+    },
+    "STR_DIALOGS_AF_D27_CROMACHIEF_3": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, generosidade",
+      "intent": "offering free transport and permanent access to ship",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Vocês fizeram muito por nós. Podem usar qualquer um de nossos transportadores pra deixar a nave quando quiserem, e são livres pra voltar quando quiser."
+    },
+    "STR_DIALOGS_AF_D27_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, apressado",
+      "intent": "politely declining offer due to mission urgency",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Obrigado pelo convite, mas temos um Guardião pra encontrar."
+    },
+    "STR_DIALOGS_AF_D27_CROMACHIEF_5": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, surpresa",
+      "intent": "questioning unfamiliar term 'Guardian'",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Guardião?"
+    },
+    "STR_DIALOGS_AF_D27_EUDER_6": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, questionador",
+      "intent": "asking if Commander received same mission from Valkyries",
+      "risk_level": "high",
+      "risk_notes": "spoiler potential—Valkyries' involvement; asking if Commander knows about mission. Monitor for reveal timing.",
+      "t": "Aquelas Valquírias não te deram a mesma missão?"
+    },
+    "STR_DIALOGS_AF_D27_CROMACHIEF_7": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, explicativo",
+      "intent": "explaining limited knowledge due to ship arrival",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Como disse, chegamos neste mundo com nosso Módulo Flutuante. Há muito que simplesmente não sabemos."
+    },
+    "STR_DIALOGS_AF_D27_EUDER_8": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, ironia leve",
+      "intent": "wryly observing that everyone is equally confused",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Parece que todos aqui somos os estranhos, então."
+    },
+    "STR_DIALOGS_AF_D28_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, dismissivo",
+      "intent": "dropping previous topic abruptly",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Deixa pra lá."
+    },
+    "STR_DIALOGS_AF_D28_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, entusiasmado",
+      "intent": "suggesting departure and new exploration direction",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Soldado, devíamos voltar. Enquanto eu sobrevoava essa máquina, notei uma área interessante além do pântano a leste."
+    },
+    "STR_DIALOGS_AF_D28_EUDER_3": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, profissional",
+      "intent": "expressing intent to explore and report to General",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Quero explorar e entregar um relatório completo das nossas aventuras pro General Brigard."
+    },
+    "STR_DIALOGS_AF_D28_EUDER_4": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, entusiasmado com bravata",
+      "intent": "playful challenge inviting player to ride with false promise",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "E aí? Vamos dar mais uma volta? Prometo te levar em casa na hora do jantar!"
+    },
+    "STR_DIALOGS_AF_D29_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, satisfação",
+      "intent": "celebrating player's agreement with emphatic confidence",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Sim! Sabia que podia contar com você."
+    },
+    "STR_DIALOGS_AF_D29_EUDER_2": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, entusiasmo",
+      "intent": "inviting player to mount flying companion with light magic phrasing",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Tá bem, deixa o Irka trabalhar sua mágica."
+    },
+    "STR_DIALOGS_AF_D30_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, urgência leve",
+      "intent": "commanding player to mount creature/vehicle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Agora, salta pra cima!"
+    },
+    "STR_DIALOGS_AF_D31_CROMACHIEF_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "attention-getting final warning",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Humanos, uma última coisa..."
+    },
+    "STR_DIALOGS_AF_D31_CROMACHIEF_2": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, gravidade máxima",
+      "intent": "warning about previously encountered enemies and future danger",
+      "risk_level": "high",
+      "risk_notes": "reveals enemy type (creatures from city); significant lore/spoiler context. Back-translation required.",
+      "t": "Os seres que vocês derrotaram na cidade é o que nos trouxe aqui. Tenham muito cuidado; são mais perigosos do que poderiam imaginar. Com certeza há mais aí."
+    },
+    "STR_DIALOGS_AF_D31_EUDER_3": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, confiante com bravata",
+      "intent": "acknowledging warning and confidently offering further help",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Claro. Vamos indo; nos avisa se aqueles pássaros pretenciosos tentarem mexer com você de novo. Ficaríamos felizes de bater neles de novo."
+    },
+    "STR_DIALOGS_AF_D31_CROMACHIEF_4": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco",
+      "intent": "final blessing/farewell",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Força, Humano."
+    },
+    "STR_DIALOGS_AF_D31_EUDER_5": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, partida entusiasmada",
+      "intent": "exclamation of departure on creature/vehicle",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Partiu!"
+    },
+    "STR_DIALOGS_AF_D32_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, explorador",
+      "intent": "observing environmental obstacle and speculating about loot",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Não consigo ver muito mais pra frente por causa dos gases nessa área. Aposto que há algo por aqui de uso pra nossa busca."
+    },
+    "STR_DIALOGS_AF_D33_EUDER_1": {
+      "speaker": "Euder",
+      "tone_register": "coloquial informal, aviso",
+      "intent": "announcing imminent arrival at destination",
+      "risk_level": "low",
+      "risk_notes": "",
+      "t": "Estamos prestes a chegar."
+    },
+    "STR_DIALOGS_AF_D34_CROMAMINION_1": {
+      "speaker": "npc",
+      "tone_register": "formal-militar seco, fraco",
+      "intent": "struggling greeting, barely conscious",
+      "risk_level": "medium",
+      "risk_notes": "truncated speech (Str...th...Hum...) suggests injury/weakness; preserve fragmentation in translation",
+      "t": "For... ça... Hum..."
+    }
+  }
+}

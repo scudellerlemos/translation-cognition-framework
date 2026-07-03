@@ -1,0 +1,102 @@
+{
+  "scene": "MELIAN_PRESENTATION",
+  "scene_group": "MELIAN_PRESENTATION",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_1",
+      "text_source": "Are you the soldier everyone is talking about lately?",
+      "speaker": "npc",
+      "tone_register": "neutral formal",
+      "intent": "question about recognition",
+      "risk_level": "low",
+      "base_translation": "Você é o soldado sobre quem todos falam ultimamente?",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_2",
+      "text_source": "It seems that your adventures are beginning to resonate throughout the city.",
+      "speaker": "npc",
+      "tone_register": "formal observational",
+      "intent": "compliment on growing reputation",
+      "risk_level": "low",
+      "base_translation": "Suas aventuras parecem estar ecoando por toda a cidade.",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_3",
+      "text_source": "What is it like to receive recognition from others?",
+      "speaker": "npc",
+      "tone_register": "formal inquisitive",
+      "intent": "probing question about emotion",
+      "risk_level": "low",
+      "base_translation": "Como é receber reconhecimento dos outros?",
+      "byte_budget": 51,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_4",
+      "text_source": "It's something I'm starting to think I'll never experience...",
+      "speaker": "npc",
+      "tone_register": "melancholic",
+      "intent": "despair",
+      "risk_level": "medium",
+      "base_translation": "É algo que começo a achar que nunca vou experimentar...",
+      "byte_budget": 61,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_5",
+      "text_source": "They think I don't notice, but I'm always left in my sister's shadow.",
+      "speaker": "npc",
+      "tone_register": "bitter resigned",
+      "intent": "confession of sibling rivalry and overshadowing",
+      "risk_level": "high",
+      "base_translation": "Acham que não percebo, mas estou sempre na sombra da minha irmã.",
+      "byte_budget": 69,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "CRITICAL LORE/CHARACTER: First explicit mention of sister shadow dynamic — core of Melian's conflict. Must preserve 'always left in shadow' metaphor intact; no spoiler of sister's identity. Tone must convey both frustration and resignation, not anger. Adequacy: 'sombra da irmã' is correct localisation but verify no name slip."
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_6",
+      "text_source": "I'd like to show my worth more than just standing guard.",
+      "speaker": "npc",
+      "tone_register": "determined aspiring",
+      "intent": "expressing desire for agency and recognition",
+      "risk_level": "medium",
+      "base_translation": "Quero mostrar meu valor mais que apenas estar de guarda.",
+      "byte_budget": 56,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Transition to aspiration — tone shift from resignation to resolve. 'Show worth' must not sound grandiose; keep grounded. Byte budget tight (56): 'Quero mostrar meu valor mais que apenas estar de guarda' fits and preserves intent."
+    },
+    {
+      "offset": "STR_DIALOGS_MELIAN_PRESENTATION_1_7",
+      "text_source": "Or maybe I should accept that they see me as obedient with no aspirations...",
+      "speaker": "npc",
+      "tone_register": "weary self-aware",
+      "intent": "resignation to perceived stereotype",
+      "risk_level": "high",
+      "base_translation": "Ou talvez eu deva aceitar que me veem como obediente, sem aspirações...",
+      "byte_budget": 76,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Closing vulnerability — character questions self-worth against stereotype of obedience. 'Obedient with no aspirations' is identity anchor; must preserve balance between acceptance and doubt. Negation ('que eles me veem') preserves the self-doubt register without confirming the stereotype as truth."
+    }
+  ],
+  "total_lines": 7,
+  "high_lines": 2,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-MELIAN_PRESENTATION-v1"
+}

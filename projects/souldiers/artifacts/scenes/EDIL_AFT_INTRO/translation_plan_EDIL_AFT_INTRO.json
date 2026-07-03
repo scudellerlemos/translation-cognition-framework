@@ -1,0 +1,63 @@
+{
+  "scene": "EDIL_AFT_INTRO",
+  "scene_group": "EDIL_AFT_INTRO",
+  "lines": [
+    {
+      "offset": "STR_DIALOGS_EDIL_AFT_INTRO_1_1",
+      "text_source": "Is there really an entire Fire Temple behind that mysterious door in the Forest of Fyr?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "curiosidade entusiasmada sobre descoberta",
+      "risk_level": "low",
+      "base_translation": "Tem mesmo um Templo do Fogo inteiro atrás daquela porta misteriosa na Floresta de Fyr?",
+      "byte_budget": 87,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AFT_INTRO_1_2",
+      "text_source": "That soldier... Melian? He's back, and badly injured, but it looks like all you suffered from was a dusting of soot. Your armour's covered.",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "observação de contraste com alívio exagerado",
+      "risk_level": "medium",
+      "base_translation": "Aquele soldado... Melian? Voltou, e machucado demais, mas parece que você só levou uma enfiada de fuligem. Sua armadura tá coberta.",
+      "byte_budget": 139,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "identidade do soldado Melian confirmada aqui; verificar se não viola reveal_timing; comparação soot/fuligem vs injúria preserva tom original"
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AFT_INTRO_1_3",
+      "text_source": "Tell me everything! Just how terrifying was that creature he was talking about? How did you manage to beat it?",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "demanda entusiasmada de detalhes; admiração exagerada",
+      "risk_level": "medium",
+      "base_translation": "Me conta tudo! Mas que criatura apavorante era aquela que ele mencionou? Como é que você conseguiu vencer aquilo?",
+      "byte_budget": 110,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "tom de hipérbole e espanto deve ser preservado; 'creature' vago mantém suspense; exclamações múltiplas ajustadas para padrão PT-BR"
+    },
+    {
+      "offset": "STR_DIALOGS_EDIL_AFT_INTRO_1_4",
+      "text_source": "Alright, alright... I'll try to curb my enthusiasm...",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "cedência com auto-ironia; reconhecimento de entusiasmo excessivo",
+      "risk_level": "low",
+      "base_translation": "Tá bom, tá bom... Vou tentar segurar a animação...",
+      "byte_budget": 53,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    }
+  ],
+  "total_lines": 4,
+  "high_lines": 0,
+  "medium_lines": 2,
+  "needs_review": [],
+  "plan_version": "souldiers-EDIL_AFT_INTRO-v1"
+}

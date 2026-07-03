@@ -1,0 +1,50 @@
+{
+  "scene": "SIDE_CH3_Kids_Pool",
+  "scene_group": "SIDE_CH3_Kids_Pool",
+  "lines": [
+    {
+      "offset": "CH3_Kids_Pool_01",
+      "text_source": "What a cute little kids' pool!",
+      "speaker": "unknown",
+      "tone_register": "coloquial informal",
+      "intent": "admiração, aprovação",
+      "risk_level": "low",
+      "base_translation": "Que piscina infantil fofa!",
+      "byte_budget": 30,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": ""
+    },
+    {
+      "offset": "CH3_Kids_Pool_02",
+      "text_source": "A kiddie pool! I should fetch the little ones!",
+      "speaker": "Balof",
+      "tone_register": "coloquial informal hiperbólico",
+      "intent": "empolgação, urgência exagerada",
+      "risk_level": "high",
+      "base_translation": "Uma piscina infantil! Preciso ir buscar os pequenos agora!",
+      "byte_budget": 46,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Balof (criticality: high) — energia/exclamação; deve soar entusiasmado e desproporcional. Verificar naturalidade da locução 'pequenos' vs. 'miúdos' (lusismo evitar)."
+    },
+    {
+      "offset": "CH3_Kids_Pool_03",
+      "text_source": "Wish I was young enough to jump in the kids' pool!",
+      "speaker": "Brigard",
+      "tone_register": "formal-militar seco",
+      "intent": "lamento estóico, nostalgia contida",
+      "risk_level": "high",
+      "base_translation": "Gostaria de ser jovem o bastante para pular na piscina infantil!",
+      "byte_budget": 50,
+      "glossary_flags": [],
+      "spoiler_flags": [],
+      "risk_notes": "Brigard (criticality: high) — registro militar/seco; risco de soar coloquial ou sentimentalista. Manter austeridade; sem floreios. 'Wish I was' → construção de lamento, não desejo infantil."
+    }
+  ],
+  "total_lines": 3,
+  "high_lines": 2,
+  "medium_lines": 0,
+  "needs_review": [],
+  "plan_version": "souldiers-SIDE_CH3_Kids_Pool-v1"
+}
