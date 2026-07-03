@@ -25,6 +25,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import connector_gate  # noqa: E402  (D6: gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
 import kb_gate  # noqa: E402
@@ -32,6 +33,8 @@ import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
 import run_scene as RS  # noqa: E402
+import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao fim do cap.)
+import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
@@ -147,6 +150,16 @@ def _batch_phase(root, pending, *, skip_kb_gate):
     return st
 
 
+def _rebuild_index_phase(root):
+    """POS-PASSE do modo batch: 1 rebuild de state_index cobrindo o capitulo INTEIRO, em vez de 1
+    por cena (redundante no batch -- roda depois que todas as cenas ja fecharam translation_plan,
+    entao ja reflete tudo de uma vez). Barato/idempotente mesmo sem cena nova verified."""
+    si = state_index.build(root, sync_db=False)
+    print(f"\n[state_index] TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+    for w in si.get("warnings", []):
+        print(f"      [state_index] AVISO: {w}")
+
+
 def _back_batch_phase(root, scenes):
     """POS-PASSE do modo batch: back-translation de todas as cenas verificadas num UNICO batch (-50%
     Opus). Roda DEPOIS do loop (cada cena ja produziu seu translation_plan); report-only (nao bloqueia).
@@ -174,8 +187,22 @@ def _chapter_cost(root, chap) -> float:
 
 
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None):
+                skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None,
+                skip_connector_gate=False):
     root = Path(root)
+    # GATE DE COMPLETUDE DE CONECTOR (D6): checa 1x pro CAPITULO INTEIRO (completude de conector nao
+    # depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
+    cg = connector_gate.check(root)
+    for w in cg["warnings"]:
+        print(f"[connector] aviso: {w}")
+    if cg["hard_problems"] or (cg["problems"] and not skip_connector_gate):
+        blockers = cg["hard_problems"] + (cg["problems"] if not skip_connector_gate else [])
+        print(f"BLOQUEADO por completude de conector ({len(blockers)}):")
+        for p in blockers:
+            print(f"  - {p}")
+        if cg["problems"] and not cg["hard_problems"]:
+            print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
+        return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
     if scenes_glob:
         scenes = _scenes_of_glob(root, scenes_glob)
         cost_chap = None   # sem filtro ch_* — reporta ledger completo do projeto
@@ -240,20 +267,26 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 return {"chapter": chap, "scenes": results, "status": "stopped_budget",
                         "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
-        # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo).
+        # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
+        # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
+        # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
         defer_back = bool(batch and backend == "api")
+        rebuild_index = not defer_back
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
                          do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
-                         defer_back=defer_back)
+                         defer_back=defer_back, rebuild_index=rebuild_index,
+                         skip_connector_gate=skip_connector_gate)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
             _print_cost(root, cost_chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
-    # POS-PASSE: back-translation em batch (-50% Opus) das cenas verificadas, se modo batch.
+    # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
+    # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
     if batch and backend == "api":
+        _rebuild_index_phase(root)
         if max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
                   f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
@@ -265,6 +298,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
              if budget_excluded else ""))
     _print_cost(root, cost_chap)
     _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
+    _audit_spoiler(root)          # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
@@ -290,6 +324,27 @@ def _export_qa(root: Path, chap: str):
               f"Gere a mao: python quality_review.py export <projeto> {chap}")
 
 
+def _audit_spoiler(root: Path):
+    """OBRIGATORIO: audita vazamento de NOME/TITULO pos-reveal (alta confianca, determinista) e de
+    GENERO pt-BR (heuristica, pode ter falso-positivo) sobre o PROJETO INTEIRO -- sempre, mesmo que o
+    capitulo atual nao tenha nada marcado no ledger. Nunca bloqueia o capitulo (report-only, mesma
+    filosofia do QA); a garantia e a auditoria RODAR e o resultado FICAR em artifacts/spoiler_audit.json
+    (nao se perder no scroll do terminal nem depender de alguem lembrar de rodar o CLI a mao)."""
+    try:
+        rep = spoiler_check.audit_and_persist(root)
+    except Exception as e:
+        print(f"[spoiler-audit obrigatorio] AVISO: falha ao auditar ({e}).")
+        return
+    if rep["name_leaks"]:
+        print(f"[spoiler-audit] ALERTA: {len(rep['name_leaks'])} vazamento(s) de NOME/TITULO "
+              f"pos-reveal -- ver {paths.spoiler_audit(root)}")
+    if rep["gender_flags"]:
+        print(f"[spoiler-audit] {len(rep['gender_flags'])} linha(s) a revisar por GENERO pt-BR "
+              f"(heuristico, pode ter falso-positivo) -- ver {paths.spoiler_audit(root)}")
+    if rep["clean"]:
+        print("[spoiler-audit] OK: nenhum vazamento nem marcador de genero suspeito.")
+
+
 def _print_cost(root: Path, chap: str | None = None):
     """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
     cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou).
@@ -311,6 +366,8 @@ def main():
     ap.add_argument("--redo", action="store_true", help="reprocessa mesmo cenas ja verified")
     ap.add_argument("--no-verify", action="store_true")
     ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
+    ap.add_argument("--skip-connector-gate", action="store_true",
+                    help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--batch", action="store_true",
                     help="traduz todas as cenas pendentes num unico batch (50%% off, assincrono)")
     ap.add_argument("--max-usd", type=float, default=None,
@@ -322,7 +379,8 @@ def main():
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
                     redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch,
-                    max_usd=a.max_usd, scenes_glob=a.scenes_glob)
+                    max_usd=a.max_usd, scenes_glob=a.scenes_glob,
+                    skip_connector_gate=a.skip_connector_gate)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

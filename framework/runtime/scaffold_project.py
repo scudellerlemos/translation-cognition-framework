@@ -18,10 +18,11 @@ import sys
 from pathlib import Path
 
 # Colunas obrigatórias: context_pack.select_glossary() usa 'term', 'target_translation',
-# 'handling_rule'. Adicionar outras colunas aqui muda o template mas não quebra nada.
+# 'handling_rule'. 'updated_date' e exigida pelo kb_gate.py (bloqueia sem ela) — faltava aqui
+# e so foi descoberta quando um projeto scaffoldado (Souldiers) chegou no gate sem a coluna.
 _GLOSSARY_HEADERS = [
     "term", "category", "target_translation", "handling_rule",
-    "spoiler_level", "aliases", "notes",
+    "spoiler_level", "aliases", "notes", "updated_date",
 ]
 
 _TONE_ANALYSIS_TEMPLATE = """\
@@ -153,6 +154,66 @@ def scaffold(project_root: Path, title: str = "") -> None:
         print("  2. Editar glossary.csv — adicionar termos (term,category,target_translation,handling_rule,...)")
         print("  3. Editar decision_log.md — documentar decisões de tradução")
         print("  4. Rodar: python framework/runtime/state_index.py <projeto>")
+
+    _report_connector_gate_status(project_root)
+    _report_kb_gate_status(project_root)
+
+
+def _report_connector_gate_status(project_root: Path) -> None:
+    """D6c: mesmo principio do _report_kb_gate_status abaixo, agora pro conector (gap real do
+    Souldiers: project.json declarava 'Fase 0 concluida' so com extract.py/reinsert.py -- os
+    scripts de build_plan/verify nunca existiram, round-trip nunca validado de verdade). NAO cria
+    stub fake dos scripts (enganaria o gate); so reporta o que falta, visivel no dia 1."""
+    _here = Path(__file__).resolve().parent
+    if str(_here) not in sys.path:
+        sys.path.insert(0, str(_here))
+    import connector_gate  # noqa: E402  (import tardio, mesmo padrao do kb_gate abaixo)
+    try:
+        r = connector_gate.check(project_root)
+    except Exception as e:
+        print(f"\n[connector_gate] nao foi possivel checar ainda ({e!r}).")
+        return
+    for w in r.get("warnings", []):
+        print(f"\n[connector_gate] aviso: {w}")
+    all_problems = r.get("hard_problems", []) + r.get("problems", [])
+    if not all_problems:
+        print("\n[connector_gate] OK — conector completo.")
+        return
+    print(f"\n[connector_gate] AINDA FALTAM {len(all_problems)} item(ns) de completude de conector:")
+    for p in r.get("hard_problems", []):
+        print(f"  [HARD] {p}")
+    for p in r.get("problems", []):
+        print(f"  [bloqueia sem --skip-connector-gate] {p}")
+
+
+def _report_kb_gate_status(project_root: Path) -> None:
+    """Roda o kb_gate de verdade (nao um checklist estatico) logo apos o scaffold, para o requisito
+    aparecer no dia 1 do onboarding em vez de ser descoberto num piloto pago (gap real do Souldiers:
+    scaffold nunca cria universe_knowledge_base.md/research_log.md com conteudo real — nem deveria,
+    um placeholder passaria o hard-gate sem pesquisa de verdade — entao so REPORTA o que falta)."""
+    if not (project_root / "project.json").is_file():
+        print("\n[kb_gate] project.json ainda nao existe — rode o gate depois de cria-lo:")
+        print("          python framework/runtime/kb_gate.py <projeto> <qualquer_scene_id>")
+        return
+    _here = Path(__file__).resolve().parent
+    if str(_here) not in sys.path:
+        sys.path.insert(0, str(_here))
+    import kb_gate  # noqa: E402  (import tardio: so precisa quando project.json ja existe)
+    try:
+        r = kb_gate.check(project_root, "00_00")
+    except Exception as e:
+        print(f"\n[kb_gate] nao foi possivel checar ainda ({e!r}) — normal antes da extracao/Fase 0.")
+        return
+    all_problems = r.get("hard_problems", []) + r.get("problems", [])
+    if not all_problems:
+        print("\n[kb_gate] OK — cobertura de KB ja suficiente para traduzir.")
+        return
+    print(f"\n[kb_gate] AINDA FALTAM {len(all_problems)} item(ns) antes de poder traduzir "
+          f"(gate obrigatorio, skill 03/04):")
+    for p in r.get("hard_problems", []):
+        print(f"  [HARD] {p}")
+    for p in r.get("problems", []):
+        print(f"  [bloqueia sem --skip-kb-gate] {p}")
 
 
 def main() -> None:

@@ -30,6 +30,7 @@ def env(tmp_path, monkeypatch):
 
     st = {
         "kb": {"warnings": [], "problems": [], "hard_problems": [], "pending_decisions": []},
+        "connector": {"hard_problems": [], "problems": [], "warnings": []},
         "tr": {"status": model.DONE, "n_lines": 3, "usage": {"in": 10, "out": 5},
                "model": model.MODEL_TRANSLATE, "reused": 0, "novel": 3},
         "highs": [],
@@ -59,6 +60,7 @@ def env(tmp_path, monkeypatch):
         return st["back"]
 
     monkeypatch.setattr(rs.kb_gate, "check", lambda r, s: st["kb"])
+    monkeypatch.setattr(rs.connector_gate, "check", lambda r: st["connector"])
     monkeypatch.setattr(rs.context_pack, "write_pack",
                         lambda r, s: {"scene_id": context_pack.scene_id_of(s), "n_lines": st["tr"]["n_lines"]})
     monkeypatch.setattr(rs.context_pack, "_doctrine_hash", lambda r: "")
@@ -90,6 +92,48 @@ def test_success_planned_no_verify(env):
     st["runs"] = [(0, "")]                           # só build_plan; verify pulado
     r = rs.run_scene(root, scene, do_verify=False)
     assert r["status"] == "planned" and r["verified"] is None
+
+
+def test_connector_hard_block(env):
+    root, scene, st = env
+    st["connector"]["hard_problems"] = ["build_plan_script ausente"]
+    r = rs.run_scene(root, scene)
+    assert r["status"] == "connector_incomplete" and r["problems"]
+
+
+def test_connector_hard_block_never_bypassed(env):
+    root, scene, st = env
+    st["connector"]["hard_problems"] = ["verify_script ausente"]
+    r = rs.run_scene(root, scene, skip_connector_gate=True)   # hard nao tem bypass
+    assert r["status"] == "connector_incomplete"
+
+
+def test_connector_soft_block_without_skip(env):
+    root, scene, st = env
+    st["connector"]["problems"] = ["nenhum round-trip verde ainda"]
+    r = rs.run_scene(root, scene, skip_connector_gate=False)
+    assert r["status"] == "connector_incomplete"
+
+
+def test_connector_soft_bypassed_with_skip(env):
+    root, scene, st = env
+    st["connector"]["problems"] = ["nenhum round-trip verde ainda"]
+    st["runs"] = [(0, ""), (0, "")]
+    r = rs.run_scene(root, scene, skip_connector_gate=True)
+    assert r["status"] == "verified"
+
+
+def test_connector_gate_runs_before_kb_gate(env, monkeypatch):
+    # ambos incompletos -- conector bloqueia PRIMEIRO (pre-requisito mais fundamental); kb_gate.check
+    # nunca chega a ser chamado.
+    root, scene, st = env
+    st["connector"]["hard_problems"] = ["build_plan_script ausente"]
+    st["kb"]["hard_problems"] = ["KB tambem incompleta"]
+    calls = []
+    monkeypatch.setattr(rs.kb_gate, "check", lambda r, s: calls.append(1) or st["kb"])
+    r = rs.run_scene(root, scene)
+    assert r["status"] == "connector_incomplete"
+    assert calls == [], "kb_gate.check nao deveria ser chamado -- conector bloqueia antes"
 
 
 def test_kb_hard_block(env):
@@ -185,6 +229,31 @@ def test_opts_object_path(env):
                               skip_kb_gate=False, pretranslated=False, defer_back=False)
     r = rs.run_scene(root, scene, opts=opts)
     assert r["status"] == "planned"
+
+
+def test_rebuild_index_false_skips_state_index_build(env, monkeypatch):
+    # modo batch (run_chapter passa rebuild_index=False): o rebuild fica pro pos-passe do capitulo,
+    # nao por cena -- state_index.build NAO deve ser chamado aqui.
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    calls = []
+    monkeypatch.setattr(rs.state_index, "build",
+                        lambda r, **k: calls.append(1) or {"tm": 0, "cards": 0, "decisions": 0, "warnings": []})
+    r = rs.run_scene(root, scene, backend="api", rebuild_index=False)
+    assert r["status"] == "verified"
+    assert calls == []
+
+
+def test_rebuild_index_default_true_calls_state_index_build(env, monkeypatch):
+    # modo interativo/nao-batch (default): comportamento antigo preservado -- rebuild por cena.
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    calls = []
+    monkeypatch.setattr(rs.state_index, "build",
+                        lambda r, **k: calls.append(1) or {"tm": 0, "cards": 0, "decisions": 0, "warnings": []})
+    r = rs.run_scene(root, scene, backend="api")
+    assert r["status"] == "verified"
+    assert calls == [1]
 
 
 def test_invalid_scene_raises(env):
