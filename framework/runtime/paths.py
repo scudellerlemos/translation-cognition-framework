@@ -44,10 +44,15 @@ def glossary(root) -> Path:         return artifacts(root) / "glossary.csv"
 def entities(root) -> Path:         return artifacts(root) / "entities.csv"
 def research_log(root) -> Path:     return artifacts(root) / "research_log.md"
 def spoiler_ledger(root) -> Path:   return artifacts(root) / "spoiler_ledger.json"
+def spoiler_audit(root) -> Path:    return artifacts(root) / "spoiler_audit.json"
 def tone_analysis(root) -> Path:    return artifacts(root) / "tone_analysis.md"
 def decision_log(root) -> Path:     return artifacts(root) / "decision_log.md"
 def kb_worklist(root, chap) -> Path:    return artifacts(root) / f"kb_phase_worklist_{chap}.md"
 def kb_ratified(root) -> Path:          return artifacts(root) / "kb_ratified.csv"
+
+# ---- cache de fontes brutas p/ KB research (kb_fetch.py / kb_build_ollama.py) ----
+def research_cache_dir(root) -> Path:       return artifacts(root) / "research_cache"
+def research_cache(root, hash_) -> Path:    return research_cache_dir(root) / f"{hash_}.md"
 
 # ---- artefatos descontinuados: cenas falhas/limpas movidas aqui (nao apagadas) ----
 def discontinued_dir(root) -> Path:

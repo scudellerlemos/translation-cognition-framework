@@ -32,10 +32,14 @@ framework/
   media-profiles/   ← games.md (validado), films.md / series.md (stubs)
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
   SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–08) + quem produz/consome cada artefato
-  runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter), contexto
-                       (context_pack), estado (state_index), IA (model + back_translate), KB/spoiler
-                       (kb_review, kb_phase, spoiler_check), qualidade (quality_review/gate/fix,
-                       tm_correct), custo (cost, cost_report) — ~23 módulos. Ver runtime/README.md
+  runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter/run_game,
+                       kernel.py como fachada), contexto (context_pack), estado (state_index), IA
+                       (model + back_translate), KB (kb_gate/kb_review/kb_phase/kb_fetch/
+                       kb_build_ollama/kb_reconcile — pipeline híbrido Ollama + ratificação humana),
+                       conector (connector_gate/connector_mgr/fingerprint_monitor), spoiler
+                       (spoiler_check), TM por série (tm_lookup/tm_updater), qualidade
+                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~41
+                       módulos. Ver runtime/README.md
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
   docs/             ← ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE, STATE_MANAGEMENT,
                        MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
@@ -109,9 +113,10 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 ## MÍDIA SUPORTADA
 
-- **Jogos** — ✅ validado em dois engines distintos:
+- **Jogos** — ✅ validado em três engines distintos:
   - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
   - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 125 cenas, pipeline completo 00–08, QA + output gerados.
+  - *Souldiers* (Unity Addressables): **CONCLUÍDO** — 470 cenas, round-trip 100%, KB via Ollama híbrido.
   - Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
@@ -150,7 +155,11 @@ exemplo de manifesto, perfil e artefatos do pipeline.
 
 **`projects/breath_of_fire_4/`** — segunda instância. Valida a portabilidade para engine Capcom. **CONCLUÍDO:**
 125 cenas, pipeline 00–08 completo, QA humana + output (125 DAT files) gerados, custo ~$11 USD.
-Débitos técnicos em aberto: glossary coluna, NPC voice cards, TM semântica (B2), release.
+
+**`projects/souldiers/`** — terceira instância. Valida engine Unity Addressables (CSV tilde-delimited
+em bundle) e o pipeline de onboarding de baixo custo (P1.7: scaffold + templates + KB híbrida via
+Ollama local). **CONCLUÍDO:** 470 cenas, round-trip byte-idêntico 100%, back-translation 100%,
+custo ~$3,06 USD.
 
 ---
 
@@ -200,32 +209,43 @@ flowchart LR
 
 ---
 
-## STATUS DO FRAMEWORK — junho 2026
+## STATUS DO FRAMEWORK — julho 2026
 
 ### Objetivos alcançados
 
 - Harness stateless (cena = job isolado, contexto O(cena)): sem estouro de sessão ✅
-- Batch API (−50%) + tiering Haiku/Sonnet/Opus: validado em escala ✅
-- Gates de cognição: KB-gate, controle de spoiler, controle de gênero ✅
+- Batch API (−50%) + tiering Haiku/Sonnet/Opus: validado em escala; batch segmentado (translate +
+  back-translation) reduz blast radius de cancelamento ✅
+- Gates de cognição: KB-gate (cobertura + profundidade de ratificação por entidade), gate de
+  completude de conector, controle de spoiler, controle de gênero (auditoria obrigatória) ✅
 - Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica ✅
 - Ledger auditável: toda chamada cobrada registrada, inclusive falhas ✅
-- Generic Connector System: dois engines (Aquaplus + Capcom) com round-trip byte-idêntico ✅
+- Generic Connector System **completo**: descoberta automática (evidence collector + tier
+  classifier) → geração de candidato (T2) → coverage gate + adversarial validator → round-trip →
+  manifesto/fingerprint versionado → gates de autonomia AI-agnostic. Três engines (Aquaplus,
+  Capcom, Unity Addressables) com round-trip byte-idêntico ✅
+- KB híbrida via Ollama local (`kb_fetch.py`/`kb_build_ollama.py`) — extração sem custo de API,
+  sempre em rascunho (`draft_ollama`) até ratificação humana por entidade (`kb_reconcile.py`);
+  governança preservada mesmo com raciocínio fora da sessão Claude ✅
+- `run_game.py`: driver ponta-a-ponta (todos os capítulos, teto de gasto global, retomada
+  automática) + `progress_report.py` (linhas/min, % do jogo, ETA, taxa de falha) ✅
+- `kernel.py`: fachada única consolidando as primitivas de orquestração (`run_scene`/`run_chapter`/
+  `run_game`/`validate`/`context_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
+- TM por série (`tm_lookup.py`/`tm_updater.py`): jogos da mesma franquia compartilham termos
+  recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
 - CI paralela reestruturada: 3 workflows, sem encadeamento (`needs:` = 0), falha nomeada por job ✅
-- 316 testes passando / 21 skipped · cobertura do core 90.17% (gate `--cov-fail-under=90`) ✅
+- 438 testes passando
 
 ### Dívidas técnicas do framework
 
 | Dívida | Prioridade |
 |---|---|
-| `run_game` — driver ponta-a-ponta (todos os capítulos + Fase 0 gating automático) | P2.5 — agora |
-| Observabilidade de progresso (linhas/min, % do jogo, ETA) | P2.5 — agora |
-| `state_index` rebuild 1×/capítulo no batch (hoje por cena, redundante) | P2.5 — agora |
-| TM busca semântica (B2: `sentence-transformers` local) | pós-produção |
-| Evolução do conector: registry de detecção + síntese governada | P4 (pós-produção) |
-| Filmes / séries: pontos de extensão sem validação em produção | futuro |
+| Filmes / séries: pontos de extensão sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
+| CLI instalável / packaging `.exe` / README de produto (E1-E4) | pós-validação, só se for publicar |
+| Bundle de custo: tiering + back-batch codados, sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
+| `connector_gate.assert_fresh_read()` (D5): testada, sem caller em produção ainda | quando formalizar fluxo de edição de conector |
 
 ### Próximos passos
 
-1. `run_game` + observabilidade (P2.5 — barato, não requer novo modelo)
-2. TM semântica (B2) — implementação
-3. Piloto multi-game: questões abertas respondidas progressivamente (BoF4 como referência)
+1. Piloto multi-game: questões de TM/registry/onboarding já respondidas na prática (3 engines validados)
+2. Filmes/séries: aguardando projeto-piloto real antes de investir em `subtitle_file`/CPS/ASR

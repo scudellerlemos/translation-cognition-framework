@@ -130,6 +130,24 @@ def check_gender(root) -> list[dict]:
     return flags
 
 
+def audit_and_persist(root) -> dict:
+    """check() + check_gender() sobre o PROJETO INTEIRO, persistidos em artifacts/spoiler_audit.json.
+    Chamado OBRIGATORIAMENTE por run_chapter a cada capitulo -- antes so existia como CLI manual
+    (`python spoiler_check.py <projeto>`), e foi exatamente por depender de alguem lembrar de rodar
+    que um projeto (Souldiers) nunca chegou a ser auditado, mesma classe do gap ja documentado em
+    onboarding-scaffold-kb-gate-drift (fase declarada pronta sem gate automatico verificando).
+    Retorna {name_leaks, gender_flags, clean}; nunca levanta (projeto sem ledger -> tudo vazio,
+    clean=True). Sobrescreve o artefato -- e o estado CORRENTE, nao historico incremental."""
+    root = Path(root)
+    leaks = check(root)
+    gender = check_gender(root)
+    rep = {"name_leaks": leaks, "gender_flags": gender, "clean": not (leaks or gender)}
+    out = paths.spoiler_audit(root)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+    return rep
+
+
 def list_guards(root) -> list[dict]:
     """Guards ativos no ledger: entidade, reveal, strings proibidas pré-reveal, gender_quarantine."""
     root = Path(root)

@@ -219,6 +219,26 @@ def select_tm(tm, scene_rows, present_speakers):
     return exact, voice
 
 
+def _load_tm_series(cfg, root, rows) -> list:
+    """D4: TM da SERIE (outro jogo da mesma franquia, ver tm_lookup.py) -- match exato por
+    src_key, mesma logica do tm_exact mas consultando tm/<serie>.json em vez da TM do PROJETO
+    atual. Isolado por serie (nunca mistura franquias); [] se nenhum hit ou arquivo ausente --
+    nunca falha o pack."""
+    import tm_lookup
+    series = tm_lookup.series_of(cfg, root)
+    hits, seen = [], set()
+    for r in rows:
+        key = tm_lookup.tm_key(r["source"])
+        if key in seen:
+            continue
+        hit = tm_lookup.lookup(series, key)
+        if hit:
+            hits.append({"source": hit["source"], "target": hit["target"],
+                        "from_game": hit.get("source_game", "?")})
+            seen.add(key)
+    return hits
+
+
 def _pos(scene_id: str):
     """scene_id -> tupla numerica de posicao narrativa p/ comparacao. Extrai TODA sequencia de
     digitos (robusto a esquemas sem '_': '12_03'->(12,3), 'AREAD050'->(50,), 'AREAD001'->(1,)).
@@ -496,6 +516,7 @@ def build_pack(root: Path, scene: str) -> dict:
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
     tm_semantic = _load_tm_semantic(db_path, db_pid, rows)
+    tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
 
@@ -513,6 +534,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "tm_exact": tm_exact,
         "tm_voice": tm_voice,
         "tm_semantic": tm_semantic,
+        "tm_series": tm_series,
         "kb": kb,
         "spoiler_guards": spoiler_guards,
         "lines": rows,
@@ -608,7 +630,13 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("**Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**")
         for e in pack["tm_semantic"]:
             L.append(f"- (~{e['score']}) `{e['source']}` -> `{e['target']}`")
-    if not pack["tm_exact"] and not pack["tm_voice"] and not pack.get("tm_semantic"):
+    if pack.get("tm_series"):
+        L.append("")
+        L.append("### 6b. Memoria de traducao da SERIE (outro jogo da mesma franquia)")
+        L.append("**Termos ja traduzidos em outro jogo da serie — usar p/ CONSISTENCIA entre jogos:**")
+        for e in pack["tm_series"]:
+            L.append(f"- `{e['source']}` -> `{e['target']}` (jogo: {e['from_game']})")
+    if not pack["tm_exact"] and not pack["tm_voice"] and not pack.get("tm_semantic") and not pack.get("tm_series"):
         L.append("_(sem memoria previa para esta cena)_")
     L.append("")
     L.append("## 7. Linhas a traduzir")

@@ -151,6 +151,25 @@ def _score_engine(evidence: dict, engine: dict) -> tuple[float, list[str]]:
     return score, reasons
 
 
+def existence_gate(evidence: dict, registry: list[dict]) -> dict:
+    """D5 — gate de existencia: formaliza (testavel, reusavel por qualquer caller) o que
+    discover.py ja fazia implicitamente via if/elif (so chama script_generator.generate() no
+    branch T2). Retorna {**classify(...), must_generate, reference_connector}.
+
+    must_generate=True SOMENTE em T2 -- e o UNICO tier onde gerar candidato via LLM e permitido.
+    T1 (engine conhecida) aponta direto pro conector de referencia, NUNCA aciona o gerador; T3
+    (bloqueado) tambem nunca aciona. Isso remove a possibilidade ESTRUTURAL de chamar o LLM p/
+    gerar um candidato quando ja existe um conector de referencia pronto (T1) ou quando e
+    logicamente impossivel (T3, cifrado/comprimido)."""
+    result = classify(evidence, registry)
+    reference_connector = None
+    if result["tier"] == "T1":
+        engine = next((e for e in registry if e["id"] == result["engine_id"]), {})
+        reference_connector = engine.get("reference_connector")
+    return {**result, "must_generate": result["tier"] == "T2",
+            "reference_connector": reference_connector}
+
+
 def load_registry(registry_path: Path | None = None) -> list[dict]:
     """Carrega o registry JSON. Padrão: connector_registry.json no mesmo diretório."""
     if registry_path is None:
