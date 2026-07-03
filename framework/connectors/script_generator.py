@@ -317,6 +317,27 @@ def _choose_pattern(evidence: dict) -> tuple[str, str]:
     )
 
 
+_SKELETON_DIR = Path(__file__).resolve().parent / "_skeleton"
+
+
+def generate_build_plan_chapter() -> str:
+    """Esqueleto de build_plan_chapter.py (D6b) — protocolo comum (~70-80% identico entre
+    conectores, confirmado comparando BoF4/Utawarerumono/Souldiers); so a preservacao de tokens
+    estruturais do engine muda por projeto (marcado # ADAPTAR no arquivo). Ao contrario de
+    `generate()` (extract.py, 3 padroes por evidencia), aqui NAO ha branching -- e sempre o
+    mesmo esqueleto, o dev copia p/ connector/build_plan_chapter.py e adapta."""
+    return (_SKELETON_DIR / "build_plan_chapter.py").read_text(encoding="utf-8")
+
+
+def generate_verify_chapter() -> str:
+    """Esqueleto de verify_chapter.py (D6b) — protocolo de SAIDA comum (exit 0/1/3 +
+    VERIFY_STATUS:{json}), consumido por connector_mgr._verify_status/run_scene.py sem mudanca
+    entre projetos. A reconstrucao byte-a-byte (`_rebuild`, marcado # ADAPTAR) e 100%
+    especifica do formato -- nao da p/ generalizar, exige o mesmo julgamento humano/LLM que
+    ja escreve extract.py hoje."""
+    return (_SKELETON_DIR / "verify_chapter.py").read_text(encoding="utf-8")
+
+
 def generate(evidence: dict, engine_hint: str | None = None) -> str:
     """Gera candidato de extract.py para engines T2 com código pré-preenchido.
 

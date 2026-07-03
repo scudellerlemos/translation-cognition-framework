@@ -80,7 +80,7 @@ def main():
     model._carta_text = lambda: "Voce e um tradutor EN->pt-BR de jogos. Responda apenas o JSON do schema."
 
     tmp = Path(tempfile.mkdtemp(prefix="batch_smoke_"))
-    (tmp / "artifacts" / scene).mkdir(parents=True)
+    (tmp / "artifacts" / "scenes" / scene).mkdir(parents=True)
     print("[smoke] cena minima (2 linhas: 1 Haiku + 1 Sonnet) -> API REAL de batch (~$0.02, minutos)...")
     try:
         status = model.batch_translate(tmp, [scene], poll_seconds=15, max_rounds=2)

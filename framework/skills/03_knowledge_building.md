@@ -292,3 +292,21 @@ O `universe_knowledge_base.md` está pronto para avançar ao Passo 4 quando:
 **Para entidades `confidence: low`:** documentar que a fonte é Tier 3 ou especulativa. Não omitir — marcar e explicar.
 
 **O KB não é uma wiki completa** — é uma referência de localização. Cobertura das entidades narrativamente relevantes, não exaustividade enciclopédica.
+
+---
+
+## 🔴 GATE FINAL — verificar contra o `kb_gate.py`, não só contra esta checklist
+
+Os critérios acima são a doutrina; `framework/runtime/kb_gate.py` é o gate DETERMINÍSTICO que
+`run_scene`/`run_chapter` de fato aplicam antes de traduzir. Já houve caso real (onboarding do
+Souldiers) em que os critérios desta skill foram seguidos "de olho" mas o gate bloqueou na 1ª
+tradução paga — porque os dois nunca são a mesma fonte de verdade e podem divergir silenciosamente.
+
+**Antes de declarar a KB pronta, rodar:**
+```
+python framework/runtime/kb_gate.py <projeto> <qualquer_scene_id>
+```
+Só avançar para o Passo 4 (Glossário) se a saída for `OK: cobertura de KB suficiente.` — qualquer
+`[HARD-BLOCK]` ou `[BLOCK]` significa que algo desta skill não produziu o artefato no formato/local
+que o gate espera (ex.: `universe_knowledge_base.md` ausente, `glossary.csv` sem coluna
+`updated_date`). Corrigir e rodar de novo até o gate passar — não prosseguir "no fiado".

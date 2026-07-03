@@ -70,6 +70,30 @@ def test_list_guards(tmp_path):
     assert g[0]["forbidden_pre_reveal"] == ["Oshtor"]
 
 
+def test_audit_and_persist_writes_report_clean(tmp_path):
+    _scene(tmp_path, "ch_11_01", "texto sem spoiler")
+    rep = sc.audit_and_persist(tmp_path)
+    assert rep == {"name_leaks": [], "gender_flags": [], "clean": True}
+    saved = json.loads(paths.spoiler_audit(tmp_path).read_text(encoding="utf-8"))
+    assert saved == rep
+
+
+def test_audit_and_persist_writes_report_with_leaks(tmp_path):
+    # 1 cena com vazamento de NOME (Oshtor pre-reveal) e outra com marcador de GENERO junto a Kuon
+    _scene(tmp_path, "ch_11_01", "O Oshtor aparece na porta.")
+    _scene(tmp_path, "ch_11_02", "Ela é a Kuon disfarçada.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"entity": "Oshtor", "reveal": "13_08", "forbidden_pre_reveal": ["Oshtor"]},
+        {"entity": "Kuon", "reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+    ]}), encoding="utf-8")
+    rep = sc.audit_and_persist(tmp_path)
+    assert rep["clean"] is False
+    assert rep["name_leaks"] and rep["name_leaks"][0]["forbidden"] == "Oshtor"
+    assert rep["gender_flags"] and rep["gender_flags"][0]["marker"] == "ela"
+    saved = json.loads(paths.spoiler_audit(tmp_path).read_text(encoding="utf-8"))
+    assert saved == rep
+
+
 def test_future_helper():
     assert sc._future("beyond_frontier", "11_01") is True
     assert sc._future("13_08", "11_01") is True

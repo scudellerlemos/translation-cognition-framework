@@ -712,6 +712,18 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
             _fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     except OSError:
         pass
+    # D4: traducoes APROVADAS pelo QA alimentam a TM da SERIE de volta (so as cenas tocadas nesta
+    # rodada; cenas 100% limpas, sem nenhuma correcao, nunca passam por aqui -- ver
+    # quality_review.py sync-tm p/ forcar sync manual de capitulos ja verified sem correcoes).
+    # Best-effort: falha de sync-TM nunca derruba o apply em si (o que importa, verbatim+IA, ja rodou).
+    try:
+        from datetime import UTC, datetime
+
+        import tm_updater
+        cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+        tm_updater.sync_scenes(root, cfg, touched, approved_at=datetime.now(UTC).isoformat())
+    except Exception as e:
+        print(f"[tm_updater] AVISO: falha ao sincronizar TM da serie ({e}).")
     return {"verbatim": verbatim_n, "ai": ai_n, "scenes": len(touched),
             "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped,
             "total_marked": total_marked, "effectiveness_rate": eff}
@@ -741,7 +753,21 @@ def main():
     pt.add_argument("project")
     pt.add_argument("relato", nargs="?", default=None,
                     help="relato_tester.csv; OMITA p/ usar teste_ingame/relato_tester.csv")
+    ps = sub.add_parser("sync-tm", help="D4: forca sync da TM da serie p/ capitulos ja verified SEM "
+                                        "nenhuma correcao (apply() so sincroniza cenas TOCADAS pelo QA)")
+    ps.add_argument("project")
+    ps.add_argument("chapter", nargs="?", default=None, help="capitulo (ex.: 11); OMITA p/ o jogo INTEIRO")
     a = ap.parse_args()
+    if a.cmd == "sync-tm":
+        from datetime import UTC, datetime
+
+        import tm_updater
+        root_p = Path(a.project)
+        cfg = json.loads((root_p / "project.json").read_text(encoding="utf-8"))
+        scenes = artifact_io.scenes(root_p, a.chapter)
+        n = tm_updater.sync_scenes(root_p, cfg, scenes, approved_at=datetime.now(UTC).isoformat())
+        print(f"[sync-tm] {n} entrada(s) sincronizada(s) na TM da serie ({len(scenes)} cena(s) verificadas).")
+        sys.exit(0)
     if a.cmd == "tester":
         relato = a.relato or str(paths.qa_tester(Path(a.project)) / "relato_tester.csv")
         if not Path(relato).is_file():

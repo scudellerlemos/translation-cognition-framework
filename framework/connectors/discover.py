@@ -19,7 +19,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 from evidence_collector import collect
-from tier_classifier import classify, load_registry
+from tier_classifier import existence_gate, load_registry
 
 
 def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None) -> int:
@@ -36,7 +36,9 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
         return 2
 
     registry = load_registry()
-    result = classify(evidence, registry)
+    # D5 — gate de existencia: existence_gate() formaliza que SO T2 aciona geracao (must_generate);
+    # T1 (engine conhecida) e T3 (bloqueado) NUNCA chamam script_generator, estruturalmente.
+    result = existence_gate(evidence, registry)
     result["evidence_summary"] = {
         "file_count": evidence["file_count"],
         "top_families": dict(list(evidence["families"].items())[:5]),
@@ -52,7 +54,7 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
 
     _print_report(result, game_dir, registry)
 
-    if generate_stub and result["tier"] == "T2":
+    if generate_stub and result["must_generate"]:
         from script_generator import generate
         stub = generate(evidence)
         out = Path(generate_stub) / "extract.py"
@@ -100,11 +102,14 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print(f"    2. Gerar stub pré-preenchido (padrão escolhido pelas evidências):")
         print(f"         python discover.py <game_dir> --generate-stub projects/<jogo>/connector/")
         print(f"    3. Preencher as constantes de CONFIG no stub gerado")
-        print(f"    4. Validar cada iteração com o smoke test (exit 0 = invariantes OK):")
+        print(f"    4. Dry-run OBRIGATÓRIO de cobertura (D2) — pega overfitting a 1 amostra ANTES")
+        print(f"       de gastar tempo no round-trip completo:")
+        print(f"         python framework/connectors/coverage_gate.py <candidato.py> <game_dir>")
+        print(f"    5. Validar cada iteração com o smoke test (exit 0 = invariantes OK):")
         print(f"         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir]")
-        print(f"    5. Quando extract OK: implementar reinsert.py e testar round-trip:")
+        print(f"    6. Quando extract OK: implementar reinsert.py e testar round-trip:")
         print(f"         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir] --roundtrip")
-        print(f"    6. Round-trip byte-idêntico = conector aprovado → registrar no registry")
+        print(f"    7. Round-trip byte-idêntico = conector aprovado → registrar no registry")
 
     elif tier == "T3":
         print(f"  Bloqueado: dados cifrados ou comprimidos")

@@ -147,7 +147,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 | B | **Validação early em `state_index.build()`** — se glossary/tone_analysis não tiverem o formato esperado, falhar com mensagem clara em vez de retornar silenciosamente 0 cards/0 decisões. | ~3k tok/jogo | ✅ |
 | C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. T2: `connector_smoke.py` (smoke test round-trip por iteração) + `script_generator.py` com 3 padrões de stub pré-preenchidos (linear_scan/token_table/pointer_table) baseados nas evidências do `discover.py`. | ~15k tok/jogo | ✅ |
 | D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ✅ (skill 04 atualizada) |
-| E | **`kb_fetch.py` + `kb_build_ollama.py`** — pipeline híbrido para KB sem custo de API: `kb_fetch.py` baixa fontes (urllib, sem LLM, sem API key) e `kb_build_ollama.py` usa Ollama local para raciocínio/extração. Elimina ~30k tokens de raciocínio da sessão Claude. Ver nota abaixo. | ~30k tok/jogo | ❌ |
+| E | **`kb_fetch.py` + `kb_build_ollama.py` + `kb_reconcile.py`** — pipeline híbrido para KB sem custo de API: `kb_fetch.py` baixa fontes e `kb_build_ollama.py` usa Ollama local para extração factual por entidade (rascunho `draft_ollama`); `kb_reconcile.py` promove pra `reconciled` só após ratificação humana (`kb_ratified.csv`). Elimina a leitura/extração de texto bruto da sessão Claude, sem abrir mão da reconciliação humana obrigatória. Ver nota abaixo. | ~30k tok/jogo | ✅ |
 
 > **Nota E — fontes de KB aceitas pelo `kb_fetch.py`:**
 > O humano pode passar qualquer tipo de fonte — o fetch tool deve normalizar tudo para texto
@@ -161,6 +161,50 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > Interface: `python kb_fetch.py <fonte_1> [fonte_2] ...` onde `<fonte>` é URL ou caminho local.
 > Saída: `artifacts/research_cache/<hash_fonte>.md` (texto normalizado, um arquivo por fonte).
 > O `kb_build_ollama.py` lê o cache sem saber se a origem era web ou arquivo local.
+>
+> ✅ **Implementado (2026-07-03).** `kb_fetch.py`: URL (stdlib `urllib` + `html.parser`, zero dep
+> nova), PDF/.docx (lazy-import `pdfplumber`/`python-docx`, `requirements-kb.txt` opcional/fora da
+> CI, `RuntimeError` claro se faltar), .xlsx (`openpyxl`, já em `requirements-dev.txt`), teto de
+> 10 MB/fonte. `kb_build_ollama.py`: 1 chamada Ollama por entidade de `entities.csv`
+> (`importance: main/secondary` — não extrai entidade nova, doutrina "não inventar"), JSON schema
+> estrito via `ollama_client._chat(fmt=...)`.
+>
+> ⚠️ **Ressalva de governança (não é opcional, é o design):** `kb_build_ollama.py` escreve
+> `research_log.md`/`universe_knowledge_base.md` sempre com **`status: draft_ollama`** — NUNCA
+> `reconciled`. `kb_gate.py` já bloqueia rascunho não-reconciliado sem nenhuma mudança (a regex de
+> status não casa `draft_ollama`). A Fase 1B (reconciliação IA+humano) da skill 03 continua
+> obrigatória e manual — o Ollama só substitui a leitura/extração bruta de texto das fontes, nunca
+> a decisão de tier/confiança/reconciliação (mesmo princípio de [[kb-reconciliation-mandatory]] e do
+> gate de `kb_review.py --strict`: a IA nunca propõe E aprova a própria KB sozinha). `confiança` do
+> Ollama é travada por schema em `low|medium` — `high` é estruturalmente impossível antes de
+> reconciliação humana (mesmo se o modelo "alucinar" o valor, `_clamp_confidence` rebaixa p/ `low`).
+> Testes: `test_kb_fetch.py` (8), `test_kb_build_ollama.py` (9).
+>
+> ✅ **Fechamento do loop (2026-07-03) — `kb_reconcile.py`.** A ressalva acima deixava a promoção
+> `draft_ollama → reconciled` só "manual/via sessão Claude", sem mecanismo formal. `kb_reconcile.py`
+> fecha isso reusando `kb_ratified.csv` (mesmo arquivo/coluna que `kb_review.py --strict` já usa —
+> nenhum formato novo): `check()` lista as entidades do rascunho com conteúdo afirmado (`found=true`,
+> ≠ UNSOURCED) ainda sem linha em `kb_ratified.csv`, e avisa se a seção "Conflitos Resolvidos" do
+> `research_log.md` ainda está no placeholder literal do rascunho (tripwire barato contra promover
+> sem revisar nada). `promote()` só flipa `status: draft_ollama → reconciled` +
+> `human_input: pending → confirmed` se `check()` estiver limpo; caso contrário recusa (`exit 1`),
+> sem alterar nada. UNSOURCED nunca bloqueia (nada foi afirmado, nada a ratificar). `kb_gate.py` **não
+> mudou** — a regex de status já bloqueia qualquer coisa ≠ `reconciled`, incluindo `draft_ollama`,
+> sem necessidade de alteração. `kb_fetch.py` ganhou `--found-por {ia,usuario}` (default `ia`),
+> gravado como `encontrada_por:` no front-matter do cache e refletido na coluna "Encontrada por" do
+> `research_log.md` — restaura a distinção que a skill 03 (Fase 1A/1B) precisa pra tiering de fonte,
+> sem reconstruir a comparação de conteúdo IA×humano da Fase 1B (deliberadamente fora de escopo).
+>
+> **Hardening pós-revisão adversarial (2026-07-03):** 2 achados reais corrigidos. (1) `_STATUS_RE`
+> era frouxa (`status[:*\s]+valor` casava em qualquer lugar do texto, ex.: "o status social do
+> personagem" também batia) — agora ancorada em início de linha + negrito exato
+> (`^\*\*Status:\*\*`), igual ao formato que `promote()` escreve; `promote()` também confere que a
+> substituição realmente mudou o arquivo antes de reportar `promoted: True` (nunca mais sucesso
+> falso). (2) o tripwire de "Conflitos Resolvidos" só checava a AUSÊNCIA do placeholder — um "xxx"
+> qualquer passava; agora exige um mínimo de conteúdo substantivo (`_MIN_CONFLICTS_CHARS`), não
+> valida qualidade semântica (exigiria modelo, fora de escopo) mas mata o caso mais preguiçoso.
+> Testes: `test_kb_reconcile.py` (11, inclui `--found-por`, decoy de status, tripwire trivial e
+> chamada dupla de `promote()`).
 
 > **Lição do Souldiers:** o maior gasto individual foi C (investigação de engine + iterações do conector).
 > D1 (`discover.py`) resolve a classificação; falta o template que usa o resultado.
@@ -190,18 +234,19 @@ capítulo, não por cena** — a TM só importa cross-capítulo.
 | Dimensão | Estado | Gap | Quando |
 |---|---|---|---|
 | paralelismo de LLM | ✅ via batch | nenhum (é o que importa em $) | — |
-| **orquestração ponta-a-ponta** | ⚠️ **manual por capítulo** | **`run_game`**: roda 16→39 sozinho (Fase 0 gating + `--max-usd` + retomada) | **agora (barato)** |
-| observabilidade de progresso | ⚠️ só custo (delta por cap. ✅) | progresso/ETA/throughput (linhas/min, % do jogo, taxa de falha) | **agora (barato)** |
-| rebuild de `state_index` | ⚠️ por cena na FASE 2 | redundante no batch (tradução já feita) → **1 rebuild/capítulo** | **agora (barato)** |
+| **orquestração ponta-a-ponta** | ✅ **feito (2026-07-03)** | `run_game.py`: descobre capítulos (`ch_<N>_*`) ou modo flat (`--scenes-glob`, rótulo `"full"`); `--max-usd` GLOBAL encolhe entre capítulos; resumível de graça | — |
+| observabilidade de progresso | ✅ **feito** | `progress_report.py`: % do jogo, linhas/min, ETA, taxa de falha — puro (elapsed_s externo) | — |
+| rebuild de `state_index` | ✅ **feito** | `run_scene.rebuild_index` (default True); `run_chapter` passa `False` em batch + 1 rebuild pós-capítulo (`_rebuild_index_phase`) | — |
 | fault-tolerance/resumo | ✅ decente (`run_state` + batch idempotente) | — (já maduro) | — |
 | pipelining (overlap do wait async) | ❌ | enquanto o batch do cap N processa (~min), fazer o local do cap N-1 / submeter cap N+1 | plataforma (P4) |
 | paralelismo cross-capítulo | ❌ | trade-off de TM documentado (perde dedup/consistência por throughput) | plataforma (P4) |
 | multi-projeto | ❌ | generalizar `state_index`/paths por projeto | plataforma (P4) |
 
 **Decisão (anti-overengineering):** p/ ESTE jogo (~33k linhas, ~3–4h wall-clock total), fila/pipelining é
-overengineering. **Vale agora:** `run_game` driver + observabilidade de progresso + rebuild 1×/capítulo —
+overengineering. **Feito (2026-07-03):** `run_game` driver + `progress_report` + rebuild 1×/capítulo —
 tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
-**Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo, multi-projeto.
+Testes: `test_run_game.py` (5), `test_progress_report.py` (5), `test_batch_mode_rebuilds_state_index_once_per_chapter`
++ 2 em `test_run_scene.py`. **Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo, multi-projeto.
 
 ### P3 — não fazer agora (overengineering)
 Banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços". O orquestrador
@@ -226,9 +271,9 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 |---|---|---|---|
 | Saída estruturada do conector | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ✅ **feito** — `verify_chapter` emite exit 0/1/3 + linha `VERIFY_STATUS:{json}`; `run_scene` usa o exit-code (grep morto). Bug latente corrigido: o grep procurava `"fora do arquivo"` (espaços) vs `"fora-do-arquivo"` (hifens) → out-of-file nunca escalonava |
 | Fonte única de paths | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** | ✅ **feito** — `paths.py` (módulo leaf, fonte única); 42 call sites migrados em 8 módulos; `test_paths_contract` fixa as strings; NAMING.md aponta |
-| run_scene coeso | `run_scene` acretando responsabilidade (~300 linhas legíveis) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ⏸️ adiado (ainda legível; não mexer no que funciona) |
+| run_scene coeso | `run_scene` acretando responsabilidade (hoje 492 linhas, era ~300 quando documentado) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` passam sem alteração |
 | Repro: gate ≠ geração | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
-| Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ⏸️ adiado (difuso; risco de overengineering) |
+| Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ✅ **feito (2026-07-03)** — `kb_gate.py` generalizou a exigência de ratificação humana por entidade (`kb_ratified.csv`) para QUALQUER `research_log.md` com `status: reconciled`, não só o caminho `draft_ollama` do `kb_reconcile.py`. Toda entidade com conteúdo afirmado (≠ UNSOURCED) no `universe_knowledge_base.md` agora exige uma linha em `kb_ratified.csv`; bypassável via `--skip-kb-gate` como qualquer `problem` (soft, não quebra continuidade de projetos já em produção). **Escopo deliberadamente reduzido**: o tripwire de conteúdo mínimo em "Conflitos Resolvidos" do `kb_reconcile.py` NÃO foi generalizado — um projeto sem nenhum conflito de verdade (fonte única) é um caso legítimo que só o placeholder EXATO do `kb_build_ollama.py` consegue distinguir de "não revisado"; não generaliza sem uma âncora textual conhecida. **Custo aceito**: Utawarerumono/BoF4/Souldiers (as 3 KBs já reconciliadas) agora mostram esse `problem` novo até serem ratificadas por entidade — não bloqueia trabalho já feito, só torna visível o que faltava. Testes: 3 novos em `test_kb_gate.py` |
 | Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ vazamento de **gênero** pt-BR fica como extensão (exige marcar entidades de gênero-quarentenado no ledger + atribuir token ao referente) |
 
 **Riscos de engenharia (avaliação crítica — mitigações offline):**
@@ -240,6 +285,9 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | Vazamento de gênero | **vazamento de GÊNERO pt-BR** (ele/ela onde o EN é neutro) — o que o `spoiler_check` de nomes NÃO pegava | contraparte observável de gênero | ✅ **feito** — `spoiler_check.check_gender`: campo `gender_quarantine` no ledger + heurística de co-ocorrência (marcador de gênero pt-BR junto a entidade pré-reveal). Mecanismo ativo; marcação real aguarda caso confirmado por fonte (não fabricar spoiler = não recair em "IA reconcilia a própria KB") |
 | IA reconcilia a própria KB | **a IA reconcilia a própria KB** (sem segundo par de olhos no delta) | gate de fonte (hard) + ratificação humana | ✅ **feito (gate)** — `kb_review.py` + `kb_phase --check`: FALHA (hard) se entidade nova não citar **fonte** no research_log (âncora externa checável = mata "IA propõe E aprova"). `--strict` exige **ratificação humana** (`kb_ratified.csv`, só o humano edita) + gênero confirmado. Evoluiu de digest → gate |
 | Gênero pt-BR inativo | **gênero pt-BR inativo** (mecanismo pronto, zero entidades marcadas) | pesquisa + resolução com fonte | ✅ **feito** — faixa 11-19 auditada (wiki): NENHUM gender-spoiler (o twist é Haku→Oshtor = identidade, já no ledger) → `gender_quarantine` dormente por estar CORRETO, documentado. Shichirya→MASCULINO, Honoka→FEMININO (com fonte); restantes flagrados no `--strict` p/ ratificação (não-fabricado) |
+| Auditoria de gênero dependia de lembrar rodar | **`spoiler_check.check_gender` só existia como CLI manual** (`python spoiler_check.py <projeto>`) — foi assim que Uta foi auditado (caps 11-19), mas o Souldiers nunca chegou a ser, porque depende de alguém lembrar de rodar. Mesma classe do gap de `onboarding-scaffold-kb-gate-drift` (fase "pronta" sem gate automático) | cabear como passo OBRIGATÓRIO e automático do pipeline, sempre, com resultado persistido | ✅ **feito** (2026-07-03) — `spoiler_check.audit_and_persist(root)` roda `check()` (vazamento de nome/título, alta confiança) + `check_gender()` (heurística, pode ter falso-positivo) sobre o **projeto inteiro** e grava `artifacts/spoiler_audit.json`. `run_chapter._audit_spoiler` chama isso **incondicionalmente** ao fim de todo capítulo (ao lado do `_export_qa`), report-only (nunca bloqueia), com aviso alto/baixo diferenciado por confiança. Não depende mais de ninguém lembrar de rodar o CLI. Teste: `test_complete_persists_spoiler_audit` |
+| Contador de batch engana | **`request_counts.succeeded` não reflete progresso real durante `in_progress`** (batch de 146 requests ficou 0/146 por 111min; cancelar por achar travado matou 12 já quase prontas — 134/146 tinham sucedido de verdade) | ferramenta de checagem honesta, nunca cancela sozinha; polling loga status periódico | ✅ **feito** — `batch_status.py`: reporta status/idade/counts de qualquer batch in_progress com o aviso embutido na própria saída ("não cancelar por contador zerado"); cancelamento continua manual e deliberado (`client.messages.batches.cancel`). `_await_batch` (llm_client.py) agora loga a cada ~5min em vez de silêncio total. Ver `anthropic-batch-progress-unreliable` (memory) |
+| Batch gigante = risco concentrado | **1 batch de back-translation com 146 requests** ficou lento (motivo real não identificável do nosso lado — conteúdo de cada request era pequeno, nada anômalo); esperar/cancelar um batch gigante é tudo-ou-nada | segmentar em vários batches menores + timeout curto (report-only não é crítico) | ✅ **feito (as 2 pontas)** — `batch_back_translate` (back_translate.py) divide requests em chunks de `chunk_size=40`, cada 1 um batch **separado**; `max_wait_seconds` default caiu de 24h → **2h** (report-only, não vale esperar o SLA inteiro). Teste: `test_batch_back_translate_segments_large_batches`. **`batch_translate` (tradução, a op CRÍTICA) também segmentada agora** (2026-07-03): `_TRANSLATE_SUBMIT_CHUNK=40` (config.py) fatia as requisições de cada rodada em batches separados via `_submit_translate_chunk`; um chunk que trava/estoura o timeout só fica sem cobertura DELE — a rodada seguinte re-tenta o que faltou (não aborta mais o batch inteiro no 1º timeout, como fazia antes). Teste: `test_batch_translate_segments_large_submissions`. |
 
 **Piso de qualidade HUMANO (supera a auto-avaliação por IA — `quality_review.py`):**
 A back-translation (Opus julgando Sonnet/Haiku) custa e não substitui um humano lendo o pt-BR. O fluxo
