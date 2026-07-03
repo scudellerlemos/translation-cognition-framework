@@ -31,6 +31,7 @@
     "id_column": "::ID::",
     "text_column": "::EN::",
     "target_column": "::PT::",
+    "target_column_note": "Descoberto rodando de verdade (2026-07-02): texts_SIDE_DIALOGS NAO tem coluna ::PT:: — usa ::BR:: (Brasil) em vez de Portugal. Mapeamento real por tabela em connector/reinsert.py:_PT_COL_BY_TABLE, nao neste campo unico.",
     "encoding": "utf-8",
     "dialogue_tables": ["texts_DIALOGS", "texts_INGAME_DIALOGS", "texts_SIDE_DIALOGS"],
     "control_codes": {

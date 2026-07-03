@@ -19,18 +19,25 @@ import csv
 import io
 import json
 import os
-import shutil
 import sys
 from pathlib import Path
 
 _CSV_DELIMITER = "~"
 _ID_COL = "::ID::"
-_PT_COL = "::PT::"
 
 _DIALOGUE_TABLES: dict[str, str] = {
     "texts_DIALOGS":        "8bbb65e6bcd747af3bbead6db0716968.bundle",
     "texts_INGAME_DIALOGS": "8d47b47a21c47126bf303e267a66fc73.bundle",
     "texts_SIDE_DIALOGS":   "a77305a96d09041b74e5948e4f67851e.bundle",
+}
+
+# Coluna de destino pt-BR NÃO é uniforme entre tabelas — descoberto rodando de verdade contra o
+# jogo instalado (2026-07-02): texts_DIALOGS/INGAME_DIALOGS têm "::PT::" (Portugal); SIDE_DIALOGS
+# não tem "::PT::" — só "::BR::" (Brasil). Usar "::BR::" ali é mais correto pra pt-BR, não é workaround.
+_PT_COL_BY_TABLE: dict[str, str] = {
+    "texts_DIALOGS":        "::PT::",
+    "texts_INGAME_DIALOGS": "::PT::",
+    "texts_SIDE_DIALOGS":   "::BR::",
 }
 
 
@@ -49,13 +56,95 @@ def _resolve_data_dir(project_json: Path, cli_override: str | None) -> Path:
     )
 
 
+def rebuild_table(table_name: str, bundle_path: Path, translations: dict[str, str]) -> tuple[bytes, int]:
+    """Retorna (bytes do bundle com `translations` aplicadas na tabela `table_name`, nº de linhas
+    dessa tabela efetivamente alteradas).
+
+    translations={} -> bytes ORIGINAIS do arquivo, sem passar pelo UnityPy (fast-path de
+    identidade). Reserializar via UnityPy mesmo sem mudança nenhuma NÃO garante round-trip
+    byte-idêntico (reempacotamento pode reordenar/realinhar o container) — por isso a cópia crua
+    é o único jeito seguro de provar round-trip. Usado por verify_chapter.py e test_roundtrip.py.
+    """
+    if not translations:
+        return bundle_path.read_bytes(), 0
+
+    import UnityPy
+    pt_col = _PT_COL_BY_TABLE.get(table_name, "::PT::")
+    env = UnityPy.load(str(bundle_path))
+    table_changed = 0
+
+    for obj in env.objects:
+        if obj.type.name != "TextAsset":
+            continue
+        d = obj.read()
+        if getattr(d, "m_Name", "") != table_name:
+            continue
+
+        text = d.m_Script
+        was_bytes = isinstance(text, bytes)  # m_Script normalmente é str no Unity deste jogo;
+        if was_bytes:                        # preservar o tipo original evita AttributeError no
+            text = text.decode("utf-8", errors="replace")  # TypeTree writer do UnityPy ao salvar.
+
+        reader = csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER)
+        fieldnames = reader.fieldnames or []
+        rows = list(reader)
+
+        for row in rows:
+            row_id = row.get(_ID_COL, "").strip().strip('"')
+            if row_id in translations:
+                row[pt_col] = translations[row_id]
+                table_changed += 1
+
+        # Reconstrói CSV com delimitador ~
+        out_buf = io.StringIO()
+        writer = csv.DictWriter(out_buf, fieldnames=fieldnames,
+                                delimiter=_CSV_DELIMITER, quoting=csv.QUOTE_ALL)
+        writer.writeheader()
+        writer.writerows(rows)
+
+        new_text = out_buf.getvalue()
+        d.m_Script = new_text.encode("utf-8") if was_bytes else new_text
+        d.save()
+        break
+
+    buf = io.BytesIO()
+    for file in env.file.files.values():
+        buf.write(file.save())
+    return buf.getvalue(), table_changed
+
+
+def read_table(table_name: str, data: bytes) -> dict[str, str]:
+    """Lê os bytes de um bundle (já modificado ou original) e retorna {::ID:: -> coluna PT/BR
+    da tabela} — a coluna varia por tabela, ver _PT_COL_BY_TABLE. Usado por verify_chapter.py
+    para conferir o que foi de fato gravado."""
+    import UnityPy
+    pt_col = _PT_COL_BY_TABLE.get(table_name, "::PT::")
+    env = UnityPy.load(io.BytesIO(data))
+    out: dict[str, str] = {}
+    for obj in env.objects:
+        if obj.type.name != "TextAsset":
+            continue
+        d = obj.read()
+        if getattr(d, "m_Name", "") != table_name:
+            continue
+        text = d.m_Script
+        if isinstance(text, bytes):
+            text = text.decode("utf-8", errors="replace")
+        for row in csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER):
+            row_id = row.get(_ID_COL, "").strip().strip('"')
+            if row_id:
+                out[row_id] = row.get(pt_col, "").strip().strip('"')
+        break
+    return out
+
+
 def reinsert(project_root: Path, data_dir: Path) -> int:
     """Aplica as traduções aprovadas nos bundles e salva cópias em output/.
 
     Retorna o número de linhas reinseridas.
     """
     try:
-        import UnityPy
+        import UnityPy  # noqa: F401  (checagem antecipada de dependência; rebuild_table importa de novo)
     except ImportError:
         raise ImportError("UnityPy não instalado. Execute: pip install UnityPy")
 
@@ -88,49 +177,9 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
             report_lines.append(f"- AVISO: bundle não encontrado: {bundle_file}\n")
             continue
 
+        new_bytes, table_inserted = rebuild_table(table_name, bundle_path, translations)
         out_bundle = output_dir / bundle_file
-        shutil.copy2(bundle_path, out_bundle)
-
-        env = UnityPy.load(str(out_bundle))
-        table_inserted = 0
-
-        for obj in env.objects:
-            if obj.type.name != "TextAsset":
-                continue
-            d = obj.read()
-            if getattr(d, "m_Name", "") != table_name:
-                continue
-
-            text = d.m_Script
-            if isinstance(text, bytes):
-                text = text.decode("utf-8", errors="replace")
-
-            reader = csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER)
-            fieldnames = reader.fieldnames or []
-            rows = list(reader)
-
-            for row in rows:
-                row_id = row.get(_ID_COL, "").strip().strip('"')
-                if row_id in translations:
-                    row[_PT_COL] = translations[row_id]
-                    table_inserted += 1
-
-            # Reconstrói CSV com delimitador ~
-            out_buf = io.StringIO()
-            writer = csv.DictWriter(out_buf, fieldnames=fieldnames,
-                                    delimiter=_CSV_DELIMITER, quoting=csv.QUOTE_ALL)
-            writer.writeheader()
-            writer.writerows(rows)
-
-            new_text = out_buf.getvalue().encode("utf-8")
-            d.m_Script = new_text
-            d.save()
-            break
-
-        # Grava o bundle modificado
-        with out_bundle.open("wb") as f:
-            for file in env.file.files.values():
-                f.write(file.save())
+        out_bundle.write_bytes(new_bytes)
 
         total_inserted += table_inserted
         report_lines.append(
