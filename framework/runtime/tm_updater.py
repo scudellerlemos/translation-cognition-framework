@@ -22,6 +22,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+if str(_HERE.parent) not in sys.path:
+    sys.path.insert(0, str(_HERE.parent))
 import context_pack  # noqa: E402
 import paths  # noqa: E402
 from text_ids import tm_key  # noqa: E402

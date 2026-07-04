@@ -19,7 +19,11 @@ import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
+_RUNTIME = _HERE.parent / "runtime"
 sys.path.insert(0, str(_HERE))
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+from connector_mgr import _connector_script  # noqa: E402  (sandbox contra path traversal)
 from skill_base import Skill  # noqa: E402
 
 
@@ -42,7 +46,13 @@ class ExtractionSkill(Skill):
         extract = conn.get("extract_script")
         if not extract:
             problems.append("project.json: connector.extract_script não declarado")
-        elif not (Path(project) / extract).is_file():
+            return problems
+        try:
+            script = _connector_script(Path(project), cfg, "extract_script", "extract.py")
+        except ValueError as e:
+            problems.append(str(e))
+            return problems
+        if not script.is_file():
             problems.append(f"extract_script não encontrado: {extract}")
         return problems
 
@@ -60,14 +70,19 @@ class ExtractionSkill(Skill):
             return {"status": "error", "problems": problems, "artifacts": []}
 
         cfg = self.project_cfg(project)
-        extract_script = project / cfg["connector"]["extract_script"]
+        try:
+            extract_script = _connector_script(project, cfg, "extract_script", "extract.py")
+        except ValueError as e:
+            return {"status": "error", "error": str(e), "artifacts": []}
         dialogs_csv = project / cfg.get("source", {}).get("file", "artifacts/dialogs.csv")
 
+        import os
         cmd = [sys.executable, str(extract_script)]
-        env = None
+        # PYTHONIOENCODING/PYTHONUTF8 + errors="replace": mesma protecao de encoding do
+        # connector_mgr._run (conector pode emitir bytes nao-utf-8 no stdout/stderr).
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
         if dat_dir:
-            import os
-            env = {**os.environ, "BOF4_DAT_DIR": str(dat_dir)}
+            env["BOF4_DAT_DIR"] = str(dat_dir)
 
         try:
             result = subprocess.run(
@@ -76,7 +91,9 @@ class ExtractionSkill(Skill):
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
+                errors="replace",
                 env=env,
+                stdin=subprocess.DEVNULL,
                 timeout=300,
             )
         except subprocess.TimeoutExpired:

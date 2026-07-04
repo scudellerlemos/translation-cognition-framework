@@ -27,8 +27,10 @@ jobs:
       - name: Ruff lint
         run: ruff check framework
 
-  # SAST — bandit varre o framework em busca de padrões inseguros (eval, subprocess shell,
-  # hash fraco, etc.). Falha só em MEDIUM+; LOW (ex.: try/except/pass) fica como aviso.
+  # SAST — bandit varre framework/ e projects/*/connector/ em busca de padrões inseguros (eval,
+  # subprocess shell, hash fraco, etc.). Connector = maior superfície de risco (parsing de binário
+  # de jogo não confiável) — round-trip testa fidelidade de bytes, não padrões inseguros de código;
+  # as duas checagens são ortogonais. Falha só em MEDIUM+; LOW (ex.: try/except/pass) fica como aviso.
   sast:
     name: SAST (bandit) — vulnerabilidades de código
     runs-on: ubuntu-latest
@@ -40,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Bandit (SAST)
-        run: bandit -r framework -c pyproject.toml --severity-level medium
+        run: bandit -r framework projects -c pyproject.toml --severity-level medium
 
   # SECRETS — gitleaks procura credenciais/chaves vazadas no diff e no histórico.
   # Conta pessoal: gratuito. Organização exige o secret GITLEAKS_LICENSE.

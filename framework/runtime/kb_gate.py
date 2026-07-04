@@ -10,9 +10,9 @@ Checagens (deterministas, sem rede):
   HARD (bloqueiam):
     - research_log.md existe e tem `status: reconciled` (pesquisa IA+humano conciliada).
     - artefatos de KB presentes e nao-vazios: glossary.csv, universe_knowledge_base.md, voice_cards.json.
-  FRONTEIRA (bloqueia se declarada): project.json `kb_frontier` = scene_id max coberto pela pesquisa
-    (ex.: "12_17"). Cena alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui.
-    Se `kb_frontier` nao for declarado, a fronteira do research_log e so REPORTADA (warning), nao bloqueia.
+  FRONTEIRA: project.json `kb_frontier` = scene_id max coberto pela pesquisa (ex.: "12_17"). Cena
+    alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui. `kb_frontier` NAO
+    declarado tambem e HARD (sem ele o gate nao tem como validar posicao de cena — tradução as cegas).
   PROFUNDIDADE (soft, reforco de coesao de codigo): 'reconciled' sozinho e so um marcador -- toda entidade com
     conteudo afirmado (nao-UNSOURCED) no universe_knowledge_base.md precisa de ratificacao humana
     em kb_ratified.csv (mesmo mecanismo que kb_reconcile.py ja usa pro caminho draft_ollama, aqui
@@ -170,11 +170,14 @@ def check(root, scene) -> dict:
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
     else:
         # kb_frontier ausente = gate nao tem fronteira machine-readable para validar posicao de cena.
-        # Promovido para problema (hard block): sem declaracao explicita nao e possivel garantir que
-        # a KB cobre a cena sendo traduzida — declare "kb_frontier": "<scene_id>" em project.json.
-        problems.append("kb_frontier nao declarada em project.json — declare a scene_id maxima coberta "
-                        "pela pesquisa (ex.: \"kb_frontier\": \"12_17\"). Sem isso o gate nao pode "
-                        "validar fronteira e qualquer cena alem da pesquisa seria traduzida as cegas.")
+        # HARD BLOCK (nunca bypassavel, nem com --skip-kb-gate): sem declaracao explicita nao e possivel
+        # garantir que a KB cobre a cena sendo traduzida — mesma severidade de "sem sei se e seguro
+        # avancar" que os demais hard_problems deste gate. Declare "kb_frontier": "<scene_id>" em project.json.
+        hard_problems.append(
+            "kb_frontier nao declarada em project.json — declare a scene_id maxima coberta "
+            "pela pesquisa (ex.: \"kb_frontier\": \"12_17\"). Sem isso o gate nao pode "
+            "validar fronteira e qualquer cena alem da pesquisa seria traduzida as cegas. "
+            "Este gate nao pode ser pulado.")
     # kb_ratified: se existe, checar coluna de data de ratificacao
     kr = paths.kb_ratified(root)
     if kr.is_file():
