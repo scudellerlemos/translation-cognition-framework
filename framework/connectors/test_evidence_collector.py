@@ -1,5 +1,4 @@
 """Testes de contrato para evidence_collector.py e tier_classifier.py."""
-import json
 import sys
 from pathlib import Path
 
@@ -10,13 +9,12 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 from evidence_collector import (
-    collect,
     _estimate_encoding,
     _shannon_entropy,
     _string_density,
+    collect,
 )
 from tier_classifier import classify, load_registry
-
 
 # ---------------------------------------------------------------------------
 # evidence_collector
@@ -202,7 +200,7 @@ def test_script_generator_is_documented_stub():
     has_marker = "NotImplementedError" in stub or "TODO" in stub
     assert has_marker, (
         "Stub deve conter TODO ou NotImplementedError indicando configuração pendente. "
-        f"Padrão linear_scan: verificar que CONFIG section tem '# TODO:'."
+        "Padrão linear_scan: verificar que CONFIG section tem '# TODO:'."
     )
 
 
@@ -218,8 +216,9 @@ def test_discover_run_known_engine(tmp_path, registry):
 
 
 def test_discover_run_blocked(tmp_path, registry):
-    from discover import run
     import os
+
+    from discover import run
     game = tmp_path / "encrypted"
     game.mkdir()
     for i in range(5):
