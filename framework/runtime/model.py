@@ -476,11 +476,11 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
 # e o mesmo schema de saida (_TRANSLATION_SCHEMA). Sem cache nem batch — 1 request por cena.
 # Retry simples em cobertura/paridade (ate _MAX_TRIES tentativas).
 
-def _ollama_translate(root, scene, pack, model):  # pragma: no cover
+def _ollama_translate(root, scene, pack, model):
     """Traduz uma cena usando Ollama local. Interface identica ao _api_translate.
 
-    NB cobertura: backend local (Ollama) APOSENTADO como POC — o tradutor de produto é a Claude API
-    (3 ranks). Mantido p/ referência, fora da medição (não-unitável sem servidor Ollama vivo).
+    Backend usado em producao pelo projeto translation_local (POC hardware local, custo zero).
+    Testado via mock de ollama_client._chat (ver test_model.py) — nunca exige servidor Ollama vivo.
 
     Retorna (data, usage, meta). usage = {in, out, cache_read:0, cache_write:0}.
     Custo = $0 (local). Sem tiering, sem batch — path simples e direto.

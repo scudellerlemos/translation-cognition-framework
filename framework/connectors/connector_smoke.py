@@ -28,9 +28,14 @@ import csv
 import hashlib
 import json
 import shutil
-import subprocess
 import sys
 from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+_RUNTIME = _HERE.parent / "runtime"
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+import connector_mgr  # noqa: E402  (encoding robusto + timeout — mesma protecao do run_scene)
 
 _REQUIRED_COLS = {"byte_budget"}  # offset ou id_col checado dinamicamente; text_* pelo prefixo
 
@@ -58,12 +63,12 @@ def smoke(project_root: Path, game_data_dir: Path | None = None, *, roundtrip: b
     if game_data_dir:
         cmd.append(str(game_data_dir))
 
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    inv1 = proc.returncode == 0
-    detail1 = proc.stdout.strip().split("\n")[-1] if proc.stdout.strip() else ""
+    code, out = connector_mgr._run(cmd, timeout=300)
+    inv1 = code == 0
+    detail1 = out.strip().split("\n")[-1] if out.strip() else ""
     if not inv1:
-        err = (proc.stderr or proc.stdout or "sem mensagem de erro").strip().split("\n")[-1]
-        detail1 = f"exit {proc.returncode}: {err[:120]}"
+        err = (out or "sem mensagem de erro").strip().split("\n")[-1]
+        detail1 = f"exit {code}: {err[:120]}"
     results.append(("extract.py exit 0", inv1, detail1))
 
     # ── Invariante 2: colunas obrigatórias ───────────────────────────────────
@@ -179,11 +184,11 @@ def _run_roundtrip(
         cmd = [sys.executable, str(reinsert_py), str(project_root)]
         if game_data_dir:
             cmd.append(str(game_data_dir))
-        proc = subprocess.run(cmd, capture_output=True, text=True)
+        code, out = connector_mgr._run(cmd, timeout=600)
 
-        if proc.returncode != 0:
-            err = (proc.stderr or proc.stdout or "erro desconhecido").strip().split("\n")[-1]
-            return False, f"reinsert.py exit {proc.returncode}: {err[:120]}"
+        if code != 0:
+            err = (out or "erro desconhecido").strip().split("\n")[-1]
+            return False, f"reinsert.py exit {code}: {err[:120]}"
 
         # Encontrar o arquivo de output gerado
         output_file = _find_output(project_root, source_path)

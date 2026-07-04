@@ -154,3 +154,63 @@ def test_batch_coverage_finds_missing():
             "lines": [{"offset": "o1", "source": "a"}, {"offset": "o2", "source": "b"}]}
     missing, bad = M._batch_coverage(pack, {"o1": {"t": "A"}})
     assert "o2" in missing and bad == []
+
+
+def _ollama_pack(tmp_path):
+    """Projeto DB-mode minimo (1 cena, 1 linha) — mesmo padrao de _db_scene, sem translations."""
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "T")
+        db.upsert_scene_lines("p", "S1", [{"offset": "o1", "source": "Hi", "byte_budget": 100}])
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p"},
+         "connector": {}}), encoding="utf-8")
+    (tmp_path / "artifacts" / "scenes" / "S1").mkdir(parents=True)
+    return context_pack.build_pack(tmp_path, "S1")
+
+
+def test_ollama_translate_success(tmp_path, monkeypatch):
+    pack = _ollama_pack(tmp_path)
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        return {"message": {"content": json.dumps({"lines": [{"offset": "o1", "t": "Oi"}]})},
+                "prompt_eval_count": 5, "eval_count": 3}
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
+    assert data["lines"]["o1"]["t"] == "Oi"
+    assert usage["in"] == 5 and usage["out"] == 3
+    assert meta["novel"] == 1
+
+
+def test_ollama_translate_malformed_json_retries(tmp_path, monkeypatch):
+    pack = _ollama_pack(tmp_path)
+    calls = {"n": 0}
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return {"message": {"content": "json quebrado"}, "prompt_eval_count": 1, "eval_count": 1}
+        return {"message": {"content": json.dumps({"lines": [{"offset": "o1", "t": "Oi"}]})},
+                "prompt_eval_count": 1, "eval_count": 1}
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
+    assert data["lines"]["o1"]["t"] == "Oi"
+    assert calls["n"] >= 2
+
+
+def test_ollama_translate_raises_on_client_error(tmp_path, monkeypatch):
+    pack = _ollama_pack(tmp_path)
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        raise RuntimeError("Ollama inacessivel em http://localhost:11434: [Errno 111]")
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    try:
+        M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
+        assert False, "deveria ter levantado RuntimeError"
+    except RuntimeError as e:
+        assert "_ollama_translate (tentativa 1)" in str(e)
