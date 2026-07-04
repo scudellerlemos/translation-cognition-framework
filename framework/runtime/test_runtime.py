@@ -197,9 +197,10 @@ def test_kb_gate_passes_when_reconciled_and_present(tmp_path):
 
 
 def test_kb_gate_blocks_when_frontier_not_declared(tmp_path):
-    root = _kb_project(tmp_path)   # sem kb_frontier -> hard block desde esta sessao
-    probs = kb_gate.check(root, "ch_12_03")["problems"]
-    assert any("kb_frontier" in p for p in probs), "ausencia de kb_frontier deve bloquear"
+    # #81: kb_frontier ausente e HARD (nao bypassavel nem com --skip-kb-gate)
+    root = _kb_project(tmp_path)   # sem kb_frontier
+    hard = kb_gate.check(root, "ch_12_03")["hard_problems"]
+    assert any("kb_frontier" in p for p in hard), "ausencia de kb_frontier deve ser hard-block"
 
 
 def test_kb_gate_blocks_unreconciled(tmp_path):
@@ -2034,6 +2035,52 @@ def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
     run_scene.run_scene(tmp_path, "ch_50_01", backend="api", opts=opts)
     assert called_with.get("backend") == "in-session", (
         "opts deve sobrescrever o kwarg backend='api'")
+
+
+def _stub_pipeline_after_gates(monkeypatch):
+    """Stuba as fases apos os gates (translate/fitting/back/state_index) — usado pelos testes de
+    #79 (bypassed_gates), que so precisam validar o que acontece ANTES/no checkpoint final."""
+    monkeypatch.setattr(run_scene, "_pack_and_translate",
+                        lambda r, s, sid, backend, pretranslated: ({"n_lines": 0, "status": "done"}, None))
+    monkeypatch.setattr(run_scene, "_fitting_loop",
+                        lambda r, s, sid, cfg, backend, do_verify, tr: (tr, True, None))
+    monkeypatch.setattr(run_scene, "_high_lines", lambda r, s, sid: [])
+    monkeypatch.setattr(run_scene, "_back_phase",
+                        lambda *a, **k: ({"status": "done", "reviewed": 0, "path": None}, None))
+    monkeypatch.setattr(run_scene.state_index, "build",
+                        lambda r, sync_db=False: {"tm": 0, "cards": 0, "decisions": 0})
+
+
+def test_run_scene_records_bypassed_gates_in_checkpoint(monkeypatch, tmp_path):
+    # #79: bypass de --skip-kb-gate/--skip-connector-gate deve deixar rastro no checkpoint -- antes,
+    # o mesmo status "verified" de uma cena limpa nao distinguia de uma cena traduzida as cegas.
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    monkeypatch.setattr(run_scene.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": ["conector incompleto"], "warnings": []})
+    monkeypatch.setattr(run_scene.kb_gate, "check",
+                        lambda r, s: {"hard_problems": [], "problems": ["kb sem cobertura"], "warnings": []})
+    _stub_pipeline_after_gates(monkeypatch)
+
+    r = run_scene.run_scene(tmp_path, "ch_50_01", skip_kb_gate=True, skip_connector_gate=True)
+    assert r["status"] == "verified"
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == ["connector", "kb"]
+
+
+def test_run_scene_bypassed_gates_empty_when_clean(monkeypatch, tmp_path):
+    # cena que passa os gates limpo (sem problems) -> bypassed_gates == [] (nunca omitido)
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    monkeypatch.setattr(run_scene.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_scene.kb_gate, "check",
+                        lambda r, s: {"hard_problems": [], "problems": [], "warnings": []})
+    _stub_pipeline_after_gates(monkeypatch)
+
+    run_scene.run_scene(tmp_path, "ch_50_01")
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == []
 
 
 def test_clean_failed_scene_moves_to_discontinued(tmp_path):
