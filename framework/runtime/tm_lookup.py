@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-tm_lookup.py — D4: TM por SERIE (franquia), consultada na ENTRADA do context_pack.
+tm_lookup.py — TM por SERIE (franquia), consultada na ENTRADA do context_pack.
 
 Hoje a TM vive isolada por PROJETO (`artifacts/state/translation_memory.jsonl`, construida por
-state_index.build_tm()). D4 generaliza pra permitir que jogos da MESMA serie compartilhem termos
+state_index.build_tm()). Esta TM por serie generaliza pra permitir que jogos da MESMA serie compartilhem termos
 recorrentes (ex.: nome de personagem que aparece em 2 jogos da mesma franquia) -- sem nunca
 misturar series diferentes.
 
@@ -81,7 +81,7 @@ def lookup_by_source(series: str, source_text: str) -> dict | None:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="D4: consulta a TM por serie.")
+    ap = argparse.ArgumentParser(description="Consulta a TM por serie.")
     ap.add_argument("series")
     ap.add_argument("--source", help="texto fonte a consultar (normalizado via tm_key)")
     a = ap.parse_args()

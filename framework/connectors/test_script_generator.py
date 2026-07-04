@@ -1,6 +1,6 @@
-"""test_script_generator.py — cobre a geracao de esqueletos (D6b): generate_build_plan_chapter()
-e generate_verify_chapter() leem o _skeleton/ e retornam o protocolo comum (nao ha branching por
-evidencia aqui, ao contrario de generate()/extract.py)."""
+"""test_script_generator.py — cobre a geracao de esqueletos de build_plan/verify:
+generate_build_plan_chapter() e generate_verify_chapter() leem o _skeleton/ e retornam o
+protocolo comum (nao ha branching por evidencia aqui, ao contrario de generate()/extract.py)."""
 import sys
 from pathlib import Path
 

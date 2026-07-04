@@ -5,7 +5,8 @@
 > mas não para todo o processo. As skills genéricas referenciam este perfil para o racional;
 > o `project.json` de cada jogo declara os **valores concretos** (tokens exatos, caminhos, limites).
 >
-> **Status:** validado (Utawarerumono é a instância de referência).
+> **Status:** validado em três engines distintos — Utawarerumono (Aquaplus, instância de
+> referência), Breath of Fire IV (Capcom DAT) e Souldiers (Unity Addressables).
 
 ---
 
@@ -100,8 +101,8 @@ Medir **por segmento entre quebras de linha**, não a linha inteira de uma vez.
 **Prioridade quando há conflito:** tom > caber > literalidade. Nunca sacrificar voz para encurtar.
 
 > **Shift-left:** o `byte_budget` viaja para o Passo 06 e vira restrição de prompt — a tradução já
-> nasce dentro do orçamento, evitando overflow e custo de LLM na reinserção. O resíduo que ainda
-> estourar é resolvido pela cascata determinística do Passo 08 (T1–T3), com LLM só no resíduo (T4).
+> nasce dentro do orçamento, evitando overflow e custo de LLM na reinserção. O que ainda estourar é
+> resolvido pela cascata determinística do Passo 08 (direct/repoint/trimmed), com LLM só no resíduo.
 > Ver `framework/connectors/hex_binary.md` e `framework/skills/08_reinsertion.md`.
 
 ---

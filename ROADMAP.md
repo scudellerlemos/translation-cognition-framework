@@ -19,10 +19,10 @@
 
 ## BoF4 — CONCLUÍDO ✅
 
-> 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, T4=0.
+> 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, 0 overflows.
 > Custo: ~$11,04 USD. Plano detalhado: `projects/breath_of_fire_4/ROADMAP.md`.
 
-Débito remanescente: TM semântica (B2) — quando corpus multi-game justificar.
+Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framework/db/`).
 
 ---
 
@@ -126,11 +126,11 @@ novo jogo
 [1] evidence_collector      ← entropia, string scan, magic bytes, encoding detection
     │
     ▼
-[2] tier_classifier         ← T1 / T2 / T3
+[2] tier_classifier         ← known_engine / unknown_engine / blocked
     │
-    ├── T1 ──► connector_registry (engine conhecida — script direto, sem LLM)
-    ├── T2 ──► script_generator  (LLM + evidências → candidato → confirmação humana)
-    └── T3 ──► contrato de escape (humano implementa extract / reinsert / validate)
+    ├── known_engine   ──► connector_registry (engine conhecida — script direto, sem LLM)
+    ├── unknown_engine ──► script_generator  (LLM + evidências → candidato → confirmação humana)
+    └── blocked        ──► contrato de escape (humano implementa extract / reinsert / validate)
                    │
     ┌──────────────┘
     ▼
@@ -171,15 +171,16 @@ novo jogo
 #### Implementação
 
 - [x] **D1.** ✅ **feito e testado** (confirmado 2026-07-03 — checkbox estava desatualizado)
-  Evidence Collector + Registry T1 — `evidence_collector.py`, `tier_classifier.py`,
+  Evidence Collector + Registry de engine conhecida — `evidence_collector.py`, `tier_classifier.py`,
   `connector_registry.json`, `script_generator.py`. Testes: `test_evidence_collector.py`. Score: **~87**
 - [x] **D2.** ✅ **feito (2026-07-03)** Coverage Gate + Adversarial Validator —
-  `coverage_gate.py` (dry-run do candidato T2 contra os 3 maiores arquivos reais, sem subprocess —
-  importa `iter_string_offsets`/`decode_string` via `importlib`; piso 85% no MÍNIMO entre arquivos,
-  não na média) + `adversarial_validator.py` (arquivo zerado entre populados, variância >1.5 entre
-  arquivos, offsets sobrepostos). Interface T3: reusa os mesmos gates sem adaptação — dependem só
-  do contrato de função, não da origem do módulo. `discover.py` aponta pro gate no passo-a-passo T2,
-  antes do `connector_smoke.py`. Testes: `test_coverage_gate.py` (9), `test_adversarial_validator.py`
+  `coverage_gate.py` (dry-run do candidato de engine desconhecida contra os 3 maiores arquivos
+  reais, sem subprocess — importa `iter_string_offsets`/`decode_string` via `importlib`; piso 85%
+  no MÍNIMO entre arquivos, não na média) + `adversarial_validator.py` (arquivo zerado entre
+  populados, variância >1.5 entre arquivos, offsets sobrepostos). Interface de escape (bloqueado):
+  reusa os mesmos gates sem adaptação — dependem só do contrato de função, não da origem do módulo.
+  `discover.py` aponta pro gate no passo-a-passo de engine desconhecida, antes do
+  `connector_smoke.py`. Testes: `test_coverage_gate.py` (9), `test_adversarial_validator.py`
   (5). Score: **~92**
 - [x] **D3.** ✅ **feito (2026-07-03)** Manifesto + Versionamento + Fingerprint —
   `framework/runtime/fingerprint_monitor.py`: `connector_manifest.json` por projeto (tier, engine,
@@ -191,9 +192,10 @@ novo jogo
 - [x] **D4.** ✅ **feito (2026-07-03)** TM por série + integração QA — ver detalhe abaixo. Score: **~97**
 - [x] **D5.** ✅ **feito (2026-07-03)** Gates de autonomia AI-agnostic:
   - **Gate de existência:** `tier_classifier.existence_gate()` — formaliza o que `discover.py` já
-    fazia via if/elif implícito; `must_generate=True` SÓ em T2 (T1 aponta pro conector de
-    referência, T3 fica bloqueado — geração via LLM estruturalmente impossível fora de T2).
-    `discover.py` refatorado pra usar. Testes: `test_tier_classifier_gate.py` (3).
+    fazia via if/elif implícito; `must_generate=True` SÓ quando a engine é desconhecida (engine
+    conhecida aponta pro conector de referência, bloqueado fica bloqueado — geração via LLM
+    estruturalmente impossível fora do caso de engine desconhecida). `discover.py` refatorado pra
+    usar. Testes: `test_tier_classifier_gate.py` (3).
   - **Gate de leitura completa:** `connector_gate.assert_fresh_read(script_path, claimed_content)`
     — interpretação operacional escolhida (mais codificável/testável): o caller passa o CONTEÚDO
     INTEIRO que alega ter lido (não um path); o gate compara hash do alegado vs. hash do disco
@@ -235,13 +237,13 @@ novo jogo
 
 #### Teto dos 3 pontos (irredutível)
 
-Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evidence_collector` os detecta e classifica como `T3-bloqueado`.
+Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evidence_collector` os detecta e classifica como `blocked`.
 
 ---
 
 ### Adiado
 
-- [x] **T4 em lote (LLM).** Plumbing pronto em `reinsert.py` (`t4_residue.json`). Inerte hoje (resíduo=0); ativa sozinho se corpus futuro gerar overflow não-relocável.
+- [x] **Resíduo em lote (LLM).** Plumbing pronto em `reinsert.py` (`residue.json`). Inerte hoje (resíduo=0); ativa sozinho se corpus futuro gerar overflow não-relocável.
 - ~~CI + empacotamento de release~~ — removido (escopo antigo; substituído por CI offline e packaging nas seções abaixo).
 
 ---

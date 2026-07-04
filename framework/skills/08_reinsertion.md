@@ -25,11 +25,11 @@ cada vez.
 |----------|--------|-----------|
 | Detectar se cabe | encode + contar bytes vs `byte_budget` | zero |
 | Escrever bytes, mapear tokens, ponteiros, patch | `reinsert.py` | zero |
-| Fazer caber (cascata T1–T3) | determinístico | zero |
-| Reescrever resíduo T4 | 1 chamada LLM **em lote** | mínimo |
+| Fazer caber (cascata direct/repoint/trimmed) | determinístico | zero |
+| Reescrever o resíduo | 1 chamada LLM **em lote** | mínimo |
 
 O grosso do encaixe já foi resolvido no **shift-left** (Passo 06 traduziu dentro do `byte_budget`),
-então o resíduo T4 tende a ser pequeno.
+então o resíduo tende a ser pequeno.
 
 ---
 
@@ -58,15 +58,17 @@ então o resíduo T4 tende a ser pequeno.
 
 ## CASCATA DE ENCAIXE (determinística primeiro — só sobe quem falha)
 
-Para cada string traduzida, `reinsert.py` aplica:
+Para cada string traduzida, `reinsert.py` aplica (nomes do esqueleto de referência,
+`framework/connectors/_skeleton/reinsert.py` — cada projeto pode escolher nomes mais específicos ao
+seu formato, ex.: `in_place`/`residuo` no Utawarerumono):
 
-- **T1 — Escrita direta:** `len(encoded) ≤ byte_budget` → grava. Zero LLM. *(maioria absoluta)*
-- **T2 — Recuperação de espaço:** repointing (se `space_strategy: repoint`); reuso de espaço de
+- **direct — Escrita direta:** `len(encoded) ≤ byte_budget` → grava. Zero LLM. *(maioria absoluta)*
+- **repoint — Recuperação de espaço:** repointing (se `space_strategy: repoint`); reuso de espaço de
   strings que encolheram; tabela de abreviações seguras. Zero LLM.
-- **T3 — Trim mecânico:** colapsar espaços duplos, reticência tipográfica (…), abreviações do
+- **trimmed — Trim mecânico:** colapsar espaços duplos, reticência tipográfica (…), abreviações do
   glossário do projeto. Zero LLM.
-- **T4 — Reescrita por LLM (resíduo):** as strings que ainda estouram são **exportadas em lote** pelo
-  `reinsert.py` para `artifacts/t4_residue.json` (`offset`, `text_source`, `current_target`,
+- **residue — Reescrita por LLM:** as strings que ainda estouram são **exportadas em lote** pelo
+  `reinsert.py` para `artifacts/residue.json` (`offset`, `text_source`, `current_target`,
   `byte_budget`, `over_by`). A IA reescreve as K strings em **uma única passada** para caber, devolve
   no `translation_plan.json` (`base_translation`), o conjunto é aprovado e **reaplicado pelo fluxo
   normal** (`poc_pipeline → approved → reinsert`). O resultado **volta pelo Micro-QA (06b)**.
@@ -79,10 +81,10 @@ Para cada string traduzida, `reinsert.py` aplica:
 
 ## TAREFAS
 
-1. **Escrever / adaptar `reinsert.py`** (encode, cascata T1–T3, emissão de patch).
+1. **Escrever / adaptar `reinsert.py`** (encode, cascata direct/repoint/trimmed, emissão de patch).
 2. **Recodificar** cada `text_target` via tabela; tokens → control codes.
-3. **Aplicar a cascata**; coletar o resíduo T4.
-4. **Resolver o resíduo T4** em chamada LLM única; re-validar no 06b; re-gravar.
+3. **Aplicar a cascata**; coletar o resíduo.
+4. **Resolver o resíduo** em chamada LLM única; re-validar no 06b; re-gravar.
 5. **Gravar** o binário traduzido em `output/<nome-original>` — **mesmo nome e extensão do input**
    (ex: `<nome>.sdat` → `output/<nome>.sdat`). Nunca sobre o original-fonte.
 6. **Emitir o patch** no `patch_format` declarado (ips / bps / xdelta).
@@ -112,9 +114,9 @@ jogo. O script **informa o caminho** ao concluir.
 
 ## REGRAS CRÍTICAS
 
-- **Reinserção é determinística.** LLM só na cascata T4, em lote, e o resultado passa pelo 06b.
+- **Reinserção é determinística.** LLM só no resíduo, em lote, e o resultado passa pelo 06b.
 - **A IA executa o `reinsert.py`; não grava bytes à mão.** Criar o script só com permissão (governança acima).
 - **Nunca sobrescrever o binário-fonte em disco** — saída em `output/`, nome e extensão preservados.
 - **Informar o diretório de saída** ao usuário ao final.
-- Strings que falham mesmo após T4 → issues no `reinsertion_report.md`, voltam para o ciclo 06c/07.
+- Strings que falham mesmo após a cascata → issues no `reinsertion_report.md`, voltam para o ciclo 06c/07.
 - Reinserção sem QA aprovado e sem round-trip é proibida.

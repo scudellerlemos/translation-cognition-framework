@@ -1,4 +1,4 @@
-"""test_kernel.py — kernel.py e fachada PURA (B3): confirma que cada nome reexportado e o MESMO
+"""test_kernel.py — kernel.py e fachada PURA: confirma que cada nome reexportado e o MESMO
 objeto do modulo de origem (identidade, nao copia) -- garante que nao virou reimplementacao."""
 import sys
 from pathlib import Path

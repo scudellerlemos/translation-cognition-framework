@@ -39,7 +39,7 @@ flowchart LR
 - [x] Container `.sdat` totalmente mapeado (`parse_pack`, `rebuild_container`) — `table_schema.md`.
 - [x] **Modelo de ponteiro FILE-RELATIVO** (correção crítica; ~42k sites confirmam vs ~63 absolutos) —
       `table_schema.md` SEÇÃO 4.
-- [x] `reinsert.py`: round-trip byte-idêntico + cascata de encaixe (1025 linhas: T1=595, RELOC=430, **resíduo T4=0**).
+- [x] `reinsert.py`: round-trip byte-idêntico + cascata de encaixe (1025 linhas: in_place=595, RELOC=430, **resíduo=0**).
 - [x] **Relocação INTRA-ARQUIVO**: o run que estoura é anexado ao fim da região do próprio arquivo; o
       arquivo cresce e a tabela Pack é reescrita (`rebuild_container`, padding a 16 bytes); ponteiro =
       offset local. (EOF-append ao fim do container foi **reprovado in-game**.)

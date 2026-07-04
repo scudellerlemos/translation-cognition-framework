@@ -55,8 +55,31 @@ Documentados no `QA_REVIEW.md`.
 | GAP C | **Zona cinza do balão** | TESTER confirma na tela (cresceu vs EN mas não estourou) |
 | GAP D | **Consistência de glossário** | `glossary_lint.py` (determinístico) |
 
+## Generic Connector System / Evolução do Motor (retirados 2026-07-03)
+Documentados em `framework/docs/ROADMAP.md` (seção Fase D / Evolução do Motor).
+
+| Antigo | Nome atual | Conceito |
+|---|---|---|
+| D1 | **Descoberta automática de engine** | `evidence_collector.py` + `tier_classifier.py` + `connector_registry.json` |
+| D2 | **Validação de cobertura/consistência do candidato** | `coverage_gate.py` + `adversarial_validator.py` |
+| D3 | **Manifesto e fingerprint de conector** | `fingerprint_monitor.py` |
+| D4 | **TM por série** | `tm_lookup.py` + `tm_updater.py` |
+| D5 | **Gates de autonomia** | `tier_classifier.existence_gate()` + `connector_gate.assert_fresh_read()` |
+| D6 | **Gate de completude de conector** | `connector_gate.py` |
+| B1 | **Validação leve** | `framework/validation/validate.py` |
+| B2 | **Memória semântica** | `framework/db/embedder.py` + `store.py` (sqlite-vec) |
+| B3 | **Fachada de orquestração** | `kernel.py` |
+| B4 | **Skill DSL** | `framework/skills/skill_base.py` + `registry.py` |
+| P1.7 | **Onboarding de baixo custo** | `scaffold_project.py`, `kb_fetch.py`/`kb_build_ollama.py`/`kb_reconcile.py` |
+| P2.5 | **Driver ponta-a-ponta** | `run_game.py` + `progress_report.py` |
+
+Os dois sistemas de **tier numerado** também foram retirados do código nesta data: o tier de
+descoberta de engine (`T1`/`T2`/`T3`) virou `known_engine`/`unknown_engine`/`blocked`; a cascata de
+encaixe de bytes na reinserção (`T1`–`T4`) virou nomes descritivos por conector — `direct`/
+`repoint`/`trimmed`/`residue` no template (`framework/connectors/_skeleton/reinsert.py`), `in_place`/
+`residuo` no Utawarerumono, `unchanged`/`shrunk`/`expanded`/`individual_overflow` no Breath of Fire IV.
+
 ## Abreviações de domínio aceitas
 Estas **podem** aparecer em código — são jargão de domínio estabelecido, documentado em
-[`NAMING.md`](NAMING.md) §3 (`KB`, `TM`, `QA`, `BIN`/`SDAT`, `T4`, `scene_id`). `T4` em especial é o
-*Tier 4* do cascade de reinserção, amarrado ao arquivo `t4_residue.json` — é nome de domínio, não
-código de planejamento.
+[`NAMING.md`](NAMING.md) §3 (`KB`, `TM`, `QA`, `BIN`/`SDAT`, `scene_id`). `T4` foi retirado desta
+lista (ver seção acima) — deixou de ser aceito como nome de domínio.

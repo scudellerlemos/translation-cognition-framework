@@ -423,10 +423,10 @@ def test_batch_smoke_evaluate():
 def test_verify_status_parses_structured_line():
     # protocolo estruturado de saida: run_scene le a linha VERIFY_STATUS, nao faz grep de prosa.
     out = ("Capitulo ch_x: ...\n  round-trip identico: False\n"
-           'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo_t4": 2, "out_of_file": 0, "n_fails": 1}\n'
-           "\nFALHAS:\n  - resíduo T4 = 2 (esperado 0)\n")
+           'VERIFY_STATUS: {"ok": false, "fitting_failure": true, "residuo": 2, "out_of_file": 0, "n_fails": 1}\n'
+           "\nFALHAS:\n  - resíduo = 2 (esperado 0)\n")
     st = connector_mgr._verify_status(out)
-    assert st["fitting_failure"] is True and st["residuo_t4"] == 2
+    assert st["fitting_failure"] is True and st["residuo"] == 2
     assert connector_mgr._verify_status("sem status aqui") == {}          # conector legado -> {}
     assert connector_mgr._verify_status("VERIFY_STATUS: {quebrado") == {}  # json invalido -> {} (nao explode)
 
@@ -1630,7 +1630,7 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
 
 
 def test_quality_review_apply_syncs_series_tm(tmp_path, monkeypatch):
-    # D4: apply() alimenta a TM da SERIE de volta com as cenas TOCADAS (verified) nesta rodada.
+    # apply() alimenta a TM da SERIE de volta com as cenas TOCADAS (verified) nesta rodada.
     import tm_lookup
     monkeypatch.setattr(tm_lookup, "_REPO_ROOT", tmp_path / "_repo")
     import paths
@@ -1765,7 +1765,7 @@ def test_integration_roundtrip_real_scene(scene):
     assert code2 == 0, f"{scene}: verify_chapter falhou:\n{out2[-700:]}"
     st = connector_mgr._verify_status(out2)               # protocolo estruturado de saida
     assert st.get("ok") is True, f"{scene}: VERIFY_STATUS nao-ok: {st}"
-    assert st.get("out_of_file") == 0 and st.get("residuo_t4") == 0   # round-trip integro
+    assert st.get("out_of_file") == 0 and st.get("residuo") == 0   # round-trip integro
 
 
 # ------------------------------- governanca -----------------------------------
