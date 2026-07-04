@@ -26,12 +26,10 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import io
 import json
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 _REQUIRED_COLS = {"byte_budget"}  # offset ou id_col checado dinamicamente; text_* pelo prefixo
@@ -175,32 +173,31 @@ def _run_roundtrip(
             for row in sample:
                 wr.writerow({id_col: row[id_col], "text_target": row[text_col]})
 
-        with tempfile.TemporaryDirectory() as tmp:
-            output_dir = project_root / "output"
-            output_dir.mkdir(exist_ok=True)
+        output_dir = project_root / "output"
+        output_dir.mkdir(exist_ok=True)
 
-            cmd = [sys.executable, str(reinsert_py), str(project_root)]
-            if game_data_dir:
-                cmd.append(str(game_data_dir))
-            proc = subprocess.run(cmd, capture_output=True, text=True)
+        cmd = [sys.executable, str(reinsert_py), str(project_root)]
+        if game_data_dir:
+            cmd.append(str(game_data_dir))
+        proc = subprocess.run(cmd, capture_output=True, text=True)
 
-            if proc.returncode != 0:
-                err = (proc.stderr or proc.stdout or "erro desconhecido").strip().split("\n")[-1]
-                return False, f"reinsert.py exit {proc.returncode}: {err[:120]}"
+        if proc.returncode != 0:
+            err = (proc.stderr or proc.stdout or "erro desconhecido").strip().split("\n")[-1]
+            return False, f"reinsert.py exit {proc.returncode}: {err[:120]}"
 
-            # Encontrar o arquivo de output gerado
-            output_file = _find_output(project_root, source_path)
-            if output_file is None:
-                return False, "reinsert.py rodou mas não gerou output/ — verificar implementação"
+        # Encontrar o arquivo de output gerado
+        output_file = _find_output(project_root, source_path)
+        if output_file is None:
+            return False, "reinsert.py rodou mas não gerou output/ — verificar implementação"
 
-            output_hash = _sha256(output_file)
-            if source_hash == output_hash:
-                return True, f"SHA256 idêntico ({source_hash[:12]}…)"
-            else:
-                return False, (
-                    f"SHA256 diverge: fonte={source_hash[:12]}… saída={output_hash[:12]}… "
-                    f"— strings codificadas com bytes diferentes do original"
-                )
+        output_hash = _sha256(output_file)
+        if source_hash == output_hash:
+            return True, f"SHA256 idêntico ({source_hash[:12]}…)"
+        else:
+            return False, (
+                f"SHA256 diverge: fonte={source_hash[:12]}… saída={output_hash[:12]}… "
+                f"— strings codificadas com bytes diferentes do original"
+            )
     finally:
         if backup and backup.is_file():
             shutil.copy2(backup, approved)

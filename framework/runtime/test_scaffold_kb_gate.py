@@ -92,3 +92,62 @@ def test_scaffold_plus_real_connector_scripts_passes_gate(tmp_path):
         json.dumps({"scenes": {"s1": {"status": "verified", "verified": True}}}), encoding="utf-8")
     r = connector_gate.check(tmp_path)
     assert r == {"hard_problems": [], "problems": [], "warnings": []}
+
+
+def test_scaffold_rerun_skips_existing_files(tmp_path, capsys):
+    """2a chamada em cima do mesmo diretorio deve SKIP os 4 arquivos (ja existem), nao sobrescrever."""
+    scaffold_project.scaffold(tmp_path, title="T")
+    scaffold_project.scaffold(tmp_path, title="T")
+    out = capsys.readouterr().out
+    assert out.count("SKIP") == 4
+
+
+def test_scaffold_reports_ok_when_both_gates_already_pass(tmp_path):
+    """Reproduz o projeto pronto (KB + conector completos) ANTES de rodar scaffold() de novo --
+    os relatorios de status devem imprimir OK em vez de listar pendencias."""
+    scaffold_project.scaffold(tmp_path, title="T")
+    _write_project_json(tmp_path, "T")
+    art = paths.artifacts(tmp_path)
+    (art / "universe_knowledge_base.md").write_text(
+        "## PersonagemA\n\n**Definicao:**\nlore real, com fonte.\n\n**Fontes:**\n- SRC-001\n",
+        encoding="utf-8")
+    (art / "research_log.md").write_text(
+        "# Research Log — T\n\n**Status:** reconciled\n\n## Fontes Avaliadas\n"
+        "| ID | Fonte | Tier |\n|----|-------|------|\n| SRC-001 | Wiki | 2 |\n",
+        encoding="utf-8")
+    import csv
+    with (art / "glossary.csv").open("a", encoding="utf-8", newline="") as fh:
+        csv.writer(fh).writerow(
+            ["Dragon", "creature", "Dragao", "verbatim", "none", "", "", "2026-01-01"])
+    state_index.build(tmp_path, sync_db=False)
+
+    conn = tmp_path / "connector"
+    conn.mkdir()
+    (conn / "build_plan_chapter.py").write_text("# real", encoding="utf-8")
+    (conn / "verify_chapter.py").write_text("# real", encoding="utf-8")
+    (conn / "test_roundtrip.py").write_text("# real", encoding="utf-8")
+    paths.run_state(tmp_path).parent.mkdir(parents=True, exist_ok=True)
+    paths.run_state(tmp_path).write_text(
+        json.dumps({"scenes": {"s1": {"status": "verified", "verified": True}}}), encoding="utf-8")
+
+    scaffold_project._report_connector_gate_status(tmp_path)
+    scaffold_project._report_kb_gate_status(tmp_path)
+
+
+def test_report_connector_gate_status_handles_exception(tmp_path, monkeypatch):
+    """Se connector_gate.check() explodir (projeto ainda incompleto demais p/ nem checar), o
+    scaffold NAO deve propagar -- so avisa e segue."""
+    import connector_gate as cg
+    monkeypatch.setattr(cg, "check", lambda root: (_ for _ in ()).throw(RuntimeError("boom")))
+    scaffold_project._report_connector_gate_status(tmp_path)  # nao deve levantar
+
+
+def test_report_kb_gate_status_handles_exception(tmp_path, monkeypatch):
+    _write_project_json(tmp_path, "T")
+    monkeypatch.setattr(kb_gate, "check", lambda root, scene: (_ for _ in ()).throw(RuntimeError("boom")))
+    scaffold_project._report_kb_gate_status(tmp_path)  # nao deve levantar
+
+
+def test_report_kb_gate_status_without_project_json(tmp_path, capsys):
+    scaffold_project._report_kb_gate_status(tmp_path)
+    assert "project.json ainda nao existe" in capsys.readouterr().out

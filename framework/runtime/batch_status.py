@@ -19,7 +19,7 @@ Uso:
 from __future__ import annotations
 
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -37,7 +37,7 @@ _WARNING = (
 
 
 def _age(created_at) -> str:
-    delta = datetime.now(timezone.utc) - created_at
+    delta = datetime.now(UTC) - created_at
     h, rem = divmod(int(delta.total_seconds()), 3600)
     m = rem // 60
     return f"{h}h{m:02d}m"

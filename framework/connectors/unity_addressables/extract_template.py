@@ -80,11 +80,11 @@ def _resolve_data_dir(project_json: Path, cli_override: str | None) -> Path:
 def extract(project_root: Path, data_dir: Path) -> int:
     try:
         import UnityPy
-    except ImportError:
+    except ImportError as exc:
         raise ImportError(
             "UnityPy não instalado. Execute: pip install UnityPy\n"
             "Documentação: https://github.com/K0lb3/UnityPy"
-        )
+        ) from exc
 
     if not _DIALOGUE_TABLES:
         raise RuntimeError(
