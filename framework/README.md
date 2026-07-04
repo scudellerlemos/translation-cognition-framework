@@ -179,13 +179,14 @@ flowchart LR
     qc["secrets — gitleaks (diff + histórico)"]
     qd["deps — pip-audit (CVEs em requirements-dev)"]
   end
-  subgraph tests["test.yml — verificação funcional (6 jobs)"]
+  subgraph tests["test.yml — verificação funcional (7 jobs)"]
     direction TB
     te["env-guard — .env nunca rastreado no git"]
     tm["mypy — type-check do núcleo já tipado"]
     tcov["coverage — runtime+db+skills+validation ≥90% (matrix 3.11 · 3.12)"]
     tb["connector-bof4 — contrato round-trip BoF4"]
     tu["connector-uta — contrato round-trip Utawarerumono"]
+    tsoul["connector-souldiers — contrato round-trip Souldiers"]
     tsk["connector-skeleton — contrato do template"]
   end
   subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
@@ -195,16 +196,18 @@ flowchart LR
   classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
   class quality,ql,qs,qc,qd qual;
-  class tests,te,tm,tcov,tb,tu,tsk test;
+  class tests,te,tm,tcov,tb,tu,tsoul,tsk test;
   class smoke,sm smoke;
 ```
 
-> **Por que 6 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
-> (guard → mypy → coverage → 3 conectores); qualquer falha cedo mascarava o resto e o tempo era a
+> **Por que 7 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
+> (guard → mypy → coverage → conectores); qualquer falha cedo mascarava o resto e o tempo era a
 > soma. Divididos em jobs independentes, cada check falha isolado e o wall-clock cai para o do
 > maior job. Os conectores ficam em jobs separados porque `test_roundtrip.py` tem basename repetido
-> entre bof4/uta e colidiria numa coleta única do pytest. Números atuais: **316 passed / 21 skipped**
-> (os 21 skipped dependem do binário do jogo, que é gitignored) · cobertura do core **90.17%**.
+> entre os projetos e colidiria numa coleta única do pytest. Números atuais: **432 passed / 10
+> skipped** no total dos 4 jobs de conector+coverage (coverage 406 passed; Utawarerumono 16 passed;
+> BoF4 9 passed/1 skipped; Souldiers 0 passed/6 skipped — os skips dependem do binário/bundle do
+> jogo, gitignored) · cobertura do core **90.07%**.
 > Sem branch protection no `main` (repo solo dev): check vermelho é aviso, não bloqueio de merge.
 
 ---

@@ -37,7 +37,7 @@ Passo a passo, em português:
 3. **Checa os tipos (mypy)** — pega erros de "encaixe" (ex.: passar texto onde se
    esperava número) antes mesmo de rodar o programa.
 4. **Roda os testes do motor (runtime) com cobertura** — além de passar, exige que pelo
-   menos **60%** do código seja exercitado pelos testes (a "cobertura"). Abaixo disso,
+   menos **90%** do código seja exercitado pelos testes (a "cobertura"). Abaixo disso,
    barra.
 5. **Roda os testes de validação** — as regras de qualidade do harness.
 6. **Roda os testes de contrato dos conectores** (um por jogo) — confere o
