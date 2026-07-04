@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
-        run: mypy framework/runtime/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
+        run: mypy framework/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
   # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o

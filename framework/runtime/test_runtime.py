@@ -1060,6 +1060,30 @@ def test_run_chapter_batch_no_back_skips_back_batch(monkeypatch, tmp_path):
     assert r["status"] == "complete"
 
 
+def test_run_chapter_batch_require_back_overrides_no_back(monkeypatch, tmp_path):
+    # --require-back tem precedencia sobre --no-back tambem no pos-passe de batch (mesma
+    # precedencia de run_scene._back_phase) -- rodando os dois juntos, o pos-passe RODA.
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    verified_scenes = set()
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: verified_scenes.add(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: s in verified_scenes)
+    called = {}
+    monkeypatch.setattr(run_chapter.M, "batch_back_translate",
+                        lambda r, scenes: called.setdefault("ran", scenes) and {})
+
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=True,
+                                no_back=True, require_back=True)
+    assert r["status"] == "complete"
+    assert "ran" in called, "batch_back_translate deveria rodar (--require-back vence --no-back)"
+
+
 def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
     # TETO DE GASTO: aborta ANTES da proxima cena quando o custo do capitulo passa de --max-usd.
     root = _fake_chapter(tmp_path, ("99_01", "99_02", "99_03"))
@@ -2009,6 +2033,26 @@ def test_back_phase_no_back_skips_translation(tmp_path, monkeypatch):
     assert bt["reviewed"] == 0 and bt["path"] is None
     state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
     assert state["scenes"]["ch_50_01"]["back_skipped"] is True
+
+
+def test_back_phase_require_back_overrides_no_back(tmp_path, monkeypatch):
+    # --require-back tem precedencia sobre --no-back: o gate obrigatorio nao pode ser
+    # silenciosamente ignorado quando as duas flags sao passadas juntas.
+    (tmp_path / "artifacts").mkdir()
+    called = {}
+
+    def _fake_back_translate(root, scene, highs, backend):
+        called["ran"] = True
+        return {"status": run_scene.M.DONE, "reviewed": len(highs), "path": None}
+    monkeypatch.setattr(run_scene.M, "back_translate", _fake_back_translate)
+
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+                                      "api", require_back=True, defer_back=False, no_back=True)
+    assert early is None
+    assert called.get("ran") is True
+    assert bt["reviewed"] == 1
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert "back_skipped" not in state["scenes"]["ch_50_01"]
 
 
 def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):

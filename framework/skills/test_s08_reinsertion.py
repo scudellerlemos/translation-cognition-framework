@@ -8,6 +8,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import s08_reinsertion as s08  # noqa: E402
 from s08_reinsertion import ReinsertionSkill  # noqa: E402
 
 
@@ -38,3 +39,41 @@ def test_check_inputs_accepts_valid_script(tmp_path):
     _write_project(tmp_path, "connector/reinsert.py")
     skill = ReinsertionSkill()
     assert skill.check_inputs(tmp_path) == []
+
+
+def test_check_inputs_rejects_missing_project_json(tmp_path):
+    skill = ReinsertionSkill()
+    problems = skill.check_inputs(tmp_path)
+    assert problems == ["project.json não encontrado"]
+
+
+def test_check_inputs_rejects_missing_reinsert_script_file(tmp_path):
+    _write_project(tmp_path, "connector/reinsert.py")  # declarado mas nunca criado
+    skill = ReinsertionSkill()
+    problems = skill.check_inputs(tmp_path)
+    assert any("não encontrado" in p for p in problems)
+
+
+def test_run_timeout(tmp_path, monkeypatch):
+    _write_project(tmp_path, "connector/reinsert.py")
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("pass", encoding="utf-8")
+
+    def _boom(*a, **k):
+        import subprocess
+        raise subprocess.TimeoutExpired(cmd="x", timeout=600)
+    monkeypatch.setattr(s08.subprocess, "run", _boom)
+    result = ReinsertionSkill().run(tmp_path)
+    assert result["status"] == "error" and "timeout" in result["error"].lower()
+
+
+def test_run_reports_generic_spawn_failure(tmp_path, monkeypatch):
+    _write_project(tmp_path, "connector/reinsert.py")
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("pass", encoding="utf-8")
+
+    def _boom(*a, **k):
+        raise OSError("spawn falhou")
+    monkeypatch.setattr(s08.subprocess, "run", _boom)
+    result = ReinsertionSkill().run(tmp_path)
+    assert result["status"] == "error" and "spawn falhou" in result["error"]

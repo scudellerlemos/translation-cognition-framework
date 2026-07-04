@@ -288,12 +288,15 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
     if batch and backend == "api":
         _rebuild_index_phase(root)
-        if no_back:
+        if no_back and not require_back:
             print("[back-batch] pulado (--no-back).")
         elif max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
                   f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
         else:
+            if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
+                print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
+                      "— back-translation em lote vai rodar.")
             _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK {chap}: {done}/{len(scenes)} cena(s) prontas."

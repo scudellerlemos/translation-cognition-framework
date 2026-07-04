@@ -8,6 +8,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import s00_extraction as s00  # noqa: E402
 from s00_extraction import ExtractionSkill  # noqa: E402
 
 
@@ -38,3 +39,41 @@ def test_check_inputs_accepts_valid_script(tmp_path):
     _write_project(tmp_path, "connector/extract.py")
     skill = ExtractionSkill()
     assert skill.check_inputs(tmp_path) == []
+
+
+def test_run_survives_non_utf8_stdout(tmp_path):
+    # Conector que emite um byte nao-utf-8 no stdout (acento cp1252, dump binario etc.) nao pode
+    # derrubar a skill com UnicodeDecodeError/TypeError -- so retornar status=error estruturado.
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "extract.py").write_text(
+        "import sys\nsys.stdout.buffer.write(b'\\xe9\\n')\n", encoding="utf-8")
+    _write_project(tmp_path, "connector/extract.py")
+    skill = ExtractionSkill()
+    result = skill.run(tmp_path)  # nao deve levantar excecao
+    assert result["status"] == "error"
+    assert "dialogs.csv" in result["error"]
+
+
+def test_check_inputs_rejects_missing_project_json(tmp_path):
+    skill = ExtractionSkill()
+    problems = skill.check_inputs(tmp_path)
+    assert problems == ["project.json não encontrado"]
+
+
+def test_check_inputs_rejects_missing_extract_script_file(tmp_path):
+    _write_project(tmp_path, "connector/extract.py")  # declarado mas nunca criado
+    skill = ExtractionSkill()
+    problems = skill.check_inputs(tmp_path)
+    assert any("não encontrado" in p for p in problems)
+
+
+def test_run_reports_generic_spawn_failure(tmp_path, monkeypatch):
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "extract.py").write_text("pass", encoding="utf-8")
+    _write_project(tmp_path, "connector/extract.py")
+
+    def _boom(*a, **k):
+        raise OSError("spawn falhou")
+    monkeypatch.setattr(s00.subprocess, "run", _boom)
+    result = ExtractionSkill().run(tmp_path)
+    assert result["status"] == "error" and "spawn falhou" in result["error"]
