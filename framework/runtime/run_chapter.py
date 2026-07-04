@@ -31,6 +31,7 @@ import cost_report  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import quality_gate  # noqa: E402  (piso de qualidade obrigatorio: verdicts de back-translation)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
 import run_scene as RS  # noqa: E402
 import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao fim do cap.)
@@ -188,7 +189,7 @@ def _chapter_cost(root, chap) -> float:
 
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
                 skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None,
-                skip_connector_gate=False):
+                skip_connector_gate=False, no_back=False):
     root = Path(root)
     # GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
     # depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
@@ -276,7 +277,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
                          do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
                          defer_back=defer_back, rebuild_index=rebuild_index,
-                         skip_connector_gate=skip_connector_gate)
+                         skip_connector_gate=skip_connector_gate, no_back=no_back)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
@@ -287,7 +288,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
     if batch and backend == "api":
         _rebuild_index_phase(root)
-        if max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
+        if no_back:
+            print("[back-batch] pulado (--no-back).")
+        elif max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
                   f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
         else:
@@ -299,6 +302,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     _print_cost(root, cost_chap)
     _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
     _audit_spoiler(root)          # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
+    _audit_quality(root, cost_chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
@@ -345,6 +349,25 @@ def _audit_spoiler(root: Path):
         print("[spoiler-audit] OK: nenhum vazamento nem marcador de genero suspeito.")
 
 
+def _audit_quality(root: Path, chap: str | None):
+    """OBRIGATORIO: torna o veredito da back-translation OBSERVAVEL (mesma logica ja aplicada ao
+    spoiler_check) -- sem isso, uma linha high/critical marcada 'revise' pelo modelo passava
+    silenciosa. Report-only (nunca bloqueia o capitulo); chap=None varre o projeto inteiro."""
+    try:
+        r = quality_gate.check(root, chap)
+    except Exception as e:
+        print(f"[quality-gate obrigatorio] AVISO: falha ao auditar ({e}).")
+        return
+    if r["revise"]:
+        print(f"[quality-gate] ALERTA: {len(r['revise'])} linha(s) high/critical com verdict "
+              f"'revise' (o modelo apontou divergencia) -- rode quality_gate.py p/ detalhe.")
+    if r["uncovered"]:
+        print(f"[quality-gate] {len(r['uncovered'])} linha(s) high/critical sem cobertura de "
+              f"back-translation -- rode quality_gate.py p/ detalhe.")
+    if not r["revise"] and not r["uncovered"]:
+        print("[quality-gate] OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura.")
+
+
 def _print_cost(root: Path, chap: str | None = None):
     """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
     cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou).
@@ -376,11 +399,13 @@ def main():
     ap.add_argument("--scenes-glob", default=None,
                     help="glob(s) customizados para projetos com estrutura flat (ex: 'AREAD*,AREAS*'). "
                          "Substitui o padrao ch_<chapter>_*. <chapter> vira so um rotulo de display.")
+    ap.add_argument("--no-back", action="store_true",
+                    help="pula a back-translation (Opus) inteiramente (economia de custo)")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
                     redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch,
                     max_usd=a.max_usd, scenes_glob=a.scenes_glob,
-                    skip_connector_gate=a.skip_connector_gate)
+                    skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

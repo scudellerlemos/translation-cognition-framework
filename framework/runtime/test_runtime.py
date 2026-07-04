@@ -447,6 +447,24 @@ def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     assert calls == ["ch_99_02", "ch_99_03"], "ch_99_01 ja verified deve ser pulado; resto em ordem"
 
 
+def test_run_chapter_calls_quality_gate(monkeypatch, tmp_path):
+    # #80: quality_gate.check() se autodeclara bloqueante/observavel no docstring mas nao tinha
+    # nenhum caller real — run_chapter deve chama-lo ao fim do capitulo, mesmo padrao ja aplicado
+    # a spoiler_check.audit_and_persist (_audit_spoiler).
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: {"status": "verified", "scene": scene, "verified": True})
+    calls = []
+    monkeypatch.setattr(run_chapter.quality_gate, "check",
+                        lambda r, chap: calls.append(chap) or
+                        {"revise": [{"scene": "ch_99_01"}], "uncovered": [], "coverage": {}})
+    r = run_chapter.run_chapter(root, "99", backend="api")
+    assert r["status"] == "complete"
+    assert calls == ["99"], "quality_gate.check deve rodar 1x ao fim do capitulo, com o filtro do capitulo"
+
+
 def test_run_survives_non_utf8_subprocess_output():
     # REGRESSAO: um filho que emite byte nao-utf-8 (acento cp1252 no console Windows) NAO pode quebrar
     # a thread leitora do subprocess — era isso que derrubava o run_chapter no meio da run e deixava o
@@ -1020,6 +1038,25 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
                         {"status": "verified", "scene": scene, "verified": True})
     run_chapter.run_chapter(root, "99", backend="api", batch=True)
     assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
+
+
+def test_run_chapter_batch_no_back_skips_back_batch(monkeypatch, tmp_path):
+    # #75: --no-back tambem deve pular o pos-passe de back-translation em lote (modo batch).
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: {"status": "verified", "scene": scene, "verified": True})
+
+    def _boom(*a, **k):
+        raise AssertionError("batch_back_translate nao deveria rodar com no_back=True")
+    monkeypatch.setattr(run_chapter.M, "batch_back_translate", _boom)
+
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=True, no_back=True)
+    assert r["status"] == "complete"
 
 
 def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
@@ -1955,6 +1992,22 @@ def test_run_scene_options_defaults():
     assert opts.skip_kb_gate is False
     assert opts.pretranslated is False
     assert opts.defer_back is False
+
+
+def test_back_phase_no_back_skips_translation(tmp_path, monkeypatch):
+    # #75: --no-back deve pular a back-translation inteiramente, sem chamar M.back_translate.
+    (tmp_path / "artifacts").mkdir()
+
+    def _boom(*a, **k):
+        raise AssertionError("M.back_translate nao deveria ser chamado com no_back=True")
+    monkeypatch.setattr(run_scene.M, "back_translate", _boom)
+
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+                                      "api", require_back=False, defer_back=False, no_back=True)
+    assert early is None
+    assert bt["reviewed"] == 0 and bt["path"] is None
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["back_skipped"] is True
 
 
 def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
