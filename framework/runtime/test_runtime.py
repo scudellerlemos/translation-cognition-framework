@@ -1691,6 +1691,30 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
     assert called["offsets"] == ["0x2"] and "encurtar" in called["note"]   # só a nota foi p/ IA
 
 
+def test_quality_review_apply_records_reviewer_identity(tmp_path, monkeypatch):
+    # #82: qa_effectiveness.jsonl deve registrar QUEM aprovou a revisao (None se nao informado).
+    import paths
+    d = paths.scene_dir(tmp_path, "ch_72_01")
+    d.mkdir(parents=True)
+    paths.translations(tmp_path, "ch_72_01", "72_01").write_text(
+        json.dumps({"lines": {"0x1": {"t": "ruim"}}}), encoding="utf-8")
+    paths.translation_plan(tmp_path, "ch_72_01", "72_01").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "text_source": "A", "base_translation": "ruim"}]}),
+        encoding="utf-8")
+    csvp = tmp_path / "ret.csv"
+    csvp.write_text(
+        "scene,offset,speaker,risk,revisar,source_en,target_pt,marcar,correcao,nota\n"
+        "ch_72_01,0x1,X,high,risco:high,A,ruim,CORRIGIR,Corrigido,\n", encoding="utf-8")
+
+    quality_review.apply(tmp_path, csvp, reviewer="felipe")
+    recs = [json.loads(ln) for ln in paths.qa_effectiveness(tmp_path).read_text(encoding="utf-8").splitlines()]
+    assert recs[-1]["reviewer"] == "felipe"
+
+    quality_review.apply(tmp_path, csvp)      # sem --reviewer -> None, nao bloqueia
+    recs = [json.loads(ln) for ln in paths.qa_effectiveness(tmp_path).read_text(encoding="utf-8").splitlines()]
+    assert recs[-1]["reviewer"] is None
+
+
 def test_quality_review_apply_syncs_series_tm(tmp_path, monkeypatch):
     # apply() alimenta a TM da SERIE de volta com as cenas TOCADAS (verified) nesta rodada.
     import tm_lookup
