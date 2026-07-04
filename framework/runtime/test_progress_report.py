@@ -1,4 +1,4 @@
-"""test_progress_report.py — cobre a observabilidade de progresso do jogo inteiro (P2.5).
+"""test_progress_report.py — cobre a observabilidade de progresso do jogo inteiro.
 
 Puro/determinista: elapsed_s e passado explicitamente (nunca time.time() interno), entao os
 testes nao precisam de monkeypatch de tempo.

@@ -2,13 +2,13 @@
 """
 kb_fetch.py — busca e normaliza fontes de KB research p/ texto plano, SEM LLM e sem chave de API.
 
-Parte 1 do pipeline hibrido de KB (P1.7-E): o humano passa qualquer fonte (URL de wiki/site, PDF,
+Parte 1 do pipeline hibrido de KB (onboarding de baixo custo): o humano passa qualquer fonte (URL de wiki/site, PDF,
 .docx, .xlsx, arquivo local .txt/.md) e este script normaliza tudo pra texto simples, cacheado em
 artifacts/research_cache/<hash>.md. O kb_build_ollama.py le esse cache sem saber se a origem era
 web ou arquivo local — a normalizacao acontece so aqui, uma vez.
 
 Zero raciocinio, zero chamada de modelo: so download/leitura + extracao deterministica. O ganho de
-tokens do P1.7-E vem de tirar essa leitura/extracao bruta da sessao Claude (ver skill 03, Fase 1A).
+tokens do onboarding de baixo custo vem de tirar essa leitura/extracao bruta da sessao Claude (ver skill 03, Fase 1A).
 
 Deps: URL usa so stdlib (urllib + html.parser — mesmo padrao do ollama_client.py, sem lib nova).
 PDF/.docx exigem pdfplumber/python-docx (requirements-kb.txt, OPCIONAL); import preguicoso com

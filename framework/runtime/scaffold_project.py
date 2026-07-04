@@ -160,7 +160,7 @@ def scaffold(project_root: Path, title: str = "") -> None:
 
 
 def _report_connector_gate_status(project_root: Path) -> None:
-    """D6c: mesmo principio do _report_kb_gate_status abaixo, agora pro conector (gap real do
+    """Mesmo principio do _report_kb_gate_status abaixo, agora pro conector (gap real do
     Souldiers: project.json declarava 'Fase 0 concluida' so com extract.py/reinsert.py -- os
     scripts de build_plan/verify nunca existiram, round-trip nunca validado de verdade). NAO cria
     stub fake dos scripts (enganaria o gate); so reporta o que falta, visivel no dia 1."""

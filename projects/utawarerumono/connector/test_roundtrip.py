@@ -66,7 +66,7 @@ def test_roundtrip_identity(original):
     buf, repoints, report = R.build_output(original, budgets, approved={})
     assert bytes(buf) == original, "round-trip de identidade NÃO é byte-idêntico"
     assert repoints == [], "identidade não deveria gerar repoint"
-    residuo = [r for r in report if r[1] == "T4_residuo"]
+    residuo = [r for r in report if r[1] == "residuo"]
     assert residuo == [], f"identidade não deveria gerar resíduo: {residuo}"
 
 
@@ -78,12 +78,12 @@ def test_source_untouched(applied):
 
 @requires_bin
 def test_no_residue(original):
-    """Com o modelo file-relativo, tudo é repointável: resíduo T4 = 0 (sem ajuste in_place forçado)."""
+    """Com o modelo file-relativo, tudo é repointável: resíduo = 0 (sem ajuste in_place forçado)."""
     _buf, _repoints, report = R.build_output(original, R.load_budgets(), {
         r["offset"]: r["text_target"]
         for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))})
-    residue = [r[0] for r in report if r[1] == "T4_residuo"]
-    assert not residue, f"resíduo T4 deveria ser 0: {residue[:8]}"
+    residue = [r[0] for r in report if r[1] == "residuo"]
+    assert not residue, f"resíduo deveria ser 0: {residue[:8]}"
 
 
 @requires_bin
@@ -291,12 +291,12 @@ def test_transliterate_keeps_color_tokens():
     assert "ç" not in out and "ã" not in out               # acento dobrado; token intacto
 
 
-# --------------------------------------------------------------------------- T4 (resíduo em lote)
-def test_collect_t4_residue_synthetic():
-    """A coleta do lote T4 extrai só as linhas tier T4_residuo, com over_by/budget corretos."""
-    report = [("0x1", "T1_in_place", 5, 5, "oi"),
-              ("0x2", "T4_residuo", 30, 20, "alvo muito longo")]
-    res = R.collect_t4_residue(report, {"0x2": "long source line"})
+# --------------------------------------------------------------------------- resíduo em lote
+def test_collect_residue_synthetic():
+    """A coleta do lote de resíduo extrai só as linhas tier residuo, com over_by/budget corretos."""
+    report = [("0x1", "in_place", 5, 5, "oi"),
+              ("0x2", "residuo", 30, 20, "alvo muito longo")]
+    res = R.collect_residue(report, {"0x2": "long source line"})
     assert len(res) == 1
     r = res[0]
     assert r["offset"] == "0x2" and r["byte_budget"] == 20 and r["over_by"] == 10
@@ -304,13 +304,13 @@ def test_collect_t4_residue_synthetic():
 
 
 @requires_bin
-def test_t4_residue_empty_on_corpus(original):
-    """Com o Plano B (relocação intra-arquivo) o resíduo irredutível é 0 → lote T4 vazio."""
+def test_residue_empty_on_corpus(original):
+    """Com o Plano B (relocação intra-arquivo) o resíduo irredutível é 0 → lote vazio."""
     approved = {r["offset"]: r["text_target"]
                 for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
     _buf, _rep, report = R.build_output(original, R.load_budgets(), approved)
-    res = R.collect_t4_residue(report, {o: s for o, s, _ in R.load_budgets()})
-    assert res == [], f"resíduo T4 deveria ser 0 com Plano B: {res[:3]}"
+    res = R.collect_residue(report, {o: s for o, s, _ in R.load_budgets()})
+    assert res == [], f"resíduo deveria ser 0 com Plano B: {res[:3]}"
 
 
 # --------------------------------------------------------------------------- governança
