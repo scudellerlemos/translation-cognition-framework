@@ -1,11 +1,12 @@
-# Tests — verificação funcional do harness em cada push/PR (6 jobs paralelos, sem
+# Tests — verificação funcional do harness em cada push/PR (7 jobs paralelos, sem
 # dependência entre si — cada um roda em runner própria e falha aparece nomeada no PR).
-#   env-guard        : .env nunca rastreado pelo git
-#   mypy              : type-check do núcleo já tipado
-#   coverage          : testes de runtime/validation/db/skills com piso de 90% (matrix 3.11/3.12)
-#   connector-bof4    : contrato round-trip do conector BoF4
-#   connector-uta     : contrato round-trip do conector Utawarerumono
-#   connector-skeleton: contrato do template de conector
+#   env-guard          : .env nunca rastreado pelo git
+#   mypy                : type-check do núcleo já tipado
+#   coverage            : testes de runtime/validation/db/skills com piso de 90% (matrix 3.11/3.12)
+#   connector-bof4      : contrato round-trip do conector BoF4
+#   connector-uta       : contrato round-trip do conector Utawarerumono
+#   connector-souldiers : contrato round-trip do conector Souldiers
+#   connector-skeleton  : contrato do template de conector
 name: Tests
 
 on:
@@ -97,6 +98,19 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Connector contract — Utawarerumono
         run: python -m pytest projects/utawarerumono/connector/ -v --tb=short
+
+  connector-souldiers:
+    name: Connector contract — Souldiers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Connector contract — Souldiers
+        run: python -m pytest projects/souldiers/connector/ -v --tb=short
 
   connector-skeleton:
     name: Connector skeleton contract
