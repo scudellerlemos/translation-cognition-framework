@@ -673,11 +673,12 @@ def tester_to_review(root, relato_path):
     return rows, ambiguous, missing
 
 
-def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
+def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> dict:
     """Processa EXATAMENTE o devolvido: verbatim (0 IA) + nota (IA cirurgica por linha). `max_usd` so
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
     scenes_touched[], stopped_budget, total_marked, effectiveness_rate}.
-    Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo."""
+    Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo.
+    `reviewer`: identidade de quem aprovou esta revisao (#82) -- None se nao informado (nao bloqueia)."""
     import time as _time
     root = Path(root)
     returned = read_returned(csv_path)
@@ -704,6 +705,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
     applied = verbatim_n + ai_n
     eff = round(applied / total_marked, 3) if total_marked else None
     rec = {"t": round(_time.time(), 3), "source": str(Path(csv_path).name),
+           "reviewer": reviewer,
            "total_marked": total_marked, "applied": applied,
            "verbatim": verbatim_n, "ai": ai_n,
            "effectiveness_rate": eff, "cost_usd": round(cost, 4)}
@@ -743,6 +745,8 @@ def main():
                     help="arquivo OU pasta devolvida; OMITA p/ ler do inbox (artifacts/qa_revisao/devolvido/)")
     pa.add_argument("--model", default=None)
     pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
+    pa.add_argument("--reviewer", default=None,
+                    help="identidade de quem aprovou a revisao (#82) -- gravado em qa_effectiveness.jsonl")
     pw = sub.add_parser("width", help="GATE deterministico 'fora do balao': lista SO as linhas que estouram "
                                       "a largura visual (exit 1 se houver); loop ate zerar")
     pw.add_argument("project")
@@ -832,7 +836,7 @@ def main():
     tot = {"verbatim": 0, "ai": 0, "cost": 0.0, "scenes": set(), "stopped": False}
     for f in files:
         print(f"[apply] processando revisao devolvida: {f}")
-        r = apply(a.project, f, model_name=a.model, max_usd=a.max_usd)
+        r = apply(a.project, f, model_name=a.model, max_usd=a.max_usd, reviewer=a.reviewer)
         tot["verbatim"] += r["verbatim"]; tot["ai"] += r["ai"]; tot["cost"] += r["cost_usd"]
         tot["scenes"].update(r["scenes_touched"]); tot["stopped"] = tot["stopped"] or r.get("stopped_budget")
     print(f"[apply] TOTAL: verbatim={tot['verbatim']} (0 IA) | nota+IA={tot['ai']} (~${tot['cost']:.4f}) "

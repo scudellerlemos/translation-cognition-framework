@@ -18,12 +18,16 @@ Ajuste SCENES (prefixos de nome de script) para extrair mais cenas/arcos.
 Caminho do binário (NUNCA hardcoded): o usuário fornece o arquivo a traduzir.
 Resolução: (1) argumento de linha de comando; senão (2) connector.source_binary do project.json.
 """
-import csv
-import json
 import sys
 from pathlib import Path
 
 import sdat_format as S
+
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 
 # --- config do arco a extrair ---
 # Prefixos de nome de script (CC_SS_NNNT.BIN). 11_01 + 11_02 = 2 primeiras cenas do 1º arco.
@@ -36,18 +40,13 @@ OUT = ROOT / "artifacts" / "dialogs.csv"
 def resolve_source() -> Path:
     """Caminho do binário a traduzir: CLI > connector.source_binary do project.json.
     Sem hardcode. O usuário deve fornecer o arquivo."""
-    if len(sys.argv) > 1:
-        p = Path(sys.argv[1])
-    else:
-        cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
-        sb = cfg.get("connector", {}).get("source_binary", "")
-        if not sb:
-            sys.exit("ERRO: forneça o binário a traduzir via argumento "
-                     "(`python extract.py <caminho>`) ou preencha "
-                     "`connector.source_binary` no project.json.")
-        p = Path(sb)
-        if not p.is_absolute():
-            p = ROOT / p                                # relativo à raiz do projeto
+    p = connector_io.resolve_source_path(
+        cli_arg=sys.argv[1] if len(sys.argv) > 1 else None,
+        project_json=ROOT / "project.json", cfg_key="source_binary", relative_base=ROOT,
+        error_hint=("ERRO: forneça o binário a traduzir via argumento "
+                    "(`python extract.py <caminho>`) ou preencha "
+                    "`connector.source_binary` no project.json."),
+    )
     if not p.is_file():
         sys.exit(f"ERRO: binário não encontrado: {p}\n"
                  "Aponte `connector.source_binary` (no project.json) ou o argumento de CLI "
@@ -73,11 +72,7 @@ def main():
         for off, text, budget in block:
             rows.append({"offset": f"0x{off:x}", "text_source": text, "byte_budget": budget})
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=["offset", "text_source", "byte_budget"])
-        w.writeheader()
-        w.writerows(rows)
+    connector_io.write_dialogs_csv(OUT, ["offset", "text_source", "byte_budget"], rows)
 
     print(f"Container: {len(files)} scripts. Arco extraído: {[f.name for f in targets]}")
     for name, c in per_scene:
