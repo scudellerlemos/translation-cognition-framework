@@ -32,9 +32,9 @@ assim é **editável em hex no lugar** (HxD mostra e edita o texto direto). Ness
   do conector eliminam isso deterministicamente: **`byte_budget`** (anti-overflow),
   **`pointer_table` + `space_strategy: repoint`** (recalcula offsets quando o alvo cresce) e o
   **gate de round-trip** (troca "a maioria abre" por "abre 100% ou trava antes de traduzir").
-- **Reserva (fora do escopo atual):** se um pacote for **opaco** (comprimido / com checksum que
-  quebra ao sobrescrever bytes), aí é preciso um passo de **unpack → editar → repack
-  byte-idêntico** — o conector `archive_script` (🚧 em `00_index.md`), ainda não definido.
+- **Pacote opaco (comprimido / com checksum que quebra ao sobrescrever bytes):** aí é preciso um
+  passo de **unpack → editar → repack byte-idêntico** usando a lib/SDK da engine — ver
+  `archive_script.md` (conector de referência: Souldiers/Unity Addressables).
 
 ---
 

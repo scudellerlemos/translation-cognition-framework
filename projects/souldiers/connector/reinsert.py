@@ -17,10 +17,14 @@ from __future__ import annotations
 
 import csv
 import io
-import json
-import os
 import sys
 from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 
 _CSV_DELIMITER = "~"
 _ID_COL = "::ID::"
@@ -42,18 +46,35 @@ _PT_COL_BY_TABLE: dict[str, str] = {
 
 
 def _resolve_data_dir(project_json: Path, cli_override: str | None) -> Path:
-    if cli_override:
-        return Path(cli_override)
-    env = os.environ.get("SOULDIERS_DATA_DIR")
-    if env:
-        return Path(env)
-    cfg = json.loads(project_json.read_text(encoding="utf-8"))
-    d = cfg.get("connector", {}).get("data_dir")
-    if d:
-        return Path(d)
-    raise RuntimeError(
-        "Caminho do jogo não encontrado. Defina SOULDIERS_DATA_DIR ou passe como argumento."
+    """Resolve o diretório de dados do jogo: CLI > env var > project.json > falha."""
+    return connector_io.resolve_source_path(
+        cli_arg=cli_override, env_var="SOULDIERS_DATA_DIR",
+        project_json=project_json, cfg_key="data_dir", exc=RuntimeError,
+        error_hint="Caminho do jogo não encontrado. Defina SOULDIERS_DATA_DIR ou passe como argumento.",
     )
+
+
+def _rewrite_csv_text(text: str, pt_col: str, translations: dict[str, str]) -> tuple[str, int]:
+    """Aplica `translations` na coluna `pt_col` de um CSV ~-delimitado (lógica PURA, sem UnityPy/
+    bundle — isolada aqui pra ser testável sem o jogo instalado, ver test_rebuild_table_logic.py).
+    Retorna (novo texto CSV, nº de linhas alteradas)."""
+    reader = csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER)
+    fieldnames = reader.fieldnames or []
+    rows = list(reader)
+    changed = 0
+
+    for row in rows:
+        row_id = row.get(_ID_COL, "").strip().strip('"')
+        if row_id in translations:
+            row[pt_col] = translations[row_id]
+            changed += 1
+
+    out_buf = io.StringIO()
+    writer = csv.DictWriter(out_buf, fieldnames=fieldnames,
+                            delimiter=_CSV_DELIMITER, quoting=csv.QUOTE_ALL)
+    writer.writeheader()
+    writer.writerows(rows)
+    return out_buf.getvalue(), changed
 
 
 def rebuild_table(table_name: str, bundle_path: Path, translations: dict[str, str]) -> tuple[bytes, int]:
@@ -85,24 +106,8 @@ def rebuild_table(table_name: str, bundle_path: Path, translations: dict[str, st
         if was_bytes:                        # preservar o tipo original evita AttributeError no
             text = text.decode("utf-8", errors="replace")  # TypeTree writer do UnityPy ao salvar.
 
-        reader = csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER)
-        fieldnames = reader.fieldnames or []
-        rows = list(reader)
+        new_text, table_changed = _rewrite_csv_text(text, pt_col, translations)
 
-        for row in rows:
-            row_id = row.get(_ID_COL, "").strip().strip('"')
-            if row_id in translations:
-                row[pt_col] = translations[row_id]
-                table_changed += 1
-
-        # Reconstrói CSV com delimitador ~
-        out_buf = io.StringIO()
-        writer = csv.DictWriter(out_buf, fieldnames=fieldnames,
-                                delimiter=_CSV_DELIMITER, quoting=csv.QUOTE_ALL)
-        writer.writeheader()
-        writer.writerows(rows)
-
-        new_text = out_buf.getvalue()
         d.m_Script = new_text.encode("utf-8") if was_bytes else new_text
         d.save()
         break

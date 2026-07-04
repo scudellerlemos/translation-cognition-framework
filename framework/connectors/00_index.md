@@ -94,7 +94,7 @@ O **conector** é o *mecanismo de I/O em código* para aquela categoria:
 | Media-profile | Conector típico | Status |
 |---------------|-----------------|--------|
 | `games` (retrô) | `hex_binary` | ✅ definido (ver `hex_binary.md`) |
-| `games` (moderno) | `archive_script` | 🚧 ponto de extensão |
+| `games` (moderno, engine de terceiro) | `archive_script` | ✅ definido (ver `archive_script.md`); referência: Souldiers (Unity Addressables) |
 | `films` / `series` | `subtitle_file` (SRT/ASS) | 🚧 ponto de extensão |
 
 O `project.json → connector.type` declara qual conector a instância usa.
@@ -107,6 +107,8 @@ O `project.json → connector.type` declara qual conector a instância usa.
 connectors/
   00_index.md        ← este arquivo
   hex_binary.md      ← contrato do conector de jogos antigos (tabela, ponteiros, byte-space, cascata)
+  archive_script.md  ← contrato do conector p/ containers de engine de terceiro (Unity etc.); estratégia
+                        de fixture sintética por família de engine (template + patch-helper)
   _skeleton/
     extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)
     reinsert.py                ← esqueleto comentado do reinseridor (cascata de encaixe + patch)
