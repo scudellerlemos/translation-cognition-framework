@@ -17,7 +17,11 @@ import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
+_RUNTIME = _HERE.parent / "runtime"
 sys.path.insert(0, str(_HERE))
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+from connector_mgr import _connector_script  # noqa: E402  (sandbox contra path traversal)
 from skill_base import Skill  # noqa: E402
 
 
@@ -32,12 +36,19 @@ class ReinsertionSkill(Skill):
         problems = super().check_inputs(project)
         if problems:
             return problems
-        conn = self.project_cfg(project).get("connector", {})
-        script = conn.get("reinsert_script")
-        if not script:
+        cfg = self.project_cfg(project)
+        conn = cfg.get("connector", {})
+        script_cfg = conn.get("reinsert_script")
+        if not script_cfg:
             problems.append("project.json: connector.reinsert_script não declarado")
-        elif not (Path(project) / script).is_file():
-            problems.append(f"reinsert_script não encontrado: {script}")
+            return problems
+        try:
+            script = _connector_script(Path(project), cfg, "reinsert_script", "reinsert.py")
+        except ValueError as e:
+            problems.append(str(e))
+            return problems
+        if not script.is_file():
+            problems.append(f"reinsert_script não encontrado: {script_cfg}")
         return problems
 
     def run(self, project: Path, *, dat_dir: str | None = None, **kwargs) -> dict:
@@ -46,7 +57,11 @@ class ReinsertionSkill(Skill):
         if problems:
             return {"status": "error", "problems": problems, "artifacts": []}
 
-        script = project / self.project_cfg(project)["connector"]["reinsert_script"]
+        cfg = self.project_cfg(project)
+        try:
+            script = _connector_script(project, cfg, "reinsert_script", "reinsert.py")
+        except ValueError as e:
+            return {"status": "error", "error": str(e), "artifacts": []}
         env = {**os.environ, "BOF4_DAT_DIR": str(dat_dir)} if dat_dir else None
         try:
             result = subprocess.run(
