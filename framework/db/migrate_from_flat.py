@@ -27,13 +27,15 @@ import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
-_RUNTIME = _HERE.parent / "runtime"
-if str(_RUNTIME) not in sys.path:
-    sys.path.insert(0, str(_RUNTIME))
+_FRAMEWORK = _HERE.parent
+if str(_FRAMEWORK) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK))
 sys.path.insert(0, str(_HERE))
 
 from store import Store  # noqa: E402
-from text_ids import scene_id_of as _sid  # noqa: E402  (fonte única; chaveia scene_id consistente)
+from text_ids import (
+    scene_id_of as _sid,  # noqa: E402  (fonte única, framework/text_ids.py — leaf, sem dep de runtime)
+)
 
 
 def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:

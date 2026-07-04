@@ -36,6 +36,8 @@ if str(_HERE) not in sys.path:
 import state_index  # noqa: E402  (sibling no mesmo dir)
 
 FRAMEWORK = _HERE.parent
+if str(FRAMEWORK) not in sys.path:
+    sys.path.insert(0, str(FRAMEWORK))
 CARTA_PATH = FRAMEWORK / "skills" / "translation_governance.md"
 TOKEN = chr(92) + "n"
 
