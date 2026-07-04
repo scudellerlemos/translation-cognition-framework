@@ -13,7 +13,6 @@ Uso:
 """
 from __future__ import annotations
 
-import fnmatch
 import math
 import re
 import statistics
