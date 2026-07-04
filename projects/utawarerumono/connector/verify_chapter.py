@@ -7,7 +7,7 @@ GOVERNANCA: sem work-text. Le artifacts/<chapter_dir>/{dialogs.csv,approved_<sfx
 (read-only). NAO escreve no binario. Prova:
   1) round-trip: build_output(approved={}) reproduz o container byte-a-byte (0 repoints);
   2) aplicacao: cada offset aprovado, mapeado a sua nova posicao (relocado=repactado / in_place=mesmo
-     offset local), lido do buffer novo == approved transliterado; resíduo T4=0; ponteiros de cada
+     offset local), lido do buffer novo == approved transliterado; resíduo=0; ponteiros de cada
      arquivo tocado resolvem DENTRO do proprio arquivo.
 
 Uso: python verify_chapter.py <chapter_dir>     ex.: python verify_chapter.py ch_11_04
@@ -70,9 +70,9 @@ def main():
     tiers = {}
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
-    residuo = tiers.get("T4_residuo", 0)
+    residuo = tiers.get("residuo", 0)
     if residuo:
-        fails.append(f"resíduo T4 = {residuo} (esperado 0)")
+        fails.append(f"resíduo = {residuo} (esperado 0)")
 
     # offsets sinalizados needs_human_review no plano (rotulos verbatim, checagem in-game)
     plan_files = sorted(chdir.glob("translation_plan_*.json"))
@@ -156,7 +156,7 @@ def main():
     print(f"  round-trip identico: {bytes(rt_buf) == original and not rt_repoints}")
     print(f"  tiers={tiers} | repoints={len(repoints)}")
     print(f"  linhas conferidas (lido == approved translit): {checked}/{len(approved)}")
-    print(f"  resíduo T4: {residuo} | ponteiros fora-do-arquivo (novos): {out_of_file} "
+    print(f"  resíduo: {residuo} | ponteiros fora-do-arquivo (novos): {out_of_file} "
           f"[{oof_new} total, {oof_base} falsos-positivos pre-existentes] | crescimento total: +{grown}")
     if label_notes:
         print("  NOTAS (verificar in-game):")
@@ -173,7 +173,7 @@ def main():
     print("VERIFY_STATUS: " + json.dumps({
         "ok": not fails,
         "fitting_failure": fitting_only,
-        "residuo_t4": residuo,
+        "residuo": residuo,
         "out_of_file": out_of_file,
         "n_fails": len(fails),
     }, ensure_ascii=False))

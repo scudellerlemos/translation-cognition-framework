@@ -1,4 +1,4 @@
-"""test_connector_gate.py — cobre o gate de completude de conector (D6, espelha kb_gate.py).
+"""test_connector_gate.py — cobre o gate de completude de conector (espelha kb_gate.py).
 
 check(root) e independente de cena (completude de conector e propriedade do PROJETO). Cobre:
 scripts ausentes (hard), nenhum round-trip verde ainda (soft), test_roundtrip.py ausente (warning),

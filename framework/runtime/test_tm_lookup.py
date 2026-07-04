@@ -1,4 +1,4 @@
-"""test_tm_lookup.py — cobre a TM por serie (D4): fallback de serie, lookup exato, serie ausente,
+"""test_tm_lookup.py — cobre a TM por serie: fallback de serie, lookup exato, serie ausente,
 isolamento cross-serie. Usa monkeypatch de tm_lookup._REPO_ROOT pra nao escrever em tm/ de verdade.
 """
 import json

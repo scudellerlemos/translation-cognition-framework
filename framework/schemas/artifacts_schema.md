@@ -120,9 +120,9 @@ Resultado da reinserção. Seções obrigatórias:
 
 | Campo / Seção | Obrigatório | Conteúdo |
 |---------------|-------------|----------|
-| Strings gravadas | ✅ | Total + distribuição por tier (T1/T2/T3/T4) |
-| Resíduo T4 | ✅ | IDs que precisaram de reescrita LLM em lote |
-| Overflows não resolvidos | ✅ | IDs que falharam mesmo após T4 → viram issues p/ 06c/07 |
+| Strings gravadas | ✅ | Total + distribuição por tier de encaixe (nomes descritivos por conector, ex.: direct/repoint/trimmed/residue) |
+| Resíduo | ✅ | IDs que precisaram de reescrita LLM em lote |
+| Overflows não resolvidos | ✅ | IDs que falharam mesmo após a cascata → viram issues p/ 06c/07 |
 | Repoints | ✅ se `repoint` | Ponteiros recalculados |
 | Patch | ✅ | Formato emitido (ips/bps/xdelta) + caminho |
 

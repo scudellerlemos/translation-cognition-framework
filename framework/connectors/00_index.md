@@ -82,7 +82,7 @@ O patch-back parece caro, mas quase nada nele precisa de LLM:
 | Reescrever o resíduo que ainda estoura | 1 chamada LLM **em lote** | **mínimo** |
 
 LLM é caro, lento e pior que código para byte-math — fica fora do caminho mecânico. Ver `hex_binary.md`
-para a cascata T1–T4 e `../skills/08_reinsertion.md` para o protocolo.
+para a cascata de encaixe e `../skills/08_reinsertion.md` para o protocolo.
 
 ---
 
@@ -109,7 +109,7 @@ connectors/
   hex_binary.md      ← contrato do conector de jogos antigos (tabela, ponteiros, byte-space, cascata)
   _skeleton/
     extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)
-    reinsert.py                ← esqueleto comentado do reinseridor (cascata T1–T4 + patch)
+    reinsert.py                ← esqueleto comentado do reinseridor (cascata de encaixe + patch)
     table_schema.md            ← formato do schema de tabela (byte=char + control codes)
     test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
 ```

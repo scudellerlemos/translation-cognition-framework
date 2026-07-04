@@ -93,15 +93,19 @@ reinsert.py(approved_translations.csv, dialogs.csv, table_schema, source_binary)
 
 A reinserção precisa caber a tradução no espaço disponível. Resolver do mais barato ao mais caro:
 
-| Tier | Método | Custo LLM |
+| Tier (nome do esqueleto de referência) | Método | Custo LLM |
 |------|--------|-----------|
-| **T1** | **Escrita direta** — cabe no byte-space → grava | zero *(maioria)* |
-| **T2** | **Recuperação de espaço** — repointing (se permitido); reuso de espaço de strings que encolheram; tabela de abreviações seguras | zero |
-| **T3** | **Trim mecânico** — colapsar espaços duplos, reticência tipográfica (…), abreviações do glossário do projeto | zero |
-| **T4** | **Reescrita por LLM** — só o resíduo, numa **única chamada em lote**; volta pelo Micro-QA (06b) | mínimo |
+| **direct** | **Escrita direta** — cabe no byte-space → grava | zero *(maioria)* |
+| **repoint** | **Recuperação de espaço** — repointing (se permitido); reuso de espaço de strings que encolheram; tabela de abreviações seguras | zero |
+| **trimmed** | **Trim mecânico** — colapsar espaços duplos, reticência tipográfica (…), abreviações do glossário do projeto | zero |
+| **residue** | **Reescrita por LLM** — só o resíduo, numa **única chamada em lote**; volta pelo Micro-QA (06b) | mínimo |
+
+Cada projeto pode escolher nomes mais específicos ao seu formato (ex.: `in_place`/`residuo` no
+Utawarerumono; `unchanged`/`shrunk`/`expanded`/`individual_overflow` no BoF4) — os nomes acima são
+os do esqueleto genérico (`framework/connectors/_skeleton/reinsert.py`).
 
 A maior parte do custo já foi eliminada no **shift-left** (orçamento de bytes na tradução, Passo 06),
-então T4 tende a processar pouquíssimas strings.
+então o resíduo tende a processar pouquíssimas strings.
 
 ---
 

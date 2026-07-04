@@ -221,9 +221,9 @@ flowchart LR
 - Revisão humana via XLSX → verbatim (R$ 0) ou nota cirúrgica ✅
 - Ledger auditável: toda chamada cobrada registrada, inclusive falhas ✅
 - Generic Connector System **completo**: descoberta automática (evidence collector + tier
-  classifier) → geração de candidato (T2) → coverage gate + adversarial validator → round-trip →
-  manifesto/fingerprint versionado → gates de autonomia AI-agnostic. Três engines (Aquaplus,
-  Capcom, Unity Addressables) com round-trip byte-idêntico ✅
+  classifier) → geração de candidato (engine desconhecida) → coverage gate + adversarial validator
+  → round-trip → manifesto/fingerprint versionado → gates de autonomia AI-agnostic. Três engines
+  (Aquaplus, Capcom, Unity Addressables) com round-trip byte-idêntico ✅
 - KB híbrida via Ollama local (`kb_fetch.py`/`kb_build_ollama.py`) — extração sem custo de API,
   sempre em rascunho (`draft_ollama`) até ratificação humana por entidade (`kb_reconcile.py`);
   governança preservada mesmo com raciocínio fora da sessão Claude ✅

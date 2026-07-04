@@ -10,7 +10,7 @@ Verifica a reinserção de UMA cena pelo protocolo do harness:
 GOVERNANÇA: sem work-text. Lê os bundles somente-leitura; escreve só em memória (rebuild_table),
 nunca no jogo. data_dir: project.json connector.data_dir_env (SOULDIERS_DATA_DIR) OU arg CLI.
 
-Sem T4/fitting (project.json length_constraints.mode="none" — engine faz wrap automático,
+Sem resíduo/fitting (project.json length_constraints.mode="none" — engine faz wrap automático,
 diferente do BoF4). exit 3 fica reservado pelo protocolo mas não é alcançável aqui hoje.
 
 Protocolo de exit code (consumido por run_scene.py):

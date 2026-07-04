@@ -1,6 +1,6 @@
-"""test_coverage_gate.py — cobre o dry-run de cobertura do candidato T2 (D2), sem precisar de
-jogo real: escreve um candidato sintetico (scanner ASCII null-terminated simples) + "arquivos de
-jogo" fake com bytes conhecidos, e mede cobertura contra eles.
+"""test_coverage_gate.py — cobre o dry-run de cobertura do candidato de engine desconhecida, sem
+precisar de jogo real: escreve um candidato sintetico (scanner ASCII null-terminated simples) +
+"arquivos de jogo" fake com bytes conhecidos, e mede cobertura contra eles.
 """
 import sys
 from pathlib import Path

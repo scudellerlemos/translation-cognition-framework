@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "comment": "Registry de engines conhecidos (T1). Cada entrada define assinaturas de detecção e aponta para o conector de referência. Engines não listados aqui são T2 (LLM gera candidato) ou T3 (cifrado/ofuscado).",
+  "comment": "Registry de engines conhecidos (tier known_engine). Cada entrada define assinaturas de detecção e aponta para o conector de referência. Engines não listados aqui são unknown_engine (LLM gera candidato) ou blocked (cifrado/ofuscado).",
   "engines": [
     {
       "id": "capcom_dat_ps1",
       "name": "Capcom DAT (PS1/PC port — container TOC)",
-      "tier": "T1",
+      "tier": "known_engine",
       "family": "capcom_dat",
       "signatures": {
         "file_patterns": ["AREAD*.DAT", "AREAS*.DAT", "AREAD*.dat", "AREAS*.dat"],
@@ -22,7 +22,7 @@
     {
       "id": "aquaplus_sdat",
       "name": "Aquaplus ScriptEvent SDAT (visual novel)",
-      "tier": "T1",
+      "tier": "known_engine",
       "family": "aquaplus_sdat",
       "signatures": {
         "file_patterns": ["*.sdat", "*.SDAT"],
@@ -39,7 +39,7 @@
     {
       "id": "unity_addressables_csv",
       "name": "Unity Addressables + CSV em TextAsset (tilde-delimited)",
-      "tier": "T1",
+      "tier": "known_engine",
       "family": "unity_addressables",
       "signatures": {
         "file_patterns": ["UnityPlayer.dll", "*.bundle"],

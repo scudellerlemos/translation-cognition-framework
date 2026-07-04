@@ -6,7 +6,7 @@ GOVERNANCA: sem work-text. Le os dados de artifacts/ch_11_03/{dialogs.csv,approv
 e o binario-fonte (read-only). NAO escreve no binario. Prova:
   1) round-trip: build_output com approved={} reproduz o arquivo do 11_03 byte-a-byte (e 0 repoints);
   2) aplicacao: com o approved do capitulo, cada linha re-extraida do buffer novo == approved
-     transliterado; resíduo T4 == 0; ponteiros do 11_03 resolvem dentro do proprio arquivo.
+     transliterado; resíduo == 0; ponteiros do 11_03 resolvem dentro do proprio arquivo.
 
 Uso: python verify_11_03.py
 """
@@ -59,9 +59,9 @@ def main():
     tiers = {}
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
-    residuo = tiers.get("T4_residuo", 0)
+    residuo = tiers.get("residuo", 0)
     if residuo:
-        fails.append(f"resíduo T4 = {residuo} (esperado 0)")
+        fails.append(f"resíduo = {residuo} (esperado 0)")
 
     # VERIFICACAO (visao do motor): mapear cada offset aprovado -> posicao ABSOLUTA no buffer novo,
     # espelhando a logica do reinsert (relocado = repactado apos new_local; in_place = mesmo offset
@@ -114,7 +114,7 @@ def main():
     print(f"Cap. {SCENE}: {len(budgets)} linhas | tiers={tiers} | repoints(aplicado)={len(repoints)}")
     print(f"  round-trip identico: {same and not rt_repoints}")
     print(f"  linhas conferidas (re-extraidas == approved translit): {checked}/{len(approved)}")
-    print(f"  resíduo T4: {residuo}")
+    print(f"  resíduo: {residuo}")
     print(f"  size 11_03: 0x{f1103.size:x} -> 0x{new_1103.size:x} (+{new_1103.size - f1103.size})")
     if label_notes:
         print("  NOTAS (rotulos needs_human_review — verificar in-game):")

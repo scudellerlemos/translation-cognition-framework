@@ -181,9 +181,10 @@ comprovado vivo, além do alvo acima:
   corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **316 testes passando / 21 skipped**, cobertura do core **90.17%** (gate
-  `--cov-fail-under=90`): 302 no core (runtime + db + skills + validation) + 9 BoF4 + 4 Utawarerumono +
-  1 skeleton de conector; os 21 skipped dependem do binário do jogo (gitignored). Determinismo,
+- **Travas de qualidade:** **460 testes passando / 4 skipped** no total (`framework/` — inclui o
+  skeleton de conector — 435 passed/3 skipped; conector Utawarerumono 16 passed; conector BoF4 9
+  passed/1 skipped por faltar `BOF4_DAT_DIR`); os conectores rodam em jobs de CI separados
+  (basename `test_roundtrip.py` repetido colidiria numa coleta única do pytest). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
 - **CI paralela:** 3 workflows GitHub Actions (`quality.yml` 4 jobs · `test.yml` 6 jobs ·
   `api-smoke.yml`) sem nenhum `needs:` — checks independentes, falha nomeada por job, wall-clock =

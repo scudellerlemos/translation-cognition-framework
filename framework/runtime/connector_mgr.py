@@ -8,7 +8,7 @@ Funções públicas (usadas por run_scene):
   _connector_hash    — SHA1 dos scripts (audit trail de versão)
   _run               — executa subprocesso com encoding robusto (Windows-safe)
   _verify_status     — parse da linha VERIFY_STATUS: {json} emitida pelo conector
-  _warn_if_connector_stale — avisa se conector mudou desde o último verify (S3)
+  _warn_if_connector_stale — avisa se conector mudou desde o último verify
 """
 from __future__ import annotations
 

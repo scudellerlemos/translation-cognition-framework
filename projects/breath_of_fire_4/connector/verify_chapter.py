@@ -5,14 +5,14 @@ verify_chapter.py — Breath of Fire IV
 Verifica a reinserção de UMA cena (1 arquivo DAT) pelo protocolo do harness:
   1. Round-trip: rebuild_section(translations={}) reproduz o DAT byte-a-byte
   2. Apply: rebuild_section(translations) → ler strings de volta == encode_string(target)
-  3. T4: strings que individualmente excedem byte_budget
+  3. Overflow individual: strings que individualmente excedem byte_budget
 
 GOVERNANÇA: sem work-text. Lê os binários DAT somente-leitura; não escreve no jogo.
 game_dat_dir: project.json connector.game_dat_dir  OU  variável BOF4_DAT_DIR.
 
 Protocolo de exit code (consumido por run_scene.py):
   exit 0 = OK
-  exit 3 = falha SOMENTE de fitting (T4 individual → re-traduzir mais curto pode ajudar)
+  exit 3 = falha SOMENTE de fitting (overflow individual → re-traduzir mais curto pode ajudar)
   exit 1 = falha dura (round-trip ou leitura — apertar o budget não cura)
 
 Uso: python verify_chapter.py <scene>   ex.: python verify_chapter.py AREAD001
@@ -90,7 +90,7 @@ def main() -> None:
     touched_files = sorted({meta["file"] for meta in dialogs.values()})
 
     fails: list[str] = []
-    t4_count = 0
+    overflow_count = 0
     checked = 0
 
     for fname in touched_files:
@@ -140,17 +140,17 @@ def main() -> None:
             fails.append(f"{fname}: overflow de ponteiro — {exc}")
             continue
 
-        # --- 3) T4 individual: strings acima do byte_budget ---
+        # --- 3) overflow individual: strings acima do byte_budget ---
         for off, meta in dialogs.items():
             if meta["file"] != fname or off not in approved:
                 continue
             encoded = E.encode_string(approved[off])
             if len(encoded) + 1 > meta["byte_budget"]:
                 fails.append(
-                    f"{off}: T4_individual "
+                    f"{off}: individual_overflow "
                     f"{len(encoded) + 1}>{meta['byte_budget']}b"
                 )
-                t4_count += 1
+                overflow_count += 1
 
         # --- 4) Leitura de volta ---
         new_strings = _section_strings(new_section)
@@ -168,8 +168,8 @@ def main() -> None:
                     f"!= aprovado {E.decode_string(want)!r}"
                 )
 
-    # Fitting = só há T4 individuals, sem falhas duras de round-trip ou leitura
-    hard_fails = [f for f in fails if "T4_individual" not in f]
+    # Fitting = só há overflows individuais, sem falhas duras de round-trip ou leitura
+    hard_fails = [f for f in fails if "individual_overflow" not in f]
     fitting_only = bool(fails) and not hard_fails
 
     print(
@@ -179,12 +179,12 @@ def main() -> None:
     rt_ok = not any("round-trip" in f for f in fails)
     print(f"  round-trip: {'OK' if rt_ok else 'FALHOU'}")
     print(f"  strings conferidas (lido == approved encoded): {checked}/{len(approved)}")
-    print(f"  T4 individual (overflow de byte_budget): {t4_count}")
+    print(f"  overflow individual (byte_budget excedido): {overflow_count}")
 
     print("VERIFY_STATUS: " + json.dumps({
         "ok": not fails,
         "fitting_failure": fitting_only,
-        "t4_individual": t4_count,
+        "individual_overflow": overflow_count,
         "n_fails": len(fails),
     }, ensure_ascii=False))
 

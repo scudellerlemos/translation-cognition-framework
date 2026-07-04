@@ -13,7 +13,7 @@ caminho do binário vem de CLI > `project.json` (nunca hardcoded). Determinísti
 Verifica ANTES de escrever:
   1) round-trip global — `build_output(approved={})` reproduz o original byte-a-byte (0 repoints);
   2) aplicação — cada offset aprovado, mapeado à sua nova posição, lê de volta == aprovado transliterado;
-  3) resíduo T4 = 0.
+  3) resíduo = 0.
 Falha em qualquer um → NÃO escreve output e sai com código 1.
 
 Uso:  python connector/reinsert_game.py [<binario>]   (default: connector.source_binary do project.json)
@@ -99,9 +99,9 @@ def main():
     tiers = {}
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
-    residuo = tiers.get("T4_residuo", 0)
+    residuo = tiers.get("residuo", 0)
     if residuo:
-        fails.append(f"resíduo T4 = {residuo} (esperado 0)")
+        fails.append(f"resíduo = {residuo} (esperado 0)")
 
     # 3) read-back: lido (do buffer novo) == aprovado transliterado. Mapeia relocados (head-reloc por
     #    arquivo) à posição absoluta nova; o resto é in_place (mesmo offset local no arquivo novo).
@@ -143,7 +143,7 @@ def main():
     print(f"read-back: {checked}/{len(approved)} linha(s) conferem (lido == aprovado translit)")
 
     status = {"ok": not fails, "scenes": n_scenes, "lines": len(budgets), "approved": len(approved),
-              "residuo_t4": residuo, "checked": checked, "n_fails": len(fails)}
+              "residuo": residuo, "checked": checked, "n_fails": len(fails)}
     print("VERIFY_STATUS: " + json.dumps(status, ensure_ascii=False))
 
     if fails:

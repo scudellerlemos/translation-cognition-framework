@@ -1,7 +1,9 @@
 # Onboarding — Novo Projeto de Tradução
 
 > Guia passo a passo para instanciar um projeto no framework SDD.
-> Criado após o piloto Utawarerumono (jun/2026) — primeira validação multi-game.
+> Criado após o piloto Utawarerumono (jun/2026) — primeira validação multi-game; atualizado após
+> o onboarding de baixo custo (scaffold + descoberta automática de engine + KB híbrida, validado
+> no Souldiers, jul/2026).
 
 ---
 
@@ -10,6 +12,36 @@
 - Você tem o binário (ou arquivo de texto/legenda) da obra-fonte.
 - A branch de trabalho está criada.
 - O framework está em `framework/` e os testes passam (`pytest framework/`).
+
+---
+
+## Caminho rápido (recomendado): scaffold + descoberta automática
+
+Antes de seguir o passo a passo manual abaixo, use as ferramentas de onboarding de baixo custo —
+reduzem o custo de dar início a um projeto novo de ~40k para ~5k tokens de sessão:
+
+1. **`scaffold_project.py`** cria a estrutura de diretórios (`connector/`, `profile/`, `artifacts/`)
+   e um `project.json` inicial, e roda um self-check de `kb_gate.py`/`connector_gate.py` — reporta
+   exatamente o que falta preencher, sem criar stub fake pra enganar o gate.
+2. **`python framework/connectors/discover.py <game_dir>`** varre o diretório do jogo e classifica
+   automaticamente o engine:
+   - **engine conhecida** (já no `connector_registry.json`, ex.: Aquaplus/Capcom DAT/Unity
+     Addressables): aponta direto pro conector de referência — copiar e adaptar, pular a etapa
+     manual de mapeamento hex.
+   - **engine desconhecida**: `--generate-stub` gera um candidato de `extract.py` pré-preenchido
+     (um dos 3 padrões: linear_scan/token_table/pointer_table, escolhido pelas evidências) — ponto
+     de partida bem mais adiantado que o `_skeleton/` genérico. Validar cobertura ANTES do
+     round-trip completo: `python framework/connectors/coverage_gate.py <candidato.py> <game_dir>`.
+   - **bloqueada** (cifrado/comprimido): fora do escopo do framework, exige engenharia reversa.
+3. **KB sem custo de API**: `kb_fetch.py` normaliza qualquer fonte (URL, PDF, .docx, arquivo local)
+   pra texto plano; `kb_build_ollama.py` gera um RASCUNHO de research/KB via Ollama LOCAL (zero
+   custo, mas sempre `status: draft_ollama`); `kb_reconcile.py` promove pra `reconciled` só depois
+   de ratificação humana por entidade — a governança de "fonte confiável antes de traduzir"
+   continua intacta, só a extração bruta fica mais barata.
+
+O passo a passo manual abaixo continua válido — é o que essas ferramentas automatizam por baixo,
+e é o caminho pra qualquer parte que a descoberta automática não cobrir (engine desconhecida sem
+candidato gerado, formato exótico, etc.).
 
 ---
 
@@ -89,9 +121,9 @@ pytest connector/test_roundtrip.py -v
 ### 4. Escrever reinsert.py
 
 Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
-- Implementar a cascata T1 (in-place) → T2 (shift-left) → T3 (relocação) → T4 (resíduo LLM).
+- Implementar a cascata direct (in-place) → repoint (shift-left) → trimmed (relocação) → residue (resíduo LLM).
 - Gravar em `output/` sem modificar `artifacts/`.
-- Sair com código 0 (sucesso), 1 (erro fatal) ou 3 (overflow irredutível — T4 necessário).
+- Sair com código 0 (sucesso), 1 (erro fatal) ou 3 (overflow irredutível — resíduo necessário).
 
 ### 5. Preencher os perfis
 
@@ -125,10 +157,17 @@ Só após todos os itens acima: iniciar o Passo 01 (Descoberta de Entidades).
 
 ---
 
-## Questões abertas para o piloto multi-game
+## Questões do piloto multi-game — respondidas pela Fase D + Souldiers
 
-> Registradas em `memory/connector-multi-game-future.md`. A responder à medida que o piloto avança.
+> Três engines distintos validados (Aquaplus, Capcom DAT, Unity Addressables) responderam as
+> questões abaixo na prática.
 
-1. **Família de engine:** o conector do jogo 2 é reutilizável para outros jogos Capcom PS1?
-2. **Versionamento do conector:** como lidar com mudanças no conector após cenas já traduzidas?
-3. **TM compartilhada:** faz sentido compartilhar TM entre jogos da mesma série/engine?
+1. ~~**Família de engine:** o conector de um jogo é reutilizável para outros jogos do mesmo engine?~~
+   → **Sim, via `connector_registry.json` (Fase D1): engine idêntica reusa o conector de referência
+   direto; engine variante reclassifica como desconhecida e gera candidato novo.**
+2. ~~**Versionamento do conector:** como lidar com mudanças no conector após cenas já traduzidas?~~
+   → **`connector_manifest.json` por projeto (Fase D3, `fingerprint_monitor.py`): fingerprint dos
+   scripts do conector + dos arquivos-fonte do jogo; detecta patch do jogo e drift de script.**
+3. ~~**TM compartilhada:** faz sentido compartilhar TM entre jogos da mesma série/engine?~~
+   → **Sim, `tm/<série>.json` (Fase D4, `tm_lookup.py`/`tm_updater.py`): declarada via
+   `project.json["series"]`, isolamento estrutural entre franquias diferentes.**

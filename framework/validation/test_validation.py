@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_validation.py — gate de regressão do validador B1 (pytest).
+test_validation.py — gate de regressão do validador (pytest).
 
 Prova que o validador (1) PASSA na instância de referência real e (2) PEGA violações injetadas
 (não-circular). Genérico: a instância real é localizada por caminho relativo ao repo.

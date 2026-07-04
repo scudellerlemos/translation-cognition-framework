@@ -1,6 +1,6 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
-> Última atualização: 2026-06-21
+> Última atualização: 2026-07-03
 > Status atual: **CICLO DE TRADUÇÃO COMPLETO**
 
 ---
@@ -14,10 +14,10 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 | Gap | Nota atual | O que BoF4 prova |
 |---|---|---|
-| Generalização | 62/100 | T2 do Generic Connector funcionando num engine Capcom desconhecido |
+| Generalização | 62/100 | Caminho de engine desconhecida do Generic Connector funcionando num engine Capcom até então não catalogado |
 | Autonomia | 52/100 | Bootstrap de conector via descoberta de diretório sem intervenção manual |
 
-**Se BoF4 validar T2:** nota sobe para ~92. É o maior salto único disponível no roadmap — Portabilidade (dim 10) passa de 6 para 9+.
+**Se BoF4 validar esse caminho:** nota sobe para ~92. É o maior salto único disponível no roadmap — Portabilidade (dim 10) passa de 6 para 9+.
 
 ### Insights do projeto anterior que se aplicam aqui
 
@@ -63,7 +63,7 @@ Os dois maiores gaps que BoF4 precisa fechar:
 - [x] **0.6. Implementar `connector/reinsert.py`**
   - `encode_string` + `rebuild_section` (identity fast-path + rebuild com traduções)
   - `patch_dat_file`: atualiza TOC se seção crescer
-  - Cascata T1→T3 documentada em `project.json`: `space_strategy: "reconstrucao_secao"`
+  - Cascata de encaixe (unchanged→shrunk→expanded) documentada em `project.json`: `space_strategy: "reconstrucao_secao"`
 
 ---
 
@@ -87,40 +87,40 @@ Os dois maiores gaps que BoF4 precisa fechar:
 
 #### P1 — Bugs ativos — TODOS RESOLVIDOS EM PRODUÇÃO ✅
 
-- [x] **P1-A. T4 fitting** — resolvido durante a tradução em escala (run_state confirma T4=0 global)
+- [x] **P1-A. Overflow individual de fitting** — resolvido durante a tradução em escala (run_state confirma 0 overflows no jogo inteiro)
 - [x] **P1-B. Encoding corrompido (AREAD013)** — resolvido; cena `verified` no estado final
 - [x] **P1-C. `coverage_failed` (6 cenas)** — resolvido; todas as 6 cenas `verified` no estado final
 
-#### Memory Layer (piloto desta funcionalidade no framework)
+#### Memory Layer — ✅ IMPLEMENTADO no framework core (`framework/db/`)
 
-> Pré-requisito: ao menos 1 capítulo traduzido e aprovado (TM com volume suficiente para retrieval útil).
 > Infraestrutura: local (CPU), zero custo de API, empacotável em .exe.
 
-  **Stack escolhida (benchmark jun/2026):**
+  **Stack implementada:**
 
   | Componente | Modelo | Tamanho | Função |
   |---|---|---|---|
   | **Bi-encoder** | `paraphrase-multilingual-MiniLM-L12-v2` | ~470 MB | Embedding de TM, KB e glossário |
   | **Reranker** | FlashRank (`MiniLM-L-12` quantizado) | ~4 MB | Reordena top-N por relevância real |
-  | **NER** | `spaCy xx_ent_wiki_sm` | ~31 MB | Extração de entidades Passo 01 (PT+EN) |
   | **Vector DB** | `sqlite-vec` | extensão C | Índice vetorial com filtros SQL nativos |
 
-- [ ] **2.4. TM semântica** — indexar `approved_*.csv` com byte_budget; retrieval por similaridade substitui match exato. Medir hit rate antes/depois.
-- [ ] **2.5. Context pack semântico** — `context_pack.py` passa a recuperar só chunks relevantes de glossário e KB em vez de carregar tudo. Medir redução de tokens por cena.
-- [ ] **2.6. Few-shot de fitting** — ao traduzir linha nova, recuperar linhas aprovadas semanticamente similares que couberam no byte_budget; passar como exemplos no prompt. Medir redução de fitting failures.
+- [x] **2.4. TM semântica** — `framework/db/embedder.py` + `store.py`; `context_pack.py::_load_tm_semantic` consulta por similaridade quando o projeto tem `.db` (gated). Validado no translation_software (6046 vetores indexados).
+- [x] **2.5. Context pack semântico** — `_load_kb` consulta só o KB relevante via embeddings em vez de carregar tudo, mesmo gate `.db`.
+- [ ] **2.6. Few-shot de fitting** — ainda não implementado: recuperar linhas aprovadas semanticamente similares que couberam no byte_budget como exemplo no prompt de tradução. Não é bloqueio de nenhum projeto atual.
 
 ---
 
 ### Fase 3 — Fechamento e pós-produção — CONCLUÍDA ✅
 
 - [x] **3.1. Passe global de consistência** (`glossary_lint`)
-- [x] **3.2. `reinsert` do jogo inteiro** — 125 DAT files em `output/`, T4=0
+- [x] **3.2. `reinsert` do jogo inteiro** — 125 DAT files em `output/`, 0 overflows
 - [x] **3.3. Gate visual in-game** — OK
 - [x] **3.4. QA humana** via `quality_review.py` (XLSX revisado e aplicado)
 
 ### Próximos passos
 
-- [ ] **TM semântica (B2)** — quando corpus multi-game justificar (ver seção Memory Layer acima)
+Nenhum débito técnico aberto para este projeto — TM semântica implementada e ativa (ver seção
+Memory Layer acima), TM por série disponível via `tm_lookup.py`/`tm_updater.py` para consistência
+entre jogos da mesma franquia (ex.: Breath of Fire 3/4/Dragon Quarter).
 
 ---
 
@@ -129,6 +129,6 @@ Os dois maiores gaps que BoF4 precisa fechar:
 > Respondidas pelo **Generic Connector System (Fase D do ROADMAP raiz)**.
 > BoF4 é o jogo-piloto dessa fase — as decisões de design foram tomadas aqui.
 
-1. ~~O conector BoF4 é reutilizável para outros jogos Capcom PS1?~~ → **Sim, via registry T1 (Fase D1): se engine idêntica, script reutilizado direto; se variante, reclassifica como T2.**
+1. ~~O conector BoF4 é reutilizável para outros jogos Capcom PS1?~~ → **Sim, via registry de engine conhecida (Fase D1): se engine idêntica, script reutilizado direto; se variante, reclassifica como engine desconhecida.**
 2. ~~Como versionar o conector se mudar após cenas já traduzidas?~~ → **`connector_version` no manifesto (Fase D3): extrações antigas com versão anterior ficam marcadas; framework recomenda re-extração.**
 3. ~~TM compartilhada faz sentido entre jogos da série BoF?~~ → **Sim, `tm/breath_of_fire.json` compartilhado entre BoF 3, 4, Dragon Quarter (Fase D4); retradução de 1 jogo deleta só as entradas dele.**

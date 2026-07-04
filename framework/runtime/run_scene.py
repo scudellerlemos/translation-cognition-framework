@@ -30,7 +30,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import connector_gate  # noqa: E402  (D6: gate de completude de conector, roda ANTES do kb_gate)
+import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
@@ -50,7 +50,7 @@ from connector_mgr import (  # noqa: E402
     _warn_if_connector_stale,
 )
 
-# Housekeeping/diagnostico (P4 hardening: extraido p/ scene_lifecycle.py quando cruzou o limiar de
+# Housekeeping/diagnostico (reforco de coesao de codigo: extraido p/ scene_lifecycle.py quando cruzou o limiar de
 # leitura) — reimportado aqui p/ rs.clean_failed_scene(...)/etc. continuarem funcionando sem mudar
 # nenhum caller (mesmo padrao de re-export usado em model.py/back_translate.py).
 from scene_lifecycle import (  # noqa: E402,F401
@@ -312,7 +312,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)
 
-    # GATE DE COMPLETUDE DE CONECTOR (D6): roda ANTES do kb_gate -- sem conector completo (scripts
+    # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
     # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
     cg = connector_gate.check(root)
     for w in cg["warnings"]:
