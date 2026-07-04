@@ -58,7 +58,7 @@ def _all_scenes(root: Path, chapters: list[str], scenes_glob: str | None) -> lis
 
 def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
             skip_kb_gate=False, require_back=False, skip_connector_gate=False,
-            started_at=None) -> dict:
+            no_back=False, started_at=None) -> dict:
     root = Path(root)
     chapters = _discover_chapters(root)
     units = chapters if chapters else ["full"]           # rotulo sintetico do modo flat
@@ -83,7 +83,7 @@ def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
         r = run_chapter.run_chapter(root, chap_label, backend=backend, batch=batch,
                                     max_usd=remaining, scenes_glob=chap_glob,
                                     skip_kb_gate=skip_kb_gate, require_back=require_back,
-                                    skip_connector_gate=skip_connector_gate)
+                                    skip_connector_gate=skip_connector_gate, no_back=no_back)
         results.append(r)
         elapsed = (time.time() - started_at) if started_at is not None else None
         prog = progress_report.report(root, all_scenes, elapsed_s=elapsed)
@@ -112,11 +112,13 @@ def main():
     ap.add_argument("--skip-connector-gate", action="store_true",
                     help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--require-back", action="store_true")
+    ap.add_argument("--no-back", action="store_true",
+                    help="pula a back-translation (Opus) inteiramente (economia de custo)")
     a = ap.parse_args()
     r = run_game(a.project, backend=a.backend, batch=a.batch, max_usd=a.max_usd,
                 scenes_glob=a.scenes_glob, skip_kb_gate=a.skip_kb_gate,
                 require_back=a.require_back, skip_connector_gate=a.skip_connector_gate,
-                started_at=time.time())
+                no_back=a.no_back, started_at=time.time())
     sys.exit(0 if r["status"] == "complete" else 1)
 
 
