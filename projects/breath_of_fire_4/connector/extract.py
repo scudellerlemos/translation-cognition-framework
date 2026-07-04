@@ -13,13 +13,17 @@ Regras:
 - byte_budget = len(raw_bytes) + 1 (inclui terminador null).
 """
 
-import csv
 import json
-import os
 import re
 import struct
 import sys
 from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 
 # ---------------------------------------------------------------------------
 # Constantes do formato
@@ -228,21 +232,17 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     max_pct = cfg.get('length_constraints', {}).get('dialogue_max_pct', 100) / 100
 
     # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
-    if source_override:
-        game_dat_dir = Path(source_override)
-    elif os.environ.get("BOF4_DAT_DIR"):
-        game_dat_dir = Path(os.environ["BOF4_DAT_DIR"])
-    else:
-        game_dat_dir = Path("")
-
+    _dir_error = (
+        "Diretório DAT não configurado.\n"
+        "Opções:\n"
+        "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
+        "  2. CLI: python extract.py project.json <DAT_DIR>\n"
+        "Ver projects/breath_of_fire_4/.env.example"
+    )
+    game_dat_dir = connector_io.resolve_source_path(
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True) or Path("")
     if not game_dat_dir.is_dir():
-        raise SystemExit(
-            "Diretório DAT não configurado.\n"
-            "Opções:\n"
-            "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
-            "  2. CLI: python extract.py project.json <DAT_DIR>\n"
-            "Ver projects/breath_of_fire_4/.env.example"
-        )
+        raise SystemExit(_dir_error)
 
     rows: list[dict] = []
     files_processed = 0
@@ -318,19 +318,12 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         if file_has_text:
             files_with_text += 1
 
-    # Grava dialogs.csv
     out_csv = root / cfg['source']['file']
-    out_csv.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = ['offset', 'file', 'entry_idx', 'ptr_idx', 'text_en', 'byte_budget', 'speaker_code']
-    with out_csv.open('w', newline='', encoding='utf-8') as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        w.writeheader()
-        w.writerows(rows)
+    connector_io.write_dialogs_csv(out_csv, fieldnames, rows)
 
-    # Grava log
-    log = root / 'artifacts' / 'extraction_log.md'
-    log.parent.mkdir(parents=True, exist_ok=True)
-    log.write_text(
+    connector_io.write_extraction_log(
+        root / 'artifacts' / 'extraction_log.md',
         f"# Extraction Log — Breath of Fire IV\n\n"
         f"- Diretório DAT: `{game_dat_dir}`\n"
         f"- Escopo: famílias de diálogo ({', '.join(sorted(_DIALOGUE_FAMILIES))})\n"
@@ -342,7 +335,6 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         f"- Container: Capcom DAT (TOC + seções)\n"
         f"- Encoding: ASCII com escapes hex `[XX]`\n"
         f"- Speaker: coluna speaker_code = [14][XX] do início da string\n",
-        encoding='utf-8',
     )
     print(f"Extraídas {len(rows)} strings de diálogo de {files_with_text} arquivos -> {out_csv}")
 

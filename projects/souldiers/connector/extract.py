@@ -20,11 +20,15 @@ Regras:
 from __future__ import annotations
 
 import csv
-import json
-import os
 import re
 import sys
 from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 
 # ---------------------------------------------------------------------------
 # Escopo — Fase 0: diálogo de personagem com falante
@@ -51,18 +55,14 @@ def _parse_speaker(row_id: str) -> str:
 
 def _resolve_data_dir(project_json: Path, cli_override: str | None) -> Path:
     """Resolve o diretório de dados do jogo: CLI > env var > project.json > falha."""
-    if cli_override:
-        return Path(cli_override)
-    env = os.environ.get("SOULDIERS_DATA_DIR")
-    if env:
-        return Path(env)
-    cfg = json.loads(project_json.read_text(encoding="utf-8"))
-    d = cfg.get("connector", {}).get("data_dir")
-    if d:
-        return Path(d)
-    raise RuntimeError(
-        "Caminho do jogo não encontrado. Defina SOULDIERS_DATA_DIR ou passe como argumento.\n"
-        "Exemplo: python extract.py projects/souldiers C:\\Souldiers_Data\\StreamingAssets\\aa\\StandaloneWindows64"
+    return connector_io.resolve_source_path(
+        cli_arg=cli_override, env_var="SOULDIERS_DATA_DIR",
+        project_json=project_json, cfg_key="data_dir", exc=RuntimeError,
+        error_hint=(
+            "Caminho do jogo não encontrado. Defina SOULDIERS_DATA_DIR ou passe como argumento.\n"
+            "Exemplo: python extract.py projects/souldiers "
+            "C:\\Souldiers_Data\\StreamingAssets\\aa\\StandaloneWindows64"
+        ),
     )
 
 
@@ -135,13 +135,10 @@ def extract(project_root: Path, data_dir: Path) -> int:
         if not found:
             log_lines.append(f"- AVISO: TextAsset não encontrado em {bundle_file}\n")
 
-    with out_csv.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["offset", "table", "text_en", "speaker"])
-        writer.writeheader()
-        writer.writerows(rows)
+    connector_io.write_dialogs_csv(out_csv, ["offset", "table", "text_en", "speaker"], rows)
 
     log_lines.append(f"\nTotal: {len(rows)} linhas extraídas\n")
-    out_log.write_text("".join(log_lines), encoding="utf-8")
+    connector_io.write_extraction_log(out_log, "".join(log_lines))
 
     print(f"Extraido: {len(rows)} linhas -> {out_csv}")
     return len(rows)

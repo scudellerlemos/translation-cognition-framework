@@ -7,6 +7,7 @@
 #   connector-uta       : contrato round-trip do conector Utawarerumono
 #   connector-souldiers : contrato round-trip do conector Souldiers
 #   connector-skeleton  : contrato do template de conector
+#   connector-io        : utilitários compartilhados entre conectores (framework/connectors/*.py)
 name: Tests
 
 on:
@@ -71,12 +72,14 @@ jobs:
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
-  # Sem o binário do jogo (gitignored), os testes que o exigem fazem pytest.skip;
-  # codec/schema/governança rodam sempre. BoF4 é EXCEÇÃO parcial: test_roundtrip_synthetic.py
-  # constrói um .DAT sintético em memória (mesma estrutura TOC+ponteiros do formato real) e roda
-  # o oráculo completo (extract->reinsert->re-extract byte-idêntico) SEMPRE, sem precisar do
-  # binário comercial — fecha a lacuna descrita na issue #84 para este conector; Souldiers/
-  # Utawarerumono seguem só com pytest.skip (candidatos a fixture sintético equivalente depois).
+  # Sem o binário/bundle do jogo (gitignored), os testes que o exigem fazem pytest.skip;
+  # codec/schema/governança rodam sempre. BoF4 e Utawarerumono já fecham a lacuna: cada um tem
+  # test_roundtrip_synthetic.py, que constrói o container binário sintético em memória (TOC+
+  # ponteiros no BoF4; Filename+Pack+scripts STSC no Uta) e roda o oráculo completo (extract->
+  # reinsert->re-extract byte-idêntico) SEMPRE, sem precisar do arquivo comercial. Souldiers usa
+  # bundles Unity (UnityPy só LÊ, não constrói do zero — fixture sintética de container não é
+  # viável); o teste sempre-ativo ali cobre só a lógica pura de reescrita do CSV interno
+  # (test_rebuild_table_logic.py), não o round-trip do bundle inteiro, que segue com pytest.skip.
   connector-bof4:
     name: Connector contract — BoF4
     runs-on: ubuntu-latest
@@ -128,3 +131,23 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Connector skeleton contract
         run: python -m pytest framework/connectors/_skeleton/ -v --tb=short
+
+  # framework/connectors/*.py (connector_io.py, discover.py, tier_classifier.py, evidence_collector.py,
+  # script_generator.py, coverage_gate.py, adversarial_validator.py, connector_smoke.py e seus testes)
+  # nunca era coletado por nenhum job -- nem aqui nem no `coverage` (que só varre runtime/db/skills/
+  # validation). Achado em code review (2026-07-04): uma regressão em connector_io.resolve_source_path
+  # (usado por BoF4/Souldiers/Utawarerumono extract.py via #86) passaria verde e só apareceria rodando
+  # contra o jogo real. Job SEM piso de cobertura (como connector-skeleton) -- framework/connectors/
+  # tem módulos mais novos/exploratórios que ainda não atingem 90% (issue #92).
+  connector-io:
+    name: Connector shared utilities (framework/connectors/)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Connector shared utilities
+        run: python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton -v --tb=short
