@@ -72,7 +72,11 @@ jobs:
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
   # Sem o binário do jogo (gitignored), os testes que o exigem fazem pytest.skip;
-  # codec/schema/governança rodam sempre.
+  # codec/schema/governança rodam sempre. BoF4 é EXCEÇÃO parcial: test_roundtrip_synthetic.py
+  # constrói um .DAT sintético em memória (mesma estrutura TOC+ponteiros do formato real) e roda
+  # o oráculo completo (extract->reinsert->re-extract byte-idêntico) SEMPRE, sem precisar do
+  # binário comercial — fecha a lacuna descrita na issue #84 para este conector; Souldiers/
+  # Utawarerumono seguem só com pytest.skip (candidatos a fixture sintético equivalente depois).
   connector-bof4:
     name: Connector contract — BoF4
     runs-on: ubuntu-latest
