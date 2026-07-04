@@ -116,10 +116,11 @@ def test_glossary_without_updated_date_blocks(tmp_path):
 
 
 def test_kb_frontier_missing_blocks(tmp_path):
+    """#81: kb_frontier ausente e HARD (nao bypassavel) -- sem ela o gate nao sabe se a KB cobre a cena."""
     _good(tmp_path)
     (tmp_path / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
     r = kb_gate.check(tmp_path, "12_01")
-    assert any("kb_frontier" in p for p in r["problems"])
+    assert any("kb_frontier" in p for p in r["hard_problems"])
 
 
 def test_scene_beyond_frontier_blocks(tmp_path):

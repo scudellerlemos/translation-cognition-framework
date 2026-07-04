@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
-        run: mypy framework/runtime/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
+        run: mypy framework/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
 
   # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
@@ -72,7 +72,11 @@ jobs:
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
   # Sem o binário do jogo (gitignored), os testes que o exigem fazem pytest.skip;
-  # codec/schema/governança rodam sempre.
+  # codec/schema/governança rodam sempre. BoF4 é EXCEÇÃO parcial: test_roundtrip_synthetic.py
+  # constrói um .DAT sintético em memória (mesma estrutura TOC+ponteiros do formato real) e roda
+  # o oráculo completo (extract->reinsert->re-extract byte-idêntico) SEMPRE, sem precisar do
+  # binário comercial — fecha a lacuna descrita na issue #84 para este conector; Souldiers/
+  # Utawarerumono seguem só com pytest.skip (candidatos a fixture sintético equivalente depois).
   connector-bof4:
     name: Connector contract — BoF4
     runs-on: ubuntu-latest

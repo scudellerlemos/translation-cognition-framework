@@ -263,12 +263,20 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
 
 
 def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str,
-                require_back: bool, defer_back: bool) -> tuple:
+                require_back: bool, defer_back: bool, no_back: bool = False) -> tuple:
     """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
 
     Retorna (bt, early_return): se early_return nao e None, run_scene() deve retorna-lo imediatamente.
     No modo defer_back, apenas registra o checkpoint de deferimento; state_index/metrics ficam em run_scene.
+    `no_back`: pula a back-translation inteiramente (economia de custo; usuario confia no 1o passe).
     """
+    if no_back and require_back:
+        print(f"[4/6] AVISO: --no-back ignorado (--require-back tem precedencia) — "
+              f"back-translation vai rodar para {len(highs)} linha(s) risco>=high")
+    elif no_back:
+        print(f"[4/6] back-translation: PULADA (--no-back) para {len(highs)} linha(s) risco>=high")
+        _checkpoint(root, scene, {"high": len(highs), "back_skipped": True})
+        return {"status": M.DONE, "reviewed": 0, "path": None}, None
     if defer_back:
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
@@ -299,18 +307,20 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
               pretranslated=False, defer_back=False, rebuild_index=True, skip_connector_gate=False,
-              opts: RunSceneOptions = None) -> RunSceneResult:
+              no_back=False, opts: RunSceneOptions = None) -> RunSceneResult:
     if opts is not None:
         backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
         skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
         rebuild_index = opts.rebuild_index
         skip_connector_gate = opts.skip_connector_gate
+        no_back = opts.no_back
     root = Path(root)
     _validate_scene_arg(root, scene)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     for w in _validate_connector_cfg(cfg):
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)
+    bypassed: list = []   # #79: rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
 
     # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
     # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
@@ -323,13 +333,15 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             print(f"      - {p}")
         _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
         return {"status": "connector_incomplete", "scene": scene, "problems": cg["hard_problems"]}
-    if cg["problems"] and not skip_connector_gate:
-        print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
-        for p in cg["problems"]:
-            print(f"      - {p}")
-        print("      -> rode build_plan+verify de 1 cena manualmente, ou use --skip-connector-gate p/ ignorar (nao recomendado).")
-        _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
-        return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
+    if cg["problems"]:
+        if not skip_connector_gate:
+            print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
+            for p in cg["problems"]:
+                print(f"      - {p}")
+            print("      -> rode build_plan+verify de 1 cena manualmente, ou use --skip-connector-gate p/ ignorar (nao recomendado).")
+            _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
+            return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
+        bypassed.append("connector")
 
     # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
     kb = kb_gate.check(root, scene)
@@ -342,13 +354,15 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
             print(f"      - {p}")
         _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
         return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["hard_problems"]}
-    if kb["problems"] and not skip_kb_gate:
-        print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
-        for p in kb["problems"]:
-            print(f"      - {p}")
-        print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
-        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
-        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+    if kb["problems"]:
+        if not skip_kb_gate:
+            print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
+            for p in kb["problems"]:
+                print(f"      - {p}")
+            print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
+            _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
+            return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+        bypassed.append("kb")
 
     # Decisoes pendentes: sempre exibidas ao usuario antes de traduzir (nao bloqueia, mas obrigatorio)
     if kb.get("pending_decisions"):
@@ -369,7 +383,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
     highs = _high_lines(root, scene, scene_id)
-    bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back)
+    bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back, no_back)
     if early is not None:
         return early
 
@@ -385,7 +399,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         # BATCH: o rebuild por-cena e redundante (a rodada de traducao ja terminou; TM so importa
         # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
         print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
-    _checkpoint(root, scene, {"status": "verified" if verified else "planned"})
+    _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
     cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
@@ -411,6 +425,8 @@ def main():
                     help="ignora o gate de cobertura de KB (nao recomendado)")
     ap.add_argument("--skip-connector-gate", action="store_true",
                     help="ignora o gate de completude de conector (nao recomendado)")
+    ap.add_argument("--no-back", action="store_true",
+                    help="pula a back-translation (Opus) inteiramente (economia de custo)")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
     ap.add_argument("--check-stale", action="store_true",
@@ -434,7 +450,7 @@ def main():
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
-                  skip_connector_gate=a.skip_connector_gate)
+                  skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
     sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",
                                   "awaiting_back_translation") else 1)
 

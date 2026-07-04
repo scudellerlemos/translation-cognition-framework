@@ -50,12 +50,12 @@ def original():
 @pytest.fixture(scope="module")
 def applied(original):
     """Roda a reinserção uma vez (sem CLI → usa project.json) e devolve os artefatos de saída."""
-    src_hash_before = hashlib.md5(original).hexdigest()
+    src_hash_before = hashlib.md5(original, usedforsecurity=False).hexdigest()
     sys.argv[:] = ["reinsert.py"]            # força resolução por project.json (sem arg de teste)
     R.main()
     out = (ROOT / "output" / SRC.name).read_bytes()
     ips = (ROOT / "output" / (SRC.name + ".ips")).read_bytes()
-    src_hash_after = hashlib.md5(SRC.read_bytes()).hexdigest()
+    src_hash_after = hashlib.md5(SRC.read_bytes(), usedforsecurity=False).hexdigest()
     return {"out": out, "ips": ips, "src_before": src_hash_before, "src_after": src_hash_after}
 
 

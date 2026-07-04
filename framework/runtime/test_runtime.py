@@ -197,9 +197,10 @@ def test_kb_gate_passes_when_reconciled_and_present(tmp_path):
 
 
 def test_kb_gate_blocks_when_frontier_not_declared(tmp_path):
-    root = _kb_project(tmp_path)   # sem kb_frontier -> hard block desde esta sessao
-    probs = kb_gate.check(root, "ch_12_03")["problems"]
-    assert any("kb_frontier" in p for p in probs), "ausencia de kb_frontier deve bloquear"
+    # #81: kb_frontier ausente e HARD (nao bypassavel nem com --skip-kb-gate)
+    root = _kb_project(tmp_path)   # sem kb_frontier
+    hard = kb_gate.check(root, "ch_12_03")["hard_problems"]
+    assert any("kb_frontier" in p for p in hard), "ausencia de kb_frontier deve ser hard-block"
 
 
 def test_kb_gate_blocks_unreconciled(tmp_path):
@@ -445,6 +446,24 @@ def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     r = run_chapter.run_chapter(root, "99", backend="api")
     assert r["status"] == "complete"
     assert calls == ["ch_99_02", "ch_99_03"], "ch_99_01 ja verified deve ser pulado; resto em ordem"
+
+
+def test_run_chapter_calls_quality_gate(monkeypatch, tmp_path):
+    # #80: quality_gate.check() se autodeclara bloqueante/observavel no docstring mas nao tinha
+    # nenhum caller real — run_chapter deve chama-lo ao fim do capitulo, mesmo padrao ja aplicado
+    # a spoiler_check.audit_and_persist (_audit_spoiler).
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: {"status": "verified", "scene": scene, "verified": True})
+    calls = []
+    monkeypatch.setattr(run_chapter.quality_gate, "check",
+                        lambda r, chap: calls.append(chap) or
+                        {"revise": [{"scene": "ch_99_01"}], "uncovered": [], "coverage": {}})
+    r = run_chapter.run_chapter(root, "99", backend="api")
+    assert r["status"] == "complete"
+    assert calls == ["99"], "quality_gate.check deve rodar 1x ao fim do capitulo, com o filtro do capitulo"
 
 
 def test_run_survives_non_utf8_subprocess_output():
@@ -1020,6 +1039,49 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
                         {"status": "verified", "scene": scene, "verified": True})
     run_chapter.run_chapter(root, "99", backend="api", batch=True)
     assert seen == {"ch_99_01": True, "ch_99_02": True}, "cenas do batch devem ir pretranslated"
+
+
+def test_run_chapter_batch_no_back_skips_back_batch(monkeypatch, tmp_path):
+    # #75: --no-back tambem deve pular o pos-passe de back-translation em lote (modo batch).
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: {"status": "verified", "scene": scene, "verified": True})
+
+    def _boom(*a, **k):
+        raise AssertionError("batch_back_translate nao deveria rodar com no_back=True")
+    monkeypatch.setattr(run_chapter.M, "batch_back_translate", _boom)
+
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=True, no_back=True)
+    assert r["status"] == "complete"
+
+
+def test_run_chapter_batch_require_back_overrides_no_back(monkeypatch, tmp_path):
+    # --require-back tem precedencia sobre --no-back tambem no pos-passe de batch (mesma
+    # precedencia de run_scene._back_phase) -- rodando os dois juntos, o pos-passe RODA.
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    verified_scenes = set()
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: verified_scenes.add(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: s in verified_scenes)
+    called = {}
+    monkeypatch.setattr(run_chapter.M, "batch_back_translate",
+                        lambda r, scenes: called.setdefault("ran", scenes) and {})
+
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=True,
+                                no_back=True, require_back=True)
+    assert r["status"] == "complete"
+    assert "ran" in called, "batch_back_translate deveria rodar (--require-back vence --no-back)"
 
 
 def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
@@ -1957,6 +2019,42 @@ def test_run_scene_options_defaults():
     assert opts.defer_back is False
 
 
+def test_back_phase_no_back_skips_translation(tmp_path, monkeypatch):
+    # #75: --no-back deve pular a back-translation inteiramente, sem chamar M.back_translate.
+    (tmp_path / "artifacts").mkdir()
+
+    def _boom(*a, **k):
+        raise AssertionError("M.back_translate nao deveria ser chamado com no_back=True")
+    monkeypatch.setattr(run_scene.M, "back_translate", _boom)
+
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+                                      "api", require_back=False, defer_back=False, no_back=True)
+    assert early is None
+    assert bt["reviewed"] == 0 and bt["path"] is None
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["back_skipped"] is True
+
+
+def test_back_phase_require_back_overrides_no_back(tmp_path, monkeypatch):
+    # --require-back tem precedencia sobre --no-back: o gate obrigatorio nao pode ser
+    # silenciosamente ignorado quando as duas flags sao passadas juntas.
+    (tmp_path / "artifacts").mkdir()
+    called = {}
+
+    def _fake_back_translate(root, scene, highs, backend):
+        called["ran"] = True
+        return {"status": run_scene.M.DONE, "reviewed": len(highs), "path": None}
+    monkeypatch.setattr(run_scene.M, "back_translate", _fake_back_translate)
+
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+                                      "api", require_back=True, defer_back=False, no_back=True)
+    assert early is None
+    assert called.get("ran") is True
+    assert bt["reviewed"] == 1
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert "back_skipped" not in state["scenes"]["ch_50_01"]
+
+
 def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
     """opts=RunSceneOptions(...) sobrescreve os kwargs individuais de run_scene()."""
     from config import RunSceneOptions
@@ -1981,6 +2079,52 @@ def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
     run_scene.run_scene(tmp_path, "ch_50_01", backend="api", opts=opts)
     assert called_with.get("backend") == "in-session", (
         "opts deve sobrescrever o kwarg backend='api'")
+
+
+def _stub_pipeline_after_gates(monkeypatch):
+    """Stuba as fases apos os gates (translate/fitting/back/state_index) — usado pelos testes de
+    #79 (bypassed_gates), que so precisam validar o que acontece ANTES/no checkpoint final."""
+    monkeypatch.setattr(run_scene, "_pack_and_translate",
+                        lambda r, s, sid, backend, pretranslated: ({"n_lines": 0, "status": "done"}, None))
+    monkeypatch.setattr(run_scene, "_fitting_loop",
+                        lambda r, s, sid, cfg, backend, do_verify, tr: (tr, True, None))
+    monkeypatch.setattr(run_scene, "_high_lines", lambda r, s, sid: [])
+    monkeypatch.setattr(run_scene, "_back_phase",
+                        lambda *a, **k: ({"status": "done", "reviewed": 0, "path": None}, None))
+    monkeypatch.setattr(run_scene.state_index, "build",
+                        lambda r, sync_db=False: {"tm": 0, "cards": 0, "decisions": 0})
+
+
+def test_run_scene_records_bypassed_gates_in_checkpoint(monkeypatch, tmp_path):
+    # #79: bypass de --skip-kb-gate/--skip-connector-gate deve deixar rastro no checkpoint -- antes,
+    # o mesmo status "verified" de uma cena limpa nao distinguia de uma cena traduzida as cegas.
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    monkeypatch.setattr(run_scene.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": ["conector incompleto"], "warnings": []})
+    monkeypatch.setattr(run_scene.kb_gate, "check",
+                        lambda r, s: {"hard_problems": [], "problems": ["kb sem cobertura"], "warnings": []})
+    _stub_pipeline_after_gates(monkeypatch)
+
+    r = run_scene.run_scene(tmp_path, "ch_50_01", skip_kb_gate=True, skip_connector_gate=True)
+    assert r["status"] == "verified"
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == ["connector", "kb"]
+
+
+def test_run_scene_bypassed_gates_empty_when_clean(monkeypatch, tmp_path):
+    # cena que passa os gates limpo (sem problems) -> bypassed_gates == [] (nunca omitido)
+    (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    monkeypatch.setattr(run_scene.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_scene.kb_gate, "check",
+                        lambda r, s: {"hard_problems": [], "problems": [], "warnings": []})
+    _stub_pipeline_after_gates(monkeypatch)
+
+    run_scene.run_scene(tmp_path, "ch_50_01")
+    state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
+    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == []
 
 
 def test_clean_failed_scene_moves_to_discontinued(tmp_path):
