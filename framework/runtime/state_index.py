@@ -29,9 +29,12 @@ import re
 import sys
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+if str(_HERE.parent) not in sys.path:
+    sys.path.insert(0, str(_HERE.parent))
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
-from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única)
+from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única, framework/text_ids.py)
 from text_ids import tm_key as _key
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---

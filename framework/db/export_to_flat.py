@@ -22,12 +22,14 @@ import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
-_RUNTIME = _HERE.parent / "runtime"
-for _p in (_HERE, _RUNTIME):
+_FRAMEWORK = _HERE.parent
+for _p in (_HERE, _FRAMEWORK):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 from store import Store  # noqa: E402
-from text_ids import tm_key as _src_key  # noqa: E402  (fonte única da chave de TM)
+from text_ids import (
+    tm_key as _src_key,  # noqa: E402  (fonte única, framework/text_ids.py — leaf, sem dep de runtime)
+)
 
 
 def export_approved(db: Store, project_id: str, out_csv: Path) -> int:
