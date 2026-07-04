@@ -105,3 +105,43 @@ def test_fetch_pdf_missing_dep_raises_clear_error(tmp_path, monkeypatch):
     f.write_bytes(b"%PDF-fake")
     with pytest.raises(RuntimeError, match="pdfplumber"):
         kb_fetch.fetch_one(str(f))
+
+
+def test_fetch_docx_missing_dep_raises_clear_error(tmp_path, monkeypatch):
+    import builtins
+    real_import = builtins.__import__
+
+    def _no_docx(name, *a, **k):
+        if name == "docx":
+            raise ImportError("no module named docx")
+        return real_import(name, *a, **k)
+    monkeypatch.setattr(builtins, "__import__", _no_docx)
+    f = tmp_path / "doc.docx"
+    f.write_bytes(b"PK-fake-docx")
+    with pytest.raises(RuntimeError, match="python-docx"):
+        kb_fetch.fetch_one(str(f))
+
+
+def test_fetch_xlsx_reads_real_file(tmp_path):
+    openpyxl = pytest.importorskip("openpyxl")
+    f = tmp_path / "termos.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Glossario"
+    ws.append(["Dragon", "Dragao"])
+    wb.save(f)
+    r = kb_fetch.fetch_one(str(f))
+    assert r["tipo"] == "xlsx"
+    assert "Glossario" in r["texto"]
+    assert "Dragon" in r["texto"] and "Dragao" in r["texto"]
+
+
+def test_fetch_url_network_error_raises_clear_message(monkeypatch):
+    import urllib.error
+    import urllib.request
+
+    def _raise(*a, **k):
+        raise urllib.error.URLError("connection refused")
+    monkeypatch.setattr(urllib.request, "urlopen", _raise)
+    with pytest.raises(RuntimeError, match="falha ao buscar"):
+        kb_fetch.fetch_one("https://exemplo.test/indisponivel")
