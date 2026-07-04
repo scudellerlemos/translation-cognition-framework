@@ -24,7 +24,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-
 # ---------------------------------------------------------------------------
 # Padrão 1: LINEAR SCAN (texto denso, ASCII/UTF-8, sem pointer table)
 # Código pronto para testar; precisa só ajustar MIN_LEN e encoding se necessário.
@@ -302,10 +301,9 @@ def _choose_pattern(evidence: dict) -> tuple[str, str]:
     has_tokens = evidence.get("has_control_tokens", False)
 
     if has_tokens:
-        return "token_table", f"tokens de controle detectados (padrão [XX])"
+        return "token_table", "tokens de controle detectados (padrão [XX])"
 
     if text_frac >= 0.6 and density >= 0.30:
-        enc_name = "utf-8" if utf8_frac > ascii_frac else "ascii"
         return "linear_scan", (
             f"arquivo denso de texto ({text_frac:.0%} legível, density={density:.2f}) "
             f"— varredura linear é a abordagem mais rápida"
