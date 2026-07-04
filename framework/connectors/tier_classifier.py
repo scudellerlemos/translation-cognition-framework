@@ -1,9 +1,9 @@
 """
-tier_classifier.py — classifica um diretório de jogo em T1/T2/T3.
+tier_classifier.py — classifica um diretório de jogo pela dificuldade de descoberta de engine.
 
-T1: engine conhecida no registry → conector reutilizável direto (sem LLM).
-T2: engine desconhecida, mas texto legível → LLM gera candidato de conector.
-T3: cifrado/ofuscado → requer engenharia reversa (fora do escopo do framework).
+known_engine: engine conhecida no registry → conector reutilizável direto (sem LLM).
+unknown_engine: engine desconhecida, mas texto legível → LLM gera candidato de conector.
+blocked: cifrado/ofuscado → requer engenharia reversa (fora do escopo do framework).
 
 Sem dependências externas. Determinístico.
 
@@ -19,28 +19,28 @@ import json
 import re
 from pathlib import Path
 
-# Entropia acima deste limiar indica cifrado/comprimido → T3
+# Entropia acima deste limiar indica cifrado/comprimido → blocked
 _ENTROPY_BLOCKED = 7.0
-# Densidade de string abaixo deste limiar indica dados sem texto legível → T3
+# Densidade de string abaixo deste limiar indica dados sem texto legível → blocked
 _DENSITY_BLOCKED = 0.05
-# Limiar mínimo de score para classificar como T1 (0.0–1.0)
-_T1_MIN_SCORE = 0.5
+# Limiar mínimo de score para classificar como known_engine (0.0–1.0)
+_KNOWN_ENGINE_MIN_SCORE = 0.5
 
 
 def classify(evidence: dict, registry: list[dict]) -> dict:
     """Classifica as evidências e retorna o tier + detalhes de decisão.
 
     Retorna:
-      tier       : "T1" | "T2" | "T3"
-      engine_id  : str | None  (T1: id do engine; T2/T3: None)
+      tier       : "known_engine" | "unknown_engine" | "blocked"
+      engine_id  : str | None  (known_engine: id do engine; demais: None)
       confidence : float 0.0–1.0
       reasons    : list[str]
-      blocked    : bool  (T3 por entropia alta)
+      blocked    : bool  (tier "blocked" por entropia alta)
     """
-    # T3-bloqueado: cifrado/comprimido detectado antes de qualquer match
+    # bloqueado: cifrado/comprimido detectado antes de qualquer match
     if _is_blocked(evidence):
         return {
-            "tier": "T3",
+            "tier": "blocked",
             "engine_id": None,
             "confidence": 1.0,
             "reasons": [
@@ -61,32 +61,32 @@ def classify(evidence: dict, registry: list[dict]) -> dict:
             best_engine = engine
             best_reasons = reasons
 
-    if best_engine and best_score >= _T1_MIN_SCORE:
+    if best_engine and best_score >= _KNOWN_ENGINE_MIN_SCORE:
         return {
-            "tier": "T1",
+            "tier": "known_engine",
             "engine_id": best_engine["id"],
             "confidence": round(best_score, 3),
             "reasons": best_reasons,
             "blocked": False,
         }
 
-    # T2: texto legível mas engine desconhecida
-    t2_reasons = ["engine não encontrada no registry"]
+    # engine desconhecida: texto legível mas não encontrado no registry
+    unknown_reasons = ["engine não encontrada no registry"]
     if evidence.get("string_density", 0) > _DENSITY_BLOCKED:
-        t2_reasons.append(
+        unknown_reasons.append(
             f"densidade de texto {evidence['string_density']:.2f} indica dados legíveis"
         )
     return {
-        "tier": "T2",
+        "tier": "unknown_engine",
         "engine_id": None,
         "confidence": round(1.0 - best_score, 3),
-        "reasons": t2_reasons,
+        "reasons": unknown_reasons,
         "blocked": False,
     }
 
 
 def _is_blocked(evidence: dict) -> bool:
-    """T3-bloqueado: entropia muito alta (cifrado) OU densidade de string muito baixa."""
+    """Tier bloqueado: entropia muito alta (cifrado) OU densidade de string muito baixa."""
     entropy = evidence.get("entropy_mean", 0.0)
     density = evidence.get("string_density", 1.0)
     return entropy > _ENTROPY_BLOCKED or (density < _DENSITY_BLOCKED and entropy > 5.0)
@@ -152,21 +152,21 @@ def _score_engine(evidence: dict, engine: dict) -> tuple[float, list[str]]:
 
 
 def existence_gate(evidence: dict, registry: list[dict]) -> dict:
-    """D5 — gate de existencia: formaliza (testavel, reusavel por qualquer caller) o que
-    discover.py ja fazia implicitamente via if/elif (so chama script_generator.generate() no
-    branch T2). Retorna {**classify(...), must_generate, reference_connector}.
+    """Gate de existencia: formaliza (testavel, reusavel por qualquer caller) o que discover.py
+    ja fazia implicitamente via if/elif (so chama script_generator.generate() no branch de engine
+    desconhecida). Retorna {**classify(...), must_generate, reference_connector}.
 
-    must_generate=True SOMENTE em T2 -- e o UNICO tier onde gerar candidato via LLM e permitido.
-    T1 (engine conhecida) aponta direto pro conector de referencia, NUNCA aciona o gerador; T3
-    (bloqueado) tambem nunca aciona. Isso remove a possibilidade ESTRUTURAL de chamar o LLM p/
-    gerar um candidato quando ja existe um conector de referencia pronto (T1) ou quando e
-    logicamente impossivel (T3, cifrado/comprimido)."""
+    must_generate=True SOMENTE quando tier == unknown_engine -- e o UNICO caso onde gerar
+    candidato via LLM e permitido. known_engine (engine ja no registry) aponta direto pro conector
+    de referencia, NUNCA aciona o gerador; blocked (cifrado/comprimido) tambem nunca aciona. Isso
+    remove a possibilidade ESTRUTURAL de chamar o LLM p/ gerar um candidato quando ja existe um
+    conector de referencia pronto ou quando e logicamente impossivel."""
     result = classify(evidence, registry)
     reference_connector = None
-    if result["tier"] == "T1":
+    if result["tier"] == "known_engine":
         engine = next((e for e in registry if e["id"] == result["engine_id"]), {})
         reference_connector = engine.get("reference_connector")
-    return {**result, "must_generate": result["tier"] == "T2",
+    return {**result, "must_generate": result["tier"] == "unknown_engine",
             "reference_connector": reference_connector}
 
 

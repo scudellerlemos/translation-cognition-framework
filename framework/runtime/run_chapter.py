@@ -25,7 +25,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import connector_gate  # noqa: E402  (D6: gate de completude de conector, roda ANTES do kb_gate)
+import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
 import kb_gate  # noqa: E402
@@ -190,7 +190,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None,
                 skip_connector_gate=False):
     root = Path(root)
-    # GATE DE COMPLETUDE DE CONECTOR (D6): checa 1x pro CAPITULO INTEIRO (completude de conector nao
+    # GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
     # depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
     cg = connector_gate.check(root)
     for w in cg["warnings"]:

@@ -1,4 +1,4 @@
-"""test_fingerprint_monitor.py — cobre o manifesto/fingerprint de conector (D3).
+"""test_fingerprint_monitor.py — cobre o manifesto/fingerprint de conector.
 
 Puro/determinista: nenhuma funcao chama datetime.now() -- timestamp e passado pelo caller.
 """
@@ -32,14 +32,14 @@ def test_compute_fingerprint_sensitive_to_byte_change(tmp_path):
 
 def test_write_and_read_manifest_roundtrip(tmp_path):
     out = fm.write_manifest(
-        tmp_path, tier="T1", engine_id="unity_addressables_csv", connector_version=1,
+        tmp_path, tier="known_engine", engine_id="unity_addressables_csv", connector_version=1,
         scripts_fingerprint="abc123", source_sample_files=[tmp_path / "f.bundle"],
         source_fingerprint="def456", timestamp_iso="2026-07-03T00:00:00+00:00",
         status="green", at_scene="AREAD001",
     )
     assert out.is_file()
     manifest = fm.read_manifest(tmp_path)
-    assert manifest["tier"] == "T1"
+    assert manifest["tier"] == "known_engine"
     assert manifest["scripts_fingerprint"] == "abc123"
     assert manifest["source_fingerprint"] == "def456"
     assert manifest["last_validated"] == {"status": "green", "at_scene": "AREAD001",
@@ -51,7 +51,7 @@ def test_read_manifest_missing_returns_none(tmp_path):
 
 
 def test_check_source_drift_detects_change(tmp_path):
-    fm.write_manifest(tmp_path, tier="T1", engine_id="x", connector_version=1,
+    fm.write_manifest(tmp_path, tier="known_engine", engine_id="x", connector_version=1,
                       scripts_fingerprint="s", source_sample_files=[], source_fingerprint="OLD",
                       timestamp_iso="t")
     assert fm.check_source_drift(tmp_path, "OLD") is False
@@ -66,7 +66,7 @@ def test_check_scripts_drift_reuses_connector_hash(tmp_path, monkeypatch):
     import connector_mgr
     monkeypatch.setattr(connector_mgr, "_connector_hash", lambda root, cfg: "CURRENT_HASH")
     monkeypatch.setattr(fm, "_connector_hash", connector_mgr._connector_hash)
-    fm.write_manifest(tmp_path, tier="T1", engine_id="x", connector_version=1,
+    fm.write_manifest(tmp_path, tier="known_engine", engine_id="x", connector_version=1,
                       scripts_fingerprint="CURRENT_HASH", source_sample_files=[],
                       source_fingerprint="s", timestamp_iso="t")
     assert fm.check_scripts_drift(tmp_path, {}) is False

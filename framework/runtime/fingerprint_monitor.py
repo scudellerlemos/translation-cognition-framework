@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fingerprint_monitor.py — D3: manifesto + versionamento + fingerprint de conector.
+fingerprint_monitor.py — manifesto + versionamento + fingerprint de conector.
 
 `connector_mgr._connector_hash` ja faz hash dos SCRIPTS do conector (build_plan_chapter.py +
 verify_chapter.py), gravado por-cena em run_state.json a cada verify bem-sucedido -- isso NAO e
@@ -100,7 +100,7 @@ def check_scripts_drift(root, cfg: dict) -> bool:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="D3: fingerprint de arquivos-fonte + manifesto de conector.")
+    ap = argparse.ArgumentParser(description="Fingerprint de arquivos-fonte + manifesto de conector.")
     ap.add_argument("project")
     ap.add_argument("--check-source", nargs="+", metavar="ARQUIVO",
                     help="verifica se estes arquivos-fonte mudaram desde o manifesto registrado")

@@ -135,7 +135,7 @@ Medir os bytes que a tradução ocupará (encode com a `table_schema` do conecto
 - Não cabe → reformular preservando tom (ainda na mesma passada de tradução).
 - Persistindo o estouro sem perder qualidade → marcar o ID em `length_warnings` no
   `translation_status.json`. Ele será resolvido pela cascata determinística no Passo 08, e só o
-  resíduo irredutível irá para a reescrita LLM em lote (T4).
+  resíduo irredutível irá para a reescrita LLM em lote.
 
 **Mídias sem byte-space** (ex: legendas): substituir a métrica por caracteres/linha ou CPS, conforme
 o media-profile. O mecanismo (orçamento como restrição + check determinístico) é o mesmo.

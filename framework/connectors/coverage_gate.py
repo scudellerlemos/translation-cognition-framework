@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-coverage_gate.py — D2: dry-run OBRIGATORIO do candidato de extract.py (T2) contra multiplas
-amostras reais, ANTES do round-trip formal (connector_smoke.py/test_roundtrip.py).
+coverage_gate.py — dry-run OBRIGATORIO do candidato de extract.py (engine desconhecida) contra
+multiplas amostras reais, ANTES do round-trip formal (connector_smoke.py/test_roundtrip.py).
 
 Contexto: script_generator.py gera um candidato de extract.py com um dos 3 padroes
 (linear_scan/token_table/pointer_table) -- todos expondo o MESMO contrato de funcao:
@@ -9,7 +9,7 @@ Contexto: script_generator.py gera um candidato de extract.py com um dos 3 padro
   decode_string(data: bytes, offset: int, table) -> tuple[str, int]
   load_table(table_path: Path) -> table
 
-Antes do D2, esse candidato so era testado manualmente contra 1 arquivo -- risco real de
+Antes deste gate, esse candidato so era testado manualmente contra 1 arquivo -- risco real de
 overfitting a 1 amostra. coverage_gate roda o candidato (via importlib, SEM subprocess/SEM
 project.json completo) contra os N MAIORES arquivos reais do jogo, mede cobertura via
 string_density (evidence_collector.py, reusada aqui, nao duplicada) como proxy do "quanto
@@ -18,8 +18,8 @@ conteudo textual deveria existir".
 Piso (COVERAGE_FLOOR=0.85) aplicado ao MINIMO entre arquivos, NAO a media -- pega o candidato que
 so funciona numa amostra (media alta esconderia 1 arquivo com cobertura pessima).
 
-Interface T3 (contrato de escape): reusavel sem adaptacao -- depende so do contrato de funcao,
-nao de quem escreveu o modulo (LLM via script_generator.py, ou humano via T3).
+Interface de escape (engine bloqueada): reusavel sem adaptacao -- depende so do contrato de
+funcao, nao de quem escreveu o modulo (LLM via script_generator.py, ou humano na engenharia reversa).
 
 Uso: python coverage_gate.py <candidato.py> <game_dir> [--floor 0.85] [--min-files 3] [--table PATH]
 """
@@ -118,7 +118,7 @@ def check(candidate_path, game_dir, *, floor: float = _COVERAGE_FLOOR,
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="D2: dry-run de cobertura do candidato T2 (extract.py).")
+    ap = argparse.ArgumentParser(description="Dry-run de cobertura do candidato de engine desconhecida (extract.py).")
     ap.add_argument("candidate")
     ap.add_argument("game_dir")
     ap.add_argument("--floor", type=float, default=_COVERAGE_FLOOR)

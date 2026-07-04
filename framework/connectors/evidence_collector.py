@@ -1,8 +1,9 @@
 """
 evidence_collector.py — coleta evidências brutas de um diretório de jogo.
 
-Parte do Generic Connector System (D1). Varre o diretório e produz um dict
-de evidências que o tier_classifier usa para decidir T1/T2/T3.
+Parte do Generic Connector System. Varre o diretório e produz um dict
+de evidências que o tier_classifier usa para decidir entre engine conhecida,
+engine desconhecida ou bloqueado.
 
 Sem dependências externas além da stdlib. 100% determinístico e sem rede.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-connector_gate.py — GATE DE COMPLETUDE DE CONECTOR (D6, espelha kb_gate.py).
+connector_gate.py — GATE DE COMPLETUDE DE CONECTOR (espelha kb_gate.py).
 
 Descoberto no onboarding do Souldiers (2026-07-02): `project.json` declarava "Fase 0 concluida" com
 so `extract.py`/`reinsert.py` prontos -- `build_plan_chapter.py`/`verify_chapter.py` nunca existiram,
@@ -41,7 +41,7 @@ from connector_mgr import (
 
 
 class StaleReadError(RuntimeError):
-    """D5 — gate de leitura completa: o conteudo alegado como lido nao bate com o disco AGORA."""
+    """Gate de leitura completa: o conteudo alegado como lido nao bate com o disco AGORA."""
 
 _SCRIPTS = (("build_plan_script", "build_plan_chapter.py"), ("verify_script", "verify_chapter.py"))
 
@@ -88,7 +88,7 @@ def check(root) -> dict:
 
 
 def assert_fresh_read(script_path, claimed_content: str) -> None:
-    """D5 — gate de LEITURA COMPLETA: antes de editar um conector existente, o caller PRECISA ter
+    """Gate de LEITURA COMPLETA: antes de editar um conector existente, o caller PRECISA ter
     lido o arquivo por inteiro AGORA (nao de memoria antiga). Interpretacao operacional escolhida
     (a mais codificavel/testavel de provar programaticamente): o caller passa o CONTEUDO INTEIRO
     que alega ter lido (nao um path) -- a unica forma de produzir isso e te-lo lido de verdade. O

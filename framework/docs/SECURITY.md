@@ -1,6 +1,6 @@
 # Security — Translation Cognition Framework
 
-> Threat model e controles de segurança do harness. Última revisão: 2026-06-21.
+> Threat model e controles de segurança do harness. Última revisão: 2026-07-03.
 
 ---
 
@@ -57,8 +57,18 @@ correspondentemente restrito.
 **Controles:**
 - Scripts rodam em subprocess isolado com timeout (300s)
 - `connector_hash` (SHA1 dos scripts) gravado no `run_state.json` após cada verify bem-sucedido
-- `_warn_if_connector_stale` emite aviso se o hash mudou desde o último verify (S3)
+- `_warn_if_connector_stale` emite aviso se o hash mudou desde o último verify
 - Path do script verificado contra o diretório do projeto antes de executar
+- `connector_gate.py` bloqueia a tradução se os scripts obrigatórios (build_plan/verify) não
+  existirem no disco, ou se nenhum round-trip verde já foi registrado — nenhum conector incompleto
+  chega perto de dado real
+- `coverage_gate.py` (dry-run de cobertura do candidato de engine desconhecida) carrega o candidato
+  via `importlib` **no mesmo processo** (sem subprocess) para inspecionar `iter_string_offsets`/
+  `decode_string`/`load_table` — risco de execução de código não confiável ACEITO
+  deliberadamente: o candidato é sempre um arquivo que o próprio operador está prestes a copiar
+  para `projects/<jogo>/connector/` e rodar de qualquer forma via `connector_smoke.py`/round-trip
+  depois; `coverage_gate` só antecipa essa execução para uma etapa anterior, não introduz uma
+  superfície nova
 
 **Gap residual:** sem verificação de integridade ANTES da primeira execução (apenas auditoria
 posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono-operador.
@@ -82,11 +92,14 @@ posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono
 
 **Controles atuais:**
 - `requirements-dev.txt` com versões compatíveis fixas (`~=`)
+- `pip-audit` roda em `quality.yml` (job `deps`) — CVEs em `requirements-dev`
+- `dependabot.yml` configurado — PRs automáticos de atualização de dependência
+- `gitleaks` roda em `quality.yml` (job `secrets`) — segredo commitado no diff + histórico
 
 **Gap residual:**
 - Sem hashes de integridade (`pip-compile --generate-hashes`)
-- Sem `pip-audit` ou `dependabot` para CVEs
-- Aceitável para ferramenta pessoal; adicionar se o projeto evoluir para uso compartilhado
+- Aceitável para ferramenta pessoal; hashes de integridade só justificam o custo se o projeto
+  evoluir para uso compartilhado
 
 ---
 
