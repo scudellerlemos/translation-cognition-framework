@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-run_game.py — DRIVER ponta-a-ponta (P2.5): roda TODOS os capitulos/cenas de um projeto em sequencia.
+run_game.py — DRIVER ponta-a-ponta: roda TODOS os capitulos/cenas de um projeto em sequencia.
 
 Elimina o "invocar run_chapter cap-a-cap manualmente". Descobre a estrutura do projeto sozinho:
   - modo CAPITULADO (ch_<N>_*): 1 chamada de run_chapter POR capitulo, na ordem numerica.

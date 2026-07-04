@@ -144,7 +144,7 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
   que mudou. Ver [ROADMAP — Prioridade #1](ROADMAP.md).
 - **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
   os arquivos de diálogo (evidence collector + tier classifier), gera um conector candidato (LLM
-  **apenas no bootstrap**, T2), valida cobertura + consistência (coverage gate + adversarial
+  **apenas no bootstrap**, quando a engine é desconhecida), valida cobertura + consistência (coverage gate + adversarial
   validator) e confirma via round-trip byte-idêntico. Após aprovação, o conector roda sem IA —
   versionado por manifesto + fingerprint (detecta patch do jogo e drift de script). Validado em
   três engines distintos: Aquaplus (Utawarerumono), Capcom DAT (Breath of Fire IV) e Unity
@@ -367,13 +367,13 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 **16 capítulos (11–23 + 30, 31, 39), 146 cenas, ~45.100 linhas.** Traduzidas, verificadas, reinseridas. Projeto arquivado.
 
-- Round-trip byte-idêntico (resíduo T4=0) · back-translation de alto risco · controle de spoiler (reveal Ukon=Oshtor) ✅
+- Round-trip byte-idêntico (resíduo=0) · back-translation de alto risco · controle de spoiler (reveal Ukon=Oshtor) ✅
 - Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
 - Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
 
-### Breath of Fire IV — ciclo de tradução completo, pendências em aberto
+### Breath of Fire IV — CONCLUÍDO ✅
 
-**125 cenas (AREAD + AREAS), todas `verified`. Reinserção concluída** (125 DAT files em `output/`, T4=0).
+**125 cenas (AREAD + AREAS), todas `verified`. Reinserção concluída** (125 DAT files em `output/`, 0 overflows).
 Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
 
 **Objetivos alcançados:**

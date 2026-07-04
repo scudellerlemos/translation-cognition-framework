@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tm_updater.py — D4: atualiza a TM da SERIE com traducoes ja APROVADAS pelo QA (nao toda traducao
+tm_updater.py — atualiza a TM da SERIE com traducoes ja APROVADAS pelo QA (nao toda traducao
 que sai do modelo -- so as que passaram pelo crivo humano de quality_review.py).
 
 sync_scenes() e chamado ao fim de quality_review.apply() com as cenas TOCADAS pelo ciclo de QA
@@ -125,7 +125,7 @@ def reset_game(series: str, source_game: str) -> int:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="D4: reset de TM da serie por retraducao de um jogo.")
+    ap = argparse.ArgumentParser(description="Reset de TM da serie por retraducao de um jogo.")
     ap.add_argument("series")
     ap.add_argument("source_game")
     ap.add_argument("--confirm", action="store_true", help="obrigatorio -- sem isso, so simula")

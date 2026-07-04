@@ -2,7 +2,7 @@
 """
 extract_template.py — TEMPLATE para Unity Addressables + tilde-CSV (TextAsset)
 
-Engine T1: Unity Addressables com localização em CSVs armazenados como TextAsset dentro
+Engine conhecida: Unity Addressables com localização em CSVs armazenados como TextAsset dentro
 de bundles. Delimitador ~. Colunas ::ID:: / ::EN:: (e ::PT:: / ::ES:: se já localizado).
 
 Projeto de referência: projects/souldiers/connector/extract.py

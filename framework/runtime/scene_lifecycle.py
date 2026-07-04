@@ -1,4 +1,4 @@
-"""scene_lifecycle.py — housekeeping/diagnostico de cena, extraido de run_scene.py (P4 hardening).
+"""scene_lifecycle.py — housekeeping/diagnostico de cena, extraido de run_scene.py (reforco de coesao de codigo).
 
 Extraido quando run_scene.py cruzou o limiar de leitura documentado no ROADMAP (ganhou 3 funcoes
 aditivas de housekeeping/diagnostico -- clean_failed_scene, prune_discontinued, _check_stale --

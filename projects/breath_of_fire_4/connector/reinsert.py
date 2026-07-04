@@ -11,7 +11,7 @@ Regras:
 - Reconstrução completa da seção de texto: pointer table + strings novas.
 - Se nova seção <= original: substituição in-place + padding com \x00.
 - Se nova seção > original: expansão + atualização do TOC e offsets subsequentes.
-- T4 (string individual excede byte_budget E a seção não cabe): reportar para reescrita.
+- Overflow individual (string excede byte_budget E a seção não cabe): reportar para reescrita.
 - O binário-fonte NUNCA é sobrescrito; saída vai para output/.
 """
 
@@ -238,7 +238,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     report: list[str] = []
-    t4_count = 0
+    overflow_count = 0
     files_modified = 0
 
     for fname, file_translations in sorted(per_file.items()):
@@ -259,7 +259,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         entry_idx, sec_off, sec_sz = result
         section = original_data[sec_off:sec_off + sec_sz]
 
-        # Verifica T4 individual (strings que excedem byte_budget próprio)
+        # Verifica overflow individual (strings que excedem byte_budget próprio)
         for offset_id, meta in string_meta.items():
             if meta['file'] != fname:
                 continue
@@ -269,9 +269,9 @@ def main(project_json: Path, source_override: str | None = None) -> None:
             budget = meta['byte_budget']
             if len(encoded) + 1 > budget:
                 report.append(
-                    f"- {fname}:{ptr_idx} T4_individual {len(encoded)+1}>{budget}b"
+                    f"- {fname}:{ptr_idx} individual_overflow {len(encoded)+1}>{budget}b"
                 )
-                t4_count += 1
+                overflow_count += 1
 
         # Reconstrói a seção e aplica patch
         new_section = rebuild_section(section, file_translations)
@@ -283,7 +283,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
         new_sz = len(new_section)
         delta = new_sz - sec_sz
-        tier = 'T1' if delta == 0 else ('T2' if delta < 0 else 'T3_expand')
+        tier = 'unchanged' if delta == 0 else ('shrunk' if delta < 0 else 'expanded')
         report.append(f"- {fname} [{tier}] seção: {sec_sz}->{new_sz} (delta={delta:+d}b)")
 
     # Grava relatório
@@ -291,12 +291,12 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     (root / 'artifacts' / 'reinsertion_report.md').write_text(
         f"# Reinsertion Report — Breath of Fire IV\n\n"
         f"Arquivos modificados: {files_modified}\n"
-        f"Strings T4 individual (overflow): {t4_count}\n\n"
+        f"Strings em overflow individual: {overflow_count}\n\n"
         f"{report_text}\n",
         encoding='utf-8',
     )
-    if t4_count:
-        print(f"ATENÇÃO: {t4_count} strings T4 individual -> reescrita LLM em lote")
+    if overflow_count:
+        print(f"ATENÇÃO: {overflow_count} strings em overflow individual -> reescrita LLM em lote")
     print(f"Output gravado em {out_dir} ({files_modified} arquivos)")
 
 

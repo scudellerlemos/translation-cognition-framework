@@ -220,7 +220,7 @@ def select_tm(tm, scene_rows, present_speakers):
 
 
 def _load_tm_series(cfg, root, rows) -> list:
-    """D4: TM da SERIE (outro jogo da mesma franquia, ver tm_lookup.py) -- match exato por
+    """TM da SERIE (outro jogo da mesma franquia, ver tm_lookup.py) -- match exato por
     src_key, mesma logica do tm_exact mas consultando tm/<serie>.json em vez da TM do PROJETO
     atual. Isolado por serie (nunca mistura franquias); [] se nenhum hit ou arquivo ausente --
     nunca falha o pack."""
