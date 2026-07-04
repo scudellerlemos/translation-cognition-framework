@@ -76,11 +76,13 @@ class ExtractionSkill(Skill):
             return {"status": "error", "error": str(e), "artifacts": []}
         dialogs_csv = project / cfg.get("source", {}).get("file", "artifacts/dialogs.csv")
 
+        import os
         cmd = [sys.executable, str(extract_script)]
-        env = None
+        # PYTHONIOENCODING/PYTHONUTF8 + errors="replace": mesma protecao de encoding do
+        # connector_mgr._run (conector pode emitir bytes nao-utf-8 no stdout/stderr).
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
         if dat_dir:
-            import os
-            env = {**os.environ, "BOF4_DAT_DIR": str(dat_dir)}
+            env["BOF4_DAT_DIR"] = str(dat_dir)
 
         try:
             result = subprocess.run(
@@ -89,7 +91,9 @@ class ExtractionSkill(Skill):
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
+                errors="replace",
                 env=env,
+                stdin=subprocess.DEVNULL,
                 timeout=300,
             )
         except subprocess.TimeoutExpired:

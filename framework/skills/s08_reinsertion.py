@@ -62,7 +62,10 @@ class ReinsertionSkill(Skill):
             script = _connector_script(project, cfg, "reinsert_script", "reinsert.py")
         except ValueError as e:
             return {"status": "error", "error": str(e), "artifacts": []}
-        env = {**os.environ, "BOF4_DAT_DIR": str(dat_dir)} if dat_dir else None
+        # PYTHONIOENCODING/PYTHONUTF8: mesma protecao de encoding do connector_mgr._run.
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
+        if dat_dir:
+            env["BOF4_DAT_DIR"] = str(dat_dir)
         try:
             result = subprocess.run(
                 [sys.executable, str(script)],

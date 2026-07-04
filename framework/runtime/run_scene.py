@@ -270,7 +270,10 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
     No modo defer_back, apenas registra o checkpoint de deferimento; state_index/metrics ficam em run_scene.
     `no_back`: pula a back-translation inteiramente (economia de custo; usuario confia no 1o passe).
     """
-    if no_back:
+    if no_back and require_back:
+        print(f"[4/6] AVISO: --no-back ignorado (--require-back tem precedencia) — "
+              f"back-translation vai rodar para {len(highs)} linha(s) risco>=high")
+    elif no_back:
         print(f"[4/6] back-translation: PULADA (--no-back) para {len(highs)} linha(s) risco>=high")
         _checkpoint(root, scene, {"high": len(highs), "back_skipped": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
