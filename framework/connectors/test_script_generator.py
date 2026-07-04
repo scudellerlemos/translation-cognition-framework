@@ -27,3 +27,24 @@ def test_generate_verify_chapter_returns_skeleton_content():
 def test_generate_verify_chapter_documents_exit_code_protocol():
     out = sg.generate_verify_chapter()
     assert "exit 0" in out and "exit 3" in out and "exit 1" in out
+
+
+def test_choose_pattern_token_table():
+    ev = {"has_control_tokens": True, "sample_encodings": {"ascii": 0.9}, "string_density": 0.5}
+    assert sg._choose_pattern(ev)[0] == "token_table"
+    out = sg.generate(ev)
+    assert "BYTE_TO_CHAR" in out and "GERADO AUTOMATICAMENTE" in out
+
+
+def test_choose_pattern_linear_scan():
+    ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 0.9}, "string_density": 0.5}
+    assert sg._choose_pattern(ev)[0] == "linear_scan"
+    out = sg.generate(ev)
+    assert "iter_string_offsets" in out and "_MIN_STRING_LEN" in out
+
+
+def test_choose_pattern_pointer_table():
+    ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 0.3}, "string_density": 0.1}
+    assert sg._choose_pattern(ev)[0] == "pointer_table"
+    out = sg.generate(ev)
+    assert "_TOC_OFFSET" in out and "struct.unpack_from" in out

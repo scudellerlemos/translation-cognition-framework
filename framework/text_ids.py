@@ -3,8 +3,13 @@
 Módulo-FOLHA (deps só `re`/`hashlib`, nenhum import de framework). Existe para que a
 canonicalização de `scene_id` e a chave de TM por source normalizado tenham UMA definição —
 antes viviam duplicadas em `context_pack.scene_id_of`, `state_index._key/_norm`,
-`migrate_from_flat._sid` e `export_to_flat._src_key`. Por ser folha sem dependências, `db/`
-pode importá-lo sem acoplar a migração ao pack-builder pesado (`context_pack`).
+`migrate_from_flat._sid` e `export_to_flat._src_key`.
+
+Mora na RAIZ de `framework/` (não em `runtime/` nem em `db/`) de propósito: `db/` importava
+daqui via manipulação de `sys.path` apontando para dentro de `runtime/`, criando uma dependência
+circular (`db` -> `runtime` -> `db`, via `context_pack.py` importando `store.Store`). Um módulo
+neutro que nenhum dos dois pacotes "possui" quebra o ciclo — `db/` e `runtime/` importam daqui,
+nunca um do outro por causa deste módulo.
 
 Os nomes antigos viram delegação (re-export), então nenhum caller precisou mudar.
 """

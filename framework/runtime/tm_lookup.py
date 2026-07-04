@@ -30,6 +30,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+if str(_HERE.parent) not in sys.path:
+    sys.path.insert(0, str(_HERE.parent))
 from text_ids import tm_key  # noqa: E402  (mesma normalizacao de chave que a TM por-projeto usa)
 
 _REPO_ROOT = _HERE.parent.parent   # framework/runtime -> framework -> raiz do repo
