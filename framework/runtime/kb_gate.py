@@ -13,7 +13,7 @@ Checagens (deterministas, sem rede):
   FRONTEIRA (bloqueia se declarada): project.json `kb_frontier` = scene_id max coberto pela pesquisa
     (ex.: "12_17"). Cena alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui.
     Se `kb_frontier` nao for declarado, a fronteira do research_log e so REPORTADA (warning), nao bloqueia.
-  PROFUNDIDADE (soft, P4 hardening): 'reconciled' sozinho e so um marcador -- toda entidade com
+  PROFUNDIDADE (soft, reforco de coesao de codigo): 'reconciled' sozinho e so um marcador -- toda entidade com
     conteudo afirmado (nao-UNSOURCED) no universe_knowledge_base.md precisa de ratificacao humana
     em kb_ratified.csv (mesmo mecanismo que kb_reconcile.py ja usa pro caminho draft_ollama, aqui
     generalizado pro caminho manual/skill-03). Bypassavel via --skip-kb-gate como qualquer problem.
@@ -97,7 +97,7 @@ def check(root, scene) -> dict:
             if re.search(r"human_input\s*:\s*pending", txt, re.I):
                 warnings.append("research_log.md: status=reconciled mas human_input=pending — "
                                 "atualize para 'confirmed' ou 'declined' (proveniência incompleta).")
-            # PROFUNDIDADE DA FASE 0 (P4 hardening — generalizado do kb_reconcile.py, que so cobria
+            # PROFUNDIDADE DA FASE 0 (reforco de coesao de codigo — generalizado do kb_reconcile.py, que so cobria
             # o caminho draft_ollama do kb_build_ollama.py): 'reconciled' sozinho e so um MARCADOR,
             # nao garante que a reconciliacao teve profundidade de verdade. Exige tambem ratificacao
             # humana por entidade (kb_ratified.csv) — seja o research_log.md escrito a mao (skill 03)

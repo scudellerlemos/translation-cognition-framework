@@ -150,5 +150,6 @@ Detalhe → [`STATE_MANAGEMENT.md`](STATE_MANAGEMENT.md).
 |---|---|---|---|
 | `utawarerumono` | flat files | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
 | `breath_of_fire_4` | flat files (corpus migrado *para dentro* de `translation_software`) | Haiku/Sonnet/Opus | concluído — 125 cenas |
+| `souldiers` | flat files | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceiro engine (Unity Addressables) |
 | `translation_software` | **SQLite + RAG nº1/nº2 ativos** | — | referência de arquitetura DB, não um projeto de tradução em progresso |
 | `translation_local` | — | **Ollama local** (qwen2.5:14b, não embeddings) | POC de hardware (RX 6650 XT) |

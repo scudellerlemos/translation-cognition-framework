@@ -1,4 +1,4 @@
-"""test_run_game.py — cobre o driver ponta-a-ponta (P2.5): descoberta capitulada/flat, teto global
+"""test_run_game.py — cobre o driver ponta-a-ponta: descoberta capitulada/flat, teto global
 de gasto, parada na 1a falha, e retomada idempotente. `run_chapter.run_chapter` e mockado nos testes
 que nao precisam do pipeline real; o teste de retomada usa o real (todas as cenas ja verified ->
 nenhuma chamada de API acontece, run_chapter pula tudo sozinho).

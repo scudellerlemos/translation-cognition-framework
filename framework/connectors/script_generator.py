@@ -1,5 +1,5 @@
 """
-script_generator.py — gerador de candidato de conector para engines T2.
+script_generator.py — gerador de candidato de conector para engines desconhecidas.
 
 Gera um extract.py com código pré-preenchido baseado nas evidências detectadas,
 em vez de um skeleton com NotImplementedError em todos os pontos.
@@ -18,7 +18,7 @@ Três padrões de stub, escolhidos automaticamente pelas evidências:
                   lê array de offsets uint32 e jump para cada string.
                   O dev adapta o tamanho e posição do TOC.
 
-Para T1 este módulo NÃO é chamado — o conector de referência é reutilizado.
+Para engine conhecida este módulo NÃO é chamado — o conector de referência é reutilizado.
 """
 from __future__ import annotations
 
@@ -321,7 +321,7 @@ _SKELETON_DIR = Path(__file__).resolve().parent / "_skeleton"
 
 
 def generate_build_plan_chapter() -> str:
-    """Esqueleto de build_plan_chapter.py (D6b) — protocolo comum (~70-80% identico entre
+    """Esqueleto de build_plan_chapter.py — protocolo comum (~70-80% identico entre
     conectores, confirmado comparando BoF4/Utawarerumono/Souldiers); so a preservacao de tokens
     estruturais do engine muda por projeto (marcado # ADAPTAR no arquivo). Ao contrario de
     `generate()` (extract.py, 3 padroes por evidencia), aqui NAO ha branching -- e sempre o
@@ -330,7 +330,7 @@ def generate_build_plan_chapter() -> str:
 
 
 def generate_verify_chapter() -> str:
-    """Esqueleto de verify_chapter.py (D6b) — protocolo de SAIDA comum (exit 0/1/3 +
+    """Esqueleto de verify_chapter.py — protocolo de SAIDA comum (exit 0/1/3 +
     VERIFY_STATUS:{json}), consumido por connector_mgr._verify_status/run_scene.py sem mudanca
     entre projetos. A reconstrucao byte-a-byte (`_rebuild`, marcado # ADAPTAR) e 100%
     especifica do formato -- nao da p/ generalizar, exige o mesmo julgamento humano/LLM que
@@ -339,7 +339,7 @@ def generate_verify_chapter() -> str:
 
 
 def generate(evidence: dict, engine_hint: str | None = None) -> str:
-    """Gera candidato de extract.py para engines T2 com código pré-preenchido.
+    """Gera candidato de extract.py para engines desconhecidas com código pré-preenchido.
 
     Escolhe o padrão de stub automaticamente pelas evidências detectadas.
     """
@@ -362,7 +362,7 @@ def generate(evidence: dict, engine_hint: str | None = None) -> str:
 
 def _render_header(evidence: dict, engine_hint: str | None, pattern: str, reason: str) -> str:
     lines = [
-        "# GERADO AUTOMATICAMENTE por script_generator.py (T2 — completar e testar)",
+        "# GERADO AUTOMATICAMENTE por script_generator.py (engine desconhecida — completar e testar)",
         "#",
         "# Evidências detectadas:",
         f"#   file_count    : {evidence.get('file_count', '?')}",

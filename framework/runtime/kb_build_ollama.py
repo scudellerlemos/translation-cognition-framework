@@ -3,7 +3,7 @@
 kb_build_ollama.py — sintetiza um RASCUNHO de research_log.md + universe_knowledge_base.md usando
 Ollama LOCAL (zero custo de API), a partir do cache produzido por kb_fetch.py.
 
-Parte 2 do pipeline hibrido de KB (P1.7-E). NAO substitui a Fase 1B (reconciliacao IA+humano) da
+Parte 2 do pipeline hibrido de KB (onboarding de baixo custo). NAO substitui a Fase 1B (reconciliacao IA+humano) da
 skill 03 -- produz so o INSUMO BRUTO (extracao factual por entidade, com citacao de fonte), sempre
 com status: draft_ollama (NUNCA reconciled). kb_gate.py ja bloqueia rascunho nao-reconciliado sem
 nenhuma mudanca (a regex de status nao casa draft_ollama) -- a promocao pra reconciled continua

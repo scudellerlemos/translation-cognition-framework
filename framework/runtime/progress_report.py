@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-progress_report.py — observabilidade de progresso do JOGO INTEIRO (P2.5): % concluido, linhas/min,
+progress_report.py — observabilidade de progresso do JOGO INTEIRO: % concluido, linhas/min,
 ETA, taxa de falha. Complementa `cost_report.py` (que so mede GASTO); aqui a metrica e COBERTURA
 do corpus (linhas verified vs. total), independente de custo.
 

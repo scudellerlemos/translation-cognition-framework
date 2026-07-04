@@ -1,4 +1,4 @@
-"""test_tm_updater.py — cobre sync/reset da TM por serie (D4): grava com source_game, idempotente
+"""test_tm_updater.py — cobre sync/reset da TM por serie: grava com source_game, idempotente
 (sem duplicata), reset remove SO do jogo certo, reset avisa antes de remover.
 """
 import json

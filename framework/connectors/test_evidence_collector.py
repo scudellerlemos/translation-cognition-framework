@@ -1,4 +1,4 @@
-"""Testes de contrato para evidence_collector.py e tier_classifier.py (D1)."""
+"""Testes de contrato para evidence_collector.py e tier_classifier.py."""
 import json
 import sys
 from pathlib import Path
@@ -96,7 +96,7 @@ def test_string_density():
 
 
 # ---------------------------------------------------------------------------
-# tier_classifier — T1 Capcom DAT
+# tier_classifier — engine conhecida (Capcom DAT)
 # ---------------------------------------------------------------------------
 
 @pytest.fixture
@@ -116,9 +116,9 @@ def _capcom_evidence():
     }
 
 
-def test_classify_t1_capcom(registry):
+def test_classify_known_engine_capcom(registry):
     result = classify(_capcom_evidence(), registry)
-    assert result["tier"] == "T1"
+    assert result["tier"] == "known_engine"
     assert result["engine_id"] == "capcom_dat_ps1"
     assert result["confidence"] > 0.5
     assert result["blocked"] is False
@@ -136,9 +136,9 @@ def _sdat_evidence():
     }
 
 
-def test_classify_t1_aquaplus(registry):
+def test_classify_known_engine_aquaplus(registry):
     result = classify(_sdat_evidence(), registry)
-    assert result["tier"] == "T1"
+    assert result["tier"] == "known_engine"
     assert result["engine_id"] == "aquaplus_sdat"
     assert result["blocked"] is False
 
@@ -155,14 +155,14 @@ def _unknown_evidence():
     }
 
 
-def test_classify_t2_unknown(registry):
+def test_classify_unknown_engine(registry):
     result = classify(_unknown_evidence(), registry)
-    assert result["tier"] == "T2"
+    assert result["tier"] == "unknown_engine"
     assert result["engine_id"] is None
     assert result["blocked"] is False
 
 
-def test_classify_t3_encrypted(registry):
+def test_classify_blocked_encrypted(registry):
     evidence = {
         "file_count": 10,
         "families": {"DATA.PKG": 10},
@@ -173,12 +173,12 @@ def test_classify_t3_encrypted(registry):
         "string_density": 0.02,
     }
     result = classify(evidence, registry)
-    assert result["tier"] == "T3"
+    assert result["tier"] == "blocked"
     assert result["blocked"] is True
 
 
 # ---------------------------------------------------------------------------
-# script_generator — stub T2
+# script_generator — stub de engine desconhecida
 # ---------------------------------------------------------------------------
 
 def test_script_generator_returns_string():
@@ -210,14 +210,14 @@ def test_script_generator_is_documented_stub():
 # discover CLI (smoke — sem chamar main())
 # ---------------------------------------------------------------------------
 
-def test_discover_run_t1(tmp_path, registry):
+def test_discover_run_known_engine(tmp_path, registry):
     from discover import run
     game = _make_dat_dir(tmp_path, n=60)
     exit_code = run(game, as_json=True)
     assert exit_code == 0
 
 
-def test_discover_run_t3(tmp_path, registry):
+def test_discover_run_blocked(tmp_path, registry):
     from discover import run
     import os
     game = tmp_path / "encrypted"
@@ -225,4 +225,4 @@ def test_discover_run_t3(tmp_path, registry):
     for i in range(5):
         (game / f"DATA{i:02d}.PKG").write_bytes(os.urandom(8192))
     exit_code = run(game, as_json=True)
-    assert exit_code == 1  # T3 → exit 1
+    assert exit_code == 1  # bloqueado → exit 1

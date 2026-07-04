@@ -64,7 +64,7 @@ in-game**. Esse marco destravou tudo o que veio depois.
 | **Passo 00 — extração** | `extract.py` extrai **por arco** usando `sdat_format.py` → `artifacts/dialogs.csv` (com `byte_budget`). Container `.sdat` mapeado (header `Filename`/`Pack`, 353 scripts) |
 | **Gate de round-trip** | ✅ byte-a-byte — travado por `connector/test_roundtrip.py` (pytest, **16 testes**) |
 | **Gate de charset** | ❌ `false` (acentos viram `@` in-game) → **transliteração na gravação**; tradução canônica mantém acentos |
-| **Passo 08 — reinserção** | `reinsert.py` → `output/ScriptEvent.sdat` + `.ips`. **Resíduo T4=0**; **ponteiros relocados resolvem dentro do arquivo** |
+| **Passo 08 — reinserção** | `reinsert.py` → `output/ScriptEvent.sdat` + `.ips`. **Resíduo=0**; **ponteiros relocados resolvem dentro do arquivo** |
 | **Gate in-game** | ✅ **validado** — pt-BR exibe (`artifacts/evidence/Fasea*.png`); linha relocada pelo Plano B exibe e o jogo avança (`artifacts/evidence/testeplanob*.png`) |
 
 **Aprendizados** em [`artifacts/decision_log.md`](artifacts/decision_log.md) e [`artifacts/extraction_log.md`](artifacts/extraction_log.md).

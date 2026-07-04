@@ -712,7 +712,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None) -> dict:
             _fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     except OSError:
         pass
-    # D4: traducoes APROVADAS pelo QA alimentam a TM da SERIE de volta (so as cenas tocadas nesta
+    # traducoes APROVADAS pelo QA alimentam a TM da SERIE de volta (so as cenas tocadas nesta
     # rodada; cenas 100% limpas, sem nenhuma correcao, nunca passam por aqui -- ver
     # quality_review.py sync-tm p/ forcar sync manual de capitulos ja verified sem correcoes).
     # Best-effort: falha de sync-TM nunca derruba o apply em si (o que importa, verbatim+IA, ja rodou).
@@ -753,7 +753,7 @@ def main():
     pt.add_argument("project")
     pt.add_argument("relato", nargs="?", default=None,
                     help="relato_tester.csv; OMITA p/ usar teste_ingame/relato_tester.csv")
-    ps = sub.add_parser("sync-tm", help="D4: forca sync da TM da serie p/ capitulos ja verified SEM "
+    ps = sub.add_parser("sync-tm", help="Forca sync da TM da serie p/ capitulos ja verified SEM "
                                         "nenhuma correcao (apply() so sincroniza cenas TOCADAS pelo QA)")
     ps.add_argument("project")
     ps.add_argument("chapter", nargs="?", default=None, help="capitulo (ex.: 11); OMITA p/ o jogo INTEIRO")

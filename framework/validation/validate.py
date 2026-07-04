@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-validate.py — Validation leve (B1): valida os artefatos de um projeto contra os schemas
+validate.py — Validation leve: valida os artefatos de um projeto contra os schemas
 (framework/schemas/artifacts_schema.md) e os invariantes, de forma EXECUTÁVEL.
 
 Genérico e sem dados de obra: descobre tudo lendo `project.json` (id_column, formatting_tokens) e os

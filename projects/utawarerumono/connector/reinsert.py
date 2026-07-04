@@ -19,14 +19,14 @@ Estratégia de encaixe (cascata determinística, sem LLM):
 - CHARSET: a fonte do jogo NÃO tem diacríticos (acento -> '@'). Decisão: TRANSLITERAR na gravação
   (á->a, ç->c, ...). A tradução canônica (approved_translations.csv) permanece com acento; só os
   BYTES gravados no jogo são dobrados para ASCII.
-- T1 in_place : len(transliterado) <= byte_budget -> grava no slot original.
+- in_place : len(transliterado) <= byte_budget -> grava no slot original.
 - RELOC intra-arquivo : se algum membro de um run estoura, anexa o run inteiro (head + continuações)
                 ao FIM da região do PRÓPRIO arquivo, faz o arquivo crescer (size do Pack é reescrito
                 via sdat_format.rebuild_container) e reescreve o(s) ponteiro(s) `50 00`+u32 do head
                 com o valor FILE-RELATIVO = posição local no arquivo. Continuações viajam junto.
                 (O gate in-game REPROVOU anexar ao fim do CONTAINER — o engine carrega cada arquivo
                 num buffer próprio dimensionado pelo `size` do Pack; ver artifacts/decision_log.md.)
-- T4 resíduo  : caso irredutível (overflow sem head identificável) -> issue para o Passo 06c.
+- resíduo  : caso irredutível (overflow sem head identificável) -> issue para o Passo 06c.
 
 Regras de governança:
 - NUNCA escreve no binário-fonte. Lê o original (read-only) e grava em output/ no projeto.
@@ -200,9 +200,9 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
             f = S.file_of(off, files)
             if f is not None and len(enc) <= budget:
                 file_inplace.setdefault(f.index, []).append((off - f.offset, enc, budget, off_hex))
-                report.append((off_hex, "T1_in_place", len(enc), budget, enc.decode("utf-8", "replace")))
+                report.append((off_hex, "in_place", len(enc), budget, enc.decode("utf-8", "replace")))
             else:
-                report.append((off_hex, "T4_residuo", len(enc), budget, enc.decode("utf-8", "replace")))
+                report.append((off_hex, "residuo", len(enc), budget, enc.decode("utf-8", "replace")))
 
     file_reloc = {}     # idx -> [(head, run, [ptr_sites])]
     for head in sorted(relocated_runs):
@@ -248,14 +248,14 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     return buf, repoints, report
 
 
-# ----------------------------------------------------------------------------- T4: resíduo em lote
-def collect_t4_residue(report, src_by):
-    """Linhas que NEM in_place NEM relocação resolveram (tier T4_residuo) — overflow irredutível.
+# ----------------------------------------------------------------------------- resíduo em lote
+def collect_residue(report, src_by):
+    """Linhas que NEM in_place NEM relocação resolveram (tier residuo) — overflow irredutível.
     Vira um LOTE para a IA reescrever mais curto numa ÚNICA passada (princípio 'LLM só no resíduo').
     Retorna lista de dicts (offset, text_source, current_target, byte_budget, target_bytes, over_by)."""
     out = []
     for off_hex, tier, nbytes, budget, txt in report:
-        if tier == "T4_residuo":
+        if tier == "residuo":
             out.append({
                 "offset": off_hex,
                 "text_source": src_by.get(off_hex, ""),
@@ -268,8 +268,8 @@ def collect_t4_residue(report, src_by):
     return out
 
 
-def write_t4_batch(path, src_name, residue):
-    """Grava artifacts/t4_residue.json: o LOTE a reescrever (vazio = nada a fazer).
+def write_residue_batch(path, src_name, residue):
+    """Grava artifacts/residue.json: o LOTE a reescrever (vazio = nada a fazer).
     A IA reescreve cada `current_target` para caber em `byte_budget`, devolve no translation_plan.json
     (base_translation), e o fluxo normal (poc_pipeline -> approved -> reinsert) reaplica. Governança:
     a IA PROPÕE no plano; o usuário aprova. Nenhuma escrita de bytes à mão."""
@@ -339,12 +339,12 @@ def main():
     tiers = {}
     for _, tier, *_ in report:
         tiers[tier] = tiers.get(tier, 0) + 1
-    residuo = tiers.get("T4_residuo", 0)
+    residuo = tiers.get("residuo", 0)
 
-    # T4 — exporta o LOTE de resíduo irredutível (vazio hoje: Plano B reloca tudo)
+    # exporta o LOTE de resíduo irredutível (vazio hoje: Plano B reloca tudo)
     src_by = {o: s for o, s, _ in budgets}
-    t4 = collect_t4_residue(report, src_by)
-    write_t4_batch(ART / "t4_residue.json", OUT.name, t4)
+    residue_batch = collect_residue(report, src_by)
+    write_residue_batch(ART / "residue.json", OUT.name, residue_batch)
 
     files = S.parse_pack(original)
     by_index = {f.index: f for f in files}
@@ -366,7 +366,7 @@ def main():
         "- Estratégia: in_place + relocação INTRA-ARQUIVO (run anexado ao fim do próprio arquivo; "
         "Pack reescrito). EOF-append (fim do container) foi REPROVADO in-game — ver decision_log.md.",
         "- Distribuição por tier: " + ", ".join(f"{k}={v}" for k, v in sorted(tiers.items())),
-        f"- Overflows não resolvidos (T4): {residuo}",
+        f"- Overflows não resolvidos: {residuo}",
         "",
         "## Relocações (head -> offset local no arquivo crescido)", "",
     ]
@@ -393,9 +393,9 @@ def main():
     REPORT.write_text("\n".join(lines), encoding="utf-8")
 
     print(f"Tiers: {tiers}")
-    print(f"Relocações: {len(repoints)}  |  Arquivos crescidos: {len(grown)}  |  Resíduo T4: {residuo}")
+    print(f"Relocações: {len(repoints)}  |  Arquivos crescidos: {len(grown)}  |  Resíduo: {residuo}")
     if residuo:
-        print(f"T4 LOTE -> {ART / 't4_residue.json'}  ({residuo} linha(s) p/ reescrita LLM em lote)")
+        print(f"LOTE DE RESÍDUO -> {ART / 'residue.json'}  ({residuo} linha(s) p/ reescrita LLM em lote)")
     print(f"Tamanho: {len(original)} -> {len(buf)} (+{len(buf) - len(original)})")
     print(f"SAÍDA  -> {OUT}")
     print(f"PATCH  -> {IPS}")

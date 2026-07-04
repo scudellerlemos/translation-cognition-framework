@@ -13,7 +13,7 @@ e emite:
 
 Valida: cobertura total, tokens de timing (_N_) e tags TMP (<color=X>, <b>) preservados por
 linha (estruturais do engine — ver project.json connector.control_codes), risk>=medium exige
-risk_notes. Sem T4/byte_budget (project.json length_constraints.mode="none" — engine faz wrap
+risk_notes. Sem resíduo/byte_budget (project.json length_constraints.mode="none" — engine faz wrap
 automático), diferente do BoF4.
 
 Uso: python build_plan_chapter.py <scene>   ex.: python build_plan_chapter.py EUDER_PRESENTATION

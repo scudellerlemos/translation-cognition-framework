@@ -3,7 +3,7 @@
 connector_smoke.py — smoke test de round-trip para conectores em desenvolvimento.
 
 Análogo ao batch_smoke.py (que valida a API batch), mas para o conector local:
-verifica 4 invariantes antes de qualquer tradução ou iteração de conector T2.
+verifica 4 invariantes antes de qualquer tradução ou iteração de conector de engine desconhecida.
 
   1. extract.py roda sem erro (exit 0)
   2. dialogs.csv tem as colunas obrigatórias (offset/id_col, text_*, byte_budget)
@@ -18,7 +18,7 @@ Uso:
 Exit 0 = todos os invariantes testados passaram.
 Exit 1 = algum falhou (diagnóstico no stdout).
 
-Por que isso importa para T2:
+Por que isso importa para engine desconhecida:
   Sem smoke test, cada iteração de "implementar → rodar → ler output → diagnosticar" é
   feita manualmente ou via tokens de LLM. O smoke test comprime esse loop a segundos.
 """

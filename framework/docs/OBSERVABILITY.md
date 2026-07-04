@@ -1,7 +1,10 @@
 # Observability — métricas do harness
 
-Estado: **especificação (P1)**. O `run_scene` já é o ponto natural de instrumentação; este doc define
-o que coletar e onde, para validar o diagnóstico (custo está na tradução ou na governança?) com número.
+Estado: **implementado** (não mais só especificação). O `run_scene` é o ponto de instrumentação
+por cena (`metrics.jsonl`, `api_ledger.jsonl`); `cost_report.py` agrega o gasto por capítulo;
+`progress_report.py` cobre a camada agregada do JOGO INTEIRO (% concluído, linhas/min, ETA, taxa de
+falha), chamado por `run_game.py`. Este doc define o que coletar e onde, para validar o diagnóstico
+(custo está na tradução ou na governança?) com número.
 
 ## Onde instrumentar
 
@@ -30,7 +33,7 @@ A proporção a mirar é **tradução : governança ≈ 70:30 ou melhor** (gover
 | consistência terminológica | TM/glossário hits vs divergências no pack | drift de termo |
 | **taxa de retrabalho** | linhas reprovadas no QA / total | qualidade do 1º passe |
 | back-translation pass-rate | `back_translation_<scene_id>.json` (pass/revise) | risco real pego |
-| resíduo T4 | `verify_chapter` | overflow não resolvido (deve ser 0) |
+| resíduo | `verify_chapter` | overflow não resolvido (deve ser 0) |
 
 ## Sinais de saúde da arquitetura (o que validar)
 

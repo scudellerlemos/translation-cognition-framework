@@ -34,16 +34,22 @@ domínio). Qualquer outra deve ser expandida.
 | `TM` | Translation Memory (memória de tradução) | `tm_exact`, `tm_voice`, `translation_memory.jsonl` |
 | `QA` | Quality Assurance | skills 06b/07, `qa_report.md` |
 | `BIN` / `SDAT` | formatos de container binário do jogo | conector (`sdat_format.py`) |
-| `T4` | Tier 4 do cascade de reinserção (resíduo que exige cognição) | `t4_residue.json`, skill 08 |
 | `scene_id` | id da cena (ex.: `12_03`), derivado de `ch_12_03` por `scene_id_of()` | todo o runtime |
 
 ## 3.1. Itens de planejamento têm NOME, não código
 
 Itens de risco/hardening/gap são identificados por **nome descritivo** — em código **e** nos
-documentos. Códigos crípticos (`H2`, `R5`, `R-CUSTO`, `GAP D`…) estão **aposentados**: eram mal
-desenhados (o mesmo `R3` chegou a significar coisas diferentes em tabelas diferentes) e obrigavam quem
-lia a abrir o ROADMAP para decifrar. Use sempre o nome (ex.: "Fonte única de paths", não "H2";
-`# paths.py: fonte única do contrato de caminhos`, não `# H2`).
+documentos. Códigos crípticos (`H2`, `R5`, `R-CUSTO`, `GAP D`, `D1`–`D6`, `B1`–`B4`, `P1.7`,
+`P2.5`…) estão **aposentados**: eram mal desenhados (o mesmo `R3` chegou a significar coisas
+diferentes em tabelas diferentes) e obrigavam quem lia a abrir o ROADMAP para decifrar. Use sempre
+o nome (ex.: "Fonte única de paths", não "H2"; `# paths.py: fonte única do contrato de caminhos`,
+não `# H2`).
+
+A mesma regra vale para tiers numerados: o tier de descoberta de engine usa `known_engine` /
+`unknown_engine` / `blocked` (não `T1`/`T2`/`T3`); a cascata de encaixe de bytes na reinserção usa
+nomes descritivos por conector (ex.: `in_place`/`residuo` no Utawarerumono, `unchanged`/`shrunk`/
+`expanded`/`individual_overflow` no BoF4, `direct`/`repoint`/`trimmed`/`residue` no template) — não
+`T1`–`T4`. `T4` foi retirado do glossário de abreviações aceitas (§3) por esse motivo.
 
 O **de-para** código-antigo → nome-atual vive em [`GLOSSARIO.md`](GLOSSARIO.md) (só para quem
 encontrar um código em commits/PRs antigos).

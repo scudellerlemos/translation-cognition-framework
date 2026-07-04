@@ -19,7 +19,7 @@ Aquaplus/SDAT usado no Utawarerumono.
 - Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico ✅
 - Pipeline completo (Fases 00–08): KB, glossário, planejamento, tradução, QA, reinserção ✅
 - **125 cenas (AREAD + AREAS), todas `verified`** — round-trip byte-idêntico, back-translation de alto risco ✅
-- 125 DAT files em `output/`, T4=0 (sem overflow) ✅
+- 125 DAT files em `output/`, 0 overflows ✅
 - QA humana concluída ✅
 - Validação in-game: OK ✅
 - Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40)

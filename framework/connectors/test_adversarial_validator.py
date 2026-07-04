@@ -1,4 +1,4 @@
-"""test_adversarial_validator.py — cobre as 3 checagens de consistencia sobre `per_file` (D2).
+"""test_adversarial_validator.py — cobre as 3 checagens de consistencia sobre `per_file`.
 Fixtures sinteticas de `per_file` (shape que coverage_gate.check() produz), sem depender dele.
 """
 import sys

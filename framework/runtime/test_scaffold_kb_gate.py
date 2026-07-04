@@ -1,5 +1,5 @@
 """test_scaffold_kb_gate.py — trava de regressao pro gap real do onboarding do Souldiers:
-scaffold_project.py (P1.7-A) e kb_gate.py (P1.5) sao mantidos por skills/codigo separados e ja
+scaffold_project.py e kb_gate.py sao mantidos por skills/codigo separados e ja
 divergiram silenciosamente 2x (glossary.csv sem 'updated_date'; universe_knowledge_base.md nunca
 scaffoldado). Este teste roda o par ponta-a-ponta pra qualquer divergencia futura quebrar aqui,
 nao num piloto pago de outro jogo.
@@ -69,7 +69,7 @@ def test_scaffold_plus_real_kb_content_passes_gate(tmp_path):
 
 
 def test_scaffold_reports_missing_connector_without_creating_fake_stub(tmp_path):
-    """scaffold() (D6c) NAO deve criar stub fake de build_plan_chapter.py/verify_chapter.py --
+    """scaffold() NAO deve criar stub fake de build_plan_chapter.py/verify_chapter.py --
     so reportar o que falta (mesma governanca do KB: nunca engana o gate com placeholder)."""
     scaffold_project.scaffold(tmp_path, title="T")
     _write_project_json(tmp_path, "T")

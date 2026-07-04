@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 kb_reconcile.py — promove o rascunho do kb_build_ollama.py (status: draft_ollama) pra reconciled,
-SO depois de ratificacao humana explicita. Fecha o loop de governanca do P1.7-E (kb_fetch.py +
+SO depois de ratificacao humana explicita. Fecha o loop de governanca do onboarding de baixo custo (kb_fetch.py +
 kb_build_ollama.py produzem so o insumo bruto; a Fase 1B da skill 03 continua sendo julgamento
 humano, nao um script).
 

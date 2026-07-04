@@ -25,7 +25,7 @@ python framework/runtime/run_scene.py <projeto> <cena> [--backend in-session|api
 - **[4] back-translation** em `risk >= high`. Por padrão é **reportada** (não bloqueia); com
   `--require-back` bloqueia até existir `back_translation_<scene_id>.json`.
 - **[5] verify_chapter** exige round-trip idêntico (approved={}), cada offset lido == approved
-  transliterado, **resíduo T4 = 0**, ponteiros resolvendo dentro do arquivo. Falha → `verify_failed`.
+  transliterado, **resíduo = 0**, ponteiros resolvendo dentro do arquivo. Falha → `verify_failed`.
 
 ## Checkpoint / resume (`run_state.json`)
 

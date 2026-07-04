@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-adversarial_validator.py — D2: 3 checagens de consistencia sobre os resultados por-arquivo do
+adversarial_validator.py — 3 checagens de consistencia sobre os resultados por-arquivo do
 coverage_gate.py. Roda DEPOIS do coverage_gate (recebe `per_file` ja computado -- nao reimporta o
 candidato nem re-le os arquivos). Nao substitui o round-trip (connector_smoke.py/
 test_roundtrip.py), que continua sendo o portao FINAL e inegociavel de aceitacao.
@@ -12,9 +12,9 @@ test_roundtrip.py), que continua sendo o portao FINAL e inegociavel de aceitacao
      entre amostras do mesmo formato, sinal de bug dependente de layout especifico.
   3. Offsets sobrepostos dentro de 1 arquivo -- bug real de geracao/duplicacao no candidato.
 
-Interface T3 (contrato de escape, humano implementa extract/reinsert/validate manualmente): reusa
-este modulo SEM NENHUMA adaptacao -- as checagens dependem so do shape de `per_file` (produzido
-por coverage_gate.check()), nao de quem escreveu o candidato.
+Interface de escape (engine bloqueada, humano implementa extract/reinsert/validate manualmente):
+reusa este modulo SEM NENHUMA adaptacao -- as checagens dependem so do shape de `per_file`
+(produzido por coverage_gate.check()), nao de quem escreveu o candidato.
 
 Uso: chamado por coverage_gate.py main() apos check(); standalone via main() so pra depuracao.
 """

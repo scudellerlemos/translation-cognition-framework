@@ -1,5 +1,5 @@
 """
-discover.py — CLI do Generic Connector System (D1).
+discover.py — CLI do Generic Connector System.
 
 Detecta automaticamente o engine de um diretório de jogo e orienta o próximo passo.
 
@@ -23,7 +23,7 @@ from tier_classifier import existence_gate, load_registry
 
 
 def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None) -> int:
-    """Executa a descoberta. Retorna exit code (0 = T1/T2 tratável; 1 = T3 bloqueado; 2 = erro)."""
+    """Executa a descoberta. Retorna exit code (0 = engine tratável, conhecida ou não; 1 = bloqueado; 2 = erro)."""
     if not game_dir.is_dir():
         print(f"ERRO: diretório não encontrado: {game_dir}", file=sys.stderr)
         return 2
@@ -36,8 +36,8 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
         return 2
 
     registry = load_registry()
-    # D5 — gate de existencia: existence_gate() formaliza que SO T2 aciona geracao (must_generate);
-    # T1 (engine conhecida) e T3 (bloqueado) NUNCA chamam script_generator, estruturalmente.
+    # Gate de existencia: existence_gate() formaliza que SO engine desconhecida aciona geracao
+    # (must_generate); engine conhecida e bloqueado NUNCA chamam script_generator, estruturalmente.
     result = existence_gate(evidence, registry)
     result["evidence_summary"] = {
         "file_count": evidence["file_count"],
@@ -50,7 +50,7 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
 
     if as_json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        return 0 if result["tier"] != "T3" else 1
+        return 0 if result["tier"] != "blocked" else 1
 
     _print_report(result, game_dir, registry)
 
@@ -62,7 +62,7 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
         out.write_text(stub, encoding="utf-8")
         print(f"\nStub gerado em: {out}")
 
-    return 0 if result["tier"] != "T3" else 1
+    return 0 if result["tier"] != "blocked" else 1
 
 
 def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
@@ -71,7 +71,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
     print(f"  RESULTADO: Tier {tier}")
     print(f"{'=' * 60}")
 
-    if tier == "T1":
+    if tier == "known_engine":
         engine_id = result["engine_id"]
         engine = next((e for e in registry if e["id"] == engine_id), {})
         print(f"  Engine: {engine.get('name', engine_id)}")
@@ -87,7 +87,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print(f"\n    Depois: pytest connector/test_roundtrip.py --dat-dir <game_dir>")
         print(f"    (round-trip obrigatório antes de qualquer tradução)")
 
-    elif tier == "T2":
+    elif tier == "unknown_engine":
         print(f"  Engine: desconhecida — requer implementação manual")
         print(f"\n  Evidências:")
         ev = result.get("evidence_summary", {})
@@ -102,7 +102,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print(f"    2. Gerar stub pré-preenchido (padrão escolhido pelas evidências):")
         print(f"         python discover.py <game_dir> --generate-stub projects/<jogo>/connector/")
         print(f"    3. Preencher as constantes de CONFIG no stub gerado")
-        print(f"    4. Dry-run OBRIGATÓRIO de cobertura (D2) — pega overfitting a 1 amostra ANTES")
+        print(f"    4. Dry-run OBRIGATÓRIO de cobertura — pega overfitting a 1 amostra ANTES")
         print(f"       de gastar tempo no round-trip completo:")
         print(f"         python framework/connectors/coverage_gate.py <candidato.py> <game_dir>")
         print(f"    5. Validar cada iteração com o smoke test (exit 0 = invariantes OK):")
@@ -111,7 +111,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print(f"         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir] --roundtrip")
         print(f"    7. Round-trip byte-idêntico = conector aprovado → registrar no registry")
 
-    elif tier == "T3":
+    elif tier == "blocked":
         print(f"  Bloqueado: dados cifrados ou comprimidos")
         print(f"\n  Evidências:")
         for r in result["reasons"]:

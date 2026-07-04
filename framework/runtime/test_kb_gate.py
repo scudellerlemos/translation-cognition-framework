@@ -35,7 +35,7 @@ def test_good_project_passes(tmp_path):
 
 
 def test_reconciled_with_unratified_entity_blocks(tmp_path):
-    # P4 hardening: 'reconciled' sozinho nao basta -- entidade com conteudo afirmado precisa de
+    # 'reconciled' sozinho nao basta -- entidade com conteudo afirmado precisa de
     # ratificacao humana (kb_ratified.csv), generalizado do kb_reconcile.py pro caminho MANUAL.
     _good(tmp_path)
     (paths.artifacts(tmp_path) / "universe_knowledge_base.md").write_text(
