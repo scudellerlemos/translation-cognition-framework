@@ -163,6 +163,9 @@ def main():
                          "nao substitui --promote; ver kb_concordance.py, #67)")
     a = ap.parse_args()
 
+    if a.concordance and a.promote:
+        ap.error("--concordance e --promote sao mutuamente exclusivos (rode um por vez)")
+
     if a.concordance:
         import kb_concordance
         kb_concordance._print_report(kb_concordance.concordance(a.project))
