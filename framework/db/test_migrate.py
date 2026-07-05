@@ -5,6 +5,7 @@ mismatch de coluna/path) e garante que o banco bate com o que a migração repor
 fixture `bof4_migrated` (migração única por sessão); só o teste de idempotência re-migra.
 Usa só stdlib — roda em CI sem deps de ML.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -122,6 +123,32 @@ def test_migrate_translations_have_content(bof4_migrated):
     assert tm, "translations vazio"
     empty = [t for t in tm if not (t.get("source") and t.get("target"))]
     assert not empty, f"{len(empty)}/{len(tm)} translations com source/target vazio"
+
+
+def test_migrate_decisions_reveal_explicit_tag_and_universal_shortcut(tmp_path):
+    """#105: reveal explicito (tag <!-- reveal: ... --> no decision_log.md, ja extraido em
+    decision_index.json por state_index.build_decision_index) tem prioridade; sem tag, universal=1
+    ganha reveal='safe' automatico (atalho aprovado); universal=0 sem tag fica None (default-deny,
+    ate revisao humana)."""
+    state_dir = tmp_path / "artifacts" / "state"
+    state_dir.mkdir(parents=True)
+    (state_dir / "decision_index.json").write_text(json.dumps([
+        {"title": "Regra de ponteiro", "tags": ["ponteiro"], "universal": True,
+         "summary": "sempre preservar offsets", "reveal": None},
+        {"title": "Nina e revelada dragao", "tags": [], "universal": False,
+         "summary": "Nina revela ser o dragao", "reveal": "ch_12"},
+        {"title": "Decisao de trama pendente", "tags": [], "universal": False,
+         "summary": "ainda nao revisado", "reveal": None},
+    ], ensure_ascii=False), encoding="utf-8")
+
+    db_path = tmp_path / "t.db"
+    migrate(tmp_path, db_path, project_id="p")
+    with Store(db_path) as db:
+        decisions = {d["title"]: d for d in db.get_decisions("p")}
+
+    assert decisions["Regra de ponteiro"]["reveal"] == "safe"          # universal sem tag -> atalho
+    assert decisions["Nina e revelada dragao"]["reveal"] == "ch_12"    # tag explicita preservada
+    assert decisions["Decisao de trama pendente"]["reveal"] is None    # nao-universal sem tag -> default-deny
 
 
 def test_migrate_project_title_from_json(bof4_migrated):

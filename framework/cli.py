@@ -6,7 +6,7 @@ invocados manualmente por subcomandos organizados.
 Uso:
   python framework/cli.py translate <project> <scene> [--backend ollama|api]
   python framework/cli.py bench     <project> <scene> [--model qwen2.5:14b]
-  python framework/cli.py db migrate <bof4_root> <dest_db>
+  python framework/cli.py db migrate <project_root> <dest_db>
   python framework/cli.py db summary <db_path> <project_id>
   python framework/cli.py ollama status
   python framework/cli.py ollama pull <model>
@@ -59,7 +59,7 @@ def cmd_bench(args):
 
 def cmd_db_migrate(args):
     from migrate_from_flat import migrate
-    result = migrate(Path(args.bof4_root), Path(args.dest_db),
+    result = migrate(Path(args.project_root), Path(args.dest_db),
                      project_id=args.project_id)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
@@ -83,18 +83,19 @@ def cmd_db_export(args):
 
 
 def cmd_db_index(args):
-    """Indexa embeddings da TM no banco SQLite."""
+    """Indexa embeddings da TM (default) ou de decisions (--kind decision, #105) no SQLite."""
     import sqlite3
 
     from embedder import Embedder
     from store import Store
+    kind = getattr(args, "kind", "translation")
     with Store(args.db_path):
         con = sqlite3.connect(args.db_path)
         emb = Embedder()
         n = emb.index_project(con, project_id=args.project_id,
-                               force=getattr(args, "force", False))
+                               force=getattr(args, "force", False), kind=kind)
         con.close()
-    print(f"Indexados: {n} vetores para projeto '{args.project_id}'")
+    print(f"Indexados: {n} vetores ({kind}) para projeto '{args.project_id}'")
     return 0
 
 
@@ -191,7 +192,7 @@ def build_parser() -> argparse.ArgumentParser:
     db_sub = p_db.add_subparsers(dest="db_command", required=True)
 
     p_mig = db_sub.add_parser("migrate", help="Migra flat files para SQLite")
-    p_mig.add_argument("bof4_root", help="Raiz do projeto BoF4")
+    p_mig.add_argument("project_root", help="Raiz do projeto")
     p_mig.add_argument("dest_db", help="Banco de destino (.db)")
     p_mig.add_argument("--project-id", default="bof4")
     p_mig.set_defaults(func=cmd_db_migrate)
@@ -207,10 +208,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp.add_argument("out_dir", help="Diretório de saída (ex.: projects/<x>/artifacts)")
     p_exp.set_defaults(func=cmd_db_export)
 
-    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM")
+    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM ou de decisions (#105)")
     p_idx.add_argument("db_path")
     p_idx.add_argument("project_id")
     p_idx.add_argument("--force", action="store_true")
+    p_idx.add_argument("--kind", choices=["translation", "decision"], default="translation",
+                       help="o que indexar: traduções (default) ou decisions (RAG sobre decision_log)")
     p_idx.set_defaults(func=cmd_db_index)
 
     # skill
