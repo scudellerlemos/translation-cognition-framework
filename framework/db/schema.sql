@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS decisions (
     summary     TEXT,
     universal   INTEGER DEFAULT 0,         -- 0/1 — regra do conector aplicável sempre
     tags        TEXT,                      -- JSON array
+    reveal      TEXT,                      -- <scene> | beyond_frontier | safe (default-deny: NULL = não injeta no RAG semântico)
     UNIQUE(project_id, title)
 );
 
@@ -247,5 +248,15 @@ CREATE TABLE IF NOT EXISTS tm_embeddings (
     translation_id  INTEGER PRIMARY KEY REFERENCES translations(id),
     model_name      TEXT NOT NULL,         -- paraphrase-multilingual-MiniLM-L12-v2
     dim             INTEGER NOT NULL,      -- 384
+    indexed_at      REAL
+);
+
+-- ── Embeddings (decisions semânticas — RAG sobre decision_log, #105) ──────────
+-- Mesmo mecanismo de tm_embeddings, aplicado a decisions.summary. Vetores na
+-- tabela virtual vec0 (decision_vectors, criada por embedder.py em runtime).
+CREATE TABLE IF NOT EXISTS decision_embeddings (
+    decision_id     INTEGER PRIMARY KEY REFERENCES decisions(id),
+    model_name      TEXT NOT NULL,
+    dim             INTEGER NOT NULL,
     indexed_at      REAL
 );

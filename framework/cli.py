@@ -83,18 +83,19 @@ def cmd_db_export(args):
 
 
 def cmd_db_index(args):
-    """Indexa embeddings da TM no banco SQLite."""
+    """Indexa embeddings da TM (default) ou de decisions (--kind decision, #105) no SQLite."""
     import sqlite3
 
     from embedder import Embedder
     from store import Store
+    kind = getattr(args, "kind", "translation")
     with Store(args.db_path):
         con = sqlite3.connect(args.db_path)
         emb = Embedder()
         n = emb.index_project(con, project_id=args.project_id,
-                               force=getattr(args, "force", False))
+                               force=getattr(args, "force", False), kind=kind)
         con.close()
-    print(f"Indexados: {n} vetores para projeto '{args.project_id}'")
+    print(f"Indexados: {n} vetores ({kind}) para projeto '{args.project_id}'")
     return 0
 
 
@@ -207,10 +208,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp.add_argument("out_dir", help="Diretório de saída (ex.: projects/<x>/artifacts)")
     p_exp.set_defaults(func=cmd_db_export)
 
-    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM")
+    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM ou de decisions (#105)")
     p_idx.add_argument("db_path")
     p_idx.add_argument("project_id")
     p_idx.add_argument("--force", action="store_true")
+    p_idx.add_argument("--kind", choices=["translation", "decision"], default="translation",
+                       help="o que indexar: traduções (default) ou decisions (RAG sobre decision_log)")
     p_idx.set_defaults(func=cmd_db_index)
 
     # skill

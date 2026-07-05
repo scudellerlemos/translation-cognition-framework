@@ -310,6 +310,11 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
 
 
 def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
+    """decision_index.json -> tabela decisions. reveal explicito (tag <!-- reveal: ... --> no
+    decision_log.md, ver state_index.build_decision_index) tem prioridade; sem tag E
+    universal=1 (regra de processo/conector, nao de trama) -> reveal='safe' automatico (#105,
+    atalho aprovado: reduz custo de curadoria sem abrir risco). Decisao NAO-universal sem tag
+    fica reveal=NULL (default-deny no context_pack) ate revisao humana explicita."""
     p = root / "artifacts" / "state" / "decision_index.json"
     if not p.is_file():
         return 0
@@ -320,12 +325,15 @@ def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
         title = d.get("title")
         if not title:
             continue
+        universal = bool(d.get("universal", False))
+        reveal = d.get("reveal") or ("safe" if universal else None)
         db.upsert_decision(
             project_id=project_id,
             title=title,
             summary=d.get("summary"),
-            universal=bool(d.get("universal", False)),
+            universal=universal,
             tags=d.get("tags", []),
+            reveal=reveal,
         )
         n += 1
     return n
