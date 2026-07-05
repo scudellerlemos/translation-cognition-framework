@@ -67,11 +67,16 @@ def test_concordance_empty_when_no_draft(tmp_path):
     assert kbc.concordance(tmp_path) == []
 
 
-def test_concordance_flags_high_agreement(tmp_path):
+def test_concordance_flags_high_agreement_on_paraphrase(tmp_path):
+    # draft e fonte humana com REDACAO DIFERENTE (nao a mesma string) mas o mesmo conteudo --
+    # prova que a comparacao tolera parafrase, nao so string identica (cosine=1.0 trivial).
     _write_entities(tmp_path, [("Oshtor", "main")])
-    texto = "Oshtor e um guerreiro Woren, companheiro leal de Nina desde a infancia."
-    _cache_one(tmp_path, texto, "https://wiki.test/oshtor", "usuario")
-    kbo.build(tmp_path, chat_fn=_chat_with(texto))
+    texto_humano = ("Consta nos registros que Oshtor, guerreiro do povo Woren, e companheiro "
+                    "leal de Nina desde a infancia dos dois.")
+    _cache_one(tmp_path, texto_humano, "https://wiki.test/oshtor", "usuario")
+    kbo.build(tmp_path, chat_fn=_chat_with(
+        "Oshtor e um guerreiro Woren, companheiro leal de Nina desde a infancia."
+    ))
 
     items = kbc.concordance(tmp_path, embed_fn=_fake_embed)
     assert len(items) == 1
@@ -114,6 +119,19 @@ def test_concordance_ignores_unsourced_entities(tmp_path):
     kbo.build(tmp_path, chat_fn=_chat_with("nao deveria ser chamado"))
 
     assert kbc.concordance(tmp_path, embed_fn=_fake_embed) == []
+
+
+def test_concordance_name_matching_respects_word_boundary(tmp_path):
+    # "Ana" nao pode casar dentro de "banana" (substring); so como palavra solta.
+    _write_entities(tmp_path, [("Ana", "main")])
+    _cache_one(tmp_path, "A plantacao de banana cresceu bastante este ano.",
+               "https://x.test/banana", "usuario")
+    kbo.build(tmp_path, chat_fn=_chat_with("Definicao qualquer sobre Ana."))
+
+    items = kbc.concordance(tmp_path, embed_fn=_fake_embed)
+    assert len(items) == 1
+    assert items[0]["level"] == "sem_pesquisa_humana"   # "banana" nao deve contar como fonte
+    assert items[0]["human_sources"] == 0
 
 
 def test_concordance_real_embedder_wiring(tmp_path):
