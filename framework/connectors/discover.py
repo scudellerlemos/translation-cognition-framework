@@ -55,12 +55,16 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
     _print_report(result, game_dir, registry)
 
     if generate_stub and result["must_generate"]:
-        from script_generator import generate
-        stub = generate(evidence)
-        out = Path(generate_stub) / "extract.py"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(stub, encoding="utf-8")
-        print(f"\nStub gerado em: {out}")
+        from script_generator import generate, generate_reinsert
+        out_dir = Path(generate_stub)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        extract_out = out_dir / "extract.py"
+        extract_out.write_text(generate(evidence), encoding="utf-8")
+        # #108: gera o PAR reinsert.py junto (mesma evidência -> mesmo padrão) -- antes só o
+        # extract.py era gerado, forçando o passo de reinsert a ser sempre 100% manual.
+        reinsert_out = out_dir / "reinsert.py"
+        reinsert_out.write_text(generate_reinsert(evidence), encoding="utf-8")
+        print(f"\nStubs gerados em: {extract_out} + {reinsert_out}")
 
     return 0 if result["tier"] != "blocked" else 1
 
@@ -99,17 +103,22 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
             print(f"    • encoding: {', '.join(f'{k}: {v:.0%}' for k, v in enc.items())}")
         print("\n  PRÓXIMOS PASSOS:")
         print("    1. Inspecionar arquivo representativo no HxD/010 Editor")
-        print("    2. Gerar stub pré-preenchido (padrão escolhido pelas evidências):")
+        print("    2. Gerar o PAR extract.py + reinsert.py pré-preenchidos (mesmo padrão,")
+        print("       escolhido pelas evidências):")
         print("         python discover.py <game_dir> --generate-stub projects/<jogo>/connector/")
-        print("    3. Preencher as constantes de CONFIG no stub gerado")
+        print("    3. Preencher as constantes de CONFIG nos 2 stubs gerados (mesmos valores")
+        print("       em ambos — extract e reinsert precisam ser espelho um do outro)")
         print("    4. Dry-run OBRIGATÓRIO de cobertura — pega overfitting a 1 amostra ANTES")
         print("       de gastar tempo no round-trip completo:")
         print("         python framework/connectors/coverage_gate.py <candidato.py> <game_dir>")
         print("    5. Validar cada iteração com o smoke test (exit 0 = invariantes OK):")
         print("         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir]")
-        print("    6. Quando extract OK: implementar reinsert.py e testar round-trip:")
+        print("    6. Testar round-trip completo (extract + reinsert):")
         print("         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir] --roundtrip")
         print("    7. Round-trip byte-idêntico = conector aprovado → registrar no registry")
+        print("\n  Loop propõe→verifica→refina (#108): repetir 3-6 ajustando o candidato a cada")
+        print("  falha, até passar ou esgotar o teto de iterações — ver")
+        print("  framework/connectors/agentic_synthesis.md. Ratificação final é SEMPRE humana.")
 
     elif tier == "blocked":
         print("  Bloqueado: dados cifrados ou comprimidos")

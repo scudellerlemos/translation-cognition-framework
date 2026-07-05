@@ -291,6 +291,230 @@ if __name__ == "__main__":
 '''
 
 
+# ---------------------------------------------------------------------------
+# REINSERT — pares de decode_string() acima. #108: candidato pré-preenchido,
+# não um conector completo — o agente/dev ainda adapta e valida via round-trip.
+# ---------------------------------------------------------------------------
+_LINEAR_SCAN_REINSERT_STUB = '''\
+import csv
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# CONFIG — mesmo _ENCODING do extract.py gerado; ajustar _APPROVED_CSV se o
+# pipeline gravar a tradução aprovada em outro caminho.
+# ---------------------------------------------------------------------------
+_ENCODING = "{encoding}"
+_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+# ---------------------------------------------------------------------------
+
+
+def encode_string(text: str) -> bytes:
+    return text.encode(_ENCODING, errors="replace")
+
+
+def main(project_json: Path, source_override: str | None = None):
+    import json
+    cfg = json.loads(project_json.read_text(encoding="utf-8"))
+    root = project_json.parent
+
+    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    data = bytearray(src.read_bytes())
+    id_col = cfg["source"]["id_column"]
+
+    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    for row in rows:
+        offset = int(row[id_col], 16)
+        raw = encode_string(row["text_target"])
+        end = offset
+        while end < len(data) and data[end] != 0x00:
+            end += 1
+        budget = (end + 1) - offset  # espaço original (inclui terminador null)
+        if len(raw) + 1 > budget:
+            raise SystemExit(
+                f"ERRO: offset {{row[id_col]}}: tradução ({{len(raw) + 1}}b) excede o "
+                f"espaço original ({{budget}}b) -- sem realocação de TOC neste padrão"
+            )
+        data[offset:offset + len(raw)] = raw
+        data[offset + len(raw):offset + budget] = b"\\x00" * (budget - len(raw))
+
+    out_dir = root / "output"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / src.name
+    out_path.write_bytes(bytes(data))
+    print(f"Reinseridas {{len(rows)}} strings → {{out_path}}")
+
+    # PRÓXIMO PASSO:
+    # 1. Rodar round-trip: python framework/connectors/connector_smoke.py <projeto> --roundtrip
+    # 2. Round-trip byte-idêntico (texto == source) = conector aprovado
+
+
+if __name__ == "__main__":
+    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    override = sys.argv[2] if len(sys.argv) > 2 else None
+    main(proj, override)
+'''
+
+_TOKEN_TABLE_REINSERT_STUB = '''\
+import csv
+import re
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# CONFIG — MESMOS BYTE_TO_CHAR/CONTROL_MAP do extract.py gerado (copiar de lá,
+# preenchidos lendo a tabela de caracteres do jogo). Invertidos automaticamente
+# abaixo -- não editar CHAR_TO_BYTE/_CONTROL_MAP_ENCODE à mão.
+# ---------------------------------------------------------------------------
+BYTE_TO_CHAR: dict[int, str] = {{
+    # 0x20: " ", 0x21: "!", ... MESMO dict do extract.py gerado
+}}
+CONTROL_MAP: list[tuple[bytes, str]] = [
+    # (b"\\x01\\x00", "\\n"),   # MESMA lista do extract.py gerado
+]
+TERMINATOR = b"\\x00"
+_UNMAPPED_RX = re.compile(r"\\[([0-9A-Fa-f]{{2}})\\]")  # fallback do decode: byte cru como [XX]
+_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+# ---------------------------------------------------------------------------
+
+CHAR_TO_BYTE = {{v: k for k, v in BYTE_TO_CHAR.items()}}
+_CONTROL_MAP_ENCODE = sorted(CONTROL_MAP, key=lambda x: -len(x[1]))  # tokens longos primeiro
+
+
+def encode_string(text: str) -> bytes:
+    out = bytearray()
+    i = 0
+    while i < len(text):
+        matched = False
+        for seq, tok in _CONTROL_MAP_ENCODE:
+            if text.startswith(tok, i):
+                out += seq
+                i += len(tok)
+                matched = True
+                break
+        if matched:
+            continue
+        m = _UNMAPPED_RX.match(text, i)
+        if m:
+            out.append(int(m.group(1), 16))
+            i = m.end()
+            continue
+        ch = text[i]
+        if ch in CHAR_TO_BYTE:
+            out.append(CHAR_TO_BYTE[ch])
+        else:
+            raise SystemExit(f"ERRO: caractere '{{ch}}' sem mapeamento em BYTE_TO_CHAR")
+        i += 1
+    return bytes(out) + TERMINATOR
+
+
+def main(project_json: Path, source_override: str | None = None):
+    import json
+    cfg = json.loads(project_json.read_text(encoding="utf-8"))
+    root = project_json.parent
+
+    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    data = bytearray(src.read_bytes())
+    id_col = cfg["source"]["id_column"]
+
+    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    for row in rows:
+        offset = int(row[id_col], 16)
+        raw = encode_string(row["text_target"])
+        end = offset
+        while data[end:end + len(TERMINATOR)] != TERMINATOR:
+            end += 1
+        budget = (end + len(TERMINATOR)) - offset
+        if len(raw) > budget:
+            raise SystemExit(
+                f"ERRO: offset {{row[id_col]}}: tradução ({{len(raw)}}b) excede o espaço "
+                f"original ({{budget}}b) -- sem realocação de TOC neste padrão"
+            )
+        data[offset:offset + len(raw)] = raw
+        data[offset + len(raw):offset + budget] = TERMINATOR * (budget - len(raw))
+
+    out_dir = root / "output"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / src.name
+    out_path.write_bytes(bytes(data))
+    print(f"Reinseridas {{len(rows)}} strings → {{out_path}}")
+
+
+if __name__ == "__main__":
+    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    override = sys.argv[2] if len(sys.argv) > 2 else None
+    main(proj, override)
+'''
+
+_POINTER_TABLE_REINSERT_STUB = '''\
+import csv
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# CONFIG — mesmo _STR_ENCODING do extract.py gerado.
+# ---------------------------------------------------------------------------
+_STR_ENCODING = "ascii"  # TODO: mesmo valor de _STR_ENCODING no extract.py gerado
+_TERMINATOR = b"\\x00"
+_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+# ---------------------------------------------------------------------------
+
+
+def encode_string(text: str) -> bytes:
+    return text.encode(_STR_ENCODING, errors="replace") + _TERMINATOR
+
+
+def main(project_json: Path, source_override: str | None = None):
+    import json
+    cfg = json.loads(project_json.read_text(encoding="utf-8"))
+    root = project_json.parent
+
+    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    data = bytearray(src.read_bytes())
+    id_col = cfg["source"]["id_column"]
+
+    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    for row in rows:
+        offset = int(row[id_col], 16)
+        raw = encode_string(row["text_target"])
+        end = offset
+        while data[end:end + len(_TERMINATOR)] != _TERMINATOR:
+            end += 1
+        budget = (end + len(_TERMINATOR)) - offset
+        if len(raw) > budget:
+            # Padrão com TOC explícita -- ADAPTAR aqui p/ realocar o final do arquivo e
+            # reescrever a entrada correspondente na tabela de ponteiros, se necessário.
+            raise SystemExit(
+                f"ERRO: offset {{row[id_col]}}: tradução ({{len(raw)}}b) excede o espaço "
+                f"original ({{budget}}b) -- realocação de TOC não implementada neste candidato"
+            )
+        data[offset:offset + len(raw)] = raw
+        data[offset + len(raw):offset + budget] = _TERMINATOR * (budget - len(raw))
+
+    out_dir = root / "output"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / src.name
+    out_path.write_bytes(bytes(data))
+    print(f"Reinseridas {{len(rows)}} strings → {{out_path}}")
+
+    # PRÓXIMO PASSO:
+    # 1. Rodar: python connector_smoke.py <projeto> [data_dir] --roundtrip
+    # 2. Se alguma tradução crescer além do espaço original: implementar realocação de TOC
+
+
+if __name__ == "__main__":
+    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    override = sys.argv[2] if len(sys.argv) > 2 else None
+    main(proj, override)
+'''
+
+
 def _choose_pattern(evidence: dict) -> tuple[str, str]:
     """Escolhe o padrão de stub com base nas evidências. Retorna (pattern_name, reason)."""
     enc = evidence.get("sample_encodings", {})
@@ -356,6 +580,61 @@ def generate(evidence: dict, engine_hint: str | None = None) -> str:
         stub = _POINTER_TABLE_STUB.format()
 
     return header + stub
+
+
+def generate_reinsert(evidence: dict, engine_hint: str | None = None) -> str:
+    """Gera candidato de reinsert.py PAREADO com o extract.py de generate() -- mesmo padrão
+    (evidência decide o mesmo jeito nos dois), inverte encode/decode. #108: candidato pré-
+    preenchido, não um conector completo -- o loop propõe→verifica→refina (ou o dev) ainda
+    adapta e valida via round-trip (connector_smoke --roundtrip é o oráculo final).
+
+    Escopo do candidato: escreve no MESMO espaço de bytes original (sem realocar TOC quando a
+    tradução cresce) -- suficiente pra a maioria dos casos (byte_budget já limita a tradução
+    upstream); casos que precisam crescer o arquivo exigem adaptação manual, sinalizada no
+    próprio candidato."""
+    pattern, reason = _choose_pattern(evidence)
+
+    enc = evidence.get("sample_encodings", {})
+    encoding = "utf-8" if enc.get("utf8", 0) > enc.get("ascii", 0) else "ascii"
+
+    header = _render_reinsert_header(evidence, engine_hint, pattern, reason)
+
+    if pattern == "linear_scan":
+        stub = _LINEAR_SCAN_REINSERT_STUB.format(encoding=encoding)
+    elif pattern == "token_table":
+        stub = _TOKEN_TABLE_REINSERT_STUB.format()
+    else:
+        stub = _POINTER_TABLE_REINSERT_STUB.format()
+
+    return header + stub
+
+
+def _render_reinsert_header(evidence: dict, engine_hint: str | None, pattern: str, reason: str) -> str:
+    lines = [
+        "# GERADO AUTOMATICAMENTE por script_generator.py (engine desconhecida — completar e testar)",
+        "# Par de: extract.py gerado por generate() com a MESMA evidência (mesmo padrão)",
+        "#",
+        "# Evidências detectadas:",
+        f"#   file_count    : {evidence.get('file_count', '?')}",
+        f"#   encoding      : {_fmt_enc(evidence.get('sample_encodings', {}))}",
+        f"#   control_tokens: {evidence.get('has_control_tokens', '?')}",
+        f"#   engine_hint   : {engine_hint or 'desconhecido'}",
+        "#",
+        f"# Padrão escolhido: {pattern.upper()}",
+        f"#   Razão: {reason}",
+        "#",
+        "# PRÉ-REQUISITO: extract.py já validado (strings corretas, sem ruído).",
+        "# Se o padrão for TOKEN_TABLE: copiar o MESMO BYTE_TO_CHAR/CONTROL_MAP já preenchido",
+        "# no extract.py -- não redigitar, os dois precisam ser espelho exato um do outro.",
+        "#",
+        "# PRÓXIMOS PASSOS:",
+        "#   1. Preencher as constantes de CONFIG marcadas acima (mesmos valores do extract.py)",
+        "#   2. Rodar: python framework/connectors/connector_smoke.py <projeto> --roundtrip",
+        "#   3. Round-trip byte-idêntico = conector aprovado (ratificação humana final)",
+        "#",
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def _render_header(evidence: dict, engine_hint: str | None, pattern: str, reason: str) -> str:
