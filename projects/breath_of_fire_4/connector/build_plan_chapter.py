@@ -11,7 +11,9 @@ e emite:
   - artifacts/<scene>/translation_plan_<sfx>.json
   - artifacts/<scene>/approved_<sfx>.csv  (offset, text_target)
 
-Valida: cobertura total, token [01] preservado por linha, risk>=medium exige risk_notes.
+Valida: cobertura total, token [02] (page break) preservado por linha, risk>=medium
+exige risk_notes. [01] é newline dentro da caixa (wrap) — sua contagem varia
+legitimamente entre EN e PT-BR conforme o tamanho da frase; não é validado.
 
 Uso: python build_plan_chapter.py <scene>   ex.: python build_plan_chapter.py AREAD001
 """
