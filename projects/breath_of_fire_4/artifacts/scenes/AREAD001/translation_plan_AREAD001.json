@@ -9,7 +9,7 @@
       "tone_register": "curious/informal",
       "intent": "Asking if following the path leads to mainland, checking with Poko",
       "risk_level": "low",
-      "base_translation": "Voce quer dizer que, seguindo esse caminho, chegamos ao continente?",
+      "base_translation": "[14][C1]@\"Quer dizer que, se[01]seguirmos por aqui,[01]chegamos ao continente?[02][14][81]ACerto, Poko?\"",
       "byte_budget": 108,
       "glossary_flags": [],
       "spoiler_flags": [],
@@ -19,14 +19,14 @@
       "offset": "AREAD001.DAT:7:7",
       "text_source": "[14][02][02]\"Heh heh...[02]She says we will be[01]in a great deal of[02]trouble should the[01]sun go down before[01]we reach land.\"",
       "speaker": "unknown",
-      "tone_register": "casual/narrative",
-      "intent": "Relaying what someone said about danger if they don't reach land before sunset",
-      "risk_level": "low",
-      "base_translation": "[14][02][02]\"Heh heh...[02]Ela diz que teremos[01]muita encrenca se o[02]sol se por antes de[01]chegarmos em[01]terra firme.\"",
+      "tone_register": "humorístico, irônico, leve",
+      "intent": "Personagem ri e avisa que vão se meter em apuros se o sol se pôr antes de alcançar terra",
+      "risk_level": "medium",
+      "base_translation": "[14][02][02]\"Heh heh...[02]Ela diz que apanhamos[01]feio se o sol baixar[02]antes de chegar[01]em terra firme.\"",
       "byte_budget": 150,
       "glossary_flags": [],
       "spoiler_flags": [],
-      "risk_notes": ""
+      "risk_notes": "Encurtado conforme revisão humana; tom irônico preservado no 'heh heh' e na construção da frase."
     },
     {
       "offset": "AREAD001.DAT:7:8",
@@ -720,7 +720,7 @@
   ],
   "total_lines": 55,
   "high_lines": 0,
-  "medium_lines": 1,
+  "medium_lines": 2,
   "needs_review": [],
   "plan_version": "bof4-AREAD001-v1"
 }
