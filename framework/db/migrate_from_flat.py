@@ -1,6 +1,6 @@
-"""migrate_from_flat.py — Importa dados do BoF4 (flat files) para SQLite.
+"""migrate_from_flat.py — Importa dados de um projeto (flat files) para SQLite.
 
-Lê os artefatos existentes do BoF4:
+Lê os artefatos existentes do projeto:
   artifacts/scenes/*/approved_*.csv → translations (approved=1)
   artifacts/glossary.csv            → glossary
   state/voice_cards.json            → voice_cards (se existir)
@@ -14,7 +14,7 @@ Lê os artefatos existentes do BoF4:
 Grava em: <dest_db> (cria se não existir)
 
 Uso:
-  python migrate_from_flat.py <bof4_root> <dest_db> [--project-id bof4]
+  python migrate_from_flat.py <project_root> <dest_db> [--project-id bof4]
   python migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db
 """
 from __future__ import annotations
@@ -458,8 +458,8 @@ def _project_meta(root: Path) -> dict:
     return meta
 
 
-def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
-    meta = _project_meta(bof4_root)
+def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
+    meta = _project_meta(project_root)
     with Store(dest_db) as db:
         db.upsert_project(
             project_id=project_id,
@@ -468,20 +468,20 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
             target_lang=meta["target_lang"],
             media_type=meta["media_type"],
         )
-        scenes = _migrate_scenes(db, project_id, bof4_root)
-        scene_lines = _migrate_scene_lines(db, project_id, bof4_root)
-        translations, approved = _migrate_translations(db, project_id, bof4_root)
-        glossary = _migrate_glossary(db, project_id, bof4_root)
-        entities = _migrate_entities(db, project_id, bof4_root)
-        voice_cards = _migrate_voice_cards(db, project_id, bof4_root)
-        decisions = _migrate_decisions(db, project_id, bof4_root)
-        spoiler = _migrate_spoiler(db, project_id, bof4_root)
-        back_translations = _migrate_back_translations(db, project_id, bof4_root)
-        kb = _migrate_kb(db, project_id, bof4_root)
-        jobs = _migrate_jobs(db, project_id, bof4_root)
-        metrics = _migrate_metrics(db, project_id, bof4_root)
-        warnings = _migrate_warnings(db, project_id, bof4_root)
-        qa_effectiveness = _migrate_qa_effectiveness(db, project_id, bof4_root)
+        scenes = _migrate_scenes(db, project_id, project_root)
+        scene_lines = _migrate_scene_lines(db, project_id, project_root)
+        translations, approved = _migrate_translations(db, project_id, project_root)
+        glossary = _migrate_glossary(db, project_id, project_root)
+        entities = _migrate_entities(db, project_id, project_root)
+        voice_cards = _migrate_voice_cards(db, project_id, project_root)
+        decisions = _migrate_decisions(db, project_id, project_root)
+        spoiler = _migrate_spoiler(db, project_id, project_root)
+        back_translations = _migrate_back_translations(db, project_id, project_root)
+        kb = _migrate_kb(db, project_id, project_root)
+        jobs = _migrate_jobs(db, project_id, project_root)
+        metrics = _migrate_metrics(db, project_id, project_root)
+        warnings = _migrate_warnings(db, project_id, project_root)
+        qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
         return {
             "project_id": project_id,
             "scenes": scenes,
@@ -504,12 +504,12 @@ def migrate(bof4_root: Path, dest_db: Path, project_id: str = "bof4") -> dict:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Migra flat files do BoF4 para SQLite.")
-    ap.add_argument("bof4_root", help="Diretório raiz do projeto BoF4")
+    ap = argparse.ArgumentParser(description="Migra flat files de um projeto para SQLite.")
+    ap.add_argument("project_root", help="Diretório raiz do projeto")
     ap.add_argument("dest_db", help="Caminho do banco SQLite de destino")
     ap.add_argument("--project-id", default="bof4", help="ID do projeto no banco (default: bof4)")
     a = ap.parse_args()
-    result = migrate(Path(a.bof4_root), Path(a.dest_db), a.project_id)
+    result = migrate(Path(a.project_root), Path(a.dest_db), a.project_id)
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
