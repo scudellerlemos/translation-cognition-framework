@@ -32,3 +32,8 @@ projects/*/output/
 # Arquivos de revisão devolvidos pelo humano (dados pessoais / fluxo local)
 projects/*/artifacts/qa_revisao/devolvido/
 
+# Config local do Claude Code (pessoal/runtime) — settings.json/hooks/agents SÃO versionados
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/worktrees/
+

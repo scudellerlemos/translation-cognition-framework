@@ -10,7 +10,7 @@ Tipar aqui (e nao em model.py) evita import circular: config <- back_translate <
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypedDict
+from typing import TypedDict, get_type_hints
 
 # --- model-mix (defaults; cost_model cenario 'mix'): Sonnet traduz, Opus verifica alto risco ---
 MODEL_TRANSLATE = "claude-sonnet-4-6"
@@ -226,6 +226,25 @@ class ConnectorConfig(TypedDict, total=False):
     target_column_note: str
     dialogue_tables: list
     dep: str                        # dependência Python do conector (ex.: "UnityPy>=1.9.6")
+
+
+def validate_connector_types(cfg: dict) -> list:
+    """A3/#65: valida o TIPO dos valores em project.json connector.{} contra ConnectorConfig.
+    Reusa o TypedDict já existente via introspeccao (get_type_hints) — sem dependencia nova
+    (pydantic/jsonschema). Chaves desconhecidas nao sao erro aqui (isso e _validate_connector_cfg
+    em run_scene.py, que so avisa). Retorna lista de mensagens de erro; lista vazia = tudo ok."""
+    hints = get_type_hints(ConnectorConfig)
+    errors = []
+    for key, value in cfg.get("connector", {}).items():
+        expected = hints.get(key)
+        if expected is None:
+            continue
+        if not isinstance(value, expected):
+            errors.append(
+                f"connector.{key!r} deveria ser {expected.__name__}, veio "
+                f"{type(value).__name__} ({value!r}) — corrija project.json"
+            )
+    return errors
 
 
 @dataclass

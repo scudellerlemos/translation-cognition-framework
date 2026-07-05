@@ -44,7 +44,17 @@ class Store:
     def _init_schema(self):
         sql = _SCHEMA.read_text(encoding="utf-8")
         self._con.executescript(sql)
+        self._migrate_schema()
         self._con.commit()
+
+    def _migrate_schema(self):
+        """#85: migrações ADITIVAS de coluna (ALTER TABLE) — CREATE TABLE IF NOT EXISTS não
+        adiciona coluna nova a uma tabela já existente num banco criado antes dela existir."""
+        cols = {r["name"] for r in self._con.execute("PRAGMA table_info(spoiler_entries)").fetchall()}
+        if "forbidden_pre_reveal" not in cols:
+            self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN forbidden_pre_reveal TEXT")
+        if "gender_quarantine" not in cols:
+            self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN gender_quarantine INTEGER DEFAULT 0")
 
     def close(self):
         self._con.close()
@@ -373,21 +383,27 @@ class Store:
     def upsert_spoiler_entry(self, project_id: str, entity: str, fact: str | None = None,
                              spoiler_level: str | None = None, reveal: str | None = None,
                              scenes: list | None = None, triggers: list | None = None,
-                             pre_reveal: str | None = None):
+                             pre_reveal: str | None = None, forbidden_pre_reveal: list | None = None,
+                             gender_quarantine: bool = False):
         self._con.execute(
             """INSERT INTO spoiler_entries(project_id, entity, fact, spoiler_level,
-                                           reveal, scenes, triggers, pre_reveal)
-               VALUES(?,?,?,?,?,?,?,?)
+                                           reveal, scenes, triggers, pre_reveal,
+                                           forbidden_pre_reveal, gender_quarantine)
+               VALUES(?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(project_id, entity, fact) DO UPDATE SET
                    spoiler_level=excluded.spoiler_level,
                    reveal=excluded.reveal,
                    scenes=excluded.scenes,
                    triggers=excluded.triggers,
-                   pre_reveal=excluded.pre_reveal""",
+                   pre_reveal=excluded.pre_reveal,
+                   forbidden_pre_reveal=excluded.forbidden_pre_reveal,
+                   gender_quarantine=excluded.gender_quarantine""",
             (project_id, entity, fact, spoiler_level, reveal,
              json.dumps(scenes or [], ensure_ascii=False),
              json.dumps(triggers or [], ensure_ascii=False),
-             pre_reveal),
+             pre_reveal,
+             json.dumps(forbidden_pre_reveal or [], ensure_ascii=False),
+             int(bool(gender_quarantine))),
         )
         self._con.commit()
 
@@ -400,6 +416,8 @@ class Store:
             d = dict(r)
             d["scenes"] = json.loads(d.get("scenes") or "[]")
             d["triggers"] = json.loads(d.get("triggers") or "[]")
+            d["forbidden_pre_reveal"] = json.loads(d.get("forbidden_pre_reveal") or "[]")
+            d["gender_quarantine"] = bool(d.get("gender_quarantine"))
             out.append(d)
         return out
 

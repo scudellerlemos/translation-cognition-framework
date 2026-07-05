@@ -26,17 +26,14 @@ Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framew
 
 ---
 
-## Próximos passos do framework
+## Backlog ativo
 
-### ⚡ PRIORIDADE ATUAL — P2.5: Maturidade de execução (barato, agora)
+> Backlog acionável migrado do markdown pro GitHub Project — deixa de viver espalhado em
+> seções de roadmap. Ver [Translation Cognition Framework — Backlog](https://github.com/users/scudellerlemos/projects/4)
+> (issues #97–#109).
 
-> Framework em produção e BoF4 concluído. Os três itens abaixo são orquestração
-> local (sem nova chamada de LLM) e desbloqueiam escala de múltiplos capítulos
-> sem intervenção manual.
-
-- [x] **run_game** — ✅ **feito (2026-07-03)** `framework/runtime/run_game.py`: driver ponta-a-ponta, descobre capítulos (`ch_<N>_*`) ou cai no modo flat (Souldiers-like, rótulo `"full"` + `--scenes-glob`); `--max-usd` é teto GLOBAL (encolhe entre capítulos); retomada automática de graça (reusa `run_state.json`, zero estado novo). Testes: `test_run_game.py` (5).
-- [x] **Observabilidade de progresso** — ✅ **feito** `framework/runtime/progress_report.py`: % do jogo, linhas/min, ETA, taxa de falha — puro/determinístico (elapsed_s passado pelo caller, sem `time.time()` interno). Impresso pelo `run_game` após cada capítulo. Testes: `test_progress_report.py` (5).
-- [x] **`state_index` rebuild 1×/capítulo** — ✅ **feito**: `run_scene.py` ganhou `rebuild_index` (default `True`, preserva o modo interativo); `run_chapter.py` passa `rebuild_index=False` em modo batch e faz 1 rebuild só para o capítulo inteiro após o loop (`_rebuild_index_phase`). Testes: `test_batch_mode_rebuilds_state_index_once_per_chapter` + 2 em `test_run_scene.py`.
+O que estava aqui (P2.5: run_game/observabilidade/rebuild de state_index) já está **entregue** —
+histórico fica nos commits, não precisa de linha de "próximos passos" pra trabalho concluído.
 
 ---
 
@@ -90,23 +87,9 @@ Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framew
 
 ### Outras Mídias (Filmes e Séries)
 
-- [ ] **C1. Perfil de filmes** — conector `subtitle_file` (SRT/ASS), constraint de CPS. `framework/media-profiles/films.md` (stub).
-- [ ] **C2. Perfil de séries** — glossário/decision_log compartilhados, spoiler-check cross-episódio. `framework/media-profiles/series.md` (stub).
-
-  #### Stack de voz (filmes/séries — pós-produção BoF4)
-
-  > Para filmes e séries, "voz" deixa de ser só texto (voice card) e passa a incluir áudio real.
-  > Pipeline novo: áudio → ASR → diarização → voice card enriquecida → pipeline existente.
-  > Todos os componentes rodam local em CPU; baixados on-demand (~900 MB total).
-
-  | Componente | Modelo/Lib | Tamanho | Função |
-  |---|---|---|---|
-  | **ASR** | `faster-whisper` (medium) | ~500 MB | Transcreve áudio em texto com timestamps |
-  | **Diarização** | `pyannote/speaker-diarization-3.1` | ~300 MB | Identifica quem fala em cada segmento |
-  | **Combinado** | WhisperX | wrapper | ASR + diarização integrados |
-  | **Prosódia** | SpeechBrain | ~100 MB | Extrai pitch, tempo, energia por personagem |
-
-  Voice card enriquecida: adiciona `pitch_range`, `tempo`, `energia`, `cps_máximo` (characters per second medido do áudio) — o `cps_máximo` por personagem substitui o byte_budget fixo como constraint de fitting em filmes.
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issue
+[#97](https://github.com/scudellerlemos/translation-cognition-framework/issues/97) (perfis
+de filme/série + stack de voz ASR/diarização/prosódia).
 
 ---
 
@@ -250,21 +233,24 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 
 ### Produto e Distribuição (pós-validação BoF4)
 
-> **Pré-requisito:** round-trip do BoF4 verde + Generic Connector System validado.
+> **Pré-requisito:** round-trip do BoF4 verde + Generic Connector System validado (ambos entregues).
 > **Valor:** comunicação externa (portfolio, open-source) — zero valor operacional para uso interno.
 
-- [ ] **E1. CLI instalável** — entrypoint `tcf` via `pyproject.toml` (`tcf translate`, `tcf extract`, `tcf verify`).
-- [ ] **E2. README de produto** — reescrever o README raiz como "você instala e usa" em vez de tour pela árvore.
-- [ ] **E3. Consolidar documentação** — mover `.md` puramente documentais para `docs/`; os `.md` de runtime (skills, schemas) ficam onde estão.
-- [ ] **E4. Distribuição como `.exe`** — PyInstaller ou Nuitka empacotam CLI + runtime Python em binário standalone para usuários sem Python. Modelo `paraphrase-multilingual-MiniLM-L12-v2` (~470 MB) baixado on-demand no primeiro uso.
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
+[#98](https://github.com/scudellerlemos/translation-cognition-framework/issues/98) (CLI `tcf`),
+[#99](https://github.com/scudellerlemos/translation-cognition-framework/issues/99) (README de produto),
+[#100](https://github.com/scudellerlemos/translation-cognition-framework/issues/100) (consolidar docs),
+[#101](https://github.com/scudellerlemos/translation-cognition-framework/issues/101) (`.exe`).
 
 ---
 
 ### CI e Qualidade Contínua (pós-validação BoF4)
 
-> **Pré-requisito:** framework estável com ≥2 projetos ativos.
+> **Pré-requisito:** framework estável com ≥2 projetos ativos (atingido — BoF4/Uta/Souldiers).
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
 - [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12. ✅
-- [ ] **F2. CI de packaging** — após `pytest` passar, PyInstaller builda o `.exe` e um smoke test valida o binário gerado.
-- [ ] **F3. LLM judge** — segundo modelo avalia fidelidade + naturalidade + aderência ao personagem com score numérico por linha; complementa o back-translate e prioriza o QA humano melhor que o risco heurístico atual.
+
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
+[#102](https://github.com/scudellerlemos/translation-cognition-framework/issues/102) (CI de packaging),
+[#103](https://github.com/scudellerlemos/translation-cognition-framework/issues/103) (LLM judge).

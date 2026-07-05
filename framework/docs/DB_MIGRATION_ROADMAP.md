@@ -24,12 +24,39 @@
 |---|---|---|---|
 | **1** | `dialogs.csv` → `scene_lines`; pacote 100% do DB no modo DB | — | ✅ feito (205b8be) |
 | **2** | **write path** (consolidado): espelho gated no `state_index.build()` reusa `migrate` → DB vira mirror fiel do estado flat após cada re-index. *(em vez de upsert inline por produtor)* | *(enche o corpus que o RAG usa)* | ✅ |
-| **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ⏳ |
+| **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ✅ |
 | **3** | derivados de `.md` gravam no DB (`decisions`/`voice_cards`/`spoiler`/`kb`) — cobertos pelo mesmo espelho gated da Fase 2 | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ✅ |
 | **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas — cobertos pelo mesmo espelho gated | — | ✅ |
 | **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05b/06b/06c) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
-| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** ⏳ produtores DB-first (flat vira só export, remove o mirror) — **deferida (precisa de run vivo)** | — | 🟡 6a feito / 6b deferido |
+| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** produtores DB-first (flat vira só export, remove o mirror) — ver [issue #109](https://github.com/scudellerlemos/translation-cognition-framework/issues/109) | — | 🟡 6a feito / 6b em issue |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
+
+## Gates de governança sob o switch DB-gated (#85)
+
+Os módulos de gate (`kb_gate`/`kb_phase`/`kb_review`/`glossary_lint`/`spoiler_check`) foram
+auditados quanto ao mesmo switch DB-gated do `context_pack`. Achado: **liam sempre o flat**,
+mesmo em projeto com `db` populado — divergência silenciosa (o gate validava uma fonte que
+podia não ser mais a de verdade). Corrigido em duas frentes:
+
+- **`spoiler_check.py`** (check/check_gender/list_guards) e **`glossary_lint.py`** (lint):
+  agora DB-gated via `context_pack.load_spoiler_ledger()`/`load_translated_scenes()` — leem
+  SQLite quando o projeto tem `db`, senão flat (comportamento original intacto). Exigiu
+  estender `spoiler_entries` com as colunas `forbidden_pre_reveal`/`gender_quarantine`
+  (ausentes no schema original; migração ADITIVA via `Store._migrate_schema`, idempotente
+  para bancos já existentes).
+- **`kb_gate.py`**: só o check de `glossary` (coluna `updated_date`) virou DB-aware (lê
+  `updated_at` do banco). Os demais hard/soft-checks deste módulo (`research_log.md`
+  reconciliado, `kb_ratified.csv`) permanecem **flat-only por decisão** — ver limite abaixo.
+
+**Limite conhecido (não fechado por #85):** `kb_phase.py` e `kb_review.py` dependem de
+`research_log.md` (status de reconciliação por capítulo) e `kb_ratified.csv` (ratificação
+humana) — nenhum dos dois tem tabela equivalente no schema.sql hoje. Não é "rotear pelo
+switch existente": é desenhar 2 tabelas novas (schema + migração dos dados flat existentes),
+decisão de design maior que o escopo de #85. Rastreado em issue separada — antes de tratar
+esses 2 módulos como DB-first, decidir se `research_log`/`kb_ratified` viram tabelas ou se
+continuam sendo, por design, a única fonte de verdade (mesmo sob projeto DB-gated) — nesse
+caso documentar isso como decisão explícita, não como lacuna. Rastreado na
+[issue #94](https://github.com/scudellerlemos/translation-cognition-framework/issues/94).
 
 ## Write-path consolidado (Fases 2/3/4) — decisão de design
 
@@ -120,5 +147,7 @@ local), não embeddings.
 3. **Pronto**: o `context_pack` em modo DB injeta a seção "falas SIMILARES (adapte)" sozinho
    (o `_get_embedder` carrega o modelo 1×/processo). Sem a stack, cai p/ `[]` (fallback testado).
 
-**Validação ainda pendente:** `embedder.index_project`/`search` nunca rodaram com as deps reais (a CI
-usa o fallback de propósito). Ligar pela 1ª vez = confirmar que index+search produzem vizinhos de fato.
+**Validação (correção — este parágrafo estava desatualizado):** `embedder.index_project`/`search` JÁ
+rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):
+6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
+memória `semantic-stack-validated` e `framework/docs/ROADMAP.md` (seção B2).

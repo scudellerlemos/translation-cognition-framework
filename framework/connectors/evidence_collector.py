@@ -118,13 +118,6 @@ def _sample_files(files: list[Path], n: int) -> list[Path]:
     return sample[:n]
 
 
-def _detect_magic(data: bytes) -> str | None:
-    """Primeiros 8 bytes em hex, ou None se dado vazio."""
-    if not data:
-        return None
-    return data[:8].hex()
-
-
 def _estimate_encoding(data: bytes) -> str:
     """Classifica o encoding predominante do dado:
     'ascii'  — 100% caracteres na faixa 0x20-0x7E + whitespace/controle comum
