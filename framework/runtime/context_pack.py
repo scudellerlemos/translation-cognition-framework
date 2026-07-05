@@ -519,6 +519,45 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
         return []
 
 
+def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
+                             k: int = 3, max_hits: int = 8):
+    """Decisões SEMANTICAMENTE similares ao conteúdo da cena (#105) — RAG paralelo a
+    select_decisions (léxico, por tag/speaker/universal). Mesmo gate default-deny por `reveal`
+    do select_kb (ver _reveal_allowed): só injeta decisão já revelada/segura.
+
+    Caminho único: sqlite-vec + embedder.py (projetos com DB).
+    Fallback: sem stack de ML, sem DB, ou sem decisions indexadas → [] (sem erro)."""
+    if not db_path:
+        return []
+    try:
+        emb = _get_embedder()
+        if emb is None:
+            return []                  # stack de ML ausente → fallback silencioso (esperado)
+        from store import Store
+        here = _pos(scene_id)
+        query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
+        out, seen = [], set()
+        with Store(db_path) as db:
+            for hit in emb.search_decisions(db._con, query, project_id=project_id, k=k):
+                if not _reveal_allowed(hit.get("reveal"), here):
+                    continue
+                title = hit.get("title", "")
+                if not title or title in seen:
+                    continue
+                seen.add(title)
+                out.append({"title": title, "summary": hit.get("summary", ""),
+                            "score": round(float(hit.get("score", 0)), 3)})
+        out.sort(key=lambda h: (-h["score"], h["title"]))     # ordem estável (determinismo)
+        return out[:max_hits]
+    except Exception as e:             # noqa: BLE001
+        # falha INESPERADA com o stack PRESENTE: não mascarar como "sem decisões" — avisa e
+        # cai p/ [] sem derrubar o pacote (mesmo tratamento de _load_tm_semantic).
+        import warnings as _w
+        _w.warn(f"Decisions semântica falhou (stack presente): {e!r} — pacote sem essa seção.",
+                stacklevel=2)
+        return []
+
+
 _KB_CAP = 5
 
 
@@ -540,24 +579,28 @@ def _load_kb(db_path, project_id):
 _KB_SAFE = {"safe", "always", "sempre", "public", "publico"}
 
 
+def _reveal_allowed(reveal: str | None, here: tuple) -> bool:
+    """GATE de spoiler DEFAULT-DENY compartilhado por select_kb (léxico) e
+    _load_decisions_semantic (semântico, #105): só permite se PROVADAMENTE seguro — `reveal`
+    marcado 'safe' (_KB_SAFE), ou `reveal` = uma cena JÁ passada (≤ `here`). Sem `reveal`, ou
+    'beyond_frontier', ou reveal FUTURO → nega. A garantia de não-vazamento vem do dado
+    explícito por item (não de matching de texto EN↔PT)."""
+    reveal = (reveal or "").strip().lower()
+    if reveal in _KB_SAFE:
+        return True
+    if reveal and reveal not in ("beyond_frontier", "bf"):
+        rp = _pos(reveal)
+        return bool(rp) and rp <= here          # já revelado até esta cena
+    return False                                # sem tag / beyond_frontier → default-deny
+
+
 def select_kb(kb, blob_low, scene_id, cap=_KB_CAP):
-    """Seções da KB relevantes à cena, com GATE de spoiler DEFAULT-DENY: uma seção só é injetada
-    se PROVADAMENTE segura — ou `reveal` marcado 'safe', ou `reveal` = uma cena JÁ passada
-    (≤ cena atual). Sem `reveal`, ou 'beyond_frontier', ou reveal FUTURO → EXCLUÍDA. A garantia
-    de não-vazamento vem do dado explícito por seção (não de matching de texto EN↔PT).
+    """Seções da KB relevantes à cena, com gate de spoiler default-deny (ver _reveal_allowed).
     Relevância: o nome/tema da seção é citado nas falas. Determinístico, sem ML."""
     here = _pos(scene_id)
     out = []
     for sec in kb:
-        reveal = (sec.get("reveal") or "").strip().lower()
-        if reveal in _KB_SAFE:
-            allowed = True
-        elif reveal and reveal not in ("beyond_frontier", "bf"):
-            rp = _pos(reveal)
-            allowed = bool(rp) and rp <= here          # já revelado até esta cena
-        else:
-            allowed = False                            # sem tag / beyond_frontier → default-deny
-        if not allowed:
+        if not _reveal_allowed(sec.get("reveal"), here):
             continue
         title = sec.get("section", "")
         toks = [w for w in re.split(r"[^\wçáàâãéêíóôõúü]+", title.lower()) if len(w) >= 4]
@@ -587,6 +630,9 @@ def build_pack(root: Path, scene: str) -> dict:
     tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
+    # Decisions semânticas (#105) -- mesmo gate default-deny por reveal do select_kb.
+    decisions_semantic = _load_decisions_semantic(
+        db_path, db_pid, rows, blob_low, scene_id_of(scene))
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
@@ -604,6 +650,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "tm_semantic": tm_semantic,
         "tm_series": tm_series,
         "kb": kb,
+        "decisions_semantic": decisions_semantic,
         "spoiler_guards": spoiler_guards,
         "lines": rows,
     }
