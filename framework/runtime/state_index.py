@@ -42,6 +42,11 @@ UNIVERSAL_DECISION_HINTS = (
     "ponteiro", "opcode", "charset", "translit", "token", "cor", "conector",
     "reinser", "byte", "relocac", "pack", "acento",
 )
+# reveal explicito de uma decisao ('## Titulo <!-- reveal: <scene>|beyond_frontier|safe -->'),
+# mesma convencao usada em universe_knowledge_base.md (ver migrate_from_flat._KB_REVEAL_RX).
+# Sem a tag -> reveal=None (default-deny no context_pack, ver _reveal_allowed).
+_REVEAL_RX = re.compile(r"<!--\s*reveal:\s*([^\s>]+)\s*-->", re.IGNORECASE)
+
 # stopwords pt p/ derivar tags do titulo das decisoes (evita ruido)
 _STOP = {
     "de", "do", "da", "dos", "das", "e", "o", "a", "os", "as", "no", "na", "nos", "nas",
@@ -232,17 +237,23 @@ def build_voice_cards(tone_md: str) -> dict:
 # ----------------------------- Decision Index ---------------------------------
 
 def build_decision_index(log_md: str) -> list[dict]:
-    """Quebra o decision_log.md em secoes '## ' -> {title, tags, universal, summary}."""
+    """Quebra o decision_log.md em secoes '## ' -> {title, tags, universal, summary, reveal}.
+
+    reveal e extraido da tag opcional na linha do titulo ('## Titulo <!-- reveal: ... -->');
+    None se ausente (default-deny -- decidido na migracao/context_pack, nao aqui)."""
     out = []
     blocks = re.split(r"\n##\s+", "\n" + log_md)
     for b in blocks:
         b = b.strip()
         if not b or b.startswith("#"):           # pula o titulo/preambulo (linha markdown iniciada por #)
             continue
-        title = b.splitlines()[0].strip()
-        if not title or title.lower().startswith("decision log"):
+        title_line = b.splitlines()[0].strip()
+        if not title_line or title_line.lower().startswith("decision log"):
             continue
-        body = b[len(title):]
+        body = b[len(title_line):]
+        m = _REVEAL_RX.search(title_line)
+        reveal = m.group(1) if m else None
+        title = _REVEAL_RX.sub("", title_line).strip()
         # summary = primeiras linhas uteis (ignora metadados **Data/Passo/Tipo**)
         summary_lines = []
         for ln in body.splitlines():
@@ -257,7 +268,7 @@ def build_decision_index(log_md: str) -> list[dict]:
         tl = title.lower()
         universal = any(h in tl for h in UNIVERSAL_DECISION_HINTS)
         out.append({"title": title, "tags": _slug_tags(title),
-                    "universal": universal, "summary": summary})
+                    "universal": universal, "summary": summary, "reveal": reveal})
     return out
 
 

@@ -66,6 +66,21 @@ def test_build_decision_index_splits_sections():
     assert any(d["universal"] for d in dec if "opcode" in d["title"].lower())
 
 
+def test_build_decision_index_extracts_reveal_tag():
+    """#105: tag opcional '<!-- reveal: ... -->' na linha do titulo vira campo reveal, e e
+    removida do titulo. Secao sem a tag -> reveal=None (default-deny decidido na migracao)."""
+    md = (
+        "# Decision Log\n"
+        "## Nina e revelada dragao <!-- reveal: ch_12 -->\n"
+        "Nina revela ser o dragao ancestral.\n"
+        "## Tom da Nina\n"
+        "Manter registro informal.\n"
+    )
+    dec = {d["title"]: d for d in si.build_decision_index(md)}
+    assert dec["Nina e revelada dragao"]["reveal"] == "ch_12"
+    assert dec["Tom da Nina"]["reveal"] is None
+
+
 def _mini_project(root: Path, with_updated_date: bool):
     art = root / "artifacts"
     (art / "state").mkdir(parents=True)

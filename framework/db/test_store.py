@@ -55,3 +55,33 @@ def test_migrate_schema_adds_columns_to_preexisting_db(tmp_path):
         assert {"forbidden_pre_reveal", "gender_quarantine"} <= cols
         entries = db2.get_spoiler_entries("p1")
     assert entries[0]["gender_quarantine"] is True
+
+
+def test_decision_reveal_roundtrip(tmp_path):
+    """#105: upsert_decision/get_decisions preserva reveal (None por default -- default-deny)."""
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_decision("p1", "Regra do dragão", summary="preservar nome", reveal="safe")
+        db.upsert_decision("p1", "Trama pendente", summary="sem revisao ainda")
+        decisions = {d["title"]: d for d in db.get_decisions("p1")}
+    assert decisions["Regra do dragão"]["reveal"] == "safe"
+    assert decisions["Trama pendente"]["reveal"] is None
+
+
+def test_migrate_schema_adds_reveal_column_to_preexisting_decisions(tmp_path):
+    """Banco criado ANTES de decisions.reveal existir no schema.sql -> ALTER TABLE aditivo,
+    mesmo padrão de test_migrate_schema_adds_columns_to_preexisting_db. Remove a coluna e
+    FECHA a conexão -- _migrate_schema só roda de novo na PRÓXIMA abertura (__init__)."""
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db._con.execute("ALTER TABLE decisions DROP COLUMN reveal")
+        db._con.commit()
+    # reabre -- _migrate_schema roda de novo e re-adiciona a coluna removida
+    with Store(db_path) as db2:
+        cols = {r["name"] for r in db2._con.execute("PRAGMA table_info(decisions)").fetchall()}
+        assert "reveal" in cols
+        db2.upsert_decision("p1", "Sem reveal ainda", summary="x")
+        decisions = db2.get_decisions("p1")
+    assert decisions[0]["reveal"] is None

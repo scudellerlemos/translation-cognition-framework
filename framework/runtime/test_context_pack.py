@@ -47,6 +47,7 @@ def test_build_pack_db_mode(tmp_path):
     assert any(k["section"] == "Dragon lore" for k in pack["kb"]), "KB safe deveria injetar"
     assert pack["spoiler_guards"], "guard de spoiler (beyond_frontier + trigger) deveria disparar"
     assert pack["tm_semantic"] == []          # sem deps de ML → fallback esperado
+    assert pack["decisions_semantic"] == []   # idem (#105) — sem deps de ML → fallback esperado
 
 
 def test_write_pack_db_mode_renders_and_writes(tmp_path):
@@ -66,6 +67,35 @@ def test_load_lines_db_missing_scene_raises(tmp_path):
     import pytest
     with pytest.raises(SystemExit):
         cp._load_lines(tmp_path, cfg, "NAOEXISTE")
+
+
+def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
+    """#105 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    instalada localmente (requirements-ml.txt); skip limpo em CI, que não instala essa stack.
+    Decision 'safe' deve entrar; decision com reveal futuro deve ficar de fora (mesmo gate de
+    select_kb, ver _reveal_allowed)."""
+    import pytest
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("sqlite_vec")
+    from embedder import Embedder
+
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+        db.upsert_scene_lines("p", "S1", [
+            {"offset": "X:0:1", "source": "The Dragon speaks to Ryu.", "byte_budget": 40}])
+        db.upsert_decision("p", "Regra do dragão", summary="dragões preservam o nome original",
+                           reveal="safe")
+        db.upsert_decision("p", "Segredo futuro do dragão",
+                           summary="dragões preservam o nome original", reveal="9_09")
+        emb = Embedder()
+        emb.index_project(db._con, project_id="p", kind="decision")
+
+    rows = [{"offset": "X:0:1", "source": "The Dragon speaks to Ryu."}]
+    got = cp._load_decisions_semantic(dbp, "p", rows, "the dragon speaks to ryu.", "1_05")
+    titles = {d["title"] for d in got}
+    assert "Regra do dragão" in titles
+    assert "Segredo futuro do dragão" not in titles
 
 
 def test_select_glossary_and_voices_lexical():
@@ -129,3 +159,14 @@ def test_select_kb_default_deny_semantics():
     blob = "safe world past reveal future reveal beyond untagged"
     got = {s["section"] for s in cp.select_kb(kb, blob, "1_05")}
     assert got == {"Safe World", "Past Reveal"}
+
+
+def test_reveal_allowed_shared_gate(tmp_path):
+    """_reveal_allowed (#105): mesmo gate default-deny usado por select_kb (KB léxica) e
+    _load_decisions_semantic (decisions semânticas) -- contrato direto, sem passar por seleção."""
+    here = cp._pos("1_05")
+    assert cp._reveal_allowed("safe", here) is True
+    assert cp._reveal_allowed("1_01", here) is True             # já passado
+    assert cp._reveal_allowed("9_09", here) is False             # futuro
+    assert cp._reveal_allowed("beyond_frontier", here) is False
+    assert cp._reveal_allowed(None, here) is False               # sem tag -> default-deny

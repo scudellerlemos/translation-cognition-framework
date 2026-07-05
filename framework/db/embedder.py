@@ -1,4 +1,4 @@
-"""embedder.py — Embeddings locais para busca semântica na TM.
+"""embedder.py — Embeddings locais para busca semântica na TM e em decisions (#105).
 
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
@@ -15,6 +15,9 @@ Uso:
     emb = Embedder()
     emb.index_project(con, project_id="bof4")   # indexa todas as traduções aprovadas
     hits = emb.search(con, "He's gone...", project_id="bof4", k=5)
+
+    emb.index_project(con, project_id="bof4", kind="decision")  # indexa decisions.summary
+    hits = emb.search_decisions(con, "onomatopeia", project_id="bof4", k=5)
 """
 from __future__ import annotations
 
@@ -27,6 +30,19 @@ import time
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
+
+# indexação genérica por "kind" -- traduções (TM) e decisions (#105) compartilham a MESMA
+# estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de origem.
+# search() continua específico de TM (shape de retorno bem diferente de decisions); ver
+# search_decisions() abaixo.
+_KIND_CONFIG = {
+    "translation": {"table": "translations", "text_col": "source",
+                    "vec_table": "tm_vectors", "emb_table": "tm_embeddings",
+                    "id_col": "translation_id", "filter_sql": " AND t.approved=1"},
+    "decision": {"table": "decisions", "text_col": "summary",
+                 "vec_table": "decision_vectors", "emb_table": "decision_embeddings",
+                 "id_col": "decision_id", "filter_sql": ""},
+}
 
 
 def _load_sentence_transformers():
@@ -75,46 +91,48 @@ class Embedder:
                                   show_progress_bar=False, normalize_embeddings=True)
         return vecs.tolist()
 
-    def _ensure_vec_table(self, con: sqlite3.Connection):
+    def _ensure_vec_table(self, con: sqlite3.Connection, kind: str = "translation"):
         """Cria a tabela virtual vec0 se não existir (requer sqlite-vec carregado)."""
         _load_sqlite_vec(con)
+        c = _KIND_CONFIG[kind]
         con.execute(f"""
-            CREATE VIRTUAL TABLE IF NOT EXISTS tm_vectors
+            CREATE VIRTUAL TABLE IF NOT EXISTS {c['vec_table']}
             USING vec0(
-                translation_id INTEGER PRIMARY KEY,
+                {c['id_col']} INTEGER PRIMARY KEY,
                 embedding float[{_DIM}]
             )
         """)
         con.commit()
 
     def index_project(self, con: sqlite3.Connection, project_id: str,
-                      force: bool = False) -> int:
-        """Indexa todas as traduções aprovadas de um projeto.
+                      force: bool = False, kind: str = "translation") -> int:
+        """Indexa as traduções aprovadas (kind='translation', default) ou as decisions
+        (kind='decision', #105) de um projeto.
 
         Pula entradas já indexadas (salvo force=True).
         Retorna número de vetores gravados.
         """
-        self._ensure_vec_table(con)
+        c = _KIND_CONFIG[kind]
+        self._ensure_vec_table(con, kind)
 
-        # Seleciona traduções aprovadas ainda não indexadas
         if force:
             # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — limpa os vetores do
             # projeto e reindexa do zero (ex.: ao trocar modelo ou a normalização).
             tids = [r[0] for r in con.execute(
-                "SELECT id FROM translations WHERE project_id=? AND approved=1",
+                f"SELECT id FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (project_id,)).fetchall()]
-            con.executemany("DELETE FROM tm_vectors WHERE translation_id=?", [(t,) for t in tids])
-            con.executemany("DELETE FROM tm_embeddings WHERE translation_id=?", [(t,) for t in tids])
+            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
+            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
             con.commit()
             rows = con.execute(
-                "SELECT id, source FROM translations WHERE project_id=? AND approved=1",
+                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608
                 (project_id,),
             ).fetchall()
         else:
             rows = con.execute(
-                """SELECT t.id, t.source FROM translations t
-                   LEFT JOIN tm_embeddings e ON t.id = e.translation_id
-                   WHERE t.project_id=? AND t.approved=1 AND e.translation_id IS NULL""",
+                f"""SELECT t.id, t.{c['text_col']} FROM {c['table']} t
+                   LEFT JOIN {c['emb_table']} e ON t.id = e.{c['id_col']}
+                   WHERE t.project_id=?{c['filter_sql']} AND e.{c['id_col']} IS NULL""",  # nosec B608
                 (project_id,),
             ).fetchall()
 
@@ -123,18 +141,18 @@ class Embedder:
 
         from store import strip_codes  # noqa: E402  (forma limpa: vetor sem ruído dos códigos)
         ids = [r[0] for r in rows]
-        texts = [strip_codes(r[1]) for r in rows]
+        texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
 
         for tid, vec in zip(ids, vecs, strict=True):
             con.execute(
-                "INSERT OR REPLACE INTO tm_vectors(translation_id, embedding) VALUES(?,?)",
+                f"INSERT OR REPLACE INTO {c['vec_table']}({c['id_col']}, embedding) VALUES(?,?)",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (tid, json.dumps(vec)),
             )
             con.execute(
-                """INSERT INTO tm_embeddings(translation_id, model_name, dim, indexed_at)
+                f"""INSERT INTO {c['emb_table']}({c['id_col']}, model_name, dim, indexed_at)
                    VALUES(?,?,?,?)
-                   ON CONFLICT(translation_id) DO UPDATE SET indexed_at=excluded.indexed_at""",
+                   ON CONFLICT({c['id_col']}) DO UPDATE SET indexed_at=excluded.indexed_at""",  # nosec B608
                 (tid, self.model_name, _DIM, time.time()),
             )
         con.commit()
@@ -176,6 +194,39 @@ class Embedder:
             results.append(d)
 
         return self._rerank(query, results) if results else results
+
+    def search_decisions(self, con: sqlite3.Connection, query: str,
+                         project_id: str, k: int = 5) -> list[dict]:
+        """Busca semântica em decisions (#105). Retorna top-k hits (title/summary/universal/
+        reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
+        forçar as duas formas numa única função genérica. Sem rerank (FlashRank é ajustado para
+        passagens de tradução, não decisões de processo)."""
+        from store import strip_codes  # noqa: E402
+        self._ensure_vec_table(con, kind="decision")
+        q_vec = self.encode([strip_codes(query)])[0]
+
+        rows = con.execute(
+            """SELECT v.decision_id, v.distance,
+                       d.title, d.summary, d.universal, d.reveal
+                FROM decision_vectors v
+                JOIN decisions d ON d.id = v.decision_id
+                WHERE d.project_id=?
+                  AND v.embedding MATCH ?
+                  AND k = ?
+                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados
+            (project_id, json.dumps(q_vec), k),
+        ).fetchall()
+
+        results = []
+        for r in rows:
+            d = dict(zip(
+                ["decision_id", "distance", "title", "summary", "universal", "reveal"],
+                r,
+                strict=True,
+            ))
+            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
+            results.append(d)
+        return results
 
     def _rerank(self, query: str, hits: list[dict]) -> list[dict]:
         """Rerank com FlashRank se disponível; caso contrário retorna como está."""

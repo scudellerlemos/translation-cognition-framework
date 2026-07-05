@@ -8,6 +8,8 @@ import re
 import sys
 from pathlib import Path
 
+import pytest
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
@@ -188,3 +190,11 @@ def test_kb_build_ollama_uses_found_by_in_research_log(tmp_path):
     kbo.build(tmp_path, chat_fn=_found_chat)
     rl = paths.research_log(tmp_path).read_text(encoding="utf-8")
     assert "Usuario (rascunho Ollama)" in rl
+
+
+def test_main_rejects_concordance_and_promote_together(tmp_path, monkeypatch):
+    # --concordance e --promote juntos nao pode silenciosamente escolher um -- erro explicito.
+    monkeypatch.setattr(sys, "argv", ["kb_reconcile.py", str(tmp_path), "--concordance", "--promote"])
+    with pytest.raises(SystemExit) as exc:
+        kbr.main()
+    assert exc.value.code == 2

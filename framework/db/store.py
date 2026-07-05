@@ -55,6 +55,9 @@ class Store:
             self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN forbidden_pre_reveal TEXT")
         if "gender_quarantine" not in cols:
             self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN gender_quarantine INTEGER DEFAULT 0")
+        dec_cols = {r["name"] for r in self._con.execute("PRAGMA table_info(decisions)").fetchall()}
+        if "reveal" not in dec_cols:
+            self._con.execute("ALTER TABLE decisions ADD COLUMN reveal TEXT")
 
     def close(self):
         self._con.close()
@@ -353,16 +356,18 @@ class Store:
     # ── Decisões ───────────────────────────────────────────────────────────────
 
     def upsert_decision(self, project_id: str, title: str, summary: str | None = None,
-                        universal: bool = False, tags: list | None = None):
+                        universal: bool = False, tags: list | None = None,
+                        reveal: str | None = None):
         self._con.execute(
-            """INSERT INTO decisions(project_id, title, summary, universal, tags)
-               VALUES(?,?,?,?,?)
+            """INSERT INTO decisions(project_id, title, summary, universal, tags, reveal)
+               VALUES(?,?,?,?,?,?)
                ON CONFLICT(project_id, title) DO UPDATE SET
                    summary=COALESCE(excluded.summary, summary),
                    universal=excluded.universal,
-                   tags=COALESCE(excluded.tags, tags)""",
+                   tags=COALESCE(excluded.tags, tags),
+                   reveal=excluded.reveal""",
             (project_id, title, summary, int(universal),
-             json.dumps(tags or [], ensure_ascii=False)),
+             json.dumps(tags or [], ensure_ascii=False), reveal),
         )
         self._con.commit()
 
