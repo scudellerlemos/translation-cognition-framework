@@ -82,6 +82,17 @@ O usuário coloca o binário em `artifacts/` e declara o `connector` no manifest
 `framework/connectors/hex_binary.md`. **O Passo 00 só avança se o round-trip passar** (extrair →
 reinserir sem mudanças === binário original).
 
+**Ferramentas de apoio à descoberta/debug de formato** (não substituem o contrato acima, aceleram
+chegar lá — nunca dependência de pipeline em produção):
+- **Kaitai Struct** (compiler ou Web IDE em [ide.kaitai.io](https://ide.kaitai.io)) + **ImHex** — mapear
+  e documentar formato binário desconhecido antes de escrever o `extract.py` à mão.
+- **Hypothesis** — fuzzing de propriedade sobre `test_roundtrip_synthetic.py`, além dos fixtures manuais.
+- **vbindiff** — localizar o byte exato de divergência quando um teste de round-trip falha.
+- **binwalk** — primeiro passe num blob binário desconhecido (assinatura de arquivo/compressão embutida).
+- **GARbro** — referência quando o jogo novo usa engine de visual novel já conhecida (+50 suportadas).
+- **UABEA** — companion do UnityPy quando ele não parsear uma versão nova do Unity.
+- **FModel** / **UndertaleModTool** — se o jogo novo for Unreal Engine ou GameMaker, respectivamente.
+
 ### 4. (Opcional) Curar o perfil
 Copiar os templates de `framework/templates/profile/` e preencher com o que já se sabe da obra.
 No pipeline real, o conteúdo equivalente é **gerado** pelos passos 1–4; o perfil curado serve de
