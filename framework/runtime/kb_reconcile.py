@@ -19,8 +19,9 @@ edita kb_ratified.csv -- a IA nunca se auto-ratifica.
 UNSOURCED nunca bloqueia (nada foi afirmado, nada a ratificar). kb_gate.py NAO precisa mudar: a
 regex que ja usa (status seguido de 'reconciled') so casa depois da promocao, exatamente como deveria.
 
-Uso:  python kb_reconcile.py <projeto>            # --check (default, read-only)
-      python kb_reconcile.py <projeto> --promote   # promove SE --check estiver limpo
+Uso:  python kb_reconcile.py <projeto>              # --check (default, read-only)
+      python kb_reconcile.py <projeto> --promote     # promove SE --check estiver limpo
+      python kb_reconcile.py <projeto> --concordance # triagem alta/baixa concordancia (#67)
 """
 from __future__ import annotations
 
@@ -157,7 +158,15 @@ def main():
     ap.add_argument("project")
     ap.add_argument("--promote", action="store_true",
                     help="promove SE o check estiver limpo; senao recusa (exit 1), nada e alterado")
+    ap.add_argument("--concordance", action="store_true",
+                    help="triagem alta/baixa concordancia rascunho x pesquisa humana (read-only, "
+                         "nao substitui --promote; ver kb_concordance.py, #67)")
     a = ap.parse_args()
+
+    if a.concordance:
+        import kb_concordance
+        kb_concordance._print_report(kb_concordance.concordance(a.project))
+        return
 
     if a.promote:
         r = promote(a.project)
