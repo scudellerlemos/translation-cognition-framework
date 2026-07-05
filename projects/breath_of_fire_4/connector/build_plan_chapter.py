@@ -33,6 +33,19 @@ def _load_known_speakers(root: Path) -> frozenset:
     return frozenset(names | {"npc", "system", "unknown"})
 
 
+def _load_portrait_codes(root: Path) -> dict:
+    """speaker_code ([14][XX], extraído deterministicamente do binário) -> nome canônico.
+
+    Ver artifacts/state/portrait_codes.json. Chaves iniciadas com '_' são metadados,
+    não códigos (ex.: '_meta').
+    """
+    pc = root / "artifacts" / "state" / "portrait_codes.json"
+    if not pc.is_file():
+        return {}
+    data = json.loads(pc.read_text(encoding="utf-8"))
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
 def _normalize_speaker(sp: str, canonical: frozenset) -> str:
     """Mapeia labels livres do modelo para valores canônicos.
 
@@ -51,6 +64,17 @@ def _normalize_speaker(sp: str, canonical: frozenset) -> str:
     return "npc"
 
 
+def _resolve_speaker(code: str, llm_guess: str, portrait_codes: dict, canonical: frozenset) -> str:
+    """speaker_code determinístico tem precedência sobre o guess do LLM.
+
+    Código presente e mapeado em portrait_codes -> nome canônico direto (#64).
+    Caso contrário, cai no comportamento anterior: guess do LLM normalizado.
+    """
+    if code and code in portrait_codes:
+        return portrait_codes[code]
+    return _normalize_speaker(llm_guess, canonical)
+
+
 def load_dialogs(p: Path) -> tuple[dict, list]:
     rows, order = {}, []
     with p.open(encoding="utf-8") as fh:
@@ -58,6 +82,7 @@ def load_dialogs(p: Path) -> tuple[dict, list]:
             rows[r["offset"]] = {
                 "text_en": r["text_en"],
                 "byte_budget": int(r["byte_budget"]),
+                "speaker_code": r.get("speaker_code", ""),
             }
             order.append(r["offset"])
     return rows, order
@@ -81,6 +106,7 @@ def main() -> None:
     dialogs, order = load_dialogs(chdir / "dialogs.csv")
     trans = json.loads(trans_files[0].read_text(encoding="utf-8"))["lines"]
     canonical_speakers = _load_known_speakers(ROOT)
+    portrait_codes = _load_portrait_codes(ROOT)
 
     errors = []
     miss = [o for o in order if o not in trans]
@@ -111,7 +137,10 @@ def main() -> None:
         line = {
             "offset": off,
             "text_source": src,
-            "speaker": _normalize_speaker(t.get("speaker", ""), canonical_speakers),
+            "speaker": _resolve_speaker(
+                dialogs[off].get("speaker_code", ""), t.get("speaker", ""),
+                portrait_codes, canonical_speakers,
+            ),
             "tone_register": t.get("tone_register", ""),
             "intent": t.get("intent", ""),
             "risk_level": t.get("risk_level", "low"),
