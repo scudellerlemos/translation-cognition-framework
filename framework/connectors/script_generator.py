@@ -367,6 +367,11 @@ from pathlib import Path
 # CONFIG — MESMOS BYTE_TO_CHAR/CONTROL_MAP do extract.py gerado (copiar de lá,
 # preenchidos lendo a tabela de caracteres do jogo). Invertidos automaticamente
 # abaixo -- não editar CHAR_TO_BYTE/_CONTROL_MAP_ENCODE à mão.
+#
+# CUIDADO: se um token do CONTROL_MAP produzir o MESMO texto que um char do
+# BYTE_TO_CHAR (ex.: os dois mapeando pra "A"), o encode SEMPRE prioriza o
+# token -- round-trip fica lossy nesse caso. Evitar sobreposição de saída
+# entre as duas tabelas.
 # ---------------------------------------------------------------------------
 BYTE_TO_CHAR: dict[int, str] = {{
     # 0x20: " ", 0x21: "!", ... MESMO dict do extract.py gerado
