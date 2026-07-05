@@ -121,6 +121,38 @@ def test_concordance_ignores_unsourced_entities(tmp_path):
     assert kbc.concordance(tmp_path, embed_fn=_fake_embed) == []
 
 
+def test_concordance_handles_missing_research_cache_dir(tmp_path):
+    """Entidade COM definicao no rascunho (precisa de cache no build), mas artifacts/
+    research_cache/ deixa de existir no momento da checagem (ex.: limpo manualmente) --
+    _load_human_cache_texts trata isso como 'nenhuma fonte', nao erro."""
+    import shutil
+    _write_entities(tmp_path, [("Oshtor", "main")])
+    _cache_one(tmp_path, "texto qualquer", "https://x.test", "ia")
+    kbo.build(tmp_path, chat_fn=_chat_with("Definicao real do rascunho."))
+    shutil.rmtree(tmp_path / "artifacts" / "research_cache")
+
+    items = kbc.concordance(tmp_path, embed_fn=_fake_embed)
+    assert len(items) == 1
+    assert items[0]["level"] == "sem_pesquisa_humana"
+
+
+def test_print_report_empty(capsys):
+    kbc._print_report([])
+    out = capsys.readouterr().out
+    assert "nenhuma entidade" in out
+
+
+def test_print_report_lists_each_item(capsys):
+    kbc._print_report([
+        {"name": "Oshtor", "level": "alta", "score": 0.9123, "human_sources": 2},
+        {"name": "Semfonte", "level": "sem_pesquisa_humana", "score": None, "human_sources": 0},
+    ])
+    out = capsys.readouterr().out
+    assert "Oshtor: alta score=0.9123 (2 fonte(s) humana(s))" in out
+    assert "Semfonte: sem_pesquisa_humana (0 fonte(s) humana(s))" in out
+    assert "triagem informativa" in out
+
+
 def test_concordance_name_matching_respects_word_boundary(tmp_path):
     # "Ana" nao pode casar dentro de "banana" (substring); so como palavra solta.
     _write_entities(tmp_path, [("Ana", "main")])
