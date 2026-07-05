@@ -28,10 +28,12 @@ reduzem o custo de dar início a um projeto novo de ~40k para ~5k tokens de sess
    - **engine conhecida** (já no `connector_registry.json`, ex.: Aquaplus/Capcom DAT/Unity
      Addressables): aponta direto pro conector de referência — copiar e adaptar, pular a etapa
      manual de mapeamento hex.
-   - **engine desconhecida**: `--generate-stub` gera um candidato de `extract.py` pré-preenchido
-     (um dos 3 padrões: linear_scan/token_table/pointer_table, escolhido pelas evidências) — ponto
-     de partida bem mais adiantado que o `_skeleton/` genérico. Validar cobertura ANTES do
-     round-trip completo: `python framework/connectors/coverage_gate.py <candidato.py> <game_dir>`.
+   - **engine desconhecida**: `--generate-stub` gera o PAR `extract.py` + `reinsert.py`
+     pré-preenchidos (#108; mesmo padrão nos dois — linear_scan/token_table/pointer_table,
+     escolhido pelas evidências) — ponto de partida bem mais adiantado que o `_skeleton/`
+     genérico. Validar cobertura ANTES do round-trip completo:
+     `python framework/connectors/coverage_gate.py <candidato.py> <game_dir>`. Loop de
+     refino documentado em `framework/connectors/agentic_synthesis.md`.
    - **bloqueada** (cifrado/comprimido): fora do escopo do framework, exige engenharia reversa.
 3. **KB sem custo de API**: `kb_fetch.py` normaliza qualquer fonte (URL, PDF, .docx, arquivo local)
    pra texto plano; `kb_build_ollama.py` gera um RASCUNHO de research/KB via Ollama LOCAL (zero
