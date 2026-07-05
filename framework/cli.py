@@ -6,7 +6,7 @@ invocados manualmente por subcomandos organizados.
 Uso:
   python framework/cli.py translate <project> <scene> [--backend ollama|api]
   python framework/cli.py bench     <project> <scene> [--model qwen2.5:14b]
-  python framework/cli.py db migrate <bof4_root> <dest_db>
+  python framework/cli.py db migrate <project_root> <dest_db>
   python framework/cli.py db summary <db_path> <project_id>
   python framework/cli.py ollama status
   python framework/cli.py ollama pull <model>
@@ -59,7 +59,7 @@ def cmd_bench(args):
 
 def cmd_db_migrate(args):
     from migrate_from_flat import migrate
-    result = migrate(Path(args.bof4_root), Path(args.dest_db),
+    result = migrate(Path(args.project_root), Path(args.dest_db),
                      project_id=args.project_id)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
@@ -191,7 +191,7 @@ def build_parser() -> argparse.ArgumentParser:
     db_sub = p_db.add_subparsers(dest="db_command", required=True)
 
     p_mig = db_sub.add_parser("migrate", help="Migra flat files para SQLite")
-    p_mig.add_argument("bof4_root", help="Raiz do projeto BoF4")
+    p_mig.add_argument("project_root", help="Raiz do projeto")
     p_mig.add_argument("dest_db", help="Banco de destino (.db)")
     p_mig.add_argument("--project-id", default="bof4")
     p_mig.set_defaults(func=cmd_db_migrate)
