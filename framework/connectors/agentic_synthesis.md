@@ -48,6 +48,14 @@ registry (`connector_registry.json`), nunca gera nada do zero (`existence_gate()
             se sobrepõem"). Quem refina é a mesma sessão/agente que propôs — edita as constantes de
             CONFIG do candidato (nunca a lógica de round-trip em si) e volta pro passo 2.
 
+            GATE DE LEITURA (#74): antes de cada edição do candidato, chamar
+            `connector_gate.assert_fresh_read(candidato_path, conteudo_que_acabei_de_ler)` com o
+            conteúdo lido NESTA iteração (não reaproveitar leitura de uma iteração anterior nem de
+            memória) — protege contra editar em cima de um diagnóstico desatualizado quando o loop
+            atravessa múltiplas iterações/turnos (ex.: um humano editou o candidato entre duas
+            iterações, ou uma iteração retomou um contexto truncado). `StaleReadError` interrompe
+            o refino e força reler antes de continuar — nunca edita "de memória".
+
 TETO: 5 iterações de refino. Estourou sem passar em (c) -> escala pra humano com o histórico
 completo de tentativas e diagnósticos (nunca solta um loop infinito, nunca declara sucesso parcial).
 
@@ -69,6 +77,7 @@ O loop NUNCA faz esse registro sozinho.
 | Verifica round-trip (oráculo) | ✅ já existia (`connector_smoke.py --roundtrip`) |
 | `discover.py --generate-stub` gera o par | ❌ **só gerava extract.py**. Adicionado: gera extract.py + reinsert.py juntos. |
 | Loop de refino automatizado | Documentado aqui como PROCESSO (quem faz o quê, teto de iterações) — a mecânica de cada iteração reusa as peças acima, não há motor novo de execução. |
+| Gate de leitura fresca antes de editar (#74) | `connector_gate.assert_fresh_read()` já existia implementado e testado, mas **sem nenhum caller em produção** — não havia fluxo formalizado de "editar um conector existente" pra plugar. O passo REFINA acima é esse fluxo: primeiro caller real da função. |
 
 ---
 
@@ -93,6 +102,7 @@ O loop NUNCA faz esse registro sozinho.
 ```
 □ extract.py e reinsert.py candidatos vêm da MESMA evidência (mesmo padrão escolhido)?
 □ Nenhuma iteração de refino pula o passo 2c (round-trip) achando "já deve passar"?
+□ Cada edição do candidato no passo REFINA passou por connector_gate.assert_fresh_read() antes?
 □ Teto de iterações respeitado — sem loop infinito, escala pra humano ao estourar?
 □ Ratificação final (registrar no connector_registry.json) é sempre uma ação humana explícita?
 ```
