@@ -36,7 +36,6 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io  # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
 import paths  # noqa: E402
 
@@ -52,25 +51,20 @@ def check(root) -> list[dict]:
     """Retorna a lista de VAZAMENTOS: cada {scene, scene_id, entity, forbidden, offset, text}. Vazio = ok.
     So considera cenas com translations_<id>.json em disco (cenas ja traduzidas)."""
     root = Path(root)
-    led = paths.spoiler_ledger(root)
-    if not led.is_file():
-        return []
-    entries = json.loads(led.read_text(encoding="utf-8")).get("entries", [])
+    entries = context_pack.load_spoiler_ledger(root).get("entries", [])
     guarded = [(e, e.get("forbidden_pre_reveal") or []) for e in entries]
     guarded = [(e, fb) for e, fb in guarded if fb]
     if not guarded:
         return []
     leaks = []
-    for scene in artifact_io.scenes(root):
-        sid = context_pack.scene_id_of(scene)
-        lines = artifact_io.translations_map(root, scene)
+    for scene, sid, lines in context_pack.load_translated_scenes(root):
         if not lines:
             continue
         for entry, forbidden in guarded:
             if not _future(entry.get("reveal", "beyond_frontier"), sid):
                 continue                                  # cena no/apos o reveal -> nome ja e seguro
             for off, v in lines.items():
-                t = (v or {}).get("t", "") if isinstance(v, dict) else ""
+                t = v.get("target", "")
                 if not t:
                     continue
                 low = t.lower()
@@ -96,17 +90,12 @@ def check_gender(root) -> list[dict]:
     offset, text}]. ESCOPO HONESTO: heuristica de CO-OCORRENCIA por linha (referente unico) — nao e
     coreferencia; pode ter falso-positivo (por isso reporta o trecho p/ o humano decidir)."""
     root = Path(root)
-    led = paths.spoiler_ledger(root)
-    if not led.is_file():
-        return []
-    entries = json.loads(led.read_text(encoding="utf-8")).get("entries", [])
+    entries = context_pack.load_spoiler_ledger(root).get("entries", [])
     guarded = [e for e in entries if e.get("gender_quarantine")]
     if not guarded:
         return []
     flags = []
-    for scene in artifact_io.scenes(root):
-        sid = context_pack.scene_id_of(scene)
-        lines = artifact_io.translations_map(root, scene)
+    for scene, sid, lines in context_pack.load_translated_scenes(root):
         if not lines:
             continue
         for entry in guarded:
@@ -115,7 +104,7 @@ def check_gender(root) -> list[dict]:
             names = (entry.get("triggers") or []) + [entry.get("entity", "")]
             names = [n for n in names if n]
             for off, v in lines.items():
-                t = (v or {}).get("t", "") if isinstance(v, dict) else ""
+                t = v.get("target", "")
                 if not t:
                     continue
                 low = t.lower()
@@ -151,10 +140,7 @@ def audit_and_persist(root) -> dict:
 def list_guards(root) -> list[dict]:
     """Guards ativos no ledger: entidade, reveal, strings proibidas pré-reveal, gender_quarantine."""
     root = Path(root)
-    led = paths.spoiler_ledger(root)
-    if not led.is_file():
-        return []
-    entries = json.loads(led.read_text(encoding="utf-8")).get("entries", [])
+    entries = context_pack.load_spoiler_ledger(root).get("entries", [])
     return [{"entity": e.get("entity", "?"),
              "reveal": e.get("reveal", "beyond_frontier"),
              "forbidden_pre_reveal": e.get("forbidden_pre_reveal") or [],
