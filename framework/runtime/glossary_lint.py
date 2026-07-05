@@ -29,7 +29,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io  # noqa: E402
+import context_pack  # noqa: E402
 import paths  # noqa: E402
 
 
@@ -52,14 +52,31 @@ man's woman's people person folk crowd enemy enemies ally allies
 """.split())
 
 
-def _load_glossary(root: Path):
+def _load_glossary(root: Path, cfg: dict | None = None):
     """[(term, expected[list], rule)] — expected = formas validas no pt-BR (target + aliases).
-    `traduzir` de palavra-comum generica (ver _GENERIC) e PULADO (traducao por contexto = ruido)."""
-    g = paths.glossary(root)
+    `traduzir` de palavra-comum generica (ver _GENERIC) e PULADO (traducao por contexto = ruido).
+    #85: DB-gated se o projeto tem `db` populado; senao flat (glossary.csv)."""
+    if cfg is None:
+        cfgp = root / "project.json"
+        cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}
+    db_path, db_pid = context_pack._db_path(root, cfg)
+    if db_path:
+        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            db_rows = db.get_glossary(db_pid)
+        rows = [{"term": r.get("term", ""), "handling_rule": r.get("handling_rule", ""),
+                "target_translation": r.get("translation", ""), "aliases": r.get("aliases", "")}
+               for r in db_rows]
+    else:
+        g = paths.glossary(root)
+        if not g.is_file():
+            return []
+        rows = list(csv.DictReader(g.open(encoding="utf-8")))
     out = []
-    if not g.is_file():
-        return out
-    for r in csv.DictReader(g.open(encoding="utf-8")):
+    for r in rows:
         term = (r.get("term") or "").strip()
         if len(term) < 3:
             continue
@@ -87,19 +104,11 @@ def lint(root) -> list[dict]:
     compiled = [(term, [_fold(e) for e in expected], rule,
                  re.compile(r"(?<!\w)" + re.escape(term) + r"(?!\w)", re.I)) for term, expected, rule in gloss]
     found = []
-    for scene in artifact_io.scenes(root, None):
-        # fonte por offset
-        src = {}
-        d = paths.dialogs(root, scene)
-        if d.is_file():
-            for r in csv.DictReader(d.open(encoding="utf-8")):
-                src[r.get("offset", "")] = r.get("text_source", "")
-        tmap = artifact_io.translations_map(root, scene) or {}
-        for off, v in tmap.items():
-            s = src.get(off, "")
-            if not s:
+    for scene, _sid, lines in context_pack.load_translated_scenes(root):
+        for off, v in lines.items():
+            s, t = v.get("source", ""), v.get("target", "")
+            if not s or not t:
                 continue
-            t = v.get("t", "") if isinstance(v, dict) else ""
             tf = _fold(t)
             for term, exp_folded, rule, rx in compiled:
                 if not rx.search(s):

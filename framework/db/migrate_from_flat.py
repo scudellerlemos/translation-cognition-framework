@@ -350,6 +350,8 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
             scenes=e.get("scenes", []),
             triggers=e.get("triggers", []),
             pre_reveal=e.get("pre_reveal"),
+            forbidden_pre_reveal=e.get("forbidden_pre_reveal", []),
+            gender_quarantine=bool(e.get("gender_quarantine")),
         )
         n += 1
     return n

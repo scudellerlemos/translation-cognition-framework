@@ -129,6 +129,55 @@ def test_check_fails_with_fewer_than_min_files(tmp_path):
     assert any("precisa de >=" in p for p in r["problems"])
 
 
+def test_file_coverage_candidate_exception_yields_zero_with_error(tmp_path):
+    """iter_string_offsets/decode_string quebrando no meio nunca propaga -- vira
+    coverage_ratio=0.0 + 'error' (o proprio erro ja e reprovacao)."""
+    src = '''
+def iter_string_offsets(data, project_cfg):
+    raise ValueError("candidato quebrado de proposito")
+
+def decode_string(data, offset, table):
+    return "", 0
+
+def load_table(table_path):
+    return None
+'''
+    candidate = cg.load_candidate(_write_candidate(tmp_path, src))
+    game_dir = tmp_path / "game"
+    f = _write_game_file(game_dir, "a.bin", [b"Hello world"])
+    r = cg.file_coverage(candidate, f)
+    assert r["coverage_ratio"] == 0.0 and r["n_strings"] == 0
+    assert "candidato quebrado de proposito" in r["error"]
+
+
+def test_check_reports_candidate_load_failure(tmp_path):
+    p = _write_candidate(tmp_path, _INCOMPLETE_CANDIDATE_SRC)   # falta decode_string
+    game_dir = tmp_path / "game"
+    _write_game_file(game_dir, "a.bin", [b"Hello world"])
+    r = cg.check(p, game_dir, min_files=1)
+    assert r["passed"] is False and r["per_file"] == []
+    assert any("candidato nao carregou" in prob for prob in r["problems"])
+
+
+def test_check_reports_load_table_failure(tmp_path):
+    src = '''
+def iter_string_offsets(data, project_cfg):
+    return iter(())
+
+def decode_string(data, offset, table):
+    return "", 0
+
+def load_table(table_path):
+    raise FileNotFoundError("tabela de caracteres ausente")
+'''
+    p = _write_candidate(tmp_path, src)
+    game_dir = tmp_path / "game"
+    _write_game_file(game_dir, "a.bin", [b"Hello world"])
+    r = cg.check(p, game_dir, min_files=1)
+    assert r["passed"] is False and r["per_file"] == []
+    assert any("load_table falhou" in prob for prob in r["problems"])
+
+
 def test_check_passes_full_coverage(tmp_path):
     candidate_path = _write_candidate(tmp_path)
     game_dir = tmp_path / "game"

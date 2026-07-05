@@ -136,23 +136,40 @@ def check(root, scene) -> dict:
         except (json.JSONDecodeError, OSError):
             problems.append("voice_cards.json invalido — rode state_index apos corrigir tone_analysis.md.")
 
-    # Glossario: updated_date e gate obrigatorio (nao so aviso de state_index)
-    gp = paths.glossary(root)
-    if gp.is_file():
-        import csv as _csv
-        try:
-            with gp.open(encoding="utf-8-sig", newline="") as fh:
-                hdr = next(_csv.reader(fh), [])
-            if "updated_date" not in [h.strip() for h in hdr]:
-                problems.append(
-                    "glossary.csv sem coluna 'updated_date' — adicione a coluna com a data da "
-                    "ultima revisao de cada termo antes de traduzir."
-                )
-        except Exception:
-            pass
+    # Glossario: updated_date/updated_at e gate obrigatorio (nao so aviso de state_index).
+    # #85: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
+    # entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header.
+    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    db_path, db_pid = context_pack._db_path(root, cfg)
+    if db_path:
+        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            g_rows = db.get_glossary(db_pid)
+        undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
+        if undated:
+            problems.append(
+                f"{len(undated)} termo(s) do glossario sem 'updated_at' no DB — grave a data da "
+                f"ultima revisao antes de traduzir: {undated[:5]}{' ...' if len(undated) > 5 else ''}"
+            )
+    else:
+        gp = paths.glossary(root)
+        if gp.is_file():
+            import csv as _csv
+            try:
+                with gp.open(encoding="utf-8-sig", newline="") as fh:
+                    hdr = next(_csv.reader(fh), [])
+                if "updated_date" not in [h.strip() for h in hdr]:
+                    problems.append(
+                        "glossary.csv sem coluna 'updated_date' — adicione a coluna com a data da "
+                        "ultima revisao de cada termo antes de traduzir."
+                    )
+            except Exception:
+                pass
 
     # fronteira: declarada em project.json (machine-readable) tem prioridade; senao, so reporta a do log
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     frontier = cfg.get("kb_frontier")
     scene_id = context_pack.scene_id_of(scene)
     if frontier:

@@ -388,8 +388,3 @@ def _render_header(evidence: dict, engine_hint: str | None, pattern: str, reason
 
 def _fmt_enc(encs: dict) -> str:
     return ", ".join(f"{k}: {v:.0%}" for k, v in encs.items()) or "desconhecido"
-
-
-def _fmt_families(families: dict) -> str:
-    top = list(families.items())[:5]
-    return ", ".join(f"{k}({v})" for k, v in top) or "nenhuma"

@@ -12,3 +12,8 @@
 - UABEA: companion do UnityPy quando ele não parsear uma versão nova do Unity.
 
 Nunca usar fora do contexto de bring-up/debug de conector — apoio à fase de descoberta, não dependência de pipeline em produção.
+
+## GitHub Project #4 — regras de campo
+
+Sempre que uma issue receber a label `bug`, setar também `Prioridade=P0` no Project #4 na mesma ação
+(campo Prioridade: P0/P2/P2.5/P4). Vale tanto para issue nova quanto pra relabeling de existente.

@@ -137,15 +137,17 @@ CREATE TABLE IF NOT EXISTS decisions (
 
 -- ── Spoiler ledger (filtro temporal de revelação) ─────────────────────────────
 CREATE TABLE IF NOT EXISTS spoiler_entries (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    project_id    TEXT NOT NULL REFERENCES projects(id),
-    entity        TEXT,
-    fact          TEXT,
-    spoiler_level TEXT,
-    reveal        TEXT,                    -- beyond_frontier | <scene_id>
-    scenes        TEXT,                    -- JSON array
-    triggers      TEXT,                    -- JSON array
-    pre_reveal    TEXT,                    -- guard de ambiguidade pré-revelação
+    id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id           TEXT NOT NULL REFERENCES projects(id),
+    entity               TEXT,
+    fact                 TEXT,
+    spoiler_level        TEXT,
+    reveal               TEXT,                    -- beyond_frontier | <scene_id>
+    scenes               TEXT,                    -- JSON array
+    triggers             TEXT,                    -- JSON array
+    pre_reveal           TEXT,                    -- guard de ambiguidade pré-revelação
+    forbidden_pre_reveal TEXT,                    -- JSON array — strings proibidas antes do reveal (spoiler_check)
+    gender_quarantine    INTEGER DEFAULT 0,        -- 0/1 — genero da entidade em segredo (spoiler_check.check_gender)
     UNIQUE(project_id, entity, fact)
 );
 
