@@ -89,7 +89,9 @@ def _entity_definitions(root: Path) -> dict[str, str]:
     return out
 
 
-def _get_embedder():
+def _get_embedder():  # pragma: no cover -- exige sentence-transformers real (stack de ML
+    # omitida da cobertura pelo mesmo motivo de embedder.py em setup.cfg: nao-unitavel sem a
+    # dependencia pesada instalada; caminho exercitado pelos testes via embed_fn injetado).
     """Import tardio -- so exige sentence-transformers instalado quando ha de fato entidade com
     fonte humana pra comparar (mesmo padrao lazy do proprio embedder.py)."""
     db_dir = str(Path(__file__).resolve().parents[1] / "db")
