@@ -19,6 +19,22 @@ import re
 import sys
 from pathlib import Path
 
+_WORD_BOUNDARY_CACHE: dict[str, re.Pattern] = {}
+
+
+def _name_pattern(name_low: str) -> re.Pattern:
+    """Regex com fronteira de palavra p/ o nome da entidade -- \\b evita casar substring dentro
+    de outra palavra (ex.: 'Ana' dentro de 'banana'). Nomes comuns em pt-BR usados como entidade
+    (ex.: 'Sistema', 'Tio') ainda podem casar legitimamente como palavra solta sem relacao com a
+    entidade -- limitacao conhecida e aceitavel aqui: este modulo e so TRIAGEM (nunca decide
+    sozinho, ver docstring do modulo); um falso positivo so faz uma entidade comum ganhar uma
+    comparacao a mais, nunca bloqueia nem promove nada."""
+    pat = _WORD_BOUNDARY_CACHE.get(name_low)
+    if pat is None:
+        pat = re.compile(rf"\b{re.escape(name_low)}\b")
+        _WORD_BOUNDARY_CACHE[name_low] = pat
+    return pat
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
@@ -99,8 +115,8 @@ def concordance(root, *, embed_fn=None) -> list[dict]:
     results = []
     to_embed = []  # (name, definicao, texto_humano_concatenado, n_fontes)
     for name, definicao in definitions.items():
-        name_low = name.lower()
-        matches = [texto for _hash, texto in human_cache if name_low in texto.lower()]
+        pat = _name_pattern(name.lower())
+        matches = [texto for _hash, texto in human_cache if pat.search(texto.lower())]
         if not matches:
             results.append({"name": name, "level": "sem_pesquisa_humana", "score": None,
                             "human_sources": 0})
