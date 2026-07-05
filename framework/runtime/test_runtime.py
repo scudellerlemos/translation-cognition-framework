@@ -932,6 +932,26 @@ def test_glossary_lint_consistency(tmp_path):
     assert {f["offset"]: f["term"] for f in found} == {"0x2": "Warmaster", "0x3": "Kuon"}
 
 
+def test_glossary_lint_consistency_text_en_column(tmp_path):
+    """#85: dialogs.csv com coluna 'text_en' (BoF4/Souldiers) em vez de 'text_source' (Uta) --
+    load_translated_scenes precisa do mesmo fallback de coluna que load_dialogs ja tinha."""
+    import glossary_lint
+    art = tmp_path / "artifacts"
+    art.mkdir(parents=True, exist_ok=True)
+    sc = paths.scene_dir(tmp_path, "ch_50_01")
+    sc.mkdir(parents=True)
+    (art / "glossary.csv").write_text(
+        "term,category,target_translation,handling_rule,spoiler_level,aliases,notes,updated_date\n"
+        "Warmaster,Titulo,Mestre de Guerra,traduzir,none,,,2026-01-01\n", encoding="utf-8")
+    (sc / "dialogs.csv").write_text(
+        "offset,text_en,byte_budget\n"
+        "0x1,The Warmaster arrived.,30\n", encoding="utf-8")
+    (sc / "translations_50_01.json").write_text(json.dumps({"lines": {
+        "0x1": {"t": "O comandante chegou."}}}), encoding="utf-8")
+    found = glossary_lint.lint(tmp_path)
+    assert [f["offset"] for f in found] == ["0x1"]
+
+
 def test_qa_tester_locator(tmp_path, monkeypatch):
     # TESTER in-game: trecho digitado (sem acento, como aparece na tela) -> localiza a linha (det., sem IA).
     import quality_review as QR
@@ -2213,6 +2233,26 @@ def test_validate_connector_cfg_warns_unknown_key():
     assert len(probs) == 1
     assert "typo_script" in probs[0]
     assert run_scene._validate_connector_cfg({"connector": {}}) == []
+
+
+def test_validate_connector_types_catches_type_mismatch():
+    """#65: valor de tipo errado (lista em vez de string) deve gerar erro de tipo, nao passar batido."""
+    from config import validate_connector_types
+    errs = validate_connector_types({"connector": {"build_plan_script": ["nao", "e", "string"]}})
+    assert len(errs) == 1
+    assert "build_plan_script" in errs[0] and "deveria ser str" in errs[0]
+    assert validate_connector_types({"connector": {"build_plan_script": "ok.py"}}) == []
+    assert validate_connector_types({"connector": {}}) == []
+
+
+def test_run_scene_rejects_connector_cfg_type_mismatch(tmp_path):
+    """#65: run_scene() deve falhar cedo (ValueError) com project.json connector{} mal tipado,
+    antes de qualquer tentativa de resolver os scripts do conector como paths."""
+    (tmp_path / "project.json").write_text(
+        json.dumps({"connector": {"verify_script": 123}}), encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    with pytest.raises(ValueError, match="mal configurado"):
+        run_scene.run_scene(tmp_path, "s01")
 
 
 def test_connector_registry_contains_known_slots():

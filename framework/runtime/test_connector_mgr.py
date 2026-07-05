@@ -21,6 +21,15 @@ def test_connector_script_accept_and_reject(tmp_path):
                              "verify_script", "verify_chapter.py")
 
 
+def test_connector_script_rejects_non_string_override(tmp_path):
+    """#65: override de tipo errado (ex.: lista em vez de string) deve falhar com mensagem
+    clara, ANTES de tentar resolver como path."""
+    (tmp_path / "connector").mkdir()
+    with pytest.raises(ValueError, match="deveria ser string"):
+        cm._connector_script(tmp_path, {"connector": {"verify_script": ["nao", "e", "string"]}},
+                             "verify_script", "verify_chapter.py")
+
+
 def test_connector_hash(tmp_path):
     conn = tmp_path / "connector"
     conn.mkdir()

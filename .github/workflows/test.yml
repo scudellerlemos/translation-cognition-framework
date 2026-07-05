@@ -137,8 +137,10 @@ jobs:
   # nunca era coletado por nenhum job -- nem aqui nem no `coverage` (que só varre runtime/db/skills/
   # validation). Achado em code review (2026-07-04): uma regressão em connector_io.resolve_source_path
   # (usado por BoF4/Souldiers/Utawarerumono extract.py via #86) passaria verde e só apareceria rodando
-  # contra o jogo real. Job SEM piso de cobertura (como connector-skeleton) -- framework/connectors/
-  # tem módulos mais novos/exploratórios que ainda não atingem 90% (issue #92).
+  # contra o jogo real. #92: piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
+  # tier_classifier.py, script_generator.py, coverage_gate.py, evidence_collector.py e
+  # adversarial_validator.py já estão em 98-100%; discover.py (23%) e connector_smoke.py (61%) são
+  # módulos exploratórios que ainda puxam a média pra baixo (issue de continuação p/ fechar 90% neles).
   connector-io:
     name: Connector shared utilities (framework/connectors/)
     runs-on: ubuntu-latest
@@ -149,5 +151,7 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
-      - name: Connector shared utilities
-        run: python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton -v --tb=short
+      - name: Connector shared utilities (coverage 75%)
+        run: |
+          python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton \
+            -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
