@@ -41,6 +41,7 @@ from config import (  # noqa: E402
     CONNECTOR_REGISTRY,
     RunSceneOptions,
     RunSceneResult,
+    validate_connector_types,
 )
 from connector_mgr import (  # noqa: E402
     _connector_hash,
@@ -317,6 +318,10 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     root = Path(root)
     _validate_scene_arg(root, scene)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    type_errors = validate_connector_types(cfg)
+    if type_errors:
+        raise ValueError("project.json connector{} mal configurado:\n" +
+                          "\n".join(f"  - {e}" for e in type_errors))
     for w in _validate_connector_cfg(cfg):
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)

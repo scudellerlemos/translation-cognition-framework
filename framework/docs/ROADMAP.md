@@ -42,14 +42,10 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | Controle de spoiler | **spoiler**: `spoiler_ledger.json` + **filtro temporal** + regra de gênero | 🟠 | ✅ **feito** — ledger + filtro no `context_pack`; Carta atualizada |
 | Bundle de custo | bundle de custo (dedup TM/intra-corpus, ~~slim de schema~~, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; **dedup por TM ✅** (linhas com fonte já traduzida em outra cena não vão ao modelo — corta tokens de saída; medido 2,8% no cap.12 sobre TM cap.11+12, **cresce com o corpus**; guard de paridade + nunca reusa a própria cena; desligado no escalonamento). **slim de schema: REJEITADO por qualidade** (ver abaixo). **cache da Carta: observável, BECO SEM SAÍDA** ✅ (medido cap.13: Carta ~1.3k tok, custa $0,14 vs output $3,41; com cache_control fica até levemente net-negativo pois o batch paraleliza e re-escreve ~27×; cache perfeito é impossível no batch e economizaria só $0,12/cap). **batch API ✅ comprovado vivo** (cap.13 9/9; −50% real; resume idempotente; re-batch acumulativo entre rodadas). **tiering por complexidade ✅ codado** (linhas SEM `\n` → Haiku −67%/linha; COM `\n` → Sonnet; benchmark: voz do Haiku no nível do Sonnet inclusive registro arcaico, mas Haiku derrapa na paridade de `\n` em escala → o split dribla a fraqueza; só no batch; falta run viva tiered p/ medir). **back-translation em BATCH ✅ codado** (Tier 1: a back-translation Opus — passo mais caro/linha, $25/M de saída — vira PÓS-PASSE do capítulo; `batch_back_translate` coleta as linhas high/critical de todas as cenas verificadas e roda 1 batch −50%; `run_chapter --batch` difere a back-translation por cena e batcheia ao fim; resume idempotente; report-only, não bloqueia; ledger marca `batch=True`. Falta run viva p/ medir). |
 
-> **slim de schema — REJEITADO (não tentar de novo).** A ideia era cortar `tone_register`/`intent`
-> da saída p/ economizar ~15% de tokens. **Não fazer:** (1) `tone_register` GATEIA qualidade no
-> `build_plan_chapter.py` (flag de interjeição copiada do source em vez de localizada); cortá-lo mata o
-> gate. (2) Com o thinking DESLIGADO (corte de custo), esses campos são a **única cognição estruturada
-> por linha** — e a ordem do schema põe `t` por ÚLTIMO, então o modelo articula registro+intenção ANTES
-> de traduzir. É raciocínio barato que ancora voz/registro (comédia, voz por personagem = o valor central
-> do projeto). Economizar saída sacrificando isso é a alavanca errada. `intent` é write-only hoje mas é o
-> par natural do `tone_register` no prefixo de raciocínio — fica.
+> **slim de schema — REJEITADO (não tentar de novo).** Decisão registrada e fechada como "not planned"
+> em [issue #111](https://github.com/scudellerlemos/translation-cognition-framework/issues/111)
+> (cortar `tone_register`/`intent` do schema quebraria o gate de qualidade e a única cognição
+> estruturada por linha com o thinking desligado).
 
 **Validação Etapa 6 (cap.12 headless):** **16/16** cenas `verified` ponta-a-ponta (round-trip byte-idêntico,
 back-translation via API). Pipeline endurecido em ~2300 linhas reais (schema-array, custo, `\n`,
@@ -211,10 +207,11 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > O segundo maior foi A+B juntos (schema errado descoberto tarde = re-fazer o que deveria estar certo desde o início).
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
-| # | Item | Nota |
-|---|---|---|
-| 10 | generalizar `state_index` p/ múltiplos projetos; paralelizar cenas | escala horizontal |
-| 11 | RAG/vetor **só** sobre `decision_log` + `universe_knowledge_base` | só ao atingir o gatilho do `adr/0003` |
+
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
+[#104](https://github.com/scudellerlemos/translation-cognition-framework/issues/104) (multi-projeto/paralelismo)
+e [#105](https://github.com/scudellerlemos/translation-cognition-framework/issues/105) (RAG sobre `decision_log`
+— KB/lore já ativo, ver Fase 3 do `DB_MIGRATION_ROADMAP.md`).
 
 ### P2.5 — Maturidade de execução (paralelismo, orquestração, observabilidade)
 > Gap reconhecido: o roadmap tratava "paralelizar cenas" como uma linha vaga. Esta seção torna explícito
@@ -246,11 +243,13 @@ capítulo, não por cena** — a TM só importa cross-capítulo.
 overengineering. **Feito (2026-07-03):** `run_game` driver + `progress_report` + rebuild 1×/capítulo —
 tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
 Testes: `test_run_game.py` (5), `test_progress_report.py` (5), `test_batch_mode_rebuilds_state_index_once_per_chapter`
-+ 2 em `test_run_scene.py`. **Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo, multi-projeto.
++ 2 em `test_run_scene.py`. **Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo,
+multi-projeto — ver [issue #104](https://github.com/scudellerlemos/translation-cognition-framework/issues/104).
 
 ### P3 — não fazer agora (overengineering)
-Banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços". O orquestrador
-determinístico + 2 papéis de IA já é a granularidade certa.
+Decisão registrada e fechada como "not planned" em
+[issue #110](https://github.com/scudellerlemos/translation-cognition-framework/issues/110)
+(banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços").
 
 ### P4 — Pós-produção & hardening (PRIORIDADE, **depois** de entregar o jogo)
 > Decisão: **entregar primeiro** (traduzir tudo → build → QA → release); só então o hardening. A maioria
@@ -274,7 +273,7 @@ determinístico + 2 papéis de IA já é a granularidade certa.
 | run_scene coeso | `run_scene` acretando responsabilidade (hoje 492 linhas, era ~300 quando documentado) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` passam sem alteração |
 | Repro: gate ≠ geração | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
 | Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ✅ **feito (2026-07-03)** — `kb_gate.py` generalizou a exigência de ratificação humana por entidade (`kb_ratified.csv`) para QUALQUER `research_log.md` com `status: reconciled`, não só o caminho `draft_ollama` do `kb_reconcile.py`. Toda entidade com conteúdo afirmado (≠ UNSOURCED) no `universe_knowledge_base.md` agora exige uma linha em `kb_ratified.csv`; bypassável via `--skip-kb-gate` como qualquer `problem` (soft, não quebra continuidade de projetos já em produção). **Escopo deliberadamente reduzido**: o tripwire de conteúdo mínimo em "Conflitos Resolvidos" do `kb_reconcile.py` NÃO foi generalizado — um projeto sem nenhum conflito de verdade (fonte única) é um caso legítimo que só o placeholder EXATO do `kb_build_ollama.py` consegue distinguir de "não revisado"; não generaliza sem uma âncora textual conhecida. **Custo aceito**: Utawarerumono/BoF4/Souldiers (as 3 KBs já reconciliadas) agora mostram esse `problem` novo até serem ratificadas por entidade — não bloqueia trabalho já feito, só torna visível o que faltava. Testes: 3 novos em `test_kb_gate.py` |
-| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ vazamento de **gênero** pt-BR fica como extensão (exige marcar entidades de gênero-quarentenado no ledger + atribuir token ao referente) |
+| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito (parcial)** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. ⚠️ extensão de gênero rastreada em [issue #106](https://github.com/scudellerlemos/translation-cognition-framework/issues/106) |
 
 **Riscos de engenharia (avaliação crítica — mitigações offline):**
 | # | Risco | Mitigação | Status |
@@ -300,14 +299,12 @@ linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 
 199 amostra + 77 idêntico-fonte + 37 critical). Custo de aplicar uma revisão verbatim = **$0**.
 
 **Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
-- **Detecção/despacho:** *registry* — cada conector declara uma assinatura (magic bytes/header); a camada
-  de I/O escolhe o conector certo. Extrair quando houver **2–3 conectores**. Conectores agrupam por
-  **família de engine**, não por título (`sdat_format` = adaptador Aquaplus-era; o por-título é só `project.json`).
-- **Síntese:** inspecionar a pasta do jogo/mídia e **gerar** um conector novo — viável porque o
-  **round-trip byte-idêntico é um oráculo automático** (loop IA-propõe→round-trip→refina; único ponto onde
-  um approach agêntico se justifica). Mesmo paradigma de governança um nível acima: IA propõe conector →
-  round-trip verifica → humano ratifica a estratégia. **Evidência-primeiro** (não construir com 1 conector).
-  Teste barato de reuso-por-família: a sequência **Mask of Truth** (mesma engine, delta ~zero).
+
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
+[#107](https://github.com/scudellerlemos/translation-cognition-framework/issues/107) (registry por
+família de engine — gatilho de 2-3 conectores já atingido: BoF4+Uta+Souldiers) e
+[#108](https://github.com/scudellerlemos/translation-cognition-framework/issues/108) (síntese agêntica
+de conector novo via round-trip como oráculo).
 
 ## Fases
 
