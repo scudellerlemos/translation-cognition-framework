@@ -93,6 +93,40 @@ def test_string_density():
     assert _string_density(binary_data) < 0.5
 
 
+def test_estimate_encoding_empty():
+    assert _estimate_encoding(b"") == "binary"
+
+
+def test_estimate_encoding_utf8_non_ascii():
+    data = "café não é ascii".encode()
+    assert _estimate_encoding(data) == "utf8"
+
+
+def test_shannon_entropy_empty():
+    assert _shannon_entropy(b"") == 0.0
+
+
+def test_string_density_empty():
+    assert _string_density(b"") == 0.0
+
+
+def test_collect_skips_unreadable_file(tmp_path, monkeypatch):
+    """Arquivo que estoura OSError na leitura (ex.: permissao, symlink quebrado) e pulado
+    silenciosamente -- nao derruba collect() nem os demais arquivos da amostra."""
+    game = _make_dat_dir(tmp_path, n=3)
+    orig_read_bytes = Path.read_bytes
+
+    def flaky_read_bytes(self, *a, **k):
+        if self.name.endswith("001.DAT"):
+            raise OSError("simulated read failure")
+        return orig_read_bytes(self, *a, **k)
+
+    monkeypatch.setattr(Path, "read_bytes", flaky_read_bytes)
+    ev = collect(game)
+    assert ev["file_count"] == 3          # contagem nao muda
+    assert ev["has_control_tokens"] is True  # os outros 2 arquivos da amostra ainda foram lidos
+
+
 # ---------------------------------------------------------------------------
 # tier_classifier — engine conhecida (Capcom DAT)
 # ---------------------------------------------------------------------------

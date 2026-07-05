@@ -336,6 +336,8 @@ def _load_sources_db(db_path: Path, project_id: str):
         "spoiler_level": e.get("spoiler_level") or "", "reveal": e.get("reveal") or "beyond_frontier",
         "scenes": e.get("scenes") or [], "triggers": e.get("triggers") or [],
         "pre_reveal": e.get("pre_reveal") or "",
+        "forbidden_pre_reveal": e.get("forbidden_pre_reveal") or [],
+        "gender_quarantine": bool(e.get("gender_quarantine")),
     } for e in sp_rows]}
     return glossary, voice_cards, decisions, tm, ledger
 
@@ -386,6 +388,70 @@ def _load_sources(root: Path, cfg: dict):
     else:
         ledger = json.loads(_read(ledger_path) or "{}")
     return glossary, voice_cards, decisions, tm, ledger
+
+
+def load_spoiler_ledger(root: Path, cfg: dict | None = None) -> dict:
+    """#85: ledger de spoiler DB-gated (mesmo switch de _load_sources) — reuso por spoiler_check.py,
+    que antes lia SEMPRE o flat mesmo em projetos com `db` populado (divergência silenciosa entre
+    o que o gate valida e a fonte real de verdade em projetos DB-first)."""
+    root = Path(root)
+    if cfg is None:
+        cfgp = root / "project.json"
+        cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}
+    db_path, db_pid = _db_path(root, cfg)
+    if db_path:
+        return _load_sources_db(db_path, db_pid)[4]
+    ledger_path = paths.spoiler_ledger(root)
+    if not ledger_path.is_file():
+        return {}
+    return json.loads(_read(ledger_path) or "{}")
+
+
+def load_translated_scenes(root: Path, cfg: dict | None = None) -> list:
+    """#85: [(scene_display, scene_id, {offset: {"source":.., "target":..}})] das cenas JÁ
+    TRADUZIDAS — DB-gated se o projeto tem `db` populado (lê translations.source/target por
+    scene_id), senão flat (dialogs.csv + translations_<id>.json por diretório de cena, via
+    artifact_io). Usado por spoiler_check/glossary_lint: antes só enxergavam cenas em disco
+    (artifacts/scenes/*), então em projeto DB-only (sem esses diretórios) rodavam sobre 0 cenas
+    e reportavam 'limpo'/sem candidatos sem checar nada de fato."""
+    root = Path(root)
+    if cfg is None:
+        cfgp = root / "project.json"
+        cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}
+    db_path, db_pid = _db_path(root, cfg)
+    if db_path:
+        _db_dir = str(FRAMEWORK / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            rows = db.get_translations(db_pid, approved_only=False)
+        by_scene: dict = {}
+        for r in rows:
+            sid = r.get("scene_id") or ""
+            by_scene.setdefault(sid, {})[r.get("offset", "")] = {
+                "source": r.get("source") or "", "target": r.get("target") or ""}
+        return [(sid, sid, lines) for sid, lines in sorted(by_scene.items())]
+    import artifact_io
+    out = []
+    for scene in artifact_io.scenes(root):
+        sid = scene_id_of(scene)
+        src_by_off = {}
+        d = paths.dialogs(root, scene)
+        if d.is_file():
+            with d.open(encoding="utf-8") as fh:
+                rdr = csv.DictReader(fh)
+                textcol = "text_source" if "text_source" in (rdr.fieldnames or []) else "text_en"
+                for r in rdr:
+                    src_by_off[r.get("offset", "")] = r.get(textcol, "")
+        tmap = artifact_io.translations_map(root, scene)
+        lines = {}
+        for off in set(src_by_off) | set(tmap):
+            v = tmap.get(off)
+            t = (v or {}).get("t", "") if isinstance(v, dict) else ""
+            lines[off] = {"source": src_by_off.get(off, ""), "target": t}
+        out.append((scene, sid, lines))
+    return out
 
 
 _EMBEDDER = None
