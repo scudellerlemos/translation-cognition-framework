@@ -58,6 +58,10 @@ THINK_TRANSLATE = False
 # e re-traduz so quando a VERIFY falha por fitting (out-of-file/residuo). Ver BUDGET_ESCALATION.
 BUDGET_TOLERANCE = 1.40
 BUDGET_ESCALATION = (1.15, 1.0)   # tolerancias mais apertadas tentadas, em ordem, na falha de fitting
+# MODELO por tier de retighten (so backend "api" — ollama tem 1 modelo local, sem tiering): pareado
+# posicionalmente com BUDGET_ESCALATION. tol=1.15 (folga maior, a maioria fecha) vai pro barato; tol=1.0
+# (o residuo que nem 1.15 resolveu — sinal real de dificuldade, nao suposicao a priori) escala pro caro.
+MODEL_ESCALATION = (MODEL_TRANSLATE_CHEAP, MODEL_BACK)   # ("claude-haiku-4-5", "claude-opus-4-8")
 
 AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe

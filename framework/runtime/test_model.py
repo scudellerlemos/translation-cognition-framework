@@ -5,6 +5,7 @@ dedup de TM (_select_reuse), normalização (_norm_t/_to_map). As chamadas de AP
 (precisam de mock pesado do SDK; ver test_runtime para os caminhos de retry/batch já cobertos).
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -48,6 +49,27 @@ def test_check_translation_flags_newline_and_missing():
 def test_translit_len_drops_accents():
     assert M._translit_len("coração") == len("coracao")
     assert M._translit_len("") == 0
+
+
+def test_budget_len_charset_true_counts_real_utf8_bytes():
+    # target_charset_supported=True (trails_sky_sc): acento NAO some, custa byte extra.
+    assert M._budget_len("coração", {"target_charset_supported": True}) == len("coração".encode("utf-8"))
+    assert M._budget_len("coração", {"target_charset_supported": True}) > M._translit_len("coração")
+
+
+def test_budget_len_charset_false_or_missing_uses_translit():
+    # bof4 ("ascii_only", nao bool) e uta (False) e ausencia de pc -> forma translit legada.
+    assert M._budget_len("coração", {"target_charset_supported": False}) == M._translit_len("coração")
+    assert M._budget_len("coração", {"target_charset_supported": "ascii_only"}) == M._translit_len("coração")
+    assert M._budget_len("coração", {}) == M._translit_len("coração")
+
+
+def test_over_budget_respects_charset():
+    # "coração" translit = "coracao" (7 bytes) cabe em budget 7; UTF-8 real (9 bytes) estoura.
+    pc_true = {"target_charset_supported": True}
+    pc_false = {"target_charset_supported": False}
+    assert M._over_budget("coração", 7, pc_false, 1.0) is False
+    assert M._over_budget("coração", 7, pc_true, 1.0) is True
 
 
 def test_norm_t_and_to_map():
@@ -106,6 +128,13 @@ def test_over_offsets_pure():
     assert M._over_offsets(budgets, lines) == ["o1"]           # só o1 estoura; o3 sem budget ignorado
 
 
+def test_over_offsets_pc_selects_metric():
+    budgets = {"o1": 7}
+    lines = {"o1": {"t": "coração"}}                           # translit=7 bytes, utf-8 real=9 bytes
+    assert M._over_offsets(budgets, lines, pc={"target_charset_supported": False}) == []
+    assert M._over_offsets(budgets, lines, pc={"target_charset_supported": True}) == ["o1"]
+
+
 def test_coverage_note():
     assert M._coverage_note([], []) == ""
     note = M._coverage_note(["o1"], ["o2"])
@@ -128,6 +157,25 @@ def test_retranslate_offsets_mocked(tmp_path, monkeypatch):
     assert r["status"] == M.DONE and r["n_lines"] == 1
     data = json.loads(paths.translations(tmp_path, "S1", "S1").read_text(encoding="utf-8"))
     assert data["lines"]["X:0:1"]["t"] == "curto"              # merge aplicou a re-tradução
+
+
+def test_retranslate_offsets_dispatches_to_ollama(tmp_path, monkeypatch):
+    # backend="ollama" NAO pode cair no _api_translate (rota errada p/ cena rodando local).
+    _db_scene(tmp_path, byte_budget=5, t="longo demais")
+    called = {"backend": None}
+
+    def fake_ollama(root, scene, sub, m, **k):
+        called["backend"] = "ollama"
+        return {"lines": {"X:0:1": {"t": "curto"}}}, {"in": 1, "out": 1}, {"reused": 0, "novel": 1}
+
+    def fail_api(*a, **k):
+        raise AssertionError("retranslate_offsets(backend='ollama') chamou _api_translate")
+
+    monkeypatch.setattr(M, "_ollama_translate", fake_ollama)
+    monkeypatch.setattr(M, "_api_translate", fail_api)
+    monkeypatch.setattr(M, "invalidate_back_translation", lambda *a, **k: None)
+    r = M.retranslate_offsets(tmp_path, "S1", ["X:0:1"], budget_tolerance=1.0, backend="ollama")
+    assert r["status"] == M.DONE and called["backend"] == "ollama"
 
 
 def test_tier_of():
@@ -199,6 +247,91 @@ def test_ollama_translate_malformed_json_retries(tmp_path, monkeypatch):
     data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
     assert data["lines"]["o1"]["t"] == "Oi"
     assert calls["n"] >= 2
+
+
+def test_ollama_translate_retries_over_budget(tmp_path, monkeypatch):
+    # paridade com _api_translate: 1a resposta estoura byte_budget -> retry -> 2a resposta cabe.
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "T")
+        db.upsert_scene_lines("p", "S1", [{"offset": "o1", "source": "Hi", "byte_budget": 5}])
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p"},
+         "connector": {}}), encoding="utf-8")
+    (tmp_path / "artifacts" / "scenes" / "S1").mkdir(parents=True)
+    pack = context_pack.build_pack(tmp_path, "S1")
+
+    calls = {"n": 0}
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        calls["n"] += 1
+        t = "traducao bem mais longa que o budget" if calls["n"] == 1 else "curto"
+        return {"message": {"content": json.dumps({"lines": [{"offset": "o1", "t": t}]})},
+                "prompt_eval_count": 1, "eval_count": 1}
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b", budget_tolerance=1.0)
+    assert data["lines"]["o1"]["t"] == "curto"
+    assert calls["n"] >= 2                                      # forçou retry por estouro de budget
+
+
+def test_ollama_translate_batches_across_multiple_calls(tmp_path, monkeypatch):
+    # 5 linhas, lote de 2 -> 3 chamadas (2+2+1); um estouro de budget isolado num lote nao pode
+    # "vazar" pro proximo lote (guard por offset_set do lote, nao pelo merged inteiro).
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "T")
+        db.upsert_scene_lines("p", "S1", [
+            {"offset": f"o{i}", "source": "Hi", "byte_budget": 100} for i in range(1, 6)])
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p"},
+         "connector": {}}), encoding="utf-8")
+    (tmp_path / "artifacts" / "scenes" / "S1").mkdir(parents=True)
+    pack = context_pack.build_pack(tmp_path, "S1")
+
+    calls = {"n": 0}
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        calls["n"] += 1
+        text = messages[1]["content"]
+        offs = re.findall(r'\| (o\d) \|', text)
+        lines = [{"offset": o, "t": f"tr-{o}"} for o in offs]
+        return {"message": {"content": json.dumps({"lines": lines})},
+                "prompt_eval_count": 1, "eval_count": 1}
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    monkeypatch.setattr(ollama_client, "OLLAMA_BATCH_LINES", 2)
+    data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
+    assert calls["n"] == 3
+    assert {o: data["lines"][o]["t"] for o in ("o1", "o2", "o3", "o4", "o5")} == {
+        "o1": "tr-o1", "o2": "tr-o2", "o3": "tr-o3", "o4": "tr-o4", "o5": "tr-o5"}
+
+
+def test_ollama_translate_retries_on_dropped_structural_token(tmp_path, monkeypatch):
+    # bug real (2026-08-24, mp0010_01): o LLM as vezes derruba <C1>/<P2> e o retry so checava `\n` ->
+    # a linha "passava" e so quebrava depois, no build_plan_chapter do conector, sem auto-reparo.
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "T")
+        db.upsert_scene_lines("p", "S1", [{"offset": "o1", "source": "<C1>Hi", "byte_budget": 100}])
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p"},
+         "formatting_token_patterns": [r"<C\d+>"], "connector": {}}), encoding="utf-8")
+    (tmp_path / "artifacts" / "scenes" / "S1").mkdir(parents=True)
+    pack = context_pack.build_pack(tmp_path, "S1")
+
+    calls = {"n": 0}
+
+    def fake_chat(model, messages, fmt=None, timeout=600):
+        calls["n"] += 1
+        t = "Oi" if calls["n"] == 1 else "<C1>Oi"   # 1a tentativa derruba o token; 2a preserva
+        return {"message": {"content": json.dumps({"lines": [{"offset": "o1", "t": t}]})},
+                "prompt_eval_count": 1, "eval_count": 1}
+
+    import ollama_client
+    monkeypatch.setattr(ollama_client, "_chat", fake_chat)
+    data, usage, meta = M._ollama_translate(tmp_path, "S1", pack, "qwen2.5:14b")
+    assert calls["n"] == 2
+    assert data["lines"]["o1"]["t"] == "<C1>Oi"
 
 
 def test_ollama_translate_raises_on_client_error(tmp_path, monkeypatch):
