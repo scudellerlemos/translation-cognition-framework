@@ -147,6 +147,23 @@ def test_render_prompt_empty_sections():
     assert "nenhum termo" in out and "sem memoria" in out
 
 
+def _minimal_pack(pc):
+    return {"scene": "S1", "scene_id": "S1", "n_lines": 0, "doctrine": "d", "doctrine_hash": "",
+            "skills_revision": "", "project_constraints": pc, "glossary_subset": [], "voice_cards": {},
+            "decisions": [], "spoiler_guards": [], "kb": [], "tm_exact": [], "tm_voice": [],
+            "tm_semantic": [], "lines": []}
+
+
+def test_render_prompt_budget_discipline_branches_on_charset():
+    """DISCIPLINA DE ORCAMENTO deve refletir a metrica REAL usada por _budget_len (ver test_model)."""
+    base = {"newline_token": "[NL]", "formatting_tokens": [], "formatting_token_patterns": [],
+            "system_line_convention": "", "length_constraints": {}, "charset_note": ""}
+    out_true = cp.render_prompt(_minimal_pack({**base, "target_charset_supported": True}), "")
+    out_false = cp.render_prompt(_minimal_pack({**base, "target_charset_supported": False}), "")
+    assert "bytes UTF-8 REAIS" in out_true and "TRANSLITERADA" not in out_true.split("## 7")[1]
+    assert "TRANSLITERADA" in out_false and "bytes UTF-8 REAIS" not in out_false.split("## 7")[1]
+
+
 def test_select_kb_default_deny_semantics():
     """Gate por seção: safe/past ENTRA; futuro/beyond_frontier/sem-tag NÃO (default-deny)."""
     kb = [

@@ -194,6 +194,24 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
     return tr, None
 
 
+def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str) -> None:
+    """Na falha final de verify (fitting exaurido OU falha dura), persiste os offsets acima do
+    byte_budget em disco — diagnostico backend-agnostico e PASSIVO (so le arquivos ja gravados;
+    nao pede nenhum trabalho extra de nenhum backend/modelo)."""
+    try:
+        over = M.over_budget_offsets(root, scene, tolerance=1.0, detail=True)
+    except Exception as e:
+        print(f"      AVISO: diagnostico de fitting falhou: {e}")
+        return
+    if not over:
+        return
+    print(f"[diag] {len(over)} linha(s) acima do byte_budget -> "
+          f"{paths.verify_diagnostics(root, scene, scene_id).name}")
+    paths.verify_diagnostics(root, scene, scene_id).write_text(
+        json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2),
+        encoding="utf-8")
+
+
 def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,
                   do_verify: bool, tr: dict) -> tuple:
     """FASE 3/5: build_plan + verify com escalonamento de fitting.
@@ -206,25 +224,33 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     verify_script = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
     _warn_if_connector_stale(root, scene, cfg)   # S3: integridade pre-execução
     # ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a verify falha por fitting
-    # (out-of-file/residuo) e ha API, re-traduz mais apertado (BUDGET_ESCALATION) e repete. Cenas
-    # normais passam de primeira (sem custo extra); so as apertadas escalam.
-    tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend == "api" else [])
+    # (out-of-file/residuo) e o backend e AUTOMATIZAVEL (api ou ollama — ambos chamam modelo real,
+    # sem intervencao manual), re-traduz mais apertado (BUDGET_ESCALATION) e repete. in-session fica
+    # de fora (depende de humano+Claude no chat p/ cada retighten). Cenas normais passam de primeira
+    # (sem custo extra); so as apertadas escalam.
+    tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend in ("api", "ollama") else [])
     verified = None
     for ti, tol in enumerate(tolerances):
         if ti > 0:
             # CIRURGICO: re-traduzir SO as linhas acima do budget (nao a cena inteira). Numa cena grande
             # com poucos estouros isso troca centenas de re-traducoes por umas poucas (medido: ~$3,4
             # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
+            # ESCALONAMENTO DE MODELO (so backend "api"): pareado por indice com BUDGET_ESCALATION —
+            # tol=1.15 (folga maior) tenta o modelo barato; tol=1.0 (residuo que nem 1.15 resolveu,
+            # sinal real de dificuldade) escala pro caro. Ollama fica de fora (1 modelo local, sem tiering).
+            model = (M.MODEL_ESCALATION[ti - 1]
+                     if backend == "api" and ti - 1 < len(M.MODEL_ESCALATION) else None)
             try:
                 over = M.over_budget_offsets(root, scene, tolerance=1.0)
                 if over:
                     print(f"[retighten] verify falhou por fitting -> re-traduzindo SO {len(over)} "
-                          f"linha(s) acima do budget (tol={tol}) ...")
-                    tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol)
+                          f"linha(s) acima do budget (tol={tol}, model={model or 'default'}) ...")
+                    tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol, backend=backend,
+                                               model=model)
                 else:
                     print(f"[retighten] verify falhou por fitting (nenhuma linha acima do budget) -> "
-                          f"re-traduzindo a cena (tol={tol}) ...")
-                    tr = M.translate(root, scene, backend=backend, budget_tolerance=tol)
+                          f"re-traduzindo a cena (tol={tol}, model={model or 'default'}) ...")
+                    tr = M.translate(root, scene, backend=backend, budget_tolerance=tol, model=model)
             except Exception as e:
                 print(f"      ERRO na re-traducao ({backend}): {e}")
                 _checkpoint(root, scene, {"status": "api_translate_failed"})
@@ -257,6 +283,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         if fitting and ti < len(tolerances) - 1:
             print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
             continue
+        _persist_fitting_diagnostics(root, scene, scene_id)
         _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
         return tr, None, {"status": "verify_failed", "scene": scene}
 
