@@ -40,6 +40,21 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
 - Nenhuma sigla de roadmap/débito técnico (`D1`–`D6`, `B1`–`B4`, `P1.7`, `P2.5`) nem os dois sistemas
   de tier numerado (`T1`/`T2`/`T3` de descoberta de engine; `T1`–`T4` da cascata de encaixe de bytes
   na reinserção) sobrevivem em código `.py` — renomeados para nomes descritivos em todo o repo
+- **`split_scenes.py`**: gap achado no onboarding do `trails_sky_sc` (2026-08-23) —
+  `run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (contrato congelado
+  em `paths.py`), mas o `extract.py` de todo conector só escreve o `dialogs.csv` FLAT — não havia
+  nenhuma ferramenta genérica no framework pra fazer essa ponte; BoF4/Souldiers/Utawarerumono tinham
+  resolvido isso ad hoc, fora do framework versionado. Escopo deliberado: só cobre o caso em que 1
+  coluna do corpus já identifica a cena 1:1 (`--by file`, padrão do BoF4/Trails Sky SC) — Souldiers
+  (prefixo no offset) e Utawarerumono (`extract.py` já roda 1×/cena) ficam fora, não força um
+  contrato que os 3 não compartilham. `test_split_scenes.py` (4 testes); documentado em
+  `NEW_PROJECT_ONBOARDING.md` (passo 2b) e `ROADMAP.md` (item F)
+- **Gap do `scaffold_project.py` corrigido**: o onboarding doc afirmava que o scaffold cria
+  `profile/` (referência humana de vozes/terminologia exigida pelo checklist de gate), mas o código
+  nunca criava — `profile/` ficava vazio até o Passo 5 do checklist notar, tarde. Descoberto no
+  mesmo onboarding do `trails_sky_sc`. `scaffold()` agora materializa os 4 arquivos de referência
+  (`voice_profiles_reference.md`, `terminology_seeds.md`, `identity_pairs_reference.md`,
+  `example_test_suites.md`); trava de regressão em `test_scaffold_creates_profile_reference_files`
 - **Doutrina de spoiler documentada na skill 03**: `spoiler_ledger.json` +
   `context_pack.select_spoiler_guards()` + `spoiler_check.py` já existiam no runtime (usados em
   `utawarerumono`), mas `framework/skills/03_knowledge_building.md` nunca os mencionava — a doutrina
@@ -116,6 +131,11 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
   interna) reportou só 9 residuais pós-opus contra os 65 reais do `verify_chapter.py` — a heurística
   de budget do `model.py` diverge do budget real do engine nessa cena; não investigado a fundo nesta
   sessão, fica como próximo passo se o resíduo de 65 for revisitado
+- **`trails_sky_sc` (quarto jogo, engine novo) onboarding iniciado**: Falcom remake engine (Sora no
+  Kiseki 2nd Chapter, 2026) — sem entrada no `connector_registry.json`, conector escrito do zero.
+  `target_charset_supported: true` (grava UTF-8 real, motivou a ADR 0005 acima). Estado atual:
+  extração + split de 67 cenas completos, `mp0010_01` (447 linhas) é a cena-piloto do escalonamento
+  de fitting — ainda com resíduo de overflow (65/447, ver acima), demais cenas não traduzidas ainda
 
 ---
 
