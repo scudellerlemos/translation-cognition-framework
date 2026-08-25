@@ -68,6 +68,19 @@ def test_scaffold_plus_real_kb_content_passes_gate(tmp_path):
     assert r["problems"] == [], r["problems"]
 
 
+def test_scaffold_creates_profile_reference_files(tmp_path):
+    """Gap real do onboarding do Trails Sky SC (2026-08-23): o onboarding doc afirma que
+    scaffold cria profile/, mas o codigo nunca criava -- profile/ ficou vazio ate o checklist
+    de gate (que exige voice_profiles_reference.md/terminology_seeds.md) ser notado tarde."""
+    scaffold_project.scaffold(tmp_path, title="T")
+    profile = tmp_path / "profile"
+    for fname in [
+        "voice_profiles_reference.md", "terminology_seeds.md",
+        "identity_pairs_reference.md", "example_test_suites.md",
+    ]:
+        assert (profile / fname).is_file(), f"scaffold nao criou profile/{fname}"
+
+
 def test_scaffold_reports_missing_connector_without_creating_fake_stub(tmp_path):
     """scaffold() NAO deve criar stub fake de build_plan_chapter.py/verify_chapter.py --
     so reportar o que falta (mesma governanca do KB: nunca engana o gate com placeholder)."""
@@ -95,11 +108,11 @@ def test_scaffold_plus_real_connector_scripts_passes_gate(tmp_path):
 
 
 def test_scaffold_rerun_skips_existing_files(tmp_path, capsys):
-    """2a chamada em cima do mesmo diretorio deve SKIP os 4 arquivos (ja existem), nao sobrescrever."""
+    """2a chamada em cima do mesmo diretorio deve SKIP os 8 arquivos (ja existem), nao sobrescrever."""
     scaffold_project.scaffold(tmp_path, title="T")
     scaffold_project.scaffold(tmp_path, title="T")
     out = capsys.readouterr().out
-    assert out.count("SKIP") == 4
+    assert out.count("SKIP") == 8
 
 
 def test_scaffold_reports_ok_when_both_gates_already_pass(tmp_path):
