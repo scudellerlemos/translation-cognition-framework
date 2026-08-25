@@ -1,0 +1,82 @@
+{
+  "_doc": "Ledger de reveal: cada fato de spoiler com o ponto narrativo em que vira conhecimento publico. O context_pack usa isto p/ FILTRO TEMPORAL — numa cena de posicao P, fatos com reveal > P sao FUTUROS: se a entidade aparece na cena, injeta-se um guard 'preserve a ambiguidade, NAO revele'. reveal='beyond_frontier' = revelado alem da fronteira pesquisada (sempre futuro p/ cenas dentro dela). Todas as entradas abaixo usam beyond_frontier: o corpus atual (demo, 71 cenas) so cobre o trecho inicial do jogo e nao ha mapeamento confirmado capitulo->scene_id ainda (ver research_log.md); usar 'beyond_frontier' e o default seguro do framework (context_pack._pos/select_spoiler_guards trata posicoes incomparaveis como futuro). Fatos sourced de SRC-007 (sinopse completa do jogo original, 2006) — pesquisados integralmente, nao omitidos; apenas QUARENTENADOS ate a fronteira real do corpus avancar e permitir fixar reveal=<scene_id> concreto. Disparo: 'triggers' = palavras DISTINTIVAS casadas por limite de palavra; 'scenes' = lista de sfx onde o guard se aplica.",
+  "entries": [
+    {
+      "id": "joshua_stigma",
+      "entity": "Joshua Bright",
+      "spoiler_level": "critical",
+      "reveal": "beyond_frontier",
+      "fact": "Weissmann implantou em Joshua, ha dez anos (durante os cuidados pos-Tragedia de Hamel), uma sugestao absoluta conhecida como 'Stigma' — fisicamente uma marca que lembra o simbolo de Ouroboros. Weissmann pode ativa-la remotamente para controlar as acoes de Joshua; isso e usado contra o grupo no clímax do jogo. SRC-007.",
+      "triggers": ["Stigma"],
+      "forbidden_pre_reveal": ["Stigma"],
+      "pre_reveal": "Trate qualquer marca/cicatriz em Joshua apenas como detalhe visual, sem explicar origem ou funcao. NAO mencione controle mental, sugestao ou vinculo com Ouroboros.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "hamel_tragedy_truth",
+      "entity": "Tragedia de Hamel",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "Joshua e sua irma mais velha Karin viviam em Hamel, vila no sul de Erebonia, atacada por jaegers usando armas fabricadas em Liberl. Karin morreu protegendo Joshua, que a matou em legitima defesa sob controle dos atacantes e ficou emocionalmente destruido. O Imperio encobriu o fato (atribuiu a um deslizamento de terra) e usou o incidente para iniciar a Guerra dos Cem Dias contra Liberl. O ataque foi orquestrado por agentes da Ouroboros para distrair Cassius Bright. SRC-007.",
+      "triggers": ["Karin"],
+      "forbidden_pre_reveal": ["Karin"],
+      "pre_reveal": "Hamel pode ser citada de passagem como nome de vila/local de origem de Joshua, sem detalhar o que aconteceu la. NAO revele a existencia de Karin, a causa real da Guerra dos Cem Dias, nem o envolvimento da Ouroboros.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "renne_true_nature",
+      "entity": "Renne",
+      "spoiler_level": "critical",
+      "reveal": "beyond_frontier",
+      "fact": "Renne e a Enforcer XV da Ouroboros, apelidada 'Angel of Slaughter'. As pessoas que ela chamava de pais eram bonecos/automatos sob seu controle; seu 'pai' declarado e um robo gigante chamado Pater-Mater. Backstory real: foi abandonada quando crianca, entregue a estranhos que maltratavam ela e outras criancas (varias nao sobreviveram); Loewe e Joshua a resgataram, e ela foi entao acolhida e treinada pela Ouroboros. SRC-007.",
+      "triggers": ["Pater-Mater", "Angel of Slaughter"],
+      "forbidden_pre_reveal": ["Pater-Mater", "Enforcer", "Angel of Slaughter"],
+      "pre_reveal": "Trate Renne apenas como a garota precoce e travessa do Estado de Crossbell ligada a investigacao da Ouroboros (descricao oficial de divulgacao, SRC-004). NAO revele que ela e uma Enforcer, que seus 'pais' sao automatos, nem sua backstory de orfa.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "weissmann_gospel_plan",
+      "entity": "Georg Weissmann",
+      "spoiler_level": "critical",
+      "reveal": "beyond_frontier",
+      "fact": "Georg Weissmann e o sacerdote herege por tras do 'Plano do Evangelho' da Ouroboros: obter o Aureole (artefato ancestral selado ha 1200 anos na cidade flutuante Liber Ark) para forcar a humanidade a 'evoluir' sob seu controle. Ele e o responsavel por implantar o Stigma em Joshua e por orquestrar a Tragedia de Hamel. No climax, usa o poder do Aureole para se transformar em 'Angel Weissmann'; e derrotado, foge ferido e depois e morto por Kevin Graham. SRC-007.",
+      "triggers": ["Weissmann", "Gospel Plan", "Aureole"],
+      "forbidden_pre_reveal": ["Weissmann", "Angel Weissmann", "Gospel Plan"],
+      "pre_reveal": "O nome 'Weissmann' e o termo 'Plano do Evangelho' NAO devem aparecer antes do reveal correspondente. Trate a Ouroboros apenas como organizacao secreta de objetivo desconhecido.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "loewe_leonhardt",
+      "entity": "Loewe",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "Loewe e o apelido usado por Leonhardt, Enforcer II da Ouroboros ('Bladelord') — nome ja publico via material oficial de divulgacao (SRC-004), mas a LIGACAO entre 'Loewe' e 'Leonhardt' e o twist. Loewe conheceu Joshua e Karin em Hamel antes da tragedia; anos depois cruza o caminho do grupo repetidamente como aliado excentrico. Morre no climax, ferido em combate contra um dragao mecanico de Weissmann, pedindo a Joshua que continue vivendo por conta propria. SRC-007.",
+      "triggers": ["Loewe"],
+      "forbidden_pre_reveal": ["Leonhardt", "Bladelord"],
+      "pre_reveal": "Trate Loewe apenas como aliado excentrico/vigarista simpatico recem-conhecido. NAO revele que ele e Leonhardt, Enforcer II da Ouroboros, nem seu vinculo com Hamel/Karin/Joshua.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "kevin_true_mission",
+      "entity": "Kevin Graham",
+      "spoiler_level": "major",
+      "reveal": "beyond_frontier",
+      "fact": "A missao real de Kevin nao e obter o Aureole para a Septian Church — ele pertence a uma organizacao rival da Ouroboros ('Fifth Dominion', cacadores de hereges) e foi enviado para assassinar Weissmann. Ele o mata no climax com uma arma que transforma o corpo em sal ('Salt Bolt'). SRC-007.",
+      "triggers": ["Salt Bolt", "Fifth Dominion"],
+      "forbidden_pre_reveal": ["Salt Bolt", "Fifth Dominion", "Heretic Hunter"],
+      "pre_reveal": "Trate Kevin apenas como sacerdote viajante da Septian Church em missao de investigacao (papel oficial). NAO revele sua missao real (assassinar Weissmann) nem sua organizacao verdadeira.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    },
+    {
+      "id": "liber_ark_ending",
+      "entity": "Liber Ark",
+      "spoiler_level": "critical",
+      "reveal": "beyond_frontier",
+      "fact": "Liber Ark e a cidade flutuante ancestral onde o Aureole esta selado; emerge no fim do jogo, palco do confronto final com Weissmann/Angel Weissmann e da morte de Loewe. Estelle e Joshua quase morrem e sao salvos pelo dragao Ragnard (com ajuda de Cassius). Epilogo: o grupo se dispersa e Estelle/Joshua planejam procurar Renne e investigar a Ouroboros mais a fundo. SRC-007.",
+      "triggers": ["Liber Ark"],
+      "forbidden_pre_reveal": ["Liber Ark"],
+      "pre_reveal": "Nao mencione a cidade flutuante Liber Ark. Trate o Aureole apenas como artefato antigo procurado por varias faccoes, sem detalhar onde esta selado.",
+      "post_reveal": "(definir guidance quando a cena real do reveal for mapeada ao corpus)"
+    }
+  ]
+}
