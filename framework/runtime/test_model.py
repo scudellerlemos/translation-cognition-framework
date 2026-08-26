@@ -53,7 +53,7 @@ def test_translit_len_drops_accents():
 
 def test_budget_len_charset_true_counts_real_utf8_bytes():
     # target_charset_supported=True (trails_sky_sc): acento NAO some, custa byte extra.
-    assert M._budget_len("coração", {"target_charset_supported": True}) == len("coração".encode("utf-8"))
+    assert M._budget_len("coração", {"target_charset_supported": True}) == len("coração".encode())
     assert M._budget_len("coração", {"target_charset_supported": True}) > M._translit_len("coração")
 
 
