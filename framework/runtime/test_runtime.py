@@ -8,10 +8,12 @@ Prova as 3 propriedades que sustentam a arquitetura-alvo:
   - state_index e IDEMPOTENTE (rodar 2x -> indices byte-identicos) e a TM e reconstruivel.
   - GOVERNANCA: nenhum work-text (dialogo/traducao) hardcoded nos .py do runtime.
 
-Roda na instancia de referencia (utawarerumono) — unica disponivel, como o test_cost_model.
+Roda sobre uma copia temporaria da instancia de referencia (utawarerumono) — unica
+disponivel, como o test_cost_model — pra nao mutar os artefatos reais versionados.
 """
 import json
 import re
+import shutil
 import sys
 import unicodedata
 from pathlib import Path
@@ -35,6 +37,9 @@ import state_index  # noqa: E402
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
 SCENE = "ch_12_01"           # cena leve, sem dependencia de traducao
+# PROJECT (instancia real) so e usado por baixo (integracao ponta-a-ponta real +
+# guard de governanca, ambos leitura ou round-trip idempotente do proprio conector).
+# O fixture `built` acima usa uma COPIA em tmp_path — nunca escreve na instancia real.
 
 
 def _norm_accents(s: str) -> str:
@@ -44,17 +49,21 @@ def _norm_accents(s: str) -> str:
 
 
 @pytest.fixture(scope="module")
-def built():
-    state_index.build(PROJECT)
-    return True
+def built(tmp_path_factory):
+    # copia pra tmp: state_index.build/context_pack.write_pack escrevem em disco
+    # e nao podem mutar os artefatos reais versionados de projects/utawarerumono.
+    project = tmp_path_factory.mktemp("utawarerumono")
+    shutil.copytree(REPO / "projects" / "utawarerumono", project, dirs_exist_ok=True)
+    state_index.build(project)
+    return project
 
 
 # ------------------------------- state_index ----------------------------------
 
 def test_state_index_idempotent(built):
-    state = PROJECT / "artifacts" / "state"
+    state = built / "artifacts" / "state"
     first = {p.name: p.read_bytes() for p in state.glob("*")}
-    state_index.build(PROJECT)
+    state_index.build(built)
     second = {p.name: p.read_bytes() for p in state.glob("*")}
     assert first.keys() == second.keys()
     for name in first:
@@ -63,7 +72,7 @@ def test_state_index_idempotent(built):
 
 def test_tm_reconstructible_and_keyed(built):
     tm = [json.loads(l) for l in
-          (PROJECT / "artifacts" / "state" / "translation_memory.jsonl")
+          (built / "artifacts" / "state" / "translation_memory.jsonl")
           .read_text(encoding="utf-8").splitlines() if l.strip()]
     assert len(tm) > 1000, "TM deveria conter o capitulo 11 inteiro (~2129 linhas)"
     e = tm[0]
@@ -73,7 +82,7 @@ def test_tm_reconstructible_and_keyed(built):
 
 
 def test_voice_cards_present(built):
-    cards = json.loads((PROJECT / "artifacts" / "state" / "voice_cards.json")
+    cards = json.loads((built / "artifacts" / "state" / "voice_cards.json")
                        .read_text(encoding="utf-8"))
     assert cards, "esperava perfis de voz destilados do tone_analysis.md"
     for c in cards.values():
@@ -83,31 +92,31 @@ def test_voice_cards_present(built):
 # ------------------------------- context_pack ---------------------------------
 
 def test_context_pack_deterministic(built):
-    context_pack.write_pack(PROJECT, SCENE)
-    p = PROJECT / "artifacts" / "scenes" / SCENE / "pack.json"
+    context_pack.write_pack(built, SCENE)
+    p = built / "artifacts" / "scenes" / SCENE / "pack.json"
     first = p.read_bytes()
-    context_pack.write_pack(PROJECT, SCENE)
+    context_pack.write_pack(built, SCENE)
     assert p.read_bytes() == first, "pack.json mudou entre execucoes (nao determinista)"
 
 
 def test_context_pack_bounded(built):
-    pack = context_pack.build_pack(PROJECT, SCENE)
-    full = context_pack.load_glossary(PROJECT / "artifacts" / "glossary.csv")
+    pack = context_pack.build_pack(built, SCENE)
+    full = context_pack.load_glossary(built / "artifacts" / "glossary.csv")
     full_terms = {g["term"] for g in full}
     sub_terms = {g["term"] for g in pack["glossary_subset"]}
     assert sub_terms <= full_terms, "subconjunto do glossario deve estar contido no glossario completo"
     assert len(sub_terms) < len(full_terms), "cena pequena nao deveria puxar o glossario inteiro"
-    all_cards = json.loads((PROJECT / "artifacts" / "state" / "voice_cards.json")
+    all_cards = json.loads((built / "artifacts" / "state" / "voice_cards.json")
                            .read_text(encoding="utf-8"))
     assert set(pack["voice_cards"]) <= set(all_cards)
     # cobre exatamente as linhas da cena
-    dialogs = context_pack.load_dialogs(PROJECT / "artifacts" / "scenes" / SCENE / "dialogs.csv")
+    dialogs = context_pack.load_dialogs(built / "artifacts" / "scenes" / SCENE / "dialogs.csv")
     assert pack["n_lines"] == len(dialogs) == len(pack["lines"])
 
 
 def test_scene_prompt_self_contained(built):
-    context_pack.write_pack(PROJECT, SCENE)
-    txt = (PROJECT / "artifacts" / "scenes" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
+    context_pack.write_pack(built, SCENE)
+    txt = (built / "artifacts" / "scenes" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
     # contem a doutrina (Carta), as linhas e o formato de saida exigido
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
