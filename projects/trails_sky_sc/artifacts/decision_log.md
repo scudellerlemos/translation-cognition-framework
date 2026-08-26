@@ -109,3 +109,41 @@
   Instalação real do Ollama + `ollama pull qwen2.5:14b` e re-run end-to-end de `mp0010_01` ficam
   pendentes de confirmação do usuário (download de vários GB, risco de ROCm-no-Windows não suportar
   RDNA2 sem `HSA_OVERRIDE_GFX_VERSION` — a validar empiricamente, não assumido).
+
+## Fechamento das 65 linhas em overflow + patch do Steam no meio do processo (2026-08-26)
+
+- **65 linhas residuais em overflow após a escalação automática de `run_scene.py`** (3 tiers de
+  tolerância já reduziram 301→145→65). Investigação read-only achou duas causas distintas: 56/65
+  (86%) eram falso-negativo por bug de off-by-one na reserva do byte de terminador (corrigido no
+  framework — ver `framework/docs/adr/0006-budget-reserves-terminator-per-connector.md` e a entrada
+  correspondente no `CHANGELOG.md`); as 9 restantes eram overflow genuíno (traduções 1–4 bytes acima
+  do budget mesmo sem o terminador) e foram encurtadas manualmente preservando sentido.
+- **Descoberta independente durante a verificação real**: o `.pac` instalado
+  (`Trails in the Sky 2nd Chapter Demo`, pasta Steam) tinha sido atualizado pelo servidor entre a
+  extração original (2026-08-23) e a tentativa de verificação (2026-08-26) — `script_en.pac` mudou de
+  conteúdo. Confirmado por três evidências independentes: (1) mtimes dos `.pac` (23 vs. 26/08), (2)
+  diff de conteúdo mostrando 100% de mismatch nos offsets antigos de `mp0010_01`, (3) reinstalação
+  completa do jogo produzindo o **mesmo MD5** de `script_en.pac` de antes — descartando a hipótese
+  alternativa do usuário (contaminação por modificações de teste aplicadas localmente ao jogo) e
+  confirmando que é build de servidor mesmo, não resíduo local.
+- **Decisão do usuário: re-extrair do build atual** (não pinar depot antigo do Steam, não aceitar só
+  verificação soft). Levantamento de raio de impacto antes de agir: `dialogs.csv` é versionado em git
+  (rede de segurança), e apenas 1 das 71 cenas (`mp0010_01`) tinha tradução real feita — escopo do
+  remap limitado a essa cena apesar de 25/78 arquivos-fonte terem mudado no corpus inteiro.
+  Corpus flat: 41.834 → 41.890 linhas.
+- **Metodologia de remap** (`difflib.SequenceMatcher` sobre as sequências ordenadas por offset de
+  `text_en` antigo vs. novo, por cena): 414/448 linhas de `mp0010_01` mapeadas 1:1 (texto idêntico,
+  offset deslocado — tradução existente reaproveitada sem mudança); 33 offsets antigos ficaram
+  órfãos, mapeando para 34 offsets novos (uma frase foi re-quebrada em duas pelo patch). As 34 novas
+  entradas foram traduzidas do zero e verificadas (orçamento de bytes + paridade de token `<C1>`)
+  antes de entrar em `translations_mp0010_01.json`. Padrão reaproveitável para qualquer cena futura
+  que precise de remap pós-patch — o script usado ficou só no scratchpad local desta sessão, não
+  versionado (candidato a virar utilitário genérico em `framework/runtime/` se acontecer de novo).
+- **Resultado**: `verify_chapter.py mp0010_01` contra o `.pac` real pós-patch: round-trip OK,
+  `{"ok": true, "fitting_failure": false, "n_fails": 0}` — primeira verificação genuína (não
+  simulada) do projeto. `run_state.json` recebeu o checkpoint `verified: true` (mesmo formato que
+  `run_scene.py` escreveria em sucesso) e `connector_gate.check()` confirma gate limpo
+  (`hard_problems`/`problems`/`warnings` todos vazios).
+- **Estado real de cobertura, para não confundir "gate liberado" com "jogo traduzido"**: 448/41.890
+  linhas traduzidas (1 de 71 cenas). O gate provou que o pipeline funciona ponta a ponta contra o
+  jogo real; o volume de tradução das outras 70 cenas continua em aberto.
