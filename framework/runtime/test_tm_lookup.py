@@ -42,6 +42,25 @@ def test_lookup_exact_match(monkeypatch, tmp_path):
     assert tl.lookup("bof", tl.tm_key("Goodbye")) is None
 
 
+def test_load_series_tm_corrupted_is_empty(monkeypatch, tmp_path):
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path)
+    p = tl.series_tm_path("corrompida")
+    p.parent.mkdir(parents=True)
+    p.write_text("{ nao e json valido", encoding="utf-8")
+    assert tl.load_series_tm("corrompida") == []
+
+
+def test_lookup_by_source_normalizes_before_lookup(monkeypatch, tmp_path):
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path)
+    p = tl.series_tm_path("bof")
+    p.parent.mkdir(parents=True)
+    p.write_text(json.dumps([{"src_key": tl.tm_key("Hello"), "source": "Hello", "target": "Ola"}]),
+                encoding="utf-8")
+    hit = tl.lookup_by_source("bof", "  Hello  ")
+    assert hit["target"] == "Ola"
+    assert tl.lookup_by_source("bof", "nada a ver") is None
+
+
 def test_isolation_between_series(monkeypatch, tmp_path):
     monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path)
     key = tl.tm_key("Dragon")
