@@ -49,6 +49,7 @@
     "space_strategy": "reconstrucao_secao",
     "patch_format": "full_file",
     "target_charset_supported": "ascii_only",
+    "budget_reserves_terminator": true,
     "charset_note": "PC port usa fonte ASCII. Diacríticos pt-BR (ã, ç, é etc.) NÃO têm suporte nativo. Pendente: validar in-game se a fonte foi expandida. Se não: transliteração NFD antes de exportar.",
     "mapping_status": "MAPEADO — 2026-06-20",
     "mapping_note": "Formato Capcom DAT com TOC. Texto ASCII puro com tokens de controle hex. Seção de texto identificada por heurística (pointer table + ASCII%). Extração multi-arquivo (AREAD/AREAS/AREAE/AREAM). Ver connector/table_schema.md."
