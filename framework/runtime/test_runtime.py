@@ -58,6 +58,28 @@ def built(tmp_path_factory):
     return project
 
 
+def _synthetic_scene_project(tmp_path):
+    """Projeto sintetico minimo (glossario com 2 termos, so 1 presente na cena; 1 linha de
+    dialogo + plano de traducao) -- exercita state_index/context_pack sem corpus real (dado
+    privado do cliente, purgado do historico; QA/CI nao deve depender dele)."""
+    (tmp_path / "project.json").write_text("{}", encoding="utf-8")
+    paths.glossary(tmp_path).parent.mkdir(parents=True, exist_ok=True)
+    paths.glossary(tmp_path).write_text(
+        "term,category,target_translation,handling_rule\n"
+        "Widget,item,Bugiganga,traduzir\n"
+        "Doohickey,item,Treco,traduzir\n", encoding="utf-8")
+    d = paths.scene_dir(tmp_path, SCENE)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\n0x1,Hero picks up the Widget.,60\n", encoding="utf-8")
+    # build_tm() le translation_plan*.json na RAIZ de artifacts/ (nao em artifacts/scenes/<cena>/)
+    (tmp_path / "artifacts" / f"translation_plan_{context_pack.scene_id_of(SCENE)}.json").write_text(
+        json.dumps({"lines": [{"offset": "0x1", "text_source": "Hero picks up the Widget.",
+                                "base_translation": "O heroi pega a Bugiganga.", "speaker": "Hero"}]}),
+        encoding="utf-8")
+    return tmp_path
+
+
 # ------------------------------- state_index ----------------------------------
 
 def test_state_index_idempotent(built):
@@ -70,11 +92,13 @@ def test_state_index_idempotent(built):
         assert first[name] == second[name], f"{name} mudou entre rebuilds (nao idempotente)"
 
 
-def test_tm_reconstructible_and_keyed(built):
+def test_tm_reconstructible_and_keyed(tmp_path):
+    root = _synthetic_scene_project(tmp_path)
+    state_index.build(root)
     tm = [json.loads(l) for l in
-          (built / "artifacts" / "state" / "translation_memory.jsonl")
+          (root / "artifacts" / "state" / "translation_memory.jsonl")
           .read_text(encoding="utf-8").splitlines() if l.strip()]
-    assert len(tm) > 1000, "TM deveria conter o capitulo 11 inteiro (~2129 linhas)"
+    assert len(tm) == 1
     e = tm[0]
     assert set(e) >= {"scene", "offset", "speaker", "source", "target", "src_key"}
     # a chave e funcao determinista do source normalizado
@@ -91,32 +115,38 @@ def test_voice_cards_present(built):
 
 # ------------------------------- context_pack ---------------------------------
 
-def test_context_pack_deterministic(built):
-    context_pack.write_pack(built, SCENE)
-    p = built / "artifacts" / "scenes" / SCENE / "pack.json"
+def test_context_pack_deterministic(tmp_path):
+    root = _synthetic_scene_project(tmp_path)
+    state_index.build(root)
+    context_pack.write_pack(root, SCENE)
+    p = root / "artifacts" / "scenes" / SCENE / "pack.json"
     first = p.read_bytes()
-    context_pack.write_pack(built, SCENE)
+    context_pack.write_pack(root, SCENE)
     assert p.read_bytes() == first, "pack.json mudou entre execucoes (nao determinista)"
 
 
-def test_context_pack_bounded(built):
-    pack = context_pack.build_pack(built, SCENE)
-    full = context_pack.load_glossary(built / "artifacts" / "glossary.csv")
+def test_context_pack_bounded(tmp_path):
+    root = _synthetic_scene_project(tmp_path)
+    state_index.build(root)
+    pack = context_pack.build_pack(root, SCENE)
+    full = context_pack.load_glossary(root / "artifacts" / "glossary.csv")
     full_terms = {g["term"] for g in full}
     sub_terms = {g["term"] for g in pack["glossary_subset"]}
     assert sub_terms <= full_terms, "subconjunto do glossario deve estar contido no glossario completo"
     assert len(sub_terms) < len(full_terms), "cena pequena nao deveria puxar o glossario inteiro"
-    all_cards = json.loads((built / "artifacts" / "state" / "voice_cards.json")
+    all_cards = json.loads((root / "artifacts" / "state" / "voice_cards.json")
                            .read_text(encoding="utf-8"))
     assert set(pack["voice_cards"]) <= set(all_cards)
     # cobre exatamente as linhas da cena
-    dialogs = context_pack.load_dialogs(built / "artifacts" / "scenes" / SCENE / "dialogs.csv")
+    dialogs = context_pack.load_dialogs(root / "artifacts" / "scenes" / SCENE / "dialogs.csv")
     assert pack["n_lines"] == len(dialogs) == len(pack["lines"])
 
 
-def test_scene_prompt_self_contained(built):
-    context_pack.write_pack(built, SCENE)
-    txt = (built / "artifacts" / "scenes" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
+def test_scene_prompt_self_contained(tmp_path):
+    root = _synthetic_scene_project(tmp_path)
+    state_index.build(root)
+    context_pack.write_pack(root, SCENE)
+    txt = (root / "artifacts" / "scenes" / SCENE / "scene_prompt.md").read_text(encoding="utf-8")
     # contem a doutrina (Carta), as linhas e o formato de saida exigido
     assert "CARTA DE GOVERNANCA" in txt
     assert "Linhas a traduzir" in txt
@@ -1898,7 +1928,8 @@ def test_no_work_text_in_runtime_scripts():
                 n = _norm_accents(t)
                 if len(n) >= 22:                 # so frases longas (evita falso-positivo de palavras comuns)
                     phrases.add(n)
-    assert phrases, "esperava frases do corpus p/ o guard"
+    if not phrases:
+        pytest.skip("sem corpus real disponivel (dado privado so localmente) — guard roda so localmente")
     for py in _HERE.glob("*.py"):
         src = _norm_accents(py.read_text(encoding="utf-8"))
         hit = next((p for p in phrases if p in src), None)

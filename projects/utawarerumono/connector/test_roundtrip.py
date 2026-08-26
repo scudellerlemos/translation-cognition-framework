@@ -348,7 +348,8 @@ def test_no_work_text_in_scripts():
     nunca contê-las. Genérico: compara cada `.py` (normalizado, insensível a acento) contra os artefatos
     do projeto — não conhece a obra, e pega até frases transliteradas."""
     phrases = _corpus_phrases()
-    assert phrases, "sem frases de referência (dialogs/approved ausentes) — não dá para checar"
+    if not phrases:
+        pytest.skip("sem frases de referência (dialogs/approved ausentes, dado privado só localmente)")
     offenders = []
     for py in sorted(HERE.glob("*.py")):
         if py.name == Path(__file__).name:      # o próprio teste pode citar exemplos
