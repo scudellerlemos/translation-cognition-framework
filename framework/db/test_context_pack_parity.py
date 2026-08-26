@@ -66,22 +66,23 @@ def test_db_sources_match_flat_for_deterministic_fields(bof4_migrated):
     assert cp.select_spoiler_guards(dl, blob, sid) == cp.select_spoiler_guards(fl, blob, sid)
 
 
-def test_db_scene_lines_match_flat(bof4_migrated):
+def test_db_scene_lines_match_flat(synthetic_migrated):
     """Linhas da cena no DB == dialogs.csv flat — o último pedaço que faltava pro
-    context_pack montar o pacote 100% do DB."""
-    db_path, _ = bof4_migrated
-    flat = cp.load_dialogs(BOF4 / "artifacts" / "scenes" / "AREAD001" / "dialogs.csv")
+    context_pack montar o pacote 100% do DB. Fixture sintetica (dialogs.csv real foi
+    purgado do BoF4 versionado; ver conftest.synthetic_migrated)."""
+    root, db_path, _ = synthetic_migrated
+    flat = cp.load_dialogs(root / "artifacts" / "scenes" / "s1" / "dialogs.csv")
     with Store(db_path) as db:
-        dbrows = db.get_scene_lines("bof4", "AREAD001")
+        dbrows = db.get_scene_lines("syn", "s1")
     assert dbrows == flat, "scene_lines do DB divergem do dialogs.csv flat"
 
 
-def test_tm_semantic_fallback_no_deps(bof4_migrated):
+def test_tm_semantic_fallback_no_deps(synthetic_migrated):
     """RAG (Fase 2.5): sem o stack de embeddings (caso da CI), a TM semântica cai p/ []
     sem erro. Com as deps + índice, retorna lista de vizinhos similares (validado local)."""
-    db_path, _ = bof4_migrated
-    rows = cp.load_dialogs(BOF4 / "artifacts" / "scenes" / "AREAD001" / "dialogs.csv")
-    res = cp._load_tm_semantic(db_path, "bof4", rows)
+    root, db_path, _ = synthetic_migrated
+    rows = cp.load_dialogs(root / "artifacts" / "scenes" / "s1" / "dialogs.csv")
+    res = cp._load_tm_semantic(db_path, "syn", rows)
     assert isinstance(res, list)  # sem deps → []; nunca lança
 
 
@@ -129,11 +130,11 @@ def test_kb_default_deny_semantics():
     assert "SemTag" not in got                 # sem tag → default-deny
 
 
-def test_db_tm_is_well_formed(bof4_migrated):
+def test_db_tm_is_well_formed(synthetic_migrated):
     """TM do DB (proveniência = approved) não precisa igualar a flat, mas tem que ser
     bem-formada e não-vazia (não-degradação)."""
-    db_path, _ = bof4_migrated
-    _g, _v, _d, dtm, _l = cp._load_sources_db(db_path, "bof4")
+    _root, db_path, _ = synthetic_migrated
+    _g, _v, _d, dtm, _l = cp._load_sources_db(db_path, "syn")
     assert dtm, "TM do DB vazia"
     needed = {"src_key", "source", "target", "speaker", "scene"}
     assert all(needed <= set(t) for t in dtm), "entradas de TM mal-formadas"

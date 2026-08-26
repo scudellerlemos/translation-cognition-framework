@@ -7,22 +7,38 @@ números positivos e coerentes, e model-mix + caching ⇒ mais barato que o mode
 
 Rodar:  pytest framework/validation/
 """
+import json
 import sys
 from pathlib import Path
-
-import pytest
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cost_model as C  # noqa: E402
 
-REPO = HERE.parent.parent
-REF = REPO / "projects" / "utawarerumono"
+
+def _synthetic_project(tmp_path):
+    """Projeto sintetico minimo (project.json + translation_plan.json) -- so mecanica de
+    custo generica (relacoes entre cenarios, incl. back-translation de linha de alto risco),
+    sem depender de corpus real do cliente."""
+    (tmp_path / "project.json").write_text("{}", encoding="utf-8")
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    (art / "translation_plan.json").write_text(json.dumps({"lines": [
+        {"text_source": "Hero picks up the Widget and looks around the room.",
+         "base_translation": "O heroi pega a Bugiganga e olha ao redor da sala.",
+         "risk_level": "low"},
+        {"text_source": "I see... this changes everything, she said quietly.",
+         "base_translation": "Entendo... isso muda tudo, ela disse baixinho.",
+         "risk_level": "medium"},
+        {"text_source": "This is my final wish before I die.",
+         "base_translation": "Este e meu ultimo desejo antes de morrer.",
+         "risk_level": "high"},
+    ]}), encoding="utf-8")
+    return tmp_path
 
 
-@pytest.mark.skipif(not REF.is_dir(), reason="projeto de referência ausente")
-def test_scenarios_positive_and_ordered():
-    r = C.cost_scenarios(REF)
+def test_scenarios_positive_and_ordered(tmp_path):
+    r = C.cost_scenarios(_synthetic_project(tmp_path))
     sc = r["scenarios"]
     for name, s in sc.items():
         assert s["total"] > 0, f"custo não-positivo em {name}"
@@ -31,9 +47,8 @@ def test_scenarios_positive_and_ordered():
     assert sc["mix_cache"]["total"] <= sc["mix"]["total"], "caching não deveria encarecer"
 
 
-@pytest.mark.skipif(not REF.is_dir(), reason="projeto de referência ausente")
-def test_per_1k_and_projection_sane():
-    r = C.cost_scenarios(REF)
+def test_per_1k_and_projection_sane(tmp_path):
+    r = C.cost_scenarios(_synthetic_project(tmp_path))
     e = r["estimate"]
     assert e["n"] > 0 and e["src_tok"] > 0
     per_k = r["scenarios"]["forte"]["total"] / e["n"] * 1000
