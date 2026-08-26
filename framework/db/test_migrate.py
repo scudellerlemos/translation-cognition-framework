@@ -20,10 +20,11 @@ from store import Store  # noqa: E402
 BOF4 = ROOT / "projects" / "breath_of_fire_4"
 
 
-def test_migrate_bof4_imports_all_present_artifacts(bof4_migrated):
-    """> 0 em cada tipo de artefato que o BoF4 TEM versionado. (decisions/spoiler estão
-    vazios — decision_index=[], ledger sem entries — então só checa as chaves presentes.)"""
-    _db, result = bof4_migrated
+def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
+    """> 0 em cada tipo de artefato presente num projeto sintetico (todos os tipos de
+    migrate_from_flat cobertos). (decisions/spoiler ficam vazios de proposito — só checa
+    as chaves presentes.)"""
+    _root, _db, result = synthetic_migrated
     assert result["scenes"] > 0, result
     assert result["scene_lines"] > 0, "dialogs.csv por cena existe mas scene_lines importou 0"
     assert result["translations"] > 0, result
@@ -86,11 +87,11 @@ def test_strip_codes_clean_form():
     assert "Voce quer dizer?" in clean and "Certo" in clean
 
 
-def test_get_translations_exposes_clean(bof4_migrated):
+def test_get_translations_exposes_clean(synthetic_migrated):
     """get_translations expõe source_clean/target_clean sem códigos, mantendo o fiel."""
-    db_path, _ = bof4_migrated
+    _root, db_path, _ = synthetic_migrated
     with Store(db_path) as db:
-        tm = db.get_translations("bof4", approved_only=True)
+        tm = db.get_translations("syn", approved_only=True)
     assert tm
     r = next(t for t in tm if "[" in (t.get("target") or ""))   # uma linha com códigos
     assert "[" in r["target"] and "[" not in r["target_clean"]  # fiel tem, clean não
@@ -114,12 +115,12 @@ def test_migrate_idempotent(tmp_path):
     assert summary["api_calls"] == first["jobs"], (summary, first)
 
 
-def test_migrate_translations_have_content(bof4_migrated):
+def test_migrate_translations_have_content(synthetic_migrated):
     """REGRESSÃO: translations migravam com source/target VAZIOS (lia colunas inexistentes).
     Agora target vem do approved_*.csv (completo/fiel) e source do dialogs.csv."""
-    db_path, _ = bof4_migrated
+    _root, db_path, _ = synthetic_migrated
     with Store(db_path) as db:
-        tm = db.get_translations("bof4", approved_only=False)
+        tm = db.get_translations("syn", approved_only=False)
     assert tm, "translations vazio"
     empty = [t for t in tm if not (t.get("source") and t.get("target"))]
     assert not empty, f"{len(empty)}/{len(tm)} translations com source/target vazio"
