@@ -225,8 +225,14 @@ def _budget_len(t, pc: dict) -> int:
 
 
 def _over_budget(t, budget, pc, tol) -> bool:
-    """True se `t` excede budget*tol pela metrica correta do projeto (ver _budget_len)."""
-    return bool(budget) and _budget_len(t, pc) > budget * tol
+    """True se `t` excede budget*tol pela metrica correta do projeto (ver _budget_len). Quando o
+    conector reserva 1 byte pro terminador \\0 dentro do proprio byte_budget (budget_reserves_terminator,
+    ver ADR sobre off-by-one), o limiar usavel e budget-1 antes de aplicar tol — casa com o oraculo
+    real de verify_chapter.py (`len(encoded) + 1 <= budget`)."""
+    if not budget:
+        return False
+    reserve = 1 if (pc or {}).get("budget_reserves_terminator") else 0
+    return _budget_len(t, pc) > (budget - reserve) * tol
 
 
 def _budget_note(over: list, pc: dict) -> str:
@@ -235,6 +241,8 @@ def _budget_note(over: list, pc: dict) -> str:
     metric = ("bytes UTF-8 reais — cada acento custa byte extra, NAO e removido na gravacao"
               if (pc or {}).get("target_charset_supported") is True
               else "TRANSLITERADO, sem acentos")
+    if (pc or {}).get("budget_reserves_terminator"):
+        metric += "; o byte_budget ja reserva 1 byte pro terminador, o texto precisa caber em budget-1"
     note = (f"- Estes offsets passam do byte_budget ({metric}); ENCURTE preservando o sentido "
             "(corte redundancia; ex.: 'adicionado ao'->'no'):\n")
     for off, b, cur in over[:25]:
