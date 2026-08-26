@@ -43,6 +43,7 @@
     "discover_output": "engine_id=null, tier=unknown_engine, confidence=0.9, blocked=false (dados legíveis, não criptografado/comprimido) — rodado via framework/connectors/discover.py em 2026-08-23.",
     "dep": "nenhuma — stdlib puro (struct, csv, pathlib). extract.py/reinsert.py escritos do zero, sem GARbro nem outra ferramenta de terceiros.",
     "target_charset_supported": true,
+    "budget_reserves_terminator": true,
     "charset_note": "Confirmado UTF-8 (reinsert.py grava bytes UTF-8 reais, sem transliteração) — CONFIRMADO VISUALMENTE NO JOGO em 2026-08-23: acentos pt-BR (í, à, é) renderizam corretamente na fonte, sem quebra/clipping (evidência em diálogo real, NPCs Skyler/Fabree, scena/mp0000.dat). Ver length_constraints.note para o registro completo do teste."
   },
   "profile": {

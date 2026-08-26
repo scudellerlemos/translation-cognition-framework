@@ -72,6 +72,17 @@ def test_over_budget_respects_charset():
     assert M._over_budget("coração", 7, pc_true, 1.0) is True
 
 
+def test_over_budget_reserves_terminator_when_flagged():
+    # bof4/trails_sky_sc: byte_budget ja inclui +1 do terminador \0 (ver ADR off-by-one).
+    # "seis66" translit = 6 bytes: budget=7 usavel (7-1=6) cabe; budget=6 usavel (6-1=5) estoura.
+    pc = {"target_charset_supported": False, "budget_reserves_terminator": True}
+    assert M._over_budget("seis66", 7, pc, 1.0) is False
+    assert M._over_budget("seis66", 6, pc, 1.0) is True
+    # sem a flag, o mesmo budget=6 nao estoura (comportamento legado, uma).
+    pc_legacy = {"target_charset_supported": False}
+    assert M._over_budget("seis66", 6, pc_legacy, 1.0) is False
+
+
 def test_norm_t_and_to_map():
     assert TOK in M._norm_t("linha1\nlinha2")
     out = M._to_map({"lines": [{"offset": "o1", "t": "a\nb", "speaker": "R"}]})
