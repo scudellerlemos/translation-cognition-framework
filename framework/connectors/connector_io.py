@@ -72,7 +72,7 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
     copia da mesma logica)."""
     literal = [re.escape(t) for t in formatting_tokens]
-    parts = literal + list(formatting_token_patterns)
+    parts = literal + [f"(?:{p})" for p in formatting_token_patterns]
     return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
 
 
