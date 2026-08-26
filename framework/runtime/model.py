@@ -34,6 +34,11 @@ import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
 
+_FRAMEWORK_CONNECTORS = _HERE.parent / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (structural_token_rx/structural_tokens_match compartilhados com o conector)
+
 # Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
 from back_translate import (  # noqa: E402,F401
     _BACK_SCHEMA,
@@ -279,17 +284,16 @@ def _structural_rx(pc: dict) -> re.Pattern:
     + pc['formatting_token_patterns']). MESMA checagem que o build_plan_chapter do conector faz depois —
     feita AQUI tambem (dentro do retry de traducao) pra pegar token perdido/trocado ANTES de persistir,
     em vez de so falhar num gate sem auto-reparo rio abaixo (bug real: 7/447 linhas em mp0010_01,
-    2026-08-24, o LLM as vezes derruba ou corrompe <C1>/<P2> e o retry existente so checava `\\n`)."""
-    literal = [re.escape(t) for t in (pc or {}).get("formatting_tokens", [])]
-    patterns = list((pc or {}).get("formatting_token_patterns", []))
-    parts = literal + patterns
-    return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+    2026-08-24, o LLM as vezes derruba ou corrompe <C1>/<P2> e o retry existente so checava `\\n`).
+    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py, #124)."""
+    pc = pc or {}
+    return connector_io.structural_token_rx(
+        pc.get("formatting_tokens", []), pc.get("formatting_token_patterns", []))
 
 
 def _struct_ok(rx: re.Pattern, source: str, t: str) -> bool:
     """True se `t` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    from collections import Counter
-    return Counter(rx.findall(source or "")) == Counter(rx.findall(t or ""))
+    return connector_io.structural_tokens_match(rx, source, t)
 
 
 # Guarda contra BLOW-UP patologico de comprimento: o modelo (raro) emite centenas/milhares de chars de

@@ -20,20 +20,21 @@ Uso: python build_plan_chapter.py <scene>   ex.: python build_plan_chapter.py mp
 """
 import csv
 import json
-import re
 import sys
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+_FRAMEWORK_CONNECTORS = ROOT.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (structural_token_rx compartilhada com model.py, #124)
 
 
-def _structural_token_rx(root: Path) -> re.Pattern:
+def _structural_token_rx(root: Path):
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    literal = [re.escape(t) for t in cfg.get("formatting_tokens", [])]
-    patterns = list(cfg.get("formatting_token_patterns", []))
-    parts = literal + patterns
-    return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+    return connector_io.structural_token_rx(
+        cfg.get("formatting_tokens", []), cfg.get("formatting_token_patterns", []))
 
 
 def load_dialogs(p: Path) -> tuple[dict, list]:

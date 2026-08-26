@@ -12,11 +12,14 @@ import sys
 import tempfile
 from pathlib import Path
 
+from hypothesis import given, settings
+from hypothesis import strategies as st
+
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "connector"))
 from extract import _scan_strings  # noqa: E402
 from fpac_unpack import read_index  # noqa: E402
-from reinsert import read_scena_strings, rebuild_pac  # noqa: E402
+from reinsert import read_scena_strings, rebuild_pac, truncate_for_budget  # noqa: E402
 
 _HEADER = struct.Struct("<4sIII")
 _ENTRY = struct.Struct("<IIQQQ")
@@ -184,3 +187,56 @@ def test_roundtrip_translation_longer_than_budget_is_truncated():
         if key == target_key:
             continue
         assert reextracted[key] == text, f"{key} foi corrompida pelo truncamento da vizinha"
+
+
+# --------------------- Hypothesis: truncate_for_budget (CLAUDE.md) -----------------
+
+@given(text=st.text(), budget=st.integers(min_value=1, max_value=256))
+@settings(max_examples=200)
+def test_truncate_for_budget_always_exact_size(text, budget):
+    """Para qualquer texto/budget, o payload gravado tem SEMPRE exatamente `budget` bytes
+    (invariante do replace same-size do reinsert.py — nunca pode desalinhar a string seguinte)."""
+    payload = truncate_for_budget(text, budget)
+    assert len(payload) == budget
+
+
+@given(text=st.text(), budget=st.integers(min_value=1, max_value=256))
+@settings(max_examples=200)
+def test_truncate_for_budget_never_splits_multibyte_utf8(text, budget):
+    """O payload, sem o padding de \\0, decodifica como UTF-8 valido e e sempre um PREFIXO do
+    texto original -- nunca corta um caractere multibyte ao meio (bug historico do reinsert.py
+    antes de trocar .encode("ascii") por .encode("utf-8"))."""
+    payload = truncate_for_budget(text, budget)
+    stripped = payload.rstrip(b"\x00")
+    decoded = stripped.decode("utf-8")          # nao pode levantar UnicodeDecodeError
+    assert text.startswith(decoded)
+    assert len(stripped) <= budget - 1
+
+
+# ------------------ Hypothesis: rebuild_pac (roundtrip generalizado) --------------
+
+@given(new_text=st.text(min_size=1, max_size=80))
+@settings(max_examples=50)
+def test_roundtrip_arbitrary_translation_never_corrupts_neighbor(new_text):
+    """Generaliza test_roundtrip_translated_reextracts_correctly: qualquer texto (curto, longo,
+    acentuado, vazio de espaco) aplicado a UMA string nunca corrompe a string vizinha nem
+    ultrapassa o budget original."""
+    data, entries = _load(_fixture_pac())
+    original = read_scena_strings(data, entries)
+    target_key = next(k for k, v in original.items() if v == "My name is Estelle Bright.")
+    budgets = {k: len(v) + 1 for k, v in original.items()}
+
+    new_bytes, changed = rebuild_pac(data, entries, {target_key: new_text}, budgets)
+    assert changed == 1
+
+    file_part, _, off_part = target_key.partition(":")
+    _name, _size, addr, _crc = next(e for e in entries if e[0].endswith(file_part))
+    abs_off = addr + int(off_part, 16)
+    budget = budgets[target_key]
+    written = new_bytes[abs_off:abs_off + budget].rstrip(b"\x00")
+    assert len(written) <= budget - 1
+    assert new_text.startswith(written.decode("utf-8"))
+
+    # vizinha inalterada byte-a-byte fora da janela [abs_off, abs_off+budget) da string traduzida
+    assert new_bytes[:abs_off] == data[:abs_off]
+    assert new_bytes[abs_off + budget:] == data[abs_off + budget:]
