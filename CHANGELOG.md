@@ -10,6 +10,22 @@ Formato: [Semântico](https://semver.org/) — `[versão] — data`.
 Trabalho incremental sobre a 1.0.0 (sem novo marco de release): cobertura de testes, reestruturação
 da CI, onboarding de baixo custo, Generic Connector System completo e terceiro jogo concluído.
 
+- **`connector_gate` liberado para `trails_sky_sc` com verificação real**: cena piloto `mp0010_01`
+  fechou o round-trip real contra o `.pac` instalado (`verify_chapter.py`: `{"ok": true,
+  "fitting_failure": false, "n_fails": 0}`), após resolver 65 linhas em overflow (56 causadas pelo
+  bug de off-by-one abaixo, 9 de overflow genuíno corrigidas manualmente) e sobreviver a um patch do
+  Steam no meio do processo (jogo mudou de build entre a extração original e a verificação; corpus
+  re-extraído, 414/448 linhas remapeadas automaticamente por diff de offset, 34 linhas órfãs
+  retraduzidas). Checkpoint gravado em `run_state.json` via o mesmo caminho de sucesso de
+  `run_scene.py`. Detalhe da investigação e da metodologia de remap em
+  `projects/trails_sky_sc/artifacts/decision_log.md`.
+- **Off-by-one do terminador corrigido por conector** (ver
+  `framework/docs/adr/0006-budget-reserves-terminator-per-connector.md`):
+  `byte_budget` de `bof4`/`trails_sky_sc`/`translation_local`/`translation_software` já reservava 1
+  byte pro terminador `\0` fisicamente no CSV, mas `model.py`/`context_pack.py` nunca descontavam
+  esse byte do limiar usado pra decidir se uma tradução cabe — causa raiz de 56/65 linhas do
+  overflow acima. Novo campo `budget_reserves_terminator` (mesmo padrão de
+  `target_charset_supported`, default `False`); `utawarerumono`/`souldiers` inalterados.
 - Cobertura elevada a 90.17% (core: runtime+db+skills+validation) com gate `--cov-fail-under=90`;
   438 testes coletados (435 passed / 3 skipped) na suite `framework/`
 - CI reestruturada para paralelismo total: `test.yml` dividido em 6 jobs independentes (era 1 job de
