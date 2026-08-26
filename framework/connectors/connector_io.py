@@ -10,6 +10,8 @@ from __future__ import annotations
 import csv
 import json
 import os
+import re
+from collections import Counter
 from pathlib import Path
 
 
@@ -61,3 +63,19 @@ def write_extraction_log(path: Path, text: str) -> None:
     """mkdir + write_text — o texto formatado (contagens etc.) continua responsabilidade do conector."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns: list[str]) -> re.Pattern:
+    """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json). MESMA regex usada
+    tanto no retry de traducao (framework/runtime/model.py, dentro do fitting loop) quanto no gate
+    pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
+    checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
+    copia da mesma logica)."""
+    literal = [re.escape(t) for t in formatting_tokens]
+    parts = literal + list(formatting_token_patterns)
+    return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+
+
+def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
+    """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
+    return Counter(rx.findall(source or "")) == Counter(rx.findall(text or ""))
