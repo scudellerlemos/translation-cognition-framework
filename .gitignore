@@ -25,6 +25,17 @@ venv/
 # (também elimina o churn de regeneração ao rodar os testes). Ver framework/docs/NAMING.md.
 projects/*/artifacts/**/pack.json
 projects/*/artifacts/**/scene_prompt.md
+projects/*/artifacts/**/back_prompt_*.md
+
+# Texto do roteiro do jogo extraído em massa (dado comercial de terceiros, risco de direito
+# autoral em repo público — mantido só localmente, ver ADR de purga do histórico).
+projects/*/artifacts/**/dialogs.csv
+projects/*/artifacts/**/translations_*.json
+projects/*/artifacts/**/translation_plan*.json
+projects/*/artifacts/**/approved_*.csv
+projects/*/artifacts/**/back_translation_*.json
+projects/*/artifacts/**/translation_memory.jsonl
+projects/*/artifacts/evidence/
 
 # Saída do conector (binários remontados com copyright — nunca versionar)
 projects/*/output/
