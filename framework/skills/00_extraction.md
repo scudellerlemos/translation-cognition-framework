@@ -85,6 +85,10 @@ Ordem de confiabilidade do método:
 
 Veredito → `target_charset_supported`: `true` / `false` / `likely` / `unknown`.
 - Faltam glifos → decidir (expandir fonte vs transliterar) no `decision_log.md`; **bloquear** tradução fiel até resolver.
+- Este veredito também seleciona a **métrica de orçamento** usada em todo o pipeline (bytes UTF-8 reais
+  vs. transliterado — ver ADR 0005): só `true` (booleano JSON estrito) ativa a métrica UTF-8 real.
+  `likely`/`unknown` **devem resolver para `false`** antes de ir para o `project.json` — a métrica errada
+  aqui estoura o budget silenciosamente na reinserção.
 
 ### 5. Gate de round-trip (prova de correção)
 Rodar `extract.py` → `reinsert.py` (sem traduzir nada) → comparar com o binário original.

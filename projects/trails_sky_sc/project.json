@@ -1,0 +1,57 @@
+{
+  "title": "The Legend of Heroes: Trails in the Sky 2nd Chapter",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "series": "kiseki",
+  "source": {
+    "file": "artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": ["<R>", "<T>", "</C>"],
+  "formatting_token_patterns": [
+    "<C\\d+>",
+    "<P\\d+>",
+    "<[Kk]\\d*>",
+    "<S\\d+>",
+    "<[Ww]\\d+>",
+    "<I\\d+>",
+    "<E\\d+>",
+    "<#E_[0-9A-Za-z]+#M_\\d+#B_\\d+>"
+  ],
+  "formatting_token_patterns_note": "Mapeamento feito em 2026-08-23 via varredura regex <[^<>]{1,20}> sobre as 41.834 strings de artifacts/dialogs.csv: 57 tokens distintos / 1.170 ocorrências, agrupados em 9 categorias (cor <C\\d+>/</C>, portrait <P\\d+>, tecla/kanji <[Kk]\\d*>, voz <S\\d+>, pausa cronometrada <[Ww]\\d+> — maiúsc./minúsc. convivem no dado real —, ícone de botão <I\\d+>, emoção <E\\d+>, código facial composto <#E_x#M_y#B_z>, e literais raros <R>/<T>). Cobertura sobre o dado observado, não uma spec do engine — variante nova fora deste conjunto pode aparecer em texto ainda não visitado (full game vs. demo).",
+  "system_line_convention": "none",
+  "length_constraints": {
+    "mode": "auto_wrap_no_manual_newline",
+    "note": "Confirmado em 2026-08-23: nenhuma das 41.834 strings extraídas (até 72 caracteres) contém '\\n' embutido — o motor faz quebra de linha automática na renderização, não há convenção de newline manual no dado-fonte. reinsert.py trunca pt-BR pro mesmo byte_budget do inglês (replace same-size, sem realocação); em orçamento apertado o corte cai no meio da palavra (ex.: 'Return to title'→'Voltar para o t'), aceitável como 1ª versão mas candidato a melhoria (truncar em fronteira de palavra) se virar problema de qualidade real. CONFIRMADO VISUALMENTE NO JOGO em 2026-08-23: glifo de acento pt-BR (í, à, é) renderiza corretamente na fonte do jogo, sem quebra/clipping — evidência em diálogo real (caixa de texto com nome de personagem, scena/mp0000.dat, NPCs 'Skyler' e 'Fabree', área jogável logo após o vídeo de recap). Lição aprendida no processo: a 1ª tentativa de teste usou strings de scena/e2000.dat que fazem parte da narração do VÍDEO de recap 'Summary of 1st Chapter' (legenda gravada no vídeo, não renderizada pelo motor) — .pac editado não tinha como afetar essa tela; strings de scena/*.dat só são um teste válido quando correspondem a diálogo interativo real (caixa com nome de personagem, avança por botão), não a narração de cutscene/vídeo."
+  },
+  "batch_size": 50,
+  "connector": {
+    "type": "unknown",
+    "engine": "Falcom remake engine (Sora no Kiseki 2nd Chapter, 2026) — engine novo, não presente no connector_registry.json",
+    "data_dir_env": "TRAILS_SKY_SC_DATA_DIR",
+    "data_dir_note": "Caminho para a pasta de instalação Steam do jogo (contém sora_2nd.exe, pac/, cursor/) — NUNCA commitado. Definir via env var ou arg CLI. Base atual: demo (\"Trails in the Sky 2nd Chapter Demo\"); jogo completo ainda não lançado/adquirido.",
+    "table_schema": "connector/table_schema.md",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "build_plan_script": "connector/build_plan_chapter.py",
+    "verify_script": "connector/verify_chapter.py",
+    "container_format": "PAC (Falcom custom archive) — pac/steam/script_en.pac contém o texto de diálogo em inglês; pac/steam/script.pac é provavelmente a versão japonesa/base; table_en.pac e contr.vdf são candidatos a metadados/tabela auxiliar. Nenhum destes formatos está documentado publicamente — Fase 0 (mapeamento hex) obrigatória antes de extract.py.",
+    "discover_output": "engine_id=null, tier=unknown_engine, confidence=0.9, blocked=false (dados legíveis, não criptografado/comprimido) — rodado via framework/connectors/discover.py em 2026-08-23.",
+    "dep": "nenhuma — stdlib puro (struct, csv, pathlib). extract.py/reinsert.py escritos do zero, sem GARbro nem outra ferramenta de terceiros.",
+    "target_charset_supported": true,
+    "budget_reserves_terminator": true,
+    "charset_note": "Confirmado UTF-8 (reinsert.py grava bytes UTF-8 reais, sem transliteração) — CONFIRMADO VISUALMENTE NO JOGO em 2026-08-23: acentos pt-BR (í, à, é) renderizam corretamente na fonte, sem quebra/clipping (evidência em diálogo real, NPCs Skyler/Fabree, scena/mp0000.dat). Ver length_constraints.note para o registro completo do teste."
+  },
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "Projeto novo (2026-08-23). Fonte atual é a demo Steam de Trails in the Sky 2nd Chapter (remake Falcom, engine desconhecido pelo framework). Fase 0 RE de VM/bytecode PAUSADA em 2026-08-23 por decisão do usuário: contêiner FPAC mapeado e confirmado; header do #scp (scena/*.dat) confirmado via desmontagem de sora_2nd.exe no Ghidra, mas mecanismo de referência de string pelo bytecode não resolvido. Decisão: pivotar para extract.py/reinsert.py heurísticos (scan de strings ASCII + replace de mesmo tamanho em bytes) em vez de continuar RE de VM — ver connector/table_schema.md seção 'DECISÃO DE ESTRATÉGIA'. extract.py/reinsert.py escritos e validados em 2026-08-23 (sessão de continuação): 41.834 strings extraídas de 78 arquivos scena/*.dat, round-trip byte-idêntico confirmado contra o .pac real e contra fixture sintética (test_roundtrip.py / test_roundtrip_synthetic.py). Sessão seguinte (mesmo dia, 2026-08-23): resolvidos os 2 itens de bloqueio que exigiam teste em jogo. (1) Charset: confirmado UTF-8 (não ASCII/CP932) comparando script_en.pac x script.pac (japonês) no mesmo arquivo — bug real corrigido em reinsert.py (.encode('ascii')→'utf-8', truncamento UTF-8-safe), coberto por teste novo. (2) Wrap/comprimento: confirmado que o motor quebra linha automaticamente (0/41.834 strings com '\n' embutido) e, via teste em jogo, que a fonte renderiza acentos pt-BR sem quebra (evidência: manual_tests/evidence/, diálogo real dos NPCs Skyler/Fabree em scena/mp0000.dat). (3) Tokens de formatação: 57 tokens/9 categorias mapeados via regex sobre dialogs.csv, registrados em formatting_tokens/formatting_token_patterns. Convenção nova: projects/*/manual_tests/ (gitignored) para arquivar builds de teste .pac ad hoc sem sujar o pipeline real — ver connector/table_schema.md seção 5/6 para o processo completo, incluindo o erro de escolher inicialmente uma string que era legenda de vídeo pré-renderizado (não afetável via .pac) em vez de diálogo interativo real. Fase D6b concluída em 2026-08-23 (sessão de continuação): split_scenes.py criado no framework (gap identificado — não havia ferramenta genérica pra materializar artifacts/scenes/<cena>/dialogs.csv a partir do flat; ver framework/runtime/split_scenes.py) e rodado de verdade (41.834 linhas -> 71 cenas). build_plan_chapter.py e verify_chapter.py escritos (adaptados do skeleton + padrão real do BoF4), validando: cobertura total + preservação de formatting_tokens/patterns (build_plan) e round-trip vazio + round-trip com text_en original + apply real + overflow individual (fitting-only) + readback por offset (não re-scan, por decisão documentada em reinsert.read_scena_strings) + ausência de corrupção fora da cena tocada (verify), tudo operando sobre o buffer .pac COMPARTIDO (múltiplas cenas no mesmo contêiner FPAC, sem arquivo isolado por cena). truncate_for_budget() extraído de reinsert.rebuild_pac pra reuso sem 2ª implementação divergente. Coberto por connector/test_chapter_pipeline.py (fixture sintético, sem depender do jogo real). connector_gate hard-check confirmado verde (`build_plan_script`/`verify_script` resolvidos). Gate soft (`nenhuma cena com round-trip verde registrado`) permanece aberto — exige 1 passada real de run_scene (translate real via model.py), que por sua vez está bloqueada pelo kb_gate: KB Fase 0 (artifacts/kb_phase_worklist.md) ainda 100% pendente, não iniciada nesta sessão. `system_line_convention` resolvido em 2026-08-23 (sessão seguinte #6): investigado se dialogs.csv (corpus de 41.834 strings de scena/*.dat) mistura texto de sistema com diálogo narrativo, como em Utawarerumono (all_caps). Testada a heurística all_caps sobre o corpus real: 24 linhas totalmente em maiúsculas, mas a maioria é diálogo gritado/dramático (\"LET! ME! GOOOOO!\", \"JUST ANSWER THE QUESTION!\", \"BUT THE ARSEILLE ISN'T HERE?!\") — all_caps aqui é ênfase emocional de fala, não voz de sistema; usar essa convenção classificaria errado 9 linhas de diálogo real como sistema. As únicas linhas genuinamente de sistema (valores de estado curto: ' OFF'/' HIGH'/' MID '/' LOW '/' [OFF]', 15 ocorrências) vêm de um único arquivo (scena/mp2052_01.dat), aparentemente um dispositivo/rádio interativo dentro de uma cena específica, não um padrão geral do corpus. Conclusão: texto de sistema/menu do jogo não vive misturado em dialogs.csv — vive inteiramente em tabela separada (pac/steam/table_en.pac -> table_en/t_text.tbl, já mapeada e catalogada em glossary.csv categoria UI, ver connector/table_schema.md RETOMADA #5). Valor setado: system_line_convention: \"none\" (mesma convenção de souldiers) — as 15 linhas-exceção em mp2052_01.dat são tratadas como texto comum (tradução literal do valor, sem regra especial; escopo pequeno demais pra justificar heurística própria).",
+  "kb_frontier": "artifacts/kb_phase_worklist.md"
+}

@@ -16,6 +16,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
 import model  # noqa: E402
+import paths  # noqa: E402
 import run_scene as rs  # noqa: E402
 
 
@@ -38,6 +39,9 @@ def env(tmp_path, monkeypatch):
         "runs": [],          # sequência de (code, out) p/ build_plan/verify; vazio => sempre (0,"")
         "translate_exc": None,
         "back_exc": None,
+        "over": [],          # offsets acima do budget (retighten cirúrgico + diagnóstico)
+        "retranslate": None,  # override de M.retranslate_offsets (p/ capturar kwargs recebidos)
+        "retranslate_calls": [],  # todo kwarg recebido por M.retranslate_offsets, em ordem (inclui model)
     }
     calls = {"i": 0}
 
@@ -67,7 +71,22 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(rs.M, "translate", fake_translate)
     monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: st["highs"])
     monkeypatch.setattr(rs.M, "back_translate", fake_back)
-    monkeypatch.setattr(rs.M, "over_budget_offsets", lambda r, s, tolerance=1.0: [])
+    def fake_over_budget_offsets(r, s, tolerance=1.0, detail=False):
+        if not st["over"]:
+            return []
+        if detail:
+            return [{"offset": o, "byte_budget": 5, "actual": 9, "source": "x", "t": "y"}
+                    for o in st["over"]]
+        return list(st["over"])
+
+    def fake_retranslate(r, s, offsets, *, budget_tolerance, backend="api", **k):
+        st["retranslate_calls"].append({"budget_tolerance": budget_tolerance, "backend": backend, **k})
+        if st["retranslate"] is not None:
+            return st["retranslate"](r, s, offsets, budget_tolerance=budget_tolerance, backend=backend)
+        return st["tr"]
+
+    monkeypatch.setattr(rs.M, "over_budget_offsets", fake_over_budget_offsets)
+    monkeypatch.setattr(rs.M, "retranslate_offsets", fake_retranslate)
     monkeypatch.setattr(rs, "_connector_script", lambda r, c, key, d: root / "connector" / d)
     monkeypatch.setattr(rs, "_warn_if_connector_stale", lambda r, s, c: None)
     monkeypatch.setattr(rs, "_connector_hash", lambda r, c: "hash")
@@ -185,6 +204,17 @@ def test_verify_failed_hard(env):
     st["runs"] = [(0, ""), (1, "falha dura")]        # verify exit 1 = falha dura (não escala)
     r = rs.run_scene(root, scene, backend="api")
     assert r["status"] == "verify_failed"
+    assert not paths.verify_diagnostics(root, scene, "AREAD001").is_file()  # nada acima do budget
+
+
+def test_verify_failed_hard_persists_diagnostics(env):
+    root, scene, st = env
+    st["runs"] = [(0, ""), (1, "falha dura")]
+    st["over"] = ["X:0:1"]
+    r = rs.run_scene(root, scene, backend="api")
+    assert r["status"] == "verify_failed"
+    diag = json.loads(paths.verify_diagnostics(root, scene, "AREAD001").read_text(encoding="utf-8"))
+    assert diag["over_budget"][0]["offset"] == "X:0:1"
 
 
 def test_fitting_escalation_then_verified(env):
@@ -193,6 +223,51 @@ def test_fitting_escalation_then_verified(env):
     st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
     r = rs.run_scene(root, scene, backend="api")
     assert r["status"] == "verified"
+
+
+def test_ollama_fitting_escalation_then_verified(env):
+    # paridade com api: backend="ollama" tambem entra no escalonamento de tolerâncias.
+    root, scene, st = env
+    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
+    r = rs.run_scene(root, scene, backend="ollama")
+    assert r["status"] == "verified"
+
+
+def test_retighten_passes_backend_to_retranslate_offsets(env):
+    root, scene, st = env
+    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
+    st["over"] = ["X:0:1"]
+    captured = {}
+
+    def spy(r, s, offsets, *, budget_tolerance, backend):
+        captured["backend"] = backend
+        return st["tr"]
+
+    st["retranslate"] = spy
+    r = rs.run_scene(root, scene, backend="ollama")
+    assert r["status"] == "verified" and captured["backend"] == "ollama"
+
+
+def test_retighten_escalates_model_by_tier(env):
+    # backend "api": tier 1 (tol=1.15) usa o modelo barato; tier 2 (tol=1.0, residuo que nem 1.15
+    # resolveu) escala pro caro — pareado por indice com M.MODEL_ESCALATION (nao suposicao a priori).
+    root, scene, st = env
+    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (3, "fitting"), (0, ""), (0, "")]
+    st["over"] = ["X:0:1"]
+    r = rs.run_scene(root, scene, backend="api")
+    assert r["status"] == "verified"
+    models = [c["model"] for c in st["retranslate_calls"]]
+    assert models == [model.MODEL_ESCALATION[0], model.MODEL_ESCALATION[1]]
+
+
+def test_retighten_no_model_escalation_for_ollama(env):
+    # ollama tem 1 modelo local -> nenhum tiering (model sempre None, mesmo escalando tolerância).
+    root, scene, st = env
+    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
+    st["over"] = ["X:0:1"]
+    r = rs.run_scene(root, scene, backend="ollama")
+    assert r["status"] == "verified"
+    assert [c["model"] for c in st["retranslate_calls"]] == [None]
 
 
 def test_defer_back(env):
