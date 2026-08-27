@@ -12,6 +12,12 @@
 - Você tem o binário (ou arquivo de texto/legenda) da obra-fonte.
 - A branch de trabalho está criada.
 - O framework está em `framework/` e os testes passam (`pytest framework/`).
+- **No Windows**: setar `PYTHONIOENCODING=utf-8` (ou `chcp 65001`) antes de rodar qualquer CLI do
+  framework (`discover.py` e afins). Sem isso, `print()` com acento/seta quebra com
+  `UnicodeEncodeError` em console cp1252 — bug pré-existente, não corrigido no código
+  (issue #119; confirmado reproduzindo ainda em 23/08/2026 durante o bring-up do Trails in the
+  Sky 2nd Chapter). Nenhum projeto até aqui foi bloqueado porque o texto-fonte é ASCII, mas é
+  verificação obrigatória antes de rodar `discover.py` num ambiente novo.
 
 ---
 
@@ -103,6 +109,20 @@ Referência: `projects/utawarerumono/connector/table_schema.md` e `framework/con
 Adaptar `framework/connectors/_skeleton/extract.py` ao formato mapeado.
 
 Critério de conclusão: `extract.py <binário>` gera `artifacts/dialogs.csv` com colunas `offset`, `text_en`, `byte_budget`.
+
+### 2b. Dividir em cenas
+
+`run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (`paths.py`, contrato
+congelado) — o `dialogs.csv` flat do passo anterior **não** é lido pelo runtime de tradução, só serve
+de corpus bruto. Se o corpus tiver uma coluna que já identifica a cena 1:1 (ex.: `file` — 1
+arquivo-fonte = 1 cena, padrão do BoF4 e do Trails Sky SC):
+
+```
+python framework/runtime/split_scenes.py <projeto> [--by file] [--dry-run]
+```
+
+Projetos com regra de agrupamento diferente (offset com prefixo de cena embutido, corpus sem coluna
+de cena) continuam exigindo split manual/específico — a ferramenta cobre só o caso comum.
 
 ### 3. Validar o round-trip (gate obrigatório)
 

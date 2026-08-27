@@ -281,6 +281,7 @@ def project_constraints(cfg: dict) -> dict:
         "length_constraints": cfg.get("length_constraints", {}),
         "newline_token": TOKEN,
         "target_charset_supported": conn.get("target_charset_supported", True),
+        "budget_reserves_terminator": conn.get("budget_reserves_terminator", False),
         "charset_note": conn.get("charset_note", ""),
         "space_strategy": conn.get("space_strategy", ""),
     }
@@ -755,11 +756,22 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("_(sem memoria previa para esta cena)_")
     L.append("")
     L.append("## 7. Linhas a traduzir")
-    L.append("> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao TRANSLITERADA (sem acentos — o `c`")
-    L.append("> de cedilha e os acentos somem na gravacao) deve **CABER** no byte_budget da linha. pt-BR")
-    L.append("> costuma ser ~15-20% mais longo que EN: em linhas curtas/UI (budget baixo) **seja conciso**")
-    L.append("> (ex.: 'adicionado ao' -> 'no'; corte redundancia), preservando sentido. Estourar muito o")
-    L.append("> orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.")
+    if pc.get("target_charset_supported") is True:
+        L.append("> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao em **bytes UTF-8 REAIS**")
+        L.append("> (acentos NAO somem na gravacao — cada `c` de cedilha/acento custa byte(s) extra) deve")
+        L.append("> **CABER** no byte_budget da linha. pt-BR costuma ser ~15-20% mais longo que EN: em")
+        L.append("> linhas curtas/UI (budget baixo) **seja conciso** (ex.: 'adicionado ao' -> 'no'; corte")
+        L.append("> redundancia), preservando sentido. Estourar muito o orcamento causa overflow no jogo.")
+        L.append("> Conte os tokens de formatacao ({c5} etc.) no tamanho.")
+    else:
+        L.append("> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao TRANSLITERADA (sem acentos — o `c`")
+        L.append("> de cedilha e os acentos somem na gravacao) deve **CABER** no byte_budget da linha. pt-BR")
+        L.append("> costuma ser ~15-20% mais longo que EN: em linhas curtas/UI (budget baixo) **seja conciso**")
+        L.append("> (ex.: 'adicionado ao' -> 'no'; corte redundancia), preservando sentido. Estourar muito o")
+        L.append("> orcamento causa overflow no jogo. Conte os tokens de formatacao ({c5} etc.) no tamanho.")
+    if pc.get("budget_reserves_terminator"):
+        L.append("> O byte_budget listado ja reserva 1 byte para o terminador `\\0` — o texto")
+        L.append("> traduzido precisa caber em `byte_budget - 1` bytes, nao no byte_budget cheio.")
     L.append("| offset | byte_budget | source |")
     L.append("|---|---|---|")
     for r in pack["lines"]:

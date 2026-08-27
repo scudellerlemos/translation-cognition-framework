@@ -8,10 +8,12 @@ Prova as 3 propriedades que sustentam a arquitetura-alvo:
   - state_index e IDEMPOTENTE (rodar 2x -> indices byte-identicos) e a TM e reconstruivel.
   - GOVERNANCA: nenhum work-text (dialogo/traducao) hardcoded nos .py do runtime.
 
-Roda na instancia de referencia (utawarerumono) — unica disponivel, como o test_cost_model.
+Roda sobre uma copia temporaria da instancia de referencia (utawarerumono) — unica
+disponivel, como o test_cost_model — pra nao mutar os artefatos reais versionados.
 """
 import json
 import re
+import shutil
 import sys
 import unicodedata
 from pathlib import Path
@@ -35,6 +37,9 @@ import state_index  # noqa: E402
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
 SCENE = "ch_12_01"           # cena leve, sem dependencia de traducao
+# PROJECT (instancia real) so e usado por baixo (integracao ponta-a-ponta real +
+# guard de governanca, ambos leitura ou round-trip idempotente do proprio conector).
+# O fixture `built` acima usa uma COPIA em tmp_path — nunca escreve na instancia real.
 
 
 def _norm_accents(s: str) -> str:
@@ -44,9 +49,13 @@ def _norm_accents(s: str) -> str:
 
 
 @pytest.fixture(scope="module")
-def built():
-    state_index.build(PROJECT)
-    return True
+def built(tmp_path_factory):
+    # copia pra tmp: state_index.build/context_pack.write_pack escrevem em disco
+    # e nao podem mutar os artefatos reais versionados de projects/utawarerumono.
+    project = tmp_path_factory.mktemp("utawarerumono")
+    shutil.copytree(REPO / "projects" / "utawarerumono", project, dirs_exist_ok=True)
+    state_index.build(project)
+    return project
 
 
 def _synthetic_scene_project(tmp_path):
@@ -74,9 +83,9 @@ def _synthetic_scene_project(tmp_path):
 # ------------------------------- state_index ----------------------------------
 
 def test_state_index_idempotent(built):
-    state = PROJECT / "artifacts" / "state"
+    state = built / "artifacts" / "state"
     first = {p.name: p.read_bytes() for p in state.glob("*")}
-    state_index.build(PROJECT)
+    state_index.build(built)
     second = {p.name: p.read_bytes() for p in state.glob("*")}
     assert first.keys() == second.keys()
     for name in first:
@@ -97,7 +106,7 @@ def test_tm_reconstructible_and_keyed(tmp_path):
 
 
 def test_voice_cards_present(built):
-    cards = json.loads((PROJECT / "artifacts" / "state" / "voice_cards.json")
+    cards = json.loads((built / "artifacts" / "state" / "voice_cards.json")
                        .read_text(encoding="utf-8"))
     assert cards, "esperava perfis de voz destilados do tone_analysis.md"
     for c in cards.values():

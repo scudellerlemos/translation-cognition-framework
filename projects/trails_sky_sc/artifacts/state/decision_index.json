@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Convenções gerais",
+    "tags": [
+      "convenções",
+      "gerais"
+    ],
+    "universal": false,
+    "summary": "- **Convenção de `handling_rule`:** `manter_original` / `traduzir` (PT), não `verbatim` / `translate` (EN) — segue o padrão já usado em `utawarerumono`. Razão: `glossary_lint.py` só audita presença verbatim quando o valor é exatamente a string `\"manter_original\"`; qualquer outro valor (incluindo",
+    "reveal": null
+  },
+  {
+    "title": "Nomes próprios",
+    "tags": [
+      "nomes",
+      "próprios"
+    ],
+    "universal": false,
+    "summary": "- Todos os 8 personagens jogáveis principais + Cassius Bright, Renne, Anelace Elfead e Kevin Graham: `manter_original` (nomes próprios não têm tradução consagrada; jogo inédito, sem localização oficial anterior para pt-BR). - Locais (Liberl, Rolent, Bose, Ruan, Zeiss, Grancel): `manter_original` — t",
+    "reveal": null
+  },
+  {
+    "title": "Traduções canônicas",
+    "tags": [
+      "traduções",
+      "canônicas"
+    ],
+    "universal": false,
+    "summary": "- **Bracer Guild → \"Guilda dos Bracers\"** (PROPOSTO, não confirmado pelo usuário): mantém \"Bracer\" como termo técnico do universo (função/profissão, não traduzível 1:1 — \"mercenário licenciado\" foi descartado por perder o peso de termo próprio do mundo) e traduz só a estrutura \"Guild → Guilda\".",
+    "reveal": null
+  }
+]

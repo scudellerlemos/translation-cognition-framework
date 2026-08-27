@@ -82,14 +82,26 @@ Para cada fonte encontrada:
 
 #### 3. Gestão de spoilers durante a busca
 
-🚨 **Crítico:** wikis contêm spoilers de late-game. Definir antes de ler qualquer fonte:
+🚨 **Crítico:** wikis contêm spoilers de late-game. Mas o framework tem mecanismo próprio para lidar
+com isso — `spoiler_ledger.json` + `context_pack.select_spoiler_guards()` (guard pré-tradução) +
+`spoiler_check.py` (auditoria pós-tradução). **Isso significa que "o corpus é curto / é uma demo" não
+é motivo para deixar de pesquisar** — é motivo para capturar o que for encontrado no ledger em vez de
+jogar fora na prosa visível do KB.
 
 1. **Definir fronteira:** até qual capítulo / segmento o corpus atual chega?
-2. **Ler apenas até essa fronteira** — não avançar para seções que revelam plot posterior
-3. **Documentar seções ignoradas** no `research_log.md` para referência futura
+2. **Se a fonte cobre só até a fronteira** (ou menos): ler e incorporar normalmente ao KB.
+3. **Se a fonte cobre além da fronteira** (sinopse completa, wiki de "Story" até o final, guia
+   completo etc.): **ler por completo — não pular a leitura**. Fatos que revelam plot posterior à
+   fronteira vão para `spoiler_ledger.json` (ver seção dedicada abaixo), não para a prosa do
+   `universe_knowledge_base.md`.
+4. **Documentar no `research_log.md`** o que foi lido e para onde cada fato foi (KB direto vs.
+   ledger).
 
-> Exemplo: para uma obra cujo corpus vai até o Cap. 5, ler apenas as seções da wiki que cobrem
-> até esse ponto. Não ler "Identidades reveladas", "Final", ou qualquer seção de arco posterior.
+> Exemplo real: SRC-007 do projeto `trails_sky_sc` é a sinopse completa do jogo (prólogo→final),
+> enviada pelo usuário — foi lida por completo. Os reveals além do corpus atual (backstory da Renne,
+> identidade do antagonista, final) foram para `spoiler_ledger.json`, não para o KB visível. Ver
+> `projects/trails_sky_sc/artifacts/spoiler_ledger.json` e
+> `projects/utawarerumono/artifacts/spoiler_ledger.json` como referência.
 
 ---
 
@@ -201,6 +213,51 @@ documentar a progressão. Isso alimenta a verificação de tom por fase no QA Fi
 
 ---
 
+## SPOILER LEDGER — fatos além da fronteira (`spoiler_ledger.json`)
+
+Quando a pesquisa (Fase 1A/1B) encontra fatos que revelam plot além da fronteira do corpus atual,
+eles **não ficam de fora da base de conhecimento** — vão para `artifacts/spoiler_ledger.json`, o
+mecanismo do framework que separa "o que a IA sabe" de "o que pode aparecer na tradução antes do
+ponto certo da história". Runtime: `context_pack.select_spoiler_guards()` injeta um guard
+pré-tradução quando a entidade aparece numa cena anterior ao `reveal`; `spoiler_check.py` audita
+pós-tradução se algum termo de `forbidden_pre_reveal` vazou numa cena anterior ao reveal
+(`run_chapter.py` chama isso automaticamente por capítulo).
+
+**Quando criar uma entrada:** um fato pesquisado revela algo que a fronteira de spoiler atual do
+projeto ainda não alcançou (identidade oculta, motivação de antagonista, morte de personagem, final
+de arco). Não é preciso esperar o corpus avançar para pesquisar — só a entrada no KB visível fica
+represada.
+
+**Schema de cada entrada:**
+
+| Campo | Obrigatório | Descrição |
+|-------|-------------|-----------|
+| `id` | Sim | slug único (ex.: `renne_true_nature`) |
+| `entity` | Sim | nome como aparece no corpus antes do reveal |
+| `spoiler_level` | Sim | `moderate` / `major` / `critical` |
+| `reveal` | Sim | `scene_id` onde o fato vira público, ou `"beyond_frontier"` se não há mapeamento capítulo→cena confirmado ainda (default seguro — sempre tratado como futuro) |
+| `fact` | Sim | o fato completo, sourced — não resumir/omitir só porque o reveal é distante |
+| `triggers` | Recomendado | palavras que disparam o guard quando aparecem na cena (casamento por limite de palavra) |
+| `scenes` | Opcional | lista explícita de `scene_id` onde o guard se aplica, quando não há trigger textual confiável |
+| `forbidden_pre_reveal` | Opcional | termos/nomes pós-reveal que NUNCA podem aparecer na tradução antes do `reveal` |
+| `pre_reveal` | Sim | instrução de como tratar a entidade com segurança antes do reveal |
+| `post_reveal` | Opcional | orientação para depois do reveal (pode ficar `"(definir quando mapeado)"` se a cena real do reveal ainda não foi identificada no corpus) |
+| `gender_quarantine` | Opcional | `true` se o gênero gramatical da entidade é o próprio spoiler (pt-BR força ele/ela; inglês nem sempre) — auditado por `spoiler_check.check_gender()` |
+
+**O KB visível (`universe_knowledge_base.md`) fica espoiler-safe:** a entrada da entidade no KB
+menciona só o que já é público (premissa, bios oficiais) e aponta para o `spoiler_ledger.json` em
+vez de expandir o reveal na prosa. Mesmo padrão usado em
+`projects/utawarerumono/artifacts/universe_knowledge_base.md` (seção Oshtor) e em
+`projects/trails_sky_sc/artifacts/universe_knowledge_base.md` (seções Renne, Ouroboros, Leonhardt).
+
+**Verificar:** `python framework/runtime/spoiler_check.py <projeto> --list-guards` lista os guards
+carregados do ledger — rodar depois de criar/editar o arquivo para confirmar que carrega sem erro.
+Sem `spoiler_ledger.json`, o `context_pack` apenas avisa ("guards de spoiler DESATIVADOS para esta
+cena") e segue sem proteção — o arquivo é opcional para o `kb_gate.py` passar, mas obrigatório na
+prática sempre que a pesquisa encontrar reveals além da fronteira.
+
+---
+
 ## FORMATO POR ENTIDADE
 
 ```md
@@ -234,6 +291,7 @@ high / medium / low / UNSOURCED
 |---------|----------|
 | `research_log.md` | Fontes avaliadas, conflitos resolvidos, gaps, fronteira de spoiler — com `status: reconciled` |
 | `universe_knowledge_base.md` | Uma entrada por entidade relevante, cada afirmação citando ID de fonte; fases narrativas |
+| `spoiler_ledger.json` | Condicional: obrigatório sempre que a pesquisa encontrar reveals além da fronteira do corpus atual (ver seção "SPOILER LEDGER" acima) |
 
 ---
 

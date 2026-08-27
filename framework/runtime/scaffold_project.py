@@ -101,10 +101,56 @@ _KB_WORKLIST_TEMPLATE = """\
 - [ ] Adicionar ao glossary.csv com handling_rule: translate
 """
 
+# profile/*.md: docs de referencia humana (nenhum script os le), mas o checklist de gate do
+# NEW_PROJECT_ONBOARDING.md exige os 2 primeiros antes de traduzir. Nunca eram criados pelo
+# scaffold apesar do onboarding doc afirmar que sim (linha "cria connector/, profile/, artifacts/")
+# -- gap real descoberto no onboarding do Trails Sky SC (2026-08-23): profile/ ficou vazio, ninguem
+# notou ate o Passo 5 do checklist. Ver test_scaffold_kb_gate.py para a trava de regressao.
+_VOICE_PROFILES_TEMPLATE = """\
+# Voice Profiles Reference — {title}
+
+Rascunho do que já se sabe dos personagens antes da pesquisa formal (skill 03/04). Pode ficar
+como stub inicial; o formato que `state_index`/`kb_gate` exigem de verdade é o de
+`artifacts/tone_analysis.md` (`### Nome — voice_criticality: X`), não este arquivo.
+
+## Personagens principais
+
+- **Nome:** (papel na história, o que já se sabe do jeito de falar)
+"""
+
+_TERMINOLOGY_SEEDS_TEMPLATE = """\
+# Terminology Seeds — {title}
+
+Termos canônicos do universo que vão precisar de handling rule em `artifacts/glossary.csv`
+(verbatim vs. traduzir). Rascunho pré-pesquisa — a fonte de verdade após a Fase 0/1 é o glossário.
+
+- **Termo:** (categoria — nome próprio / lore / facção / lugar; decisão preliminar)
+"""
+
+_IDENTITY_PAIRS_TEMPLATE = """\
+# Identity Pairs Reference — {title}
+
+Pares de identidade dupla (personagem com 2 nomes/formas — nome secreto, disfarce, forma
+alternativa) que exigem cuidado de spoiler (`spoiler_ledger.json`, ver `context_pack`).
+Deixar vazio se a obra não tiver esse padrão.
+
+- **Nome público → Nome real:** (capítulo do reveal, o que não pode vazar antes)
+"""
+
+_EXAMPLE_TEST_SUITES_TEMPLATE = """\
+# Example Test Suites — {title}
+
+Linhas de referência (dificeis/representativas) para validar tom e terminologia manualmente
+antes de rodar o pipeline em escala. Preencher com exemplos reais do corpus conforme forem
+aparecendo nas primeiras cenas traduzidas.
+"""
+
 
 def scaffold(project_root: Path, title: str = "") -> None:
     art = project_root / "artifacts"
     art.mkdir(parents=True, exist_ok=True)
+    profile = project_root / "profile"
+    profile.mkdir(parents=True, exist_ok=True)
 
     t = title or project_root.name
     created, skipped = [], []
@@ -141,6 +187,20 @@ def scaffold(project_root: Path, title: str = "") -> None:
     else:
         kp.write_text(_KB_WORKLIST_TEMPLATE.format(title=t), encoding="utf-8")
         created.append(kp)
+
+    # 5-8. profile/*.md — referencia humana, exigida pelo checklist de gate do onboarding
+    for fname, tmpl in [
+        ("voice_profiles_reference.md", _VOICE_PROFILES_TEMPLATE),
+        ("terminology_seeds.md", _TERMINOLOGY_SEEDS_TEMPLATE),
+        ("identity_pairs_reference.md", _IDENTITY_PAIRS_TEMPLATE),
+        ("example_test_suites.md", _EXAMPLE_TEST_SUITES_TEMPLATE),
+    ]:
+        fp = profile / fname
+        if fp.exists():
+            skipped.append(fp)
+        else:
+            fp.write_text(tmpl.format(title=t), encoding="utf-8")
+            created.append(fp)
 
     for f in created:
         print(f"  CRIADO  {f.relative_to(project_root)}")
