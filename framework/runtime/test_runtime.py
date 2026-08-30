@@ -482,7 +482,7 @@ def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
     monkeypatch.setattr(run_chapter.RS, "run_scene",
                         lambda r, scene, **kw: calls.append(scene) or
                         {"status": "verified", "scene": scene, "verified": True})
-    r = run_chapter.run_chapter(root, "99", backend="api")
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=False)
     assert r["status"] == "complete"
     assert calls == ["ch_99_02", "ch_99_03"], "ch_99_01 ja verified deve ser pulado; resto em ordem"
 
@@ -500,7 +500,7 @@ def test_run_chapter_calls_quality_gate(monkeypatch, tmp_path):
     monkeypatch.setattr(run_chapter.quality_gate, "check",
                         lambda r, chap: calls.append(chap) or
                         {"revise": [{"scene": "ch_99_01"}], "uncovered": [], "coverage": {}})
-    r = run_chapter.run_chapter(root, "99", backend="api")
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=False)
     assert r["status"] == "complete"
     assert calls == ["99"], "quality_gate.check deve rodar 1x ao fim do capitulo, com o filtro do capitulo"
 
@@ -523,7 +523,7 @@ def test_run_chapter_stops_on_failure(monkeypatch, tmp_path):
                         lambda r, scene, **kw:
                         {"status": "verify_failed" if scene == "ch_99_01" else "verified",
                          "scene": scene})
-    r = run_chapter.run_chapter(root, "99", backend="api")
+    r = run_chapter.run_chapter(root, "99", backend="api", batch=False)
     assert r["status"] == "stopped" and r["stopped_at"] == "ch_99_01"
 
 
@@ -1156,7 +1156,7 @@ def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
                         {"status": "verified", "scene": scene, "verified": True})
     # custo do capitulo cresce $2 por cena ja rodada (mock do ledger)
     monkeypatch.setattr(run_chapter, "_chapter_cost", lambda r, c: 2.0 * len(ran))
-    res = run_chapter.run_chapter(root, "99", backend="api", max_usd=3.0)
+    res = run_chapter.run_chapter(root, "99", backend="api", max_usd=3.0, batch=False)
     # antes 99_01: $0<3 roda; antes 99_02: $2<3 roda; antes 99_03: $4>=3 ABORTA
     assert res["status"] == "stopped_budget" and res["stopped_at"] == "ch_99_03"
     assert ran == ["ch_99_01", "ch_99_02"], "para antes da 3a cena (teto estourado)"
