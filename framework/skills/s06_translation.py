@@ -47,10 +47,10 @@ class TranslationSkill(Skill):
         if not scene:
             return {"status": "error", "problems": ["argumento 'scene' obrigatório"], "artifacts": []}
         import run_scene as rs
-        result = rs.run_scene(
+        result: dict = dict(rs.run_scene(
             str(project), scene, backend=backend, require_back=require_back,
             do_verify=do_verify, skip_kb_gate=skip_kb_gate,
-        )
+        ))
         # run_scene devolve status próprio (verified/planned/...); normaliza p/ o contrato da Skill
         result.setdefault("artifacts", [])
         return result
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Skill 06 — Tradução")
     ap.add_argument("project", help="Raiz do projeto")
     ap.add_argument("scene", help="ID da cena (ex: AREAD001)")
-    ap.add_argument("--backend", default="api", choices=["in-session", "api", "ollama"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--no-verify", action="store_true")
     ap.add_argument("--skip-kb-gate", action="store_true")
     ap.add_argument("--require-back", action="store_true")
