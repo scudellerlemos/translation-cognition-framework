@@ -2,6 +2,6 @@
   "_meta": {
     "description": "Mapeamento código de cor do falante ([14][XX], extraído deterministicamente do binário por extract.py) -> nome canônico do personagem (ver voice_cards.json).",
     "status": "vazio — nenhum código confirmado ainda. Preencher via pesquisa humana/jogo real (issue de continuação de #64); nunca inferir por heurística de texto.",
-    "fallback": "código presente mas ausente daqui cai no guess do LLM (build_plan_chapter._normalize_speaker), como já era o comportamento antes da #64."
+    "fallback": "código presente mas ausente daqui cai no guess do LLM (connector_io.normalize_speaker), como já era o comportamento antes da #64."
   }
 }
