@@ -22,6 +22,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+_RISK = frozenset({"low", "medium", "high", "critical"})
 
 # ADAPTAR: tokens estruturais do engine que devem sobreviver a traducao VERBATIM (ex.: timing,
 # markup de cor/negrito). Deixe vazio (regex que nunca casa) se o projeto nao tiver nenhum.
@@ -75,8 +76,12 @@ def main() -> None:
         if _tokens(src) != _tokens(tgt):
             errors.append(f"{off}: tokens estruturais divergentes "
                           f"(src={sorted(_tokens(src).elements())} tgt={sorted(_tokens(tgt).elements())})")
+        risk = t.get("risk_level")
+        if risk not in _RISK:
+            errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
+            risk = "low"
         line = {"offset": off, "text_source": src, "speaker": t.get("speaker", ""),
-               "risk_level": t.get("risk_level", "low"), "base_translation": tgt,
+               "risk_level": risk, "base_translation": tgt,
                "byte_budget": dialogs[off]["byte_budget"]}
         if "risk_notes" in t:
             line["risk_notes"] = t["risk_notes"]

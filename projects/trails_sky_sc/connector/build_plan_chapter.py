@@ -25,6 +25,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+_RISK = frozenset({"low", "medium", "high", "critical"})
 _FRAMEWORK_CONNECTORS = ROOT.parent.parent / "framework" / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
@@ -83,8 +84,12 @@ def main() -> None:
         if src_tokens != tgt_tokens:
             errors.append(f"{off}: tokens de formatacao divergentes "
                           f"(src={sorted(src_tokens.elements())} tgt={sorted(tgt_tokens.elements())})")
+        risk = t.get("risk_level")
+        if risk not in _RISK:
+            errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
+            risk = "low"
         line = {"offset": off, "text_source": src, "speaker": t.get("speaker", ""),
-               "risk_level": t.get("risk_level", "low"), "base_translation": tgt,
+               "risk_level": risk, "base_translation": tgt,
                "byte_budget": dialogs[off]["byte_budget"]}
         if "risk_notes" in t:
             line["risk_notes"] = t["risk_notes"]
