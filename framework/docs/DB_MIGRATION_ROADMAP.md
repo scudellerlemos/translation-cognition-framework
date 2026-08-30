@@ -136,8 +136,8 @@ A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Q
 
 A migração de DADO está completa; ligar a busca semântica é **operacional**, não migração. O projeto
 alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 já migrado pra dentro dele:
-125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` é o POC de Ollama (LLM
-local), não embeddings.
+125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` está **descontinuado**
+(ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
 
 1. **Instalar a stack** (fora da CI, pesada): `pip install -r requirements-ml.txt`
    (`sentence-transformers` + `sqlite-vec` + `flashrank`; ~700 MB–1,5 GB com torch + modelo MiniLM).
