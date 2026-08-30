@@ -26,7 +26,73 @@
       "canônicas"
     ],
     "universal": false,
-    "summary": "- **Bracer Guild → \"Guilda dos Bracers\"** (PROPOSTO, não confirmado pelo usuário): mantém \"Bracer\" como termo técnico do universo (função/profissão, não traduzível 1:1 — \"mercenário licenciado\" foi descartado por perder o peso de termo próprio do mundo) e traduz só a estrutura \"Guild → Guilda\".",
+    "summary": "- **Bracer Guild → \"Guilda dos Bracers\"** (CONFIRMADO pelo usuário em 2026-08-23): mantém \"Bracer\" como termo técnico do universo (função/profissão, não traduzível 1:1 — \"mercenário licenciado\" foi descartado por perder o peso de termo próprio do mundo) e traduz só a estrutura \"Guild → Guilda\".",
+    "reveal": null
+  },
+  {
+    "title": "Cobertura de vocabulário — Arts/Crafts e UI (2026-08-23)",
+    "tags": [
+      "cobertura",
+      "vocabulário",
+      "arts",
+      "crafts",
+      "2026"
+    ],
+    "universal": false,
+    "summary": "- **Arts/Crafts/S-Crafts/habilidades reativas** (226 termos, `manter_original` / `Mecânica`): descobertos em `pac/steam/table_en.pac -> table_en/t_skill.tbl`. Nomes de habilidade seguem a mesma regra dos termos de mecânica já estabelecidos (Quartz, Orbment, Sepith, Mira, Art) — são",
+    "reveal": null
+  },
+  {
+    "title": "`system_line_convention: \"none\"` (2026-08-23)",
+    "tags": [
+      "system_line_convention",
+      "none",
+      "2026"
+    ],
+    "universal": false,
+    "summary": "- Testada a heurística `all_caps` (usada em `utawarerumono`) contra o corpus real de `dialogs.csv` (41.834 linhas): 24 linhas totalmente maiúsculas, mas a maioria é diálogo gritado/dramático (falso positivo — ex. \"LET! ME! GOOOOO!\", \"JUST ANSWER THE QUESTION!\").",
+    "reveal": null
+  },
+  {
+    "title": "Tratamento de spoiler (correção 2026-08-23)",
+    "tags": [
+      "tratamento",
+      "spoiler",
+      "correção",
+      "2026"
+    ],
+    "universal": true,
+    "summary": "- Abordagem anterior (não pesquisar reveals além da fronteira do corpus \"porque é uma demo\") foi **corrigida pelo usuário**: o framework já tem mecanismo próprio para lidar com spoiler (`spoiler_ledger.json` + `context_pack.select_spoiler_guards()` + `spoiler_check.py`, mesmo padrão",
+    "reveal": null
+  },
+  {
+    "title": "Correção da métrica de byte_budget + backend de execução (2026-08-24)",
+    "tags": [
+      "correção",
+      "métrica",
+      "byte_budget",
+      "backend",
+      "execução",
+      "2026"
+    ],
+    "universal": true,
+    "summary": "- **Bug de raiz corrigido no framework** (não no projeto): a cena `mp0010_01` reportou 308/447 linhas `soft_failed` por estouro de `byte_budget`. Causa real: `framework/runtime/model.py` usava a forma TRANSLITERADA (sem acento) como métrica de orçamento em todo o pipeline, incondicionalmente — corre",
+    "reveal": null
+  },
+  {
+    "title": "Fechamento das 65 linhas em overflow + patch do Steam no meio do processo (2026-08-26)",
+    "tags": [
+      "fechamento",
+      "linhas",
+      "overflow",
+      "patch",
+      "steam",
+      "meio",
+      "processo",
+      "2026"
+    ],
+    "universal": false,
+    "summary": "- **65 linhas residuais em overflow após a escalação automática de `run_scene.py`** (3 tiers de tolerância já reduziram 301→145→65). Investigação read-only achou duas causas distintas: 56/65 (86%) eram falso-negativo por bug de off-by-one na reserva do byte de terminador (corrigido no",
     "reveal": null
   }
 ]
