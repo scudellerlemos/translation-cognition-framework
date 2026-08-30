@@ -226,6 +226,10 @@ def check(root, scene) -> dict:
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     import argparse
     ap = argparse.ArgumentParser(description="Gate de cobertura de KB (pre-traducao).")
     ap.add_argument("project")

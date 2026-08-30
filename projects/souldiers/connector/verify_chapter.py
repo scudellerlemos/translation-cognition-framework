@@ -64,6 +64,10 @@ def _data_dir(root: Path) -> Path:
 
 
 def main() -> None:
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <scene>  (ex.: EUDER_PRESENTATION)")
 
