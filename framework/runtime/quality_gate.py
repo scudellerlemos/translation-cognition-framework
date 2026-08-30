@@ -100,6 +100,10 @@ def export_revise(revise, csv_path):
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     ap = argparse.ArgumentParser(description="Piso de qualidade observavel (verdicts de back-translation).")
     ap.add_argument("project")
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")

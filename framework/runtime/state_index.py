@@ -432,6 +432,10 @@ def _check_sync(root: Path) -> None:
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     if "--check-sync" in sys.argv:
         flags = [a for a in sys.argv[1:] if not a.startswith("--")]
         root = Path(flags[0]) if flags else Path(".")
