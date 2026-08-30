@@ -37,9 +37,9 @@ import state_index  # noqa: E402
 REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
 SCENE = "ch_12_01"           # cena leve, sem dependencia de traducao
-# PROJECT (instancia real) so e usado por baixo (integracao ponta-a-ponta real +
-# guard de governanca, ambos leitura ou round-trip idempotente do proprio conector).
-# O fixture `built` acima usa uma COPIA em tmp_path — nunca escreve na instancia real.
+# PROJECT (instancia real) so e usado por baixo pra LEITURA (guard de governanca) e como
+# origem da copia do fixture `integ_project` (#96) -- a integracao real roda so na copia,
+# nunca na instancia real. O fixture `built` acima ja usa uma COPIA em tmp_path.
 
 
 def _norm_accents(s: str) -> str:
@@ -1885,22 +1885,34 @@ def _first_translated_scenes(n=5):
 _INTEG_SCENES = _first_translated_scenes(5)
 
 
+@pytest.fixture(scope="module")
+def integ_project(tmp_path_factory):
+    """Copia utawarerumono pra tmp: build_plan_chapter/verify_chapter (subprocess) escrevem
+    translation_plan/pack/warnings em disco e nao podem mutar os artefatos reais versionados
+    de projects/utawarerumono (#96)."""
+    if not (PROJECT / "project.json").is_file():
+        pytest.skip("projeto utawarerumono nao disponivel")
+    project = tmp_path_factory.mktemp("utawarerumono_integ")
+    shutil.copytree(PROJECT, project, dirs_exist_ok=True)
+    return project
+
+
 @pytest.mark.parametrize("scene", _INTEG_SCENES or ["<sem-projeto>"])
-def test_integration_roundtrip_real_scene(scene):
+def test_integration_roundtrip_real_scene(scene, integ_project):
     """INTEGRACAO (nao-mock): exercita o CONECTOR REAL — build_plan_chapter + verify_chapter — nas 5
     PRIMEIRAS cenas ja traduzidas e confere o round-trip byte-identico via VERIFY_STATUS. Cobre o que os
     testes unitarios nao pegam: o pipeline conector ponta-a-ponta + reinsert/reextract. Roda OFFLINE (a
     traducao ja existe; sem API). Skip so se projeto/conector/cena/BIN ausentes."""
     import json as _json
-    pj = PROJECT / "project.json"
+    pj = integ_project / "project.json"
     if scene == "<sem-projeto>" or not pj.is_file():
         pytest.skip("projeto utawarerumono nao disponivel")
     cfg = _json.loads(pj.read_text(encoding="utf-8"))
-    src_bin = PROJECT / cfg.get("connector", {}).get("source_binary", "")
+    src_bin = integ_project / cfg.get("connector", {}).get("source_binary", "")
     if src_bin and not src_bin.is_file():
         pytest.skip(f"binario do conector nao disponivel: {src_bin.name}")
-    bp = connector_mgr._connector_script(PROJECT, cfg, "build_plan_script", "build_plan_chapter.py")
-    vf = connector_mgr._connector_script(PROJECT, cfg, "verify_script", "verify_chapter.py")
+    bp = connector_mgr._connector_script(integ_project, cfg, "build_plan_script", "build_plan_chapter.py")
+    vf = connector_mgr._connector_script(integ_project, cfg, "verify_script", "verify_chapter.py")
     if not (bp.is_file() and vf.is_file()):
         pytest.skip("conector nao disponivel")
     # reusa run_scene._run (stdin=DEVNULL + encoding robusto) — evita WinError 50 do subprocess sob captura
