@@ -8,7 +8,7 @@
 #   connector-souldiers : contrato round-trip do conector Souldiers
 #   connector-skeleton  : contrato do template de conector
 #   connector-io        : utilitários compartilhados entre conectores (framework/connectors/*.py)
-#   merge-gate          : aprovação manual (environment production) antes do merge em main
+#   merge-gate          : aprovação manual (environment Production) antes do merge em main
 name: Tests
 
 on:
@@ -46,7 +46,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
-        run: mypy --follow-imports=silent framework/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py framework/runtime/model.py framework/runtime/run_scene.py framework/runtime/run_chapter.py framework/runtime/run_game.py framework/runtime/back_translate.py framework/runtime/llm_client.py framework/skills/registry.py framework/skills/s00_extraction.py framework/skills/s06_translation.py framework/skills/s07_qa.py framework/skills/s08_reinsertion.py framework/skills/skill_base.py
+        # Lista de arquivos vive só em mypy.ini ([mypy] files=) — evita divergir do que roda localmente.
+        run: mypy --follow-imports=silent
 
   # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
@@ -70,10 +71,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Run framework tests with coverage (90%)
+        # Escopo (runtime/validation/db/skills/cli.py) vive só em setup.cfg ([coverage:run] source=)
+        # pra não divergir do que roda localmente.
         run: |
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
-            -v --tb=short --cov=framework/runtime --cov=framework/validation --cov=framework/db \
-            --cov=framework/skills --cov=framework/cli.py --cov-report=term-missing --cov-fail-under=90
+            -v --tb=short --cov --cov-report=term-missing --cov-fail-under=90
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
@@ -162,8 +164,8 @@ jobs:
             -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
 
   # Gate de aprovação manual antes do merge em main. "Require pull request reviews" do GitHub
-  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Reaproveita o mesmo
-  # mecanismo de environment protection do sync-prd.yml (permite auto-aprovação, mas fica
+  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Usa o mesmo mecanismo de
+  # environment protection do publish-release (release.yml) (permite auto-aprovação, mas fica
   # registrado quem/quando). needs: encadeia os jobs deste arquivo — se algum falhar, o gate
   # nunca fica disponível pra aprovar. Só roda em PR (não em push direto pra main).
   merge-gate:
@@ -171,6 +173,6 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
     runs-on: ubuntu-latest
-    environment: production
+    environment: Production
     steps:
       - run: echo "Merge aprovado manualmente."

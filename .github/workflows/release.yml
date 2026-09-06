@@ -1,0 +1,57 @@
+# Release — dispara quando uma tag vX.Y.Z é empurrada. Confere que VERSION e
+# CHANGELOG.md batem com a tag (oráculo, ADR 0011) e cria a GitHub Release neste
+# mesmo repo. `publish-release` fica atrás do mesmo approval gate do merge-gate:
+# Settings -> Environments -> Production.
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  validate-release:
+    name: Valida VERSION e CHANGELOG.md contra a tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Confere VERSION == tag e extrai a seção do CHANGELOG
+        run: |
+          set -e
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(cat VERSION)"
+          if [ "$tag" != "$version" ]; then
+            echo "ERRO: VERSION ($version) diverge da tag (v$tag). Atualize VERSION antes de taguear."
+            exit 1
+          fi
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "ERRO: CHANGELOG.md nao tem secao '## [$version]'. Renomeie a secao"
+            echo "'## [Nao versionado]' para '## [$version] - $(date -u +%Y-%m-%d)' antes de taguear."
+            exit 1
+          fi
+          awk "/^## \[$version\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > release_notes.md
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-notes
+          path: release_notes.md
+
+  publish-release:
+    name: Publica GitHub Release (gated)
+    needs: validate-release
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-notes
+
+      - name: Cria a release neste repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          gh release create "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" \
+            --title "${GITHUB_REF_NAME}" --notes-file release_notes.md

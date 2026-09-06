@@ -1,0 +1,63 @@
+# ADR 0012 — Esteira em repo único: `main` governada, release por tag, poda de branches
+
+**Status:** aceito · **Data:** 2026-09-06
+
+## Contexto
+
+Este repositório (`translation-cognition-framework`) sempre foi tratado, na cabeça do projeto,
+como "HML" — um par com um segundo repositório `prd-translation-cognition-framework` ("PRD"),
+alimentado por `sync-prd.yml`: a cada push em `main`, um snapshot curado (allowlist/denylist de
+arquivo) era squash-commitado no PRD, escondendo `.claude/`, `CLAUDE.md`, as ADRs e os dirs de POC
+(`translation_local`/`translation_software`) de quem visitasse o link público do portfólio.
+
+Ao revisar essa separação, confirmou-se (`gh repo view`) que **este repo já é público**
+(`visibility: PUBLIC`). Isso muda o cálculo: a curadoria do PRD nunca escondeu nada que já não
+estivesse acessível publicamente neste repo — o ganho real era só estético (não mostrar tooling
+interno no link do portfólio), não segurança. O conteúdo genuinamente sensível (dump de diálogo de
+jogo comercial: `dialogs.csv`, `translation_plan*.json`, `translation_memory.jsonl` etc.) nunca
+dependeu da separação de repo — sempre ficou de fora via `.gitignore`, e continua assim.
+
+Decisão do projeto: não vale manter 2 repos, 1 secret cross-repo (`PRD_REPO_TOKEN`) e 1 job de
+drift-check só por preferência estética de curadoria. Consolidar em 1 repo só.
+
+## Decisão
+
+- **1 repo só.** `sync-prd.yml` é removido; o repo `prd-translation-cognition-framework` fica órfão
+  (arquivamento é limpeza manual futura, fora desta ADR).
+- **`main` é a única branch governada.** Branch protection (PR obrigatório, status checks de
+  `quality.yml`/`test.yml`, sem push direto/force-push) + `environment: Production` (approval
+  manual) — mesmo gate que já existia para o `merge-gate`. Branches de feature continuam livres,
+  sem gate, sem approval — é o espaço de trabalho.
+- **`environment: Production` passa a exigir branch/tag correspondente** (`deployment_branch_policy`
+  restrito a protected branches + tags `v*.*.*`) — hoje está `null` (qualquer ref pode disparar um
+  job gated), o que não faz sentido pra um ambiente chamado "Production".
+- **Release imutável por tag** (`release.yml`, novo): `git tag vX.Y.Z` dispara validação de que
+  `VERSION` bate com a tag e `CHANGELOG.md` tem a seção da versão, depois cria uma GitHub Release
+  neste mesmo repo (job gated por `environment: Production`, mesmo padrão do `merge-gate`). A
+  validação VERSION/CHANGELOG é um **oráculo** no vocabulário da ADR 0011 (fato objetivo sobre o
+  estado do repo, não um parâmetro ajustável).
+- **Poda semanal de branches** (`branch-hygiene.yml`, novo): cron semanal remove branches já
+  mergeadas em `main` além das 50 mais recentes (ordenadas por atividade), nunca toca branch não
+  integrada. Primeira execução em modo dry-run antes de habilitar remoção real.
+
+Esta ADR cobre a camada de **topologia de repo/branch/release**. A camada de **gates de
+CI/qualidade** continua descrita pela ADR 0011 (`0011-ci-gate-governance-oraculo-vs-knob.md`,
+status `proposto`) e roda igual em qualquer branch via `quality.yml`/`test.yml` — as duas ADRs
+descrevem a mesma esteira, em camadas diferentes.
+
+## Consequências
+
+- (+) Uma fonte de verdade só: sem sync cross-repo, sem secret cross-repo, sem job de drift-check
+  allow/deny pra manter.
+- (+) `main` passa a ser protegida de fato (branch protection real), não só "gate de aprovação
+  dentro do workflow" — fecha o gap concreto do `deployment_branch_policy: null`.
+- (+) Release vira um evento rastreável (tag + GitHub Release), não um número em `VERSION` mantido
+  só de memória.
+- (−) O link público do portfólio passa a mostrar `.claude/`, `CLAUDE.md`, ADRs internas e dirs de
+  POC — aceito conscientemente (sem ganho de segurança em escondê-los, já que o repo é público de
+  qualquer forma).
+- (−) Poda automática de branch é uma ação destrutiva rodando sem revisão a cada semana — mitigado
+  por dry-run obrigatório na primeira execução e por só tocar branches já mergeadas (nunca
+  trabalho não integrado).
+- Fora de escopo (decidir na implementação): arquivamento efetivo do repo PRD; remoção do secret
+  `PRD_REPO_TOKEN`/variável `PRD_REPO` (ação manual em Settings, não versionada).
