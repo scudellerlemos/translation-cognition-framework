@@ -433,7 +433,7 @@ def _check_sync(root: Path) -> None:
 
 def main():
     try:                                              # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     except Exception:
         pass
     if "--check-sync" in sys.argv:
