@@ -51,6 +51,9 @@ jobs:
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
   # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
   # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
+  # --cov aponta só p/ os pacotes que este job testa: framework/connectors/ tem gate proprio
+  # (job "Connector shared utilities", piso 75%) -- medir aqui tambem so puniria os 90% com
+  # codigo que este job nunca executa (so importado de passagem por model.py/split_scenes.py).
   # Paralelizado pela matriz de versões de Python (2 runners).
   coverage:
     name: Coverage — runtime + db + skills + validation (py${{ matrix.python-version }})
@@ -68,7 +71,8 @@ jobs:
       - name: Run framework tests with coverage (90%)
         run: |
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
-            -v --tb=short --cov=framework --cov-report=term-missing --cov-fail-under=90
+            -v --tb=short --cov=framework/runtime --cov=framework/validation --cov=framework/db \
+            --cov=framework/skills --cov=framework/cli.py --cov-report=term-missing --cov-fail-under=90
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
