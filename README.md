@@ -249,6 +249,24 @@ Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual e
 
 ---
 
+## Stack técnica
+
+| Camada | Ferramenta | Uso |
+|---|---|---|
+| Linguagem | Python 3.11+ | todo o framework, sem web framework/ORM |
+| Persistência | SQLite (`framework/db/`) | store versionado (TM, glossário, voice cards) |
+| LLM | `anthropic` SDK + `httpx` | única chamada de rede do pipeline (Cognition) |
+| Testes | pytest + pytest-cov, Hypothesis | suíte + round-trip sintético dos conectores |
+| Qualidade | ruff, mypy, bandit, pip-audit, pre-commit | lint, types, segurança, supply chain |
+| RAG opcional | `sentence-transformers` + `sqlite-vec` (`requirements-ml.txt`) | TM semântica; sem instalar, cai em fallback `[]` |
+| KB opcional | `pdfplumber`, `python-docx` (`requirements-kb.txt`) | fontes de conhecimento em PDF/.docx |
+| KB local opcional | Ollama | reconciliação de KB sem custo de API (usado no Souldiers) |
+
+> Regra: nada opcional entra na CI nem é requerido pelo runtime determinístico — sem instalar, o
+> framework degrada com fallback testado, nunca quebra.
+
+---
+
 ## Estrutura do repositório
 
 ```
