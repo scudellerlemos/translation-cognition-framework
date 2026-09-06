@@ -22,7 +22,8 @@ jobs:
           mkdir -p snapshot/.github/workflows
           cp -r framework snapshot/
           # projects/*/connector: só código de engenharia reversa + metadados, nunca
-          # artifacts/output/manual_tests/profile (dado de jogo/cliente).
+          # artifacts/output/profile (dado de jogo/cliente). translation_local/translation_software
+          # ficam HML-only de propósito (POC sem conector, fora do escopo do portfólio publicado).
           for proj in projects/*/; do
             name=$(basename "$proj")
             if [ -d "${proj}connector" ]; then
@@ -30,13 +31,96 @@ jobs:
               cp -r "${proj}connector" "snapshot/projects/${name}/"
               [ -f "${proj}project.json" ] && cp "${proj}project.json" "snapshot/projects/${name}/"
               [ -f "${proj}README.md" ] && cp "${proj}README.md" "snapshot/projects/${name}/"
+              [ -f "${proj}ROADMAP.md" ] && cp "${proj}ROADMAP.md" "snapshot/projects/${name}/"
+              [ -f "${proj}ROADMAP_history.md" ] && cp "${proj}ROADMAP_history.md" "snapshot/projects/${name}/"
             fi
           done
-          cp README.md CHANGELOG.md VERSION pyproject.toml setup.cfg mypy.ini \
+          cp README.md CHANGELOG.md ROADMAP.md VERSION pyproject.toml setup.cfg mypy.ini \
              .pre-commit-config.yaml .gitattributes .gitignore snapshot/
           cp requirements-dev.txt requirements-ml.txt requirements-kb.txt snapshot/
           cp .github/workflows/test.yml .github/workflows/quality.yml \
              .github/workflows/api-smoke.yml snapshot/.github/workflows/
+          cp .github/dependabot.yml snapshot/.github/
+      - name: Verificar que a allowlist cobre tudo (drift check)
+        # Achado de revisão: arquivo novo fora da allowlist sumia do PRD em silêncio (nem builda,
+        # nem avisa). Fecha o buraco: todo arquivo rastreado no HML tem que casar com `allow`
+        # (vai pro PRD) OU `deny` (fica HML-only de propósito, listado aqui). Sobrou algo que não
+        # bate com nenhum dos dois -> falha o job e lista os paths, forçando classificação explícita.
+        run: |
+          set -e
+          allow=(
+            'framework/*'
+            'projects/breath_of_fire_4/connector/*'
+            'projects/breath_of_fire_4/project.json'
+            'projects/breath_of_fire_4/README.md'
+            'projects/breath_of_fire_4/ROADMAP.md'
+            'projects/souldiers/connector/*'
+            'projects/souldiers/project.json'
+            'projects/souldiers/README.md'
+            'projects/trails_sky_sc/connector/*'
+            'projects/trails_sky_sc/project.json'
+            'projects/trails_sky_sc/README.md'
+            'projects/utawarerumono/connector/*'
+            'projects/utawarerumono/project.json'
+            'projects/utawarerumono/README.md'
+            'projects/utawarerumono/ROADMAP_history.md'
+            'README.md'
+            'CHANGELOG.md'
+            'ROADMAP.md'
+            'VERSION'
+            'pyproject.toml'
+            'setup.cfg'
+            'mypy.ini'
+            '.pre-commit-config.yaml'
+            '.gitattributes'
+            '.gitignore'
+            'requirements-dev.txt'
+            'requirements-ml.txt'
+            'requirements-kb.txt'
+            '.github/workflows/test.yml'
+            '.github/workflows/quality.yml'
+            '.github/workflows/api-smoke.yml'
+            '.github/dependabot.yml'
+          )
+          deny=(
+            '.claude/*'
+            'CLAUDE.md'
+            '.env.example'
+            '.github/workflows/sync-prd.yml'
+            '.github/workflows/README.md'
+            'projects/breath_of_fire_4/artifacts/*'
+            'projects/breath_of_fire_4/output/*'
+            'projects/breath_of_fire_4/profile/*'
+            'projects/breath_of_fire_4/.env.example'
+            'projects/souldiers/artifacts/*'
+            'projects/souldiers/output/*'
+            'projects/souldiers/profile/*'
+            'projects/trails_sky_sc/artifacts/*'
+            'projects/trails_sky_sc/output/*'
+            'projects/trails_sky_sc/profile/*'
+            'projects/utawarerumono/artifacts/*'
+            'projects/utawarerumono/output/*'
+            'projects/utawarerumono/profile/*'
+            'projects/translation_local/*'
+            'projects/translation_software/*'
+          )
+          unclassified=()
+          while IFS= read -r f; do
+            matched=0
+            for p in "${allow[@]}" "${deny[@]}"; do
+              case "$f" in
+                $p) matched=1; break ;;
+              esac
+            done
+            [ "$matched" = 0 ] && unclassified+=("$f")
+          done < <(git ls-files)
+          if [ "${#unclassified[@]}" -gt 0 ]; then
+            echo "ERRO: arquivo(s) rastreado(s) no HML sem classificacao na allowlist/denylist deste workflow:"
+            printf '  %s\n' "${unclassified[@]}"
+            echo "Classifique cada um: adicione ao array 'allow' (vai pro PRD) ou 'deny' (fica HML-only)."
+            exit 1
+          fi
+          echo "OK: todo arquivo rastreado esta classificado (allow ou deny)."
       - name: Upload snapshot artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
