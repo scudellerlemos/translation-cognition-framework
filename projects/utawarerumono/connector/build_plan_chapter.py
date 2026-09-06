@@ -21,8 +21,14 @@ import json
 import sys
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (RISK_LEVELS compartilhado entre conectores)
+
 ROOT = Path(__file__).resolve().parent.parent
-_RISK = frozenset({"low", "medium", "high", "critical"})
+_RISK = connector_io.RISK_LEVELS
 TOKEN = chr(92) + "n"
 INTERJ_PREFIX = ("interjeicao_",)   # interjeicao localizavel: nao pode ser identica ao source
 

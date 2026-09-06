@@ -65,7 +65,8 @@ def write_extraction_log(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-_SYSTEM_RX = re.compile(r"narrador|narrator|sistema|system|tutorial|instruc", re.I)
+_SYSTEM_RX = re.compile(r"\b(?:narrador|narrator|sistema|system|tutorial|instruc\w*)\b", re.I)
+RISK_LEVELS = frozenset({"low", "medium", "high", "critical"})
 
 
 def normalize_speaker(sp: str, canonical: frozenset) -> str:

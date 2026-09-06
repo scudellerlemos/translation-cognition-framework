@@ -71,3 +71,25 @@ def test_write_extraction_log_creates_parent_and_writes_text(tmp_path):
     out = tmp_path / "artifacts" / "extraction_log.md"
     cio.write_extraction_log(out, "# Log\n\nOK\n")
     assert out.read_text(encoding="utf-8") == "# Log\n\nOK\n"
+
+
+def test_normalize_speaker_matches_canonical_case_insensitive():
+    assert cio.normalize_speaker("Ryu", frozenset({"Ryu", "Nina"})) == "Ryu"
+    assert cio.normalize_speaker("ryu", frozenset({"Ryu", "Nina"})) == "Ryu"
+
+
+def test_normalize_speaker_maps_system_words_as_whole_tokens():
+    assert cio.normalize_speaker("System", frozenset()) == "system"
+    assert cio.normalize_speaker("Narrator", frozenset()) == "system"
+    assert cio.normalize_speaker("Instructor", frozenset()) == "system"
+
+
+def test_normalize_speaker_does_not_match_system_words_as_substring():
+    # achado do code review: regex sem word-boundary classificava qualquer nome que
+    # CONTIVESSE "system"/"narrator"/etc. como falante de sistema (ex.: "Ecosystem Guardian").
+    assert cio.normalize_speaker("Ecosystem Guardian", frozenset()) == "npc"
+    assert cio.normalize_speaker("Narratorial Kin", frozenset()) == "npc"
+
+
+def test_normalize_speaker_unknown_for_empty():
+    assert cio.normalize_speaker("", frozenset()) == "unknown"

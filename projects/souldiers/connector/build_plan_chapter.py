@@ -32,7 +32,7 @@ if str(_FRAMEWORK_CONNECTORS) not in sys.path:
 import connector_io  # noqa: E402  (normalize_speaker compartilhado entre conectores)
 
 ROOT = Path(__file__).resolve().parent.parent
-_RISK = frozenset({"low", "medium", "high", "critical"})
+_RISK = connector_io.RISK_LEVELS
 
 _TIMING_RX = re.compile(r"_\d+_")
 _TAG_RX = re.compile(r"<[^>]+>")
