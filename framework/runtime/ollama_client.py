@@ -6,14 +6,8 @@ Backend plugável para model.py. Requer Ollama rodando em OLLAMA_HOST
 Configuração via env:
   OLLAMA_HOST         URL base do Ollama  (default: http://localhost:11434)
   OLLAMA_MODEL        Modelo padrão       (default: qwen2.5:14b)
-  OLLAMA_NUM_CTX      Janela de contexto  (default: 12288 — cobre doutrina+pack fixo (~3,4k tok) +
-                       1 lote de OLLAMA_BATCH_LINES linhas + saída, com folga)
-  OLLAMA_BATCH_LINES  Linhas por chamada  (default: 40 — model.py._ollama_translate traduz a cena em
-                       lotes, não numa chamada só; existe pra caber a janela de contexto acima na VRAM
-                       de placas de 8 GB sem estourar pra CPU (medido: RX 6650 XT, ver ADR 0005))
-
-Hardware alvo: AMD Radeon RX 6650 XT (8 GB VRAM, RDNA2, ROCm no Windows).
-Velocidade esperada: ~10–15 tok/s com Qwen2.5-14B (partial GPU offload).
+  OLLAMA_NUM_CTX      Janela de contexto  (default: 12288 — folga acima do consumo típico de
+                       kb_build_ollama.py; ver ADR 0005 para o histórico de medição em RX 6650 XT)
 """
 from __future__ import annotations
 
@@ -28,12 +22,9 @@ OLLAMA_MODEL_DEFAULT: str = os.environ.get("OLLAMA_MODEL", "qwen2.5:14b")
 # cena real (glossario+TM+decisoes+linhas) facilmente passa de 8-10k tokens e o excesso e TRUNCADO
 # em silencio (sem erro), virando linhas "sem traducao" no build_plan. Qwen2.5-14B suporta 32k nativo.
 OLLAMA_NUM_CTX: int = int(os.environ.get("OLLAMA_NUM_CTX", "12288"))
-OLLAMA_BATCH_LINES: int = int(os.environ.get("OLLAMA_BATCH_LINES", "40"))
 
-_TIMEOUT = 1800  # segundos — MEDIDO em 2026-08-24 na RX 6650 XT: geracao ~6,2 tok/s com ~57% offload
-# GPU (14B em placa de 8 GB); 1 lote de 40 linhas so de geracao ja passa de 600s. 30 min da folga p/
-# lote + eventual retry sem matar uma chamada que so estava lenta (perderia o lote inteiro — translate()
-# so grava no fim). Nao cobre timeout de rede real (Ollama fora do ar) — isso falha rapido, nao em 30 min.
+_TIMEOUT = 1800  # segundos — folga generosa p/ chamada lenta sem matar (ver ADR 0005 p/ medicoes
+# historicas de velocidade). Nao cobre timeout de rede real (Ollama fora do ar) — isso falha rapido.
 
 
 def health_check() -> bool:

@@ -85,6 +85,7 @@ flowchart TB
 | **Round-trip** | Extrair→reinserir regenera os bytes? (oráculo de correção) | `connector/verify_chapter.py` · `test_roundtrip.py` |
 | **Back-translation** | A linha de alto risco preserva o sentido? | `model.back_translate` (Opus) → `quality_gate.py` |
 | **Lint** | pt-BR natural? cabe no balão? | `naturalness_lint.py` · `quality_review` (largura) |
+| **Schema** | `risk_level` é um enum válido? `risk_notes` presente quando ≥ medium? | `validate.py` (report-only, roda 1x/capítulo via `run_chapter._audit_schema`) |
 
 > **O round-trip prova bytes, não qualidade.** Ele garante que a tradução **reentra** no jogo sem
 > corromper o arquivo — não que ela está *boa*. A qualidade vem dos outros gates + da revisão humana (§5).

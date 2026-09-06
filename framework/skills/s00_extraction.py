@@ -56,7 +56,7 @@ class ExtractionSkill(Skill):
             problems.append(f"extract_script não encontrado: {extract}")
         return problems
 
-    def run(self, project: Path, *, dat_dir: str = None, **kwargs) -> dict:
+    def run(self, project: Path, *, dat_dir: str | None = None, **kwargs) -> dict:
         """Roda o connector/extract.py.
 
         Args:

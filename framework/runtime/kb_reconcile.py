@@ -152,6 +152,10 @@ def _print_check(r: dict):
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     import argparse
     ap = argparse.ArgumentParser(
         description="Promove draft_ollama -> reconciled apos ratificacao humana (kb_ratified.csv).")

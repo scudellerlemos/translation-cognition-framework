@@ -19,14 +19,18 @@ Uso: python build_plan_chapter.py <scene>   ex.: python build_plan_chapter.py AR
 """
 import csv
 import json
-import re
 import sys
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (normalize_speaker compartilhado entre conectores)
+
 ROOT = Path(__file__).resolve().parent.parent
 PAGE_BREAK = "[02]"  # page break do BoF4 — estrutural (ritmo de leitura)
-
-_SYSTEM_RX = re.compile(r"narrador|narrator|sistema|system|tutorial|instruc", re.I)
+_RISK = frozenset({"low", "medium", "high", "critical"})
 
 
 def _load_known_speakers(root: Path) -> frozenset:
@@ -48,24 +52,6 @@ def _load_portrait_codes(root: Path) -> dict:
     return {k: v for k, v in data.items() if not k.startswith("_")}
 
 
-def _normalize_speaker(sp: str, canonical: frozenset) -> str:
-    """Mapeia labels livres do modelo para valores canônicos.
-
-    Valores aceitos: nome EN do personagem (de voice_cards), 'npc', 'system', 'unknown'.
-    """
-    if not sp:
-        return "unknown"
-    if sp in canonical:
-        return sp
-    sp_low = sp.lower()
-    for name in canonical:
-        if name.lower() == sp_low:
-            return name
-    if _SYSTEM_RX.search(sp):
-        return "system"
-    return "npc"
-
-
 def _resolve_speaker(code: str, llm_guess: str, portrait_codes: dict, canonical: frozenset) -> str:
     """speaker_code determinístico tem precedência sobre o guess do LLM.
 
@@ -74,7 +60,7 @@ def _resolve_speaker(code: str, llm_guess: str, portrait_codes: dict, canonical:
     """
     if code and code in portrait_codes:
         return portrait_codes[code]
-    return _normalize_speaker(llm_guess, canonical)
+    return connector_io.normalize_speaker(llm_guess, canonical)
 
 
 def load_dialogs(p: Path) -> tuple[dict, list]:
@@ -136,6 +122,11 @@ def main() -> None:
                 f"(src={PAGE_BREAK in src} tgt={PAGE_BREAK in tgt})"
             )
 
+        risk = t.get("risk_level")
+        if risk not in _RISK:
+            errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
+            risk = "low"
+
         line = {
             "offset": off,
             "text_source": src,
@@ -145,7 +136,7 @@ def main() -> None:
             ),
             "tone_register": t.get("tone_register", ""),
             "intent": t.get("intent", ""),
-            "risk_level": t.get("risk_level", "low"),
+            "risk_level": risk,
             "base_translation": tgt,
             "byte_budget": budget,
             "glossary_flags": t.get("glossary_flags", []),

@@ -109,6 +109,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
@@ -195,6 +199,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
@@ -285,6 +293,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
@@ -352,6 +364,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
@@ -450,6 +466,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
@@ -514,6 +534,10 @@ def main(project_json: Path, source_override: str | None = None):
 
 
 if __name__ == "__main__":
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)

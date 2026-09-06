@@ -45,12 +45,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
-        run: mypy framework/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py
+        run: mypy --follow-imports=silent framework/text_ids.py framework/runtime/config.py framework/runtime/paths.py framework/runtime/cost.py framework/runtime/context_pack.py framework/runtime/state_index.py framework/db/store.py framework/db/migrate_from_flat.py framework/db/export_to_flat.py framework/runtime/model.py framework/runtime/run_scene.py framework/runtime/run_chapter.py framework/runtime/run_game.py framework/runtime/back_translate.py framework/runtime/llm_client.py framework/skills/registry.py framework/skills/s00_extraction.py framework/skills/s06_translation.py framework/skills/s07_qa.py framework/skills/s08_reinsertion.py framework/skills/skill_base.py
 
   # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
   # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
   # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
+  # --cov aponta só p/ os pacotes que este job testa: framework/connectors/ tem gate proprio
+  # (job "Connector shared utilities", piso 75%) -- medir aqui tambem so puniria os 90% com
+  # codigo que este job nunca executa (so importado de passagem por model.py/split_scenes.py).
   # Paralelizado pela matriz de versões de Python (2 runners).
   coverage:
     name: Coverage — runtime + db + skills + validation (py${{ matrix.python-version }})
@@ -68,7 +71,8 @@ jobs:
       - name: Run framework tests with coverage (90%)
         run: |
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
-            -v --tb=short --cov=framework --cov-report=term-missing --cov-fail-under=90
+            -v --tb=short --cov=framework/runtime --cov=framework/validation --cov=framework/db \
+            --cov=framework/skills --cov=framework/cli.py --cov-report=term-missing --cov-fail-under=90
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.

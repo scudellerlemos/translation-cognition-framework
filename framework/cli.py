@@ -4,8 +4,7 @@ Ponto de entrada único para operações do pipeline. Substitui os 15+ scripts
 invocados manualmente por subcomandos organizados.
 
 Uso:
-  python framework/cli.py translate <project> <scene> [--backend ollama|api]
-  python framework/cli.py bench     <project> <scene> [--model qwen2.5:14b]
+  python framework/cli.py translate <project> <scene> [--backend api|in-session]
   python framework/cli.py db migrate <project_root> <dest_db>
   python framework/cli.py db summary <db_path> <project_id>
   python framework/cli.py ollama status
@@ -40,19 +39,6 @@ def cmd_translate(args):
     )
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0 if result.get("status") in ("verified", "planned") else 1
-
-
-# ── bench ──────────────────────────────────────────────────────────────────────
-
-def cmd_bench(args):
-    from bench_local import run_bench
-    from ollama_client import OLLAMA_MODEL_DEFAULT
-    run_bench(
-        Path(args.project), args.scene,
-        model=getattr(args, "model", None) or OLLAMA_MODEL_DEFAULT,
-        out_path=Path(args.out) if getattr(args, "out", None) else None,
-    )
-    return 0
 
 
 # ── db ─────────────────────────────────────────────────────────────────────────
@@ -173,19 +159,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_tr.add_argument("project", help="Diretório do projeto")
     p_tr.add_argument("scene", help="ID da cena (ex: AREAD001)")
     p_tr.add_argument("--backend", default="api",
-                      choices=["in-session", "api", "ollama"])
+                      choices=["in-session", "api"])
     p_tr.add_argument("--no-verify", action="store_true")
     p_tr.add_argument("--skip-kb-gate", action="store_true")
     p_tr.add_argument("--require-back", action="store_true")
     p_tr.set_defaults(func=cmd_translate)
-
-    # bench
-    p_bench = sub.add_parser("bench", help="Benchmark Ollama vs baseline Sonnet")
-    p_bench.add_argument("project", help="Raiz do projeto BoF4 (com aprovados)")
-    p_bench.add_argument("scene", help="Cena a benchmarkar")
-    p_bench.add_argument("--model", default=None)
-    p_bench.add_argument("--out", default=None, help="Salva resultado JSON")
-    p_bench.set_defaults(func=cmd_bench)
 
     # db
     p_db = sub.add_parser("db", help="Operações no banco SQLite")
@@ -234,7 +212,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_skr.add_argument("--scene", default=None, help="cena (skills 06)")
     p_skr.add_argument("--chapter", default=None, help="capítulo (skill 07)")
     p_skr.add_argument("--dat-dir", dest="dat_dir", default=None, help="dir dos DATs (skills 00/08)")
-    p_skr.add_argument("--backend", default=None, choices=["in-session", "api", "ollama"])
+    p_skr.add_argument("--backend", default=None, choices=["in-session", "api"])
     p_skr.set_defaults(func=cmd_skill_run)
 
     # ollama
@@ -252,6 +230,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     ap = build_parser()
     args = ap.parse_args()
     sys.exit(args.func(args) or 0)

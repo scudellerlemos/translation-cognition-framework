@@ -142,16 +142,6 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, 
         out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
-    if backend == "ollama":
-        from ollama_client import OLLAMA_MODEL_DEFAULT  # import preguicoso — sem rede em import
-        m = model or OLLAMA_MODEL_DEFAULT
-        data, usage, meta = _ollama_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
-        data["_meta"] = {"model_id": m, "backend": "ollama",
-                         "doctrine_hash": pack.get("doctrine_hash", "")}
-        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        log_api_call(root, scene, "translate", f"ollama:{m}", usage)
-        return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
-                "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
     raise ValueError(f"backend desconhecido: {backend}")
 
 
@@ -220,7 +210,7 @@ def _translit_len(t) -> int:
     return len("".join(c for c in s if not unicodedata.combining(c)))
 
 
-def _budget_len(t, pc: dict) -> int:
+def _budget_len(t, pc: dict | None) -> int:
     """Bytes UTF-8 REAIS quando o conector NAO translitera na gravacao (target_charset_supported
     ESTRITAMENTE True); senao a forma TRANSLITERADA — o que bof4/uta gravam de fato. Fonte unica
     da metrica de orcamento (espelha o que verify_chapter.py realmente confere)."""
@@ -241,8 +231,7 @@ def _over_budget(t, budget, pc, tol) -> bool:
 
 
 def _budget_note(over: list, pc: dict) -> str:
-    """Texto de correcao de retry p/ offsets acima do budget — compartilhado por _api_translate e
-    _ollama_translate (mesma redacao, so muda a lista de offsets)."""
+    """Texto de correcao de retry p/ offsets acima do budget — usado por _api_translate."""
     metric = ("bytes UTF-8 reais — cada acento custa byte extra, NAO e removido na gravacao"
               if (pc or {}).get("target_charset_supported") is True
               else "TRANSLITERADO, sem acentos")
@@ -387,7 +376,7 @@ def _select_reuse(pack, *, enabled):
         return {}
     tok = context_pack.TOKEN
     scene_id_here = pack.get("scene_id", "")
-    by_key = {}
+    by_key: dict[str, dict] = {}
     for e in pack.get("tm_exact", []):
         if context_pack.scene_id_of(str(e.get("from_scene", ""))) == scene_id_here:
             continue                                  # nunca reusar a propria cena
@@ -457,7 +446,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort nem adaptive thinking (400) -> omitir.
     no_effort = _no_effort_model(model)
     thinking = {"type": "adaptive"} if (think and not no_effort) else {"type": "disabled"}
-    out_cfg = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
+    out_cfg: dict = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
     if not no_effort:
         out_cfg["effort"] = effort
 
@@ -531,131 +520,10 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
                      f"remover os `<>`: {bad_struct[:30]}\n")
         if over:
             note += _budget_note(over, pc)
+    assert last is not None  # _MAX_TRIES > 0 -> loop roda >=1x -> last sempre atribuido aqui
     raise RuntimeError(f"_api_translate: cobertura/paridade incompletas apos {_MAX_TRIES} tentativas: "
                        f"faltam={last['missing']} paridade={last['bad_parity']} "
                        f"formatacao={last['bad_structural']}")
-
-
-# ------------------------------- OLLAMA backend -------------------------------
-# Backend local (zero custo de API). Usa a mesma prompt do API backend (doutrina + pack)
-# e o mesmo schema de saida (_TRANSLATION_SCHEMA). Sem cache; EM LOTES de OLLAMA_BATCH_LINES
-# (ollama_client.py) — diferente do api, que manda a cena inteira numa chamada: a janela de
-# contexto local (OLLAMA_NUM_CTX) e pequena p/ caber numa GPU de consumidor, entao a cena precisa
-# ser fatiada p/ nao truncar em silencio (ver ADR 0005). Retry por lote em cobertura/paridade/budget
-# (ate _MAX_TRIES tentativas por lote).
-
-def _ollama_translate(root, scene, pack, model, *, budget_tolerance=None):
-    """Traduz uma cena usando Ollama local. Interface identica ao _api_translate (incl. retry por
-    estouro de byte_budget — paridade com o backend api, ver _over_budget/_budget_note).
-
-    Backend usado em producao pelo projeto translation_local (POC hardware local, custo zero).
-    Testado via mock de ollama_client._chat (ver test_model.py) — nunca exige servidor Ollama vivo.
-
-    Retorna (data, usage, meta). usage = {in, out, cache_read:0, cache_write:0}.
-    Custo = $0 (local). Sem tiering; traduz em lotes (OLLAMA_BATCH_LINES), nao a cena inteira.
-    """
-    from ollama_client import OLLAMA_BATCH_LINES
-    from ollama_client import _chat as _oc_chat
-    from ollama_client import _text_of as _oc_text
-    from ollama_client import _usage_of as _oc_usage
-
-    tol = budget_tolerance or BUDGET_TOLERANCE
-    pc = pack.get("project_constraints", {})
-    struct_rx = _structural_rx(pc)
-    reuse = _select_reuse(pack, enabled=True)
-    reuse.update(_label_passthrough(pack))
-    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
-    meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
-    if not novel:
-        return {"lines": dict(reuse)}, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}, meta
-
-    tok = context_pack.TOKEN
-    budgets = {r["offset"]: r.get("byte_budget") for r in novel}
-    srcmap = {r["offset"]: r.get("source", "") for r in novel}
-
-    system_text = _carta_text()
-    merged = {}
-    usage = {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
-
-    def _translate_chunk(chunk_lines):
-        # UMA chamada = UM lote (nao a cena inteira): a janela de contexto local (OLLAMA_NUM_CTX) e
-        # bem menor que a de uma API de nuvem — mandar tudo de uma vez trunca em silencio (ver ADR 0005).
-        offsets = [r["offset"] for r in chunk_lines]
-        offset_set = set(offsets)
-        novel_by_off = {r["offset"]: r for r in chunk_lines}
-        target, note = chunk_lines, ""
-        for attempt in range(_MAX_TRIES):
-            red = dict(pack); red["lines"] = target; red["n_lines"] = len(target)
-            user_text = context_pack.render_prompt(red, carta="") + _NL_RULE + note
-            messages = [
-                {"role": "system", "content": system_text},
-                {"role": "user",   "content": user_text},
-            ]
-            try:
-                resp = _oc_chat(model, messages, fmt=_TRANSLATION_SCHEMA)
-            except RuntimeError as e:
-                raise RuntimeError(f"_ollama_translate (tentativa {attempt+1}): {e}") from e
-
-            u = _oc_usage(resp)
-            _add_usage(usage, u)
-
-            try:
-                data = _to_map(json.loads(_oc_text(resp)))
-            except Exception:
-                if attempt < _MAX_TRIES - 1:
-                    note = "\n\n## CORRECAO: resposta anterior era JSON invalido. Tente novamente.\n"
-                    continue
-                break
-
-            for off, v in data.get("lines", {}).items():
-                if off not in offset_set or not isinstance(v, dict):
-                    continue
-                v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
-                if _is_blowup(srcmap.get(off, ""), v["t"]):
-                    continue
-                if off not in merged:
-                    merged[off] = v
-                else:
-                    old = merged[off]
-                    old_par = (old.get("t", "").count(tok) == srcmap.get(off, "").count(tok)) and \
-                        _struct_ok(struct_rx, srcmap.get(off, ""), old.get("t", ""))
-                    new_par = (v.get("t", "").count(tok) == srcmap.get(off, "").count(tok)) and \
-                        _struct_ok(struct_rx, srcmap.get(off, ""), v["t"])
-                    if new_par and not old_par:
-                        merged[off] = v                  # prioriza paridade correta
-                    elif new_par == old_par and _over_budget(old.get("t", ""), budgets.get(off), pc, tol) and \
-                            _budget_len(v.get("t", ""), pc) < _budget_len(old.get("t", ""), pc):
-                        merged[off] = v                  # mesma paridade: prefere a mais curta (budget)
-
-            # so deste lote (merged e compartilhado entre lotes -- nao varrer offsets de outros lotes)
-            missing = [o for o in offsets if o not in merged]
-            bad_par = [o for o in offsets
-                       if o in merged and merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
-            bad_struct = [o for o in offsets
-                          if o in merged and not _struct_ok(struct_rx, srcmap.get(o, ""), merged[o].get("t", ""))]
-            over = [(o, budgets[o], _budget_len(merged[o].get("t", ""), pc)) for o in offsets
-                    if o in merged and _over_budget(merged[o].get("t", ""), budgets.get(o), pc, tol)]
-            if not missing and not bad_par and not bad_struct and (not over or attempt == _MAX_TRIES - 1):
-                return
-
-            broken = set(missing) | set(bad_par) | set(bad_struct) | {o for o, _b, _c in over}
-            target = [novel_by_off[o] for o in offsets if o in broken]
-            note = "\n\n## CORRECAO NECESSARIA (traduza SO as linhas acima)\n"
-            if missing:
-                note += f"- Faltam: {missing[:30]}\n"
-            if bad_par:
-                note += f"- Token de quebra errado: {bad_par[:20]}\n"
-            if bad_struct:
-                note += (f"- Token de formatacao do engine perdido/trocado (preserve <C1>/<P2>/etc. "
-                         f"EXATOS, sem remover os `<>`): {bad_struct[:20]}\n")
-            if over:
-                note += _budget_note(over, pc)
-
-    for i in range(0, len(novel), OLLAMA_BATCH_LINES):
-        _translate_chunk(novel[i:i + OLLAMA_BATCH_LINES])
-
-    merged.update(reuse)
-    return {"lines": merged}, usage, meta
 
 
 # --------------------------- escalonamento CIRURGICO --------------------------
@@ -705,7 +573,7 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, q
                         backend: str = "api"):
     """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<scene_id>.json,
     preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting (e do quality_fix).
-    Reusa _api_translate/_ollama_translate sobre um pack reduzido (dedup ja vem OFF com
+    Reusa _api_translate sobre um pack reduzido (dedup ja vem OFF com
     budget_tolerance != None -> traduz fresco e mais curto). `backend` despacha igual translate()
     (default "api" preserva o comportamento de todo caller anterior). `quality_note` opcional anexa
     feedback de revisao da back-translation ao prompt (so suportado no backend api; quality_fix so
@@ -722,11 +590,7 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, q
     if not sub["lines"]:
         return {"status": DONE, "model": model or MODEL_TRANSLATE, "usage": None,
                 "n_lines": 0, "reused": 0, "novel": 0}
-    if backend == "ollama":
-        from ollama_client import OLLAMA_MODEL_DEFAULT  # import preguicoso — sem rede em import
-        m = model or OLLAMA_MODEL_DEFAULT
-        data, usage, meta = _ollama_translate(root, scene, sub, m, budget_tolerance=budget_tolerance)
-    elif backend == "api":
+    if backend == "api":
         m = model or MODEL_TRANSLATE
         data, usage, meta = _api_translate(root, scene, sub, m, budget_tolerance=budget_tolerance,
                                            quality_note=quality_note)
@@ -776,7 +640,7 @@ def _translate_params(pack, model, note=""):
     # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort (400) — igual ao _api_translate, OMITE o
     # effort nesses modelos. BUG MEDIDO (cap.15): o batch sempre mandava effort -> todo request do tier
     # cheap (Haiku) dava 400 -> as linhas single-line nunca voltavam (MISSING) -> coverage_failed.
-    out_cfg = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
+    out_cfg: dict = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
     if not _no_effort_model(model):
         out_cfg["effort"] = EFFORT_TRANSLATE
     params = {
@@ -898,6 +762,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
     {all_reused, written, coverage_failed, errored:<tipo>}. Cenas != (written|all_reused) ainda
     caem p/ o caminho interativo (run_scene). NAO roda build_plan/verify (isso e por-cena)."""
+    from typing import cast
+
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
     root = Path(root)
@@ -958,7 +824,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                     # custom_id 'scene__tier__chunk' — ^[a-zA-Z0-9_-]{1,64}$; split('__',1)[0] = scene
                     cid = f"{scene}__{tier}__{ci // _BATCH_CHUNK}"
                     req_model[cid] = tmodel
-                    reqs.append(Request(custom_id=cid, params=MessageCreateParamsNonStreaming(**params)))
+                    reqs.append(Request(custom_id=cid, params=cast(MessageCreateParamsNonStreaming, params)))
         if not reqs:
             break
         # SEGMENTACAO: nao submete tudo num batch so -- fatia em chunks de _TRANSLATE_SUBMIT_CHUNK
@@ -994,7 +860,7 @@ def main():
     ap = argparse.ArgumentParser(description="Interface de modelo do harness (translate).")
     ap.add_argument("project")
     ap.add_argument("scene")
-    ap.add_argument("--backend", default="api", choices=["in-session", "api", "ollama"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--model", default=None)
     a = ap.parse_args()
     r = translate(a.project, a.scene, backend=a.backend, model=a.model)

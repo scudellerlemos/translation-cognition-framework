@@ -155,6 +155,10 @@ def extract(project_root: Path, data_dir: Path) -> int:
 
 
 def main() -> None:
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     project_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
     data_dir_arg = sys.argv[2] if len(sys.argv) > 2 else None
     project_json = project_root / "project.json"

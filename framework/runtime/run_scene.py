@@ -26,6 +26,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import cast
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
@@ -153,7 +154,7 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
 
     Retorna (tr, early_return): se early_return não é None, run_scene() deve retorná-lo imediatamente.
     """
-    tr = None
+    tr: M.TranslateResult | dict | None = None
     if pretranslated:                                       # batch ja produziu o translations_<scene_id>.json
         pack = context_pack.write_pack(root, scene)
         outp = paths.translations(root, scene, scene_id)
@@ -172,8 +173,9 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
             return None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     if isinstance(tr, dict) and tr.get("reused"):
-        print(f"      dedup: {tr['reused']}/{tr['n_lines']} linha(s) reaproveitadas da TM "
-              f"(nao re-traduzidas; {tr.get('novel', 0)} novas ao modelo)")
+        tr_done = cast(M.TranslateDone, tr)
+        print(f"      dedup: {tr_done['reused']}/{tr_done['n_lines']} linha(s) reaproveitadas da TM "
+              f"(nao re-traduzidas; {tr_done.get('novel', 0)} novas ao modelo)")
     _checkpoint(root, scene, {"scene_id": scene_id, "n_lines": tr["n_lines"], "status": "packed"})
 
     # V2/V3: registra doctrine_hash e prompt_hash no checkpoint — computados direto das fontes
@@ -185,6 +187,7 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
         _checkpoint(root, scene, {"doctrine_hash": _cp_hash, "prompt_hash": _pr_hash})
 
     if tr["status"] == M.AWAITING:
+        tr = cast(M.TranslateAwaiting, tr)
         print("[2/6] AGUARDANDO traducao (caminho assinatura): responda o prompt limitado")
         print(f"      prompt : {tr['prompt']}")
         print(f"      saida  : {tr['expected_output']}")
@@ -213,7 +216,7 @@ def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str) -> None:
 
 
 def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,
-                  do_verify: bool, tr: dict) -> tuple:
+                  do_verify: bool, tr: M.TranslateResult | dict) -> tuple:
     """FASE 3/5: build_plan + verify com escalonamento de fitting.
 
     Re-traduz apenas as linhas acima do budget quando a verify falha por fitting (exit 3), escalando
@@ -224,11 +227,11 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     verify_script = _connector_script(root, cfg, "verify_script", "verify_chapter.py")
     _warn_if_connector_stale(root, scene, cfg)   # S3: integridade pre-execução
     # ESCALONAMENTO DE FITTING: budget 1.40 (natural) por padrao; se a verify falha por fitting
-    # (out-of-file/residuo) e o backend e AUTOMATIZAVEL (api ou ollama — ambos chamam modelo real,
-    # sem intervencao manual), re-traduz mais apertado (BUDGET_ESCALATION) e repete. in-session fica
+    # (out-of-file/residuo) e o backend e AUTOMATIZAVEL (api — chama modelo real, sem intervencao
+    # manual), re-traduz mais apertado (BUDGET_ESCALATION) e repete. in-session fica
     # de fora (depende de humano+Claude no chat p/ cada retighten). Cenas normais passam de primeira
     # (sem custo extra); so as apertadas escalam.
-    tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend in ("api", "ollama") else [])
+    tolerances = [None] + (list(M.BUDGET_ESCALATION) if backend == "api" else [])
     verified = None
     for ti, tol in enumerate(tolerances):
         if ti > 0:
@@ -237,7 +240,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
             # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
             # ESCALONAMENTO DE MODELO (so backend "api"): pareado por indice com BUDGET_ESCALATION —
             # tol=1.15 (folga maior) tenta o modelo barato; tol=1.0 (residuo que nem 1.15 resolveu,
-            # sinal real de dificuldade) escala pro caro. Ollama fica de fora (1 modelo local, sem tiering).
+            # sinal real de dificuldade) escala pro caro.
             model = (M.MODEL_ESCALATION[ti - 1]
                      if backend == "api" and ti - 1 < len(M.MODEL_ESCALATION) else None)
             try:
@@ -310,6 +313,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
     print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
+    bt: M.BackTranslateResult | dict
     try:
         bt = M.back_translate(root, scene, highs, backend=backend)
     except Exception as e:
@@ -319,6 +323,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
             _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
             return bt, {"status": "back_translation_failed", "scene": scene, "error": str(e)}
     if bt["status"] == M.AWAITING:
+        bt = cast(M.BackTranslateAwaiting, bt)
         msg = f"      AGUARDANDO back-translation: {bt['prompt']}"
         if require_back:
             print(msg + "  (--require-back: bloqueia)")
@@ -326,6 +331,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
             return bt, {"status": "awaiting_back_translation", "scene": scene}
         print(msg + "  (apenas reportado; use --require-back p/ bloquear)")
     elif bt["status"] == M.READY:
+        bt = cast(M.BackTranslateReady, bt)
         print(f"      back-translation presente: {bt['path']}")
     else:
         print(f"      back-translation: {bt.get('reviewed',0)} revisada(s)")
@@ -335,7 +341,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
               pretranslated=False, defer_back=False, rebuild_index=True, skip_connector_gate=False,
-              no_back=False, opts: RunSceneOptions = None) -> RunSceneResult:
+              no_back=False, opts: RunSceneOptions | None = None) -> RunSceneResult:
     if opts is not None:
         backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
         skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
@@ -449,7 +455,7 @@ def main():
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene", nargs="?", default=None)
-    ap.add_argument("--backend", default="api", choices=["in-session", "api", "ollama"])
+    ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--require-back", action="store_true",
                     help="bloqueia se a back-translation de alto risco faltar")
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")

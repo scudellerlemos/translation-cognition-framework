@@ -18,6 +18,7 @@ arquivo aprovado (approved_translations.csv). Na POC, a aprovação é o snapsho
 """
 import csv
 import json
+import sys
 from pathlib import Path
 
 ART = Path(__file__).resolve().parent.parent / "artifacts"
@@ -29,6 +30,10 @@ def tok_counts(s: str):
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     # source (offset -> byte_budget, text_source)
     src = {r["offset"]: (r["text_source"], int(r["byte_budget"]))
            for r in csv.DictReader((ART / "dialogs.csv").open(encoding="utf-8"))}

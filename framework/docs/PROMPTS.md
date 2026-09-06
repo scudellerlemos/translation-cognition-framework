@@ -133,3 +133,4 @@ produziria, com a vantagem de ser inspecionável e portável.
 
 Para os detalhes de implementação da camada de modelo: [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md).
 Para como o contexto é montado por cena: [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
+Para como o prompt é versionado e como se detecta drift de doutrina: `adr/0007-prompt-management-versioned-doctrine-no-external-tool.md`.

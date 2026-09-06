@@ -12,11 +12,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "connector"))
-from build_plan_chapter import (  # noqa: E402
-    _load_portrait_codes,
-    _normalize_speaker,
-    _resolve_speaker,
-)
+sys.path.insert(0, str(PROJECT_ROOT.parent.parent / "framework" / "connectors"))
+from build_plan_chapter import _load_portrait_codes, _resolve_speaker  # noqa: E402
+from connector_io import normalize_speaker as _normalize_speaker  # noqa: E402
 
 CANONICAL = frozenset({"Ryu", "Nina", "npc", "system", "unknown"})
 

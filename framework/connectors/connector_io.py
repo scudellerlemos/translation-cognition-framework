@@ -65,6 +65,27 @@ def write_extraction_log(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+_SYSTEM_RX = re.compile(r"narrador|narrator|sistema|system|tutorial|instruc", re.I)
+
+
+def normalize_speaker(sp: str, canonical: frozenset) -> str:
+    """Mapeia labels livres do modelo para valores canônicos.
+
+    Valores aceitos: nome EN do personagem (de voice_cards), 'npc', 'system', 'unknown'.
+    """
+    if not sp:
+        return "unknown"
+    if sp in canonical:
+        return sp
+    sp_low = sp.lower()
+    for name in canonical:
+        if name.lower() == sp_low:
+            return name
+    if _SYSTEM_RX.search(sp):
+        return "system"
+    return "npc"
+
+
 def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns: list[str]) -> re.Pattern:
     """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json). MESMA regex usada
     tanto no retry de traducao (framework/runtime/model.py, dentro do fitting loop) quanto no gate

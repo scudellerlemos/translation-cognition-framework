@@ -25,36 +25,23 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (normalize_speaker compartilhado entre conectores)
+
 ROOT = Path(__file__).resolve().parent.parent
+_RISK = frozenset({"low", "medium", "high", "critical"})
 
 _TIMING_RX = re.compile(r"_\d+_")
 _TAG_RX = re.compile(r"<[^>]+>")
-
-_SYSTEM_RX = re.compile(r"narrador|narrator|sistema|system|tutorial|instruc", re.I)
 
 
 def _load_known_speakers(root: Path) -> frozenset:
     vc = root / "artifacts" / "state" / "voice_cards.json"
     names = set(json.loads(vc.read_text(encoding="utf-8")).keys()) if vc.is_file() else set()
     return frozenset(names | {"npc", "system", "unknown"})
-
-
-def _normalize_speaker(sp: str, canonical: frozenset) -> str:
-    """Mapeia labels livres do modelo para valores canônicos.
-
-    Valores aceitos: nome EN do personagem (de voice_cards), 'npc', 'system', 'unknown'.
-    """
-    if not sp:
-        return "unknown"
-    if sp in canonical:
-        return sp
-    sp_low = sp.lower()
-    for name in canonical:
-        if name.lower() == sp_low:
-            return name
-    if _SYSTEM_RX.search(sp):
-        return "system"
-    return "npc"
 
 
 def load_dialogs(p: Path) -> tuple[dict, list]:
@@ -120,13 +107,18 @@ def main() -> None:
                 f"(src={sorted(_tokens(src).elements())} tgt={sorted(_tokens(tgt).elements())})"
             )
 
+        risk = t.get("risk_level")
+        if risk not in _RISK:
+            errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
+            risk = "low"
+
         line = {
             "offset": off,
             "text_source": src,
-            "speaker": _normalize_speaker(t.get("speaker", ""), canonical_speakers),
+            "speaker": connector_io.normalize_speaker(t.get("speaker", ""), canonical_speakers),
             "tone_register": t.get("tone_register", ""),
             "intent": t.get("intent", ""),
-            "risk_level": t.get("risk_level", "low"),
+            "risk_level": risk,
             "base_translation": tgt,
             "byte_budget": budget,
             "glossary_flags": t.get("glossary_flags", []),

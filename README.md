@@ -249,6 +249,13 @@ Os termos do projeto na primeira vez que você os encontra. Detalhe conceitual e
 
 ---
 
+## Stack técnica
+
+Linguagem: Python 3.11+. Detalhe completo (modelo/LLM, embedding, RAG, execução, persistência,
+opcionais) em [`framework/docs/STACK.md`](framework/docs/STACK.md).
+
+---
+
 ## Estrutura do repositório
 
 ```
