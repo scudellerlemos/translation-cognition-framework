@@ -22,6 +22,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+_RISK = frozenset({"low", "medium", "high", "critical"})
 TOKEN = chr(92) + "n"
 INTERJ_PREFIX = ("interjeicao_",)   # interjeicao localizavel: nao pode ser identica ao source
 
@@ -70,12 +71,16 @@ def main():
         tr = t.get("tone_register", "")
         if tr.startswith(INTERJ_PREFIX) and tgt.strip() == src.strip():
             errors.append(f"{off}: interjeicao identica ao source ('{src}') - localizar")
+        risk = t.get("risk_level")
+        if risk not in _RISK:
+            errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
+            risk = "low"
         line = {
             "offset": off, "text_source": src,
             "speaker": t.get("speaker", ""),
             "entities_present": [t["speaker"]] if t.get("speaker") not in ("", "rotulo") else [],
             "tone_register": tr, "intent": t.get("intent", ""),
-            "risk_level": t.get("risk_level", "low"),
+            "risk_level": risk,
             "base_translation": tgt, "byte_budget": budget,
             "glossary_flags": t.get("glossary_flags", []),
             "spoiler_flags": t.get("spoiler_flags", []),

@@ -225,29 +225,6 @@ def test_fitting_escalation_then_verified(env):
     assert r["status"] == "verified"
 
 
-def test_ollama_fitting_escalation_then_verified(env):
-    # paridade com api: backend="ollama" tambem entra no escalonamento de tolerâncias.
-    root, scene, st = env
-    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
-    r = rs.run_scene(root, scene, backend="ollama")
-    assert r["status"] == "verified"
-
-
-def test_retighten_passes_backend_to_retranslate_offsets(env):
-    root, scene, st = env
-    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
-    st["over"] = ["X:0:1"]
-    captured = {}
-
-    def spy(r, s, offsets, *, budget_tolerance, backend):
-        captured["backend"] = backend
-        return st["tr"]
-
-    st["retranslate"] = spy
-    r = rs.run_scene(root, scene, backend="ollama")
-    assert r["status"] == "verified" and captured["backend"] == "ollama"
-
-
 def test_retighten_escalates_model_by_tier(env):
     # backend "api": tier 1 (tol=1.15) usa o modelo barato; tier 2 (tol=1.0, residuo que nem 1.15
     # resolveu) escala pro caro — pareado por indice com M.MODEL_ESCALATION (nao suposicao a priori).
@@ -258,16 +235,6 @@ def test_retighten_escalates_model_by_tier(env):
     assert r["status"] == "verified"
     models = [c["model"] for c in st["retranslate_calls"]]
     assert models == [model.MODEL_ESCALATION[0], model.MODEL_ESCALATION[1]]
-
-
-def test_retighten_no_model_escalation_for_ollama(env):
-    # ollama tem 1 modelo local -> nenhum tiering (model sempre None, mesmo escalando tolerância).
-    root, scene, st = env
-    st["runs"] = [(0, ""), (3, "fitting"), (0, ""), (0, "")]
-    st["over"] = ["X:0:1"]
-    r = rs.run_scene(root, scene, backend="ollama")
-    assert r["status"] == "verified"
-    assert [c["model"] for c in st["retranslate_calls"]] == [None]
 
 
 def test_defer_back(env):

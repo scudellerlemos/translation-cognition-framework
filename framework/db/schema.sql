@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS scenes (
     n_high      INTEGER,
     verified    INTEGER DEFAULT 0,         -- 0/1 bool
     cost_usd    REAL DEFAULT 0.0,
-    backend     TEXT,                      -- api | ollama
+    backend     TEXT,                      -- api | in-session
     model_id    TEXT,
     created_at  REAL,
     updated_at  REAL,
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     scene_id    TEXT,
     kind        TEXT NOT NULL,             -- translate | back_translate | verify | embed
     model_id    TEXT,
-    backend     TEXT,                      -- api | ollama | local
+    backend     TEXT,                      -- api | in-session
     tokens_in   INTEGER DEFAULT 0,
     tokens_out  INTEGER DEFAULT 0,
     cost_usd    REAL DEFAULT 0.0,

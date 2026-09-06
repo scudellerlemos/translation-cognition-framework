@@ -11,8 +11,11 @@ Propriedades:
   - PARA NA 1ª FALHA: build_plan/verify/api falhou -> interrompe e reporta (nao mascara erro).
   - Determinista: descobre as cenas por glob de artifacts/scenes/ch_<cap>_*/dialogs.csv (ordem por scene_id).
   - Reusa run_scene + state_index; nada de logica de IA aqui.
+  - BATCH POR DEFAULT: backend=api roda em batch (50% off) a menos que --no-batch seja passado; se o
+    batch em SI falhar, aborta em vez de cair silenciosamente no interativo full-price (ver _batch_phase).
 
 Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--require-back] [--redo] [--no-verify]
+                            [--no-batch] [--allow-interactive-fallback]
       <cap> = "12" roda ch_12_01, ch_12_02, ... na ordem.
 """
 from __future__ import annotations
@@ -25,6 +28,9 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+_VALIDATION_DIR = _HERE.parent / "validation"
+if str(_VALIDATION_DIR) not in sys.path:
+    sys.path.insert(0, str(_VALIDATION_DIR))
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
@@ -36,6 +42,7 @@ import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao 
 import run_scene as RS  # noqa: E402
 import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao fim do cap.)
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
+import validate  # noqa: E402  (auditoria obrigatoria de schema dos artefatos, projeto inteiro)
 
 _OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
@@ -126,11 +133,15 @@ def _verified(root: Path, scene: str) -> bool:
     return st.get("status") in _DONE and st.get("verified") is True
 
 
-def _batch_phase(root, pending, *, skip_kb_gate):
+def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     """FASE 1 do modo batch: submete as cenas pendentes (que passam o KB-gate) num unico batch (50% off,
-    Carta cacheada compartilhada). Retorna {scene: status} do batch_translate. Cenas KB-bloqueadas ou
-    que falham cobertura caem p/ o caminho interativo na fase 2 (run_scene normal). Best-effort: se o
-    batch em si falhar (rede), retorna {} e tudo vira caminho interativo."""
+    Carta cacheada compartilhada). Retorna ({scene: status}, failed). Cenas KB-bloqueadas ou que falham
+    cobertura caem p/ o caminho interativo na fase 2 (run_scene normal) -- isso e normal, nao e falha.
+
+    Se o batch em SI falhar (bug/rede — ja aconteceu: Haiku rejeitando `effort` no batch derrubou
+    9/9 cenas pro interativo full-price sem ninguem perceber ate investigacao manual), o default e
+    ABORTAR em vez de cair silenciosamente no caminho caro -- mesma filosofia do teto de --max-usd
+    (nunca gastar surpresa). --allow-interactive-fallback destrava o comportamento antigo de propósito."""
     submit = []
     for s in pending:
         kb = kb_gate.check(root, s)
@@ -139,16 +150,21 @@ def _batch_phase(root, pending, *, skip_kb_gate):
             continue
         submit.append(s)
     if not submit:
-        return {}
+        return {}, False
     print(f"[batch] submetendo {len(submit)} cena(s) em 1 batch (50% off; pode levar minutos) ...")
     try:
         st = M.batch_translate(root, submit)
     except Exception as e:
-        print(f"[batch] falhou ({e}) -> caindo p/ caminho interativo em todas as cenas.")
-        return {}
+        if not allow_interactive_fallback:
+            print(f"[batch] FALHOU ({e}). Abortando ANTES de gastar full-price "
+                  f"(use --allow-interactive-fallback pra rodar mesmo assim no caminho caro).")
+            return {}, True
+        print(f"[batch] falhou ({e}) -> caindo p/ caminho interativo em todas as cenas "
+              f"(--allow-interactive-fallback ativo).")
+        return {}, False
     for s in submit:
         print(f"[batch] {s}: {st.get(s, '?')}")
-    return st
+    return st, False
 
 
 def _rebuild_index_phase(root):
@@ -188,8 +204,8 @@ def _chapter_cost(root, chap) -> float:
 
 
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False, batch=False, max_usd=None, scenes_glob=None,
-                skip_connector_gate=False, no_back=False):
+                skip_kb_gate=False, batch=True, max_usd=None, scenes_glob=None,
+                skip_connector_gate=False, no_back=False, allow_interactive_fallback=False):
     root = Path(root)
     # GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
     # depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
@@ -243,7 +259,11 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if batch and backend == "api":
         pending = [s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
         if pending:
-            batch_status = _batch_phase(root, pending, skip_kb_gate=skip_kb_gate)
+            batch_status, batch_failed = _batch_phase(
+                root, pending, skip_kb_gate=skip_kb_gate,
+                allow_interactive_fallback=allow_interactive_fallback)
+            if batch_failed:
+                return {"chapter": chap, "scenes": [], "status": "batch_failed"}
 
     results = []
     for scene in scenes:
@@ -306,12 +326,13 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
     _audit_spoiler(root)          # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
     _audit_quality(root, cost_chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
+    _audit_schema(root)           # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
 
 
-def _export_qa(root: Path, chap: str):
+def _export_qa(root: Path, chap: str | None):
     """OBRIGATORIO: ao fim do capitulo, disponibiliza o XLSX de revisao HUMANA no outbox — SEMPRE, mesmo
     que a IA nao tenha marcado nada (o piso de qualidade e o humano ler). Best-effort: nao derruba um
     capitulo ja traduzido se o export falhar (ex.: openpyxl ausente) — so avisa em alto e bom som."""
@@ -371,6 +392,24 @@ def _audit_quality(root: Path, chap: str | None):
         print("[quality-gate] OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura.")
 
 
+def _audit_schema(root: Path):
+    """OBRIGATORIO: valida os artefatos do projeto inteiro contra schema/enum (validate.py) --
+    sem isso, um risk_level invalido/ausente so aparecia se alguem rodasse validate.py a mao.
+    Report-only (nunca bloqueia o capitulo, mesma filosofia do spoiler-audit/quality-gate)."""
+    try:
+        issues = validate.validate_project(root)
+    except Exception as e:
+        print(f"[schema-audit obrigatorio] AVISO: falha ao auditar ({e}).")
+        return
+    errs = [i for i in issues if i[0] == "ERROR"]
+    if errs:
+        print(f"[schema-audit] ALERTA: {len(errs)} erro(s) de schema -- rode validate.py p/ detalhe.")
+        for sev, art, msg in errs[:10]:
+            print(f"  {sev} [{art}] {msg}")
+    else:
+        print("[schema-audit] OK: nenhum erro de schema.")
+
+
 def _print_cost(root: Path, chap: str | None = None):
     """Resumo de gasto REAL (api_ledger.jsonl) ao fim do capitulo — protege o saldo (toda chamada
     cobrada conta, inclusive cenas que falharam/escalaram, nao so as que o metrics.jsonl registrou).
@@ -394,8 +433,12 @@ def main():
     ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
     ap.add_argument("--skip-connector-gate", action="store_true",
                     help="ignora o gate de completude de conector (nao recomendado)")
-    ap.add_argument("--batch", action="store_true",
-                    help="traduz todas as cenas pendentes num unico batch (50%% off, assincrono)")
+    ap.add_argument("--no-batch", action="store_true",
+                    help="desliga o modo batch (default: ligado -- 50%% off, assincrono); "
+                         "use p/ debug interativo com feedback imediato por cena")
+    ap.add_argument("--allow-interactive-fallback", action="store_true",
+                    help="se o batch em si falhar (bug/rede), cai no caminho interativo full-price "
+                         "em vez de abortar (default: aborta, p/ nao gastar caro sem avisar)")
     ap.add_argument("--max-usd", type=float, default=None,
                     help="teto de gasto: aborta antes da proxima cena se o custo do capitulo passar deste "
                          "valor (cenas verified seguem salvas; rode de novo p/ continuar)")
@@ -406,9 +449,10 @@ def main():
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
     a = ap.parse_args()
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
-                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate, batch=a.batch,
-                    max_usd=a.max_usd, scenes_glob=a.scenes_glob,
-                    skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
+                    redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
+                    batch=not a.no_batch, max_usd=a.max_usd, scenes_glob=a.scenes_glob,
+                    skip_connector_gate=a.skip_connector_gate, no_back=a.no_back,
+                    allow_interactive_fallback=a.allow_interactive_fallback)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 
 

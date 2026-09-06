@@ -111,6 +111,10 @@ def resolve_source(root: Path, conn: dict, cli_override: str | None) -> tuple[Pa
 
 
 def main(project_json: Path, source_override: str | None = None):
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     conn = cfg["connector"]
     root = project_json.parent

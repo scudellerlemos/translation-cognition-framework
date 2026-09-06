@@ -58,7 +58,7 @@ def _all_scenes(root: Path, chapters: list[str], scenes_glob: str | None) -> lis
 
 def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
             skip_kb_gate=False, require_back=False, skip_connector_gate=False,
-            no_back=False, started_at=None) -> dict:
+            no_back=False, started_at=None, allow_interactive_fallback=False) -> dict:
     root = Path(root)
     chapters = _discover_chapters(root)
     units = chapters if chapters else ["full"]           # rotulo sintetico do modo flat
@@ -67,7 +67,7 @@ def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
           f"{len(all_scenes)} cena(s) no total"
           + (f" | teto GLOBAL: ${max_usd:.2f}" if max_usd is not None else ""))
 
-    results = []
+    results: list[dict] = []
     for unit in units:
         if max_usd is not None:
             spent = cost_report.report(root).get("total_usd", 0.0)
@@ -83,7 +83,8 @@ def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
         r = run_chapter.run_chapter(root, chap_label, backend=backend, batch=batch,
                                     max_usd=remaining, scenes_glob=chap_glob,
                                     skip_kb_gate=skip_kb_gate, require_back=require_back,
-                                    skip_connector_gate=skip_connector_gate, no_back=no_back)
+                                    skip_connector_gate=skip_connector_gate, no_back=no_back,
+                                    allow_interactive_fallback=allow_interactive_fallback)
         results.append(r)
         elapsed = (time.time() - started_at) if started_at is not None else None
         prog = progress_report.report(root, all_scenes, elapsed_s=elapsed)
@@ -114,11 +115,15 @@ def main():
     ap.add_argument("--require-back", action="store_true")
     ap.add_argument("--no-back", action="store_true",
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
+    ap.add_argument("--allow-interactive-fallback", action="store_true",
+                    help="se o batch em si falhar (bug/rede), cai no caminho interativo full-price "
+                         "em vez de abortar (default: aborta, p/ nao gastar caro sem avisar)")
     a = ap.parse_args()
     r = run_game(a.project, backend=a.backend, batch=a.batch, max_usd=a.max_usd,
                 scenes_glob=a.scenes_glob, skip_kb_gate=a.skip_kb_gate,
                 require_back=a.require_back, skip_connector_gate=a.skip_connector_gate,
-                no_back=a.no_back, started_at=time.time())
+                no_back=a.no_back, started_at=time.time(),
+                allow_interactive_fallback=a.allow_interactive_fallback)
     sys.exit(0 if r["status"] == "complete" else 1)
 
 

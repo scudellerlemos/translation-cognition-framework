@@ -43,6 +43,14 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     def E(art, msg): issues.append(("ERROR", art, msg))
     def W(art, msg): issues.append(("WARN", art, msg))
 
+    def _check_risk(label, lines):
+        for l in lines:
+            off = l.get("offset", "?")
+            if l.get("risk_level") not in RISK:
+                E(label, f"{off}: risk_level inválido '{l.get('risk_level')}'")
+            if l.get("risk_level") in ("medium", "high", "critical") and not (l.get("risk_notes") or "").strip():
+                E(label, f"{off}: risk_notes obrigatório para risk_level ≥ medium")
+
     pj = root / "project.json"
     if not pj.is_file():
         return [("ERROR", "project.json", f"manifesto não encontrado em {root}")]
@@ -117,7 +125,7 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                 if s.count("\\n") != tgt.count("\\n"):
                     W("approved_translations.csv", f"{i}: nº de quebras '\\n' difere do source")
 
-    # --- translation_plan.json
+    # --- translation_plan.json (legado sem sufixo — poc_pipeline antigo)
     if has("translation_plan.json"):
         plan = _json(art / "translation_plan.json")
         lines = plan.get("lines", [])
@@ -128,10 +136,7 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
             for k in req:
                 if k not in l:
                     E("translation_plan.json", f"{off}: campo obrigatório ausente '{k}'")
-            if l.get("risk_level") not in RISK:
-                E("translation_plan.json", f"{off}: risk_level inválido '{l.get('risk_level')}'")
-            if l.get("risk_level") in ("medium", "high", "critical") and not (l.get("risk_notes") or "").strip():
-                E("translation_plan.json", f"{off}: risk_notes obrigatório para risk_level ≥ medium")
+        _check_risk("translation_plan.json", lines)
         if plan.get("total_lines") != len(lines):
             E("translation_plan.json", f"total_lines {plan.get('total_lines')} != nº de linhas {len(lines)}")
         if dialog_ids and len(lines) != len(dialog_ids):
@@ -139,6 +144,22 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
         cc = sum(1 for l in lines if l.get("risk_level") == "critical")
         if plan.get("critical_lines") != cc:
             E("translation_plan.json", f"critical_lines {plan.get('critical_lines')} != contagem real {cc}")
+
+    # --- translation_plan_<scene_id>.json por cena (schema real de produção; ver paths.py).
+    # Campos obrigatórios reduzidos ao subconjunto universal entre conectores (o resto varia:
+    # nem todo conector emite tone_register/intent/glossary_flags/entities_present).
+    for pf in sorted((art / "scenes").glob("*/translation_plan_*.json")):
+        label = f"scenes/{pf.parent.name}/{pf.name}"
+        plan = _json(pf)
+        lines = plan.get("lines", [])
+        for l in lines:
+            off = l.get("offset", "?")
+            for k in ("offset", "text_source", "speaker", "risk_level", "base_translation"):
+                if k not in l:
+                    E(label, f"{off}: campo obrigatório ausente '{k}'")
+        _check_risk(label, lines)
+        if plan.get("total_lines") != len(lines):
+            E(label, f"total_lines {plan.get('total_lines')} != nº de linhas {len(lines)}")
 
     # --- entities.csv
     if has("entities.csv"):

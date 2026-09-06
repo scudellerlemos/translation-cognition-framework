@@ -243,6 +243,8 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
     Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra). Cena sem
     candidato -> 'no_high' (sem request). Retorna {scene: status} em
     {reviewed, no_high, errored, parse_failed, timeout}. NAO bloqueia o pipeline (o run_scene ja seguiu)."""
+    from typing import cast
+
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
     root = Path(root)
@@ -260,7 +262,7 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
             continue
         highs[scene] = hl
         reqs.append(Request(custom_id=scene,
-                            params=MessageCreateParamsNonStreaming(**_back_params(hl, m))))
+                            params=cast(MessageCreateParamsNonStreaming, _back_params(hl, m))))
     if not reqs:
         return status
     client = _client()

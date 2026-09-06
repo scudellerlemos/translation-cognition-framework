@@ -314,6 +314,10 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
 
 # ----------------------------------------------------------------------------- main
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     path, only = parse_args()
     src = resolve_source(path)
     OUT = ROOT / "output" / src.name
