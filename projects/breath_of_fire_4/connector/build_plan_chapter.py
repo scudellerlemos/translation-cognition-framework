@@ -30,7 +30,7 @@ import connector_io  # noqa: E402  (normalize_speaker compartilhado entre conect
 
 ROOT = Path(__file__).resolve().parent.parent
 PAGE_BREAK = "[02]"  # page break do BoF4 — estrutural (ritmo de leitura)
-_RISK = frozenset({"low", "medium", "high", "critical"})
+_RISK = connector_io.RISK_LEVELS
 
 
 def _load_known_speakers(root: Path) -> frozenset:

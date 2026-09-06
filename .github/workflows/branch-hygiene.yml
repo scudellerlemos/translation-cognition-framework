@@ -1,0 +1,51 @@
+# Branch hygiene — poda branches ja mergeadas em main alem das 50 mais recentes.
+# Nunca toca branch com trabalho ainda nao integrado (so entra na lista quem ja e
+# ancestral de main). Roda em dry-run por padrao (input default true; o cron cai no
+# mesmo default via `inputs.dry_run || 'true'`) — so trocar depois de conferir a
+# primeira execucao manual.
+name: Branch hygiene
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Listar sem apagar (recomendado na primeira execucao)'
+        type: boolean
+        default: true
+  schedule:
+    - cron: '0 5 * * 0'   # domingo 05:00 UTC
+
+jobs:
+  prune-merged-branches:
+    name: Poda branches mergeadas alem das 50 mais recentes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Lista branches mergeadas, ordena por atividade recente, poda alem de 50
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'true' }}
+        run: |
+          set -e
+          mapfile -t merged < <(
+            git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/remotes/origin \
+              | sed 's#^origin/##' \
+              | grep -vx 'main' \
+              | while read -r b; do
+                  git merge-base --is-ancestor "origin/$b" origin/main 2>/dev/null && echo "$b"
+                done
+          )
+          old=("${merged[@]:50}")
+          echo "Branches mergeadas alem das 50 mais recentes: ${#old[@]}"
+          for b in "${old[@]}"; do
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "[dry-run] apagaria: $b"
+            else
+              echo "apagando: $b"
+              git push origin --delete "$b"
+            fi
+          done

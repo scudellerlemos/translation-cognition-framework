@@ -134,6 +134,31 @@ def test_scenes_glob_discovery(env):
     assert r["status"] == "complete" and len(r["scenes"]) == 2
 
 
+def test_batch_failure_aborts_by_default(env, monkeypatch):
+    # ADR 0009: batch em SI falhando (nao a cena) deve abortar o capitulo, nunca cair
+    # silenciosamente pro caminho interativo full-price sem avisar (era o bug original).
+    root, _ = env
+
+    def boom(r, scenes):
+        raise RuntimeError("batch API rejected request")
+    monkeypatch.setattr(rc.M, "batch_translate", boom)
+    r = rc.run_chapter(root, "12", backend="api", batch=True)
+    assert r["status"] == "batch_failed"
+    assert r["scenes"] == []
+
+
+def test_batch_failure_falls_back_with_flag(env, monkeypatch):
+    # --allow-interactive-fallback destrava o comportamento antigo de proposito.
+    root, _ = env
+
+    def boom(r, scenes):
+        raise RuntimeError("batch API rejected request")
+    monkeypatch.setattr(rc.M, "batch_translate", boom)
+    r = rc.run_chapter(root, "12", backend="api", batch=True, allow_interactive_fallback=True)
+    assert r["status"] == "complete"
+    assert all(x["status"] == "verified" for x in r["scenes"])
+
+
 def test_chapter_arg_traversal_blocked(env):
     root, _ = env
     with pytest.raises(ValueError, match="separador de path"):

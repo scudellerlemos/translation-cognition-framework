@@ -21,8 +21,13 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+_FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (RISK_LEVELS compartilhado entre conectores)
+
 ROOT = Path(__file__).resolve().parent.parent
-_RISK = frozenset({"low", "medium", "high", "critical"})
+_RISK = connector_io.RISK_LEVELS
 
 # ADAPTAR: tokens estruturais do engine que devem sobreviver a traducao VERBATIM (ex.: timing,
 # markup de cor/negrito). Deixe vazio (regex que nunca casa) se o projeto nao tiver nenhum.

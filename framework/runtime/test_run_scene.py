@@ -361,3 +361,25 @@ def test_check_stale_reports(tmp_path, monkeypatch, capsys):
     rsp.unlink()
     rs._check_stale(str(tmp_path))
     assert "nenhuma cena" in capsys.readouterr().out.lower()
+
+
+def test_audit_schema_ok_when_no_errors(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(rs.validate, "validate_project", lambda r: [])
+    rs._audit_schema(tmp_path)
+    assert "OK" in capsys.readouterr().out
+
+
+def test_audit_schema_reports_errors(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(rs.validate, "validate_project",
+                        lambda r: [("ERROR", "art1", "msg1"), ("WARN", "art2", "msg2")])
+    rs._audit_schema(tmp_path)
+    out = capsys.readouterr().out
+    assert "ALERTA" in out and "1 erro" in out and "art1" in out and "art2" not in out
+
+
+def test_audit_schema_never_raises_on_failure(tmp_path, monkeypatch, capsys):
+    def boom(r):
+        raise RuntimeError("kaboom")
+    monkeypatch.setattr(rs.validate, "validate_project", boom)
+    rs._audit_schema(tmp_path)  # não deve levantar
+    assert "AVISO" in capsys.readouterr().out
