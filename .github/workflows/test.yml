@@ -164,8 +164,8 @@ jobs:
             -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
 
   # Gate de aprovação manual antes do merge em main. "Require pull request reviews" do GitHub
-  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Reaproveita o mesmo
-  # mecanismo de environment protection do sync-prd.yml (permite auto-aprovação, mas fica
+  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Usa o mesmo mecanismo de
+  # environment protection do publish-release (release.yml) (permite auto-aprovação, mas fica
   # registrado quem/quando). needs: encadeia os jobs deste arquivo — se algum falhar, o gate
   # nunca fica disponível pra aprovar. Só roda em PR (não em push direto pra main).
   merge-gate:
