@@ -18,7 +18,12 @@ import re
 import sys
 from pathlib import Path
 
-RISK = {"low", "medium", "high", "critical"}
+_FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+import connector_io  # noqa: E402  (RISK_LEVELS compartilhado entre conectores)
+
+RISK = connector_io.RISK_LEVELS
 HANDLING = {"manter_original", "traduzir", "traduzir_parcial"}
 SPOILER = {"none", "moderate", "major", "critical"}
 CATEGORY = {"Personagem", "Local", "Facção", "Item", "Conceito", "Título", "Criatura",

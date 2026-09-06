@@ -83,9 +83,9 @@ pip install sentence-transformers sqlite-vec flashrank
 python framework/cli.py db index projects/translation_software/translation_software.db bof4
 ```
 
-### Traduzir com backend local
+### Traduzir
 ```bash
-python framework/cli.py translate projects/translation_software AREAD001 --backend ollama
+python framework/cli.py translate projects/translation_software AREAD001 --backend api
 ```
 
 ---
