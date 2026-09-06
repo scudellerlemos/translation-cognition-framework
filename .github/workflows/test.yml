@@ -71,10 +71,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Run framework tests with coverage (90%)
+        # Escopo (runtime/validation/db/skills/cli.py) vive só em setup.cfg ([coverage:run] source=)
+        # pra não divergir do que roda localmente.
         run: |
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
-            -v --tb=short --cov=framework/runtime --cov=framework/validation --cov=framework/db \
-            --cov=framework/skills --cov=framework/cli.py --cov-report=term-missing --cov-fail-under=90
+            -v --tb=short --cov --cov-report=term-missing --cov-fail-under=90
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.

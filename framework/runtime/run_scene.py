@@ -31,12 +31,16 @@ from typing import cast
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+_VALIDATION_DIR = _HERE.parent / "validation"
+if str(_VALIDATION_DIR) not in sys.path:
+    sys.path.insert(0, str(_VALIDATION_DIR))
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import state_index  # noqa: E402
+import validate  # noqa: E402  (auditoria de schema dos artefatos -- so quando rodado como entry point, ver main())
 from config import (  # noqa: E402
     CONNECTOR_KNOWN_KEYS,
     CONNECTOR_REGISTRY,
@@ -451,6 +455,24 @@ def _indent(s: str) -> str:
     return "\n".join("      " + ln for ln in s.strip().splitlines() if ln.strip())
 
 
+def _audit_schema(root: Path):
+    """Report-only, mesma filosofia de run_chapter._audit_schema: o driver de capitulo ja audita o
+    projeto inteiro ao fim (1x, cobre toda cena verified naquele run); aqui cobre quem chama
+    run_scene.py DIRETO (fora de run_chapter), que sem isso nunca tinha o schema auditado."""
+    try:
+        issues = validate.validate_project(root)
+    except Exception as e:
+        print(f"[schema-audit] AVISO: falha ao auditar ({e}).")
+        return
+    errs = [i for i in issues if i[0] == "ERROR"]
+    if errs:
+        print(f"[schema-audit] ALERTA: {len(errs)} erro(s) de schema -- rode validate.py p/ detalhe.")
+        for sev, art, msg in errs[:10]:
+            print(f"  {sev} [{art}] {msg}")
+    else:
+        print("[schema-audit] OK: nenhum erro de schema.")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
@@ -489,6 +511,7 @@ def main():
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                   skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
+    _audit_schema(Path(a.project))
     sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",
                                   "awaiting_back_translation") else 1)
 
