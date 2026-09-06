@@ -8,6 +8,7 @@
 #   connector-souldiers : contrato round-trip do conector Souldiers
 #   connector-skeleton  : contrato do template de conector
 #   connector-io        : utilitários compartilhados entre conectores (framework/connectors/*.py)
+#   merge-gate          : aprovação manual (environment production) antes do merge em main
 name: Tests
 
 on:
@@ -159,3 +160,17 @@ jobs:
         run: |
           python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton \
             -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
+
+  # Gate de aprovação manual antes do merge em main. "Require pull request reviews" do GitHub
+  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Reaproveita o mesmo
+  # mecanismo de environment protection do sync-prd.yml (permite auto-aprovação, mas fica
+  # registrado quem/quando). needs: encadeia os jobs deste arquivo — se algum falhar, o gate
+  # nunca fica disponível pra aprovar. Só roda em PR (não em push direto pra main).
+  merge-gate:
+    name: Merge gate — aprovação manual
+    if: github.event_name == 'pull_request'
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: echo "Merge aprovado manualmente."
