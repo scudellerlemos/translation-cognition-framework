@@ -1,13 +1,13 @@
 # Changelog
 
-Todas as mudanças significativas do framework são documentadas aqui.
-Formato: [Semântico](https://semver.org/) — `[versão] — data`.
+Todas as mudanças significativas do framework são documentadas aqui, em ordem cronológica
+(mais recente primeiro). Sem numeração de versão — o projeto não tagueia releases.
 
 ---
 
-## [Não versionado] — pós-1.0.0
+## 2026-08/09 — pós-harness estável
 
-Trabalho incremental sobre a 1.0.0 (sem novo marco de release): cobertura de testes, reestruturação
+Trabalho incremental sobre o harness estável abaixo: cobertura de testes, reestruturação
 da CI, onboarding de baixo custo, Generic Connector System completo e terceiro jogo concluído.
 
 - **`connector_gate` liberado para `trails_sky_sc` com verificação real**: cena piloto `mp0010_01`
@@ -155,9 +155,9 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
 
 ---
 
-## [1.0.0] — 2026-06-16
+## 2026-06-16 — harness estável
 
-Primeira versão estável do harness. Framework em produção com Utawarerumono (cap. 11–20+).
+Framework em produção com Utawarerumono (cap. 11–20+).
 
 ### Runtime (`framework/runtime/`)
 
@@ -221,7 +221,7 @@ Primeira versão estável do harness. Framework em produção com Utawarerumono 
 
 ---
 
-## [Não versionado] — pré-1.0.0
+## Antes de 2026-06-16 — histórico inicial
 
 Desenvolvimento iterativo durante produção do cap. 11–20 do Utawarerumono. Marcos relevantes:
 

@@ -15,6 +15,8 @@ jobs:
   smoke:
     name: Smoke da Batch API (~$0.002; pula sem a key)
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     env:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
@@ -24,6 +26,8 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
@@ -44,3 +48,20 @@ jobs:
       - name: Batch API smoke (~$0.002)
         if: steps.key.outputs.present == 'true'
         run: python framework/runtime/batch_smoke.py
+
+      # Cron falho passa batido se ninguém abrir a aba Actions. Abre (ou comenta numa já
+      # aberta) uma issue em vez de silenciar — sem secret novo, usa o token padrão do job.
+      - name: Notifica falha (abre/atualiza issue)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          title="CI agendada falhou: ${{ github.workflow }}"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --search "in:title \"$title\"" --state open --json number -q '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Falhou de novo: $run_url"
+          else
+            gh issue create --title "$title" --body "Run: $run_url"
+          fi
