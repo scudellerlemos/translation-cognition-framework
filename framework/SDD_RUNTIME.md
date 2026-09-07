@@ -23,16 +23,20 @@ O runtime automatiza a execução em escala (o harness orquestra sem o chat).
 ### Skill 00 — Extração (`00_extraction.md`)
 
 **Responsável**: conector do projeto (`<projeto>/connector/extract.py`)
-**Runtime envolvido**: nenhum (etapa pré-pipeline, 100% determinística)
+**Runtime envolvido**: `scaffold_project.py` (setup, antes do primeiro extract), `split_scenes.py` (pós-extract)
 
 ```
-connector/extract.py  →  artifacts/<scene>/dialogs.csv
-                          artifacts/extraction_log.md
+runtime/scaffold_project.py   →  artifacts KB + profile/ inicializados (schema correto desde o início)
+connector/extract.py          →  artifacts/dialogs.csv (FLAT)
+                                  artifacts/extraction_log.md
+runtime/split_scenes.py       →  artifacts/scenes/<scene>/dialogs.csv (agrupado por --by)
 ```
 
 - O `dialogs.csv` é a **entrada** do pipeline do runtime.
 - O `byte_budget` por linha calculado aqui é consumido pelo `context_pack` e pelo `build_plan`.
 - O round-trip oracle (`reextract == extract`) é validado aqui, antes de qualquer tradução.
+- `split_scenes.py` só cobre o caso 1-coluna-identifica-a-cena (ex.: BoF4, Trails Sky SC); Souldiers e
+  Utawarerumono materializam `scenes/` por outro caminho.
 
 ---
 
@@ -47,6 +51,7 @@ decision_log.md      →  state_index.build_decision_index() →  artifacts/stat
 glossary.csv         →  context_pack.write_pack()  →  parte do scene_prompt.md
 research_log.md      →  kb_gate.check()  →  gate obrigatório antes da tradução
 kb_ratified.csv      →  kb_gate.check()  →  valida cobertura por entidade da cena
+research_log.md      →  kb_concordance.py  →  triagem read-only (draft_ollama × pesquisa humana), skill 03
 ```
 
 **Gate crítico**: `kb_gate.check()` é executado por `run_scene()` antes de qualquer chamada de IA.
@@ -95,6 +100,7 @@ artifacts/<scene>/approved_<id>.csv            ← projeção (offset, text_targ
 **Backends disponíveis**:
 - `api` (escala headless): Anthropic SDK com tiering Haiku/Sonnet, batch -50%
 - `in-session` (assinatura): sem chamada de rede, prompt auto-contido, 1 cena por sessão limpa
+- Ollama local (`ollama_client.py`): backend plugável de `model.py`, zero custo de API
 
 ---
 

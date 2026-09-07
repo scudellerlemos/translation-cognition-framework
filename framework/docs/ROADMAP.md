@@ -299,13 +299,15 @@ não-traduzido), `tamanho` (outlier), `pt-PT?`. O humano preenche `correcao` (te
 linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 691 marcadas (391 high +
 199 amostra + 77 idêntico-fonte + 37 critical). Custo de aplicar uma revisão verbatim = **$0**.
 
-**Evolução da camada de conector (norte de "plataforma" — PRIORIDADE pós-produção):**
+**Evolução da camada de conector (norte de "plataforma") — ENTREGUE:**
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#107](https://github.com/scudellerlemos/translation-cognition-framework/issues/107) (registry por
-família de engine — gatilho de 2-3 conectores já atingido: BoF4+Uta+Souldiers) e
+Issues [#107](https://github.com/scudellerlemos/translation-cognition-framework/issues/107) (registry
+por família de engine) e
 [#108](https://github.com/scudellerlemos/translation-cognition-framework/issues/108) (síntese agêntica
-de conector novo via round-trip como oráculo).
+de conector novo via round-trip como oráculo) **fechadas** — ambas cobertas pelo Generic Connector
+System (Fase D, `docs/ROADMAP.md` raiz: D1–D6 entregues, 3 engines validadas + 4ª em onboarding).
+Ver [Project #4](https://github.com/users/scudellerlemos/projects/4) pro backlog de plataforma que
+segue em aberto (ex. issue #104 — generalizar `state_index` + paralelismo/pipelining cross-capítulo).
 
 ## Fases
 

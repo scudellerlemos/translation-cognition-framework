@@ -149,6 +149,10 @@ flowchart LR
 
 ## Estado atual (junho 2026) — OBRA DE REFERÊNCIA COMPLETA
 
+> Retrato do marco de conclusão do Utawarerumono (capítulos, custo, linhas abaixo são daquele momento,
+> não atualizados depois). Números de testes/CI mudam com frequência — estado corrente sempre em
+> [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+
 O harness deixou de ser projeto e entregou uma obra inteira: **os 16 capítulos do jogo (11–23 + 30, 31,
 39) traduzidos e verificados ponta-a-ponta** (round-trip byte-idêntico, resíduo 0, + back-translation de
 alto risco) — **146 cenas, ~45.100 linhas**, em capítulos inteiros **via Batch API**. O que foi
@@ -181,14 +185,14 @@ comprovado vivo, além do alvo acima:
   corrompia); encaixe **in_place + relocação intra-arquivo**; round-trip byte-idêntico é o oráculo.
 - **Humano no loop:** revisão única por **XLSX amigável** (`quality_review.py`); aplicação verbatim ($0)
   ou nota cirúrgica; **TM como coração** — o jogo não é re-traduzido inteiro após o QA.
-- **Travas de qualidade:** **460 testes passando / 4 skipped** no total (`framework/` — inclui o
-  skeleton de conector — 435 passed/3 skipped; conector Utawarerumono 16 passed; conector BoF4 9
-  passed/1 skipped por faltar `BOF4_DAT_DIR`); os conectores rodam em jobs de CI separados
+- **Travas de qualidade:** testes passando com os conectores rodando em jobs de CI separados
   (basename `test_roundtrip.py` repetido colidiria numa coleta única do pytest). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
-- **CI paralela:** 3 workflows GitHub Actions (`quality.yml` 4 jobs · `test.yml` 6 jobs ·
-  `api-smoke.yml`) sem nenhum `needs:` — checks independentes, falha nomeada por job, wall-clock =
-  maior job. Detalhe do desenho em
+  Contagem corrente em [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+- **CI paralela:** 6 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
+  push/PR (sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
+  maior job); `api-smoke.yml`, `dep-audit-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
+  sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em
   [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
 ## Documentos relacionados
