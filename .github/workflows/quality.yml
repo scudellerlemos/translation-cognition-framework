@@ -5,8 +5,12 @@
 name: Quality
 
 on:
+  # push em "**" + pull_request em "**" duplicava a suite inteira em toda branch com PR aberta
+  # (um run por evento, mesmo commit e mesmos 4 contexts na branch protection) - mesmo caso do
+  # test.yml (ver commit "ci: remove duplicacao de test.yml..."). push fica só em main (onde faz
+  # sentido rodar sem PR); pull_request cobre toda branch via PR.
   push:
-    branches: ["**"]
+    branches: ["main"]
   pull_request:
     branches: ["**"]
 
