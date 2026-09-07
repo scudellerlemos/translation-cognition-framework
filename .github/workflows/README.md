@@ -94,6 +94,22 @@ Dispara só quando alguém cria e envia uma tag no formato `v1.2.3` (`git tag v1
    (`environment: Production`) — diferente do resto da esteira, aqui faz sentido parar pra
    confirmar: publicar uma versão é raro e deliberado, não um clique repetido em todo merge.
 
+Escolher o número da versão (patch/minor/major) é decisão manual de quem tagueia — sem ferramenta,
+sem enforcement de formato de commit. Critério e motivo em `framework/docs/adr/0013-versionamento-semver-manual.md`.
+
+### Se uma release sair quebrada
+
+Não existe automação pra isso — é um procedimento manual, de baixa frequência:
+
+- **Yank (esconder a release ruim)**: `gh release delete vX.Y.Z` apaga a Release do GitHub (a tag
+  git continua existindo, só a Release na aba **Releases** some). Se quiser manter a tag mas deixar
+  claro que não deve ser usada, edite a Release antes de decidir apagar (`gh release edit vX.Y.Z
+  --notes "..."`) avisando no topo das notas.
+- **Hotfix**: `git checkout -b hotfix/descricao vX.Y.Z` — branch a partir da tag ruim, não de
+  `main` (main pode já ter avançado com outras mudanças que você não quer no hotfix). Corrige, abre
+  PR pra `main` normalmente (mesmos gates de sempre). Depois de mergear, bump de `VERSION` (patch) e
+  tag nova a partir de `main` — mesmo fluxo de qualquer release.
+
 ---
 
 ## 5. `branch-hygiene.yml` — limpeza semanal de branches

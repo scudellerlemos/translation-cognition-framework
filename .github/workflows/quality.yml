@@ -72,6 +72,9 @@ jobs:
   # (sentence-transformers/sqlite-vec/flashrank/torch) ficavam sem auditoria. Steps SEPARADOS:
   # cada requirements-*.txt é uma stack opcional independente (kb/ml não são pré-requisito um do
   # outro nem do dev) — uma falha não deve mascarar a auditoria das outras duas.
+  # `pip freeze` de cada stack sobe como artifact (retenção 90 dias): os requirements-*.txt usam
+  # `~=` (compatible release) de propósito, não pin exato — sem isso não dá pra responder "quais
+  # versões exatas rodaram na build de tal dia" se um bug aparecer só numa combinação específica.
   deps:
     name: Dependências (pip-audit) — CVEs conhecidos
     runs-on: ubuntu-latest
@@ -97,3 +100,11 @@ jobs:
         run: pip install -r requirements-ml.txt
       - name: pip-audit — requirements-ml.txt (CVEs)
         run: pip-audit -r requirements-ml.txt
+      - name: Congela versões exatas resolvidas (dev+kb+ml)
+        run: pip freeze > /tmp/pip-freeze-dev-kb-ml.txt
+      - name: Sobe pip-freeze como artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pip-freeze-${{ github.sha }}
+          path: /tmp/pip-freeze-dev-kb-ml.txt
+          retention-days: 90
