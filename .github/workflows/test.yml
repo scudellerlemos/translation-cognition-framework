@@ -8,7 +8,8 @@
 #   connector-souldiers : contrato round-trip do conector Souldiers
 #   connector-skeleton  : contrato do template de conector
 #   connector-io        : utilitários compartilhados entre conectores (framework/connectors/*.py)
-#   merge-gate          : aprovação manual (environment Production) antes do merge em main
+#   all-checks          : agregador automático (single status check pra branch protection)
+#   mark-staging        : marca o SHA de main no environment Staging (audit trail, sem aprovação)
 name: Tests
 
 on:
@@ -177,16 +178,28 @@ jobs:
           python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton \
             -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
 
-  # Gate de aprovação manual antes do merge em main. "Require pull request reviews" do GitHub
-  # bloqueia o autor de aprovar a própria PR — inviável pra dev solo. Usa environment protection
-  # (permite auto-aprovação, mas fica registrado quem/quando). needs: encadeia os jobs deste
-  # arquivo — se algum falhar, o gate nunca fica disponível pra aprovar. Só roda em PR (não em
-  # push direto pra main).
-  merge-gate:
-    name: Merge gate — aprovação manual
+  # Agregador automático: um single status check pra branch protection não precisar listar os
+  # 8 jobs acima individualmente. Sem aprovação manual (isso virou teatro pra dev solo — é sempre
+  # a mesma pessoa aprovando o próprio PR; a aprovação de verdade agora só existe no environment
+  # Production do release.yml, evento raro/deliberado, não em todo merge). needs: encadeia os jobs
+  # deste arquivo — se algum falhar, este nunca fica verde. Só roda em PR.
+  all-checks:
+    name: All checks — agregador (branch protection)
     if: github.event_name == 'pull_request'
     needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
     runs-on: ubuntu-latest
-    environment: Production
     steps:
-      - run: echo "Merge aprovado manualmente."
+      - run: echo "Todos os checks de test.yml passaram."
+
+  # Marca no environment Staging qual SHA de main está validado agora — só audit trail nativo do
+  # GitHub (aba Environments/Deployments), sem aprovação e sem re-rodar nada. Só dispara em push
+  # direto pra main (que só acontece via merge de PR já protegido) — deployment_branch_policy do
+  # Staging trava isso no lado do GitHub também.
+  mark-staging:
+    name: Marca Staging (main validado)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - run: echo "main em ${{ github.sha }} validado (Staging)."

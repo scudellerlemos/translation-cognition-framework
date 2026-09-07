@@ -16,6 +16,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **Tests** | `test.yml` | Todo push e PR | "O código **funciona**?" |
 | **Quality** | `quality.yml` | Todo push e PR | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
+| **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 
 > **Vocabulário mínimo:** *push* = enviar código pro GitHub · *PR (pull request)* =
@@ -81,7 +82,21 @@ fluxo antes de começar a traduzir um capítulo novo.
 
 ---
 
-## 4. `branch-hygiene.yml` — limpeza semanal de branches
+## 4. `release.yml` — publica uma versão do framework
+
+Dispara só quando alguém cria e envia uma tag no formato `v1.2.3` (`git tag v1.2.3 && git push
+--tags`). Duas etapas:
+
+1. **Valida** — confere que o arquivo `VERSION` na raiz bate com a tag enviada. Se não bater,
+   falha (você esqueceu de atualizar o `VERSION` antes de taguear).
+2. **Publica** — cria a *Release* no GitHub (aba **Releases**), com notas geradas automaticamente
+   a partir dos PRs mergeados desde a última tag. Essa etapa **exige aprovação manual**
+   (`environment: Production`) — diferente do resto da esteira, aqui faz sentido parar pra
+   confirmar: publicar uma versão é raro e deliberado, não um clique repetido em todo merge.
+
+---
+
+## 5. `branch-hygiene.yml` — limpeza semanal de branches
 
 Toda semana (e sob demanda) confere quantas branches já **mergeadas** em `main`
 existem além das 50 mais recentes, e apaga as mais antigas — nunca toca branch com
