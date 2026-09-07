@@ -1,5 +1,7 @@
-# requirements-ml.txt — stack OPCIONAL de TM semântica (RAG nº1). NÃO entra na CI nem é
-# requerida pelo runtime determinístico: sem ela o context_pack cai p/ [] (fallback testado).
+# requirements-ml.txt — stack OPCIONAL de TM semântica (RAG nº1). Não é requerida pelo runtime
+# determinístico: sem ela o context_pack cai p/ [] (fallback testado). Instalada e auditada por
+# CVE em quality.yml (job deps, #89) — nunca instalada em test.yml (nenhum teste funcional
+# depende dela).
 #
 # Instala SÓ quando for LIGAR a busca semântica num projeto com `db` (hoje: translation_software):
 #   pip install -r requirements-ml.txt

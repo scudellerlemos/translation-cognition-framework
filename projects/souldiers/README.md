@@ -35,6 +35,20 @@ Nenhum aberto do lado do framework — P1.7 (onboarding), P2.5, D6, Fase D compl
 foram fechados nesta mesma janela de trabalho, todos com testes e revisão independente.
 A única pendência é operacional: revisão humana do XLSX de QA (fora do escopo do framework).
 
+**Risco aceito e documentado (não é lacuna esquecida):** o round-trip byte-idêntico do bundle
+Unity real (`test_roundtrip.py`, 6/6 acima) só roda localmente com `--data-dir` apontando pro jogo
+instalado — nunca na CI, que faz `pytest.skip`. Diferente de BoF4/Utawarerumono (formato binário
+próprio, sintetizável em memória), o container aqui é UnityFS lido só via UnityPy, que não expõe
+API pra construir um bundle do zero (`SerializedFile`/`BundleFile.__init__` exigem um
+`EndianBinaryReader` de bytes já existentes) — replicar isso exigiria reimplementar o formato
+UnityFS à mão. Decisão consciente de custo-benefício, não descoberta agora: a CI sempre roda
+`test_rebuild_table_logic.py` (lógica de reescrita do CSV interno — onde bugs reais de tradução
+aconteceriam), cobrindo a superfície de risco que é código nosso; a serialização do container em
+si fica por conta do UnityPy (dependência de terceiros, não nosso código). Ver ADR 0011.
+Nota lateral: `UnityPy` ainda não está em nenhum `requirements-*.txt` — inofensivo hoje porque
+nenhum caminho testado em CI o importa, mas quebraria se o skip acima for removido sem adicionar
+a dependência.
+
 ---
 
 ## Estrutura
@@ -62,7 +76,7 @@ artifacts/
 
 ## Questões abertas (piloto multi-game)
 
-Ver [ROADMAP.md raiz](../../ROADMAP.md). Este piloto fechou a Fase D inteira (Generic Connector
+Ver [ROADMAP.md raiz](../../docs/ROADMAP.md). Este piloto fechou a Fase D inteira (Generic Connector
 System) e validou o terceiro engine distinto — as questões de família de engine, versionamento,
 onboarding e TM compartilhada da discussão multi-game já têm resposta prática nos módulos
 `tier_classifier.py`/`fingerprint_monitor.py`/`scaffold_project.py`/`tm_lookup.py`.

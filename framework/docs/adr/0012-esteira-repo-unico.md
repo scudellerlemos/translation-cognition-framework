@@ -61,3 +61,19 @@ descrevem a mesma esteira, em camadas diferentes.
   trabalho não integrado).
 - Fora de escopo (decidir na implementação): arquivamento efetivo do repo PRD; remoção do secret
   `PRD_REPO_TOKEN`/variável `PRD_REPO` (ação manual em Settings, não versionada).
+
+## Atualização (2026-09-06): `release.yml`/`VERSION` removidos
+
+Decisão revertida: `release.yml` e o arquivo `VERSION` foram removidos. "Release" é um conceito de
+software versionado com consumidor externo baixando um artefato — não se aplica a um projeto de
+tradução (o entregável é o corpus traduzido em `artifacts/scenes/`, não um pacote instalável).
+Manter o mecanismo era governança emprestada de outro tipo de projeto sem propósito real aqui.
+
+Isso também fecha, por eliminação, o motivo original do `deployment_branch_policy: null` do
+`environment: Production`: a incompatibilidade vinha de dois consumidores com necessidade de
+política diferente compartilhando o mesmo environment (`merge-gate`, ref de PR-merge, vs.
+`publish-release`, padrão de tag). Com `publish-release` fora, sobra só o `merge-gate` — e ali
+`deployment_branch_policy` seguir `null` deixa de ser um gap: job disparado por PR roda contra
+`refs/pull/<PR>/merge`, uma ref que nunca corresponde a nome de branch/tag, então nenhuma política
+de branch conseguiria restringi-lo de qualquer forma. O controle real ali sempre foi o approval
+manual (`required_reviewers`), que continua ativo.
