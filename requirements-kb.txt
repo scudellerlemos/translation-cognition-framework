@@ -1,7 +1,8 @@
-# requirements-kb.txt — stack OPCIONAL do kb_fetch.py p/ fontes PDF/.docx. NAO entra na CI nem e
-# requerida pelo runtime determinístico: sem ela, kb_fetch.py levanta RuntimeError com instrucao
-# clara SO quando uma fonte PDF/.docx e passada (URL/txt/.md/.xlsx nao precisam destas libs —
-# .xlsx usa openpyxl, ja em requirements-dev.txt).
+# requirements-kb.txt — stack OPCIONAL do kb_fetch.py p/ fontes PDF/.docx. Nao e requerida pelo
+# runtime determinístico: sem ela, kb_fetch.py levanta RuntimeError com instrucao clara SO quando
+# uma fonte PDF/.docx e passada (URL/txt/.md/.xlsx nao precisam destas libs — .xlsx usa openpyxl,
+# ja em requirements-dev.txt). Instalada e auditada por CVE em quality.yml (job deps, #89) — nunca
+# instalada em test.yml (nenhum teste funcional depende dela).
 #
 # Instala SO quando for buscar fonte de KB em PDF ou .docx:
 #   pip install -r requirements-kb.txt

@@ -40,6 +40,22 @@ Lacunas identificadas:
 5. Coverage 90% audita linha executada, não se o teste de fato assere alguma coisa — gameável com
    teste tautológico.
 
+## Risco aceito (exemplo concreto, não hipotético)
+
+Nem toda lacuna de oráculo é uma lacuna esquecida — às vezes é uma decisão consciente de
+custo-benefício, e essa distinção precisa ficar registrada em algum lugar em vez de virar dúvida
+recorrente em toda auditoria futura. Caso real: o conector Souldiers (`projects/souldiers/`) usa
+bundles Unity Addressables (UnityFS) via UnityPy, uma lib que só *lê* bundles existentes —
+`SerializedFile.__init__`/`BundleFile.__init__` exigem um `EndianBinaryReader` de bytes já
+existentes, sem API pra construir um bundle do zero. Isso torna inviável (sem reimplementar o
+formato UnityFS à mão) o padrão de fixture sintética que BoF4/Utawarerumono usam pros próprios
+formatos binários (bespoke, simples, parseados 100% por código do próprio projeto). Decisão: o
+oráculo de round-trip byte-idêntico do container continua rodando só localmente
+(`test_roundtrip.py`, exige `--data-dir` com o jogo instalado, `pytest.skip` na CI); a CI cobre
+sempre a lógica que É código nosso e onde bugs reais aconteceriam (reescrita do CSV interno,
+`test_rebuild_table_logic.py`) — a serialização do container em si é responsabilidade do UnityPy,
+não nosso código. Ver `projects/souldiers/README.md` para o detalhamento.
+
 ## Decisão (faseada)
 
 ### Fase 1 — Meta-gate (oráculo vs knob)

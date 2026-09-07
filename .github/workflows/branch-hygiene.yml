@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -49,3 +50,20 @@ jobs:
               git push origin --delete "$b"
             fi
           done
+
+      # Cron falho passa batido se ninguém abrir a aba Actions. Abre (ou comenta numa já
+      # aberta) uma issue em vez de silenciar — sem secret novo, usa o token padrão do job.
+      - name: Notifica falha (abre/atualiza issue)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          title="CI agendada falhou: ${{ github.workflow }}"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --search "in:title \"$title\"" --state open --json number -q '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Falhou de novo: $run_url"
+          else
+            gh issue create --title "$title" --body "Run: $run_url"
+          fi
