@@ -128,6 +128,8 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
   - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
   - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 125 cenas, pipeline completo 00–08, QA + output gerados.
   - *Souldiers* (Unity Addressables): **CONCLUÍDO** — 470 cenas, round-trip 100%, KB via Ollama híbrido.
+  - *Trails in the Sky SC* (Falcom): **EM ANDAMENTO** — 4º engine, conector novo (`target_charset_supported`),
+    cena-piloto com round-trip real fechado; 67 cenas extraídas, tradução em curso.
   - Ver `media-profiles/games.md`.
 - **Filmes** — 🚧 ponto de extensão. Ver `media-profiles/films.md`.
 - **Séries** — 🚧 ponto de extensão. Ver `media-profiles/series.md`.
@@ -172,14 +174,22 @@ em bundle) e o pipeline de onboarding de baixo custo (P1.7: scaffold + templates
 Ollama local). **CONCLUÍDO:** 470 cenas, round-trip byte-idêntico 100%, back-translation 100%,
 custo ~$3,06 USD.
 
+**`projects/trails_sky_sc/`** — quarta instância, **EM ANDAMENTO**. Valida engine Falcom (remake
+*Sora no Kiseki 2nd Chapter*), conector escrito do zero (`target_charset_supported: true`, grava
+UTF-8 real). 67 cenas extraídas; cena-piloto `mp0010_01` fechou round-trip real contra o `.pac`.
+Ainda sem `README.md` próprio — ver `docs/CHANGELOG.md` e `artifacts/decision_log.md` pelo estado atual.
+
 ---
 
 ## CI — esteira de verificação (paralela, sem encadeamento)
 
-Cada push/PR dispara **3 workflows** do GitHub Actions. Todos os jobs rodam em paralelo, em
-runners isoladas, **sem nenhum `needs:`** — o tempo total é o do maior job, não a soma, e uma
-falha aparece nomeada por job no PR. (O único "sequencial" do projeto é o pipeline de tradução
-00→08, que é dependência real de dado do domínio, não CI.)
+Existem 6 workflows do GitHub Actions no repo; cada push/PR dispara **2** deles (`quality.yml` +
+`test.yml`). Todos os jobs desses 2 rodam em paralelo, em runners isoladas, **sem nenhum `needs:`**
+— o tempo total é o do maior job, não a soma, e uma falha aparece nomeada por job no PR. Os outros
+4 são sob demanda: `api-smoke.yml` e `dep-audit-optional.yml` (cron semanal + `workflow_dispatch`),
+`branch-hygiene.yml` (`workflow_dispatch`) e `release.yml` (só dispara em tag `v*.*.*`). (O único
+"sequencial" do projeto é o pipeline de tradução 00→08, que é dependência real de dado do domínio,
+não CI.)
 
 ```mermaid
 flowchart LR
@@ -190,7 +200,7 @@ flowchart LR
     qc["secrets — gitleaks (diff + histórico)"]
     qd["deps — pip-audit (CVEs em requirements-dev)"]
   end
-  subgraph tests["test.yml — verificação funcional (7 jobs)"]
+  subgraph tests["test.yml — verificação funcional (8 jobs)"]
     direction TB
     te["env-guard — .env nunca rastreado no git"]
     tm["mypy — type-check do núcleo já tipado"]
@@ -199,6 +209,7 @@ flowchart LR
     tu["connector-uta — contrato round-trip Utawarerumono"]
     tsoul["connector-souldiers — contrato round-trip Souldiers"]
     tsk["connector-skeleton — contrato do template"]
+    tio["connector-io — utilitários compartilhados (framework/connectors/*.py) ≥75%"]
   end
   subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
     sm["batch smoke da Batch API (~$0.002; pula sem ANTHROPIC_API_KEY)"]
@@ -207,23 +218,24 @@ flowchart LR
   classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
   class quality,ql,qs,qc,qd qual;
-  class tests,te,tm,tcov,tb,tu,tsoul,tsk test;
+  class tests,te,tm,tcov,tb,tu,tsoul,tsk,tio test;
   class smoke,sm smoke;
 ```
 
-> **Por que 7 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
+> **Por que 8 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
 > (guard → mypy → coverage → conectores); qualquer falha cedo mascarava o resto e o tempo era a
 > soma. Divididos em jobs independentes, cada check falha isolado e o wall-clock cai para o do
 > maior job. Os conectores ficam em jobs separados porque `test_roundtrip.py` tem basename repetido
-> entre os projetos e colidiria numa coleta única do pytest. Números atuais: **432 passed / 10
-> skipped** no total dos 4 jobs de conector+coverage (coverage 406 passed; Utawarerumono 16 passed;
-> BoF4 9 passed/1 skipped; Souldiers 0 passed/6 skipped — os skips dependem do binário/bundle do
-> jogo, gitignored) · cobertura do core **90.07%**.
+> entre os projetos e colidiria numa coleta única do pytest. Números atuais: **603 passed / 27
+> skipped** no total dos 6 jobs de execução (coverage 497 passed/4 skipped; Utawarerumono 8
+> passed/13 skipped; BoF4 21 passed/1 skipped; Souldiers 4 passed/6 skipped — os skips dependem do
+> binário/bundle do jogo, gitignored; connector-skeleton 1 passed/3 skipped; connector-io 72
+> passed) · cobertura do core **≥90%** (gate `--cov-fail-under=90`), conectores **≥75%**.
 > Sem branch protection no `main` (repo solo dev): check vermelho é aviso, não bloqueio de merge.
 
 ---
 
-## STATUS DO FRAMEWORK — julho 2026
+## STATUS DO FRAMEWORK — setembro 2026
 
 ### Objetivos alcançados
 
@@ -247,8 +259,10 @@ flowchart LR
   `run_game`/`validate`/`context_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
 - TM por série (`tm_lookup.py`/`tm_updater.py`): jogos da mesma franquia compartilham termos
   recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
-- CI paralela reestruturada: 3 workflows, sem encadeamento (`needs:` = 0), falha nomeada por job ✅
-- 438 testes passando
+- CI paralela reestruturada: 2 workflows por push/PR (+ 4 sob demanda: cron/dispatch/tag), sem
+  encadeamento (`needs:` = 0), falha nomeada por job ✅
+- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): `v1.0.0`, `v1.0.1` publicadas ✅
+- 577 testes passando
 
 ### Dívidas técnicas do framework
 

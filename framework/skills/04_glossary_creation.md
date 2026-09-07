@@ -45,21 +45,23 @@ Colunas obrigatórias:
 | `term` | Termo no idioma-fonte |
 | `category` | Categoria da entidade |
 | `target_translation` | Forma final no idioma-alvo (`project.json → target_language`) |
-| `handling_rule` | `verbatim` / `translate` / `translate_partial` |
+| `handling_rule` | `manter_original` / `traduzir` / `traduzir_parcial` |
 | `spoiler_level` | none / moderate / major / critical |
 | `aliases` | Aliases do termo (separados por `;`) |
 | `notes` | Instruções específicas de uso |
 
-> **ATENÇÃO — valores do runtime:** o CSV deve usar os valores em inglês exibidos acima
-> (`verbatim`, `translate`, `translate_partial`). Esses são os valores que
-> `context_pack.select_glossary()` e `state_index` leem. Usar os equivalentes em português
-> (`manter_original`, `traduzir`) produz `glossary_subset: 0` silenciosamente.
-> Rodar `python framework/runtime/state_index.py <projeto>` — se retornar aviso de coluna
-> faltando ou glossary=0 em cena que deveria ter hits, é sinal de schema errado.
+> **Valores do runtime:** `context_pack.select_glossary()` casa termo/entidade pelo texto da cena —
+> não lê o valor de `handling_rule` (qualquer string passa). Quem lê o valor literalmente é
+> `glossary_lint.py`, que espera `manter_original` (os demais valores com `target_translation`
+> preenchido caem no caminho `traduzir`). Os demais skills (05–08, `translation_governance.md`) e
+> 3 dos 4 projetos existentes (`breath_of_fire_4`, `trails_sky_sc`, `utawarerumono`) usam os valores
+> em português abaixo — só `souldiers` usa `verbatim`/`translate` (equivalente aceito pelo caminho
+> `traduzir`, mas fora do audit de `manter_original`). Preferir os valores em português para casar
+> com o linter e o restante do processo.
 
 ### Regras de handling_rule
 
-**`verbatim`** — usar exatamente o termo no idioma-fonte (ou romanização). Aplica-se tipicamente a:
+**`manter_original`** — usar exatamente o termo no idioma-fonte (ou romanização). Aplica-se tipicamente a:
 - Nomes de personagens
 - Locais inventados
 - Títulos culturais
@@ -68,13 +70,13 @@ Colunas obrigatórias:
 - Mecânicas com nome próprio
 - Moeda inventada
 
-**`translate`** — usar a tradução no idioma-alvo. Aplica-se tipicamente a:
+**`traduzir`** — usar a tradução no idioma-alvo. Aplica-se tipicamente a:
 - UI (menus, modos, prompts)
 - Títulos políticos/militares descritivos
 - Facções com nome descritivo
 - Elementos descritivos genéricos de locais (Inn, River, Province)
 
-**`translate_partial`** — manter o nome próprio, traduzir o elemento descritivo:
+**`traduzir_parcial`** — manter o nome próprio, traduzir o elemento descritivo:
 - `[NomePróprio] Inn` → `Estalagem [NomePróprio]`
 - `[NomePróprio] River` → `Rio [NomePróprio]`
 

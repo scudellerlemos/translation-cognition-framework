@@ -1,6 +1,6 @@
 # Roadmap — Translation Cognition Framework (SDD)
 
-> Última atualização: 2026-07-01
+> Última atualização: 2026-09-07
 > Histórico do projeto piloto Utawarerumono em `projects/utawarerumono/ROADMAP_history.md`.
 
 ---
@@ -12,7 +12,8 @@
 | Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
-| Generic Connector System (Fase D) | 🟡 piloto concluído (BoF4) — automação D1–D5 pós-produção |
+| Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
+| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — `v1.0.0`, `v1.0.1` publicadas |
 | Perfis filme/série + subtitle_file | 🔴 stub / não iniciado |
 
 ---

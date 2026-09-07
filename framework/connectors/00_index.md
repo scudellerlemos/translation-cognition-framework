@@ -114,6 +114,8 @@ connectors/
   _skeleton/
     extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)
     reinsert.py                ← esqueleto comentado do reinseridor (cascata de encaixe + patch)
+    build_plan_chapter.py      ← esqueleto do plano por capítulo (pontos # ADAPTAR: tokens do engine)
+    verify_chapter.py          ← esqueleto do verificador (reconstrução byte-a-byte; exit 0/1/3 + VERIFY_STATUS)
     table_schema.md            ← formato do schema de tabela (byte=char + control codes)
     test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
 ```
