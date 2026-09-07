@@ -1,7 +1,26 @@
 # Changelog
 
 Todas as mudanças significativas do framework são documentadas aqui, em ordem cronológica
-(mais recente primeiro). Sem numeração de versão — o projeto não tagueia releases.
+(mais recente primeiro). Numeração de versão via `VERSION` + tag `vX.Y.Z` desde a v1.0.0
+(ver `framework/docs/adr/0013-versionamento-semver-manual.md`); as seções abaixo continuam
+organizadas por período, não por versão.
+
+---
+
+## 2026-09 — versionamento SemVer + CI hardening
+
+- **Versionamento SemVer manual adotado** (ADR 0013): `VERSION` + tag `vX.Y.Z`, decisão de
+  patch/minor/major é julgamento humano no momento de taguear, sem ferramenta nem enforcement de
+  formato de commit. Primeiras tags reais: `v1.0.0`, `v1.0.1`.
+- `release.yml` passou a subir `pip-freeze` (`pip freeze` da instalação usada na Release) como
+  artifact — auditoria de que exatamente foi publicado; `.github/workflows/README.md` documenta
+  procedimento de hotfix/rollback (yank via `gh release delete`, branch de hotfix a partir da tag).
+- `dep-audit-optional.yml` (novo workflow): `pip-audit` de `requirements-kb.txt`/`requirements-ml.txt`
+  (torch + sentence-transformers) saiu do job `deps` de `quality.yml` — instalar essas stacks opcionais
+  do zero custava ~1min a cada push/PR pra auditar código que a maioria das mudanças nem toca — e virou
+  checagem semanal (cron + `workflow_dispatch`, mesmo padrão do `api-smoke.yml`), com issue automática
+  em falha (corrigido logo em seguida: o job novo não instalava o próprio `pip-audit` nem tinha
+  `permissions: issues: write`, então falhava sempre que rodava).
 
 ---
 
