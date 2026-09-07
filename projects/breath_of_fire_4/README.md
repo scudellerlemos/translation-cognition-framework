@@ -63,7 +63,7 @@ output/                   ← 125 DAT files traduzidos e reinseridos
 
 ## Questões abertas (piloto multi-game)
 
-Ver [ROADMAP.md raiz](../../ROADMAP.md). As 4 questões (família de engine,
+Ver [ROADMAP.md raiz](../../docs/ROADMAP.md). As 4 questões (família de engine,
 versionamento do conector, onboarding mínimo, TM compartilhada) foram parcialmente
 respondidas por este piloto — a TM semântica (B2) é a questão principal em aberto
 para o reuso cross-game.

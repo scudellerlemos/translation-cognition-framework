@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![438 testes](https://img.shields.io/badge/testes-438%20passing-brightgreen) ![nota AI eng.](https://img.shields.io/badge/nota%20AI%20eng.-86%2F100-orange)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![438 testes](https://img.shields.io/badge/testes-438%20passing-brightgreen)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -141,7 +141,7 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 - **Versionamento de artefatos e prompts** — todo artefato carrega as instruções exatas que o
   produziram (`doctrine_hash`, `model_id`, `skills_revision`). Sem proveniência, melhorar um prompt
   é cego: não há como saber quais cenas foram traduzidas com doutrina obsoleta nem re-traduzir só o
-  que mudou. Ver [ROADMAP — Prioridade #1](ROADMAP.md).
+  que mudou. Ver [ROADMAP — Prioridade #1](docs/ROADMAP.md).
 - **Generic Connector System** — quando o framework encontra um novo jogo, descobre automaticamente
   os arquivos de diálogo (evidence collector + tier classifier), gera um conector candidato (LLM
   **apenas no bootstrap**, quando a engine é desconhecida), valida cobertura + consistência (coverage gate + adversarial
@@ -341,14 +341,14 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 [`GOVERNANCE.md`](framework/docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
 [`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](framework/docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
-[`CHANGELOG.md`](CHANGELOG.md) (histórico de versões) ·
-[`adr/`](framework/docs/adr/) (as decisões de IA, registradas) · [`ROADMAP.md`](ROADMAP.md).
+[`CHANGELOG.md`](docs/CHANGELOG.md) (histórico de versões) ·
+[`adr/`](framework/docs/adr/) (as decisões de IA, registradas) · [`ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
 ## Status — julho 2026
 
-**Versão estável: [1.0.0](CHANGELOG.md).** Ver [ROADMAP](ROADMAP.md) para o detalhamento técnico.
+Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/ROADMAP.md) (detalhamento técnico).
 
 ### Framework — objetivos alcançados
 
