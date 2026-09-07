@@ -2,8 +2,10 @@
 # validate-release: oráculo objetivo (VERSION bate com a tag) — sem environment, automático.
 # publish-release: gated por environment Production (aprovação manual — aqui sim faz sentido:
 # evento raro e deliberado, não um clique repetido em todo merge). Notas da release são geradas
-# pelo próprio GitHub (--generate-notes, lista de PRs desde a última tag) — não dependem do
-# formato do CHANGELOG.md (que é cronológico, sem número de versão, por decisão própria).
+# pelo próprio GitHub (lista de PRs desde a última tag) — não dependem do formato do
+# CHANGELOG.md (que é cronológico, sem número de versão, por decisão própria). Os textos fixos
+# que o GitHub gera em inglês ("What's Changed", "Full Changelog" etc.) são traduzidos pra pt-BR
+# antes de publicar — todo o resto do projeto (commits, docs, ADRs) já é em português.
 name: Release
 
 on:
@@ -36,7 +38,22 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Gera notas em pt-BR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          gh api "repos/${{ github.repository }}/releases/generate-notes" \
+            -f tag_name="${GITHUB_REF_NAME}" --jq .body > /tmp/release-notes.md
+          sed -i \
+            -e "s/## What's Changed/## O que mudou/" \
+            -e "s/### New Contributors/### Novos contribuidores/" \
+            -e "s/made their first contribution/fez sua primeira contribuição/g" \
+            -e "s/ by @/ por @/g" \
+            -e "s/ in http/ em http/g" \
+            -e "s/\*\*Full Changelog\*\*/**Changelog completo**/" \
+            /tmp/release-notes.md
       - name: Cria release neste repo
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --generate-notes
+        run: gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --notes-file /tmp/release-notes.md
