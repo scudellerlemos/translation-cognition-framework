@@ -77,3 +77,30 @@ política diferente compartilhando o mesmo environment (`merge-gate`, ref de PR-
 `refs/pull/<PR>/merge`, uma ref que nunca corresponde a nome de branch/tag, então nenhuma política
 de branch conseguiria restringi-lo de qualquer forma. O controle real ali sempre foi o approval
 manual (`required_reviewers`), que continua ativo.
+
+## Atualização (2026-09-06, parte 2): release volta, mas com motivo e desenho diferentes
+
+Segunda reversão da mesma decisão, por um motivo diferente do que a derrubou: este repo não é só o
+corpus de tradução, é um **framework reutilizável** — o README já versiona proveniência de
+doutrina/prompt por artefato (`doctrine_hash`, `skills_revision`), mas nunca versionou o *código do
+framework* em si. Sem tag, não há como responder "essa tradução foi feita com qual versão do
+framework" se um bug for encontrado depois. `release.yml` e `VERSION` voltam.
+
+Ao mesmo tempo, ficou claro que o `merge-gate` original (aprovação manual em `environment:
+Production` antes de **todo** merge em `main`) era teatro pra dev solo: sempre a mesma pessoa
+aprovando o próprio PR, sem checar nada que o botão "Merge pull request" já não force. Esse job
+perde a aprovação manual e vira só um agregador automático (`all-checks`) — a aprovação manual de
+verdade migra pra onde faz sentido: `publish-release`, evento raro e deliberado.
+
+Isso também permite fechar o `deployment_branch_policy` de verdade, não por eliminação como da
+primeira vez: em vez de 1 environment com 2 consumidores incompatíveis, agora são **2 environments,
+cada um com exatamente 1 consumidor**:
+- `Staging` — marcador automático (sem aprovação) de qual SHA de `main` está validado; policy
+  restrita a protected branches.
+- `Production` — só `publish-release` (padrão de tag `v*.*.*`); continua com aprovação manual, agora
+  aplicada a um evento que realmente vale a pena parar pra confirmar.
+
+`CHANGELOG.md` continua cronológico sem número de versão (decisão anterior, não revertida) —
+`validate-release` confere só `VERSION == tag`; as notas da Release usam `gh release
+create --generate-notes` (lista de PRs desde a última tag, gerada pelo próprio GitHub) em vez de
+extrair uma seção do CHANGELOG.
