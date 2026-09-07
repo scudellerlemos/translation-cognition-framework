@@ -13,8 +13,12 @@
 name: Tests
 
 on:
+  # push em "**" + pull_request em "**" duplicava a suite inteira em toda branch com PR aberta
+  # (um run por evento, mesmo commit) sem ganho: all-checks só roda no evento pull_request (se:
+  # abaixo), então o run de push numa branch de feature nunca contribui pro branch protection.
+  # push fica só em main (onde mark-staging precisa dele); pull_request cobre toda branch via PR.
   push:
-    branches: ["**"]
+    branches: ["main"]
   pull_request:
     branches: ["**"]
 
