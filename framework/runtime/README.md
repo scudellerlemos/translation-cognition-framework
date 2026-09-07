@@ -22,6 +22,8 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 | `context_pack.py` | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. Inclui `validate_dialogs_csv()` — schema guard antes de `load_dialogs` (A4). TM por série (`tm_series`) consultada na entrada via `tm_lookup.py`. |
 | `artifact_io.py` | Camada única de leitura de artefatos (scenes, plan_lines, translations_map, back_entries). |
 | `paths.py` | Fonte única de caminhos de artefato. |
+| `scaffold_project.py` | Inicializa os artefatos KB de um projeto novo com o schema correto desde o início (elimina "schema errado descoberto tarde"); materializa `profile/` (4 arquivos de referência) e reporta status do `kb_gate`/`connector_gate`. Skip seguro — nunca sobrescreve arquivo existente. |
+| `split_scenes.py` | Materializa `artifacts/scenes/<cena>/dialogs.csv` a partir do `dialogs.csv` FLAT do `extract.py`, agrupando por 1 coluna do corpus (`--by`, default `file`). Escopo deliberado: só cobre o caso 1-coluna-identifica-a-cena (BoF4/Trails Sky SC); Souldiers/Utawarerumono ficam fora, não força um contrato que os 3 não compartilham. |
 
 **Modelo — IA + suporte determinístico**
 
@@ -50,6 +52,7 @@ flowchart LR
 | `model.py` | 🩷 IA | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
 | `back_translate.py` | 🩷 IA | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
 | `llm_client.py` | det. | Cliente + backoff/retry, await de batch, dotenv. |
+| `ollama_client.py` | det. | REST client pro Ollama local (zero custo de API) — backend plugável de `model.py`; configuração via `OLLAMA_HOST`/`OLLAMA_MODEL`/`OLLAMA_NUM_CTX`. |
 | `config.py` | det. | Constantes de tier/modelo/custo/status (sem lógica). |
 | `cost.py` | det. | Pricing real + `log_api_call` (escreve o ledger). |
 | `bench_translate.py` | det. | Benchmark Sonnet vs Opus-à-mão (gate de aprovação de modelo). |
@@ -74,6 +77,7 @@ flowchart LR
 | `kb_fetch.py` | P1.7-E: busca/normaliza fontes de KB (URL/PDF/.docx/.xlsx/local) pra `artifacts/research_cache/`, zero LLM. `--found-por {ia,usuario}` preserva proveniência. |
 | `kb_build_ollama.py` | P1.7-E: extração factual por entidade via Ollama LOCAL a partir do cache — sempre `status: draft_ollama`, nunca `reconciled` sozinho. |
 | `kb_reconcile.py` | Promove `draft_ollama` → `reconciled` SÓ após ratificação humana por entidade (`kb_ratified.csv`) + revisão real da seção "Conflitos Resolvidos". |
+| `kb_concordance.py` | Sinaliza concordância entre o rascunho `draft_ollama` e a pesquisa humana já registrada — triagem read-only pra Fase 1B (skill 03), nunca bloqueia nem decide sozinho; o gate de promoção continua em `kb_reconcile.py`. |
 | `spoiler_check.py` | `check` (nomes) + `check_gender` (gênero) — não vaza reveal antes do `reveal_timing`. `audit_and_persist()` roda OBRIGATORIAMENTE ao fim de todo capítulo (`run_chapter.py`), grava `spoiler_audit.json`. |
 
 **Qualidade & custo (det.)**

@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![438 testes](https://img.shields.io/badge/testes-438%20passing-brightgreen)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![577 testes](https://img.shields.io/badge/testes-577%20passing-brightgreen)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -333,7 +333,9 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
    piloto de portabilidade para novo engine Capcom.
 5. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
    pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
-6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
+6. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
+   `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
+7. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..08` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
@@ -346,7 +348,7 @@ Aprofundar: [`ARCHITECTURE.md`](framework/docs/ARCHITECTURE.md) (o porquê medid
 
 ---
 
-## Status — julho 2026
+## Status — setembro 2026
 
 Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/ROADMAP.md) (detalhamento técnico).
 
@@ -368,7 +370,7 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
   + observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) ✅
 - TM por série: jogos da mesma franquia compartilham termos recorrentes, isolamento estrutural ✅
 - Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
-- 438 testes passando
+- 577 testes passando (501 runtime+db+skills+validation, cobertura ≥90% · 76 conectores, cobertura ≥75%)
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 
@@ -404,6 +406,14 @@ engine distinto validado pelo Generic Connector System.
   nesta rodada que 1 batch gigante "trava" aparentemente (contador da API não reflete progresso
   real durante `in_progress`) ✅
 - Revisão humana (XLSX) disponibilizada; aplicação fica para quando o humano priorizar
+
+### Trails in the Sky SC (Falcom, quarto jogo, engine novo) — EM ANDAMENTO 🚧
+
+Engine do remake *Sora no Kiseki 2nd Chapter* (2026), sem entrada prévia no `connector_registry.json`
+— conector escrito do zero, `target_charset_supported: true` (grava UTF-8 real). Extração + split das
+67 cenas completos; cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
+instalado após o off-by-one do terminador ser corrigido por conector (ADR 0006). Demais cenas ainda
+não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifacts/decision_log.md`.
 
 ---
 
