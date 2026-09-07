@@ -16,6 +16,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **Tests** | `test.yml` | Todo push e PR | "O código **funciona**?" |
 | **Quality** | `quality.yml` | Todo push e PR | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
+| **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
 | **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 
@@ -79,6 +80,18 @@ fluxo antes de começar a traduzir um capítulo novo.
 - Precisa do segredo `ANTHROPIC_API_KEY` configurado no repositório.
 - **Se a chave não existir, ele pula** (fica verde, com um aviso) em vez de dar erro.
   Para ativá-lo de verdade: *Settings → Secrets and variables → Actions → New secret*.
+
+---
+
+## 3.5. `dep-audit-optional.yml` — CVE nas stacks opcionais (kb/ml)
+
+`requirements-kb.txt` (extração de PDF/DOCX) e `requirements-ml.txt` (torch +
+sentence-transformers) são **opcionais** — nunca instaladas em `test.yml`, e instalar torch do
+zero custava ~1min a cada push/PR só pra auditar código que a maioria das mudanças nem toca. Saíram
+do job `deps` de `quality.yml` (que continua auditando `requirements-dev.txt`, a stack que roda de
+verdade) e viraram checagem **semanal** aqui, mesmo padrão do `api-smoke.yml`: não roda a cada push,
+só todo domingo (agendado) ou sob demanda, e se falhar abre/atualiza uma issue automaticamente (sem
+issue, o cron falho passaria batido).
 
 ---
 
