@@ -66,15 +66,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # DEPS — pip-audit confere as dependências contra CVEs conhecidos (supply-chain). Falha se
-  # houver vulnerabilidade reportada sem fix aplicado. #89: os 3 requirements-*.txt (dev/kb/ml),
-  # não só o de dev — requirements-kb.txt (pdfplumber/python-docx) e requirements-ml.txt
-  # (sentence-transformers/sqlite-vec/flashrank/torch) ficavam sem auditoria. Steps SEPARADOS:
-  # cada requirements-*.txt é uma stack opcional independente (kb/ml não são pré-requisito um do
-  # outro nem do dev) — uma falha não deve mascarar a auditoria das outras duas.
-  # `pip freeze` de cada stack sobe como artifact (retenção 90 dias): os requirements-*.txt usam
-  # `~=` (compatible release) de propósito, não pin exato — sem isso não dá pra responder "quais
-  # versões exatas rodaram na build de tal dia" se um bug aparecer só numa combinação específica.
+  # DEPS — pip-audit confere requirements-dev.txt (a stack que o runtime determinístico usa)
+  # contra CVEs conhecidos (supply-chain) em todo push/PR. requirements-kb.txt/ml.txt (stacks
+  # OPCIONAIS, nunca instaladas em test.yml) saíram daqui pra dep-audit-optional.yml, cadência
+  # semanal: instalavam torch+sentence-transformers (~700MB-1,5GB) do zero a cada push/PR, ~1min
+  # do total de ~2min20s do job só pra auditar código que a maioria das mudanças nem toca.
+  # `pip freeze` sobe como artifact (retenção 90 dias): requirements-dev.txt usa `~=` (compatible
+  # release) de propósito, não pin exato — sem isso não dá pra responder "qual versão exata rodou"
+  # se um bug aparecer só numa combinação específica.
   deps:
     name: Dependências (pip-audit) — CVEs conhecidos
     runs-on: ubuntu-latest
@@ -84,27 +83,16 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: |
-            requirements-dev.txt
-            requirements-kb.txt
-            requirements-ml.txt
+          cache-dependency-path: requirements-dev.txt
       - name: Install dependencies (dev)
         run: pip install -r requirements-dev.txt
       - name: pip-audit — requirements-dev.txt (CVEs)
         run: pip-audit -r requirements-dev.txt
-      - name: Install dependencies (kb)
-        run: pip install -r requirements-kb.txt
-      - name: pip-audit — requirements-kb.txt (CVEs)
-        run: pip-audit -r requirements-kb.txt
-      - name: Install dependencies (ml)
-        run: pip install -r requirements-ml.txt
-      - name: pip-audit — requirements-ml.txt (CVEs)
-        run: pip-audit -r requirements-ml.txt
-      - name: Congela versões exatas resolvidas (dev+kb+ml)
-        run: pip freeze > /tmp/pip-freeze-dev-kb-ml.txt
+      - name: Congela versões exatas resolvidas (dev)
+        run: pip freeze > /tmp/pip-freeze-dev.txt
       - name: Sobe pip-freeze como artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pip-freeze-${{ github.sha }}
-          path: /tmp/pip-freeze-dev-kb-ml.txt
+          path: /tmp/pip-freeze-dev.txt
           retention-days: 90
