@@ -162,3 +162,24 @@ alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 j�
 rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):
 6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
 memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).
+
+### Checklist de revalidação de modelo (projeto novo, #170)
+
+`_MODEL_NAME` (`paraphrase-multilingual-MiniLM-L12-v2`, em `embedder.py`) cobre ~50 idiomas com
+qualidade desigual — o 1.0/0.944 acima só foi medido no par EN→pt-BR. Antes de confiar no
+retrieval semântico em produção para um projeto com par de idiomas diferente, rodar:
+
+```
+python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases paraphrases.json]
+```
+
+- Sem `--paraphrases`: mede só `exact_match_avg` (query = source verbatim → deve recuperar a
+  própria linha, score esperado perto de 1.0).
+- Com `--paraphrases` (JSON `[{"query": ..., "source": ...}, ...]`, curado à mão por par de
+  idiomas — reaproveitar o exercício feito pra EN→pt-BR): mede também `vocab_variation_avg`.
+- Comparar os dois contra a régua EN→pt-BR (1.0 / 0.944). Score bem abaixo disso → o modelo
+  pinado não serve bem pro par de idiomas; considerar `--model` alternativo (grava
+  `tm_embeddings.model_name` por vetor, reindex é automático dentro do próprio comando).
+
+Isso é validação **operacional** por projeto, não migração de dado — roda uma vez ao ligar
+`db`/RAG num projeto novo, fora da CI (precisa da stack de `requirements-ml.txt`).
