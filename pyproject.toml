@@ -1,3 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "translation-cognition-framework"
+dynamic = ["version"]
+description = "Translation Cognition Framework — pipeline SDD de localização narrativa (games/filmes/séries)"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic~=0.109",
+    "httpx~=0.28",
+]
+
+[project.scripts]
+tcf = "framework.cli:main"
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+
+[tool.setuptools.packages.find]
+include = ["framework*"]
+namespaces = true
+
 [tool.ruff]
 target-version = "py311"
 line-length = 100
