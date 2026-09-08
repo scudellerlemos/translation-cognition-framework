@@ -92,7 +92,7 @@ exato de TM, glossário por termo, voice card por nome de falante). RAG **semân
 | RAG | Onde | Mecanismo | Status |
 |---|---|---|---|
 | **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto + reranker **FlashRank** (`ms-marco-MiniLM-L-12-v2`, opcional) | ✅ **validado** — `projects/translation_software/translation_software.db` tem **6.046 vetores** indexados (corpus do BoF4); busca exata→score 1.0, variação→0.944 |
-| **nº2 — KB/lore** | retrieval semântico sobre a Knowledge Base | mesma infra `sqlite-vec`, **gated pela trava temporal de spoiler** (default-deny por reveal-por-seção) | ✅ ligado |
+| **nº2 — KB/lore** | `context_pack.select_kb()` → seções da KB no pacote | retrieval **léxico** (token do título da seção citado na cena), **gated pela trava temporal de spoiler** (default-deny por reveal-por-seção); indexação semântica (`embedder.index_project(kind="kb")`, #169) já disponível mas ainda não trocada pro retrieval | ✅ ligado (léxico) |
 | **nº3 — cross-game/franquia** | corpus compartilhado por série, retrieval por cena | reusa a mesma infra | 🔮 futuro (multi-game) |
 
 **Onde RAG deliberadamente NÃO entra** (decidido, não esquecido): glossário (match léxico é

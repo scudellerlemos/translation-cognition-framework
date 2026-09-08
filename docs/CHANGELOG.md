@@ -9,6 +9,12 @@ organizadas por período, não por versão.
 
 ## 2026-09 — versionamento SemVer + CI hardening
 
+- **Chunking do RAG semântico documentado, `kb` vira kind indexável** (#169, ADR 0014): o embedder
+  nunca chunka — `_KIND_CONFIG` ganhou o kind `"kb"` (tabela `kb`, coluna `content`, nova tabela
+  `kb_embeddings` no schema) reaproveitando a mesma indexação genérica 1-linha-1-vetor de
+  `translation`/`decision`, porque a KB já chega pré-chunkada por seção markdown na ingestão
+  (`migrate_from_flat._migrate_kb`). Convenção pra conteúdo tipo documento em projeto futuro:
+  chunking é responsabilidade do parser que grava a tabela-fonte, nunca do embedder.
 - **Versionamento SemVer manual adotado** (ADR 0013): `VERSION` + tag `vX.Y.Z`, decisão de
   patch/minor/major é julgamento humano no momento de taguear, sem ferramenta nem enforcement de
   formato de commit. Primeiras tags reais: `v1.0.0`, `v1.0.1`.
