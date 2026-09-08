@@ -35,6 +35,29 @@ import context_pack  # noqa: E402
 import paths  # noqa: E402
 
 
+def _cfg(root: Path) -> dict:
+    p = root / "project.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+
+
+def research_log_text(root: Path, cfg: dict | None = None) -> str:
+    """Conteudo integral do research_log.md — do SQLite se o projeto tem `db` populado
+    (#94: mesmo switch DB-gated do context_pack), senao do arquivo flat. Retorna '' se ausente
+    em ambas as fontes."""
+    root = Path(root)
+    if cfg is None:
+        cfg = _cfg(root)
+    db_path, db_pid = context_pack._db_path(root, cfg)
+    if db_path:
+        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            return db.get_research_log(db_pid) or ""
+    return context_pack._read(paths.research_log(root))
+
+
 def _research_section(md: str, chap: str) -> str:
     """Texto da secao '## cap.<chap>' do research_log.md (ate o proximo '## '). '' se nao houver."""
     # casa '## cap.19' / '## cap.19 — ...' (limite em '.' p/ nao casar cap.1 com cap.19)
@@ -60,9 +83,22 @@ def _rows_for_chapter(path: Path, name_col: str, chap: str) -> list[dict]:
     return out
 
 
-def _ratified_set(root) -> set:
-    """Nomes ja ratificados pelo HUMANO (kb_ratified.csv, coluna 'name'). Vazio se nao houver arquivo.
-    E o SEGUNDO PAR DE OLHOS: so o humano edita este arquivo (a IA nunca se auto-ratifica)."""
+def _ratified_set(root, cfg: dict | None = None) -> set:
+    """Nomes ja ratificados pelo HUMANO (coluna 'name'). Do SQLite se o projeto tem `db`
+    populado (#94), senao do kb_ratified.csv flat. Vazio se nenhuma fonte tiver o nome.
+    E o SEGUNDO PAR DE OLHOS: so o humano grava aqui (a IA nunca se auto-ratifica)."""
+    root = Path(root)
+    if cfg is None:
+        cfg = _cfg(root)
+    db_path, db_pid = context_pack._db_path(root, cfg)
+    if db_path:
+        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            rows = db.get_kb_ratified(db_pid)
+        return {(r.get("name") or "").strip().lower() for r in rows if r.get("name")}
     p = paths.kb_ratified(root)
     if not p.is_file():
         return set()
@@ -86,8 +122,9 @@ def digest(root, chapter) -> list[dict]:
     flags[], note}. kind in {glossary, entity}. Vazio = nenhuma entidade nova marcada no capitulo."""
     root = Path(root)
     chap = str(chapter)
-    section = _research_section(context_pack._read(paths.research_log(root)), chap).lower()
-    ratified = _ratified_set(root)
+    cfg = _cfg(root)
+    section = _research_section(research_log_text(root, cfg), chap).lower()
+    ratified = _ratified_set(root, cfg)
     items = []
 
     def _flags(name, note):
