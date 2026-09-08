@@ -1,6 +1,6 @@
 # Translation Local — Inferência local (Ollama POC; piloto: BoF4)
 
-> Status: **DESCONTINUADO** (2026-08-30) — ver `framework/docs/adr/0008-ollama-local-tier-not-adopted.md`
+> Status: **DESCONTINUADO** (2026-08-30) — ver `docs/adr/0008-ollama-local-tier-not-adopted.md`
 
 ---
 

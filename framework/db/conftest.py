@@ -51,6 +51,10 @@ def synthetic_migrated(tmp_path_factory):
         encoding="utf-8")
     (art / "universe_knowledge_base.md").write_text(
         "## Mundo\nUm mundo sintetico de teste.\n", encoding="utf-8")
+    (art / "research_log.md").write_text(
+        "# Research Log\n\n**Status:** reconciled\n\n## cap.1\n\nHero confirmado.\n", encoding="utf-8")
+    (art / "kb_ratified.csv").write_text(
+        "name,ratified_by,date,note\nHero,QA,2026-01-01,ok\n", encoding="utf-8")
     (art / "api_ledger.jsonl").write_text(
         json.dumps({"scene": "s1", "kind": "translate", "model": "m",
                     "usage": {"in": 10, "out": 5}, "cost_usd": 0.01}) + "\n", encoding="utf-8")
