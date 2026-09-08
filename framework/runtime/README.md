@@ -1,7 +1,7 @@
 # framework/runtime — harness de execução (orquestração determinística + interface de modelo)
 
 Torna **cada cena um job stateless e limitado**: o contexto por execução é O(cena), não O(histórico).
-É a camada que tira a orquestração e a memória da janela da LLM. Ver `framework/docs/ARCHITECTURE.md`.
+É a camada que tira a orquestração e a memória da janela da LLM. Ver `docs/ARCHITECTURE.md`.
 
 ## Módulos
 
