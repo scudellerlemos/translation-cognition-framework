@@ -85,3 +85,25 @@ def test_migrate_schema_adds_reveal_column_to_preexisting_decisions(tmp_path):
         db2.upsert_decision("p1", "Sem reveal ainda", summary="x")
         decisions = db2.get_decisions("p1")
     assert decisions[0]["reveal"] is None
+
+
+def test_reindex_pending_embeddings_never_raises(tmp_path, monkeypatch):
+    """#171: uma falha de embedding (extensão nativa incompatível, hardware ROCm indisponível,
+    etc. — qualquer coisa além de ImportError) nunca pode derrubar o write-path. Embedding é
+    busca semântica opcional sobre dados já persistidos em SQL; regressão real encontrada ao
+    conectar reindex_pending_embeddings no migrate() (a exceção só era pega se ImportError)."""
+    import types
+    fake_embedder = types.ModuleType("embedder")
+
+    class BoomEmbedder:
+        def __init__(self):
+            raise RuntimeError("falha nativa simulada (nao-ImportError)")
+
+    fake_embedder.Embedder = BoomEmbedder
+    monkeypatch.setitem(sys.modules, "embedder", fake_embedder)
+
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        result = db.reindex_pending_embeddings("p1")
+    assert result is None
