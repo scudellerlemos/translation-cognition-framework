@@ -33,6 +33,8 @@ def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
     assert result["voice_cards"] > 0, "voice_cards.json existe (artifacts/state/) mas importou 0 — path errado?"
     assert result["back_translations"] > 0, "back_translation_*.json existe mas importou 0"
     assert result["kb"] > 0, "universe_knowledge_base.md existe mas importou 0 seções"
+    assert result["research_log"] > 0, "research_log.md existe mas importou 0 (#94)"
+    assert result["kb_ratified"] > 0, "kb_ratified.csv existe mas importou 0 (#94)"
     assert result["jobs"] > 0, result
     assert result["metrics"] > 0, "metrics.jsonl existe mas importou 0 — mismatch?"
     assert result["warnings"] > 0, "warnings.jsonl existe mas importou 0"
@@ -76,6 +78,16 @@ def test_migrate_voice_cards_keep_lines(bof4_migrated):
         vc = db.get_voice_cards("bof4")
     assert vc, "voice_cards vazio"
     assert any(c.get("lines") for c in vc), "lines não migraram (formato context_pack perdido)"
+
+
+def test_migrate_research_log_and_kb_ratified_lossless(synthetic_migrated):
+    """#94: research_log.md/kb_ratified.csv migram byte-fiel (conteudo) e sem perder colunas."""
+    _root, db_path, _ = synthetic_migrated
+    with Store(db_path) as db:
+        content = db.get_research_log("syn")
+        ratified = db.get_kb_ratified("syn")
+    assert content and "reconciled" in content.lower() and "## cap.1" in content
+    assert ratified == [{"name": "Hero", "ratified_by": "QA", "date": "2026-01-01", "note": "ok"}]
 
 
 def test_strip_codes_clean_form():

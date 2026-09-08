@@ -280,9 +280,8 @@ def discover(root, chap) -> dict:
 
 
 def _reconciled(root: Path) -> bool:
-    rl = paths.research_log(root)
-    return rl.is_file() and bool(
-        re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I))
+    """#94: DB-gated via kb_review.research_log_text (SQLite se `db` populado, senao flat)."""
+    return bool(re.search(r"status[:*\s]+reconciled", kb_review.research_log_text(root), re.I))
 
 
 def coverage(root, chap, *, strict=False) -> dict:

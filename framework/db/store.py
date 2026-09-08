@@ -233,6 +233,44 @@ class Store:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    # ── Research log (#94) ──────────────────────────────────────────────────────
+
+    def upsert_research_log(self, project_id: str, content: str):
+        self._con.execute(
+            """INSERT INTO research_log(project_id, content, updated_at) VALUES(?,?,?)
+               ON CONFLICT(project_id) DO UPDATE SET
+                   content=excluded.content, updated_at=excluded.updated_at""",
+            (project_id, content, time.time()),
+        )
+        self._con.commit()
+
+    def get_research_log(self, project_id: str) -> str | None:
+        row = self._con.execute(
+            "SELECT content FROM research_log WHERE project_id=?", (project_id,)
+        ).fetchone()
+        return row["content"] if row else None
+
+    # ── Ratificação humana de KB (#94) ──────────────────────────────────────────
+
+    def upsert_kb_ratified(self, project_id: str, entries: list):
+        """Nomes ratificados em LOTE (1 commit). entries: [{name, ratified_by, date, note}]."""
+        self._con.executemany(
+            """INSERT INTO kb_ratified(project_id, name, ratified_by, date, note)
+               VALUES(?,?,?,?,?)
+               ON CONFLICT(project_id, name) DO UPDATE SET
+                   ratified_by=excluded.ratified_by, date=excluded.date, note=excluded.note""",
+            [(project_id, e.get("name", ""), e.get("ratified_by"), e.get("date"), e.get("note"))
+             for e in entries],
+        )
+        self._con.commit()
+
+    def get_kb_ratified(self, project_id: str) -> list[dict]:
+        rows = self._con.execute(
+            "SELECT name, ratified_by, date, note FROM kb_ratified WHERE project_id=? ORDER BY name",
+            (project_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
     # ── Back-translation ────────────────────────────────────────────────────────
 
     def upsert_back_translations(self, project_id: str, scene_id: str, entries: list):

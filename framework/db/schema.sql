@@ -163,6 +163,28 @@ CREATE TABLE IF NOT EXISTS kb (
     UNIQUE(project_id, section)
 );
 
+-- ── Research log (pesquisa reconciliada IA+humano — research_log.md, #94) ─────
+-- Espelho do arquivo inteiro (1 linha/projeto): kb_phase/kb_review já sabem parsear a seção
+-- '## cap.N' e o marcador 'status: reconciled' de uma string markdown — aqui só troca a FONTE
+-- dessa string (DB em vez de disco), sem duplicar o parsing.
+CREATE TABLE IF NOT EXISTS research_log (
+    project_id  TEXT PRIMARY KEY REFERENCES projects(id),
+    content     TEXT NOT NULL,
+    updated_at  REAL
+);
+
+-- ── Ratificação humana de KB (kb_ratified.csv, #94) ────────────────────────────
+-- Segundo par de olhos: só o humano grava aqui (a IA nunca se auto-ratifica).
+CREATE TABLE IF NOT EXISTS kb_ratified (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   TEXT NOT NULL REFERENCES projects(id),
+    name         TEXT NOT NULL,
+    ratified_by  TEXT,
+    date         TEXT,
+    note         TEXT,
+    UNIQUE(project_id, name)
+);
+
 -- ── Back-translation (verificação pt-BR → EN de linhas de alto risco) ─────────
 CREATE TABLE IF NOT EXISTS back_translations (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,

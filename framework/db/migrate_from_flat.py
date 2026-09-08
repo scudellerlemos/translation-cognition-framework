@@ -365,6 +365,31 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
     return n
 
 
+def _migrate_research_log(db: Store, project_id: str, root: Path) -> int:
+    p = root / "artifacts" / "research_log.md"
+    if not p.is_file():
+        return 0
+    db.upsert_research_log(project_id, p.read_text(encoding="utf-8"))
+    return 1
+
+
+def _migrate_kb_ratified(db: Store, project_id: str, root: Path) -> int:
+    p = root / "artifacts" / "kb_ratified.csv"
+    if not p.is_file():
+        return 0
+    entries = []
+    with p.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            name = (row.get("name") or "").strip()
+            if not name:
+                continue
+            entries.append({"name": name, "ratified_by": row.get("ratified_by"),
+                            "date": row.get("date"), "note": row.get("note")})
+    if entries:
+        db.upsert_kb_ratified(project_id, entries)
+    return len(entries)
+
+
 def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
     recs = _read_jsonl(root / "artifacts" / "api_ledger.jsonl")   # leitor tolerante único
     if not recs:
@@ -486,6 +511,8 @@ def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
         spoiler = _migrate_spoiler(db, project_id, project_root)
         back_translations = _migrate_back_translations(db, project_id, project_root)
         kb = _migrate_kb(db, project_id, project_root)
+        research_log = _migrate_research_log(db, project_id, project_root)
+        kb_ratified = _migrate_kb_ratified(db, project_id, project_root)
         jobs = _migrate_jobs(db, project_id, project_root)
         metrics = _migrate_metrics(db, project_id, project_root)
         warnings = _migrate_warnings(db, project_id, project_root)
@@ -503,6 +530,8 @@ def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
             "spoiler": spoiler,
             "back_translations": back_translations,
             "kb": kb,
+            "research_log": research_log,
+            "kb_ratified": kb_ratified,
             "jobs": jobs,
             "metrics": metrics,
             "warnings": warnings,
