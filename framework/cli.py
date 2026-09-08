@@ -94,14 +94,16 @@ def cmd_db_validate_model(args):
     em produção (#170) — ver docs/DB_MIGRATION_ROADMAP.md."""
     import sqlite3
 
+    from store import Store
     from validate_model import validate_model
     paraphrases = (json.loads(Path(args.paraphrases).read_text(encoding="utf-8"))
                    if getattr(args, "paraphrases", None) else None)
-    con = sqlite3.connect(args.db_path)
-    result = validate_model(con, args.project_id, model_name=getattr(args, "model", None),
-                             sample_size=getattr(args, "sample_size", 20),
-                             paraphrases=paraphrases)
-    con.close()
+    with Store(args.db_path):
+        con = sqlite3.connect(args.db_path)
+        result = validate_model(con, args.project_id, model_name=getattr(args, "model", None),
+                                 sample_size=getattr(args, "sample_size", 20),
+                                 paraphrases=paraphrases)
+        con.close()
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
