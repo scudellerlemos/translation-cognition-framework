@@ -14,10 +14,16 @@ Dependências (instalar via pip):
 Uso:
     emb = Embedder()
     emb.index_project(con, project_id="bof4")   # indexa todas as traduções aprovadas
-    hits = emb.search(con, "He's gone...", project_id="bof4", k=5)
+    hits = emb.search(con, "He's gone...", project_id="bof4", k=5, min_score=0.6)
 
     emb.index_project(con, project_id="bof4", kind="decision")  # indexa decisions.summary
     hits = emb.search_decisions(con, "onomatopeia", project_id="bof4", k=5)
+
+NN exato vs ANN (#172): search()/search_decisions() fazem NN exato (cosine sobre TODOS os
+vetores do projeto via vec0, sem índice aproximado) — decisão deliberada para corpus pequeno
+(~6 mil linhas / 1 jogo, validado em docs/STACK.md), favorece determinismo sobre latência.
+Considerar migrar para ANN (sqlite-vec suporta índice aproximado) a partir de ~50-100 mil
+vetores por projeto, quando o scan linear passar a pesar na latência do pacote de contexto.
 """
 from __future__ import annotations
 
@@ -160,8 +166,14 @@ class Embedder:
 
     def search(self, con: sqlite3.Connection, query: str,
                project_id: str, k: int = 5,
-               approved_only: bool = True) -> list[dict]:
-        """Busca semântica na TM. Retorna top-k hits com score de similaridade."""
+               approved_only: bool = True,
+               min_score: float | None = None) -> list[dict]:
+        """Busca semântica na TM. Retorna top-k hits com score de similaridade.
+
+        min_score (#172): corta hits com score abaixo do threshold antes do rerank. None
+        (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
+        seção rotulada no pacote de contexto.
+        """
         from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
@@ -191,6 +203,8 @@ class Embedder:
             # vetores são unit-norm (encode normaliza) e a distância é L2 -> cos = 1 - L2²/2.
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
+            if min_score is not None and d["score"] < min_score:
+                continue
             results.append(d)
 
         return self._rerank(query, results) if results else results
