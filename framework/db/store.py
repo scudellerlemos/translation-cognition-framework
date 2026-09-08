@@ -159,13 +159,16 @@ class Store:
         pula o que já tem embedding). Chamado do write-path (migrate_from_flat) a cada
         mirror flat→DB, pra uma linha aprovada/corrigida nunca ficar esperando reindex
         manual. None se sentence-transformers/sqlite-vec (deps de ML, opcionais) não
-        instaladas — mesmo fallback silencioso de search_tm_semantic."""
+        instaladas, OU se a indexação falhar por qualquer outro motivo (ex.: extensão
+        nativa do sqlite-vec incompatível, hardware ROCm indisponível) — embedding é busca
+        semântica opcional; nunca pode derrubar o mirror flat→DB (dados da TM/decisions já
+        estão persistidos em SQL antes desta chamada)."""
         try:
             from embedder import Embedder  # type: ignore
             emb = Embedder()
             return (emb.index_project(self._con, project_id, kind="translation")
                     + emb.index_project(self._con, project_id, kind="decision"))
-        except ImportError:
+        except Exception:
             return None
 
     def get_tm_approved(self, project_id: str, limit: int = 5000) -> list[dict]:
