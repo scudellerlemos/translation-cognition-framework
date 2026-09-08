@@ -69,3 +69,79 @@ def test_generate_stub_not_written_when_dir_missing_flag(tmp_path, monkeypatch):
 
     assert rc == 0
     assert not (tmp_path / "extract.py").exists()
+
+
+# ---------------------------------------------------------------------------
+# #95: cobertura de erro/relatório de discover.run() e _print_report()
+# ---------------------------------------------------------------------------
+
+_KNOWN_REGISTRY = [{
+    "id": "known_engine", "name": "Known Engine",
+    "reference_connector": "projects/ref/connector",
+    "signatures": {"file_patterns": ["*.KNOWN"], "min_file_count": 1},
+}]
+_KNOWN_EVIDENCE = {
+    "file_count": 5, "families": {"X.KNOWN": 5}, "magic_bytes": {},
+    "sample_encodings": {"ascii": 0.9}, "has_control_tokens": False,
+    "entropy_mean": 4.0, "string_density": 0.5,
+}
+_BLOCKED_EVIDENCE = {
+    "file_count": 5, "families": {}, "magic_bytes": {},
+    "sample_encodings": {"ascii": 0.9}, "has_control_tokens": False,
+    "entropy_mean": 7.9, "string_density": 0.5,
+}
+
+
+def test_run_missing_game_dir_returns_2(tmp_path):
+    rc = discover.run(tmp_path / "does_not_exist")
+    assert rc == 2
+
+
+def test_run_evidence_collection_error_returns_2(tmp_path, monkeypatch):
+    monkeypatch.setattr(discover, "collect", lambda game_dir: {"error": "falha ao ler arquivo"})
+    game_dir = tmp_path / "game"
+    game_dir.mkdir()
+
+    rc = discover.run(game_dir)
+
+    assert rc == 2
+
+
+def test_run_known_engine_prints_reference_connector(tmp_path, monkeypatch, capsys):
+    _stub_collect_and_registry(monkeypatch, _KNOWN_EVIDENCE)
+    monkeypatch.setattr(discover, "load_registry", lambda: _KNOWN_REGISTRY)
+    game_dir = tmp_path / "game"
+    game_dir.mkdir()
+
+    rc = discover.run(game_dir)
+
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "Known Engine" in out
+    assert "projects/ref/connector" in out
+
+
+def test_run_blocked_prints_reasons(tmp_path, monkeypatch, capsys):
+    _stub_collect_and_registry(monkeypatch, _BLOCKED_EVIDENCE)
+    game_dir = tmp_path / "game"
+    game_dir.mkdir()
+
+    rc = discover.run(game_dir)
+
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "Bloqueado" in out
+    assert "engenharia reversa" in out
+
+
+def test_run_unknown_engine_prints_top_families(tmp_path, monkeypatch, capsys):
+    ev = dict(_UNKNOWN_EVIDENCE, families={"DATA.BIN": 12, "TEXT.STR": 4})
+    _stub_collect_and_registry(monkeypatch, ev)
+    game_dir = tmp_path / "game"
+    game_dir.mkdir()
+
+    rc = discover.run(game_dir)
+
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "DATA.BIN: 12 arquivos" in out
