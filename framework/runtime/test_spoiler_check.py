@@ -62,6 +62,30 @@ def test_check_gender_flags_marker_near_entity(tmp_path):
     assert flags and flags[0]["marker"] == "ela" and flags[0]["entity"] == "Oshtor"
 
 
+def test_check_gender_ignores_marker_referring_to_other_entity(tmp_path):
+    # "ela" esta colada a Rion (referente correto); Kuon so aparece longe, no inicio da frase.
+    # Co-ocorrencia pura (so "a entidade aparece na linha?") flagraria isso; atribuicao por
+    # referente mais proximo nao deve, pois "ela" nao se refere a Kuon nesta linha.
+    _scene(tmp_path, "ch_11_01", "Kuon observa em silencio enquanto Rion, ela mesma, decide.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"entity": "Kuon", "reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+        {"entity": "Rion", "reveal": "13_08", "triggers": ["Rion"]},
+    ]}), encoding="utf-8")
+    assert sc.check_gender(tmp_path) == []
+
+
+def test_check_gender_flags_correct_referent_among_multiple_entities(tmp_path):
+    # Duas entidades na linha; "ela" fica colada a Kuon (em quarentena) -> deve flagrar mesmo com
+    # Rion tambem citado (nao e mero "a entidade aparece em algum lugar da linha").
+    _scene(tmp_path, "ch_11_01", "Rion observa em silencio enquanto Kuon, ela mesma, decide.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"entity": "Kuon", "reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+        {"entity": "Rion", "reveal": "13_08", "triggers": ["Rion"]},
+    ]}), encoding="utf-8")
+    flags = sc.check_gender(tmp_path)
+    assert flags and flags[0]["entity"] == "Kuon" and flags[0]["marker"] == "ela"
+
+
 def test_list_guards(tmp_path):
     _scene(tmp_path, "ch_11_01", "x")
     _ledger(tmp_path, forbidden_pre_reveal=["Oshtor"], gender_quarantine=True, notes="twist central")
