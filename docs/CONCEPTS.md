@@ -3,7 +3,7 @@
 > Este doc ensina **os conceitos**, não o código. Público: alguém confortável com engenharia de
 > software/dados, mas novo nas decisões de *engenharia de IA*. Cada conceito segue o mesmo molde:
 > **o problema → a solução → por que importa em IA**. Para o panorama, volte ao
-> [`README`](../../README.md); para o porquê medido, veja [`ARCHITECTURE.md`](ARCHITECTURE.md).
+> [`README`](../README.md); para o porquê medido, veja [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 A tese do projeto em uma frase: **a LLM é cara, esquecida e estocástica — então use-a só onde IA é
 insubstituível e faça todo o resto com código determinístico, testável e barato.** Tudo abaixo é
@@ -171,4 +171,4 @@ determinísticos são regeneráveis. Não confunda "pipeline determinístico" co
 | **④ Validation** | #6 SDD (gates de etapa) · #7 gates + propõe→aprova→aplica |
 
 Leia agora [`ARCHITECTURE.md`](ARCHITECTURE.md) (o porquê medido) e [`GOVERNANCE.md`](GOVERNANCE.md)
-(quem decide o quê). Para vocabulário rápido, o glossário está no [`README`](../../README.md#glossário-leia-antes-de-mergulhar).
+(quem decide o quê). Para vocabulário rápido, o glossário está no [`README`](../README.md#glossário-leia-antes-de-mergulhar).

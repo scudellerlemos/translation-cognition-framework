@@ -1,0 +1,22 @@
+{
+  "title": "TCF Demo",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "artifacts/scenes/demo01/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": [],
+  "system_line_convention": "all_caps",
+  "length_constraints": {
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110
+  },
+  "batch_size": 20,
+  "kb_frontier": "1",
+  "notes": "Projeto sintetico de demonstracao (dialogo ficticio, sem jogo real por tras) — existe so para o `tcf translate` do README ter um exemplo real e executavel de ponta a ponta."
+}
