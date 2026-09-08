@@ -2,7 +2,7 @@
 
 Todas as mudanças significativas do framework são documentadas aqui, em ordem cronológica
 (mais recente primeiro). Numeração de versão via `VERSION` + tag `vX.Y.Z` desde a v1.0.0
-(ver `framework/docs/adr/0013-versionamento-semver-manual.md`); as seções abaixo continuam
+(ver `docs/adr/0013-versionamento-semver-manual.md`); as seções abaixo continuam
 organizadas por período, não por versão.
 
 ---
@@ -39,7 +39,7 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
   `run_scene.py`. Detalhe da investigação e da metodologia de remap em
   `projects/trails_sky_sc/artifacts/decision_log.md`.
 - **Off-by-one do terminador corrigido por conector** (ver
-  `framework/docs/adr/0006-budget-reserves-terminator-per-connector.md`):
+  `docs/adr/0006-budget-reserves-terminator-per-connector.md`):
   `byte_budget` de `bof4`/`trails_sky_sc`/`translation_local`/`translation_software` já reservava 1
   byte pro terminador `\0` fisicamente no CSV, mas `model.py`/`context_pack.py` nunca descontavam
   esse byte do limiar usado pra decidir se uma tradução cabe — causa raiz de 56/65 linhas do

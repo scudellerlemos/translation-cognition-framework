@@ -474,6 +474,10 @@ def _audit_schema(root: Path):
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    except Exception:
+        pass
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene", nargs="?", default=None)

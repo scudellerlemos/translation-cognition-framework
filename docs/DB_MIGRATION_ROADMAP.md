@@ -150,4 +150,4 @@ alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 j�
 **Validação (correção — este parágrafo estava desatualizado):** `embedder.index_project`/`search` JÁ
 rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):
 6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
-memória `semantic-stack-validated` e `framework/docs/ROADMAP.md` (seção B2).
+memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).

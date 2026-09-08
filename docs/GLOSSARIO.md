@@ -10,7 +10,7 @@
 > 2026-06.
 
 ## Hardening — endurecimentos de arquitetura
-Documentados em `framework/docs/ROADMAP.md` (seção P4). Código antigo → nome atual:
+Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado). Código antigo → nome atual:
 
 | Antigo | Nome atual | Conceito |
 |---|---|---|
@@ -22,7 +22,7 @@ Documentados em `framework/docs/ROADMAP.md` (seção P4). Código antigo → nom
 | H6 | **Spoiler observável** | verificação observável de não-vazamento pós-tradução (`spoiler_check.py`) |
 
 ## Riscos de cognição (levar o pipeline a produção)
-Documentados em `framework/docs/ROADMAP.md` (seção P1.5).
+Documentados em `docs/ROADMAP.md` (seção P1.5, Histórico detalhado).
 
 | Antigo | Nome atual | Conceito |
 |---|---|---|
@@ -34,7 +34,7 @@ Documentados em `framework/docs/ROADMAP.md` (seção P1.5).
 | R-CUSTO | **Re-tradução cara** | re-tradução era 58% do gasto (rótulo de engine traduzido → estouro de budget → retighten); resolvido por `model._label_passthrough` |
 
 ## Riscos de engenharia (mitigações offline)
-Documentados em `framework/docs/ROADMAP.md` (seção P4).
+Documentados em `docs/ROADMAP.md` (seção P4, Histórico detalhado).
 
 | Antigo | Nome atual | Conceito |
 |---|---|---|
@@ -56,7 +56,7 @@ Documentados no `QA_REVIEW.md`.
 | GAP D | **Consistência de glossário** | `glossary_lint.py` (determinístico) |
 
 ## Generic Connector System / Evolução do Motor (retirados 2026-07-03)
-Documentados em `framework/docs/ROADMAP.md` (seção Fase D / Evolução do Motor).
+Documentados em `docs/ROADMAP.md` (seção Fase D / Evolução do Motor).
 
 | Antigo | Nome atual | Conceito |
 |---|---|---|

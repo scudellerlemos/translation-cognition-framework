@@ -8,7 +8,7 @@
 
 Os outros dois pilares têm casa própria:
 - **Arquitetura** (as camadas, o "porquê" medido) → [`ARCHITECTURE.md`](ARCHITECTURE.md)
-- **Engenharia** (a fronteira IA↔determinístico, os módulos, alavancas de custo) → [`ARCHITECTURE.md`](ARCHITECTURE.md) + [`../runtime/README.md`](../runtime/README.md)
+- **Engenharia** (a fronteira IA↔determinístico, os módulos, alavancas de custo) → [`ARCHITECTURE.md`](ARCHITECTURE.md) + [`../framework/runtime/README.md`](../framework/runtime/README.md)
 - **Governança** (este doc) → *quem propõe, quem aprova, quem aplica, e o que é imutável*
 
 ---
