@@ -79,6 +79,8 @@ retriever semântico cai para `[]`, testado). Stack (`requirements-ml.txt`):
 - **Onde mora**: `framework/db/embedder.py` (`Embedder.encode`/`index_project`/`search`).
 - **Como ligar**: `pip install -r requirements-ml.txt` (pesado: ~700 MB–1,5 GB, puxa torch) e
   `python framework/cli.py db index <projeto>.db <project_id>`.
+- **Multi-projeto**: processo isolado por projeto, sem daemon compartilhado — cache de download do
+  modelo já é por-máquina (default do Hugging Face Hub), reload por processo aceito (ver ADR 0014).
 
 ---
 
