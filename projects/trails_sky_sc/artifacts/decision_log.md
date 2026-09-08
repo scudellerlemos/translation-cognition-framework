@@ -94,7 +94,7 @@
   para `bof4`/`utawarerumono` (translitera na gravação), errado para `trails_sky_sc`, cujo `reinsert.py`
   grava bytes UTF-8 reais (acento não some, custa byte extra). Corrigido via `_budget_len()`, que agora
   lê `connector.target_charset_supported` do `project.json` para escolher a métrica certa. Ver ADR 0005
-  (`framework/docs/adr/0005-budget-metric-per-connector-charset.md`) para o design completo.
+  (`docs/adr/0005-budget-metric-per-connector-charset.md`) para o design completo.
 - `project.json` atualizado: `connector.target_charset_supported: true` + `charset_note` citando a
   confirmação in-game de 2026-08-23 (acentos pt-BR renderizam sem clipping, NPCs Skyler/Fabree,
   `scena/mp0000.dat`) — já registrada em `notes`, agora também no campo estruturado que o gate de tipos
@@ -115,7 +115,7 @@
 - **65 linhas residuais em overflow após a escalação automática de `run_scene.py`** (3 tiers de
   tolerância já reduziram 301→145→65). Investigação read-only achou duas causas distintas: 56/65
   (86%) eram falso-negativo por bug de off-by-one na reserva do byte de terminador (corrigido no
-  framework — ver `framework/docs/adr/0006-budget-reserves-terminator-per-connector.md` e a entrada
+  framework — ver `docs/adr/0006-budget-reserves-terminator-per-connector.md` e a entrada
   correspondente no `CHANGELOG.md`); as 9 restantes eram overflow genuíno (traduções 1–4 bytes acima
   do budget mesmo sem o terminador) e foram encurtadas manualmente preservando sentido.
 - **Descoberta independente durante a verificação real**: o `.pac` instalado
