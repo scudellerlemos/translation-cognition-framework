@@ -150,6 +150,10 @@ def list_guards(root) -> list[dict]:
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     ap = argparse.ArgumentParser(description="Verificacao de nao-vazamento de spoiler (pos-traducao).")
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")

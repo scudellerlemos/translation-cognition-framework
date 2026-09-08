@@ -18,7 +18,7 @@ vida-longa que acumulava todo o histórico (ver `adr/0002-stateless-scene-jobs.m
 
 > **Eixo diferente das 4 camadas.** Isto é a **organização do código** (genérico reutilizável vs.
 > instância da obra) — não confundir com as **4 camadas conceituais** de responsabilidade (Cognition /
-> State / Execution / Validation), descritas no [README raiz](../../README.md#a-arquitetura-em-4-camadas).
+> State / Execution / Validation), descritas no [README raiz](../README.md#a-arquitetura-em-4-camadas).
 > Uma pasta pode implementar mais de uma camada (ex.: `runtime/` cobre State + Execution + Cognition).
 
 ```
@@ -27,7 +27,7 @@ framework/media-profiles/  ← A CATEGORIA (jogos/filmes/séries). Formato, toke
 framework/connectors/      ← A I/O (código det.). Extração/reinserção meio↔corpus.
 framework/runtime/         ← O HARNESS (orquestração det. + interface de modelo).  [NOVO]
 framework/validation/      ← OS GATES (código det.). Schemas, naturalidade, custo.
-framework/docs/            ← ARQUITETURA + ADRs + ROADMAP.                          [NOVO]
+docs/                      ← ARQUITETURA + ADRs + ROADMAP (documentação, fora de framework/).
         +
 projects/<título>/         ← A INSTÂNCIA (o quê). Manifesto + perfil + artefatos + conector do título.
 ```
@@ -151,7 +151,7 @@ flowchart LR
 
 > Retrato do marco de conclusão do Utawarerumono (capítulos, custo, linhas abaixo são daquele momento,
 > não atualizados depois). Números de testes/CI mudam com frequência — estado corrente sempre em
-> [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+> [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
 O harness deixou de ser projeto e entregou uma obra inteira: **os 16 capítulos do jogo (11–23 + 30, 31,
 39) traduzidos e verificados ponta-a-ponta** (round-trip byte-idêntico, resíduo 0, + back-translation de
@@ -188,12 +188,12 @@ comprovado vivo, além do alvo acima:
 - **Travas de qualidade:** testes passando com os conectores rodando em jobs de CI separados
   (basename `test_roundtrip.py` repetido colidiria numa coleta única do pytest). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
-  Contagem corrente em [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+  Contagem corrente em [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 - **CI paralela:** 6 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
   push/PR (sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
   maior job); `api-smoke.yml`, `dep-audit-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
   sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em
-  [`framework/README.md`](../README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
+  [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
 ## Documentos relacionados
 

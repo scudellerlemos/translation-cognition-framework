@@ -120,7 +120,7 @@ connectors/
     test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
 ```
 
-Ver `framework/docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.
+Ver `docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.
 
 Os scripts **reais** (adaptados ao binário específico) vivem na instância, em
 `projects/<título>/connector/`. O framework fornece apenas contrato + esqueleto.
