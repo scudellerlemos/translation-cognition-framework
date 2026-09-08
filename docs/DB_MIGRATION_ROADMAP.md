@@ -106,8 +106,15 @@ paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan
   Store deve produzir os mesmos registros que o caminho legado (produtor grava flat →
   `migrate_from_flat.migrate()` espelha pro Store), para a mesma entrada — ver
   `framework/connectors/test_connector_io.py::test_sync_translations_db_matches_legacy_flat_then_migrate_oracle`.
-- **Em aberto:** validar com run vivo assim que algum projeto ativo adotar `db` (fora do
-  controle desta issue — depende de decisão de produto, não técnica).
+- **Run vivo validado (set/2026):** dado real do Trails Sky SC — cena `mp0010_01` (447 linhas,
+  tradução pt-BR de produção já feita, reconstruída a partir de
+  `artifacts/scenes/mp0010_01/_build_translations.py`, que sobrevive no repo como script de
+  montagem). Backfill via `migrate_from_flat.py`, `db` ligado *temporariamente* em
+  `project.json` (não commitado — projeto ativo continua flat por decisão de produto, não
+  técnica), `build_plan_chapter.py mp0010_01` rodado nos dois modos: `approved_mp0010_01.csv`
+  e `translation_plan_mp0010_01.json` do caminho DB-first bateram **byte-a-byte** com o caminho
+  legado (flat), e as 447 linhas no `Store` conferem (encoding UTF-8 correto, inclusive
+  acentuação pt-BR). Confirma em dado de produção real o que o oráculo sintético já provava.
 
 ## Detalhe das oportunidades de RAG
 
