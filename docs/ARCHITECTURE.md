@@ -27,7 +27,7 @@ framework/media-profiles/  ← A CATEGORIA (jogos/filmes/séries). Formato, toke
 framework/connectors/      ← A I/O (código det.). Extração/reinserção meio↔corpus.
 framework/runtime/         ← O HARNESS (orquestração det. + interface de modelo).  [NOVO]
 framework/validation/      ← OS GATES (código det.). Schemas, naturalidade, custo.
-framework/docs/            ← ARQUITETURA + ADRs + ROADMAP.                          [NOVO]
+docs/                      ← ARQUITETURA + ADRs + ROADMAP (documentação, fora de framework/).
         +
 projects/<título>/         ← A INSTÂNCIA (o quê). Manifesto + perfil + artefatos + conector do título.
 ```

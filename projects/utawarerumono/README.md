@@ -52,7 +52,7 @@ benchmark (nível Opus-à-mão); **Batch −50%** vivo; **tiering** Haiku/Sonnet
 em batch**; **controle de spoiler/gênero** por ledger temporal (reveal Ukon=Oshtor em `ch_13_08`);
 **gate de fonte de KB** (`kb_review.py` + `kb_phase.py`); **revisão humana via XLSX** com **TM como
 coração** (o jogo não é re-traduzido inteiro após o QA). Governança com desenhos:
-[`../../framework/docs/GOVERNANCE.md`](../../framework/docs/GOVERNANCE.md).
+[`../../docs/GOVERNANCE.md`](../../docs/GOVERNANCE.md).
 
 ### Marco anterior — validação in-game do conector ✅ (1025 linhas, cap. 11_01/02)
 
