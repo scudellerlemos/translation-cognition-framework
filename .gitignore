@@ -39,6 +39,11 @@ projects/*/artifacts/**/back_translation_*.json
 projects/*/artifacts/**/translation_memory.jsonl
 projects/*/artifacts/evidence/
 
+# Exceção: projects/demo é sintético (dialogo ficticio, sem copyright) — precisa estar
+# versionado pra README (#99) prometer "clone e rode" de verdade. Traduções/plan/approved
+# do demo continuam ignorados (regeneráveis, mesmo padrão dos projetos reais).
+!projects/demo/artifacts/**/dialogs.csv
+
 # Saída do conector (binários remontados com copyright — nunca versionar)
 projects/*/output/
 
