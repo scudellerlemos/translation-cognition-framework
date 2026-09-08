@@ -423,6 +423,10 @@ def _print_cost(root: Path, chap: str | None = None):
 
 
 def main():
+    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    except Exception:
+        pass
     ap = argparse.ArgumentParser(description="Driver determinista de capitulo (loop de cenas).")
     ap.add_argument("project")
     ap.add_argument("chapter", help='prefixo do capitulo, ex.: "12"')
