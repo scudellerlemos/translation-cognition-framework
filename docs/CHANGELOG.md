@@ -14,7 +14,14 @@ organizadas por período, não por versão.
   `kb_embeddings` no schema) reaproveitando a mesma indexação genérica 1-linha-1-vetor de
   `translation`/`decision`, porque a KB já chega pré-chunkada por seção markdown na ingestão
   (`migrate_from_flat._migrate_kb`). Convenção pra conteúdo tipo documento em projeto futuro:
-  chunking é responsabilidade do parser que grava a tabela-fonte, nunca do embedder.
+  chunking é responsabilidade do parser que grava a tabela-fonte, nunca do embedder. Escopo
+  ampliado na mesma issue: `Embedder.search_kb()` + `context_pack._load_kb_semantic()` injetam
+  uma seção "5d. Lore SEMELHANTE (semântica)" suplementar (nunca substitui `select_kb` léxico),
+  com o mesmo gate de spoiler e dedupe contra o resultado léxico. Validado com Embedder/sqlite-vec
+  reais (não só skip de CI) e com a KB real do BoF4 (11 seções) — retrieval discrimina bem
+  (query fora de tópico cai pra ~0.15–0.21 vs. ~0.26–0.56 nas relevantes), mas como nenhum projeto
+  hoje tagueia `reveal` na KB, o gate default-deny mantém esse caminho invisível em produção até
+  a KB de algum projeto ganhar essas tags.
 - **Versionamento SemVer manual adotado** (ADR 0013): `VERSION` + tag `vX.Y.Z`, decisão de
   patch/minor/major é julgamento humano no momento de taguear, sem ferramenta nem enforcement de
   formato de commit. Primeiras tags reais: `v1.0.0`, `v1.0.1`.

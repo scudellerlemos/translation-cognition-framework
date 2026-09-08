@@ -41,6 +41,31 @@ def test_all_kinds_share_the_same_key_shape():
     assert len(set(map(frozenset, shapes.values()))) == 1, shapes
 
 
+def test_index_and_search_kb_end_to_end(tmp_path):
+    """#169 smoke test com Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    instalada (requirements-ml.txt); skip limpo em CI (mesmo padrão de
+    test_load_kb_semantic_respects_reveal_gate em framework/runtime/test_context_pack.py)."""
+    import pytest
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("sqlite_vec")
+    from embedder import Embedder
+    from store import Store
+
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+        db.upsert_kb("p", [
+            {"section": "Dragão do Vento", "content": "guardião ancestral dos ares", "reveal": "safe"},
+            {"section": "Receitas de cozinha", "content": "como fazer bolo de fubá", "reveal": "safe"},
+        ])
+        emb = Embedder()
+        n = emb.index_project(db._con, project_id="p", kind="kb")
+        assert n == 2
+        hits = emb.search_kb(db._con, "quem é o guardião ancestral dos ares?", project_id="p", k=2)
+        assert hits[0]["section"] == "Dragão do Vento"          # top-1 tem que ser o relevante
+        assert hits[0]["score"] > hits[1]["score"]
+
+
 if __name__ == "__main__":
     test_kb_kind_registered_without_chunk_fn()
     test_kb_embeddings_table_exists_in_schema()

@@ -48,6 +48,7 @@ def test_build_pack_db_mode(tmp_path):
     assert pack["spoiler_guards"], "guard de spoiler (beyond_frontier + trigger) deveria disparar"
     assert pack["tm_semantic"] == []          # sem deps de ML → fallback esperado
     assert pack["decisions_semantic"] == []   # idem (#105) — sem deps de ML → fallback esperado
+    assert pack["kb_semantic"] == []          # idem (#169) — sem deps de ML → fallback esperado
 
 
 def test_write_pack_db_mode_renders_and_writes(tmp_path):
@@ -96,6 +97,34 @@ def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
     titles = {d["title"] for d in got}
     assert "Regra do dragão" in titles
     assert "Segredo futuro do dragão" not in titles
+
+
+def test_load_kb_semantic_respects_reveal_gate(tmp_path):
+    """#169 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    instalada localmente (requirements-ml.txt); skip limpo em CI, que não instala essa stack.
+    Seção 'safe' deve entrar; seção com reveal futuro deve ficar de fora (mesmo gate de
+    select_kb/_load_decisions_semantic, ver _reveal_allowed)."""
+    import pytest
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("sqlite_vec")
+    from embedder import Embedder
+
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+        db.upsert_kb("p", [
+            {"section": "Dragão do Vento", "content": "guardião ancestral dos ares",
+             "reveal": "safe"},
+            {"section": "Segredo do Dragão", "content": "guardião ancestral dos ares",
+             "reveal": "9_09"},
+        ])
+        emb = Embedder()
+        emb.index_project(db._con, project_id="p", kind="kb")
+
+    got = cp._load_kb_semantic(dbp, "p", "quem é o guardião ancestral dos ares?", "1_05")
+    sections = {s["section"] for s in got}
+    assert "Dragão do Vento" in sections
+    assert "Segredo do Dragão" not in sections
 
 
 def test_select_glossary_and_voices_lexical():
