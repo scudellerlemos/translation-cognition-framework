@@ -1,6 +1,6 @@
 # Revisão humana de qualidade (QA) — dois papéis
 
-> Guia completo do framework (filosofia + gates + papéis): `framework/docs/QA_REVIEW.md`.
+> Guia completo do framework (filosofia + gates + papéis): `docs/QA_REVIEW.md`.
 > Abaixo, o resumo prático desta instância.
 
 Dois papéis humanos **convergem no mesmo `apply`** (determinístico, $0 de IA salvo a "nota"):

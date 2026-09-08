@@ -63,7 +63,7 @@ runtime lê. Renomear quebra os capítulos já traduzidos (11–19+) e/ou script
 exige script de migração + revalidação de round-trip — não é um "rename de clareza".
 
 > **Onde os termos são EXPLICADOS (não só listados):** este doc é o *contrato* de nomes (para
-> mantenedores). Quem está chegando deve ler o **glossário** no [`README`](../../README.md) e o guia
+> mantenedores). Quem está chegando deve ler o **glossário** no [`README`](../README.md) e o guia
 > conceitual [`CONCEPTS.md`](CONCEPTS.md) — lá os conceitos (Context Pack, TM, KB, round-trip…) são
 > ensinados, não apenas nomeados.
 

@@ -20,7 +20,7 @@ voice cards dos falantes + decisões relevantes + hits de TM + linhas), `state_i
 materializada: `translation_memory.jsonl` + `voice_cards.json` + `decision_index.json`, idempotente),
 `model.py` (interface de IA: Sonnet traduz / Opus back-translation; backends `in-session` e `api`),
 `run_scene.py` (orquestrador determinístico + checkpoint `run_state.json`). Gates: `test_runtime.py`
-(determinismo, boundedness, idempotência, guard de no-work-text). Docs: `framework/docs/` + ADRs 0001–0004.
+(determinismo, boundedness, idempotência, guard de no-work-text). Docs: `docs/` + ADRs 0001–0004.
 
 **Provado (dogfood):** `run_scene ch_11_11` (já traduzido) roda pack→build_plan→back-translation→verify
 com **round-trip byte-idêntico 121/121, T4=0, 0 ponteiro fora-do-arquivo**, com o chat **fora** da
@@ -32,7 +32,7 @@ contexto nunca acumula. Sonnet vira o default de tradução (contexto pequeno e 
 **CONGELADA** por decisão do usuário até o harness estar provado; este ciclo entregou as fundações.
 
 **Revisão necessária:** P1 — instrumentar métricas (`metrics.jsonl`) + endurecer o caminho `api` contra
-o SDK vivo + benchmark de modelos. Ver `framework/docs/ROADMAP.md`.
+o SDK vivo + benchmark de modelos. Ver `docs/ROADMAP.md`.
 
 ## Deep pass do arco (Carta exercida) + custo de produção medido
 
