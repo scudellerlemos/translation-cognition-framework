@@ -46,16 +46,27 @@ podia não ser mais a de verdade). Corrigido em duas frentes:
   para bancos já existentes).
 - **`kb_gate.py`**: só o check de `glossary` (coluna `updated_date`) virou DB-aware (lê
   `updated_at` do banco). Os demais hard/soft-checks deste módulo (`research_log.md`
-  reconciliado, `kb_ratified.csv`) permanecem **flat-only por decisão** — ver limite abaixo.
+  reconciliado, `kb_ratified.csv`) permanecem **flat-only** — não faziam parte do escopo de
+  #85 (não têm um ponto único de leitura equivalente a `_reconciled`/`_ratified_set`, ver
+  abaixo, que valesse a pena rotear antes de #94 decidir o schema).
 
-**Limite conhecido (não fechado por #85):** `kb_phase.py` e `kb_review.py` dependem de
-`research_log.md` (status de reconciliação por capítulo) e `kb_ratified.csv` (ratificação
-humana) — nenhum dos dois tem tabela equivalente no schema.sql hoje. Não é "rotear pelo
-switch existente": é desenhar 2 tabelas novas (schema + migração dos dados flat existentes),
-decisão de design maior que o escopo de #85. Rastreado em issue separada — antes de tratar
-esses 2 módulos como DB-first, decidir se `research_log`/`kb_ratified` viram tabelas ou se
-continuam sendo, por design, a única fonte de verdade (mesmo sob projeto DB-gated) — nesse
-caso documentar isso como decisão explícita, não como lacuna. Rastreado na
+**Fechado por #94:** `kb_phase.py` (`_reconciled`) e `kb_review.py` (`digest`/`blocking`, via
+`_research_section`/`_ratified_set`) dependiam de `research_log.md`/`kb_ratified.csv` sem
+tabela equivalente no schema. Decisão tomada: **opção 1** do issue — duas tabelas novas:
+
+- `research_log` — espelho do arquivo inteiro (1 linha/projeto). O parsing de seção
+  `## cap.N` e do marcador `status: reconciled`, já existente em `kb_review.py`/`kb_phase.py`,
+  roda sobre a MESMA string; só troca a fonte (DB em vez de disco) — sem duplicar lógica de
+  parsing numa 2ª tabela por capítulo.
+- `kb_ratified` — 1 linha por nome ratificado, mesmas colunas do CSV (`name`/`ratified_by`/
+  `date`/`note`).
+
+Ambas migradas via `migrate_from_flat.py` (mirror automático — já entram no `_sync_db` das
+Fases 2/3, sem hook novo) e lidas via `kb_review.research_log_text()`/`kb_review._ratified_set()`,
+DB-gated pelo mesmo switch `context_pack._db_path` dos outros 3 módulos. **Fora do escopo:**
+a leitura de `glossary.csv`/`entities.csv` dentro de `kb_review.digest()` (linhas marcadas
+`(cap.N)`) continua flat-only — não foi citada no issue #94, é uma lacuna separada e não foi
+fechada aqui. Ver
 [issue #94](https://github.com/scudellerlemos/translation-cognition-framework/issues/94).
 
 ## Write-path consolidado (Fases 2/3/4) — decisão de design
@@ -150,4 +161,4 @@ alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 j�
 **Validação (correção — este parágrafo estava desatualizado):** `embedder.index_project`/`search` JÁ
 rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):
 6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
-memória `semantic-stack-validated` e `framework/docs/ROADMAP.md` (seção B2).
+memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).

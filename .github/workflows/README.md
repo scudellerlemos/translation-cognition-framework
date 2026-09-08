@@ -108,7 +108,7 @@ Dispara só quando alguém cria e envia uma tag no formato `v1.2.3` (`git tag v1
    confirmar: publicar uma versão é raro e deliberado, não um clique repetido em todo merge.
 
 Escolher o número da versão (patch/minor/major) é decisão manual de quem tagueia — sem ferramenta,
-sem enforcement de formato de commit. Critério e motivo em `framework/docs/adr/0013-versionamento-semver-manual.md`.
+sem enforcement de formato de commit. Critério e motivo em `docs/adr/0013-versionamento-semver-manual.md`.
 
 ### Se uma release sair quebrada
 
