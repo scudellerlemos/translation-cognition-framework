@@ -163,8 +163,9 @@ jobs:
   # (usado por BoF4/Souldiers/Utawarerumono extract.py via #86) passaria verde e só apareceria rodando
   # contra o jogo real. #92: piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
   # tier_classifier.py, script_generator.py, coverage_gate.py, evidence_collector.py e
-  # adversarial_validator.py já estão em 98-100%; discover.py (23%) e connector_smoke.py (61%) são
-  # módulos exploratórios que ainda puxam a média pra baixo (issue de continuação p/ fechar 90% neles).
+  # adversarial_validator.py já estavam em 98-100%; discover.py (23%) e connector_smoke.py (61%) puxavam
+  # a média pra baixo. #95: testes adicionados p/ discover.py/connector_smoke.py -- pacote em 98.52%,
+  # piso alinhado com o do job `coverage` (90%).
   connector-io:
     name: Connector shared utilities (framework/connectors/)
     runs-on: ubuntu-latest
@@ -177,10 +178,10 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
-      - name: Connector shared utilities (coverage 75%)
+      - name: Connector shared utilities (coverage 90%)
         run: |
           python -m pytest framework/connectors/ --ignore=framework/connectors/_skeleton \
-            -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=75
+            -v --tb=short --cov=framework/connectors --cov-report=term-missing --cov-fail-under=90
 
   # Agregador automático: um single status check pra branch protection não precisar listar os
   # 8 jobs acima individualmente. Sem aprovação manual (isso virou teatro pra dev solo — é sempre
