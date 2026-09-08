@@ -20,6 +20,7 @@ Uso:
     hits = emb.search_decisions(con, "onomatopeia", project_id="bof4", k=5)
 
     emb.index_project(con, project_id="bof4", kind="kb")  # indexa kb.content (seções da KB)
+    hits = emb.search_kb(con, "quem é o dragão do vento", project_id="bof4", k=5)
 
 Convenção de chunking (#169, ver docs/adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md):
 o embedder NUNCA chunka — sempre 1 linha da tabela-fonte = 1 vetor. Conteúdo que não é
@@ -236,6 +237,40 @@ class Embedder:
         for r in rows:
             d = dict(zip(
                 ["decision_id", "distance", "title", "summary", "universal", "reveal"],
+                r,
+                strict=True,
+            ))
+            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
+            results.append(d)
+        return results
+
+    def search_kb(self, con: sqlite3.Connection, query: str,
+                  project_id: str, k: int = 5) -> list[dict]:
+        """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
+        shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
+        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz. Sem rerank
+        (mesmo motivo de search_decisions: FlashRank é ajustado para tradução, não lore)."""
+        from store import strip_codes  # noqa: E402
+        self._ensure_vec_table(con, kind="kb")
+        q_vec = self.encode([strip_codes(query)])[0]
+
+        rows = con.execute(
+            """SELECT v.kb_id, v.distance,
+                       kb.section, kb.content, kb.reveal
+                FROM kb_vectors v
+                JOIN kb ON kb.id = v.kb_id
+                WHERE kb.project_id=?
+                  AND v.embedding MATCH ?
+                  AND k = ?
+                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados; alias
+                                          # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
+            (project_id, json.dumps(q_vec), k),
+        ).fetchall()
+
+        results = []
+        for r in rows:
+            d = dict(zip(
+                ["kb_id", "distance", "section", "content", "reveal"],
                 r,
                 strict=True,
             ))

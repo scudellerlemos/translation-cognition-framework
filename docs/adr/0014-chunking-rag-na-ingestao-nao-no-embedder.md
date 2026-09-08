@@ -60,6 +60,15 @@ sempre a mesma receita: 1 entrada em `_KIND_CONFIG` + 1 tabela `<kind>_embedding
   precisa saber que a responsabilidade de "virar unidade pesquisável" é dele, não do embedder — sem
   isso documentado, a tentação óbvia é adicionar um `chunk_fn` ali. Este ADR é o registro dessa
   decisão pra próxima vez que a pergunta aparecer.
-- Fora de escopo: `search_kb()` (retrieval semântico sobre a KB usando `kb_vectors`) — o #169 cobre
-  só a capacidade de *indexar*; `context_pack.select_kb()` hoje é léxico (match de token no título
-  da seção) e continua assim até haver necessidade concreta de trocar por semântico.
+- Extensão feita na mesma issue: `Embedder.search_kb()` (retrieval semântico sobre `kb_vectors`,
+  mesmo shape de `search_decisions()`) e `context_pack._load_kb_semantic()`, que injeta uma seção
+  **"## 5d. Lore SEMELHANTE (semântica)"** no prompt, adicional a `select_kb()` (léxico, inalterado)
+  — nunca substituindo, só suplementando, com dedupe por seção já mostrada e o mesmo gate de
+  spoiler (`_reveal_allowed`) que `select_kb`/`_load_decisions_semantic` já usam. Fallback pra `[]`
+  sem stack de ML, sem DB, ou em erro inesperado (mesmo padrão de `_load_tm_semantic`).
+- Validado com dados reais (`projects/breath_of_fire_4`, 11 seções): queries de lore relevantes
+  destacam a seção certa nas top-3 com score visivelmente maior que uma query fora de tópico
+  ("receita de bolo de fubá" → scores ~0.14–0.21 vs. ~0.26–0.56 nas relevantes). Achado relevante:
+  a KB do BoF4 não tem nenhuma tag `<!-- reveal: ... -->`, então toda seção fica com `reveal=NULL`
+  — o gate default-deny bloqueia a seção semântica inteira até o projeto tagueá-la, ou seja, hoje
+  esse caminho não muda o pacote de nenhum projeto real (só o léxico `select_kb` está ativo neles).
