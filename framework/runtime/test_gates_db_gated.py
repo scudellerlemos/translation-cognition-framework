@@ -20,6 +20,8 @@ if _DB_DIR not in sys.path:
 import context_pack  # noqa: E402
 import glossary_lint  # noqa: E402
 import kb_gate  # noqa: E402
+import kb_phase  # noqa: E402
+import kb_review  # noqa: E402
 import spoiler_check as sc  # noqa: E402
 from store import Store  # noqa: E402
 
@@ -132,3 +134,49 @@ def test_load_spoiler_ledger_db_gated_carries_new_fields(tmp_path):
     ledger = context_pack.load_spoiler_ledger(tmp_path, cfg)
     e = ledger["entries"][0]
     assert e["forbidden_pre_reveal"] == ["Oshtor"] and e["gender_quarantine"] is True
+
+
+# ── #94: kb_phase.py / kb_review.py — research_log / kb_ratified DB-gated ──────
+
+def test_kb_phase_reconciled_db_gated(tmp_path):
+    """_reconciled le research_log do SQLite (nao ha research_log.md em disco)."""
+    db_path = _db_project(tmp_path)
+    with Store(db_path) as db:
+        db.upsert_project("p1", "T")
+        db.upsert_research_log("p1", "# Research Log\n\n**Status:** reconciled\n")
+    assert kb_phase._reconciled(tmp_path) is True
+
+
+def test_kb_phase_reconciled_db_gated_false_when_absent(tmp_path):
+    db_path = _db_project(tmp_path)
+    with Store(db_path) as db:
+        db.upsert_project("p1", "T")
+    assert kb_phase._reconciled(tmp_path) is False
+
+
+def test_kb_review_research_section_db_gated(tmp_path):
+    db_path = _db_project(tmp_path)
+    md = "# Research Log\n\n## cap.19 — delta de KB\n\nOshtor e general.\n\n## cap.20\n\noutro\n"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "T")
+        db.upsert_research_log("p1", md)
+    section = kb_review._research_section(kb_review.research_log_text(tmp_path), "19")
+    assert "Oshtor" in section and "outro" not in section
+
+
+def test_kb_review_digest_db_gated_source_and_ratification(tmp_path):
+    """digest() cruza glossary.csv flat (leitura de glossario/entities e fora do escopo de #94)
+    com research_log/kb_ratified — estes 2 lidos do SQLite (#94), no projeto DB-gated."""
+    db_path = _db_project(tmp_path)
+    with Store(db_path) as db:
+        db.upsert_project("p1", "T")
+        db.upsert_research_log("p1", "## cap.19\n\nOshtor confirmado pela wiki oficial.\n")
+        db.upsert_kb_ratified("p1", [{"name": "Oshtor", "ratified_by": "Felipe", "date": "2026-06-14"}])
+    (tmp_path / "artifacts").mkdir(exist_ok=True)
+    (tmp_path / "artifacts" / "glossary.csv").write_text(
+        "term,translation,notes\nOshtor,Oshtor,(cap.19)\n", encoding="utf-8")
+    items = kb_review.digest(tmp_path, "19")
+    assert items and items[0]["name"] == "Oshtor"
+    assert "sem fonte declarada" not in items[0]["flags"]
+    assert "nao ratificado" not in items[0]["flags"]
+    assert kb_review.blocking(tmp_path, "19", strict=True) == []
