@@ -67,6 +67,20 @@ def test_db_export_dispatch(tmp_path, monkeypatch, capsys):
     assert "approved" in capsys.readouterr().out
 
 
+def test_extract_dispatch_aliases_skill_00(tmp_path, monkeypatch, capsys):
+    import registry
+    monkeypatch.setattr(registry.get("00"), "run", lambda p, **k: {"status": "ok", "seen": k})
+    assert _run(["extract", str(tmp_path), "--dat-dir", "dats"]) == 0
+    assert '"dat_dir": "dats"' in capsys.readouterr().out
+
+
+def test_verify_dispatch_aliases_skill_07(tmp_path, monkeypatch, capsys):
+    import registry
+    monkeypatch.setattr(registry.get("07"), "run", lambda p, **k: {"status": "ok", "seen": k})
+    assert _run(["verify", str(tmp_path), "--chapter", "C01"]) == 0
+    assert '"chapter": "C01"' in capsys.readouterr().out
+
+
 def test_skill_check_ok(tmp_path, capsys):
     # skill 07 (QA) gate: sem artifacts/scenes -> gate reporta problema (rc 1)
     (tmp_path / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")

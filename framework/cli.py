@@ -3,12 +3,16 @@
 Ponto de entrada único para operações do pipeline. Substitui os 15+ scripts
 invocados manualmente por subcomandos organizados.
 
-Uso:
-  python framework/cli.py translate <project> <scene> [--backend api|in-session]
-  python framework/cli.py db migrate <project_root> <dest_db>
-  python framework/cli.py db summary <db_path> <project_id>
-  python framework/cli.py ollama status
-  python framework/cli.py ollama pull <model>
+Instalável via `pip install .` (entrypoint `tcf`, #98). Uso:
+  tcf translate <project> <scene> [--backend api|in-session]
+  tcf extract <project> [--dat-dir DIR]
+  tcf verify <project> [--chapter ID]
+  tcf db migrate <project_root> <dest_db>
+  tcf db summary <db_path> <project_id>
+  tcf ollama status
+  tcf ollama pull <model>
+
+Sem instalar, roda igual via `python framework/cli.py <comando>`.
 """
 from __future__ import annotations
 
@@ -83,6 +87,18 @@ def cmd_db_index(args):
         con.close()
     print(f"Indexados: {n} vetores ({kind}) para projeto '{args.project_id}'")
     return 0
+
+
+# ── extract / verify (aliases finos p/ skill 00/07 — #98) ─────────────────────
+
+def cmd_extract(args):
+    args.skill_id = "00"
+    return cmd_skill_run(args)
+
+
+def cmd_verify(args):
+    args.skill_id = "07"
+    return cmd_skill_run(args)
 
 
 # ── skill ────────────────────────────────────────────────────────────────────────
@@ -164,6 +180,18 @@ def build_parser() -> argparse.ArgumentParser:
     p_tr.add_argument("--skip-kb-gate", action="store_true")
     p_tr.add_argument("--require-back", action="store_true")
     p_tr.set_defaults(func=cmd_translate)
+
+    # extract (alias fino p/ skill 00)
+    p_ex = sub.add_parser("extract", help="Extrai texto do jogo (skill 00)")
+    p_ex.add_argument("project", help="Diretório do projeto")
+    p_ex.add_argument("--dat-dir", dest="dat_dir", default=None, help="dir dos DATs")
+    p_ex.set_defaults(func=cmd_extract)
+
+    # verify (alias fino p/ skill 07 — QA)
+    p_ve = sub.add_parser("verify", help="Roda QA de um capítulo (skill 07)")
+    p_ve.add_argument("project", help="Diretório do projeto")
+    p_ve.add_argument("--chapter", default=None, help="capítulo a verificar")
+    p_ve.set_defaults(func=cmd_verify)
 
     # db
     p_db = sub.add_parser("db", help="Operações no banco SQLite")
