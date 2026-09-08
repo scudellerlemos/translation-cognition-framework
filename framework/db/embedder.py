@@ -1,4 +1,4 @@
-"""embedder.py — Embeddings locais para busca semântica na TM e em decisions (#105).
+"""embedder.py — Embeddings locais para busca semântica na TM, em decisions (#105) e na KB (#169).
 
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
@@ -18,6 +18,15 @@ Uso:
 
     emb.index_project(con, project_id="bof4", kind="decision")  # indexa decisions.summary
     hits = emb.search_decisions(con, "onomatopeia", project_id="bof4", k=5)
+
+    emb.index_project(con, project_id="bof4", kind="kb")  # indexa kb.content (seções da KB)
+
+Convenção de chunking (#169, ver docs/adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md):
+o embedder NUNCA chunka — sempre 1 linha da tabela-fonte = 1 vetor. Conteúdo que não é
+naturalmente atômico (ex.: universe_knowledge_base.md) é quebrado em unidades ANTES de
+chegar aqui, na ingestão (migrate_from_flat._migrate_kb quebra por seção `##`/`###` do
+markdown). Kind novo = tabela-fonte já atômica + entrada em _KIND_CONFIG; nunca um chunk_fn
+no embedder.
 """
 from __future__ import annotations
 
@@ -31,9 +40,12 @@ _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
 
-# indexação genérica por "kind" -- traduções (TM) e decisions (#105) compartilham a MESMA
-# estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de origem.
-# search() continua específico de TM (shape de retorno bem diferente de decisions); ver
+# indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
+# a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
+# origem. Nenhum kind aqui precisa de chunk_fn: a tabela-fonte já é 1-linha-1-unidade —
+# translations/decisions porque diálogo já vem atômico, kb porque a ingestão (ver
+# migrate_from_flat._migrate_kb) já quebra o markdown por seção antes de gravar. search()
+# continua específico de TM (shape de retorno bem diferente de decisions/kb); ver
 # search_decisions() abaixo.
 _KIND_CONFIG = {
     "translation": {"table": "translations", "text_col": "source",
@@ -42,6 +54,9 @@ _KIND_CONFIG = {
     "decision": {"table": "decisions", "text_col": "summary",
                  "vec_table": "decision_vectors", "emb_table": "decision_embeddings",
                  "id_col": "decision_id", "filter_sql": ""},
+    "kb": {"table": "kb", "text_col": "content",
+           "vec_table": "kb_vectors", "emb_table": "kb_embeddings",
+           "id_col": "kb_id", "filter_sql": ""},
 }
 
 
