@@ -325,17 +325,36 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 
 ## Começar
 
-1. Leia [`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md) se os conceitos acima são novos.
-2. Leia [`framework/README.md`](framework/README.md) — o modelo de camadas e como instanciar um projeto.
-3. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
-   um jogo (visual novel), EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
-4. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
+**Instalar e traduzir um exemplo real, em menos de 2 minutos** (dado fictício, sem jogo real por
+trás — existe só para este README ter algo de verdade pra rodar; você só precisa da sua própria
+chave da Anthropic):
+
+```bash
+git clone https://github.com/scudellerlemos/translation-cognition-framework
+cd translation-cognition-framework
+pip install .
+cp .env.example .env && $EDITOR .env   # cole sua chave: https://console.anthropic.com/
+tcf translate projects/demo demo01
+```
+
+Isso roda o pipeline completo numa cena de 5 falas (`projects/demo/`): monta o context pack, chama
+o modelo, valida o plano, roda o round-trip do conector e grava o resultado verificado em
+`projects/demo/artifacts/scenes/demo01/`. Sem instalar via `pip`, o mesmo comando funciona como
+`python framework/cli.py translate projects/demo demo01`.
+
+**Para ir além do exemplo sintético e traduzir uma obra real:**
+
+1. Leia [`framework/docs/CONCEPTS.md`](framework/docs/CONCEPTS.md) se os conceitos do topo deste
+   README são novos, e [`framework/README.md`](framework/README.md) para o modelo de camadas.
+2. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
+   um jogo (visual novel) real, EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
+3. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
    piloto de portabilidade para novo engine Capcom.
-5. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
+4. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
    pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
-6. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
+5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
    `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
-7. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
+6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
    rode o pipeline `00..08` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
@@ -422,6 +441,6 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 | Dívida | Quando |
 |---|---|
 | Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| CLI instalável / packaging `.exe` / README de produto (E1-E4) | pós-validação, só se for publicar externamente |
+| Packaging `.exe` (E4) | pós-validação, só se for publicar externamente |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 
