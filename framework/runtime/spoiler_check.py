@@ -15,10 +15,12 @@ pre-reveal e flagra qualquer ocorrencia (casada por LIMITE DE PALAVRA, reusa con
 
 NB de escopo honesto: o vazamento de GENERO pt-BR (ele/ela onde a fonte e neutra) e o outro risco que
 a memoria do projeto enfatiza. `check_gender` marca no ledger QUAIS entidades tem genero em quarentena
-(`gender_quarantine: true`) e atribui o token de genero ao REFERENTE MAIS PROXIMO na linha (distancia em
-caracteres entre o marcador e cada mencao de entidade do ledger) — nao e coreferencia real (sem parser
-sintatico), mas corrige o falso-positivo mais comum da co-ocorrencia pura: uma linha com DUAS entidades
-citadas, onde o marcador de genero pertence claramente a outra que nao a que esta em quarentena. Ver #106.
+(`gender_quarantine: true`) e continua flagrando por CO-OCORRENCIA na linha (RECALL preservado — perder
+um vazamento real e pior que um falso-positivo extra), mas agora ATRIBUI o token de genero ao referente
+mais provavel: cada flag carrega `confident` (True se a mencao da entidade em quarentena e a mais proxima,
+em distancia de caracteres, do marcador entre as entidades do ledger citadas na linha; False se outra
+entidade do ledger esta mais perto — ainda flagrado, so com prioridade de revisao menor). Nao e
+coreferencia real (sem parser sintatico). Ver #106.
 Governanca: read-only, sem rede, sem work-text.
 
 Uso:  python spoiler_check.py <projeto> [--json]   (exit 1 se houver vazamento; 0 se limpo)
@@ -97,8 +99,7 @@ def _mention_positions(name: str, low: str) -> list[int]:
     n = (name or "").strip().lower()
     if not n:
         return []
-    pat = re.escape(n) + (r"(?:e?s)?" if n.isalnum() else "")
-    pat = r"\b" + pat + r"\b" if n.isalnum() else re.escape(n)
+    pat = r"\b" + re.escape(n) + r"(?:e?s)?\b" if n.isalnum() else re.escape(n)
     return [m.start() for m in re.finditer(pat, low)]
 
 
@@ -121,14 +122,18 @@ def _nearest_referents(marker_pos: int, entities: list[tuple[str, list[str]]], l
 
 def check_gender(root) -> list[dict]:
     """Contraparte OBSERVAVEL do vazamento de GENERO (o que o pt-BR forca e o ingles nao tem).
-    Para entries do ledger com `gender_quarantine: true`, em cenas ANTES do reveal, flagra linhas onde
-    o marcador de genero pt-BR mais proximo (por distancia de char) e uma mencao da propria entidade em
-    quarentena — nao so co-ocorrencia na linha (isso evitava falso-positivo quando a linha cita a
-    entidade em quarentena E outra entidade, e o marcador pertence a outra). Retorna [{scene, scene_id,
-    entity, marker, offset, text}]. ESCOPO HONESTO: nearest-mention por distancia de caracteres entre
-    as entidades DO LEDGER — nao e parsing sintatico/coreferencia real, e so enxerga entidades listadas
-    no ledger (um referente de fora dele e invisivel); pode ainda ter falso-positivo/negativo em frases
-    complexas (por isso reporta o trecho p/ o humano decidir)."""
+    Para entries do ledger com `gender_quarantine: true`, em cenas ANTES do reveal, flagra linhas que
+    citam a entidade E contem um marcador de genero pt-BR — RECALL preservado de proposito (perder um
+    vazamento real e pior que um falso-positivo extra pro humano descartar; distancia em caracteres
+    nao e gramatica, entao um referente mais perto no texto pode nao ser o referente real da frase).
+    Cada flag carrega tambem `confident`: True quando a mencao da entidade em quarentena e a mais
+    proxima (por distancia de char, entre as entidades DO LEDGER citadas na linha) do marcador — ou
+    seja, o token FOI atribuido ao referente mais provavel, nao so contabilizada a co-ocorrencia; False
+    quando outra entidade do ledger esta mais perto do marcador (ainda flagrado, mas com prioridade
+    menor de revisao humana — pode ser o marcador se referindo a essa outra entidade). Retorna
+    [{scene, scene_id, entity, marker, offset, text, confident}]. ESCOPO HONESTO: nearest-mention por
+    distancia de caracteres entre entidades DO LEDGER — nao e parsing sintatico/coreferencia real, e so
+    enxerga entidades listadas no ledger (um referente fora dele nao entra no calculo de confianca)."""
     root = Path(root)
     entries = context_pack.load_spoiler_ledger(root).get("entries", [])
     guarded = [e for e in entries if e.get("gender_quarantine")]
@@ -142,7 +147,7 @@ def check_gender(root) -> list[dict]:
         for entry in guarded:
             if not _future(entry.get("reveal", "beyond_frontier"), sid):
                 continue                                  # no/apos o reveal -> genero ja e publico
-            ent_name = entry.get("entity", "")
+            ent_name = entry.get("entity", "?")           # mesmo default de all_entities (match consistente)
             names = _entity_names(entry)
             for off, v in lines.items():
                 t = v.get("target", "")
@@ -151,16 +156,15 @@ def check_gender(root) -> list[dict]:
                 low = t.lower()
                 if not any(context_pack._present(n.lower(), low) for n in names):
                     continue                              # entidade nao citada nesta linha
-                flagged = False
                 for mk in _GENDER_MARKERS:
-                    for mpos in _mention_positions(mk, low):
-                        if ent_name in _nearest_referents(mpos, all_entities, low):
-                            flags.append({"scene": scene, "scene_id": sid, "entity": ent_name,
-                                          "marker": mk, "offset": off, "text": t})
-                            flagged = True
-                            break                         # 1 flag por linha basta
-                    if flagged:
-                        break
+                    positions = _mention_positions(mk, low)
+                    if not positions:
+                        continue
+                    referents = _nearest_referents(positions[0], all_entities, low)
+                    flags.append({"scene": scene, "scene_id": sid, "entity": ent_name,
+                                  "marker": mk, "offset": off, "text": t,
+                                  "confident": ent_name in referents})
+                    break                                 # 1 flag por linha basta
     return flags
 
 
@@ -239,7 +243,9 @@ def main():
     else:
         print(f"GENERO A REVISAR (heuristica, pode ter falso-positivo) — {len(gender)} linha(s):")
         for k in gender:
-            print(f"  {k['scene']} {k['offset']}: '{k['marker']}' junto a {k['entity']} (genero em quarentena)")
+            conf = "referente provavel" if k.get("confident") else "outra entidade mais perto, revisar"
+            print(f"  {k['scene']} {k['offset']}: '{k['marker']}' junto a {k['entity']} "
+                  f"(genero em quarentena, {conf})")
             print(f"      -> {k['text'][:90]}")
     sys.exit(1 if (leaks or gender) else 0)
 
