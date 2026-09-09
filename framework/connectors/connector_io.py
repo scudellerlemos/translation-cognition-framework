@@ -151,6 +151,22 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
             )
         rows = [r for r in db.get_translations(project_id, approved_only=True)
                 if r["scene_id"] == scene_id]
+        # #182: reindexa embeddings pendentes no MESMO write-path real de tradução
+        # (run_scene/run_chapter -> sync_translations_db), não só na migração manual (#171
+        # já cobria migrate_from_flat). Incremental (embedder pula o que já tem vetor) e
+        # nunca levanta (retorna None sem ML deps/sqlite-vec) — nunca derruba a escrita da TM.
+        # ponytail: Embedder() carrega sentence-transformers no __init__ (embedder.py:104) —
+        # cada cena paga esse load 1x (medido: ~11.8s a frio, ~8.8s com HF_HUB_OFFLINE=1;
+        # o encode/index em si de 1 linha nova é ~0.059s -- >99.5% do custo é o load do
+        # modelo). É custo de LATÊNCIA, não de $ (roda local/CPU). run_chapter.py NÃO
+        # amortiza isso hoje: seu loop de cenas é in-process, mas run_scene() sobe um
+        # subprocess novo por cena p/ build_plan_chapter.py (run_scene.py:267), e é dentro
+        # desse subprocess que este reindex roda -- o modelo recarrega a cada cena mesmo em
+        # lote de capítulo. Aceito por ora (~9-12s soma bem com os 15-75s de uma chamada de
+        # tradução real). Se lotes de centenas de cenas tornarem isso sensível, batelar por
+        # capítulo exige tirar esta chamada daqui e somar 1x pós-loop em run_chapter.py + 1x
+        # no caminho standalone de run_scene.py (não é reordenação trivial).
+        db.reindex_pending_embeddings(project_id)
 
     scene_dir = root / "artifacts" / "scenes" / scene_id
     with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
