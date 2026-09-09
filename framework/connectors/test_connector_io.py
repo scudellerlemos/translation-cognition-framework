@@ -143,6 +143,23 @@ def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
     assert csv_text == ["offset,text_target", "0x1,O heroi pega a Bugiganga.", "0x2,[14]Ola[01]tudo bem?"]
 
 
+def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
+    """#182: sync_translations_db (write-path real de run_scene/run_chapter) chama
+    reindex_pending_embeddings automaticamente, igual ao #171 já fazia em migrate(). Sem
+    sentence-transformers/sqlite-vec (CI), a chamada é silenciosa (None) — não quebra a
+    escrita da TM. Verificamos via Store.reindex_pending_embeddings diretamente (mesma
+    conexão/arquivo que sync_translations_db acabou de escrever) que ela não levanta."""
+    (tmp_path / "project.json").write_text(
+        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _scene(tmp_path)
+    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
+
+    from store import Store  # noqa: E402
+    with Store(tmp_path / "p.db") as db:
+        result = db.reindex_pending_embeddings("proj")
+    assert result is None or result >= 0, result
+
+
 def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
     """Inverso do oráculo de round-trip do #109 (mesma ideia de test_export_roundtrip_lossless,
     invertida): produtor DB-first (sync_translations_db) direto no Store DEVE bater com o

@@ -151,6 +151,11 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
             )
         rows = [r for r in db.get_translations(project_id, approved_only=True)
                 if r["scene_id"] == scene_id]
+        # #182: reindexa embeddings pendentes no MESMO write-path real de tradução
+        # (run_scene/run_chapter -> sync_translations_db), não só na migração manual (#171
+        # já cobria migrate_from_flat). Incremental (embedder pula o que já tem vetor) e
+        # nunca levanta (retorna None sem ML deps/sqlite-vec) — nunca derruba a escrita da TM.
+        db.reindex_pending_embeddings(project_id)
 
     scene_dir = root / "artifacts" / "scenes" / scene_id
     with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
