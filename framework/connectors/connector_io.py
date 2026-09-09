@@ -155,6 +155,12 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
         # (run_scene/run_chapter -> sync_translations_db), não só na migração manual (#171
         # já cobria migrate_from_flat). Incremental (embedder pula o que já tem vetor) e
         # nunca levanta (retorna None sem ML deps/sqlite-vec) — nunca derruba a escrita da TM.
+        # ponytail: Embedder() carrega sentence-transformers no __init__ (embedder.py:104) —
+        # cada cena paga esse load 1x, mesmo com poucas linhas novas pra embedar (o "0 pendente
+        # -> pula load" não ajuda aqui: a cena que acabou de aprovar linha SEMPRE tem >=1
+        # pendente, a dela própria). Aceito por ora (mesmo padrão do ADR 0015: custo one-time
+        # por processo). Se latência por cena em lote grande incomodar, batelar por capítulo
+        # (chamar reindex 1x no fim do run_chapter em vez de 1x por sync_translations_db).
         db.reindex_pending_embeddings(project_id)
 
     scene_dir = root / "artifacts" / "scenes" / scene_id

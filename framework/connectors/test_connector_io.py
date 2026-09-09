@@ -160,6 +160,28 @@ def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
     assert result is None or result >= 0, result
 
 
+def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path):
+    """#182 critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
+    stack ML estiver instalada; skip limpo em CI -- mesmo padrão de
+    test_index_and_search_kb_end_to_end em framework/db/test_embedder_kind_config.py), a
+    linha aprovada por sync_translations_db tem que aparecer em Embedder.search() sem
+    NENHUM passo manual (nem db index, nem migrate) entre a escrita e a busca."""
+    import pytest
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("sqlite_vec")
+
+    (tmp_path / "project.json").write_text(
+        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _scene(tmp_path)
+    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
+
+    from embedder import Embedder  # noqa: E402
+    from store import Store  # noqa: E402
+    with Store(tmp_path / "p.db") as db:
+        hits = Embedder().search(db._con, "Hero picks up the Widget.", project_id="proj", k=2)
+    assert any(h["offset"] == "0x1" for h in hits), hits
+
+
 def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
     """Inverso do oráculo de round-trip do #109 (mesma ideia de test_export_roundtrip_lossless,
     invertida): produtor DB-first (sync_translations_db) direto no Store DEVE bater com o
