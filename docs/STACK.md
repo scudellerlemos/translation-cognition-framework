@@ -93,7 +93,7 @@ exato de TM, glossário por termo, voice card por nome de falante). RAG **semân
 
 | RAG | Onde | Mecanismo | Status |
 |---|---|---|---|
-| **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto + reranker **FlashRank** (`ms-marco-MiniLM-L-12-v2`, opcional) | ✅ **validado tecnicamente e por ROI real** — `projects/translation_software/translation_software.db` tem **6.046 vetores** indexados (corpus do BoF4); busca exata→score 1.0, variação→0.944. ROI medido em produção (10 cenas reais, #175): -24% custo, +2 sucessos/10. Ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) — manter índice atualizado (`db index --force` após cada lote) agora é **requisito obrigatório**, não otimização opcional |
+| **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto + reranker **FlashRank** (`ms-marco-MiniLM-L-12-v2`, opcional) | ✅ **validado tecnicamente e por ROI real** — `projects/translation_software/translation_software.db` tem **6.046 vetores** indexados (corpus do BoF4); busca exata→score 1.0, variação→0.944. ROI medido em produção (10 cenas reais, #175): -24% custo, +2 sucessos/10. Ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) — manter índice atualizado é **requisito obrigatório**. Desde #182, isso é automático: `reindex_pending_embeddings()` roda no próprio write-path de tradução (`connector_io.sync_translations_db`, chamado por `run_scene`/`run_chapter` a cada cena), não só em `db migrate` manual |
 | **nº2 — KB/lore** | `context_pack.select_kb()` (léxico) + `_load_kb_semantic()` (semântico, #169) → seções "5c." e "5d." do pacote | **léxico**: token do título da seção citado na cena. **semântico** (suplemento, nunca substitui): `embedder.search_kb()` sobre `kb_vectors`, dedupe contra o léxico. Ambos **gated pela mesma trava temporal de spoiler** (default-deny por reveal-por-seção) | ✅ ligado (léxico sempre; semântico se a stack de ML estiver instalada E o projeto tiver `kb` indexada — validado com o KB real do BoF4, mas nenhum projeto hoje tem `reveal` tagueado, então o gate barra a seção semântica em produção até isso mudar) |
 | **nº3 — cross-game/franquia** | corpus compartilhado por série, retrieval por cena | reusa a mesma infra | 🔮 futuro (multi-game) |
 
@@ -102,8 +102,11 @@ preciso; semântico traria falso-positivo), voice cards (identidade por nome, n�
 núcleo do pacote (match exato/contagens/hashes — determinismo é inegociável ali).
 
 Vetores são **pré-computados** (build do pacote só consulta, não reinfere) e o **modelo é pinado**
-(`tm_embeddings.model_name` grava o nome; trocar modelo = reindex explícito). Detalhe de fases e
-decisões de design → [`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md).
+(`tm_embeddings.model_name` grava o nome; trocar modelo = reindex explícito). Reindex incremental
+(`Store.reindex_pending_embeddings()`, pula o que já tem vetor, nunca levanta sem deps de ML) roda
+tanto em `db migrate` (#171) quanto no write-path real de tradução (#182) — uma linha aprovada via
+`run_scene` fica pesquisável sem passo manual. Detalhe de fases e decisões de design →
+[`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md).
 
 ---
 
