@@ -1,4 +1,4 @@
-# ADR 0014 — Embedder isolado por processo, sem daemon compartilhado entre projetos
+# ADR 0015 — Embedder isolado por processo, sem daemon compartilhado entre projetos
 
 **Status:** aceito · **Data:** 2026-09-08
 
