@@ -153,6 +153,32 @@ Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 - `terminology_seeds.md`: termos canônicos do universo que precisam de handling rule.
 - `identity_pairs_reference.md`: pares de identidade dupla (se houver).
 
+### 5b. RAG semântico (opcional, #174)
+
+Só se o projeto for DB-first (`project.json` com `db` declarado — Passo 0). Sequência formal —
+substitui ter que lembrar de cabeça (critério de pronto do #174):
+
+1. **Instalar a stack** (fora da CI, pesada — `sentence-transformers` + `sqlite-vec` + `flashrank`,
+   ~700 MB–1,5 GB com torch): `pip install -r requirements-ml.txt`.
+2. **Popular o índice inicial**: `python framework/cli.py db migrate <project_root> <dest_db> --project-id <id>`
+   (corpus ainda flat) já reindexa embeddings no fim (#171); se o corpus já está no DB, use
+   `python framework/cli.py db index <db_path> <project_id>` direto.
+3. **Revalidar o modelo pro par de idiomas do projeto** (checklist #170 — o modelo pinado,
+   `paraphrase-multilingual-MiniLM-L12-v2`, só foi medido em EN→pt-BR):
+   `python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases paraphrases.json]`
+   — comparar contra a régua EN→pt-BR (exact_match ≈1.0 / vocab_variation ≈0.944). Score bem
+   abaixo → considerar `--model` alternativo (grava `tm_embeddings.model_name`, reindex automático).
+4. **Reindex contínuo é automático desde #182** — toda cena aprovada via `run_scene`/`run_chapter`
+   chama `Store.reindex_pending_embeddings()` no próprio write-path (`connector_io.sync_translations_db`).
+   Nenhum passo manual recorrente depois do índice inicial.
+
+**Threshold de score não é item de onboarding**: a ADR 0016 fechou #172 sem evidência de que afinar
+threshold por projeto traga ROI — o alavancador medido é reuso exato via índice atualizado, não
+afinamento de score. Não perder tempo tunando isso por padrão.
+
+Detalhe/rationale completo → [`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md) (seção "Como LIGAR
+a TM semântica") e [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md).
+
 ### 6. Rodar os testes de contrato
 
 ```
@@ -174,9 +200,8 @@ Os testes do skeleton verificam:
 - [ ] `pytest connector/test_roundtrip.py` verde
 - [ ] `profile/voice_profiles_reference.md` com ao menos os personagens principais
 - [ ] `profile/terminology_seeds.md` com os termos críticos do universo
-- [ ] Se `db`/RAG semântico habilitado (`project.json` com `db` declarado): modelo de embedding
-      revalidado pro par de idiomas do projeto (`db validate-model`, ver checklist em
-      `docs/DB_MIGRATION_ROADMAP.md#checklist-de-revalidação-de-modelo-projeto-novo-170`)
+- [ ] Se `db`/RAG semântico habilitado (`project.json` com `db` declarado): sequência do Passo 5b
+      completa (stack instalada, índice inicial populado, modelo revalidado pro par de idiomas)
 
 Só após todos os itens acima: iniciar o Passo 01 (Descoberta de Entidades).
 
