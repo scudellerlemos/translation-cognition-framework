@@ -28,7 +28,7 @@
 | **3** | derivados de `.md` gravam no DB (`decisions`/`voice_cards`/`spoiler`/`kb`) — cobertos pelo mesmo espelho gated da Fase 2 | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ✅ |
 | **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas — cobertos pelo mesmo espelho gated | — | ✅ |
 | **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05b/06b/06c) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
-| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** produtores DB-first (flat vira só export, remove o mirror) — ver [issue #109](https://github.com/scudellerlemos/translation-cognition-framework/issues/109) | — | 🟡 6a feito / 6b em issue |
+| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** ✅ `build_plan_chapter` (translations) DB-first via `connector_io.sync_translations_db` — ver [[db-first-6b-escopo]] e [issue #109](https://github.com/scudellerlemos/translation-cognition-framework/issues/109) | — | ✅ 6a+6b feito (escopo: translations) |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
 
 ## Gates de governança sob o switch DB-gated (#85)
@@ -88,6 +88,44 @@ warnings, qa_effectiveness). Por quê:
 
 `migrate()` passou a ler `title`/`media_type`/langs do `project.json` (era hardcoded
 "Breath of Fire IV") — pré-requisito p/ o write-path ser multi-projeto.
+
+## Fase 6b — produtores DB-first (#109) — decisão de escopo
+
+**Decisão (set/2026):** o critério de pronto original da issue ("1 projeto rodando end-to-end
+com produtores DB-first") não é atingível hoje sem run vivo — **nenhum projeto ativo tem
+`db` populado** (`translation_software` é um shell DB-only, corpus BoF4 migrado uma vez, sem
+connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguem flat). Em vez de esperar
+esse pré-requisito (fora do controle desta issue), o escopo foi reduzido ao que o oráculo de
+paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan_chapter.py`.
+
+- **`connector_io.sync_translations_db(root, scene_id, sfx, approved, plan_lines)`** — novo,
+  único ponto compartilhado pelas 6 cópias de `build_plan_chapter.py` (mesmo gate-shape de
+  `state_index._db_target`, extraído aqui pra nunca divergir entre conectores, espírito do
+  #86). Se `project.json:db` não populado → no-op, `False`, caller escreve o CSV como sempre
+  (BoF4/Uta/Souldiers/Trails/Demo hoje: comportamento intacto, zero risco).
+- Se gated: grava cada offset aprovado direto no `Store` (fonte de verdade) e regenera
+  `approved_<sfx>.csv` a **partir do DB** — o flat vira export derivado, não mais o dado
+  gravado pelo produtor (o mirror da Fase 2 some para este produtor especificamente).
+- **Não migrado para DB-first:** `run_scene.py`, `back_translate.py`, `cost.py`,
+  `quality_review.py`, `tm_updater.py` — continuam gravando flat direto (espelhados pelo
+  mirror da Fase 2, `state_index._sync_db`). Fora do escopo: nenhum desses tem oráculo de
+  paridade equivalente ao de translations hoje; converter sem oráculo seria mudança de fonte
+  de verdade sem prova de não-regressão.
+- **Validação:** sem projeto DB-gated ativo, não há run vivo possível. Oráculo sintético
+  **invertido** de `test_export_roundtrip_lossless` (mesma convenção de toda fase desta
+  migração — dado sintético, sem chamada de API): `sync_translations_db` gravando direto no
+  Store deve produzir os mesmos registros que o caminho legado (produtor grava flat →
+  `migrate_from_flat.migrate()` espelha pro Store), para a mesma entrada — ver
+  `framework/connectors/test_connector_io.py::test_sync_translations_db_matches_legacy_flat_then_migrate_oracle`.
+- **Run vivo validado (set/2026):** dado real do Trails Sky SC — cena `mp0010_01` (447 linhas,
+  tradução pt-BR de produção já feita, reconstruída a partir de
+  `artifacts/scenes/mp0010_01/_build_translations.py`, que sobrevive no repo como script de
+  montagem). Backfill via `migrate_from_flat.py`, `db` ligado *temporariamente* em
+  `project.json` (não commitado — projeto ativo continua flat por decisão de produto, não
+  técnica), `build_plan_chapter.py mp0010_01` rodado nos dois modos: `approved_mp0010_01.csv`
+  e `translation_plan_mp0010_01.json` do caminho DB-first bateram **byte-a-byte** com o caminho
+  legado (flat), e as 447 linhas no `Store` conferem (encoding UTF-8 correto, inclusive
+  acentuação pt-BR). Confirma em dado de produção real o que o oráculo sintético já provava.
 
 ## Detalhe das oportunidades de RAG
 
