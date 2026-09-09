@@ -109,6 +109,15 @@ def test_get_translations_exposes_clean(synthetic_migrated):
     assert "[" in r["target"] and "[" not in r["target_clean"]  # fiel tem, clean não
 
 
+def test_migrate_reindexes_embeddings_no_ml_deps(synthetic_migrated):
+    """#171: migrate() chama reindex_pending_embeddings automaticamente (write-path); sem
+    sentence-transformers/sqlite-vec instalados (CI), o resultado é None — silencioso, não
+    quebra a migração. Com deps de ML instaladas, embeddings > 0 (linhas aprovadas indexadas)."""
+    _root, _db, result = synthetic_migrated
+    assert "embeddings" in result
+    assert result["embeddings"] is None or result["embeddings"] > 0, result
+
+
 def test_migrate_idempotent(tmp_path):
     """Rodar a migração 2x no mesmo banco não duplica (upsert, não insert)."""
     db_path = tmp_path / "t.db"
