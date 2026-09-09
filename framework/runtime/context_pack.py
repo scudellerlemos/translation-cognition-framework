@@ -480,9 +480,14 @@ def _get_embedder():
     return _EMBEDDER
 
 
-def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
+def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
+                      min_score: float | None = None):
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
+
+    min_score (#172): repassado a Embedder.search(); vem de project.json (`rag_min_score`,
+    por projeto/par de idiomas — source_language/target_language já vivem no mesmo arquivo).
+    None (default) preserva o comportamento atual, sem corte.
 
     Caminho único: sqlite-vec + embedder.py (projetos com DB).
     Fallback: sem stack de ML ou sem DB → [] (sem erro).
@@ -497,7 +502,8 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
         out, seen = [], set()
         with Store(db_path) as db:
             for r in rows:
-                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k):
+                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k,
+                                      min_score=min_score):
                     if float(hit.get("score", 0)) >= 0.999:    # match exato já está em tm_exact
                         continue
                     key = (hit.get("source", ""), hit.get("target", ""))
@@ -667,7 +673,7 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
-    tm_semantic = _load_tm_semantic(db_path, db_pid, rows)
+    tm_semantic = _load_tm_semantic(db_path, db_pid, rows, min_score=cfg.get("rag_min_score"))
     tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
