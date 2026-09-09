@@ -480,9 +480,14 @@ def _get_embedder():
     return _EMBEDDER
 
 
-def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
+def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
+                      min_score: float | None = None):
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
+
+    min_score (#172): repassado a Embedder.search(); vem de project.json (`rag_min_score`,
+    por projeto/par de idiomas — source_language/target_language já vivem no mesmo arquivo).
+    None (default) preserva o comportamento atual, sem corte.
 
     Caminho único: sqlite-vec + embedder.py (projetos com DB).
     Fallback: sem stack de ML ou sem DB → [] (sem erro).
@@ -497,7 +502,8 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8):
         out, seen = [], set()
         with Store(db_path) as db:
             for r in rows:
-                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k):
+                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k,
+                                      min_score=min_score):
                     if float(hit.get("score", 0)) >= 0.999:    # match exato já está em tm_exact
                         continue
                     key = (hit.get("source", ""), hit.get("target", ""))
@@ -555,6 +561,46 @@ def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
         # cai p/ [] sem derrubar o pacote (mesmo tratamento de _load_tm_semantic).
         import warnings as _w
         _w.warn(f"Decisions semântica falhou (stack presente): {e!r} — pacote sem essa seção.",
+                stacklevel=2)
+        return []
+
+
+def _load_kb_semantic(db_path, project_id, blob_low, scene_id,
+                      k: int = 3, max_hits: int = 5):
+    """Seções da KB SEMANTICAMENTE similares ao conteúdo da cena (#169) — RAG paralelo a
+    select_kb (léxico, por título de seção citado). Mesmo gate default-deny por `reveal`
+    (ver _reveal_allowed) de select_kb/_load_decisions_semantic: só injeta seção já
+    revelada/segura.
+
+    Caminho único: sqlite-vec + embedder.py (projetos com DB).
+    Fallback: sem stack de ML, sem DB, ou sem kb indexada → [] (sem erro)."""
+    if not db_path:
+        return []
+    try:
+        emb = _get_embedder()
+        if emb is None:
+            return []                  # stack de ML ausente → fallback silencioso (esperado)
+        from store import Store
+        here = _pos(scene_id)
+        query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
+        out, seen = [], set()
+        with Store(db_path) as db:
+            for hit in emb.search_kb(db._con, query, project_id=project_id, k=k):
+                if not _reveal_allowed(hit.get("reveal"), here):
+                    continue
+                section = hit.get("section", "")
+                if not section or section in seen:
+                    continue
+                seen.add(section)
+                out.append({"section": section, "content": hit.get("content", ""),
+                            "score": round(float(hit.get("score", 0)), 3)})
+        out.sort(key=lambda h: (-h["score"], h["section"]))    # ordem estável (determinismo)
+        return out[:max_hits]
+    except Exception as e:             # noqa: BLE001
+        # falha INESPERADA com o stack PRESENTE: não mascarar como "sem lore" — avisa e cai
+        # p/ [] sem derrubar o pacote (mesmo tratamento de _load_tm_semantic).
+        import warnings as _w
+        _w.warn(f"KB semântica falhou (stack presente): {e!r} — pacote sem essa seção.",
                 stacklevel=2)
         return []
 
@@ -627,13 +673,15 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers)
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
-    tm_semantic = _load_tm_semantic(db_path, db_pid, rows)
+    tm_semantic = _load_tm_semantic(db_path, db_pid, rows, min_score=cfg.get("rag_min_score"))
     tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
     # Decisions semânticas (#105) -- mesmo gate default-deny por reveal do select_kb.
     decisions_semantic = _load_decisions_semantic(
         db_path, db_pid, rows, blob_low, scene_id_of(scene))
+    # KB semântica (#169) -- idem, RAG paralelo a select_kb (léxico).
+    kb_semantic = _load_kb_semantic(db_path, db_pid, blob_low, scene_id_of(scene))
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
@@ -651,6 +699,7 @@ def build_pack(root: Path, scene: str) -> dict:
         "tm_semantic": tm_semantic,
         "tm_series": tm_series,
         "kb": kb,
+        "kb_semantic": kb_semantic,
         "decisions_semantic": decisions_semantic,
         "spoiler_guards": spoiler_guards,
         "lines": rows,
@@ -731,6 +780,14 @@ def render_prompt(pack: dict, carta: str) -> str:
         L.append("## 5c. Lore relevante (KB — apenas fatos JA revelados ate esta cena)")
         for s in pack["kb"]:
             L.append(f"### {s['section']}")
+            L.append(s["content"])
+        L.append("")
+    _kb_shown = {s["section"] for s in pack.get("kb", [])}
+    kb_sem = [s for s in pack.get("kb_semantic", []) if s["section"] not in _kb_shown]
+    if kb_sem:
+        L.append("## 5d. Lore SEMELHANTE (semantica, ADAPTE ao contexto — apenas ja revelada)")
+        for s in kb_sem:
+            L.append(f"### {s['section']} (~{s['score']})")
             L.append(s["content"])
         L.append("")
     L.append("## 6. Memoria de traducao (consistencia — nao reinventar)")
