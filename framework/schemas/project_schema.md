@@ -22,6 +22,7 @@
 | `system_line_convention` | enum/string | — | Como detectar texto de sistema (ex: `all_caps`, `none`) |
 | `length_constraints` | object | — | Limites de comprimento (ver abaixo) |
 | `batch_size` | int | — | Linhas por lote de tradução (default 200) |
+| `rag_min_score` | float | — | Score mínimo (#172) p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte (default) |
 | `profile` | object | — | Caminhos para os arquivos de perfil curado (ver abaixo) |
 | `notes` | string | — | Observações livres sobre o título |
 
