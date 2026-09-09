@@ -89,6 +89,25 @@ def cmd_db_index(args):
     return 0
 
 
+def cmd_db_validate_model(args):
+    """Revalida o modelo de embedding pro par de idiomas do projeto antes de habilitar RAG
+    em produção (#170) — ver docs/DB_MIGRATION_ROADMAP.md."""
+    import sqlite3
+
+    from store import Store
+    from validate_model import validate_model
+    paraphrases = (json.loads(Path(args.paraphrases).read_text(encoding="utf-8"))
+                   if getattr(args, "paraphrases", None) else None)
+    with Store(args.db_path):
+        con = sqlite3.connect(args.db_path)
+        result = validate_model(con, args.project_id, model_name=getattr(args, "model", None),
+                                 sample_size=getattr(args, "sample_size", 20),
+                                 paraphrases=paraphrases)
+        con.close()
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 # ── extract / verify (aliases finos p/ skill 00/07 — #98) ─────────────────────
 
 def cmd_extract(args):
@@ -221,6 +240,18 @@ def build_parser() -> argparse.ArgumentParser:
     p_idx.add_argument("--kind", choices=["translation", "decision"], default="translation",
                        help="o que indexar: traduções (default) ou decisions (RAG sobre decision_log)")
     p_idx.set_defaults(func=cmd_db_index)
+
+    p_val = db_sub.add_parser(
+        "validate-model",
+        help="Revalida modelo de embedding pro par de idiomas antes de produção (#170)")
+    p_val.add_argument("db_path")
+    p_val.add_argument("project_id")
+    p_val.add_argument("--model", default=None,
+                       help="default: modelo pinado em embedder._MODEL_NAME")
+    p_val.add_argument("--sample-size", type=int, default=20)
+    p_val.add_argument("--paraphrases", default=None,
+                       help="JSON com [{query, source}, ...] curado pro par de idiomas")
+    p_val.set_defaults(func=cmd_db_validate_model)
 
     # skill
     p_sk = sub.add_parser("skill", help="Roda skills do pipeline (registry det./orquestração)")

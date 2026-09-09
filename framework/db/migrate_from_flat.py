@@ -517,6 +517,9 @@ def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
         metrics = _migrate_metrics(db, project_id, project_root)
         warnings = _migrate_warnings(db, project_id, project_root)
         qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
+        # #171: reindexa embeddings pendentes (TM/decisions) no mesmo write-path que espelha
+        # flat→DB — uma linha aprovada ou corrigida depois nunca fica esperando reindex manual.
+        embeddings = db.reindex_pending_embeddings(project_id)
         return {
             "project_id": project_id,
             "scenes": scenes,
@@ -536,6 +539,7 @@ def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
             "metrics": metrics,
             "warnings": warnings,
             "qa_effectiveness": qa_effectiveness,
+            "embeddings": embeddings,
             "db": str(dest_db),
         }
 

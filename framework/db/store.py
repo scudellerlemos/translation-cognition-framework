@@ -154,6 +154,23 @@ class Store:
         except ImportError:
             return self.search_tm_exact(source, project_id)
 
+    def reindex_pending_embeddings(self, project_id: str) -> int | None:
+        """#171: embeda TM/decisions ainda sem vetor (incremental — embedder.index_project
+        pula o que já tem embedding). Chamado do write-path (migrate_from_flat) a cada
+        mirror flat→DB, pra uma linha aprovada/corrigida nunca ficar esperando reindex
+        manual. None se sentence-transformers/sqlite-vec (deps de ML, opcionais) não
+        instaladas, OU se a indexação falhar por qualquer outro motivo (ex.: extensão
+        nativa do sqlite-vec incompatível, hardware ROCm indisponível) — embedding é busca
+        semântica opcional; nunca pode derrubar o mirror flat→DB (dados da TM/decisions já
+        estão persistidos em SQL antes desta chamada)."""
+        try:
+            from embedder import Embedder  # type: ignore
+            emb = Embedder()
+            return (emb.index_project(self._con, project_id, kind="translation")
+                    + emb.index_project(self._con, project_id, kind="decision"))
+        except Exception:
+            return None
+
     def get_tm_approved(self, project_id: str, limit: int = 5000) -> list[dict]:
         rows = self._con.execute(
             """SELECT scene_id, offset, source, target, speaker
