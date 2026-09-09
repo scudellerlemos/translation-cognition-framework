@@ -48,6 +48,7 @@ def test_build_pack_db_mode(tmp_path):
     assert pack["spoiler_guards"], "guard de spoiler (beyond_frontier + trigger) deveria disparar"
     assert pack["tm_semantic"] == []          # sem deps de ML → fallback esperado
     assert pack["decisions_semantic"] == []   # idem (#105) — sem deps de ML → fallback esperado
+    assert pack["kb_semantic"] == []          # idem (#169) — sem deps de ML → fallback esperado
 
 
 def test_write_pack_db_mode_renders_and_writes(tmp_path):
@@ -98,6 +99,72 @@ def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
     assert "Segredo futuro do dragão" not in titles
 
 
+def test_load_kb_semantic_respects_reveal_gate(tmp_path):
+    """#169 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    instalada localmente (requirements-ml.txt); skip limpo em CI, que não instala essa stack.
+    Seção 'safe' deve entrar; seção com reveal futuro deve ficar de fora (mesmo gate de
+    select_kb/_load_decisions_semantic, ver _reveal_allowed)."""
+    import pytest
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("sqlite_vec")
+    from embedder import Embedder
+
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+        db.upsert_kb("p", [
+            {"section": "Dragão do Vento", "content": "guardião ancestral dos ares",
+             "reveal": "safe"},
+            {"section": "Segredo do Dragão", "content": "guardião ancestral dos ares",
+             "reveal": "9_09"},
+        ])
+        emb = Embedder()
+        emb.index_project(db._con, project_id="p", kind="kb")
+
+    got = cp._load_kb_semantic(dbp, "p", "quem é o guardião ancestral dos ares?", "1_05")
+    sections = {s["section"] for s in got}
+    assert "Dragão do Vento" in sections
+    assert "Segredo do Dragão" not in sections
+
+
+def test_load_kb_semantic_gate_dedupe_and_sort_with_mocked_embedder(tmp_path, monkeypatch):
+    """Cobre o corpo de _load_kb_semantic (gate, dedupe, ordenacao) SEM depender da stack de ML
+    real -- troca _get_embedder() por um stub com search_kb() (mesmo contrato do Embedder), igual
+    a como CI (sem requirements-ml.txt) nunca exercitaria essas linhas de outra forma."""
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+
+    class _FakeEmbedder:
+        def search_kb(self, con, query, project_id, k):
+            return [
+                {"section": "Segredo Futuro", "content": "spoiler", "reveal": "9_09", "score": 0.95},
+                {"section": "Dragão do Vento", "content": "guardiao", "reveal": "safe", "score": 0.9},
+                {"section": "Dragão do Vento", "content": "dup", "reveal": "safe", "score": 0.5},
+            ]
+
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _FakeEmbedder())
+    got = cp._load_kb_semantic(dbp, "p", "quem é o guardião?", "1_05")
+    assert [s["section"] for s in got] == ["Dragão do Vento"]  # gate barra futuro, dedupe remove repetido
+
+
+def test_load_kb_semantic_falls_back_on_unexpected_error(tmp_path, monkeypatch):
+    """Falha inesperada COM o stack presente (índice corrompido etc.) cai p/ [] com warning
+    visivel -- não mascara como "sem lore" (mesmo tratamento de _load_tm_semantic)."""
+    import pytest
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+
+    class _BrokenEmbedder:
+        def search_kb(self, *a, **k):
+            raise RuntimeError("boom")
+
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _BrokenEmbedder())
+    with pytest.warns(UserWarning, match="KB sem"):
+        assert cp._load_kb_semantic(dbp, "p", "query", "1_05") == []
+
+
 def test_select_glossary_and_voices_lexical():
     """select_glossary/select_voices casam por presença no blob (limite de palavra)."""
     gloss = [{"term": "Dragon", "translation": "Dragão", "aliases": "Wyrm"},
@@ -124,14 +191,18 @@ def test_render_prompt_full_sections():
         "decisions": [{"title": "Regra", "summary": "manter", "universal": True}],
         "spoiler_guards": [{"entity": "Fou-lu", "spoiler_level": "high", "guard": "trate como mistério"}],
         "kb": [{"section": "Lore", "content": "lore do mundo"}],
+        "kb_semantic": [{"section": "Lore Semelhante", "content": "lore parecida", "score": 0.5},
+                        {"section": "Lore", "content": "duplicado do lexico", "score": 0.9}],
         "tm_exact": [{"source": "Hi", "target": "Oi", "speaker": "Ryu", "from_scene": "S0"}],
         "tm_voice": [{"speaker": "Ryu", "source": "Hi", "target": "Oi"}],
         "tm_semantic": [{"score": 0.9, "source": "Hey", "target": "Ei"}],
         "lines": [{"offset": "X:0:1", "source": "Hello | world", "byte_budget": 20}],
     }
     out = cp.render_prompt(pack, "CARTA DE TESTE")
-    for needle in ("Cena S1", "Dragon", "Ryu", "Fou-lu", "Lore", "SIMILARES", "charset", "Hello"):
+    for needle in ("Cena S1", "Dragon", "Ryu", "Fou-lu", "Lore", "SIMILARES", "charset", "Hello",
+                   "Lore Semelhante", "5d."):
         assert needle in out, needle
+    assert "duplicado do lexico" not in out, "seção já mostrada no léxico não repete na semântica"
 
 
 def test_render_prompt_empty_sections():
