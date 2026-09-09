@@ -282,3 +282,15 @@ CREATE TABLE IF NOT EXISTS decision_embeddings (
     dim             INTEGER NOT NULL,
     indexed_at      REAL
 );
+
+-- ── Embeddings (KB semântica — RAG sobre kb.content, #169) ─────────────────────
+-- Mesmo mecanismo de tm_embeddings/decision_embeddings, aplicado a kb.content. A KB já
+-- chega pré-chunkada (1 linha = 1 seção do markdown, ver migrate_from_flat._migrate_kb) —
+-- não precisa de chunk_fn no embedder, só de um kind novo em _KIND_CONFIG. Vetores na
+-- tabela virtual vec0 (kb_vectors, criada por embedder.py em runtime).
+CREATE TABLE IF NOT EXISTS kb_embeddings (
+    kb_id           INTEGER PRIMARY KEY REFERENCES kb(id),
+    model_name      TEXT NOT NULL,
+    dim             INTEGER NOT NULL,
+    indexed_at      REAL
+);
