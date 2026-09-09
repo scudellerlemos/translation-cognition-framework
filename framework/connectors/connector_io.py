@@ -11,6 +11,7 @@ import csv
 import json
 import os
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 
@@ -101,3 +102,59 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
     return Counter(rx.findall(source or "")) == Counter(rx.findall(text or ""))
+
+
+def sync_translations_db(root: Path, scene_id: str, sfx: str,
+                          approved: list[tuple[str, str]], plan_lines: list[dict]) -> bool:
+    """Write-path DB-first do build_plan_chapter (#109, Fase 6b). Gated por project.json:db
+    (mesmo formato de state_index._db_target) — MESMO shape em todo conector, extraído aqui p/
+    nunca divergir entre eles (espirito do #86).
+
+    Se gated: grava cada offset aprovado direto no Store (fonte de verdade) e regenera
+    artifacts/scenes/<scene>/approved_<sfx>.csv a PARTIR do DB — o flat vira export derivado,
+    não mais o dado gravado pelo produtor. Se não-gated (BoF4/Uta/Souldiers/Trails hoje):
+    no-op, retorna False — o caller escreve o CSV como sempre (comportamento intacto).
+    """
+    pj = root / "project.json"
+    if not pj.is_file():
+        return False
+    try:
+        cfg = json.loads(pj.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return False
+    db_cfg = cfg.get("db") or {}
+    rel, project_id = db_cfg.get("path"), db_cfg.get("project_id")
+    if not rel or not project_id:
+        return False
+
+    db_dir = str(Path(__file__).resolve().parents[1] / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import importlib
+    mff = importlib.import_module("migrate_from_flat")
+    Store = mff.Store
+
+    meta_by = {ln["offset"]: ln for ln in plan_lines}
+    with Store(root / rel) as db:
+        pmeta = mff._project_meta(root)
+        db.upsert_project(project_id=project_id, title=pmeta["title"],
+                          source_lang=pmeta["source_lang"], target_lang=pmeta["target_lang"],
+                          media_type=pmeta["media_type"])
+        for off, tgt in approved:
+            m = meta_by.get(off, {})
+            db.upsert_translation(
+                project_id=project_id, scene_id=scene_id, offset=off,
+                source=m.get("text_source", ""), target=tgt,
+                speaker=m.get("speaker", ""), tone_register=m.get("tone_register", ""),
+                intent=m.get("intent", ""), risk_level=m.get("risk_level", "low"),
+                risk_notes=m.get("risk_notes", ""), approved=True,
+            )
+        rows = [r for r in db.get_translations(project_id, approved_only=True)
+                if r["scene_id"] == scene_id]
+
+    scene_dir = root / "artifacts" / "scenes" / scene_id
+    with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["offset", "text_target"])
+        w.writerows((r["offset"], r["target"]) for r in rows)
+    return True

@@ -1,4 +1,4 @@
-"""embedder.py — Embeddings locais para busca semântica na TM e em decisions (#105).
+"""embedder.py — Embeddings locais para busca semântica na TM, em decisions (#105) e na KB (#169).
 
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
@@ -14,10 +14,26 @@ Dependências (instalar via pip):
 Uso:
     emb = Embedder()
     emb.index_project(con, project_id="bof4")   # indexa todas as traduções aprovadas
-    hits = emb.search(con, "He's gone...", project_id="bof4", k=5)
+    hits = emb.search(con, "He's gone...", project_id="bof4", k=5, min_score=0.6)
 
     emb.index_project(con, project_id="bof4", kind="decision")  # indexa decisions.summary
     hits = emb.search_decisions(con, "onomatopeia", project_id="bof4", k=5)
+
+    emb.index_project(con, project_id="bof4", kind="kb")  # indexa kb.content (seções da KB)
+    hits = emb.search_kb(con, "quem é o dragão do vento", project_id="bof4", k=5)
+
+Convenção de chunking (#169, ver docs/adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md):
+o embedder NUNCA chunka — sempre 1 linha da tabela-fonte = 1 vetor. Conteúdo que não é
+naturalmente atômico (ex.: universe_knowledge_base.md) é quebrado em unidades ANTES de
+chegar aqui, na ingestão (migrate_from_flat._migrate_kb quebra por seção `##`/`###` do
+markdown). Kind novo = tabela-fonte já atômica + entrada em _KIND_CONFIG; nunca um chunk_fn
+no embedder.
+
+NN exato vs ANN (#172): search()/search_decisions() fazem NN exato (cosine sobre TODOS os
+vetores do projeto via vec0, sem índice aproximado) — decisão deliberada para corpus pequeno
+(~6 mil linhas / 1 jogo, validado em docs/STACK.md), favorece determinismo sobre latência.
+Considerar migrar para ANN (sqlite-vec suporta índice aproximado) a partir de ~50-100 mil
+vetores por projeto, quando o scan linear passar a pesar na latência do pacote de contexto.
 """
 from __future__ import annotations
 
@@ -31,9 +47,12 @@ _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
 
-# indexação genérica por "kind" -- traduções (TM) e decisions (#105) compartilham a MESMA
-# estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de origem.
-# search() continua específico de TM (shape de retorno bem diferente de decisions); ver
+# indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
+# a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
+# origem. Nenhum kind aqui precisa de chunk_fn: a tabela-fonte já é 1-linha-1-unidade —
+# translations/decisions porque diálogo já vem atômico, kb porque a ingestão (ver
+# migrate_from_flat._migrate_kb) já quebra o markdown por seção antes de gravar. search()
+# continua específico de TM (shape de retorno bem diferente de decisions/kb); ver
 # search_decisions() abaixo.
 _KIND_CONFIG = {
     "translation": {"table": "translations", "text_col": "source",
@@ -42,6 +61,9 @@ _KIND_CONFIG = {
     "decision": {"table": "decisions", "text_col": "summary",
                  "vec_table": "decision_vectors", "emb_table": "decision_embeddings",
                  "id_col": "decision_id", "filter_sql": ""},
+    "kb": {"table": "kb", "text_col": "content",
+           "vec_table": "kb_vectors", "emb_table": "kb_embeddings",
+           "id_col": "kb_id", "filter_sql": ""},
 }
 
 
@@ -160,8 +182,14 @@ class Embedder:
 
     def search(self, con: sqlite3.Connection, query: str,
                project_id: str, k: int = 5,
-               approved_only: bool = True) -> list[dict]:
-        """Busca semântica na TM. Retorna top-k hits com score de similaridade."""
+               approved_only: bool = True,
+               min_score: float | None = None) -> list[dict]:
+        """Busca semântica na TM. Retorna top-k hits com score de similaridade.
+
+        min_score (#172): corta hits com score abaixo do threshold antes do rerank. None
+        (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
+        seção rotulada no pacote de contexto.
+        """
         from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
@@ -191,6 +219,8 @@ class Embedder:
             # vetores são unit-norm (encode normaliza) e a distância é L2 -> cos = 1 - L2²/2.
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
+            if min_score is not None and d["score"] < min_score:
+                continue
             results.append(d)
 
         return self._rerank(query, results) if results else results
@@ -221,6 +251,40 @@ class Embedder:
         for r in rows:
             d = dict(zip(
                 ["decision_id", "distance", "title", "summary", "universal", "reveal"],
+                r,
+                strict=True,
+            ))
+            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
+            results.append(d)
+        return results
+
+    def search_kb(self, con: sqlite3.Connection, query: str,
+                  project_id: str, k: int = 5) -> list[dict]:
+        """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
+        shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
+        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz. Sem rerank
+        (mesmo motivo de search_decisions: FlashRank é ajustado para tradução, não lore)."""
+        from store import strip_codes  # noqa: E402
+        self._ensure_vec_table(con, kind="kb")
+        q_vec = self.encode([strip_codes(query)])[0]
+
+        rows = con.execute(
+            """SELECT v.kb_id, v.distance,
+                       kb.section, kb.content, kb.reveal
+                FROM kb_vectors v
+                JOIN kb ON kb.id = v.kb_id
+                WHERE kb.project_id=?
+                  AND v.embedding MATCH ?
+                  AND k = ?
+                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados; alias
+                                          # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
+            (project_id, json.dumps(q_vec), k),
+        ).fetchall()
+
+        results = []
+        for r in rows:
+            d = dict(zip(
+                ["kb_id", "distance", "section", "content", "reveal"],
                 r,
                 strict=True,
             ))

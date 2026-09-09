@@ -62,6 +62,44 @@ def test_check_gender_flags_marker_near_entity(tmp_path):
     assert flags and flags[0]["marker"] == "ela" and flags[0]["entity"] == "Oshtor"
 
 
+def test_check_gender_low_confidence_when_referent_is_other_entity(tmp_path):
+    # "ela" esta colada a Rion (referente provavel); Kuon so aparece longe, no inicio da frase.
+    # RECALL preservado (ainda flagra, co-ocorrencia pura nunca e suprimida -- perder um vazamento
+    # real e pior que um falso-positivo extra), mas confident=False sinaliza que o referente mais
+    # proximo do marcador e outra entidade, nao a que esta em quarentena.
+    _scene(tmp_path, "ch_11_01", "Kuon observa em silencio enquanto Rion, ela mesma, decide.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"entity": "Kuon", "reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+        {"entity": "Rion", "reveal": "13_08", "triggers": ["Rion"]},
+    ]}), encoding="utf-8")
+    flags = sc.check_gender(tmp_path)
+    assert flags and flags[0]["entity"] == "Kuon" and flags[0]["confident"] is False
+
+
+def test_check_gender_high_confidence_when_referent_matches(tmp_path):
+    # Duas entidades na linha; "ela" fica colada a Kuon (em quarentena) -> atribuicao por
+    # referente mais proximo marca confident=True (nao e mero "a entidade aparece na linha").
+    _scene(tmp_path, "ch_11_01", "Rion observa em silencio enquanto Kuon, ela mesma, decide.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"entity": "Kuon", "reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+        {"entity": "Rion", "reveal": "13_08", "triggers": ["Rion"]},
+    ]}), encoding="utf-8")
+    flags = sc.check_gender(tmp_path)
+    assert flags and flags[0]["entity"] == "Kuon" and flags[0]["marker"] == "ela"
+    assert flags[0]["confident"] is True
+
+
+def test_check_gender_flags_even_without_entity_field(tmp_path):
+    # Regressao do bug achado em review: ledger entry sem "entity" (so triggers) nao pode ficar
+    # cega -- o default usado p/ montar all_entities e p/ comparar o referente tem que bater.
+    _scene(tmp_path, "ch_11_01", "Ela é a Kuon disfarcada.")
+    paths.spoiler_ledger(tmp_path).write_text(json.dumps({"entries": [
+        {"reveal": "13_08", "gender_quarantine": True, "triggers": ["Kuon"]},
+    ]}), encoding="utf-8")
+    flags = sc.check_gender(tmp_path)
+    assert flags and flags[0]["confident"] is True
+
+
 def test_list_guards(tmp_path):
     _scene(tmp_path, "ch_11_01", "x")
     _ledger(tmp_path, forbidden_pre_reveal=["Oshtor"], gender_quarantine=True, notes="twist central")
