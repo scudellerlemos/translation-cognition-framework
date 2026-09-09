@@ -118,10 +118,11 @@ def main():
     }
     (chdir / f"translation_plan_{sfx}.json").write_text(
         json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
-    with (chdir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
-        w.writerow(["offset", "text_target"])
-        w.writerows(approved)
+    if not connector_io.sync_translations_db(ROOT, sys.argv[1], sfx, approved, plan_lines):
+        with (chdir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
+            w = csv.writer(fh)
+            w.writerow(["offset", "text_target"])
+            w.writerows(approved)
 
     print(f"OK: {len(plan_lines)} linhas -> translation_plan_{sfx}.json + approved_{sfx}.csv")
     print(f"  risco: {plan['high_lines']} high, {plan['medium_lines']} medium, "
