@@ -40,6 +40,12 @@ def validate_model(con: sqlite3.Connection, project_id: str, model_name: str | N
     emb = Embedder(model_name) if model_name else Embedder()
     emb.index_project(con, project_id, force=True)  # reindexa com o modelo em validação
 
+    if sample_size < 1:
+        raise ValueError(f"sample_size deve ser >= 1 (recebido: {sample_size})")
+
+    # ponytail: carrega todas as linhas aprovadas pra amostrar em memória (stdlib random,
+    # sem função seedável no SQLite) — corpus atual (~6 mil linhas/projeto) cabe folgado;
+    # se um projeto crescer a ponto de pesar, trocar por reservoir sampling na query.
     all_rows = con.execute(
         "SELECT id, source FROM translations WHERE project_id=? AND approved=1",
         (project_id,),
