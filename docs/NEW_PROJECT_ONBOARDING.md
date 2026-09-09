@@ -174,6 +174,9 @@ Os testes do skeleton verificam:
 - [ ] `pytest connector/test_roundtrip.py` verde
 - [ ] `profile/voice_profiles_reference.md` com ao menos os personagens principais
 - [ ] `profile/terminology_seeds.md` com os termos críticos do universo
+- [ ] Se `db`/RAG semântico habilitado (`project.json` com `db` declarado): modelo de embedding
+      revalidado pro par de idiomas do projeto (`db validate-model`, ver checklist em
+      `docs/DB_MIGRATION_ROADMAP.md#checklist-de-revalidação-de-modelo-projeto-novo-170`)
 
 Só após todos os itens acima: iniciar o Passo 01 (Descoberta de Entidades).
 
