@@ -201,14 +201,14 @@ rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a st
 6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
 memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).
 
-### Checklist de revalidação de modelo (projeto novo, #170)
+### Checklist de revalidação de modelo (projeto novo, #170; amostragem e 2º par, #185)
 
 `_MODEL_NAME` (`paraphrase-multilingual-MiniLM-L12-v2`, em `embedder.py`) cobre ~50 idiomas com
 qualidade desigual — o 1.0/0.944 acima só foi medido no par EN→pt-BR. Antes de confiar no
 retrieval semântico em produção para um projeto com par de idiomas diferente, rodar:
 
 ```
-python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases paraphrases.json]
+python framework/cli.py db validate-model <db_path> <project_id> [--seed N] [--paraphrases paraphrases.json]
 ```
 
 - Sem `--paraphrases`: mede só `exact_match_avg` (query = source verbatim → deve recuperar a
@@ -218,6 +218,20 @@ python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases 
 - Comparar os dois contra a régua EN→pt-BR (1.0 / 0.944). Score bem abaixo disso → o modelo
   pinado não serve bem pro par de idiomas; considerar `--model` alternativo (grava
   `tm_embeddings.model_name` por vetor, reindex é automático dentro do próprio comando).
+- **Amostragem (#185):** a amostra de `exact_match` é aleatória sobre TODAS as linhas aprovadas
+  do projeto (antes era `LIMIT N` sem `ORDER BY`, sempre as N primeiras linhas inseridas —
+  enviesado pra early game/capítulos iniciais). `--seed` fixa a amostra pra reprodutibilidade
+  (comparação antes/depois, CI); sem `--seed`, cada rodada amostra de novo (mais representativo
+  em validação manual pontual).
+
+**Segundo par de idiomas validado (#185, corpus de teste dedicado, não produção):** JA→pt-BR,
+10 frases sintéticas estilo diálogo de RPG + 5 paráfrases curadas manualmente (script do
+exercício não versionado, mesmo padrão do paraphrases.json do #170) —
+`exact_match_avg=1.0`, `vocab_variation_avg=0.8962` (seed=42). Levemente abaixo do EN→pt-BR
+(0.944), mas ainda alto — o modelo pinado generaliza razoavelmente pra um par com fonte de
+morfologia bem diferente (JA, sem espaços/aglutinante, vs. EN). Não é um par 1:1 com projeto
+real (todos os `project.json` hoje são `source_language=en`), mas dá um segundo data point
+além do único par medido antes.
 
 Isso é validação **operacional** por projeto, não migração de dado — roda uma vez ao ligar
 `db`/RAG num projeto novo, fora da CI (precisa da stack de `requirements-ml.txt`).
