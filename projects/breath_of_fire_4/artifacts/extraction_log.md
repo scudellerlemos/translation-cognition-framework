@@ -1,6 +1,6 @@
 # Extraction Log — Breath of Fire IV
 
-- Diretório DAT: `C:\Program Files (x86)\Steam\steamapps\common\4249150_breathoffire4\english\DAT`
+- Diretório DAT: `C:\Program Files (x86)\Steam\steamapps\common\4249150_BreathofFire4\english\DAT`
 - Escopo: famílias de diálogo (AREAD, AREAS)
 - Arquivos com diálogo: 125
 - Strings extraídas: 6046
