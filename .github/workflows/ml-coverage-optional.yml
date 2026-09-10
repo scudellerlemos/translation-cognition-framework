@@ -9,6 +9,10 @@
 # (dep-audit-optional.yml, #89) pra cadência semanal em vez de todo push/PR — reaproveita o
 # mesmo raciocínio de custo aqui. Upgrade natural se uma regressão passar batido entre domingos:
 # mover pra test.yml (push/pull_request) e aceitar o tempo extra por PR.
+#
+# Todo test file com pytest.importorskip("sentence_transformers"/"sqlite_vec") no repo entra
+# aqui (grep -rl "importorskip(\"sentence_transformers\")\|importorskip(\"sqlite_vec\")"
+# framework/) -- inclui framework/connectors/test_connector_io.py (#182, reindex no write-path).
 name: Cobertura real (ML) — embedder/validate_model
 
 on:
@@ -42,7 +46,7 @@ jobs:
         run: |
           python -m pytest framework/db/test_validate_model.py framework/db/test_embedder_kind_config.py \
             framework/db/test_embedder_min_score.py framework/runtime/test_context_pack.py \
-            framework/runtime/test_kb_concordance.py \
+            framework/runtime/test_kb_concordance.py framework/connectors/test_connector_io.py \
             -v --tb=short --cov-config=.coveragerc-ml --cov=framework/db --cov-report=
       - name: Gate de cobertura real — embedder.py + validate_model.py (piso 85%)
         run: |
