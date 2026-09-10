@@ -18,7 +18,7 @@
 | Ursula | Ursula | Capitã imperial que se junta ao grupo. |
 | Ershin | Ershin | Armadura com Deis aprisionada; fala em terceira pessoa. |
 
-## Personagens — NPCs e Antagonistas <!-- reveal: beyond_frontier -->
+## Personagens — NPCs e Antagonistas <!-- reveal: AREAD155 -->
 
 | Personagem | Tradução/Grafia PT-BR | Notas |
 |------------|----------------------|-------|
