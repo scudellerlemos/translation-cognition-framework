@@ -21,6 +21,17 @@ se aplica a todos os tipos:
 > de personagem identificado por falante. UI, itens e batalha são fases separadas.
 > Ver `framework/media-profiles/games.md` — seção "Escopo de extração".
 
+> **Achado empírico (#183):** apesar de marcadas "fase futura" pra **tradução**,
+> `AREAE*` e `AREAM*` contêm texto narrativo real — falas de NPC com `[14][XX]@`
+> em `AREAE` (ex.: `"Did you come from Worent?"`) e definições de local em `AREAM`
+> (ex.: `"It's called Pung'tap, which means The Tower of Wind."`). Confirmado por
+> scan das 972 DAT do jogo. Isso NÃO expande o escopo Fase 0 de tradução (`dialogs.csv`
+> continua só `AREAD`/`AREAS`) — mas habilita `connector/mine_scene_order.py`, um
+> extrator complementar que reusa os mesmos parsers binários deste arquivo pra minerar
+> `artifacts/state/entity_first_scene.json` (ordem narrativa por entidade, sem texto
+> de diálogo) a partir das 4 famílias narrativas. Usado pra resolver `reveal:` de
+> spoiler-gate no KB de lore quando a família AREAD/AREAS sozinha não fecha.
+
 ### Filtros de conteúdo aplicados dentro das famílias incluídas
 
 | Filtro | Critério | Motivo |

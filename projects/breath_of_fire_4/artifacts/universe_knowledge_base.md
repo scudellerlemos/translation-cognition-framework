@@ -31,7 +31,7 @@
 | Chino | Chino | Criança NPC — 48× no corpus. |
 | Mami, Tarhn, Iggy, Levant, Rhun, Soniel, Ahtar, Mei | (manter grafia EN) | NPCs menores; nenhuma ratificação humana específica. |
 
-## Locais <!-- reveal: beyond_frontier -->
+## Locais <!-- reveal: AREAM037 -->
 
 | Nome EN | PT-BR | Notas |
 |---------|-------|-------|
@@ -76,7 +76,7 @@
 | P'ung Ryong | P'ung Ryong | Nome coreano do Dragão do Vento — 15× no corpus. Manter. |
 | Sandflier | Sandflier | Veículo que navega no oceano de areia — Wikipedia PT: "barcos que navegam pela areia". |
 
-## Formas de Dragão de Ryu <!-- reveal: beyond_frontier -->
+## Formas de Dragão de Ryu <!-- reveal: AREAE038 -->
 
 Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes EN por ora; traduzir durante fases de revisão com contexto visual confirmado.
 
