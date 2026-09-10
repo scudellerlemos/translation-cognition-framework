@@ -80,7 +80,7 @@
 
 Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes EN por ora; traduzir durante fases de revisão com contexto visual confirmado.
 
-## Mecânicas de Combate e Stats
+## Mecânicas de Combate e Stats <!-- reveal: safe -->
 
 | Inglês | PT-BR | Notas |
 |--------|-------|-------|
@@ -111,7 +111,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 
 - **Gaguejo de Scias em pt-BR** — convenção a definir quando cenas com Scias forem traduzidas. Registrar no `decision_log.md`.
 
-## Itens e Equipamentos
+## Itens e Equipamentos <!-- reveal: safe -->
 
 | Inglês | PT-BR | Notas |
 |--------|-------|-------|
@@ -121,7 +121,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 | Dragon Crystal | Cristal Dragão | |
 | Lures / Rod / Rods | Iscas / Vara / Varas | Equipamentos de pesca. |
 
-## Títulos e Tratamentos
+## Títulos e Tratamentos <!-- reveal: safe -->
 
 | Inglês | PT-BR | Notas |
 |--------|-------|-------|
