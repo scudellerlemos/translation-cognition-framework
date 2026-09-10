@@ -17,6 +17,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **Quality** | `quality.yml` | Todo push e PR | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
 | **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
+| **Cobertura real (ML)** | `ml-coverage-optional.yml` | Domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
 | **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 
@@ -92,6 +93,21 @@ do job `deps` de `quality.yml` (que continua auditando `requirements-dev.txt`, a
 verdade) e viraram checagem **semanal** aqui, mesmo padrão do `api-smoke.yml`: não roda a cada push,
 só todo domingo (agendado) ou sob demanda, e se falhar abre/atualiza uma issue automaticamente (sem
 issue, o cron falho passaria batido).
+
+---
+
+## 3.6. `ml-coverage-optional.yml` — cobertura real de `embedder.py`/`validate_model.py`
+
+O job `coverage` de `test.yml` mede `framework/db` inteiro, mas **exclui de propósito**
+`embedder.py` (`setup.cfg`) — sem `sentence-transformers`/`sqlite-vec` instalados, os únicos
+testes que exercitam a lógica real de indexação/busca vetorial (não os que usam
+`_FakeEmbedder`) ficam pulados via `pytest.importorskip`. Resultado: uma regressão na busca
+semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar (#181).
+
+Este job instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
+um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Mesma
+cadência semanal do `dep-audit-optional.yml` e pelo mesmo motivo de custo (torch +
+sentence-transformers do zero ~1min+ por run) — não roda em todo push/PR.
 
 ---
 

@@ -1,0 +1,18 @@
+# .coveragerc-ml — usado só pelo job ml-coverage-optional.yml (#181), NUNCA pelo job `coverage`
+# de test.yml (que usa setup.cfg, cujo omit exclui embedder.py de propósito -- ver comentário lá).
+# source aqui restringe a medição aos dois módulos que só funcionam de verdade com a stack ML
+# instalada; --cov=framework/db na CLI ainda mede o pacote inteiro (--cov de linha de comando
+# tem precedência sobre este source), o filtro final vem do --include no passo de gate.
+[run]
+source =
+    framework/db/embedder.py
+    framework/db/validate_model.py
+
+[report]
+precision = 2
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.
+    def main\(
+    if TYPE_CHECKING:
+    raise NotImplementedError
