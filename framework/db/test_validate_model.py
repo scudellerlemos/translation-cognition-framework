@@ -1,6 +1,7 @@
 """test_validate_model.py — smoke test do validate_model (#170) com Embedder/sqlite-vec
 REAIS. Só roda se a stack ML estiver instalada localmente (requirements-ml.txt); skip
-limpo em CI, que não instala essa stack (mesmo padrão de test_context_pack.py)."""
+limpo em test.yml (push/PR, que não instala essa stack, mesmo padrão de
+test_context_pack.py), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181)."""
 import sqlite3
 import sys
 from pathlib import Path
