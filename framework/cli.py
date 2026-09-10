@@ -102,7 +102,7 @@ def cmd_db_validate_model(args):
         con = sqlite3.connect(args.db_path)
         result = validate_model(con, args.project_id, model_name=getattr(args, "model", None),
                                  sample_size=getattr(args, "sample_size", 20),
-                                 paraphrases=paraphrases)
+                                 paraphrases=paraphrases, seed=getattr(args, "seed", None))
         con.close()
     print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
@@ -249,6 +249,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_val.add_argument("--model", default=None,
                        help="default: modelo pinado em embedder._MODEL_NAME")
     p_val.add_argument("--sample-size", type=int, default=20)
+    p_val.add_argument("--seed", type=int, default=None,
+                       help="fixa a amostra aleatoria (reprodutibilidade); default: entropia do SO")
     p_val.add_argument("--paraphrases", default=None,
                        help="JSON com [{query, source}, ...] curado pro par de idiomas")
     p_val.set_defaults(func=cmd_db_validate_model)
