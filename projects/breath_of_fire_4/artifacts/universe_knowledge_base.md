@@ -51,7 +51,7 @@
 | Imperial Capital | Capital Imperial | Capital do Império Fou. |
 | Kasq Woods, Yorae Shrine, Sonne, Shyde, Kyoin, Pukapuka, Chedo, Pabpab, Koshka | (manter grafia EN) | Localidades menores sem ratificação específica. |
 
-## Facções e Povos <!-- reveal: beyond_frontier -->
+## Facções e Povos <!-- reveal: AREAS015 -->
 
 | Nome EN | PT-BR | Fonte |
 |---------|-------|-------|
@@ -63,7 +63,7 @@
 | Faeries | Fadas | 72× no corpus (mecânica de vila de fadas). |
 | Manillo | Manillo | Criaturas-mercadores — "Manillo Shop". |
 
-## Conceitos e Lore <!-- reveal: beyond_frontier -->
+## Conceitos e Lore <!-- reveal: AREAD077 -->
 
 | Termo EN | Tradução PT-BR | Notas |
 |----------|---------------|-------|
@@ -97,7 +97,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 | Ranged / Melee | À Distância / Corpo-a-Corpo | Tipos de dano físico. |
 | ARaises [stat] | AUp [stat] | Efeitos de habilidade gerados por control codes — convenção abreviada. |
 
-## Decisões Ratificadas (2026-06-21) <!-- reveal: beyond_frontier -->
+## Decisões Ratificadas (2026-06-21) <!-- reveal: AREAS036 -->
 
 | Termo | Decisão | Nota |
 |-------|---------|------|
@@ -107,7 +107,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 | Ryu | **Ryu** (manter) | Nome personalizável pelo jogador; aparece via `[04][01]`, nunca como literal. |
 | Elina / Deis (gênero) | feminino ✓ | Confirmado pelo corpus. |
 
-## Decisões Abertas <!-- reveal: beyond_frontier -->
+## Decisões Abertas <!-- reveal: safe -->
 
 - **Gaguejo de Scias em pt-BR** — convenção a definir quando cenas com Scias forem traduzidas. Registrar no `decision_log.md`.
 
