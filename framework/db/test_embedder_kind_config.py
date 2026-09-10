@@ -43,8 +43,9 @@ def test_all_kinds_share_the_same_key_shape():
 
 def test_index_and_search_kb_end_to_end(tmp_path):
     """#169 smoke test com Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
-    instalada (requirements-ml.txt); skip limpo em CI (mesmo padrão de
-    test_load_kb_semantic_respects_reveal_gate em framework/runtime/test_context_pack.py)."""
+    instalada (requirements-ml.txt); skip limpo em test.yml (push/PR, mesmo padrão de
+    test_load_kb_semantic_respects_reveal_gate em framework/runtime/test_context_pack.py), mas
+    roda de verdade semanalmente em ml-coverage-optional.yml (#181)."""
     import pytest
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
