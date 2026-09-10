@@ -69,8 +69,11 @@ Plumbing HTTP/streaming/backoff → `framework/runtime/llm_client.py`.
 
 ## Embedding
 
-**Opcional e opt-in** — não entra na CI nem é exigido pelo runtime determinístico (sem a stack, o
-retriever semântico cai para `[]`, testado). Stack (`requirements-ml.txt`):
+**Opcional e opt-in** — não entra no push/PR (`test.yml`) nem é exigido pelo runtime
+determinístico (sem a stack, o retriever semântico cai para `[]`, testado). Testada de verdade
+(sem mock) semanalmente por `ml-coverage-optional.yml` (#181), piso de 85% em `embedder.py`/
+`validate_model.py` — mesma cadência do audit de CVE (`dep-audit-optional.yml`, #89), fora do
+push/PR pelo mesmo motivo de custo (torch do zero). Stack (`requirements-ml.txt`):
 
 - **`sentence-transformers`** — modelo `paraphrase-multilingual-MiniLM-L12-v2`, vetores de
   dimensão **384**, normalizados (`normalize_embeddings=True`) para o cosseno virar `1 - L2²/2`.

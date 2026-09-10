@@ -162,8 +162,9 @@ def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
 
 def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path):
     """#182 critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
-    stack ML estiver instalada; skip limpo em CI -- mesmo padrão de
-    test_index_and_search_kb_end_to_end em framework/db/test_embedder_kind_config.py), a
+    stack ML estiver instalada; skip limpo em test.yml (push/PR) -- mesmo padrão de
+    test_index_and_search_kb_end_to_end em framework/db/test_embedder_kind_config.py, mas roda
+    de verdade semanalmente em ml-coverage-optional.yml (#181)), a
     linha aprovada por sync_translations_db tem que aparecer em Embedder.search() sem
     NENHUM passo manual (nem db index, nem migrate) entre a escrita e a busca."""
     import pytest

@@ -72,7 +72,8 @@ def test_load_lines_db_missing_scene_raises(tmp_path):
 
 def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
     """#105 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
-    instalada localmente (requirements-ml.txt); skip limpo em CI, que não instala essa stack.
+    instalada localmente (requirements-ml.txt); skip limpo em test.yml (push/PR, que não instala
+    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181).
     Decision 'safe' deve entrar; decision com reveal futuro deve ficar de fora (mesmo gate de
     select_kb, ver _reveal_allowed)."""
     import pytest
@@ -143,7 +144,8 @@ def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
 
 def test_load_kb_semantic_respects_reveal_gate(tmp_path):
     """#169 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
-    instalada localmente (requirements-ml.txt); skip limpo em CI, que não instala essa stack.
+    instalada localmente (requirements-ml.txt); skip limpo em test.yml (push/PR, que não instala
+    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181).
     Seção 'safe' deve entrar; seção com reveal futuro deve ficar de fora (mesmo gate de
     select_kb/_load_decisions_semantic, ver _reveal_allowed)."""
     import pytest
