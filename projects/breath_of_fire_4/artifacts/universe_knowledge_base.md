@@ -6,7 +6,7 @@
 
 ---
 
-## Personagens — Grupo Principal
+## Personagens — Grupo Principal <!-- reveal: beyond_frontier -->
 
 | Personagem | Tradução/Grafia PT-BR | Notas |
 |------------|----------------------|-------|
@@ -18,7 +18,7 @@
 | Ursula | Ursula | Capitã imperial que se junta ao grupo. |
 | Ershin | Ershin | Armadura com Deis aprisionada; fala em terceira pessoa. |
 
-## Personagens — NPCs e Antagonistas
+## Personagens — NPCs e Antagonistas <!-- reveal: beyond_frontier -->
 
 | Personagem | Tradução/Grafia PT-BR | Notas |
 |------------|----------------------|-------|
@@ -31,7 +31,7 @@
 | Chino | Chino | Criança NPC — 48× no corpus. |
 | Mami, Tarhn, Iggy, Levant, Rhun, Soniel, Ahtar, Mei | (manter grafia EN) | NPCs menores; nenhuma ratificação humana específica. |
 
-## Locais
+## Locais <!-- reveal: beyond_frontier -->
 
 | Nome EN | PT-BR | Notas |
 |---------|-------|-------|
@@ -51,7 +51,7 @@
 | Imperial Capital | Capital Imperial | Capital do Império Fou. |
 | Kasq Woods, Yorae Shrine, Sonne, Shyde, Kyoin, Pukapuka, Chedo, Pabpab, Koshka | (manter grafia EN) | Localidades menores sem ratificação específica. |
 
-## Facções e Povos
+## Facções e Povos <!-- reveal: beyond_frontier -->
 
 | Nome EN | PT-BR | Fonte |
 |---------|-------|-------|
@@ -63,7 +63,7 @@
 | Faeries | Fadas | 72× no corpus (mecânica de vila de fadas). |
 | Manillo | Manillo | Criaturas-mercadores — "Manillo Shop". |
 
-## Conceitos e Lore
+## Conceitos e Lore <!-- reveal: beyond_frontier -->
 
 | Termo EN | Tradução PT-BR | Notas |
 |----------|---------------|-------|
@@ -76,7 +76,7 @@
 | P'ung Ryong | P'ung Ryong | Nome coreano do Dragão do Vento — 15× no corpus. Manter. |
 | Sandflier | Sandflier | Veículo que navega no oceano de areia — Wikipedia PT: "barcos que navegam pela areia". |
 
-## Formas de Dragão de Ryu
+## Formas de Dragão de Ryu <!-- reveal: beyond_frontier -->
 
 Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes EN por ora; traduzir durante fases de revisão com contexto visual confirmado.
 
@@ -97,7 +97,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 | Ranged / Melee | À Distância / Corpo-a-Corpo | Tipos de dano físico. |
 | ARaises [stat] | AUp [stat] | Efeitos de habilidade gerados por control codes — convenção abreviada. |
 
-## Decisões Ratificadas (2026-06-21)
+## Decisões Ratificadas (2026-06-21) <!-- reveal: beyond_frontier -->
 
 | Termo | Decisão | Nota |
 |-------|---------|------|
@@ -107,7 +107,7 @@ Grass Dragon, Sand Dragon, Rock Dragon, Tree Dragon, Mud Dragon → manter nomes
 | Ryu | **Ryu** (manter) | Nome personalizável pelo jogador; aparece via `[04][01]`, nunca como literal. |
 | Elina / Deis (gênero) | feminino ✓ | Confirmado pelo corpus. |
 
-## Decisões Abertas
+## Decisões Abertas <!-- reveal: beyond_frontier -->
 
 - **Gaguejo de Scias em pt-BR** — convenção a definir quando cenas com Scias forem traduzidas. Registrar no `decision_log.md`.
 
