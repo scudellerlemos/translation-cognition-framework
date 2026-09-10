@@ -120,9 +120,9 @@ versionado — script de calibração pontual):
 
 | Categoria | Exemplo | Score (top hit) |
 |---|---|---|
-| Verbatim normalizado (texto do corpus após `strip_codes`, sem alteração) | `"Monsters! They're everywhere!..."` | **1.0** (5/5 queries) |
-| Quase-verbatim (mesma frase digitada à mão, pequena diferença de pontuação/aspas) | "Where do you want to go?" | 0.83–0.89 |
-| Paráfrase genuína (mesmo sentido, palavras diferentes) | "So what is the state of the sacrifice now?" | 0.71–0.89 (uma cauda em 0,57) |
+| Verbatim normalizado (texto do corpus após `strip_codes`, sem alteração) | `"Monsters! They're everywhere!..."` | **1,0** (5/5 queries) |
+| Quase-verbatim (mesma frase digitada à mão, pequena diferença de pontuação/aspas) | "Where do you want to go?" | 0,83–0,89 |
+| Paráfrase genuína (mesmo sentido, palavras diferentes) | "So what is the state of the sacrifice now?" | 0,71–0,89 (uma cauda em 0,57) |
 | Mesmo domínio temático, conteúdo específico diferente (ruído plausível) | "Take this sword, it was forged by ancient smiths" → hit sobre uma lâmina que não corta | 0,37–0,51 |
 | Fora de domínio (não relacionado ao jogo) | "Preheat the oven to 200 degrees..." | 0,13–0,38 |
 
