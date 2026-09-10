@@ -21,6 +21,7 @@
     "diacritic_strategy": "nfd_transliteration"
   },
   "batch_size": 50,
+  "rag_min_score": 0.55,
   "connector": {
     "type": "hex_binary",
     "container_format": "capcom_dat_toc",
