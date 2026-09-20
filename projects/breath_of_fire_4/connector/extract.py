@@ -267,8 +267,11 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         "Ver projects/breath_of_fire_4/.env.example"
     )
     game_dat_dir = connector_io.resolve_source_path(
-        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True) or Path("")
-    if not game_dat_dir.is_dir():
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True)
+    # Path("") == Path(".") (CWD) -- .is_dir() sempre True, entao "nao configurado" (None) precisa
+    # de check explicito ANTES do is_dir(), senao a checagem abaixo nunca dispara e o run prossegue
+    # calado com a CWD como diretorio DAT (0 arquivos .DAT, dialogs.csv vazio, exit 0).
+    if game_dat_dir is None or not game_dat_dir.is_dir():
         raise SystemExit(_dir_error)
 
     rows: list[dict] = []

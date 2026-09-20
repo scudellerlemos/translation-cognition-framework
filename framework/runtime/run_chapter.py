@@ -148,6 +148,12 @@ def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     submit = []
     for s in pending:
         kb = kb_gate.check(root, s)
+        # hard_problems: nunca bypassavel (nem com --skip-kb-gate) -- mesma regra do caminho
+        # interativo em run_scene.py. Sem este check, uma cena com KB vazia/sem fronteira ia
+        # direto pro batch pago em vez de cair pro caminho interativo (que bloqueia de verdade).
+        if kb.get("hard_problems"):
+            print(f"[batch] {s} pulado do batch (KB-gate, hard): {kb['hard_problems'][0]}")
+            continue
         if kb["problems"] and not skip_kb_gate:
             print(f"[batch] {s} pulado do batch (KB-gate): {kb['problems'][0]}")
             continue

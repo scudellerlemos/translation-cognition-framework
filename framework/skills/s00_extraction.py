@@ -42,7 +42,7 @@ class ExtractionSkill(Skill):
         if problems:
             return problems
         cfg = self.project_cfg(project)
-        conn = cfg.get("connector", {})
+        conn = cfg.get("connector") or {}
         extract = conn.get("extract_script")
         if not extract:
             problems.append("project.json: connector.extract_script não declarado")

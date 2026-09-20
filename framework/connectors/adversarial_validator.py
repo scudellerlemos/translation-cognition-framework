@@ -23,6 +23,7 @@ from __future__ import annotations
 import statistics
 
 _VARIANCE_CV_MAX = 1.5
+_POPULATED_MIN = 10   # soma dos arquivos nao-zero p/ considerar o lote "populado" (ver check())
 
 
 def check(per_file: list[dict]) -> dict:
@@ -32,7 +33,10 @@ def check(per_file: list[dict]) -> dict:
     valid = [f for f in per_file if not f.get("error")]
     counts = [f["n_strings"] for f in valid]
 
-    if counts and max(counts) > 10 and min(counts) == 0:
+    # soma dos NAO-zero (nao max()): max() so olha o arquivo mais populado, entao um lote tipo
+    # [8, 0, 9] (nenhum individualmente > 10) nunca disparava mesmo com evidencia clara de que o
+    # candidato EXTRAI bem desse formato -- a soma agrega essa evidencia entre arquivos.
+    if counts and min(counts) == 0 and sum(c for c in counts if c > 0) > _POPULATED_MIN:
         zeroed = [f["path"] for f in valid if f["n_strings"] == 0]
         problems.append(
             f"arquivo(s) com ZERO strings extraidas entre arquivos populados (candidato nao "

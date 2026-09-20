@@ -297,11 +297,14 @@ def _bt_revise_offsets(root, scene) -> set:
         return set()
     try:
         data = json.loads(btf.read_text(encoding="utf-8"))
+        # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir
+        # micro-qa). dict.get() por entrada (nao indexacao) tambem cobre "entries" malformado (entrada
+        # nao-dict) -- so leitura best-effort, nao pode derrubar o export() inteiro por 1 cena com JSON
+        # parcialmente escrito a mao.
+        return {e.get("offset") for e in data.get("entries", [])
+                if isinstance(e, dict) and e.get("verdict") == "revise" and not e.get("stale")}
     except Exception:
         return set()
-    # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir micro-qa)
-    return {e.get("offset") for e in data.get("entries", [])
-            if e.get("verdict") == "revise" and not e.get("stale")}
 
 
 def width_violations(root, chapter=None) -> list:

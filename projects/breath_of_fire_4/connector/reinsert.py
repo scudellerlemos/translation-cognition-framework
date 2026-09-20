@@ -179,9 +179,10 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
     # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
     game_dat_dir = connector_io.resolve_source_path(
-        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True) or Path("")
-
-    if not game_dat_dir.is_dir():
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True)
+    # Path("") == Path(".") (CWD) -- .is_dir() sempre True, entao "nao configurado" (None) precisa
+    # de check explicito ANTES do is_dir(), senao a checagem abaixo nunca dispara.
+    if game_dat_dir is None or not game_dat_dir.is_dir():
         raise SystemExit(
             "Diretório DAT não configurado.\n"
             "Opções:\n"

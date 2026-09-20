@@ -204,7 +204,11 @@ def check(root, scene) -> dict:
         # `_pos(scene_id) > _pos(frontier vazio)` dava True p/ quase toda cena com numero no nome —
         # bloqueava 500+ cenas por engano. So funcionava por coincidencia no BoF4 (nomes de cena
         # sem segmento puramente numerico).
-        if frontier_pos and _pos(scene_id) > frontier_pos:
+        scene_pos = _pos(scene_id)
+        # scene_pos vazio (scene_id sem digito) e INCOMPARAVEL, nao "antes da fronteira" -- default-deny
+        # (mesma convencao de _pos()/select_spoiler_guards): sem como provar que a KB cobre esta cena,
+        # trata como alem da fronteira em vez de deixar passar por `() > frontier_pos` dar False.
+        if frontier_pos and (not scene_pos or scene_pos > frontier_pos):
             problems.append(f"cena {scene_id} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
     else:
