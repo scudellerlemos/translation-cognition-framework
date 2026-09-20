@@ -107,6 +107,44 @@ def test_sync_scenes_refuses_to_overwrite_corrupt_series_tm(monkeypatch, tmp_pat
     assert tm_path.read_text(encoding="utf-8").startswith('[{"source_game": "other"')
 
 
+def test_sync_scenes_warns_about_malformed_entries_and_keeps_them(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path / "_repo")
+    root = tmp_path / "game1"
+    _setup_verified_scene(root, "ch_01_01", "0x1", "Hello", "Ola")
+    tm_path = tu.series_tm_path("bof")
+    tm_path.parent.mkdir(parents=True, exist_ok=True)
+    tm_path.write_text(json.dumps([{"source": "sem chaves"}]), encoding="utf-8")   # sem source_game/src_key
+    assert tu.sync_scenes(root, {"series": "bof"}, ["ch_01_01"], approved_at="t") == 1
+    assert "1 entrada(s)" in capsys.readouterr().out
+    assert len(tl.load_series_tm("bof")) == 2                                       # a torta nao foi apagada
+
+
+def test_sync_scenes_warns_and_syncs_nothing_when_run_state_unreadable(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path / "_repo")
+    root = tmp_path / "game1"
+    _setup_verified_scene(root, "ch_01_01", "0x1", "Hello", "Ola")
+    paths.run_state(root).write_text("{nao e json", encoding="utf-8")
+    assert tu.sync_scenes(root, {"series": "bof"}, ["ch_01_01"], approved_at="t") == 0
+    assert "NADA sera sincronizado" in capsys.readouterr().out
+
+
+def test_read_plan_entries_tolerates_missing_and_corrupt_plan(tmp_path):
+    assert tu._read_plan_entries(tmp_path, "ch_01_01", "01_01") == {}                # plano ausente
+    sd = paths.scene_dir(tmp_path, "ch_01_01")
+    sd.mkdir(parents=True)
+    paths.translation_plan(tmp_path, "ch_01_01", "01_01").write_text("{torto", encoding="utf-8")
+    assert tu._read_plan_entries(tmp_path, "ch_01_01", "01_01") == {}                # plano corrompido
+
+
+def test_reset_game_on_unreadable_series_tm_removes_nothing(monkeypatch, tmp_path):
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path / "_repo")
+    tm_path = tu.series_tm_path("bof")
+    tm_path.parent.mkdir(parents=True, exist_ok=True)
+    tm_path.write_text("{torto", encoding="utf-8")
+    assert tu.reset_game("bof", "game1") == 0
+    assert tm_path.read_text(encoding="utf-8") == "{torto"                           # nao mexeu no arquivo
+
+
 def test_tm_correct_replace_is_literal_not_regex_template():
     """`replace` com barra invertida (token do jogo `\\n`) ou `\\1` nao pode virar quebra de linha / erro de grupo."""
     import tm_correct as tc
