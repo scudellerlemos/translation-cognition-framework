@@ -84,7 +84,10 @@ def lint_project(root: Path) -> list[dict]:
             # linter e best-effort (achados sao candidatos p/ revisao, nao um gate) -- 1 regex
             # invalida em project.json nao pode derrubar o lint inteiro, so essa checagem de token.
             import warnings
-            warnings.warn(f"naturalness_lint: formatting_token_patterns ignora regex invalida {p!r} ({e})")
+            warnings.warn(
+                f"naturalness_lint: formatting_token_patterns ignora regex invalida {p!r} ({e})",
+                stacklevel=2,
+            )
     art = root / "artifacts"
 
     def strip_tokens(s: str) -> str:

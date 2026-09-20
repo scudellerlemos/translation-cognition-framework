@@ -186,7 +186,10 @@ class Store:
             # tratada por reindex_pending_embeddings acima) -- mas tambem cobriria um bug real no
             # embedder, entao avisa (ImportError de deps ausentes acima fica silencioso: esperado).
             import warnings
-            warnings.warn(f"search_tm_semantic: fallback p/ busca exata ({type(e).__name__}: {e})")
+            warnings.warn(
+                f"search_tm_semantic: fallback p/ busca exata ({type(e).__name__}: {e})",
+                stacklevel=2,
+            )
             return self.search_tm_exact(source, project_id)
 
     def reindex_pending_embeddings(self, project_id: str) -> int | None:
