@@ -52,7 +52,7 @@ def _read(p: Path) -> str:
 
 
 def estimate(root: Path) -> dict:
-    root = Path(root)
+    root = Path(root).resolve()   # Carta = root.parent.parent: com Path('.') resolvia errado
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     batch = int(cfg.get("batch_size", 200))
     art = root / "artifacts"
@@ -110,9 +110,10 @@ def _scenario(e, *, models, cache):
     tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * src_per + INSTR_TOK
-        out_tok = batch * (tgt_per + META_TOK_PER_LINE)
+    sizes = [min(batch, e["n"] - i * batch) for i in range(nb)]   # ultimo lote e parcial
+    for bs in sizes:
+        in_tok = ctx + bs * src_per + INSTR_TOK
+        out_tok = bs * (tgt_per + META_TOK_PER_LINE)
         # modelo médio do lote: mistura por risco (aprox: usa 'medium' como base, 'low' p/ baratos)
         m = models["medium"]
         trans += _call_cost(in_tok, out_tok, m, ctx, cache)
@@ -122,9 +123,9 @@ def _scenario(e, *, models, cache):
         trans += ctx * p["in"] * (CACHE_WRITE - CACHE_READ)   # diferença write-vs-read no 1º lote
     # micro-QA: 1 chamada por lote
     qa = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * (src_per + tgt_per) + INSTR_TOK
-        out_tok = batch * QA_OUT_TOK_PER_LINE
+    for bs in sizes:
+        in_tok = ctx + bs * (src_per + tgt_per) + INSTR_TOK
+        out_tok = bs * QA_OUT_TOK_PER_LINE
         qa += _call_cost(in_tok, out_tok, models["qa"], ctx, cache)
     # back-translation: 1 chamada em lote com as linhas de alto risco
     back = 0.0

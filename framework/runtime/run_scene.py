@@ -532,6 +532,7 @@ def main():
     if not a.scene:
         ap.error("scene e obrigatorio (exceto com --check-stale)")
     if a.clean:
+        _validate_scene_arg(Path(a.project), a.scene)
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,

@@ -172,3 +172,13 @@ def test_upsert_translation_empty_source_keeps_existing_source(tmp_path):
         db.upsert_translation("p1", "s1", "0x1", source="", target="Oi", approved=True)
         hit = db.search_tm_exact("Hello", "p1")
     assert [h["target"] for h in hit] == ["Oi"]
+
+
+def test_upsert_entity_reupsert_updates_first_scene_and_notes(tmp_path):
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("a", "A")
+        db.upsert_entity("a", "Ryu", canonical_pt="Ryu")
+        db.upsert_entity("a", "Ryu", first_scene="ch_02", notes="protagonista")
+        db.upsert_entity("a", "Ryu", canonical_pt="Ryu")     # None nao pode apagar o que ja existe
+        e = db.get_entities("a")[0]
+    assert e["first_scene"] == "ch_02" and e["notes"] == "protagonista"

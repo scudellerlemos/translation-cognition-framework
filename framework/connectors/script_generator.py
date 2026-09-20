@@ -184,7 +184,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = src.read_bytes()
     table = load_table(root / cfg["connector"]["table_schema"])
 
@@ -275,7 +275,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = src.read_bytes()
     table = load_table(Path("."))  # pointer table não usa tabela
 
@@ -331,7 +331,7 @@ _APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminh
 
 
 def encode_string(text: str) -> bytes:
-    return text.encode(_ENCODING, errors="replace")
+    return text.encode(_ENCODING)   # strict: char sem mapeamento falha alto, nunca vira "?" em silencio
 
 
 def main(project_json: Path, source_override: str | None = None):
@@ -339,7 +339,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
@@ -447,7 +447,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
@@ -461,7 +461,7 @@ def main(project_json: Path, source_override: str | None = None):
         while end < len(data) and data[end:end + len(TERMINATOR)] != TERMINATOR:
             # MESMA varredura do decode_string do extract.py: a sequência de controle é consumida
             # inteira, senão um byte terminador dentro dela seria tomado como fim da string.
-            for seq, _tok in CONTROL_MAP:
+            for seq, _tok in sorted(CONTROL_MAP, key=lambda x: -len(x[0])):
                 if data[end:end + len(seq)] == seq:
                     end += len(seq)
                     break
@@ -476,7 +476,8 @@ def main(project_json: Path, source_override: str | None = None):
                 f"original ({{budget}}b) -- sem realocação de TOC neste padrão"
             )
         data[offset:offset + len(raw)] = raw
-        data[offset + len(raw):offset + budget] = TERMINATOR * (budget - len(raw))
+        pad = budget - len(raw)   # em BYTES; termina sempre com o terminador completo
+        data[offset + len(raw):offset + budget] = (TERMINATOR * pad)[(len(TERMINATOR) - 1) * pad:]
 
     out_dir = root / "output"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -512,7 +513,7 @@ _APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminh
 
 
 def encode_string(text: str) -> bytes:
-    return text.encode(_STR_ENCODING, errors="replace") + _TERMINATOR
+    return text.encode(_STR_ENCODING) + _TERMINATOR   # strict: char sem mapeamento falha alto, nunca vira "?"
 
 
 def main(project_json: Path, source_override: str | None = None):
@@ -520,7 +521,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
@@ -544,7 +545,8 @@ def main(project_json: Path, source_override: str | None = None):
                 f"original ({{budget}}b) -- realocação de TOC não implementada neste candidato"
             )
         data[offset:offset + len(raw)] = raw
-        data[offset + len(raw):offset + budget] = _TERMINATOR * (budget - len(raw))
+        pad = budget - len(raw)   # em BYTES; termina sempre com o terminador completo
+        data[offset + len(raw):offset + budget] = (_TERMINATOR * pad)[(len(_TERMINATOR) - 1) * pad:]
 
     out_dir = root / "output"
     out_dir.mkdir(parents=True, exist_ok=True)

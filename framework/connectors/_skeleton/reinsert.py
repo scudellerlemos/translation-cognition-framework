@@ -139,5 +139,7 @@ def main(project_json: Path, source_override: str | None = None):
 if __name__ == "__main__":
     # Uso: python reinsert.py [project.json] [<caminho-do-binário-entregue>]
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)

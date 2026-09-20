@@ -389,6 +389,8 @@ class Store:
                ON CONFLICT(project_id, name) DO UPDATE SET
                    canonical_pt=COALESCE(excluded.canonical_pt, canonical_pt),
                    entity_type=COALESCE(excluded.entity_type, entity_type),
+                   first_scene=COALESCE(excluded.first_scene, first_scene),
+                   notes=COALESCE(excluded.notes, notes),
                    spoiler_reveal_scene=COALESCE(excluded.spoiler_reveal_scene,
                                                   spoiler_reveal_scene)""",
             (project_id, name, canonical_pt, entity_type, first_scene,
