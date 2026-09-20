@@ -52,7 +52,7 @@ def check(root, chapter=None) -> dict:
     """
     root = Path(root)
     revise, uncovered = [], []
-    cov = {"lines": 0, "high": 0, "with_back": 0, "sampled_low": 0}
+    cov: dict[str, float] = {"lines": 0, "high": 0, "with_back": 0, "sampled_low": 0}
     for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)       # le translation_plan; [] se sem plano
         if not plan_lines:
@@ -102,7 +102,7 @@ def export_revise(revise, csv_path):
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Piso de qualidade observavel (verdicts de back-translation).")
     ap.add_argument("project")
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")

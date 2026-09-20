@@ -44,7 +44,7 @@ def load_worklist(csv_path) -> dict:
     p = Path(csv_path)
     if not p.is_file():
         raise FileNotFoundError(f"worklist nao encontrada: {csv_path}")
-    by_scene = {}
+    by_scene: dict[str, list] = {}
     with p.open(encoding="utf-8-sig", newline="") as fh:
         for r in csv.DictReader(fh):
             scene, off = (r.get("scene") or "").strip(), (r.get("offset") or "").strip()
@@ -130,7 +130,7 @@ def apply(root, worklist, *, model_name=None, max_usd=None) -> dict:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Re-traducao dirigida das linhas 'revise' (dados propoem; script aplica).")
     ap.add_argument("project")
     ap.add_argument("worklist", help="CSV do quality_gate --export")

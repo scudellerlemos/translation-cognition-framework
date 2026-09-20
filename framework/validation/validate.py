@@ -148,7 +148,7 @@ def _check_approved_flat(art: Path, idc: str, dialog_ids: set[str], src_text: di
         tgt = r.get("text_target", "") or ""
         if dialog_ids and i not in dialog_ids:
             out.append(_E("approved_translations.csv", f"id '{i}' não existe em dialogs.csv"))
-        s = src_text.get(i)
+        s = src_text.get(i) if i is not None else None
         if s is not None:
             out += _check_target("approved_translations.csv", i, s, tgt, tokens, rx_tokens)
     return out

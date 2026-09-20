@@ -127,7 +127,7 @@ def main():
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
     with contextlib.suppress(AttributeError, ValueError, OSError):
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     found = lint(a.project)
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
     out.write_text(json.dumps({"count": len(found), "findings": found}, ensure_ascii=False, indent=2),
