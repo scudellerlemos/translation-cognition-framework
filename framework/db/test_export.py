@@ -44,6 +44,18 @@ def test_export_tm_well_formed(bof4_migrated, tmp_path):
     assert all(e["src_key"] for e in lines if e["source"]), "src_key vazio p/ source não-vazio"
 
 
+def test_export_writes_rows_from_a_populated_db(synthetic_migrated, tmp_path):
+    """O BoF4 versionado não tem mais traduções (purga); o sintético garante o caminho COM linhas."""
+    import json
+    _root, db_path, migrated = synthetic_migrated
+    result = export(db_path, migrated["project_id"], tmp_path)
+    assert result["approved"] > 0 and result["tm"] > 0, result
+    with (tmp_path / "approved_translations.csv").open(encoding="utf-8", newline="") as fh:
+        assert len(list(csv.DictReader(fh))) == result["approved"]
+    tm = [json.loads(ln) for ln in (tmp_path / "translation_memory.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert len(tm) == result["tm"] and all(e["src_key"] for e in tm if e["source"])
+
+
 def test_export_roundtrip_lossless(bof4_migrated, tmp_path):
     """Oráculo do cutover: DB → export approved → re-migrate num DB fresco → mesmas traduções.
     Reusa o approved exportado como se fosse o approved_*.csv de uma cena (mesmo formato)."""
