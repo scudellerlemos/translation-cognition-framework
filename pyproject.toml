@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "Translation Cognition Framework — pipeline SDD de localização narrativa (games/filmes/séries)"
 requires-python = ">=3.11"
 dependencies = [
-    "anthropic~=0.109",
+    "anthropic>=0.109,<2.0",
     "httpx~=0.28",
 ]
 
