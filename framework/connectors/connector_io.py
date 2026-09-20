@@ -62,6 +62,26 @@ def resolve_source_path(
     raise exc(error_hint)
 
 
+def load_approved(path: Path, consequence: str) -> dict[str, str]:
+    """approved_translations.csv -> {offset: texto}. Coluna canonica `text_target` (mesmo contrato de
+    export_to_flat/build_plan_chapter); `text_pt` = legado. Linha so com espaco = vazia (identity).
+    Levanta ValueError se o CSV tem linhas mas NENHUMA preenchida: reinserir assim e no-op silencioso
+    (coluna errada) -- `consequence` diz o que aconteceria, p/ a mensagem."""
+    out: dict[str, str] = {}
+    n_rows = 0
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            n_rows += 1
+            key = (row.get("offset") or "").strip()
+            val = row.get("text_target") or row.get("text_pt") or ""
+            if key and val.strip():
+                out[key] = val
+    if n_rows and not out:
+        raise ValueError(f"{path} tem {n_rows} linha(s) mas nenhuma com coluna text_target/text_pt "
+                         f"preenchida -- {consequence}")
+    return out
+
+
 def write_dialogs_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
     """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda.
     Atômico (tmp + replace): extract que morre no meio não trunca o dialogs.csv bom anterior."""

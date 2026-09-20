@@ -79,8 +79,8 @@ def _validate_kb_format(root: Path) -> list[str]:
                     f"Colunas encontradas: {hdr}. "
                     f"Rodar 'python framework/runtime/scaffold_project.py <projeto>' p/ template correto."
                 )
-        except Exception:
-            pass
+        except Exception as exc:
+            issues.append(f"glossary.csv ilegivel ({exc!r}) — schema nao validado.")
 
     # 2. tone_analysis.md — voice cards precisam de '### Nome — `voice_criticality: X`'
     tp = paths.tone_analysis(root)
@@ -375,8 +375,8 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
                 if stale:
                     warnings.append(f"{stale} termo(s) do glossario com updated_date "
                                     f"> {GLOSSARY_STALENESS_DAYS} dias — considere revisar.")
-        except Exception:
-            pass
+        except Exception as exc:
+            warnings.append(f"glossary.csv ilegivel ({exc!r}) — governanca de updated_date nao checada.")
 
     # persiste avisos em warnings.jsonl (agregado permanente — nao so stdout)
     if warnings:

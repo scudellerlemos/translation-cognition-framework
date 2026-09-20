@@ -100,6 +100,9 @@ def log_api_call(root, scene, kind, model, usage, *, batch=False):
     _warn_ledger_size(lp)          # fora do try: warning.warn nao e excecao por padrao
     try:
         _ledger_append(lp, json.dumps(rec, ensure_ascii=False) + "\n")
-    except Exception:
-        pass
+    except Exception as exc:
+        import warnings as _warnings
+        _warnings.warn(f"cost.py: falha ao gravar api_ledger.jsonl ({exc!r}) -- esta chamada "
+                       f"(${rec['cost_usd']}) NAO foi contabilizada no ledger / --max-usd.",
+                       RuntimeWarning, stacklevel=2)
     return rec

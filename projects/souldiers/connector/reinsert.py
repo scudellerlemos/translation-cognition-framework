@@ -159,18 +159,8 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
         raise FileNotFoundError(f"Arquivo de traduções não encontrado: {approved_csv}")
 
     # Carrega traduções aprovadas: offset → text_target (canonica) / text_pt (legado)
-    translations: dict[str, str] = {}
-    n_rows = 0
-    with approved_csv.open(encoding="utf-8-sig", newline="") as f:
-        for row in csv.DictReader(f):
-            n_rows += 1
-            key = row.get("offset", "").strip()
-            val = row.get("text_target") or row.get("text_pt") or ""
-            if key and val.strip():   # strip so p/ testar vazio: espaco final de linha identity e conteudo
-                translations[key] = val
-    if n_rows and not translations:
-        raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"
-                         f"text_pt preenchida -- reinsercao copiaria os bundles originais sem traducao")
+    translations = connector_io.load_approved(
+        approved_csv, "reinsercao copiaria os bundles originais sem traducao")
 
     output_dir = project_root / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
