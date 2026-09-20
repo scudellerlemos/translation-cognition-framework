@@ -388,8 +388,12 @@ def _load_lines(root: Path, cfg: dict, scene: str):
     scene_dir = paths.scene_dir(root, scene)
     if not (scene_dir / "dialogs.csv").is_file():
         raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
-    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
-        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
+    probs = validate_dialogs_csv(scene_dir / "dialogs.csv")
+    if probs:
+        # todo problema aqui (coluna ausente, offset/byte_budget vazio ou nao-numerico) e fatal p/
+        # load_dialogs() logo abaixo -- abortar aqui da um erro claro em vez de um KeyError/ValueError
+        # cru numa linha arbitraria do CSV.
+        raise SystemExit(f"ERRO: dialogs.csv invalido ({scene}): " + "; ".join(probs))
     return load_dialogs(scene_dir / "dialogs.csv")
 
 

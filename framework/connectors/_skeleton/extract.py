@@ -53,7 +53,8 @@ def decode_string(data: bytes, offset: int, table) -> tuple[str, int]:
     byte_to_char, control_map, terminator = table
     out = []
     i = offset
-    while not data[i:].startswith(terminator):
+    n = len(data)
+    while i < n and data[i:i + len(terminator)] != terminator:
         # 2a. tentar casar um control code (sequência -> token)
         matched = False
         for seq, token in control_map:          # control_map ordenado por len desc
@@ -71,6 +72,8 @@ def decode_string(data: bytes, offset: int, table) -> tuple[str, int]:
             ch = f"[{data[i]:02X}]"             # byte desconhecido -> marcar p/ revisão
         out.append(ch)
         i += 1
+    if i >= n:
+        raise ValueError(f"string sem terminador a partir do offset {offset} (arquivo truncado/corrompido)")
     byte_budget = (i + len(terminator)) - offset
     return "".join(out), byte_budget
 

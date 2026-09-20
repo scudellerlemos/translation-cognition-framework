@@ -90,28 +90,28 @@ def rebuild_section(
         else:
             ptr_idx_to_bytes[ptr_idx] = orig_raw
 
-    # Mapeia orig_ptr → primeiro ptr_idx apontando para esse offset
-    orig_ptr_to_first_idx: dict[int, int] = {}
-    for ptr_idx, orig_ptr, _raw in original_strings:
-        if orig_ptr not in orig_ptr_to_first_idx:
-            orig_ptr_to_first_idx[orig_ptr] = ptr_idx
-
-    # Escreve strings em ordem crescente de offset original
-    unique_orig_ptrs = sorted(orig_ptr_to_first_idx.keys())
+    # Escreve strings em ordem crescente de ptr_idx, deduplicando por CONTEUDO final (nao mais por
+    # orig_ptr): 2+ ptr_idx que compartilhavam o mesmo offset original (string sharing da Capcom)
+    # so continuam compartilhando armazenamento se a tradução final for IGUAL -- se as traduções
+    # aprovadas divergirem por ptr_idx, cada uma ganha seu proprio slot; antes, so a do primeiro
+    # ptr_idx alias (por offset original) era gravada e as demais eram descartadas em silêncio.
     new_string_data = bytearray()
-    orig_offset_to_new_offset: dict[int, int] = {}
-
-    for orig_ptr in unique_orig_ptrs:
-        first_idx = orig_ptr_to_first_idx[orig_ptr]
-        new_start = first_ptr + len(new_string_data)
-        orig_offset_to_new_offset[orig_ptr] = new_start
-        new_string_data += ptr_idx_to_bytes.get(first_idx, b'')
-        new_string_data += b'\x00'
+    bytes_to_new_offset: dict[bytes, int] = {}
+    ptr_idx_to_new_offset: dict[int, int] = {}
+    for ptr_idx in sorted(ptr_idx_to_bytes.keys()):
+        raw = ptr_idx_to_bytes[ptr_idx]
+        new_offset = bytes_to_new_offset.get(raw)
+        if new_offset is None:
+            new_offset = first_ptr + len(new_string_data)
+            bytes_to_new_offset[raw] = new_offset
+            new_string_data += raw
+            new_string_data += b'\x00'
+        ptr_idx_to_new_offset[ptr_idx] = new_offset
 
     # Reconstrói a tabela de ponteiros
     new_ptr_table = bytearray(first_ptr)
     for i, orig_ptr in enumerate(original_ptrs):
-        new_ptr = orig_offset_to_new_offset.get(orig_ptr, orig_ptr)
+        new_ptr = ptr_idx_to_new_offset.get(i, orig_ptr)
         if new_ptr > 0xFFFF:
             raise OverflowError(
                 f"Offset de ponteiro excede uint16: {new_ptr:#06x} "

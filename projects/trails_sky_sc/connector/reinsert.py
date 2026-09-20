@@ -164,6 +164,15 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
 
     budgets = _load_byte_budgets(dialogs_csv)
 
+    # offset aprovado sem budget em dialogs.csv = approved_translations.csv desatualizado (extract.py
+    # re-rodou e mudou offsets) ou key errada -- rebuild_pac() pula esses em silencio (budgets.get()
+    # None -> continue), entao sem este check a unica pista seria "reinseridas" abaixo do esperado.
+    missing = sorted(k for k in translations if k not in budgets)
+    if missing:
+        print(f"[reinsert] AVISO: {len(missing)} traducao(oes) aprovada(s) sem budget em dialogs.csv "
+              f"(offset nao existe mais / dialogs.csv desatualizado?) -- NAO reinseridas: "
+              f"{missing[:5]}{' ...' if len(missing) > 5 else ''}")
+
     pac_path = data_dir / _SCRIPT_PAC
     if not pac_path.is_file():
         raise FileNotFoundError(f"script_en.pac nao encontrado: {pac_path}")
@@ -177,11 +186,17 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
     out_pac.write_bytes(new_bytes)
 
     report_path = artifacts / "reinsertion_report.md"
+    missing_section = (
+        f"\nAVISO: {len(missing)} traducao(oes) aprovada(s) sem budget em dialogs.csv "
+        f"(NAO reinseridas): {', '.join(missing)}\n"
+        if missing else ""
+    )
     report_path.write_text(
         "# Reinsertion Report — Trails in the Sky 2nd Chapter\n\n"
         f"Traducoes carregadas: {len(translations)}\n"
         f"Strings reinseridas: {changed}\n"
-        f"Saida: {out_pac}\n",
+        f"Saida: {out_pac}\n"
+        f"{missing_section}",
         encoding="utf-8",
     )
     print(f"Reinserido: {changed} strings -> {out_pac}")

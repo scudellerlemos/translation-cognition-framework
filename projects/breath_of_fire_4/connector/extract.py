@@ -17,6 +17,7 @@ import json
 import re
 import struct
 import sys
+import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -78,7 +79,14 @@ def decode_string(raw: bytes) -> str:
 
 
 def encode_string(text: str) -> bytes:
-    """String CSV → bytes sem terminador. Inverso de decode_string."""
+    """String CSV → bytes sem terminador. Inverso de decode_string.
+
+    O font do jogo so tem ASCII — acentos pt-BR (ã, é, ç, ô...) sao transliterados via NFD
+    (á->a, ç->c, ...) ANTES do encode, mesmo padrao ja usado em
+    utawarerumono/connector/reinsert.py:transliterate. Sem isso, todo acento virava '?' (0x3F)
+    silenciosamente: verify_chapter.py compara decode(rebuild(encode(x))) contra encode_string(x),
+    entao o round-trip comparava corrompido-com-corrompido e passava verde."""
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
     out = bytearray()
     i = 0
     while i < len(text):
@@ -91,7 +99,7 @@ def encode_string(text: str) -> bytes:
             if ord(ch) in _ASCII_RANGE:
                 out.append(ord(ch))
             else:
-                # Caracter fora do ASCII imprimível — transliterar para '?' para segurança
+                # ainda nao mapeavel apos NFD (ex.: CJK) — ultimo recurso
                 out.append(0x3F)
             i += 1
     return bytes(out)

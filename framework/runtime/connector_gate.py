@@ -66,7 +66,7 @@ def check(root) -> dict:
     cfg_path = root / "project.json"
     try:
         cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
         cfg = {}
     hard_problems: list[str] = []
     for key, default in _SCRIPTS:
