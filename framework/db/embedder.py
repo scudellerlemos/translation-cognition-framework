@@ -44,6 +44,8 @@ import tempfile
 import time
 import warnings
 
+from textclean import strip_codes  # forma limpa: vetor/consulta sem ruído dos códigos
+
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
@@ -168,8 +170,7 @@ class Embedder:
         if not rows:
             return 0
 
-        from store import strip_codes  # noqa: E402  (forma limpa: vetor sem ruído dos códigos)
-        ids = [r[0] for r in rows]
+        ids =[r[0] for r in rows]
         texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
         # force: vetores+metadado velhos; senão: linha cujo texto mudou perdeu o metadado (trigger) mas
@@ -202,7 +203,6 @@ class Embedder:
         (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
         seção rotulada no pacote de contexto.
         """
-        from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
 
@@ -245,7 +245,6 @@ class Embedder:
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
         forçar as duas formas numa única função genérica. Sem rerank (FlashRank é ajustado para
         passagens de tradução, não decisões de processo)."""
-        from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="decision")
         q_vec = self.encode([strip_codes(query)])[0]
 
@@ -280,7 +279,6 @@ class Embedder:
         shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
         chamador (ver context_pack._reveal_allowed), igual search_decisions() faz. Sem rerank
         (mesmo motivo de search_decisions: FlashRank é ajustado para tradução, não lore)."""
-        from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="kb")
         q_vec = self.encode([strip_codes(query)])[0]
 

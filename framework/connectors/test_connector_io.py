@@ -5,10 +5,35 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import connector_io as cio  # noqa: E402
+
+
+def _approved(tmp_path, header, rows):
+    p = tmp_path / "approved_translations.csv"
+    p.write_text("\n".join([header, *rows]) + "\n", encoding="utf-8")
+    return p
+
+
+def test_load_approved_reads_text_target_and_legacy_text_pt(tmp_path):
+    p = _approved(tmp_path, "offset,text_target", ["0x1,Ola", "0x2,  ", ",sem-id"])
+    assert cio.load_approved(p, "x") == {"0x1": "Ola"}          # espaco-so e id vazio ignorados
+    p = _approved(tmp_path, "offset,text_pt", ["0x1,Legado"])
+    assert cio.load_approved(p, "x") == {"0x1": "Legado"}
+
+
+def test_load_approved_raises_when_rows_but_none_filled(tmp_path):
+    p = _approved(tmp_path, "offset,text_en", ["0x1,coluna errada"])      # coluna nao reconhecida
+    with pytest.raises(ValueError, match="nenhuma com coluna text_target/text_pt.*consequencia-x"):
+        cio.load_approved(p, "consequencia-x")
+
+
+def test_load_approved_empty_csv_is_not_an_error(tmp_path):
+    assert cio.load_approved(_approved(tmp_path, "offset,text_target", []), "x") == {}
 
 
 def test_resolve_source_path_prefers_cli_arg(tmp_path, monkeypatch):

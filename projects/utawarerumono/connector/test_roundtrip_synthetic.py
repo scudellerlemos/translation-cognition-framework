@@ -272,3 +272,52 @@ def test_loaders_aggregate_scenes_when_flat_csv_absent(tmp_path, monkeypatch):
     monkeypatch.setattr(R, "ART", tmp_path)
     assert R.load_budgets() == [("0x10", "Hi", 2)]
     assert R.load_approved() == {"0x10": "Oi"}
+
+
+def _run_verify_chapter(tmp_path, monkeypatch, *, needs_review: bool):
+    """verify_chapter.main() sobre o sdat sintetico, com o buffer aplicado corrompido em 1 offset
+    (got != want) -- exercita o ramo `off_hex in needs_review` (nota) vs falha dura."""
+    import json
+
+    import verify_chapter as V
+
+    data = _build_synthetic_sdat()
+    budgets = _budgets_from(data, S.parse_pack(data))
+    off_hex = budgets[0][0]
+    (tmp_path / "game.bin").write_bytes(data)
+    (tmp_path / "project.json").write_text(
+        json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    sc = tmp_path / "artifacts" / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\n" + "".join(f"{o},{t},{b}\n" for o, t, b in budgets),
+        encoding="utf-8")
+    (sc / "approved_01.csv").write_text(f"offset,text_target\n{off_hex},Oi amigo\n", encoding="utf-8")
+    if needs_review:
+        (sc / "translation_plan_01.json").write_text(
+            json.dumps({"needs_review": [off_hex]}), encoding="utf-8")
+
+    real = R.build_output
+
+    def corrupting(original, b, approved):
+        buf, repoints, report = real(original, b, approved)
+        if approved:                      # so a aplicacao, nao o round-trip com approved vazio
+            buf = bytearray(buf)
+            buf[int(off_hex, 16)] = ord("Z")
+        return buf, repoints, report
+
+    monkeypatch.setattr(R, "build_output", corrupting)
+    monkeypatch.setattr(V, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["verify_chapter.py", "ch_01"])
+    V.main()
+
+
+def test_verify_chapter_needs_review_mismatch_is_a_note_not_a_failure(tmp_path, monkeypatch, capsys):
+    _run_verify_chapter(tmp_path, monkeypatch, needs_review=True)      # sem SystemExit
+    assert "NOTAS" in capsys.readouterr().out
+
+
+def test_verify_chapter_plain_mismatch_is_a_hard_failure(tmp_path, monkeypatch):
+    with pytest.raises(SystemExit) as ei:
+        _run_verify_chapter(tmp_path, monkeypatch, needs_review=False)
+    assert ei.value.code == 1

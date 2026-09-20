@@ -63,8 +63,9 @@ def clean_failed_scene(root, scene) -> list[str]:
             if scene in state.get("scenes", {}):
                 del state["scenes"][scene]
                 rs.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        except (json.JSONDecodeError, OSError):
-            pass
+        except (json.JSONDecodeError, OSError) as exc:
+            print(f"[discontinue] AVISO: run_state.json ilegivel ({exc!r}) -- checkpoint de "
+                  f"'{scene}' NAO removido; a cena pode continuar marcada como verified.")
     return moved
 
 

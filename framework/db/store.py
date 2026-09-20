@@ -13,23 +13,13 @@ from __future__ import annotations
 
 import contextlib
 import json
-import re
 import sqlite3
 import time
 from pathlib import Path
 
+from textclean import strip_codes  # leaf; `from store import strip_codes` segue valendo
+
 _SCHEMA = Path(__file__).with_name("schema.sql")
-
-_CODE_RX = re.compile(r"\[[0-9A-Fa-f]{2}\]")
-
-
-def strip_codes(text: str) -> str:
-    """Forma LIMPA do texto: remove os códigos de controle do jogo (`[XX]`) e normaliza
-    espaços. Para LEITURA e EMBEDDING semântico — o `target` FIEL (com códigos) continua
-    intacto no banco (round-trip/conector dependem dele). Genérico (multi-game)."""
-    if not text:
-        return text or ""
-    return re.sub(r"\s+", " ", _CODE_RX.sub(" ", text)).strip()
 
 
 class Store:
