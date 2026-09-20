@@ -17,6 +17,7 @@ import json
 import re
 import struct
 import sys
+import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -30,6 +31,17 @@ import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores,
 # ---------------------------------------------------------------------------
 _ASCII_RANGE = range(0x20, 0x7F)
 _CTRL_RE = re.compile(r'\[([0-9A-Fa-f]{2})\]')
+
+# Pontuação tipográfica comum em diálogo pt-BR gerado por LLM que NFD não decompõe (não são
+# acentos, são glifos distintos) -- sem isto, viravam '?' (0x3F) em silêncio, e
+# verify_chapter.py comparava encode_string(x) contra encode_string(x) (mesma função em
+# ambos os lados), entao o round-trip passava verde mesmo com a perda.
+_PUNCT_FALLBACK = {
+    '–': '-', '—': '-',              # en/em dash
+    '‘': "'", '’': "'",              # aspas simples curvas
+    '“': '"', '”': '"',              # aspas duplas curvas
+    '…': '...',                      # reticências
+}
 
 # ---------------------------------------------------------------------------
 # Escopo de extração — Fase 0: apenas diálogo de história
@@ -78,7 +90,15 @@ def decode_string(raw: bytes) -> str:
 
 
 def encode_string(text: str) -> bytes:
-    """String CSV → bytes sem terminador. Inverso de decode_string."""
+    """String CSV → bytes sem terminador. Inverso de decode_string.
+
+    O font do jogo so tem ASCII — acentos pt-BR (ã, é, ç, ô...) sao transliterados via NFD
+    (á->a, ç->c, ...) ANTES do encode, mesmo padrao ja usado em
+    utawarerumono/connector/reinsert.py:transliterate. Sem isso, todo acento virava '?' (0x3F)
+    silenciosamente: verify_chapter.py compara decode(rebuild(encode(x))) contra encode_string(x),
+    entao o round-trip comparava corrompido-com-corrompido e passava verde."""
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = "".join(_PUNCT_FALLBACK.get(c, c) for c in text)
     out = bytearray()
     i = 0
     while i < len(text):
@@ -91,7 +111,11 @@ def encode_string(text: str) -> bytes:
             if ord(ch) in _ASCII_RANGE:
                 out.append(ord(ch))
             else:
-                # Caracter fora do ASCII imprimível — transliterar para '?' para segurança
+                # ainda nao mapeavel apos NFD+_PUNCT_FALLBACK (ex.: CJK) — ultimo recurso, mas
+                # avisado (verify_chapter.py nao pega isso: compara encode_string(x) contra
+                # encode_string(x), entao um '?' silencioso passaria verde nos dois lados).
+                print(f"[extract] AVISO: caractere sem mapeamento ASCII substituido por '?': {ch!r} "
+                      f"(U+{ord(ch):04X}) em {text!r}")
                 out.append(0x3F)
             i += 1
     return bytes(out)
@@ -217,6 +241,9 @@ def extract_section_strings(section: bytes) -> list[tuple[int, int, bytes]]:
         end = section.find(b'\x00', ptr)
         if end == -1:
             end = min(ptr + 255, len(section))
+            print(f"[extract] AVISO: string sem terminador em ptr_idx={i // 2} (offset {ptr:#x}) "
+                  f"-- truncada em 255 bytes, resto PERDIDO (heuristica de secao pode ter travado "
+                  f"num limite errado)")
         raw = section[ptr:end]
         results.append((i // 2, ptr, raw))
 
@@ -236,12 +263,15 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         "Diretório DAT não configurado.\n"
         "Opções:\n"
         "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
-        "  2. CLI: python extract.py project.json <DAT_DIR>\n"
+        "  2. CLI: python extract.py <project_root> <DAT_DIR>\n"
         "Ver projects/breath_of_fire_4/.env.example"
     )
     game_dat_dir = connector_io.resolve_source_path(
-        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True) or Path("")
-    if not game_dat_dir.is_dir():
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True)
+    # Path("") == Path(".") (CWD) -- .is_dir() sempre True, entao "nao configurado" (None) precisa
+    # de check explicito ANTES do is_dir(), senao a checagem abaixo nunca dispara e o run prossegue
+    # calado com a CWD como diretorio DAT (0 arquivos .DAT, dialogs.csv vazio, exit 0).
+    if game_dat_dir is None or not game_dat_dir.is_dir():
         raise SystemExit(_dir_error)
 
     rows: list[dict] = []
@@ -340,6 +370,8 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
 
 if __name__ == '__main__':
-    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('project.json')
+    # argv[1] = raiz do projeto (nao project.json) -- mesma convencao de souldiers/trails_sky_sc
+    # e do que connector_smoke.py ja passa; sem isso, o smoke test falha sempre p/ este conector.
+    proj_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('.')
     override = sys.argv[2] if len(sys.argv) > 2 else None
-    main(proj, override)
+    main(proj_root / 'project.json', override)

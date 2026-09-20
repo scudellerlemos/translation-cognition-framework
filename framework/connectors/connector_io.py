@@ -40,7 +40,7 @@ def resolve_source_path(
         return Path(os.environ[env_var])
     if project_json is not None and cfg_key:
         cfg = json.loads(Path(project_json).read_text(encoding="utf-8"))
-        declared = cfg.get("connector", {}).get(cfg_key)
+        declared = (cfg.get("connector") or {}).get(cfg_key)
         if declared:
             p = Path(declared)
             if relative_base is not None and not p.is_absolute():

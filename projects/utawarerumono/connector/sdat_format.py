@@ -219,12 +219,14 @@ def _trim_edges(block: list[tuple[int, str, int]]) -> list[tuple[int, str, int]]
 # de um script é a "entrada" do seu bloco de texto.
 
 
-def _file_start_of(off: int, starts: list[int], files: list[ScriptFile]) -> int | None:
-    """Início do arquivo (Pack) que contém `off`, via busca binária. None se fora de qualquer arquivo."""
+def _file_at(off: int, starts: list[int], files: list[ScriptFile]) -> ScriptFile | None:
+    """ScriptFile (Pack) que contém `off`, via busca binária (starts pré-ordenado 1x pelo caller —
+    evitar o re-sort por chamada de file_of(), custoso no loop de index_pointers()). None se fora
+    de qualquer arquivo."""
     import bisect
     j = bisect.bisect_right(starts, off) - 1
     if 0 <= j < len(files) and files[j].offset <= off < files[j].end:
-        return files[j].offset
+        return files[j]
     return None
 
 
@@ -245,10 +247,16 @@ def index_pointers(data: bytes, files: list[ScriptFile]) -> dict[int, list[tuple
                 break
             site = i + 2
             if site + 4 <= n:
-                fs = _file_start_of(i, starts, files)
-                if fs is not None:
-                    tgt = fs + struct.unpack_from("<I", data, site)[0]
-                    idx.setdefault(tgt, []).append((site, fs))
+                f = _file_at(i, starts, files)
+                if f is not None:
+                    tgt = f.offset + struct.unpack_from("<I", data, site)[0]
+                    # ponteiro file-relativo TEM que apontar dentro do proprio arquivo (contrato do
+                    # formato, ver docstring do modulo) -- descarta match fora dos limites: uma string
+                    # de diálogo terminando em 'P'/'S' (0x50/0x53) produz, junto do seu \0 terminador,
+                    # a MESMA sequencia de opcode por coincidencia; sem este bound check os 4 bytes
+                    # seguintes (conteudo de string, nao bytecode) eram lidos como ponteiro real.
+                    if f.offset <= tgt < f.end:
+                        idx.setdefault(tgt, []).append((site, f.offset))
             i += 1
     return idx
 
@@ -262,12 +270,18 @@ def is_head(data: bytes, off: int, idx: dict[int, list[tuple[int, int]]]) -> boo
     return off in idx
 
 
-def read_run(data: bytes, head_off: int, idx: dict[int, list[tuple[int, int]]]) -> list[int]:
+def read_run(data: bytes, head_off: int, idx: dict[int, list[tuple[int, int]]], file_end: int) -> list[int]:
     """Run = head + continuações (strings sem ponteiro próprio) até o próximo head.
-    Captura o run COMPLETO (sem truncar): a relocação precisa mover todas as continuações."""
+    Captura o run COMPLETO (sem truncar): a relocação precisa mover todas as continuações.
+
+    `file_end` (ScriptFile.end de `head_off`, ver extract_text_block que já bounda do mesmo jeito):
+    nunca caminha para depois do fim do PRÓPRIO arquivo -- sem isso, quando a última string de
+    diálogo de um arquivo termina exatamente no limite de alinhamento de 16 bytes (sem padding \0
+    antes do próximo arquivo), o loop não parava e decodificava bytes do cabeçalho/bytecode do
+    PRÓXIMO arquivo como se fossem uma continuação do run."""
     members = [head_off]
     nxt = head_off + len(read_cstr(data, head_off)) + 1
-    while len(members) < MAX_RUN and nxt < len(data):
+    while len(members) < MAX_RUN and nxt < min(len(data), file_end):
         if data[nxt] == 0x00:
             break
         if is_head(data, nxt, idx):

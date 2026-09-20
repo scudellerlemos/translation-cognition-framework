@@ -92,8 +92,13 @@ def validate_dialogs_csv(path: Path) -> list:
                 if not (row.get("offset") or "").strip():
                     problems.append(f"linha {i}: offset vazio")
                 bv = (row.get("byte_budget") or "").strip()
-                if bv and not bv.lstrip("-").isdigit():
-                    problems.append(f"linha {i}: byte_budget não-numérico: {bv!r}")
+                if not bv:
+                    problems.append(f"linha {i}: byte_budget vazio")
+                else:
+                    try:
+                        int(bv)          # int() valida sinal/digitos corretamente (lstrip("-") aceitava "--5")
+                    except ValueError:
+                        problems.append(f"linha {i}: byte_budget não-numérico: {bv!r}")
     except (OSError, csv.Error) as e:
         problems.append(f"erro ao ler: {e}")
     return problems
@@ -167,14 +172,38 @@ def select_voices(voice_cards, blob_low):
     return dict(sorted(sel.items()))
 
 
-def select_decisions(decisions, present_terms, present_speakers):
+def _decision_reveal_ok(reveal, here: tuple | None) -> bool:
+    """Gate de spoiler p/ decisoes: `reveal` e metadado OPT-IN (a maioria das decisoes nao tem
+    tag) -- ao contrario do default-deny da KB (_reveal_allowed), aqui SEM tag = sem gate
+    (comportamento historico preservado). SO bloqueia quando ha tag explicita e ela e futura
+    em relacao a esta cena (mesma semantica de select_spoiler_guards)."""
+    reveal = (reveal or "").strip().lower()
+    if not reveal:
+        return True                # sem tag = sem gate (comportamento historico, ver docstring)
+    if reveal == "beyond_frontier" or reveal == "bf":
+        return False
+    if not here:       # cena atual incomparavel (scene_id nao-numerico) -> DEFAULT-SAFE: bloqueia
+        return False    # (mesma convencao de _pos()/select_spoiler_guards p/ posicao incomparavel)
+    rp = _pos(reveal)
+    return not rp or rp <= here     # tag nao-numerica -> nao bloqueia (nao conseguimos comparar)
+
+
+def select_decisions(decisions, present_terms, present_speakers, scene_id: str | None = None):
+    """scene_id ativa o gate de spoiler _decision_reveal_ok: decisoes com `reveal` explicito e
+    FUTURO para esta cena ficam de fora do pacote (#spoiler leak). scene_id=None preserva o
+    comportamento historico SO p/ decisoes sem tag `reveal` (maioria) -- decisoes COM tag ficam
+    bloqueadas por seguranca (default-deny, sem cena p/ comparar), nao "sem filtro"."""
+    here = _pos(scene_id) if scene_id is not None else None
     toks = {t.lower() for t in present_terms} | {s.lower() for s in present_speakers}
     chosen, seen = [], set()
     for d in decisions:                       # universais primeiro (regras do conector)
-        if d.get("universal") and d["title"] not in seen:
+        if (d.get("universal") and d["title"] not in seen
+                and _decision_reveal_ok(d.get("reveal"), here)):
             chosen.append(d); seen.add(d["title"])
     for d in decisions:                       # depois: casadas por TAG (titulo) OU pelo SUMMARY (conteudo)
         if d["title"] in seen:
+            continue
+        if not _decision_reveal_ok(d.get("reveal"), here):
             continue
         tags = {t.lower() for t in d.get("tags", [])}
         summ = (d.get("summary", "") or "").lower()
@@ -326,6 +355,7 @@ def _load_sources_db(db_path: Path, project_id: str):
     decisions = [{
         "title": d.get("title", ""), "summary": d.get("summary") or "",
         "universal": bool(d.get("universal")), "tags": d.get("tags") or [],
+        "reveal": d.get("reveal"),
     } for d in dec_rows]
     tm = [{
         "src_key": state_index._key(r.get("source", "")), "source": r.get("source", ""),
@@ -360,8 +390,12 @@ def _load_lines(root: Path, cfg: dict, scene: str):
     scene_dir = paths.scene_dir(root, scene)
     if not (scene_dir / "dialogs.csv").is_file():
         raise SystemExit(f"ERRO: {scene_dir/'dialogs.csv'} nao encontrado")
-    for prob in validate_dialogs_csv(scene_dir / "dialogs.csv"):
-        print(f"[A4] AVISO dialogs.csv ({scene}): {prob}")
+    probs = validate_dialogs_csv(scene_dir / "dialogs.csv")
+    if probs:
+        # todo problema aqui (coluna ausente, offset/byte_budget vazio ou nao-numerico) e fatal p/
+        # load_dialogs() logo abaixo -- abortar aqui da um erro claro em vez de um KeyError/ValueError
+        # cru numa linha arbitraria do CSV.
+        raise SystemExit(f"ERRO: dialogs.csv invalido ({scene}): " + "; ".join(probs))
     return load_dialogs(scene_dir / "dialogs.csv")
 
 
@@ -670,7 +704,7 @@ def build_pack(root: Path, scene: str) -> dict:
     voices = select_voices(voice_cards, blob_low)
     present_terms = [g["term"] for g in gsub]
     present_speakers = list(voices.keys())
-    dsel = select_decisions(decisions, present_terms, present_speakers)
+    dsel = select_decisions(decisions, present_terms, present_speakers, scene_id_of(scene))
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
     tm_semantic = _load_tm_semantic(db_path, db_pid, rows, min_score=cfg.get("rag_min_score"))

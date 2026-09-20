@@ -124,16 +124,28 @@ def final_text_bytes(off_hex: str, source: str, approved: dict) -> bytes:
     return transliterate(text).encode("utf-8")
 
 
-def _head_of(original: bytes, off: int, pidx) -> int | None:
+def _head_of(original: bytes, off: int, pidx, files) -> int | None:
     """Head do run que contém `off`: o próprio off se for head; senão caminha PELO BINÁRIO para trás
-    (strings reais) até achar um head. None se não houver (resíduo)."""
+    (strings reais) até achar um head. None se não houver (resíduo).
+
+    Nunca cruza a fronteira do PRÓPRIO ScriptFile de `off` (arquivos são contíguos, ver
+    sdat_format.py) -- sem isso, um overflow que é a 1ª string de diálogo do arquivo, sem padding
+    antes dela, caminhava para trás para dentro do arquivo ANTERIOR e resolvia um head falso lá."""
     if is_head(original, off, pidx):
         return off
+    f = S.file_of(off, files)
+    if f is None:
+        return None
     cur = off
     for _ in range(S.MAX_RUN):
-        prev = original.rfind(b"\x00", 0, cur - 1)
+        prev = original.rfind(b"\x00", f.offset, cur - 1)
         if prev < 0:
-            return None
+            # nenhum \0 entre f.offset e cur -- ou f.offset E o inicio da string anterior (1a
+            # string do arquivo, sem padding antes dela: rfind() com start=f.offset nunca deixa
+            # `cur` chegar a valer f.offset, entao esse caso precisa do check explicito aqui).
+            if original[f.offset] == 0x00:
+                return None
+            return f.offset if is_head(original, f.offset, pidx) else None
         cur = prev + 1                      # início da string anterior
         if original[cur] == 0x00:           # padding/fim de bloco -> sem head
             return None
@@ -166,11 +178,11 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     relocated_runs = {}   # head_off(int) -> [member_off(int)]
     member_to_head = {}
     for off_hex in overflow:
-        head = _head_of(original, int(off_hex, 16), pidx)
+        head = _head_of(original, int(off_hex, 16), pidx, files)
         if head is None:
             continue
         if head not in relocated_runs:
-            run = read_run(original, head, pidx)
+            run = read_run(original, head, pidx, S.file_of(head, files).end)
             relocated_runs[head] = run
             for m in run:
                 member_to_head[m] = head
@@ -178,11 +190,11 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     # 2b) modo gate: manter só o run do offset pedido (relocando-o mesmo que não seja overflow)
     if only_offset is not None:
         tgt = int(only_offset, 16) if isinstance(only_offset, str) else only_offset
-        head = member_to_head.get(tgt) or _head_of(original, tgt, pidx)
+        head = member_to_head.get(tgt) or _head_of(original, tgt, pidx, files)
         if head is None:
             relocated_runs, member_to_head = {}, {}
         else:
-            run = relocated_runs.get(head) or read_run(original, head, pidx)
+            run = relocated_runs.get(head) or read_run(original, head, pidx, S.file_of(head, files).end)
             relocated_runs, member_to_head = {head: run}, {m: head for m in run}
 
     relocated_offsets = set(member_to_head.keys())

@@ -37,7 +37,7 @@ class ReinsertionSkill(Skill):
         if problems:
             return problems
         cfg = self.project_cfg(project)
-        conn = cfg.get("connector", {})
+        conn = cfg.get("connector") or {}
         script_cfg = conn.get("reinsert_script")
         if not script_cfg:
             problems.append("project.json: connector.reinsert_script não declarado")
@@ -65,7 +65,8 @@ class ReinsertionSkill(Skill):
         # PYTHONIOENCODING/PYTHONUTF8: mesma protecao de encoding do connector_mgr._run.
         env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
         if dat_dir:
-            env["BOF4_DAT_DIR"] = str(dat_dir)
+            data_dir_env = (cfg.get("connector") or {}).get("data_dir_env", "BOF4_DAT_DIR")
+            env[data_dir_env] = str(dat_dir)
         try:
             result = subprocess.run(
                 [sys.executable, str(script)],

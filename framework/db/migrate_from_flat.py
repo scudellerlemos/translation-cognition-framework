@@ -76,10 +76,14 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
             textcol = "text_source" if "text_source" in cols else "text_en"
             for r in rdr:
                 bb = (r.get("byte_budget") or "").strip()
+                try:
+                    budget = int(bb)      # int() valida sinal/digitos (lstrip("-") aceitava "--5" e quebrava aqui)
+                except ValueError:
+                    budget = None
                 lines.append({
                     "offset": r.get("offset", ""),
                     "source": r.get(textcol, ""),
-                    "byte_budget": int(bb) if bb.lstrip("-").isdigit() else None,
+                    "byte_budget": budget,
                 })
         if lines:
             db.upsert_scene_lines(project_id, sid, lines)
@@ -403,8 +407,10 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
             kind=rec.get("kind", "translate"),
             model_id=rec.get("model"),
             backend="api",
-            tokens_in=u.get("in", 0) + u.get("cache_read", 0),
-            tokens_out=u.get("out", 0),
+            # .get(key, default) NAO cobre valor explicitamente null (default so vale p/ key ausente)
+            # -- mesmo caso de 'usage': null na linha 403, um nivel abaixo (in/cache_read/out: null).
+            tokens_in=(u.get("in") or 0) + (u.get("cache_read") or 0),
+            tokens_out=u.get("out") or 0,
             cost_usd=rec.get("cost_usd", 0.0),
             batch=rec.get("batch", False),
         )
@@ -493,7 +499,10 @@ def _project_meta(root: Path) -> dict:
 
 def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
     meta = _project_meta(project_root)
-    with Store(dest_db) as db:
+    with Store(dest_db) as db, db.batch():
+        # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
+        # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
+        # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
         db.upsert_project(
             project_id=project_id,
             title=meta["title"],

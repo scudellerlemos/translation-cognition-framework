@@ -64,8 +64,17 @@ def check(root) -> dict:
     completude de conector e uma propriedade do PROJETO, nao de uma cena especifica)."""
     root = Path(root)
     cfg_path = root / "project.json"
-    cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
     hard_problems: list[str] = []
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+        # cfg={} faria _connector_script() cair pros paths DEFAULT calado -- se o projeto usa
+        # connector.build_plan_script/verify_script customizado, o gate passaria checando o
+        # arquivo ERRADO em vez de acusar o project.json quebrado. Vira hard_problem em vez de
+        # mascarar (mesma convencao de kb_gate.check()).
+        cfg = {}
+        hard_problems.append(f"project.json corrompido/ilegivel ({e}) — corrija antes de continuar "
+                              f"(overrides de connector.* ficam invisiveis enquanto isso).")
     for key, default in _SCRIPTS:
         p = _connector_script(root, cfg, key, default)
         if not p.is_file():

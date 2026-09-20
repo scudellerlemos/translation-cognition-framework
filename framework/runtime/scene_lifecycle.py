@@ -49,7 +49,11 @@ def clean_failed_scene(root, scene) -> list[str]:
         if p.is_file():
             disc.mkdir(parents=True, exist_ok=True)
             dest = disc / p.name
-            p.rename(dest)
+            # .replace() (os.replace), nao .rename() (os.rename): no Windows, rename() levanta
+            # FileExistsError se dest ja existe (retry de cena que falhou 2x) -- replace() sobrescreve
+            # atomicamente nos dois SOs, o que a docstring ja promete ("Idempotente: rodar 2x nao
+            # levanta excecao").
+            p.replace(dest)
             moved.append(str(dest))
     # remove o checkpoint da cena do run_state.json (nao apaga o arquivo, so a chave)
     rs = paths.run_state(root)

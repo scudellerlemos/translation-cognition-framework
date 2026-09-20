@@ -45,6 +45,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import artifact_io  # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
+import back_translate  # noqa: E402  (invalidate_back_translation -- crivo antigo nao vale mais)
 import context_pack  # noqa: E402
 import paths  # noqa: E402
 
@@ -197,7 +198,8 @@ def apply(root, corrections, chapter=None) -> dict:
             except (json.JSONDecodeError, OSError):
                 continue
             changed = False
-            for _off, v in iterator(data):
+            corrected_offsets = []
+            for off, v in iterator(data):
                 before = v.get(field, "")
                 if not before:
                     continue
@@ -207,9 +209,12 @@ def apply(root, corrections, chapter=None) -> dict:
                     v[field] = after
                     repl_count += n
                     changed = True
+                    corrected_offsets.append(off)
             if changed:
                 path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
                 files_changed += 1
+                if field == "t":     # texto TRADUZIDO mudou -> o verdict de back-translation antigo
+                    back_translate.invalidate_back_translation(root, scene, corrected_offsets)
         # approved_<id>.csv (CSV, coluna text_target) — terceiro artefato coerente
         ap = paths.approved(root, scene, sid)
         rows = _read_approved(ap)

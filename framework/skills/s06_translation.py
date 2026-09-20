@@ -35,7 +35,11 @@ class TranslationSkill(Skill):
         if problems:
             return problems
         if not (Path(project) / "artifacts" / "scenes").is_dir():
-            problems.append("artifacts/scenes/ ausente — rode a extração (skill 00) antes")
+            problems.append(
+                "artifacts/scenes/ ausente — rode a extração (skill 00) e depois "
+                "python framework/runtime/split_scenes.py <projeto> (skill 00 sozinha nao cria "
+                "artifacts/scenes/)"
+            )
         return problems
 
     def run(self, project: Path, *, scene: str | None = None, backend: str = "api",
@@ -51,6 +55,11 @@ class TranslationSkill(Skill):
             str(project), scene, backend=backend, require_back=require_back,
             do_verify=do_verify, skip_kb_gate=skip_kb_gate,
         ))
+        # AUDITORIA OBRIGATORIA (spoiler + schema): este e o unico ponto por onde `tcf skill run 06`
+        # chama run_scene -- sem isso, esse caminho de invocacao direta nunca gerava/atualizava
+        # spoiler_audit.json (mesma lacuna corrigida em cli.py:cmd_translate e run_scene.py:main()).
+        rs._audit_spoiler(Path(project))
+        rs._audit_schema(Path(project))
         # run_scene devolve status próprio (verified/planned/...); normaliza p/ o contrato da Skill
         result.setdefault("artifacts", [])
         return result
@@ -71,4 +80,5 @@ if __name__ == "__main__":
         require_back=a.require_back, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
     )
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    sys.exit(0 if result.get("status") in ("verified", "planned") else 1)
+    from config import SCENE_OK_STATUSES
+    sys.exit(0 if result.get("status") in SCENE_OK_STATUSES else 1)
