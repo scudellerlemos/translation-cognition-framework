@@ -92,7 +92,9 @@ def validate_dialogs_csv(path: Path) -> list:
                 if not (row.get("offset") or "").strip():
                     problems.append(f"linha {i}: offset vazio")
                 bv = (row.get("byte_budget") or "").strip()
-                if bv and not bv.lstrip("-").isdigit():
+                if not bv:
+                    problems.append(f"linha {i}: byte_budget vazio")
+                elif not bv.lstrip("-").isdigit():
                     problems.append(f"linha {i}: byte_budget não-numérico: {bv!r}")
     except (OSError, csv.Error) as e:
         problems.append(f"erro ao ler: {e}")
@@ -173,7 +175,7 @@ def _decision_reveal_ok(reveal, here: tuple | None) -> bool:
     (comportamento historico preservado). SO bloqueia quando ha tag explicita e ela e futura
     em relacao a esta cena (mesma semantica de select_spoiler_guards)."""
     reveal = (reveal or "").strip().lower()
-    if not reveal or here is None:
+    if not reveal or not here:     # `here` vazio (scene_id nao-numerico) -> nao conseguimos comparar
         return True
     if reveal == "beyond_frontier" or reveal == "bf":
         return False

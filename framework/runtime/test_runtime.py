@@ -1738,7 +1738,7 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
 
     def fake_retranslate(root, scene, offsets, *, model=None, budget_tolerance, quality_note=""):
         called["offsets"] = list(offsets); called["note"] = quality_note
-        return {"usage": {"in": 5, "out": 2, "cache_read": 0, "cache_write": 0}}
+        return {"usage": {"in": 5, "out": 2, "cache_read": 0, "cache_write": 0}, "n_lines": len(offsets)}
 
     monkeypatch.setattr(quality_review.model, "retranslate_offsets", fake_retranslate)
     r = quality_review.apply(tmp_path, csvp)

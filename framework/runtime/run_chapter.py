@@ -44,7 +44,10 @@ import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao 
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 import validate  # noqa: E402  (auditoria obrigatoria de schema dos artefatos, projeto inteiro)
 
-_OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
+_OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena -- de
+# proposito MAIS ESTREITO que config.SCENE_OK_STATUSES (que inclui awaiting_*): aqui e um driver
+# batch stateless, awaiting_* exige producao manual (chat/in-session) que o driver nao pode fazer
+# sozinho, entao PARA o capitulo (nao pula pra proxima cena) ate a cena ser resolvida manualmente.
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
 
 # PREVISIBILIDADE — estimativa pre-voo: custo esperado ANTES de gastar, derivado do nº de linhas.
@@ -219,6 +222,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"  - {p}")
         if cg["problems"] and not cg["hard_problems"]:
             print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
+        _run_mandatory_audits(root, chap)
         return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
     if scenes_glob:
         scenes = _scenes_of_glob(root, scenes_glob)
@@ -230,6 +234,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if not scenes:
         hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
+        _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "empty"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
@@ -252,6 +257,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if max_usd is not None and not affordable and pend_est:
         print(f"\nABORTADO ANTES DE GASTAR: nem a 1a cena pendente cabe em --max-usd ${max_usd:.2f} "
               f"(estimativa ~${est['lo']:.2f}-${est['hi']:.2f}). Aumente o teto ou recarregue. Nada foi gasto.")
+        _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "stopped_budget_preflight"}
 
     # MODO BATCH: traduz as pendentes QUE CABEM num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
@@ -263,6 +269,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 root, pending, skip_kb_gate=skip_kb_gate,
                 allow_interactive_fallback=allow_interactive_fallback)
             if batch_failed:
+                _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": [], "status": "batch_failed"}
 
     results = []

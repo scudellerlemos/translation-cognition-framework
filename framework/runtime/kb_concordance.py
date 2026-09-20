@@ -38,6 +38,7 @@ def _name_pattern(name_low: str) -> re.Pattern:
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import context_pack  # noqa: E402  (reusa o _get_embedder cacheado -- evita 2a copia divergente)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from kb_reconcile import _ENTITY_BLOCK_RE  # noqa: E402  (reusa parser de entidade do rascunho)
 
@@ -89,21 +90,8 @@ def _entity_definitions(root: Path) -> dict[str, str]:
     return out
 
 
-def _get_embedder():  # pragma: no cover -- exige sentence-transformers real (stack de ML
-    # omitida da cobertura pelo mesmo motivo de embedder.py em setup.cfg: nao-unitavel sem a
-    # dependencia pesada instalada; caminho exercitado pelos testes via embed_fn injetado).
-    """Import tardio -- so exige sentence-transformers instalado quando ha de fato entidade com
-    fonte humana pra comparar (mesmo padrao lazy do proprio embedder.py). Retorna None se o
-    stack de ML nao esta instalado (mesmo fallback de context_pack._get_embedder) -- este modulo
-    e read-only/triagem e nunca deve estourar so por falta de uma dependencia pesada opcional."""
-    db_dir = str(Path(__file__).resolve().parents[1] / "db")
-    if db_dir not in sys.path:
-        sys.path.insert(0, db_dir)
-    try:
-        from embedder import Embedder
-        return Embedder()
-    except ImportError:
-        return None
+_get_embedder = context_pack._get_embedder   # lazy + cacheado no processo; None se stack de ML
+                                              # ausente (fallback esperado, este modulo e triagem)
 
 
 def concordance(root, *, embed_fn=None) -> list[dict]:
