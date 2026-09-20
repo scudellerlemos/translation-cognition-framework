@@ -101,15 +101,29 @@ def resolve_source(path: str | None = None) -> Path:
 
 
 # ----------------------------------------------------------------------------- carga de artefatos
+def _scene_dirs():
+    """Layout atual: artifacts/scenes/<cena>/ (dialogs.csv + approved_*.csv por cena), ordem estavel."""
+    return sorted((p for p in (ART / "scenes").glob("*") if p.is_dir()), key=lambda p: p.name)
+
+
+def _rows(files):
+    for f in files:
+        with f.open(encoding="utf-8-sig") as fh:
+            yield from csv.DictReader(fh)
+
+
 def load_budgets():
-    """offset(hex str) -> (text_source, byte_budget). Preserva ordem do dialogs.csv."""
-    rows = list(csv.DictReader((ART / "dialogs.csv").open(encoding="utf-8")))
-    return [(r["offset"], r["text_source"], int(r["byte_budget"])) for r in rows]
+    """offset(hex str) -> (text_source, byte_budget). Preserva ordem do dialogs.csv.
+    Layout antigo (artifacts/dialogs.csv plano) tem prioridade; senao agrega as cenas."""
+    flat = ART / "dialogs.csv"
+    files = [flat] if flat.is_file() else [d / "dialogs.csv" for d in _scene_dirs() if (d / "dialogs.csv").is_file()]
+    return [(r["offset"], r["text_source"], int(r["byte_budget"])) for r in _rows(files)]
 
 
 def load_approved():
-    return {r["offset"]: r["text_target"]
-            for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    flat = ART / "approved_translations.csv"
+    files = [flat] if flat.is_file() else [ap for d in _scene_dirs() for ap in sorted(d.glob("approved_*.csv"))]
+    return {r["offset"]: r["text_target"] for r in _rows(files)}
 
 
 # ----------------------------------------------------------------------------- núcleo do encaixe
@@ -312,6 +326,9 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
                 break
         if start > 0xFFFFFF:
             raise ValueError("offset excede o limite de 3 bytes do IPS")
+        if start == 0x454F46:      # b"EOF" em 3 bytes: o parser IPS leria como fim do patch -> comeca 1 byte antes
+            start -= 1
+            chunk.insert(0, modified[start] if start < len(modified) else 0x00)
         patch += struct.pack(">I", start)[1:]      # 3 bytes big-endian
         patch += struct.pack(">H", len(chunk))     # tamanho 2 bytes
         patch += bytes(chunk)
@@ -331,6 +348,8 @@ def main():
     original = src.read_bytes()
     budgets = load_budgets()
     approved = load_approved()
+    if not budgets:
+        sys.exit(f"ERRO: nenhum dialogs.csv em {ART} (nem artifacts/scenes/<cena>/) -- rode o extract primeiro")
 
     # 1) GATE DE ROUND-TRIP: reinserir o source (transliterado = idêntico p/ ASCII) reproduz o original
     rt_buf, rt_repoints, _ = build_output(original, budgets, approved={})

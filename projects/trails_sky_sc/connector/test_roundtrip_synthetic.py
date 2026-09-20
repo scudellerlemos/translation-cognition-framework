@@ -240,3 +240,15 @@ def test_roundtrip_arbitrary_translation_never_corrupts_neighbor(new_text):
     # vizinha inalterada byte-a-byte fora da janela [abs_off, abs_off+budget) da string traduzida
     assert new_bytes[:abs_off] == data[:abs_off]
     assert new_bytes[abs_off + budget:] == data[abs_off + budget:]
+
+
+def test_rebuild_pac_rejects_budget_outside_entry_instead_of_growing_file():
+    """dialogs.csv velho: offset+budget alem da entrada crescia o buffer (slice-assign) em silencio."""
+    import pytest
+    data, entries = _load(_fixture_pac())
+    original = read_scena_strings(data, entries)
+    key = next(k for k, v in original.items() if v == "Our story begins in Rolent.")
+    with pytest.raises(ValueError, match="fora da entrada"):
+        rebuild_pac(data, entries, {key: "x"}, {key: 10_000})
+    with pytest.raises(ValueError, match="fora da entrada"):
+        rebuild_pac(data, entries, {key: "x"}, {key: 0})

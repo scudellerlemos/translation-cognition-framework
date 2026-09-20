@@ -25,6 +25,8 @@ import struct
 import sys
 from pathlib import Path
 
+import pytest
+
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "connector"))
 import reinsert as R  # noqa: E402
@@ -225,3 +227,48 @@ def test_load_game_reads_scenes_layout(tmp_path, monkeypatch):
     monkeypatch.setattr(R, "ART", tmp_path)
     budgets, approved, scenes = G.load_game()
     assert scenes == 1 and budgets == [("0x10", "Hello", 6)] and approved == {"0x10": "Ola"}
+
+
+def test_load_game_rejects_conflicting_duplicate_approved(tmp_path, monkeypatch):
+    import reinsert_game as G
+    sd = tmp_path / "scenes" / "ch_01"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hello,6\n", encoding="utf-8")
+    (sd / "approved_a.csv").write_text("offset,text_target\n0x10,Ola\n", encoding="utf-8")
+    (sd / "approved_b.csv").write_text("offset,text_target\n0x10,Oi\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    with pytest.raises(ValueError, match="traducoes diferentes"):
+        G.load_game()
+
+
+def _apply_ips(base: bytes, patch: bytes) -> bytes:
+    assert patch[:5] == b"PATCH"
+    out, i = bytearray(base), 5
+    while patch[i:i + 3] != b"EOF":
+        off, n = int.from_bytes(patch[i:i + 3], "big"), int.from_bytes(patch[i + 3:i + 5], "big")
+        chunk = patch[i + 5:i + 5 + n]
+        out[off:off + n] = chunk
+        i += 5 + n
+    return bytes(out)
+
+
+def test_make_ips_never_emits_record_at_eof_marker_offset():
+    """Registro no offset 0x454F46 tem os mesmos 3 bytes de 'EOF': o patch era truncado ali."""
+    import reinsert as R
+    original = bytes(0x454F46 + 8)
+    modified = bytearray(original)
+    modified[0x454F46:0x454F46 + 3] = b"abc"
+    patch = R.make_ips(original, bytes(modified))
+    assert int.from_bytes(patch[5:8], "big") == 0x454F45
+    assert _apply_ips(original, patch) == bytes(modified)
+
+
+def test_loaders_aggregate_scenes_when_flat_csv_absent(tmp_path, monkeypatch):
+    import reinsert as R
+    sc = tmp_path / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hi,2\n", encoding="utf-8")
+    (sc / "approved_ch_01.csv").write_text("offset,text_target\n0x10,Oi\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    assert R.load_budgets() == [("0x10", "Hi", 2)]
+    assert R.load_approved() == {"0x10": "Oi"}

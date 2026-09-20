@@ -63,12 +63,15 @@ def resolve_source_path(
 
 
 def write_dialogs_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
-    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda."""
+    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda.
+    Atômico (tmp + replace): extract que morre no meio não trunca o dialogs.csv bom anterior."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as f:
+    tmp = path.with_name(path.name + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)
+    os.replace(tmp, path)
 
 
 def write_extraction_log(path: Path, text: str) -> None:

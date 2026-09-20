@@ -81,14 +81,14 @@ def decode_string(raw: bytes) -> str:
     """Bytes sem terminador → string CSV. ASCII → chr, outros → [XX]."""
     parts = []
     for b in raw:
-        if b in _ASCII_RANGE:
+        if b in _ASCII_RANGE and b != 0x5B:      # '[' literal vira [5B]: senao "[AB]" ASCII re-encodava como 0xAB
             parts.append(chr(b))
         else:
             parts.append(f'[{b:02X}]')
     return ''.join(parts)
 
 
-def encode_string(text: str) -> bytes:
+def encode_string(text: str, strict: bool = False) -> bytes:
     """String CSV → bytes sem terminador. Inverso de decode_string.
 
     O font do jogo so tem ASCII — acentos pt-BR (ã, é, ç, ô...) sao transliterados via NFD
@@ -109,6 +109,8 @@ def encode_string(text: str) -> bytes:
             ch = text[i]
             if ord(ch) in _ASCII_RANGE:
                 out.append(ord(ch))
+            elif strict:
+                raise ValueError(f"caractere sem mapeamento ASCII: {ch!r} (U+{ord(ch):04X}) em {text!r}")
             else:
                 # ainda nao mapeavel apos NFD+_PUNCT_FALLBACK (ex.: CJK) — ultimo recurso, mas
                 # avisado (verify_chapter.py nao pega isso: compara encode_string(x) contra

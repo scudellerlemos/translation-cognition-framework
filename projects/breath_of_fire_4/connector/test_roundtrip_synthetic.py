@@ -161,3 +161,29 @@ def test_roundtrip_expansion_updates_toc():
     new_section_bytes = new_data[new_sec_off:new_sec_off + new_sec_sz]
     new_strings = {i: raw for i, _p, raw in extract_section_strings(new_section_bytes)}
     assert decode_string(new_strings[0]) == translations[0]
+
+
+def test_literal_bracket_bytes_roundtrip_not_confused_with_control_code():
+    """ASCII literal '[AB]' (5B 41 42 5D) virava o byte 0xAB no re-encode; agora '[' sai como [5B]."""
+    from extract import encode_string
+    raw = b"x[AB]y\x8f"
+    text = decode_string(raw)
+    assert "[5B]" in text and encode_string(text) == raw
+
+
+def test_encode_strict_rejects_unmappable_char():
+    from extract import encode_string
+    with pytest.raises(ValueError):
+        encode_string("\u65e5\u672c", strict=True)
+    assert encode_string("\u65e5", strict=False) == b"?"
+
+
+def test_patch_dat_file_keeps_size_delta_multiple_of_toc_alignment():
+    original = _build_synthetic_dat()
+    entries = parse_toc(original)
+    entry_idx, sec_off, sec_sz = find_text_section(original, entries)
+    section = original[sec_off:sec_off + sec_sz]
+    translations = {i: decode_string(raw) for i, _p, raw in extract_section_strings(section)}
+    translations[0] = "Oi"
+    new_data = patch_dat_file(original, entry_idx, rebuild_section(section, translations))
+    assert (len(new_data) - len(original)) % 16 == 0
