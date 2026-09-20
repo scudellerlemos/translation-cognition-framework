@@ -14,8 +14,11 @@ on:
 
 jobs:
   validate-release:
-    name: Valida VERSION == tag
+    name: Valida VERSION == tag e testes verdes
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read   # gh run list (gate de testes abaixo)
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Confere VERSION == tag
@@ -28,6 +31,20 @@ jobs:
             exit 1
           fi
           echo "OK: VERSION == tag ($version)"
+      # Tag nao dispara test.yml (so main/PR): exige um run verde dele NESTE commit, senao uma tag
+      # em commit quebrado/nao testado publicaria release mesmo assim.
+      - name: Confere Tests verde neste commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          ok="$(gh run list --workflow=test.yml --commit "$GITHUB_SHA" --status success --json databaseId --jq length)"
+          if [ "$ok" -lt 1 ]; then
+            echo "ERRO: nenhum run verde de test.yml em $GITHUB_SHA. Aguarde/conserte os testes antes de taguear."
+            exit 1
+          fi
+          echo "OK: test.yml verde em $GITHUB_SHA"
 
   publish-release:
     name: Publica GitHub Release
