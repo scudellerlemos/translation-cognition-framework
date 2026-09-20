@@ -167,14 +167,34 @@ def select_voices(voice_cards, blob_low):
     return dict(sorted(sel.items()))
 
 
-def select_decisions(decisions, present_terms, present_speakers):
+def _decision_reveal_ok(reveal, here: tuple | None) -> bool:
+    """Gate de spoiler p/ decisoes: `reveal` e metadado OPT-IN (a maioria das decisoes nao tem
+    tag) -- ao contrario do default-deny da KB (_reveal_allowed), aqui SEM tag = sem gate
+    (comportamento historico preservado). SO bloqueia quando ha tag explicita e ela e futura
+    em relacao a esta cena (mesma semantica de select_spoiler_guards)."""
+    reveal = (reveal or "").strip().lower()
+    if not reveal or here is None:
+        return True
+    if reveal == "beyond_frontier" or reveal == "bf":
+        return False
+    rp = _pos(reveal)
+    return not rp or rp <= here     # tag nao-numerica -> nao bloqueia (nao conseguimos comparar)
+
+
+def select_decisions(decisions, present_terms, present_speakers, scene_id: str | None = None):
+    """scene_id (opcional p/ retrocompat) ativa o gate de spoiler _decision_reveal_ok: decisoes
+    com `reveal` explicito e FUTURO para esta cena ficam de fora do pacote (#spoiler leak)."""
+    here = _pos(scene_id) if scene_id is not None else None
     toks = {t.lower() for t in present_terms} | {s.lower() for s in present_speakers}
     chosen, seen = [], set()
     for d in decisions:                       # universais primeiro (regras do conector)
-        if d.get("universal") and d["title"] not in seen:
+        if (d.get("universal") and d["title"] not in seen
+                and _decision_reveal_ok(d.get("reveal"), here)):
             chosen.append(d); seen.add(d["title"])
     for d in decisions:                       # depois: casadas por TAG (titulo) OU pelo SUMMARY (conteudo)
         if d["title"] in seen:
+            continue
+        if not _decision_reveal_ok(d.get("reveal"), here):
             continue
         tags = {t.lower() for t in d.get("tags", [])}
         summ = (d.get("summary", "") or "").lower()
@@ -326,6 +346,7 @@ def _load_sources_db(db_path: Path, project_id: str):
     decisions = [{
         "title": d.get("title", ""), "summary": d.get("summary") or "",
         "universal": bool(d.get("universal")), "tags": d.get("tags") or [],
+        "reveal": d.get("reveal"),
     } for d in dec_rows]
     tm = [{
         "src_key": state_index._key(r.get("source", "")), "source": r.get("source", ""),
@@ -670,7 +691,7 @@ def build_pack(root: Path, scene: str) -> dict:
     voices = select_voices(voice_cards, blob_low)
     present_terms = [g["term"] for g in gsub]
     present_speakers = list(voices.keys())
-    dsel = select_decisions(decisions, present_terms, present_speakers)
+    dsel = select_decisions(decisions, present_terms, present_speakers, scene_id_of(scene))
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
     tm_semantic = _load_tm_semantic(db_path, db_pid, rows, min_score=cfg.get("rag_min_score"))

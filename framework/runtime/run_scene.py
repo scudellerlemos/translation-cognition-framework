@@ -39,11 +39,13 @@ import context_pack  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero -- so quando rodado como entry point, ver main())
 import state_index  # noqa: E402
 import validate  # noqa: E402  (auditoria de schema dos artefatos -- so quando rodado como entry point, ver main())
 from config import (  # noqa: E402
     CONNECTOR_KNOWN_KEYS,
     CONNECTOR_REGISTRY,
+    SCENE_OK_STATUSES,
     RunSceneOptions,
     RunSceneResult,
     validate_connector_types,
@@ -455,6 +457,26 @@ def _indent(s: str) -> str:
     return "\n".join("      " + ln for ln in s.strip().splitlines() if ln.strip())
 
 
+def _audit_spoiler(root: Path):
+    """Report-only, mesma filosofia de run_chapter._audit_spoiler: o driver de capitulo ja audita
+    o projeto inteiro ao fim (spoiler de nome/titulo + genero pt-BR); aqui cobre quem chama
+    run_scene.py DIRETO (fora de run_chapter) -- ex.: `tcf translate` cena-a-cena -- que sem isso
+    nunca tinha o spoiler_audit.json gerado/atualizado."""
+    try:
+        rep = spoiler_check.audit_and_persist(root)
+    except Exception as e:
+        print(f"[spoiler-audit] AVISO: falha ao auditar ({e}).")
+        return
+    if rep["name_leaks"]:
+        print(f"[spoiler-audit] ALERTA: {len(rep['name_leaks'])} vazamento(s) de NOME/TITULO "
+              f"pos-reveal -- ver {paths.spoiler_audit(root)}")
+    if rep["gender_flags"]:
+        print(f"[spoiler-audit] {len(rep['gender_flags'])} linha(s) a revisar por GENERO pt-BR "
+              f"(heuristico, pode ter falso-positivo) -- ver {paths.spoiler_audit(root)}")
+    if rep["clean"]:
+        print("[spoiler-audit] OK: nenhum vazamento nem marcador de genero suspeito.")
+
+
 def _audit_schema(root: Path):
     """Report-only, mesma filosofia de run_chapter._audit_schema: o driver de capitulo ja audita o
     projeto inteiro ao fim (1x, cobre toda cena verified naquele run); aqui cobre quem chama
@@ -515,9 +537,9 @@ def main():
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                   skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
+    _audit_spoiler(Path(a.project))
     _audit_schema(Path(a.project))
-    sys.exit(0 if r["status"] in ("verified", "planned", "awaiting_translation",
-                                  "awaiting_back_translation") else 1)
+    sys.exit(0 if r["status"] in SCENE_OK_STATUSES else 1)
 
 
 if __name__ == "__main__":

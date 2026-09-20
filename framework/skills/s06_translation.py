@@ -71,4 +71,5 @@ if __name__ == "__main__":
         require_back=a.require_back, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
     )
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    sys.exit(0 if result.get("status") in ("verified", "planned") else 1)
+    from config import SCENE_OK_STATUSES
+    sys.exit(0 if result.get("status") in SCENE_OK_STATUSES else 1)

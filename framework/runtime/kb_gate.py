@@ -38,9 +38,8 @@ _KB_HARD = ("universe_knowledge_base.md",)
 _KB_ARTIFACTS = ("glossary.csv",)
 
 
-def _pos(scene_id: str):
-    """scene_id '12_03' -> (12, 3) p/ comparacao numerica robusta (evita pegadinha lexicografica 9 vs 12)."""
-    return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
+_pos = context_pack._pos   # fonte unica do parser de posicao narrativa (evitava divergencia:
+                            # este split("_") dava () p/ ids alfanumericos sem "_", ex. "AREAD050")
 
 
 def _parse_pending_decisions(txt: str) -> list[str]:
