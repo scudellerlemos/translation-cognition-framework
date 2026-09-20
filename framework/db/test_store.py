@@ -182,3 +182,16 @@ def test_upsert_entity_reupsert_updates_first_scene_and_notes(tmp_path):
         db.upsert_entity("a", "Ryu", canonical_pt="Ryu")     # None nao pode apagar o que ja existe
         e = db.get_entities("a")[0]
     assert e["first_scene"] == "ch_02" and e["notes"] == "protagonista"
+
+
+def test_upserts_with_null_key_columns_are_idempotent(tmp_path):
+    """NULL em coluna de chave UNIQUE conta como distinto no SQLite: fact/source ausentes duplicavam a cada re-migracao."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        for _ in range(2):
+            db.upsert_spoiler_entry(project_id="p1", entity="Kuon", reveal="beyond_frontier")
+            db.upsert_warnings("p1", [{"t": 1.0, "warnings": ["w"]}])
+            db.upsert_qa_effectiveness("p1", [{"t": 1.0, "applied": 1}])
+        assert len(db.get_spoiler_entries("p1")) == 1
+        assert len(db.get_warnings("p1")) == 1
+        assert db._con.execute("SELECT COUNT(*) FROM qa_effectiveness").fetchone()[0] == 1

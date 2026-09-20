@@ -404,15 +404,15 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
         db.log_job(
             project_id=project_id,
             scene_id=rec.get("scene"),
-            kind=rec.get("kind", "translate"),
+            kind=rec.get("kind") or "translate",   # kind NOT NULL: null explicito abortaria a migracao inteira
             model_id=rec.get("model"),
             backend="api",
             # .get(key, default) NAO cobre valor explicitamente null (default so vale p/ key ausente)
             # -- mesmo caso de 'usage': null na linha 403, um nivel abaixo (in/cache_read/out: null).
             tokens_in=(u.get("in") or 0) + (u.get("cache_read") or 0),
             tokens_out=u.get("out") or 0,
-            cost_usd=rec.get("cost_usd", 0.0),
-            batch=rec.get("batch", False),
+            cost_usd=rec.get("cost_usd") or 0.0,
+            batch=bool(rec.get("batch")),
         )
     return len(recs)
 
@@ -497,7 +497,17 @@ def _project_meta(root: Path) -> dict:
     return meta
 
 
-def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
+def _default_project_id(root: Path) -> str:
+    """project.json:db.project_id (o mesmo id que o write-path DB-first usa); 'bof4' so como ultimo fallback."""
+    try:
+        cfg = json.loads((root / "project.json").read_text(encoding="utf-8-sig"))
+        return (cfg.get("db") or {}).get("project_id") or "bof4"
+    except (OSError, json.JSONDecodeError, AttributeError):
+        return "bof4"
+
+
+def migrate(project_root: Path, dest_db: Path, project_id: str | None = None) -> dict:
+    project_id = project_id or _default_project_id(project_root)   # sem a flag, migrar outro projeto gravava tudo como 'bof4'
     meta = _project_meta(project_root)
     with Store(dest_db) as db, db.batch():
         # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
@@ -557,7 +567,7 @@ def main():
     ap = argparse.ArgumentParser(description="Migra flat files de um projeto para SQLite.")
     ap.add_argument("project_root", help="Diretório raiz do projeto")
     ap.add_argument("dest_db", help="Caminho do banco SQLite de destino")
-    ap.add_argument("--project-id", default="bof4", help="ID do projeto no banco (default: bof4)")
+    ap.add_argument("--project-id", default=None, help="ID do projeto no banco (default: db.project_id do project.json, senao bof4)")
     a = ap.parse_args()
     result = migrate(Path(a.project_root), Path(a.dest_db), a.project_id)
     print(json.dumps(result, indent=2, ensure_ascii=False))

@@ -224,3 +224,19 @@ def test_migrate_warnings_content(bof4_migrated):
     assert w, "warnings vazio"
     assert any(isinstance(r.get("warnings"), list) and r["warnings"] for r in w), \
         "warnings não reidratou p/ lista"
+
+
+def test_migrate_tolerates_null_ledger_fields_and_defaults_project_id_from_project_json(tmp_path):
+    """kind/cost_usd/batch null explicito no ledger (.get(k, default) nao cobre) nao abortam a migracao;
+    sem project_id, usa db.project_id do project.json (nao 'bof4')."""
+    (tmp_path / "artifacts").mkdir()
+    (tmp_path / "project.json").write_text(json.dumps({"title": "X", "db": {"project_id": "meujogo"}}),
+                                           encoding="utf-8")
+    (tmp_path / "artifacts" / "api_ledger.jsonl").write_text(
+        json.dumps({"scene": "s", "kind": None, "cost_usd": None, "batch": None, "usage": None}) + "\n",
+        encoding="utf-8")
+    result = migrate(tmp_path, tmp_path / "t.db")
+    assert result["jobs"] == 1 and result["project_id"] == "meujogo"
+    with Store(tmp_path / "t.db") as db:
+        job = db._con.execute("SELECT kind, cost_usd, batch FROM jobs WHERE project_id='meujogo'").fetchone()
+    assert tuple(job) == ("translate", 0.0, 0)
