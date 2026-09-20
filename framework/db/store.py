@@ -197,7 +197,10 @@ class Store:
             emb = Embedder()
             return (emb.index_project(self._con, project_id, kind="translation")
                     + emb.index_project(self._con, project_id, kind="decision"))
-        except Exception:
+        except ImportError:
+            return None                        # deps de ML opcionais ausentes: esperado
+        except Exception as exc:   # noqa: BLE001  (busca semantica e opcional: nunca derruba o mirror)
+            print(f"[store] AVISO: indexacao de embeddings falhou ({exc!r}) -- busca semantica desatualizada.")
             return None
 
     # ── Glossário ────────────────────────────────────────────────────────────

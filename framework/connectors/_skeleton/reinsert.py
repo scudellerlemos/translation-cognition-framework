@@ -20,6 +20,7 @@ Regras:
 - Sobrescreve o idioma-fonte pelo idioma-alvo (ex: EN -> pt-BR).
 """
 
+import contextlib
 import csv
 import json
 import sys
@@ -76,10 +77,8 @@ def emit_patch(original: bytes, modified: bytes, fmt: str, out_path: Path):
 # 4. MAIN
 # ---------------------------------------------------------------------------
 def main(project_json: Path, source_override: str | None = None):
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     conn = cfg["connector"]
     root = project_json.parent
