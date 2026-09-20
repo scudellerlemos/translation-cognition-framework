@@ -151,9 +151,14 @@ class Store:
             from embedder import Embedder  # type: ignore
             emb = Embedder()
             return emb.search(self._con, source, project_id=project_id, k=k)
-        except Exception:
-            # deps de ML ausentes (ImportError) OU extensao nativa do sqlite-vec incompativel /
-            # hardware indisponivel (mesma falha ja tratada por reindex_pending_embeddings acima)
+        except ImportError:
+            return self.search_tm_exact(source, project_id)
+        except Exception as e:
+            # extensao nativa do sqlite-vec incompativel / hardware indisponivel (mesma falha ja
+            # tratada por reindex_pending_embeddings acima) -- mas tambem cobriria um bug real no
+            # embedder, entao avisa (ImportError de deps ausentes acima fica silencioso: esperado).
+            import warnings
+            warnings.warn(f"search_tm_semantic: fallback p/ busca exata ({type(e).__name__}: {e})")
             return self.search_tm_exact(source, project_id)
 
     def reindex_pending_embeddings(self, project_id: str) -> int | None:

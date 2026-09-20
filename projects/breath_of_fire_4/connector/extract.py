@@ -263,7 +263,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         "Diretório DAT não configurado.\n"
         "Opções:\n"
         "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
-        "  2. CLI: python extract.py project.json <DAT_DIR>\n"
+        "  2. CLI: python extract.py <project_root> <DAT_DIR>\n"
         "Ver projects/breath_of_fire_4/.env.example"
     )
     game_dat_dir = connector_io.resolve_source_path(
