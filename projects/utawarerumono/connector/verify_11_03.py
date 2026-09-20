@@ -81,7 +81,7 @@ def main():
     # offsets que pertencem a runs RELOCADOS (repactados contiguamente apos new_local)
     new_abs = {}
     relocated = set()
-    for head_hex, idx, new_local, _ptrs, run in repoints:
+    for _head_hex, idx, new_local, _ptrs, run in repoints:
         if S.parse_pack(original)[idx].name != SCENE:
             continue
         pos = new_local
@@ -89,8 +89,6 @@ def main():
             m_hex = f"0x{m:x}"
             new_abs[m_hex] = new_1103.offset + pos
             relocated.add(m_hex)
-            enc = translit_of(m_hex).encode("utf-8") if m_hex in approved or m_hex in src_by \
-                else S.read_cstr(original, m)
             pos += len(translit_of(m_hex).encode("utf-8")) + 1
     # demais offsets aprovados = in_place (mesmo offset local no arquivo novo)
     for off_hex in approved:
@@ -100,7 +98,7 @@ def main():
 
     checked = 0
     label_notes = []
-    for off_hex, tgt in approved.items():
+    for off_hex, _tgt in approved.items():
         pos = new_abs[off_hex]
         if not (new_1103.offset <= pos < new_1103.end):
             fails.append(f"{off_hex}: posicao {pos:#x} fora do arquivo")
@@ -113,7 +111,6 @@ def main():
             label_notes.append(f"{off_hex} (rotulo needs_review): lido {got!r} vs {want!r}")
         else:
             fails.append(f"{off_hex}: lido {got!r} != aprovado(translit) {want!r}")
-    out_of_file = 0  # checado via posicao acima
 
     print(f"Cap. {SCENE}: {len(budgets)} linhas | tiers={tiers} | repoints(aplicado)={len(repoints)}")
     print(f"  round-trip identico: {same and not rt_repoints}")

@@ -78,7 +78,7 @@ def test_synthetic_dat_is_recognized():
     section = data[sec_off:sec_off + sec_sz]
     strings = extract_section_strings(section)
     assert len(strings) == len(_STRINGS)
-    for (ptr_idx, _ptr, raw), expected in zip(strings, _STRINGS):
+    for (ptr_idx, _ptr, raw), expected in zip(strings, _STRINGS, strict=False):
         assert raw == expected, (ptr_idx, raw, expected)
 
 

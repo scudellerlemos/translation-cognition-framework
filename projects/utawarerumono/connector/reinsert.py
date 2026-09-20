@@ -213,7 +213,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     report = []
     file_inplace = {}   # idx -> [(local_off, enc, budget, off_hex)]
     if do_inplace:
-        for off_hex, source, budget in budgets:
+        for off_hex, _source, budget in budgets:
             off = int(off_hex, 16)
             enc, _ = encoded[off_hex]
             if off in relocated_offsets:
@@ -240,7 +240,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
         f = by_index[idx]
         nd = bytearray(original[f.offset:f.end])
         # 4a) in_place: grava no slot local e zera a sobra (até o terminador do slot original)
-        for local_off, enc, budget, off_hex in file_inplace.get(idx, []):
+        for local_off, enc, budget, _off_hex in file_inplace.get(idx, []):
             nd[local_off:local_off + len(enc)] = enc
             for k in range(local_off + len(enc), local_off + budget + 1):
                 nd[k] = 0x00
@@ -254,7 +254,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
                 else:                            # continuação fora do corpus -> mantém original (translit.)
                     enc = transliterate(read_cstr(original, m).decode("utf-8", "replace")).encode("utf-8")
                 nd += enc + b"\x00"
-            for site, fs in sites:               # site é absoluto e está NESTE arquivo (ponteiros não cruzam)
+            for site, _fs in sites:               # site é absoluto e está NESTE arquivo (ponteiros não cruzam)
                 nd[site - f.offset: site - f.offset + 4] = struct.pack("<I", new_local)
             repoints.append((f"0x{head:x}", idx, new_local, [f"0x{s:x}" for s, _ in sites], run))
             for m in run:
