@@ -42,6 +42,7 @@ import os
 import sqlite3
 import tempfile
 import time
+import warnings
 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
@@ -321,6 +322,10 @@ class Embedder:
             results = ranker.rerank(req)
             return [r["meta"] for r in results]
         except ImportError:
+            return hits
+        except Exception as exc:   # cache de modelo corrompido/sem rede/onnx quebrado: rerank e refinamento, nao derruba a busca
+            warnings.warn(f"rerank FlashRank indisponivel ({type(exc).__name__}: {str(exc)[:120]}) -- "
+                          f"usando ordem vetorial", RuntimeWarning, stacklevel=2)
             return hits
 
 

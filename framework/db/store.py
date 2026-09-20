@@ -499,7 +499,7 @@ class Store:
                    pre_reveal=excluded.pre_reveal,
                    forbidden_pre_reveal=excluded.forbidden_pre_reveal,
                    gender_quarantine=excluded.gender_quarantine""",
-            (project_id, entity, fact, spoiler_level, reveal,
+            (project_id, entity, fact or "", spoiler_level, reveal,   # NULL em chave UNIQUE = linha duplicada a cada re-migracao
              json.dumps(scenes or [], ensure_ascii=False),
              json.dumps(triggers or [], ensure_ascii=False),
              pre_reveal,
@@ -592,7 +592,7 @@ class Store:
         self._con.executemany(
             """INSERT INTO warnings(project_id, t, source, warnings) VALUES(?,?,?,?)
                ON CONFLICT(project_id, t, source) DO UPDATE SET warnings=excluded.warnings""",
-            [(project_id, r.get("t"), r.get("source"),
+            [(project_id, r.get("t"), r.get("source") or "",
               json.dumps(r.get("warnings", []), ensure_ascii=False)) for r in rows],
         )
         self._commit()
@@ -618,7 +618,7 @@ class Store:
                    total_marked=excluded.total_marked, applied=excluded.applied,
                    verbatim=excluded.verbatim, ai=excluded.ai,
                    effectiveness_rate=excluded.effectiveness_rate, cost_usd=excluded.cost_usd""",
-            [(project_id, r.get("t"), r.get("source"), r.get("total_marked"),
+            [(project_id, r.get("t"), r.get("source") or "", r.get("total_marked"),
               r.get("applied"), r.get("verbatim"), r.get("ai"),
               r.get("effectiveness_rate"), r.get("cost_usd")) for r in rows],
         )

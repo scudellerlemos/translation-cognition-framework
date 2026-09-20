@@ -223,7 +223,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_mig = db_sub.add_parser("migrate", help="Migra flat files para SQLite")
     p_mig.add_argument("project_root", help="Raiz do projeto")
     p_mig.add_argument("dest_db", help="Banco de destino (.db)")
-    p_mig.add_argument("--project-id", default="bof4")
+    p_mig.add_argument("--project-id", default=None, help="default: db.project_id do project.json, senao bof4")
     p_mig.set_defaults(func=cmd_db_migrate)
 
     p_sum = db_sub.add_parser("summary", help="Resumo do banco")

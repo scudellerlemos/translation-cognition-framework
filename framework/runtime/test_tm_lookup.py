@@ -42,6 +42,22 @@ def test_lookup_exact_match(monkeypatch, tmp_path):
     assert tl.lookup("bof", tl.tm_key("Goodbye")) is None
 
 
+def test_lookup_parses_once_and_sees_file_change(monkeypatch, tmp_path):
+    """context_pack chama lookup() por linha: nao pode re-parsear o JSON da serie a cada chamada,
+    mas tem que enxergar a TM reescrita (tm_updater) -- indice invalida por mtime/tamanho."""
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path)
+    p = tl.series_tm_path("bof")
+    p.parent.mkdir(parents=True)
+    p.write_text(json.dumps([{"src_key": "a", "target": "1"}]), encoding="utf-8")
+    calls = []
+    real = tl.load_series_tm
+    monkeypatch.setattr(tl, "load_series_tm", lambda s: calls.append(s) or real(s))
+    assert tl.lookup("bof", "a")["target"] == "1" and tl.lookup("bof", "a") and tl.lookup("bof", "zz") is None
+    assert len(calls) == 1
+    p.write_text(json.dumps([{"src_key": "a", "target": "1"}, {"src_key": "b", "target": "2"}]), encoding="utf-8")
+    assert tl.lookup("bof", "b")["target"] == "2"
+
+
 def test_load_series_tm_corrupted_is_empty(monkeypatch, tmp_path):
     monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path)
     p = tl.series_tm_path("corrompida")
