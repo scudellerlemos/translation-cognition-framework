@@ -129,3 +129,45 @@ def test_cost_report_counts_exhaustions(env):
     assert (ex["n"], ex["scenes"], ex["kept"]) == (1, 1, 2)
     assert cost_report.report(root, chapter="94")["exhausted"]["n"] == 0
     assert "esgotamentos: 1" in cost_report._fmt(cost_report.report(root), by_scene=False)
+
+
+# --- best-effort: falha de I/O do checkpoint avisa e segue, nunca derruba nem mascara o erro --------
+def _boom(*_a, **_k):
+    raise OSError("disco cheio")
+
+
+def test_load_returns_empty_when_checkpoint_already_covers_every_line(tmp_path):
+    import translate_checkpoint as ckpt
+    paths.scene_dir(tmp_path, SCENE).mkdir(parents=True)
+    srcmap = {"0x1": "Hello", "0x2": "World"}
+    merged = {o: _good(o) for o in srcmap}
+    assert ckpt.save(tmp_path, SCENE, "95_01", "d1", merged, srcmap, bad=set()) == 2
+    assert ckpt.load(tmp_path, SCENE, "95_01", "d1", srcmap) == {}     # nada a retomar: traduz normal
+
+
+def test_save_returns_zero_and_warns_when_write_fails(tmp_path, monkeypatch, capsys):
+    import translate_checkpoint as ckpt
+    paths.scene_dir(tmp_path, SCENE).mkdir(parents=True)
+    monkeypatch.setattr(type(paths.scene_dir(tmp_path, SCENE)), "write_text", _boom)
+    assert ckpt.save(tmp_path, SCENE, "95_01", "d1", {"0x1": _good("0x1")}, {"0x1": "Hello"}, bad=set()) == 0
+    assert "nao gravei" in capsys.readouterr().out
+
+
+def test_clear_disabled_keeps_the_file_and_failure_only_warns(tmp_path, monkeypatch, capsys):
+    import translate_checkpoint as ckpt
+    paths.scene_dir(tmp_path, SCENE).mkdir(parents=True)
+    part = paths.translations_partial(tmp_path, SCENE, "95_01")
+    part.write_text("{}", encoding="utf-8")
+    ckpt.clear(tmp_path, SCENE, "95_01", enabled=False)
+    assert part.exists()
+    monkeypatch.setattr(type(part), "unlink", _boom)
+    ckpt.clear(tmp_path, SCENE, "95_01")                                # nao levanta
+    assert "nao removi o checkpoint" in capsys.readouterr().out
+
+
+def test_log_exhausted_warns_when_ledger_unwritable(tmp_path, capsys):
+    import translate_checkpoint as ckpt
+    paths.translate_exhausted(tmp_path).mkdir(parents=True)             # diretorio no lugar do arquivo
+    last = {"missing": [1], "bad_parity": [], "bad_structural": []}
+    ckpt.log_exhausted(tmp_path, SCENE, model.MODEL_TRANSLATE, dict(_ZERO), last, 0, stage="first")
+    assert "nao registrei o esgotamento" in capsys.readouterr().out

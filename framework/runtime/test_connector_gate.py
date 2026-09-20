@@ -108,3 +108,16 @@ def test_assert_fresh_read_raises_when_file_missing(tmp_path):
         raise AssertionError("deveria ter levantado StaleReadError")
     except cg.StaleReadError as e:
         assert "nao existe" in str(e)
+
+
+def test_corrupt_project_json_is_a_hard_problem_not_a_silent_default(tmp_path):
+    (tmp_path / "project.json").write_text("{nao e json", encoding="utf-8")
+    r = cg.check(tmp_path)
+    assert any("project.json corrompido" in p for p in r["hard_problems"])
+
+
+def test_corrupt_run_state_counts_as_no_green_roundtrip(tmp_path):
+    rs = paths.run_state(tmp_path)
+    rs.parent.mkdir(parents=True)
+    rs.write_text("{nao e json", encoding="utf-8")
+    assert cg._has_green_roundtrip(tmp_path) is False
