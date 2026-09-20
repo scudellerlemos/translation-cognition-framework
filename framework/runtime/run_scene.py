@@ -150,8 +150,6 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
     return rec
 
 
-def _high_lines(root: Path, scene: str, scene_id: str):
-    return M.high_risk_lines(root, scene)               # fonte unica (model.high_risk_lines)
 
 
 def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
@@ -299,7 +297,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     return tr, verified, None
 
 
-def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str,
+def _back_phase(root: Path, scene: str, highs: list, backend: str,
                 require_back: bool, defer_back: bool, no_back: bool = False) -> tuple:
     """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
 
@@ -426,8 +424,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return early
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
-    highs = _high_lines(root, scene, scene_id)
-    bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back, no_back)
+    highs = M.high_risk_lines(root, scene)
+    bt, early = _back_phase(root, scene, highs, backend, require_back, defer_back, no_back)
     if early is not None:
         return early
 
@@ -458,7 +456,7 @@ def _indent(s: str) -> str:
 
 
 def _audit_spoiler(root: Path):
-    """Report-only, mesma filosofia de run_chapter._audit_spoiler: o driver de capitulo ja audita
+    """Report-only (chamado tambem por run_chapter, ao fim do capitulo): o driver de capitulo ja audita
     o projeto inteiro ao fim (spoiler de nome/titulo + genero pt-BR); aqui cobre quem chama
     run_scene.py DIRETO (fora de run_chapter) -- ex.: `tcf translate` cena-a-cena -- que sem isso
     nunca tinha o spoiler_audit.json gerado/atualizado."""
@@ -478,7 +476,7 @@ def _audit_spoiler(root: Path):
 
 
 def _audit_schema(root: Path):
-    """Report-only, mesma filosofia de run_chapter._audit_schema: o driver de capitulo ja audita o
+    """Report-only (chamado tambem por run_chapter, ao fim do capitulo): o driver de capitulo ja audita o
     projeto inteiro ao fim (1x, cobre toda cena verified naquele run); aqui cobre quem chama
     run_scene.py DIRETO (fora de run_chapter), que sem isso nunca tinha o schema auditado."""
     try:

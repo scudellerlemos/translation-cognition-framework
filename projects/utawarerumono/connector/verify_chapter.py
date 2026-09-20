@@ -85,11 +85,17 @@ def main():
         needs_review = set(json.loads(plan_files[0].read_text(encoding="utf-8")).get("needs_review", []))
 
     def translit_of(off_hex):
-        return R.transliterate(approved.get(off_hex, src_by.get(off_hex, "")))
+        # Fallback reads from ORIGINAL, not "" — empty string would underestimate pos/new_abs for
+        # offsets outside the corpus, corrupting positions of all following strings in the same run.
+        if off_hex in approved:
+            return R.transliterate(approved[off_hex])
+        if off_hex in src_by:
+            return R.transliterate(src_by[off_hex])
+        return R.transliterate(S.read_cstr(original, int(off_hex, 16)).decode("utf-8", "replace"))
 
     # mapear offsets relocados (repactados apos new_local, por arquivo) -> posicao absoluta nova
     new_abs = {}
-    for head_hex, idx, new_local, _ptrs, run in repoints:
+    for _head_hex, idx, new_local, _ptrs, run in repoints:
         fnew = by_name_new[files[idx].name]
         pos = new_local
         for m in run:

@@ -179,7 +179,7 @@ def test_pack_rebuild_integrity(original):
     fn = sorted(S.parse_pack(out), key=lambda f: f.offset)
 
     assert [f.name for f in fo] == [f.name for f in fn], "conjunto/ordem de arquivos mudou"
-    assert all(a.end == b.offset for a, b in zip(fn, fn[1:])), "arquivos não contíguos na saída"
+    assert all(a.end == b.offset for a, b in zip(fn, fn[1:], strict=False)), "arquivos não contíguos na saída"
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in fn), "alinhamento de 16 bytes quebrado"
     # arquivos cujo conteúdo é idêntico (comparando por nome, ignorando deslocamento de posição)
     oN = {f.name: f for f in fn}

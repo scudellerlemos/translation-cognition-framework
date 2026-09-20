@@ -1225,7 +1225,7 @@ FIXES = {
 }
 
 lines = {}
-for (off_hex, budget, src), (speaker, tone, intent, risk, notes, t) in zip(ROWS, TR):
+for (off_hex, _budget, _src), (speaker, tone, intent, risk, notes, t) in zip(ROWS, TR, strict=False):
     key = f"scena/mp0010_01.dat:{off_hex}"
     if off_hex in FIXES:
         t = FIXES[off_hex]

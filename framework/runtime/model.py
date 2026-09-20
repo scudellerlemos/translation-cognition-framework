@@ -108,9 +108,8 @@ def _no_effort_model(model: str) -> bool:
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, max_usd=None) -> TranslateResult:
-    """Traduz uma cena. `max_usd` e informativo: emite aviso se o custo estimado supera o teto,
-    mas NAO aborta (use run_chapter --max-usd para teto duro por capitulo)."""
+def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) -> TranslateResult:
+    """Traduz uma cena (use run_chapter --max-usd para teto duro por capitulo)."""
     root = Path(root)
     pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
     scene_id = pack["scene_id"]
@@ -123,16 +122,7 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None, 
                 "expected_output": str(out)}
     if backend == "api":
         m = model or MODEL_TRANSLATE
-        if max_usd is None:
-            import warnings
-            warnings.warn(
-                f"translate({scene}): sem teto de custo (max_usd=None). "
-                "Use run_chapter --max-usd para teto duro por capitulo.", stacklevel=2)
         data, usage, meta = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
-        c = cost_of(m, usage)
-        if max_usd is not None and c > max_usd:
-            import warnings
-            warnings.warn(f"translate({scene}): custo ${c:.4f} excedeu max_usd=${max_usd:.4f}.", stacklevel=2)
         # V1: proveniência — doctrine/modelo gravados junto com a tradução para auditoria posterior
         data["_meta"] = {
             "model_id": m,

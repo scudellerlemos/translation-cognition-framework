@@ -210,15 +210,6 @@ class Store:
         except Exception:
             return None
 
-    def get_tm_approved(self, project_id: str, limit: int = 5000) -> list[dict]:
-        rows = self._con.execute(
-            """SELECT scene_id, offset, source, target, speaker
-               FROM translations WHERE project_id=? AND approved=1
-               ORDER BY created_at DESC LIMIT ?""",
-            (project_id, limit),
-        ).fetchall()
-        return [dict(r) for r in rows]
-
     # ── Glossário ────────────────────────────────────────────────────────────
 
     def get_translations(self, project_id: str, approved_only: bool = True) -> list[dict]:
@@ -340,14 +331,6 @@ class Store:
               e.get("verdict"), e.get("note")) for e in entries],
         )
         self._commit()
-
-    def get_back_translations(self, project_id: str, scene_id: str) -> list[dict]:
-        rows = self._con.execute(
-            "SELECT offset, back_en, verdict, note FROM back_translations "
-            "WHERE project_id=? AND scene_id=? ORDER BY id",
-            (project_id, scene_id),
-        ).fetchall()
-        return [dict(r) for r in rows]
 
     def upsert_glossary(self, project_id: str, term: str, translation: str,
                         handling_rule: str | None = None, domain: str | None = None,
@@ -623,13 +606,6 @@ class Store:
               r.get("effectiveness_rate"), r.get("cost_usd")) for r in rows],
         )
         self._commit()
-
-    def get_qa_effectiveness(self, project_id: str) -> list[dict]:
-        rows = self._con.execute(
-            "SELECT t, source, total_marked, applied, verbatim, ai, effectiveness_rate, "
-            "cost_usd FROM qa_effectiveness WHERE project_id=? ORDER BY t", (project_id,)
-        ).fetchall()
-        return [dict(r) for r in rows]
 
     # ── Stats ────────────────────────────────────────────────────────────────
 

@@ -174,7 +174,6 @@ def patch_dat_file(
         for i in range(1, toc_size // 16):
             entry_off = i * 16
             off_i = struct.unpack_from('<I', new_data, entry_off)[0]
-            sz_i = struct.unpack_from('<I', new_data, entry_off + 4)[0]
 
             if i == entry_idx:
                 # Atualiza tamanho desta seção
@@ -259,10 +258,10 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         per_file[meta['file']][meta['ptr_idx']] = text_target
 
     # Fallback: para strings sem tradução, usa o original (garante round-trip)
-    for offset_id, meta in string_meta.items():
+    for _offset_id, meta in string_meta.items():
         fname = meta['file']
         ptr_idx = meta['ptr_idx']
-        if ptr_idx not in per_file[fname]:
+        if ptr_idx not in per_file.get(fname, {}):
             per_file[fname][ptr_idx] = meta['text_en']
 
     # Processa cada arquivo com traduções
@@ -292,7 +291,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         section = original_data[sec_off:sec_off + sec_sz]
 
         # Verifica overflow individual (strings que excedem byte_budget próprio)
-        for offset_id, meta in string_meta.items():
+        for _offset_id, meta in string_meta.items():
             if meta['file'] != fname:
                 continue
             ptr_idx = meta['ptr_idx']
@@ -306,7 +305,11 @@ def main(project_json: Path, source_override: str | None = None) -> None:
                 overflow_count += 1
 
         # Reconstrói a seção e aplica patch
-        new_section = rebuild_section(section, file_translations)
+        try:
+            new_section = rebuild_section(section, file_translations)
+        except OverflowError as exc:
+            print(f"OverflowError em {fname}: {exc}")
+            sys.exit(3)
         new_data = patch_dat_file(original_data, entry_idx, new_section)
 
         out_path = out_dir / fname
