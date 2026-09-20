@@ -65,7 +65,7 @@ def _is_pure_onomatopoeia(s: str) -> bool:
 
 
 def _csv(p: Path) -> list[dict]:
-    with p.open(encoding="utf-8") as f:
+    with p.open(encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 

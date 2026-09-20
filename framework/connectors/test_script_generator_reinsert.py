@@ -38,8 +38,8 @@ def _project_json(tmp_path: Path, source_binary: str) -> Path:
 
 
 def _write_approved_same_as_source(tmp_path: Path, rows: list[dict]):
-    """approved.csv com text_target == text_en -> round-trip deve ser byte-idêntico."""
-    approved = tmp_path / "artifacts" / "approved.csv"
+    """approved_translations.csv com text_target == text_en -> round-trip deve ser byte-idêntico."""
+    approved = tmp_path / "artifacts" / "approved_translations.csv"
     approved.parent.mkdir(parents=True, exist_ok=True)
     with approved.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -101,7 +101,7 @@ def test_linear_scan_reinsert_rejects_translation_too_long(tmp_path):
     project_json = _project_json(tmp_path, "game.bin")
 
     ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 1.0}, "string_density": 0.9}
-    approved = tmp_path / "artifacts" / "approved.csv"
+    approved = tmp_path / "artifacts" / "approved_translations.csv"
     approved.parent.mkdir(parents=True)
     with approved.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -176,3 +176,58 @@ def test_token_table_encode_decode_are_inverse_once_table_filled(tmp_path):
 
     reencoded = reinsert_mod.encode_string(text)
     assert reencoded == raw
+
+
+def _filled_token_reinsert(control):
+    ev = {"has_control_tokens": True, "sample_encodings": {"ascii": 0.9}, "string_density": 0.5}
+    code = sg.generate_reinsert(ev).replace(
+        'CONTROL_MAP: list[tuple[bytes, str]] = [\n    # (b"\\x01\\x00", "\\n"),   # MESMA lista do extract.py gerado\n]',
+        f"CONTROL_MAP: list[tuple[bytes, str]] = {control!r}",
+    ).replace(
+        "BYTE_TO_CHAR: dict[int, str] = {\n    # 0x20: \" \", 0x21: \"!\", ... MESMO dict do extract.py gerado\n}",
+        'BYTE_TO_CHAR: dict[int, str] = {0x41: "A"}',
+    )
+    return ev, code
+
+
+def test_token_table_reinsert_budget_matches_decode_with_multibyte_control(tmp_path):
+    """Sequencia de controle contendo o byte terminador (01 00): o decode a consome inteira, entao o
+    reinsert tem que medir o MESMO budget (antes parava no 00 interno -> falso 'excede')."""
+    ev, code = _filled_token_reinsert([(b"\x01\x00", "[NL]")])
+    raw = b"A\x01\x00A\x00"
+    src = tmp_path / "game.bin"
+    src.write_bytes(raw)
+    project_json = _project_json(tmp_path, "game.bin")
+    _write_approved_same_as_source(tmp_path, [{"offset": "0x0", "text_en": "A[NL]A"}])
+    _exec_module(code, "gen_reinsert_token_multibyte").main(project_json, str(src))
+    assert (tmp_path / "output" / "game.bin").read_bytes() == raw
+
+
+def test_reinsert_stubs_fail_loudly_without_terminator_instead_of_hanging(tmp_path):
+    """Sem terminador ate o EOF o scan `while ... != TERMINATOR: end += 1` nunca terminava."""
+    import pytest
+    for ev, name in (({"has_control_tokens": False, "sample_encodings": {"ascii": 0.3}, "string_density": 0.1}, "ptr"),
+                     ({"has_control_tokens": True, "sample_encodings": {"ascii": 0.9}, "string_density": 0.5}, "tok")):
+        src = tmp_path / f"{name}.bin"
+        src.write_bytes(b"AAA")
+        project_json = _project_json(tmp_path, src.name)
+        _write_approved_same_as_source(tmp_path, [{"offset": "0x0", "text_en": "AAA"}])
+        code = _filled_token_reinsert([])[1] if name == "tok" else sg.generate_reinsert(ev)
+        mod = _exec_module(code, f"gen_reinsert_noterm_{name}")
+        with pytest.raises(SystemExit, match="sem terminador"):
+            mod.main(project_json, str(src))
+
+
+def test_generated_stub_cli_accepts_project_root_dir(tmp_path):
+    """connector_smoke/connector_mgr passam a RAIZ do projeto (nao o project.json) como argv[1]."""
+    import subprocess
+    import sys
+    (tmp_path / "game.bin").write_bytes(b"AAA\x00")
+    _project_json(tmp_path, "game.bin")
+    _write_approved_same_as_source(tmp_path, [{"offset": "0x0", "text_en": "AAA"}])
+    stub = tmp_path / "reinsert.py"
+    ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 0.9}, "string_density": 0.5}
+    stub.write_text(sg.generate_reinsert(ev), encoding="utf-8")
+    r = subprocess.run([sys.executable, str(stub), str(tmp_path)], capture_output=True, text=True)  # nosec B603
+    assert r.returncode == 0, r.stderr
+    assert (tmp_path / "output" / "game.bin").read_bytes() == b"AAA\x00"

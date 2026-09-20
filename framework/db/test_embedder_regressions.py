@@ -65,3 +65,29 @@ def test_texto_alterado_e_reindexado(tmp_path, emb):
         hits = emb.search(db._con, "lore about the moon", project_id="a", k=3)
     assert hits and hits[0]["source"] == "lore about the moon"
     assert hits[0]["score"] == pytest.approx(1.0, abs=1e-3)   # vetor NOVO (nao o de "dragon of wind")
+
+
+def test_search_nao_serve_vetor_obsoleto_antes_do_reindex(tmp_path, emb):
+    """Entre o upsert (source novo) e o proximo reindex, o vetor velho ainda esta no vec0: a busca
+    tem que ignorar a linha (metadata apagada pelo trigger), nao devolver texto novo com score do velho."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("a", "A")
+        db.upsert_translation("a", "s", "o1", source="dragon of wind", target="x", approved=True)
+        emb.index_project(db._con, "a")
+        db.upsert_translation("a", "s", "o1", source="lore about the moon", target="y", approved=True)
+        assert emb.search(db._con, "dragon of wind", project_id="a", k=3) == []
+
+
+def test_force_reindex_com_encode_falho_nao_esvazia_o_indice(tmp_path, emb):
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("a", "A")
+        db.upsert_translation("a", "s", "o1", source="dragon of wind", target="x", approved=True)
+        emb.index_project(db._con, "a")
+
+        def boom(texts):
+            raise RuntimeError("encode falhou")
+        emb.encode = boom
+        with pytest.raises(RuntimeError):
+            emb.index_project(db._con, "a", force=True)
+        n = db._con.execute("SELECT COUNT(*) FROM tm_embeddings").fetchone()[0]
+    assert n == 1

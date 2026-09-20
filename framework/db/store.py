@@ -150,7 +150,8 @@ class Store:
                    approved, backend, model_id, created_at)
                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(project_id, scene_id, offset) DO UPDATE SET
-                   source=excluded.source, target=excluded.target, speaker=excluded.speaker,
+                   source=COALESCE(NULLIF(excluded.source, ''), source), target=excluded.target,
+                   speaker=excluded.speaker,
                    tone_register=excluded.tone_register, intent=excluded.intent,
                    risk_level=excluded.risk_level, risk_notes=excluded.risk_notes,
                    approved=excluded.approved, backend=excluded.backend,

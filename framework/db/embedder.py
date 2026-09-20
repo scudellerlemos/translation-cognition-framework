@@ -149,16 +149,11 @@ class Embedder:
         self._ensure_vec_table(con, kind)
 
         if force:
-            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — limpa os vetores do
-            # projeto e reindexa do zero (ex.: ao trocar modelo ou a normalização).
-            tids = [r[0] for r in con.execute(
-                f"SELECT id FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
-                (project_id,)).fetchall()]
-            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.commit()
+            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — reindexa do zero (ex.: ao
+            # trocar modelo ou a normalização); os vetores velhos só saem DEPOIS do encode (abaixo),
+            # senão um encode que falha deixaria o indice do projeto vazio.
             rows = con.execute(
-                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608
+                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (project_id,),
             ).fetchall()
         else:
@@ -176,9 +171,11 @@ class Embedder:
         ids = [r[0] for r in rows]
         texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
-        if not force:
-            # linha cujo texto mudou perdeu o metadado (trigger) mas ainda tem o vetor velho no vec0
-            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
+        # force: vetores+metadado velhos; senão: linha cujo texto mudou perdeu o metadado (trigger) mas
+        # ainda tem o vetor velho no vec0
+        con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
+        if force:
+            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
 
         for tid, vec in zip(ids, vecs, strict=True):
             con.execute(
@@ -216,6 +213,7 @@ class Embedder:
                 JOIN translations t ON t.id = v.translation_id
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
+                  AND EXISTS (SELECT 1 FROM tm_embeddings e WHERE e.translation_id = t.id)
                   AND v.embedding MATCH ?
                   AND k = ?
                 ORDER BY v.distance
@@ -256,6 +254,7 @@ class Embedder:
                 FROM decision_vectors v
                 JOIN decisions d ON d.id = v.decision_id
                 WHERE d.project_id=?
+                  AND EXISTS (SELECT 1 FROM decision_embeddings e WHERE e.decision_id = d.id)
                   AND v.embedding MATCH ?
                   AND k = ?
                 ORDER BY v.distance
@@ -290,6 +289,7 @@ class Embedder:
                 FROM kb_vectors v
                 JOIN kb ON kb.id = v.kb_id
                 WHERE kb.project_id=?
+                  AND EXISTS (SELECT 1 FROM kb_embeddings e WHERE e.kb_id = kb.id)
                   AND v.embedding MATCH ?
                   AND k = ?
                 ORDER BY v.distance

@@ -162,3 +162,13 @@ def test_source_change_drops_embedding_metadata(tmp_path):
         # source novo: metadado some
         db.upsert_translation("p1", "s1", "0x1", source="Bye", target="Tchau", approved=True)
         assert db._con.execute("SELECT count(*) FROM tm_embeddings").fetchone()[0] == 0
+
+
+def test_upsert_translation_empty_source_keeps_existing_source(tmp_path):
+    """Caller sem source (migrate_from_flat / sync_translations_db sem plan) nao pode apagar o source bom."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "P")
+        db.upsert_translation("p1", "s1", "0x1", source="Hello", target="Ola", approved=True)
+        db.upsert_translation("p1", "s1", "0x1", source="", target="Oi", approved=True)
+        hit = db.search_tm_exact("Hello", "p1")
+    assert [h["target"] for h in hit] == ["Oi"]

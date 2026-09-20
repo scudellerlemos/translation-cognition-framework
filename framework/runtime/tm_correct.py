@@ -80,7 +80,7 @@ def _apply_text(text: str, rules) -> tuple[str, int]:
     """Aplica todas as regras (compiladas) a um texto. Retorna (novo_texto, n_substituicoes)."""
     total = 0
     for rx, repl in rules:
-        text, n = rx.subn(repl, text)
+        text, n = rx.subn(lambda _m, _r=repl: _r, text)   # literal: '\n'/'\1' do replace nao sao template de regex
         total += n
     return text, total
 
@@ -145,7 +145,7 @@ def _collect_approved(hits, path, scene, sid, compiled):
             continue
         after, applied = before, None
         for c, rx, repl in compiled:
-            new, n = rx.subn(repl, after)
+            new, n = rx.subn(lambda _m, _r=repl: _r, after)
             if n:
                 after, applied = new, c
         if after != before and applied is not None:
@@ -169,7 +169,7 @@ def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
         after = before
         applied = None
         for c, rx, repl in compiled:
-            new, n = rx.subn(repl, after)
+            new, n = rx.subn(lambda _m, _r=repl: _r, after)
             if n:
                 after = new
                 applied = c

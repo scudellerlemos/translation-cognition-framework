@@ -211,7 +211,7 @@ def main(project_json: Path, source_override: str | None = None) -> None:
         if not scene_dir.is_dir():
             continue
         for appr in sorted(scene_dir.glob("approved_*.csv")):
-            with appr.open(encoding='utf-8') as f:
+            with appr.open(encoding='utf-8-sig') as f:
                 for row in csv.DictReader(f):
                     target = row.get('text_target', '').strip()
                     if target:
@@ -219,6 +219,10 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
     # Agrupa por arquivo: {fname: {ptr_idx: text_decoded}}
     per_file: dict[str, dict[int, str]] = defaultdict(dict)
+    orphans = sorted(k for k in translations if k not in string_meta)
+    if orphans:      # approved desatualizado (extract re-rodou / key errada): sem isto so sobra "reinseridas" menor
+        print(f"[reinsert] AVISO: {len(orphans)} traducao(oes) aprovada(s) sem linha em dialogs.csv -- "
+              f"NAO reinseridas: {orphans[:5]}{' ...' if len(orphans) > 5 else ''}")
     for offset_id, text_target in translations.items():
         meta = string_meta.get(offset_id)
         if meta is None:

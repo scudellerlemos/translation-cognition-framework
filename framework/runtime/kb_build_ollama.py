@@ -28,7 +28,6 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-from kb_reconcile import _current_status  # noqa: E402  (mesmo parser de '**Status:**' do gate)
 
 _MAX_CONTEXT_CHARS = 12_000   # teto de contexto por chamada -- qwen2.5:14b local, run barato/rapido
 _CONFIDENCE_ALLOWED = ("low", "medium")
@@ -137,7 +136,8 @@ def build(root, *, chat_fn=None, model=None, force=False) -> dict:
     Sem cache (nenhuma fonte buscada ainda) -> toda entidade vira UNSOURCED sem chamar o modelo
     (nao ha o que extrair; evita chamada inutil e garante "nao inventar" mesmo sem fontes)."""
     root = Path(root)
-    if not force and _current_status(root).lower() == "reconciled":
+    rl = paths.research_log(root)   # MESMA regex tolerante do kb_gate (aceita "status: reconciled" e "**Status:** ...")
+    if not force and rl.is_file() and re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I):
         raise RuntimeError("research_log.md ja esta 'reconciled': rodar de novo sobrescreveria a KB "
                            "revisada por humano com rascunho. Use force=True (--force) se for isso mesmo.")
     chat = chat_fn or _default_chat

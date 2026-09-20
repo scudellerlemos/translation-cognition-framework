@@ -165,8 +165,8 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
         for row in csv.DictReader(f):
             n_rows += 1
             key = row.get("offset", "").strip()
-            val = (row.get("text_target") or row.get("text_pt") or "").strip()
-            if key and val:
+            val = row.get("text_target") or row.get("text_pt") or ""
+            if key and val.strip():   # strip so p/ testar vazio: espaco final de linha identity e conteudo
                 translations[key] = val
     if n_rows and not translations:
         raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"

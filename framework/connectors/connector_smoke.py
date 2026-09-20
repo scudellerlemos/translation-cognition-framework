@@ -180,6 +180,9 @@ def _run_roundtrip(
 
         output_dir = project_root / "output"
         output_dir.mkdir(exist_ok=True)
+        stale = _find_output(project_root, source_path)
+        if stale is not None:                # output/ velho faria o SHA passar sem o reinsert rodar de verdade
+            stale.unlink()
 
         cmd = [sys.executable, str(reinsert_py), str(project_root)]
         if game_data_dir:

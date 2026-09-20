@@ -91,3 +91,25 @@ def test_reset_game_warns_before_removing(monkeypatch, tmp_path, capsys):
     tu.reset_game("bof", "game1")
     out = capsys.readouterr().out
     assert "AVISO" in out and "IRREVERSIVEL" in out
+
+
+def test_sync_scenes_refuses_to_overwrite_corrupt_series_tm(monkeypatch, tmp_path):
+    """TM da serie truncada: reescrever apagaria as entradas dos OUTROS jogos -> aborta sem tocar no arquivo."""
+    import pytest
+    monkeypatch.setattr(tl, "_REPO_ROOT", tmp_path / "_repo")
+    root = tmp_path / "game1"
+    _setup_verified_scene(root, "ch_01_01", "0x1", "Hello", "Ola")
+    tm_path = tu.series_tm_path("bof")
+    tm_path.parent.mkdir(parents=True, exist_ok=True)
+    tm_path.write_text('[{"source_game": "other", "src_key": "k", "sour', encoding="utf-8")
+    with pytest.raises(RuntimeError, match="ilegivel"):
+        tu.sync_scenes(root, {"series": "bof"}, ["ch_01_01"], approved_at="2026-07-03T00:00:00Z")
+    assert tm_path.read_text(encoding="utf-8").startswith('[{"source_game": "other"')
+
+
+def test_tm_correct_replace_is_literal_not_regex_template():
+    """`replace` com barra invertida (token do jogo `\\n`) ou `\\1` nao pode virar quebra de linha / erro de grupo."""
+    import tm_correct as tc
+    rules = [(tc._compile("Ukon", "word"), "Ukon\\nSama"), (tc._compile("Oi", "word"), "\\1")]
+    text, n = tc._apply_text("Oi Ukon", rules)
+    assert text == "\\1 Ukon\\nSama" and n == 2
