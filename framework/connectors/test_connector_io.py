@@ -224,3 +224,10 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
         dbfirst_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                         for r in db.get_translations("proj")}
     assert dbfirst_rows == legacy_rows
+
+
+def test_transliterate_folds_accents_but_keeps_compat_glyphs_and_tokens():
+    # NFD (não NFKD): ①②③ têm de sobreviver (round-trip do Utawarerumono, ch_30_09).
+    assert cio.transliterate("Ação, coração é ótimo") == "Acao, coracao e otimo"
+    assert cio.transliterate("①②③") == "①②③"
+    assert cio.transliterate("{c5}Ação{c-1} [14][0A]") == "{c5}Acao{c-1} [14][0A]"
