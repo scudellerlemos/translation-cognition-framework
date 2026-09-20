@@ -156,7 +156,7 @@ def _run_roundtrip(
         )
     source_hash = _sha256(source_path)
 
-    # Criar identity approved_translations.csv temporário (3 primeiras strings)
+    # Criar identity approved_translations.csv temporário (amostra espalhada, ate 6 strings)
     with dialogs_csv.open(encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     text_col = next((c for c in (rows[0].keys() if rows else []) if c.startswith("text_")), None)
@@ -172,7 +172,9 @@ def _run_roundtrip(
         shutil.copy2(approved, backup)
 
     try:
-        sample = rows[:3]
+        # espalhado pelo arquivo (+ a ultima): so as 3 primeiras escondiam bug de offset/ponteiro no meio/fim
+        sample = rows[::max(1, len(rows) // 5)][:5] + rows[-1:]
+        sample = list({r[id_col]: r for r in sample}.values())
         with approved.open("w", encoding="utf-8", newline="") as f:
             wr = csv.DictWriter(f, fieldnames=[id_col, "text_target"])
             wr.writeheader()

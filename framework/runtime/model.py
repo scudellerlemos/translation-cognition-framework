@@ -678,6 +678,7 @@ def _parse_batch_lines(pack, text):
     reuse = _batch_reuse(pack)
     novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
     srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
+    struct_rx = _structural_rx(pack.get("project_constraints", {}))
     try:
         parsed = _to_map(json.loads(text))
     except Exception:
@@ -688,6 +689,8 @@ def _parse_batch_lines(pack, text):
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
             if _is_blowup(srcmap.get(off, ""), v["t"]):
                 continue                                 # lixo patologico -> descarta (re-roda / missing)
+            if not _struct_ok(struct_rx, srcmap.get(off, ""), v["t"]):
+                continue                                 # token de formatacao perdido/trocado (paridade com o caminho interativo)
             out[off] = v
     return out
 
