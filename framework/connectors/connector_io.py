@@ -12,8 +12,19 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from collections import Counter
 from pathlib import Path
+
+
+def transliterate(s: str) -> str:
+    """Dobra diacríticos para ASCII (NFD canônico + descarte de combining marks). Mantém tudo o mais.
+    NFD (não NFKD): decomposição CANÔNICA dobra acento (á->a, ç->c), mas PRESERVA glifos de compat.
+    que o jogo já usa (ex.: dígitos circulados ①②③ de sequências de puzzle: NFKD os reduzia a 1/2/3,
+    corrompendo o round-trip do binário original — ver ch_30_09). Tokens {..}/[XX] são ASCII e
+    não são afetados. Conectores cujo font não tem acento (ASCII-only) devem usar esta função."""
+    nfd = unicodedata.normalize("NFD", s)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
 
 
 def resolve_source_path(
