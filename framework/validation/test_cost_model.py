@@ -16,6 +16,21 @@ sys.path.insert(0, str(HERE))
 import cost_model as C  # noqa: E402
 
 
+def test_pricing_matches_runtime_ledger_table():
+    """cost_model.PRICE (estimativa de planejamento) e cost._PRICE (ledger real, framework/runtime/
+    cost.py -- que se autodeclara "fonte unica de custo do harness") sao 2 tabelas mantidas a mao em
+    arquivos/pacotes diferentes, sem import entre si. Se uma for atualizada (reajuste de preco da API)
+    e a outra nao, a estimativa diverge silenciosamente do gasto real cobrado -- trava a paridade em
+    vez de depender de revisao manual dos dois arquivos toda vez que o preco mudar."""
+    runtime_dir = HERE.parent / "runtime"
+    sys.path.insert(0, str(runtime_dir))
+    import cost as RC  # noqa: E402  (framework/runtime/cost.py)
+    mapping = {"opus": "claude-opus-4-8", "sonnet": "claude-sonnet-4-6", "haiku": "claude-haiku-4-5"}
+    for short, full in mapping.items():
+        assert C.PRICE[short] == RC._PRICE[full], (
+            f"cost_model.PRICE[{short!r}] diverge de cost._PRICE[{full!r}] -- atualize as duas juntas.")
+
+
 def _synthetic_project(tmp_path):
     """Projeto sintetico minimo (project.json + translation_plan.json) -- so mecanica de
     custo generica (relacoes entre cenarios, incl. back-translation de linha de alto risco),
