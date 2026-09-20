@@ -718,13 +718,17 @@ def _batch_coverage(pack, merged):
 # _await_batch -> llm_client.py (importado acima).
 
 
-def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, req_model, packs, merged,
-                            root, default_model):
+def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, req_model, req_offsets,
+                            packs, merged, root, default_model):
     """Submete e mescla UM chunk de requests de traducao (ate _TRANSLATE_SUBMIT_CHUNK requests por
     batch). Isola a rodada inteira de virar tudo-ou-nada: um chunk que trava/estoura o timeout so fica
     SEM cobertura dele agora -- a rodada seguinte (ou o coverage_failed final, se acabarem as rodadas)
     trata o que faltar, exatamente como qualquer request perdido hoje (mesmo caminho do
-    _batch_coverage/_merge_best_parity). Ver feedback-segment-large-batches / _TRANSLATE_SUBMIT_CHUNK."""
+    _batch_coverage/_merge_best_parity). Ver feedback-segment-large-batches / _TRANSLATE_SUBMIT_CHUNK.
+
+    req_offsets[cid] = offsets REALMENTE pedidos NESTE chunk/tier -- restringe o merge a eles, pra uma
+    resposta que "vaze" um offset de OUTRO chunk da mesma cena (alucinado/duplicado) nao ser aceita sem
+    nunca ter sido validada no contexto/orcamento do chunk a que aquele offset pertence de verdade."""
     batch = _with_backoff(lambda: client.messages.batches.create(requests=chunk_reqs))  # noqa: B023  (_with_backoff invoca na hora)
     if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
         print(f"  [translate-batch] chunk {batch.id} nao concluiu em {max_wait_seconds}s "
@@ -741,7 +745,11 @@ def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, 
         msg = result.result.message
         log_api_call(root, scene, "translate", req_model.get(cid, default_model), _usage_of(msg), batch=True)
         srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
-        _merge_best_parity(merged[scene], _parse_batch_lines(packs[scene], _text_of(msg)), srcmap)
+        parsed = _parse_batch_lines(packs[scene], _text_of(msg))
+        wanted = req_offsets.get(cid)
+        if wanted is not None:
+            parsed = {off: v for off, v in parsed.items() if off in wanted}
+        _merge_best_parity(merged[scene], parsed, srcmap)
 
 
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
@@ -797,7 +805,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     for rnd in range(max_rounds):
         if not pending:
             break
-        reqs, req_model = [], {}                          # req_model[custom_id] = modelo (p/ custo no ledger)
+        reqs, req_model, req_offsets = [], {}, {}         # req_model/req_offsets[custom_id] = modelo/offsets pedidos
         for scene in pending:
             miss, badpar = _batch_coverage(packs[scene], merged[scene])
             want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd0: tudo; depois: so o que falta
@@ -824,6 +832,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
                     # custom_id 'scene__tier__chunk' — ^[a-zA-Z0-9_-]{1,64}$; split('__',1)[0] = scene
                     cid = f"{scene}__{tier}__{ci // _BATCH_CHUNK}"
                     req_model[cid] = tmodel
+                    req_offsets[cid] = {r["offset"] for r in chunk}
                     reqs.append(Request(custom_id=cid, params=cast(MessageCreateParamsNonStreaming, params)))
         if not reqs:
             break
@@ -832,8 +841,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         # chunk lento/travado nao afeta os demais nem aborta a rodada inteira.
         for i in range(0, len(reqs), _TRANSLATE_SUBMIT_CHUNK):
             chunk = reqs[i:i + _TRANSLATE_SUBMIT_CHUNK]
-            _submit_translate_chunk(client, chunk, poll_seconds, max_wait_seconds, req_model, packs,
-                                    merged, root, m)
+            _submit_translate_chunk(client, chunk, poll_seconds, max_wait_seconds, req_model, req_offsets,
+                                    packs, merged, root, m)
         still = []
         for scene in pending:
             if str(status.get(scene, "")).startswith("errored"):

@@ -76,10 +76,14 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
             textcol = "text_source" if "text_source" in cols else "text_en"
             for r in rdr:
                 bb = (r.get("byte_budget") or "").strip()
+                try:
+                    budget = int(bb)      # int() valida sinal/digitos (lstrip("-") aceitava "--5" e quebrava aqui)
+                except ValueError:
+                    budget = None
                 lines.append({
                     "offset": r.get("offset", ""),
                     "source": r.get(textcol, ""),
-                    "byte_budget": int(bb) if bb.lstrip("-").isdigit() else None,
+                    "byte_budget": budget,
                 })
         if lines:
             db.upsert_scene_lines(project_id, sid, lines)
