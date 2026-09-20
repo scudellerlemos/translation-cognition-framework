@@ -33,6 +33,7 @@ if str(_HERE) not in sys.path:
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
+import translate_checkpoint as ckpt  # noqa: E402  (L01: nao perder linhas pagas quando os retries esgotam)
 
 _FRAMEWORK_CONNECTORS = _HERE.parent / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
@@ -430,7 +431,10 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     budgets = {r["offset"]: r.get("byte_budget") for r in novel}
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
     last, usage = None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
-    merged = {}        # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
+    # L01: so o 1o passe usa checkpoint (no escalonamento de fitting a traducao e mais curta de proposito)
+    sid, use_ckpt, dh = context_pack.scene_id_of(scene), budget_tolerance is None, pack.get("doctrine_hash", "")
+    seed = ckpt.load(root, scene, sid, dh, srcmap, enabled=use_ckpt)   # linhas ja pagas de uma rodada que esgotou
+    merged = dict(seed)  # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
     # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
     # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
     # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort nem adaptive thinking (400) -> omitir.
@@ -451,7 +455,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         red = dict(pack); red["lines"] = target; red["n_lines"] = len(target)
         return context_pack.render_prompt(red, carta="") + _NL_RULE + quality_note + note
 
-    target, note = novel, ""   # quality_note (back-translation/quality_fix) entra via _render; "" no fluxo normal
+    target, note = [r for r in novel if r["offset"] not in seed], ""   # quality_note (back-translation/quality_fix) entra via _render; "" no fluxo normal
     for attempt in range(_MAX_TRIES):
         msg = _stream_final(
             client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
@@ -494,6 +498,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         # (round-trip) e o juiz de residuo.
         if not missing and not bad_par and not bad_struct and (not over or attempt == _MAX_TRIES - 1):
             merged.update(reuse)                      # reanexa as linhas reaproveitadas da TM
+            ckpt.clear(root, scene, sid, enabled=use_ckpt)
             return {"lines": merged}, usage, meta
         # PROXIMA RODADA = SO as linhas quebradas (recuperacao por-linha, nao re-traduz a cena inteira)
         broken = set(missing) | set(bad_par) | set(bad_struct) | {o for o, _b, _c in over}
@@ -511,9 +516,13 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
         if over:
             note += _budget_note(over, pc)
     assert last is not None  # _MAX_TRIES > 0 -> loop roda >=1x -> last sempre atribuido aqui
+    kept = ckpt.save(root, scene, sid, dh, merged, srcmap,
+                     set(last["bad_parity"]) | set(last["bad_structural"]), enabled=use_ckpt)
+    ckpt.log_exhausted(root, scene, model, usage, last, kept, stage="first" if use_ckpt else "retighten")
     raise RuntimeError(f"_api_translate: cobertura/paridade incompletas apos {_MAX_TRIES} tentativas: "
                        f"faltam={last['missing']} paridade={last['bad_parity']} "
-                       f"formatacao={last['bad_structural']}")
+                       f"formatacao={last['bad_structural']}"
+                       + (f" | {kept} linha(s) boa(s) salvas em checkpoint: rode de novo p/ retomar" if kept else ""))
 
 
 # --------------------------- escalonamento CIRURGICO --------------------------
