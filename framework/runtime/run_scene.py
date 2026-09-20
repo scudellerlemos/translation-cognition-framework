@@ -23,6 +23,7 @@ Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [-
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -123,8 +124,8 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
             ents = json.loads(bpath.read_text(encoding="utf-8")).get("entries", [])
             if ents:
                 bt_pass = sum(1 for e in ents if e.get("verdict") == "pass") / len(ents)
-        except Exception:
-            pass
+        except (OSError, ValueError, AttributeError) as exc:
+            print(f"[run_scene] AVISO: back_translation de {scene} ilegivel ({exc!r}) -- bt_pass omitido.")
     rec = {"scene": scene, "n_lines": n_lines, "n_high": n_high, "verified": verified,
            "reused": tr.get("reused", 0) if isinstance(tr, dict) else 0,
            "translate": {"model": tmodel, "usage": tu, "cost_usd": round(M.cost_of(tmodel, tu or {}), 5)},
@@ -482,10 +483,8 @@ def _audit_schema(root: Path):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene", nargs="?", default=None)

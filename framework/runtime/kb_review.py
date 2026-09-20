@@ -22,6 +22,7 @@ Governanca: read-only, sem rede, sem work-text. Uso:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import re
@@ -169,10 +170,8 @@ def blocking(root, chapter, *, strict=False) -> list[dict]:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Digest/gate do delta de KB por capitulo.")
     ap.add_argument("project")
     ap.add_argument("chapter", help="prefixo do capitulo, ex.: 19")

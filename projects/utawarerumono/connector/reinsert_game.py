@@ -19,6 +19,7 @@ Falha em qualquer um → NÃO escreve output e sai com código 1.
 Uso:  python connector/reinsert_game.py [<binario>]   (default: connector.source_binary do project.json)
 """
 import argparse
+import contextlib
 import csv
 import json
 import sys
@@ -61,10 +62,8 @@ def _qa_review_present() -> bool:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Fase 3 — reinserção global (jogo inteiro num passe).")
     ap.add_argument("binary", nargs="?", default=None, help="binário-fonte (default: project.json)")
     ap.add_argument("--skip-qa-gate", action="store_true",

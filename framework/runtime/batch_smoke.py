@@ -21,6 +21,7 @@ Uso:  python batch_smoke.py
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import sys
 import tempfile
@@ -65,10 +66,8 @@ def _build_pack(scene_id):
 def main():
     # console Windows e cp1252 por padrao -> caractere fora dele (ex.: marca de OK) quebra o print com
     # UnicodeEncodeError e mascara um smoke SAUDAVEL como exit 1. Forca UTF-8 na saida.
-    try:
+    with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     scene, scene_id = "ch_00_00", "00_00"
     pack = _build_pack(scene_id)
     # stub do pack/prompt (o smoke nao precisa da KB real — testa a PLUMBING, nao a qualidade);

@@ -17,6 +17,7 @@ Protocolo de exit code (consumido por run_scene.py):
 
 Uso: python verify_chapter.py <scene>   ex.: python verify_chapter.py AREAD001
 """
+import contextlib
 import csv
 import json
 import os
@@ -54,10 +55,8 @@ def _section_strings(section: bytes) -> dict[int, bytes]:
 
 
 def main() -> None:
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <scene>  (ex.: AREAD001)")
 

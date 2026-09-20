@@ -131,7 +131,7 @@ def _count_csv_rows(path: Path) -> int:
     try:
         with path.open(encoding="utf-8", newline="") as f:
             return sum(1 for _ in csv.reader(f)) - 1  # exclui header
-    except Exception:
+    except (OSError, ValueError, csv.Error):
         return -1
 
 

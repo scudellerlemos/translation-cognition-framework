@@ -29,6 +29,7 @@ entropia do SO (amostra diferente a cada rodada, mais representativa em validaç
 """
 from __future__ import annotations
 
+import contextlib
 import random
 import sqlite3
 
@@ -85,10 +86,8 @@ if __name__ == "__main__":
     import json
     import sys
     from pathlib import Path
-    try:                                              # Windows cp1252: permitir acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
 
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("db_path")
