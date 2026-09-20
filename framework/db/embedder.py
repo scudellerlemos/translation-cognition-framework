@@ -46,6 +46,17 @@ import time
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
+_KNN_MAX = 4096   # teto de `k` do vec0 (sqlite-vec)
+
+
+def _knn_k(con: sqlite3.Connection, vec_table: str) -> int:
+    """`k` do KNN do vec0. O KNN roda sobre os vetores de TODOS os projetos e o filtro de project_id
+    (e approved) só vem depois do JOIN -- com k pequeno o top-k podia vir todo de OUTRO projeto e a
+    busca voltar vazia. Pede todos os vetores (até _KNN_MAX) e o LIMIT do SQL aplica o k do chamador
+    já depois do filtro. ponytail: acima de _KNN_MAX vetores o bug volta parcialmente; upgrade path =
+    partition key por projeto na tabela vec0."""
+    n = con.execute(f"SELECT count(*) FROM {vec_table}").fetchone()[0]  # nosec B608 - vec_table é literal interno
+    return max(1, min(n, _KNN_MAX))
 
 # indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
 # a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
@@ -165,6 +176,9 @@ class Embedder:
         ids = [r[0] for r in rows]
         texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
+        if not force:
+            # linha cujo texto mudou perdeu o metadado (trigger) mas ainda tem o vetor velho no vec0
+            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
 
         for tid, vec in zip(ids, vecs, strict=True):
             con.execute(
@@ -204,8 +218,9 @@ class Embedder:
                   {" AND t.approved=1" if approved_only else ""}
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal por bool; valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
+            (project_id, json.dumps(q_vec), _knn_k(con, "tm_vectors"), k),
         ).fetchall()
 
         results = []
@@ -243,8 +258,9 @@ class Embedder:
                 WHERE d.project_id=?
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados
+            (project_id, json.dumps(q_vec), _knn_k(con, "decision_vectors"), k),
         ).fetchall()
 
         results = []
@@ -276,9 +292,10 @@ class Embedder:
                 WHERE kb.project_id=?
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados; alias
-                                          # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados; alias
+                              # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
+            (project_id, json.dumps(q_vec), _knn_k(con, "kb_vectors"), k),
         ).fetchall()
 
         results = []

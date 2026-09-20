@@ -78,7 +78,7 @@ def validate_dialogs_csv(path: Path) -> list:
     Chamada em build_pack() antes de load_dialogs() para erros antecipados e legíveis."""
     problems = []
     try:
-        with path.open(encoding="utf-8") as fh:
+        with path.open(encoding="utf-8-sig") as fh:
             rdr = csv.DictReader(fh)
             fields = frozenset(rdr.fieldnames or [])
             for col in ("offset", "byte_budget"):
@@ -106,7 +106,7 @@ def validate_dialogs_csv(path: Path) -> list:
 
 def load_dialogs(p: Path):
     rows = []
-    with p.open(encoding="utf-8") as fh:
+    with p.open(encoding="utf-8-sig") as fh:
         rdr = csv.DictReader(fh)
         textcol = "text_source" if "text_source" in (rdr.fieldnames or []) else "text_en"
         for r in rdr:
@@ -119,7 +119,7 @@ def load_glossary(p: Path):
     out: list[dict] = []
     if not p.is_file():
         return out
-    with p.open(encoding="utf-8") as fh:
+    with p.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             out.append(r)
     return out
@@ -474,7 +474,7 @@ def load_translated_scenes(root: Path, cfg: dict | None = None) -> list:
         src_by_off = {}
         d = paths.dialogs(root, scene)
         if d.is_file():
-            with d.open(encoding="utf-8") as fh:
+            with d.open(encoding="utf-8-sig") as fh:
                 rdr = csv.DictReader(fh)
                 textcol = "text_source" if "text_source" in (rdr.fieldnames or []) else "text_en"
                 for r in rdr:

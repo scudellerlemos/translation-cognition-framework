@@ -302,3 +302,11 @@ def test_reveal_allowed_shared_gate(tmp_path):
     assert cp._reveal_allowed("9_09", here) is False             # futuro
     assert cp._reveal_allowed("beyond_frontier", here) is False
     assert cp._reveal_allowed(None, here) is False               # sem tag -> default-deny
+
+
+def test_load_glossary_tolerates_utf8_bom(tmp_path):
+    """Excel/Notepad gravam CSV com BOM: sem utf-8-sig a 1a coluna vira '\\ufeffterm' e o glossario some."""
+    p = tmp_path / "glossary.csv"
+    p.write_bytes("\ufeffterm,handling_rule\nOshtor,manter_original\n".encode("utf-8"))
+    rows = cp.load_glossary(p)
+    assert rows and rows[0].get("term") == "Oshtor"

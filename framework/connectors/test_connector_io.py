@@ -231,3 +231,12 @@ def test_transliterate_folds_accents_but_keeps_compat_glyphs_and_tokens():
     assert cio.transliterate("Ação, coração é ótimo") == "Acao, coracao e otimo"
     assert cio.transliterate("①②③") == "①②③"
     assert cio.transliterate("{c5}Ação{c-1} [14][0A]") == "{c5}Acao{c-1} [14][0A]"
+
+
+def test_structural_tokens_match_capture_group_pattern_distinguishes_tokens():
+    """Pattern com grupo de captura (BoF4 `\\[([0-9A-Fa-f]{2})\\]`): findall devolvia so o grupo e
+    trocar [01] por [02] passava. Comparacao por match inteiro tem que reprovar."""
+    rx = cio.structural_token_rx([], [r"\[([0-9A-Fa-f]{2})\]"])
+    assert cio.structural_tokens_match(rx, "a [01] b", "x [01] y")
+    assert not cio.structural_tokens_match(rx, "a [01] b", "x [02] y")
+    assert not cio.structural_tokens_match(rx, "a [01] b", "x y")

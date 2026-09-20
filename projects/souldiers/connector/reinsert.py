@@ -151,21 +151,26 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
     try:
         import UnityPy  # noqa: F401  (checagem antecipada de dependência; rebuild_table importa de novo)
     except ImportError:
-        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy")
+        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy") from None
 
     artifacts = project_root / "artifacts"
     approved_csv = artifacts / "approved_translations.csv"
     if not approved_csv.is_file():
         raise FileNotFoundError(f"Arquivo de traduções não encontrado: {approved_csv}")
 
-    # Carrega traduções aprovadas: offset → text_pt
+    # Carrega traduções aprovadas: offset → text_target (canonica) / text_pt (legado)
     translations: dict[str, str] = {}
-    with approved_csv.open(encoding="utf-8", newline="") as f:
+    n_rows = 0
+    with approved_csv.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
+            n_rows += 1
             key = row.get("offset", "").strip()
-            val = row.get("text_pt", "").strip()
+            val = (row.get("text_target") or row.get("text_pt") or "").strip()
             if key and val:
                 translations[key] = val
+    if n_rows and not translations:
+        raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"
+                         f"text_pt preenchida -- reinsercao copiaria os bundles originais sem traducao")
 
     output_dir = project_root / "output"
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -213,3 +213,15 @@ def test_head_of_finds_head_at_file_start_no_padding():
     pidx = {0: []}                    # is_head() só faz `off in idx`
     assert R._head_of(body, 4, pidx, [f]) == 0          # 4 = início de "BBB"
     assert R._head_of(body, 0, pidx, [f]) == 0          # já é head, atalho direto
+
+
+def test_load_game_reads_scenes_layout(tmp_path, monkeypatch):
+    """Layout atual artifacts/scenes/ch_*/ (refactor cbb9a9e): load_game lia artifacts/ch_* e agregava 0 cenas."""
+    import reinsert_game as G
+    sd = tmp_path / "scenes" / "ch_01"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hello,6\n", encoding="utf-8")
+    (sd / "approved_ch_01.csv").write_text("offset,text_target\n0x10,Ola\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    budgets, approved, scenes = G.load_game()
+    assert scenes == 1 and budgets == [("0x10", "Hello", 6)] and approved == {"0x10": "Ola"}

@@ -120,13 +120,13 @@ def _kb_blob(root: Path) -> str:
     g_parts, e_parts = [], []
     g = paths.glossary(root)
     if g.is_file():
-        with g.open(encoding="utf-8") as fh:
+        with g.open(encoding="utf-8-sig") as fh:
             for r in csv.DictReader(fh):
                 g_parts.append(r.get("term", "") or "")
                 g_parts.append(r.get("aliases", "") or "")
     e = paths.entities(root)
     if e.is_file():
-        with e.open(encoding="utf-8") as fh:
+        with e.open(encoding="utf-8-sig") as fh:
             for r in csv.DictReader(fh):
                 e_parts.append(r.get("canonical_name", "") or "")
                 e_parts.append(r.get("aliases", "") or "")

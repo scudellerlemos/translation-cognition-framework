@@ -625,12 +625,20 @@ def _coverage_note(missing, bad_par) -> str:
     return note
 
 
+def _batch_reuse(pack) -> dict:
+    """Linhas que NAO vao ao LLM no batch: reuso da TM + labels de engine (passthrough). Fonte unica
+    p/ _translate_params, _batch_coverage e batch_translate -- se divergirem, a label conta como
+    "faltando" pra sempre e a cena paga o batch e ainda cai no caminho interativo (custo dobrado)."""
+    reuse = _select_reuse(pack, enabled=True)
+    reuse.update(_label_passthrough(pack))
+    return reuse
+
+
 def _translate_params(pack, model, note=""):
     """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
     (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
     `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
-    reuse = _select_reuse(pack, enabled=True)
-    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough (fora do lote do LLM)
+    reuse = _batch_reuse(pack)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
@@ -667,7 +675,7 @@ def _tier_of(source: str) -> str:
 def _parse_batch_lines(pack, text):
     """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
     Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
-    reuse = _select_reuse(pack, enabled=True)
+    reuse = _batch_reuse(pack)
     novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
     srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
     try:
@@ -706,7 +714,7 @@ def _merge_best_parity(dest, new, srcmap):
 def _batch_coverage(pack, merged):
     """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
     tok = context_pack.TOKEN
-    reuse = _select_reuse(pack, enabled=True)
+    reuse = _batch_reuse(pack)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
     missing = [r["offset"] for r in novel if r["offset"] not in merged]
@@ -784,8 +792,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     for scene in scenes:
         pack = context_pack.write_pack(root, scene)
         packs[scene] = pack
-        reuse = _select_reuse(pack, enabled=True)
-        merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
+        reuse = _batch_reuse(pack)
+        merged[scene] = dict(reuse)                      # reuso (TM + labels) pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
         existing = paths.translations(root, scene, pack['scene_id'])

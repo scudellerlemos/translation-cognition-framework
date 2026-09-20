@@ -110,9 +110,16 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
     return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
 
 
+def structural_token_counts(rx: re.Pattern, text: str) -> Counter:
+    """Multiset dos tokens de formatacao em `text`. Usa o match INTEIRO (group(0)): `findall` devolveria
+    so o grupo de captura de patterns como `\\[([0-9A-Fa-f]{2})\\]` (BoF4), e dois tokens literais
+    diferentes ([01] vs [02]) colapsariam no mesmo valor."""
+    return Counter(m.group(0) for m in rx.finditer(text or ""))
+
+
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    return Counter(rx.findall(source or "")) == Counter(rx.findall(text or ""))
+    return structural_token_counts(rx, source) == structural_token_counts(rx, text)
 
 
 def sync_translations_db(root: Path, scene_id: str, sfx: str,
