@@ -21,6 +21,7 @@ Uso:  python run_chapter.py <projeto> <cap> [--backend api|in-session] [--requir
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -450,15 +451,13 @@ def _print_cost(root: Path, chap: str | None = None):
         rep = cost_report.report(root, chapter=chap)
         if rep["n_calls"]:
             print(f"\n{cost_report._fmt(rep, by_scene=False)}")
-    except Exception:
-        pass
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"[run_chapter] AVISO: resumo de gasto indisponivel ({exc!r}).", file=sys.stderr)
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Driver determinista de capitulo (loop de cenas).")
     ap.add_argument("project")
     ap.add_argument("chapter", help='prefixo do capitulo, ex.: "12"')

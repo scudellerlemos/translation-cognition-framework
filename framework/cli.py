@@ -17,6 +17,7 @@ Sem instalar, roda igual via `python framework/cli.py <comando>`.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -295,10 +296,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = build_parser()
     args = ap.parse_args()
     sys.exit(args.func(args) or 0)

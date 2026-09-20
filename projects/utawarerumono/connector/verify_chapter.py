@@ -12,6 +12,7 @@ GOVERNANCA: sem work-text. Le artifacts/<chapter_dir>/{dialogs.csv,approved_<sfx
 
 Uso: python verify_chapter.py <chapter_dir>     ex.: python verify_chapter.py ch_11_04
 """
+import contextlib
 import csv
 import json
 import sys
@@ -29,10 +30,8 @@ def load_csv(p):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <chapter_dir>  (ex.: ch_11_04)")
     chdir = ROOT / "artifacts" / "scenes" / sys.argv[1]
