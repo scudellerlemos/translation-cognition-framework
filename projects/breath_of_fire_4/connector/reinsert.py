@@ -17,7 +17,6 @@ Regras:
 
 import csv
 import json
-import os
 import struct
 import sys
 from collections import defaultdict
@@ -25,8 +24,11 @@ from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 _FRAMEWORK = _HERE.parent.parent.parent / "framework" / "runtime"
-if str(_FRAMEWORK) not in sys.path:
-    sys.path.insert(0, str(_FRAMEWORK))
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+for _p in (_FRAMEWORK, _FRAMEWORK_CONNECTORS):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 import paths as _paths  # noqa: E402
 from extract import (
     encode_string,
@@ -176,12 +178,8 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     root = project_json.parent
 
     # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
-    if source_override:
-        game_dat_dir = Path(source_override)
-    elif os.environ.get("BOF4_DAT_DIR"):
-        game_dat_dir = Path(os.environ["BOF4_DAT_DIR"])
-    else:
-        game_dat_dir = Path("")
+    game_dat_dir = connector_io.resolve_source_path(
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True) or Path("")
 
     if not game_dat_dir.is_dir():
         raise SystemExit(

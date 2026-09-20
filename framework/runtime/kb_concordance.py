@@ -93,18 +93,23 @@ def _get_embedder():  # pragma: no cover -- exige sentence-transformers real (st
     # omitida da cobertura pelo mesmo motivo de embedder.py em setup.cfg: nao-unitavel sem a
     # dependencia pesada instalada; caminho exercitado pelos testes via embed_fn injetado).
     """Import tardio -- so exige sentence-transformers instalado quando ha de fato entidade com
-    fonte humana pra comparar (mesmo padrao lazy do proprio embedder.py)."""
+    fonte humana pra comparar (mesmo padrao lazy do proprio embedder.py). Retorna None se o
+    stack de ML nao esta instalado (mesmo fallback de context_pack._get_embedder) -- este modulo
+    e read-only/triagem e nunca deve estourar so por falta de uma dependencia pesada opcional."""
     db_dir = str(Path(__file__).resolve().parents[1] / "db")
     if db_dir not in sys.path:
         sys.path.insert(0, db_dir)
-    from embedder import Embedder
-    return Embedder()
+    try:
+        from embedder import Embedder
+        return Embedder()
+    except ImportError:
+        return None
 
 
 def concordance(root, *, embed_fn=None) -> list[dict]:
     """Read-only, nunca bloqueia. Retorna lista ordenada por nome de
-    {name, level, score, human_sources}. level in {"alta", "baixa", "sem_pesquisa_humana"};
-    score e None quando level == "sem_pesquisa_humana" (nunca um score 0 silencioso).
+    {name, level, score, human_sources}. level in {"alta", "baixa", "sem_pesquisa_humana",
+    "sem_stack_ml"}. score e None quando nao ha comparacao numerica (nunca um score 0 silencioso).
 
     `embed_fn(texts: list[str]) -> list[list[float]]` injetavel p/ teste (default: Embedder real
     de framework/db/embedder.py -- mesmo padrao de chat_fn em kb_build_ollama.build())."""
@@ -128,7 +133,15 @@ def concordance(root, *, embed_fn=None) -> list[dict]:
     if not to_embed:
         return sorted(results, key=lambda r: r["name"].lower())
 
-    embed = embed_fn or _get_embedder().encode
+    if embed_fn is None:
+        embedder = _get_embedder()
+        if embedder is None:      # stack de ML ausente -- triagem nunca bloqueia (ver docstring)
+            results.extend({"name": name, "level": "sem_stack_ml", "score": None,
+                             "human_sources": n_sources} for name, _, _, n_sources in to_embed)
+            return sorted(results, key=lambda r: r["name"].lower())
+        embed_fn = embedder.encode
+
+    embed = embed_fn
     draft_vecs = embed([t[1] for t in to_embed])
     human_vecs = embed([t[2] for t in to_embed])
     for (name, _definicao, _human_txt, n_sources), dv, hv in zip(

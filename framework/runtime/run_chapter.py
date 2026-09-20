@@ -285,6 +285,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                       f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
                       f"salvas — rode de novo p/ continuar).")
                 _print_cost(root, cost_chap)
+                _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": results, "status": "stopped_budget",
                         "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
@@ -303,6 +304,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
             _print_cost(root, cost_chap)
+            _run_mandatory_audits(root, cost_chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
     # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
@@ -323,13 +325,21 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
              if budget_excluded else ""))
     _print_cost(root, cost_chap)
-    _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
-    _audit_spoiler(root)          # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
-    _audit_quality(root, cost_chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
-    _audit_schema(root)           # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
+    _run_mandatory_audits(root, cost_chap)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
+
+
+def _run_mandatory_audits(root: Path, chap: str | None):
+    """OBRIGATORIO mesmo em parada antecipada: as cenas ja verified nesta ou em rodadas
+    anteriores nao podem ficar sem QA/spoiler/quality/schema so porque O RUN ATUAL parou cedo
+    (orcamento ou falha de cena) -- os 4 audits abaixo varrem o PROJETO INTEIRO, nao so o delta
+    desta chamada, entao sao seguros/idempotentes de rodar em qualquer ponto de saida."""
+    _export_qa(root, chap)     # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
+    _audit_spoiler(root)       # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
+    _audit_quality(root, chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
+    _audit_schema(root)        # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
 
 
 def _export_qa(root: Path, chap: str | None):

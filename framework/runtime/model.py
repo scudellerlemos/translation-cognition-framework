@@ -224,7 +224,7 @@ def _over_budget(t, budget, pc, tol) -> bool:
     conector reserva 1 byte pro terminador \\0 dentro do proprio byte_budget (budget_reserves_terminator,
     ver ADR sobre off-by-one), o limiar usavel e budget-1 antes de aplicar tol — casa com o oraculo
     real de verify_chapter.py (`len(encoded) + 1 <= budget`)."""
-    if not budget:
+    if budget is None:          # None = sem budget declarado; 0 = orcamento ZERO real (deve ENFORCAR)
         return False
     reserve = 1 if (pc or {}).get("budget_reserves_terminator") else 0
     return _budget_len(t, pc) > (budget - reserve) * tol
@@ -536,7 +536,7 @@ def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0, pc: dict |
     _budget_len). Puro/deterministico (testavel sem rede)."""
     over = []
     for off, b in budgets.items():
-        if not b:
+        if b is None:            # None = sem budget declarado; 0 = orcamento ZERO real (deve ENFORCAR)
             continue
         v = lines.get(off)
         if v and _over_budget((v or {}).get("t", ""), b, pc, tolerance):

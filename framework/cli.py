@@ -34,6 +34,7 @@ for _p in (_RUNTIME, _DB, _SKILLS):
 
 def cmd_translate(args):
     import run_scene as rs
+    from config import SCENE_OK_STATUSES
     result = rs.run_scene(
         args.project, args.scene,
         backend=args.backend,
@@ -41,8 +42,10 @@ def cmd_translate(args):
         do_verify=not getattr(args, "no_verify", False),
         skip_kb_gate=getattr(args, "skip_kb_gate", False),
     )
+    rs._audit_spoiler(Path(args.project))
+    rs._audit_schema(Path(args.project))
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    return 0 if result.get("status") in ("verified", "planned") else 1
+    return 0 if result.get("status") in SCENE_OK_STATUSES else 1
 
 
 # ── db ─────────────────────────────────────────────────────────────────────────
@@ -146,6 +149,7 @@ def cmd_skill_check(args):
 
 def cmd_skill_run(args):
     import registry
+    from config import SCENE_OK_STATUSES
     s = registry.get(args.skill_id)
     if s is None:
         print(f"skill desconhecida: {args.skill_id}", file=sys.stderr)
@@ -157,7 +161,7 @@ def cmd_skill_run(args):
             kwargs[k] = v
     result = s.run(Path(args.project), **kwargs)
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    return 0 if result.get("status") in ("ok", "planned", "verified") else 1
+    return 0 if result.get("status") in ({"ok"} | SCENE_OK_STATUSES) else 1
 
 
 # ── ollama ─────────────────────────────────────────────────────────────────────
