@@ -75,3 +75,19 @@ def test_cache_read_cheaper_than_full_input():
     full = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=False)
     cached = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=True)
     assert cached < full
+
+
+def test_estimate_reads_per_scene_plans_and_survives_empty_corpus(tmp_path):
+    """Layout atual: artifacts/scenes/<cena>/translation_plan_*.json (antes n=0, n_high=0)."""
+    (tmp_path / "project.json").write_text("{}", encoding="utf-8")
+    sc = tmp_path / "artifacts" / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "translation_plan_ch_01.json").write_text(json.dumps({"lines": [
+        {"text_source": "Hello", "base_translation": "Ola", "risk_level": "high"},
+        {"text_source": "Bye", "base_translation": "Tchau", "risk_level": "low"}]}), encoding="utf-8")
+    e = C.estimate(tmp_path)
+    assert e["n"] == 2 and e["n_high"] == 1
+    empty = tmp_path / "e"
+    empty.mkdir()
+    (empty / "project.json").write_text("{}", encoding="utf-8")
+    assert C.estimate(empty)["n"] == 0

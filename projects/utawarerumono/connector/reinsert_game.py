@@ -73,7 +73,7 @@ def main():
     budgets, approved, n_scenes = load_game()
     print(f"jogo: {n_scenes} cena(s) · {len(budgets)} linha(s) · {len(approved)} aprovada(s)")
     if not budgets:
-        sys.exit("ERRO: nenhuma cena com dialogs.csv + approved_*.csv em artifacts/ch_*/")
+        sys.exit("ERRO: nenhuma cena com dialogs.csv + approved_*.csv em artifacts/scenes/<cena>/")
 
     # GATE DE QA OBRIGATORIO (cobre o usuario): nao gera o .sdat de ENTREGA sem o relatorio de revisao
     # humana do jogo inteiro ter sido disponibilizado. Garante que o piso de qualidade (humano ler) nao

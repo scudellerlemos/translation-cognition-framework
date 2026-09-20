@@ -114,6 +114,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -207,6 +209,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -301,6 +305,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -320,7 +326,7 @@ from pathlib import Path
 # pipeline gravar a tradução aprovada em outro caminho.
 # ---------------------------------------------------------------------------
 _ENCODING = "{encoding}"
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 
@@ -337,7 +343,7 @@ def main(project_json: Path, source_override: str | None = None):
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
@@ -372,6 +378,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -400,7 +408,7 @@ CONTROL_MAP: list[tuple[bytes, str]] = [
 ]
 TERMINATOR = b"\\x00"
 _UNMAPPED_RX = re.compile(r"\\[([0-9A-Fa-f]{{2}})\\]")  # fallback do decode: byte cru como [XX]
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 CHAR_TO_BYTE = {{v: k for k, v in BYTE_TO_CHAR.items()}}
@@ -443,15 +451,24 @@ def main(project_json: Path, source_override: str | None = None):
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
         offset = int(row[id_col], 16)
         raw = encode_string(row["text_target"])
         end = offset
-        while data[end:end + len(TERMINATOR)] != TERMINATOR:
-            end += 1
+        while end < len(data) and data[end:end + len(TERMINATOR)] != TERMINATOR:
+            # MESMA varredura do decode_string do extract.py: a sequência de controle é consumida
+            # inteira, senão um byte terminador dentro dela seria tomado como fim da string.
+            for seq, _tok in CONTROL_MAP:
+                if data[end:end + len(seq)] == seq:
+                    end += len(seq)
+                    break
+            else:
+                end += 1
+        if end >= len(data):
+            raise SystemExit(f"ERRO: offset {{row[id_col]}}: string sem terminador (arquivo truncado/corrompido)")
         budget = (end + len(TERMINATOR)) - offset
         if len(raw) > budget:
             raise SystemExit(
@@ -474,6 +491,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -488,7 +507,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 _STR_ENCODING = "ascii"  # TODO: mesmo valor de _STR_ENCODING no extract.py gerado
 _TERMINATOR = b"\\x00"
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 
@@ -505,15 +524,17 @@ def main(project_json: Path, source_override: str | None = None):
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
         offset = int(row[id_col], 16)
         raw = encode_string(row["text_target"])
         end = offset
-        while data[end:end + len(_TERMINATOR)] != _TERMINATOR:
+        while end < len(data) and data[end:end + len(_TERMINATOR)] != _TERMINATOR:
             end += 1
+        if end >= len(data):
+            raise SystemExit(f"ERRO: offset {{row[id_col]}}: string sem terminador (arquivo truncado/corrompido)")
         budget = (end + len(_TERMINATOR)) - offset
         if len(raw) > budget:
             # Padrão com TOC explícita -- ADAPTAR aqui p/ realocar o final do arquivo e
@@ -542,6 +563,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''

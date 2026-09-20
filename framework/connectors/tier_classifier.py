@@ -131,7 +131,7 @@ def _score_engine(evidence: dict, engine: dict) -> tuple[float, list[str]]:
                 break
 
     # --- encoding (peso 0.10) ---
-    expected_enc = (sig.get("encoding") or "").lower()
+    expected_enc = (sig.get("encoding") or "").lower().replace("-", "").replace("_", "")   # "utf-8" (registry) -> "utf8" (evidence_collector)
     if expected_enc:
         sample_encs = evidence.get("sample_encodings", {})
         enc_score = sample_encs.get(expected_enc, 0.0)

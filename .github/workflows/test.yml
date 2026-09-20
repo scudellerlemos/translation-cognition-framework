@@ -6,6 +6,8 @@
 #   connector-bof4      : contrato round-trip do conector BoF4
 #   connector-uta       : contrato round-trip do conector Utawarerumono
 #   connector-souldiers : contrato round-trip do conector Souldiers
+#   connector-trails    : contrato round-trip do conector Trails Sky SC
+#   connector-demo      : contrato round-trip do conector demo
 #   connector-skeleton  : contrato do template de conector
 #   connector-io        : utilitários compartilhados entre conectores (framework/connectors/*.py)
 #   all-checks          : agregador automático (single status check pra branch protection)
@@ -141,6 +143,36 @@ jobs:
       - name: Connector contract — Souldiers
         run: python -m pytest projects/souldiers/connector/ -v --tb=short
 
+  connector-trails:
+    name: Connector contract — Trails Sky SC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Connector contract — Trails Sky SC
+        run: python -m pytest projects/trails_sky_sc/connector/ -v --tb=short
+
+  connector-demo:
+    name: Connector contract — Demo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Connector contract — Demo
+        run: python -m pytest projects/demo/connector/ -v --tb=short
+
   connector-skeleton:
     name: Connector skeleton contract
     runs-on: ubuntu-latest
@@ -191,7 +223,7 @@ jobs:
   all-checks:
     name: All checks — agregador (branch protection)
     if: github.event_name == 'pull_request'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io]
     runs-on: ubuntu-latest
     steps:
       - run: echo "Todos os checks de test.yml passaram."
@@ -203,7 +235,7 @@ jobs:
   mark-staging:
     name: Marca Staging (main validado)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-skeleton, connector-io]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io]
     runs-on: ubuntu-latest
     environment: Staging
     steps:

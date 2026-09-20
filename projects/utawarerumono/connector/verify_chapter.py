@@ -121,11 +121,9 @@ def main():
         want = translit_of(off_hex)
         if got == want:
             checked += 1
-        elif approved.get(off_hex, "") in ("Head", "Head_toriuma") or \
-                json.loads((sorted(chdir.glob('translation_plan_*.json'))[0]).read_text(encoding='utf-8')):
+        elif approved.get(off_hex, "") in ("Head", "Head_toriuma") or off_hex in needs_review:
             # rotulos needs_review reinserem verbatim; se nao bater, reportar como nota
-            if got != want:
-                label_notes.append(f"{off_hex}: lido {got!r} vs {want!r}")
+            label_notes.append(f"{off_hex}: lido {got!r} vs {want!r}")
         else:
             fails.append(f"{off_hex}: lido {got!r} != aprovado(translit) {want!r}")
 

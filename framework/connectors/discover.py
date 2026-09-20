@@ -50,23 +50,28 @@ def run(game_dir: Path, as_json: bool = False, generate_stub: Path | None = None
 
     if as_json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        return 0 if result["tier"] != "blocked" else 1
-
-    _print_report(result, game_dir, registry)
+    else:
+        _print_report(result, game_dir, registry)
 
     if generate_stub and result["must_generate"]:
-        from script_generator import generate, generate_reinsert
-        out_dir = Path(generate_stub)
-        out_dir.mkdir(parents=True, exist_ok=True)
-        extract_out = out_dir / "extract.py"
-        extract_out.write_text(generate(evidence), encoding="utf-8")
-        # #108: gera o PAR reinsert.py junto (mesma evidência -> mesmo padrão) -- antes só o
-        # extract.py era gerado, forçando o passo de reinsert a ser sempre 100% manual.
-        reinsert_out = out_dir / "reinsert.py"
-        reinsert_out.write_text(generate_reinsert(evidence), encoding="utf-8")
-        print(f"\nStubs gerados em: {extract_out} + {reinsert_out}")
+        _write_stubs(evidence, Path(generate_stub))
 
     return 0 if result["tier"] != "blocked" else 1
+
+
+def _write_stubs(evidence: dict, out_dir: Path) -> None:
+    """Escreve o PAR extract.py + reinsert.py. NUNCA sobrescreve arquivo existente: o stub e adaptado a
+    mao depois de gerado, e re-rodar a descoberta apagaria o trabalho. (stderr: nao suja o --json.)"""
+    from script_generator import generate, generate_reinsert
+    out_dir.mkdir(parents=True, exist_ok=True)
+    # #108: gera o PAR reinsert.py junto (mesma evidência -> mesmo padrão)
+    for name, code in (("extract.py", generate(evidence)), ("reinsert.py", generate_reinsert(evidence))):
+        out = out_dir / name
+        if out.exists():
+            print(f"\n{out} ja existe -- mantido (apague-o para regerar o stub)", file=sys.stderr)
+            continue
+        out.write_text(code, encoding="utf-8")
+        print(f"\nStub gerado em: {out}", file=sys.stderr)
 
 
 def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:

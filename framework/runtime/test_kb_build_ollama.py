@@ -180,3 +180,14 @@ def test_build_refuses_reconciled_kb_without_force(tmp_path):
     with pytest.raises(RuntimeError, match="(?i)reconcil"):
         kbo.build(tmp_path, chat_fn=lambda *a: {})
     assert rl.read_text(encoding="utf-8") == "**Status:** reconciled\n"
+
+
+def test_build_refuses_reconciled_kb_lowercase_status_format(tmp_path):
+    """O kb_gate aceita 'status: reconciled' (sem negrito); a guarda de sobrescrita tem que ver o MESMO formato."""
+    import pytest
+    _write_entities(tmp_path, [])
+    rl = paths.research_log(tmp_path)
+    rl.parent.mkdir(parents=True, exist_ok=True)
+    rl.write_text("status: reconciled\nhuman_input: done\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="(?i)reconcil"):
+        kbo.build(tmp_path, chat_fn=lambda *a: {})
