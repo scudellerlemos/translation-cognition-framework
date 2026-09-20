@@ -87,7 +87,7 @@ if __name__ == "__main__":
     import sys
     from pathlib import Path
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
 
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("db_path")

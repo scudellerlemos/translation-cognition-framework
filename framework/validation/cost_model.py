@@ -160,7 +160,7 @@ def cost_scenarios(root: Path) -> dict:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     args = sys.argv[1:]
     report = "--report" in args
     root = Path(next((a for a in args if not a.startswith("--")), "."))

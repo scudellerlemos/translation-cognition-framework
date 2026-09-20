@@ -288,7 +288,7 @@ def check(root, scene) -> dict:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     import argparse
     ap = argparse.ArgumentParser(description="Gate de cobertura de KB (pre-traducao).")
     ap.add_argument("project")

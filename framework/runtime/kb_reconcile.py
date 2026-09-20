@@ -154,7 +154,7 @@ def _print_check(r: dict):
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     import argparse
     ap = argparse.ArgumentParser(
         description="Promove draft_ollama -> reconciled apos ratificacao humana (kb_ratified.csv).")

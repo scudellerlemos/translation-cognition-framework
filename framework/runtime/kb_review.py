@@ -73,7 +73,7 @@ def _research_section(md: str, chap: str) -> str:
 
 def _rows_for_chapter(path: Path, name_col: str, chap: str) -> list[dict]:
     """Linhas do CSV cujas notas marcam '(cap.<chap>)'. Retorna dicts crus (com name_col garantido)."""
-    out = []
+    out: list[dict] = []
     if not path.is_file():
         return out
     marker = f"(cap.{chap})"
@@ -171,7 +171,7 @@ def blocking(root, chapter, *, strict=False) -> list[dict]:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Digest/gate do delta de KB por capitulo.")
     ap.add_argument("project")
     ap.add_argument("chapter", help="prefixo do capitulo, ex.: 19")
