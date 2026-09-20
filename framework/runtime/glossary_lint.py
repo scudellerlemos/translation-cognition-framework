@@ -19,6 +19,7 @@ Exit: 1 se houver candidatos (alimenta o loop "corrige -> re-roda ate zerar"); 0
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import re
@@ -125,10 +126,8 @@ def main():
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
-    try:
+    with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     found = lint(a.project)
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
     out.write_text(json.dumps({"count": len(found), "findings": found}, ensure_ascii=False, indent=2),

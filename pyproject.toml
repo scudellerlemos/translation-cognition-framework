@@ -32,9 +32,10 @@ target-version = "py311"
 line-length = 100
 
 [tool.ruff.lint]
-# Curado: bugs reais (F/B) + import-sort (I) + modernização (UP).
+# Curado: bugs reais (F/B) + import-sort (I) + modernização (UP) + falha engolida (S110/S112:
+# `except: pass|continue` — se o silêncio é intencional, `contextlib.suppress(<exceção real>)`).
 # Grupo E (pycodestyle/estilo) e o formatter ficam só no pre-commit, não na CI.
-select = ["F", "I", "UP", "B"]
+select = ["F", "I", "UP", "B", "S110", "S112"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/test_*.py" = ["B011"]

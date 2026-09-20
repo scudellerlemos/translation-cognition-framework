@@ -38,6 +38,7 @@ Uso: python reinsert.py [<caminho-binário>] [--validate-one <offset_hex>]
   container idêntico ao original (blast radius mínimo para um teste in-game isolado).
 Caminho do binário (NUNCA hardcoded): CLI > connector.source_binary do project.json.
 """
+import contextlib
 import csv
 import json
 import struct
@@ -338,10 +339,8 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
 
 # ----------------------------------------------------------------------------- main
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     path, only = parse_args()
     src = resolve_source(path)
     OUT = ROOT / "output" / src.name
