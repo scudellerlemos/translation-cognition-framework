@@ -39,6 +39,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io  # noqa: E402  (fonte unica de enumeracao de cenas)
 import context_pack  # noqa: E402
 import kb_review  # noqa: E402  (gate de fonte/ratificacao do delta de KB)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
@@ -104,8 +105,7 @@ def _scenes_of(root: Path, chap: str) -> list[str]:
     Capitulo especial "all": usa artifacts/dialogs.csv diretamente (modelo flat, ex: BoF4)."""
     if chap == "all":
         return [_FLAT_SCENE] if paths.dialogs_flat(root).is_file() else []
-    names = [p.parent.name for p in paths.scenes_dir(root).glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=scene_id_of)
+    return artifact_io.scenes(root, chap)
 
 
 def _kb_blob_from(glossary_terms, entity_names) -> str:
