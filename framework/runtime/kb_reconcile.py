@@ -25,6 +25,7 @@ Uso:  python kb_reconcile.py <projeto>              # --check (default, read-onl
 """
 from __future__ import annotations
 
+import contextlib
 import re
 import sys
 from pathlib import Path
@@ -152,10 +153,8 @@ def _print_check(r: dict):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     import argparse
     ap = argparse.ArgumentParser(
         description="Promove draft_ollama -> reconciled apos ratificacao humana (kb_ratified.csv).")

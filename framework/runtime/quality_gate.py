@@ -28,6 +28,7 @@ Uso:  python quality_gate.py <projeto> [<capitulo>] [--json]   (exit 1 se houver
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -100,10 +101,8 @@ def export_revise(revise, csv_path):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Piso de qualidade observavel (verdicts de back-translation).")
     ap.add_argument("project")
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")

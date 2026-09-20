@@ -61,3 +61,74 @@ def test_validate_kb_format_reports_unreadable_glossary(tmp_path):
         warnings.simplefilter("ignore")
         issues = state_index._validate_kb_format(tmp_path)
     assert any("glossary.csv ilegivel" in i for i in issues)
+
+
+# --- S110 residuais: leituras de config/estado que engoliam tudo e agora estreitam + avisam -----------
+def test_stale_connector_check_warns_when_run_state_unreadable(tmp_path, capsys):
+    import connector_mgr
+    rs = paths.run_state(tmp_path)
+    rs.parent.mkdir(parents=True)
+    rs.write_text("{nao e json", encoding="utf-8")
+    connector_mgr._warn_if_connector_stale(tmp_path, "ch_01_01", {})
+    assert "não consegui checar o hash" in capsys.readouterr().out
+
+
+def test_print_cost_warns_instead_of_hiding_a_broken_report(tmp_path, monkeypatch, capsys):
+    import run_chapter
+
+    def boom(*_a, **_k):
+        raise ValueError("ledger torto")
+    monkeypatch.setattr(cost_report, "report", boom)
+    run_chapter._print_cost(tmp_path, "01")            # nao pode derrubar o capitulo
+    assert "resumo de gasto indisponivel" in capsys.readouterr().err
+
+
+def test_metrics_warns_when_back_translation_unreadable(tmp_path, capsys):
+    import run_scene
+    bp = paths.back_translation(tmp_path, "ch_01_01", "01_01")
+    bp.parent.mkdir(parents=True)
+    bp.write_text("{nao e json", encoding="utf-8")
+    paths.metrics(tmp_path).parent.mkdir(parents=True, exist_ok=True)
+    rec = run_scene._metrics(tmp_path, "ch_01_01", "01_01", n_lines=1, tr={}, bt={}, n_high=0, verified=True)
+    assert rec["back_pass_rate"] is None
+    assert "back_translation de ch_01_01 ilegivel" in capsys.readouterr().out
+
+
+def test_build_tm_warns_when_scene_pack_unreadable(tmp_path, capsys):
+    scene = tmp_path / "scenes" / "ch_01_01"
+    scene.mkdir(parents=True)
+    (scene / "translation_plan_01_01.json").write_text('{"lines": []}', encoding="utf-8")
+    (scene / "pack.json").write_text("{nao e json", encoding="utf-8")
+    assert state_index.build_tm(tmp_path) == []
+    assert "doctrine_version vazio" in capsys.readouterr().out
+
+
+# --- BLE001 que escondiam degradacao real ---------------------------------------------------------
+def test_chapter_cost_warns_that_the_spend_cap_is_blind(tmp_path, monkeypatch, capsys):
+    import run_chapter
+
+    def boom(*_a, **_k):
+        raise ValueError("run_state torto")
+    monkeypatch.setattr(cost_report, "report", boom)
+    assert run_chapter._chapter_cost(tmp_path, "01") == 0.0     # comportamento mantido (nao aborta)
+    assert "--max-usd NAO esta sendo aplicado" in capsys.readouterr().err
+
+
+def test_load_kb_warns_when_db_is_unreadable(tmp_path, capsys):
+    import context_pack
+    bad = tmp_path / "state.db"
+    bad.write_bytes(b"isto nao e um sqlite")
+    assert context_pack._load_kb(str(bad), "p") == []
+    assert "KB indisponivel" in capsys.readouterr().out
+
+
+def test_load_kb_without_db_is_silent(capsys):
+    import context_pack
+    assert context_pack._load_kb(None, "p") == []
+    assert capsys.readouterr().out == ""
+
+
+def test_verify_status_bad_json_is_empty_dict():
+    import connector_mgr
+    assert connector_mgr._verify_status("ok\nVERIFY_STATUS: {torto") == {}
+    assert connector_mgr._verify_status('VERIFY_STATUS: {"a": 1}') == {"a": 1}

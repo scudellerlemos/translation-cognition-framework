@@ -16,6 +16,7 @@ DETERMINÍSTICO. Não contém nenhuma frase da obra:
 No fluxo real há um gate de aprovação humana entre a proposta (translation_plan.json) e o
 arquivo aprovado (approved_translations.csv). Na POC, a aprovação é o snapshot do plano.
 """
+import contextlib
 import csv
 import json
 import sys
@@ -30,10 +31,8 @@ def tok_counts(s: str):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     # source (offset -> byte_budget, text_source)
     src = {r["offset"]: (r["text_source"], int(r["byte_budget"]))
            for r in csv.DictReader((ART / "dialogs.csv").open(encoding="utf-8"))}

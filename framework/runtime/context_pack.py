@@ -653,7 +653,8 @@ def _load_kb(db_path, project_id):
         from store import Store
         with Store(db_path) as db:
             return db.get_kb(project_id)
-    except Exception:
+    except Exception as exc:   # noqa: BLE001  (KB e opcional: qualquer falha degrada p/ sem-lore, mas avisa)
+        print(f"[context_pack] AVISO: KB indisponivel em {db_path} ({exc!r}) -- prompt sem lore.")
         return []
 
 

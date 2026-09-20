@@ -6,6 +6,7 @@ custo de uma chamada, e o append ao api_ledger.jsonl. `model`/`run_scene`/`cost_
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import time
@@ -79,10 +80,8 @@ def _ledger_append(p: Path, line: str):
             f.write(line)
     finally:
         if acquired:
-            try:
+            with contextlib.suppress(OSError):        # lock orfao e quebrado pelo proximo writer (>5 s)
                 lock.unlink()
-            except Exception:
-                pass
 
 
 def log_api_call(root, scene, kind, model, usage, *, batch=False):
