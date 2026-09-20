@@ -198,3 +198,19 @@ def test_main_rejects_concordance_and_promote_together(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as exc:
         kbr.main()
     assert exc.value.code == 2
+
+
+def test_print_check_ok_when_nothing_pending(capsys):
+    kbr._print_check({"pending_ratification": [], "conflicts_untouched": False})
+    assert "Pronto para --promote" in capsys.readouterr().out
+
+
+def test_print_check_lists_pending_entities_and_untouched_conflicts(capsys):
+    kbr._print_check({"pending_ratification": ["Alice", "Bob"], "conflicts_untouched": True})
+    out = capsys.readouterr().out
+    assert "2 entidade(s) ainda sem ratificacao" in out and "  - Alice" in out and "  - Bob" in out
+    assert "Conflitos Resolvidos" in out
+
+
+def test_conflicts_body_is_empty_without_research_log(tmp_path):
+    assert kbr._conflicts_section_body(tmp_path) == ""
