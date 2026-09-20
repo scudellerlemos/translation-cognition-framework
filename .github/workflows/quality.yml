@@ -14,6 +14,10 @@ on:
   pull_request:
     branches: ["**"]
 
+# Menor privilegio: sem isto o GITHUB_TOKEN herda o default do repo (pode ser read/write).
+permissions:
+  contents: read
+
 jobs:
   # LINT — ruff (regras F/I/UP/B) no produto reusável framework/: imports/variáveis
   # mortos, bugs do bugbear e ordenação de imports. Scripts one-off de projects/*/connector
@@ -57,6 +61,9 @@ jobs:
   secrets:
     name: Secret scan (gitleaks) — credenciais vazadas
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read   # gitleaks-action lista os commits do PR via API
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

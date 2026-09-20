@@ -94,6 +94,17 @@ def test_scans_per_scene_plans(tmp_path):
     assert "fragmento_residual" in _checks(N.lint_project(tmp_path), "0x9")
 
 
+def test_scans_scenes_layout_plans(tmp_path):
+    # layout atual (refactor cbb9a9e): artifacts/scenes/<scene>/translation_plan_*.json
+    sd = tmp_path / "artifacts" / "scenes" / "ch_11_01"
+    sd.mkdir(parents=True)
+    (tmp_path / "project.json").write_text(json.dumps({"title": "T", "formatting_tokens": []}), encoding="utf-8")
+    plan = {"lines": [{"offset": "0x9", "text_source": "U... Urgh...", "base_translation": "U... Argh...",
+                       "speaker": "A"}]}
+    (sd / "translation_plan_11_01.json").write_text(json.dumps(plan), encoding="utf-8")
+    assert "fragmento_residual" in _checks(N.lint_project(tmp_path), "0x9")
+
+
 # ----------------------------------------------------------------- NÃO deve flagar
 def test_skips_pure_scream(tmp_path):
     p = _make_project(tmp_path, [("0x1", "Aaaah!", "Aaaah!"), ("0x2", "Aaagh--", "Aaagh--")])

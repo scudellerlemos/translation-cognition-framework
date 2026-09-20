@@ -52,7 +52,7 @@ def _read(p: Path) -> str:
 
 
 def estimate(root: Path) -> dict:
-    root = Path(root)
+    root = Path(root).resolve()   # Carta = root.parent.parent: com Path('.') resolvia errado
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     batch = int(cfg.get("batch_size", 200))
     art = root / "artifacts"
@@ -65,9 +65,11 @@ def estimate(root: Path) -> dict:
     ctx_tok = _toks(" " * ctx_chars) + _toks(carta)
 
     # corpus: tokens de source e alvo por linha; nº de linhas; nº de alto risco
-    plan_f = art / "translation_plan.json"
-    if plan_f.is_file():
-        lines = json.loads(plan_f.read_text(encoding="utf-8")).get("lines", [])
+    plan_files = [f for f in [art / "translation_plan.json", *sorted((art / "scenes").glob("*/translation_plan_*.json"))]
+                  if f.is_file()]
+    if plan_files:
+        lines = [l for f in plan_files
+                 for l in json.loads(f.read_text(encoding="utf-8-sig")).get("lines", [])]
         src_tok = sum(_toks(l.get("text_source", "")) for l in lines)
         tgt_tok = sum(_toks(l.get("base_translation", "")) for l in lines)
         n = len(lines)
@@ -76,7 +78,11 @@ def estimate(root: Path) -> dict:
                 "medium": sum(1 for l in lines if l.get("risk_level") == "medium"),
                 "high": n_high}
     else:
-        rows = list(csv.DictReader((art / "dialogs.csv").open(encoding="utf-8")))
+        rows = []
+        for f in [art / "dialogs.csv", *sorted((art / "scenes").glob("*/dialogs.csv"))]:
+            if f.is_file():
+                with f.open(encoding="utf-8-sig") as fh:
+                    rows += list(csv.DictReader(fh))
         src_tok = sum(_toks(r.get("text_source", "")) for r in rows)
         n = len(rows); tgt_tok = src_tok; n_high = 0; risk = {"low": n, "medium": 0, "high": 0}
 
@@ -104,9 +110,10 @@ def _scenario(e, *, models, cache):
     tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * src_per + INSTR_TOK
-        out_tok = batch * (tgt_per + META_TOK_PER_LINE)
+    sizes = [min(batch, e["n"] - i * batch) for i in range(nb)]   # ultimo lote e parcial
+    for bs in sizes:
+        in_tok = ctx + bs * src_per + INSTR_TOK
+        out_tok = bs * (tgt_per + META_TOK_PER_LINE)
         # modelo médio do lote: mistura por risco (aprox: usa 'medium' como base, 'low' p/ baratos)
         m = models["medium"]
         trans += _call_cost(in_tok, out_tok, m, ctx, cache)
@@ -116,9 +123,9 @@ def _scenario(e, *, models, cache):
         trans += ctx * p["in"] * (CACHE_WRITE - CACHE_READ)   # diferença write-vs-read no 1º lote
     # micro-QA: 1 chamada por lote
     qa = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * (src_per + tgt_per) + INSTR_TOK
-        out_tok = batch * QA_OUT_TOK_PER_LINE
+    for bs in sizes:
+        in_tok = ctx + bs * (src_per + tgt_per) + INSTR_TOK
+        out_tok = bs * QA_OUT_TOK_PER_LINE
         qa += _call_cost(in_tok, out_tok, models["qa"], ctx, cache)
     # back-translation: 1 chamada em lote com as linhas de alto risco
     back = 0.0
@@ -169,7 +176,7 @@ def main():
         f"{'cenário':<12}{'$ arco':>10}{'$/1k linhas':>14}{'$ ~33k (proj.)':>18}",
     ]
     for name, sc in r["scenarios"].items():
-        per_k = sc["total"] / n * 1000
+        per_k = sc["total"] / max(n, 1) * 1000
         proj = per_k * GAME / 1000
         lines.append(f"{name:<12}{sc['total']:>10.3f}{per_k:>14.3f}{proj:>18.2f}")
     base = r["scenarios"]["forte"]["total"]

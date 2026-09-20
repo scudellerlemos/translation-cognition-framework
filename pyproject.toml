@@ -22,6 +22,11 @@ version = { file = "VERSION" }
 include = ["framework*"]
 namespaces = true
 
+# Dados lidos em runtime relativos ao codigo (db/schema.sql, skills/translation_governance.md,
+# templates/, media-profiles/): sem isto `pip install .` gera wheel so com .py e o tcf quebra.
+[tool.setuptools.package-data]
+framework = ["**/*.sql", "**/*.md", "**/*.json"]
+
 [tool.ruff]
 target-version = "py311"
 line-length = 100

@@ -1135,12 +1135,30 @@ def test_run_chapter_batch_require_back_overrides_no_back(monkeypatch, tmp_path)
     monkeypatch.setattr(run_chapter, "_verified", lambda r, s: s in verified_scenes)
     called = {}
     monkeypatch.setattr(run_chapter.M, "batch_back_translate",
-                        lambda r, scenes: called.setdefault("ran", scenes) and {})
+                        lambda r, scenes: called.setdefault("ran", scenes) and {s: "reviewed" for s in scenes})
 
     r = run_chapter.run_chapter(root, "99", backend="api", batch=True,
                                 no_back=True, require_back=True)
     assert r["status"] == "complete"
     assert "ran" in called, "batch_back_translate deveria rodar (--require-back vence --no-back)"
+
+
+def test_run_chapter_batch_require_back_blocks_when_back_pending(monkeypatch, tmp_path):
+    # em batch o back e deferido pro pos-passe: --require-back nao pode virar no-op se ele falha/timeout
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.M, "batch_translate",
+                        lambda r, scenes, **kw: {s: "written" for s in scenes})
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    done = set()
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: done.add(scene) or {"status": "verified", "scene": scene, "verified": True})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: s in done)
+    monkeypatch.setattr(run_chapter.M, "batch_back_translate", lambda r, scenes: {s: "timeout" for s in scenes})
+
+    assert run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)["status"] == "back_incomplete"
+    assert run_chapter.run_chapter(root, "99", backend="api", batch=True)["status"] == "complete"   # report-only sem a flag
 
 
 def test_run_chapter_max_usd_aborts(monkeypatch, tmp_path):
@@ -2528,6 +2546,22 @@ def test_spoiler_guard_incomparable_defaults_safe():
         "entity": "X", "fact": "f", "reveal": "PROLOGUE",
         "triggers": ["dragon"], "pre_reveal": "guard"}]}
     assert context_pack.select_spoiler_guards(ledger, "the dragon", "AREAD001")
+
+
+def test_ledger_append_takes_over_stale_lock(tmp_path):
+    """Lock orfao (processo morto) nao pode custar 1 s de espera em TODO append: some apos 5 s."""
+    import os
+    import time
+
+    import cost
+    led = tmp_path / "api_ledger.jsonl"
+    lock = led.with_suffix(".lock")
+    lock.write_text("")
+    old = time.time() - 60
+    os.utime(lock, (old, old))
+    t0 = time.time()
+    cost._ledger_append(led, "x\n")
+    assert led.read_text() == "x\n" and not lock.exists() and time.time() - t0 < 0.5
 
 
 if __name__ == "__main__":

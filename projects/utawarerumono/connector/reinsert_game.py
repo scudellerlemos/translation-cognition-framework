@@ -2,7 +2,7 @@
 """
 reinsert_game.py — FASE 3: reinserção GLOBAL (jogo inteiro num passe).
 
-Agrega TODOS os `artifacts/ch_*/dialogs.csv` (budgets) + `approved_*.csv` (traduções aprovadas) e
+Agrega TODOS os `artifacts/scenes/ch_*/dialogs.csv` (budgets) + `approved_*.csv` (traduções aprovadas) e
 aplica no binário num ÚNICO `build_output` → `output/<bin>` + patch `.ips`. É o passe que fecha o jogo:
 até aqui o conector provava por capítulo; aqui o jogo inteiro vai junto.
 
@@ -29,19 +29,21 @@ import sdat_format as S
 
 def load_game():
     """Agrega budgets (offset, source, byte_budget) e approved {offset: target} de TODAS as cenas
-    `artifacts/ch_*` que tenham dialogs.csv + approved_*.csv. Ordem estável (scene_id, depois dialogs)."""
+    `artifacts/scenes/ch_*` que tenham dialogs.csv + approved_*.csv. Ordem estável (scene_id, depois dialogs)."""
     budgets, approved, scenes = [], {}, 0
-    for sd in sorted(R.ART.glob("ch_*"), key=lambda p: p.name):
+    for sd in sorted((R.ART / "scenes").glob("ch_*"), key=lambda p: p.name):
         dlg = sd / "dialogs.csv"
         aps = sorted(sd.glob("approved_*.csv"))
         if not dlg.is_file() or not aps:
             continue
         scenes += 1
-        for r in csv.DictReader(dlg.open(encoding="utf-8")):
+        for r in csv.DictReader(dlg.open(encoding="utf-8-sig")):
             budgets.append((r["offset"], r["text_source"], int(r["byte_budget"])))
         for ap in aps:
-            for r in csv.DictReader(ap.open(encoding="utf-8")):
-                approved[r["offset"]] = r["text_target"]
+            for r in csv.DictReader(ap.open(encoding="utf-8-sig")):
+                if approved.setdefault(r["offset"], r["text_target"]) != r["text_target"]:   # last-wins silencioso
+                    raise ValueError(f"{ap}: offset {r['offset']} aprovado com traducoes diferentes em mais de um "
+                                     f"approved_*.csv -- deixe so uma")
     return budgets, approved, scenes
 
 
@@ -73,7 +75,7 @@ def main():
     budgets, approved, n_scenes = load_game()
     print(f"jogo: {n_scenes} cena(s) · {len(budgets)} linha(s) · {len(approved)} aprovada(s)")
     if not budgets:
-        sys.exit("ERRO: nenhuma cena com dialogs.csv + approved_*.csv em artifacts/ch_*/")
+        sys.exit("ERRO: nenhuma cena com dialogs.csv + approved_*.csv em artifacts/scenes/<cena>/")
 
     # GATE DE QA OBRIGATORIO (cobre o usuario): nao gera o .sdat de ENTREGA sem o relatorio de revisao
     # humana do jogo inteiro ter sido disponibilizado. Garante que o piso de qualidade (humano ler) nao

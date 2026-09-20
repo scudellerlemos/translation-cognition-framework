@@ -134,3 +134,64 @@ def test_reindex_pending_embeddings_never_raises(tmp_path, monkeypatch):
         db.upsert_project("p1", "Projeto Teste")
         result = db.reindex_pending_embeddings("p1")
     assert result is None
+
+
+def test_upsert_translation_reupsert_updates_source(tmp_path):
+    """Re-upsert do mesmo (project, scene, offset) com source novo (ex.: extract re-rodado com texto
+    corrigido) tem que trocar o source -- senao TM exata e embeddings ficam pareados ao texto velho."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "P")
+        db.upsert_translation("p1", "s1", "0x1", source="Hello", target="Ola", approved=True)
+        db.upsert_translation("p1", "s1", "0x1", source="Hello there", target="Ola ai", approved=True)
+        assert db.search_tm_exact("Hello", "p1") == []
+        hit = db.search_tm_exact("Hello there", "p1")
+    assert [h["target"] for h in hit] == ["Ola ai"]
+
+
+def test_source_change_drops_embedding_metadata(tmp_path):
+    """Trigger: mudar translations.source apaga o metadado de embedding (o reindex refaz o vetor)."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "P")
+        db.upsert_translation("p1", "s1", "0x1", source="Hello", target="Ola", approved=True)
+        tid = db._con.execute("SELECT id FROM translations").fetchone()[0]
+        db._con.execute("INSERT INTO tm_embeddings(translation_id, model_name, dim) VALUES(?,?,?)",
+                        (tid, "m", 384))
+        # mesmo source: metadado permanece
+        db.upsert_translation("p1", "s1", "0x1", source="Hello", target="Oi", approved=True)
+        assert db._con.execute("SELECT count(*) FROM tm_embeddings").fetchone()[0] == 1
+        # source novo: metadado some
+        db.upsert_translation("p1", "s1", "0x1", source="Bye", target="Tchau", approved=True)
+        assert db._con.execute("SELECT count(*) FROM tm_embeddings").fetchone()[0] == 0
+
+
+def test_upsert_translation_empty_source_keeps_existing_source(tmp_path):
+    """Caller sem source (migrate_from_flat / sync_translations_db sem plan) nao pode apagar o source bom."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "P")
+        db.upsert_translation("p1", "s1", "0x1", source="Hello", target="Ola", approved=True)
+        db.upsert_translation("p1", "s1", "0x1", source="", target="Oi", approved=True)
+        hit = db.search_tm_exact("Hello", "p1")
+    assert [h["target"] for h in hit] == ["Oi"]
+
+
+def test_upsert_entity_reupsert_updates_first_scene_and_notes(tmp_path):
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("a", "A")
+        db.upsert_entity("a", "Ryu", canonical_pt="Ryu")
+        db.upsert_entity("a", "Ryu", first_scene="ch_02", notes="protagonista")
+        db.upsert_entity("a", "Ryu", canonical_pt="Ryu")     # None nao pode apagar o que ja existe
+        e = db.get_entities("a")[0]
+    assert e["first_scene"] == "ch_02" and e["notes"] == "protagonista"
+
+
+def test_upserts_with_null_key_columns_are_idempotent(tmp_path):
+    """NULL em coluna de chave UNIQUE conta como distinto no SQLite: fact/source ausentes duplicavam a cada re-migracao."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        for _ in range(2):
+            db.upsert_spoiler_entry(project_id="p1", entity="Kuon", reveal="beyond_frontier")
+            db.upsert_warnings("p1", [{"t": 1.0, "warnings": ["w"]}])
+            db.upsert_qa_effectiveness("p1", [{"t": 1.0, "applied": 1}])
+        assert len(db.get_spoiler_entries("p1")) == 1
+        assert len(db.get_warnings("p1")) == 1
+        assert db._con.execute("SELECT COUNT(*) FROM qa_effectiveness").fetchone()[0] == 1

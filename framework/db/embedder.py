@@ -42,10 +42,22 @@ import os
 import sqlite3
 import tempfile
 import time
+import warnings
 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 _RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
+_KNN_MAX = 4096   # teto de `k` do vec0 (sqlite-vec)
+
+
+def _knn_k(con: sqlite3.Connection, vec_table: str) -> int:
+    """`k` do KNN do vec0. O KNN roda sobre os vetores de TODOS os projetos e o filtro de project_id
+    (e approved) só vem depois do JOIN -- com k pequeno o top-k podia vir todo de OUTRO projeto e a
+    busca voltar vazia. Pede todos os vetores (até _KNN_MAX) e o LIMIT do SQL aplica o k do chamador
+    já depois do filtro. ponytail: acima de _KNN_MAX vetores o bug volta parcialmente; upgrade path =
+    partition key por projeto na tabela vec0."""
+    n = con.execute(f"SELECT count(*) FROM {vec_table}").fetchone()[0]  # nosec B608 - vec_table é literal interno
+    return max(1, min(n, _KNN_MAX))
 
 # indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
 # a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
@@ -138,16 +150,11 @@ class Embedder:
         self._ensure_vec_table(con, kind)
 
         if force:
-            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — limpa os vetores do
-            # projeto e reindexa do zero (ex.: ao trocar modelo ou a normalização).
-            tids = [r[0] for r in con.execute(
-                f"SELECT id FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
-                (project_id,)).fetchall()]
-            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.commit()
+            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — reindexa do zero (ex.: ao
+            # trocar modelo ou a normalização); os vetores velhos só saem DEPOIS do encode (abaixo),
+            # senão um encode que falha deixaria o indice do projeto vazio.
             rows = con.execute(
-                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608
+                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (project_id,),
             ).fetchall()
         else:
@@ -165,6 +172,11 @@ class Embedder:
         ids = [r[0] for r in rows]
         texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
+        # force: vetores+metadado velhos; senão: linha cujo texto mudou perdeu o metadado (trigger) mas
+        # ainda tem o vetor velho no vec0
+        con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
+        if force:
+            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
 
         for tid, vec in zip(ids, vecs, strict=True):
             con.execute(
@@ -202,10 +214,12 @@ class Embedder:
                 JOIN translations t ON t.id = v.translation_id
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
+                  AND EXISTS (SELECT 1 FROM tm_embeddings e WHERE e.translation_id = t.id)
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal por bool; valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
+            (project_id, json.dumps(q_vec), _knn_k(con, "tm_vectors"), k),
         ).fetchall()
 
         results = []
@@ -241,10 +255,12 @@ class Embedder:
                 FROM decision_vectors v
                 JOIN decisions d ON d.id = v.decision_id
                 WHERE d.project_id=?
+                  AND EXISTS (SELECT 1 FROM decision_embeddings e WHERE e.decision_id = d.id)
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados
+            (project_id, json.dumps(q_vec), _knn_k(con, "decision_vectors"), k),
         ).fetchall()
 
         results = []
@@ -274,11 +290,13 @@ class Embedder:
                 FROM kb_vectors v
                 JOIN kb ON kb.id = v.kb_id
                 WHERE kb.project_id=?
+                  AND EXISTS (SELECT 1 FROM kb_embeddings e WHERE e.kb_id = kb.id)
                   AND v.embedding MATCH ?
                   AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados; alias
-                                          # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY v.distance
+                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados; alias
+                              # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
+            (project_id, json.dumps(q_vec), _knn_k(con, "kb_vectors"), k),
         ).fetchall()
 
         results = []
@@ -304,6 +322,10 @@ class Embedder:
             results = ranker.rerank(req)
             return [r["meta"] for r in results]
         except ImportError:
+            return hits
+        except Exception as exc:   # cache de modelo corrompido/sem rede/onnx quebrado: rerank e refinamento, nao derruba a busca
+            warnings.warn(f"rerank FlashRank indisponivel ({type(exc).__name__}: {str(exc)[:120]}) -- "
+                          f"usando ordem vetorial", RuntimeWarning, stacklevel=2)
             return hits
 
 

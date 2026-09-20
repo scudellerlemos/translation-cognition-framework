@@ -156,7 +156,7 @@ def _run_roundtrip(
         )
     source_hash = _sha256(source_path)
 
-    # Criar identity approved_translations.csv temporário (3 primeiras strings)
+    # Criar identity approved_translations.csv temporário (amostra espalhada, ate 6 strings)
     with dialogs_csv.open(encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     text_col = next((c for c in (rows[0].keys() if rows else []) if c.startswith("text_")), None)
@@ -166,12 +166,15 @@ def _run_roundtrip(
     # Salvar approved_translations.csv original se existir (restaurar depois)
     approved = project_root / "artifacts" / "approved_translations.csv"
     backup = None
+    stale_bak: tuple[Path, Path] | None = None
     if approved.is_file():
         backup = approved.with_suffix(".smoke_backup")
         shutil.copy2(approved, backup)
 
     try:
-        sample = rows[:3]
+        # espalhado pelo arquivo (+ a ultima): so as 3 primeiras escondiam bug de offset/ponteiro no meio/fim
+        sample = rows[::max(1, len(rows) // 5)][:5] + rows[-1:]
+        sample = list({r[id_col]: r for r in sample}.values())
         with approved.open("w", encoding="utf-8", newline="") as f:
             wr = csv.DictWriter(f, fieldnames=[id_col, "text_target"])
             wr.writeheader()
@@ -180,6 +183,10 @@ def _run_roundtrip(
 
         output_dir = project_root / "output"
         output_dir.mkdir(exist_ok=True)
+        stale = _find_output(project_root, source_path)
+        if stale is not None:                # output/ velho faria o SHA passar sem o reinsert rodar de verdade
+            stale_bak = (stale, stale.with_name(stale.name + ".smoke_stale"))
+            stale.replace(stale_bak[1])      # guardado, restaurado no finally (pode ser o output real)
 
         cmd = [sys.executable, str(reinsert_py), str(project_root)]
         if game_data_dir:
@@ -204,6 +211,9 @@ def _run_roundtrip(
                 f"— strings codificadas com bytes diferentes do original"
             )
     finally:
+        if stale_bak is not None:
+            stale_bak[0].unlink(missing_ok=True)
+            stale_bak[1].replace(stale_bak[0])
         if backup and backup.is_file():
             shutil.copy2(backup, approved)
             backup.unlink()

@@ -63,3 +63,15 @@ def test_all_artifacts_with_issues(tmp_path):
     for needle in ("handling_rule", "byte_budget", "token [01]", "critical_lines",
                    "canonical_name duplicado", "reveal_timing"):
         assert needle in msgs, needle
+
+
+def test_scenes_layout_checks_token_preservation(tmp_path):
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_tokens": ["[01]"]}), encoding="utf-8")
+    sd = tmp_path / "artifacts" / "scenes" / "s1"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\na,Hi [01],10\nb,Yo,5\n", encoding="utf-8")
+    (sd / "approved_s1.csv").write_text("offset,text_target\na,Oi\nz,Ola\n", encoding="utf-8")
+    msgs = [i[2] for i in validate.validate_project(tmp_path)]
+    assert any("token [01] 1→0" in m for m in msgs) and any("'z' não existe" in m for m in msgs)

@@ -36,11 +36,8 @@ import sqlite3
 def validate_model(con: sqlite3.Connection, project_id: str, model_name: str | None = None,
                     sample_size: int = 20, paraphrases: list[dict] | None = None,
                     seed: int | None = None) -> dict:
-    from embedder import Embedder
-    emb = Embedder(model_name) if model_name else Embedder()
-    emb.index_project(con, project_id, force=True)  # reindexa com o modelo em validação
-
-    if sample_size < 1:
+    from embedder import _MODEL_NAME, Embedder
+    if sample_size < 1:                                # valida ANTES de reindexar (o reindex e caro e destrutivo)
         raise ValueError(f"sample_size deve ser >= 1 (recebido: {sample_size})")
 
     # ponytail: carrega todas as linhas aprovadas pra amostrar em memória (stdlib random,
@@ -54,16 +51,22 @@ def validate_model(con: sqlite3.Connection, project_id: str, model_name: str | N
         raise ValueError(f"nenhuma tradução aprovada em '{project_id}' — nada pra validar")
     rows = random.Random(seed).sample(all_rows, min(sample_size, len(all_rows)))
 
-    exact_scores = []
-    for tid, source in rows:
-        hits = emb.search(con, source, project_id=project_id, k=1)
-        exact_scores.append(hits[0]["score"] if hits and hits[0]["translation_id"] == tid else 0.0)
+    emb = Embedder(model_name) if model_name else Embedder()
+    emb.index_project(con, project_id, force=True)  # reindexa com o modelo em validação
+    try:
+        exact_scores = []
+        for tid, source in rows:
+            hits = emb.search(con, source, project_id=project_id, k=1)
+            exact_scores.append(hits[0]["score"] if hits and hits[0]["translation_id"] == tid else 0.0)
 
-    vocab_scores = []
-    for pair in (paraphrases or []):
-        hits = emb.search(con, pair["query"], project_id=project_id, k=5)
-        match = next((h for h in hits if h["source"] == pair["source"]), None)
-        vocab_scores.append(match["score"] if match else 0.0)
+        vocab_scores = []
+        for pair in (paraphrases or []):
+            hits = emb.search(con, pair["query"], project_id=project_id, k=5)
+            match = next((h for h in hits if h["source"] == pair["source"]), None)
+            vocab_scores.append(match["score"] if match else 0.0)
+    finally:
+        if emb.model_name != _MODEL_NAME:              # o force acima trocou os vetores do projeto: restaura o modelo padrao
+            Embedder().index_project(con, project_id, force=True)
 
     return {
         "model_name": emb.model_name,

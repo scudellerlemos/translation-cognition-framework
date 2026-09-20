@@ -10,6 +10,7 @@ if str(_HERE) not in sys.path:
 
 from evidence_collector import (
     _estimate_encoding,
+    _sample_files,
     _shannon_entropy,
     _string_density,
     collect,
@@ -259,3 +260,10 @@ def test_discover_run_blocked(tmp_path, registry):
         (game / f"DATA{i:02d}.PKG").write_bytes(os.urandom(8192))
     exit_code = run(game, as_json=True)
     assert exit_code == 1  # bloqueado → exit 1
+
+
+def test_sample_files_has_no_duplicates_with_uneven_extensions():
+    """Extensao rara (1 arquivo) + extensao grande: o indice global repetia arquivo da extensao grande."""
+    files = [Path("x.a")] + [Path(f"y{i}.b") for i in range(5)]
+    s = _sample_files(files, 4)
+    assert len(s) == 4 and len(set(s)) == 4 and Path("x.a") in s

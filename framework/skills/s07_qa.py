@@ -45,6 +45,9 @@ class QaSkill(Skill):
         import quality_gate
         r = quality_gate.check(Path(project), chapter)
         rev, unc = r["revise"], r["uncovered"]
+        if not r["coverage"].get("lines"):
+            return {"status": "error", "artifacts": [],
+                    "problems": ["QA nao viu nenhuma linha (capitulo inexistente ou plano vazio) -- nada foi verificado"]}
         # 'blocked' = gate reprovou (há revise/uncovered); 'ok' = piso satisfeito p/ o escopo coberto
         return {
             "status": "blocked" if (rev or unc) else "ok",

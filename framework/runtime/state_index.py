@@ -113,7 +113,8 @@ def build_tm(art: Path) -> list[dict]:
     """Le todos os translation_plan*.json (raiz + subdirs) -> entradas de TM, ordenadas e dedup."""
     entries: dict[str, dict] = {}
     plan_files = sorted(art.glob("translation_plan*.json")) + \
-        sorted(art.glob("*/translation_plan*.json"))
+        sorted(art.glob("*/translation_plan*.json")) + \
+        sorted(art.glob("scenes/*/translation_plan*.json"))   # layout atual (paths.scene_dir)
     for pf in plan_files:
         try:
             data = json.loads(pf.read_text(encoding="utf-8"))
@@ -126,7 +127,7 @@ def build_tm(art: Path) -> list[dict]:
         scene = data.get("scene_group") or pf.stem.replace("translation_plan_", "").replace(
             "translation_plan", "root")
         # V4: tenta ler pack.json da cena para registrar doctrine_version por entrada de TM
-        scene_pack = art / pf.parent.name / "pack.json" if pf.parent != art else None
+        scene_pack = pf.parent / "pack.json" if pf.parent != art else None
         doctrine_version = ""
         if scene_pack and scene_pack.is_file():
             try:
