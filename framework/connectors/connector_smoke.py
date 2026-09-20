@@ -101,7 +101,7 @@ def smoke(project_root: Path, game_data_dir: Path | None = None, *, roundtrip: b
         with dialogs_csv.open(encoding="utf-8", newline="") as f:
             rows = list(csv.DictReader(f))
         text_col = next((c for c in (rows[0].keys() if rows else []) if c.startswith("text_")), None)
-        non_empty = [r for r in rows if r.get(text_col, "").strip()] if text_col else []
+        non_empty = [r for r in rows if (r.get(text_col) or "").strip()] if text_col else []
         inv3 = len(non_empty) >= 1
         detail3 = f"{len(non_empty)} linhas não-vazias extraídas"
         if inv3 and non_empty:
@@ -148,7 +148,7 @@ def _run_roundtrip(
         return False, "dialogs.csv não existe — rodar sem --roundtrip primeiro"
 
     # Descobrir fonte original para comparação
-    source_path = _find_source(project_root, project_json, game_data_dir)
+    source_path = _find_source(project_root, project_json)
     if source_path is None:
         return False, (
             "fonte original não encontrada. "
@@ -169,6 +169,9 @@ def _run_roundtrip(
     stale_bak: tuple[Path, Path] | None = None
     if approved.is_file():
         backup = approved.with_suffix(".smoke_backup")
+        if backup.exists():
+            return False, ("backup pendente de execucao anterior interrompida; restaure "
+                          f"{backup.name} -> {approved.name} antes de rodar o smoke test novamente")
         shutil.copy2(approved, backup)
 
     try:
@@ -221,7 +224,7 @@ def _run_roundtrip(
             approved.unlink()  # era temporário
 
 
-def _find_source(project_root: Path, project_json: Path, game_data_dir: Path | None) -> Path | None:
+def _find_source(project_root: Path, project_json: Path) -> Path | None:
     """Localiza o arquivo-fonte original para comparação de round-trip."""
     if project_json.is_file():
         try:
@@ -233,9 +236,6 @@ def _find_source(project_root: Path, project_json: Path, game_data_dir: Path | N
                     return p
         except Exception:
             pass
-    if game_data_dir and game_data_dir.is_dir():
-        # Para Unity e similares: não há single-file source; round-trip é diferente
-        return None
     return None
 
 

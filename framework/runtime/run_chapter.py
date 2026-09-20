@@ -41,9 +41,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 import quality_gate  # noqa: E402  (piso de qualidade obrigatorio: verdicts de back-translation)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
 import run_scene as RS  # noqa: E402
-import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao fim do cap.)
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
-import validate  # noqa: E402  (auditoria obrigatoria de schema dos artefatos, projeto inteiro)
 
 # subconjunto MAIS ESTREITO de config.SCENE_OK_STATUSES (que inclui awaiting_*): aqui e um driver
 # batch stateless, awaiting_* exige producao manual (chat/in-session) que o driver nao pode fazer
@@ -366,9 +364,9 @@ def _run_mandatory_audits(root: Path, chap: str | None):
     (orcamento ou falha de cena) -- os 4 audits abaixo varrem o PROJETO INTEIRO, nao so o delta
     desta chamada, entao sao seguros/idempotentes de rodar em qualquer ponto de saida."""
     _export_qa(root, chap)     # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
-    _audit_spoiler(root)       # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
+    RS._audit_spoiler(root)       # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
     _audit_quality(root, chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
-    _audit_schema(root)        # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
+    RS._audit_schema(root)        # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
 
 
 def _export_qa(root: Path, chap: str | None):
@@ -380,7 +378,7 @@ def _export_qa(root: Path, chap: str | None):
         outbox = paths.qa_outbox(root)
         outbox.mkdir(parents=True, exist_ok=True)
         paths.qa_inbox(root).mkdir(parents=True, exist_ok=True)
-        out = outbox / f"review_cap_{chap}.xlsx"
+        out = outbox / f"review_cap_{chap or 'todos'}.xlsx"
         quality_review.write_xlsx(rows, str(out))
         marked = sum(1 for r in rows if r.get("revisar"))
         print(f"[QA obrigatorio] revisao humana disponibilizada: {out}")
@@ -388,28 +386,7 @@ def _export_qa(root: Path, chap: str | None):
               f"{paths.qa_inbox(root)} e rode: quality_review.py apply <projeto>")
     except Exception as e:
         print(f"[QA obrigatorio] AVISO: falha ao gerar o XLSX de revisao ({e}). "
-              f"Gere a mao: python quality_review.py export <projeto> {chap}")
-
-
-def _audit_spoiler(root: Path):
-    """OBRIGATORIO: audita vazamento de NOME/TITULO pos-reveal (alta confianca, determinista) e de
-    GENERO pt-BR (heuristica, pode ter falso-positivo) sobre o PROJETO INTEIRO -- sempre, mesmo que o
-    capitulo atual nao tenha nada marcado no ledger. Nunca bloqueia o capitulo (report-only, mesma
-    filosofia do QA); a garantia e a auditoria RODAR e o resultado FICAR em artifacts/spoiler_audit.json
-    (nao se perder no scroll do terminal nem depender de alguem lembrar de rodar o CLI a mao)."""
-    try:
-        rep = spoiler_check.audit_and_persist(root)
-    except Exception as e:
-        print(f"[spoiler-audit obrigatorio] AVISO: falha ao auditar ({e}).")
-        return
-    if rep["name_leaks"]:
-        print(f"[spoiler-audit] ALERTA: {len(rep['name_leaks'])} vazamento(s) de NOME/TITULO "
-              f"pos-reveal -- ver {paths.spoiler_audit(root)}")
-    if rep["gender_flags"]:
-        print(f"[spoiler-audit] {len(rep['gender_flags'])} linha(s) a revisar por GENERO pt-BR "
-              f"(heuristico, pode ter falso-positivo) -- ver {paths.spoiler_audit(root)}")
-    if rep["clean"]:
-        print("[spoiler-audit] OK: nenhum vazamento nem marcador de genero suspeito.")
+              f"Gere a mao: python quality_review.py export <projeto>{' ' + chap if chap else ''}")
 
 
 def _audit_quality(root: Path, chap: str | None):
@@ -429,24 +406,6 @@ def _audit_quality(root: Path, chap: str | None):
               f"back-translation -- rode quality_gate.py p/ detalhe.")
     if not r["revise"] and not r["uncovered"]:
         print("[quality-gate] OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura.")
-
-
-def _audit_schema(root: Path):
-    """OBRIGATORIO: valida os artefatos do projeto inteiro contra schema/enum (validate.py) --
-    sem isso, um risk_level invalido/ausente so aparecia se alguem rodasse validate.py a mao.
-    Report-only (nunca bloqueia o capitulo, mesma filosofia do spoiler-audit/quality-gate)."""
-    try:
-        issues = validate.validate_project(root)
-    except Exception as e:
-        print(f"[schema-audit obrigatorio] AVISO: falha ao auditar ({e}).")
-        return
-    errs = [i for i in issues if i[0] == "ERROR"]
-    if errs:
-        print(f"[schema-audit] ALERTA: {len(errs)} erro(s) de schema -- rode validate.py p/ detalhe.")
-        for sev, art, msg in errs[:10]:
-            print(f"  {sev} [{art}] {msg}")
-    else:
-        print("[schema-audit] OK: nenhum erro de schema.")
 
 
 def _print_cost(root: Path, chap: str | None = None):

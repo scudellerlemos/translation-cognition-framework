@@ -93,7 +93,7 @@ def _demo() -> None:
         pos += len(c)
 
     entries_bytes = b""
-    for i, n in enumerate(names):
+    for i, _n in enumerate(names):
         entries_bytes += ENTRY.pack(
             0, 0, name_table_addr + name_offsets[i], len(contents[i]), data_addrs[i]
         )

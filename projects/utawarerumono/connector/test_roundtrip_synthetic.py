@@ -82,7 +82,7 @@ def _build_synthetic_sdat(file_strings: list[list[bytes]] = _FILE_STRINGS) -> by
     for b in bodies:
         offsets.append(cur)
         cur += len(b)
-    entries = b"".join(struct.pack("<II", o, len(b)) for o, b in zip(offsets, bodies))
+    entries = b"".join(struct.pack("<II", o, len(b)) for o, b in zip(offsets, bodies, strict=False))
 
     header = region_a + region_b + region_c_head + entries + filler
     assert len(header) == header_total
@@ -96,9 +96,9 @@ def test_synthetic_sdat_is_recognized():
     files = S.parse_pack(data)
     assert [f.name for f in files] == ["11_01_000S.BIN", "11_02_000S.BIN"]
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in files), "alinhamento não replicado"
-    assert all(a.end == b.offset for a, b in zip(files, files[1:])), "arquivos não contíguos"
+    assert all(a.end == b.offset for a, b in zip(files, files[1:], strict=False)), "arquivos não contíguos"
 
-    for f, expected in zip(files, _FILE_STRINGS):
+    for f, expected in zip(files, _FILE_STRINGS, strict=False):
         block = S.extract_text_block(data, f)
         assert [t for _, t, _ in block] == [s.decode() for s in expected]
 
@@ -202,7 +202,7 @@ def test_rebuild_container_preserves_pack_integrity():
     new_files = S.parse_pack(bytes(buf))
 
     assert [f.name for f in new_files] == [f.name for f in files]
-    assert all(a.end == b.offset for a, b in zip(new_files, new_files[1:]))
+    assert all(a.end == b.offset for a, b in zip(new_files, new_files[1:], strict=False))
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in new_files)
 
 

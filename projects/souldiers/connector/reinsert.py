@@ -3,7 +3,7 @@
 reinsert.py — Souldiers (Forge Reply, 2022 — Unity Addressables + tilde-CSV)
 
 Contrato:
-    entrada : approved_translations.csv (offset, text_pt) + data_dir (bundles)
+    entrada : approved_translations.csv (offset, text_target; text_pt legado aceito) + data_dir (bundles)
     saída   : output/<bundle>.bundle (cópia modificada com ::PT:: preenchido)
               artifacts/reinsertion_report.md
 
