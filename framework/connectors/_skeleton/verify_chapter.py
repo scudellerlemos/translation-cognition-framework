@@ -61,16 +61,18 @@ def main() -> None:
         sys.exit(f"ERRO: esperado 1 approved_*.csv em {scene_dir}, achei {len(appr_files)}")
 
     dialogs: dict[str, str] = {}
-    with (scene_dir / "dialogs.csv").open(encoding="utf-8") as f:
+    with (scene_dir / "dialogs.csv").open(encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             dialogs[row["offset"]] = row["text_en"]
 
     approved: dict[str, str] = {}
-    with appr_files[0].open(encoding="utf-8") as f:
+    with appr_files[0].open(encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             approved[row["offset"]] = row["text_target"]
 
     round_trip_ok, fitting_failure, fails = _rebuild(scene, dialogs, approved)
+    if not round_trip_ok and not fails:
+        fails = ["round-trip falhou (reinsert com approved vazio nao reproduz o original)"]
 
     print(f"Cena {scene}: {len(dialogs)} string(s)")
     print(f"  round-trip: {'OK' if round_trip_ok else 'FALHOU'}")

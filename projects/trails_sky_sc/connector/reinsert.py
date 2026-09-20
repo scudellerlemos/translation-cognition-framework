@@ -3,7 +3,7 @@
 reinsert.py — Trails in the Sky 2nd Chapter (Falcom remake engine, 2026)
 
 Contrato:
-    entrada : artifacts/approved_translations.csv (offset, text_pt)
+    entrada : artifacts/approved_translations.csv (offset, text_target; text_pt legado aceito)
               artifacts/dialogs.csv (byte_budget original por offset, gerado por extract.py)
               data_dir (pac/steam/script_en.pac)
     saída   : output/script_en.pac (cópia do contêiner com scena/*.dat traduzidos)
@@ -95,7 +95,7 @@ def rebuild_pac(
     buf = bytearray(pac_bytes)
     changed = 0
 
-    for name, _size, addr, _crc in entries:
+    for name, size, addr, _crc in entries:
         if "/scena/" not in name or not name.endswith(".dat"):
             continue
         rel_name = "scena/" + name.split("/scena/", 1)[1]
@@ -108,6 +108,10 @@ def rebuild_pac(
             budget = budgets.get(key)
             if budget is None:
                 continue
+            # dialogs.csv velho/adulterado: sem isto o slice-assign fora do arquivo CRESCE o buf (ou
+            # escreve na entrada vizinha) e budget<=0 vira raw[:-1]
+            if budget < 1 or offset < 0 or offset + budget > size or addr + offset + budget > len(buf):
+                raise ValueError(f"{key}: budget {budget} fora da entrada ({size}b) -- rode extract de novo")
             payload = truncate_for_budget(text_pt, budget)
             abs_off = addr + offset
             buf[abs_off:abs_off + budget] = payload
@@ -155,12 +159,18 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
         )
 
     translations: dict[str, str] = {}
-    with approved_csv.open(encoding="utf-8", newline="") as f:
+    n_rows = 0
+    with approved_csv.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
+            n_rows += 1
             key = row.get("offset", "").strip()
-            val = row.get("text_pt", "").strip()
-            if key and val:
+            # text_target = coluna canonica (build_plan_chapter / export_to_flat); text_pt = legado.
+            val = row.get("text_target") or row.get("text_pt") or ""
+            if key and val.strip():   # strip so p/ testar vazio: espaco final de linha identity e conteudo
                 translations[key] = val
+    if n_rows and not translations:
+        raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"
+                         f"text_pt preenchida -- reinsercao geraria um .pac identico ao original")
 
     budgets = _load_byte_budgets(dialogs_csv)
 

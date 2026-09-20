@@ -57,3 +57,15 @@ def test_missing_flat_file_exits(tmp_path):
         assert False, "deveria ter chamado sys.exit"
     except SystemExit as e:
         assert "dialogs.csv" in str(e)
+
+
+def test_colliding_stems_exit(tmp_path):
+    _write_flat(tmp_path, [
+        {"offset": "a:1", "file": "a/x.dat", "text_en": "Hi", "byte_budget": "3"},
+        {"offset": "b:1", "file": "b/x.dat", "text_en": "Yo", "byte_budget": "3"},
+    ])
+    try:
+        split_scenes.split(tmp_path)
+        assert False, "deveria ter chamado sys.exit"
+    except SystemExit as e:
+        assert "colidem" in str(e)

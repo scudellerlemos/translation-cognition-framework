@@ -18,15 +18,15 @@ import csv
 import json
 import re
 import sys
-from collections import Counter
 from pathlib import Path
 
-_FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent
+# parent.parent = raiz do repo tanto aqui (framework/connectors/_skeleton) quanto copiado p/ projects/<p>/connector
+_FRAMEWORK_CONNECTORS = ROOT.parent.parent / "framework" / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
-import connector_io  # noqa: E402  (RISK_LEVELS compartilhado entre conectores)
+import connector_io  # noqa: E402  (RISK_LEVELS + structural_token_counts compartilhados entre conectores)
 
-ROOT = Path(__file__).resolve().parent.parent
 _RISK = connector_io.RISK_LEVELS
 
 # ADAPTAR: tokens estruturais do engine que devem sobreviver a traducao VERBATIM (ex.: timing,
@@ -44,8 +44,8 @@ def load_dialogs(p: Path) -> tuple[dict, list]:
     return rows, order
 
 
-def _tokens(text: str) -> Counter:
-    return Counter(_STRUCTURAL_TOKEN_RX.findall(text))
+def _tokens(text: str):
+    return connector_io.structural_token_counts(_STRUCTURAL_TOKEN_RX, text)
 
 
 def main() -> None:

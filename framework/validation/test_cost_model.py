@@ -11,6 +11,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cost_model as C  # noqa: E402
@@ -75,3 +77,31 @@ def test_cache_read_cheaper_than_full_input():
     full = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=False)
     cached = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=True)
     assert cached < full
+
+
+def test_estimate_reads_per_scene_plans_and_survives_empty_corpus(tmp_path):
+    """Layout atual: artifacts/scenes/<cena>/translation_plan_*.json (antes n=0, n_high=0)."""
+    (tmp_path / "project.json").write_text("{}", encoding="utf-8")
+    sc = tmp_path / "artifacts" / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "translation_plan_ch_01.json").write_text(json.dumps({"lines": [
+        {"text_source": "Hello", "base_translation": "Ola", "risk_level": "high"},
+        {"text_source": "Bye", "base_translation": "Tchau", "risk_level": "low"}]}), encoding="utf-8")
+    e = C.estimate(tmp_path)
+    assert e["n"] == 2 and e["n_high"] == 1
+    empty = tmp_path / "e"
+    empty.mkdir()
+    (empty / "project.json").write_text("{}", encoding="utf-8")
+    assert C.estimate(empty)["n"] == 0
+
+
+def test_scenario_bills_partial_last_batch():
+    """n=250, batch=200 -> lotes de 200+50 (antes cobrava 2x200 = 400 linhas)."""
+    def e(n, nb):
+        return {"batch": 200, "ctx_tok": 1000, "src_tok": n * 10, "tgt_tok": n * 12, "n": n,
+                "n_high": 0, "n_batches": nb, "risk": {}}
+    m = dict(low="sonnet", medium="sonnet", high="sonnet", qa="sonnet", back="sonnet")
+    whole = C._scenario(e(250, 2), models=m, cache=False)
+    parts = [C._scenario(e(n, 1), models=m, cache=False) for n in (200, 50)]
+    assert whole["trans"] == pytest.approx(sum(p["trans"] for p in parts))
+    assert whole["qa"] == pytest.approx(sum(p["qa"] for p in parts))

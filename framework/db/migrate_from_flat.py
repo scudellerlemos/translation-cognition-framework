@@ -42,7 +42,7 @@ def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
     rs_path = root / "artifacts" / "run_state.json"
     if not rs_path.is_file():
         return 0
-    state = json.loads(rs_path.read_text(encoding="utf-8"))
+    state = json.loads(rs_path.read_text(encoding="utf-8-sig"))
     n = 0
     for scene_id, data in state.get("scenes", {}).items():
         db.upsert_scene(
@@ -70,7 +70,7 @@ def _migrate_scene_lines(db: Store, project_id: str, root: Path) -> int:
             continue
         sid = _sid(scene_dir.name)
         lines = []
-        with dcsv.open(encoding="utf-8", newline="") as f:
+        with dcsv.open(encoding="utf-8-sig", newline="") as f:
             rdr = csv.DictReader(f)
             cols = rdr.fieldnames or []
             textcol = "text_source" if "text_source" in cols else "text_en"
@@ -109,7 +109,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
         src_by = {}
         dcsv = scene_dir / "dialogs.csv"
         if dcsv.is_file():
-            with dcsv.open(encoding="utf-8", newline="") as f:
+            with dcsv.open(encoding="utf-8-sig", newline="") as f:
                 rdr = csv.DictReader(f)
                 cols = rdr.fieldnames or []
                 tc = "text_source" if "text_source" in cols else "text_en"
@@ -120,7 +120,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
         meta_by = {}
         for plan_path in sorted(scene_dir.glob("translation_plan_*.json")):
             try:
-                data = json.loads(plan_path.read_text(encoding="utf-8"))
+                data = json.loads(plan_path.read_text(encoding="utf-8-sig"))
             except (json.JSONDecodeError, OSError):
                 continue
             lines = data.get("lines", [])
@@ -131,7 +131,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
                     meta_by[ln["offset"]] = ln
         # target (completo/fiel) — do approved_*.csv
         for csv_path in sorted(scene_dir.glob("approved_*.csv")):
-            with csv_path.open(encoding="utf-8", newline="") as f:
+            with csv_path.open(encoding="utf-8-sig", newline="") as f:
                 for row in csv.DictReader(f):
                     off = row.get("offset", "")
                     tgt = row.get("text_target", "")
@@ -175,7 +175,7 @@ def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
         if section and "\n".join(buf).strip():
             entries.append({"section": section, "content": "\n".join(buf).strip(), "reveal": reveal})
 
-    for line in p.read_text(encoding="utf-8").splitlines():
+    for line in p.read_text(encoding="utf-8-sig").splitlines():
         if line.startswith(("## ", "### ")):
             _flush()
             m = _KB_REVEAL_RX.search(line)
@@ -201,7 +201,7 @@ def _migrate_back_translations(db: Store, project_id: str, root: Path) -> int:
         scene_id = _sid(scene_dir.name)
         for bt_path in sorted(scene_dir.glob("back_translation_*.json")):
             try:
-                data = json.loads(bt_path.read_text(encoding="utf-8"))
+                data = json.loads(bt_path.read_text(encoding="utf-8-sig"))
             except (json.JSONDecodeError, OSError):
                 continue
             entries = [e for e in data.get("entries", []) if e.get("offset")]
@@ -216,7 +216,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
     if not g_path.is_file():
         return 0
     n = 0
-    with g_path.open(encoding="utf-8", newline="") as f:
+    with g_path.open(encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             term = row.get("term") or row.get("source_term", "")
@@ -244,7 +244,7 @@ def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
     if not e_path.is_file():
         return 0
     n = 0
-    with e_path.open(encoding="utf-8", newline="") as f:
+    with e_path.open(encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             name = row.get("name") or row.get("entity") or row.get("canonical_name", "")
@@ -274,7 +274,7 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
             break
     else:
         return 0
-    data = json.loads(vc_path.read_text(encoding="utf-8"))
+    data = json.loads(vc_path.read_text(encoding="utf-8-sig"))
     n = 0
     # Formato dict {nome: {...}} (context_pack) — chave é o falante.
     if isinstance(data, dict) and "cards" not in data:
@@ -322,7 +322,7 @@ def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
     p = root / "artifacts" / "state" / "decision_index.json"
     if not p.is_file():
         return 0
-    data = json.loads(p.read_text(encoding="utf-8"))
+    data = json.loads(p.read_text(encoding="utf-8-sig"))
     items = data if isinstance(data, list) else data.get("decisions", [])
     n = 0
     for d in items:
@@ -347,7 +347,7 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
     p = root / "artifacts" / "spoiler_ledger.json"
     if not p.is_file():
         return 0
-    data = json.loads(p.read_text(encoding="utf-8"))
+    data = json.loads(p.read_text(encoding="utf-8-sig"))
     n = 0
     for e in data.get("entries", []):
         entity = e.get("entity")
@@ -373,7 +373,7 @@ def _migrate_research_log(db: Store, project_id: str, root: Path) -> int:
     p = root / "artifacts" / "research_log.md"
     if not p.is_file():
         return 0
-    db.upsert_research_log(project_id, p.read_text(encoding="utf-8"))
+    db.upsert_research_log(project_id, p.read_text(encoding="utf-8-sig"))
     return 1
 
 
@@ -404,15 +404,15 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
         db.log_job(
             project_id=project_id,
             scene_id=rec.get("scene"),
-            kind=rec.get("kind", "translate"),
+            kind=rec.get("kind") or "translate",   # kind NOT NULL: null explicito abortaria a migracao inteira
             model_id=rec.get("model"),
             backend="api",
             # .get(key, default) NAO cobre valor explicitamente null (default so vale p/ key ausente)
             # -- mesmo caso de 'usage': null na linha 403, um nivel abaixo (in/cache_read/out: null).
             tokens_in=(u.get("in") or 0) + (u.get("cache_read") or 0),
             tokens_out=u.get("out") or 0,
-            cost_usd=rec.get("cost_usd", 0.0),
-            batch=rec.get("batch", False),
+            cost_usd=rec.get("cost_usd") or 0.0,
+            batch=bool(rec.get("batch")),
         )
     return len(recs)
 
@@ -422,7 +422,7 @@ def _read_jsonl(path: Path) -> list[dict]:
     if not path.is_file():
         return []
     out: list[dict] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
         line = line.strip()
         if not line:
             continue
@@ -484,7 +484,7 @@ def _project_meta(root: Path) -> dict:
     pj = root / "project.json"
     if pj.is_file():
         try:
-            cfg = json.loads(pj.read_text(encoding="utf-8"))
+            cfg = json.loads(pj.read_text(encoding="utf-8-sig"))
             # nomenclatura real do project.json: source_language/target_language (com fallback)
             meta["title"] = cfg.get("title") or meta["title"]
             meta["media_type"] = cfg.get("media_type") or meta["media_type"]
@@ -497,7 +497,17 @@ def _project_meta(root: Path) -> dict:
     return meta
 
 
-def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
+def _default_project_id(root: Path) -> str:
+    """project.json:db.project_id (o mesmo id que o write-path DB-first usa); 'bof4' so como ultimo fallback."""
+    try:
+        cfg = json.loads((root / "project.json").read_text(encoding="utf-8-sig"))
+        return (cfg.get("db") or {}).get("project_id") or "bof4"
+    except (OSError, json.JSONDecodeError, AttributeError):
+        return "bof4"
+
+
+def migrate(project_root: Path, dest_db: Path, project_id: str | None = None) -> dict:
+    project_id = project_id or _default_project_id(project_root)   # sem a flag, migrar outro projeto gravava tudo como 'bof4'
     meta = _project_meta(project_root)
     with Store(dest_db) as db, db.batch():
         # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
@@ -557,7 +567,7 @@ def main():
     ap = argparse.ArgumentParser(description="Migra flat files de um projeto para SQLite.")
     ap.add_argument("project_root", help="Diretório raiz do projeto")
     ap.add_argument("dest_db", help="Caminho do banco SQLite de destino")
-    ap.add_argument("--project-id", default="bof4", help="ID do projeto no banco (default: bof4)")
+    ap.add_argument("--project-id", default=None, help="ID do projeto no banco (default: db.project_id do project.json, senao bof4)")
     a = ap.parse_args()
     result = migrate(Path(a.project_root), Path(a.dest_db), a.project_id)
     print(json.dumps(result, indent=2, ensure_ascii=False))

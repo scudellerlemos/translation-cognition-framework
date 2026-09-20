@@ -63,12 +63,15 @@ def resolve_source_path(
 
 
 def write_dialogs_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
-    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda."""
+    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda.
+    Atômico (tmp + replace): extract que morre no meio não trunca o dialogs.csv bom anterior."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as f:
+    tmp = path.with_name(path.name + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)
+    os.replace(tmp, path)
 
 
 def write_extraction_log(path: Path, text: str) -> None:
@@ -110,9 +113,16 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
     return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
 
 
+def structural_token_counts(rx: re.Pattern, text: str) -> Counter:
+    """Multiset dos tokens de formatacao em `text`. Usa o match INTEIRO (group(0)): `findall` devolveria
+    so o grupo de captura de patterns como `\\[([0-9A-Fa-f]{2})\\]` (BoF4), e dois tokens literais
+    diferentes ([01] vs [02]) colapsariam no mesmo valor."""
+    return Counter(m.group(0) for m in rx.finditer(text or ""))
+
+
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    return Counter(rx.findall(source or "")) == Counter(rx.findall(text or ""))
+    return structural_token_counts(rx, source) == structural_token_counts(rx, text)
 
 
 def sync_translations_db(root: Path, scene_id: str, sfx: str,

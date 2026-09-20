@@ -21,7 +21,6 @@ Uso: python build_plan_chapter.py <scene>   ex.: python build_plan_chapter.py mp
 import csv
 import json
 import sys
-from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -80,8 +79,8 @@ def main() -> None:
         src = dialogs[off]["text_en"]
         t = trans[off]
         tgt = t["t"]
-        src_tokens = Counter(structural_rx.findall(src))
-        tgt_tokens = Counter(structural_rx.findall(tgt))
+        src_tokens = connector_io.structural_token_counts(structural_rx, src)
+        tgt_tokens = connector_io.structural_token_counts(structural_rx, tgt)
         if src_tokens != tgt_tokens:
             errors.append(f"{off}: tokens de formatacao divergentes "
                           f"(src={sorted(src_tokens.elements())} tgt={sorted(tgt_tokens.elements())})")

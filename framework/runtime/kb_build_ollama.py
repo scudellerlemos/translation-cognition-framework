@@ -125,14 +125,21 @@ def _default_chat(model, messages, fmt):
     return json.loads(_text_of(resp))
 
 
-def build(root, *, chat_fn=None, model=None) -> dict:
+def build(root, *, chat_fn=None, model=None, force=False) -> dict:
     """Le artifacts/research_cache/*.md + entities.csv (main/secondary), pergunta ao Ollama (1
     chamada por entidade, JSON schema estrito) e escreve research_log.md + universe_knowledge_base.md
     RASCUNHO (status: draft_ollama, NUNCA reconciled). Retorna {entities_covered, entities_unsourced,
     sources_read}. `chat_fn(model, messages, fmt) -> dict` injetavel p/ teste (default: Ollama real).
+    Falha de chamada ao Ollama ABORTA (RuntimeError) sem escrever nada -- nunca vira UNSOURCED com
+    motivo falso. Recusa sobrescrever KB/research_log ja `reconciled` (perderia a ratificacao humana)
+    salvo force=True.
     Sem cache (nenhuma fonte buscada ainda) -> toda entidade vira UNSOURCED sem chamar o modelo
     (nao ha o que extrair; evita chamada inutil e garante "nao inventar" mesmo sem fontes)."""
     root = Path(root)
+    rl = paths.research_log(root)   # MESMA regex tolerante do kb_gate (aceita "status: reconciled" e "**Status:** ...")
+    if not force and rl.is_file() and re.search(r"status[:*\s]+reconciled", rl.read_text(encoding="utf-8"), re.I):
+        raise RuntimeError("research_log.md ja esta 'reconciled': rodar de novo sobrescreveria a KB "
+                           "revisada por humano com rascunho. Use force=True (--force) se for isso mesmo.")
     chat = chat_fn or _default_chat
     cache = _load_cache(root)
     entities = _load_entities(root)
@@ -146,7 +153,7 @@ def build(root, *, chat_fn=None, model=None) -> dict:
               f"{dropped}. Considere rodar kb_fetch com fontes menores/mais focadas, ou aumentar "
               f"_MAX_CONTEXT_CHARS.")
 
-    kb_sections, covered, unsourced = [], 0, 0
+    kb_sections, covered, unsourced, failed = [], 0, 0, []
     for ent in entities:
         name = (ent.get("canonical_name") or "").strip()
         if not name:
@@ -159,7 +166,8 @@ def build(root, *, chat_fn=None, model=None) -> dict:
             try:
                 data = chat(model, messages, _SCHEMA)
             except Exception as e:
-                data = {"found": False, "definicao": "", "fontes": [], "confianca": "low", "_erro": str(e)}
+                failed.append(f"{name}: {e}")
+                continue
         if data.get("found"):
             covered += 1
             conf = _clamp_confidence(data.get("confianca"))
@@ -184,6 +192,8 @@ def build(root, *, chat_fn=None, model=None) -> dict:
                 "**Status de confianca:**\nUNSOURCED\n"
             )
 
+    if failed:
+        raise RuntimeError(f"Ollama falhou em {len(failed)} entidade(s); nada foi escrito: {failed}")
     _write_research_log(root, cache)
     _write_kb(root, kb_sections)
     return {"entities_covered": covered, "entities_unsourced": unsourced, "sources_read": len(cache)}
@@ -232,8 +242,9 @@ def main():
     ap = argparse.ArgumentParser(description="Sintetiza rascunho de KB via Ollama local (nunca reconciled).")
     ap.add_argument("project")
     ap.add_argument("--model", default=None)
+    ap.add_argument("--force", action="store_true", help="sobrescreve mesmo se research_log ja estiver reconciled")
     a = ap.parse_args()
-    r = build(a.project, model=a.model)
+    r = build(a.project, model=a.model, force=a.force)
     print(f"[kb_build_ollama] {r['entities_covered']} entidade(s) coberta(s), "
           f"{r['entities_unsourced']} UNSOURCED, {r['sources_read']} fonte(s) lida(s).")
     print("status: draft_ollama -- rode a reconciliacao (skill 03, Fase 1B) antes de traduzir.")

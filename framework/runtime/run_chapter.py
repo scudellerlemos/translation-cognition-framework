@@ -193,19 +193,22 @@ def _rebuild_index_phase(root):
 def _back_batch_phase(root, scenes):
     """POS-PASSE do modo batch: back-translation de todas as cenas verificadas num UNICO batch (-50%
     Opus). Roda DEPOIS do loop (cada cena ja produziu seu translation_plan); report-only (nao bloqueia).
-    Resume idempotente dentro do batch_back_translate (cena ja revisada nao re-cobra)."""
+    Resume idempotente dentro do batch_back_translate (cena ja revisada nao re-cobra).
+
+    Retorna as cenas SEM back-translation concluida (o chamador so bloqueia se --require-back)."""
     if not scenes:
-        return
+        return []
     print(f"\n[back-batch] back-translation de {len(scenes)} cena(s) em 1 batch (50% off, Opus) ...")
     try:
         st = M.batch_back_translate(root, scenes)
     except Exception as e:
         print(f"[back-batch] falhou ({e}) — back-translation segue pendente (report-only, nao bloqueia).")
-        return
+        return list(scenes)
     rev = sum(1 for v in st.values() if v == "reviewed")
     noh = sum(1 for v in st.values() if v == "no_high")
     print(f"[back-batch] {rev} revisada(s), {noh} sem alto risco; detalhe: "
           f"{ {s: v for s, v in st.items() if v not in ('no_high',)} }")
+    return [s for s in scenes if st.get(s) not in ("reviewed", "no_high")]
 
 
 def _chapter_cost(root, chap) -> float:
@@ -327,18 +330,21 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
     # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
+    back_pending: list = []
     if batch and backend == "api":
         _rebuild_index_phase(root)
+        verified = [s for s in scenes if _verified(root, s)]
         if no_back and not require_back:
             print("[back-batch] pulado (--no-back).")
         elif max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
                   f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
+            back_pending = verified
         else:
             if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
                 print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
                       "— back-translation em lote vai rodar.")
-            _back_batch_phase(root, [s for s in scenes if _verified(root, s)])
+            back_pending = _back_batch_phase(root, verified)
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK {chap}: {done}/{len(scenes)} cena(s) prontas."
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
@@ -347,6 +353,10 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     _run_mandatory_audits(root, cost_chap)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
+    if require_back and back_pending:   # em modo batch a back-translation e deferida: --require-back precisa bloquear aqui
+        print(f"\n--require-back: back-translation pendente em {len(back_pending)} cena(s) "
+              f"({', '.join(back_pending[:5])}) -- rode de novo p/ concluir.")
+        status = "back_incomplete"
     return {"chapter": chap, "scenes": results, "status": status}
 
 

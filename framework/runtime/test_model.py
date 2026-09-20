@@ -181,6 +181,14 @@ def test_parse_batch_lines():
     assert M._parse_batch_lines(pack, "json quebrado") == {}   # tolera parse-fail
 
 
+def test_parse_batch_lines_drops_lost_format_token():
+    """Caminho batch tinha so o blowup-guard: token <C1> derrubado pelo modelo era aceito e persistido."""
+    pack = {"scene_id": "S1", "tm_exact": [], "project_constraints": {"formatting_tokens": ["<C1>"]},
+            "lines": [{"offset": "o1", "source": "<C1>Hi"}, {"offset": "o2", "source": "<C1>Yo"}]}
+    text = json.dumps({"lines": [{"offset": "o1", "t": "Oi"}, {"offset": "o2", "t": "<C1>Ei"}]})
+    assert list(M._parse_batch_lines(pack, text)) == ["o2"]
+
+
 def test_merge_best_parity_prefers_good():
     srcmap = {"o1": "sem token"}                              # 0 tokens = paridade boa é 0
     dest = {"o1": {"t": f"x{TOK}y"}}                          # ruim (1 token)
@@ -195,3 +203,11 @@ def test_batch_coverage_finds_missing():
     assert "o2" in missing and bad == []
 
 
+def test_batch_coverage_ignores_engine_labels():
+    """Label de engine (passthrough) nao vai ao LLM no batch -> nao pode contar como 'faltando'
+    (senao a cena cai em coverage_failed pra sempre e paga o batch duas vezes)."""
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "lightA02"}, {"offset": "o2", "source": "Hello there friend"}]}
+    assert "o1" in M._batch_reuse(pack)
+    missing, _bad = M._batch_coverage(pack, {"o2": {"t": "Oi amigo"}})
+    assert missing == []

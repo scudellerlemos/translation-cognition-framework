@@ -67,6 +67,12 @@ def _ledger_append(p: Path, line: str):
             acquired = True
             break
         except FileExistsError:
+            try:                                  # lock orfao (processo morreu segurando): 1 s de espera por append, pra sempre
+                if time.time() - lock.stat().st_mtime > 5:
+                    lock.unlink()
+                    continue
+            except OSError:
+                pass
             time.sleep(0.02)
     try:
         with p.open("a", encoding="utf-8") as f:

@@ -138,7 +138,7 @@ def read_table(table_name: str, data: bytes) -> dict[str, str]:
         for row in csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER):
             row_id = row.get(_ID_COL, "").strip().strip('"')
             if row_id:
-                out[row_id] = row.get(pt_col, "").strip().strip('"')
+                out[row_id] = row.get(pt_col, "")   # exato: strip('"') escondia/inventava diferenca em fala entre aspas
         break
     return out
 
@@ -151,21 +151,26 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
     try:
         import UnityPy  # noqa: F401  (checagem antecipada de dependência; rebuild_table importa de novo)
     except ImportError:
-        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy")
+        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy") from None
 
     artifacts = project_root / "artifacts"
     approved_csv = artifacts / "approved_translations.csv"
     if not approved_csv.is_file():
         raise FileNotFoundError(f"Arquivo de traduções não encontrado: {approved_csv}")
 
-    # Carrega traduções aprovadas: offset → text_pt
+    # Carrega traduções aprovadas: offset → text_target (canonica) / text_pt (legado)
     translations: dict[str, str] = {}
-    with approved_csv.open(encoding="utf-8", newline="") as f:
+    n_rows = 0
+    with approved_csv.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
+            n_rows += 1
             key = row.get("offset", "").strip()
-            val = row.get("text_pt", "").strip()
-            if key and val:
+            val = row.get("text_target") or row.get("text_pt") or ""
+            if key and val.strip():   # strip so p/ testar vazio: espaco final de linha identity e conteudo
                 translations[key] = val
+    if n_rows and not translations:
+        raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"
+                         f"text_pt preenchida -- reinsercao copiaria os bundles originais sem traducao")
 
     output_dir = project_root / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -192,6 +197,11 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
         )
         print(f"  {table_name}: {table_inserted} linhas → {out_bundle.name}")
 
+    if total_inserted < len(translations):   # ID aprovado que nao existe em nenhuma tabela (extract re-rodou / key errada)
+        msg = (f"AVISO: {len(translations) - total_inserted} traducao(oes) aprovada(s) sem ::ID:: correspondente "
+               f"nas tabelas -- NAO reinseridas")
+        print(msg)
+        report_lines.append(f"- {msg}\n")
     report_path = artifacts / "reinsertion_report.md"
     report_lines.append(f"\nTotal reinserido: {total_inserted} linhas\n")
     report_path.write_text("".join(report_lines), encoding="utf-8")

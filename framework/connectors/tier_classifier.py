@@ -125,13 +125,14 @@ def _score_engine(evidence: dict, engine: dict) -> tuple[float, list[str]]:
     if expected_magic:
         all_magics = {m.lower() for m in evidence.get("magic_bytes", {})}
         for found_magic in all_magics:
-            if found_magic.startswith(expected_magic) or expected_magic.startswith(found_magic):
+            # found_magic vazio (arquivo de 0 bytes): startswith("") e sempre True -> casava com TODA engine
+            if found_magic and (found_magic.startswith(expected_magic) or expected_magic.startswith(found_magic)):
                 score += 0.30
                 reasons.append(f"magic_bytes: {found_magic[:16]}")
                 break
 
     # --- encoding (peso 0.10) ---
-    expected_enc = (sig.get("encoding") or "").lower()
+    expected_enc = (sig.get("encoding") or "").lower().replace("-", "").replace("_", "")   # "utf-8" (registry) -> "utf8" (evidence_collector)
     if expected_enc:
         sample_encs = evidence.get("sample_encodings", {})
         enc_score = sample_encs.get(expected_enc, 0.0)

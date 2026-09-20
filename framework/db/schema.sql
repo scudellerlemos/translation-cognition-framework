@@ -294,3 +294,28 @@ CREATE TABLE IF NOT EXISTS kb_embeddings (
     dim             INTEGER NOT NULL,
     indexed_at      REAL
 );
+
+-- ── Invalidação de embeddings obsoletos ───────────────────────────────────────
+-- index_project() só indexa linhas SEM metadado (LEFT JOIN ... IS NULL). Sem isto, mudar o texto
+-- de uma linha já indexada deixava o vetor antigo servindo RAG/TM com conteúdo obsoleto. Apagar
+-- o metadado faz o próximo index_project() reindexar a linha (e trocar o vetor).
+CREATE TRIGGER IF NOT EXISTS trg_tm_embedding_stale
+AFTER UPDATE OF source ON translations
+WHEN OLD.source IS NOT NEW.source
+BEGIN
+    DELETE FROM tm_embeddings WHERE translation_id = OLD.id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_decision_embedding_stale
+AFTER UPDATE OF summary ON decisions
+WHEN OLD.summary IS NOT NEW.summary
+BEGIN
+    DELETE FROM decision_embeddings WHERE decision_id = OLD.id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_kb_embedding_stale
+AFTER UPDATE OF content ON kb
+WHEN OLD.content IS NOT NEW.content
+BEGIN
+    DELETE FROM kb_embeddings WHERE kb_id = OLD.id;
+END;

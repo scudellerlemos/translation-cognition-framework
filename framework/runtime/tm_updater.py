@@ -67,8 +67,9 @@ def sync_scenes(root, cfg: dict, scenes: list, *, approved_at: str) -> int:
     if tm_path.is_file():
         try:
             existing = json.loads(tm_path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            existing = []
+        except (json.JSONDecodeError, OSError) as e:
+            # NAO zera: reescrever sobre um JSON truncado apagaria a TM dos OUTROS jogos da serie
+            raise RuntimeError(f"tm_updater: {tm_path} ilegivel ({e}) -- corrija/restaure antes de sincronizar") from e
     # .get() (nao indexacao direta): uma entrada de tm/<serie>.json sem source_game/src_key (editada a
     # mao, ou de versao antiga do formato) nao pode levantar KeyError aqui -- o caller (quality_review.
     # apply()) engole qualquer excecao com um except Exception AMPLO, entao 1 entrada ruim derrubava o

@@ -112,6 +112,9 @@ def check(candidate_path, game_dir, *, floor: float = _COVERAGE_FLOOR,
         worst = min(per_file, key=lambda r: r["coverage_ratio"])
         problems.append(f"cobertura minima {min_coverage:.0%} < piso {floor:.0%} "
                         f"(pior arquivo: {worst['path']})")
+    if per_file and not any(r["n_strings"] for r in per_file) and not any(r.get("error") for r in per_file):
+        problems.append("candidato nao extraiu nenhuma string de nenhum arquivo amostrado "
+                        "(ratio 1.0 sem texto esperado e um extract quebrado sao indistinguiveis)")
     return {"passed": not problems, "floor": floor, "per_file": per_file,
             "min_coverage": round(min_coverage, 3), "problems": problems}
 

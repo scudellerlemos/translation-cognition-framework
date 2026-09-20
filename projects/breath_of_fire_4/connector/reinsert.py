@@ -17,6 +17,7 @@ Regras:
 
 import csv
 import json
+import math
 import struct
 import sys
 from collections import defaultdict
@@ -125,6 +126,18 @@ def rebuild_section(
 # ---------------------------------------------------------------------------
 # 2. PATCH DO ARQUIVO (mantém ou expande a seção de texto no TOC)
 # ---------------------------------------------------------------------------
+def _toc_alignment(entries: list, toc_size: int) -> int:
+    """Maior potencia de 2 (<=16) que divide TODOS os offsets do TOC: alinhamento que o formato ja usa."""
+    g = toc_size
+    for off, *_ in entries[1:]:
+        if off:
+            g = math.gcd(g, off)
+    a = 1
+    while a < 16 and g % (a * 2) == 0:
+        a *= 2
+    return a
+
+
 def patch_dat_file(
     original_data: bytes,
     entry_idx: int,
@@ -137,6 +150,9 @@ def patch_dat_file(
     entries = parse_toc(original_data)
     sec_off, sec_sz = entries[entry_idx][0], entries[entry_idx][1]
 
+    # delta multiplo do alinhamento: as secoes seguintes mantem os offsets alinhados como no original
+    align = _toc_alignment(entries, struct.unpack_from('<I', original_data, 0)[0])
+    new_section = new_section + b'\x00' * ((sec_sz - len(new_section)) % align)
     new_sz = len(new_section)
     delta = new_sz - sec_sz
 
@@ -207,18 +223,35 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     # Carrega traduções aprovadas dos approved_*.csv por cena (artifacts/scenes/<scene>/)
     translations: dict[str, str] = {}  # offset_id -> text_target
     scenes_dir = _paths.scenes_dir(root)
+    if not scenes_dir.is_dir():
+        sys.exit(f"ERRO: {scenes_dir} nao existe -- rode split_scenes primeiro")
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
         for appr in sorted(scene_dir.glob("approved_*.csv")):
-            with appr.open(encoding='utf-8') as f:
+            with appr.open(encoding='utf-8-sig') as f:
                 for row in csv.DictReader(f):
-                    target = row.get('text_target', '').strip()
-                    if target:
+                    target = row.get('text_target') or ''
+                    if target.strip():   # strip so p/ testar vazio (igual Souldiers/Trails): espaco final e conteudo
                         translations[row['offset']] = target
+
+    # '?' silencioso no jogo = corrupcao: traducao que nao cabe no ASCII do font aborta ANTES de gravar
+    unmappable = []
+    for offset_id, text_target in translations.items():
+        try:
+            encode_string(text_target, strict=True)
+        except ValueError as exc:
+            unmappable.append(f"{offset_id}: {exc}")
+    if unmappable:
+        sys.exit("ERRO: traducao(oes) com caractere fora do ASCII do font (revise no approved):\n  "
+                 + "\n  ".join(unmappable[:10]) + (f"\n  ... (+{len(unmappable) - 10})" if len(unmappable) > 10 else ""))
 
     # Agrupa por arquivo: {fname: {ptr_idx: text_decoded}}
     per_file: dict[str, dict[int, str]] = defaultdict(dict)
+    orphans = sorted(k for k in translations if k not in string_meta)
+    if orphans:      # approved desatualizado (extract re-rodou / key errada): sem isto so sobra "reinseridas" menor
+        print(f"[reinsert] AVISO: {len(orphans)} traducao(oes) aprovada(s) sem linha em dialogs.csv -- "
+              f"NAO reinseridas: {orphans[:5]}{' ...' if len(orphans) > 5 else ''}")
     for offset_id, text_target in translations.items():
         meta = string_meta.get(offset_id)
         if meta is None:
