@@ -32,6 +32,17 @@ import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores,
 _ASCII_RANGE = range(0x20, 0x7F)
 _CTRL_RE = re.compile(r'\[([0-9A-Fa-f]{2})\]')
 
+# Pontuação tipográfica comum em diálogo pt-BR gerado por LLM que NFD não decompõe (não são
+# acentos, são glifos distintos) -- sem isto, viravam '?' (0x3F) em silêncio, e
+# verify_chapter.py comparava encode_string(x) contra encode_string(x) (mesma função em
+# ambos os lados), entao o round-trip passava verde mesmo com a perda.
+_PUNCT_FALLBACK = {
+    '–': '-', '—': '-',              # en/em dash
+    '‘': "'", '’': "'",              # aspas simples curvas
+    '“': '"', '”': '"',              # aspas duplas curvas
+    '…': '...',                      # reticências
+}
+
 # ---------------------------------------------------------------------------
 # Escopo de extração — Fase 0: apenas diálogo de história
 #
@@ -87,6 +98,7 @@ def encode_string(text: str) -> bytes:
     silenciosamente: verify_chapter.py compara decode(rebuild(encode(x))) contra encode_string(x),
     entao o round-trip comparava corrompido-com-corrompido e passava verde."""
     text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = "".join(_PUNCT_FALLBACK.get(c, c) for c in text)
     out = bytearray()
     i = 0
     while i < len(text):
@@ -99,7 +111,11 @@ def encode_string(text: str) -> bytes:
             if ord(ch) in _ASCII_RANGE:
                 out.append(ord(ch))
             else:
-                # ainda nao mapeavel apos NFD (ex.: CJK) — ultimo recurso
+                # ainda nao mapeavel apos NFD+_PUNCT_FALLBACK (ex.: CJK) — ultimo recurso, mas
+                # avisado (verify_chapter.py nao pega isso: compara encode_string(x) contra
+                # encode_string(x), entao um '?' silencioso passaria verde nos dois lados).
+                print(f"[extract] AVISO: caractere sem mapeamento ASCII substituido por '?': {ch!r} "
+                      f"(U+{ord(ch):04X}) em {text!r}")
                 out.append(0x3F)
             i += 1
     return bytes(out)
@@ -225,6 +241,9 @@ def extract_section_strings(section: bytes) -> list[tuple[int, int, bytes]]:
         end = section.find(b'\x00', ptr)
         if end == -1:
             end = min(ptr + 255, len(section))
+            print(f"[extract] AVISO: string sem terminador em ptr_idx={i // 2} (offset {ptr:#x}) "
+                  f"-- truncada em 255 bytes, resto PERDIDO (heuristica de secao pode ter travado "
+                  f"num limite errado)")
         raw = section[ptr:end]
         results.append((i // 2, ptr, raw))
 

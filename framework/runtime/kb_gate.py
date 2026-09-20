@@ -73,7 +73,11 @@ def check(root, scene) -> dict:
     root = Path(root)
     art = paths.artifacts(root)
     hard_problems, problems, warnings = [], [], []
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    cfg_path = root / "project.json"
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        cfg = {}
     db_path, db_pid = context_pack._db_path(root, cfg)
 
     # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
