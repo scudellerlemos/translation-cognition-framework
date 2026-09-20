@@ -160,7 +160,7 @@ def build(root, *, chat_fn=None, model=None, force=False) -> dict:
             continue
         aliases = (ent.get("aliases") or "").strip()
         if not cache:
-            data = {"found": False, "definicao": "", "fontes": [], "confianca": "low"}
+            data: dict = {"found": False, "definicao": "", "fontes": [], "confianca": "low"}
         else:
             messages = [{"role": "user", "content": _prompt_for(name, aliases, context)}]
             try:

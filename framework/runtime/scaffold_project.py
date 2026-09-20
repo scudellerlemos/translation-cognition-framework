@@ -279,7 +279,7 @@ def _report_kb_gate_status(project_root: Path) -> None:
 
 def main() -> None:
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     title_idx = next((i for i, a in enumerate(sys.argv) if a == "--title"), None)
     title = sys.argv[title_idx + 1] if title_idx is not None and title_idx + 1 < len(sys.argv) else ""

@@ -91,7 +91,7 @@ def plan(root, corrections, chapter=None) -> list[dict]:
     root = Path(root)
     # pre-compila por regra (uma vez)
     compiled = [(c, _compile(c["find"], c["mode"]), c["replace"]) for c in corrections]
-    hits = []
+    hits: list[dict] = []
     for scene in artifact_io.scenes(root, chapter):
         sid = context_pack.scene_id_of(scene)
         # translations_<id>.json: lines = {offset: {... "t": ...}}

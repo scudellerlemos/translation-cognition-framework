@@ -755,7 +755,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Revisao humana por capitulo (export CSV marcado / apply do devolvido).")
     sub = ap.add_subparsers(dest="cmd", required=True)
     pe = sub.add_parser("export", help="gera o CSV marcado p/ revisao (capitulo, ou JOGO TODO se omitir)")
@@ -822,12 +822,12 @@ def main():
             print(f"[width] {label}: OK — 0 linha(s) fora do balao (segmento <= {WIDTH_MAX} translit).")
             sys.exit(0)
         if a.out:
-            out = a.out
+            out_file = a.out
         else:
             outbox = paths.qa_outbox(Path(a.project)); outbox.mkdir(parents=True, exist_ok=True)
-            out = str(outbox / f"review_largura_{scope}.xlsx")
-        write_xlsx(rows, out)                              # arquivo SO com as linhas problematicas
-        print(f"[width] {label}: {len(rows)} linha(s) FORA DO BALAO (segmento > {WIDTH_MAX}) -> {out}")
+            out_file = str(outbox / f"review_largura_{scope}.xlsx")
+        write_xlsx(rows, out_file)                              # arquivo SO com as linhas problematicas
+        print(f"[width] {label}: {len(rows)} linha(s) FORA DO BALAO (segmento > {WIDTH_MAX}) -> {out_file}")
         print("        Encurte (CORRIGIR + Correcao/Nota), rode 'apply', e re-rode 'width' ate zerar.")
         sys.exit(1)                                        # gate: exit !=0 alimenta o loop ate ficar limpo
     if a.cmd == "export":
@@ -841,13 +841,13 @@ def main():
         for d in (outbox, inbox, tester):          # garante estrutura completa antes de qualquer arquivo
             d.mkdir(parents=True, exist_ok=True)
         if a.out:
-            out = a.out
+            out_file = a.out
         else:
-            out = str(outbox / f"review_{scope}.{ext}")
-        (write_csv if a.csv else write_xlsx)(rows, out)
+            out_file = str(outbox / f"review_{scope}.{ext}")
+        (write_csv if a.csv else write_xlsx)(rows, out_file)
         marked = sum(1 for r in rows if r["revisar"])
         label = f"cap.{a.chapter}" if a.chapter else "JOGO INTEIRO"
-        print(f"[export] {label}: {len(rows)} linha(s) -> {out}")
+        print(f"[export] {label}: {len(rows)} linha(s) -> {out_file}")
         print(f"         {marked} marcada(s) p/ avaliar; abra no Excel/LibreOffice, filtre a coluna "
               f"'Revisar', preencha 'Correcao' (texto certo) ou 'Nota' (instrucao) e devolva em "
               f"{inbox} (ou em {tester}/relato_tester.csv para relatos in-game).")
@@ -857,7 +857,7 @@ def main():
         print(f"[apply] nada a aplicar — nenhum .xlsx/.csv devolvido em "
               f"{a.returned or paths.qa_inbox(Path(a.project))}.")
         sys.exit(0)
-    tot = {"verbatim": 0, "ai": 0, "cost": 0.0, "scenes": set(), "stopped": False}
+    tot: dict = {"verbatim": 0, "ai": 0, "cost": 0.0, "scenes": set(), "stopped": False}
     for f in files:
         print(f"[apply] processando revisao devolvida: {f}")
         r = apply(a.project, f, model_name=a.model, max_usd=a.max_usd, reviewer=a.reviewer)
