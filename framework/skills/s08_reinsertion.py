@@ -37,7 +37,7 @@ class ReinsertionSkill(Skill):
         if problems:
             return problems
         cfg = self.project_cfg(project)
-        conn = cfg.get("connector", {})
+        conn = cfg.get("connector") or {}
         script_cfg = conn.get("reinsert_script")
         if not script_cfg:
             problems.append("project.json: connector.reinsert_script não declarado")

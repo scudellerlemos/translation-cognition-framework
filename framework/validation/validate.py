@@ -67,7 +67,12 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     idc = src.get("id_column", "offset")
     tokens = cfg.get("formatting_tokens", []) or []
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
-    rx_tokens = [re.compile(p) for p in (cfg.get("formatting_token_patterns", []) or [])]
+    rx_tokens = []
+    for p in (cfg.get("formatting_token_patterns", []) or []):
+        try:
+            rx_tokens.append(re.compile(p))
+        except re.error as e:
+            E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
