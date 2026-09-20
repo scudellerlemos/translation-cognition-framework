@@ -49,7 +49,7 @@ def split(root: Path, by: str = "file", dry_run: bool = False) -> dict:
     flat = paths.dialogs_flat(root)
     if not flat.is_file():
         sys.exit(f"ERRO: {flat} nao existe -- rode extract.py primeiro (Passo 00).")
-    with flat.open(encoding="utf-8", newline="") as fh:
+    with flat.open(encoding="utf-8-sig", newline="") as fh:
         reader = csv.DictReader(fh)
         fieldnames = reader.fieldnames or []
         if by not in fieldnames:
@@ -57,8 +57,13 @@ def split(root: Path, by: str = "file", dry_run: bool = False) -> dict:
         rows = list(reader)
 
     groups: dict[str, list[dict]] = {}
+    origin: dict[str, str] = {}
     for row in rows:
-        groups.setdefault(_scene_name(row[by]), []).append(row)
+        scene = _scene_name(row[by])
+        if origin.setdefault(scene, row[by]) != row[by]:   # a/x.dat e b/x.dat viravam UMA cena "x" em silencio
+            sys.exit(f"ERRO: '{origin[scene]}' e '{row[by]}' colidem na cena '{scene}' -- "
+                     f"use outra coluna em --by ou renomeie")
+        groups.setdefault(scene, []).append(row)
 
     if not dry_run:
         for scene, scene_rows in groups.items():

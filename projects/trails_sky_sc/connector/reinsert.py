@@ -95,7 +95,7 @@ def rebuild_pac(
     buf = bytearray(pac_bytes)
     changed = 0
 
-    for name, _size, addr, _crc in entries:
+    for name, size, addr, _crc in entries:
         if "/scena/" not in name or not name.endswith(".dat"):
             continue
         rel_name = "scena/" + name.split("/scena/", 1)[1]
@@ -108,6 +108,10 @@ def rebuild_pac(
             budget = budgets.get(key)
             if budget is None:
                 continue
+            # dialogs.csv velho/adulterado: sem isto o slice-assign fora do arquivo CRESCE o buf (ou
+            # escreve na entrada vizinha) e budget<=0 vira raw[:-1]
+            if budget < 1 or offset < 0 or offset + budget > size or addr + offset + budget > len(buf):
+                raise ValueError(f"{key}: budget {budget} fora da entrada ({size}b) -- rode extract de novo")
             payload = truncate_for_budget(text_pt, budget)
             abs_off = addr + offset
             buf[abs_off:abs_off + budget] = payload

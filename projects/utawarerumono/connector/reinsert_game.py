@@ -37,11 +37,13 @@ def load_game():
         if not dlg.is_file() or not aps:
             continue
         scenes += 1
-        for r in csv.DictReader(dlg.open(encoding="utf-8")):
+        for r in csv.DictReader(dlg.open(encoding="utf-8-sig")):
             budgets.append((r["offset"], r["text_source"], int(r["byte_budget"])))
         for ap in aps:
-            for r in csv.DictReader(ap.open(encoding="utf-8")):
-                approved[r["offset"]] = r["text_target"]
+            for r in csv.DictReader(ap.open(encoding="utf-8-sig")):
+                if approved.setdefault(r["offset"], r["text_target"]) != r["text_target"]:   # last-wins silencioso
+                    raise ValueError(f"{ap}: offset {r['offset']} aprovado com traducoes diferentes em mais de um "
+                                     f"approved_*.csv -- deixe so uma")
     return budgets, approved, scenes
 
 
