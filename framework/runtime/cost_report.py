@@ -51,6 +51,25 @@ def _verified_scenes(root: Path) -> set[str]:
             if st.get("status") == "verified" and st.get("verified") is True}
 
 
+def _exhausted(root: Path, chapter=None) -> dict:
+    """L01: esgotamentos de retry de traducao (translate_exhausted.jsonl, escrito por translate_checkpoint).
+    n = ocorrencias; cost_usd = o que as tentativas custaram (com checkpoint, so o que faltou e re-pago);
+    kept = linhas boas salvas no checkpoint. E o numero que diz se o esgotamento e frequente o bastante
+    p/ valer escalar a ultima tentativa."""
+    p = paths.translate_exhausted(root)
+    rows = []
+    for line in (p.read_text(encoding="utf-8").splitlines() if p.is_file() else []):
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            print(f"[cost_report] AVISO: linha ilegivel em {p.name} ignorada.", file=sys.stderr)
+    if chapter is not None:
+        rows = [r for r in rows if str(r.get("scene", "")).startswith(f"ch_{chapter}_")]
+    return {"n": len(rows), "scenes": len({r.get("scene") for r in rows}),
+            "cost_usd": round(sum(r.get("cost_usd", 0.0) for r in rows), 4),
+            "kept": sum(r.get("kept", 0) for r in rows)}
+
+
 def report(root, chapter=None) -> dict:
     """Agrega o ledger. `chapter` (ex.: "15") filtra so as cenas `ch_15_*` -> mostra o DELTA do capitulo
     em vez do acumulado de todo o ledger (que confunde: o total cresce a cada capitulo)."""
@@ -90,6 +109,7 @@ def report(root, chapter=None) -> dict:
         "by_scene": dict(sorted(by_scene.items())),
         "tokens": {"in": tok_in, "out": tok_out, "cache_read": tok_cache_r, "cache_write": tok_cache_w},
         "verified_scenes": len(verified),
+        "exhausted": _exhausted(root, chapter),
         "chapter": chapter,
     }
 
@@ -105,6 +125,10 @@ def _fmt(rep: dict, by_scene: bool) -> str:
     w = rep["wasted_usd"]
     tag = "ok" if w == 0 else ("baixo" if rep["total_usd"] and w / rep["total_usd"] < 0.15 else "ALTO")
     L.append(f"  desperdicado: ${w:.4f}  (cenas que nao fecharam verified) [{tag}]")
+    ex = rep.get("exhausted") or {}
+    if ex.get("n"):
+        L.append(f"  esgotamentos: {ex['n']} em {ex['scenes']} cena(s) (retries acabaram; tentativas custaram "
+                 f"${ex['cost_usd']:.4f}; {ex['kept']} linha(s) boa(s) salvas p/ retomar)")
     t = rep["tokens"]
     L.append(f"  tokens      : in={t['in']:,} out={t['out']:,} "
              f"cache_read={t['cache_read']:,} cache_write={t['cache_write']:,}")
