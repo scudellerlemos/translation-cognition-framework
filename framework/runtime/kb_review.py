@@ -76,7 +76,7 @@ def _rows_for_chapter(path: Path, name_col: str, chap: str) -> list[dict]:
     if not path.is_file():
         return out
     marker = f"(cap.{chap})"
-    with path.open(encoding="utf-8") as fh:
+    with path.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             if marker in (r.get("notes", "") or ""):
                 out.append(r)

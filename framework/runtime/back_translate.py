@@ -189,6 +189,17 @@ def invalidate_back_translation(root, scene, offsets) -> int:
     return n
 
 
+def _has_stale(out, cands) -> bool:
+    """True se `out` (back_translation ja gravada) tem entry STALE de algum candidato: o verdict julgou o
+    texto antigo (ver invalidate_back_translation) -> a cena precisa ser re-julgada, nao pulada."""
+    try:
+        entries = json.loads(out.read_text(encoding="utf-8")).get("entries", [])
+    except (json.JSONDecodeError, OSError):
+        return False
+    offs = {c["offset"] for c in cands}
+    return any(e.get("stale") and e.get("offset") in offs for e in entries)
+
+
 _BACK_CHUNK = 40    # requests por batch — nao 1 batch gigante (ver feedback-segment-large-batches:
                     # blast radius menor, progresso incremental, e cada chunk usa o timeout curto abaixo
                     # em vez de 1 timeout unico gigante bloqueando tudo)
@@ -240,7 +251,8 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
 
     Grava back_translation_<scene_id>.json por cena. custom_id = scene.
 
-    Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra). Cena sem
+    Resume idempotente: cena que ja tem back_translation_<scene_id>.json e pulada (nao re-cobra), EXCETO
+    se alguma entry candidata estiver stale (linha re-traduzida depois do verdict). Cena sem
     candidato -> 'no_high' (sem request). Retorna {scene: status} em
     {reviewed, no_high, errored, parse_failed, timeout}. NAO bloqueia o pipeline (o run_scene ja seguiu)."""
     from typing import cast
@@ -257,7 +269,7 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
         if not hl:
             status[scene] = "no_high"
             continue
-        if out.is_file():                                # ja revisada (run anterior) -> nao re-cobra
+        if out.is_file() and not _has_stale(out, hl):    # ja revisada (run anterior) -> nao re-cobra
             status[scene] = "reviewed"
             continue
         highs[scene] = hl

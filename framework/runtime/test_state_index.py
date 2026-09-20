@@ -122,3 +122,14 @@ def test_check_sync_reports_no_version(tmp_path, capsys):
     si._check_sync(tmp_path)
     out = capsys.readouterr().out.lower()
     assert "doctrine" in out
+
+
+def test_build_tm_reads_scenes_layout(tmp_path):
+    """Layout atual: artifacts/scenes/<scene>/translation_plan_*.json (refactor cbb9a9e)."""
+    art = tmp_path / "artifacts"
+    sc = art / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "translation_plan_ch_01.json").write_text(json.dumps({
+        "lines": [{"offset": "A:0:1", "text_source": "Hi", "base_translation": "Oi", "speaker": "Ryu"}]
+    }), encoding="utf-8")
+    assert {e["source"] for e in si.build_tm(art)} == {"Hi"}

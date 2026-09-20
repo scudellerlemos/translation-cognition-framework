@@ -74,7 +74,7 @@ def _load_glossary(root: Path, cfg: dict | None = None):
         g = paths.glossary(root)
         if not g.is_file():
             return []
-        rows = list(csv.DictReader(g.open(encoding="utf-8")))
+        rows = list(csv.DictReader(g.open(encoding="utf-8-sig")))
     out = []
     for r in rows:
         term = (r.get("term") or "").strip()

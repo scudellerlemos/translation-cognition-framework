@@ -2,7 +2,7 @@
 """
 reinsert_game.py — FASE 3: reinserção GLOBAL (jogo inteiro num passe).
 
-Agrega TODOS os `artifacts/ch_*/dialogs.csv` (budgets) + `approved_*.csv` (traduções aprovadas) e
+Agrega TODOS os `artifacts/scenes/ch_*/dialogs.csv` (budgets) + `approved_*.csv` (traduções aprovadas) e
 aplica no binário num ÚNICO `build_output` → `output/<bin>` + patch `.ips`. É o passe que fecha o jogo:
 até aqui o conector provava por capítulo; aqui o jogo inteiro vai junto.
 
@@ -29,9 +29,9 @@ import sdat_format as S
 
 def load_game():
     """Agrega budgets (offset, source, byte_budget) e approved {offset: target} de TODAS as cenas
-    `artifacts/ch_*` que tenham dialogs.csv + approved_*.csv. Ordem estável (scene_id, depois dialogs)."""
+    `artifacts/scenes/ch_*` que tenham dialogs.csv + approved_*.csv. Ordem estável (scene_id, depois dialogs)."""
     budgets, approved, scenes = [], {}, 0
-    for sd in sorted(R.ART.glob("ch_*"), key=lambda p: p.name):
+    for sd in sorted((R.ART / "scenes").glob("ch_*"), key=lambda p: p.name):
         dlg = sd / "dialogs.csv"
         aps = sorted(sd.glob("approved_*.csv"))
         if not dlg.is_file() or not aps:

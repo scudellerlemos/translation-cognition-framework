@@ -19,6 +19,9 @@ class _FakeCursor:
     def fetchall(self):
         return self._rows
 
+    def fetchone(self):                  # `SELECT count(*)` de embedder._knn_k
+        return (len(self._rows),)
+
 
 class _FakeCon:
     """distance -> score via score = 1 - distance**2/2 (ver embedder.search).
@@ -27,7 +30,7 @@ class _FakeCon:
     def __init__(self, rows):
         self._rows = rows
 
-    def execute(self, _sql, _params):
+    def execute(self, _sql, _params=()):
         return _FakeCursor(self._rows)
 
 

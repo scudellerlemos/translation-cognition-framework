@@ -195,3 +195,11 @@ def test_batch_coverage_finds_missing():
     assert "o2" in missing and bad == []
 
 
+def test_batch_coverage_ignores_engine_labels():
+    """Label de engine (passthrough) nao vai ao LLM no batch -> nao pode contar como 'faltando'
+    (senao a cena cai em coverage_failed pra sempre e paga o batch duas vezes)."""
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "lightA02"}, {"offset": "o2", "source": "Hello there friend"}]}
+    assert "o1" in M._batch_reuse(pack)
+    missing, _bad = M._batch_coverage(pack, {"o2": {"t": "Oi amigo"}})
+    assert missing == []

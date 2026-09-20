@@ -103,7 +103,8 @@ def lint_project(root: Path) -> list[dict]:
     #   2) plano único legado (`translation_plan.json`);
     #   3) dialogs.csv + approved_translations.csv.
     pairs = []
-    scene_plans = sorted(art.glob("ch_*/translation_plan_*.json"))
+    scene_plans = sorted(art.glob("scenes/*/translation_plan_*.json")) or \
+        sorted(art.glob("ch_*/translation_plan_*.json"))   # legado: cenas direto em artifacts/
     plan_f = art / "translation_plan.json"
 
     def _add_plan_lines(pf: Path):
