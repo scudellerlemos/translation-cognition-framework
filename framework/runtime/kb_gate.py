@@ -193,8 +193,8 @@ def check(root, scene) -> dict:
                         "glossary.csv sem coluna 'updated_date' — adicione a coluna com a data da "
                         "ultima revisao de cada termo antes de traduzir."
                     )
-            except Exception:
-                pass
+            except Exception as exc:
+                problems.append(f"glossary.csv ilegivel ({exc!r}) — nao foi possivel checar 'updated_date'.")
 
     # fronteira: declarada em project.json (machine-readable) tem prioridade; senao, so reporta a do log
     frontier = cfg.get("kb_frontier")
@@ -245,8 +245,8 @@ def check(root, scene) -> dict:
                     if undated:
                         warnings.append(f"{undated} entidade(s) em kb_ratified.csv sem data de "
                                         f"ratificacao (coluna '{date_cols[0]}').")
-        except Exception:
-            pass
+        except Exception as exc:
+            warnings.append(f"kb_ratified.csv ilegivel ({exc!r}) — data de ratificacao nao checada.")
 
     return {
         "hard_problems": hard_problems,
