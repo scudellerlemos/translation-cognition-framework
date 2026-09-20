@@ -222,7 +222,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"  - {p}")
         if cg["problems"] and not cg["hard_problems"]:
             print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
-        _run_mandatory_audits(root, chap)
+        # scenes_glob: chap e so um rotulo (nao um capitulo real) -- filtrar por ele faria os audits
+        # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` usado mais abaixo).
+        _run_mandatory_audits(root, None if scenes_glob else chap)
         return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
     if scenes_glob:
         scenes = _scenes_of_glob(root, scenes_glob)

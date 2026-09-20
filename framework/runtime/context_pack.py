@@ -189,8 +189,10 @@ def _decision_reveal_ok(reveal, here: tuple | None) -> bool:
 
 
 def select_decisions(decisions, present_terms, present_speakers, scene_id: str | None = None):
-    """scene_id (opcional p/ retrocompat) ativa o gate de spoiler _decision_reveal_ok: decisoes
-    com `reveal` explicito e FUTURO para esta cena ficam de fora do pacote (#spoiler leak)."""
+    """scene_id ativa o gate de spoiler _decision_reveal_ok: decisoes com `reveal` explicito e
+    FUTURO para esta cena ficam de fora do pacote (#spoiler leak). scene_id=None preserva o
+    comportamento historico SO p/ decisoes sem tag `reveal` (maioria) -- decisoes COM tag ficam
+    bloqueadas por seguranca (default-deny, sem cena p/ comparar), nao "sem filtro"."""
     here = _pos(scene_id) if scene_id is not None else None
     toks = {t.lower() for t in present_terms} | {s.lower() for s in present_speakers}
     chosen, seen = [], set()

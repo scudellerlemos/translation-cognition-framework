@@ -79,16 +79,21 @@ def check(root, scene) -> dict:
     except (json.JSONDecodeError, OSError, UnicodeDecodeError):
         cfg = {}
     db_path, db_pid = context_pack._db_path(root, cfg)
-
-    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
-    # lacuna do check de glossario abaixo) -- projeto com `db` populado nao tem o .md em disco.
+    kb_rows = g_rows = None
     if db_path:
+        # Fetch 1x aqui p/ os 3 checks DB-aware abaixo (KB, glossario-presenca, glossario-updated_at)
+        # reusarem -- evita abrir Store/rodar get_glossary() de novo em cada check.
         _db_dir = str(Path(__file__).resolve().parent.parent / "db")
         if _db_dir not in sys.path:
             sys.path.insert(0, _db_dir)
         from store import Store
         with Store(db_path) as db:
             kb_rows = db.get_kb(db_pid)
+            g_rows = db.get_glossary(db_pid)
+
+    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
+    # lacuna do check de glossario abaixo) -- projeto com `db` populado nao tem o .md em disco.
+    if db_path:
         if not any((r.get("content") or "").strip() for r in kb_rows):
             hard_problems.append(
                 "KB vazia no DB (tabela kb) — sintetize a KB (skill 03/04) antes de traduzir. "
@@ -140,13 +145,8 @@ def check(root, scene) -> dict:
     # glossary.csv: #85 DB-aware (mesma lacuna do check de universe_knowledge_base.md acima) --
     # projeto com `db` populado nao tem o CSV em disco.
     if db_path:
-        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
-        if _db_dir not in sys.path:
-            sys.path.insert(0, _db_dir)
-        from store import Store
-        with Store(db_path) as db:
-            if not db.get_glossary(db_pid):
-                problems.append("glossario vazio no DB (tabela glossary) — KB incompleta (skills 03/04).")
+        if not g_rows:
+            problems.append("glossario vazio no DB (tabela glossary) — KB incompleta (skills 03/04).")
     else:
         for name in _KB_ARTIFACTS:
             f = art / name
@@ -170,12 +170,6 @@ def check(root, scene) -> dict:
     # #85: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
     # entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header.
     if db_path:
-        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
-        if _db_dir not in sys.path:
-            sys.path.insert(0, _db_dir)
-        from store import Store
-        with Store(db_path) as db:
-            g_rows = db.get_glossary(db_pid)
         undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
         if undated:
             problems.append(
