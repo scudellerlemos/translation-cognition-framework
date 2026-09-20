@@ -21,6 +21,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+from config import SCENE_OK_STATUSES  # noqa: E402  (awaiting_* e pausa legitima, nao falha)
 from run_chapter import (
     _count_lines,  # noqa: E402  (reusa a mesma contagem de linhas do run_chapter)
 )
@@ -42,7 +43,7 @@ def report(root, scenes, *, elapsed_s: float | None = None) -> dict:
     verified_scenes = [s for s in scenes
                        if statuses.get(s, {}).get("status") == "verified" and statuses.get(s, {}).get("verified")]
     attempted = [s for s in scenes if s in statuses]
-    failed = [s for s in attempted if statuses[s].get("status") not in ("verified", "planned")]
+    failed = [s for s in attempted if statuses[s].get("status") not in SCENE_OK_STATUSES]
 
     lines_total = _count_lines(root, scenes)
     lines_verified = _count_lines(root, verified_scenes)

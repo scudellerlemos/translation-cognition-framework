@@ -577,7 +577,9 @@ def _apply_verbatim(root, scene, pairs) -> int:
     srcmap = {ln.get("offset", ""): ln.get("text_source", "") for ln in pdata.get("lines", [])}
     n = 0
     for off, txt in pairs:
-        fitted = model._parity_fit(srcmap.get(off, ""), model._norm_t(txt))
+        if off not in srcmap:          # offset nao existe mais no plano atual (export stale) -> pula
+            continue
+        fitted = model._parity_fit(srcmap[off], model._norm_t(txt))
         tdata.setdefault("lines", {}).setdefault(off, {})["t"] = fitted
         for ln in pdata.get("lines", []):
             if ln.get("offset") == off:
@@ -701,7 +703,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
                                             model=m, budget_tolerance=1.0, quality_note=note)
             if res.get("usage"):
                 cost += model.cost_of(m, res["usage"])
-            ai_n += len(slot["nota"])
+            ai_n += res.get("n_lines", 0)   # so os offsets que realmente casaram no pack atual (nao os pedidos)
     applied = verbatim_n + ai_n
     eff = round(applied / total_marked, 3) if total_marked else None
     rec = {"t": round(_time.time(), 3), "source": str(Path(csv_path).name),

@@ -51,6 +51,11 @@ class TranslationSkill(Skill):
             str(project), scene, backend=backend, require_back=require_back,
             do_verify=do_verify, skip_kb_gate=skip_kb_gate,
         ))
+        # AUDITORIA OBRIGATORIA (spoiler + schema): este e o unico ponto por onde `tcf skill run 06`
+        # chama run_scene -- sem isso, esse caminho de invocacao direta nunca gerava/atualizava
+        # spoiler_audit.json (mesma lacuna corrigida em cli.py:cmd_translate e run_scene.py:main()).
+        rs._audit_spoiler(Path(project))
+        rs._audit_schema(Path(project))
         # run_scene devolve status próprio (verified/planned/...); normaliza p/ o contrato da Skill
         result.setdefault("artifacts", [])
         return result
