@@ -137,22 +137,33 @@ def _write_approved(path: Path, rows: list[dict]) -> None:
         w.writerows([(r.get("offset", ""), r.get("text_target", "")) for r in rows])
 
 
+def _rewrite(before, compiled):
+    """Aplica as regras em sequencia sobre `before`. Retorna (after, regra_que_mudou_por_ultimo)
+    ou (before, None) se nada mudou o texto."""
+    after, applied = before, None
+    for c, rx, repl in compiled:
+        new, n = rx.subn(lambda _m, _r=repl: _r, after)
+        if n:
+            after, applied = new, c
+    return (after, applied) if after != before else (before, None)
+
+
+def _hit(scene, sid, artifact, offset, field, before, after, applied):
+    return {"scene": scene, "scene_id": sid, "artifact": artifact, "offset": offset,
+            "field": field, "before": before, "after": after, "find": applied["find"],
+            "replace": applied["replace"], "note": applied["note"]}
+
+
 def _collect_approved(hits, path, scene, sid, compiled):
     """Coleta hits (dry-run) na coluna text_target do approved_<id>.csv."""
     for r in _read_approved(path):
         before = r.get("text_target", "")
         if not before:
             continue
-        after, applied = before, None
-        for c, rx, repl in compiled:
-            new, n = rx.subn(lambda _m, _r=repl: _r, after)
-            if n:
-                after, applied = new, c
-        if after != before and applied is not None:
-            hits.append({"scene": scene, "scene_id": sid, "artifact": "approved",
-                         "offset": r.get("offset", ""), "field": "text_target",
-                         "before": before, "after": after, "find": applied["find"],
-                         "replace": applied["replace"], "note": applied["note"]})
+        after, applied = _rewrite(before, compiled)
+        if applied is not None:
+            hits.append(_hit(scene, sid, "approved", r.get("offset", ""), "text_target",
+                             before, after, applied))
 
 
 def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
@@ -160,23 +171,16 @@ def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
         return
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[tm_correct] AVISO: {path.name} ilegivel ({exc!r}) -- NAO corrigido.")
         return
     for off, v in iterator(data):
         before = v.get(field, "")
         if not before:
             continue
-        after = before
-        applied = None
-        for c, rx, repl in compiled:
-            new, n = rx.subn(lambda _m, _r=repl: _r, after)
-            if n:
-                after = new
-                applied = c
-        if after != before and applied is not None:
-            hits.append({"scene": scene, "scene_id": sid, "artifact": artifact, "offset": off,
-                         "field": field, "before": before, "after": after,
-                         "find": applied["find"], "replace": applied["replace"], "note": applied["note"]})
+        after, applied = _rewrite(before, compiled)
+        if applied is not None:
+            hits.append(_hit(scene, sid, artifact, off, field, before, after, applied))
 
 
 def apply(root, corrections, chapter=None) -> dict:
@@ -196,7 +200,7 @@ def apply(root, corrections, chapter=None) -> dict:
             try:
                 data = json.loads(path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, OSError):
-                continue
+                continue                               # ja avisado por plan() -> _collect
             changed = False
             corrected_offsets = []
             for off, v in iterator(data):

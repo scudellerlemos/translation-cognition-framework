@@ -33,6 +33,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io  # noqa: E402  (sibling; enumeracao de cenas em disco — leaf, sem dep de context_pack)
 import state_index  # noqa: E402  (sibling no mesmo dir)
 
 FRAMEWORK = _HERE.parent
@@ -467,7 +468,6 @@ def load_translated_scenes(root: Path, cfg: dict | None = None) -> list:
             by_scene.setdefault(sid, {})[r.get("offset", "")] = {
                 "source": r.get("source") or "", "target": r.get("target") or ""}
         return [(sid, sid, lines) for sid, lines in sorted(by_scene.items())]
-    import artifact_io
     out = []
     for scene in artifact_io.scenes(root):
         sid = scene_id_of(scene)

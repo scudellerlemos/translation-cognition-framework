@@ -121,7 +121,9 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
         for plan_path in sorted(scene_dir.glob("translation_plan_*.json")):
             try:
                 data = json.loads(plan_path.read_text(encoding="utf-8-sig"))
-            except (json.JSONDecodeError, OSError):
+            except (json.JSONDecodeError, OSError) as exc:
+                print(f"[migrate] AVISO: {plan_path} ilegivel ({exc!r}) -- speaker/tom/risco dessa "
+                      f"cena ficam sem metadado.")
                 continue
             lines = data.get("lines", [])
             if isinstance(lines, dict):
@@ -202,7 +204,9 @@ def _migrate_back_translations(db: Store, project_id: str, root: Path) -> int:
         for bt_path in sorted(scene_dir.glob("back_translation_*.json")):
             try:
                 data = json.loads(bt_path.read_text(encoding="utf-8-sig"))
-            except (json.JSONDecodeError, OSError):
+            except (json.JSONDecodeError, OSError) as exc:
+                print(f"[migrate] AVISO: {bt_path} ilegivel ({exc!r}) -- back-translations dessa cena "
+                      f"NAO migradas.")
                 continue
             entries = [e for e in data.get("entries", []) if e.get("offset")]
             if entries:
