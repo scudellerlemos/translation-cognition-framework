@@ -50,3 +50,10 @@ def test_score_engine_encoding_matches_registry_utf8_spelling_to_collector_key()
     hit, _ = tc._score_engine(evidence, engine)
     miss, _ = tc._score_engine({**evidence, "sample_encodings": {}}, engine)
     assert hit - miss == pytest.approx(0.10)
+
+
+def test_empty_magic_does_not_match_every_engine():
+    """Arquivo de 0 bytes gera magic "" e expected.startswith("") era sempre True."""
+    engine = {"signatures": {"magic_bytes": "46696c656e616d65"}}
+    _, reasons = tc._score_engine({"magic_bytes": {"": ["empty.bin"]}}, engine)
+    assert not any(r.startswith("magic_bytes") for r in reasons)

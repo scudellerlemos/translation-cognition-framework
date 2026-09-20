@@ -113,6 +113,19 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                 except ValueError:
                     E("dialogs.csv", f"{i}: byte_budget não-inteiro")
 
+    def check_target(label, i, s, tgt):
+        for tk in tokens:
+            if s.count(tk) != tgt.count(tk):
+                E(label, f"{i}: token {tk} {s.count(tk)}→{tgt.count(tk)}")
+        # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
+        # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
+        for rx in rx_tokens:
+            ms, mt = sorted(rx.findall(s)), sorted(rx.findall(tgt))
+            if ms != mt:
+                E(label, f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}")
+        if s.count("\\n") != tgt.count("\\n"):
+            W(label, f"{i}: nº de quebras '\\n' difere do source")
+
     # --- approved_translations.csv (casa com dialogs + preserva tokens)
     if has("approved_translations.csv"):
         for r in _csv(art / "approved_translations.csv"):
@@ -122,18 +135,24 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                 E("approved_translations.csv", f"id '{i}' não existe em dialogs.csv")
             s = src_text.get(i)
             if s is not None:
-                for tk in tokens:
-                    if s.count(tk) != tgt.count(tk):
-                        E("approved_translations.csv", f"{i}: token {tk} {s.count(tk)}→{tgt.count(tk)}")
-                # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
-                # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
-                for rx in rx_tokens:
-                    ms, mt = sorted(rx.findall(s)), sorted(rx.findall(tgt))
-                    if ms != mt:
-                        E("approved_translations.csv",
-                          f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}")
-                if s.count("\\n") != tgt.count("\\n"):
-                    W("approved_translations.csv", f"{i}: nº de quebras '\\n' difere do source")
+                check_target("approved_translations.csv", i, s, tgt)
+
+    # --- layout por cena: scenes/<cena>/dialogs.csv + approved_*.csv (o flat acima nao existe mais nos
+    # projetos atuais -> sem isto a preservacao de tokens NUNCA era conferida)
+    for sd in sorted(p for p in (art / "scenes").glob("*") if p.is_dir()):
+        if not (sd / "dialogs.csv").is_file():
+            continue
+        drows = _csv(sd / "dialogs.csv")
+        tcol = "text_source" if (drows and "text_source" in drows[0]) else src.get("text_column", "")
+        scene_src = {r.get(idc): (r.get(tcol) or "") for r in drows}
+        for ap in sorted(sd.glob("approved_*.csv")):
+            label = f"scenes/{sd.name}/{ap.name}"
+            for r in _csv(ap):
+                i = r.get(idc)
+                if i not in scene_src:
+                    E(label, f"id '{i}' não existe em dialogs.csv da cena")
+                else:
+                    check_target(label, i, scene_src[i], r.get("text_target", "") or "")
 
     # --- translation_plan.json (legado sem sufixo — poc_pipeline antigo)
     if has("translation_plan.json"):
