@@ -384,3 +384,11 @@ def test_run_roundtrip_restores_preexisting_output(tmp_path, monkeypatch):
 
     assert (tmp_path / "output" / "game.bin").read_bytes() == b"REAL-OUTPUT"
     assert not list((tmp_path / "output").glob("*.smoke_stale"))
+
+
+def test_find_source_bad_json_warns(tmp_path, capsys):
+    project_json = tmp_path / "project.json"
+    project_json.write_text("{not valid json", encoding="utf-8")
+
+    cs._find_source(tmp_path, project_json)
+    assert "AVISO: project.json ilegivel" in capsys.readouterr().out

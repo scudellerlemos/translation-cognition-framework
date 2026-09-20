@@ -94,5 +94,5 @@ def _warn_if_connector_stale(root: Path, scene: str, cfg: dict) -> None:
             print(f"[S3] AVISO: conector mudou desde o último verify de '{scene}' "
                   f"(hash salvo: {last_hash[:8]}… ≠ atual: {_connector_hash(root, cfg)[:8]}…). "
                   "Re-verificação recomendada.")
-    except Exception:
-        pass
+    except (OSError, ValueError, AttributeError) as exc:
+        print(f"[S3] AVISO: não consegui checar o hash do conector de '{scene}' ({exc!r}).")

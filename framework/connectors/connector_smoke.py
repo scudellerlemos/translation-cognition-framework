@@ -24,6 +24,7 @@ Por que isso importa para engine desconhecida:
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import hashlib
 import json
@@ -79,8 +80,8 @@ def smoke(project_root: Path, game_data_dir: Path | None = None, *, roundtrip: b
             try:
                 cfg = json.loads(project_json.read_text(encoding="utf-8"))
                 id_col = cfg.get("source", {}).get("id_column", "offset")
-            except Exception:
-                pass
+            except (OSError, ValueError, AttributeError) as exc:
+                print(f"[connector_smoke] AVISO: project.json ilegivel ({exc!r}) -- id_column='offset'.")
         with dialogs_csv.open(encoding="utf-8", newline="") as f:
             cols = set(next(csv.reader(f), []))
         text_cols = [c for c in cols if c.startswith("text_")]
@@ -234,8 +235,8 @@ def _find_source(project_root: Path, project_json: Path) -> Path | None:
                 p = project_root / declared
                 if p.is_file():
                     return p
-        except Exception:
-            pass
+        except (OSError, ValueError, AttributeError) as exc:
+            print(f"[connector_smoke] AVISO: project.json ilegivel ({exc!r}) -- sem source_binary.")
     return None
 
 
@@ -262,10 +263,8 @@ def _sha256(p: Path) -> str:
 
 
 def main() -> None:
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     flags = [a for a in sys.argv[1:] if a.startswith("--")]
 

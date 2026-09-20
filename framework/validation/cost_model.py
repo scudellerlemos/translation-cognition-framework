@@ -21,6 +21,7 @@ Uso:  python cost_model.py <dir-do-projeto> [--report]   (--report grava artifac
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import json
 import sys
@@ -158,10 +159,8 @@ def cost_scenarios(root: Path) -> dict:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     args = sys.argv[1:]
     report = "--report" in args
     root = Path(next((a for a in args if not a.startswith("--")), "."))

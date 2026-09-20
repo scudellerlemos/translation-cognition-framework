@@ -28,6 +28,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import re
@@ -752,10 +753,8 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Revisao humana por capitulo (export CSV marcado / apply do devolvido).")
     sub = ap.add_subparsers(dest="cmd", required=True)
     pe = sub.add_parser("export", help="gera o CSV marcado p/ revisao (capitulo, ou JOGO TODO se omitir)")

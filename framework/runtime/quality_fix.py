@@ -24,6 +24,7 @@ Uso:  python quality_fix.py <projeto> <worklist.csv> [--apply] [--model M] [--js
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import sys
@@ -128,10 +129,8 @@ def apply(root, worklist, *, model_name=None, max_usd=None) -> dict:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Re-traducao dirigida das linhas 'revise' (dados propoem; script aplica).")
     ap.add_argument("project")
     ap.add_argument("worklist", help="CSV do quality_gate --export")
