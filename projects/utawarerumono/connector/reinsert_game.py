@@ -115,7 +115,14 @@ def main():
     src_by = {o: s for o, s, _ in budgets}
 
     def translit_of(off_hex):
-        return R.transliterate(approved.get(off_hex, src_by.get(off_hex, "")))
+        # Mesmo fallback de build_output() p/ continuação fora do corpus (reinsert.py:233-234): ler do
+        # ORIGINAL, não "" — "" faria pos/new_abs subestimar o tamanho real gravado p/ esse membro do
+        # run, corrompendo a posição calculada de TODO membro seguinte no mesmo run.
+        if off_hex in approved:
+            return R.transliterate(approved[off_hex])
+        if off_hex in src_by:
+            return R.transliterate(src_by[off_hex])
+        return R.transliterate(S.read_cstr(original, int(off_hex, 16)).decode("utf-8", "replace"))
 
     new_abs = {}
     for _head_hex, idx, new_local, _ptrs, run in repoints:
