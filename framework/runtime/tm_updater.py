@@ -75,6 +75,11 @@ def sync_scenes(root, cfg: dict, scenes: list, *, approved_at: str) -> int:
     # sync inteiro (todas as cenas da chamada) em vez de so ficar de fora do indice de upsert.
     by_key = {(e["source_game"], e["src_key"]): i for i, e in enumerate(existing)
               if e.get("source_game") and e.get("src_key")}
+    n_malformed = sum(1 for e in existing if not (e.get("source_game") and e.get("src_key")))
+    if n_malformed:
+        print(f"[tm_updater] AVISO: {n_malformed} entrada(s) de tm/{series}.json sem "
+              f"source_game/src_key -- fora do indice de dedup (upsert pode duplicar em vez de "
+              f"atualizar se o mesmo par for sincronizado de novo).")
 
     rs = paths.run_state(root)
     verified = set()

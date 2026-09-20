@@ -76,8 +76,13 @@ def check(root, scene) -> dict:
     cfg_path = root / "project.json"
     try:
         cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
-    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+        # cfg={} faria _db_path() tratar um projeto DB-backed como flat-file calado -- os checks de
+        # KB/glossario cairiam pro caminho de arquivo (sempre "ausente") em vez de acusar o
+        # project.json quebrado. Vira hard_problem em vez de mascarar.
         cfg = {}
+        hard_problems.append(f"project.json corrompido/ilegivel ({e}) — corrija antes de continuar "
+                              f"(deteccao de DB vs. artefatos flat fica incerta enquanto isso).")
     db_path, db_pid = context_pack._db_path(root, cfg)
     kb_rows = g_rows = None
     if db_path:

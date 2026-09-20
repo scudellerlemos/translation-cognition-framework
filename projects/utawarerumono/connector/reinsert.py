@@ -140,7 +140,12 @@ def _head_of(original: bytes, off: int, pidx, files) -> int | None:
     for _ in range(S.MAX_RUN):
         prev = original.rfind(b"\x00", f.offset, cur - 1)
         if prev < 0:
-            return None
+            # nenhum \0 entre f.offset e cur -- ou f.offset E o inicio da string anterior (1a
+            # string do arquivo, sem padding antes dela: rfind() com start=f.offset nunca deixa
+            # `cur` chegar a valer f.offset, entao esse caso precisa do check explicito aqui).
+            if original[f.offset] == 0x00:
+                return None
+            return f.offset if is_head(original, f.offset, pidx) else None
         cur = prev + 1                      # início da string anterior
         if original[cur] == 0x00:           # padding/fim de bloco -> sem head
             return None

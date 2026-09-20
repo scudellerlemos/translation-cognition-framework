@@ -202,3 +202,14 @@ def test_rebuild_container_preserves_pack_integrity():
     assert [f.name for f in new_files] == [f.name for f in files]
     assert all(a.end == b.offset for a, b in zip(new_files, new_files[1:]))
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in new_files)
+
+
+def test_head_of_finds_head_at_file_start_no_padding():
+    """_head_of: cabeça sem padding antes dela (1ª string do arquivo, offset == f.offset) precisa
+    ser achada ao caminhar pra trás a partir de uma continuação -- rfind(.., f.offset, cur-1) nunca
+    deixa `cur` chegar a valer f.offset, então esse caso exige o check explícito quando prev < 0."""
+    body = b"AAA\x00BBB\x00"          # head "AAA" (pointer próprio) + continuação "BBB" (sem pointer)
+    f = S.ScriptFile(index=0, name="X", offset=0, size=len(body))
+    pidx = {0: []}                    # is_head() só faz `off in idx`
+    assert R._head_of(body, 4, pidx, [f]) == 0          # 4 = início de "BBB"
+    assert R._head_of(body, 0, pidx, [f]) == 0          # já é head, atalho direto
