@@ -35,7 +35,11 @@ class TranslationSkill(Skill):
         if problems:
             return problems
         if not (Path(project) / "artifacts" / "scenes").is_dir():
-            problems.append("artifacts/scenes/ ausente — rode a extração (skill 00) antes")
+            problems.append(
+                "artifacts/scenes/ ausente — rode a extração (skill 00) e depois "
+                "python framework/runtime/split_scenes.py <projeto> (skill 00 sozinha nao cria "
+                "artifacts/scenes/)"
+            )
         return problems
 
     def run(self, project: Path, *, scene: str | None = None, backend: str = "api",

@@ -22,8 +22,15 @@ _PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
 def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
     """Custo US$ de uma chamada a partir do usage (in/out/cache_read/cache_write). A Batch API tem
     desconto de 50% sobre TODO o uso (batch=True -> 0.5x)."""
+    if not u:
+        return 0.0
     p = _PRICE.get(model)
-    if not p or not u:
+    if not p:
+        import warnings as _warnings
+        _warnings.warn(
+            f"cost.py: modelo {model!r} sem preco em _PRICE -- custo registrado como 0.0 "
+            f"(orcamento --max-usd NAO detecta gasto real deste modelo; adicione o preco em _PRICE).",
+            RuntimeWarning, stacklevel=2)
         return 0.0
     base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
             + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])

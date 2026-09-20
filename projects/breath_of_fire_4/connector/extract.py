@@ -340,6 +340,8 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
 
 if __name__ == '__main__':
-    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('project.json')
+    # argv[1] = raiz do projeto (nao project.json) -- mesma convencao de souldiers/trails_sky_sc
+    # e do que connector_smoke.py ja passa; sem isso, o smoke test falha sempre p/ este conector.
+    proj_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('.')
     override = sys.argv[2] if len(sys.argv) > 2 else None
-    main(proj, override)
+    main(proj_root / 'project.json', override)

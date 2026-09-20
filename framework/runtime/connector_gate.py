@@ -64,7 +64,10 @@ def check(root) -> dict:
     completude de conector e uma propriedade do PROJETO, nao de uma cena especifica)."""
     root = Path(root)
     cfg_path = root / "project.json"
-    cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
+    except (json.JSONDecodeError, OSError):
+        cfg = {}
     hard_problems: list[str] = []
     for key, default in _SCRIPTS:
         p = _connector_script(root, cfg, key, default)
