@@ -803,8 +803,9 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
             try:
                 ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
                 merged[scene].update({o: v for o, v in ex.items() if isinstance(v, dict)})
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"[batch] AVISO: {existing.name} ilegivel ({exc!r}) -- as linhas ja pagas desse "
+                      f"arquivo serao re-traduzidas e o arquivo sobrescrito.")
         miss, badpar = _batch_coverage(pack, merged[scene])
         if not miss and not badpar:
             _write_translations(root, scene, {"lines": merged[scene]})

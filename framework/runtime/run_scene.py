@@ -36,6 +36,7 @@ if str(_VALIDATION_DIR) not in sys.path:
     sys.path.insert(0, str(_VALIDATION_DIR))
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
+import cost_report  # noqa: E402  (leitor unico do api_ledger.jsonl)
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
@@ -101,21 +102,8 @@ def _checkpoint(root: Path, scene: str, patch: dict):
 def _ledger_scene_cost(root: Path, scene: str) -> float:
     """Custo-VERDADE da cena = soma de TODAS as chamadas no api_ledger.jsonl (cada retry de cobertura e
     cada escalonamento de fitting), nao so a ultima translate/back. E o numero que casa com o saldo."""
-    p = paths.ledger(root)
-    if not p.is_file():
-        return 0.0
-    tot = 0.0
-    for line in p.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            r = json.loads(line)
-        except Exception:
-            continue
-        if r.get("scene") == scene:
-            tot += r.get("cost_usd", 0.0)
-    return round(tot, 5)
+    return round(sum(r.get("cost_usd", 0.0) for r in cost_report.read_ledger(root)
+                     if r.get("scene") == scene), 5)
 
 
 def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, verified):

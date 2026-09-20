@@ -158,19 +158,8 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
             f"dialogs.csv nao encontrado (rode extract.py primeiro): {dialogs_csv}"
         )
 
-    translations: dict[str, str] = {}
-    n_rows = 0
-    with approved_csv.open(encoding="utf-8-sig", newline="") as f:
-        for row in csv.DictReader(f):
-            n_rows += 1
-            key = row.get("offset", "").strip()
-            # text_target = coluna canonica (build_plan_chapter / export_to_flat); text_pt = legado.
-            val = row.get("text_target") or row.get("text_pt") or ""
-            if key and val.strip():   # strip so p/ testar vazio: espaco final de linha identity e conteudo
-                translations[key] = val
-    if n_rows and not translations:
-        raise ValueError(f"{approved_csv} tem {n_rows} linha(s) mas nenhuma com coluna text_target/"
-                         f"text_pt preenchida -- reinsercao geraria um .pac identico ao original")
+    translations = connector_io.load_approved(
+        approved_csv, "reinsercao geraria um .pac identico ao original")
 
     budgets = _load_byte_budgets(dialogs_csv)
 
