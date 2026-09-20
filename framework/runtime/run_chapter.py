@@ -209,7 +209,9 @@ def _chapter_cost(root, chap) -> float:
     """Gasto REAL ja contabilizado neste capitulo (delta do ledger, so cenas ch_<chap>_*)."""
     try:
         return cost_report.report(root, chapter=chap).get("total_usd", 0.0)
-    except Exception:
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"[run_chapter] AVISO: nao consegui ler o gasto do capitulo ({exc!r}) -- "
+              "o teto --max-usd NAO esta sendo aplicado.", file=sys.stderr)
         return 0.0
 
 
