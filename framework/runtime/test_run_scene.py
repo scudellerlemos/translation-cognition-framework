@@ -383,3 +383,137 @@ def test_audit_schema_never_raises_on_failure(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(rs.validate, "validate_project", boom)
     rs._audit_schema(tmp_path)  # não deve levantar
     assert "AVISO" in capsys.readouterr().out
+
+
+# --- ramos de borda: guards, avisos de gate, pretranslated, back awaiting/ready, auditorias ----------
+def test_empty_scene_raises(env):
+    root, _scene, _st = env
+    with pytest.raises(ValueError, match="vazia"):
+        rs.run_scene(root, "")
+
+
+def test_connector_wrong_type_raises_before_any_work(env):
+    root, scene, _st = env
+    (root / "project.json").write_text(
+        json.dumps({"title": "T", "connector": {"build_plan_script": 123}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="mal configurado"):
+        rs.run_scene(root, scene)
+
+
+def test_unknown_connector_key_only_warns(env, capsys):
+    root, scene, st = env
+    (root / "project.json").write_text(
+        json.dumps({"title": "T", "connector": {"chave_estranha": "x"}}), encoding="utf-8")
+    st["runs"] = [(0, ""), (0, "")]
+    assert rs.run_scene(root, scene)["status"] == "verified"
+    assert "[cfg] AVISO" in capsys.readouterr().out
+
+
+def test_gate_warnings_are_printed_without_blocking(env, capsys):
+    root, scene, st = env
+    st["connector"]["warnings"] = ["sem test_roundtrip"]
+    st["kb"]["warnings"] = ["KB velha"]
+    st["runs"] = [(0, ""), (0, "")]
+    assert rs.run_scene(root, scene)["status"] == "verified"
+    out = capsys.readouterr().out
+    assert "[connector] aviso: sem test_roundtrip" in out and "[kb] aviso: KB velha" in out
+
+
+def test_pretranslated_reuses_batch_output_when_file_exists(env, capsys):
+    root, scene, st = env
+    paths.translations(root, scene, "AREAD001").write_text("{}", encoding="utf-8")
+    st["translate_exc"] = RuntimeError("nao deveria chamar M.translate")
+    st["runs"] = [(0, ""), (0, "")]
+    assert rs.run_scene(root, scene, pretranslated=True)["status"] == "verified"
+    assert "traducao do batch reaproveitada" in capsys.readouterr().out
+
+
+def test_pretranslated_falls_back_to_translate_when_batch_left_no_file(env, capsys):
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    assert rs.run_scene(root, scene, pretranslated=True)["status"] == "verified"
+    assert "batch nao produziu a traducao" in capsys.readouterr().out
+
+
+def test_dedup_summary_is_printed_when_tm_reused_lines(env, capsys):
+    root, scene, st = env
+    st["tr"] = {**st["tr"], "reused": 2, "novel": 1}
+    st["runs"] = [(0, ""), (0, "")]
+    rs.run_scene(root, scene)
+    assert "dedup: 2/3 linha(s) reaproveitadas da TM" in capsys.readouterr().out
+
+
+def test_retranslate_failure_during_fitting_escalation(env):
+    root, scene, st = env
+    st["runs"] = [(0, ""), (3, "fitting")]
+    st["over"] = ["X:0:1"]
+
+    def boom(r, s, offsets, *, budget_tolerance, backend):
+        raise RuntimeError("api caiu no retighten")
+    st["retranslate"] = boom
+    r = rs.run_scene(root, scene, backend="api")
+    assert r["status"] == "api_translate_failed" and "retighten" in r["error"]
+
+
+def test_back_awaiting_without_require_back_is_only_reported(env, capsys):
+    root, scene, st = env
+    st["highs"] = [{"offset": "X:0:1"}]
+    st["back"] = {"status": model.AWAITING, "prompt": "back.md", "expected_output": "o.json"}
+    st["runs"] = [(0, ""), (0, "")]
+    assert rs.run_scene(root, scene)["status"] == "verified"
+    assert "apenas reportado" in capsys.readouterr().out
+
+
+def test_back_ready_reports_existing_path(env, capsys):
+    root, scene, st = env
+    st["highs"] = [{"offset": "X:0:1"}]
+    st["back"] = {"status": model.READY, "path": "bt.json"}
+    st["runs"] = [(0, ""), (0, "")]
+    rs.run_scene(root, scene)
+    assert "back-translation presente: bt.json" in capsys.readouterr().out
+
+
+def test_state_index_warnings_are_surfaced(env, monkeypatch, capsys):
+    root, scene, st = env
+    monkeypatch.setattr(rs.state_index, "build",
+                        lambda r, **k: {"tm": 1, "cards": 0, "decisions": 0, "warnings": ["TM torta"]})
+    st["runs"] = [(0, ""), (0, "")]
+    rs.run_scene(root, scene)
+    assert "[state_index] AVISO: TM torta" in capsys.readouterr().out
+
+
+def test_persist_fitting_diagnostics_failure_only_warns(env, monkeypatch, capsys):
+    root, scene, _st = env
+
+    def boom(*a, **k):
+        raise RuntimeError("sem plano")
+    monkeypatch.setattr(rs.M, "over_budget_offsets", boom)
+    rs._persist_fitting_diagnostics(root, scene, "AREAD001")
+    assert "diagnostico de fitting falhou" in capsys.readouterr().out
+
+
+def test_metrics_computes_back_pass_rate_from_entries(env):
+    root, scene, _st = env
+    bt = paths.back_translation(root, scene, "AREAD001")
+    bt.write_text(json.dumps({"entries": [{"verdict": "pass"}, {"verdict": "revise"}]}), encoding="utf-8")
+    rec = rs._metrics(root, scene, "AREAD001", n_lines=2, tr={}, bt={}, n_high=1, verified=True)
+    assert rec["back_pass_rate"] == 0.5
+
+
+@pytest.mark.parametrize("rep,needle", [
+    ({"name_leaks": [1], "gender_flags": [], "clean": False}, "ALERTA: 1 vazamento"),
+    ({"name_leaks": [], "gender_flags": [1, 2], "clean": False}, "2 linha(s) a revisar por GENERO"),
+    ({"name_leaks": [], "gender_flags": [], "clean": True}, "OK: nenhum vazamento"),
+])
+def test_audit_spoiler_reports_each_outcome(tmp_path, monkeypatch, capsys, rep, needle):
+    monkeypatch.setattr(rs.spoiler_check, "audit_and_persist", lambda r: rep)
+    rs._audit_spoiler(tmp_path)
+    assert needle in capsys.readouterr().out
+
+
+def test_audit_spoiler_failure_only_warns(tmp_path, monkeypatch, capsys):
+    def boom(r):
+        raise RuntimeError("kaboom")
+    monkeypatch.setattr(rs.spoiler_check, "audit_and_persist", boom)
+    rs._audit_spoiler(tmp_path)
+    assert "[spoiler-audit] AVISO" in capsys.readouterr().out
