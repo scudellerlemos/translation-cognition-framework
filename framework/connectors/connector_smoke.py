@@ -166,6 +166,7 @@ def _run_roundtrip(
     # Salvar approved_translations.csv original se existir (restaurar depois)
     approved = project_root / "artifacts" / "approved_translations.csv"
     backup = None
+    stale_bak: tuple[Path, Path] | None = None
     if approved.is_file():
         backup = approved.with_suffix(".smoke_backup")
         shutil.copy2(approved, backup)
@@ -182,7 +183,8 @@ def _run_roundtrip(
         output_dir.mkdir(exist_ok=True)
         stale = _find_output(project_root, source_path)
         if stale is not None:                # output/ velho faria o SHA passar sem o reinsert rodar de verdade
-            stale.unlink()
+            stale_bak = (stale, stale.with_name(stale.name + ".smoke_stale"))
+            stale.replace(stale_bak[1])      # guardado, restaurado no finally (pode ser o output real)
 
         cmd = [sys.executable, str(reinsert_py), str(project_root)]
         if game_data_dir:
@@ -207,6 +209,9 @@ def _run_roundtrip(
                 f"— strings codificadas com bytes diferentes do original"
             )
     finally:
+        if stale_bak is not None:
+            stale_bak[0].unlink(missing_ok=True)
+            stale_bak[1].replace(stale_bak[0])
         if backup and backup.is_file():
             shutil.copy2(backup, approved)
             backup.unlink()

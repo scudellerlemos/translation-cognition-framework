@@ -231,3 +231,42 @@ def test_generated_stub_cli_accepts_project_root_dir(tmp_path):
     r = subprocess.run([sys.executable, str(stub), str(tmp_path)], capture_output=True, text=True)  # nosec B603
     assert r.returncode == 0, r.stderr
     assert (tmp_path / "output" / "game.bin").read_bytes() == b"AAA\x00"
+
+
+def test_linear_reinsert_strict_encode_never_writes_question_mark(tmp_path):
+    """Char fora do encoding do stub (ex.: 'é' em ascii) falhava em silencio virando '?' no jogo."""
+    import pytest
+    src = tmp_path / "game.bin"
+    src.write_bytes(b"Hello\x00")
+    project_json = _project_json(tmp_path, "game.bin")
+    _write_approved_same_as_source(tmp_path, [{"offset": "0x0", "text_en": "Hé"}])
+    ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 1.0}, "string_density": 0.9}
+    mod = _exec_module(sg.generate_reinsert(ev), "gen_reinsert_linear_strict")
+    with pytest.raises((UnicodeEncodeError, SystemExit)):
+        mod.main(project_json, str(src))
+    out = tmp_path / "output" / "game.bin"
+    assert not out.exists() or b"?" not in out.read_bytes()
+
+
+def test_pointer_reinsert_shrink_keeps_slot_size_and_dir_override_falls_back(tmp_path):
+    """Traducao menor preenche o slot ate o budget (em bytes) e um argv[2] que e DIRETORIO
+    (connector_smoke passa game_data_dir) cai no source_binary do project.json."""
+    s1, s2 = b"Alpha", b"Beta"
+    toc = struct.pack("<II", 8, 8 + len(s1) + 1)
+    data = toc + s1 + b"\x00" + s2 + b"\x00"
+    (tmp_path / "game.bin").write_bytes(data)
+    project_json = _project_json(tmp_path, "game.bin")
+    ev = {"has_control_tokens": False, "sample_encodings": {"ascii": 0.3}, "string_density": 0.1}
+    extract_code = sg.generate(ev).replace("_TOC_ENTRY_COUNT = None", "_TOC_ENTRY_COUNT = 2")
+    _exec_module(extract_code, "gen_x_ptr_shrink").main(project_json, str(tmp_path / "game.bin"))
+    rows = list(csv.DictReader((tmp_path / "dialogs.csv").open(encoding="utf-8")))
+    approved = tmp_path / "artifacts" / "approved_translations.csv"
+    approved.parent.mkdir(parents=True, exist_ok=True)
+    with approved.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["offset", "text_target"])
+        for r in rows:
+            w.writerow([r["offset"], "Al" if r["text_en"] == "Alpha" else r["text_en"]])
+    _exec_module(sg.generate_reinsert(ev), "gen_r_ptr_shrink").main(project_json, str(tmp_path))   # dir -> fallback
+    out = (tmp_path / "output" / "game.bin").read_bytes()
+    assert len(out) == len(data) and out[8:14] == b"Al\x00\x00\x00\x00" and out[14:] == data[14:]

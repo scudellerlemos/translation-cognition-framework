@@ -207,6 +207,8 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     # Carrega traduções aprovadas dos approved_*.csv por cena (artifacts/scenes/<scene>/)
     translations: dict[str, str] = {}  # offset_id -> text_target
     scenes_dir = _paths.scenes_dir(root)
+    if not scenes_dir.is_dir():
+        sys.exit(f"ERRO: {scenes_dir} nao existe -- rode split_scenes primeiro")
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
