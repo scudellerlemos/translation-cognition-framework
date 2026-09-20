@@ -2141,7 +2141,7 @@ def test_back_phase_no_back_skips_translation(tmp_path, monkeypatch):
         raise AssertionError("M.back_translate nao deveria ser chamado com no_back=True")
     monkeypatch.setattr(run_scene.M, "back_translate", _boom)
 
-    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", [{"offset": "o1"}],
                                       "api", require_back=False, defer_back=False, no_back=True)
     assert early is None
     assert bt["reviewed"] == 0 and bt["path"] is None
@@ -2160,7 +2160,7 @@ def test_back_phase_require_back_overrides_no_back(tmp_path, monkeypatch):
         return {"status": run_scene.M.DONE, "reviewed": len(highs), "path": None}
     monkeypatch.setattr(run_scene.M, "back_translate", _fake_back_translate)
 
-    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", "50_01", [{"offset": "o1"}],
+    bt, early = run_scene._back_phase(tmp_path, "ch_50_01", [{"offset": "o1"}],
                                       "api", require_back=True, defer_back=False, no_back=True)
     assert early is None
     assert called.get("ran") is True
@@ -2202,7 +2202,7 @@ def _stub_pipeline_after_gates(monkeypatch):
                         lambda r, s, sid, backend, pretranslated: ({"n_lines": 0, "status": "done"}, None))
     monkeypatch.setattr(run_scene, "_fitting_loop",
                         lambda r, s, sid, cfg, backend, do_verify, tr: (tr, True, None))
-    monkeypatch.setattr(run_scene, "_high_lines", lambda r, s, sid: [])
+    monkeypatch.setattr(run_scene.M, "high_risk_lines", lambda r, s: [])
     monkeypatch.setattr(run_scene, "_back_phase",
                         lambda *a, **k: ({"status": "done", "reviewed": 0, "path": None}, None))
     monkeypatch.setattr(run_scene.state_index, "build",

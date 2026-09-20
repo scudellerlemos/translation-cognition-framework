@@ -252,6 +252,27 @@ def test_run_roundtrip_success_matches_hash_and_restores_backup(tmp_path, monkey
     assert not (tmp_path / "artifacts" / "approved_translations.smoke_backup").exists()
 
 
+def test_run_roundtrip_refuses_when_stale_smoke_backup_exists(tmp_path, monkeypatch):
+    # backup de run interrompido guarda o approved REAL; sobrescrevê-lo com o CSV identity temporario
+    # perderia as traducoes aprovadas de verdade.
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+    dialogs_csv = _write_dialogs_csv(tmp_path, [{"offset": "0x0", "text_en": "hello", "byte_budget": "5"}])
+    (tmp_path / "game.bin").write_bytes(b"X")
+    project_json = tmp_path / "project.json"
+    project_json.write_text(json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    approved = tmp_path / "artifacts" / "approved_translations.csv"
+    approved.write_text("identity-temporario", encoding="utf-8")
+    backup = approved.with_suffix(".smoke_backup")
+    backup.write_text("aprovado-real", encoding="utf-8")
+    monkeypatch.setattr(cs.connector_mgr, "_run", lambda *a, **k: pytest.fail("nao deveria rodar reinsert"))
+
+    ok, detail = cs._run_roundtrip(tmp_path, None, dialogs_csv, project_json, "offset")
+
+    assert ok is False and "backup pendente" in detail
+    assert backup.read_text(encoding="utf-8") == "aprovado-real"
+
+
 def test_run_roundtrip_hash_mismatch(tmp_path, monkeypatch):
     (tmp_path / "connector").mkdir()
     (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
@@ -297,18 +318,16 @@ def test_run_roundtrip_ignores_stale_output_when_reinsert_writes_nothing(tmp_pat
 # #95: cobertura de _find_source() e _find_output()
 # ---------------------------------------------------------------------------
 
-def test_find_source_bad_json_with_game_data_dir_returns_none(tmp_path):
+def test_find_source_bad_json_returns_none(tmp_path):
     project_json = tmp_path / "project.json"
     project_json.write_text("{not valid json", encoding="utf-8")
-    game_data_dir = tmp_path / "gd"
-    game_data_dir.mkdir()
 
-    assert cs._find_source(tmp_path, project_json, game_data_dir) is None
+    assert cs._find_source(tmp_path, project_json) is None
 
 
 def test_find_source_nothing_declared_returns_none(tmp_path):
     project_json = tmp_path / "project.json"  # nao existe
-    assert cs._find_source(tmp_path, project_json, None) is None
+    assert cs._find_source(tmp_path, project_json) is None
 
 
 def test_find_output_missing_output_dir_returns_none(tmp_path):
