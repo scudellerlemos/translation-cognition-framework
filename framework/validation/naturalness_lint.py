@@ -24,6 +24,7 @@ import json
 import re
 import sys
 import unicodedata
+import warnings
 from pathlib import Path
 
 VOWELS_H = set("aeiouh")              # onomatopeia "pura" (gritos/suspiros) — cópia aceitável
@@ -69,13 +70,9 @@ def _csv(p: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def lint_project(root: Path) -> list[dict]:
-    """Retorna lista de achados: {offset, check, speaker, source, target, note}."""
-    root = Path(root)
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    idc = (cfg.get("source", {}) or {}).get("id_column", "offset")
-    tokens = cfg.get("formatting_tokens", []) or []
-    # tokens parametrizados (cor {c<N>}/{c-1}/{c-}, etc.): regex, não literais
+def _token_config(cfg: dict) -> tuple[list, list]:
+    """(tokens literais, tokens parametrizados compilados). Parametrizados = cor {c<N>}/{c-1}/{c-}, etc.:
+    regex, não literais."""
     rx_tokens = []
     for p in (cfg.get("formatting_token_patterns", []) or []):
         try:
@@ -83,52 +80,39 @@ def lint_project(root: Path) -> list[dict]:
         except re.error as e:
             # linter e best-effort (achados sao candidatos p/ revisao, nao um gate) -- 1 regex
             # invalida em project.json nao pode derrubar o lint inteiro, so essa checagem de token.
-            import warnings
             warnings.warn(
                 f"naturalness_lint: formatting_token_patterns ignora regex invalida {p!r} ({e})",
-                stacklevel=2,
+                stacklevel=3,
             )
-    art = root / "artifacts"
+    return cfg.get("formatting_tokens", []) or [], rx_tokens
 
-    def strip_tokens(s: str) -> str:
-        s = (s or "").replace("\\n", " ")             # quebra-de-linha literal não é conteúdo
-        for tk in tokens:
-            s = s.replace(tk, " ")
-        for rx in rx_tokens:
-            s = rx.sub(" ", s)
-        return s
 
-    # pares (offset, source, target, speaker). Precedência de fonte:
-    #   1) planos POR CENA do harness (`ch_*/translation_plan_*.json`) — formato canônico em escala;
-    #   2) plano único legado (`translation_plan.json`);
-    #   3) dialogs.csv + approved_translations.csv.
-    pairs = []
+def _load_pairs(art: Path, idc: str) -> list[tuple]:
+    """pares (offset, source, target, speaker). Precedência de fonte:
+      1) planos POR CENA do harness (`ch_*/translation_plan_*.json`) — formato canônico em escala;
+      2) plano único legado (`translation_plan.json`);
+      3) dialogs.csv + approved_translations.csv."""
     scene_plans = sorted(art.glob("scenes/*/translation_plan_*.json")) or \
         sorted(art.glob("ch_*/translation_plan_*.json"))   # legado: cenas direto em artifacts/
     plan_f = art / "translation_plan.json"
+    if scene_plans or plan_f.is_file():
+        return [(l.get("offset"), l.get("text_source", ""), l.get("base_translation", ""), l.get("speaker", ""))
+                for pf in (scene_plans or [plan_f])
+                for l in json.loads(pf.read_text(encoding="utf-8")).get("lines", [])]
+    src = {}
+    if (art / "dialogs.csv").is_file():
+        for r in _csv(art / "dialogs.csv"):
+            src[r.get(idc)] = r.get("text_source", "")
+    if not (art / "approved_translations.csv").is_file():
+        return []
+    return [(r.get(idc), src.get(r.get(idc), ""), r.get("text_target", ""), "")
+            for r in _csv(art / "approved_translations.csv")]
 
-    def _add_plan_lines(pf: Path):
-        for l in json.loads(pf.read_text(encoding="utf-8")).get("lines", []):
-            pairs.append((l.get("offset"), l.get("text_source", ""),
-                          l.get("base_translation", ""), l.get("speaker", "")))
 
-    if scene_plans:
-        for pf in scene_plans:
-            _add_plan_lines(pf)
-    elif plan_f.is_file():
-        _add_plan_lines(plan_f)
-    else:
-        src = {}
-        if (art / "dialogs.csv").is_file():
-            for r in _csv(art / "dialogs.csv"):
-                src[r.get(idc)] = r.get("text_source", "")
-        if (art / "approved_translations.csv").is_file():
-            for r in _csv(art / "approved_translations.csv"):
-                pairs.append((r.get(idc), src.get(r.get(idc), ""), r.get("text_target", ""), ""))
-
-    # whitelist: termos de glossário manter_original (por conteúdo alfabético) + aliases/UI (p/ rótulo)
-    keep_alpha = set()
-    labels = set()
+def _load_whitelist(art: Path) -> tuple[set, set]:
+    """termos de glossário manter_original (por conteúdo alfabético) + aliases/UI (p/ rótulo)."""
+    keep_alpha: set = set()
+    labels: set = set()
     if (art / "glossary.csv").is_file():
         for r in _csv(art / "glossary.csv"):
             if (r.get("handling_rule") or "").strip() == "manter_original":
@@ -139,59 +123,93 @@ def lint_project(root: Path) -> list[dict]:
     if am.is_file():
         for a in json.loads(am.read_text(encoding="utf-8")).get("aliases", []):
             labels.add(_norm(a.get("alias", "")))
+    return keep_alpha, labels
+
+
+def _strip_tokens(s: str, tokens: list, rx_tokens: list) -> str:
+    s = (s or "").replace("\\n", " ")                 # quebra-de-linha literal não é conteúdo
+    for tk in tokens:
+        s = s.replace(tk, " ")
+    for rx in rx_tokens:
+        s = rx.sub(" ", s)
+    return s
+
+
+def _finding(off, chk, spk, s, t, note) -> dict:
+    return {"offset": off, "check": chk, "speaker": spk, "source": s, "target": t, "note": note}
+
+
+def _is_non_dialogue(t: str, spk: str) -> bool:
+    """Rótulo de falante/rig, identificador de asset ou SFX — não é diálogo, fora do lint."""
+    # rótulos de falante / rig (speaker == "rotulo": "Head", "RightFoot", "lightA02",
+    # "Leg_2_B_L") — não são diálogo; o track de labels (`53 00`) cuida deles.
+    if (spk or "").strip().lower() == "rotulo":
+        return True
+    # identificador de asset/rig solto (mesmo sem o speaker certo): "Leg_2_B_L", "gake_parts"
+    # (snake_case), "RightFoot"/"LeftFoot" (CamelCase), "lightA02" (token alfanumérico).
+    ts = (t or "").strip()
+    if (re.match(r"^[A-Za-z][\w]*_[\w]+$", ts)
+            or re.match(r"^[A-Z][a-z]+(?:[A-Z][a-z]+)+$", ts)
+            or re.match(r"^[A-Za-z]+\d+$", ts)):
+        return True
+    # SFX entre asteriscos (didascália de som): "*CRASH*", "*Tap, tap*...", "*CRUNCH* *SNAP*".
+    # Convenção: som ambiente entre `*...*` é mantido. Se fora dos asteriscos não sobra letra → SFX.
+    return "*" in (t or "") and not _alpha(re.sub(r"\*[^*]*\*", " ", t))
+
+
+def _check_identical(off, spk, s, t, ns, plain_s, keep_alpha, labels) -> dict | None:
+    """alvo idêntico ao source (`plain_s` = source sem tokens)."""
+    a = _alpha(plain_s)                               # conteúdo alfabético sem tokens
+    if not a or a in keep_alpha or _is_pure_onomatopoeia(plain_s):
+        return None                                   # numérico/símbolos / nome próprio / grito puro: ok
+    if ns in labels:
+        return _finding(off, "rotulo_cru", spk, s, t, "rótulo de falante idêntico ao source — localizar")
+    return _finding(off, "copia_crua", spk, s, t, "alvo idêntico ao source — traduzir/localizar")
+
+
+def _check_stammer(off, spk, s, t, keep_alpha) -> dict | None:
+    """fragmento inicial residual: stub de 1 letra + reticências idêntico (ex.: "U..."),
+    com o resto traduzido. "X..." é hesitação; "a short" (1 letra + espaço) é palavra real → ignora.
+    Só é RESÍDUO se a inicial foi COPIADA crua (mesma letra source==target) E não é um início
+    legítimo de pt-BR (`STAMMER_OK`: a/e/o/é). "U... Urgh..."->"U..." = resíduo; "U..."->"Nnh..."
+    (localizado, letra diferente) e "E... bem..."->"E..." (palavra pt-BR) NÃO são."""
+    ms = re.match(r"^([^\W\d_])\.\.\.", (s or "").strip())
+    mt = re.match(r"^([^\W\d_])\.\.\.", (t or "").strip())
+    if not (ms and mt and ms.group(1).lower() == mt.group(1).lower()
+            and mt.group(1).lower() not in STAMMER_OK):
+        return None
+    # EXCEÇÃO: gagueira de NOME PRÓPRIO ("K...Kuon?", "H...Honoka") — a inicial é a 1ª letra
+    # da palavra seguinte, que é um nome do glossário (manter_original). Isso é legítimo (regra 5
+    # da referência), não resíduo. Pega a palavra após "X..." e checa contra a whitelist de nomes.
+    mword = re.match(r"^.\.\.\.\s*([^\s?!.,;:]+)", (t or "").strip())
+    nextw = _alpha(mword.group(1)) if mword else ""
+    if nextw and nextw[:1] == mt.group(1).lower() and nextw in keep_alpha:
+        return None                                   # gagueira de nome próprio -> ok
+    return _finding(off, "fragmento_residual", spk, s, t,
+                    f"hesitação inicial '{ms.group(1)}...' copiada do source — localizar")
+
+
+def lint_project(root: Path) -> list[dict]:
+    """Retorna lista de achados: {offset, check, speaker, source, target, note}."""
+    root = Path(root)
+    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    idc = (cfg.get("source", {}) or {}).get("id_column", "offset")
+    tokens, rx_tokens = _token_config(cfg)
+    art = root / "artifacts"
+    pairs = _load_pairs(art, idc)
+    keep_alpha, labels = _load_whitelist(art)
 
     found = []
-    def add(off, chk, spk, s, t, note):
-        found.append({"offset": off, "check": chk, "speaker": spk,
-                      "source": s, "target": t, "note": note})
-
     for off, s, t, spk in pairs:
         ns, nt = _norm(s), _norm(t)
-        if not ns or not nt:
-            continue
-        # rótulos de falante / rig (speaker == "rotulo": "Head", "RightFoot", "lightA02",
-        # "Leg_2_B_L") — não são diálogo; o track de labels (`53 00`) cuida deles.
-        if (spk or "").strip().lower() == "rotulo":
-            continue
-        # identificador de asset/rig solto (mesmo sem o speaker certo): "Leg_2_B_L", "gake_parts"
-        # (snake_case), "RightFoot"/"LeftFoot" (CamelCase), "lightA02" (token alfanumérico).
-        _ts = (t or "").strip()
-        if (re.match(r"^[A-Za-z][\w]*_[\w]+$", _ts)
-                or re.match(r"^[A-Z][a-z]+(?:[A-Z][a-z]+)+$", _ts)
-                or re.match(r"^[A-Za-z]+\d+$", _ts)):
-            continue
-        # SFX entre asteriscos (didascália de som): "*CRASH*", "*Tap, tap*...", "*CRUNCH* *SNAP*".
-        # Convenção: som ambiente entre `*...*` é mantido. Se fora dos asteriscos não sobra letra → SFX.
-        if "*" in (t or "") and not _alpha(re.sub(r"\*[^*]*\*", " ", t)):
+        if not ns or not nt or _is_non_dialogue(t, spk):
             continue
         if ns == nt:                                  # idêntico ao source
-            a = _alpha(strip_tokens(s))               # conteúdo alfabético sem tokens
-            if not a or a in keep_alpha or _is_pure_onomatopoeia(strip_tokens(s)):
-                continue                              # numérico/símbolos / nome próprio / grito puro: ok
-            if ns in labels:
-                add(off, "rotulo_cru", spk, s, t, "rótulo de falante idêntico ao source — localizar")
-            else:
-                add(off, "copia_crua", spk, s, t, "alvo idêntico ao source — traduzir/localizar")
-            continue
-        # fragmento inicial residual: stub de 1 letra + reticências idêntico (ex.: "U..."),
-        # com o resto traduzido. "X..." é hesitação; "a short" (1 letra + espaço) é palavra real → ignora.
-        # Só é RESÍDUO se a inicial foi COPIADA crua (mesma letra source==target) E não é um início
-        # legítimo de pt-BR (`STAMMER_OK`: a/e/o/é). "U... Urgh..."->"U..." = resíduo; "U..."->"Nnh..."
-        # (localizado, letra diferente) e "E... bem..."->"E..." (palavra pt-BR) NÃO são.
-        ms = re.match(r"^([^\W\d_])\.\.\.", (s or "").strip())
-        mt = re.match(r"^([^\W\d_])\.\.\.", (t or "").strip())
-        if (ms and mt and ms.group(1).lower() == mt.group(1).lower()
-                and mt.group(1).lower() not in STAMMER_OK):
-            # EXCEÇÃO: gagueira de NOME PRÓPRIO ("K...Kuon?", "H...Honoka") — a inicial é a 1ª letra
-            # da palavra seguinte, que é um nome do glossário (manter_original). Isso é legítimo (regra 5
-            # da referência), não resíduo. Pega a palavra após "X..." e checa contra a whitelist de nomes.
-            mword = re.match(r"^.\.\.\.\s*([^\s?!.,;:]+)", (t or "").strip())
-            nextw = _alpha(mword.group(1)) if mword else ""
-            if nextw and nextw[:1] == mt.group(1).lower() and nextw in keep_alpha:
-                continue                                   # gagueira de nome próprio -> ok
-            add(off, "fragmento_residual", spk, s, t,
-                f"hesitação inicial '{ms.group(1)}...' copiada do source — localizar")
-
+            f = _check_identical(off, spk, s, t, ns, _strip_tokens(s, tokens, rx_tokens), keep_alpha, labels)
+        else:
+            f = _check_stammer(off, spk, s, t, keep_alpha)
+        if f:
+            found.append(f)
     return found
 
 

@@ -212,75 +212,83 @@ def _chapter_cost(root, chap) -> float:
         return 0.0
 
 
-def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
-                skip_kb_gate=False, batch=True, max_usd=None, scenes_glob=None,
-                skip_connector_gate=False, no_back=False, allow_interactive_fallback=False):
-    root = Path(root)
-    # GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
-    # depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
+def _connector_blocked(root, chap, scenes_glob, skip_connector_gate) -> dict | None:
+    """GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
+    depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
+    Retorna o resultado de run_chapter se bloqueou (audits ja rodados), senao None."""
     cg = connector_gate.check(root)
     for w in cg["warnings"]:
         print(f"[connector] aviso: {w}")
-    if cg["hard_problems"] or (cg["problems"] and not skip_connector_gate):
-        blockers = cg["hard_problems"] + (cg["problems"] if not skip_connector_gate else [])
-        print(f"BLOQUEADO por completude de conector ({len(blockers)}):")
-        for p in blockers:
-            print(f"  - {p}")
-        if cg["problems"] and not cg["hard_problems"]:
-            print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
-        # scenes_glob: chap e so um rotulo (nao um capitulo real) -- filtrar por ele faria os audits
-        # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` usado mais abaixo).
-        _run_mandatory_audits(root, None if scenes_glob else chap)
-        return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
-    if scenes_glob:
-        scenes = _scenes_of_glob(root, scenes_glob)
-        cost_chap = None   # sem filtro ch_* — reporta ledger completo do projeto
-    else:
-        _validate_chapter_arg(root, chap)
-        scenes = artifact_io.scenes(root, chap)
-        cost_chap = chap
-    if not scenes:
-        hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
-        print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
-        _run_mandatory_audits(root, cost_chap)
-        return {"chapter": chap, "scenes": [], "status": "empty"}
-    print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
-          + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
+    if not (cg["hard_problems"] or (cg["problems"] and not skip_connector_gate)):
+        return None
+    blockers = cg["hard_problems"] + (cg["problems"] if not skip_connector_gate else [])
+    print(f"BLOQUEADO por completude de conector ({len(blockers)}):")
+    for p in blockers:
+        print(f"  - {p}")
+    if cg["problems"] and not cg["hard_problems"]:
+        print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
+    # scenes_glob: chap e so um rotulo (nao um capitulo real) -- filtrar por ele faria os audits
+    # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` de _discover_scenes).
+    _run_mandatory_audits(root, None if scenes_glob else chap)
+    return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
 
-    # PREVISIBILIDADE: estima o custo das cenas PENDENTES (nao-verified) ANTES de gastar 1 centavo.
+
+def _discover_scenes(root, chap, scenes_glob) -> tuple[list[str], str | None]:
+    """(cenas, chap p/ filtrar o ledger). scenes_glob: sem filtro ch_* — reporta ledger completo do projeto."""
+    if scenes_glob:
+        return _scenes_of_glob(root, scenes_glob), None
+    _validate_chapter_arg(root, chap)
+    return artifact_io.scenes(root, chap), chap
+
+
+def _preflight_budget(root, scenes, redo, max_usd) -> tuple[set, bool]:
+    """PREVISIBILIDADE: estima o custo das cenas PENDENTES (nao-verified) ANTES de gastar 1 centavo e
+    aplica o TETO DURO: so as cenas cujo custo pessimista acumulado cabe em max_usd sao comprometidas;
+    as que nao cabem sao ADIADAS (skipped_budget), nunca traduzidas caro no interativo. Sem gasto-
+    surpresa: o trabalho iniciado tem custo de pior-caso <= max_usd. Resto resumivel apos recarga.
+    Retorna (adiadas, abortou) -- abortou = nem a 1a cena pendente cabe no teto."""
     pend_est = [s for s in scenes if redo or not _verified(root, s)]
     est = _estimate(root, pend_est)
     print(f"estimativa pre-voo: {est['lines']} linha(s) pendente(s) -> ~${est['lo']:.2f}-${est['hi']:.2f}"
           f" (reuso de TM puxa p/ baixo)"
           + (f" | teto --max-usd ${max_usd:.2f}" if max_usd is not None else ""))
-
-    # TETO DURO PREVISIVEL: comete ao batch SO as cenas cujo custo pessimista acumulado cabe no teto;
-    # as que nao cabem sao ADIADAS (skipped_budget), nunca traduzidas caro no interativo. Sem gasto-
-    # surpresa: o trabalho iniciado tem custo de pior-caso <= max_usd. Resto resumivel apos recarga.
-    affordable, budget_excluded = _fit_budget(root, pend_est, max_usd)
-    budget_excluded = set(budget_excluded)
+    affordable, dropped = _fit_budget(root, pend_est, max_usd)
+    budget_excluded = set(dropped)
     if budget_excluded:
         print(f"[teto ${max_usd:.2f}] {len(budget_excluded)} cena(s) adiada(s) por orcamento "
               f"(resumiveis apos recarga): {', '.join(sorted(budget_excluded, key=context_pack.scene_id_of))}")
     if max_usd is not None and not affordable and pend_est:
         print(f"\nABORTADO ANTES DE GASTAR: nem a 1a cena pendente cabe em --max-usd ${max_usd:.2f} "
               f"(estimativa ~${est['lo']:.2f}-${est['hi']:.2f}). Aumente o teto ou recarregue. Nada foi gasto.")
-        _run_mandatory_audits(root, cost_chap)
-        return {"chapter": chap, "scenes": [], "status": "stopped_budget_preflight"}
+        return budget_excluded, True
+    return budget_excluded, False
 
-    # MODO BATCH: traduz as pendentes QUE CABEM num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
-    batch_status = {}
-    if batch and backend == "api":
-        pending = [s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
-        if pending:
-            batch_status, batch_failed = _batch_phase(
-                root, pending, skip_kb_gate=skip_kb_gate,
-                allow_interactive_fallback=allow_interactive_fallback)
-            if batch_failed:
-                _run_mandatory_audits(root, cost_chap)
-                return {"chapter": chap, "scenes": [], "status": "batch_failed"}
 
+def _over_budget(root, chap, scene, cost_chap, max_usd) -> bool:
+    """TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
+    uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
+    salvas; rode de novo p/ continuar de onde parou."""
+    if max_usd is None:
+        return False
+    spent = _chapter_cost(root, cost_chap)
+    if spent < max_usd:
+        return False
+    print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} >= "
+          f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
+          f"salvas — rode de novo p/ continuar).")
+    _print_cost(root, cost_chap)
+    return True
+
+
+def _scene_loop(root, chap, scenes, cost_chap, batch_status, budget_excluded, *, backend, batch, redo,
+                max_usd, **scene_kw) -> tuple[list, dict | None]:
+    """Roda as cenas em sequencia. Retorna (results, parada) -- parada = None se rodou tudo, senao
+    {"status", "stopped_at"} (custo ja impresso; os audits ficam com o chamador)."""
     results = []
+    # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
+    # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
+    # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
+    defer_back = bool(batch and backend == "api")
     for scene in scenes:
         if not redo and _verified(root, scene):
             print(f"[skip] {scene} ja verified")
@@ -290,54 +298,85 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"[teto] {scene} adiada por orcamento (rode de novo apos recarga)")
             results.append({"scene": scene, "status": "skipped_budget"})
             continue
-        # TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
-        # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
-        # salvas; rode de novo p/ continuar de onde parou.
-        if max_usd is not None:
-            spent = _chapter_cost(root, cost_chap)
-            if spent >= max_usd:
-                print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} >= "
-                      f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
-                      f"salvas — rode de novo p/ continuar).")
-                _print_cost(root, cost_chap)
-                _run_mandatory_audits(root, cost_chap)
-                return {"chapter": chap, "scenes": results, "status": "stopped_budget",
-                        "stopped_at": scene}
+        if _over_budget(root, chap, scene, cost_chap, max_usd):
+            return results, {"status": "stopped_budget", "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
-        # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
-        # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
-        # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
-        defer_back = bool(batch and backend == "api")
-        rebuild_index = not defer_back
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
-        r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
-                         do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
-                         defer_back=defer_back, rebuild_index=rebuild_index,
-                         skip_connector_gate=skip_connector_gate, no_back=no_back)
+        r = RS.run_scene(root, scene, backend=backend, pretranslated=pre,
+                         defer_back=defer_back, rebuild_index=not defer_back, **scene_kw)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
             _print_cost(root, cost_chap)
-            _run_mandatory_audits(root, cost_chap)
-            return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
-    # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
-    # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
-    back_pending: list = []
-    if batch and backend == "api":
-        _rebuild_index_phase(root)
-        verified = [s for s in scenes if _verified(root, s)]
-        if no_back and not require_back:
-            print("[back-batch] pulado (--no-back).")
-        elif max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
-            print(f"[back-batch] pulado: teto de gasto atingido "
-                  f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
-            back_pending = verified
-        else:
-            if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
-                print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
-                      "— back-translation em lote vai rodar.")
-            back_pending = _back_batch_phase(root, verified)
+            return results, {"status": "stopped", "stopped_at": scene}
+    return results, None
+
+
+def _post_pass(root, scenes, cost_chap, *, no_back, require_back, max_usd) -> list:
+    """POS-PASSE do modo batch: rebuild do state_index + back-translation em batch (-50% Opus), 1x pro
+    capitulo inteiro (cada cena deferiu os dois pra cá). Retorna as cenas com back-translation pendente."""
+    _rebuild_index_phase(root)
+    verified = [s for s in scenes if _verified(root, s)]
+    if no_back and not require_back:
+        print("[back-batch] pulado (--no-back).")
+        return []
+    if max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
+        print(f"[back-batch] pulado: teto de gasto atingido "
+              f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
+        return verified
+    if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
+        print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
+              "— back-translation em lote vai rodar.")
+    return _back_batch_phase(root, verified)
+
+
+def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
+                skip_kb_gate=False, batch=True, max_usd=None, scenes_glob=None,
+                skip_connector_gate=False, no_back=False, allow_interactive_fallback=False):
+    root = Path(root)
+    blocked = _connector_blocked(root, chap, scenes_glob, skip_connector_gate)
+    if blocked:
+        return blocked
+    scenes, cost_chap = _discover_scenes(root, chap, scenes_glob)
+    if not scenes:
+        hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
+        print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
+        _run_mandatory_audits(root, cost_chap)
+        return {"chapter": chap, "scenes": [], "status": "empty"}
+    print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
+          + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
+
+    budget_excluded, aborted = _preflight_budget(root, scenes, redo, max_usd)
+    if aborted:
+        _run_mandatory_audits(root, cost_chap)
+        return {"chapter": chap, "scenes": [], "status": "stopped_budget_preflight"}
+
+    # MODO BATCH: traduz as pendentes QUE CABEM num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
+    use_batch = batch and backend == "api"
+    pending = ([s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
+               if use_batch else [])
+    batch_status, batch_failed = (_batch_phase(root, pending, skip_kb_gate=skip_kb_gate,
+                                               allow_interactive_fallback=allow_interactive_fallback)
+                                  if pending else ({}, False))
+    if batch_failed:
+        _run_mandatory_audits(root, cost_chap)
+        return {"chapter": chap, "scenes": [], "status": "batch_failed"}
+
+    results, stopped = _scene_loop(
+        root, chap, scenes, cost_chap, batch_status, budget_excluded, backend=backend, batch=batch,
+        redo=redo, max_usd=max_usd, require_back=require_back, do_verify=do_verify,
+        skip_kb_gate=skip_kb_gate, skip_connector_gate=skip_connector_gate, no_back=no_back)
+    if stopped:
+        _run_mandatory_audits(root, cost_chap)
+        return {"chapter": chap, "scenes": results, **stopped}
+
+    back_pending = (_post_pass(root, scenes, cost_chap, no_back=no_back, require_back=require_back,
+                               max_usd=max_usd) if use_batch else [])
+    return _finish(root, chap, scenes, results, cost_chap, budget_excluded, back_pending, require_back)
+
+
+def _finish(root, chap, scenes, results, cost_chap, budget_excluded, back_pending, require_back) -> dict:
     done = sum(1 for x in results if x["status"] in ("verified", "skipped"))
     print(f"\nOK {chap}: {done}/{len(scenes)} cena(s) prontas."
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
