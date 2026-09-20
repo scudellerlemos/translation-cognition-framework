@@ -177,17 +177,24 @@ _VISIBLE_RX = re.compile(r"\{c-?\d*\}|\{W\d+\}|\{COLOR\}|\{END\}")   # tokens qu
 _BOF4_HEX_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\]")
 # par: codigo de controle + byte de face (@=0x40, A=0x41, B=0x42 ... G=0x47)
 _BOF4_FACE_PAIR_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\][@A-G]")
+# souldiers: token de timing puro ruido p/ leitura humana (ver build_plan_chapter.py:_TIMING_RX).
+# <color=X>/<b> NAO entram aqui: markup legivel/estrutural que o revisor pode precisar conferir
+# (posicionamento), diferente dos codigos acima/{...} abaixo, que sao ruido puro sem valor de leitura.
+_SOULDIERS_TIMING_RX = re.compile(r"_\d+_")
 
 
 def _display_text(s: str) -> str:
-    """Limpa codigos de controle BoF4 para exibicao no Excel (nao altera dados armazenados).
-    Detectado automaticamente pela presenca de [XX] — nao precisa de config por projeto.
-    [01] -> newline, [02] -> ' // ' (page break), demais codigos e bytes-de-face removidos."""
-    if not s or not _BOF4_HEX_RX.search(s):
+    """Limpa codigos de controle sem valor de leitura p/ o revisor humano no Excel (nao altera dados
+    armazenados): BoF4 [XX] hex, utawarerumono {W75}/{c5}/{COLOR}/{END} (ja tratados como nao-visiveis
+    no resto deste arquivo — ver _VISIBLE_RX/_fold/_envelope/_flags) e souldiers _N_ (timing).
+    Deteccao automatica por presenca de cada padrao — nao precisa de config por projeto."""
+    if not s or not (_BOF4_HEX_RX.search(s) or _VISIBLE_RX.search(s) or _SOULDIERS_TIMING_RX.search(s)):
         return s
     s = s.replace("[01]", "\n").replace("[02]", " // ")
     s = _BOF4_FACE_PAIR_RX.sub("", s)           # remove [XX] + byte de face juntos
     s = _BOF4_HEX_RX.sub("", s)                 # remove codigos remanescentes
+    s = _VISIBLE_RX.sub("", s)                  # remove tokens {W75}/{c5}/{COLOR}/{END}
+    s = _SOULDIERS_TIMING_RX.sub("", s)         # remove tokens de timing _N_
     s = re.sub(r"[ \t]+", " ", s)               # normaliza espacos (sem destruir \n)
     s = re.sub(r"(^\s*(//\s*)+|(//\s*)*\s*$)", "", s)  # strip page-break markers nas bordas
     return s.strip()
@@ -290,11 +297,14 @@ def _bt_revise_offsets(root, scene) -> set:
         return set()
     try:
         data = json.loads(btf.read_text(encoding="utf-8"))
+        # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir
+        # micro-qa). dict.get() por entrada (nao indexacao) tambem cobre "entries" malformado (entrada
+        # nao-dict) -- so leitura best-effort, nao pode derrubar o export() inteiro por 1 cena com JSON
+        # parcialmente escrito a mao.
+        return {e.get("offset") for e in data.get("entries", [])
+                if isinstance(e, dict) and e.get("verdict") == "revise" and not e.get("stale")}
     except Exception:
         return set()
-    # stale=True: linha foi corrigida verbatim DEPOIS do bt -> bt antigo nao vale mais (nao emitir micro-qa)
-    return {e.get("offset") for e in data.get("entries", [])
-            if e.get("verdict") == "revise" and not e.get("stale")}
 
 
 def width_violations(root, chapter=None) -> list:
@@ -577,7 +587,9 @@ def _apply_verbatim(root, scene, pairs) -> int:
     srcmap = {ln.get("offset", ""): ln.get("text_source", "") for ln in pdata.get("lines", [])}
     n = 0
     for off, txt in pairs:
-        fitted = model._parity_fit(srcmap.get(off, ""), model._norm_t(txt))
+        if off not in srcmap:          # offset nao existe mais no plano atual (export stale) -> pula
+            continue
+        fitted = model._parity_fit(srcmap[off], model._norm_t(txt))
         tdata.setdefault("lines", {}).setdefault(off, {})["t"] = fitted
         for ln in pdata.get("lines", []):
             if ln.get("offset") == off:
@@ -617,8 +629,16 @@ def returned_files(root, arg) -> list[Path]:
 
 def _fold(s: str) -> str:
     """Normaliza p/ casar com o que aparece NA TELA: tira tokens, dobra acento (NFD), minuscula, colapsa
-    espacos. 'está tão' -> 'esta tao' (= o transliterado in-game)."""
-    s = _VISIBLE_RX.sub("", (s or "").replace("\\n", " ").replace(context_pack.TOKEN, " "))
+    espacos. 'está tão' -> 'esta tao' (= o transliterado in-game). Cobre os MESMOS codigos de controle
+    de _display_text (BoF4 [XX], utawarerumono {...}, souldiers _N_) -- sem isso, uma linha aprovada
+    com [01]/[02] (BoF4) retinha o codigo cru no indice e nunca casava com o texto que o tester digitou
+    olhando a TELA (onde o codigo nunca aparece)."""
+    s = (s or "").replace("\\n", " ").replace(context_pack.TOKEN, " ")
+    s = s.replace("[01]", " ").replace("[02]", " ")
+    s = _BOF4_FACE_PAIR_RX.sub("", s)
+    s = _BOF4_HEX_RX.sub("", s)
+    s = _VISIBLE_RX.sub("", s)
+    s = _SOULDIERS_TIMING_RX.sub("", s)
     s = "".join(c for c in unicodedata.normalize("NFD", s) if not unicodedata.combining(c))
     return re.sub(r"\s+", " ", s).strip().lower()
 
@@ -701,7 +721,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
                                             model=m, budget_tolerance=1.0, quality_note=note)
             if res.get("usage"):
                 cost += model.cost_of(m, res["usage"])
-            ai_n += len(slot["nota"])
+            ai_n += res.get("n_lines", 0)   # so os offsets que realmente casaram no pack atual (nao os pedidos)
     applied = verbatim_n + ai_n
     eff = round(applied / total_marked, 3) if total_marked else None
     rec = {"t": round(_time.time(), 3), "source": str(Path(csv_path).name),

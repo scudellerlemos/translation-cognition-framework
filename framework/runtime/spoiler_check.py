@@ -49,7 +49,10 @@ def _future(reveal: str, scene_id: str) -> bool:
     """A cena `scene_id` esta ANTES do reveal? (reveal 'beyond_frontier' = sempre futuro)."""
     if reveal == "beyond_frontier":
         return True
-    return context_pack._pos(reveal) > context_pack._pos(scene_id)
+    rp = context_pack._pos(reveal)
+    if not rp:      # reveal nao-numerico/vazio -> incomparavel -> DEFAULT-SAFE: trata como futuro
+        return True  # (mesma convencao de select_spoiler_guards p/ posicao incomparavel)
+    return rp > context_pack._pos(scene_id)
 
 
 def check(root) -> list[dict]:

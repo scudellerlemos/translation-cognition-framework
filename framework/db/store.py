@@ -11,6 +11,7 @@ Uso:
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import re
 import sqlite3
@@ -39,13 +40,21 @@ class Store:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._con = sqlite3.connect(str(self.path), check_same_thread=False)
         self._con.row_factory = sqlite3.Row
+        self._in_batch = False   # ver batch() abaixo
         self._init_schema()
+
+    def _commit(self):
+        """Todo metodo de escrita chama isto em vez de self._con.commit() direto -- dentro de
+        um bloco batch() vira no-op (1 commit real soh no fim do bloco); fora dele, commit
+        normal por chamada (mesmo comportamento de sempre)."""
+        if not self._in_batch:
+            self._con.commit()
 
     def _init_schema(self):
         sql = _SCHEMA.read_text(encoding="utf-8")
         self._con.executescript(sql)
         self._migrate_schema()
-        self._con.commit()
+        self._commit()
 
     def _migrate_schema(self):
         """#85: migrações ADITIVAS de coluna (ALTER TABLE) — CREATE TABLE IF NOT EXISTS não
@@ -68,6 +77,25 @@ class Store:
     def __exit__(self, *_):
         self.close()
 
+    @contextlib.contextmanager
+    def batch(self):
+        """Adia os commits individuais de cada upsert_*/log_*/clear_* (1 por chamada, fsync
+        incluso) pra UM commit soh no fim do bloco -- pra loads em massa de linha-a-linha
+        (ex.: migrate_from_flat.py migrando milhares de traducoes) em vez de um fsync por
+        linha. NAO muda a durabilidade caso a caso do uso normal (runtime/producao continuam
+        commitando por chamada fora deste bloco) -- so a flag _in_batch, que _commit() checa,
+        fica ligada TEMPORARIAMENTE. Erro dentro do bloco -> rollback (a mesma garantia de
+        tudo-ou-nada que os commits individuais davam, um passo por vez)."""
+        self._in_batch = True
+        try:
+            yield self
+            self._con.commit()
+        except BaseException:
+            self._con.rollback()
+            raise
+        finally:
+            self._in_batch = False
+
     # ── Projetos ────────────────────────────────────────────────────────────
 
     def upsert_project(self, project_id: str, title: str,
@@ -79,7 +107,7 @@ class Store:
                ON CONFLICT(id) DO UPDATE SET title=excluded.title""",
             (project_id, title, source_lang, target_lang, media_type, time.time()),
         )
-        self._con.commit()
+        self._commit()
 
     # ── Cenas ────────────────────────────────────────────────────────────────
 
@@ -100,7 +128,7 @@ class Store:
             (scene_id, project_id, status, n_lines, n_high, int(verified),
              cost_usd, backend, model_id, now, now),
         )
-        self._con.commit()
+        self._commit()
 
     def get_scenes(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -130,7 +158,7 @@ class Store:
             (project_id, scene_id, offset, source, target, speaker, tone_register,
              intent, risk_level, risk_notes, int(approved), backend, model_id, time.time()),
         )
-        self._con.commit()
+        self._commit()
 
     def search_tm_exact(self, source: str, project_id: str,
                         approved_only: bool = True) -> list[dict]:
@@ -152,6 +180,16 @@ class Store:
             emb = Embedder()
             return emb.search(self._con, source, project_id=project_id, k=k)
         except ImportError:
+            return self.search_tm_exact(source, project_id)
+        except Exception as e:
+            # extensao nativa do sqlite-vec incompativel / hardware indisponivel (mesma falha ja
+            # tratada por reindex_pending_embeddings acima) -- mas tambem cobriria um bug real no
+            # embedder, entao avisa (ImportError de deps ausentes acima fica silencioso: esperado).
+            import warnings
+            warnings.warn(
+                f"search_tm_semantic: fallback p/ busca exata ({type(e).__name__}: {e})",
+                stacklevel=2,
+            )
             return self.search_tm_exact(source, project_id)
 
     def reindex_pending_embeddings(self, project_id: str) -> int | None:
@@ -218,7 +256,7 @@ class Store:
             [(project_id, scene_id, ln.get("offset", ""), ln.get("source"),
               ln.get("byte_budget")) for ln in lines],
         )
-        self._con.commit()
+        self._commit()
 
     def get_scene_lines(self, project_id: str, scene_id: str) -> list[dict]:
         """Linhas da cena na MESMA forma de context_pack.load_dialogs (offset/source/byte_budget)."""
@@ -241,7 +279,7 @@ class Store:
             [(project_id, e.get("section", ""), e.get("content", ""), e.get("reveal"))
              for e in entries],
         )
-        self._con.commit()
+        self._commit()
 
     def get_kb(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -259,7 +297,7 @@ class Store:
                    content=excluded.content, updated_at=excluded.updated_at""",
             (project_id, content, time.time()),
         )
-        self._con.commit()
+        self._commit()
 
     def get_research_log(self, project_id: str) -> str | None:
         row = self._con.execute(
@@ -279,7 +317,7 @@ class Store:
             [(project_id, e.get("name", ""), e.get("ratified_by"), e.get("date"), e.get("note"))
              for e in entries],
         )
-        self._con.commit()
+        self._commit()
 
     def get_kb_ratified(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -300,7 +338,7 @@ class Store:
             [(project_id, scene_id, e.get("offset", ""), e.get("back_en"),
               e.get("verdict"), e.get("note")) for e in entries],
         )
-        self._con.commit()
+        self._commit()
 
     def get_back_translations(self, project_id: str, scene_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -330,7 +368,7 @@ class Store:
             (project_id, term, translation, handling_rule, domain, category,
              aliases, spoiler_level, notes, time.time()),
         )
-        self._con.commit()
+        self._commit()
 
     def get_glossary(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -355,7 +393,7 @@ class Store:
             (project_id, name, canonical_pt, entity_type, first_scene,
              spoiler_reveal_scene, notes),
         )
-        self._con.commit()
+        self._commit()
 
     def get_entities(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -391,7 +429,7 @@ class Store:
              json.dumps(lines or [], ensure_ascii=False),
              criticality),
         )
-        self._con.commit()
+        self._commit()
 
     def get_voice_cards(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -424,7 +462,7 @@ class Store:
             (project_id, title, summary, int(universal),
              json.dumps(tags or [], ensure_ascii=False), reveal),
         )
-        self._con.commit()
+        self._commit()
 
     def get_decisions(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -465,7 +503,7 @@ class Store:
              json.dumps(forbidden_pre_reveal or [], ensure_ascii=False),
              int(bool(gender_quarantine))),
         )
-        self._con.commit()
+        self._commit()
 
     def get_spoiler_entries(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -494,14 +532,14 @@ class Store:
             (project_id, scene_id, kind, model_id, backend,
              tokens_in, tokens_out, cost_usd, int(batch), time.time()),
         )
-        self._con.commit()
+        self._commit()
 
     def clear_jobs(self, project_id: str) -> None:
         """Apaga os jobs do projeto. `jobs` é o mirror do api_ledger.jsonl (append-log sem
         chave natural); o write-path reconstrói por clear+reload p/ não inflar o custo a cada
         re-index (ao contrário das outras tabelas, que são idempotentes via UNIQUE upsert)."""
         self._con.execute("DELETE FROM jobs WHERE project_id=?", (project_id,))
-        self._con.commit()
+        self._commit()
 
     def get_cost_summary(self, project_id: str) -> dict:
         row = self._con.execute(
@@ -532,7 +570,7 @@ class Store:
               int(bool(r.get("verified"))), r.get("reused"), r.get("back_pass_rate"),
               r.get("cost_usd_last"), r.get("cost_usd"), r.get("raw")) for r in rows],
         )
-        self._con.commit()
+        self._commit()
 
     def get_metrics(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -554,7 +592,7 @@ class Store:
             [(project_id, r.get("t"), r.get("source"),
               json.dumps(r.get("warnings", []), ensure_ascii=False)) for r in rows],
         )
-        self._con.commit()
+        self._commit()
 
     def get_warnings(self, project_id: str) -> list[dict]:
         rows = self._con.execute(
@@ -581,7 +619,7 @@ class Store:
               r.get("applied"), r.get("verbatim"), r.get("ai"),
               r.get("effectiveness_rate"), r.get("cost_usd")) for r in rows],
         )
-        self._con.commit()
+        self._commit()
 
     def get_qa_effectiveness(self, project_id: str) -> list[dict]:
         rows = self._con.execute(

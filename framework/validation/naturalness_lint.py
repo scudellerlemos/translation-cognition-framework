@@ -76,7 +76,18 @@ def lint_project(root: Path) -> list[dict]:
     idc = (cfg.get("source", {}) or {}).get("id_column", "offset")
     tokens = cfg.get("formatting_tokens", []) or []
     # tokens parametrizados (cor {c<N>}/{c-1}/{c-}, etc.): regex, não literais
-    rx_tokens = [re.compile(p) for p in (cfg.get("formatting_token_patterns", []) or [])]
+    rx_tokens = []
+    for p in (cfg.get("formatting_token_patterns", []) or []):
+        try:
+            rx_tokens.append(re.compile(p))
+        except re.error as e:
+            # linter e best-effort (achados sao candidatos p/ revisao, nao um gate) -- 1 regex
+            # invalida em project.json nao pode derrubar o lint inteiro, so essa checagem de token.
+            import warnings
+            warnings.warn(
+                f"naturalness_lint: formatting_token_patterns ignora regex invalida {p!r} ({e})",
+                stacklevel=2,
+            )
     art = root / "artifacts"
 
     def strip_tokens(s: str) -> str:

@@ -99,7 +99,9 @@ def _scenario(e, *, models, cache):
     """models: dict com 'low'/'medium'/'high'/'qa'/'back' -> nome do modelo.
     cache: aplica prompt caching do contexto. Retorna $ total + breakdown."""
     ctx = e["ctx_tok"]; batch = e["batch"]; nb = e["n_batches"]
-    src_per = e["src_tok"] / e["n"]; tgt_per = e["tgt_tok"] / e["n"]
+    # e["n"] == 0 (plano/dialogs.csv vazio) -> reporta cenario de custo zero em vez de ZeroDivisionError
+    src_per = e["src_tok"] / e["n"] if e["n"] else 0.0
+    tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
     for _ in range(nb):

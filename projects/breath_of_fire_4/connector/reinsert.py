@@ -17,7 +17,6 @@ Regras:
 
 import csv
 import json
-import os
 import struct
 import sys
 from collections import defaultdict
@@ -25,8 +24,11 @@ from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 _FRAMEWORK = _HERE.parent.parent.parent / "framework" / "runtime"
-if str(_FRAMEWORK) not in sys.path:
-    sys.path.insert(0, str(_FRAMEWORK))
+_FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
+for _p in (_FRAMEWORK, _FRAMEWORK_CONNECTORS):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
 import paths as _paths  # noqa: E402
 from extract import (
     encode_string,
@@ -88,28 +90,28 @@ def rebuild_section(
         else:
             ptr_idx_to_bytes[ptr_idx] = orig_raw
 
-    # Mapeia orig_ptr → primeiro ptr_idx apontando para esse offset
-    orig_ptr_to_first_idx: dict[int, int] = {}
-    for ptr_idx, orig_ptr, _raw in original_strings:
-        if orig_ptr not in orig_ptr_to_first_idx:
-            orig_ptr_to_first_idx[orig_ptr] = ptr_idx
-
-    # Escreve strings em ordem crescente de offset original
-    unique_orig_ptrs = sorted(orig_ptr_to_first_idx.keys())
+    # Escreve strings em ordem crescente de ptr_idx, deduplicando por CONTEUDO final (nao mais por
+    # orig_ptr): 2+ ptr_idx que compartilhavam o mesmo offset original (string sharing da Capcom)
+    # so continuam compartilhando armazenamento se a tradução final for IGUAL -- se as traduções
+    # aprovadas divergirem por ptr_idx, cada uma ganha seu proprio slot; antes, so a do primeiro
+    # ptr_idx alias (por offset original) era gravada e as demais eram descartadas em silêncio.
     new_string_data = bytearray()
-    orig_offset_to_new_offset: dict[int, int] = {}
-
-    for orig_ptr in unique_orig_ptrs:
-        first_idx = orig_ptr_to_first_idx[orig_ptr]
-        new_start = first_ptr + len(new_string_data)
-        orig_offset_to_new_offset[orig_ptr] = new_start
-        new_string_data += ptr_idx_to_bytes.get(first_idx, b'')
-        new_string_data += b'\x00'
+    bytes_to_new_offset: dict[bytes, int] = {}
+    ptr_idx_to_new_offset: dict[int, int] = {}
+    for ptr_idx in sorted(ptr_idx_to_bytes.keys()):
+        raw = ptr_idx_to_bytes[ptr_idx]
+        new_offset = bytes_to_new_offset.get(raw)
+        if new_offset is None:
+            new_offset = first_ptr + len(new_string_data)
+            bytes_to_new_offset[raw] = new_offset
+            new_string_data += raw
+            new_string_data += b'\x00'
+        ptr_idx_to_new_offset[ptr_idx] = new_offset
 
     # Reconstrói a tabela de ponteiros
     new_ptr_table = bytearray(first_ptr)
     for i, orig_ptr in enumerate(original_ptrs):
-        new_ptr = orig_offset_to_new_offset.get(orig_ptr, orig_ptr)
+        new_ptr = ptr_idx_to_new_offset.get(i, orig_ptr)
         if new_ptr > 0xFFFF:
             raise OverflowError(
                 f"Offset de ponteiro excede uint16: {new_ptr:#06x} "
@@ -176,19 +178,16 @@ def main(project_json: Path, source_override: str | None = None) -> None:
     root = project_json.parent
 
     # Resolve diretório DAT do jogo — CLI > BOF4_DAT_DIR env var > falha (nunca lê de project.json)
-    if source_override:
-        game_dat_dir = Path(source_override)
-    elif os.environ.get("BOF4_DAT_DIR"):
-        game_dat_dir = Path(os.environ["BOF4_DAT_DIR"])
-    else:
-        game_dat_dir = Path("")
-
-    if not game_dat_dir.is_dir():
+    game_dat_dir = connector_io.resolve_source_path(
+        cli_arg=source_override, env_var="BOF4_DAT_DIR", allow_missing=True)
+    # Path("") == Path(".") (CWD) -- .is_dir() sempre True, entao "nao configurado" (None) precisa
+    # de check explicito ANTES do is_dir(), senao a checagem abaixo nunca dispara.
+    if game_dat_dir is None or not game_dat_dir.is_dir():
         raise SystemExit(
             "Diretório DAT não configurado.\n"
             "Opções:\n"
             "  1. Variável de ambiente: BOF4_DAT_DIR=<caminho>\n"
-            "  2. CLI: python reinsert.py project.json <DAT_DIR>\n"
+            "  2. CLI: python reinsert.py <project_root> <DAT_DIR>\n"
             "Ver projects/breath_of_fire_4/.env.example"
         )
 
@@ -301,6 +300,8 @@ def main(project_json: Path, source_override: str | None = None) -> None:
 
 
 if __name__ == '__main__':
-    proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('project.json')
+    # argv[1] = raiz do projeto (nao project.json) -- mesma convencao de souldiers/trails_sky_sc
+    # e do que connector_smoke.py ja passa; sem isso, o smoke --roundtrip falha sempre p/ este conector.
+    proj_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('.')
     override = sys.argv[2] if len(sys.argv) > 2 else None
-    main(proj, override)
+    main(proj_root / 'project.json', override)

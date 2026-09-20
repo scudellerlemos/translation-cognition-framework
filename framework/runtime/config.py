@@ -67,6 +67,14 @@ AWAITING = "awaiting"   # o operador/modelo do chat precisa produzir a saida
 READY = "ready"         # a saida ja existe
 DONE = "done"           # chamada de IA concluida (backend api)
 
+# Fonte unica dos status de run_scene() que NAO sao falha (usados p/ decidir exit code em
+# cli.py/s06_translation.py/run_scene.py __main__): "awaiting_*" e uma PAUSA legitima (aguarda
+# producao manual no caminho in-session), nao uma falha de pipeline -- sem isso, cada caller
+# reimplementava a whitelist e alguns esqueciam os dois status de awaiting (#achado de review).
+SCENE_OK_STATUSES: frozenset = frozenset({
+    "verified", "planned", "awaiting_translation", "awaiting_back_translation",
+})
+
 # Governanca do glossario: entradas com updated_date mais antiga que este limite geram aviso de revisao.
 GLOSSARY_STALENESS_DAYS = 180
 

@@ -38,9 +38,8 @@ _KB_HARD = ("universe_knowledge_base.md",)
 _KB_ARTIFACTS = ("glossary.csv",)
 
 
-def _pos(scene_id: str):
-    """scene_id '12_03' -> (12, 3) p/ comparacao numerica robusta (evita pegadinha lexicografica 9 vs 12)."""
-    return tuple(int(p) for p in str(scene_id).split("_") if p.isdigit())
+_pos = context_pack._pos   # fonte unica do parser de posicao narrativa (evitava divergencia:
+                            # este split("_") dava () p/ ids alfanumericos sem "_", ex. "AREAD050")
 
 
 def _parse_pending_decisions(txt: str) -> list[str]:
@@ -74,15 +73,45 @@ def check(root, scene) -> dict:
     root = Path(root)
     art = paths.artifacts(root)
     hard_problems, problems, warnings = [], [], []
+    cfg_path = root / "project.json"
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8")) if cfg_path.is_file() else {}
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+        # cfg={} faria _db_path() tratar um projeto DB-backed como flat-file calado -- os checks de
+        # KB/glossario cairiam pro caminho de arquivo (sempre "ausente") em vez de acusar o
+        # project.json quebrado. Vira hard_problem em vez de mascarar.
+        cfg = {}
+        hard_problems.append(f"project.json corrompido/ilegivel ({e}) — corrija antes de continuar "
+                              f"(deteccao de DB vs. artefatos flat fica incerta enquanto isso).")
+    db_path, db_pid = context_pack._db_path(root, cfg)
+    kb_rows = g_rows = None
+    if db_path:
+        # Fetch 1x aqui p/ os 3 checks DB-aware abaixo (KB, glossario-presenca, glossario-updated_at)
+        # reusarem -- evita abrir Store/rodar get_glossary() de novo em cada check.
+        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
+        if _db_dir not in sys.path:
+            sys.path.insert(0, _db_dir)
+        from store import Store
+        with Store(db_path) as db:
+            kb_rows = db.get_kb(db_pid)
+            g_rows = db.get_glossary(db_pid)
 
-    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate
-    for name in _KB_HARD:
-        f = art / name
-        if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
+    # lacuna do check de glossario abaixo) -- projeto com `db` populado nao tem o .md em disco.
+    if db_path:
+        if not any((r.get("content") or "").strip() for r in kb_rows):
             hard_problems.append(
-                f"{name} ausente/vazio — sintetize a KB (skill 03/04) antes de traduzir. "
-                f"Este gate nao pode ser pulado."
+                "KB vazia no DB (tabela kb) — sintetize a KB (skill 03/04) antes de traduzir. "
+                "Este gate nao pode ser pulado."
             )
+    else:
+        for name in _KB_HARD:
+            f = art / name
+            if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+                hard_problems.append(
+                    f"{name} ausente/vazio — sintetize a KB (skill 03/04) antes de traduzir. "
+                    f"Este gate nao pode ser pulado."
+                )
 
     pending_decisions: list[str] = []
     rl = art / "research_log.md"
@@ -118,10 +147,16 @@ def check(root, scene) -> dict:
         # Decisoes pendentes: sempre extraidas e reportadas ao usuario (nao bloqueiam)
         pending_decisions = _parse_pending_decisions(txt)
 
-    for name in _KB_ARTIFACTS:
-        f = art / name
-        if not f.is_file() or not f.read_text(encoding="utf-8").strip():
-            problems.append(f"{name} ausente/vazio — KB incompleta (skills 03/04).")
+    # glossary.csv: #85 DB-aware (mesma lacuna do check de universe_knowledge_base.md acima) --
+    # projeto com `db` populado nao tem o CSV em disco.
+    if db_path:
+        if not g_rows:
+            problems.append("glossario vazio no DB (tabela glossary) — KB incompleta (skills 03/04).")
+    else:
+        for name in _KB_ARTIFACTS:
+            f = art / name
+            if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+                problems.append(f"{name} ausente/vazio — KB incompleta (skills 03/04).")
     vc = paths.voice_cards(root)
     if not vc.is_file():
         problems.append("voice_cards.json ausente — rode state_index (deriva do tone_analysis.md).")
@@ -139,15 +174,7 @@ def check(root, scene) -> dict:
     # Glossario: updated_date/updated_at e gate obrigatorio (nao so aviso de state_index).
     # #85: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
     # entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header.
-    cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    db_path, db_pid = context_pack._db_path(root, cfg)
     if db_path:
-        _db_dir = str(Path(__file__).resolve().parent.parent / "db")
-        if _db_dir not in sys.path:
-            sys.path.insert(0, _db_dir)
-        from store import Store
-        with Store(db_path) as db:
-            g_rows = db.get_glossary(db_pid)
         undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
         if undated:
             problems.append(
@@ -182,7 +209,11 @@ def check(root, scene) -> dict:
         # `_pos(scene_id) > _pos(frontier vazio)` dava True p/ quase toda cena com numero no nome —
         # bloqueava 500+ cenas por engano. So funcionava por coincidencia no BoF4 (nomes de cena
         # sem segmento puramente numerico).
-        if frontier_pos and _pos(scene_id) > frontier_pos:
+        scene_pos = _pos(scene_id)
+        # scene_pos vazio (scene_id sem digito) e INCOMPARAVEL, nao "antes da fronteira" -- default-deny
+        # (mesma convencao de _pos()/select_spoiler_guards): sem como provar que a KB cobre esta cena,
+        # trata como alem da fronteira em vez de deixar passar por `() > frontier_pos` dar False.
+        if frontier_pos and (not scene_pos or scene_pos > frontier_pos):
             problems.append(f"cena {scene_id} ALEM da fronteira de KB pesquisada (kb_frontier={frontier}) — "
                             f"estenda a Fase 0 ate aqui antes de traduzir.")
     else:

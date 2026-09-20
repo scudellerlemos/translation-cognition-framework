@@ -31,6 +31,7 @@ if str(_HERE) not in sys.path:
 _VALIDATION_DIR = _HERE.parent / "validation"
 if str(_VALIDATION_DIR) not in sys.path:
     sys.path.insert(0, str(_VALIDATION_DIR))
+import config  # noqa: E402  (fonte unica de SCENE_OK_STATUSES -- ver _OK abaixo)
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
@@ -44,7 +45,13 @@ import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao 
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 import validate  # noqa: E402  (auditoria obrigatoria de schema dos artefatos, projeto inteiro)
 
-_OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena
+# subconjunto MAIS ESTREITO de config.SCENE_OK_STATUSES (que inclui awaiting_*): aqui e um driver
+# batch stateless, awaiting_* exige producao manual (chat/in-session) que o driver nao pode fazer
+# sozinho, entao PARA o capitulo (nao pula pra proxima cena) ate a cena ser resolvida manualmente.
+# Derivado (nao mais uma 2a lista hardcoded): um status novo em SCENE_OK_STATUSES que nao comece
+# com "awaiting_" cairia aqui por engano sem alguem lembrar de revisar este arquivo tambem --
+# a exclusao por prefixo torna a intencao (so awaiting_* fica de fora) explicita e auto-aplicavel.
+_OK = tuple(s for s in config.SCENE_OK_STATUSES if not s.startswith("awaiting_"))
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
 
 # PREVISIBILIDADE — estimativa pre-voo: custo esperado ANTES de gastar, derivado do nº de linhas.
@@ -145,6 +152,12 @@ def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     submit = []
     for s in pending:
         kb = kb_gate.check(root, s)
+        # hard_problems: nunca bypassavel (nem com --skip-kb-gate) -- mesma regra do caminho
+        # interativo em run_scene.py. Sem este check, uma cena com KB vazia/sem fronteira ia
+        # direto pro batch pago em vez de cair pro caminho interativo (que bloqueia de verdade).
+        if kb.get("hard_problems"):
+            print(f"[batch] {s} pulado do batch (KB-gate, hard): {kb['hard_problems'][0]}")
+            continue
         if kb["problems"] and not skip_kb_gate:
             print(f"[batch] {s} pulado do batch (KB-gate): {kb['problems'][0]}")
             continue
@@ -219,6 +232,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"  - {p}")
         if cg["problems"] and not cg["hard_problems"]:
             print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
+        # scenes_glob: chap e so um rotulo (nao um capitulo real) -- filtrar por ele faria os audits
+        # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` usado mais abaixo).
+        _run_mandatory_audits(root, None if scenes_glob else chap)
         return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
     if scenes_glob:
         scenes = _scenes_of_glob(root, scenes_glob)
@@ -230,6 +246,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if not scenes:
         hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
+        _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "empty"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
@@ -252,6 +269,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if max_usd is not None and not affordable and pend_est:
         print(f"\nABORTADO ANTES DE GASTAR: nem a 1a cena pendente cabe em --max-usd ${max_usd:.2f} "
               f"(estimativa ~${est['lo']:.2f}-${est['hi']:.2f}). Aumente o teto ou recarregue. Nada foi gasto.")
+        _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "stopped_budget_preflight"}
 
     # MODO BATCH: traduz as pendentes QUE CABEM num batch (fase 1); a fase 2 so finaliza (build_plan/verify).
@@ -263,6 +281,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 root, pending, skip_kb_gate=skip_kb_gate,
                 allow_interactive_fallback=allow_interactive_fallback)
             if batch_failed:
+                _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": [], "status": "batch_failed"}
 
     results = []
@@ -285,6 +304,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                       f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
                       f"salvas — rode de novo p/ continuar).")
                 _print_cost(root, cost_chap)
+                _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": results, "status": "stopped_budget",
                         "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
@@ -303,6 +323,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
             _print_cost(root, cost_chap)
+            _run_mandatory_audits(root, cost_chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
     # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
     # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
@@ -323,13 +344,21 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
           + (f" ({len(budget_excluded)} adiada(s) por orcamento — rode de novo apos recarga)"
              if budget_excluded else ""))
     _print_cost(root, cost_chap)
-    _export_qa(root, cost_chap)   # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
-    _audit_spoiler(root)          # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
-    _audit_quality(root, cost_chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
-    _audit_schema(root)           # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
+    _run_mandatory_audits(root, cost_chap)
     # parcial-por-orcamento NAO e "complete" (honestidade do status); mas tb nao e erro de pipeline.
     status = "stopped_budget" if budget_excluded else "complete"
     return {"chapter": chap, "scenes": results, "status": status}
+
+
+def _run_mandatory_audits(root: Path, chap: str | None):
+    """OBRIGATORIO mesmo em parada antecipada: as cenas ja verified nesta ou em rodadas
+    anteriores nao podem ficar sem QA/spoiler/quality/schema so porque O RUN ATUAL parou cedo
+    (orcamento ou falha de cena) -- os 4 audits abaixo varrem o PROJETO INTEIRO, nao so o delta
+    desta chamada, entao sao seguros/idempotentes de rodar em qualquer ponto de saida."""
+    _export_qa(root, chap)     # QA OBRIGATORIO: gera o XLSX de revisao humana SEMPRE (piso de qualidade)
+    _audit_spoiler(root)       # AUDITORIA OBRIGATORIA: spoiler de nome/titulo + genero pt-BR, projeto inteiro
+    _audit_quality(root, chap)  # OBRIGATORIO: piso de qualidade (verdicts de back-translation)
+    _audit_schema(root)        # OBRIGATORIO: schema/enum dos artefatos (ex.: risk_level), projeto inteiro
 
 
 def _export_qa(root: Path, chap: str | None):

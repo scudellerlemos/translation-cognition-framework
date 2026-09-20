@@ -36,8 +36,15 @@ def read_index(path: Path) -> tuple[bytes, list[tuple[str, int, int, int]]]:
 
 def extract_all(path: Path, out_dir: Path) -> None:
     data, entries = read_index(path)
+    out_dir = out_dir.resolve()
     for name, size, addr, _crc in entries:
-        dest = out_dir / name
+        # `name` vem cru da tabela de nomes do .pac (nao confiavel: arquivo corrompido ou
+        # adulterado). Sem o check de contencao, um nome tipo '../../evil.dat' ou absoluto escapa
+        # de out_dir -- pathlib '/' nao normaliza '..' e descarta out_dir se o lado direito for
+        # absoluto.
+        dest = (out_dir / name).resolve()
+        if dest != out_dir and out_dir not in dest.parents:
+            raise ValueError(f"entrada do .pac escreveria fora de out_dir: {name!r}")
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(data[addr:addr + size])
 
