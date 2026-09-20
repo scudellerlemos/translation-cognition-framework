@@ -30,6 +30,33 @@ def test_spoiler_entry_roundtrip_new_fields(tmp_path):
     assert e["gender_quarantine"] is True
 
 
+def test_batch_persists_all_writes_with_single_commit(tmp_path):
+    """db.batch(): commits individuais de cada upsert_* viram 1 soh no fim do bloco, mas o
+    resultado final e o MESMO de rodar sem batch -- todas as linhas persistem apos o `with`."""
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db, db.batch():
+        db.upsert_project("p1", "Projeto Teste")
+        for i in range(5):
+            db.upsert_scene(project_id="p1", scene_id=f"S{i}", status="pending")
+    with Store(db_path) as db:
+        assert len(db.get_scenes("p1")) == 5
+
+
+def test_batch_rolls_back_all_writes_on_error(tmp_path):
+    """Excecao dentro do bloco -> rollback de TUDO que foi escrito ali (mesma garantia
+    tudo-ou-nada que os commits individuais davam um passo por vez, so que em lote)."""
+    import pytest
+
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        with pytest.raises(RuntimeError):
+            with db.batch():
+                db.upsert_scene(project_id="p1", scene_id="S0", status="pending")
+                raise RuntimeError("falha simulada no meio do lote")
+        assert db.get_scenes("p1") == []
+
+
 def test_spoiler_entry_new_fields_default_empty(tmp_path):
     """Entry sem os campos novos -> forbidden_pre_reveal=[] e gender_quarantine=False (não None/erro)."""
     db_path = tmp_path / "t.db"

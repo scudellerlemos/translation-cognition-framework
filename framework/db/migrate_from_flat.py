@@ -499,7 +499,10 @@ def _project_meta(root: Path) -> dict:
 
 def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
     meta = _project_meta(project_root)
-    with Store(dest_db) as db:
+    with Store(dest_db) as db, db.batch():
+        # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
+        # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
+        # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
         db.upsert_project(
             project_id=project_id,
             title=meta["title"],
