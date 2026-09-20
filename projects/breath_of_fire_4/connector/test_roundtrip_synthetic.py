@@ -187,3 +187,32 @@ def test_patch_dat_file_keeps_size_delta_multiple_of_toc_alignment():
     translations[0] = "Oi"
     new_data = patch_dat_file(original, entry_idx, rebuild_section(section, translations))
     assert (len(new_data) - len(original)) % 16 == 0
+
+
+def test_rebuild_section_raises_when_pointer_exceeds_uint16():
+    original = _build_synthetic_dat()
+    section = original[32:]
+    with pytest.raises(OverflowError):
+        rebuild_section(section, {0: "x" * 70000})
+
+
+def test_reinsert_main_exits_3_on_pointer_overflow(tmp_path):
+    """Overflow de ponteiro uint16 aborta com exit 3 (antes: traceback cru), sem gravar o .DAT."""
+    from reinsert import main as reinsert_main
+
+    dat_dir = tmp_path / "dat"
+    dat_dir.mkdir()
+    (dat_dir / "A.DAT").write_bytes(_build_synthetic_dat())
+    scene = tmp_path / "artifacts" / "scenes" / "ch_01_01"
+    scene.mkdir(parents=True)
+    rows = ["offset,file,entry_idx,ptr_idx,text_en,byte_budget"]
+    rows += [f"A:{i},A.DAT,1,{i},{s.decode()},{len(s) + 1}" for i, s in enumerate(_STRINGS)]
+    (tmp_path / "artifacts" / "dialogs.csv").write_text("\n".join(rows) + "\n", encoding="utf-8")
+    (scene / "approved_01.csv").write_text(f"offset,text_target\nA:0,{'x' * 70000}\n", encoding="utf-8")
+    (tmp_path / "project.json").write_text(
+        '{"source": {"file": "artifacts/dialogs.csv"}}', encoding="utf-8")
+
+    with pytest.raises(SystemExit) as ei:
+        reinsert_main(tmp_path / "project.json", str(dat_dir))
+    assert ei.value.code == 3
+    assert not (tmp_path / "output" / "A.DAT").exists()

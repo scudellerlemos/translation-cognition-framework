@@ -26,7 +26,7 @@ from pathlib import Path
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 
-def _read_ledger(root: Path) -> list[dict]:
+def read_ledger(root: Path) -> list[dict]:
     p = paths.ledger(root)
     if not p.is_file():
         return []
@@ -55,7 +55,7 @@ def report(root, chapter=None) -> dict:
     """Agrega o ledger. `chapter` (ex.: "15") filtra so as cenas `ch_15_*` -> mostra o DELTA do capitulo
     em vez do acumulado de todo o ledger (que confunde: o total cresce a cada capitulo)."""
     root = Path(root)
-    rows = _read_ledger(root)
+    rows = read_ledger(root)
     if chapter is not None:
         pref = f"ch_{chapter}_"
         rows = [r for r in rows if str(r.get("scene", "")).startswith(pref)]

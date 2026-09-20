@@ -31,6 +31,7 @@ if str(_HERE) not in sys.path:
 _VALIDATION_DIR = _HERE.parent / "validation"
 if str(_VALIDATION_DIR) not in sys.path:
     sys.path.insert(0, str(_VALIDATION_DIR))
+import artifact_io  # noqa: E402  (fonte unica de enumeracao de cenas)
 import config  # noqa: E402  (fonte unica de SCENE_OK_STATUSES -- ver _OK abaixo)
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
@@ -109,12 +110,6 @@ def _validate_chapter_arg(root: Path, chap: str) -> None:
     candidate = (paths.artifacts(root) / f"ch_{chap}_00").resolve()
     if not candidate.is_relative_to(paths.artifacts(root).resolve()):
         raise ValueError(f"chapter {chap!r} resultaria em path fora de artifacts/ — bloqueado")
-
-
-def _scenes_of(root: Path, chap: str) -> list[str]:
-    art = paths.artifacts(root)
-    names = [p.parent.name for p in (art / "scenes").glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=context_pack.scene_id_of)
 
 
 def _scenes_of_glob(root: Path, globs: str) -> list[str]:
@@ -242,7 +237,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         cost_chap = None   # sem filtro ch_* — reporta ledger completo do projeto
     else:
         _validate_chapter_arg(root, chap)
-        scenes = _scenes_of(root, chap)
+        scenes = artifact_io.scenes(root, chap)
         cost_chap = chap
     if not scenes:
         hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
