@@ -82,7 +82,7 @@ class ExtractionSkill(Skill):
         # connector_mgr._run (conector pode emitir bytes nao-utf-8 no stdout/stderr).
         env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
         if dat_dir:
-            data_dir_env = cfg.get("connector", {}).get("data_dir_env", "BOF4_DAT_DIR")
+            data_dir_env = (cfg.get("connector") or {}).get("data_dir_env", "BOF4_DAT_DIR")
             env[data_dir_env] = str(dat_dir)
 
         try:
