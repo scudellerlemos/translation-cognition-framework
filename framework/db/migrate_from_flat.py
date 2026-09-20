@@ -407,8 +407,10 @@ def _migrate_jobs(db: Store, project_id: str, root: Path) -> int:
             kind=rec.get("kind", "translate"),
             model_id=rec.get("model"),
             backend="api",
-            tokens_in=u.get("in", 0) + u.get("cache_read", 0),
-            tokens_out=u.get("out", 0),
+            # .get(key, default) NAO cobre valor explicitamente null (default so vale p/ key ausente)
+            # -- mesmo caso de 'usage': null na linha 403, um nivel abaixo (in/cache_read/out: null).
+            tokens_in=(u.get("in") or 0) + (u.get("cache_read") or 0),
+            tokens_out=u.get("out") or 0,
             cost_usd=rec.get("cost_usd", 0.0),
             batch=rec.get("batch", False),
         )
