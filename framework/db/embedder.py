@@ -331,7 +331,7 @@ class Embedder:
 if __name__ == "__main__":
     import sys
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     if len(sys.argv) < 3:
         print("Uso: python embedder.py <db_path> <project_id> [query]")
         sys.exit(1)

@@ -243,7 +243,7 @@ def discover(root, chap) -> dict:
     kb_low = _kb_blob(root)
     per = _scan(root, scenes)
     corpus = "\n".join(t for _, t in per)
-    agg = {}
+    agg: dict[str, dict] = {}
     for scene_id, text in per:
         for m in _CAP_RUN.finditer(text):
             cand = _clean_cand(m.group(0))             # limpa ALL-CAPS/gagueira/stopword de borda
@@ -259,7 +259,9 @@ def discover(root, chap) -> dict:
             rec["scenes"].add(scene_id)
             if not rec["example"]:
                 rec["example"] = _excerpt(text, m.start())
-    gap, weak, covered = [], [], []
+    gap: list[dict] = []
+    weak: list[dict] = []
+    covered: list[dict] = []
     for _low, rec in agg.items():
         rec["scenes"] = sorted(rec["scenes"], key=_pos)
         if _covered(rec["cand"], kb_low):

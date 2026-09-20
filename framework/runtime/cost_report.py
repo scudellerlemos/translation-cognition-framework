@@ -85,7 +85,9 @@ def report(root, chapter=None) -> dict:
     total = round(sum(r.get("cost_usd", 0.0) for r in rows), 4)
     n_calls = len(rows)
 
-    by_model, by_kind, by_scene = {}, {}, {}
+    by_model: dict[str, float] = {}
+    by_kind: dict[str, float] = {}
+    by_scene: dict[str, dict] = {}
     tok_in = tok_out = tok_cache_r = tok_cache_w = 0
     for r in rows:
         c = r.get("cost_usd", 0.0)

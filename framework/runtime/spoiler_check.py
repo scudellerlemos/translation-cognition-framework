@@ -204,7 +204,7 @@ def list_guards(root) -> list[dict]:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Verificacao de nao-vazamento de spoiler (pos-traducao).")
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")

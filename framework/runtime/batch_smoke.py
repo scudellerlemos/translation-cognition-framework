@@ -67,13 +67,13 @@ def main():
     # console Windows e cp1252 por padrao -> caractere fora dele (ex.: marca de OK) quebra o print com
     # UnicodeEncodeError e mascara um smoke SAUDAVEL como exit 1. Forca UTF-8 na saida.
     with contextlib.suppress(AttributeError, ValueError, OSError):
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     scene, scene_id = "ch_00_00", "00_00"
     pack = _build_pack(scene_id)
     # stub do pack/prompt (o smoke nao precisa da KB real — testa a PLUMBING, nao a qualidade);
     # _client() NAO e stubado -> as chamadas vao pra API REAL.
-    context_pack.write_pack = lambda r, s: pack
-    context_pack.render_prompt = lambda p, carta="": (
+    context_pack.write_pack = lambda r, s: pack  # type: ignore[assignment]  # stub deliberado
+    context_pack.render_prompt = lambda p, carta="": (  # type: ignore[misc]  # stub deliberado
         "Traduza CADA linha abaixo para pt-BR natural. Devolva uma entrada por offset, no schema pedido.\n"
         + "\n".join(f"{l['offset']}: {l['source']}" for l in p["lines"]))
     model._carta_text = lambda: "Voce e um tradutor EN->pt-BR de jogos. Responda apenas o JSON do schema."
@@ -91,7 +91,7 @@ def main():
     rows = [json.loads(l) for l in ledger.read_text(encoding="utf-8").splitlines()] if ledger.is_file() else []
     ok, problems = evaluate(status, rows, scene)
     cost = sum(r.get("cost_usd", 0.0) for r in rows)
-    by_model = {}
+    by_model: dict[str, float] = {}
     for r in rows:
         by_model[r.get("model", "?")] = round(by_model.get(r.get("model", "?"), 0.0) + r.get("cost_usd", 0), 5)
     print(f"[smoke] status={status} | custo=${cost:.4f} | por modelo={by_model}")

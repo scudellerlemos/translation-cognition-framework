@@ -216,13 +216,13 @@ def lint_project(root: Path) -> list[dict]:
 
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir ♪/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
     found = lint_project(root)
     out = root / "artifacts" / "naturalness_lint.json"
     out.write_text(json.dumps({"count": len(found), "findings": found},
                               ensure_ascii=False, indent=2), encoding="utf-8")
-    by = {}
+    by: dict[str, int] = {}
     for f in found:
         by[f["check"]] = by.get(f["check"], 0) + 1
         print(f"{f['check']:18} {f['offset']:>9}  {f['source']!r} -> {f['target']!r}")

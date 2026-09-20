@@ -1,7 +1,7 @@
 # Tests — verificação funcional do harness em cada push/PR (7 jobs paralelos, sem
 # dependência entre si — cada um roda em runner própria e falha aparece nomeada no PR).
 #   env-guard          : .env nunca rastreado pelo git
-#   mypy                : type-check do núcleo já tipado
+#   mypy                : type-check de todo framework/ (exceto connectors/ e _skeleton/)
 #   coverage            : testes de runtime/validation/db/skills com piso de 90% (matrix 3.11/3.12)
 #   connector-bof4      : contrato round-trip do conector BoF4
 #   connector-uta       : contrato round-trip do conector Utawarerumono
