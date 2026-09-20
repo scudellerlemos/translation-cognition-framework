@@ -384,6 +384,9 @@ def test_paths_contract():
     assert rel(paths.run_state(r)) == "artifacts/run_state.json"
     assert rel(paths.ledger(r)) == "artifacts/api_ledger.jsonl"
     assert rel(paths.metrics(r)) == "artifacts/metrics.jsonl"
+    assert rel(paths.translate_exhausted(r)) == "artifacts/translate_exhausted.jsonl"
+    assert rel(paths.translations_partial(r, "ch_16_01", "16_01")) == \
+        "artifacts/scenes/ch_16_01/partial_translations_16_01.json"
     assert rel(paths.glossary(r)) == "artifacts/glossary.csv"
     assert rel(paths.entities(r)) == "artifacts/entities.csv"
     assert rel(paths.kb_worklist(r, "16")) == "artifacts/kb_phase_worklist_16.md"
