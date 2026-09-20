@@ -171,7 +171,8 @@ def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
         return
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[tm_correct] AVISO: {path.name} ilegivel ({exc!r}) -- NAO corrigido.")
         return
     for off, v in iterator(data):
         before = v.get(field, "")
@@ -199,7 +200,7 @@ def apply(root, corrections, chapter=None) -> dict:
             try:
                 data = json.loads(path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, OSError):
-                continue
+                continue                               # ja avisado por plan() -> _collect
             changed = False
             corrected_offsets = []
             for off, v in iterator(data):

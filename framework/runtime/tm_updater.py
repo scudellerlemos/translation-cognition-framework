@@ -88,8 +88,9 @@ def sync_scenes(root, cfg: dict, scenes: list, *, approved_at: str) -> int:
         try:
             st = json.loads(rs.read_text(encoding="utf-8")).get("scenes", {})
             verified = {s for s, v in st.items() if v.get("status") == "verified" and v.get("verified")}
-        except (json.JSONDecodeError, OSError):
-            pass
+        except (json.JSONDecodeError, OSError) as exc:
+            print(f"[tm_updater] AVISO: run_state.json ilegivel ({exc!r}) -- nenhuma cena conta "
+                  f"como verified, NADA sera sincronizado no TM.")
 
     n = 0
     for scene in scenes:

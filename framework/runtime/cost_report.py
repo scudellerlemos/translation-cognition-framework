@@ -30,15 +30,18 @@ def read_ledger(root: Path) -> list[dict]:
     p = paths.ledger(root)
     if not p.is_file():
         return []
-    out = []
+    out, bad = [], 0
     for line in p.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
             continue
         try:
             out.append(json.loads(line))
-        except Exception:
-            continue
+        except json.JSONDecodeError:
+            bad += 1
+    if bad:
+        print(f"[cost_report] AVISO: {bad} linha(s) ilegivel(is) em {p.name} ignorada(s) -- "
+              f"o gasto real pode ser MAIOR que o reportado.", file=sys.stderr)   # stdout = --json
     return out
 
 
