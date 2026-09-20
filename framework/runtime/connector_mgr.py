@@ -75,7 +75,7 @@ def _verify_status(out: str) -> dict:
         if line.startswith("VERIFY_STATUS:"):
             try:
                 return json.loads(line[len("VERIFY_STATUS:"):].strip())
-            except Exception:
+            except ValueError:
                 return {}
     return {}
 

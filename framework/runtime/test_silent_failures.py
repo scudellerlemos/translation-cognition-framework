@@ -101,3 +101,34 @@ def test_build_tm_warns_when_scene_pack_unreadable(tmp_path, capsys):
     (scene / "pack.json").write_text("{nao e json", encoding="utf-8")
     assert state_index.build_tm(tmp_path) == []
     assert "doctrine_version vazio" in capsys.readouterr().out
+
+
+# --- BLE001 que escondiam degradacao real ---------------------------------------------------------
+def test_chapter_cost_warns_that_the_spend_cap_is_blind(tmp_path, monkeypatch, capsys):
+    import run_chapter
+
+    def boom(*_a, **_k):
+        raise ValueError("run_state torto")
+    monkeypatch.setattr(cost_report, "report", boom)
+    assert run_chapter._chapter_cost(tmp_path, "01") == 0.0     # comportamento mantido (nao aborta)
+    assert "--max-usd NAO esta sendo aplicado" in capsys.readouterr().err
+
+
+def test_load_kb_warns_when_db_is_unreadable(tmp_path, capsys):
+    import context_pack
+    bad = tmp_path / "state.db"
+    bad.write_bytes(b"isto nao e um sqlite")
+    assert context_pack._load_kb(str(bad), "p") == []
+    assert "KB indisponivel" in capsys.readouterr().out
+
+
+def test_load_kb_without_db_is_silent(capsys):
+    import context_pack
+    assert context_pack._load_kb(None, "p") == []
+    assert capsys.readouterr().out == ""
+
+
+def test_verify_status_bad_json_is_empty_dict():
+    import connector_mgr
+    assert connector_mgr._verify_status("ok\nVERIFY_STATUS: {torto") == {}
+    assert connector_mgr._verify_status('VERIFY_STATUS: {"a": 1}') == {"a": 1}

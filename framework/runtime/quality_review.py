@@ -304,7 +304,8 @@ def _bt_revise_offsets(root, scene) -> set:
         # parcialmente escrito a mao.
         return {e.get("offset") for e in data.get("entries", [])
                 if isinstance(e, dict) and e.get("verdict") == "revise" and not e.get("stale")}
-    except Exception:
+    except (OSError, ValueError, AttributeError) as exc:
+        print(f"[quality_review] AVISO: {btf.name} de {scene} ilegivel ({exc!r}) -- micro-QA da IA omitido.")
         return set()
 
 
