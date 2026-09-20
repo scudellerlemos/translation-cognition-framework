@@ -31,6 +31,7 @@ if str(_HERE) not in sys.path:
 _VALIDATION_DIR = _HERE.parent / "validation"
 if str(_VALIDATION_DIR) not in sys.path:
     sys.path.insert(0, str(_VALIDATION_DIR))
+import config  # noqa: E402  (fonte unica de SCENE_OK_STATUSES -- ver _OK abaixo)
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
@@ -44,10 +45,13 @@ import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero ao 
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 import validate  # noqa: E402  (auditoria obrigatoria de schema dos artefatos, projeto inteiro)
 
-_OK = ("verified", "planned")          # estados que permitem seguir p/ a proxima cena -- de
-# proposito MAIS ESTREITO que config.SCENE_OK_STATUSES (que inclui awaiting_*): aqui e um driver
+# subconjunto MAIS ESTREITO de config.SCENE_OK_STATUSES (que inclui awaiting_*): aqui e um driver
 # batch stateless, awaiting_* exige producao manual (chat/in-session) que o driver nao pode fazer
 # sozinho, entao PARA o capitulo (nao pula pra proxima cena) ate a cena ser resolvida manualmente.
+# Derivado (nao mais uma 2a lista hardcoded): um status novo em SCENE_OK_STATUSES que nao comece
+# com "awaiting_" cairia aqui por engano sem alguem lembrar de revisar este arquivo tambem --
+# a exclusao por prefixo torna a intencao (so awaiting_* fica de fora) explicita e auto-aplicavel.
+_OK = tuple(s for s in config.SCENE_OK_STATUSES if not s.startswith("awaiting_"))
 _DONE = ("verified",)                  # estados que contam como "ja feito" (skip em modo resumivel)
 
 # PREVISIBILIDADE — estimativa pre-voo: custo esperado ANTES de gastar, derivado do nº de linhas.
