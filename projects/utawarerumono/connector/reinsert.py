@@ -42,11 +42,15 @@ import csv
 import json
 import struct
 import sys
-import unicodedata
 from pathlib import Path
 
 import sdat_format as S
 from sdat_format import find_pointers, is_head, read_cstr, read_run
+
+_FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+from connector_io import transliterate  # noqa: E402  (compartilhado; usado em final_text_bytes)
 
 ROOT = Path(__file__).resolve().parent.parent          # raiz do projeto
 ART = ROOT / "artifacts"
@@ -90,16 +94,7 @@ def resolve_source(path: str | None = None) -> Path:
     return p
 
 
-# ----------------------------------------------------------------------------- transliteração (charset)
-# Acentos pt-BR -> ASCII. Determinístico, sem LLM. Tokens {..} são ASCII e não são afetados.
-def transliterate(s: str) -> str:
-    """Dobra diacríticos para ASCII (NFD canônico + descarte de combining marks). Mantém tudo o mais.
-    NFD (não NFKD): decomposição CANÔNICA dobra acento (á->a, ç->c), mas PRESERVA glifos de compat.
-    que o jogo já usa (ex.: dígitos circulados ①②③ de sequências de puzzle: NFKD os reduzia a 1/2/3,
-    corrompendo o round-trip do binário original — ver ch_30_09)."""
-    nfd = unicodedata.normalize("NFD", s)
-    return "".join(c for c in nfd if not unicodedata.combining(c))
-
+# transliterate() (charset pt-BR -> ASCII): vem de connector_io (importado no topo).
 
 # Leitura do binário (read_cstr/find_pointers/is_head/read_run): vêm de sdat_format (módulo único
 # compartilhado com extract.py — garante o mesmo entendimento de formato dos dois lados do round-trip).

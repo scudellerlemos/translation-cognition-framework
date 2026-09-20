@@ -17,7 +17,6 @@ import json
 import re
 import struct
 import sys
-import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -93,11 +92,11 @@ def encode_string(text: str) -> bytes:
     """String CSV → bytes sem terminador. Inverso de decode_string.
 
     O font do jogo so tem ASCII — acentos pt-BR (ã, é, ç, ô...) sao transliterados via NFD
-    (á->a, ç->c, ...) ANTES do encode, mesmo padrao ja usado em
-    utawarerumono/connector/reinsert.py:transliterate. Sem isso, todo acento virava '?' (0x3F)
+    (á->a, ç->c, ...) ANTES do encode, via connector_io.transliterate (compartilhado com o
+    Utawarerumono). Sem isso, todo acento virava '?' (0x3F)
     silenciosamente: verify_chapter.py compara decode(rebuild(encode(x))) contra encode_string(x),
     entao o round-trip comparava corrompido-com-corrompido e passava verde."""
-    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = connector_io.transliterate(text)
     text = "".join(_PUNCT_FALLBACK.get(c, c) for c in text)
     out = bytearray()
     i = 0
