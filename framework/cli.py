@@ -241,7 +241,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_idx.add_argument("db_path")
     p_idx.add_argument("project_id")
     p_idx.add_argument("--force", action="store_true")
-    p_idx.add_argument("--kind", choices=["translation", "decision"], default="translation",
+    p_idx.add_argument("--kind", choices=["translation", "decision", "kb"], default="translation",
                        help="o que indexar: traduções (default) ou decisions (RAG sobre decision_log)")
     p_idx.set_defaults(func=cmd_db_index)
 

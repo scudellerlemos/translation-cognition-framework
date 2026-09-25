@@ -195,3 +195,21 @@ def test_batch_coverage_finds_missing():
     assert "o2" in missing and bad == []
 
 
+
+
+def test_batch_coverage_ignores_engine_label_lines():
+    # rotulo de engine nunca vai ao lote (_translate_params) -> nao pode contar como faltante
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "body"}, {"offset": "o2", "source": "Hello there"}]}
+    assert M._batch_coverage(pack, {"o2": {"t": "Ola"}}) == ([], [])
+
+
+def test_batch_coverage_and_merge_check_formatting_tokens():
+    pack = {"scene_id": "S1", "tm_exact": [], "project_constraints": {"formatting_tokens": ["<C1>", "<C2>"]},
+            "lines": [{"offset": "o1", "source": "a <C1>x b"}]}
+    assert M._batch_coverage(pack, {"o1": {"t": "a <C2>x b"}}) == ([], ["o1"])   # token trocado
+    assert M._batch_coverage(pack, {"o1": {"t": "a <C1>x b"}}) == ([], [])
+    rx = M._structural_rx(pack["project_constraints"])
+    dest = {"o1": {"t": "a <C1>x b"}}
+    M._merge_best_parity(dest, {"o1": {"t": "sem token"}}, {"o1": "a <C1>x b"}, rx)
+    assert dest["o1"]["t"] == "a <C1>x b"                                          # nao regride p/ ruim

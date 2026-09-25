@@ -151,3 +151,13 @@ def test_nested_batch_keeps_outer_atomicity(tmp_path):
                 db.upsert_scene(project_id="p1", scene_id="S1", status="pending")
                 raise RuntimeError("falha simulada apos o bloco interno")
         assert db.get_scenes("p1") == []
+
+
+def test_spoiler_entry_without_fact_upserts_not_duplicates(tmp_path):
+    # NULL e distinto no UNIQUE -> cada re-mirror duplicava a entry sem fact
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="01")
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="02")
+        entries = db.get_spoiler_entries("p1")
+    assert len(entries) == 1 and entries[0]["reveal"] == "02"
