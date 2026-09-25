@@ -75,3 +75,16 @@ def test_cache_read_cheaper_than_full_input():
     full = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=False)
     cached = C._call_cost(10_000, 1_000, "opus", ctx_tok=8_000, cache=True)
     assert cached < full
+
+
+def test_partial_batch_priced_by_real_size_and_empty_plan_is_free():
+    """Lote parcial (n < batch) cobra so as linhas reais; plano vazio = custo zero."""
+    base = dict(ctx_tok=1000, batch=200, src_tok=20 * 10, tgt_tok=20 * 12, n=20, n_high=0,
+                n_batches=1)
+    models = dict(low="haiku", medium="sonnet", high="opus", qa="sonnet", back="opus")
+    small = C._scenario(base, models=models, cache=False)
+    full = C._scenario({**base, "src_tok": 200 * 10, "tgt_tok": 200 * 12, "n": 200},
+                       models=models, cache=False)
+    assert small["trans"] < full["trans"] / 2
+    empty = C._scenario({**base, "src_tok": 0, "tgt_tok": 0, "n": 0}, models=models, cache=True)
+    assert empty["total"] == 0.0

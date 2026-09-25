@@ -68,7 +68,7 @@ def _resolve_data_dir(project_json: Path, cli_override: str | None) -> Path:
     if env:
         return Path(env)
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
-    d = cfg.get("connector", {}).get("data_dir")
+    d = (cfg.get("connector") or {}).get("data_dir")
     if d:
         return Path(d)
     raise RuntimeError(

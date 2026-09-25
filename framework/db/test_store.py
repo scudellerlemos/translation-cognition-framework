@@ -134,3 +134,20 @@ def test_reindex_pending_embeddings_never_raises(tmp_path, monkeypatch):
         db.upsert_project("p1", "Projeto Teste")
         result = db.reindex_pending_embeddings("p1")
     assert result is None
+
+
+def test_nested_batch_keeps_outer_atomicity(tmp_path):
+    """batch() aninhado e no-op: o bloco interno nao commita nem desliga o lote -- erro no
+    externo desfaz TUDO, inclusive o que foi escrito dentro do interno."""
+    import pytest
+
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        with pytest.raises(RuntimeError):
+            with db.batch():
+                with db.batch():
+                    db.upsert_scene(project_id="p1", scene_id="S0", status="pending")
+                db.upsert_scene(project_id="p1", scene_id="S1", status="pending")
+                raise RuntimeError("falha simulada apos o bloco interno")
+        assert db.get_scenes("p1") == []

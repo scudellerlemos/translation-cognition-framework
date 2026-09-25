@@ -102,23 +102,25 @@ def _scenario(e, *, models, cache):
     # e["n"] == 0 (plano/dialogs.csv vazio) -> reporta cenario de custo zero em vez de ZeroDivisionError
     src_per = e["src_tok"] / e["n"] if e["n"] else 0.0
     tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
+    # tamanho REAL de cada lote (o ultimo pode ser parcial; n=0 -> nenhum lote, custo zero)
+    sizes = [min(batch, e["n"] - i * batch) for i in range(nb)] if e["n"] else []
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * src_per + INSTR_TOK
-        out_tok = batch * (tgt_per + META_TOK_PER_LINE)
+    for size in sizes:
+        in_tok = ctx + size * src_per + INSTR_TOK
+        out_tok = size * (tgt_per + META_TOK_PER_LINE)
         # modelo médio do lote: mistura por risco (aprox: usa 'medium' como base, 'low' p/ baratos)
         m = models["medium"]
         trans += _call_cost(in_tok, out_tok, m, ctx, cache)
     # caching: o 1º lote ESCREVE o cache (1.25×) em vez de ler
-    if cache:
+    if cache and sizes:
         p = PRICE[models["medium"]]
         trans += ctx * p["in"] * (CACHE_WRITE - CACHE_READ)   # diferença write-vs-read no 1º lote
     # micro-QA: 1 chamada por lote
     qa = 0.0
-    for _ in range(nb):
-        in_tok = ctx + batch * (src_per + tgt_per) + INSTR_TOK
-        out_tok = batch * QA_OUT_TOK_PER_LINE
+    for size in sizes:
+        in_tok = ctx + size * (src_per + tgt_per) + INSTR_TOK
+        out_tok = size * QA_OUT_TOK_PER_LINE
         qa += _call_cost(in_tok, out_tok, models["qa"], ctx, cache)
     # back-translation: 1 chamada em lote com as linhas de alto risco
     back = 0.0
@@ -126,7 +128,9 @@ def _scenario(e, *, models, cache):
         in_tok = ctx + e["n_high"] * (src_per + tgt_per) + INSTR_TOK
         out_tok = e["n_high"] * (src_per + 20)
         back = _call_cost(in_tok, out_tok, models["back"], ctx, cache)
-    # QA final: 1 passe no corpus
+    # QA final: 1 passe no corpus (corpus vazio -> nenhuma chamada)
+    if not e["n"]:
+        return {"total": trans + qa + back, "trans": trans, "qa": qa, "back": back, "final": 0.0}
     in_tok = ctx + e["src_tok"] + e["tgt_tok"] + INSTR_TOK
     out_tok = e["n"] * FINAL_QA_OUT_PER_LINE
     final = _call_cost(in_tok, out_tok, models["qa"], ctx, cache)

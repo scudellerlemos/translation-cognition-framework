@@ -149,15 +149,18 @@ def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     9/9 cenas pro interativo full-price sem ninguem perceber ate investigacao manual), o default e
     ABORTAR em vez de cair silenciosamente no caminho caro -- mesma filosofia do teto de --max-usd
     (nunca gastar surpresa). --allow-interactive-fallback destrava o comportamento antigo de propósito."""
-    submit = []
+    submit: list[str] = []
     for s in pending:
         kb = kb_gate.check(root, s)
         # hard_problems: nunca bypassavel (nem com --skip-kb-gate) -- mesma regra do caminho
         # interativo em run_scene.py. Sem este check, uma cena com KB vazia/sem fronteira ia
         # direto pro batch pago em vez de cair pro caminho interativo (que bloqueia de verdade).
+        # hard_problems sao do PROJETO (KB vazia, sem fronteira, project.json corrompido), nao da
+        # cena -- valem p/ todas as restantes: 1 aviso e para, em vez de reler KB N vezes.
         if kb.get("hard_problems"):
-            print(f"[batch] {s} pulado do batch (KB-gate, hard): {kb['hard_problems'][0]}")
-            continue
+            print(f"[batch] {len(pending)} cena(s) fora do batch (KB-gate, hard): {kb['hard_problems'][0]}")
+            submit = []
+            break
         if kb["problems"] and not skip_kb_gate:
             print(f"[batch] {s} pulado do batch (KB-gate): {kb['problems'][0]}")
             continue

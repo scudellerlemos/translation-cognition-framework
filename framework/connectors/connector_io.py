@@ -96,7 +96,13 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
     copia da mesma logica)."""
     literal = [re.escape(t) for t in formatting_tokens]
     parts = literal + [f"(?:{p})" for p in formatting_token_patterns]
-    return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+    try:
+        return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+    except re.error as e:
+        # fail-fast (antes de qualquer chamada de API) -- descartar o padrao calado deixaria token
+        # de formatacao passar sem checagem de paridade
+        raise ValueError(f"project.json formatting_token_patterns: regex invalida ({e}) "
+                         f"-- rode validate.py") from e
 
 
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:

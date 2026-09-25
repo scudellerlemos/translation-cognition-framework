@@ -24,7 +24,7 @@ _CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) não
 
 
 def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
-    override = cfg.get("connector", {}).get(key)
+    override = (cfg.get("connector") or {}).get(key)
     if override is not None and not isinstance(override, str):
         raise ValueError(
             f"project.json connector.{key!r} deveria ser string (path relativo), "
