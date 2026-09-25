@@ -100,4 +100,10 @@ def test_non_string_formatting_token_reported_not_crash(tmp_path):
         {"title": "T", "source_language": "en", "target_language": "pt-BR",
          "source": {"id_column": "offset"}, "formatting_tokens": ["<C1>", 5]}), encoding="utf-8")
     (tmp_path / "artifacts").mkdir()
-    assert any("formatting_tokens" in i[2] for i in validate.validate_project(tmp_path))
+    errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
+    assert any("item invalido 5" in m for m in errs)
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_tokens": "<C1>"}), encoding="utf-8")
+    errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
+    assert any("deve ser lista" in m for m in errs)   # string nao vira 4 tokens de 1 char

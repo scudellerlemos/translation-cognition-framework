@@ -88,33 +88,61 @@ def normalize_speaker(sp: str, canonical: frozenset) -> str:
     return "npc"
 
 
+def structural_token_problems(formatting_tokens, formatting_token_patterns) -> list[str]:
+    """Todos os erros de config dos tokens de formatacao (lista vazia = ok). Fonte UNICA da regra --
+    structural_token_rx (runtime/conector) e validate.py (auditoria) chamam esta, nunca uma copia."""
+    tokens, patterns = formatting_tokens or [], formatting_token_patterns or []   # JSON null == []
+    out = []
+    if not isinstance(tokens, list):
+        out.append(f"formatting_tokens deve ser lista, veio {type(tokens).__name__} {tokens!r}")
+        tokens = []
+    if not isinstance(patterns, list):
+        out.append(f"formatting_token_patterns deve ser lista, veio {type(patterns).__name__} {patterns!r}")
+        patterns = []
+    out += [f"formatting_tokens: item invalido {t!r} (string nao-vazia)"
+            for t in tokens if not (isinstance(t, str) and t)]
+    valid = []
+    for p in patterns:
+        if not isinstance(p, str):
+            out.append(f"formatting_token_patterns: item nao-string {p!r}")
+            continue
+        try:
+            prx = re.compile(f"(?:{p})")   # forma envolvida = a que entra na alternancia
+        except re.error as e:
+            out.append(f"formatting_token_patterns: regex invalida {p!r} ({e})")
+            continue
+        if prx.search("") is not None:
+            # casa vazio (ex.: r"\d*") = um "token" em cada posicao -> toda linha reprova o gate
+            out.append(f"formatting_token_patterns: {p!r} casa string vazia")
+            continue
+        valid.append(p)
+    if len(valid) > 1:
+        try:
+            re.compile("|".join(f"(?:{p})" for p in valid))
+        except re.error as e:   # so quebra combinado: grupo nomeado repetido entre padroes
+            out.append(f"formatting_token_patterns: validos sozinhos, quebram combinados ({e})")
+    return out
+
+
 def structural_token_rx(formatting_tokens: list[str] | None,
                         formatting_token_patterns: list[str] | None) -> re.Pattern:
     """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json). MESMA regex usada
     tanto no retry de traducao (framework/runtime/model.py, dentro do fitting loop) quanto no gate
     pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
-    copia da mesma logica)."""
+    copia da mesma logica). Config invalida -> ValueError (fail-fast antes de qualquer chamada de
+    API: descartar item calado deixaria token de formatacao passar sem checagem de paridade)."""
+    problems = structural_token_problems(formatting_tokens, formatting_token_patterns)
+    if problems:
+        raise ValueError("project.json: " + "; ".join(problems) + " -- detalhe em validate.py")
     # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego).
     # ponytail: alternancia e first-match -- literal que e prefixo de token de PADRAO (ou padrao
-    # prefixo de padrao) ainda cega a troca, e padrao que so casa vazio em contexto (lookbehind/)
-    # passa no guard abaixo. Config com tokens sobrepostos e erro de config; tokenizar por
-    # match-mais-longo se algum projeto real precisar.
-    literal = [re.escape(t) for t in sorted(formatting_tokens or [], key=len, reverse=True)]  # null == []
+    # prefixo de padrao) ainda cega a troca, e padrao que so casa vazio em contexto (lookbehind/\b)
+    # passa. Config com tokens sobrepostos e erro de config; tokenizar por match-mais-longo se algum
+    # projeto real precisar.
+    literal = [re.escape(t) for t in sorted(formatting_tokens or [], key=len, reverse=True)]
     parts = literal + [f"(?:{p})" for p in formatting_token_patterns or []]
-    try:
-        rx = re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
-    except re.error as e:
-        # fail-fast (antes de qualquer chamada de API) -- descartar o padrao calado deixaria token
-        # de formatacao passar sem checagem de paridade
-        raise ValueError(f"project.json formatting_token_patterns: regex invalida ({e}) "
-                         f"-- rode validate.py") from e
-    if rx.search("") is not None:
-        # padrao que casa vazio (ex.: r"\d*") conta um "token" em cada posicao -> toda linha com
-        # tamanho != do source reprova o gate estrutural e o retry queima chamadas
-        raise ValueError("project.json formatting_tokens/formatting_token_patterns: algum item casa "
-                         "string vazia -- rode validate.py")
-    return rx
+    return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
 
 
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:

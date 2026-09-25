@@ -65,36 +65,24 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
             E("project.json", f"campo obrigatório ausente: {k}")
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
-    tokens = []
-    for t in cfg.get("formatting_tokens", []) or []:
-        if isinstance(t, str) and t:
-            tokens.append(t)
-        else:
-            E("project.json", f"formatting_tokens: item invalido {t!r} (precisa ser string nao-vazia)")
+    raw_tokens = cfg.get("formatting_tokens") or []
+    raw_patterns = cfg.get("formatting_token_patterns") or []
+    # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o
+    for msg in connector_io.structural_token_problems(raw_tokens, raw_patterns):
+        E("project.json", msg)
+    # checagens por linha so com os itens bem-formados (item ruim ja virou 1 ERROR acima, nao 1 por linha)
+    tokens = [t for t in raw_tokens if isinstance(t, str) and t] if isinstance(raw_tokens, list) else []
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
     rx_tokens = []
-    patterns = cfg.get("formatting_token_patterns", []) or []
-    for p in patterns:
+    for p in raw_patterns if isinstance(raw_patterns, list) else []:
         if not isinstance(p, str):
-            E("project.json", f"formatting_token_patterns: item nao-string {p!r}")
             continue
         try:
-            rx_tokens.append(re.compile(p))
-        except re.error as e:
-            E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
-    # a MESMA regex que o runtime compila (connector_io.structural_token_rx), sobre os itens validos:
-    # pega o que so quebra combinado (flag inline, grupo nomeado repetido) e padrao que casa vazio.
-    # Um item ruim acima nao esconde estes erros; padrao individualmente vazio e descartado das
-    # checagens por linha (senao cada linha aprovada vira um ERROR do mesmo erro de config).
-    for rx in list(rx_tokens):
-        if rx.search("") is not None:
-            E("project.json", f"formatting_token_patterns: {rx.pattern!r} casa string vazia")
-            rx_tokens.remove(rx)
-    try:
-        connector_io.structural_token_rx(tokens, [r.pattern for r in rx_tokens])
-    except ValueError as e:
-        E("project.json", str(e))
-        rx_tokens = []
+            rx = re.compile(p)
+        except re.error:
+            continue
+        if rx.search("") is None:
+            rx_tokens.append(rx)
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
