@@ -88,21 +88,29 @@ def normalize_speaker(sp: str, canonical: frozenset) -> str:
     return "npc"
 
 
-def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns: list[str]) -> re.Pattern:
+def structural_token_rx(formatting_tokens: list[str] | None,
+                        formatting_token_patterns: list[str] | None) -> re.Pattern:
     """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json). MESMA regex usada
     tanto no retry de traducao (framework/runtime/model.py, dentro do fitting loop) quanto no gate
     pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
     copia da mesma logica)."""
-    literal = [re.escape(t) for t in formatting_tokens or []]          # JSON null == []
+    # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego)
+    literal = [re.escape(t) for t in sorted(formatting_tokens or [], key=len, reverse=True)]  # null == []
     parts = literal + [f"(?:{p})" for p in formatting_token_patterns or []]
     try:
-        return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+        rx = re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
     except re.error as e:
         # fail-fast (antes de qualquer chamada de API) -- descartar o padrao calado deixaria token
         # de formatacao passar sem checagem de paridade
         raise ValueError(f"project.json formatting_token_patterns: regex invalida ({e}) "
                          f"-- rode validate.py") from e
+    if rx.search("") is not None:
+        # padrao que casa vazio (ex.: r"\d*") conta um "token" em cada posicao -> toda linha com
+        # tamanho != do source reprova o gate estrutural e o retry queima chamadas
+        raise ValueError("project.json formatting_tokens/formatting_token_patterns: algum item casa "
+                         "string vazia -- rode validate.py")
+    return rx
 
 
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:

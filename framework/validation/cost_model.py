@@ -54,7 +54,7 @@ def _read(p: Path) -> str:
 def estimate(root: Path) -> dict:
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    batch = int(cfg.get("batch_size", 200))
+    batch = int(cfg.get("batch_size") or 200)
     if batch <= 0:
         raise ValueError(f"project.json batch_size deve ser > 0, veio {batch}")
     art = root / "artifacts"
@@ -175,7 +175,7 @@ def main():
         f"{'cenário':<12}{'$ arco':>10}{'$/1k linhas':>14}{'$ ~33k (proj.)':>18}",
     ]
     for name, sc in r["scenarios"].items():
-        per_k = sc["total"] / n * 1000
+        per_k = sc["total"] / n * 1000 if n else 0.0
         proj = per_k * GAME / 1000
         lines.append(f"{name:<12}{sc['total']:>10.3f}{per_k:>14.3f}{proj:>18.2f}")
     base = r["scenarios"]["forte"]["total"]

@@ -232,3 +232,12 @@ def test_structural_match_with_capturing_group_still_compares_literals():
     assert not cio.structural_tokens_match(rx, "<C1>Oi {c5}", "<C2>Oi {c5}")
     assert cio.structural_tokens_match(rx, "<C1>Oi {c5}", "Ola <C1> {c5}")
     assert cio.structural_token_rx(None, None).pattern == "(?!)"   # JSON null == []
+
+
+def test_structural_rx_longest_literal_first_and_rejects_empty_match():
+    """Literal prefixo ("<C") nao pode engolir <C1>/<C2>; padrao que casa vazio e recusado."""
+    import pytest
+    rx = cio.structural_token_rx(["<C", "<C1>", "<C2>"], [])
+    assert not cio.structural_tokens_match(rx, "<C1>x", "<C2>x")
+    with pytest.raises(ValueError):
+        cio.structural_token_rx([], [r"\d*"])

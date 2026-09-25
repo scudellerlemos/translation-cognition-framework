@@ -73,3 +73,22 @@ def test_inline_flag_pattern_flagged_like_runtime(tmp_path):
         encoding="utf-8")
     (tmp_path / "artifacts").mkdir()
     assert any("formatting_token_patterns" in i[2] for i in validate.validate_project(tmp_path))
+
+
+def test_capture_group_pattern_compares_whole_token_and_empty_match_flagged(tmp_path):
+    """validate compara o token inteiro (group(0)), nao so o grupo; padrao que casa vazio -> ERROR."""
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_token_patterns": [r"<(C)\d+>"]}),
+        encoding="utf-8")
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    (art / "dialogs.csv").write_text("offset,text_en\nX:1,<C1>Hi\n", encoding="utf-8")
+    (art / "approved_translations.csv").write_text("offset,text_target\nX:1,<C2>Oi\n", encoding="utf-8")
+    assert any("X:1" in i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR")
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_token_patterns": [r"\d*", 5]}),
+        encoding="utf-8")
+    errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
+    assert any("nao-string" in m for m in errs)
