@@ -224,3 +224,11 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
         dbfirst_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                         for r in db.get_translations("proj")}
     assert dbfirst_rows == legacy_rows
+
+
+def test_structural_match_with_capturing_group_still_compares_literals():
+    """Padrao com grupo de captura nao pode cegar a checagem dos tokens literais (<C1> -> <C2>)."""
+    rx = cio.structural_token_rx(["<C1>", "<C2>"], [r"\{c(\d+)\}"])
+    assert not cio.structural_tokens_match(rx, "<C1>Oi {c5}", "<C2>Oi {c5}")
+    assert cio.structural_tokens_match(rx, "<C1>Oi {c5}", "Ola <C1> {c5}")
+    assert cio.structural_token_rx(None, None).pattern == "(?!)"   # JSON null == []
