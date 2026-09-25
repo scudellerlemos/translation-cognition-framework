@@ -68,18 +68,22 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     tokens = cfg.get("formatting_tokens", []) or []
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
     rx_tokens = []
-    for p in (cfg.get("formatting_token_patterns", []) or []):
+    patterns = cfg.get("formatting_token_patterns", []) or []
+    for p in patterns:
+        if not isinstance(p, str):
+            E("project.json", f"formatting_token_patterns: item nao-string {p!r}")
+            continue
         try:
             rx_tokens.append(re.compile(p))
         except re.error as e:
             E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
-    # mesma alternancia unica (?:p1)|(?:p2) que connector_io.structural_token_rx compila no runtime:
-    # pega o que so quebra combinado (flag inline "(?i)" fora do inicio, grupo nomeado repetido)
-    if rx_tokens and len(rx_tokens) == len(cfg.get("formatting_token_patterns") or []):
+    # a MESMA regex que o runtime compila (connector_io.structural_token_rx) -- nunca uma copia que
+    # diverge: pega o que so quebra combinado (flag inline, grupo nomeado repetido) e padrao vazio
+    if len(rx_tokens) == len(patterns):
         try:
-            re.compile("|".join(f"(?:{r.pattern})" for r in rx_tokens))
-        except re.error as e:
-            E("project.json", f"formatting_token_patterns: combinados numa regex so, quebram ({e})")
+            connector_io.structural_token_rx(tokens, patterns)
+        except ValueError as e:
+            E("project.json", str(e))
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
@@ -135,7 +139,9 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                 # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
                 # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
                 for rx in rx_tokens:
-                    ms, mt = sorted(rx.findall(s)), sorted(rx.findall(tgt))
+                    # group(0), nao findall: com grupo de captura findall compara so o grupo
+                    ms = sorted(m.group(0) for m in rx.finditer(s))
+                    mt = sorted(m.group(0) for m in rx.finditer(tgt))
                     if ms != mt:
                         E("approved_translations.csv",
                           f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}")
