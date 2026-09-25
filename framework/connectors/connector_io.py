@@ -88,21 +88,31 @@ def normalize_speaker(sp: str, canonical: frozenset) -> str:
     return "npc"
 
 
-def structural_token_problems(formatting_tokens, formatting_token_patterns) -> list[str]:
-    """Todos os erros de config dos tokens de formatacao (lista vazia = ok). Fonte UNICA da regra --
-    structural_token_rx (runtime/conector) e validate.py (auditoria) chamam esta, nunca uma copia."""
-    tokens, patterns = formatting_tokens or [], formatting_token_patterns or []   # JSON null == []
-    out = []
-    if not isinstance(tokens, list):
-        out.append(f"formatting_tokens deve ser lista, veio {type(tokens).__name__} {tokens!r}")
-        tokens = []
-    if not isinstance(patterns, list):
-        out.append(f"formatting_token_patterns deve ser lista, veio {type(patterns).__name__} {patterns!r}")
-        patterns = []
-    out += [f"formatting_tokens: item invalido {t!r} (string nao-vazia)"
-            for t in tokens if not (isinstance(t, str) and t)]
-    valid = []
-    for p in patterns:
+_NUMBERED_GROUP_REF = re.compile(r"(?<!\\)(?:\\\\)*\\[1-9]|\(\?\(\d")   # \1 ou (?(1)...)
+
+
+def structural_token_config(formatting_tokens, formatting_token_patterns) -> tuple[list[str], list[str], list[str]]:
+    """(erros, tokens validos, patterns validos) da config de tokens de formatacao. Fonte UNICA da
+    regra -- structural_token_rx (runtime/conector) e validate.py (auditoria) chamam esta, nunca
+    uma copia. So JSON null vira []; qualquer outro nao-lista ({}, 0, "") e erro."""
+    out: list[str] = []
+    lists = []
+    for key, v in (("formatting_tokens", formatting_tokens), ("formatting_token_patterns", formatting_token_patterns)):
+        if v is None:
+            v = []
+        elif not isinstance(v, list):
+            out.append(f"{key} deve ser lista, veio {type(v).__name__} {v!r}")
+            v = []
+        lists.append(v)
+    tokens = []
+    for t in lists[0]:
+        if isinstance(t, str) and t:
+            tokens.append(t)
+        else:
+            out.append(f"formatting_tokens: item invalido {t!r} (string nao-vazia)")
+    patterns: list[str] = []
+    groups_before = 0
+    for p in lists[1]:
         if not isinstance(p, str):
             out.append(f"formatting_token_patterns: item nao-string {p!r}")
             continue
@@ -115,13 +125,20 @@ def structural_token_problems(formatting_tokens, formatting_token_patterns) -> l
             # casa vazio (ex.: r"\d*") = um "token" em cada posicao -> toda linha reprova o gate
             out.append(f"formatting_token_patterns: {p!r} casa string vazia")
             continue
-        valid.append(p)
-    if len(valid) > 1:
+        if groups_before and _NUMBERED_GROUP_REF.search(p):
+            # na alternancia os grupos de padroes anteriores deslocam a numeracao: \1 aponta pro grupo errado
+            out.append(f"formatting_token_patterns: {p!r} usa referencia numerada a grupo, "
+                       "que muda de numero quando combinado -- use (?P<nome>...)/(?P=nome)")
+            continue
+        patterns.append(p)
+        groups_before += prx.groups
+    if len(patterns) > 1:
         try:
-            re.compile("|".join(f"(?:{p})" for p in valid))
+            re.compile("|".join(f"(?:{p})" for p in patterns))
         except re.error as e:   # so quebra combinado: grupo nomeado repetido entre padroes
             out.append(f"formatting_token_patterns: validos sozinhos, quebram combinados ({e})")
-    return out
+            patterns = []
+    return out, tokens, patterns
 
 
 def structural_token_rx(formatting_tokens: list[str] | None,
@@ -132,26 +149,28 @@ def structural_token_rx(formatting_tokens: list[str] | None,
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
     copia da mesma logica). Config invalida -> ValueError (fail-fast antes de qualquer chamada de
     API: descartar item calado deixaria token de formatacao passar sem checagem de paridade)."""
-    problems = structural_token_problems(formatting_tokens, formatting_token_patterns)
+    problems, tokens, patterns = structural_token_config(formatting_tokens, formatting_token_patterns)
     if problems:
-        raise ValueError("project.json: " + "; ".join(problems) + " -- detalhe em validate.py")
+        raise ValueError("project.json: " + "; ".join(problems))
     # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego).
     # ponytail: alternancia e first-match -- literal que e prefixo de token de PADRAO (ou padrao
     # prefixo de padrao) ainda cega a troca, e padrao que so casa vazio em contexto (lookbehind/\b)
     # passa. Config com tokens sobrepostos e erro de config; tokenizar por match-mais-longo se algum
     # projeto real precisar.
-    literal = [re.escape(t) for t in sorted(formatting_tokens or [], key=len, reverse=True)]
-    parts = literal + [f"(?:{p})" for p in formatting_token_patterns or []]
+    literal = [re.escape(t) for t in sorted(tokens, key=len, reverse=True)]
+    parts = literal + [f"(?:{p})" for p in patterns]
     return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
+
+
+def structural_token_counts(rx: re.Pattern, text: str) -> Counter:
+    """Multiset de tokens de formatacao em `text`. group(0), nao findall: padrao com grupo de captura
+    faria findall devolver so o grupo ('' p/ todo token literal) e a troca <C1>-><C2> passaria."""
+    return Counter(m.group(0) for m in rx.finditer(text or ""))
 
 
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    # group(0), nao findall: padrao com grupo de captura faria findall devolver so o grupo
-    # ('' p/ todo token literal) e a troca <C1>-><C2> passaria como identica
-    def toks(s):
-        return Counter(m.group(0) for m in rx.finditer(s or ""))
-    return toks(source) == toks(text)
+    return structural_token_counts(rx, source) == structural_token_counts(rx, text)
 
 
 def sync_translations_db(root: Path, scene_id: str, sfx: str,
