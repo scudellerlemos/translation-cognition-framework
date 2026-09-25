@@ -70,6 +70,9 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     rx_tokens = []
     for p in (cfg.get("formatting_token_patterns", []) or []):
         try:
+            # mesma forma envolvida (?:...) que connector_io.structural_token_rx compila no runtime
+            # (ex.: flag inline "(?i)..." compila solta mas quebra envolvida)
+            re.compile(f"(?:{p})")
             rx_tokens.append(re.compile(p))
         except re.error as e:
             E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
