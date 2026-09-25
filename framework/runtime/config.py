@@ -247,7 +247,7 @@ def validate_connector_types(cfg: dict) -> list:
     em run_scene.py, que so avisa). Retorna lista de mensagens de erro; lista vazia = tudo ok."""
     hints = get_type_hints(ConnectorConfig)
     errors = []
-    for key, value in cfg.get("connector", {}).items():
+    for key, value in (cfg.get("connector") or {}).items():
         expected = hints.get(key)
         if expected is None:
             continue

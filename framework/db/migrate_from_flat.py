@@ -499,33 +499,36 @@ def _project_meta(root: Path) -> dict:
 
 def migrate(project_root: Path, dest_db: Path, project_id: str) -> dict:
     meta = _project_meta(project_root)
-    with Store(dest_db) as db, db.batch():
-        # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
-        # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
-        # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
-        db.upsert_project(
-            project_id=project_id,
-            title=meta["title"],
-            source_lang=meta["source_lang"],
-            target_lang=meta["target_lang"],
-            media_type=meta["media_type"],
-        )
-        scenes = _migrate_scenes(db, project_id, project_root)
-        scene_lines = _migrate_scene_lines(db, project_id, project_root)
-        translations, approved = _migrate_translations(db, project_id, project_root)
-        glossary = _migrate_glossary(db, project_id, project_root)
-        entities = _migrate_entities(db, project_id, project_root)
-        voice_cards = _migrate_voice_cards(db, project_id, project_root)
-        decisions = _migrate_decisions(db, project_id, project_root)
-        spoiler = _migrate_spoiler(db, project_id, project_root)
-        back_translations = _migrate_back_translations(db, project_id, project_root)
-        kb = _migrate_kb(db, project_id, project_root)
-        research_log = _migrate_research_log(db, project_id, project_root)
-        kb_ratified = _migrate_kb_ratified(db, project_id, project_root)
-        jobs = _migrate_jobs(db, project_id, project_root)
-        metrics = _migrate_metrics(db, project_id, project_root)
-        warnings = _migrate_warnings(db, project_id, project_root)
-        qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
+    with Store(dest_db) as db:
+        with db.batch():
+            # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
+            # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
+            # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
+            db.upsert_project(
+                project_id=project_id,
+                title=meta["title"],
+                source_lang=meta["source_lang"],
+                target_lang=meta["target_lang"],
+                media_type=meta["media_type"],
+            )
+            scenes = _migrate_scenes(db, project_id, project_root)
+            scene_lines = _migrate_scene_lines(db, project_id, project_root)
+            translations, approved = _migrate_translations(db, project_id, project_root)
+            glossary = _migrate_glossary(db, project_id, project_root)
+            entities = _migrate_entities(db, project_id, project_root)
+            voice_cards = _migrate_voice_cards(db, project_id, project_root)
+            decisions = _migrate_decisions(db, project_id, project_root)
+            spoiler = _migrate_spoiler(db, project_id, project_root)
+            back_translations = _migrate_back_translations(db, project_id, project_root)
+            kb = _migrate_kb(db, project_id, project_root)
+            research_log = _migrate_research_log(db, project_id, project_root)
+            kb_ratified = _migrate_kb_ratified(db, project_id, project_root)
+            jobs = _migrate_jobs(db, project_id, project_root)
+            metrics = _migrate_metrics(db, project_id, project_root)
+            warnings = _migrate_warnings(db, project_id, project_root)
+            qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
+        # Fora do batch(): carga do modelo/encode e lenta e embedder.py faz commit proprio --
+        # dentro do bloco seguraria o lock de escrita e quebraria o tudo-ou-nada.
         # #171: reindexa embeddings pendentes (TM/decisions) no mesmo write-path que espelha
         # flat→DB — uma linha aprovada ou corrigida depois nunca fica esperando reindex manual.
         embeddings = db.reindex_pending_embeddings(project_id)

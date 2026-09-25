@@ -302,7 +302,7 @@ def select_spoiler_guards(ledger: dict, blob_low: str, scene_id: str) -> list:
 
 
 def project_constraints(cfg: dict) -> dict:
-    conn = cfg.get("connector", {})
+    conn = cfg.get("connector") or {}
     return {
         "formatting_tokens": cfg.get("formatting_tokens", []),
         "formatting_token_patterns": cfg.get("formatting_token_patterns", []),

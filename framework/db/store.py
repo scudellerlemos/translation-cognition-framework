@@ -85,7 +85,11 @@ class Store:
         linha. NAO muda a durabilidade caso a caso do uso normal (runtime/producao continuam
         commitando por chamada fora deste bloco) -- so a flag _in_batch, que _commit() checa,
         fica ligada TEMPORARIAMENTE. Erro dentro do bloco -> rollback (a mesma garantia de
-        tudo-ou-nada que os commits individuais davam, um passo por vez)."""
+        tudo-ou-nada que os commits individuais davam, um passo por vez). Aninhado: o bloco
+        interno e no-op -- so o mais externo commita/faz rollback."""
+        if self._in_batch:
+            yield self
+            return
         self._in_batch = True
         try:
             yield self

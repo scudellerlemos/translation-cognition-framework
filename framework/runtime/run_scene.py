@@ -81,7 +81,7 @@ def _validate_connector_cfg(cfg: dict) -> list:
     """Retorna lista de avisos sobre chaves desconhecidas em project.json connector.{}."""
     known = CONNECTOR_KNOWN_KEYS | {s.key for s in CONNECTOR_REGISTRY}
     return [f"connector.{k!r} desconhecida — chaves validas: {sorted(known)}"
-            for k in sorted(cfg.get("connector", {})) if k not in known]
+            for k in sorted(cfg.get("connector") or {}) if k not in known]
 
 
 def _checkpoint(root: Path, scene: str, patch: dict):
