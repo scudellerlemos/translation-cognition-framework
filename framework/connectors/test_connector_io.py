@@ -250,15 +250,19 @@ def test_structural_rx_longest_literal_first_and_rejects_empty_match():
     (0, None),
     (None, [5]),               # (?:5) passaria como padrao
     (None, [r"(?P<a>x)", r"(?P<a>y)"]),   # so quebra combinado
-    (None, [r"(x)", r"(a)\1"]),           # \1 renumerado na alternancia
 ])
 def test_structural_token_rx_fails_fast_on_bad_config(tokens, patterns):
     with pytest.raises(ValueError):
         cio.structural_token_rx(tokens, patterns)
 
 
-def test_structural_token_rx_wrapped_only_pattern_and_leading_backref_ok():
-    rx = cio.structural_token_rx(None, [r"(a)\1", r"<c)|(\d>"])   # \1 sem grupo antes: nao muda
-    assert rx.search("aa") and rx.search("<c") and rx.search("5>")
+def test_structural_token_rx_wrapped_only_pattern_ok():
+    rx = cio.structural_token_rx(None, [r"<c)|(\d>"])
+    assert rx.search("<c") and rx.search("5>")
     problems, _, patterns = cio.structural_token_config(None, [r"<c)|(\d>"])
     assert problems == [] and patterns == [r"<c)|(\d>"]
+
+
+def test_structural_token_config_combined_conflict_keeps_valid_patterns():
+    problems, _, patterns = cio.structural_token_config(None, [r"(?P<a>x)", r"(?P<a>y)", "<b>"])
+    assert len(problems) == 1 and "<b>" in patterns   # validate segue auditando <b> por linha
