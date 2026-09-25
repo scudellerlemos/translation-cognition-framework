@@ -149,7 +149,7 @@ def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     9/9 cenas pro interativo full-price sem ninguem perceber ate investigacao manual), o default e
     ABORTAR em vez de cair silenciosamente no caminho caro -- mesma filosofia do teto de --max-usd
     (nunca gastar surpresa). --allow-interactive-fallback destrava o comportamento antigo de propósito."""
-    submit = []
+    submit: list[str] = []
     for s in pending:
         kb = kb_gate.check(root, s)
         # hard_problems: nunca bypassavel (nem com --skip-kb-gate) -- mesma regra do caminho

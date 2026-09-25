@@ -94,8 +94,8 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
     pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
     copia da mesma logica)."""
-    literal = [re.escape(t) for t in formatting_tokens]
-    parts = literal + [f"(?:{p})" for p in formatting_token_patterns]
+    literal = [re.escape(t) for t in formatting_tokens or []]          # JSON null == []
+    parts = literal + [f"(?:{p})" for p in formatting_token_patterns or []]
     try:
         return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
     except re.error as e:
@@ -107,7 +107,11 @@ def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns:
 
 def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     """True se `text` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    return Counter(rx.findall(source or "")) == Counter(rx.findall(text or ""))
+    # group(0), nao findall: padrao com grupo de captura faria findall devolver so o grupo
+    # ('' p/ todo token literal) e a troca <C1>-><C2> passaria como identica
+    def toks(s):
+        return Counter(m.group(0) for m in rx.finditer(s or ""))
+    return toks(source) == toks(text)
 
 
 def sync_translations_db(root: Path, scene_id: str, sfx: str,

@@ -70,12 +70,16 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     rx_tokens = []
     for p in (cfg.get("formatting_token_patterns", []) or []):
         try:
-            # mesma forma envolvida (?:...) que connector_io.structural_token_rx compila no runtime
-            # (ex.: flag inline "(?i)..." compila solta mas quebra envolvida)
-            re.compile(f"(?:{p})")
             rx_tokens.append(re.compile(p))
         except re.error as e:
             E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
+    # mesma alternancia unica (?:p1)|(?:p2) que connector_io.structural_token_rx compila no runtime:
+    # pega o que so quebra combinado (flag inline "(?i)" fora do inicio, grupo nomeado repetido)
+    if rx_tokens and len(rx_tokens) == len(cfg.get("formatting_token_patterns") or []):
+        try:
+            re.compile("|".join(f"(?:{r.pattern})" for r in rx_tokens))
+        except re.error as e:
+            E("project.json", f"formatting_token_patterns: combinados numa regex so, quebram ({e})")
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()

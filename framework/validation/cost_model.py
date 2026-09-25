@@ -55,6 +55,8 @@ def estimate(root: Path) -> dict:
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     batch = int(cfg.get("batch_size", 200))
+    if batch <= 0:
+        raise ValueError(f"project.json batch_size deve ser > 0, veio {batch}")
     art = root / "artifacts"
 
     # contexto CACHEÁVEL por prompt (glossário + voz + Carta/regras + fatia de KB)
@@ -80,7 +82,7 @@ def estimate(root: Path) -> dict:
         src_tok = sum(_toks(r.get("text_source", "")) for r in rows)
         n = len(rows); tgt_tok = src_tok; n_high = 0; risk = {"low": n, "medium": 0, "high": 0}
 
-    n_batches = max(1, (n + batch - 1) // batch)
+    n_batches = (n + batch - 1) // batch          # mesma contagem que _scenario precifica
     return {"batch": batch, "ctx_tok": ctx_tok, "src_tok": src_tok, "tgt_tok": tgt_tok,
             "n": n, "n_high": n_high, "n_batches": n_batches, "risk": risk}
 
