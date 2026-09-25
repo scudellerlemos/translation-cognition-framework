@@ -54,7 +54,7 @@ def _read(p: Path) -> str:
 def estimate(root: Path) -> dict:
     root = Path(root)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    batch = int(cfg.get("batch_size") or 200)
+    batch = int(cfg["batch_size"]) if cfg.get("batch_size") is not None else 200   # 0 vai pro guard
     if batch <= 0:
         raise ValueError(f"project.json batch_size deve ser > 0, veio {batch}")
     art = root / "artifacts"

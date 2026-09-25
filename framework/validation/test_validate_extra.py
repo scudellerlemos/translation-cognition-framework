@@ -92,3 +92,12 @@ def test_capture_group_pattern_compares_whole_token_and_empty_match_flagged(tmp_
         encoding="utf-8")
     errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
     assert any("nao-string" in m for m in errs)
+    assert any("casa string vazia" in m for m in errs)   # item ruim nao esconde o erro de vazio
+
+
+def test_non_string_formatting_token_reported_not_crash(tmp_path):
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_tokens": ["<C1>", 5]}), encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    assert any("formatting_tokens" in i[2] for i in validate.validate_project(tmp_path))

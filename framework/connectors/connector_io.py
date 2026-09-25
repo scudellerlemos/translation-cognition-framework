@@ -95,7 +95,11 @@ def structural_token_rx(formatting_tokens: list[str] | None,
     pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
     copia da mesma logica)."""
-    # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego)
+    # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego).
+    # ponytail: alternancia e first-match -- literal que e prefixo de token de PADRAO (ou padrao
+    # prefixo de padrao) ainda cega a troca, e padrao que so casa vazio em contexto (lookbehind/)
+    # passa no guard abaixo. Config com tokens sobrepostos e erro de config; tokenizar por
+    # match-mais-longo se algum projeto real precisar.
     literal = [re.escape(t) for t in sorted(formatting_tokens or [], key=len, reverse=True)]  # null == []
     parts = literal + [f"(?:{p})" for p in formatting_token_patterns or []]
     try:

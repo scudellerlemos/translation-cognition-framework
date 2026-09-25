@@ -65,7 +65,12 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
             E("project.json", f"campo obrigatório ausente: {k}")
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
-    tokens = cfg.get("formatting_tokens", []) or []
+    tokens = []
+    for t in cfg.get("formatting_tokens", []) or []:
+        if isinstance(t, str) and t:
+            tokens.append(t)
+        else:
+            E("project.json", f"formatting_tokens: item invalido {t!r} (precisa ser string nao-vazia)")
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
     rx_tokens = []
     patterns = cfg.get("formatting_token_patterns", []) or []
@@ -77,13 +82,19 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
             rx_tokens.append(re.compile(p))
         except re.error as e:
             E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})")
-    # a MESMA regex que o runtime compila (connector_io.structural_token_rx) -- nunca uma copia que
-    # diverge: pega o que so quebra combinado (flag inline, grupo nomeado repetido) e padrao vazio
-    if len(rx_tokens) == len(patterns):
-        try:
-            connector_io.structural_token_rx(tokens, patterns)
-        except ValueError as e:
-            E("project.json", str(e))
+    # a MESMA regex que o runtime compila (connector_io.structural_token_rx), sobre os itens validos:
+    # pega o que so quebra combinado (flag inline, grupo nomeado repetido) e padrao que casa vazio.
+    # Um item ruim acima nao esconde estes erros; padrao individualmente vazio e descartado das
+    # checagens por linha (senao cada linha aprovada vira um ERROR do mesmo erro de config).
+    for rx in list(rx_tokens):
+        if rx.search("") is not None:
+            E("project.json", f"formatting_token_patterns: {rx.pattern!r} casa string vazia")
+            rx_tokens.remove(rx)
+    try:
+        connector_io.structural_token_rx(tokens, [r.pattern for r in rx_tokens])
+    except ValueError as e:
+        E("project.json", str(e))
+        rx_tokens = []
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
