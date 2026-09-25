@@ -1222,6 +1222,16 @@ def test_batch_back_translate(monkeypatch, tmp_path):
     st2 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0, sample_rate=0)
     assert st2 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb2.models == []
 
+    # STALE (linha re-traduzida depois do back): re-julga so a cena invalidada
+    assert back_translate.invalidate_back_translation(tmp_path, "ch_77_01", ["0x1"]) == 1
+    fb3 = _FakeBatches({"ch_77_01": [_backtext(["0x1"])]})
+    monkeypatch.setattr(back_translate, "_client",
+                        lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb3)))
+    st3 = model.batch_back_translate(tmp_path, ["ch_77_01", "ch_77_02"], poll_seconds=0, sample_rate=0)
+    assert st3 == {"ch_77_01": "reviewed", "ch_77_02": "reviewed"} and fb3.models == [model.MODEL_BACK]
+    bt = json.loads((paths.scene_dir(tmp_path, "ch_77_01") / "back_translation_77_01.json").read_text("utf-8"))
+    assert not any(e.get("stale") for e in bt["entries"])
+
 
 def test_batch_back_translate_segments_large_batches(monkeypatch, tmp_path):
     """Regressao real (Souldiers, 2026-07-03): 1 batch gigante de back-translation pareceu travado por
@@ -2532,3 +2542,37 @@ def test_spoiler_guard_incomparable_defaults_safe():
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-v"]))
+
+
+def test_run_chapter_max_usd_is_per_run_not_lifetime(monkeypatch, tmp_path):
+    # RESUME: capitulo ja gastou $10 em runs anteriores; --max-usd 3 vale p/ ESTA execucao.
+    root = _fake_chapter(tmp_path, ("99_01", "99_02"))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    ran = []
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: ran.append(scene) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    monkeypatch.setattr(run_chapter, "_chapter_cost", lambda r, c: 10.0 + len(ran))
+    res = run_chapter.run_chapter(root, "99", backend="api", max_usd=3.0, batch=False)
+    assert ran == ["ch_99_01", "ch_99_02"] and res["status"] != "stopped_budget"
+
+
+def test_run_chapter_require_back_not_deferred_in_batch(monkeypatch, tmp_path):
+    # --require-back no modo batch: run_scene roda o back (e o gate) ele mesmo, nao difere
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    monkeypatch.setattr(run_chapter, "_batch_phase", lambda r, p, **kw: ({}, False))
+    monkeypatch.setattr(run_chapter, "_rebuild_index_phase", lambda r: None)
+    monkeypatch.setattr(run_chapter, "_back_batch_phase", lambda r, s: None)
+    kws = []
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: kws.append(kw) or
+                        {"status": "verified", "scene": scene, "verified": True})
+    run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
+    assert kws and kws[0]["defer_back"] is False

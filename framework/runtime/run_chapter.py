@@ -245,6 +245,10 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         _validate_chapter_arg(root, chap)
         scenes = _scenes_of(root, chap)
         cost_chap = chap
+    # --max-usd e teto DESTA execucao (o _fit_budget ja o trata assim): o ledger acumula runs
+    # anteriores, entao os checks comparam so o delta -- senao o resume de um capitulo que ja gastou
+    # >= max_usd para antes da 1a cena, apos o batch ja ter gasto de novo.
+    spent0 = _chapter_cost(root, cost_chap) if max_usd is not None else 0.0
     if not scenes:
         hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
@@ -300,9 +304,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
         # salvas; rode de novo p/ continuar de onde parou.
         if max_usd is not None:
-            spent = _chapter_cost(root, cost_chap)
+            spent = _chapter_cost(root, cost_chap) - spent0
             if spent >= max_usd:
-                print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} >= "
+                print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} nesta execucao >= "
                       f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
                       f"salvas — rode de novo p/ continuar).")
                 _print_cost(root, cost_chap)
@@ -313,7 +317,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
         # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
         # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
-        defer_back = bool(batch and backend == "api")
+        # --require-back NAO difere: o pos-passe e report-only e o run_scene._back_phase so aplica o
+        # require_back quando roda a back-translation ele mesmo (diferir -> gate pulado calado).
+        defer_back = bool(batch and backend == "api") and not require_back
         rebuild_index = not defer_back
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
@@ -333,9 +339,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         _rebuild_index_phase(root)
         if no_back and not require_back:
             print("[back-batch] pulado (--no-back).")
-        elif max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
+        elif max_usd is not None and _chapter_cost(root, cost_chap) - spent0 >= max_usd:
             print(f"[back-batch] pulado: teto de gasto atingido "
-                  f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
+                  f"(${_chapter_cost(root, cost_chap) - spent0:.2f} >= ${max_usd:.2f}).")
         else:
             if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
                 print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
@@ -475,7 +481,7 @@ def main():
                     help="se o batch em si falhar (bug/rede), cai no caminho interativo full-price "
                          "em vez de abortar (default: aborta, p/ nao gastar caro sem avisar)")
     ap.add_argument("--max-usd", type=float, default=None,
-                    help="teto de gasto: aborta antes da proxima cena se o custo do capitulo passar deste "
+                    help="teto de gasto DESTA execucao: aborta antes da proxima cena se o gasto passar deste "
                          "valor (cenas verified seguem salvas; rode de novo p/ continuar)")
     ap.add_argument("--scenes-glob", default=None,
                     help="glob(s) customizados para projetos com estrutura flat (ex: 'AREAD*,AREAS*'). "

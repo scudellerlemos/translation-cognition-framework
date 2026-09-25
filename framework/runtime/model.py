@@ -620,7 +620,7 @@ def _coverage_note(missing, bad_par) -> str:
     if missing:
         note += f"- Faltam estes offsets — INCLUA todos: {sorted(missing)[:40]}\n"
     if bad_par:
-        note += ("- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
+        note += ("- Estes offsets tem nº de quebras `\\n` ou tokens de formatacao DIFERENTES da fonte — case EXATO (mesma "
                  f"quantidade e posicao do token): {sorted(bad_par)[:30]}\n")
     return note
 
@@ -684,34 +684,40 @@ def _parse_batch_lines(pack, text):
     return out
 
 
-def _merge_best_parity(dest, new, srcmap):
+def _line_ok(src, t, rx=None):
+    """Paridade de `\\n` E (com rx) de tokens de formatacao -- o mesmo par que o _api_translate retenta."""
+    tok = context_pack.TOKEN
+    return t.count(tok) == src.count(tok) and (rx is None or _struct_ok(rx, src, t))
+
+
+def _merge_best_parity(dest, new, srcmap, rx=None):
     """Mescla `new` em `dest` ACUMULANDO entre rodadas, preferindo paridade de `\\n` correta — igual ao
     _api_translate (interativo). NUNCA troca uma linha de paridade BOA por uma RUIM: assim uma re-rodada
     que regride uma linha ja boa nao desfaz o ganho (o `dict.update` cego perdia isso e a cena nao
     convergia). Mesma paridade -> usa a mais nova (consistente com o comportamento anterior)."""
-    tok = context_pack.TOKEN
     for off, v in new.items():
         src = srcmap.get(off, "")
-        good = v.get("t", "").count(tok) == src.count(tok)
+        good = _line_ok(src, v.get("t", ""), rx)
         old = dest.get(off)
         if old is None:
             dest[off] = v
             continue
-        old_good = old.get("t", "").count(tok) == src.count(tok)
+        old_good = _line_ok(src, old.get("t", ""), rx)
         if good or not old_good:        # melhora a paridade, ou ambas ruins -> aceita a nova
             dest[off] = v
     return dest
 
 
 def _batch_coverage(pack, merged):
-    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
-    tok = context_pack.TOKEN
+    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry). bad_parity =
+    `\\n` OU tokens de formatacao divergentes (batch sem isso deixava <C1> perdido ir pro build_plan)."""
+    rx = _structural_rx(pack.get("project_constraints", {}))
     reuse = _select_reuse(pack, enabled=True)
+    reuse.update(_label_passthrough(pack))            # rotulo de engine nunca vai ao lote (_translate_params)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
     missing = [r["offset"] for r in novel if r["offset"] not in merged]
-    bad_par = [o for o in srcmap if o in merged
-               and merged[o].get("t", "").count(tok) != srcmap[o].count(tok)]
+    bad_par = [o for o in srcmap if o in merged and not _line_ok(srcmap[o], merged[o].get("t", ""), rx)]
     return missing, bad_par
 
 
@@ -749,7 +755,8 @@ def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, 
         wanted = req_offsets.get(cid)
         if wanted is not None:
             parsed = {off: v for off, v in parsed.items() if off in wanted}
-        _merge_best_parity(merged[scene], parsed, srcmap)
+        _merge_best_parity(merged[scene], parsed, srcmap,
+                           _structural_rx(packs[scene].get("project_constraints", {})))
 
 
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
@@ -785,6 +792,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
         pack = context_pack.write_pack(root, scene)
         packs[scene] = pack
         reuse = _select_reuse(pack, enabled=True)
+        reuse.update(_label_passthrough(pack))           # rotulo de engine: _translate_params nunca o pede
         merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.

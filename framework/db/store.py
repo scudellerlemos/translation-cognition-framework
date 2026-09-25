@@ -208,8 +208,8 @@ class Store:
         try:
             from embedder import Embedder  # type: ignore
             emb = Embedder()
-            return (emb.index_project(self._con, project_id, kind="translation")
-                    + emb.index_project(self._con, project_id, kind="decision"))
+            return sum(emb.index_project(self._con, project_id, kind=k)
+                       for k in ("translation", "decision", "kb"))   # kb: senao search_kb vazio sempre
         except Exception:
             return None
 
@@ -500,7 +500,9 @@ class Store:
                    pre_reveal=excluded.pre_reveal,
                    forbidden_pre_reveal=excluded.forbidden_pre_reveal,
                    gender_quarantine=excluded.gender_quarantine""",
-            (project_id, entity, fact, spoiler_level, reveal,
+            # fact or "": NULL e distinto no UNIQUE(project_id, entity, fact) -> ON CONFLICT nunca
+            # dispararia e cada re-mirror duplicaria a entry sem fact
+            (project_id, entity, fact or "", spoiler_level, reveal,
              json.dumps(scenes or [], ensure_ascii=False),
              json.dumps(triggers or [], ensure_ascii=False),
              pre_reveal,
