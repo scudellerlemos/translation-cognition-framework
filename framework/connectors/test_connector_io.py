@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
@@ -167,7 +169,6 @@ def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path)
     de verdade semanalmente em ml-coverage-optional.yml (#181)), a
     linha aprovada por sync_translations_db tem que aparecer em Embedder.search() sem
     NENHUM passo manual (nem db index, nem migrate) entre a escrita e a busca."""
-    import pytest
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
 
@@ -236,8 +237,28 @@ def test_structural_match_with_capturing_group_still_compares_literals():
 
 def test_structural_rx_longest_literal_first_and_rejects_empty_match():
     """Literal prefixo ("<C") nao pode engolir <C1>/<C2>; padrao que casa vazio e recusado."""
-    import pytest
     rx = cio.structural_token_rx(["<C", "<C1>", "<C2>"], [])
     assert not cio.structural_tokens_match(rx, "<C1>x", "<C2>x")
     with pytest.raises(ValueError):
         cio.structural_token_rx([], [r"\d*"])
+
+
+@pytest.mark.parametrize("tokens,patterns", [
+    ("<C1>", None),            # string viraria 4 tokens de 1 char
+    ([5], None),               # item nao-string
+    (None, {}),                # falsy nao-lista nao pode virar [] calado
+    (0, None),
+    (None, [5]),               # (?:5) passaria como padrao
+    (None, [r"(?P<a>x)", r"(?P<a>y)"]),   # so quebra combinado
+    (None, [r"(x)", r"(a)\1"]),           # \1 renumerado na alternancia
+])
+def test_structural_token_rx_fails_fast_on_bad_config(tokens, patterns):
+    with pytest.raises(ValueError):
+        cio.structural_token_rx(tokens, patterns)
+
+
+def test_structural_token_rx_wrapped_only_pattern_and_leading_backref_ok():
+    rx = cio.structural_token_rx(None, [r"(a)\1", r"<c)|(\d>"])   # \1 sem grupo antes: nao muda
+    assert rx.search("aa") and rx.search("<c") and rx.search("5>")
+    problems, _, patterns = cio.structural_token_config(None, [r"<c)|(\d>"])
+    assert problems == [] and patterns == [r"<c)|(\d>"]

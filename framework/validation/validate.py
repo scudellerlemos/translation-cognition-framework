@@ -65,24 +65,15 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
             E("project.json", f"campo obrigatório ausente: {k}")
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
-    raw_tokens = cfg.get("formatting_tokens") or []
-    raw_patterns = cfg.get("formatting_token_patterns") or []
-    # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o
-    for msg in connector_io.structural_token_problems(raw_tokens, raw_patterns):
+    # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o; as
+    # checagens por linha usam so os itens validos (item ruim ja virou 1 ERROR, nao 1 por linha)
+    tok_problems, tokens, patterns = connector_io.structural_token_config(
+        cfg.get("formatting_tokens"), cfg.get("formatting_token_patterns"))
+    for msg in tok_problems:
         E("project.json", msg)
-    # checagens por linha so com os itens bem-formados (item ruim ja virou 1 ERROR acima, nao 1 por linha)
-    tokens = [t for t in raw_tokens if isinstance(t, str) and t] if isinstance(raw_tokens, list) else []
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
-    rx_tokens = []
-    for p in raw_patterns if isinstance(raw_patterns, list) else []:
-        if not isinstance(p, str):
-            continue
-        try:
-            rx = re.compile(p)
-        except re.error:
-            continue
-        if rx.search("") is None:
-            rx_tokens.append(rx)
+    # Forma envolvida (?:p), a mesma do runtime -- "a)|(b" so compila assim.
+    rx_tokens = [re.compile(f"(?:{p})") for p in patterns]
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
@@ -143,7 +134,7 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                     mt = sorted(m.group(0) for m in rx.finditer(tgt))
                     if ms != mt:
                         E("approved_translations.csv",
-                          f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}")
+                          f"{i}: token de padrão /{rx.pattern[3:-1]}/ não preservado verbatim {ms}→{mt}")
                 if s.count("\\n") != tgt.count("\\n"):
                     W("approved_translations.csv", f"{i}: nº de quebras '\\n' difere do source")
 

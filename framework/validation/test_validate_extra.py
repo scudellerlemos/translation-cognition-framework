@@ -107,3 +107,16 @@ def test_non_string_formatting_token_reported_not_crash(tmp_path):
          "source": {"id_column": "offset"}, "formatting_tokens": "<C1>"}), encoding="utf-8")
     errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
     assert any("deve ser lista" in m for m in errs)   # string nao vira 4 tokens de 1 char
+
+
+def test_validate_checks_wrapped_only_pattern_per_line(tmp_path):
+    """Padrao que so compila envolvido (?:p) e o que o runtime usa -- validate nao pode descarta-lo calado."""
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR", "source": {"id_column": "offset"},
+         "formatting_tokens": ["<X>"], "formatting_token_patterns": [r"<c)|(\d>"]}), encoding="utf-8")
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    (art / "dialogs.csv").write_text("offset,text_source\n1,a <c b\n", encoding="utf-8")
+    (art / "approved_translations.csv").write_text("offset,text_target\n1,a b\n", encoding="utf-8")
+    errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
+    assert any("não preservado" in m for m in errs), errs

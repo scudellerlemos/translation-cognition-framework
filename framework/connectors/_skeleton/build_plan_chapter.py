@@ -45,7 +45,8 @@ def load_dialogs(p: Path) -> tuple[dict, list]:
 
 
 def _tokens(text: str) -> Counter:
-    return Counter(_STRUCTURAL_TOKEN_RX.findall(text))
+    # group(0), nao findall: com grupo de captura findall devolve so o grupo e cega a troca
+    return Counter(m.group(0) for m in _STRUCTURAL_TOKEN_RX.finditer(text))
 
 
 def main() -> None:
