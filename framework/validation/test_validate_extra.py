@@ -63,3 +63,13 @@ def test_all_artifacts_with_issues(tmp_path):
     for needle in ("handling_rule", "byte_budget", "token [01]", "critical_lines",
                    "canonical_name duplicado", "reveal_timing"):
         assert needle in msgs, needle
+
+
+def test_inline_flag_pattern_flagged_like_runtime(tmp_path):
+    """Flag inline "(?i)..." compila solta mas quebra na forma (?:...) do runtime -> ERROR aqui."""
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_token_patterns": [r"(?i)<c\d>"]}),
+        encoding="utf-8")
+    (tmp_path / "artifacts").mkdir()
+    assert any("formatting_token_patterns" in i[2] for i in validate.validate_project(tmp_path))

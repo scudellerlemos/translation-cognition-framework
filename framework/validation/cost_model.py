@@ -98,12 +98,12 @@ def _call_cost(in_tok, out_tok, model, ctx_tok=0, cache=False):
 def _scenario(e, *, models, cache):
     """models: dict com 'low'/'medium'/'high'/'qa'/'back' -> nome do modelo.
     cache: aplica prompt caching do contexto. Retorna $ total + breakdown."""
-    ctx = e["ctx_tok"]; batch = e["batch"]; nb = e["n_batches"]
+    ctx = e["ctx_tok"]; batch = e["batch"]
     # e["n"] == 0 (plano/dialogs.csv vazio) -> reporta cenario de custo zero em vez de ZeroDivisionError
     src_per = e["src_tok"] / e["n"] if e["n"] else 0.0
     tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
     # tamanho REAL de cada lote (o ultimo pode ser parcial; n=0 -> nenhum lote, custo zero)
-    sizes = [min(batch, e["n"] - i * batch) for i in range(nb)] if e["n"] else []
+    sizes = [min(batch, e["n"] - i) for i in range(0, e["n"], batch)]
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
     for size in sizes:

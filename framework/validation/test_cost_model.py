@@ -88,3 +88,10 @@ def test_partial_batch_priced_by_real_size_and_empty_plan_is_free():
     assert small["trans"] < full["trans"] / 2
     empty = C._scenario({**base, "src_tok": 0, "tgt_tok": 0, "n": 0}, models=models, cache=True)
     assert empty["total"] == 0.0
+
+
+def test_stale_n_batches_never_yields_negative_cost():
+    """n_batches maior que ceil(n/batch) (montado a mao) nao gera lote de tamanho negativo."""
+    e = dict(ctx_tok=1000, batch=200, src_tok=200, tgt_tok=240, n=20, n_high=0, n_batches=2)
+    models = dict(low="haiku", medium="sonnet", high="opus", qa="sonnet", back="opus")
+    assert C._scenario(e, models=models, cache=False)["trans"] > 0
