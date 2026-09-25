@@ -60,9 +60,11 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
     if not pj.is_file():
         return [("ERROR", "project.json", f"manifesto não encontrado em {root}")]
     cfg = _json(pj)
-    for k in ("title", "source_language", "target_language", "source", "formatting_tokens"):
+    for k in ("title", "source_language", "target_language", "source"):
         if not cfg.get(k):
             E("project.json", f"campo obrigatório ausente: {k}")
+    if "formatting_tokens" not in cfg:   # [] explicito = "sem tokens", valido (mesma regra do runtime)
+        E("project.json", "campo obrigatório ausente: formatting_tokens")
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
     # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o; as
@@ -73,7 +75,7 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
         E("project.json", msg)
     # Tokens parametrizados (índice variável, ex.: cor {c<N>}/{c-1}/{c-}): regex, não literais.
     # Forma envolvida (?:p), a mesma do runtime -- "a)|(b" so compila assim.
-    rx_tokens = [re.compile(f"(?:{p})") for p in patterns]
+    rx_tokens = [(p, re.compile(f"(?:{p})")) for p in patterns]
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
@@ -128,13 +130,13 @@ def validate_project(root: Path) -> list[tuple[str, str, str]]:
                         E("approved_translations.csv", f"{i}: token {tk} {s.count(tk)}→{tgt.count(tk)}")
                 # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
                 # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
-                for rx in rx_tokens:
+                for pat, rx in rx_tokens:
                     # group(0), nao findall: com grupo de captura findall compara so o grupo
                     ms = sorted(m.group(0) for m in rx.finditer(s))
                     mt = sorted(m.group(0) for m in rx.finditer(tgt))
                     if ms != mt:
                         E("approved_translations.csv",
-                          f"{i}: token de padrão /{rx.pattern[3:-1]}/ não preservado verbatim {ms}→{mt}")
+                          f"{i}: token de padrão /{pat}/ não preservado verbatim {ms}→{mt}")
                 if s.count("\\n") != tgt.count("\\n"):
                     W("approved_translations.csv", f"{i}: nº de quebras '\\n' difere do source")
 
