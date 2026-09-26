@@ -364,6 +364,14 @@ def _label_passthrough(pack) -> dict:
     return out
 
 
+def _prefilled(pack, *, enabled=True) -> dict:
+    """Linhas que NUNCA vao ao LLM: reuso de TM (se enabled) + rotulo de engine (passthrough sempre).
+    Fonte unica -- cada call site que montava os dois a mao podia esquecer um (bug do rotulo sobrescrito)."""
+    out = _select_reuse(pack, enabled=enabled)
+    out.update(_label_passthrough(pack))
+    return out
+
+
 def _select_reuse(pack, *, enabled):
     """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
     em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
@@ -424,8 +432,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     struct_rx = _structural_rx(pc)
     # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
     # linhas com fonte ja traduzida em OUTRA cena nao vao ao modelo (corta tokens de saida).
-    reuse = _select_reuse(pack, enabled=(budget_tolerance is None))
-    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough SEMPRE (ate no retighten)
+    reuse = _prefilled(pack, enabled=(budget_tolerance is None))   # rotulo: passthrough SEMPRE (ate no retighten)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
     if not novel:                                     # cena 100% reaproveitada -> zero chamada de API
@@ -627,8 +634,7 @@ def _translate_params(pack, model, note=""):
     """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
     (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
     `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
-    reuse = _select_reuse(pack, enabled=True)
-    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough (fora do lote do LLM)
+    reuse = _prefilled(pack)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
@@ -665,9 +671,8 @@ def _tier_of(source: str) -> str:
 def _parse_batch_lines(pack, text):
     """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
     Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
-    reuse = _select_reuse(pack, enabled=True)
-    # rotulo de engine tambem fica de fora: resposta que ecoe/invente o offset nao sobrescreve o passthrough
-    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse) - set(_label_passthrough(pack))
+    reuse = _prefilled(pack)                          # rotulo tambem: resposta que o ecoe nao sobrescreve o passthrough
+    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
     srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
     try:
         parsed = _to_map(json.loads(text))
@@ -711,8 +716,7 @@ def _batch_coverage(pack, merged):
     """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry). bad_parity =
     `\\n` OU tokens de formatacao divergentes (batch sem isso deixava <C1> perdido ir pro build_plan)."""
     rx = _structural_rx(pack.get("project_constraints", {}))
-    reuse = _select_reuse(pack, enabled=True)
-    reuse.update(_label_passthrough(pack))            # rotulo de engine nunca vai ao lote (_translate_params)
+    reuse = _prefilled(pack)                          # rotulo de engine nunca vai ao lote (_translate_params)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
     missing = [r["offset"] for r in novel if r["offset"] not in merged]
@@ -790,8 +794,7 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     for scene in scenes:
         pack = context_pack.write_pack(root, scene)
         packs[scene] = pack
-        reuse = _select_reuse(pack, enabled=True)
-        reuse.update(_label_passthrough(pack))           # rotulo de engine: _translate_params nunca o pede
+        reuse = _prefilled(pack)
         merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.

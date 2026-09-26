@@ -305,3 +305,18 @@ def test_reveal_allowed_shared_gate(tmp_path):
     assert cp._reveal_allowed("9_09", here) is False             # futuro
     assert cp._reveal_allowed("beyond_frontier", here) is False
     assert cp._reveal_allowed(None, here) is False               # sem tag -> default-deny
+
+
+def test_load_decisions_semantic_gates_reveal_before_top_k(tmp_path, monkeypatch):
+    # top-k antes do gate: os k mais proximos nao revelados zeravam a secao inteira
+    class _Fake:
+        def search_decisions(self, con, q, project_id, k):
+            assert k < 0                                   # pede todos; o corte vem depois do gate
+            return [{"title": "futuro", "summary": "x", "reveal": "9_09", "score": 0.9},
+                    {"title": "ok", "summary": None, "reveal": "safe", "score": 0.5}]
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
+    got = cp._load_decisions_semantic(dbp, "p", [], "q", "1_05", k=1)
+    assert got == [{"title": "ok", "summary": "", "score": 0.5}]       # summary NULL -> "" (nao 'None')

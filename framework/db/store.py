@@ -71,14 +71,16 @@ class Store:
             self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN gender_quarantine INTEGER DEFAULT 0")
         # fact NULL e distinto no UNIQUE -> bancos antigos acumularam 1 copia por re-mirror; o upsert
         # agora grava '' (ver upsert_spoiler_entry). Fica so a mais nova (a que ja e '', ou o maior id).
-        self._con.execute(
-            """DELETE FROM spoiler_entries WHERE fact IS NULL AND (
-                   EXISTS(SELECT 1 FROM spoiler_entries s WHERE s.project_id=spoiler_entries.project_id
-                          AND s.entity=spoiler_entries.entity AND s.fact='')
-                   OR id < (SELECT MAX(id) FROM spoiler_entries s
-                            WHERE s.project_id=spoiler_entries.project_id
-                              AND s.entity=spoiler_entries.entity AND s.fact IS NULL))""")
-        self._con.execute("UPDATE spoiler_entries SET fact='' WHERE fact IS NULL")
+        # Gate de leitura: no caso normal (sem NULL) nao abre transacao de escrita a cada Store().
+        if self._con.execute("SELECT 1 FROM spoiler_entries WHERE fact IS NULL LIMIT 1").fetchone():
+            self._con.execute(
+                """DELETE FROM spoiler_entries WHERE fact IS NULL AND (
+                       EXISTS(SELECT 1 FROM spoiler_entries s WHERE s.project_id=spoiler_entries.project_id
+                              AND s.entity=spoiler_entries.entity AND s.fact='')
+                       OR id < (SELECT MAX(id) FROM spoiler_entries s
+                                WHERE s.project_id=spoiler_entries.project_id
+                                  AND s.entity=spoiler_entries.entity AND s.fact IS NULL))""")
+            self._con.execute("UPDATE spoiler_entries SET fact='' WHERE fact IS NULL")
         dec_cols = {r["name"] for r in self._con.execute("PRAGMA table_info(decisions)").fetchall()}
         if "reveal" not in dec_cols:
             self._con.execute("ALTER TABLE decisions ADD COLUMN reveal TEXT")

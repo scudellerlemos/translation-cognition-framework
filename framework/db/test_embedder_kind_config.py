@@ -90,6 +90,8 @@ def test_search_filters_project_before_top_k(tmp_path):
         assert sorted(h["title"] for h in hits) == ["b1", "b2"]
         # linha editada: reindex troca o vetor (antes ficava o velho)
         db.upsert_decision("far", "b1", summary="a-editado")
+        # antes do reindex: sem emb row -> fora da busca (nao ranqueia pelo vetor velho)
+        assert [h["title"] for h in emb.search_decisions(db._con, "a", project_id="far", k=2)] == ["b2"]
         assert emb.index_project(db._con, project_id="far", kind="decision") == 1
         assert emb.search_decisions(db._con, "a", project_id="far", k=1)[0]["title"] == "b1"
 

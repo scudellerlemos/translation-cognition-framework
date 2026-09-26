@@ -2577,3 +2577,19 @@ def test_run_chapter_require_back_not_deferred_in_batch(monkeypatch, tmp_path):
     run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
     assert kws and kws[0]["defer_back"] is False
     assert kws[0]["rebuild_index"] is False          # rebuild segue 1x/capitulo, mesmo com --require-back
+
+
+def test_run_chapter_batch_early_stop_still_rebuilds_index(monkeypatch, tmp_path):
+    # batch difere o rebuild do state_index p/ o pos-passe; parar no meio nao pode perdê-lo
+    root = _fake_chapter(tmp_path, ("99_01", "99_02"))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    monkeypatch.setattr(run_chapter, "_batch_phase", lambda r, p, **kw: ({}, False))
+    rebuilt = []
+    monkeypatch.setattr(run_chapter, "_rebuild_index_phase", lambda r: rebuilt.append(1))
+    monkeypatch.setattr(run_chapter.RS, "run_scene",
+                        lambda r, scene, **kw: {"status": "back_translation_failed", "scene": scene})
+    res = run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
+    assert res["status"] == "stopped" and rebuilt == [1]
