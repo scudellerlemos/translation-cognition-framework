@@ -407,25 +407,17 @@ def test_deferred_back_does_not_compute_sample(env, monkeypatch):
     assert r["status"] == "verified"
 
 
-def test_sample_failure_falls_back_to_high_lines(env, monkeypatch):
-    # plan malformado na montagem da amostra -> back segue so com as high (nao derruba nem pula o back)
-    root, scene, st = env
-    st["runs"] = [(0, ""), (0, "")]
-    got = []
-    monkeypatch.setattr(rs.M, "back_translate_candidates",
-                        lambda r, s: (_ for _ in ()).throw(AttributeError("'str' object has no attribute 'get'")))
-    monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: [{"offset": "hi1"}])
-    monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
-    r = rs.run_scene(root, scene, backend="api", pretranslated=True)
-    assert got == [[{"offset": "hi1"}]]
-    assert r["status"] == "verified"
-
-
-def test_sample_failure_with_require_back_blocks(env, monkeypatch):
+def test_sample_failure_with_require_back_blocks(env, monkeypatch, capsys):
     # --require-back promete cobrir a amostra: falha ao monta-la bloqueia (nao rebaixa calado p/ so high)
     root, scene, st = env
     st["runs"] = [(0, ""), (0, "")]
     monkeypatch.setattr(rs.M, "back_translate_candidates",
                         lambda r, s: (_ for _ in ()).throw(AttributeError("plan malformado")))
+    called = []
+    monkeypatch.setattr(rs.M, "back_translate", lambda *a, **k: called.append(1))
     r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
-    assert r["status"] == "back_translation_failed"
+    assert r["status"] == "back_translation_failed" and "plan malformado" in r["error"]
+    assert called == []
+    st_scene = json.loads(paths.run_state(root).read_text(encoding="utf-8"))["scenes"][scene]
+    assert st_scene["status"] == "back_translation_failed"
+    assert "plan malformado" in capsys.readouterr().out     # causa visivel, nao so o status
