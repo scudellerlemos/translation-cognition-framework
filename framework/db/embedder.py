@@ -220,9 +220,9 @@ class Embedder:
                 {" HAVING l2 > ?" if cut else ""}
                 ORDER BY l2 LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
             (json.dumps(q_vec), project_id,
-             # score = 1 - L2²/2; score arredonda (4 casas) p/ >= m  <=>  cru >= m - 5e-5
-             #   -> manter  <=>  L2 > sqrt(2*(1-(m-5e-5)))  (mesmo corte do check pos-arredondamento)
-             *(((2.0 * (1.0 - (max_score - 5e-5))) ** 0.5,) if cut else ()),
+             # score cru = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score)). Filtro UNICO
+             # (so no SQL, sobre o cru): um 2o check no score arredondado discordava na fronteira.
+             *(((2.0 * (1.0 - max_score)) ** 0.5,) if cut else ()),
              k),
         ).fetchall()
 
@@ -238,8 +238,6 @@ class Embedder:
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
             if min_score is not None and d["score"] < min_score:
-                continue
-            if max_score is not None and d["score"] >= max_score:   # faixa de arredondamento do corte SQL
                 continue
             results.append(d)
 

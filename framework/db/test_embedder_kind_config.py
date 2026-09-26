@@ -106,13 +106,12 @@ def test_search_max_score_excludes_exact_before_top_k(tmp_path):
 
     emb = Embedder.__new__(Embedder)
     emb.model_name = "fake"
-    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8], "Yes~": [0.99897, (1 - 0.99897 ** 2) ** 0.5]}
+    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8]}
     emb.encode = lambda texts: [vecs.get(t, [0.8, 0.6]) + [0.0] * (_DIM - 2) for t in texts]
     emb._rerank = lambda q, hits: hits
     with Store(tmp_path / "p.db") as db:
         db.upsert_project("p", "p")
-        # "Yes~": cos 0.99897 -> score arredonda p/ 0.999 (faixa de arredondamento): nao pode ocupar slot
-        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!", "Yes~"]):
+        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!"]):
             db.upsert_translation("p", "s", str(i), src, target=f"Sim{i}", approved=True)
         emb.index_project(db._con, project_id="p")
         assert [h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=1)] == ["Yes."]
