@@ -167,8 +167,11 @@ class Embedder:
         vecs = self.encode(texts)
 
         for tid, vec in zip(ids, vecs, strict=True):
+            # vetor velho de linha editada (store apagou só o emb_table): OR REPLACE do vec0 não
+            # é confiável (ver force acima) -> DELETE explícito antes.
+            con.execute(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", (tid,))  # nosec B608
             con.execute(
-                f"INSERT OR REPLACE INTO {c['vec_table']}({c['id_col']}, embedding) VALUES(?,?)",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
+                f"INSERT INTO {c['vec_table']}({c['id_col']}, embedding) VALUES(?,?)",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (tid, json.dumps(vec)),
             )
             con.execute(
@@ -194,18 +197,19 @@ class Embedder:
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
 
+        # vec_distance_l2 + LIMIT em vez de `MATCH ... AND k = ?`: o k do vec0 escolhe os k mais
+        # próximos da tabela INTEIRA (todos os projetos, aprovados ou não) ANTES do WHERE, então o
+        # filtro podia devolver < k hits. Scan linear = mesmo custo do NN exato do vec0 (#172).
         rows = con.execute(
-            f"""SELECT v.translation_id, v.distance,
+            f"""SELECT v.translation_id, vec_distance_l2(v.embedding, ?) AS distance,
                        t.scene_id, t.offset, t.source, t.target,
                        t.speaker, t.tone_register, t.risk_level
                 FROM tm_vectors v
                 JOIN translations t ON t.id = v.translation_id
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal por bool; valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY distance LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
+            (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
         results = []
@@ -236,15 +240,13 @@ class Embedder:
         q_vec = self.encode([strip_codes(query)])[0]
 
         rows = con.execute(
-            """SELECT v.decision_id, v.distance,
+            """SELECT v.decision_id, vec_distance_l2(v.embedding, ?) AS distance,
                        d.title, d.summary, d.universal, d.reveal
                 FROM decision_vectors v
                 JOIN decisions d ON d.id = v.decision_id
                 WHERE d.project_id=?
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search)
+            (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
         results = []
@@ -269,16 +271,13 @@ class Embedder:
         q_vec = self.encode([strip_codes(query)])[0]
 
         rows = con.execute(
-            """SELECT v.kb_id, v.distance,
+            """SELECT v.kb_id, vec_distance_l2(v.embedding, ?) AS distance,
                        kb.section, kb.content, kb.reveal
                 FROM kb_vectors v
                 JOIN kb ON kb.id = v.kb_id
                 WHERE kb.project_id=?
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance""",  # nosec B608 - fragmento literal, valores parametrizados; alias
-                                          # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
-            (project_id, json.dumps(q_vec), k),
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search)
+            (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
         results = []

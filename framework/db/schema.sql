@@ -294,3 +294,13 @@ CREATE TABLE IF NOT EXISTS kb_embeddings (
     dim             INTEGER NOT NULL,
     indexed_at      REAL
 );
+
+-- Texto-fonte editado -> vetor velho fica obsoleto: apaga o metadado de embedding e o próximo
+-- reindex_pending_embeddings re-embeda a linha (embedder.index_project troca o vetor vec0).
+CREATE TRIGGER IF NOT EXISTS decisions_summary_stale_emb
+AFTER UPDATE OF summary ON decisions WHEN old.summary IS NOT new.summary
+BEGIN DELETE FROM decision_embeddings WHERE decision_id = new.id; END;
+
+CREATE TRIGGER IF NOT EXISTS kb_content_stale_emb
+AFTER UPDATE OF content ON kb WHEN old.content IS NOT new.content
+BEGIN DELETE FROM kb_embeddings WHERE kb_id = new.id; END;

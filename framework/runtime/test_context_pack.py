@@ -233,6 +233,8 @@ def test_render_prompt_full_sections():
                              "handling_rule": "preserve", "spoiler_level": ""}],
         "voice_cards": {"Ryu": {"criticality": "high", "aliases": ["Hero"], "lines": ["fala curta"]}},
         "decisions": [{"title": "Regra", "summary": "manter", "universal": True}],
+        "decisions_semantic": [{"title": "Onomatopeia", "summary": "adaptar sons", "score": 0.7},
+                               {"title": "Regra", "summary": "dup do lexico", "score": 0.9}],
         "spoiler_guards": [{"entity": "Fou-lu", "spoiler_level": "high", "guard": "trate como mistério"}],
         "kb": [{"section": "Lore", "content": "lore do mundo"}],
         "kb_semantic": [{"section": "Lore Semelhante", "content": "lore parecida", "score": 0.5},
@@ -244,9 +246,10 @@ def test_render_prompt_full_sections():
     }
     out = cp.render_prompt(pack, "CARTA DE TESTE")
     for needle in ("Cena S1", "Dragon", "Ryu", "Fou-lu", "Lore", "SIMILARES", "charset", "Hello",
-                   "Lore Semelhante", "5d."):
+                   "Lore Semelhante", "5d.", "Onomatopeia"):
         assert needle in out, needle
     assert "duplicado do lexico" not in out, "seção já mostrada no léxico não repete na semântica"
+    assert "dup do lexico" not in out, "decisão já mostrada no léxico não repete na semântica"
 
 
 def test_render_prompt_empty_sections():

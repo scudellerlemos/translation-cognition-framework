@@ -161,3 +161,34 @@ def test_spoiler_entry_without_fact_upserts_not_duplicates(tmp_path):
         db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="02")
         entries = db.get_spoiler_entries("p1")
     assert len(entries) == 1 and entries[0]["reveal"] == "02"
+
+
+def test_partial_upsert_keeps_list_columns(tmp_path):
+    # COALESCE era no-op: None virava '[]' (nunca NULL) e o upsert parcial apagava a lista
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_voice_card("p1", "Ryu", aliases=["Hero"], lines=["curto"])
+        db.upsert_voice_card("p1", "Ryu", register="formal")
+        db.upsert_decision("p1", "Regra", summary="s", tags=["t"])
+        db.upsert_decision("p1", "Regra", universal=True)
+        vc, = db.get_voice_cards("p1")
+        dec, = db.get_decisions("p1")
+    assert vc["aliases"] == ["Hero"] and vc["lines"] == ["curto"] and vc["register"] == "formal"
+    assert dec["tags"] == ["t"] and dec["summary"] == "s"
+
+
+def test_edited_text_invalidates_embedding(tmp_path):
+    # summary/content editado mantinha o vetor velho: reindex só pega linha SEM emb row
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_decision("p1", "Regra", summary="velho")
+        db.upsert_kb("p1", [{"section": "S", "content": "velho"}])
+        con = db._con
+        con.execute("INSERT INTO decision_embeddings VALUES(1,'m',384,0)")
+        con.execute("INSERT INTO kb_embeddings VALUES(1,'m',384,0)")
+        db.upsert_decision("p1", "Regra", summary="velho", universal=True)   # texto igual: mantém
+        assert con.execute("SELECT COUNT(*) FROM decision_embeddings").fetchone()[0] == 1
+        db.upsert_decision("p1", "Regra", summary="novo")
+        db.upsert_kb("p1", [{"section": "S", "content": "novo"}])
+        assert con.execute("SELECT COUNT(*) FROM decision_embeddings").fetchone()[0] == 0
+        assert con.execute("SELECT COUNT(*) FROM kb_embeddings").fetchone()[0] == 0
