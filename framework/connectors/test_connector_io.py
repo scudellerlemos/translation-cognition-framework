@@ -149,6 +149,22 @@ def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
     assert csv_text == ["offset,text_target", "0x1,O heroi pega a Bugiganga.", "0x2,[14]Ola[01]tudo bem?"]
 
 
+def test_sync_translations_db_keys_db_by_canonical_scene_id(tmp_path):
+    """Cena "ch_01_02": sync gravava o nome do dir cru no DB e o migrate grava scene_id_of ("01_02")
+    -> mesma cena duplicada no DB. Chave do DB = canonica; CSV continua no dir cru."""
+    from migrate_from_flat import migrate  # noqa: E402
+    from store import Store  # noqa: E402
+    (tmp_path / "project.json").write_text(
+        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    scene_dir = _scene(tmp_path, "ch_01_02")
+    assert cio.sync_translations_db(tmp_path, "ch_01_02", "a", _APPROVED, _PLAN_LINES) is True
+    assert (scene_dir / "approved_a.csv").is_file()
+    migrate(tmp_path, tmp_path / "p.db", project_id="proj")
+    with Store(tmp_path / "p.db") as db:
+        rows = db.get_translations("proj", approved_only=False)
+    assert sorted({r["scene_id"] for r in rows}) == ["01_02"] and len(rows) == 2
+
+
 def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
     """#182: sync_translations_db (write-path real de run_scene/run_chapter) chama
     reindex_pending_embeddings automaticamente, igual ao #171 já fazia em migrate(). Sem

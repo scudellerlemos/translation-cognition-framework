@@ -166,7 +166,7 @@ def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     return structural_token_counts(rx, source) == structural_token_counts(rx, text)
 
 
-def sync_translations_db(root: Path, scene_id: str, sfx: str,
+def sync_translations_db(root: Path, scene: str, sfx: str,
                           approved: list[tuple[str, str]], plan_lines: list[dict]) -> bool:
     """Write-path DB-first do build_plan_chapter (#109, Fase 6b). Gated por project.json:db
     (mesmo formato de state_index._db_target) — MESMO shape em todo conector, extraído aqui p/
@@ -197,6 +197,9 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
     Store = mff.Store
 
     meta_by = {ln["offset"]: ln for ln in plan_lines}
+    # `scene` e o nome do dir (argv do build_plan); a chave no DB e o scene_id canonico (sem "ch_"),
+    # a mesma que migrate_from_flat grava e context_pack le -- senao a cena duplica no DB
+    scene_id = mff._sid(scene)
     with Store(root / rel) as db:
         pmeta = mff._project_meta(root)
         db.upsert_project(project_id=project_id, title=pmeta["title"],
@@ -232,7 +235,7 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
         # no caminho standalone de run_scene.py (não é reordenação trivial).
         db.reindex_pending_embeddings(project_id)
 
-    scene_dir = root / "artifacts" / "scenes" / scene_id
+    scene_dir = root / "artifacts" / "scenes" / scene
     with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["offset", "text_target"])
