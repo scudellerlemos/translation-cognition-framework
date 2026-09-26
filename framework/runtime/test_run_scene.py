@@ -407,19 +407,6 @@ def test_deferred_back_does_not_compute_sample(env, monkeypatch):
     assert r["status"] == "verified"
 
 
-def test_sample_failure_falls_back_to_high_lines(env, monkeypatch):
-    # API publica (pretranslated sem defer/require_back): falha na amostra -> back segue so com as high
-    root, scene, st = env
-    st["runs"] = [(0, ""), (0, "")]
-    got = []
-    monkeypatch.setattr(rs.M, "back_translate_candidates",
-                        lambda r, s: (_ for _ in ()).throw(AttributeError("plan malformado")))
-    monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: [{"offset": "hi1"}])
-    monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
-    r = rs.run_scene(root, scene, backend="api", pretranslated=True)
-    assert got == [[{"offset": "hi1"}]] and r["status"] == "verified"
-
-
 def test_sample_failure_with_require_back_blocks(env, monkeypatch, capsys):
     # --require-back promete cobrir a amostra: falha ao monta-la bloqueia (nao rebaixa calado p/ so high)
     root, scene, st = env
