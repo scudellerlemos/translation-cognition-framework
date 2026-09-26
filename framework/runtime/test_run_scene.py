@@ -416,6 +416,16 @@ def test_sample_failure_falls_back_to_high_lines(env, monkeypatch):
                         lambda r, s: (_ for _ in ()).throw(AttributeError("'str' object has no attribute 'get'")))
     monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: [{"offset": "hi1"}])
     monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
-    r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    r = rs.run_scene(root, scene, backend="api", pretranslated=True)
     assert got == [[{"offset": "hi1"}]]
     assert r["status"] == "verified"
+
+
+def test_sample_failure_with_require_back_blocks(env, monkeypatch):
+    # --require-back promete cobrir a amostra: falha ao monta-la bloqueia (nao rebaixa calado p/ so high)
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    monkeypatch.setattr(rs.M, "back_translate_candidates",
+                        lambda r, s: (_ for _ in ()).throw(AttributeError("plan malformado")))
+    r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    assert r["status"] == "back_translation_failed"
