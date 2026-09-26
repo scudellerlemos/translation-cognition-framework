@@ -96,9 +96,10 @@ def check(root, scene) -> dict:
             kb_rows = db.get_kb(db_pid)
             g_rows = db.get_glossary(db_pid)
 
-    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
-    # lacuna do check de glossario abaixo) -- projeto com `db` populado nao tem o .md em disco.
-    if db_path:
+    # universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware -- mas so
+    # p/ projeto so-DB (sem o .md em disco): com o flat presente ele decide, o DB e mirror dele (KB
+    # sem secao ##/### vira 0 linhas no DB e bloqueava projeto flat valido ao ligar o db).
+    if db_path and not (art / _KB_HARD[0]).is_file():
         if not any((r.get("content") or "").strip() for r in kb_rows):
             hard_problems.append(
                 "KB vazia no DB (tabela kb) — sintetize a KB (skill 03/04) antes de traduzir. "
@@ -147,9 +148,10 @@ def check(root, scene) -> dict:
         # Decisoes pendentes: sempre extraidas e reportadas ao usuario (nao bloqueiam)
         pending_decisions = _parse_pending_decisions(txt)
 
-    # glossary.csv: #85 DB-aware (mesma lacuna do check de universe_knowledge_base.md acima) --
-    # projeto com `db` populado nao tem o CSV em disco.
-    if db_path:
+    # glossary.csv: #85 DB-aware so p/ projeto so-DB (mesma regra da KB acima: CSV presente decide;
+    # o mirror sempre grava updated_at, entao o check de updated_date sumiria ao ligar o db).
+    gl_db = db_path and not paths.glossary(root).is_file()
+    if gl_db:
         if not g_rows:
             problems.append("glossario vazio no DB (tabela glossary) — KB incompleta (skills 03/04).")
     else:
@@ -174,7 +176,7 @@ def check(root, scene) -> dict:
     # Glossario: updated_date/updated_at e gate obrigatorio (nao so aviso de state_index).
     # #85: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
     # entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header.
-    if db_path:
+    if gl_db:
         undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
         if undated:
             problems.append(

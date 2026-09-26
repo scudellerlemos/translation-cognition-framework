@@ -194,6 +194,7 @@ def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
     _flush()
     if entries:
         db.upsert_kb(project_id, entries)
+    db.prune_absent("kb", project_id, {e["section"] for e in entries})
     return len(entries)
 
 
@@ -222,7 +223,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
     g_path = root / "artifacts" / "glossary.csv"
     if not g_path.is_file():
         return 0
-    n = 0
+    keep: set = set()
     with g_path.open(encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -231,6 +232,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                            or row.get("target_term", ""))
             if not term or not translation:
                 continue
+            keep.add(term)
             db.upsert_glossary(
                 project_id=project_id,
                 term=term,
@@ -242,21 +244,22 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                 spoiler_level=row.get("spoiler_level"),
                 notes=row.get("notes"),
             )
-            n += 1
-    return n
+    db.prune_absent("glossary", project_id, keep)
+    return len(keep)
 
 
 def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
     e_path = root / "artifacts" / "entities.csv"
     if not e_path.is_file():
         return 0
-    n = 0
+    keep: set = set()
     with e_path.open(encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             name = row.get("name") or row.get("entity") or row.get("canonical_name", "")
             if not name:
                 continue
+            keep.add(name)
             db.upsert_entity(
                 project_id=project_id,
                 name=name,
@@ -266,8 +269,8 @@ def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
                 spoiler_reveal_scene=row.get("spoiler_reveal_scene"),
                 notes=row.get("notes"),
             )
-            n += 1
-    return n
+    db.prune_absent("entities", project_id, keep)
+    return len(keep)
 
 
 def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
@@ -298,6 +301,7 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
                 criticality=card.get("criticality", "medium"),
             )
             n += 1
+        db.prune_absent("voice_cards", project_id, set(data))
         return n
     # Formato legado: lista ou {"cards": [...]}.
     cards = data if isinstance(data, list) else data.get("cards", [])
@@ -317,6 +321,8 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
             criticality=card.get("criticality", "medium"),
         )
         n += 1
+    db.prune_absent("voice_cards", project_id,
+                    {c.get("speaker") or c.get("name", "") for c in cards})
     return n
 
 
@@ -347,6 +353,7 @@ def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
             reveal=reveal,
         )
         n += 1
+    db.prune_absent("decisions", project_id, {d.get("title") for d in items})
     return n
 
 
@@ -373,6 +380,8 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
             gender_quarantine=bool(e.get("gender_quarantine")),
         )
         n += 1
+    db.prune_absent("spoiler_entries", project_id,
+                    {(e.get("entity"), e.get("fact") or "") for e in data.get("entries", [])})
     return n
 
 
@@ -398,6 +407,7 @@ def _migrate_kb_ratified(db: Store, project_id: str, root: Path) -> int:
                             "date": row.get("date"), "note": row.get("note")})
     if entries:
         db.upsert_kb_ratified(project_id, entries)
+    db.prune_absent("kb_ratified", project_id, {e["name"] for e in entries})
     return len(entries)
 
 

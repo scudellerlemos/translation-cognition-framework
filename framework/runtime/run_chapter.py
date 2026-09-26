@@ -238,6 +238,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` usado mais abaixo).
         _run_mandatory_audits(root, None if scenes_glob else chap)
         return {"chapter": chap, "scenes": [], "status": "connector_incomplete"}
+    state_index.mirror_db(root)   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
     if scenes_glob:
         scenes = _scenes_of_glob(root, scenes_glob)
         cost_chap = None   # sem filtro ch_* — reporta ledger completo do projeto

@@ -127,6 +127,28 @@ paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan
   legado (flat), e as 447 linhas no `Store` conferem (encoding UTF-8 correto, inclusive
   acentuação pt-BR). Confirma em dado de produção real o que o oráculo sintético já provava.
 
+## Modo DB como default de projeto novo (set/2026)
+
+`framework/templates/project.template.json` declara `db`. O que fechou as lacunas que impediam isso:
+
+- **Bootstrap:** `sync_translations_db` não cria mais o DB (criava um DB só com traduções → o
+  `context_pack` trocava p/ modo DB com KB vazia e "cena sem linhas no DB"). Quem cria é
+  `state_index.mirror_db`, chamado no início de `run_chapter` (após o gate de conector) e do CLI
+  `run_scene` — `build()` + `migrate()`, então KB/linhas/voz entram juntos.
+- **DB velho:** o mirror no início do run traz o que os produtores flat-only
+  (`back_translate`/`metrics`/`quality_review`, KB editada à mão) gravaram desde o último run.
+  `migrate()` agora poda linhas de KB (glossary/entities/voice_cards/decisions/spoiler/kb/
+  kb_ratified) removidas do flat — só quando o arquivo flat existe (arquivo ausente não apaga).
+  Vetores vec0 órfãos ficam (a busca faz JOIN na tabela-mãe antes do LIMIT).
+- **Gates:** flat presente decide no `kb_gate` (KB `.md` sem seção `##` vira 0 linhas no DB e
+  bloqueava; o mirror sempre grava `updated_at` e escondia o check de `updated_date`). Tabela só
+  é lida em projeto só-DB (sem o flat em disco).
+- **ML opcional:** sem `sentence-transformers`/`sqlite-vec`, reindex devolve `None` e as seções
+  semânticas do pacote ficam vazias — sem erro.
+- **Validado:** demo com `db` ligado, do zero (sem `.db`): `run_scene demo01 --backend in-session`
+  → verified; pacote idêntico ao modo flat (linhas/glossário/TM); DB com 1 `scene_id` canônico,
+  5/5 aprovadas.
+
 ## Detalhe das oportunidades de RAG
 
 **🟢 nº1 — TM semântica (Fase 2.5, maior ROI).** Hoje uma fala só reusa tradução se for *idêntica*

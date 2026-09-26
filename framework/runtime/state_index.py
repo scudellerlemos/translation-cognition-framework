@@ -328,6 +328,16 @@ def _sync_db(root: Path):
     return migrate(root, db_path, project_id)
 
 
+def mirror_db(root: Path):
+    """Espelha flat->DB no INICIO do run (run_chapter/run_scene CLI): cria o DB no 1o run de
+    projeto novo e traz o que os produtores flat-only (back_translate/metrics/quality_review,
+    KB editada a mao) gravaram desde o ultimo run. build() antes: voice_cards/decision_index
+    sao derivados e precisam estar frescos. No-op (None) sem project.json:db."""
+    if not _db_target(Path(root))[0]:
+        return None
+    return build(root)["db_synced"]
+
+
 # --------------------------------- driver -------------------------------------
 
 def build(root: Path, *, sync_db: bool = True) -> dict:
