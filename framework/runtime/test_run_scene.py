@@ -395,3 +395,13 @@ def test_pretranslated_back_includes_low_risk_sample(env, monkeypatch):
     monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
     rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
     assert got == [[{"offset": "low1"}]]
+
+
+def test_deferred_back_does_not_compute_sample(env, monkeypatch):
+    # defer_back retorna antes do back -> nao le/parseia o plano p/ montar a amostra
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    monkeypatch.setattr(rs.M, "back_translate_candidates",
+                        lambda r, s: (_ for _ in ()).throw(AssertionError("amostra calculada a toa")))
+    r = rs.run_scene(root, scene, backend="api", pretranslated=True, defer_back=True)
+    assert r["status"] == "verified"

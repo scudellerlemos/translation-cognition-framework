@@ -290,57 +290,61 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": [], "status": "batch_failed"}
 
-    results = []
-    for scene in scenes:
-        if not redo and _verified(root, scene):
-            print(f"[skip] {scene} ja verified")
-            results.append({"scene": scene, "status": "skipped"})
-            continue
-        if scene in budget_excluded:                  # adiada no pre-voo por orcamento — nao gasta
-            print(f"[teto] {scene} adiada por orcamento (rode de novo apos recarga)")
-            results.append({"scene": scene, "status": "skipped_budget"})
-            continue
-        # TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
-        # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
-        # salvas; rode de novo p/ continuar de onde parou.
-        if max_usd is not None:
-            spent = _chapter_cost(root, cost_chap) - spent0
-            if spent >= max_usd:
-                print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} nesta execucao >= "
-                      f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
-                      f"salvas — rode de novo p/ continuar).")
-                if batch and backend == "api":
-                    _rebuild_index_phase(root)   # cenas ja verified entram na TM (rebuild e deferido no batch)
-                _print_cost(root, cost_chap)
-                _run_mandatory_audits(root, cost_chap)
-                return {"chapter": chap, "scenes": results, "status": "stopped_budget",
-                        "stopped_at": scene}
-        pre = batch_status.get(scene) in ("written", "all_reused")
-        # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
-        # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
-        # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
-        # --require-back NAO difere: o pos-passe e report-only e o run_scene._back_phase so aplica o
-        # require_back quando roda a back-translation ele mesmo (diferir -> gate pulado calado).
-        defer_back = bool(batch and backend == "api") and not require_back
-        rebuild_index = not (batch and backend == "api")
-        print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
-        r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
-                         do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
-                         defer_back=defer_back, rebuild_index=rebuild_index,
-                         skip_connector_gate=skip_connector_gate, no_back=no_back)
-        results.append({"scene": scene, "status": r["status"]})
-        if r["status"] not in _OK:
-            print(f"\nPAROU em {scene}: status = {r['status']} "
-                  f"(corrija e rode de novo; cenas verified serao puladas)")
-            if batch and backend == "api":
-                _rebuild_index_phase(root)       # idem: rebuild deferido nao pode se perder no early-return
-            _print_cost(root, cost_chap)
-            _run_mandatory_audits(root, cost_chap)
-            return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
-    # POS-PASSE: back-translation em batch (-50% Opus) + rebuild do state_index, 1x pro capitulo
-    # inteiro, se modo batch (cada cena deferiu os dois pra cá — ver rebuild_index/defer_back acima).
+    results: list[dict] = []
+    stop: dict | None = None
+    # try/finally: o rebuild do state_index e DEFERIDO no batch (rebuild_index=False por cena) -> roda
+    # em TODA saida do loop (fim, parada por status/teto ou excecao), senao as cenas ja verified nao
+    # entram na TM
+    try:
+        for scene in scenes:
+            if not redo and _verified(root, scene):
+                print(f"[skip] {scene} ja verified")
+                results.append({"scene": scene, "status": "skipped"})
+                continue
+            if scene in budget_excluded:                  # adiada no pre-voo por orcamento — nao gasta
+                print(f"[teto] {scene} adiada por orcamento (rode de novo apos recarga)")
+                results.append({"scene": scene, "status": "skipped_budget"})
+                continue
+            # TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
+            # uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
+            # salvas; rode de novo p/ continuar de onde parou.
+            if max_usd is not None:
+                spent = _chapter_cost(root, cost_chap) - spent0
+                if spent >= max_usd:
+                    print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} nesta execucao >= "
+                          f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
+                          f"salvas — rode de novo p/ continuar).")
+                    stop = {"chapter": chap, "scenes": results, "status": "stopped_budget", "stopped_at": scene}
+                    break
+            pre = batch_status.get(scene) in ("written", "all_reused")
+            # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
+            # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
+            # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
+            # --require-back NAO difere: o pos-passe e report-only e o run_scene._back_phase so aplica o
+            # require_back quando roda a back-translation ele mesmo (diferir -> gate pulado calado).
+            defer_back = bool(batch and backend == "api") and not require_back
+            rebuild_index = not (batch and backend == "api")
+            print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
+            r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
+                             do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,
+                             defer_back=defer_back, rebuild_index=rebuild_index,
+                             skip_connector_gate=skip_connector_gate, no_back=no_back)
+            results.append({"scene": scene, "status": r["status"]})
+            if r["status"] not in _OK:
+                print(f"\nPAROU em {scene}: status = {r['status']} "
+                      f"(corrija e rode de novo; cenas verified serao puladas)")
+                stop = {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
+                break
+    finally:
+        if batch and backend == "api":
+            _rebuild_index_phase(root)
+    if stop is not None:
+        _print_cost(root, cost_chap)
+        _run_mandatory_audits(root, cost_chap)
+        return stop
+    # POS-PASSE: back-translation em batch (-50% Opus), 1x pro capitulo inteiro, se modo batch (cada
+    # cena deferiu pra cá — ver defer_back acima; o rebuild do state_index roda no finally do loop).
     if batch and backend == "api":
-        _rebuild_index_phase(root)
         if no_back and not require_back:
             print("[back-batch] pulado (--no-back).")
         elif max_usd is not None and _chapter_cost(root, cost_chap) - spent0 >= max_usd:

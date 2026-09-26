@@ -320,3 +320,17 @@ def test_load_decisions_semantic_gates_reveal_before_top_k(tmp_path, monkeypatch
     monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
     got = cp._load_decisions_semantic(dbp, "p", [], "q", "1_05", k=1)
     assert got == [{"title": "ok", "summary": "", "score": 0.5}]       # summary NULL -> "" (nao 'None')
+
+
+def test_load_tm_semantic_skips_exact_matches_before_cut(tmp_path, monkeypatch):
+    # "Yes." com >=k exatos: exatos ocupavam o top-k e o vizinho real sumia
+    class _Fake:
+        def search(self, con, q, project_id, k, min_score=None):
+            hits = [{"source": "Yes.", "target": f"Sim{i}.", "score": 1.0} for i in range(3)]
+            return (hits + [{"source": "Yes!", "target": "Sim!", "score": 0.9}])[:k]
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
+    got = cp._load_tm_semantic(dbp, "p", [{"source": "Yes."}], k=1)
+    assert [h["source"] for h in got] == ["Yes!"]
