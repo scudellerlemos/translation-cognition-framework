@@ -301,13 +301,13 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
 
 def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str,
                 require_back: bool, defer_back: bool, no_back: bool = False,
-                bt_lines: list | None = None) -> tuple:
+                sample: bool = False) -> tuple:
     """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
 
     Retorna (bt, early_return): se early_return nao e None, run_scene() deve retorna-lo imediatamente.
     No modo defer_back, apenas registra o checkpoint de deferimento; state_index/metrics ficam em run_scene.
     `no_back`: pula a back-translation inteiramente (economia de custo; usuario confia no 1o passe).
-    `bt_lines`: o que vai de fato ao back (default = highs); `highs` segue so p/ log/checkpoint.
+    `sample`: back tambem da amostra low/medium (back_translate_candidates); `highs` segue so p/ log/checkpoint.
     """
     if no_back and require_back:
         print(f"[4/6] AVISO: --no-back ignorado (--require-back tem precedencia) — "
@@ -320,8 +320,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
-    if bt_lines is None:
-        bt_lines = highs
+    bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
     print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
           + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
     bt: M.BackTranslateResult | dict
@@ -436,7 +435,7 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     # a amostra nunca e revisada
     highs = _high_lines(root, scene, scene_id)
     bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back, no_back,
-                            bt_lines=M.back_translate_candidates(root, scene) if pretranslated else None)
+                            sample=pretranslated)
     if early is not None:
         return early
 

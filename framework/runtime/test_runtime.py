@@ -2593,3 +2593,21 @@ def test_run_chapter_batch_early_stop_still_rebuilds_index(monkeypatch, tmp_path
                         lambda r, scene, **kw: {"status": "back_translation_failed", "scene": scene})
     res = run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
     assert res["status"] == "stopped" and rebuilt == [1]
+
+
+def test_run_chapter_batch_exception_still_rebuilds_index(monkeypatch, tmp_path):
+    root = _fake_chapter(tmp_path, ("99_01",))
+    monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter.connector_gate, "check",
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
+    monkeypatch.setattr(run_chapter, "_batch_phase", lambda r, p, **kw: ({}, False))
+    rebuilt = []
+    monkeypatch.setattr(run_chapter, "_rebuild_index_phase", lambda r: rebuilt.append(1))
+
+    def _boom(r, scene, **kw):
+        raise OSError("disco cheio")
+    monkeypatch.setattr(run_chapter.RS, "run_scene", _boom)
+    with pytest.raises(OSError):
+        run_chapter.run_chapter(root, "99", backend="api", batch=True)
+    assert rebuilt == [1]
