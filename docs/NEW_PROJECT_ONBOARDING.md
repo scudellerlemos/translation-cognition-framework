@@ -91,6 +91,9 @@ Copiar `framework/templates/project.template.json` e preencher:
 | `connector.type` | `"hex_binary"` (jogos antigos) / `"subtitle_file"` / `"unknown"` |
 | `connector.source_binary` | Caminho relativo ao artefato (ex: `"artifacts/DIALOG.BIN"`) |
 | `db` | `{"path": "<slug>.db", "project_id": "<slug>"}` — default (modo DB). O arquivo nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run); KB/glossário/voz continuam editados nos flat files, o DB é espelho. Remover a chave = modo flat. |
+| `kb_frontier` | scene_id máxima coberta pela pesquisa de KB (ex.: `"12_17"`). Nasce `""` — o `kb_gate` bloqueia (hard) até ser declarada; não use placeholder com dígitos (seria lido como fronteira real). |
+| `formatting_token_patterns` | regex de tokens parametrizados (ex.: `"\[([0-9A-Fa-f]{2})\]"`), complementa a lista literal `formatting_tokens`. |
+| `connector` | `type`, `table_schema`, `encoding`, `source_binary`, `extract_script`, `reinsert_script`, `control_codes` — chaves válidas em `config.CONNECTOR_KNOWN_KEYS`; `build_plan_script`/`verify_script` só se fugirem do default `connector/*.py`. |
 
 Deixar como `"TBD"` qualquer campo que depende do mapeamento do Passo 00.
 
