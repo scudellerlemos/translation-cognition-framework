@@ -236,8 +236,9 @@ class Embedder:
             ))
             # vetores são unit-norm (encode normaliza) e a distância é L2 -> cos = 1 - L2²/2.
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
-            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
-            if min_score is not None and d["score"] < min_score:
+            raw = 1.0 - float(d["distance"]) ** 2 / 2.0
+            d["score"] = round(raw, 4)            # exibicao; os cortes (min/max_score) usam o cru
+            if min_score is not None and raw < min_score:
                 continue
             results.append(d)
 
