@@ -207,6 +207,7 @@ class Embedder:
         # GROUP BY (source, target): o mesmo par repetido em N cenas ocupava N slots do top-k. Com MIN()
         # o SQLite devolve as colunas "bare" da linha de menor distancia (garantia documentada).
         # alias `l2`, nao `distance`: o vec0 tem coluna oculta `distance` que venceria o alias no HAVING.
+        cut = max_score is not None and max_score <= 1.0      # >1 = sem corte superior (score max e 1)
         rows = con.execute(
             f"""SELECT v.translation_id, MIN(vec_distance_l2(v.embedding, ?)) AS l2,
                        t.scene_id, t.offset, t.source, t.target,
@@ -216,11 +217,12 @@ class Embedder:
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
                 GROUP BY t.source, t.target
-                {" HAVING l2 > ?" if max_score is not None else ""}
+                {" HAVING l2 > ?" if cut else ""}
                 ORDER BY l2 LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
             (json.dumps(q_vec), project_id,
-             # score = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score))
-             *(((2.0 * max(0.0, 1.0 - max_score)) ** 0.5,) if max_score is not None else ()),
+             # score = 1 - L2²/2; score arredonda (4 casas) p/ >= m  <=>  cru >= m - 5e-5
+             #   -> manter  <=>  L2 > sqrt(2*(1-(m-5e-5)))  (mesmo corte do check pos-arredondamento)
+             *(((2.0 * (1.0 - (max_score - 5e-5))) ** 0.5,) if cut else ()),
              k),
         ).fetchall()
 

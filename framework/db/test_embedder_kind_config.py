@@ -106,12 +106,13 @@ def test_search_max_score_excludes_exact_before_top_k(tmp_path):
 
     emb = Embedder.__new__(Embedder)
     emb.model_name = "fake"
-    emb.encode = lambda texts: [{"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8]}.get(t, [0.8, 0.6]) + [0.0] * (_DIM - 2)
-                                for t in texts]
+    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8], "Yes~": [0.99897, (1 - 0.99897 ** 2) ** 0.5]}
+    emb.encode = lambda texts: [vecs.get(t, [0.8, 0.6]) + [0.0] * (_DIM - 2) for t in texts]
     emb._rerank = lambda q, hits: hits
     with Store(tmp_path / "p.db") as db:
         db.upsert_project("p", "p")
-        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!"]):
+        # "Yes~": cos 0.99897 -> score arredonda p/ 0.999 (faixa de arredondamento): nao pode ocupar slot
+        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!", "Yes~"]):
             db.upsert_translation("p", "s", str(i), src, target=f"Sim{i}", approved=True)
         emb.index_project(db._con, project_id="p")
         assert [h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=1)] == ["Yes."]
@@ -124,7 +125,8 @@ def test_search_max_score_excludes_exact_before_top_k(tmp_path):
         emb.index_project(db._con, project_id="p")
         hits = emb.search(db._con, "Yes.", project_id="p", k=2, max_score=0.999)
         assert sorted(h["source"] for h in hits) == ["Yes!", "Yes?"]
-        assert emb.search(db._con, "Yes.", project_id="p", k=1, max_score=1.5)   # >1 nao vira complex
+        # >1 = sem corte superior: o exato fica (nem complex no bind, nem clamp que corta L2=0)
+        assert emb.search(db._con, "Yes.", project_id="p", k=1, max_score=1.5)[0]["source"] == "Yes."
 
 
 if __name__ == "__main__":

@@ -325,6 +325,10 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         try:
             bt_lines = M.back_translate_candidates(root, scene)
         except Exception as e:
+            if require_back:   # --require-back promete cobrir a amostra -> bloqueia, nao rebaixa calado
+                _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
+                return ({"status": M.DONE, "reviewed": 0, "path": None},
+                        {"status": "back_translation_failed", "scene": scene, "error": str(e)})
             print(f"      AVISO: amostra low/medium falhou ({e}) — back so das linhas risco>=high.")
     bt: M.BackTranslateResult | dict
     try:
