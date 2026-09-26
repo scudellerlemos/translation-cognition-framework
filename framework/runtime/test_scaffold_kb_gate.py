@@ -5,6 +5,7 @@ scaffoldado). Este teste roda o par ponta-a-ponta pra qualquer divergencia futur
 nao num piloto pago de outro jogo.
 """
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -209,3 +210,24 @@ def test_project_template_declares_keys_the_gates_and_connector_read():
     assert set(cfg["connector"]) <= CONNECTOR_KNOWN_KEYS
     assert {"extract_script", "reinsert_script", "table_schema", "source_binary"} <= set(cfg["connector"])
     assert validate_connector_types(cfg) == []
+
+
+def test_fresh_scaffold_e2e_gates_report_exactly_the_onboarding_steps(tmp_path):
+    """E2E: scaffold puro (sem project.json escrito a mao) -> os 2 gates listam EXATAMENTE os passos
+    reais de onboarding (adaptar conector, sintetizar KB, declarar fronteira, reconciliar pesquisa,
+    rodar state_index) -- nada de 'ausente'/'corrompido' que o scaffold deveria ter criado. E o
+    connector/ copiado roda a propria suite limpo (so skips ate a Fase 0)."""
+    scaffold_project.scaffold(tmp_path, title="T")
+    c = connector_gate.check(tmp_path)
+    assert [("build_plan" in p, "_skeleton" in p) for p in c["hard_problems"]] == [(True, True), (False, True)]
+    assert c["problems"] == [] and c["warnings"] == []
+    k = kb_gate.check(tmp_path, "01")
+    assert len(k["hard_problems"]) == 2, k["hard_problems"]
+    assert "placeholder do scaffold" in k["hard_problems"][0]
+    assert "kb_frontier nao declarada" in k["hard_problems"][1]
+    assert len(k["problems"]) == 2, k["problems"]
+    assert "status: reconciled" in k["problems"][0] and "voice_cards.json" in k["problems"][1]
+    assert k["warnings"] == [] and k["pending_decisions"] == []
+    r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "connector"],
+                       cwd=tmp_path, capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
