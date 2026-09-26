@@ -9,7 +9,7 @@ context_pack consulta estes indices.
 Gera (em `<projeto>/artifacts/state/`):
   - translation_memory.jsonl  : 1 linha por fala ja traduzida -> {scene, offset, speaker,
                                 source, target, src_key}. src_key = sha1(source normalizado).
-                                Fonte: TODOS os translation_plan*.json (raiz + ch_*/), que ja
+                                Fonte: translation_plan*.json (scenes/<cena>/ verified + legado raiz/ch_*/), que ja
                                 carregam text_source + speaker + base_translation.
   - voice_cards.json          : {personagem -> {criticality, lines[]}} destilado do tone_analysis.md
                                 (<=~300 tok/card). So a voz, sem o resto do contexto narrativo.
@@ -109,11 +109,28 @@ def _slug_tags(title: str) -> list[str]:
 
 # ----------------------------- Translation Memory -----------------------------
 
+def _verified_scenes(art: Path) -> set[str] | None:
+    """Cenas `verified` no run_state.json (mesmo criterio do run_chapter._verified); None = sem run_state."""
+    p = art / "run_state.json"
+    if not p.is_file():
+        return None
+    try:
+        scenes = json.loads(p.read_text(encoding="utf-8")).get("scenes", {})
+    except (json.JSONDecodeError, OSError):
+        return None
+    return {k for k, v in scenes.items() if v.get("status") == "verified" and v.get("verified") is True}
+
+
 def build_tm(art: Path) -> list[dict]:
-    """Le todos os translation_plan*.json (raiz + subdirs) -> entradas de TM, ordenadas e dedup."""
+    """Le todos os translation_plan*.json (raiz, subdirs legados e scenes/<cena>/) -> entradas de TM,
+    ordenadas e dedup. Planos de scenes/<cena>/ so entram se a cena esta verified no run_state (plano
+    reprovado nao vira TM reusada); sem run_state (legado) entram todos."""
     entries: dict[str, dict] = {}
+    verified = _verified_scenes(art)
     plan_files = sorted(art.glob("translation_plan*.json")) + \
-        sorted(art.glob("*/translation_plan*.json"))
+        sorted(art.glob("*/translation_plan*.json")) + \
+        [pf for pf in sorted(art.glob("scenes/*/translation_plan*.json"))
+         if verified is None or pf.parent.name in verified]
     for pf in plan_files:
         try:
             data = json.loads(pf.read_text(encoding="utf-8"))
@@ -126,7 +143,7 @@ def build_tm(art: Path) -> list[dict]:
         scene = data.get("scene_group") or pf.stem.replace("translation_plan_", "").replace(
             "translation_plan", "root")
         # V4: tenta ler pack.json da cena para registrar doctrine_version por entrada de TM
-        scene_pack = art / pf.parent.name / "pack.json" if pf.parent != art else None
+        scene_pack = pf.parent / "pack.json" if pf.parent != art else None
         doctrine_version = ""
         if scene_pack and scene_pack.is_file():
             try:

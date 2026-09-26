@@ -72,8 +72,7 @@ def _synthetic_scene_project(tmp_path):
     d.mkdir(parents=True, exist_ok=True)
     (d / "dialogs.csv").write_text(
         "offset,text_source,byte_budget\n0x1,Hero picks up the Widget.,60\n", encoding="utf-8")
-    # build_tm() le translation_plan*.json na RAIZ de artifacts/ (nao em artifacts/scenes/<cena>/)
-    (tmp_path / "artifacts" / f"translation_plan_{context_pack.scene_id_of(SCENE)}.json").write_text(
+    paths.translation_plan(tmp_path, SCENE, context_pack.scene_id_of(SCENE)).write_text(
         json.dumps({"lines": [{"offset": "0x1", "text_source": "Hero picks up the Widget.",
                                 "base_translation": "O heroi pega a Bugiganga.", "speaker": "Hero"}]}),
         encoding="utf-8")
