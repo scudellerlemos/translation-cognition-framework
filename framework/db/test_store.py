@@ -192,3 +192,18 @@ def test_edited_text_invalidates_embedding(tmp_path):
         db.upsert_kb("p1", [{"section": "S", "content": "novo"}])
         assert con.execute("SELECT COUNT(*) FROM decision_embeddings").fetchone()[0] == 0
         assert con.execute("SELECT COUNT(*) FROM kb_embeddings").fetchone()[0] == 0
+
+
+def test_migrate_dedups_legacy_null_fact_spoiler_entries(tmp_path):
+    # bancos antigos: 1 copia fact=NULL por re-mirror; a migracao deixa so a mais nova
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        for rev in ("01", "02"):
+            db._con.execute("INSERT INTO spoiler_entries(project_id, entity, fact, reveal) "
+                            "VALUES('p1','X',NULL,?)", (rev,))
+        db._con.commit()
+    with Store(db_path) as db:
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="03")
+        entries = db.get_spoiler_entries("p1")
+    assert len(entries) == 1 and entries[0]["reveal"] == "03"

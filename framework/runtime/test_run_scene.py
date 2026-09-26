@@ -383,3 +383,15 @@ def test_audit_schema_never_raises_on_failure(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(rs.validate, "validate_project", boom)
     rs._audit_schema(tmp_path)  # não deve levantar
     assert "AVISO" in capsys.readouterr().out
+
+
+def test_pretranslated_back_includes_low_risk_sample(env, monkeypatch):
+    # cena do batch com --require-back: o back roda aqui e o pos-passe pula o arquivo (fresh) ->
+    # tem que cobrir a amostra low/medium tambem, nao so high
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    got = []
+    monkeypatch.setattr(rs.M, "back_translate_candidates", lambda r, s: [{"offset": "low1"}])
+    monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
+    rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    assert got == [[{"offset": "low1"}]]

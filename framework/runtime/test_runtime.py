@@ -2576,3 +2576,4 @@ def test_run_chapter_require_back_not_deferred_in_batch(monkeypatch, tmp_path):
                         {"status": "verified", "scene": scene, "verified": True})
     run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
     assert kws and kws[0]["defer_back"] is False
+    assert kws[0]["rebuild_index"] is False          # rebuild segue 1x/capitulo, mesmo com --require-back
