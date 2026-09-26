@@ -113,6 +113,22 @@ def test_kb_gate_db_gated_glossary_dated_no_updated_at_problem(tmp_path):
     assert not any("updated_at" in p for p in r["problems"])
 
 
+def test_kb_gate_flat_present_decides_over_db_mirror(tmp_path):
+    """Ligar o db num projeto flat valido nao pode mudar o veredito: KB .md sem secao ##/### vira
+    0 linhas no DB (hard block 'KB vazia no DB'), e o mirror grava updated_at sempre (sumia o
+    check de updated_date do CSV). Com o flat em disco, o flat decide."""
+    from migrate_from_flat import migrate
+    _db_project(tmp_path)
+    art = tmp_path / "artifacts"
+    art.mkdir()
+    (art / "universe_knowledge_base.md").write_text("# KB\nsem universo a reconciliar\n", encoding="utf-8")
+    (art / "glossary.csv").write_text("term,translation\nKuon,Kuon\n", encoding="utf-8")
+    migrate(tmp_path, tmp_path / "t.db", "p1")
+    r = kb_gate.check(tmp_path, "ch_11_01")
+    assert not any("KB vazia" in p for p in r["hard_problems"])
+    assert any("updated_date" in p for p in r["problems"])
+
+
 def test_load_translated_scenes_db_gated_shape(tmp_path):
     db_path = _db_project(tmp_path)
     with Store(db_path) as db:

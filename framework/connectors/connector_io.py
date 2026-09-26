@@ -188,6 +188,10 @@ def sync_translations_db(root: Path, scene: str, sfx: str,
     rel, project_id = db_cfg.get("path"), db_cfg.get("project_id")
     if not rel or not project_id:
         return False
+    # DB ausente -> quem cria e o mirror (state_index.mirror_db, com KB/linhas). Criar aqui
+    # deixava um DB so com traducoes e o context_pack trocava p/ modo DB com KB vazia.
+    if not (root / rel).is_file():
+        return False
 
     db_dir = str(Path(__file__).resolve().parents[1] / "db")
     if db_dir not in sys.path:

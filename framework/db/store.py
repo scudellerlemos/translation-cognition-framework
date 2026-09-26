@@ -570,6 +570,30 @@ class Store:
         self._con.execute("DELETE FROM jobs WHERE project_id=?", (project_id,))
         self._commit()
 
+    # tabela KB -> (colunas da chave natural, tabela de embedding FK -> id) p/ prune_absent
+    _PRUNABLE = {
+        "glossary": (("term",), None), "entities": (("name",), None),
+        "voice_cards": (("speaker",), None), "decisions": (("title",), "decision_embeddings"),
+        "spoiler_entries": (("entity", "fact"), None), "kb": (("section",), "kb_embeddings"),
+        "kb_ratified": (("name",), None),
+    }
+
+    def prune_absent(self, table: str, project_id: str, keep: set) -> int:
+        """Apaga as linhas do projeto cuja chave natural não está em `keep` (mirror fiel:
+        upsert sozinho deixa no DB o que foi removido do flat). Chave de 1 coluna -> valor;
+        de 2+ -> tupla. Embedding FK sai antes (foreign_keys=ON)."""
+        cols, emb = self._PRUNABLE[table]
+        rows = self._con.execute(
+            f"SELECT id, {', '.join(cols)} FROM {table} WHERE project_id=?", (project_id,)).fetchall()
+        gone = [(r[0],) for r in rows
+                if (r[1] if len(cols) == 1 else tuple(r)[1:]) not in keep]
+        if emb:
+            fk = "decision_id" if emb == "decision_embeddings" else "kb_id"
+            self._con.executemany(f"DELETE FROM {emb} WHERE {fk}=?", gone)
+        self._con.executemany(f"DELETE FROM {table} WHERE id=?", gone)
+        self._commit()
+        return len(gone)
+
     def get_cost_summary(self, project_id: str) -> dict:
         row = self._con.execute(
             """SELECT SUM(cost_usd) as total, SUM(tokens_in) as tin,

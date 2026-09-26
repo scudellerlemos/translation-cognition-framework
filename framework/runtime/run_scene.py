@@ -545,6 +545,7 @@ def main():
     if a.clean:
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
+    state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                   skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)

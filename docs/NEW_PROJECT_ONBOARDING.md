@@ -80,7 +80,7 @@ projects/<slug>/
 
 ### 0. Criar project.json
 
-Copiar `framework/connectors/project.template.json` e preencher:
+Copiar `framework/templates/project.template.json` e preencher:
 
 | Campo obrigatório | O que colocar |
 |---|---|
@@ -90,6 +90,7 @@ Copiar `framework/connectors/project.template.json` e preencher:
 | `target_language` | `"pt-BR"` |
 | `connector.type` | `"hex_binary"` (jogos antigos) / `"subtitle_file"` / `"unknown"` |
 | `connector.source_binary` | Caminho relativo ao artefato (ex: `"artifacts/DIALOG.BIN"`) |
+| `db` | `{"path": "<slug>.db", "project_id": "<slug>"}` — default (modo DB). O arquivo nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run); KB/glossário/voz continuam editados nos flat files, o DB é espelho. Remover a chave = modo flat. |
 
 Deixar como `"TBD"` qualquer campo que depende do mapeamento do Passo 00.
 
@@ -155,7 +156,7 @@ Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 
 ### 5b. RAG semântico (opcional, #174)
 
-Só se o projeto for DB-first (`project.json` com `db` declarado — Passo 0). Sequência formal —
+Só com a stack de ML instalada (o `db` do Passo 0 funciona sem ela: sem ML o RAG semântico cai p/ vazio, sem erro). Sequência formal —
 substitui ter que lembrar de cabeça (critério de pronto do #174):
 
 1. **Instalar a stack** (fora da CI, pesada — `sentence-transformers` + `sqlite-vec` + `flashrank`,

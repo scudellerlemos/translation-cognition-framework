@@ -120,6 +120,15 @@ _PLAN_LINES = [
 _APPROVED = [(ln["offset"], ln["base_translation"]) for ln in _PLAN_LINES]
 
 
+def _db_project(root):
+    """project.json declarando db + o DB ja criado (o mirror do inicio do run cria)."""
+    from store import Store  # noqa: E402
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "project.json").write_text(
+        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    Store(root / "p.db").close()
+
+
 def test_sync_translations_db_noop_without_db_config(tmp_path):
     (tmp_path / "project.json").write_text(json.dumps({"title": "x"}), encoding="utf-8")
     scene_dir = _scene(tmp_path)
@@ -127,9 +136,18 @@ def test_sync_translations_db_noop_without_db_config(tmp_path):
     assert not (scene_dir / "approved_a.csv").exists()
 
 
-def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
+def test_sync_translations_db_does_not_create_missing_db(tmp_path):
+    """DB declarado mas ainda nao criado: sync criava um DB so com traducoes e o context_pack
+    trocava p/ modo DB com KB/linhas vazias. Quem cria e o mirror; aqui o caller segue flat."""
     (tmp_path / "project.json").write_text(
         json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _scene(tmp_path)
+    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is False
+    assert not (tmp_path / "p.db").exists()
+
+
+def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
+    _db_project(tmp_path)
     scene_dir = _scene(tmp_path)
 
     assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
@@ -154,8 +172,7 @@ def test_sync_translations_db_keys_db_by_canonical_scene_id(tmp_path):
     -> mesma cena duplicada no DB. Chave do DB = canonica; CSV continua no dir cru."""
     from migrate_from_flat import migrate  # noqa: E402
     from store import Store  # noqa: E402
-    (tmp_path / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(tmp_path)
     scene_dir = _scene(tmp_path, "ch_01_02")
     assert cio.sync_translations_db(tmp_path, "ch_01_02", "a", _APPROVED, _PLAN_LINES) is True
     assert (scene_dir / "approved_a.csv").is_file()
@@ -171,8 +188,7 @@ def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
     sentence-transformers/sqlite-vec (CI), a chamada é silenciosa (None) — não quebra a
     escrita da TM. Verificamos via Store.reindex_pending_embeddings diretamente (mesma
     conexão/arquivo que sync_translations_db acabou de escrever) que ela não levanta."""
-    (tmp_path / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(tmp_path)
     _scene(tmp_path)
     assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
@@ -192,8 +208,7 @@ def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path)
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
 
-    (tmp_path / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(tmp_path)
     _scene(tmp_path)
     assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
@@ -234,8 +249,7 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
     # caminho DB-first: producer grava direto no Store via sync_translations_db.
     dbfirst_root = tmp_path / "dbfirst"
     _scene(dbfirst_root)
-    (dbfirst_root / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(dbfirst_root)
     assert cio.sync_translations_db(dbfirst_root, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
     from store import Store  # noqa: E402

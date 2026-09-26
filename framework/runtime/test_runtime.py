@@ -2499,6 +2499,23 @@ def test_state_index_syncs_db_when_gated(tmp_path):
     assert title == "Test Game", title   # não hardcoded "Breath of Fire IV"
 
 
+def test_mirror_db_bootstraps_db_mode_for_new_project(tmp_path):
+    """Projeto novo com db declarado: o mirror do inicio do run cria o DB com KB + linhas, e o
+    context_pack em modo DB enxerga o mesmo glossario/linhas do flat (antes o 1o DB nascia do
+    build_plan so com traducoes -> KB vazia e 'cena sem linhas no DB'). Sem db: no-op."""
+    _tiny_project(tmp_path, with_db=True)
+    (tmp_path / "artifacts" / "glossary.csv").write_text(
+        "term,translation\nHello,Ola\n", encoding="utf-8")
+    assert state_index.mirror_db(tmp_path)
+    cfg = json.loads((tmp_path / "project.json").read_text(encoding="utf-8"))
+    assert context_pack._db_path(tmp_path, cfg)[0]                      # modo DB ligado
+    assert [r["offset"] for r in context_pack._load_lines(tmp_path, cfg, "ch_1_01")] == ["X.DAT:0:1"]
+    nodb = tmp_path / "nodb"
+    nodb.mkdir()
+    _tiny_project(nodb, with_db=False)
+    assert state_index.mirror_db(nodb) is None
+
+
 def test_state_index_sync_db_false_skips_mirror(tmp_path):
     """#1 (perf): sync_db=False (checkpoint por-cena do run_scene) NÃO espelha no DB nem cria
     banco, mesmo num projeto gated — o mirror só roda no rebuild deliberado (default True)."""
