@@ -141,3 +141,19 @@ def test_check_sync_reports_no_version(tmp_path, capsys):
     si._check_sync(tmp_path)
     out = capsys.readouterr().out.lower()
     assert "doctrine" in out
+
+
+def test_approve_scene_db_flips_only_that_scene(tmp_path):
+    """#216: build_plan grava approved=0 no DB; run_scene aprova a cena quando fecha verified."""
+    sys.path.insert(0, str(_HERE.parent / "db"))
+    import store
+    (tmp_path / "project.json").write_text(
+        json.dumps({"db": {"path": "p.db", "project_id": "p"}}), encoding="utf-8")
+    with store.Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "p")
+        for sc in ("a", "b"):
+            db.upsert_translation("p", sc, "1", "Hi", target=sc, approved=False)
+    si.approve_scene_db(tmp_path, "a")
+    with store.Store(tmp_path / "p.db") as db:
+        assert [r["target"] for r in db.get_translations("p")] == ["a"]
+    si.approve_scene_db(tmp_path / "sem_db", "a")        # sem project.json:db -> no-op

@@ -42,6 +42,23 @@ def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
     assert "decisions" in result and "spoiler" in result, result
 
 
+def test_migrate_approves_only_verified_scenes(tmp_path):
+    """#216: approved_*.csv existe desde o build_plan (antes do verify) -- cena reprovada entra no DB
+    mas NAO aprovada (fora da TM); sem run_state (legado) tudo aprovado."""
+    (tmp_path / "project.json").write_text(json.dumps({"title": "x"}), encoding="utf-8")
+    for sc in ("ok", "bad"):
+        d = tmp_path / "artifacts" / "scenes" / sc
+        d.mkdir(parents=True)
+        (d / "approved_a.csv").write_text(f"offset,text_target\n0x1,{sc}\n", encoding="utf-8")
+    (tmp_path / "artifacts" / "run_state.json").write_text(json.dumps({"scenes": {
+        "ok": {"status": "verified", "verified": True},
+        "bad": {"status": "verify_failed", "verified": False}}}), encoding="utf-8")
+    res = migrate(tmp_path, tmp_path / "p.db", project_id="p")
+    assert (res["translations"], res["approved"]) == (2, 1)
+    with Store(tmp_path / "p.db") as db:
+        assert [r["target"] for r in db.get_translations("p")] == ["ok"]
+
+
 def test_migrate_counts_roundtrip_to_store(bof4_migrated):
     db_path, result = bof4_migrated
     with Store(db_path) as db:

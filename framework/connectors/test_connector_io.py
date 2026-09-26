@@ -136,7 +136,11 @@ def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
 
     from store import Store  # noqa: E402
     with Store(tmp_path / "p.db") as db:
-        rows = {r["offset"]: r for r in db.get_translations("proj")}
+        # #216: build_plan roda antes do verify -> nada aprovado (nao vira TM) ate a cena fechar verified
+        assert db.get_translations("proj") == []
+        rows = {r["offset"]: r for r in db.get_translations("proj", approved_only=False)}
+        db.approve_scene("proj", "s1")
+        assert len(db.get_translations("proj")) == 2
     assert rows["0x1"]["target"] == "O heroi pega a Bugiganga."
     assert rows["0x1"]["speaker"] == "Hero"
     assert rows["0x2"]["target"] == "[14]Ola[01]tudo bem?"
@@ -180,6 +184,7 @@ def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path)
     from embedder import Embedder  # noqa: E402
     from store import Store  # noqa: E402
     with Store(tmp_path / "p.db") as db:
+        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene, #216)
         hits = Embedder().search(db._con, "Hero picks up the Widget.", project_id="proj", k=2)
     assert any(h["offset"] == "0x1" for h in hits), hits
 
@@ -222,6 +227,7 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
         legacy_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                        for r in db.get_translations("proj")}
     with Store(dbfirst_root / "p.db") as db:
+        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene, #216)
         dbfirst_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                         for r in db.get_translations("proj")}
     assert dbfirst_rows == legacy_rows

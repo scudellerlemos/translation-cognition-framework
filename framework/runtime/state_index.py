@@ -36,6 +36,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
 from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única, framework/text_ids.py)
 from text_ids import tm_key as _key
+from text_ids import verified_scenes  # noqa: E402
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -109,24 +110,12 @@ def _slug_tags(title: str) -> list[str]:
 
 # ----------------------------- Translation Memory -----------------------------
 
-def _verified_scenes(art: Path) -> set[str] | None:
-    """Cenas `verified` no run_state.json (mesmo criterio do run_chapter._verified); None = sem run_state."""
-    p = art / "run_state.json"
-    if not p.is_file():
-        return None
-    try:
-        scenes = json.loads(p.read_text(encoding="utf-8")).get("scenes", {})
-    except (json.JSONDecodeError, OSError):
-        return None
-    return {k for k, v in scenes.items() if v.get("status") == "verified" and v.get("verified") is True}
-
-
 def build_tm(art: Path) -> list[dict]:
     """Le todos os translation_plan*.json (raiz, subdirs legados e scenes/<cena>/) -> entradas de TM,
     ordenadas e dedup. Planos de scenes/<cena>/ so entram se a cena esta verified no run_state (plano
     reprovado nao vira TM reusada); sem run_state (legado) entram todos."""
     entries: dict[str, dict] = {}
-    verified = _verified_scenes(art)
+    verified = verified_scenes(art / "run_state.json")
     plan_files = sorted(art.glob("translation_plan*.json")) + \
         sorted(art.glob("*/translation_plan*.json")) + \
         [pf for pf in sorted(art.glob("scenes/*/translation_plan*.json"))
@@ -307,6 +296,20 @@ def _db_target(root: Path):
     if not rel or not pid:
         return None, None
     return Path(root) / rel, pid
+
+
+def approve_scene_db(root: Path, scene: str) -> None:
+    """Marca approved=1 as traducoes da cena no DB (gated por project.json:db). O build_plan grava
+    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB (#216)."""
+    db_path, project_id = _db_target(root)
+    if not db_path or not db_path.is_file():
+        return
+    db_dir = str(Path(__file__).resolve().parents[1] / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    from store import Store
+    with Store(db_path) as db:
+        db.approve_scene(project_id, scene)
 
 
 def _sync_db(root: Path):
