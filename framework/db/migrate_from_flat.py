@@ -36,6 +36,7 @@ from store import Store  # noqa: E402
 from text_ids import (
     scene_id_of as _sid,  # noqa: E402  (fonte única, framework/text_ids.py — leaf, sem dep de runtime)
 )
+from text_ids import verified_scenes  # noqa: E402
 
 
 def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
@@ -101,9 +102,14 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     if not scenes_dir.is_dir():
         return 0, 0
     seen: set = set()   # (scene_id, offset) distintos — conta linhas do DB, não linhas de CSV
+    n_ok = 0
+    # approved = cena verified no run_state (sem run_state = legado, tudo aprovado): o approved_*.csv
+    # existe desde o build_plan, ANTES do verify -- cena reprovada nao vira TM do DB (#216)
+    verified = verified_scenes(root / "artifacts" / "run_state.json")
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
+        ok = verified is None or scene_dir.name in verified
         scene_id = _sid(scene_dir.name)
         # source (EN) por offset — do dialogs.csv (extração completa da cena)
         src_by = {}
@@ -149,11 +155,12 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
                         intent=m.get("intent", ""),
                         risk_level=m.get("risk_level", "low"),
                         risk_notes=m.get("risk_notes", ""),
-                        approved=True,
+                        approved=ok,
                     )
-                    seen.add((scene_id, off))
-    n = len(seen)   # todas migram como approved=True → total == approved
-    return n, n
+                    if (scene_id, off) not in seen:
+                        seen.add((scene_id, off))
+                        n_ok += ok
+    return len(seen), n_ok
 
 
 _KB_REVEAL_RX = re.compile(r"<!--\s*reveal:\s*([^\s>]+)\s*-->", re.IGNORECASE)

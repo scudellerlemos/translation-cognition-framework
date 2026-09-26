@@ -453,6 +453,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
         print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
+    if verified:
+        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB (#216)
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
     cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"

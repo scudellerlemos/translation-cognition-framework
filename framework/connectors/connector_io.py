@@ -209,9 +209,11 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
                 source=m.get("text_source", ""), target=tgt,
                 speaker=m.get("speaker", ""), tone_register=m.get("tone_register", ""),
                 intent=m.get("intent", ""), risk_level=m.get("risk_level", "low"),
-                risk_notes=m.get("risk_notes", ""), approved=True,
+                risk_notes=m.get("risk_notes", ""), approved=False,
             )
-        rows = [r for r in db.get_translations(project_id, approved_only=True)
+        # approved=False: build_plan roda ANTES do verify; a cena so vira TM do DB quando fecha
+        # verified (run_scene -> state_index.approve_scene_db, #216). O CSV e o que o verify le.
+        rows = [r for r in db.get_translations(project_id, approved_only=False)
                 if r["scene_id"] == scene_id]
         # #182: reindexa embeddings pendentes no MESMO write-path real de tradução
         # (run_scene/run_chapter -> sync_translations_db), não só na migração manual (#171

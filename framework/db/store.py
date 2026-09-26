@@ -181,6 +181,12 @@ class Store:
         )
         self._commit()
 
+    def approve_scene(self, project_id: str, scene_id: str):
+        """approved=1 em todas as traducoes da cena (chamado quando a cena fecha verified, #216)."""
+        self._con.execute("UPDATE translations SET approved=1 WHERE project_id=? AND scene_id=?",
+                          (project_id, scene_id))
+        self._commit()
+
     def search_tm_exact(self, source: str, project_id: str,
                         approved_only: bool = True) -> list[dict]:
         """Busca exata na TM por texto fonte. Retorna lista de hits."""
