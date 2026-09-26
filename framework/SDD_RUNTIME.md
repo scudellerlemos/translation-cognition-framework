@@ -26,7 +26,7 @@ O runtime automatiza a execução em escala (o harness orquestra sem o chat).
 **Runtime envolvido**: `scaffold_project.py` (setup, antes do primeiro extract), `split_scenes.py` (pós-extract)
 
 ```
-runtime/scaffold_project.py   →  artifacts KB + profile/ inicializados (schema correto desde o início)
+runtime/scaffold_project.py   →  project.json + artifacts KB + profile/ + connector/ (_skeleton) inicializados (schema correto desde o início)
 connector/extract.py          →  artifacts/dialogs.csv (FLAT)
                                   artifacts/extraction_log.md
 runtime/split_scenes.py       →  artifacts/scenes/<scene>/dialogs.csv (agrupado por --by)

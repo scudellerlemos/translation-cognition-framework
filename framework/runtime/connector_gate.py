@@ -12,6 +12,8 @@ Checagens (deterministas, sem rede):
   HARD (bloqueiam sempre, nao bypassavel):
     - build_plan_script E verify_script (via connector_mgr, resolve overrides de project.json)
       existem no disco. Sem eles, nenhum round-trip e fisicamente possivel.
+    - e NAO sao a copia intocada do _skeleton (scaffold_project copia o skeleton p/ connector/ --
+      a copia sem adaptar nao pode passar o gate, mesma governanca do placeholder de KB).
   problems (bloqueiam salvo --skip-connector-gate):
     - nenhuma cena do projeto tem verified=True em run_state.json -- round-trip nunca rodou verde
       nem uma vez. Reusa o `run_state.json` que ja existe (connector_mgr grava `connector_hash` la
@@ -44,6 +46,14 @@ class StaleReadError(RuntimeError):
     """Gate de leitura completa: o conteudo alegado como lido nao bate com o disco AGORA."""
 
 _SCRIPTS = (("build_plan_script", "build_plan_chapter.py"), ("verify_script", "verify_chapter.py"))
+_SKELETON = _HERE.parent / "connectors" / "_skeleton"
+
+
+def _is_unadapted_skeleton(p: Path, default: str) -> bool:
+    sk = _SKELETON / default
+    if not sk.is_file():
+        return False
+    return p.read_bytes().replace(b"\r\n", b"\n") == sk.read_bytes().replace(b"\r\n", b"\n")  # autocrlf
 
 
 def _has_green_roundtrip(root: Path) -> bool:
@@ -80,6 +90,11 @@ def check(root) -> dict:
         if not p.is_file():
             hard_problems.append(
                 f"{key} ausente ({p}) — sem ele nenhum round-trip e possivel. Este gate nao pode ser pulado."
+            )
+        elif _is_unadapted_skeleton(p, default):
+            hard_problems.append(
+                f"{key} ({p}) ainda e a copia intocada do _skeleton — adapte ao formato do jogo "
+                f"(Fase 0). Este gate nao pode ser pulado."
             )
     problems: list[str] = []
     if not hard_problems and not _has_green_roundtrip(root):
