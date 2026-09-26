@@ -2592,23 +2592,24 @@ def test_run_chapter_batch_early_stop_still_rebuilds_index(monkeypatch, tmp_path
     monkeypatch.setattr(run_chapter.RS, "run_scene",
                         lambda r, scene, **kw: {"status": "back_translation_failed", "scene": scene})
     res = run_chapter.run_chapter(root, "99", backend="api", batch=True, require_back=True)
-    assert res["status"] == "stopped" and rebuilt == [1]
+    assert res["status"] == "stopped" and rebuilt == [1, 1]   # antes do batch + apos o loop
 
 
 def test_run_chapter_batch_exception_skips_rebuild(monkeypatch, tmp_path):
-    # excecao propaga limpa: sem rebuild (plan da cena que estourou nao e verified; build_tm nao filtra)
+    # excecao propaga limpa: sem rebuild apos o loop; o rebuild ANTES do _batch_phase (da proxima
+    # execucao) e que cobre a TM velha -- senao o batch pre-traduz sem as cenas ja verified
     root = _fake_chapter(tmp_path, ("99_01",))
     monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
     monkeypatch.setattr(run_chapter.connector_gate, "check",
                         lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(run_chapter, "_verified", lambda r, s: False)
-    monkeypatch.setattr(run_chapter, "_batch_phase", lambda r, p, **kw: ({}, False))
-    rebuilt = []
-    monkeypatch.setattr(run_chapter, "_rebuild_index_phase", lambda r: rebuilt.append(1))
+    events = []
+    monkeypatch.setattr(run_chapter, "_batch_phase", lambda r, p, **kw: events.append("batch") or ({}, False))
+    monkeypatch.setattr(run_chapter, "_rebuild_index_phase", lambda r: events.append("rebuild"))
 
     def _boom(r, scene, **kw):
         raise OSError("disco cheio")
     monkeypatch.setattr(run_chapter.RS, "run_scene", _boom)
     with pytest.raises(OSError):
         run_chapter.run_chapter(root, "99", backend="api", batch=True)
-    assert rebuilt == []
+    assert events == ["rebuild", "batch"]

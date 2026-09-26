@@ -407,11 +407,15 @@ def test_deferred_back_does_not_compute_sample(env, monkeypatch):
     assert r["status"] == "verified"
 
 
-def test_sample_failure_routes_to_back_translation_failed(env, monkeypatch):
-    # plan malformado na montagem da amostra -> mesmo caminho de falha do back (nao derruba run_scene)
+def test_sample_failure_falls_back_to_high_lines(env, monkeypatch):
+    # plan malformado na montagem da amostra -> back segue so com as high (nao derruba nem pula o back)
     root, scene, st = env
     st["runs"] = [(0, ""), (0, "")]
+    got = []
     monkeypatch.setattr(rs.M, "back_translate_candidates",
                         lambda r, s: (_ for _ in ()).throw(AttributeError("'str' object has no attribute 'get'")))
+    monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: [{"offset": "hi1"}])
+    monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
     r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
-    assert r["status"] == "back_translation_failed"
+    assert got == [[{"offset": "hi1"}]]
+    assert r["status"] == "verified"

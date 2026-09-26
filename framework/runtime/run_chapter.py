@@ -283,6 +283,9 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     if batch and backend == "api":
         pending = [s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
         if pending:
+            # rebuild ANTES do batch: execucao anterior que parou por excecao/Ctrl-C/batch_failed nao
+            # reconstruiu -> sem isto o batch pre-traduz contra TM velha e re-paga linhas reusaveis
+            _rebuild_index_phase(root)
             batch_status, batch_failed = _batch_phase(
                 root, pending, skip_kb_gate=skip_kb_gate,
                 allow_interactive_fallback=allow_interactive_fallback)
@@ -333,8 +336,8 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
             stop = {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}
             break
     # rebuild do state_index DEFERIDO no batch (rebuild_index=False por cena) -> 1x apos o loop, em fim
-    # E parada por status/teto. Excecao NAO reconstroi (propaga limpa; a cena que estourou pode ter plan
-    # nao-verified e build_tm nao filtra) -- a proxima execucao reconstroi.
+    # E parada por status/teto. Excecao NAO reconstroi (propaga limpa, sem mascarar o erro nem reescrever
+    # a TM durante Ctrl-C) -- o rebuild antes do _batch_phase da proxima execucao cobre.
     if batch_api:
         _rebuild_index_phase(root)
     if stop is not None:

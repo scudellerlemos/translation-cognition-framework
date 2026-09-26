@@ -117,15 +117,15 @@ def test_batch_mode(env):
 
 
 def test_batch_mode_rebuilds_state_index_once_per_chapter(env, monkeypatch):
-    # modo batch: 1 rebuild pro capitulo INTEIRO (2 cenas), nao 1 por cena -- redundante no batch
-    # (a rodada de traducao ja terminou antes do rebuild ser util). Ver _rebuild_index_phase.
+    # modo batch: rebuild por capitulo (1 antes do batch + 1 apos o loop), nao 1 por cena -- redundante
+    # no batch (a rodada de traducao ja terminou antes do rebuild ser util). Ver _rebuild_index_phase.
     root, _ = env
     calls = []
     monkeypatch.setattr(rc.state_index, "build",
                         lambda r, **k: calls.append(1) or {"tm": 0, "cards": 0, "decisions": 0, "warnings": []})
     r = rc.run_chapter(root, "12", backend="api", batch=True)
     assert r["status"] == "complete"
-    assert calls == [1]
+    assert calls == [1, 1]
 
 
 def test_scenes_glob_discovery(env):
