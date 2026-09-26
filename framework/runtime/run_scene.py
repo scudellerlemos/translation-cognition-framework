@@ -320,11 +320,11 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
-    bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
-    print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
-          + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
     bt: M.BackTranslateResult | dict
-    try:
+    try:   # amostra dentro do try: plan malformado cai no mesmo report-only/back_translation_failed
+        bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
+        print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
+              + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
         bt = M.back_translate(root, scene, bt_lines, backend=backend)
     except Exception as e:
         print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")

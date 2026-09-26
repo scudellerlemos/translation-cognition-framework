@@ -536,21 +536,14 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
         out, seen = [], set()
         with Store(db_path) as db:
             for r in rows:
-                # os filtros abaixo (exato/dup) rodam DEPOIS do top-k -> sobre-busca e corta em k aqui
-                # (fala curta tipo "Yes." com >=k exatos zerava os vizinhos).
-                # ponytail: 4k fixo; fala com >4k exatos ainda perde vizinhos -> paginar se aparecer.
-                taken = 0
-                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k * 4,
-                                      min_score=min_score):
-                    if taken >= k:
-                        break
-                    if float(hit.get("score", 0)) >= 0.999:    # match exato já está em tm_exact
-                        continue
+                # max_score exclui o match exato (já está em tm_exact) NO SQL, antes do top-k — fala
+                # curta tipo "Yes." com >=k exatos não zera mais os vizinhos.
+                for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k,
+                                      min_score=min_score, max_score=0.999):
                     key = (hit.get("source", ""), hit.get("target", ""))
                     if key in seen:
                         continue
                     seen.add(key)
-                    taken += 1
                     # exibe a forma LIMPA (sem códigos do jogo) — fiel fica no banco
                     out.append({"source": strip_codes(hit.get("source", "")),
                                 "target": strip_codes(hit.get("target", "")),

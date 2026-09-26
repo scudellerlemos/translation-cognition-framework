@@ -2595,7 +2595,8 @@ def test_run_chapter_batch_early_stop_still_rebuilds_index(monkeypatch, tmp_path
     assert res["status"] == "stopped" and rebuilt == [1]
 
 
-def test_run_chapter_batch_exception_still_rebuilds_index(monkeypatch, tmp_path):
+def test_run_chapter_batch_exception_skips_rebuild(monkeypatch, tmp_path):
+    # excecao propaga limpa: sem rebuild (plan da cena que estourou nao e verified; build_tm nao filtra)
     root = _fake_chapter(tmp_path, ("99_01",))
     monkeypatch.setattr(run_chapter.kb_gate, "check", lambda r, s: {"problems": [], "warnings": []})
     monkeypatch.setattr(run_chapter.connector_gate, "check",
@@ -2610,4 +2611,4 @@ def test_run_chapter_batch_exception_still_rebuilds_index(monkeypatch, tmp_path)
     monkeypatch.setattr(run_chapter.RS, "run_scene", _boom)
     with pytest.raises(OSError):
         run_chapter.run_chapter(root, "99", backend="api", batch=True)
-    assert rebuilt == [1]
+    assert rebuilt == []

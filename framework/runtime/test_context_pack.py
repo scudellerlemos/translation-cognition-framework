@@ -111,7 +111,7 @@ def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch
     seen = {}
 
     class _FakeEmbedder:
-        def search(self, con, query, project_id, k=3, min_score=None):
+        def search(self, con, query, project_id, k=3, min_score=None, max_score=None):
             seen["min_score"] = min_score
             return []
 
@@ -130,7 +130,7 @@ def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
     seen = {}
 
     class _FakeEmbedder:
-        def search(self, con, query, project_id, k=3, min_score=None):
+        def search(self, con, query, project_id, k=3, min_score=None, max_score=None):
             seen["min_score"] = min_score
             return []
 
@@ -325,9 +325,10 @@ def test_load_decisions_semantic_gates_reveal_before_top_k(tmp_path, monkeypatch
 def test_load_tm_semantic_skips_exact_matches_before_cut(tmp_path, monkeypatch):
     # "Yes." com >=k exatos: exatos ocupavam o top-k e o vizinho real sumia
     class _Fake:
-        def search(self, con, q, project_id, k, min_score=None):
+        def search(self, con, q, project_id, k, min_score=None, max_score=None):
             hits = [{"source": "Yes.", "target": f"Sim{i}.", "score": 1.0} for i in range(3)]
-            return (hits + [{"source": "Yes!", "target": "Sim!", "score": 0.9}])[:k]
+            hits += [{"source": "Yes!", "target": "Sim!", "score": 0.9}]
+            return [h for h in hits if max_score is None or h["score"] < max_score][:k]
     dbp = tmp_path / "p.db"
     with Store(dbp) as db:
         db.upsert_project("p", "T")
