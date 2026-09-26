@@ -204,19 +204,23 @@ class Embedder:
         # vec_distance_l2 + LIMIT em vez de `MATCH ... AND k = ?`: o k do vec0 escolhe os k mais
         # próximos da tabela INTEIRA (todos os projetos, aprovados ou não) ANTES do WHERE, então o
         # filtro podia devolver < k hits. Scan linear = mesmo custo do NN exato do vec0 (#172).
+        # GROUP BY (source, target): o mesmo par repetido em N cenas ocupava N slots do top-k. Com MIN()
+        # o SQLite devolve as colunas "bare" da linha de menor distancia (garantia documentada).
+        # alias `l2`, nao `distance`: o vec0 tem coluna oculta `distance` que venceria o alias no HAVING.
         rows = con.execute(
-            f"""SELECT v.translation_id, vec_distance_l2(v.embedding, ?) AS distance,
+            f"""SELECT v.translation_id, MIN(vec_distance_l2(v.embedding, ?)) AS l2,
                        t.scene_id, t.offset, t.source, t.target,
                        t.speaker, t.tone_register, t.risk_level
                 FROM tm_vectors v
                 JOIN translations t ON t.id = v.translation_id
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
-                  {" AND vec_distance_l2(v.embedding, ?) > ?" if max_score is not None else ""}
-                ORDER BY distance LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
+                GROUP BY t.source, t.target
+                {" HAVING l2 > ?" if max_score is not None else ""}
+                ORDER BY l2 LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
             (json.dumps(q_vec), project_id,
              # score = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score))
-             *((json.dumps(q_vec), (2.0 * (1.0 - max_score)) ** 0.5) if max_score is not None else ()),
+             *(((2.0 * max(0.0, 1.0 - max_score)) ** 0.5,) if max_score is not None else ()),
              k),
         ).fetchall()
 
@@ -232,6 +236,8 @@ class Embedder:
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
             if min_score is not None and d["score"] < min_score:
+                continue
+            if max_score is not None and d["score"] >= max_score:   # faixa de arredondamento do corte SQL
                 continue
             results.append(d)
 
