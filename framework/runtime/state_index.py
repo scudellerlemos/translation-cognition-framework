@@ -35,8 +35,8 @@ if str(_HERE.parent) not in sys.path:
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
 from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única, framework/text_ids.py)
+from text_ids import scene_id_of, verified_scenes  # noqa: E402
 from text_ids import tm_key as _key
-from text_ids import verified_scenes  # noqa: E402
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
 UNIVERSAL_DECISION_HINTS = (
@@ -309,7 +309,7 @@ def approve_scene_db(root: Path, scene: str) -> None:
         sys.path.insert(0, db_dir)
     from store import Store
     with Store(db_path) as db:
-        db.approve_scene(project_id, scene)
+        db.approve_scene(project_id, scene_id_of(scene))
 
 
 def _sync_db(root: Path):

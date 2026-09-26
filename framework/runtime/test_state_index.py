@@ -152,8 +152,8 @@ def test_approve_scene_db_flips_only_that_scene(tmp_path):
     with store.Store(tmp_path / "p.db") as db:
         db.upsert_project("p", "p")
         for sc in ("a", "b"):
-            db.upsert_translation("p", sc, "1", "Hi", target=sc, approved=False)
-    si.approve_scene_db(tmp_path, "a")
+            db.upsert_translation("p", sc, "1", "Hi", target=sc, approved=False)   # chave canonica
+    si.approve_scene_db(tmp_path, "ch_a")               # nome do dir -> scene_id canonico "a"
     with store.Store(tmp_path / "p.db") as db:
         assert [r["target"] for r in db.get_translations("p")] == ["a"]
     si.approve_scene_db(tmp_path / "sem_db", "a")        # sem project.json:db -> no-op
