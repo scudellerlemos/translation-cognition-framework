@@ -801,6 +801,12 @@ def render_prompt(pack: dict, carta: str) -> str:
     for d in pack["decisions"]:
         flag = " [universal]" if d.get("universal") else ""
         L.append(f"- **{d['title']}**{flag}: {d['summary']}")
+    _dec_shown = {d["title"] for d in pack["decisions"]}
+    dec_sem = [d for d in pack.get("decisions_semantic", []) if d["title"] not in _dec_shown]
+    if dec_sem:
+        L.append("**Decisoes SEMELHANTES (semantica — aplique se couber no contexto):**")
+        for d in dec_sem:
+            L.append(f"- (~{d['score']}) **{d['title']}**: {d['summary']}")
     L.append("")
     guards = pack.get("spoiler_guards", [])
     if guards:

@@ -32,6 +32,11 @@ def strip_codes(text: str) -> str:
     return re.sub(r"\s+", " ", _CODE_RX.sub(" ", text)).strip()
 
 
+def _json_or_none(v: list | None) -> str | None:
+    """None -> NULL (o COALESCE do upsert preserva o valor gravado); lista -> JSON."""
+    return None if v is None else json.dumps(v, ensure_ascii=False)
+
+
 class Store:
     """Interface sobre o banco SQLite. Thread-safe via WAL + check_same_thread=False."""
 
@@ -425,12 +430,12 @@ class Store:
                    lines=COALESCE(excluded.lines, lines),
                    criticality=excluded.criticality""",
             (project_id, speaker,
-             json.dumps(aliases or [], ensure_ascii=False),
+             _json_or_none(aliases),
              register,
-             json.dumps(quirks or [], ensure_ascii=False),
-             json.dumps(example_src or [], ensure_ascii=False),
-             json.dumps(example_tgt or [], ensure_ascii=False),
-             json.dumps(lines or [], ensure_ascii=False),
+             _json_or_none(quirks),
+             _json_or_none(example_src),
+             _json_or_none(example_tgt),
+             _json_or_none(lines),
              criticality),
         )
         self._commit()
@@ -464,7 +469,7 @@ class Store:
                    tags=COALESCE(excluded.tags, tags),
                    reveal=excluded.reveal""",
             (project_id, title, summary, int(universal),
-             json.dumps(tags or [], ensure_ascii=False), reveal),
+             _json_or_none(tags), reveal),
         )
         self._commit()
 
