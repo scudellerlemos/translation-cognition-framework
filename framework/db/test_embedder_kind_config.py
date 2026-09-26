@@ -106,7 +106,7 @@ def test_search_max_score_excludes_exact_before_top_k(tmp_path):
 
     emb = Embedder.__new__(Embedder)
     emb.model_name = "fake"
-    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8]}
+    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8], "Yes~": [0.99897, (1 - 0.99897 ** 2) ** 0.5]}
     emb.encode = lambda texts: [vecs.get(t, [0.8, 0.6]) + [0.0] * (_DIM - 2) for t in texts]
     emb._rerank = lambda q, hits: hits
     with Store(tmp_path / "p.db") as db:
@@ -117,13 +117,20 @@ def test_search_max_score_excludes_exact_before_top_k(tmp_path):
         assert [h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=1)] == ["Yes."]
         hits = emb.search(db._con, "Yes.", project_id="p", k=1, max_score=0.999)
         assert [h["source"] for h in hits] == ["Yes!"]
+        # fronteira: cortes no score CRU (0.99897 < 0.999 fica, exibido arredondado 0.999; min idem)
+        db.upsert_translation("p", "s", "8", "Yes~", target="Sim~", approved=True)
+        emb.index_project(db._con, project_id="p")
+        hits = emb.search(db._con, "Yes.", project_id="p", k=1, max_score=0.999)
+        assert [(h["source"], h["score"]) for h in hits] == [("Yes~", 0.999)]
+        # min_score no cru: 0.99897 < 0.999 sai (no arredondado 0.999 passava)
+        assert "Yes~" not in {h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=9, min_score=0.999)}
         # mesmo par (source, target) em N cenas ocupa 1 slot, nao N
         for sc in ("s2", "s3"):
             db.upsert_translation("p", sc, "9", "Yes!", target="Sim3", approved=True)
         db.upsert_translation("p", "s", "5", "Yes?", target="Sim?", approved=True)
         emb.index_project(db._con, project_id="p")
-        hits = emb.search(db._con, "Yes.", project_id="p", k=2, max_score=0.999)
-        assert sorted(h["source"] for h in hits) == ["Yes!", "Yes?"]
+        hits = emb.search(db._con, "Yes.", project_id="p", k=3, max_score=0.999)
+        assert sorted(h["source"] for h in hits) == ["Yes!", "Yes?", "Yes~"]
         # >1 = sem corte superior: o exato fica (nem complex no bind, nem clamp que corta L2=0)
         assert emb.search(db._con, "Yes.", project_id="p", k=1, max_score=1.5)[0]["source"] == "Yes."
 

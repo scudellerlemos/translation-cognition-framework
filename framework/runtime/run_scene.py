@@ -321,13 +321,21 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
     bt: M.BackTranslateResult | dict
-    try:   # amostra dentro do try: falha ao monta-la cai no mesmo AVISO/report-only/back_translation_failed
-        bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
+    try:
+        bt_lines = highs
+        if sample:   # lazy: so se o back roda
+            try:
+                bt_lines = M.back_translate_candidates(root, scene)
+            except Exception as e:
+                if require_back:   # --require-back promete cobrir a amostra -> cai no bloqueio abaixo
+                    raise
+                print(f"      AVISO: amostra low/medium falhou ({e}) — back so das linhas risco>=high.")
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
               + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
         bt = M.back_translate(root, scene, bt_lines, backend=backend)
     except Exception as e:
-        print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")
+        print(f"      AVISO: back-translation falhou ({backend}): {e} — "
+              + ("BLOQUEADA (--require-back)." if require_back else "seguindo (report-only)."))
         bt = {"status": M.DONE, "reviewed": 0, "path": None}
         if require_back:
             _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
