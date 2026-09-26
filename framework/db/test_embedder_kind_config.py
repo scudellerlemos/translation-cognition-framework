@@ -96,6 +96,29 @@ def test_search_filters_project_before_top_k(tmp_path):
         assert emb.search_decisions(db._con, "a", project_id="far", k=1)[0]["title"] == "b1"
 
 
+def test_search_max_score_excludes_exact_before_top_k(tmp_path):
+    """Fala curta ("Yes.") com >=k matches exatos: o exato ocupava o top-k e o vizinho real sumia.
+    max_score corta no SQL, antes do LIMIT. Encode falso (só sqlite-vec)."""
+    import pytest
+    pytest.importorskip("sqlite_vec")
+    from embedder import _DIM, Embedder
+    from store import Store
+
+    emb = Embedder.__new__(Embedder)
+    emb.model_name = "fake"
+    emb.encode = lambda texts: [([1.0, 0.0] if t == "Yes." else [0.8, 0.6]) + [0.0] * (_DIM - 2)
+                                for t in texts]
+    emb._rerank = lambda q, hits: hits
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "p")
+        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!"]):
+            db.upsert_translation("p", "s", str(i), src, target=f"Sim{i}", approved=True)
+        emb.index_project(db._con, project_id="p")
+        assert [h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=1)] == ["Yes."]
+        hits = emb.search(db._con, "Yes.", project_id="p", k=1, max_score=0.999)
+        assert [h["source"] for h in hits] == ["Yes!"]
+
+
 if __name__ == "__main__":
     test_kb_kind_registered_without_chunk_fn()
     test_kb_embeddings_table_exists_in_schema()

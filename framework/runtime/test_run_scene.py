@@ -405,3 +405,13 @@ def test_deferred_back_does_not_compute_sample(env, monkeypatch):
                         lambda r, s: (_ for _ in ()).throw(AssertionError("amostra calculada a toa")))
     r = rs.run_scene(root, scene, backend="api", pretranslated=True, defer_back=True)
     assert r["status"] == "verified"
+
+
+def test_sample_failure_routes_to_back_translation_failed(env, monkeypatch):
+    # plan malformado na montagem da amostra -> mesmo caminho de falha do back (nao derruba run_scene)
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    monkeypatch.setattr(rs.M, "back_translate_candidates",
+                        lambda r, s: (_ for _ in ()).throw(AttributeError("'str' object has no attribute 'get'")))
+    r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    assert r["status"] == "back_translation_failed"

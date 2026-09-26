@@ -186,12 +186,16 @@ class Embedder:
     def search(self, con: sqlite3.Connection, query: str,
                project_id: str, k: int = 5,
                approved_only: bool = True,
-               min_score: float | None = None) -> list[dict]:
+               min_score: float | None = None,
+               max_score: float | None = None) -> list[dict]:
         """Busca semântica na TM. Retorna top-k hits com score de similaridade.
 
         min_score (#172): corta hits com score abaixo do threshold antes do rerank. None
         (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
         seção rotulada no pacote de contexto.
+
+        max_score: exclui hits com score >= max_score NO SQL (antes do LIMIT) — p/ quem quer só
+        vizinhos, não o match exato (senão fala curta com >=k exatos consome o top-k inteiro).
         """
         from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
@@ -208,8 +212,12 @@ class Embedder:
                 JOIN translations t ON t.id = v.translation_id
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
+                  {" AND vec_distance_l2(v.embedding, ?) > ?" if max_score is not None else ""}
                 ORDER BY distance LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
-            (json.dumps(q_vec), project_id, k),
+            (json.dumps(q_vec), project_id,
+             # score = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score))
+             *((json.dumps(q_vec), (2.0 * (1.0 - max_score)) ** 0.5) if max_score is not None else ()),
+             k),
         ).fetchall()
 
         results = []
