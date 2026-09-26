@@ -213,3 +213,19 @@ def test_batch_coverage_and_merge_check_formatting_tokens():
     dest = {"o1": {"t": "a <C1>x b"}}
     M._merge_best_parity(dest, {"o1": {"t": "sem token"}}, {"o1": "a <C1>x b"}, rx)
     assert dest["o1"]["t"] == "a <C1>x b"                                          # nao regride p/ ruim
+
+
+def test_select_reuse_rejects_tm_target_missing_formatting_token():
+    pack = {"scene_id": "S1", "project_constraints": {"formatting_tokens": ["<C1>"]},
+            "tm_exact": [{"from_scene": "S0", "source": "a <C1>x b", "target": "a x b"}],
+            "lines": [{"offset": "o1", "source": "a <C1>x b"}]}
+    assert M._select_reuse(pack, enabled=True) == {}
+
+
+def test_parse_batch_lines_ignores_engine_label_offset():
+    # resposta que ecoe o rotulo nao pode sobrescrever o passthrough
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "body"}, {"offset": "o2", "source": "Hello there"}]}
+    out = M._parse_batch_lines(pack, json.dumps({"lines": [{"offset": "o1", "t": "corpo"},
+                                                           {"offset": "o2", "t": "Ola"}]}))
+    assert set(out) == {"o2"}

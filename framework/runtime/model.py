@@ -370,11 +370,11 @@ def _select_reuse(pack, *, enabled):
     Guards: (1) nunca reusa a PROPRIA cena — a TM e reconstruida apos cada cena, entao re-rodar a poria
     na TM e a dedup reusaria a saida velha, sabotando o escalonamento de fitting (que quer ENCURTAR);
     (2) paridade de quebra: a chave de TM normaliza ignorando `\\n`, entao so reusa se a contagem do token
-    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade). Desligado (vazio) no
+    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade), idem tokens de formatacao. Desligado (vazio) no
     escalonamento (enabled=False) p/ re-traduzir fresco e mais curto. Determinista (testavel sem rede)."""
     if not enabled:
         return {}
-    tok = context_pack.TOKEN
+    rx = _structural_rx(pack.get("project_constraints", {}))
     scene_id_here = pack.get("scene_id", "")
     by_key: dict[str, dict] = {}
     for e in pack.get("tm_exact", []):
@@ -387,8 +387,8 @@ def _select_reuse(pack, *, enabled):
         if not e:
             continue
         tgt = e.get("target", "")
-        if not tgt or tgt.count(tok) != (r.get("source", "") or "").count(tok):
-            continue                                  # paridade de quebra com a fonte ATUAL
+        if not tgt or not _line_ok(r.get("source", "") or "", tgt, rx):
+            continue                                  # paridade de quebra/tokens com a fonte ATUAL
         reuse[r["offset"]] = {"speaker": e.get("speaker", ""), "tone_register": "",
                               "intent": "reuso_tm", "risk_level": "low", "risk_notes": "",
                               "t": _norm_t(tgt)}
@@ -480,14 +480,12 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
             if _is_blowup(srcmap.get(off, ""), v["t"]):
                 continue                                 # lixo patologico -> descarta (vira 'missing' -> retry)
-            good_parity = (v["t"].count(tok) == srcmap.get(off, "").count(tok)) and \
-                _struct_ok(struct_rx, srcmap.get(off, ""), v["t"])
+            good_parity = _line_ok(srcmap.get(off, ""), v["t"], struct_rx)
             if off not in merged:
                 merged[off] = v                      # preenche lacuna
             else:
                 old = merged[off]
-                old_parity = (old.get("t", "").count(tok) == srcmap.get(off, "").count(tok)) and \
-                    _struct_ok(struct_rx, srcmap.get(off, ""), old.get("t", ""))
+                old_parity = _line_ok(srcmap.get(off, ""), old.get("t", ""), struct_rx)
                 if good_parity and not old_parity:
                     merged[off] = v                  # prioriza paridade correta
                 elif good_parity == old_parity and _over(off, old) and \
@@ -668,7 +666,8 @@ def _parse_batch_lines(pack, text):
     """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
     Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
     reuse = _select_reuse(pack, enabled=True)
-    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
+    # rotulo de engine tambem fica de fora: resposta que ecoe/invente o offset nao sobrescreve o passthrough
+    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse) - set(_label_passthrough(pack))
     srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
     try:
         parsed = _to_map(json.loads(text))

@@ -320,7 +320,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         # --require-back NAO difere: o pos-passe e report-only e o run_scene._back_phase so aplica o
         # require_back quando roda a back-translation ele mesmo (diferir -> gate pulado calado).
         defer_back = bool(batch and backend == "api") and not require_back
-        rebuild_index = not defer_back
+        rebuild_index = not (batch and backend == "api")
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, require_back=require_back,
                          do_verify=do_verify, skip_kb_gate=skip_kb_gate, pretranslated=pre,

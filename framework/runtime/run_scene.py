@@ -426,7 +426,10 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return early
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
-    highs = _high_lines(root, scene, scene_id)
+    # cena do batch (tier barato): inclui a amostra low/medium, mesmo conjunto do pos-passe
+    # batch_back_translate -- senao o arquivo gravado aqui (--require-back) conta como fresh la e
+    # a amostra nunca e revisada
+    highs = M.back_translate_candidates(root, scene) if pretranslated else _high_lines(root, scene, scene_id)
     bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back, no_back)
     if early is not None:
         return early
