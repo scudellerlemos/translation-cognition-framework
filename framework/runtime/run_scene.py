@@ -321,7 +321,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
     bt: M.BackTranslateResult | dict
-    try:   # sem fallback "so high" p/ falha da amostra: le o mesmo plano que _high_lines ja parseou
+    try:   # sem fallback "so high": a amostra re-le o mesmo arquivo de plano que _high_lines ja leu sem erro
         bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
               + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
