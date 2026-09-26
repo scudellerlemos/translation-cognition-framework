@@ -29,8 +29,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-from connector_mgr import (
-    _connector_hash,  # noqa: E402  (reusa o hash de scripts existente, nao duplica)
+from connector_mgr import (  # noqa: E402  (reusa o hash de scripts existente, nao duplica)
+    connector_changed,
 )
 
 
@@ -95,7 +95,7 @@ def check_scripts_drift(root, cfg: dict) -> bool:
     manifest = read_manifest(root)
     if not manifest or not manifest.get("scripts_fingerprint"):
         return True
-    return manifest["scripts_fingerprint"] != _connector_hash(Path(root), cfg)
+    return connector_changed(Path(root), cfg, manifest["scripts_fingerprint"])
 
 
 def main():
