@@ -22,7 +22,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 | `context_pack.py` | Monta o pacote LIMITADO de 1 cena → `scene_prompt.md` + `pack.json`. A peça central. Inclui `validate_dialogs_csv()` — schema guard antes de `load_dialogs` (A4). TM por série (`tm_series`) consultada na entrada via `tm_lookup.py`. |
 | `artifact_io.py` | Camada única de leitura de artefatos (scenes, plan_lines, translations_map, back_entries). |
 | `paths.py` | Fonte única de caminhos de artefato. |
-| `scaffold_project.py` | Inicializa os artefatos KB de um projeto novo com o schema correto desde o início (elimina "schema errado descoberto tarde"); materializa `profile/` (4 arquivos de referência) e reporta status do `kb_gate`/`connector_gate`. Skip seguro — nunca sobrescreve arquivo existente. |
+| `scaffold_project.py` | Inicializa os artefatos KB de um projeto novo com o schema correto desde o início (elimina "schema errado descoberto tarde"); gera `project.json` do template, KB-stub/research_log/kb_ratified/spoiler_ledger, `profile/` (4 arquivos de referência) e `connector/` (cópia do `_skeleton`) — nenhum placeholder passa gate — e reporta status do `kb_gate`/`connector_gate`. Skip seguro — nunca sobrescreve arquivo existente. |
 | `split_scenes.py` | Materializa `artifacts/scenes/<cena>/dialogs.csv` a partir do `dialogs.csv` FLAT do `extract.py`, agrupando por 1 coluna do corpus (`--by`, default `file`). Escopo deliberado: só cobre o caso 1-coluna-identifica-a-cena (BoF4/Trails Sky SC); Souldiers/Utawarerumono ficam fora, não força um contrato que os 3 não compartilham. |
 
 **Modelo — IA + suporte determinístico**

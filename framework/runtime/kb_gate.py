@@ -32,6 +32,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+from scaffold_project import KB_PLACEHOLDER  # noqa: E402  (marcador da KB-stub do scaffold)
 
 # Artefatos de KB: hard = NUNCA bypassavel (nem com --skip-kb-gate); skip = bypassavel
 _KB_HARD = ("universe_knowledge_base.md",)
@@ -108,10 +109,16 @@ def check(root, scene) -> dict:
     else:
         for name in _KB_HARD:
             f = art / name
-            if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+            txt = f.read_text(encoding="utf-8").strip() if f.is_file() else ""
+            if not txt:
                 hard_problems.append(
                     f"{name} ausente/vazio — sintetize a KB (skill 03/04) antes de traduzir. "
                     f"Este gate nao pode ser pulado."
+                )
+            elif KB_PLACEHOLDER in txt:
+                hard_problems.append(
+                    f"{name} ainda e o placeholder do scaffold — sintetize a KB (skill 03/04) e "
+                    f"remova a linha {KB_PLACEHOLDER}. Este gate nao pode ser pulado."
                 )
 
     pending_decisions: list[str] = []

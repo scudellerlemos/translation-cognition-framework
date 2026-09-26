@@ -26,9 +26,12 @@
 Antes de seguir o passo a passo manual abaixo, use as ferramentas de onboarding de baixo custo —
 reduzem o custo de dar início a um projeto novo de ~40k para ~5k tokens de sessão:
 
-1. **`scaffold_project.py`** cria a estrutura de diretórios (`connector/`, `profile/`, `artifacts/`)
-   e um `project.json` inicial, e roda um self-check de `kb_gate.py`/`connector_gate.py` — reporta
-   exatamente o que falta preencher, sem criar stub fake pra enganar o gate.
+1. **`scaffold_project.py`** cria `project.json` (do template, com `title`/`db` do projeto),
+   `artifacts/` (glossário, tone_analysis, decision_log, KB `.md`, research_log `pending`,
+   kb_ratified.csv, spoiler_ledger.json), `profile/` e `connector/` (cópia do `_skeleton`, com
+   `test_roundtrip*.py` + `conftest.py`), e roda um self-check de `kb_gate.py`/`connector_gate.py`.
+   Nenhum placeholder passa gate: a KB-stub tem um marcador que o `kb_gate` bloqueia (hard) e a cópia
+   intocada do `_skeleton` é bloqueada (hard) pelo `connector_gate` até ser adaptada.
 2. **`python framework/connectors/discover.py <game_dir>`** varre o diretório do jogo e classifica
    automaticamente o engine:
    - **engine conhecida** (já no `connector_registry.json`, ex.: Aquaplus/Capcom DAT/Unity
@@ -82,7 +85,7 @@ projects/<slug>/
 
 ### 0. Criar project.json
 
-Copiar `framework/templates/project.template.json` e preencher:
+Já criado pelo `scaffold_project.py` (sem ele: copiar `framework/templates/project.template.json`). Preencher:
 
 | Campo obrigatório | O que colocar |
 |---|---|
