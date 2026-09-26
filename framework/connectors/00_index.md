@@ -117,7 +117,9 @@ connectors/
     build_plan_chapter.py      ← esqueleto do plano por capítulo (pontos # ADAPTAR: tokens do engine)
     verify_chapter.py          ← esqueleto do verificador (reconstrução byte-a-byte; exit 0/1/3 + VERIFY_STATUS)
     table_schema.md            ← formato do schema de tabela (byte=char + control codes)
-    test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
+    test_roundtrip.py          ← contrato: round-trip byte-idêntico real (cópia em tmp) + sem texto/path hardcoded
+    test_roundtrip_synthetic.py ← oráculo sempre ativo em CI: encode→decode via Hypothesis sobre tabela sintética
+    conftest.py                ← connector/ no sys.path + opção --source-binary (binário real fica fora do repo)
 ```
 
 Ver `docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.

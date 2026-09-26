@@ -63,6 +63,8 @@ projects/<slug>/
     extract.py          ← extrator determinístico (adaptar do _skeleton)
     reinsert.py         ← reinseridor determinístico (adaptar do _skeleton)
     test_roundtrip.py   ← testes de contrato do conector (ver _skeleton)
+    test_roundtrip_synthetic.py ← oráculo sintético (Hypothesis) — roda em CI sem o binário
+    conftest.py         ← sys.path + --source-binary
   profile/
     voice_profiles_reference.md
     identity_pairs_reference.md
