@@ -18,5 +18,13 @@
   },
   "batch_size": 20,
   "kb_frontier": "1",
+  "db": {
+    "path": "demo.db",
+    "project_id": "demo"
+  },
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md"
+  },
   "notes": "Projeto sintetico de demonstracao (dialogo ficticio, sem jogo real por tras) — existe so para o `tcf translate` do README ter um exemplo real e executavel de ponta a ponta."
 }
