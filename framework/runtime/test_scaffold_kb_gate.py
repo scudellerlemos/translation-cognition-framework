@@ -164,3 +164,18 @@ def test_report_kb_gate_status_handles_exception(tmp_path, monkeypatch):
 def test_report_kb_gate_status_without_project_json(tmp_path, capsys):
     scaffold_project._report_kb_gate_status(tmp_path)
     assert "project.json ainda nao existe" in capsys.readouterr().out
+
+
+def test_project_template_declares_keys_the_gates_and_connector_read():
+    """O template nao tinha kb_frontier/connector/formatting_token_patterns -- todo projeto real
+    (BoF4, Souldiers, Trails, Uta) adicionou na mao depois de tropecar no gate. kb_frontier vazio
+    (nao placeholder com digitos: _pos() leria os digitos como fronteira real) cai no hard-block
+    instrutivo do kb_gate."""
+    from config import CONNECTOR_KNOWN_KEYS, validate_connector_types
+    tpl = Path(__file__).resolve().parents[1] / "templates" / "project.template.json"
+    cfg = json.loads(tpl.read_text(encoding="utf-8"))
+    assert cfg["kb_frontier"] == ""
+    assert cfg["formatting_token_patterns"] == []
+    assert set(cfg["connector"]) <= CONNECTOR_KNOWN_KEYS
+    assert {"extract_script", "reinsert_script", "table_schema", "source_binary"} <= set(cfg["connector"])
+    assert validate_connector_types(cfg) == []
