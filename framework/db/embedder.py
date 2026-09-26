@@ -234,7 +234,8 @@ class Embedder:
         """Busca semântica em decisions (#105). Retorna top-k hits (title/summary/universal/
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
         forçar as duas formas numa única função genérica. Sem rerank (FlashRank é ajustado para
-        passagens de tradução, não decisões de processo)."""
+        passagens de tradução, não decisões de processo). k<0 = todos (LIMIT -1 do SQLite), p/ o
+        chamador cortar DEPOIS do seu próprio gate (reveal)."""
         from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="decision")
         q_vec = self.encode([strip_codes(query)])[0]
@@ -244,8 +245,10 @@ class Embedder:
                        d.title, d.summary, d.universal, d.reveal
                 FROM decision_vectors v
                 JOIN decisions d ON d.id = v.decision_id
+                JOIN decision_embeddings e ON e.decision_id = v.decision_id
                 WHERE d.project_id=?
-                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search)
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search); JOIN emb:
+                                                 # linha editada (trigger apagou o emb) some ate o reindex
             (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
@@ -275,8 +278,10 @@ class Embedder:
                        kb.section, kb.content, kb.reveal
                 FROM kb_vectors v
                 JOIN kb ON kb.id = v.kb_id
+                JOIN kb_embeddings e ON e.kb_id = v.kb_id
                 WHERE kb.project_id=?
-                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search)
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search); JOIN emb:
+                                                 # linha editada (trigger apagou o emb) some ate o reindex
             (json.dumps(q_vec), project_id, k),
         ).fetchall()
 

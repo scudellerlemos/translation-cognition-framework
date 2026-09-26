@@ -309,6 +309,8 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
                 print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} nesta execucao >= "
                       f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
                       f"salvas — rode de novo p/ continuar).")
+                if batch and backend == "api":
+                    _rebuild_index_phase(root)   # cenas ja verified entram na TM (rebuild e deferido no batch)
                 _print_cost(root, cost_chap)
                 _run_mandatory_audits(root, cost_chap)
                 return {"chapter": chap, "scenes": results, "status": "stopped_budget",
@@ -330,6 +332,8 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
                   f"(corrija e rode de novo; cenas verified serao puladas)")
+            if batch and backend == "api":
+                _rebuild_index_phase(root)       # idem: rebuild deferido nao pode se perder no early-return
             _print_cost(root, cost_chap)
             _run_mandatory_audits(root, cost_chap)
             return {"chapter": chap, "scenes": results, "status": "stopped", "stopped_at": scene}

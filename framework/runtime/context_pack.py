@@ -577,16 +577,21 @@ def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
         from store import Store
         here = _pos(scene_id)
         query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
-        out, seen = [], set()
+        out: list[dict] = []
+        seen: set[str] = set()
         with Store(db_path) as db:
-            for hit in emb.search_decisions(db._con, query, project_id=project_id, k=k):
+            for hit in emb.search_decisions(db._con, query, project_id=project_id, k=-1):
+                # k=-1 (todos, em ordem de distancia) + corte AQUI, depois do gate de reveal:
+                # top-k antes do gate devolvia [] quando os k mais proximos ainda nao foram revelados
+                if len(out) >= k:
+                    break
                 if not _reveal_allowed(hit.get("reveal"), here):
                     continue
                 title = hit.get("title", "")
                 if not title or title in seen:
                     continue
                 seen.add(title)
-                out.append({"title": title, "summary": hit.get("summary", ""),
+                out.append({"title": title, "summary": hit.get("summary") or "",
                             "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["title"]))     # ordem estável (determinismo)
         return out[:max_hits]
@@ -617,16 +622,21 @@ def _load_kb_semantic(db_path, project_id, blob_low, scene_id,
         from store import Store
         here = _pos(scene_id)
         query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
-        out, seen = [], set()
+        out: list[dict] = []
+        seen: set[str] = set()
         with Store(db_path) as db:
-            for hit in emb.search_kb(db._con, query, project_id=project_id, k=k):
+            for hit in emb.search_kb(db._con, query, project_id=project_id, k=-1):
+                # k=-1 (todos, em ordem de distancia) + corte AQUI, depois do gate de reveal:
+                # top-k antes do gate devolvia [] quando os k mais proximos ainda nao foram revelados
+                if len(out) >= k:
+                    break
                 if not _reveal_allowed(hit.get("reveal"), here):
                     continue
                 section = hit.get("section", "")
                 if not section or section in seen:
                     continue
                 seen.add(section)
-                out.append({"section": section, "content": hit.get("content", ""),
+                out.append({"section": section, "content": hit.get("content") or "",
                             "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["section"]))    # ordem estável (determinismo)
         return out[:max_hits]
