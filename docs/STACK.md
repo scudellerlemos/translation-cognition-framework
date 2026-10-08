@@ -43,6 +43,21 @@ flowchart TB
   classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
 ```
 
+## Onde está o detalhe
+
+Este documento é a visão geral. Cada tema tem um documento próprio:
+
+| Tema | Documento |
+|---|---|
+| Como o prompt de cada cena é montado | [`CONTEXT_PACK.md`](CONTEXT_PACK.md) |
+| Contrato do modelo, formato da resposta, benchmarks | [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md) |
+| Busca semântica: dados, indexação, recuperação, calibração | [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) |
+| Onde o custo é cortado e a origem de cada número | [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md) |
+| Conector, round-trip e falta de espaço | [`CONNECTORS.md`](CONNECTORS.md) |
+| Passos do pipeline e checkpoints | [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md) |
+| Revisão humana | [`QA_REVIEW.md`](QA_REVIEW.md) |
+| Jogo novo | [`NEW_PROJECT_ONBOARDING.md`](NEW_PROJECT_ONBOARDING.md) |
+
 ## Vocabulário usado neste documento
 
 | Termo | O que é |
@@ -99,7 +114,8 @@ Decisões de engenharia nessa camada:
 - **Roteamento por complexidade.** O modelo mais caro só vê o que precisa dele. O contexto curado
   do pacote permite que Sonnet e Haiku façam a tradução; Opus fica para verificar.
 - **Saída estruturada.** A tradução volta em JSON validado por schema (`json_schema`), e não como
-  texto livre a ser parseado. O formato está descrito logo abaixo.
+  texto livre a ser parseado. Cada fala volta com tradução, falante, registro, intenção e risco; schema e validação em
+  [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md#o-formato-da-resposta).
 - **Prompt caching.** A doutrina de tradução (o `system` prompt, igual para todas as cenas) é
   marcada com `cache_control`. O efeito medido é pequeno, porque o custo está na saída e não na
   doutrina (ver [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md)).
@@ -111,42 +127,7 @@ Decisões de engenharia nessa camada:
 - **Re-tradução por estouro de espaço.** Se a tradução não cabe nos bytes da fala original, só as
   linhas que estouraram são re-traduzidas, escalando de modelo (`MODEL_ESCALATION`).
 
-### O formato da resposta
-
-A chamada de tradução usa saída estruturada estrita. O modelo devolve um array com uma entrada por
-fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model.py`):
-
-```json
-{"lines": [{
-  "offset": "0x1A2B",
-  "speaker": "Ryu",
-  "tone_register": "informal",
-  "intent": "pergunta direta",
-  "risk_level": "low",
-  "risk_notes": "",
-  "t": "Para onde você quer ir?"
-}]}
-```
-
-Os valores acima são ilustrativos.
-
-| Campo | Para que serve |
-|---|---|
-| `offset` | identifica a fala no binário; é a chave que liga a resposta à linha de origem |
-| `t` | a tradução |
-| `speaker`, `tone_register`, `intent` | o que o modelo entendeu da fala; ficam registrados para revisão e alimentam os exemplos de voz |
-| `risk_level` | `low`, `medium`, `high` ou `critical`; decide se a fala passa pela back-translation |
-| `risk_notes` | o motivo do risco, quando houver |
-
-Esses campos explicam a média de 66 tokens de saída por fala: a tradução é só uma parte do objeto.
-Cortar `tone_register` e `intent` para economizar tokens foi avaliado e rejeitado: o gate de
-qualidade depende desses campos.
-
-Depois da resposta, o código confere três coisas por fala, sem modelo: se todo `offset` pedido
-voltou (cobertura), se a contagem do marcador de quebra de linha é igual à da fonte, e se os
-tokens de formatação do jogo foram preservados. A fala que falha volta sozinha na nova tentativa.
-
-Contrato, backends e benchmarks → [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md). Cliente HTTP,
+Contrato, formato da resposta, backends e benchmarks → [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md). Cliente HTTP,
 streaming e backoff → `framework/runtime/llm_client.py`.
 
 ---
@@ -226,42 +207,6 @@ Implementação da recuperação, o laço de reuso em execução e a calibraçã
 
 ---
 
-## Execução
-
-Cada cena roda como um **job independente e limitado**: o prompt contém o contexto daquela cena, e
-não o histórico do projeto. O tamanho do prompt não cresce com o número de cenas já traduzidas.
-
-```
-run_scene(cena):
-  gates (conector + KB)      bloqueiam antes de gastar com modelo
-  → context_pack             monta o prompt (determinístico)
-  → translate [IA]           só as falas sem reuso de TM
-  → build_plan               valida e prepara a reinserção
-  → verify (round-trip)      bytes conferem? → cena vira `verified`
-  → back_translate [IA]      só risco alto; marca para revisão, não bloqueia
-  → checkpoint + state_index
-```
-
-- **`run_scene.py`** orquestra uma cena. **`run_chapter.py`** roda um capítulo inteiro, em loop
-  retomável.
-- **Lote por padrão.** No backend `api`, o `run_chapter` envia as cenas pela Message Batches API:
-  50% de desconto, processamento assíncrono (até cerca de 1 h por corpus). Tempo real só com
-  `--no-batch` ou via `run_scene`, para piloto e depuração.
-- **Teto de gasto.** `--max-usd` é um limite duro: o run estima o custo antes de enviar e aborta
-  se passar. Se o lote falhar, o padrão é abortar em vez de cair calado no caminho mais caro.
-- **Retomada.** `run_state.json` guarda o estado por cena. Uma queda na cena 40 não perde as 39
-  anteriores.
-- **Custo auditável.** `api_ledger.jsonl` registra toda chamada cobrada, inclusive as que
-  falharam. A recuperação de erro é por fala, não por cena, então o custo de um retry é
-  proporcional ao que quebrou.
-- **Ordem de grandeza.** O gasto real acumulado do projeto Utawarerumono, somado pelo ledger, foi
-  de cerca de R$ 338 (Sonnet R$ 260, Opus R$ 40, Haiku R$ 38).
-
-Detalhe e medições → [`ARCHITECTURE.md`](ARCHITECTURE.md) e
-[`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
-
----
-
 ## Conector e round-trip — a garantia de que o jogo não quebra
 
 Traduzir o texto é metade do problema. A outra metade é devolver esse texto a um arquivo binário
@@ -330,6 +275,42 @@ Quando a posição não pode ser comparada (identificador sem número), o conte�
 futuro. O erro seguro é esconder demais.
 
 Detalhe → [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) e
+[`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
+
+---
+
+## Execução
+
+Cada cena roda como um **job independente e limitado**: o prompt contém o contexto daquela cena, e
+não o histórico do projeto. O tamanho do prompt não cresce com o número de cenas já traduzidas.
+
+```
+run_scene(cena):
+  gates (conector + KB)      bloqueiam antes de gastar com modelo
+  → context_pack             monta o prompt (determinístico)
+  → translate [IA]           só as falas sem reuso de TM
+  → build_plan               valida e prepara a reinserção
+  → verify (round-trip)      bytes conferem? → cena vira `verified`
+  → back_translate [IA]      só risco alto; marca para revisão, não bloqueia
+  → checkpoint + state_index
+```
+
+- **`run_scene.py`** orquestra uma cena. **`run_chapter.py`** roda um capítulo inteiro, em loop
+  retomável.
+- **Lote por padrão.** No backend `api`, o `run_chapter` envia as cenas pela Message Batches API:
+  50% de desconto, processamento assíncrono (até cerca de 1 h por corpus). Tempo real só com
+  `--no-batch` ou via `run_scene`, para piloto e depuração.
+- **Teto de gasto.** `--max-usd` é um limite duro: o run estima o custo antes de enviar e aborta
+  se passar. Se o lote falhar, o padrão é abortar em vez de cair calado no caminho mais caro.
+- **Retomada.** `run_state.json` guarda o estado por cena. Uma queda na cena 40 não perde as 39
+  anteriores.
+- **Custo auditável.** `api_ledger.jsonl` registra toda chamada cobrada, inclusive as que
+  falharam. A recuperação de erro é por fala, não por cena, então o custo de um retry é
+  proporcional ao que quebrou.
+- **Ordem de grandeza.** O gasto real acumulado do projeto Utawarerumono, somado pelo ledger, foi
+  de cerca de R$ 338 (Sonnet R$ 260, Opus R$ 40, Haiku R$ 38).
+
+Detalhe e medições → [`ARCHITECTURE.md`](ARCHITECTURE.md) e
 [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
 
 ---
