@@ -13,7 +13,7 @@
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
 | Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
-| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — `v1.0.0`, `v1.0.1` publicadas |
+| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — versão atual `v1.1.0` (tags `v1.0.0`–`v1.1.0`) |
 | Perfis filme/série + subtitle_file | 🔴 stub / não iniciado |
 
 ---
@@ -242,6 +242,7 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 [#99](https://github.com/scudellerlemos/translation-cognition-framework/issues/99) (README de produto),
 [#100](https://github.com/scudellerlemos/translation-cognition-framework/issues/100) (consolidar docs),
 [#101](https://github.com/scudellerlemos/translation-cognition-framework/issues/101) (`.exe`).
+#98, #99 e #100 já foram entregues; resta a #101.
 
 ---
 

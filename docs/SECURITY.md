@@ -35,7 +35,7 @@ correspondentemente restrito.
 - CI verifica (`git ls-files --error-unmatch .env`) que `.env` não está rastreado
 - `_load_dotenv` em `llm_client.py` carrega da variável de ambiente ou `.env` local
 
-**Gap residual:** sem processo de rotação de chave; sem detecção de chave em `git log`.
+**Gap residual:** sem processo de rotação de chave (a detecção de chave no diff e no histórico é do gitleaks, no CI).
 
 ---
 
@@ -44,7 +44,7 @@ correspondentemente restrito.
 **Ameaça:** argumento `scene` malformado (`../etc/passwd`) acessando arquivos fora de `artifacts/`.
 
 **Controles:**
-- `_validate_scene_arg` em `run_scene.py` verifica que o path resolvido está sob `artifacts/`
+- `_validate_scene_arg` em `run_scene.py` verifica que o path resolvido está sob `artifacts/scenes/`
 - `_connector_script` verifica que o script do conector está sob o diretório do projeto
 - Testes: `test_run_scene_rejects_path_traversal_scene`, `test_connector_sandbox_blocks_external_path`
 

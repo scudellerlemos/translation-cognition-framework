@@ -40,7 +40,7 @@ def synthetic_migrated(tmp_path_factory):
     art = root / "artifacts"
     (art / "state").mkdir(parents=True)
     (art / "run_state.json").write_text(
-        json.dumps({"scenes": {"s1": {"status": "translated", "n_lines": 2}}}), encoding="utf-8")
+        json.dumps({"scenes": {"s1": {"status": "verified", "verified": True, "n_lines": 2}}}), encoding="utf-8")
     (art / "glossary.csv").write_text(
         "term,category,target_translation,handling_rule,aliases\n"
         "Widget,item,Bugiganga,traduzir,\n", encoding="utf-8")

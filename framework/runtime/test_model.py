@@ -203,11 +203,47 @@ def test_batch_coverage_finds_missing():
     assert "o2" in missing and bad == []
 
 
+
+
+def test_batch_coverage_ignores_engine_label_lines():
+    # rotulo de engine nunca vai ao lote (_translate_params) -> nao pode contar como faltante
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "body"}, {"offset": "o2", "source": "Hello there"}]}
+    assert M._batch_coverage(pack, {"o2": {"t": "Ola"}}) == ([], [])
+
+
+def test_batch_coverage_and_merge_check_formatting_tokens():
+    pack = {"scene_id": "S1", "tm_exact": [], "project_constraints": {"formatting_tokens": ["<C1>", "<C2>"]},
+            "lines": [{"offset": "o1", "source": "a <C1>x b"}]}
+    assert M._batch_coverage(pack, {"o1": {"t": "a <C2>x b"}}) == ([], ["o1"])   # token trocado
+    assert M._batch_coverage(pack, {"o1": {"t": "a <C1>x b"}}) == ([], [])
+    rx = M._structural_rx(pack["project_constraints"])
+    dest = {"o1": {"t": "a <C1>x b"}}
+    M._merge_best_parity(dest, {"o1": {"t": "sem token"}}, {"o1": "a <C1>x b"}, rx)
+    assert dest["o1"]["t"] == "a <C1>x b"                                          # nao regride p/ ruim
+
+
+def test_select_reuse_rejects_tm_target_missing_formatting_token():
+    pack = {"scene_id": "S1", "project_constraints": {"formatting_tokens": ["<C1>"]},
+            "tm_exact": [{"from_scene": "S0", "source": "a <C1>x b", "target": "a x b"}],
+            "lines": [{"offset": "o1", "source": "a <C1>x b"}]}
+    assert M._select_reuse(pack, enabled=True) == {}
+
+
+def test_parse_batch_lines_ignores_engine_label_offset():
+    # resposta que ecoe o rotulo nao pode sobrescrever o passthrough
+    pack = {"scene_id": "S1", "tm_exact": [],
+            "lines": [{"offset": "o1", "source": "body"}, {"offset": "o2", "source": "Hello there"}]}
+    out = M._parse_batch_lines(pack, json.dumps({"lines": [{"offset": "o1", "t": "corpo"},
+                                                           {"offset": "o2", "t": "Ola"}]}))
+    assert set(out) == {"o2"}
+
+
 def test_batch_coverage_ignores_engine_labels():
     """Label de engine (passthrough) nao vai ao LLM no batch -> nao pode contar como 'faltando'
     (senao a cena cai em coverage_failed pra sempre e paga o batch duas vezes)."""
     pack = {"scene_id": "S1", "tm_exact": [],
             "lines": [{"offset": "o1", "source": "lightA02"}, {"offset": "o2", "source": "Hello there friend"}]}
-    assert "o1" in M._batch_reuse(pack)
+    assert "o1" in M._prefilled(pack)
     missing, _bad = M._batch_coverage(pack, {"o2": {"t": "Oi amigo"}})
     assert missing == []

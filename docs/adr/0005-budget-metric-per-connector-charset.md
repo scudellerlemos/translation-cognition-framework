@@ -2,6 +2,9 @@
 
 **Status:** aceito · **Data:** 2026-08-24
 
+> **Nota 2026-10:** o backend `ollama` de tradução foi removido (ADR 0008); a parte de paridade
+> `api`/`ollama` desta ADR é histórica. A métrica de budget por charset continua valendo.
+
 ## Contexto
 
 `trails_sky_sc` cena `mp0010_01`: 308/447 linhas `soft_failed` por estouro de `byte_budget`. Causa raiz

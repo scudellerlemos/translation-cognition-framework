@@ -64,12 +64,13 @@ determinístico (`framework/runtime/run_scene.py`) encadeia:
 
 ```
 run_scene(cena)
+  0. connector_gate + kb_gate (bloqueiam antes de qualquer chamada de modelo)
   1. context_pack  → pacote LIMITADO (doutrina cacheável + glossário-subset + voice cards dos
                      falantes + decisões relevantes + hits de TM + linhas+budgets) → scene_prompt.md
   2. translate ............................► [IA: Sonnet]   (única parte não-determinística)
   3. build_plan_chapter (valida cobertura/tokens/risk_notes) → approved_<scene_id>.csv
-  4. high? back_translate .................► [IA: Opus]     (verificação de alto risco)
-  5. verify_chapter (round-trip byte-idêntico + ponteiros within-file)
+  4. verify_chapter (round-trip byte-idêntico + ponteiros within-file)
+  5. high? back_translate .................► [IA: Opus]     (verificação de alto risco; report-only)
   6. checkpoint (run_state.json) + state_index (TM cresce)
 ```
 
@@ -77,9 +78,9 @@ run_scene(cena)
 flowchart LR
   pack["context_pack<br/>det."] --> tr{{"translate<br/>IA · Sonnet"}}
   tr --> plan["build_plan<br/>det."]
-  plan --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}
-  bt --> vf["verify round-trip<br/>det."]
-  vf --> cp["checkpoint + TM<br/>det."]
+  plan --> vf["verify round-trip<br/>det."]
+  vf --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}
+  bt --> cp["checkpoint + TM<br/>det."]
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
   class tr,bt ia;
 ```
@@ -129,7 +130,7 @@ isoladas. Ver `MODEL_INTERFACE.md`.
 - **Contexto constante por execução** → a janela não cresce com o nº de capítulos (mata o estouro).
 - **Doutrina cacheável (~4K tok)** cobrada ~1× via prompt-caching, não a cada cena.
 - **Consistência vem do store** (TM/glossário/voice cards), não da memória do chat.
-- **Model-mix**: Sonnet traduz, Opus só verifica alto risco (ver `validation/cost_model.py`).
+- **Model-mix**: Sonnet traduz, Opus verifica alto risco e re-traduz só o resíduo de fitting (ver `validation/cost_model.py`).
 
 Resultado: Sonnet passa a ser o default de tradução com contexto pequeno e curado. Ver
 `adr/0004-model-agnostic-interface.md` e a seção *Sonnet Readiness* do `ROADMAP.md`.
@@ -163,7 +164,7 @@ comprovado vivo, além do alvo acima:
 - **Custo medido e controlado:** Sonnet aprovado por benchmark (nível Opus-à-mão em comédia/registro);
   gasto real acumulado **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28), **R$ 0 desperdiçado**.
   Alavancas codadas: Batch API **−50%**, **tiering** por complexidade (Haiku simples, Sonnet multi-linha,
-  Opus só back-translation), **dedup por TM**, **back-translation em batch**.
+  Opus na back-translation e no último degrau de fitting), **dedup por TM**, **back-translation em batch**.
 - **Custo PREVISÍVEL (a engenharia que fecha o caso p/ orçamento baixo):**
   - **Recuperação por-linha** — quando o `verify` reprova por cobertura/paridade/budget, o re-translate
     manda **só as linhas quebradas** (não a cena inteira). O gatilho é variância do LLM (aleatória); a
@@ -189,9 +190,9 @@ comprovado vivo, além do alvo acima:
   (basename `test_roundtrip.py` repetido colidiria numa coleta única do pytest). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
   Contagem corrente em [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
-- **CI paralela:** 6 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
+- **CI paralela:** 7 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
   push/PR (sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
-  maior job); `api-smoke.yml`, `dep-audit-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
+  maior job); `api-smoke.yml`, `dep-audit-optional.yml`, `ml-coverage-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
   sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em
   [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 

@@ -385,6 +385,45 @@ def test_audit_schema_never_raises_on_failure(tmp_path, monkeypatch, capsys):
     assert "AVISO" in capsys.readouterr().out
 
 
+def test_pretranslated_back_includes_low_risk_sample(env, monkeypatch):
+    # cena do batch com --require-back: o back roda aqui e o pos-passe pula o arquivo (fresh) ->
+    # tem que cobrir a amostra low/medium tambem, nao so high
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    got = []
+    monkeypatch.setattr(rs.M, "back_translate_candidates", lambda r, s: [{"offset": "low1"}])
+    monkeypatch.setattr(rs.M, "back_translate", lambda r, s, h, **k: got.append(h) or st["back"])
+    rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    assert got == [[{"offset": "low1"}]]
+
+
+def test_deferred_back_does_not_compute_sample(env, monkeypatch):
+    # defer_back retorna antes do back -> nao le/parseia o plano p/ montar a amostra
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    monkeypatch.setattr(rs.M, "back_translate_candidates",
+                        lambda r, s: (_ for _ in ()).throw(AssertionError("amostra calculada a toa")))
+    r = rs.run_scene(root, scene, backend="api", pretranslated=True, defer_back=True)
+    assert r["status"] == "verified"
+
+
+def test_sample_failure_with_require_back_blocks(env, monkeypatch, capsys):
+    # --require-back promete cobrir a amostra: falha ao monta-la bloqueia (nao rebaixa calado p/ so high)
+    root, scene, st = env
+    st["runs"] = [(0, ""), (0, "")]
+    monkeypatch.setattr(rs.M, "back_translate_candidates",
+                        lambda r, s: (_ for _ in ()).throw(AttributeError("plan malformado")))
+    called = []
+    monkeypatch.setattr(rs.M, "back_translate", lambda *a, **k: called.append(1))
+    r = rs.run_scene(root, scene, backend="api", require_back=True, pretranslated=True)
+    assert r["status"] == "back_translation_failed" and "plan malformado" in r["error"]
+    assert called == []
+    st_scene = json.loads(paths.run_state(root).read_text(encoding="utf-8"))["scenes"][scene]
+    assert st_scene["status"] == "back_translation_failed"
+    out = capsys.readouterr().out
+    assert "plan malformado" in out and "BLOQUEADA" in out   # causa visivel e sem "seguindo" enganoso
+
+
 # --- ramos de borda: guards, avisos de gate, pretranslated, back awaiting/ready, auditorias ----------
 def test_empty_scene_raises(env):
     root, _scene, _st = env

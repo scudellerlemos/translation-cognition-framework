@@ -111,7 +111,7 @@ def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch
     seen = {}
 
     class _FakeEmbedder:
-        def search(self, con, query, project_id, k=3, min_score=None):
+        def search(self, con, query, project_id, k=3, min_score=None, max_score=None):
             seen["min_score"] = min_score
             return []
 
@@ -130,7 +130,7 @@ def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
     seen = {}
 
     class _FakeEmbedder:
-        def search(self, con, query, project_id, k=3, min_score=None):
+        def search(self, con, query, project_id, k=3, min_score=None, max_score=None):
             seen["min_score"] = min_score
             return []
 
@@ -233,6 +233,8 @@ def test_render_prompt_full_sections():
                              "handling_rule": "preserve", "spoiler_level": ""}],
         "voice_cards": {"Ryu": {"criticality": "high", "aliases": ["Hero"], "lines": ["fala curta"]}},
         "decisions": [{"title": "Regra", "summary": "manter", "universal": True}],
+        "decisions_semantic": [{"title": "Onomatopeia", "summary": "adaptar sons", "score": 0.7},
+                               {"title": "Regra", "summary": "dup do lexico", "score": 0.9}],
         "spoiler_guards": [{"entity": "Fou-lu", "spoiler_level": "high", "guard": "trate como mistério"}],
         "kb": [{"section": "Lore", "content": "lore do mundo"}],
         "kb_semantic": [{"section": "Lore Semelhante", "content": "lore parecida", "score": 0.5},
@@ -244,9 +246,10 @@ def test_render_prompt_full_sections():
     }
     out = cp.render_prompt(pack, "CARTA DE TESTE")
     for needle in ("Cena S1", "Dragon", "Ryu", "Fou-lu", "Lore", "SIMILARES", "charset", "Hello",
-                   "Lore Semelhante", "5d."):
+                   "Lore Semelhante", "5d.", "Onomatopeia"):
         assert needle in out, needle
     assert "duplicado do lexico" not in out, "seção já mostrada no léxico não repete na semântica"
+    assert "dup do lexico" not in out, "decisão já mostrada no léxico não repete na semântica"
 
 
 def test_render_prompt_empty_sections():
@@ -304,9 +307,39 @@ def test_reveal_allowed_shared_gate(tmp_path):
     assert cp._reveal_allowed(None, here) is False               # sem tag -> default-deny
 
 
+def test_load_decisions_semantic_gates_reveal_before_top_k(tmp_path, monkeypatch):
+    # top-k antes do gate: os k mais proximos nao revelados zeravam a secao inteira
+    class _Fake:
+        def search_decisions(self, con, q, project_id, k):
+            assert k < 0                                   # pede todos; o corte vem depois do gate
+            return [{"title": "futuro", "summary": "x", "reveal": "9_09", "score": 0.9},
+                    {"title": "ok", "summary": None, "reveal": "safe", "score": 0.5}]
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
+    got = cp._load_decisions_semantic(dbp, "p", [], "q", "1_05", k=1)
+    assert got == [{"title": "ok", "summary": "", "score": 0.5}]       # summary NULL -> "" (nao 'None')
+
+
+def test_load_tm_semantic_skips_exact_matches_before_cut(tmp_path, monkeypatch):
+    # "Yes." com >=k exatos: exatos ocupavam o top-k e o vizinho real sumia
+    class _Fake:
+        def search(self, con, q, project_id, k, min_score=None, max_score=None):
+            hits = [{"source": "Yes.", "target": f"Sim{i}.", "score": 1.0} for i in range(3)]
+            hits += [{"source": "Yes!", "target": "Sim!", "score": 0.9}]
+            return [h for h in hits if max_score is None or h["score"] < max_score][:k]
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+    monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
+    got = cp._load_tm_semantic(dbp, "p", [{"source": "Yes."}], k=1)
+    assert [h["source"] for h in got] == ["Yes!"]
+
+
 def test_load_glossary_tolerates_utf8_bom(tmp_path):
     """Excel/Notepad gravam CSV com BOM: sem utf-8-sig a 1a coluna vira '\\ufeffterm' e o glossario some."""
     p = tmp_path / "glossary.csv"
-    p.write_bytes("\ufeffterm,handling_rule\nOshtor,manter_original\n".encode("utf-8"))
+    p.write_bytes("\ufeffterm,handling_rule\nOshtor,manter_original\n".encode())
     rows = cp.load_glossary(p)
     assert rows and rows[0].get("term") == "Oshtor"

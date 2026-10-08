@@ -185,6 +185,8 @@ CONNECTOR_KNOWN_KEYS: frozenset = frozenset({
     "build_plan_script", "verify_script",
     # — metadados de tipo e formato —
     "type", "container_format", "table_schema", "encoding",
+    # — binario-fonte (lido por _skeleton/extract.py, script_generator, connector_smoke) —
+    "source_binary", "source_binary_note", "space_note",
     # — scripts de conector (não executados pelo harness, mas declarados no manifesto) —
     "extract_script", "reinsert_script",
     # — estratégia de espaço e patch —
@@ -214,6 +216,9 @@ class ConnectorConfig(TypedDict, total=False):
     container_format: str           # "capcom_dat_toc" | "sdat_v4" | ...
     table_schema: str               # caminho relativo ao schema da tabela de ponteiros
     encoding: str                   # "ascii_with_ctrl_codes" | "utf-8" | ...
+    source_binary: str              # caminho RELATIVO a raiz do projeto (nunca absoluto)
+    source_binary_note: str
+    space_note: str
     extract_script: str
     reinsert_script: str
     build_plan_script: str          # override do default em CONNECTOR_REGISTRY
@@ -247,7 +252,7 @@ def validate_connector_types(cfg: dict) -> list:
     em run_scene.py, que so avisa). Retorna lista de mensagens de erro; lista vazia = tudo ok."""
     hints = get_type_hints(ConnectorConfig)
     errors = []
-    for key, value in cfg.get("connector", {}).items():
+    for key, value in (cfg.get("connector") or {}).items():
         expected = hints.get(key)
         if expected is None:
             continue

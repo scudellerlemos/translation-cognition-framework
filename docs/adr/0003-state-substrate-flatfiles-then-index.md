@@ -2,6 +2,11 @@
 
 **Status:** aceito · **Data:** 2026-06-10
 
+> **Atualização 2026-10:** o gatilho de banco/RAG previsto aqui foi atingido. SQLite (`framework/db/`) +
+> `sqlite-vec` + embedder local existem e são o default de projeto novo; os flat files seguem como
+> fonte editável/espelho e como modo dos projetos sem `db`. Ver `../DB_MIGRATION_ROADMAP.md` e os
+> ADRs 0014–0016. O texto abaixo é o registro da decisão original.
+
 ## Contexto
 
 O harness precisa de memória externa consultável (consistência sem usar a janela). Opções: flat files,

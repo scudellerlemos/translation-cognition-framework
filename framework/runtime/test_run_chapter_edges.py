@@ -24,7 +24,7 @@ def test_batch_phase_skips_scenes_blocked_by_kb_gate(tmp_path, monkeypatch, caps
     gates = {"a": {**_OK_KB, "hard_problems": ["KB vazia"]}, "b": {**_OK_KB, "problems": ["sem fronteira"]}}
     monkeypatch.setattr(rc.kb_gate, "check", lambda r, s: gates[s])
     monkeypatch.setattr(rc.M, "batch_translate", lambda r, s: pytest.fail("nada a submeter"))
-    st, failed = rc._batch_phase(tmp_path, ["a", "b"], skip_kb_gate=False, allow_interactive_fallback=False)
+    st, failed = rc._batch_phase(tmp_path, ["b", "a"], skip_kb_gate=False, allow_interactive_fallback=False)
     out = capsys.readouterr().out
     assert (st, failed) == ({}, False)
     assert "KB-gate, hard" in out and "KB vazia" in out and "sem fronteira" in out
@@ -36,7 +36,8 @@ def test_batch_phase_skip_kb_gate_bypasses_soft_but_not_hard(tmp_path, monkeypat
     sent = []
     monkeypatch.setattr(rc.M, "batch_translate", lambda r, s: sent.append(list(s)) or {x: "written" for x in s})
     st, failed = rc._batch_phase(tmp_path, ["a", "b"], skip_kb_gate=True, allow_interactive_fallback=False)
-    assert sent == [["b"]] and st == {"b": "written"} and failed is False
+    # hard_problem e do PROJETO (nao da cena): pula o batch inteiro, mesmo com --skip-kb-gate
+    assert sent == [] and st == {} and failed is False
 
 
 def test_batch_phase_failure_with_fallback_flag_continues_interactive(tmp_path, monkeypatch, capsys):

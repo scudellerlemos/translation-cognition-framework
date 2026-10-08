@@ -136,6 +136,79 @@ def test_reindex_pending_embeddings_never_raises(tmp_path, monkeypatch):
     assert result is None
 
 
+def test_nested_batch_keeps_outer_atomicity(tmp_path):
+    """batch() aninhado e no-op: o bloco interno nao commita nem desliga o lote -- erro no
+    externo desfaz TUDO, inclusive o que foi escrito dentro do interno."""
+    import pytest
+
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        with pytest.raises(RuntimeError):
+            with db.batch():
+                with db.batch():
+                    db.upsert_scene(project_id="p1", scene_id="S0", status="pending")
+                db.upsert_scene(project_id="p1", scene_id="S1", status="pending")
+                raise RuntimeError("falha simulada apos o bloco interno")
+        assert db.get_scenes("p1") == []
+
+
+def test_spoiler_entry_without_fact_upserts_not_duplicates(tmp_path):
+    # NULL e distinto no UNIQUE -> cada re-mirror duplicava a entry sem fact
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="01")
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="02")
+        entries = db.get_spoiler_entries("p1")
+    assert len(entries) == 1 and entries[0]["reveal"] == "02"
+
+
+def test_partial_upsert_keeps_list_columns(tmp_path):
+    # COALESCE era no-op: None virava '[]' (nunca NULL) e o upsert parcial apagava a lista
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_voice_card("p1", "Ryu", aliases=["Hero"], lines=["curto"])
+        db.upsert_voice_card("p1", "Ryu", register="formal")
+        db.upsert_decision("p1", "Regra", summary="s", tags=["t"])
+        db.upsert_decision("p1", "Regra", universal=True)
+        vc, = db.get_voice_cards("p1")
+        dec, = db.get_decisions("p1")
+    assert vc["aliases"] == ["Hero"] and vc["lines"] == ["curto"] and vc["register"] == "formal"
+    assert dec["tags"] == ["t"] and dec["summary"] == "s"
+
+
+def test_edited_text_invalidates_embedding(tmp_path):
+    # summary/content editado mantinha o vetor velho: reindex só pega linha SEM emb row
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_decision("p1", "Regra", summary="velho")
+        db.upsert_kb("p1", [{"section": "S", "content": "velho"}])
+        con = db._con
+        con.execute("INSERT INTO decision_embeddings VALUES(1,'m',384,0)")
+        con.execute("INSERT INTO kb_embeddings VALUES(1,'m',384,0)")
+        db.upsert_decision("p1", "Regra", summary="velho", universal=True)   # texto igual: mantém
+        assert con.execute("SELECT COUNT(*) FROM decision_embeddings").fetchone()[0] == 1
+        db.upsert_decision("p1", "Regra", summary="novo")
+        db.upsert_kb("p1", [{"section": "S", "content": "novo"}])
+        assert con.execute("SELECT COUNT(*) FROM decision_embeddings").fetchone()[0] == 0
+        assert con.execute("SELECT COUNT(*) FROM kb_embeddings").fetchone()[0] == 0
+
+
+def test_migrate_dedups_legacy_null_fact_spoiler_entries(tmp_path):
+    # bancos antigos: 1 copia fact=NULL por re-mirror; a migracao deixa so a mais nova
+    db_path = tmp_path / "t.db"
+    with Store(db_path) as db:
+        db.upsert_project("p1", "Projeto Teste")
+        for rev in ("01", "02"):
+            db._con.execute("INSERT INTO spoiler_entries(project_id, entity, fact, reveal) "
+                            "VALUES('p1','X',NULL,?)", (rev,))
+        db._con.commit()
+    with Store(db_path) as db:
+        db.upsert_spoiler_entry(project_id="p1", entity="X", reveal="03")
+        entries = db.get_spoiler_entries("p1")
+    assert len(entries) == 1 and entries[0]["reveal"] == "03"
+
+
 def test_upsert_translation_reupsert_updates_source(tmp_path):
     """Re-upsert do mesmo (project, scene, offset) com source novo (ex.: extract re-rodado com texto
     corrigido) tem que trocar o source -- senao TM exata e embeddings ficam pareados ao texto velho."""

@@ -303,10 +303,10 @@ def select_spoiler_guards(ledger: dict, blob_low: str, scene_id: str) -> list:
 
 
 def project_constraints(cfg: dict) -> dict:
-    conn = cfg.get("connector", {})
+    conn = cfg.get("connector") or {}
     return {
-        "formatting_tokens": cfg.get("formatting_tokens", []),
-        "formatting_token_patterns": cfg.get("formatting_token_patterns", []),
+        "formatting_tokens": cfg.get("formatting_tokens") or [],
+        "formatting_token_patterns": cfg.get("formatting_token_patterns") or [],
         "system_line_convention": cfg.get("system_line_convention", ""),
         "length_constraints": cfg.get("length_constraints", {}),
         "newline_token": TOKEN,
@@ -536,10 +536,10 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
         out, seen = [], set()
         with Store(db_path) as db:
             for r in rows:
+                # max_score exclui o match exato (já está em tm_exact) NO SQL, antes do top-k — fala
+                # curta tipo "Yes." com >=k exatos não zera mais os vizinhos.
                 for hit in emb.search(db._con, r.get("source", ""), project_id=project_id, k=k,
-                                      min_score=min_score):
-                    if float(hit.get("score", 0)) >= 0.999:    # match exato já está em tm_exact
-                        continue
+                                      min_score=min_score, max_score=0.999):
                     key = (hit.get("source", ""), hit.get("target", ""))
                     if key in seen:
                         continue
@@ -577,16 +577,21 @@ def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
         from store import Store
         here = _pos(scene_id)
         query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
-        out, seen = [], set()
+        out: list[dict] = []
+        seen: set[str] = set()
         with Store(db_path) as db:
-            for hit in emb.search_decisions(db._con, query, project_id=project_id, k=k):
+            for hit in emb.search_decisions(db._con, query, project_id=project_id, k=-1):
+                # k=-1 (todos, em ordem de distancia) + corte AQUI, depois do gate de reveal:
+                # top-k antes do gate devolvia [] quando os k mais proximos ainda nao foram revelados
+                if len(out) >= k:
+                    break
                 if not _reveal_allowed(hit.get("reveal"), here):
                     continue
                 title = hit.get("title", "")
                 if not title or title in seen:
                     continue
                 seen.add(title)
-                out.append({"title": title, "summary": hit.get("summary", ""),
+                out.append({"title": title, "summary": hit.get("summary") or "",
                             "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["title"]))     # ordem estável (determinismo)
         return out[:max_hits]
@@ -617,16 +622,21 @@ def _load_kb_semantic(db_path, project_id, blob_low, scene_id,
         from store import Store
         here = _pos(scene_id)
         query = blob_low[:2000]        # amostra do conteúdo da cena -- 1 query, não por linha
-        out, seen = [], set()
+        out: list[dict] = []
+        seen: set[str] = set()
         with Store(db_path) as db:
-            for hit in emb.search_kb(db._con, query, project_id=project_id, k=k):
+            for hit in emb.search_kb(db._con, query, project_id=project_id, k=-1):
+                # k=-1 (todos, em ordem de distancia) + corte AQUI, depois do gate de reveal:
+                # top-k antes do gate devolvia [] quando os k mais proximos ainda nao foram revelados
+                if len(out) >= k:
+                    break
                 if not _reveal_allowed(hit.get("reveal"), here):
                     continue
                 section = hit.get("section", "")
                 if not section or section in seen:
                     continue
                 seen.add(section)
-                out.append({"section": section, "content": hit.get("content", ""),
+                out.append({"section": section, "content": hit.get("content") or "",
                             "score": round(float(hit.get("score", 0)), 3)})
         out.sort(key=lambda h: (-h["score"], h["section"]))    # ordem estável (determinismo)
         return out[:max_hits]
@@ -802,6 +812,12 @@ def render_prompt(pack: dict, carta: str) -> str:
     for d in pack["decisions"]:
         flag = " [universal]" if d.get("universal") else ""
         L.append(f"- **{d['title']}**{flag}: {d['summary']}")
+    _dec_shown = {d["title"] for d in pack["decisions"]}
+    dec_sem = [d for d in pack.get("decisions_semantic", []) if d["title"] not in _dec_shown]
+    if dec_sem:
+        L.append("**Decisoes SEMELHANTES (semantica — aplique se couber no contexto):**")
+        for d in dec_sem:
+            L.append(f"- (~{d['score']}) **{d['title']}**: {d['summary']}")
     L.append("")
     guards = pack.get("spoiler_guards", [])
     if guards:

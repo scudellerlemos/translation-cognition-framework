@@ -24,7 +24,7 @@ _CONNECTOR_TIMEOUT = 300   # segundos; conector travado (build_plan/verify) não
 
 
 def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
-    override = cfg.get("connector", {}).get(key)
+    override = (cfg.get("connector") or {}).get(key)
     if override is not None and not isinstance(override, str):
         raise ValueError(
             f"project.json connector.{key!r} deveria ser string (path relativo), "
@@ -36,17 +36,26 @@ def _connector_script(root: Path, cfg: dict, key: str, default: str) -> Path:
     return p
 
 
-def _connector_hash(root: Path, cfg: dict) -> str:
+def _connector_hash(root: Path, cfg: dict, *, raw: bool = False) -> str:
     """SHA1 do conteúdo dos scripts do conector — identifica a versão em uso no momento da verificação.
     Gravado no run_state.json junto com 'verified=True': artefato sabe com qual conector foi gerado.
-    Conector ausente (em-desenvolvimento) = hash de string vazia por slot."""
+    Conector ausente (em-desenvolvimento) = hash de string vazia por slot.
+    CRLF normalizado p/ LF: com core.autocrlf o mesmo commit tem bytes diferentes no Windows e no
+    Linux, e o run_state versionado acusava "conector mudou" num dos dois. raw=True = hash legado."""
     h = hashlib.sha1(usedforsecurity=False)
     for key, default in [("build_plan_script", "build_plan_chapter.py"),
                           ("verify_script", "verify_chapter.py")]:
         p = _connector_script(root, cfg, key, default)
         if p.is_file():
-            h.update(p.read_bytes())
+            b = p.read_bytes()
+            h.update(b if raw else b.replace(b"\r\n", b"\n"))
     return h.hexdigest()[:12]
+
+
+def connector_changed(root: Path, cfg: dict, saved_hash: str) -> bool:
+    """saved_hash (run_state/manifesto) nao bate com o conector atual — aceita o hash legado (bytes
+    crus, antes da normalizacao de CRLF) p/ nao acusar mudanca falsa em todo run_state ja gravado."""
+    return saved_hash not in (_connector_hash(root, cfg), _connector_hash(root, cfg, raw=True))
 
 
 def _run(cmd, timeout=_CONNECTOR_TIMEOUT) -> tuple[int, str]:
@@ -90,7 +99,7 @@ def _warn_if_connector_stale(root: Path, scene: str, cfg: dict) -> None:
     try:
         saved = json.loads(rs.read_text(encoding="utf-8")).get("scenes", {}).get(scene, {})
         last_hash = saved.get("connector_hash")
-        if last_hash and last_hash != _connector_hash(root, cfg):
+        if last_hash and connector_changed(root, cfg, last_hash):
             print(f"[S3] AVISO: conector mudou desde o último verify de '{scene}' "
                   f"(hash salvo: {last_hash[:8]}… ≠ atual: {_connector_hash(root, cfg)[:8]}…). "
                   "Re-verificação recomendada.")

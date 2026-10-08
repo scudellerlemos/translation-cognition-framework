@@ -143,15 +143,17 @@ def _batch_phase(root, pending, *, skip_kb_gate, allow_interactive_fallback):
     9/9 cenas pro interativo full-price sem ninguem perceber ate investigacao manual), o default e
     ABORTAR em vez de cair silenciosamente no caminho caro -- mesma filosofia do teto de --max-usd
     (nunca gastar surpresa). --allow-interactive-fallback destrava o comportamento antigo de propósito."""
-    submit = []
+    submit: list[str] = []
     for s in pending:
         kb = kb_gate.check(root, s)
         # hard_problems: nunca bypassavel (nem com --skip-kb-gate) -- mesma regra do caminho
         # interativo em run_scene.py. Sem este check, uma cena com KB vazia/sem fronteira ia
         # direto pro batch pago em vez de cair pro caminho interativo (que bloqueia de verdade).
+        # hard_problems sao do PROJETO (KB vazia, sem fronteira, project.json corrompido), nao da
+        # cena -- valem p/ todas as restantes: 1 aviso e para, em vez de reler KB N vezes.
         if kb.get("hard_problems"):
-            print(f"[batch] {s} pulado do batch (KB-gate, hard): {kb['hard_problems'][0]}")
-            continue
+            print(f"[batch] batch inteiro pulado (KB-gate, hard): {kb['hard_problems'][0]}")
+            return {}, False
         if kb["problems"] and not skip_kb_gate:
             print(f"[batch] {s} pulado do batch (KB-gate): {kb['problems'][0]}")
             continue
@@ -267,16 +269,16 @@ def _preflight_budget(root, scenes, redo, max_usd) -> tuple[set, bool]:
     return budget_excluded, False
 
 
-def _over_budget(root, chap, scene, cost_chap, max_usd) -> bool:
+def _over_budget(root, chap, scene, cost_chap, max_usd, spent0=0.0) -> bool:
     """TETO DE GASTO: checa o custo do capitulo ANTES de cada cena (a granularidade e por-cena —
     uma cena ja iniciada pode estourar um pouco; o teto barra a PROXIMA). Cenas verified ja
     salvas; rode de novo p/ continuar de onde parou."""
     if max_usd is None:
         return False
-    spent = _chapter_cost(root, cost_chap)
+    spent = _chapter_cost(root, cost_chap) - spent0
     if spent < max_usd:
         return False
-    print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} >= "
+    print(f"\nABORTADO por teto de gasto: {chap} ja custou ${spent:.2f} nesta execucao >= "
           f"--max-usd ${max_usd:.2f} (parado ANTES de {scene}; cenas verified seguem "
           f"salvas — rode de novo p/ continuar).")
     _print_cost(root, cost_chap)
@@ -284,14 +286,17 @@ def _over_budget(root, chap, scene, cost_chap, max_usd) -> bool:
 
 
 def _scene_loop(root, chap, scenes, cost_chap, batch_status, budget_excluded, *, backend, batch, redo,
-                max_usd, **scene_kw) -> tuple[list, dict | None]:
+                max_usd, spent0=0.0, **scene_kw) -> tuple[list, dict | None]:
     """Roda as cenas em sequencia. Retorna (results, parada) -- parada = None se rodou tudo, senao
     {"status", "stopped_at"} (custo ja impresso; os audits ficam com o chamador)."""
     results = []
     # MODO BATCH: difere a back-translation p/ o pos-passe (1 batch -50% Opus ao fim do capitulo)
     # E o rebuild do state_index (1x pro capitulo inteiro em _rebuild_index_phase, nao por cena
     # -- redundante no batch, a rodada de traducao ja terminou antes do rebuild ser util).
-    defer_back = bool(batch and backend == "api")
+    # --require-back NAO difere: o pos-passe e report-only e o run_scene._back_phase so aplica o
+    # require_back quando roda a back-translation ele mesmo (diferir -> gate pulado calado).
+    batch_api = bool(batch and backend == "api")
+    defer_back = batch_api and not scene_kw.get("require_back")
     for scene in scenes:
         if not redo and _verified(root, scene):
             print(f"[skip] {scene} ja verified")
@@ -301,12 +306,12 @@ def _scene_loop(root, chap, scenes, cost_chap, batch_status, budget_excluded, *,
             print(f"[teto] {scene} adiada por orcamento (rode de novo apos recarga)")
             results.append({"scene": scene, "status": "skipped_budget"})
             continue
-        if _over_budget(root, chap, scene, cost_chap, max_usd):
+        if _over_budget(root, chap, scene, cost_chap, max_usd, spent0):
             return results, {"status": "stopped_budget", "stopped_at": scene}
         pre = batch_status.get(scene) in ("written", "all_reused")
         print(f"\n=== {scene} ({backend}{', batch' if pre else ''}) ===")
         r = RS.run_scene(root, scene, backend=backend, pretranslated=pre,
-                         defer_back=defer_back, rebuild_index=not defer_back, **scene_kw)
+                         defer_back=defer_back, rebuild_index=not batch_api, **scene_kw)
         results.append({"scene": scene, "status": r["status"]})
         if r["status"] not in _OK:
             print(f"\nPAROU em {scene}: status = {r['status']} "
@@ -316,17 +321,17 @@ def _scene_loop(root, chap, scenes, cost_chap, batch_status, budget_excluded, *,
     return results, None
 
 
-def _post_pass(root, scenes, cost_chap, *, no_back, require_back, max_usd) -> list:
-    """POS-PASSE do modo batch: rebuild do state_index + back-translation em batch (-50% Opus), 1x pro
-    capitulo inteiro (cada cena deferiu os dois pra cá). Retorna as cenas com back-translation pendente."""
-    _rebuild_index_phase(root)
+def _post_pass(root, scenes, cost_chap, *, no_back, require_back, max_usd, spent0=0.0) -> list:
+    """POS-PASSE do modo batch: back-translation em batch (-50% Opus), 1x pro capitulo inteiro (cada
+    cena deferiu pra cá; o rebuild do state_index roda logo apos o loop, em run_chapter). Retorna as
+    cenas com back-translation pendente."""
     verified = [s for s in scenes if _verified(root, s)]
     if no_back and not require_back:
         print("[back-batch] pulado (--no-back).")
         return []
-    if max_usd is not None and _chapter_cost(root, cost_chap) >= max_usd:
+    if max_usd is not None and _chapter_cost(root, cost_chap) - spent0 >= max_usd:
         print(f"[back-batch] pulado: teto de gasto atingido "
-              f"(${_chapter_cost(root, cost_chap):.2f} >= ${max_usd:.2f}).")
+              f"(${_chapter_cost(root, cost_chap) - spent0:.2f} >= ${max_usd:.2f}).")
         return verified
     if no_back:   # require_back=True: mesmo gate de precedencia do run_scene._back_phase
         print("[back-batch] AVISO: --no-back ignorado (--require-back tem precedencia) "
@@ -341,7 +346,12 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     blocked = _connector_blocked(root, chap, scenes_glob, skip_connector_gate)
     if blocked:
         return blocked
+    state_index.mirror_db(root)   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
     scenes, cost_chap = _discover_scenes(root, chap, scenes_glob)
+    # --max-usd e teto DESTA execucao (o _fit_budget ja o trata assim): o ledger acumula runs
+    # anteriores, entao os checks comparam so o delta -- senao o resume de um capitulo que ja gastou
+    # >= max_usd para antes da 1a cena, apos o batch ja ter gasto de novo.
+    spent0 = _chapter_cost(root, cost_chap) if max_usd is not None else 0.0
     if not scenes:
         hint = f"artifacts/scenes/<glob>/dialogs.csv (glob: {scenes_glob})" if scenes_glob else f"artifacts/scenes/ch_{chap}_*/dialogs.csv"
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
@@ -359,6 +369,10 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     use_batch = batch and backend == "api"
     pending = ([s for s in scenes if (redo or not _verified(root, s)) and s not in budget_excluded]
                if use_batch else [])
+    if pending:
+        # rebuild ANTES do batch: execucao anterior que parou por excecao/Ctrl-C/batch_failed nao
+        # reconstruiu -> sem isto o batch pre-traduz contra TM velha e re-paga linhas reusaveis
+        _rebuild_index_phase(root)
     batch_status, batch_failed = (_batch_phase(root, pending, skip_kb_gate=skip_kb_gate,
                                                allow_interactive_fallback=allow_interactive_fallback)
                                   if pending else ({}, False))
@@ -368,14 +382,19 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
 
     results, stopped = _scene_loop(
         root, chap, scenes, cost_chap, batch_status, budget_excluded, backend=backend, batch=batch,
-        redo=redo, max_usd=max_usd, require_back=require_back, do_verify=do_verify,
+        redo=redo, max_usd=max_usd, spent0=spent0, require_back=require_back, do_verify=do_verify,
         skip_kb_gate=skip_kb_gate, skip_connector_gate=skip_connector_gate, no_back=no_back)
+    # rebuild do state_index DEFERIDO no batch (rebuild_index=False por cena) -> 1x apos o loop, em fim
+    # E parada por status/teto. Excecao NAO reconstroi (propaga limpa, sem mascarar o erro nem reescrever
+    # a TM durante Ctrl-C) -- o rebuild antes do _batch_phase da proxima execucao cobre.
+    if use_batch:
+        _rebuild_index_phase(root)
     if stopped:
         _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": results, **stopped}
 
     back_pending = (_post_pass(root, scenes, cost_chap, no_back=no_back, require_back=require_back,
-                               max_usd=max_usd) if use_batch else [])
+                               max_usd=max_usd, spent0=spent0) if use_batch else [])
     return _finish(root, chap, scenes, results, cost_chap, budget_excluded, back_pending, require_back)
 
 
@@ -477,7 +496,7 @@ def main():
                     help="se o batch em si falhar (bug/rede), cai no caminho interativo full-price "
                          "em vez de abortar (default: aborta, p/ nao gastar caro sem avisar)")
     ap.add_argument("--max-usd", type=float, default=None,
-                    help="teto de gasto: aborta antes da proxima cena se o custo do capitulo passar deste "
+                    help="teto de gasto DESTA execucao: aborta antes da proxima cena se o gasto passar deste "
                          "valor (cenas verified seguem salvas; rode de novo p/ continuar)")
     ap.add_argument("--scenes-glob", default=None,
                     help="glob(s) customizados para projetos com estrutura flat (ex: 'AREAD*,AREAS*'). "

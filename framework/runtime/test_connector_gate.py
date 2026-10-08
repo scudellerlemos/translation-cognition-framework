@@ -110,6 +110,13 @@ def test_assert_fresh_read_raises_when_file_missing(tmp_path):
         assert "nao existe" in str(e)
 
 
+def test_connector_null_treated_as_absent(tmp_path):
+    """`"connector": null` no project.json = sem overrides (paths default), nao AttributeError."""
+    (tmp_path / "project.json").write_text(json.dumps({"title": "T", "connector": None}), encoding="utf-8")
+    r = cg.check(tmp_path)
+    assert len(r["hard_problems"]) == 2   # scripts default ausentes -- mesmo caso de connector={}
+
+
 def test_corrupt_project_json_is_a_hard_problem_not_a_silent_default(tmp_path):
     (tmp_path / "project.json").write_text("{nao e json", encoding="utf-8")
     r = cg.check(tmp_path)

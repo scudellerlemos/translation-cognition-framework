@@ -143,6 +143,15 @@ _PLAN_LINES = [
 _APPROVED = [(ln["offset"], ln["base_translation"]) for ln in _PLAN_LINES]
 
 
+def _db_project(root):
+    """project.json declarando db + o DB ja criado (o mirror do inicio do run cria)."""
+    from store import Store  # noqa: E402
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "project.json").write_text(
+        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    Store(root / "p.db").close()
+
+
 def test_sync_translations_db_noop_without_db_config(tmp_path):
     (tmp_path / "project.json").write_text(json.dumps({"title": "x"}), encoding="utf-8")
     scene_dir = _scene(tmp_path)
@@ -150,16 +159,29 @@ def test_sync_translations_db_noop_without_db_config(tmp_path):
     assert not (scene_dir / "approved_a.csv").exists()
 
 
-def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
+def test_sync_translations_db_does_not_create_missing_db(tmp_path):
+    """DB declarado mas ainda nao criado: sync criava um DB so com traducoes e o context_pack
+    trocava p/ modo DB com KB/linhas vazias. Quem cria e o mirror; aqui o caller segue flat."""
     (tmp_path / "project.json").write_text(
         json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _scene(tmp_path)
+    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is False
+    assert not (tmp_path / "p.db").exists()
+
+
+def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
+    _db_project(tmp_path)
     scene_dir = _scene(tmp_path)
 
     assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
     from store import Store  # noqa: E402
     with Store(tmp_path / "p.db") as db:
-        rows = {r["offset"]: r for r in db.get_translations("proj")}
+        # #216: build_plan roda antes do verify -> nada aprovado (nao vira TM) ate a cena fechar verified
+        assert db.get_translations("proj") == []
+        rows = {r["offset"]: r for r in db.get_translations("proj", approved_only=False)}
+        db.approve_scene("proj", "s1")
+        assert len(db.get_translations("proj")) == 2
     assert rows["0x1"]["target"] == "O heroi pega a Bugiganga."
     assert rows["0x1"]["speaker"] == "Hero"
     assert rows["0x2"]["target"] == "[14]Ola[01]tudo bem?"
@@ -168,43 +190,45 @@ def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
     assert csv_text == ["offset,text_target", "0x1,O heroi pega a Bugiganga.", "0x2,[14]Ola[01]tudo bem?"]
 
 
-def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
-    """#182: sync_translations_db (write-path real de run_scene/run_chapter) chama
-    reindex_pending_embeddings automaticamente, igual ao #171 já fazia em migrate(). Sem
-    sentence-transformers/sqlite-vec (CI), a chamada é silenciosa (None) — não quebra a
-    escrita da TM. Verificamos via Store.reindex_pending_embeddings diretamente (mesma
-    conexão/arquivo que sync_translations_db acabou de escrever) que ela não levanta."""
-    (tmp_path / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
-    _scene(tmp_path)
-    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
-
+def test_sync_translations_db_keys_db_by_canonical_scene_id(tmp_path):
+    """Cena "ch_01_02": sync gravava o nome do dir cru no DB e o migrate grava scene_id_of ("01_02")
+    -> mesma cena duplicada no DB. Chave do DB = canonica; CSV continua no dir cru."""
+    from migrate_from_flat import migrate  # noqa: E402
     from store import Store  # noqa: E402
+    _db_project(tmp_path)
+    scene_dir = _scene(tmp_path, "ch_01_02")
+    assert cio.sync_translations_db(tmp_path, "ch_01_02", "a", _APPROVED, _PLAN_LINES) is True
+    assert (scene_dir / "approved_a.csv").is_file()
+    migrate(tmp_path, tmp_path / "p.db", project_id="proj")
     with Store(tmp_path / "p.db") as db:
-        result = db.reindex_pending_embeddings("proj")
-    assert result is None or result >= 0, result
+        rows = db.get_translations("proj", approved_only=False)
+    assert sorted({r["scene_id"] for r in rows}) == ["01_02"] and len(rows) == 2
 
 
-def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path):
+def test_verified_scene_is_semantically_searchable_end_to_end(tmp_path):
     """#182 critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
-    stack ML estiver instalada; skip limpo em test.yml (push/PR) -- mesmo padrão de
-    test_index_and_search_kb_end_to_end em framework/db/test_embedder_kind_config.py, mas roda
-    de verdade semanalmente em ml-coverage-optional.yml (#181)), a
-    linha aprovada por sync_translations_db tem que aparecer em Embedder.search() sem
-    NENHUM passo manual (nem db index, nem migrate) entre a escrita e a busca."""
-    import pytest
+    stack ML estiver instalada; skip limpo em test.yml (push/PR), roda de verdade semanalmente
+    em ml-coverage-optional.yml (#181)), a cena tem que aparecer em Embedder.search() assim
+    que fecha verified -- pelo write-path REAL (sync_translations_db -> approve_scene_db), sem
+    NENHUM passo manual (nem db index, nem migrate), e sem esperar a cena seguinte. Antes da
+    aprovação (approved=0, #216) ela NÃO pode aparecer."""
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
+    sys.path.insert(0, str(_HERE.parent / "runtime"))
+    import state_index  # noqa: E402
 
-    (tmp_path / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(tmp_path)
     _scene(tmp_path)
     assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
     from embedder import Embedder  # noqa: E402
     from store import Store  # noqa: E402
+    emb, q = Embedder(), "Hero picks up the Widget."
     with Store(tmp_path / "p.db") as db:
-        hits = Embedder().search(db._con, "Hero picks up the Widget.", project_id="proj", k=2)
+        assert emb.search(db._con, q, project_id="proj", k=2) == []     # ainda nao verificada
+    state_index.approve_scene_db(tmp_path, "s1")    # cena fechou verified (run_scene, #216)
+    with Store(tmp_path / "p.db") as db:
+        hits = emb.search(db._con, q, project_id="proj", k=2)
     assert any(h["offset"] == "0x1" for h in hits), hits
 
 
@@ -237,8 +261,7 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
     # caminho DB-first: producer grava direto no Store via sync_translations_db.
     dbfirst_root = tmp_path / "dbfirst"
     _scene(dbfirst_root)
-    (dbfirst_root / "project.json").write_text(
-        json.dumps({"title": "x", "db": {"path": "p.db", "project_id": "proj"}}), encoding="utf-8")
+    _db_project(dbfirst_root)
     assert cio.sync_translations_db(dbfirst_root, "s1", "a", _APPROVED, _PLAN_LINES) is True
 
     from store import Store  # noqa: E402
@@ -246,9 +269,51 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
         legacy_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                        for r in db.get_translations("proj")}
     with Store(dbfirst_root / "p.db") as db:
+        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene, #216)
         dbfirst_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                         for r in db.get_translations("proj")}
     assert dbfirst_rows == legacy_rows
+
+
+def test_structural_match_with_capturing_group_still_compares_literals():
+    """Padrao com grupo de captura nao pode cegar a checagem dos tokens literais (<C1> -> <C2>)."""
+    rx = cio.structural_token_rx(["<C1>", "<C2>"], [r"\{c(\d+)\}"])
+    assert not cio.structural_tokens_match(rx, "<C1>Oi {c5}", "<C2>Oi {c5}")
+    assert cio.structural_tokens_match(rx, "<C1>Oi {c5}", "Ola <C1> {c5}")
+    assert cio.structural_token_rx(None, None).pattern == "(?!)"   # JSON null == []
+
+
+def test_structural_rx_longest_literal_first_and_rejects_empty_match():
+    """Literal prefixo ("<C") nao pode engolir <C1>/<C2>; padrao que casa vazio e recusado."""
+    rx = cio.structural_token_rx(["<C", "<C1>", "<C2>"], [])
+    assert not cio.structural_tokens_match(rx, "<C1>x", "<C2>x")
+    with pytest.raises(ValueError):
+        cio.structural_token_rx([], [r"\d*"])
+
+
+@pytest.mark.parametrize("tokens,patterns", [
+    ("<C1>", None),            # string viraria 4 tokens de 1 char
+    ([5], None),               # item nao-string
+    (None, {}),                # falsy nao-lista nao pode virar [] calado
+    (0, None),
+    (None, [5]),               # (?:5) passaria como padrao
+    (None, [r"(?P<a>x)", r"(?P<a>y)"]),   # so quebra combinado
+])
+def test_structural_token_rx_fails_fast_on_bad_config(tokens, patterns):
+    with pytest.raises(ValueError):
+        cio.structural_token_rx(tokens, patterns)
+
+
+def test_structural_token_rx_wrapped_only_pattern_ok():
+    rx = cio.structural_token_rx(None, [r"<c)|(\d>"])
+    assert rx.search("<c") and rx.search("5>")
+    problems, _, patterns = cio.structural_token_config(None, [r"<c)|(\d>"])
+    assert problems == [] and patterns == [r"<c)|(\d>"]
+
+
+def test_structural_token_config_combined_conflict_keeps_valid_patterns():
+    problems, _, patterns = cio.structural_token_config(None, [r"(?P<a>x)", r"(?P<a>y)", "<b>"])
+    assert len(problems) == 1 and "<b>" in patterns   # validate segue auditando <b> por linha
 
 
 def test_transliterate_folds_accents_but_keeps_compat_glyphs_and_tokens():

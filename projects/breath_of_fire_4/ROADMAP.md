@@ -100,11 +100,10 @@ Os dois maiores gaps que BoF4 precisa fechar:
   | Componente | Modelo | Tamanho | Função |
   |---|---|---|---|
   | **Bi-encoder** | `paraphrase-multilingual-MiniLM-L12-v2` | ~470 MB | Embedding de TM, KB e glossário |
-  | **Reranker** | FlashRank (`MiniLM-L-12` quantizado) | ~4 MB | Reordena top-N por relevância real |
   | **Vector DB** | `sqlite-vec` | extensão C | Índice vetorial com filtros SQL nativos |
 
 - [x] **2.4. TM semântica** — `framework/db/embedder.py` + `store.py`; `context_pack.py::_load_tm_semantic` consulta por similaridade quando o projeto tem `.db` (gated). Validado no translation_software (6046 vetores indexados).
-- [x] **2.5. Context pack semântico** — `_load_kb` consulta só o KB relevante via embeddings em vez de carregar tudo, mesmo gate `.db`.
+- [x] **2.5. Context pack semântico** — `select_kb` (léxico) + `_load_kb_semantic` (embeddings) injetam só as seções de KB relevantes, mesmo gate `.db`.
 - [ ] **2.6. Few-shot de fitting** — ainda não implementado: recuperar linhas aprovadas semanticamente similares que couberam no byte_budget como exemplo no prompt de tradução. Não é bloqueio de nenhum projeto atual.
 
 ---

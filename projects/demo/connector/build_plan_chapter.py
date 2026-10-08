@@ -11,9 +11,7 @@ Uso: python build_plan_chapter.py <scene>
 """
 import csv
 import json
-import re
 import sys
-from collections import Counter
 from pathlib import Path
 
 _FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent.parent.parent / "framework" / "connectors"
@@ -24,9 +22,6 @@ import connector_io  # noqa: E402  (RISK_LEVELS compartilhado entre conectores)
 ROOT = Path(__file__).resolve().parent.parent
 _RISK = connector_io.RISK_LEVELS
 
-# Demo nao tem tokens estruturais de engine (sem timing/markup) — regex que nunca casa.
-_STRUCTURAL_TOKEN_RX = re.compile(r"(?!)")
-
 
 def load_dialogs(p: Path) -> tuple[dict, list]:
     rows, order = {}, []
@@ -35,10 +30,6 @@ def load_dialogs(p: Path) -> tuple[dict, list]:
             rows[r["offset"]] = {"text_en": r["text_en"], "byte_budget": int(r.get("byte_budget") or 0)}
             order.append(r["offset"])
     return rows, order
-
-
-def _tokens(text: str) -> Counter:
-    return Counter(_STRUCTURAL_TOKEN_RX.findall(text))
 
 
 def main() -> None:
@@ -55,6 +46,10 @@ def main() -> None:
 
     dialogs, order = load_dialogs(scene_dir / "dialogs.csv")
     trans = json.loads(trans_files[0].read_text(encoding="utf-8"))["lines"]
+    # tokens estruturais do engine (timing/markup) que sobrevivem VERBATIM: declarados em
+    # project.json formatting_tokens/_patterns -- MESMA regex do retry do model.py (#124)
+    cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
+    rx = connector_io.structural_token_rx(cfg.get("formatting_tokens"), cfg.get("formatting_token_patterns"))
 
     errors = []
     miss = [o for o in order if o not in trans]
@@ -71,9 +66,11 @@ def main() -> None:
         src = dialogs[off]["text_en"]
         t = trans[off]
         tgt = t["t"]
-        if _tokens(src) != _tokens(tgt):
+        src_tokens = connector_io.structural_token_counts(rx, src)
+        tgt_tokens = connector_io.structural_token_counts(rx, tgt)
+        if src_tokens != tgt_tokens:
             errors.append(f"{off}: tokens estruturais divergentes "
-                          f"(src={sorted(_tokens(src).elements())} tgt={sorted(_tokens(tgt).elements())})")
+                          f"(src={sorted(src_tokens.elements())} tgt={sorted(tgt_tokens.elements())})")
         risk = t.get("risk_level")
         if risk not in _RISK:
             errors.append(f"{off}: risk_level ausente/invalido '{risk}'")

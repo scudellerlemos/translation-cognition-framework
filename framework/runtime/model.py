@@ -355,17 +355,25 @@ def _label_passthrough(pack) -> dict:
     return out
 
 
+def _prefilled(pack, *, enabled=True) -> dict:
+    """Linhas que NUNCA vao ao LLM: reuso de TM (se enabled) + rotulo de engine (passthrough sempre).
+    Fonte unica -- cada call site que montava os dois a mao podia esquecer um (bug do rotulo sobrescrito)."""
+    out = _select_reuse(pack, enabled=enabled)
+    out.update(_label_passthrough(pack))
+    return out
+
+
 def _select_reuse(pack, *, enabled):
     """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
     em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
     Guards: (1) nunca reusa a PROPRIA cena — a TM e reconstruida apos cada cena, entao re-rodar a poria
     na TM e a dedup reusaria a saida velha, sabotando o escalonamento de fitting (que quer ENCURTAR);
     (2) paridade de quebra: a chave de TM normaliza ignorando `\\n`, entao so reusa se a contagem do token
-    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade). Desligado (vazio) no
+    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade), idem tokens de formatacao. Desligado (vazio) no
     escalonamento (enabled=False) p/ re-traduzir fresco e mais curto. Determinista (testavel sem rede)."""
     if not enabled:
         return {}
-    tok = context_pack.TOKEN
+    rx = _structural_rx(pack.get("project_constraints", {}))
     scene_id_here = pack.get("scene_id", "")
     by_key: dict[str, dict] = {}
     for e in pack.get("tm_exact", []):
@@ -378,8 +386,8 @@ def _select_reuse(pack, *, enabled):
         if not e:
             continue
         tgt = e.get("target", "")
-        if not tgt or tgt.count(tok) != (r.get("source", "") or "").count(tok):
-            continue                                  # paridade de quebra com a fonte ATUAL
+        if not tgt or not _line_ok(r.get("source", "") or "", tgt, rx):
+            continue                                  # paridade de quebra/tokens com a fonte ATUAL
         reuse[r["offset"]] = {"speaker": e.get("speaker", ""), "tone_register": "",
                               "intent": "reuso_tm", "risk_level": "low", "risk_notes": "",
                               "t": _norm_t(tgt)}
@@ -415,8 +423,7 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
     struct_rx = _structural_rx(pc)
     # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
     # linhas com fonte ja traduzida em OUTRA cena nao vao ao modelo (corta tokens de saida).
-    reuse = _select_reuse(pack, enabled=(budget_tolerance is None))
-    reuse.update(_label_passthrough(pack))            # rotulo de engine: passthrough SEMPRE (ate no retighten)
+    reuse = _prefilled(pack, enabled=(budget_tolerance is None))   # rotulo: passthrough SEMPRE (ate no retighten)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
     if not novel:                                     # cena 100% reaproveitada -> zero chamada de API
@@ -474,14 +481,12 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
             v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
             if _is_blowup(srcmap.get(off, ""), v["t"]):
                 continue                                 # lixo patologico -> descarta (vira 'missing' -> retry)
-            good_parity = (v["t"].count(tok) == srcmap.get(off, "").count(tok)) and \
-                _struct_ok(struct_rx, srcmap.get(off, ""), v["t"])
+            good_parity = _line_ok(srcmap.get(off, ""), v["t"], struct_rx)
             if off not in merged:
                 merged[off] = v                      # preenche lacuna
             else:
                 old = merged[off]
-                old_parity = (old.get("t", "").count(tok) == srcmap.get(off, "").count(tok)) and \
-                    _struct_ok(struct_rx, srcmap.get(off, ""), old.get("t", ""))
+                old_parity = _line_ok(srcmap.get(off, ""), old.get("t", ""), struct_rx)
                 if good_parity and not old_parity:
                     merged[off] = v                  # prioriza paridade correta
                 elif good_parity == old_parity and _over(off, old) and \
@@ -619,25 +624,16 @@ def _coverage_note(missing, bad_par) -> str:
     if missing:
         note += f"- Faltam estes offsets — INCLUA todos: {sorted(missing)[:40]}\n"
     if bad_par:
-        note += ("- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
+        note += ("- Estes offsets tem nº de quebras `\\n` ou tokens de formatacao DIFERENTES da fonte — case EXATO (mesma "
                  f"quantidade e posicao do token): {sorted(bad_par)[:30]}\n")
     return note
-
-
-def _batch_reuse(pack) -> dict:
-    """Linhas que NAO vao ao LLM no batch: reuso da TM + labels de engine (passthrough). Fonte unica
-    p/ _translate_params, _batch_coverage e batch_translate -- se divergirem, a label conta como
-    "faltando" pra sempre e a cena paga o batch e ainda cai no caminho interativo (custo dobrado)."""
-    reuse = _select_reuse(pack, enabled=True)
-    reuse.update(_label_passthrough(pack))
-    return reuse
 
 
 def _translate_params(pack, model, note=""):
     """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
     (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
     `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
-    reuse = _batch_reuse(pack)
+    reuse = _prefilled(pack)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     if not novel:
         return None, reuse, novel
@@ -674,7 +670,7 @@ def _tier_of(source: str) -> str:
 def _parse_batch_lines(pack, text):
     """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
     Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
-    reuse = _batch_reuse(pack)
+    reuse = _prefilled(pack)                          # rotulo tambem: resposta que o ecoe nao sobrescreve o passthrough
     novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
     srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
     struct_rx = _structural_rx(pack.get("project_constraints", {}))
@@ -694,34 +690,39 @@ def _parse_batch_lines(pack, text):
     return out
 
 
-def _merge_best_parity(dest, new, srcmap):
+def _line_ok(src, t, rx=None):
+    """Paridade de `\\n` E (com rx) de tokens de formatacao -- o mesmo par que o _api_translate retenta."""
+    tok = context_pack.TOKEN
+    return t.count(tok) == src.count(tok) and (rx is None or _struct_ok(rx, src, t))
+
+
+def _merge_best_parity(dest, new, srcmap, rx=None):
     """Mescla `new` em `dest` ACUMULANDO entre rodadas, preferindo paridade de `\\n` correta — igual ao
     _api_translate (interativo). NUNCA troca uma linha de paridade BOA por uma RUIM: assim uma re-rodada
     que regride uma linha ja boa nao desfaz o ganho (o `dict.update` cego perdia isso e a cena nao
     convergia). Mesma paridade -> usa a mais nova (consistente com o comportamento anterior)."""
-    tok = context_pack.TOKEN
     for off, v in new.items():
         src = srcmap.get(off, "")
-        good = v.get("t", "").count(tok) == src.count(tok)
+        good = _line_ok(src, v.get("t", ""), rx)
         old = dest.get(off)
         if old is None:
             dest[off] = v
             continue
-        old_good = old.get("t", "").count(tok) == src.count(tok)
+        old_good = _line_ok(src, old.get("t", ""), rx)
         if good or not old_good:        # melhora a paridade, ou ambas ruins -> aceita a nova
             dest[off] = v
     return dest
 
 
 def _batch_coverage(pack, merged):
-    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry)."""
-    tok = context_pack.TOKEN
-    reuse = _batch_reuse(pack)
+    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry). bad_parity =
+    `\\n` OU tokens de formatacao divergentes (batch sem isso deixava <C1> perdido ir pro build_plan)."""
+    rx = _structural_rx(pack.get("project_constraints", {}))
+    reuse = _prefilled(pack)                          # rotulo de engine nunca vai ao lote (_translate_params)
     novel = [r for r in pack["lines"] if r["offset"] not in reuse]
     srcmap = {r["offset"]: r.get("source", "") for r in novel}
     missing = [r["offset"] for r in novel if r["offset"] not in merged]
-    bad_par = [o for o in srcmap if o in merged
-               and merged[o].get("t", "").count(tok) != srcmap[o].count(tok)]
+    bad_par = [o for o in srcmap if o in merged and not _line_ok(srcmap[o], merged[o].get("t", ""), rx)]
     return missing, bad_par
 
 
@@ -759,7 +760,8 @@ def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, 
         wanted = req_offsets.get(cid)
         if wanted is not None:
             parsed = {off: v for off, v in parsed.items() if off in wanted}
-        _merge_best_parity(merged[scene], parsed, srcmap)
+        _merge_best_parity(merged[scene], parsed, srcmap,
+                           _structural_rx(packs[scene].get("project_constraints", {})))
 
 
 def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
@@ -794,8 +796,8 @@ def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_secon
     for scene in scenes:
         pack = context_pack.write_pack(root, scene)
         packs[scene] = pack
-        reuse = _batch_reuse(pack)
-        merged[scene] = dict(reuse)                      # reuso (TM + labels) pre-preenche o acumulado
+        reuse = _prefilled(pack)
+        merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
         # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
         # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
         existing = paths.translations(root, scene, pack['scene_id'])

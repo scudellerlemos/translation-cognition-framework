@@ -35,6 +35,25 @@ def test_build_tm_dedups_and_reads_plan(tmp_path):
     assert all(e["src_key"] for e in tm)                 # chave de TM computada
 
 
+def test_build_tm_reads_scene_plans_verified_only(tmp_path):
+    """Planos em artifacts/scenes/<cena>/ (layout real desde cbb9a9e) ficavam fora do glob -> TM vazia.
+    So cena verified no run_state entra; sem run_state entram todas (legado)."""
+    root = tmp_path
+    for scene, src in (("a", "Hi"), ("b", "Bye")):
+        pf = paths.translation_plan(root, scene, scene)
+        pf.parent.mkdir(parents=True)
+        pf.write_text(json.dumps({"lines": [
+            {"offset": "1", "text_source": src, "base_translation": src + "!"}]}), encoding="utf-8")
+    (paths.scene_dir(root, "a") / "pack.json").write_text('{"doctrine_hash": "h1"}', encoding="utf-8")
+    art = paths.artifacts(root)
+    assert {e["source"] for e in si.build_tm(art)} == {"Hi", "Bye"}
+    paths.run_state(root).write_text(json.dumps({"scenes": {
+        "a": {"status": "verified", "verified": True}, "b": {"status": "failed", "verified": False}}}),
+        encoding="utf-8")
+    tm = si.build_tm(art)
+    assert [(e["source"], e["doctrine_version"]) for e in tm] == [("Hi", "h1")]
+
+
 def test_build_voice_cards_parses_blocks_and_inline():
     md = (
         "### Ryu — `voice_criticality: high`\n"
@@ -122,6 +141,22 @@ def test_check_sync_reports_no_version(tmp_path, capsys):
     si._check_sync(tmp_path)
     out = capsys.readouterr().out.lower()
     assert "doctrine" in out
+
+
+def test_approve_scene_db_flips_only_that_scene(tmp_path):
+    """#216: build_plan grava approved=0 no DB; run_scene aprova a cena quando fecha verified."""
+    sys.path.insert(0, str(_HERE.parent / "db"))
+    import store
+    (tmp_path / "project.json").write_text(
+        json.dumps({"db": {"path": "p.db", "project_id": "p"}}), encoding="utf-8")
+    with store.Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "p")
+        for sc in ("a", "b"):
+            db.upsert_translation("p", sc, "1", "Hi", target=sc, approved=False)   # chave canonica
+    si.approve_scene_db(tmp_path, "ch_a")               # nome do dir -> scene_id canonico "a"
+    with store.Store(tmp_path / "p.db") as db:
+        assert [r["target"] for r in db.get_translations("p")] == ["a"]
+    si.approve_scene_db(tmp_path / "sem_db", "a")        # sem project.json:db -> no-op
 
 
 def test_build_tm_reads_scenes_layout(tmp_path):

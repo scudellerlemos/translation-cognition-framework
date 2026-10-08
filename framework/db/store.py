@@ -22,6 +22,11 @@ from textclean import strip_codes  # leaf; `from store import strip_codes` segue
 _SCHEMA = Path(__file__).with_name("schema.sql")
 
 
+def _json_or_none(v: list | None) -> str | None:
+    """None -> NULL (o COALESCE do upsert preserva o valor gravado); lista -> JSON."""
+    return None if v is None else json.dumps(v, ensure_ascii=False)
+
+
 class Store:
     """Interface sobre o banco SQLite. Thread-safe via WAL + check_same_thread=False."""
 
@@ -54,6 +59,18 @@ class Store:
             self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN forbidden_pre_reveal TEXT")
         if "gender_quarantine" not in cols:
             self._con.execute("ALTER TABLE spoiler_entries ADD COLUMN gender_quarantine INTEGER DEFAULT 0")
+        # fact NULL e distinto no UNIQUE -> bancos antigos acumularam 1 copia por re-mirror; o upsert
+        # agora grava '' (ver upsert_spoiler_entry). Fica so a mais nova (a que ja e '', ou o maior id).
+        # Gate de leitura: no caso normal (sem NULL) nao abre transacao de escrita a cada Store().
+        if self._con.execute("SELECT 1 FROM spoiler_entries WHERE fact IS NULL LIMIT 1").fetchone():
+            self._con.execute(
+                """DELETE FROM spoiler_entries WHERE fact IS NULL AND (
+                       EXISTS(SELECT 1 FROM spoiler_entries s WHERE s.project_id=spoiler_entries.project_id
+                              AND s.entity=spoiler_entries.entity AND s.fact='')
+                       OR id < (SELECT MAX(id) FROM spoiler_entries s
+                                WHERE s.project_id=spoiler_entries.project_id
+                                  AND s.entity=spoiler_entries.entity AND s.fact IS NULL))""")
+            self._con.execute("UPDATE spoiler_entries SET fact='' WHERE fact IS NULL")
         dec_cols = {r["name"] for r in self._con.execute("PRAGMA table_info(decisions)").fetchall()}
         if "reveal" not in dec_cols:
             self._con.execute("ALTER TABLE decisions ADD COLUMN reveal TEXT")
@@ -75,7 +92,11 @@ class Store:
         linha. NAO muda a durabilidade caso a caso do uso normal (runtime/producao continuam
         commitando por chamada fora deste bloco) -- so a flag _in_batch, que _commit() checa,
         fica ligada TEMPORARIAMENTE. Erro dentro do bloco -> rollback (a mesma garantia de
-        tudo-ou-nada que os commits individuais davam, um passo por vez)."""
+        tudo-ou-nada que os commits individuais davam, um passo por vez). Aninhado: o bloco
+        interno e no-op -- so o mais externo commita/faz rollback."""
+        if self._in_batch:
+            yield self
+            return
         self._in_batch = True
         try:
             yield self
@@ -151,6 +172,12 @@ class Store:
         )
         self._commit()
 
+    def approve_scene(self, project_id: str, scene_id: str):
+        """approved=1 em todas as traducoes da cena (chamado quando a cena fecha verified, #216)."""
+        self._con.execute("UPDATE translations SET approved=1 WHERE project_id=? AND scene_id=?",
+                          (project_id, scene_id))
+        self._commit()
+
     def search_tm_exact(self, source: str, project_id: str,
                         approved_only: bool = True) -> list[dict]:
         """Busca exata na TM por texto fonte. Retorna lista de hits."""
@@ -195,8 +222,8 @@ class Store:
         try:
             from embedder import Embedder  # type: ignore
             emb = Embedder()
-            return (emb.index_project(self._con, project_id, kind="translation")
-                    + emb.index_project(self._con, project_id, kind="decision"))
+            return sum(emb.index_project(self._con, project_id, kind=k)
+                       for k in ("translation", "decision", "kb"))   # kb: senao search_kb vazio sempre
         except ImportError:
             return None                        # deps de ML opcionais ausentes: esperado
         except Exception as exc:   # noqa: BLE001  (busca semantica e opcional: nunca derruba o mirror)
@@ -400,12 +427,12 @@ class Store:
                    lines=COALESCE(excluded.lines, lines),
                    criticality=excluded.criticality""",
             (project_id, speaker,
-             json.dumps(aliases or [], ensure_ascii=False),
+             _json_or_none(aliases),
              register,
-             json.dumps(quirks or [], ensure_ascii=False),
-             json.dumps(example_src or [], ensure_ascii=False),
-             json.dumps(example_tgt or [], ensure_ascii=False),
-             json.dumps(lines or [], ensure_ascii=False),
+             _json_or_none(quirks),
+             _json_or_none(example_src),
+             _json_or_none(example_tgt),
+             _json_or_none(lines),
              criticality),
         )
         self._commit()
@@ -439,7 +466,7 @@ class Store:
                    tags=COALESCE(excluded.tags, tags),
                    reveal=excluded.reveal""",
             (project_id, title, summary, int(universal),
-             json.dumps(tags or [], ensure_ascii=False), reveal),
+             _json_or_none(tags), reveal),
         )
         self._commit()
 
@@ -519,6 +546,32 @@ class Store:
         re-index (ao contrário das outras tabelas, que são idempotentes via UNIQUE upsert)."""
         self._con.execute("DELETE FROM jobs WHERE project_id=?", (project_id,))
         self._commit()
+
+    # tabela KB -> (colunas da chave natural, tabela de embedding FK -> id) p/ prune_absent
+    _PRUNABLE = {
+        "glossary": (("term",), None), "entities": (("name",), None),
+        "voice_cards": (("speaker",), None), "decisions": (("title",), "decision_embeddings"),
+        "spoiler_entries": (("entity", "fact"), None), "kb": (("section",), "kb_embeddings"),
+        "kb_ratified": (("name",), None),
+    }
+
+    def prune_absent(self, table: str, project_id: str, keep: set) -> int:
+        """Apaga as linhas do projeto cuja chave natural não está em `keep` (mirror fiel:
+        upsert sozinho deixa no DB o que foi removido do flat). Chave de 1 coluna -> valor;
+        de 2+ -> tupla. Embedding FK sai antes (foreign_keys=ON)."""
+        cols, emb = self._PRUNABLE[table]
+        # nosec B608 abaixo: table/cols/emb vem de _PRUNABLE (literal da classe), nunca de input
+        rows = self._con.execute(
+            f"SELECT id, {', '.join(cols)} FROM {table} WHERE project_id=?",  # nosec B608
+            (project_id,)).fetchall()
+        gone = [(r[0],) for r in rows
+                if (r[1] if len(cols) == 1 else tuple(r)[1:]) not in keep]
+        if emb:
+            fk = "decision_id" if emb == "decision_embeddings" else "kb_id"
+            self._con.executemany(f"DELETE FROM {emb} WHERE {fk}=?", gone)  # nosec B608
+        self._con.executemany(f"DELETE FROM {table} WHERE id=?", gone)  # nosec B608
+        self._commit()
+        return len(gone)
 
     def get_cost_summary(self, project_id: str) -> dict:
         row = self._con.execute(

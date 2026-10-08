@@ -62,13 +62,19 @@ def test_check_source_drift_true_when_no_manifest(tmp_path):
     assert fm.check_source_drift(tmp_path, "whatever") is True
 
 
-def test_check_scripts_drift_reuses_connector_hash(tmp_path, monkeypatch):
+def test_check_scripts_drift_reuses_connector_hash(tmp_path):
+    """Mesmo hash de connector_mgr; manifesto com hash legado (bytes CRLF crus) nao e drift falso,
+    so mudanca real de conteudo e."""
     import connector_mgr
-    monkeypatch.setattr(connector_mgr, "_connector_hash", lambda root, cfg: "CURRENT_HASH")
-    monkeypatch.setattr(fm, "_connector_hash", connector_mgr._connector_hash)
-    fm.write_manifest(tmp_path, tier="known_engine", engine_id="x", connector_version=1,
-                      scripts_fingerprint="CURRENT_HASH", source_sample_files=[],
-                      source_fingerprint="s", timestamp_iso="t")
-    assert fm.check_scripts_drift(tmp_path, {}) is False
-    monkeypatch.setattr(fm, "_connector_hash", lambda root, cfg: "DIFFERENT_HASH")
+    conn = tmp_path / "connector"
+    conn.mkdir()
+    (conn / "build_plan_chapter.py").write_bytes(b"a = 1\r\nb = 2\r\n")
+    (conn / "verify_chapter.py").write_bytes(b"ok\r\n")
+    for fp in (connector_mgr._connector_hash(tmp_path, {}),
+               connector_mgr._connector_hash(tmp_path, {}, raw=True)):
+        fm.write_manifest(tmp_path, tier="known_engine", engine_id="x", connector_version=1,
+                          scripts_fingerprint=fp, source_sample_files=[],
+                          source_fingerprint="s", timestamp_iso="t")
+        assert fm.check_scripts_drift(tmp_path, {}) is False
+    (conn / "verify_chapter.py").write_bytes(b"mudou\r\n")
     assert fm.check_scripts_drift(tmp_path, {}) is True

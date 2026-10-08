@@ -41,7 +41,7 @@ não trabalho refeito pela IA:
   diálogos nem traduções hardcoded no código. Inclui **helpers/geradores transientes**: para autorar
   tradução em massa, escreva o **artefato de dados** (CSV/JSON) direto — nunca um `.py` com frases.
   - **Enforcement automático:** um teste genérico (`connector/test_roundtrip.py →
-    test_no_work_text_in_scripts`) compara cada `.py` do conector contra os artefatos do projeto
+    test_no_hardcoded_work_text_in_connector_scripts`) compara cada `.py` do conector contra os artefatos do projeto
     (insensível a acento) e **falha** se achar texto da obra embutido. É data-driven — vale para
     qualquer instância, sem conhecer a obra. (Opcional: replicar como hook `PreToolUse` para barrar já
     na escrita.)
@@ -117,7 +117,9 @@ connectors/
     build_plan_chapter.py      ← esqueleto do plano por capítulo (pontos # ADAPTAR: tokens do engine)
     verify_chapter.py          ← esqueleto do verificador (reconstrução byte-a-byte; exit 0/1/3 + VERIFY_STATUS)
     table_schema.md            ← formato do schema de tabela (byte=char + control codes)
-    test_connector_contract.py ← testes de contrato genéricos (copiar para projects/<título>/connector/)
+    test_roundtrip.py          ← contrato: round-trip byte-idêntico real (cópia em tmp) + sem texto/path hardcoded
+    test_roundtrip_synthetic.py ← oráculo sempre ativo em CI: encode→decode via Hypothesis sobre tabela sintética
+    conftest.py                ← connector/ no sys.path + opção --source-binary (binário real fica fora do repo)
 ```
 
 Ver `docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.

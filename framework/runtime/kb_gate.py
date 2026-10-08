@@ -34,6 +34,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+from scaffold_project import KB_PLACEHOLDER  # noqa: E402  (marcador da KB-stub do scaffold)
 
 # Artefatos de KB: hard = NUNCA bypassavel (nem com --skip-kb-gate); skip = bypassavel
 _KB_HARD = ("universe_knowledge_base.md",)
@@ -106,10 +107,16 @@ def _check_kb_present(art: Path, db_path, kb_rows, res: dict) -> None:
         return
     for name in _KB_HARD:
         f = art / name
-        if not f.is_file() or not f.read_text(encoding="utf-8").strip():
+        txt = f.read_text(encoding="utf-8").strip() if f.is_file() else ""
+        if not txt:
             res["hard_problems"].append(
                 f"{name} ausente/vazio — sintetize a KB (skill 03/04) antes de traduzir. "
                 f"Este gate nao pode ser pulado."
+            )
+        elif KB_PLACEHOLDER in txt:
+            res["hard_problems"].append(
+                f"{name} ainda e o placeholder do scaffold — sintetize a KB (skill 03/04) e "
+                f"remova a linha {KB_PLACEHOLDER}. Este gate nao pode ser pulado."
             )
 
 
@@ -276,11 +283,16 @@ def check(root, scene) -> dict:
     db_path, db_pid = context_pack._db_path(root, cfg)
     kb_rows, g_rows = _fetch_db_rows(db_path, db_pid) if db_path else (None, None)
 
-    _check_kb_present(art, db_path, kb_rows, res)
+    # #85: DB-aware so p/ projeto so-DB (sem o flat em disco): com o flat presente ele decide, o DB e
+    # mirror dele (KB sem secao ##/### vira 0 linhas no DB e bloqueava projeto flat valido ao ligar o
+    # db; o mirror sempre grava updated_at, entao o check de updated_date sumiria).
+    kb_db = db_path and not (art / _KB_HARD[0]).is_file()
+    gl_db = db_path and not paths.glossary(root).is_file()
+    _check_kb_present(art, kb_db, kb_rows, res)
     _check_research_log(root, art, res)
-    _check_glossary_present(art, db_path, g_rows, res)
+    _check_glossary_present(art, gl_db, g_rows, res)
     _check_voice_cards(root, res)
-    _check_glossary_dated(root, db_path, g_rows, res)
+    _check_glossary_dated(root, gl_db, g_rows, res)
     _check_frontier(cfg, scene, res)
     _check_ratified_dates(root, res)
     return res

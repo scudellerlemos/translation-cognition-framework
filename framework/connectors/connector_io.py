@@ -122,21 +122,76 @@ def normalize_speaker(sp: str, canonical: frozenset) -> str:
     return "npc"
 
 
-def structural_token_rx(formatting_tokens: list[str], formatting_token_patterns: list[str]) -> re.Pattern:
+def structural_token_config(formatting_tokens, formatting_token_patterns) -> tuple[list[str], list[str], list[str]]:
+    """(erros, tokens validos, patterns validos) da config de tokens de formatacao. Fonte UNICA da
+    regra -- structural_token_rx (runtime/conector) e validate.py (auditoria) chamam esta, nunca
+    uma copia. So JSON null vira []; qualquer outro nao-lista ({}, 0, "") e erro."""
+    out: list[str] = []
+
+    def as_list(key, v):
+        if v is None:
+            return []
+        if not isinstance(v, list):
+            out.append(f"{key} deve ser lista, veio {type(v).__name__} {v!r}")
+            return []
+        return v
+    raw_tokens = as_list("formatting_tokens", formatting_tokens)
+    raw_patterns = as_list("formatting_token_patterns", formatting_token_patterns)
+    tokens = []
+    for t in raw_tokens:
+        if isinstance(t, str) and t:
+            tokens.append(t)
+        else:
+            out.append(f"formatting_tokens: item invalido {t!r} (string nao-vazia)")
+    patterns: list[str] = []
+    for p in raw_patterns:
+        if not isinstance(p, str):
+            out.append(f"formatting_token_patterns: item nao-string {p!r}")
+            continue
+        try:
+            prx = re.compile(f"(?:{p})")   # forma envolvida = a que entra na alternancia
+        except re.error as e:
+            out.append(f"formatting_token_patterns: regex invalida {p!r} ({e})")
+            continue
+        if prx.search("") is not None:
+            # casa vazio (ex.: r"\d*") = um "token" em cada posicao -> toda linha reprova o gate
+            out.append(f"formatting_token_patterns: {p!r} casa string vazia")
+            continue
+        patterns.append(p)
+    if len(patterns) > 1:
+        try:
+            re.compile("|".join(f"(?:{p})" for p in patterns))
+        except re.error as e:   # so quebra combinado: grupo nomeado repetido entre padroes
+            # patterns fica: validate segue auditando cada um sozinho; o runtime ja levanta pelo erro
+            out.append(f"formatting_token_patterns: validos sozinhos, quebram combinados ({e})")
+    return out, tokens, patterns
+
+
+def structural_token_rx(formatting_tokens: list[str] | None,
+                        formatting_token_patterns: list[str] | None) -> re.Pattern:
     """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json). MESMA regex usada
     tanto no retry de traducao (framework/runtime/model.py, dentro do fitting loop) quanto no gate
     pos-hoc do conector (build_plan_chapter.py) — extraida aqui pra nunca divergir entre as duas
     checagens (bug real: 7/447 linhas em mp0010_01, 2026-08-24, quando cada lado tinha sua propria
-    copia da mesma logica)."""
-    literal = [re.escape(t) for t in formatting_tokens]
-    parts = literal + [f"(?:{p})" for p in formatting_token_patterns]
+    copia da mesma logica). Config invalida -> ValueError (fail-fast antes de qualquer chamada de
+    API: descartar item calado deixaria token de formatacao passar sem checagem de paridade)."""
+    problems, tokens, patterns = structural_token_config(formatting_tokens, formatting_token_patterns)
+    if problems:
+        raise ValueError("project.json: " + "; ".join(problems))
+    # mais longo primeiro: com "<C" antes de "<C1>" na alternancia, <C1>-><C2> casaria so "<C" (cego).
+    # ponytail: alternancia e first-match -- literal que e prefixo de token de PADRAO (ou padrao
+    # prefixo de padrao) ainda cega a troca, e padrao que so casa vazio em contexto (lookbehind/\b)
+    # passa; e referencia numerada (\1) num padrao apos outro com grupo e renumerada na alternancia
+    # (aponta pro grupo errado). Config com tokens sobrepostos/backref numerada e erro de config;
+    # tokenizar por match-mais-longo (ou 1 regex por padrao) se algum projeto real precisar.
+    literal = [re.escape(t) for t in sorted(tokens, key=len, reverse=True)]
+    parts = literal + [f"(?:{p})" for p in patterns]
     return re.compile("|".join(parts)) if parts else re.compile(r"(?!)")
 
 
 def structural_token_counts(rx: re.Pattern, text: str) -> Counter:
-    """Multiset dos tokens de formatacao em `text`. Usa o match INTEIRO (group(0)): `findall` devolveria
-    so o grupo de captura de patterns como `\\[([0-9A-Fa-f]{2})\\]` (BoF4), e dois tokens literais
-    diferentes ([01] vs [02]) colapsariam no mesmo valor."""
+    """Multiset de tokens de formatacao em `text`. group(0), nao findall: padrao com grupo de captura
+    faria findall devolver so o grupo ('' p/ todo token literal) e a troca <C1>-><C2> passaria."""
     return Counter(m.group(0) for m in rx.finditer(text or ""))
 
 
@@ -145,7 +200,7 @@ def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
     return structural_token_counts(rx, source) == structural_token_counts(rx, text)
 
 
-def sync_translations_db(root: Path, scene_id: str, sfx: str,
+def sync_translations_db(root: Path, scene: str, sfx: str,
                           approved: list[tuple[str, str]], plan_lines: list[dict]) -> bool:
     """Write-path DB-first do build_plan_chapter (#109, Fase 6b). Gated por project.json:db
     (mesmo formato de state_index._db_target) — MESMO shape em todo conector, extraído aqui p/
@@ -167,6 +222,10 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
     rel, project_id = db_cfg.get("path"), db_cfg.get("project_id")
     if not rel or not project_id:
         return False
+    # DB ausente -> quem cria e o mirror (state_index.mirror_db, com KB/linhas). Criar aqui
+    # deixava um DB so com traducoes e o context_pack trocava p/ modo DB com KB vazia.
+    if not (root / rel).is_file():
+        return False
 
     db_dir = str(Path(__file__).resolve().parents[1] / "db")
     if db_dir not in sys.path:
@@ -176,6 +235,9 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
     Store = mff.Store
 
     meta_by = {ln["offset"]: ln for ln in plan_lines}
+    # `scene` e o nome do dir (argv do build_plan); a chave no DB e o scene_id canonico (sem "ch_"),
+    # a mesma que migrate_from_flat grava e context_pack le -- senao a cena duplica no DB
+    scene_id = mff._sid(scene)
     with Store(root / rel) as db:
         pmeta = mff._project_meta(root)
         db.upsert_project(project_id=project_id, title=pmeta["title"],
@@ -188,28 +250,15 @@ def sync_translations_db(root: Path, scene_id: str, sfx: str,
                 source=m.get("text_source", ""), target=tgt,
                 speaker=m.get("speaker", ""), tone_register=m.get("tone_register", ""),
                 intent=m.get("intent", ""), risk_level=m.get("risk_level", "low"),
-                risk_notes=m.get("risk_notes", ""), approved=True,
+                risk_notes=m.get("risk_notes", ""), approved=False,
             )
-        rows = [r for r in db.get_translations(project_id, approved_only=True)
+        # approved=False: build_plan roda ANTES do verify; a cena so vira TM do DB quando fecha
+        # verified (run_scene -> state_index.approve_scene_db, #216), e e la que o vetor nasce
+        # (reindex so embeda approved=1). O CSV e o que o verify le.
+        rows = [r for r in db.get_translations(project_id, approved_only=False)
                 if r["scene_id"] == scene_id]
-        # #182: reindexa embeddings pendentes no MESMO write-path real de tradução
-        # (run_scene/run_chapter -> sync_translations_db), não só na migração manual (#171
-        # já cobria migrate_from_flat). Incremental (embedder pula o que já tem vetor) e
-        # nunca levanta (retorna None sem ML deps/sqlite-vec) — nunca derruba a escrita da TM.
-        # ponytail: Embedder() carrega sentence-transformers no __init__ (embedder.py:104) —
-        # cada cena paga esse load 1x (medido: ~11.8s a frio, ~8.8s com HF_HUB_OFFLINE=1;
-        # o encode/index em si de 1 linha nova é ~0.059s -- >99.5% do custo é o load do
-        # modelo). É custo de LATÊNCIA, não de $ (roda local/CPU). run_chapter.py NÃO
-        # amortiza isso hoje: seu loop de cenas é in-process, mas run_scene() sobe um
-        # subprocess novo por cena p/ build_plan_chapter.py (run_scene.py:267), e é dentro
-        # desse subprocess que este reindex roda -- o modelo recarrega a cada cena mesmo em
-        # lote de capítulo. Aceito por ora (~9-12s soma bem com os 15-75s de uma chamada de
-        # tradução real). Se lotes de centenas de cenas tornarem isso sensível, batelar por
-        # capítulo exige tirar esta chamada daqui e somar 1x pós-loop em run_chapter.py + 1x
-        # no caminho standalone de run_scene.py (não é reordenação trivial).
-        db.reindex_pending_embeddings(project_id)
 
-    scene_dir = root / "artifacts" / "scenes" / scene_id
+    scene_dir = root / "artifacts" / "scenes" / scene
     with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["offset", "text_target"])

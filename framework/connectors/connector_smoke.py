@@ -230,7 +230,7 @@ def _find_source(project_root: Path, project_json: Path) -> Path | None:
     if project_json.is_file():
         try:
             cfg = json.loads(project_json.read_text(encoding="utf-8"))
-            declared = cfg.get("connector", {}).get("source_binary")
+            declared = (cfg.get("connector") or {}).get("source_binary")
             if declared:
                 p = project_root / declared
                 if p.is_file():

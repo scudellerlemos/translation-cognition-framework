@@ -55,7 +55,9 @@ def _read(p: Path) -> str:
 def estimate(root: Path) -> dict:
     root = Path(root).resolve()   # Carta = root.parent.parent: com Path('.') resolvia errado
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
-    batch = int(cfg.get("batch_size", 200))
+    batch = int(cfg["batch_size"]) if cfg.get("batch_size") is not None else 200   # 0 vai pro guard
+    if batch <= 0:
+        raise ValueError(f"project.json batch_size deve ser > 0, veio {batch}")
     art = root / "artifacts"
 
     # contexto CACHEÁVEL por prompt (glossário + voz + Carta/regras + fatia de KB)
@@ -87,7 +89,7 @@ def estimate(root: Path) -> dict:
         src_tok = sum(_toks(r.get("text_source", "")) for r in rows)
         n = len(rows); tgt_tok = src_tok; n_high = 0; risk = {"low": n, "medium": 0, "high": 0}
 
-    n_batches = max(1, (n + batch - 1) // batch)
+    n_batches = (n + batch - 1) // batch          # mesma contagem que _scenario precifica
     return {"batch": batch, "ctx_tok": ctx_tok, "src_tok": src_tok, "tgt_tok": tgt_tok,
             "n": n, "n_high": n_high, "n_batches": n_batches, "risk": risk}
 
@@ -105,28 +107,29 @@ def _call_cost(in_tok, out_tok, model, ctx_tok=0, cache=False):
 def _scenario(e, *, models, cache):
     """models: dict com 'low'/'medium'/'high'/'qa'/'back' -> nome do modelo.
     cache: aplica prompt caching do contexto. Retorna $ total + breakdown."""
-    ctx = e["ctx_tok"]; batch = e["batch"]; nb = e["n_batches"]
+    ctx = e["ctx_tok"]; batch = e["batch"]
     # e["n"] == 0 (plano/dialogs.csv vazio) -> reporta cenario de custo zero em vez de ZeroDivisionError
     src_per = e["src_tok"] / e["n"] if e["n"] else 0.0
     tgt_per = e["tgt_tok"] / e["n"] if e["n"] else 0.0
+    # tamanho REAL de cada lote (o ultimo pode ser parcial; n=0 -> nenhum lote, custo zero)
+    sizes = [min(batch, e["n"] - i) for i in range(0, e["n"], batch)]
     # tradução: 1 chamada por lote. in = ctx + batch*src + instr ; out = batch*(tgt+meta)
     trans = 0.0
-    sizes = [min(batch, e["n"] - i * batch) for i in range(nb)]   # ultimo lote e parcial
-    for bs in sizes:
-        in_tok = ctx + bs * src_per + INSTR_TOK
-        out_tok = bs * (tgt_per + META_TOK_PER_LINE)
+    for size in sizes:
+        in_tok = ctx + size * src_per + INSTR_TOK
+        out_tok = size * (tgt_per + META_TOK_PER_LINE)
         # modelo médio do lote: mistura por risco (aprox: usa 'medium' como base, 'low' p/ baratos)
         m = models["medium"]
         trans += _call_cost(in_tok, out_tok, m, ctx, cache)
     # caching: o 1º lote ESCREVE o cache (1.25×) em vez de ler
-    if cache:
+    if cache and sizes:
         p = PRICE[models["medium"]]
         trans += ctx * p["in"] * (CACHE_WRITE - CACHE_READ)   # diferença write-vs-read no 1º lote
     # micro-QA: 1 chamada por lote
     qa = 0.0
-    for bs in sizes:
-        in_tok = ctx + bs * (src_per + tgt_per) + INSTR_TOK
-        out_tok = bs * QA_OUT_TOK_PER_LINE
+    for size in sizes:
+        in_tok = ctx + size * (src_per + tgt_per) + INSTR_TOK
+        out_tok = size * QA_OUT_TOK_PER_LINE
         qa += _call_cost(in_tok, out_tok, models["qa"], ctx, cache)
     # back-translation: 1 chamada em lote com as linhas de alto risco
     back = 0.0
@@ -134,7 +137,9 @@ def _scenario(e, *, models, cache):
         in_tok = ctx + e["n_high"] * (src_per + tgt_per) + INSTR_TOK
         out_tok = e["n_high"] * (src_per + 20)
         back = _call_cost(in_tok, out_tok, models["back"], ctx, cache)
-    # QA final: 1 passe no corpus
+    # QA final: 1 passe no corpus (corpus vazio -> nenhuma chamada)
+    if not e["n"]:
+        return {"total": trans + qa + back, "trans": trans, "qa": qa, "back": back, "final": 0.0}
     in_tok = ctx + e["src_tok"] + e["tgt_tok"] + INSTR_TOK
     out_tok = e["n"] * FINAL_QA_OUT_PER_LINE
     final = _call_cost(in_tok, out_tok, models["qa"], ctx, cache)
@@ -175,7 +180,7 @@ def main():
         f"{'cenário':<12}{'$ arco':>10}{'$/1k linhas':>14}{'$ ~33k (proj.)':>18}",
     ]
     for name, sc in r["scenarios"].items():
-        per_k = sc["total"] / max(n, 1) * 1000
+        per_k = sc["total"] / n * 1000 if n else 0.0
         proj = per_k * GAME / 1000
         lines.append(f"{name:<12}{sc['total']:>10.3f}{per_k:>14.3f}{proj:>18.2f}")
     base = r["scenarios"]["forte"]["total"]

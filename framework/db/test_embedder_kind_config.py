@@ -67,6 +67,73 @@ def test_index_and_search_kb_end_to_end(tmp_path):
         assert hits[0]["score"] > hits[1]["score"]
 
 
+def test_search_filters_project_before_top_k(tmp_path):
+    """k do vec0 era aplicado na tabela inteira ANTES do filtro de projeto/aprovado: vizinhos de
+    outro projeto ocupavam o top-k e a busca devolvia < k hits. Encode falso (só sqlite-vec)."""
+    import pytest
+    pytest.importorskip("sqlite_vec")
+    from embedder import _DIM, Embedder
+    from store import Store
+
+    emb = Embedder.__new__(Embedder)
+    emb.model_name = "fake"
+    emb.encode = lambda texts: [[1.0 if t.startswith("a") else 0.0] + [0.0] * (_DIM - 1)
+                                for t in texts]
+    with Store(tmp_path / "p.db") as db:
+        for pid, text in (("near", "a1"), ("near", "a2"), ("far", "b1"), ("far", "b2")):
+            db.upsert_project(pid, pid)
+            db.upsert_decision(pid, text, summary=text)
+        emb.index_project(db._con, project_id="near", kind="decision")
+        emb.index_project(db._con, project_id="far", kind="decision")
+        # query "a" é mais próxima dos vetores de "near"; k=2 em "far" tem que achar os 2 de "far"
+        hits = emb.search_decisions(db._con, "a", project_id="far", k=2)
+        assert sorted(h["title"] for h in hits) == ["b1", "b2"]
+        # linha editada: reindex troca o vetor (antes ficava o velho)
+        db.upsert_decision("far", "b1", summary="a-editado")
+        # antes do reindex: sem emb row -> fora da busca (nao ranqueia pelo vetor velho)
+        assert [h["title"] for h in emb.search_decisions(db._con, "a", project_id="far", k=2)] == ["b2"]
+        assert emb.index_project(db._con, project_id="far", kind="decision") == 1
+        assert emb.search_decisions(db._con, "a", project_id="far", k=1)[0]["title"] == "b1"
+
+
+def test_search_max_score_excludes_exact_before_top_k(tmp_path):
+    """Fala curta ("Yes.") com >=k matches exatos: o exato ocupava o top-k e o vizinho real sumia.
+    max_score corta no SQL, antes do LIMIT. Encode falso (só sqlite-vec)."""
+    import pytest
+    pytest.importorskip("sqlite_vec")
+    from embedder import _DIM, Embedder
+    from store import Store
+
+    emb = Embedder.__new__(Embedder)
+    emb.model_name = "fake"
+    vecs = {"Yes.": [1.0, 0.0], "Yes?": [0.6, 0.8], "Yes~": [0.99897, (1 - 0.99897 ** 2) ** 0.5]}
+    emb.encode = lambda texts: [vecs.get(t, [0.8, 0.6]) + [0.0] * (_DIM - 2) for t in texts]
+    with Store(tmp_path / "p.db") as db:
+        db.upsert_project("p", "p")
+        for i, src in enumerate(["Yes.", "Yes.", "Yes.", "Yes!"]):
+            db.upsert_translation("p", "s", str(i), src, target=f"Sim{i}", approved=True)
+        emb.index_project(db._con, project_id="p")
+        assert [h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=1)] == ["Yes."]
+        hits = emb.search(db._con, "Yes.", project_id="p", k=1, max_score=0.999)
+        assert [h["source"] for h in hits] == ["Yes!"]
+        # fronteira: cortes no score CRU (0.99897 < 0.999 fica, exibido arredondado 0.999; min idem)
+        db.upsert_translation("p", "s", "8", "Yes~", target="Sim~", approved=True)
+        emb.index_project(db._con, project_id="p")
+        hits = emb.search(db._con, "Yes.", project_id="p", k=1, max_score=0.999)
+        assert [(h["source"], h["score"]) for h in hits] == [("Yes~", 0.999)]
+        # min_score no cru: 0.99897 < 0.999 sai (no arredondado 0.999 passava)
+        assert "Yes~" not in {h["source"] for h in emb.search(db._con, "Yes.", project_id="p", k=9, min_score=0.999)}
+        # mesmo par (source, target) em N cenas ocupa 1 slot, nao N
+        for sc in ("s2", "s3"):
+            db.upsert_translation("p", sc, "9", "Yes!", target="Sim3", approved=True)
+        db.upsert_translation("p", "s", "5", "Yes?", target="Sim?", approved=True)
+        emb.index_project(db._con, project_id="p")
+        hits = emb.search(db._con, "Yes.", project_id="p", k=3, max_score=0.999)
+        assert sorted(h["source"] for h in hits) == ["Yes!", "Yes?", "Yes~"]
+        # >1 = sem corte superior: o exato fica (nem complex no bind, nem clamp que corta L2=0)
+        assert emb.search(db._con, "Yes.", project_id="p", k=1, max_score=1.5)[0]["source"] == "Yes."
+
+
 if __name__ == "__main__":
     test_kb_kind_registered_without_chunk_fn()
     test_kb_embeddings_table_exists_in_schema()
