@@ -3,13 +3,12 @@
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
   sqlite-vec             extensão C para índice vetorial no SQLite
-  flashrank              reranker MiniLM-L-12 quantizado (~4 MB, opcional)
 
 Hardware alvo: AMD RX 6650 XT (ROCm) ou CPU fallback.
 O modelo roda em GPU automaticamente se torch+ROCm detectado.
 
 Dependências (instalar via pip):
-  pip install sentence-transformers sqlite-vec flashrank
+  pip install sentence-transformers sqlite-vec
 
 Uso:
     emb = Embedder()
@@ -38,14 +37,11 @@ vetores por projeto, quando o scan linear passar a pesar na latência do pacote 
 from __future__ import annotations
 
 import json
-import os
 import sqlite3
-import tempfile
 import time
 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
-_RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
 
 # indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
 # a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
@@ -190,7 +186,7 @@ class Embedder:
                max_score: float | None = None) -> list[dict]:
         """Busca semântica na TM. Retorna top-k hits com score de similaridade.
 
-        min_score (#172): corta hits com score abaixo do threshold antes do rerank. None
+        min_score (#172): corta hits com score abaixo do threshold. None
         (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
         seção rotulada no pacote de contexto.
 
@@ -242,14 +238,13 @@ class Embedder:
                 continue
             results.append(d)
 
-        return self._rerank(query, results) if results else results
+        return results
 
     def search_decisions(self, con: sqlite3.Connection, query: str,
                          project_id: str, k: int = 5) -> list[dict]:
         """Busca semântica em decisions (#105). Retorna top-k hits (title/summary/universal/
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
-        forçar as duas formas numa única função genérica. Sem rerank (FlashRank é ajustado para
-        passagens de tradução, não decisões de processo). k<0 = todos (LIMIT -1 do SQLite), p/ o
+        forçar as duas formas numa única função genérica. k<0 = todos (LIMIT -1 do SQLite), p/ o
         chamador cortar DEPOIS do seu próprio gate (reveal)."""
         from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="decision")
@@ -282,8 +277,7 @@ class Embedder:
                   project_id: str, k: int = 5) -> list[dict]:
         """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
         shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
-        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz. Sem rerank
-        (mesmo motivo de search_decisions: FlashRank é ajustado para tradução, não lore)."""
+        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz."""
         from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="kb")
         q_vec = self.encode([strip_codes(query)])[0]
@@ -310,20 +304,6 @@ class Embedder:
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
             results.append(d)
         return results
-
-    def _rerank(self, query: str, hits: list[dict]) -> list[dict]:
-        """Rerank com FlashRank se disponível; caso contrário retorna como está."""
-        try:
-            from flashrank import Ranker, RerankRequest  # type: ignore
-            ranker = Ranker(model_name=_RERANKER_MODEL,
-                            cache_dir=os.path.join(tempfile.gettempdir(), "flashrank"))
-            passages = [{"id": i, "text": h["source"], "meta": h}
-                        for i, h in enumerate(hits)]
-            req = RerankRequest(query=query, passages=passages)
-            results = ranker.rerank(req)
-            return [r["meta"] for r in results]
-        except ImportError:
-            return hits
 
 
 if __name__ == "__main__":
