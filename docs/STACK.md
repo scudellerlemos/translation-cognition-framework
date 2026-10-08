@@ -221,8 +221,8 @@ Decisões de engenharia nessa camada:
 
 - **Roteamento por complexidade.** O modelo mais caro só vê o que precisa dele. O contexto curado
   do pacote permite que Sonnet e Haiku façam a tradução; Opus fica para verificar.
-- **Saída estruturada.** A tradução volta em JSON validado por schema (`json_schema`), uma entrada
-  por fala, e não como texto livre a ser parseado.
+- **Saída estruturada.** A tradução volta em JSON validado por schema (`json_schema`), e não como
+  texto livre a ser parseado. O formato está descrito logo abaixo.
 - **Prompt caching.** A doutrina de tradução (o `system` prompt, igual para todas as cenas) é
   marcada com `cache_control`. O efeito medido é pequeno, porque o custo está na saída e não na
   doutrina (ver a tabela de economia na seção de RAG).
@@ -233,6 +233,41 @@ Decisões de engenharia nessa camada:
   respondido dentro de uma sessão de assinatura, e o run retoma depois.
 - **Re-tradução por estouro de espaço.** Se a tradução não cabe nos bytes da fala original, só as
   linhas que estouraram são re-traduzidas, escalando de modelo (`MODEL_ESCALATION`).
+
+### O formato da resposta
+
+A chamada de tradução usa saída estruturada estrita. O modelo devolve um array com uma entrada por
+fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model.py`):
+
+```json
+{"lines": [{
+  "offset": "0x1A2B",
+  "speaker": "Ryu",
+  "tone_register": "informal",
+  "intent": "pergunta direta",
+  "risk_level": "low",
+  "risk_notes": "",
+  "t": "Para onde você quer ir?"
+}]}
+```
+
+Os valores acima são ilustrativos.
+
+| Campo | Para que serve |
+|---|---|
+| `offset` | identifica a fala no binário; é a chave que liga a resposta à linha de origem |
+| `t` | a tradução |
+| `speaker`, `tone_register`, `intent` | o que o modelo entendeu da fala; ficam registrados para revisão e alimentam os exemplos de voz |
+| `risk_level` | `low`, `medium`, `high` ou `critical`; decide se a fala passa pela back-translation |
+| `risk_notes` | o motivo do risco, quando houver |
+
+Esses campos explicam a média de 66 tokens de saída por fala: a tradução é só uma parte do objeto.
+Cortar `tone_register` e `intent` para economizar tokens foi avaliado e rejeitado: o gate de
+qualidade depende desses campos.
+
+Depois da resposta, o código confere três coisas por fala, sem modelo: se todo `offset` pedido
+voltou (cobertura), se a contagem do marcador de quebra de linha é igual à da fonte, e se os
+tokens de formatação do jogo foram preservados. A fala que falha volta sozinha na nova tentativa.
 
 Contrato, backends e benchmarks → [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md). Cliente HTTP,
 streaming e backoff → `framework/runtime/llm_client.py`.
@@ -631,8 +666,138 @@ run_scene(cena):
 - **Custo auditável.** `api_ledger.jsonl` registra toda chamada cobrada, inclusive as que
   falharam. A recuperação de erro é por fala, não por cena, então o custo de um retry é
   proporcional ao que quebrou.
+- **Ordem de grandeza.** O gasto real acumulado do projeto Utawarerumono, somado pelo ledger, foi
+  de cerca de R$ 338 (Sonnet R$ 260, Opus R$ 40, Haiku R$ 38).
 
 Detalhe e medições → [`ARCHITECTURE.md`](ARCHITECTURE.md) e
+[`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
+
+---
+
+## Conector e round-trip — a garantia de que o jogo não quebra
+
+Traduzir o texto é metade do problema. A outra metade é devolver esse texto a um arquivo binário
+que o jogo consiga ler. Essa parte é **determinística**, específica de cada jogo, e é o que o
+conector resolve.
+
+### O que é um conector
+
+É um conjunto de scripts Python em `projects/<jogo>/connector/`, com um contrato fixo:
+
+| Script | O que faz |
+|---|---|
+| `extract.py` | lê o binário do jogo e gera `dialogs.csv`: uma linha por fala, com `offset` (onde ela está no arquivo), o texto-fonte e `byte_budget` (quantos bytes ela ocupa) |
+| `build_plan_chapter.py` | junta a tradução do modelo com o `dialogs.csv`: valida cobertura e tokens de formatação, e grava o plano de reinserção |
+| `reinsert.py` | codifica a tradução no formato do jogo e reconstrói o arquivo |
+| `verify_chapter.py` | executa o round-trip e devolve o veredito |
+| `test_roundtrip.py`, `test_roundtrip_synthetic.py` | testes do próprio conector |
+
+O que é comum a todos os jogos (linha de comando, validação de cobertura, protocolo de saída) vem
+de um esqueleto em `framework/connectors/_skeleton/`. O que não dá para generalizar é a
+reconstrução byte a byte do formato: tabela de caracteres, códigos de controle, ponteiros,
+contêiner. Isso é escrito por jogo.
+
+Quatro jogos têm conector, cada um com uma restrição de espaço diferente (o estágio de cada um
+está na tabela do fim do documento):
+
+| Projeto | Engine / formato | Restrição de espaço |
+|---|---|---|
+| `utawarerumono` | Aquaplus (SDAT) | orçamento em bytes por fala; reinserção no lugar, com realocação dentro do arquivo |
+| `breath_of_fire_4` | Capcom (PS1/PC), tabela de ponteiros por seção | orçamento em bytes por fala; a seção é reconstruída |
+| `souldiers` | Unity 2021 (Addressables) | sem limite de bytes; a engine quebra a linha sozinha |
+| `trails_sky_sc` | engine própria da Falcom | quebra automática, sem quebra manual |
+
+### O round-trip
+
+O `verify_chapter.py` faz três verificações, nesta ordem:
+
+1. **Round-trip.** Reconstrói o arquivo **sem aplicar tradução nenhuma** e compara com o original,
+   byte a byte. Se não bate, o conector não entende o formato, e nada que ele escrever é
+   confiável. É o teste que não admite exceção.
+2. **Aplicação.** Reconstrói o arquivo com a tradução da cena.
+3. **Releitura.** Extrai o texto do arquivo reconstruído e confere que é a tradução aplicada.
+
+O resultado segue um protocolo único, que o orquestrador lê:
+
+| Código de saída | Significado | O que o run faz |
+|---|---|---|
+| `0` | as três verificações passaram | a cena vira `verified` e a tradução é aprovada |
+| `3` | a única falha foi falta de espaço | re-traduz mais curto (ver abaixo) |
+| `1` | falha dura (round-trip, leitura ou outra) | para; é defeito de conector, não de tradução |
+
+### Quando a tradução não cabe
+
+Em jogos com orçamento de bytes, o português costuma sair maior que o inglês. O tratamento é
+gradual:
+
+- **Tolerância inicial de 1,40.** A tradução pode passar do orçamento da fala em até 40%, porque
+  os conectores conseguem absorver crescimento (realocando ou reconstruindo a seção). Traduzir sem
+  aperto dá texto mais natural e menos re-tentativas.
+- **O `verify` é o juiz.** Se o arquivo reconstruído não fecha, ele devolve código `3`.
+- **Aperto progressivo.** O run re-traduz só as falas acima do orçamento, com tolerância 1,15 no
+  Haiku; o que ainda não couber vai a 1,0 no Opus (`BUDGET_ESCALATION` e `MODEL_ESCALATION`). O
+  modelo caro só vê o resíduo que provou ser difícil. Vale só no backend de API, que roda sem
+  intervenção humana.
+- **O orçamento é medido nos bytes que serão gravados.** Se o conector translitera os acentos na
+  reinserção, conta o texto transliterado; se grava UTF-8, contam os bytes UTF-8.
+
+Como criar um conector para um jogo novo → [`NEW_PROJECT_ONBOARDING.md`](NEW_PROJECT_ONBOARDING.md).
+
+---
+
+## Verificações antes e depois da tradução
+
+Além do round-trip, três mecanismos cercam a chamada do modelo.
+
+### Gates: bloqueio antes de gastar
+
+Dois gates rodam no início de `run_scene` e `run_chapter`, sem rede e sem modelo. A ideia é falhar
+antes do primeiro token pago.
+
+| Gate | Bloqueia quando |
+|---|---|
+| `connector_gate` | faltam os scripts de plano ou de verificação; eles ainda são a cópia intocada do esqueleto; ou nenhuma cena do projeto jamais passou no round-trip |
+| `kb_gate` | a pesquisa do universo do jogo não foi revisada e marcada como conciliada; glossário, base de conhecimento ou voice cards estão vazios; a cena está além do ponto da história que a pesquisa cobre (`kb_frontier`); ou o projeto tem banco e a stack de embedding não está instalada |
+
+Parte das condições é dura (não há como contornar) e parte aceita uma flag explícita de bypass
+(`--skip-connector-gate`, `--skip-kb-gate`).
+
+### Back-translation: verificação de sentido
+
+O round-trip prova que os **bytes** estão certos; não diz nada sobre o **sentido**. Para isso há
+uma segunda chamada de modelo (`back_translate.py`):
+
+- **O que faz.** O Opus recebe a tradução em português, traduz de volta para o inglês e compara
+  com a fonte. Devolve, por fala, um veredito `pass` ou `revise` e uma nota curta.
+- **Em que falas.** Nas que o próprio modelo de tradução classificou como `high` ou `critical`, e
+  em uma amostra de 5% das demais. A amostra é determinística: depende de
+  `sha1(seed|cena|offset)`, então rodar duas vezes escolhe as mesmas falas.
+- **Não bloqueia.** O resultado marca a fala para revisão humana. Uma divergência de sentido é
+  julgamento, e travar o run por ela trocaria um problema de qualidade por um de disponibilidade.
+- **Invalidação.** Se uma fala é re-traduzida depois do veredito, o veredito é marcado como
+  vencido e ela é julgada de novo.
+- **Custo.** No lote, roda como um passo único no fim do capítulo, pela Batch API.
+
+### Filtro de spoiler
+
+Um tradutor que sabe o fim da história pode entregá-lo sem querer: usar o nome verdadeiro de um
+personagem antes da revelação, ou um pronome que denuncia quem ele é. O mesmo vale para o modelo,
+se o prompt contiver informação do futuro.
+
+O controle é por **posição na história**. O identificador da cena vira uma tupla numérica
+(`12_03` → `(12, 3)`), e todo conteúdo sensível carrega uma marca `reveal` com a cena em que
+aquilo é revelado. Compara-se a marca com a cena atual:
+
+| Fonte | Regra |
+|---|---|
+| KB e decisões recuperadas por busca semântica | só entram com `reveal` já ultrapassado; sem marca, não entram (default-deny) |
+| Decisões selecionadas por termo | entram, a menos que tenham `reveal` no futuro |
+| Fatos do registro de spoilers | se o fato ainda não foi revelado e um gatilho dele aparece na cena, o prompt recebe a instrução de como manter a ambiguidade |
+
+Quando a posição não pode ser comparada (identificador sem número), o conteúdo é tratado como
+futuro. O erro seguro é esconder demais.
+
+Detalhe → [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) e
 [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
 
 ---
@@ -660,6 +825,32 @@ um arquivo local dispensa infraestrutura, e manter dado relacional e vetor no me
 elimina a sincronização entre dois sistemas.
 
 Detalhe → [`STATE_MANAGEMENT.md`](STATE_MANAGEMENT.md).
+
+---
+
+## Qualidade e CI
+
+O código determinístico é a maior parte do sistema, e é testado como software comum. São 7
+workflows no GitHub Actions:
+
+| Workflow | Quando roda | O que verifica |
+|---|---|---|
+| `test.yml` | PR e push no `main` | mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado |
+| `quality.yml` | PR e push no `main` | ruff (lint), bandit (segurança no código), pip-audit (CVE nas dependências), gitleaks (credenciais vazadas) |
+| `api-smoke.yml` | semanal e manual | uma cena mínima enviada de verdade à Batch API, para detectar mudança de contrato da API antes de um capítulo pago |
+| `ml-coverage-optional.yml` | semanal | os testes da stack de embedding sem mock, com piso de 85% |
+| `dep-audit-optional.yml` | semanal | pip-audit nas dependências de ML e de pesquisa |
+| `branch-hygiene.yml` | semanal | branches já incorporadas ao `main` |
+| `release.yml` | tag de versão | gera a release |
+
+Dois pontos de desenho:
+
+- **O binário do jogo não vai para o repositório**, então o teste de round-trip real não roda no
+  CI. Para cobrir a lógica mesmo assim, cada conector tem um `test_roundtrip_synthetic.py`: o
+  Hypothesis gera textos aleatórios, o teste codifica e decodifica numa tabela sintética em
+  memória, e exige o texto e o tamanho em bytes de volta, exatos.
+- **Os testes de PR não chamam a API nem carregam o modelo de embedding.** As duas dependências
+  externas são exercitadas de verdade nos workflows semanais.
 
 ---
 
