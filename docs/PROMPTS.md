@@ -33,7 +33,7 @@ compatíveis com um domínio — neste caso, o de um tradutor literário especia
 de jogos.
 
 **No framework:** a Doutrina (também chamada de Carta) é o `system` prompt enviado a cada chamada
-da API. Ela define o papel do modelo: quem ele é, o que o jogo é, quais as restrições de
+de tradução da API (a back-translation roda sem `system`). Ela define o papel do modelo: quem ele é, o que o jogo é, quais as restrições de
 comprimento, quais tokens de engine não devem ser tocados, quais convenções pt-BR se aplicam
 (gênero gramatical, registro de personagem, controle de spoiler). Sem essa instrução de papel,
 o modelo responderia como assistente genérico — com registro neutro e sem consciência dos
@@ -127,7 +127,7 @@ produziria, com a vantagem de ser inspecionável e portável.
 | Chain-of-thought | Back-translation (Opus + thinking) | Verificar ambiguidade e voz em linhas de alto risco |
 | Role-based prompting | Doutrina / Carta no `system` | Definir papel, registro e contratos do jogo |
 | Instruction tuning | context_pack + scene_prompt.md | Contexto limitado, schema explícito, restrições por linha |
-| RAG determinístico | TM — exact/fuzzy match | Reutilizar traduções aprovadas sem reinventar |
+| RAG determinístico | TM — match exato + similares por embedding | Reutilizar traduções aprovadas sem reinventar |
 | RAG semântico | KB — embeddings por cena | Recuperar terminologia de lore por significado, não por palavra |
 | Fine-tuning | — | Não usado; prompt-only por auditabilidade e portabilidade |
 

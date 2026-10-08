@@ -5,17 +5,17 @@ Torna **cada cena um job stateless e limitado**: o contexto por execução é O(
 
 ## Módulos
 
-Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`):
+Agrupados por concern (a fronteira com o LLM pago é só `model.py` + `back_translate.py`):
 
 **Orquestração & contexto (det.)**
 
 | Arquivo | Função |
 |---|---|
-| `run_scene.py` | Orquestrador de 1 cena: `connector_gate` (completude de conector) → `kb_gate` → `_pack_and_translate` → `_fitting_loop` → `_back_phase` → verify → checkpoint. Grava `connector_hash` + `_ts` junto com `verified=True`. Resumível. Flags: `--check-stale`, `--purge-discontinued DAYS`, `--skip-kb-gate`, `--skip-connector-gate`. |
+| `run_scene.py` | Orquestrador de 1 cena: `connector_gate` (completude de conector) → `kb_gate` → `_pack_and_translate` → `_fitting_loop` (build_plan + verify, com escalonamento de budget) → `_back_phase` → `state_index.build` → checkpoint. Grava `connector_hash` + `_ts` junto com `verified=True`. Resumível. Flags: `--check-stale`, `--purge-discontinued DAYS`, `--skip-kb-gate`, `--skip-connector-gate`. |
 | `scene_lifecycle.py` | Housekeeping/diagnóstico extraído de `run_scene.py` (P4 hardening): `clean_failed_scene`, `prune_discontinued`, `_check_stale`. Reimportado em `run_scene.py` (mesmo nome, zero mudança de caller). |
 | `connector_mgr.py` | Interface do conector (A1): `_run`, `_verify_status`, `_connector_script`, `_connector_hash`, `_warn_if_connector_stale`. Detecta conector stale via `run_state.json` antes de executar (S3). |
 | `connector_gate.py` | Gate de completude de conector (D6, espelha `kb_gate.py`): hard-block se scripts ausentes; soft-block se nunca houve round-trip verde. `assert_fresh_read()` (D5): prova de leitura completa antes de editar um conector (hash do conteúdo alegado vs. disco). |
-| `run_chapter.py` | Driver de capítulo: loop de cenas via `run_scene`; modo `--batch` (−50%); resumível; `--max-usd`; auditoria de spoiler/gênero obrigatória ao fim (`run_scene._audit_spoiler`); rebuild de `state_index` 1×/capítulo em modo batch. |
+| `run_chapter.py` | Driver de capítulo: loop de cenas via `run_scene`; modo batch por padrão (−50%; `--no-batch` desliga); resumível; `--max-usd`; ao fim, sempre: export de QA, auditoria de spoiler/gênero, piso de qualidade e validação de schema; rebuild de `state_index` 1×/capítulo em modo batch. |
 | `run_game.py` | Driver ponta-a-ponta: descobre capítulos (ou modo flat via `--scenes-glob`) e roda todos em sequência; `--max-usd` GLOBAL (encolhe entre capítulos); retomada automática de graça. |
 | `progress_report.py` | Observabilidade de progresso do jogo inteiro: % concluído, linhas/min, ETA, taxa de falha — puro (elapsed_s externo, sem `time.time()` interno). |
 | `kernel.py` | Fachada fina (B3): consolida `run_scene`/`run_chapter`/`run_game`/`validate_project`/`write_pack` sob um import único. Zero lógica nova — reexport testado por identidade de objeto. |
@@ -27,7 +27,7 @@ Agrupados por concern (a fronteira de IA é só `model.py` + `back_translate.py`
 
 **Modelo — IA + suporte determinístico**
 
-A fronteira não-determinística é **só** `model.py` + `back_translate.py` (as chamadas ao LLM). Todo o
+A fronteira não-determinística é **só** `model.py` + `back_translate.py` (as chamadas ao LLM pago; fora dela, só `kb_build_ollama.py` chama um LLM, local e sempre como rascunho). Todo o
 resto deste grupo é plumbing **determinístico** em volta da IA:
 
 ```mermaid
@@ -52,7 +52,7 @@ flowchart LR
 | `model.py` | 🩷 IA | `translate` / `batch_*`; backends `in-session` (assinatura) e `api` (model-mix); guard anti-blow-up. |
 | `back_translate.py` | 🩷 IA | Back-translation de alto risco (Opus) + amostragem ~5% das low/medium; invalidação de stale. |
 | `llm_client.py` | det. | Cliente + backoff/retry, await de batch, dotenv. |
-| `ollama_client.py` | det. | REST client pro Ollama local (zero custo de API) — backend plugável de `model.py`; configuração via `OLLAMA_HOST`/`OLLAMA_MODEL`/`OLLAMA_NUM_CTX`. |
+| `ollama_client.py` | det. | REST client pro Ollama local (zero custo de API) — usado só pelo pipeline de KB (`kb_fetch`/`kb_build_ollama`) e por `tcf ollama`, não é backend de tradução (ADR 0008); configuração via `OLLAMA_HOST`/`OLLAMA_MODEL`/`OLLAMA_NUM_CTX`. |
 | `config.py` | det. | Constantes de tier/modelo/custo/status (sem lógica). |
 | `cost.py` | det. | Pricing real + `log_api_call` (escreve o ledger). |
 | `bench_translate.py` | det. | Benchmark Sonnet vs Opus-à-mão (gate de aprovação de modelo). |
@@ -63,7 +63,7 @@ flowchart LR
 |---|---|
 | `state_index.py` | Materializa `translation_memory.jsonl`, `voice_cards.json`, `decision_index.json`. Idempotente. |
 | `tm_correct.py` | Find→replace governado em translations + plan (dado propõe, script aplica; dry-run/`--apply`). |
-| `tm_lookup.py` | TM por SÉRIE (D4): `tm/<série>.json` na raiz do repo (committed), isolamento estrutural entre franquias. Série declarada em `project.json["series"]` (fallback: slug do título). |
+| `tm_lookup.py` | TM por SÉRIE (D4): `tm/<série>.json` na raiz do repo (versionado quando existir; ainda não há nenhum), isolamento estrutural entre franquias. Série declarada em `project.json["series"]` (fallback: slug do título). |
 | `tm_updater.py` | `sync_scenes()` — upsert na TM da série a partir de `translation_plan_*.json` das cenas VERIFIED tocadas pelo QA; `reset_game()` — remove entradas de 1 jogo (retradução), avisa antes. |
 | `fingerprint_monitor.py` | Manifesto de conector por projeto (D3): `connector_manifest.json` (tier/engine/versão/fingerprints). Fingerprint de ARQUIVOS-FONTE do jogo (detecta patch); reusa `_connector_hash` p/ drift de scripts. |
 
@@ -95,23 +95,23 @@ flowchart LR
 
 | Arquivo | Função |
 |---|---|
-| `test_runtime.py` | 125 testes: determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, contrato do conector (hash determinístico, sandbox, protocolo VERIFY_STATUS), round-trip de integração, kb_gate human_input, validate_dialogs_csv, prune_discontinued, summary_line, TM por série via `apply()`. Fixture `fake_pack_ctx` (conftest.py) elimina monkeypatches repetidos em testes de batch. Módulos novos (`kb_reconcile`, `connector_gate`, `run_game`, `progress_report`, `tm_lookup`, `tm_updater`, `fingerprint_monitor`, `kernel`, `kb_fetch`, `kb_build_ollama`) têm `test_<módulo>.py` dedicado. |
+| `test_runtime.py` | determinismo, boundedness, idempotência, recuperação por-linha, teto/estimativa de custo, guard de no-work-text, contrato do conector (hash determinístico, sandbox, protocolo VERIFY_STATUS), round-trip de integração, kb_gate human_input, validate_dialogs_csv, prune_discontinued, summary_line, TM por série via `apply()`. Fixture `fake_pack_ctx` (conftest.py) elimina monkeypatches repetidos em testes de batch. Módulos novos (`kb_reconcile`, `connector_gate`, `run_game`, `progress_report`, `tm_lookup`, `tm_updater`, `fingerprint_monitor`, `kernel`, `kb_fetch`, `kb_build_ollama`) têm `test_<módulo>.py` dedicado. |
 | `conftest.py` | Fixture `fake_pack_ctx`: patcha `write_pack`, `render_prompt`, `_carta_text` em 3 linhas (E6). |
 
 > Mapa skill↔runtime (qual módulo executa cada etapa do SDD, quem produz/consome cada artefato):
 > [`../SDD_RUNTIME.md`](../SDD_RUNTIME.md).
 
 > Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
-> [`../docs/GOVERNANCE.md`](../docs/GOVERNANCE.md).
+> [`../docs/GOVERNANCE.md`](../../docs/GOVERNANCE.md).
 
 > Convenção de nomes (identificadores em inglês, glossário de abreviações aceitas — KB/TM/scene_id… — e o
-> **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`../docs/NAMING.md`](../docs/NAMING.md).
+> **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`../docs/NAMING.md`](../../docs/NAMING.md).
 
 ## Uso
 
 ```bash
 # 1) materializa o estado consultável (idempotente)
-python framework/runtime/state_index.py projects/<projeto> --rebuild
+python framework/runtime/state_index.py projects/<projeto>
 
 # 2) monta o contexto limitado de uma cena (determinístico)
 python framework/runtime/context_pack.py projects/<projeto> <cena>
@@ -120,5 +120,5 @@ python framework/runtime/context_pack.py projects/<projeto> <cena>
 python framework/runtime/run_scene.py projects/<projeto> <cena> [--backend in-session|api] [--require-back] [--no-verify]
 ```
 
-`<cena>` = subdir em `artifacts/` (ex.: `ch_12_01`). Genérico: nenhum dado de obra aqui; tudo vem de
+`<cena>` = subdir em `artifacts/scenes/` (ex.: `ch_12_01`). Genérico: nenhum dado de obra aqui; tudo vem de
 `project.json` + artefatos. Sem rede no caminho `in-session`. Sem work-text nos `.py` (travado por teste).

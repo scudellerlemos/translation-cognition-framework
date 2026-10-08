@@ -5,28 +5,13 @@ alimenta a busca semântica, onde entra RAG e como a execução escala. Cada se�
 profundo correspondente — este arquivo é o mapa, não o detalhe.
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  subgraph model["MODELO — Anthropic Claude (única parte não-determinística)"]
-    direction LR
-    m1["translate<br/>Sonnet 4.6 (Haiku 4.5 no tier barato)"]
-    m2["back_translate<br/>Opus 4.8 (só alto risco)"]
-  end
-  subgraph embed["EMBEDDING — opcional, opt-in por projeto"]
-    m3["sentence-transformers<br/>paraphrase-multilingual-MiniLM-L12-v2 (dim 384)"]
-  end
-  subgraph rag["RAG — 2 retrievers ativos + 1 futuro"]
-    direction LR
-    r1["nº1 TM semântica<br/>sqlite-vec (vec0)"]
-    r2["nº2 KB/lore<br/>gated por spoiler"]
-  end
-  subgraph exec["EXECUÇÃO — cena = job stateless"]
-    direction LR
-    e1["run_scene / run_chapter"]
-    e2["backend in-session (assinatura)<br/>ou api (Batch −50%)"]
-  end
-  subgraph store["PERSISTÊNCIA — SQLite (opt-in) ou flat files"]
-    s1["Store (framework/db/)<br/>TM · glossário · voice cards · ledger"]
-  end
+  model["<b>MODELO</b> — Anthropic Claude (única parte não-determinística)<br/>translate: Sonnet 4.6 (Haiku 4.5 no tier barato)<br/>back_translate: Opus 4.8 (só alto risco)"]:::mod
+  embed["<b>EMBEDDING</b> — opcional, opt-in por projeto<br/>sentence-transformers · paraphrase-multilingual-MiniLM-L12-v2 (dim 384)"]:::emb
+  rag["<b>RAG</b> — 3 retrievers semânticos ativos + 1 futuro<br/>TM semântica — sqlite-vec (vec0)<br/>KB/lore e decisões — gated por spoiler"]:::rg
+  exec["<b>EXECUÇÃO</b> — cena = job stateless<br/>run_scene / run_chapter<br/>backend in-session (assinatura) ou api (Batch −50%)"]:::ex
+  store["<b>PERSISTÊNCIA</b> — SQLite (opt-in) ou flat files<br/>Store (framework/db/) · TM · glossário · voice cards · ledger"]:::st
   model --> exec
   embed --> rag
   rag --> exec
@@ -36,11 +21,6 @@ flowchart TB
   classDef rg fill:#e8dff5,stroke:#6a3d9b,color:#000;
   classDef ex fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
-  class model,m1,m2 mod;
-  class embed,m3 emb;
-  class rag,r1,r2 rg;
-  class exec,e1,e2 ex;
-  class store,s1 st;
 ```
 
 ---
@@ -54,7 +34,7 @@ modelo é trocar uma string em `framework/runtime/config.py`, nada mais no harne
 |---|---|---|---|
 | Tradução (padrão) | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | maioria das linhas; contexto curado dispensa Opus |
 | Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | só linhas single-line no caminho batch (−67%/linha) |
-| Verificação | `claude-opus-4-8` | `MODEL_BACK` | back-translation, só linhas `risk >= high` |
+| Verificação | `claude-opus-4-8` | `MODEL_BACK` | back-translation das linhas `risk >= high` (+ amostra de 5% das demais em cenas do batch); último degrau do re-aperto de fitting |
 
 **Duas chamadas de IA, e só estas** (`translate`, `back_translate`) — o resto do harness é
 determinístico. Dois backends por trás do mesmo contrato: `in-session` (assinatura, sem chamada de
@@ -99,6 +79,7 @@ recuperação, gate de spoiler, degradação) → [`RAG_ARCHITECTURE.md`](RAG_AR
 |---|---|---|---|
 | **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto | ✅ **validado tecnicamente e por ROI real**. ROI medido em produção (10 cenas reais, #175): -24% custo, +2 sucessos/10. Ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) — manter índice atualizado é **requisito obrigatório**. Desde #182, isso é automático: `reindex_pending_embeddings()` roda no próprio write-path de tradução (`state_index.approve_scene_db`, chamado por `run_scene`/`run_chapter` quando a cena fecha `verified`), não só em `db migrate` manual. Calibração de `rag_min_score` com dado real (#184) → ver subseção abaixo |
 | **nº2 — KB/lore** | `context_pack.select_kb()` (léxico) + `_load_kb_semantic()` (semântico, #169) → seções "5c." e "5d." do pacote | **léxico**: token do título da seção citado na cena. **semântico** (suplemento, nunca substitui): `embedder.search_kb()` sobre `kb_vectors`, dedupe contra o léxico. Ambos **gated pela mesma trava temporal de spoiler** (default-deny por reveal-por-seção) | ✅ ligado (léxico sempre; semântico se a stack de ML estiver instalada E o projeto tiver `kb` indexada — validado com o KB real do BoF4, mas nenhum projeto hoje tem `reveal` tagueado, então o gate barra a seção semântica em produção até isso mudar) |
+| **decisões (semântico)** | `context_pack._load_decisions_semantic()` | `embedder` sobre `decision_embeddings`, suplemento ao índice léxico de decisões | ✅ ligado — ver [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) |
 | **nº3 — cross-game/franquia** | corpus compartilhado por série, retrieval por cena | reusa a mesma infra | 🔮 futuro (multi-game) |
 
 ### Fluxo em execução — o laço de reuso
@@ -214,14 +195,14 @@ tanto em `db migrate` (#171) quanto no write-path real de tradução (#182) — 
 Cada cena roda como **job stateless e limitado** — contexto O(cena), não O(histórico):
 
 ```
-run_scene(cena): context_pack → translate[IA] → build_plan → back_translate[IA, só alto risco]
-                 → verify (round-trip) → checkpoint + state_index
+run_scene(cena): context_pack → translate[IA] → build_plan → verify (round-trip)
+                 → back_translate[IA, só alto risco] → checkpoint + state_index
 ```
 
 - **`run_scene.py`** — orquestrador de 1 cena; **`run_chapter.py`** — driver de capítulo, loop
   resumível, `--max-usd` como teto duro de gasto (estimativa pré-voo antes de comprometer).
-- **Escala**: Batch API (−50%, paralelo pela Anthropic, ~1h/corpus) é o default para >5 cenas;
-  `--backend api` (tempo real) fica só para piloto/debug individual.
+- **Escala**: Batch API (−50%, paralelo pela Anthropic, ~1h/corpus) é o default do `run_chapter`
+  no backend `api`; tempo real só com `--no-batch` ou via `run_scene` (piloto/debug individual).
 - **Checkpoints**: `run_state.json` por cena — cair na cena 40 não perde as 39 anteriores.
 - **Custo auditável**: `api_ledger.jsonl` registra toda chamada cobrada (inclusive falhas);
   recuperação por-linha (não por-cena) mantém o retry ∝ linhas quebradas.
@@ -237,12 +218,13 @@ Dois modos, **gated por projeto** (`project.json` com `db` populado → SQLite; 
 
 - **SQLite** (`framework/db/store.py`, classe `Store`) — WAL + thread-safe, schema único
   (`projects`, `scenes`, `translations`, `scene_lines`, `kb`, `glossary`, `entities`,
-  `voice_cards`, `decisions`, `spoiler_entries`, `jobs`, `metrics`, `warnings`,
+  `voice_cards`, `decisions`, `spoiler_entries`, `research_log`, `kb_ratified`, `back_translations`, `jobs`, `metrics`, `warnings`,
   `qa_effectiveness`). É o modo que habilita RAG (o vetor precisa de um lugar pra morar).
 - **Flat files** (legado) — `translation_memory.jsonl`, `glossary.csv`, `state/*.json`. BoF4 e
-  Utawarerumono seguem flat; `translation_software` é o único projeto com `db` ligado hoje.
+  Utawarerumono seguem flat; `translation_software` e `demo` são os projetos com `db` declarado hoje.
 - **Ponte**: `migrate_from_flat.py` / `export_to_flat.py` — paridade DB==flat é o oráculo; o
-  write-path usa um hook único gated em `state_index.build()` (não upsert espalhado).
+  write-path por cena é `sync_translations_db` + `state_index.approve_scene_db`; o espelho do corpus
+  inteiro fica no `state_index.build()` deliberado (CLI), não no checkpoint por cena.
 
 Detalhe → [`STATE_MANAGEMENT.md`](STATE_MANAGEMENT.md).
 

@@ -68,9 +68,9 @@ O passo de cena **lê** desse estado (via Context Pack) e **escreve** de volta (
 cresce). O modelo nunca "lembra" — ele *consulta*.
 
 **Por que importa em IA.** Consistência vira propriedade do **store**, não da sorte do modelo. Sem
-banco de dados, sem embeddings, sem segundo serviço pago — só arquivos `.json`/`.csv`/`.jsonl` que você
-versiona no git, faz diff e reconstrói. É RAG levado ao osso: recuperação determinística de estado
-curado, em vez de busca vetorial aproximada.
+segundo serviço pago — por padrão só arquivos `.json`/`.csv`/`.jsonl` que você versiona no git, faz diff
+e reconstrói. É RAG levado ao osso: recuperação determinística de estado curado; a busca vetorial
+(SQLite + embeddings locais, opt-in) entra só como suplemento — ver `RAG_ARCHITECTURE.md`.
 
 > No código: `runtime/state_index.py` materializa `artifacts/state/` (idempotente, reconstruível).
 

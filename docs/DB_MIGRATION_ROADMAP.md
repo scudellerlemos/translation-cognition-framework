@@ -152,9 +152,8 @@ paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan
 ## Detalhe das oportunidades de RAG
 
 **🟢 nº1 — TM semântica (Fase 2.5, maior ROI).** Hoje uma fala só reusa tradução se for *idêntica*
-(`src_key`). A infra (`embedder.py` + `sqlite-vec` + reranker + `store.search_tm_semantic`) **já existe
-mas não está plugada** no pipeline (só via `cli db index`). Plugar no `context_pack` (modo DB) como
-seção separada e rotulada ataca o custo (re-tradução = 58% do gasto) e a consistência de voz.
+(`src_key`). A infra (`embedder.py` + `sqlite-vec` + `store.search_tm_semantic`, sem reranker) **já está
+plugada** no `context_pack` (modo DB) como seção separada e rotulada — ataca o custo (re-tradução = 58% do gasto) e a consistência de voz.
 Depende da Fase 2 (corpus no DB), mas dá pra começar já com a TM aprovada que está migrada.
 
 **🟢 nº2 — KB/lore (Fase 3).** `universe_knowledge_base.md` agora está no DB (tabela `kb`, por seção).
@@ -206,7 +205,7 @@ A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Q
 ## Como LIGAR a TM semântica (stack de ML) — projeto `translation_software`
 
 A migração de DADO está completa; ligar a busca semântica é **operacional**, não migração. O projeto
-alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 já migrado pra dentro dele:
+alvo é **`translation_software`** (com `db` declarado, assim como `demo` e todo projeto novo pelo template; corpus do BoF4 já migrado pra dentro dele:
 125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` está **descontinuado**
 (ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
 
