@@ -128,6 +128,53 @@ chave são os 16 primeiros caracteres do SHA-1 desse texto.
 
 A busca é um dicionário `chave → tradução`, montado uma vez por cena.
 
+#### Por que hash, e como os dois caminhos se dividem
+
+A chave responde uma pergunta só: "esta fala já foi traduzida?". Ela existe para responder isso
+sem usar modelo nenhum.
+
+- **É a pergunta certa para a decisão mais cara.** Decidir que uma fala **não vai ao LLM** exige
+  certeza. Duas falas com cosseno de 0,97 podem ser "Vá para o norte" e "Vá para o sul"; reusar a
+  tradução de uma na outra seria erro. Só igualdade de texto autoriza o reuso.
+- **Normalizar antes de comparar aumenta os acertos sem risco.** Comparar o texto cru perderia as
+  falas que só mudam em caixa, espaço ou posição da quebra de linha, que são a mesma fala para
+  fins de tradução.
+- **O hash dá uma chave curta e de tamanho fixo.** A consulta é um acesso a dicionário em memória,
+  O(1) por fala.
+
+O sistema identifica uma fala já traduzida por dois caminhos independentes:
+
+| | Caminho exato | Caminho semântico |
+|---|---|---|
+| Pergunta | esta fala já foi traduzida? | que falas traduzidas se parecem com esta? |
+| Como identifica | `tm_key` da fala igual à de uma tradução aprovada | vizinhos por distância em `tm_vectors` |
+| Usa embedding | não | sim |
+| Match exato | é o alvo | é excluído no SQL (score ≥ 0,999), porque o caminho exato já cuidou dele |
+| O que faz com o resultado | a fala **não vai** ao modelo (`_select_reuse`) | o par entra no prompt como referência para as falas novas |
+| Efeito em tokens | corta saída | acrescenta entrada, com teto |
+
+No caminho exato, ao montar o pacote o código carrega as traduções aprovadas do projeto, calcula
+`tm_key` de cada fonte e monta o dicionário; depois calcula a mesma chave para cada fala da cena e
+consulta. No modo arquivos a chave vem gravada na TM (`src_key`); no modo banco ela é calculada na
+hora, em Python, e não é coluna da tabela.
+
+Consequências para o RAG:
+
+- **Divisão de trabalho.** O caminho exato decide o que não traduzir; o semântico só informa. É
+  por isso que a economia medida veio do hash, e não do embedding.
+- **As vagas do top-k ficam para vizinhos de verdade.** Sem a exclusão do match exato, uma fala
+  repetida como "Yes." ocuparia os 3 vizinhos com cópias de si mesma.
+- **Os dois caminhos só leem `approved=1`.** O que alimenta o reuso e as referências já passou no
+  round-trip.
+
+Dois limites conhecidos:
+
+- **A TM é carregada por cena.** No modo banco o dicionário é remontado a cada cena, a partir de
+  todas as traduções aprovadas. Com milhares de linhas o custo é desprezível; com milhões valeria
+  gravar a chave como coluna indexada e consultar só as falas da cena.
+- **"Exato" tem duas definições.** O hash normaliza caixa e espaços; o corte de 0,999 é aplicado
+  ao vetor do texto sem os códigos do jogo. Os critérios são parecidos, mas não idênticos.
+
 O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário e do log de
 decisões. Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
 versão antiga.
