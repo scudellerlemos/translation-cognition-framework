@@ -211,7 +211,7 @@ alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 j�
 (ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
 
 1. **Instalar a stack** (fora da CI, pesada): `pip install -r requirements-ml.txt`
-   (`sentence-transformers` + `sqlite-vec` + `flashrank`; ~700 MB–1,5 GB com torch + modelo MiniLM).
+   (`sentence-transformers` + `sqlite-vec`; ~700 MB–1,5 GB com torch + modelo MiniLM).
 2. **Construir os vetores** (compute único, ~minutos em CPU):
    `python framework/cli.py db index projects/translation_software/translation_software.db bof4`
    → popula `tm_embeddings` + a virtual table `vec0` na própria `.db`.
