@@ -59,6 +59,46 @@ flowchart TB
 | `context_pack` | `framework/runtime/context_pack.py` | `_load_tm_semantic` / `_load_kb_semantic` / `_load_decisions_semantic` + `_reveal_allowed` |
 | write-path | `connector_io.sync_translations_db` → `state_index.approve_scene_db` | grava a cena (`approved=0`); ao fechar `verified`, aprova e dispara o reindex |
 
+### Para que serve a TM semântica
+
+Ela cobre o caso que o hash não pega: a fala **quase igual** a uma já traduzida. Uma vírgula ou
+uma palavra de diferença muda a chave da TM exata, e a fala vai ao modelo como se fosse nova. Sem
+referência, o modelo traduz do zero e pode escolher outro fraseado para o que, no jogo, é a mesma
+frase com uma variação.
+
+Jogos têm muito texto assim: a mesma pergunta de NPC com pontuação diferente, a mesma mensagem de
+sistema com outro nome de item, a fala que um personagem repete com pequena mudança. Para o
+jogador, traduções diferentes dessas falas parecem descuido.
+
+A TM semântica acha essas falas vizinhas e as coloca no prompt, com a tradução que foi aprovada,
+numa seção rotulada:
+
+```
+**Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**
+- (~0.87) `Where do you want to go?` -> `Para onde você quer ir?`
+```
+
+O par acima é ilustrativo. O número entre parênteses é o score de similaridade, que o modelo vê
+junto com o par.
+
+Três propriedades definem o papel dela:
+
+- **É referência, não substituição.** A fala continua indo ao modelo. A instrução é adaptar, e não
+  copiar, porque a diferença entre as duas falas pode importar. Quem substitui é só o caminho
+  exato.
+- **Não decide nada no pipeline.** Um vizinho ruim custa algumas linhas de prompt e pode ser
+  ignorado pelo modelo. Por isso o limiar pode ser mais permissivo do que seria aceitável para
+  reuso automático.
+- **Só mostra tradução aprovada.** O que serve de referência já passou no round-trip.
+
+Na calibração do `rag_min_score` (abaixo), as faixas úteis foram as de fala quase idêntica (score
+de 0,83 a 0,89) e de paráfrase (0,71 a 0,89). É nelas que a referência ajuda.
+
+O que está e o que não está medido: a medição do ADR 0016 mostrou que o ganho de **custo** veio do
+reuso exato, e que ligar a busca semântica não piorou os lints de glossário e de naturalidade. O
+ganho de **consistência** da TM semântica é a intenção do desenho e ainda não foi medido
+isoladamente.
+
 ---
 
 ## 2. Modelo de dados
@@ -197,11 +237,100 @@ flowchart TB
 - **Busca exata, não aproximada**: scan linear sobre os vetores do projeto, pelo determinismo.
   Reavaliar ANN a partir de ~50–100 mil vetores por projeto.
 - **Score** = `1 − L2²/2` sobre vetores unit-norm (idêntico 1,0 · ortogonal 0,0). `rag_min_score`
-  é por projeto, em `project.json`; calibração → [`STACK.md`](STACK.md#rag_min_score--calibração-com-dado-real).
+  é por projeto, em `project.json`; calibração → [abaixo](#rag_min_score--calibração-com-dado-real).
 - **Sem reranker**: o pacote ordena por score (ordem estável). O FlashRank foi removido em
   2026-10-07 — medido, não mudava o que entrava no pacote e custava ~200 ms por linha.
 - **Determinismo**: vetores pré-computados + ordenação estável → `context_pack` rodado 2× sai
   byte-idêntico.
+
+### Implementação e parâmetros
+
+**Indexação.** Cada fala aprovada vira um vetor de 384 dimensões, gravado em `tm_vectors` (tabela
+virtual `vec0` do `sqlite-vec`). Antes de embedar, os códigos de controle do jogo são removidos do
+texto (`strip_codes`), para que a similaridade meça o sentido da fala e não a formatação. Seções
+da KB e decisões têm índices próprios (`kb_vectors`, `decision_vectors`). Uma linha editada perde
+o vetor por trigger e some da busca até ser reindexada, então o índice nunca devolve texto velho.
+
+**Consulta.** A busca é vizinho mais próximo **exato**: varredura linear com `vec_distance_l2`,
+sem índice aproximado (ANN). Para milhares de vetores o custo é desprezível, e a varredura permite
+filtrar **antes** de cortar os `k` vizinhos. Com o operador `MATCH ... k` do `vec0`, o corte vinha
+primeiro, sobre a tabela inteira, e o filtro por projeto e por `approved=1` podia devolver menos
+de `k` resultados.
+
+```sql
+SELECT ..., MIN(vec_distance_l2(v.embedding, :consulta)) AS l2
+FROM tm_vectors v JOIN translations t ON t.id = v.translation_id
+WHERE t.project_id = :projeto AND t.approved = 1
+GROUP BY t.source, t.target          -- o mesmo par em N cenas ocupa 1 vaga, não N
+HAVING l2 > :l2_do_match_exato       -- exclui o que o caminho léxico já trouxe
+ORDER BY l2 LIMIT :k
+```
+
+**Parâmetros de recuperação** (em `context_pack.py`):
+
+| Parâmetro | TM semântica | KB e decisões semânticas |
+|---|---|---|
+| Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
+| `k` (vizinhos por consulta) | 3 | 3 |
+| Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
+| Score mínimo | `rag_min_score` (0,55; calibrado, ver abaixo) | sem limiar; o corte é o `k` |
+| Score máximo | 0,999 (acima disso é match exato) | — |
+| Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
+| Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
+| Ordenação | score decrescente, desempate pelo texto (saída estável) | idem |
+
+Sobre a calibração: o único parâmetro calibrado com dado real é o `rag_min_score`. O `k=3` e o
+teto de 8 são valores fixos de projeto, escolhidos para limitar o tamanho da seção; não houve
+experimento variando `k`. A medição de custo (ADR 0016) mostrou que o ganho não vinha dali, então
+afinar `k` ficou sem prioridade.
+
+Dois detalhes de correção que mudaram o resultado:
+
+- **O corte superior é feito no SQL, antes do `LIMIT`.** Uma fala curta como "Yes." tem dezenas de
+  ocorrências idênticas no corpus. Sem o corte, elas ocupavam todas as `k` vagas e a fala ficava
+  sem vizinho útil.
+- **Em KB e decisões, o `k` é aplicado depois do filtro de spoiler.** A consulta traz todos os
+  candidatos em ordem de distância e o código para ao juntar 3 permitidos. Cortar antes devolvia
+  lista vazia quando os 3 mais próximos ainda não tinham sido revelados.
+
+O filtro de spoiler é default-deny: KB e decisões semânticas só entram com uma marca `reveal`
+provando que o conteúdo já foi revelado no ponto da história em que a cena está. Hoje nenhum
+projeto tem a KB marcada, então a KB semântica fica vazia em produção até isso ser feito.
+
+A busca semântica não entra, de propósito, no glossário (o match por termo é preciso; o semântico
+traria falso positivo) nem nos voice cards (identidade é por nome, não por similaridade).
+
+### `rag_min_score` — calibração com dado real
+
+`rag_min_score` é o score mínimo para um vizinho semântico entrar no prompt. O score é o cosseno
+entre a fala consultada e a fala-fonte indexada: 1,0 é idêntico, 0,0 é sem relação. Só o texto na
+língua de origem entra no cálculo; a tradução vai junto como metadado.
+
+A calibração usou um índice real: 12 cenas do Breath of Fire IV traduzidas pelo pipeline e
+aprovadas (323 falas, 323 vetores), e 40 consultas em 5 categorias.
+
+| Categoria da consulta | Exemplo | Score do melhor hit |
+|---|---|---|
+| Texto idêntico ao do corpus | `"Monsters! They're everywhere!..."` | **1,0** (5 de 5) |
+| Quase idêntico (pontuação ou aspas diferentes) | "Where do you want to go?" | 0,83–0,89 |
+| Paráfrase (mesmo sentido, outras palavras) | "So what is the state of the sacrifice now?" | 0,71–0,89 (um caso em 0,57) |
+| Mesmo tema, conteúdo diferente | "Take this sword, it was forged by ancient smiths" | 0,37–0,51 |
+| Fora do domínio | "Preheat the oven to 200 degrees..." | 0,13–0,38 |
+
+Leitura: acima de 0,71 os hits são paráfrases de verdade, úteis como referência. Abaixo de 0,57
+eles casam só por vocabulário de tema (fantasia/RPG), sem relação de sentido. O maior score de
+ruído observado foi **0,51**.
+
+**Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
+paráfrases (0,57). Fica em `projects/translation_software/project.json`; é configurável por
+projeto, porque depende do par de idiomas.
+
+Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
+para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em
+produção. O modelo também só foi validado para inglês→português; para outro par de idiomas,
+`tcf db validate-model` refaz a medição.
+
+Fases e decisões de design do banco e do índice → [`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md).
 
 ---
 
@@ -259,10 +388,66 @@ mascarar como "sem vizinhos" esconderia índice desatualizado.
 ## 7. Na execução
 
 O laço completo de uma cena — consulta, reuso exato sem LLM, tradução, aprovação e volta para o
-índice — está desenhado em [`STACK.md` → Fluxo em execução](STACK.md#fluxo-em-execução--o-laço-de-reuso).
+índice — está desenhado [abaixo](#fluxo-em-execução--o-laço-de-reuso).
 
 Ponto que costuma confundir: **a economia medida (−24%, ADR 0016) vem do reuso exato**, que tira a
 linha do LLM. Os retrievers semânticos desta página só enriquecem o prompt das linhas novas.
+
+### Fluxo em execução — o laço de reuso
+
+O que acontece com **uma cena** em projeto com `db`, e por onde a tradução aprovada volta para
+alimentar a cena seguinte:
+
+```mermaid
+flowchart TB
+  scene["cena N<br/>linhas-fonte"]
+  subgraph pack["context_pack — det., só consulta (vetor pré-computado)"]
+    direction LR
+    ex["match EXATO<br/>tm_exact"]
+    sem["TM semântica<br/>embedder.search · k=3/linha<br/>rag_min_score ≤ score &lt; 0,999<br/>máx. 8 hits"]
+    kb["KB / decisões<br/>filtro de spoiler default-deny"]
+  end
+  split{"_prefilled<br/>fonte já traduzida em OUTRA cena<br/>+ paridade de tokens/quebras?"}
+  reuse["reuso de TM<br/>0 token"]
+  llm{{"translate<br/>IA · Sonnet / Haiku"}}
+  plan["build_plan<br/>grava approved=0"]
+  vf["verify round-trip"]
+  ok["approve_scene<br/>approved=1"]
+  idx["reindex_pending_embeddings<br/>embeda aprovadas ainda sem vetor"]
+  db[("SQLite do projeto<br/>translations + tm_vectors (vec0)")]
+
+  scene --> ex & sem & kb
+  ex --> split
+  split -->|"sim"| reuse
+  split -->|"não: linha nova"| llm
+  sem -. "falas SIMILARES (adapte)" .-> llm
+  kb -. "lore já revelada" .-> llm
+  reuse --> plan
+  llm --> plan
+  plan --> vf --> ok --> idx --> db
+  db -. "cena N+1" .-> ex
+  db -. "cena N+1" .-> sem
+
+  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef rg fill:#e8dff5,stroke:#6a3d9b,color:#000;
+  classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
+  classDef save fill:#fde6c4,stroke:#c97b1f,color:#000;
+  class llm ia;
+  class sem,kb rg;
+  class db,idx,ok st;
+  class reuse save;
+```
+
+- **Onde está a economia** (laranja): uma fala cuja fonte já foi traduzida em outra cena **não vai
+  ao LLM** (`model._select_reuse`); a tradução aprovada é reusada. Uma cena 100% reaproveitada não
+  faz chamada nenhuma. Foi esse caminho que rendeu a redução de 24% de custo medida em 10 cenas
+  (ADR 0016). A busca semântica (roxo) só **informa** o prompt das falas novas; não corta tokens.
+- **Só vira TM o que passou no round-trip.** O `build_plan` grava a tradução com `approved=0`; o
+  `approve_scene` promove para `approved=1` depois do `verify`. As buscas exata e semântica só
+  leem `approved=1`, então uma tradução reprovada nunca contamina as cenas seguintes.
+- **O vetor nasce na aprovação.** `reindex_pending_embeddings` embeda as linhas aprovadas que ainda
+  não têm vetor, logo depois do `approve_scene`. A cena N+1 já enxerga a cena N. É incremental e
+  não derruba a escrita: o dado já está gravado em SQL antes da indexação.
 
 ---
 

@@ -51,7 +51,7 @@ tocar nas aprovadas.
 | Papel | Modelo default | Constante | Razão |
 |---|---|---|---|
 | Tradução | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | barato, suficiente com contexto curado |
-| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no caminho batch (−67%/linha); ativo e medido, ver `STACK.md` |
+| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no caminho batch (−67%/linha); ativo e medido, ver `TOKEN_ECONOMY.md` |
 | Back-translation | `claude-opus-4-8` | `MODEL_BACK` | raciocínio p/ ambiguidade/duplo-sentido |
 
 Trocar de modelo = trocar a string. Nenhuma outra parte do harness sabe qual modelo rodou.
