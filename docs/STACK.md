@@ -225,22 +225,94 @@ Arquitetura completa do RAG (dados, indexação, recuperação, filtro de spoile
 | **Decisões** | decisões de tradução relacionadas ao conteúdo da cena | `_load_decisions_semantic`, sobre `decision_vectors`, além do índice léxico | ativa |
 | **Entre jogos da mesma série** | TM compartilhada por franquia | mesma infraestrutura | futura |
 
-Detalhes de implementação que importam:
+### Como a recuperação foi implementada
 
-- **Busca exata, não aproximada.** A consulta faz varredura linear com `vec_distance_l2` sobre os
-  vetores do projeto, sem índice ANN. Para corpus de milhares de linhas o custo é desprezível, e o
-  filtro (só linhas aprovadas, só do projeto) é aplicado antes do corte dos `k` vizinhos.
-- **Vetores pré-computados.** Montar o pacote só consulta o índice; o único texto embedado na hora
-  é a fala usada como consulta.
-- **Limites.** Na TM semântica: 3 vizinhos por fala, no máximo 8 por cena, e só hits com score
-  entre `rag_min_score` e 0,999 (acima disso é match exato, que já entrou pelo caminho léxico).
-- **Filtro de spoiler.** KB e decisões semânticas só entram se tiverem uma marca `reveal` provando
-  que aquele conteúdo já foi revelado no ponto da história em que a cena está. Sem marca, não
-  entra (default-deny). Hoje nenhum projeto tem a KB marcada, então a KB semântica fica vazia em
-  produção até isso ser feito.
-- **Onde a busca semântica não entra, de propósito**: glossário (o match por termo é preciso; o
-  semântico traria falso positivo), voice cards (identidade é por nome, não por similaridade) e o
-  núcleo do pacote.
+**Indexação.** Cada fala aprovada vira um vetor de 384 dimensões, gravado em `tm_vectors` (tabela
+virtual `vec0` do `sqlite-vec`). Antes de embedar, os códigos de controle do jogo são removidos do
+texto (`strip_codes`), para que a similaridade meça o sentido da fala e não a formatação. Seções
+da KB e decisões têm índices próprios (`kb_vectors`, `decision_vectors`). Uma linha editada perde
+o vetor por trigger e some da busca até ser reindexada, então o índice nunca devolve texto velho.
+
+**Consulta.** A busca é vizinho mais próximo **exato**: varredura linear com `vec_distance_l2`,
+sem índice aproximado (ANN). Para milhares de vetores o custo é desprezível, e a varredura permite
+filtrar **antes** de cortar os `k` vizinhos. Com o operador `MATCH ... k` do `vec0`, o corte vinha
+primeiro, sobre a tabela inteira, e o filtro por projeto e por `approved=1` podia devolver menos
+de `k` resultados.
+
+```sql
+SELECT ..., MIN(vec_distance_l2(v.embedding, :consulta)) AS l2
+FROM tm_vectors v JOIN translations t ON t.id = v.translation_id
+WHERE t.project_id = :projeto AND t.approved = 1
+GROUP BY t.source, t.target          -- o mesmo par em N cenas ocupa 1 vaga, não N
+HAVING l2 > :l2_do_match_exato       -- exclui o que o caminho léxico já trouxe
+ORDER BY l2 LIMIT :k
+```
+
+**Parâmetros de recuperação** (em `context_pack.py`):
+
+| Parâmetro | TM semântica | KB e decisões semânticas |
+|---|---|---|
+| Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
+| `k` (vizinhos por consulta) | 3 | 3 |
+| Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
+| Score mínimo | `rag_min_score` (0,55; calibrado, ver abaixo) | sem limiar; o corte é o `k` |
+| Score máximo | 0,999 (acima disso é match exato) | — |
+| Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
+| Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
+| Ordenação | score decrescente, desempate pelo texto (saída estável) | idem |
+
+Sobre a calibração: o único parâmetro calibrado com dado real é o `rag_min_score`. O `k=3` e o
+teto de 8 são valores fixos de projeto, escolhidos para limitar o tamanho da seção; não houve
+experimento variando `k`. A medição de custo (ADR 0016) mostrou que o ganho não vinha dali, então
+afinar `k` ficou sem prioridade.
+
+Dois detalhes de correção que mudaram o resultado:
+
+- **O corte superior é feito no SQL, antes do `LIMIT`.** Uma fala curta como "Yes." tem dezenas de
+  ocorrências idênticas no corpus. Sem o corte, elas ocupavam todas as `k` vagas e a fala ficava
+  sem vizinho útil.
+- **Em KB e decisões, o `k` é aplicado depois do filtro de spoiler.** A consulta traz todos os
+  candidatos em ordem de distância e o código para ao juntar 3 permitidos. Cortar antes devolvia
+  lista vazia quando os 3 mais próximos ainda não tinham sido revelados.
+
+O filtro de spoiler é default-deny: KB e decisões semânticas só entram com uma marca `reveal`
+provando que o conteúdo já foi revelado no ponto da história em que a cena está. Hoje nenhum
+projeto tem a KB marcada, então a KB semântica fica vazia em produção até isso ser feito.
+
+A busca semântica não entra, de propósito, no glossário (o match por termo é preciso; o semântico
+traria falso positivo) nem nos voice cards (identidade é por nome, não por similaridade).
+
+### Onde está a economia de tokens
+
+Um ponto que evita confusão: **a busca semântica não reduz tokens; ela acrescenta.** Cada vizinho
+é texto a mais no prompt. O que ela compra é consistência de fraseado, e os tetos acima existem
+para que esse acréscimo seja pequeno e previsível (no máximo 8 pares, 3 decisões e 3 seções por
+cena). A economia vem das técnicas abaixo, em ordem de impacto.
+
+| Técnica | O que corta | Como | Efeito |
+|---|---|---|---|
+| **Reuso exato de TM** | tokens de saída, os mais caros (5× o preço de entrada) | `model._select_reuse`: fala com o mesmo hash de fonte já aprovada em outra cena não é enviada ao modelo | cena 100% repetida custa zero; responsável pelos −24% do ADR 0016 |
+| **Pacote limitado por cena** | tokens de entrada | seleção por presença de termo, com teto por seção (glossário 60, decisões 12, KB 5, TM de voz 3 por falante) | o prompt não cresce com o projeto |
+| **Prompt caching** | tokens de entrada repetidos | a doutrina de tradução vai no `system` com `cache_control`; é igual em todas as cenas | releitura cobrada a 10% do preço de entrada |
+| **Thinking desligado na tradução** | tokens de saída | `effort: low`, `thinking: disabled`; thinking é cobrado como saída | cerca de 5× de diferença na medição |
+| **Roteamento por complexidade** | preço por token | no lote, falas de uma linha só vão para Haiku; as com quebra de linha ficam no Sonnet | −67% por fala roteada |
+| **Batch API** | preço por token | `run_chapter` envia as cenas em lote assíncrono | −50% |
+| **Retry por fala** | reenvio | se a saída vem incompleta ou inválida, a nova tentativa manda só as falas que falharam; as já pagas ficam em checkpoint | custo do retry proporcional ao que quebrou |
+| **Verificação amostrada** | chamadas ao modelo mais caro | back-translation só nas falas de risco alto, mais 5% das demais | Opus vê uma fração do corpus |
+
+O reuso exato tem duas proteções, porque reusar errado custa mais do que traduzir de novo:
+
+- **Paridade de estrutura.** A chave de TM ignora quebras de linha, então duas falas com o mesmo
+  texto podem quebrar em pontos diferentes. O reuso só vale se a tradução guardada tiver o mesmo
+  número de quebras e de tokens de formatação que a fala atual. Sem isso a reinserção reprova.
+- **Nunca a própria cena.** Ao re-traduzir uma cena para encurtar o texto, reusar a saída anterior
+  dela devolveria justamente a tradução que não coube.
+
+O papel do índice vetorial nessa conta é indireto. A medição do ADR 0016 comparou 10 cenas com e
+sem o banco indexado: o custo caiu 24% e 2 cenas saíram a custo zero. O ganho veio do reuso exato
+de falas repetidas (texto de sistema e de menu comum a várias áreas do jogo), que depende de a
+tradução aprovada estar disponível logo na cena seguinte. Por isso a reindexação acontece a cada
+aprovação, e não em lote no fim.
 
 ### Fluxo em execução — o laço de reuso
 
