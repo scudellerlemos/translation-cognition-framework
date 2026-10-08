@@ -12,6 +12,12 @@ organizadas por período, não por versão.
 - **Modo DB vira default de projeto novo** (e3b6921): o template de `project.json` declara `db`; o
   banco nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run). Projetos
   existentes sem `db` seguem em flat files, sem mudança.
+- **Busca semântica vira default de projeto com `db`**: `sentence-transformers` e `sqlite-vec` entram
+  nas dependências do pacote (o `pyproject.toml` passa a ler os pins de `requirements.txt` +
+  `requirements-ml.txt`, fonte única); projeto com `db` e sem a stack instalada é hard-block no
+  `kb_gate` (antes o RAG caía para vazio sem aviso). Opt-out explícito: `"db": {..., "semantic": false}` no
+  `project.json` (o `demo` usa). `TCF_ALLOW_NO_ML=1` rebaixa o bloqueio a aviso (CI de push/PR).
+  **Atenção ao atualizar**: projeto com `db` passa a exigir `pip install -r requirements-ml.txt`.
 - **Scaffold completo** (e0869d1, 6f722fe, ad8c847): `scaffold_project` gera `project.json`, os
   artefatos de KB e um `connector/` copiado do `_skeleton` (com `test_roundtrip.py`,
   `test_roundtrip_synthetic.py` e `conftest.py`). A cópia intocada do `_skeleton` é hard-block no

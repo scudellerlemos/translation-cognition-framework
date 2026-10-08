@@ -26,6 +26,26 @@ import spoiler_check as sc  # noqa: E402
 from store import Store  # noqa: E402
 
 
+def test_kb_gate_blocks_db_project_without_ml_stack(monkeypatch):
+    """Projeto com `db` e sem a stack de ML: hard-block (antes o RAG caia p/ vazio calado).
+    Opt-out explicito (db.semantic=false) ou TCF_ALLOW_NO_ML viram aviso; sem `db` nao checa."""
+    monkeypatch.setattr(kb_gate.importlib.util, "find_spec", lambda name: None)
+    monkeypatch.delenv("TCF_ALLOW_NO_ML", raising=False)
+
+    def run(cfg):
+        res = {"hard_problems": [], "warnings": []}
+        kb_gate._check_semantic_stack(cfg, res)
+        return len(res["hard_problems"]), len(res["warnings"])
+
+    db = {"path": "t.db", "project_id": "t"}
+    assert run({"db": db}) == (1, 0)
+    assert run({"db": {**db, "semantic": False}}) == (0, 1)
+    assert run({}) == (0, 0)
+    assert not context_pack.semantic_enabled({"db": {**db, "semantic": False}})
+    monkeypatch.setenv("TCF_ALLOW_NO_ML", "1")
+    assert run({"db": db}) == (0, 1)
+
+
 def _db_project(tmp_path) -> Path:
     db_path = tmp_path / "t.db"
     (tmp_path / "project.json").write_text(json.dumps({
