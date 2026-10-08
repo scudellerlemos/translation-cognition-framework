@@ -292,10 +292,50 @@ Arquitetura completa do RAG (dados, indexação, recuperação, filtro de spoile
 
 | Busca | O que recupera | Como | Estado |
 |---|---|---|---|
-| **TM semântica** | falas já traduzidas parecidas com as da cena; viram a seção "falas SIMILARES (adapte)" do prompt | `Embedder.search()` sobre `tm_vectors` | ativa; ganho medido (ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md)) |
+| **TM semântica** | falas já traduzidas parecidas com as da cena; viram a seção "falas SIMILARES (adapte)" do prompt | `Embedder.search()` sobre `tm_vectors` | ativa; serve à consistência, não à economia (ver abaixo) |
 | **KB / lore** | seções da base de conhecimento relevantes para a cena | léxica (`select_kb`, pelo título da seção citado na cena) + semântica (`_load_kb_semantic`, sobre `kb_vectors`), sem duplicar | ativa; a parte semântica só devolve seção com marca de revelação (ver filtro de spoiler abaixo) |
 | **Decisões** | decisões de tradução relacionadas ao conteúdo da cena | `_load_decisions_semantic`, sobre `decision_vectors`, além do índice léxico | ativa |
 | **Entre jogos da mesma série** | TM compartilhada por franquia | mesma infraestrutura | futura |
+
+### Para que serve a TM semântica
+
+Ela cobre o caso que o hash não pega: a fala **quase igual** a uma já traduzida. Uma vírgula ou
+uma palavra de diferença muda a chave da TM exata, e a fala vai ao modelo como se fosse nova. Sem
+referência, o modelo traduz do zero e pode escolher outro fraseado para o que, no jogo, é a mesma
+frase com uma variação.
+
+Jogos têm muito texto assim: a mesma pergunta de NPC com pontuação diferente, a mesma mensagem de
+sistema com outro nome de item, a fala que um personagem repete com pequena mudança. Para o
+jogador, traduções diferentes dessas falas parecem descuido.
+
+A TM semântica acha essas falas vizinhas e as coloca no prompt, com a tradução que foi aprovada,
+numa seção rotulada:
+
+```
+**Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**
+- (~0.87) `Where do you want to go?` -> `Para onde você quer ir?`
+```
+
+O par acima é ilustrativo. O número entre parênteses é o score de similaridade, que o modelo vê
+junto com o par.
+
+Três propriedades definem o papel dela:
+
+- **É referência, não substituição.** A fala continua indo ao modelo. A instrução é adaptar, e não
+  copiar, porque a diferença entre as duas falas pode importar. Quem substitui é só o caminho
+  exato.
+- **Não decide nada no pipeline.** Um vizinho ruim custa algumas linhas de prompt e pode ser
+  ignorado pelo modelo. Por isso o limiar pode ser mais permissivo do que seria aceitável para
+  reuso automático.
+- **Só mostra tradução aprovada.** O que serve de referência já passou no round-trip.
+
+Na calibração do `rag_min_score` (abaixo), as faixas úteis foram as de fala quase idêntica (score
+de 0,83 a 0,89) e de paráfrase (0,71 a 0,89). É nelas que a referência ajuda.
+
+O que está e o que não está medido: a medição do ADR 0016 mostrou que o ganho de **custo** veio do
+reuso exato, e que ligar a busca semântica não piorou os lints de glossário e de naturalidade. O
+ganho de **consistência** da TM semântica é a intenção do desenho e ainda não foi medido
+isoladamente.
 
 ### Como a recuperação foi implementada
 
