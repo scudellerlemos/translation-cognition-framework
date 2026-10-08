@@ -19,8 +19,8 @@ O harness opera sem usar a janela da LLM como memória. Esta é a separação de
 
 | Estado | Arquivo | Vida |
 |---|---|---|
-| Pacote de contexto | `artifacts/<cena>/pack.json` + `scene_prompt.md` | recomputável de `state/` + dialogs |
-| Plano da cena | `artifacts/<cena>/translation_plan_<scene_id>.json` | derivado de translations + dialogs |
+| Pacote de contexto | `artifacts/scenes/<cena>/pack.json` + `scene_prompt.md` | recomputável de `state/` + dialogs |
+| Plano da cena | `artifacts/scenes/<cena>/translation_plan_<scene_id>.json` | derivado de translations + dialogs |
 | Logs de QA | `micro_qa_log.json`, `back_translation_<scene_id>.json` | por lote/cena |
 
 Regra: se um estado é **derivável** de outros, ele é temporário (regenerar > guardar). A TM, os voice
@@ -36,11 +36,11 @@ Ver `adr/0003-state-substrate-flatfiles-then-index.md`.
 | Abordagem | Quando | Veredito atual |
 |---|---|---|
 | Flat files + índice (atual) | sempre — o 80/20 | **adotado**. Portável, versionável, diff-ável, zero infra. |
-| Banco relacional | múltiplos projetos + consultas transacionais | adiar (P2). |
-| Banco vetorial / RAG | recuperação **semântica** sobre lore/decisões grandes | só quando a recuperação por tag/termo não bastar (P2). Hoje a TM é lookup por chave exata + voz por falante — não precisa de embeddings. |
+| Banco relacional | múltiplos projetos + consultas transacionais | **adotado como opt-in**: SQLite local por projeto (`project.json:db`) — ver `STACK.md`. |
+| Banco vetorial / RAG | recuperação **semântica** sobre lore/decisões grandes | **adotado como opt-in** (sqlite-vec + MiniLM) sobre TM, KB e decisões — ver `RAG_ARCHITECTURE.md`. Sem `db`, a TM segue lookup por chave exata + voz por falante. |
 | Knowledge Graph | relações densas entre entidades | overengineering. `entities.csv` + `aliases_map.json` bastam (P3). |
 
-**Gatilho para evoluir** (documentar quando ocorrer): o `context_pack` passar a precisar de "decisões/lore
+**Gatilho para evoluir** (já ocorreu — ver `RAG_ARCHITECTURE.md`): o `context_pack` passar a precisar de "decisões/lore
 semanticamente parecidas" que a busca por tag não acha → aí entra RAG/vetor **só sobre** `decision_log`
 + `universe_knowledge_base`, mantendo o resto em flat files.
 

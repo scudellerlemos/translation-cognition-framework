@@ -13,30 +13,23 @@ sobre o mesmo SQLite do projeto, todos opcionais, nenhum no caminho crítico.
 ## 1. Visão geral
 
 ```mermaid
-flowchart LR
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
+flowchart TB
   subgraph src["FONTES (por projeto)"]
-    direction TB
     f1["traduções aprovadas<br/>approved_*.csv"]
     f2["decision_log.md"]
     f3["universe_knowledge_base.md"]
   end
   subgraph ing["INGESTÃO — det."]
-    direction TB
     i1["sync_translations_db + approve_scene_db<br/>(write-path de cada cena)"]
     i2["migrate_from_flat<br/>(mirror flat→DB)<br/>KB quebrada por seção ##/###"]
   end
   subgraph db["SQLite do projeto"]
-    direction TB
     t1[("translations<br/>decisions · kb")]
     t2[("vec0<br/>tm_vectors · decision_vectors · kb_vectors")]
   end
   emb["Embedder<br/>MiniLM multilíngue · dim 384<br/>local, CPU/GPU"]
-  subgraph ret["RECUPERAÇÃO — context_pack, det."]
-    direction TB
-    r1["nº1 TM semântica"]
-    r2["nº2 KB / lore"]
-    r3["decisões semelhantes"]
-  end
+  ret["<b>RECUPERAÇÃO</b> — context_pack, det.<br/>nº1 TM semântica · nº2 KB / lore · decisões semelhantes"]
   prompt["scene_prompt.md<br/>seções rotuladas"]
   llm{{"translate<br/>IA"}}
 
@@ -45,7 +38,7 @@ flowchart LR
   i1 & i2 --> t1
   t1 -->|"reindex_pending_embeddings"| emb
   emb -->|"1 linha = 1 vetor"| t2
-  t2 --> r1 & r2 & r3
+  t2 --> ret
   emb -. "embeda a query" .-> ret
   ret --> prompt --> llm
 
@@ -55,7 +48,7 @@ flowchart LR
   classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
   class llm ia;
   class emb em;
-  class r1,r2,r3 rg;
+  class ret rg;
   class t1,t2 st;
 ```
 
@@ -214,7 +207,8 @@ flowchart TB
 
 ## 5. Gate de spoiler (`_reveal_allowed`)
 
-Vale para KB e decisões, léxico e semântico. **Default-deny**: só entra o que é provadamente seguro.
+Vale para KB (léxico e semântico) e decisões semânticas. **Default-deny**: só entra o que é provadamente
+seguro. Decisões léxicas usam gate opt-in (`_decision_reveal_ok`): sem tag `reveal`, a decisão entra.
 
 ```mermaid
 flowchart TB

@@ -6,17 +6,17 @@ chamada" do "o que o pipeline faz", para que o mesmo `run_scene` rode com qualqu
 ## Contrato
 
 ```
-translate(root, scene, *, backend, model)        -> {status, path|prompt, scene_id, n_lines}
+translate(root, scene, *, backend, model, budget_tolerance)        -> {status, path|prompt, scene_id, n_lines}
 back_translate(root, scene, high_lines, *, backend, model) -> {status, path|prompt, reviewed}
 ```
 
 Dois papéis de IA, e **apenas** estes:
 - **translate** — traduz a cena a partir do pacote limitado (`context_pack`).
-- **back_translate** — verifica linhas `risk >= high` (pt-BR → EN → confere sentido/voz/ambiguidade).
+- **back_translate** — verifica linhas `risk >= high`, mais uma amostra de 5% das demais nas cenas vindas do batch (pt-BR → EN → confere sentido/voz/ambiguidade).
 
 ## Dois backends, mesmo contrato
 
-### (a) `in-session` — caminho ASSINATURA (default)
+### (a) `in-session` — caminho ASSINATURA (opt-in: `--backend in-session`; o default é `api`)
 Não chama rede. Garante o `scene_prompt.md` (auto-contido e **limitado**) e checa se o modelo do chat
 já produziu `translations_<scene_id>.json`:
 - ausente → `status: awaiting` (o operador responde o prompt numa **sessão limpa**; como o prompt é
@@ -30,7 +30,8 @@ Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic`/`ANTHROPIC_A
 - **Doutrina (Carta) no `system` com `cache_control`** → cobrada ~1× via prompt-caching, não a cada cena.
 - **Model-mix** (cenário `mix` do `cost_model.py`): tradução em **Sonnet**, back-translation em **Opus**.
 - **Streaming** (`messages.stream` + `get_final_message`) p/ saídas longas; `output_config` com
-  `json_schema` + `effort: high`; adaptive thinking.
+  `json_schema` + `effort: low`, sem thinking (tradução); `effort: high` + thinking adaptativo só na
+  back-translation.
 - **`max_tokens = 64000`** (cobre a maior cena do corpus; o valor antigo de 16k truncava cenas grandes).
 - **Guard do token de quebra + cobertura** com retry corretivo (até 3 tentativas): se o modelo emitir
   quebra de linha REAL no campo `t` (em vez do literal `\n`) ou faltar offsets, regenera — mata o bug
@@ -39,7 +40,7 @@ Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic`/`ANTHROPIC_A
   em `run_scene` (retomável).
 
 **Como ligar:** `pip install anthropic` + `ANTHROPIC_API_KEY` no ambiente **ou** num `.env` na raiz do
-framework (carregado por `model._load_dotenv`; `.env` está no `.gitignore`, ver `.env.example`).
+repositório (carregado por `llm_client._load_dotenv`; `.env` está no `.gitignore`, ver `.env.example`).
 Driver de capítulo: `run_chapter.py <projeto> <cap> --backend api` (loop de cenas fora do chat,
 resumível, para na 1ª falha). Métricas por cena em `artifacts/metrics.jsonl` (ver `OBSERVABILITY.md`).
 Benchmark de modelo: `bench_translate.py` grava saída paralela `translations_<scene_id>.<tag>.json` sem

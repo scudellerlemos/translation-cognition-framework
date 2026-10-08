@@ -41,7 +41,7 @@ não trabalho refeito pela IA:
   diálogos nem traduções hardcoded no código. Inclui **helpers/geradores transientes**: para autorar
   tradução em massa, escreva o **artefato de dados** (CSV/JSON) direto — nunca um `.py` com frases.
   - **Enforcement automático:** um teste genérico (`connector/test_roundtrip.py →
-    test_no_work_text_in_scripts`) compara cada `.py` do conector contra os artefatos do projeto
+    test_no_hardcoded_work_text_in_connector_scripts`) compara cada `.py` do conector contra os artefatos do projeto
     (insensível a acento) e **falha** se achar texto da obra embutido. É data-driven — vale para
     qualquer instância, sem conhecer a obra. (Opcional: replicar como hook `PreToolUse` para barrar já
     na escrita.)

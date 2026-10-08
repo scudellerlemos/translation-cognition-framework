@@ -57,21 +57,22 @@ esbarra num gate. Ver o "reproduzível com asterisco" em [`ARCHITECTURE.md`](ARC
 
 ## 3. A pilha de gates (o que cada um garante)
 
-Cada cena atravessa uma pilha de verificações antes de virar "verified". Um gate vermelho **trava** a cena.
+Cada cena atravessa uma pilha de verificações antes de virar "verified". KB e round-trip **travam** a cena; os demais **marcam** para a revisão humana (report-only).
 
 ```mermaid
 flowchart TB
   scene["cena traduzida"] --> kb
   kb{"KB: toda entidade nova<br/>cita fonte?"} -->|não| kbx(["BLOQUEIA"])
-  kb -->|sim| sp
-  sp{"spoiler: nome/gênero<br/>revelado antes da hora?"} -->|sim| spx(["BLOQUEIA"])
-  sp -->|não| rt
+  kb -->|sim| rt
   rt{"round-trip:<br/>bytes batem?"} -->|não| rtx(["BLOQUEIA"])
-  rt -->|sim| bt
+  rt -->|sim| ok(["VERIFIED ✓"])
+  ok --> bt
   bt{"back-translation<br/>(alto risco): sentido?"} -->|revise| btx(["marca p/ revisão"])
-  bt -->|pass| lint
+  bt -->|pass| sp
+  sp{"spoiler: nome/gênero<br/>revelado antes da hora?"} -->|sim| spx(["marca p/ revisão"])
+  sp -->|não| lint
   lint{"lint: naturalidade<br/>+ largura de balão"} -->|fail| lintx(["marca"])
-  lint -->|ok| ok(["VERIFIED ✓"])
+  lint -->|ok| hum(["revisão humana"])
   classDef bad fill:#f6d6d6,stroke:#b3261e,color:#000;
   classDef good fill:#d9f2d9,stroke:#2e7d32,color:#000;
   class kbx,spx,rtx,btx,lintx bad;
@@ -81,7 +82,7 @@ flowchart TB
 | Gate | Pergunta | Onde |
 |---|---|---|
 | **KB / fonte** | Toda entidade nova (`(cap.N)`) cita fonte no `research_log.md`? | `kb_review.py --gate` · `kb_phase.py --check` |
-| **Spoiler** | Nome ou gênero revelado aparece antes do `reveal_timing`? | `spoiler_check.py` (`check` + `check_gender`) |
+| **Spoiler** | Nome ou gênero revelado aparece antes do `reveal_timing`? | `spoiler_check.py` (`check` + `check_gender`) — auditoria report-only ao fim do run |
 | **Round-trip** | Extrair→reinserir regenera os bytes? (oráculo de correção) | `connector/verify_chapter.py` · `test_roundtrip.py` |
 | **Back-translation** | A linha de alto risco preserva o sentido? | `model.back_translate` (Opus) → `quality_gate.py` |
 | **Lint** | pt-BR natural? cabe no balão? | `naturalness_lint.py` · `quality_review` (largura) |
@@ -175,8 +176,8 @@ flowchart LR
   inclusive as que depois falham. `cost_report.py` agrega; **gasto desperdiçado é medido**, não escondido.
 - **Teto uniforme (`--max-usd`):** os drivers caros (`run_chapter`, `quality_fix`, `quality_review`)
   aceitam um teto; ao atingi-lo, **param e reportam** quantas cenas/linhas sobraram. Sem surpresa na fatura.
-- **Alavancas:** Batch API −50%, tiering (Haiku linha simples / Sonnet multi-linha / Opus só
-  back-translation), dedup por TM, escalonamento cirúrgico de fitting.
+- **Alavancas:** Batch API −50%, tiering (Haiku linha simples / Sonnet multi-linha / Opus na
+  back-translation e no último degrau de fitting), dedup por TM, escalonamento cirúrgico de fitting.
 
 ---
 
@@ -193,5 +194,5 @@ flowchart LR
 | As decisões arquiteturais (ADRs) | [`adr/`](adr/) |
 
 > **Resumindo a filosofia:** determinístico por padrão, IA só onde exige IA, humano com a palavra final,
-> e nada se move sem deixar rastro. É isso que faz um projeto de tradução de ~33 mil linhas ser
+> e nada se move sem deixar rastro. É isso que faz um projeto de tradução de ~45 mil linhas ser
 > auditável por uma pessoa só.

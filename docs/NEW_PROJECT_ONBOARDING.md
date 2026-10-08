@@ -12,12 +12,11 @@
 - Você tem o binário (ou arquivo de texto/legenda) da obra-fonte.
 - A branch de trabalho está criada.
 - O framework está em `framework/` e os testes passam (`pytest framework/`).
-- **No Windows**: setar `PYTHONIOENCODING=utf-8` (ou `chcp 65001`) antes de rodar qualquer CLI do
-  framework (`discover.py` e afins). Sem isso, `print()` com acento/seta quebra com
-  `UnicodeEncodeError` em console cp1252 — bug pré-existente, não corrigido no código
-  (issue #119; confirmado reproduzindo ainda em 23/08/2026 durante o bring-up do Trails in the
-  Sky 2nd Chapter). Nenhum projeto até aqui foi bloqueado porque o texto-fonte é ASCII, mas é
-  verificação obrigatória antes de rodar `discover.py` num ambiente novo.
+- **No Windows**: os CLIs principais (`discover.py`, `tcf`, `run_scene`, `run_chapter`, scaffold e o
+  `_skeleton`) já forçam stdout UTF-8 (issue #119, fechada). `PYTHONIOENCODING=utf-8` (ou
+  `chcp 65001`) continua recomendado para os CLIs auxiliares sem esse guard (`kb_fetch.py`,
+  `kb_phase.py`, `split_scenes.py`, `coverage_gate.py`), onde `print()` com acento/seta ainda pode
+  quebrar com `UnicodeEncodeError` em console cp1252.
 
 ---
 
@@ -93,7 +92,7 @@ Já criado pelo `scaffold_project.py` (sem ele: copiar `framework/templates/proj
 | `media_type` | `"game"` / `"film"` / `"series"` |
 | `source_language` | `"en"` (ou `"ja"`, etc.) |
 | `target_language` | `"pt-BR"` |
-| `connector.type` | `"hex_binary"` (jogos antigos) / `"subtitle_file"` / `"unknown"` |
+| `connector.type` | `"hex_binary"` (binário próprio) / `"unity_addressables_csv"` (Unity) / `"unknown"` (engine ainda não mapeada) |
 | `connector.source_binary` | Caminho relativo ao artefato (ex: `"artifacts/DIALOG.BIN"`) |
 | `db` | `{"path": "<slug>.db", "project_id": "<slug>"}` — default (modo DB). O arquivo nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run); KB/glossário/voz continuam editados nos flat files, o DB é espelho. Remover a chave = modo flat. |
 | `kb_frontier` | scene_id máxima coberta pela pesquisa de KB (ex.: `"12_17"`). Nasce `""` — o `kb_gate` bloqueia (hard) até ser declarada; não use placeholder com dígitos (seria lido como fronteira real). |
@@ -117,7 +116,7 @@ Referência: `projects/utawarerumono/connector/table_schema.md` e `framework/con
 
 Adaptar `framework/connectors/_skeleton/extract.py` ao formato mapeado.
 
-Critério de conclusão: `extract.py <binário>` gera `artifacts/dialogs.csv` com colunas `offset`, `text_en`, `byte_budget`.
+Critério de conclusão: `extract.py` gera `artifacts/dialogs.csv` com colunas `<source.id_column>` (ex.: `offset`), `text_source`, `byte_budget`.
 
 ### 2b. Dividir em cenas
 
@@ -136,8 +135,8 @@ de cena) continuam exigindo split manual/específico — a ferramenta cobre só 
 ### 3. Validar o round-trip (gate obrigatório)
 
 ```
-python connector/extract.py artifacts/<BINARIO>
-python connector/reinsert.py artifacts/dialogs.csv   # sem traduzir nada
+python connector/extract.py . [<BINARIO>]    # 1º arg = raiz do projeto ou project.json
+python connector/reinsert.py . [<BINARIO>]   # sem traduzir nada (lê artifacts/dialogs.csv sozinho)
 diff <original> output/<BINARIO>                      # deve ser vazio
 ```
 
@@ -154,7 +153,8 @@ pytest connector/test_roundtrip.py -v
 Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 - Implementar a cascata direct (in-place) → repoint (shift-left) → trimmed (relocação) → residue (resíduo LLM).
 - Gravar em `output/` sem modificar `artifacts/`.
-- Sair com código 0 (sucesso), 1 (erro fatal) ou 3 (overflow irredutível — resíduo necessário).
+- Reportar o resíduo em `artifacts/reinsertion_report.md` (o protocolo de saída 0/1/3 é do
+  `connector/verify_chapter.py`, não do `reinsert.py`).
 
 ### 5. Preencher os perfis
 
@@ -205,6 +205,8 @@ Os testes do skeleton verificam:
 
 - [ ] `project.json` preenchido (sem `"TBD"` nos campos de conector)
 - [ ] `dialogs.csv` gerado e com offset, texto e byte_budget
+- [ ] `connector/build_plan_chapter.py` e `connector/verify_chapter.py` adaptados (o `connector_gate`
+      bloqueia enquanto forem a cópia intocada do `_skeleton`)
 - [ ] Round-trip byte-idêntico confirmado
 - [ ] `pytest connector/test_roundtrip.py` verde
 - [ ] `profile/voice_profiles_reference.md` com ao menos os personagens principais

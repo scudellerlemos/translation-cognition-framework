@@ -41,16 +41,20 @@ framework/
                        (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~41
                        módulos. Ver runtime/README.md
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
-  docs/             ← ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE, STATE_MANAGEMENT,
-                       MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING, ROADMAP, adr/
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
+
+docs/               ← (raiz do repo) ARCHITECTURE, STACK (modelo/embedding/RAG/execução), GOVERNANCE,
+                       STATE_MANAGEMENT, MODEL_INTERFACE, TRANSLATION_PIPELINE, OBSERVABILITY, NAMING,
+                       ROADMAP, adr/
 
 projects/
   utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
     connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
-  breath_of_fire_4/ ← segunda instância — piloto de portabilidade para engine Capcom
-    connector/      ← implementado (Fase 0 concluída, round-trip green)
+  breath_of_fire_4/ ← segunda instância (engine Capcom) — concluída
+  souldiers/        ← terceira instância (Unity Addressables) — concluída
+  trails_sky_sc/    ← quarta instância (Falcom) — em andamento
+  demo/             ← cena de 5 falas do quickstart
 ```
 
 ---
@@ -142,9 +146,9 @@ Além das skills (o *processo*), `framework/runtime/` é o *harness* que torna a
 cada cena é um **job stateless e limitado** (contexto O(cena), não O(histórico)), o que elimina o
 estouro de sessão e viabiliza Sonnet a custo previsível. A LLM faz só cognição (traduzir / verificar
 alto risco); orquestração, estado, contexto e validação são determinísticos. Ver
-[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), a governança
-com desenhos em [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) e a convenção de nomes em
-[`docs/NAMING.md`](docs/NAMING.md).
+[`runtime/README.md`](runtime/README.md), [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md), a governança
+com desenhos em [`docs/GOVERNANCE.md`](../docs/GOVERNANCE.md) e a convenção de nomes em
+[`docs/NAMING.md`](../docs/NAMING.md).
 
 ---
 
@@ -155,7 +159,7 @@ usadas são deliberadas — chain-of-thought só na back-translation (CoT em tra
 custaria ~5× mais), role-based prompting na Doutrina cacheada que define o papel do tradutor,
 instruction tuning no `context_pack` que mantém o contexto em O(cena), e RAG em duas camadas
 (TM determinística + KB semântica com embeddings). Detalhes, custos reais e aprendizados de
-produção em [`docs/PROMPTS.md`](docs/PROMPTS.md).
+produção em [`docs/PROMPTS.md`](../docs/PROMPTS.md).
 
 ---
 
@@ -183,11 +187,14 @@ Ainda sem `README.md` próprio — ver `docs/CHANGELOG.md` e `artifacts/decision
 
 ## CI — esteira de verificação (paralela, sem encadeamento)
 
-Existem 6 workflows do GitHub Actions no repo; cada push/PR dispara **2** deles (`quality.yml` +
-`test.yml`). Todos os jobs desses 2 rodam em paralelo, em runners isoladas, **sem nenhum `needs:`**
-— o tempo total é o do maior job, não a soma, e uma falha aparece nomeada por job no PR. Os outros
-4 são sob demanda: `api-smoke.yml` e `dep-audit-optional.yml` (cron semanal + `workflow_dispatch`),
-`branch-hygiene.yml` (`workflow_dispatch`) e `release.yml` (só dispara em tag `v*.*.*`). (O único
+Existem 7 workflows do GitHub Actions no repo; cada PR (e cada push no `main`) dispara **2** deles
+(`quality.yml` + `test.yml`). Os checks desses 2 rodam em paralelo, em runners isoladas — o tempo
+total é o do maior job, não a soma, e uma falha aparece nomeada por job no PR. Os únicos `needs:`
+são os dois jobs finais do `test.yml`: `all-checks` (agregador exigido pela branch protection) e
+`mark-staging` (só em push no `main`). Os outros 5 são sob demanda: `api-smoke.yml`,
+`dep-audit-optional.yml` e `ml-coverage-optional.yml` (cron e/ou `workflow_dispatch`),
+`branch-hygiene.yml` (`workflow_dispatch` + cron semanal, dry-run por padrão) e `release.yml` (só
+dispara em tag `v*.*.*`). (O único
 "sequencial" do projeto é o pipeline de tradução 00→08, que é dependência real de dado do domínio,
 não CI.)
 
@@ -195,12 +202,12 @@ não CI.)
 flowchart LR
   subgraph quality["quality.yml — estilo & segurança (4 jobs)"]
     direction TB
-    ql["lint — ruff (F/I/UP/B) em framework/"]
+    ql["lint — ruff (F/I/UP/B) em framework/ e projects/"]
     qs["sast — bandit (severidade medium+)"]
     qc["secrets — gitleaks (diff + histórico)"]
     qd["deps — pip-audit (CVEs em requirements-dev)"]
   end
-  subgraph tests["test.yml — verificação funcional (8 jobs)"]
+  subgraph tests["test.yml — verificação funcional (11 checks + agregador)"]
     direction TB
     te["env-guard — .env nunca rastreado no git"]
     tm["mypy — type-check do núcleo já tipado"]
@@ -208,8 +215,11 @@ flowchart LR
     tb["connector-bof4 — contrato round-trip BoF4"]
     tu["connector-uta — contrato round-trip Utawarerumono"]
     tsoul["connector-souldiers — contrato round-trip Souldiers"]
+    ttr["connector-trails — contrato round-trip Trails Sky SC"]
+    tdemo["connector-demo — contrato do projeto demo"]
     tsk["connector-skeleton — contrato do template"]
-    tio["connector-io — utilitários compartilhados (framework/connectors/*.py) ≥75%"]
+    tio["connector-io — utilitários compartilhados (framework/connectors/*.py) ≥90%"]
+    thk["hooks — testes de .claude/hooks/"]
   end
   subgraph smoke["api-smoke.yml — só cron/manual (1 job)"]
     sm["batch smoke da Batch API (~$0.002; pula sem ANTHROPIC_API_KEY)"]
@@ -218,20 +228,19 @@ flowchart LR
   classDef test fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef smoke fill:#eceff1,stroke:#607d8b,color:#000;
   class quality,ql,qs,qc,qd qual;
-  class tests,te,tm,tcov,tb,tu,tsoul,tsk,tio test;
+  class tests,te,tm,tcov,tb,tu,tsoul,ttr,tdemo,tsk,tio,thk test;
   class smoke,sm smoke;
 ```
 
-> **Por que 8 jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
+> **Por que tantos jobs em `test.yml` e não 1?** Antes eram 5 passos sequenciais na mesma runner
 > (guard → mypy → coverage → conectores); qualquer falha cedo mascarava o resto e o tempo era a
 > soma. Divididos em jobs independentes, cada check falha isolado e o wall-clock cai para o do
 > maior job. Os conectores ficam em jobs separados porque `test_roundtrip.py` tem basename repetido
-> entre os projetos e colidiria numa coleta única do pytest. Números atuais: **603 passed / 27
-> skipped** no total dos 6 jobs de execução (coverage 497 passed/4 skipped; Utawarerumono 8
-> passed/13 skipped; BoF4 21 passed/1 skipped; Souldiers 4 passed/6 skipped — os skips dependem do
-> binário/bundle do jogo, gitignored; connector-skeleton 1 passed/3 skipped; connector-io 72
-> passed) · cobertura do core **≥90%** (gate `--cov-fail-under=90`), conectores **≥75%**.
-> Sem branch protection no `main` (repo solo dev): check vermelho é aviso, não bloqueio de merge.
+> entre os projetos e colidiria numa coleta única do pytest. Parte dos testes de conector é pulada
+> no CI porque depende do binário/bundle do jogo (gitignored). Cobertura do core e de
+> `framework/connectors` **≥90%** (gate `--cov-fail-under=90`).
+> O `main` tem branch protection: os 4 jobs do `quality.yml` e o agregador `all-checks` são status
+> checks obrigatórios — check vermelho bloqueia o merge.
 
 ---
 
@@ -256,20 +265,20 @@ flowchart LR
 - `run_game.py`: driver ponta-a-ponta (todos os capítulos, teto de gasto global, retomada
   automática) + `progress_report.py` (linhas/min, % do jogo, ETA, taxa de falha) ✅
 - `kernel.py`: fachada única consolidando as primitivas de orquestração (`run_scene`/`run_chapter`/
-  `run_game`/`validate`/`context_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
+  `run_game`/`validate_project`/`write_pack`) — contratos tipados, sem dependência de Claude/MCP ✅
 - TM por série (`tm_lookup.py`/`tm_updater.py`): jogos da mesma franquia compartilham termos
   recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
-- CI paralela reestruturada: 2 workflows por push/PR (+ 4 sob demanda: cron/dispatch/tag), sem
-  encadeamento (`needs:` = 0), falha nomeada por job ✅
-- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): `v1.0.0`, `v1.0.1` publicadas ✅
-- 577 testes passando
+- CI paralela reestruturada: 2 workflows por PR (+ 5 sob demanda: cron/dispatch/tag), checks sem
+  encadeamento (só o agregador `all-checks` usa `needs:`), falha nomeada por job ✅
+- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão atual `v1.1.0` ✅
+- Suíte verde no CI (cobertura ≥90%)
 
 ### Dívidas técnicas do framework
 
 | Dívida | Prioridade |
 |---|---|
 | Filmes / séries: pontos de extensão sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| CLI instalável / packaging `.exe` / README de produto (E1-E4) | pós-validação, só se for publicar |
+| Packaging `.exe` / README de produto (E2-E4; a CLI instalável `tcf` já existe) | pós-validação, só se for publicar |
 | Bundle de custo: tiering + back-batch codados, sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 | `connector_gate.assert_fresh_read()` (D5): testada, sem caller em produção ainda | quando formalizar fluxo de edição de conector |
 
