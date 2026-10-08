@@ -212,11 +212,13 @@ def test_project_template_declares_keys_the_gates_and_connector_read():
     assert validate_connector_types(cfg) == []
 
 
-def test_fresh_scaffold_e2e_gates_report_exactly_the_onboarding_steps(tmp_path):
+def test_fresh_scaffold_e2e_gates_report_exactly_the_onboarding_steps(tmp_path, monkeypatch):
     """E2E: scaffold puro (sem project.json escrito a mao) -> os 2 gates listam EXATAMENTE os passos
     reais de onboarding (adaptar conector, sintetizar KB, declarar fronteira, reconciliar pesquisa,
     rodar state_index) -- nada de 'ausente'/'corrompido' que o scaffold deveria ter criado. E o
     connector/ copiado roda a propria suite limpo (so skips ate a Fase 0)."""
+    # stack de ML e passo de AMBIENTE (testado em test_gates_db_gated), nao do scaffold: fora daqui.
+    monkeypatch.setattr(kb_gate, "_check_semantic_stack", lambda cfg, res: None)
     scaffold_project.scaffold(tmp_path, title="T")
     c = connector_gate.check(tmp_path)
     assert [("build_plan" in p, "_skeleton" in p) for p in c["hard_problems"]] == [(True, True), (False, True)]

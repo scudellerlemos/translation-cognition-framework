@@ -317,6 +317,14 @@ def project_constraints(cfg: dict) -> dict:
     }
 
 
+def semantic_enabled(cfg: dict) -> bool:
+    """Busca semantica (embeddings) e o DEFAULT de todo projeto com `db`. Desliga so de proposito:
+    `"db": {..., "semantic": false}` no project.json. O kb_gate bloqueia projeto com `db` e sem a
+    stack de ML instalada em vez de deixar o RAG cair p/ vazio calado."""
+    db = cfg.get("db") or {}
+    return bool(db.get("path")) and db.get("semantic", True) is not False
+
+
 def _db_path(root: Path, cfg: dict):
     """(db_path, project_id) se o projeto declara um `db` populado; senão (None, None).
     Com DB presente, o context_pack lê as fontes do SQLite; senão, dos flat files (BoF4)."""
@@ -718,15 +726,16 @@ def build_pack(root: Path, scene: str) -> dict:
     dsel = select_decisions(decisions, present_terms, present_speakers, scene_id_of(scene))
     tm_exact, tm_voice = select_tm(tm, rows, present_speakers)
     db_path, db_pid = _db_path(root, cfg)
-    tm_semantic = _load_tm_semantic(db_path, db_pid, rows, min_score=cfg.get("rag_min_score"))
+    sem_db = db_path if semantic_enabled(cfg) else None   # db.semantic=false: so RAG lexico
+    tm_semantic = _load_tm_semantic(sem_db, db_pid, rows, min_score=cfg.get("rag_min_score"))
     tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
     # Decisions semânticas (#105) -- mesmo gate default-deny por reveal do select_kb.
     decisions_semantic = _load_decisions_semantic(
-        db_path, db_pid, rows, blob_low, scene_id_of(scene))
+        sem_db, db_pid, rows, blob_low, scene_id_of(scene))
     # KB semântica (#169) -- idem, RAG paralelo a select_kb (léxico).
-    kb_semantic = _load_kb_semantic(db_path, db_pid, blob_low, scene_id_of(scene))
+    kb_semantic = _load_kb_semantic(sem_db, db_pid, blob_low, scene_id_of(scene))
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))
 
