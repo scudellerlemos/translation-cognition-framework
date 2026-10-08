@@ -233,14 +233,12 @@ def test_run_roundtrip_success_matches_hash_and_restores_backup(tmp_path, monkey
     approved.write_text("old-approved-content", encoding="utf-8")
 
     output_dir = tmp_path / "output"
-    output_dir.mkdir()
-    (output_dir / "game.bin").write_bytes(b"ORIGINAL-BYTES")
-
     game_data_dir = tmp_path / "gamedata"
     calls = []
 
     def fake_run(cmd, timeout=None):
         calls.append(cmd)
+        (output_dir / "game.bin").write_bytes(b"ORIGINAL-BYTES")   # o reinsert gera o output
         return 0, ""
 
     monkeypatch.setattr(cs.connector_mgr, "_run", fake_run)
@@ -254,6 +252,27 @@ def test_run_roundtrip_success_matches_hash_and_restores_backup(tmp_path, monkey
     assert not (tmp_path / "artifacts" / "approved_translations.smoke_backup").exists()
 
 
+def test_run_roundtrip_refuses_when_stale_smoke_backup_exists(tmp_path, monkeypatch):
+    # backup de run interrompido guarda o approved REAL; sobrescrevê-lo com o CSV identity temporario
+    # perderia as traducoes aprovadas de verdade.
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+    dialogs_csv = _write_dialogs_csv(tmp_path, [{"offset": "0x0", "text_en": "hello", "byte_budget": "5"}])
+    (tmp_path / "game.bin").write_bytes(b"X")
+    project_json = tmp_path / "project.json"
+    project_json.write_text(json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    approved = tmp_path / "artifacts" / "approved_translations.csv"
+    approved.write_text("identity-temporario", encoding="utf-8")
+    backup = approved.with_suffix(".smoke_backup")
+    backup.write_text("aprovado-real", encoding="utf-8")
+    monkeypatch.setattr(cs.connector_mgr, "_run", lambda *a, **k: pytest.fail("nao deveria rodar reinsert"))
+
+    ok, detail = cs._run_roundtrip(tmp_path, None, dialogs_csv, project_json, "offset")
+
+    assert ok is False and "backup pendente" in detail
+    assert backup.read_text(encoding="utf-8") == "aprovado-real"
+
+
 def test_run_roundtrip_hash_mismatch(tmp_path, monkeypatch):
     (tmp_path / "connector").mkdir()
     (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
@@ -264,10 +283,12 @@ def test_run_roundtrip_hash_mismatch(tmp_path, monkeypatch):
     project_json.write_text(json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
 
     output_dir = tmp_path / "output"
-    output_dir.mkdir()
-    (output_dir / "game.bin").write_bytes(b"DIFFERENT-BYTES")
 
-    monkeypatch.setattr(cs.connector_mgr, "_run", lambda cmd, timeout=None: (0, ""))
+    def fake_run(cmd, timeout=None):
+        (output_dir / "game.bin").write_bytes(b"DIFFERENT-BYTES")
+        return 0, ""
+
+    monkeypatch.setattr(cs.connector_mgr, "_run", fake_run)
 
     ok, detail = cs._run_roundtrip(tmp_path, None, dialogs_csv, project_json, "offset")
 
@@ -275,22 +296,38 @@ def test_run_roundtrip_hash_mismatch(tmp_path, monkeypatch):
     assert "SHA256 diverge" in detail
 
 
+def test_run_roundtrip_ignores_stale_output_when_reinsert_writes_nothing(tmp_path, monkeypatch):
+    """output/ velho identico ao source nao pode fazer o smoke passar se o reinsert nao gerou nada."""
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+    dialogs_csv = _write_dialogs_csv(tmp_path, [{"offset": "0x0", "text_en": "hello", "byte_budget": "5"}])
+    (tmp_path / "game.bin").write_bytes(b"ORIGINAL-BYTES")
+    project_json = tmp_path / "project.json"
+    project_json.write_text(json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    (tmp_path / "output").mkdir()
+    (tmp_path / "output" / "game.bin").write_bytes(b"ORIGINAL-BYTES")
+    monkeypatch.setattr(cs.connector_mgr, "_run", lambda cmd, timeout=None: (0, ""))
+
+    ok, detail = cs._run_roundtrip(tmp_path, None, dialogs_csv, project_json, "offset")
+
+    assert ok is False
+    assert "não gerou output" in detail
+
+
 # ---------------------------------------------------------------------------
 # #95: cobertura de _find_source() e _find_output()
 # ---------------------------------------------------------------------------
 
-def test_find_source_bad_json_with_game_data_dir_returns_none(tmp_path):
+def test_find_source_bad_json_returns_none(tmp_path):
     project_json = tmp_path / "project.json"
     project_json.write_text("{not valid json", encoding="utf-8")
-    game_data_dir = tmp_path / "gd"
-    game_data_dir.mkdir()
 
-    assert cs._find_source(tmp_path, project_json, game_data_dir) is None
+    assert cs._find_source(tmp_path, project_json) is None
 
 
 def test_find_source_nothing_declared_returns_none(tmp_path):
     project_json = tmp_path / "project.json"  # nao existe
-    assert cs._find_source(tmp_path, project_json, None) is None
+    assert cs._find_source(tmp_path, project_json) is None
 
 
 def test_find_output_missing_output_dir_returns_none(tmp_path):
@@ -329,3 +366,29 @@ def test_find_output_no_match_returns_none(tmp_path):
     (out_dir / "other.txt").write_bytes(b"z")
 
     assert cs._find_output(tmp_path, source) is None
+
+
+def test_run_roundtrip_restores_preexisting_output(tmp_path, monkeypatch):
+    """O smoke move o output/ real pro lado pra nao mascarar o reinsert -- e tem que devolve-lo."""
+    (tmp_path / "connector").mkdir()
+    (tmp_path / "connector" / "reinsert.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+    dialogs_csv = _write_dialogs_csv(tmp_path, [{"offset": "0x0", "text_en": "hello", "byte_budget": "5"}])
+    (tmp_path / "game.bin").write_bytes(b"ORIGINAL-BYTES")
+    project_json = tmp_path / "project.json"
+    project_json.write_text(json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    (tmp_path / "output").mkdir()
+    (tmp_path / "output" / "game.bin").write_bytes(b"REAL-OUTPUT")
+    monkeypatch.setattr(cs.connector_mgr, "_run", lambda cmd, timeout=None: (0, ""))
+
+    cs._run_roundtrip(tmp_path, None, dialogs_csv, project_json, "offset")
+
+    assert (tmp_path / "output" / "game.bin").read_bytes() == b"REAL-OUTPUT"
+    assert not list((tmp_path / "output").glob("*.smoke_stale"))
+
+
+def test_find_source_bad_json_warns(tmp_path, capsys):
+    project_json = tmp_path / "project.json"
+    project_json.write_text("{not valid json", encoding="utf-8")
+
+    cs._find_source(tmp_path, project_json)
+    assert "AVISO: project.json ilegivel" in capsys.readouterr().out

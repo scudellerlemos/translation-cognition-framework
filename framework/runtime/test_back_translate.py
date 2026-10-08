@@ -73,3 +73,11 @@ def test_ln_entry_normalizes():
                       "speaker": "Ryu", "risk_notes": "x"})
     assert e == {"offset": "A:0:1", "source": "Hi", "target": "Oi", "speaker": "Ryu",
                  "risk_notes": "x"}
+
+
+def test_has_stale_only_for_candidate_offsets(tmp_path):
+    out = tmp_path / "bt.json"
+    out.write_text(json.dumps({"entries": [{"offset": "a", "stale": True}, {"offset": "b"}]}), encoding="utf-8")
+    assert bt._has_stale(out, [{"offset": "a"}])                 # verdict velho -> re-julgar
+    assert not bt._has_stale(out, [{"offset": "b"}])             # so 'b' e candidato e nao esta stale
+    assert not bt._has_stale(tmp_path / "nope.json", [{"offset": "a"}])

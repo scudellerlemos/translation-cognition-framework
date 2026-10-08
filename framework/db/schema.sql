@@ -295,12 +295,27 @@ CREATE TABLE IF NOT EXISTS kb_embeddings (
     indexed_at      REAL
 );
 
--- Texto-fonte editado -> vetor velho fica obsoleto: apaga o metadado de embedding e o próximo
--- reindex_pending_embeddings re-embeda a linha (embedder.index_project troca o vetor vec0).
-CREATE TRIGGER IF NOT EXISTS decisions_summary_stale_emb
-AFTER UPDATE OF summary ON decisions WHEN old.summary IS NOT new.summary
-BEGIN DELETE FROM decision_embeddings WHERE decision_id = new.id; END;
+-- ── Invalidação de embeddings obsoletos ───────────────────────────────────────
+-- index_project() só indexa linhas SEM metadado (LEFT JOIN ... IS NULL). Sem isto, mudar o texto
+-- de uma linha já indexada deixava o vetor antigo servindo RAG/TM com conteúdo obsoleto. Apagar
+-- o metadado faz o próximo index_project() reindexar a linha (e trocar o vetor).
+CREATE TRIGGER IF NOT EXISTS trg_tm_embedding_stale
+AFTER UPDATE OF source ON translations
+WHEN OLD.source IS NOT NEW.source
+BEGIN
+    DELETE FROM tm_embeddings WHERE translation_id = OLD.id;
+END;
 
-CREATE TRIGGER IF NOT EXISTS kb_content_stale_emb
-AFTER UPDATE OF content ON kb WHEN old.content IS NOT new.content
-BEGIN DELETE FROM kb_embeddings WHERE kb_id = new.id; END;
+CREATE TRIGGER IF NOT EXISTS trg_decision_embedding_stale
+AFTER UPDATE OF summary ON decisions
+WHEN OLD.summary IS NOT NEW.summary
+BEGIN
+    DELETE FROM decision_embeddings WHERE decision_id = OLD.id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_kb_embedding_stale
+AFTER UPDATE OF content ON kb
+WHEN OLD.content IS NOT NEW.content
+BEGIN
+    DELETE FROM kb_embeddings WHERE kb_id = OLD.id;
+END;

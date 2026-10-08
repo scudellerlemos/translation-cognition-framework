@@ -3,7 +3,7 @@
 reinsert.py — Souldiers (Forge Reply, 2022 — Unity Addressables + tilde-CSV)
 
 Contrato:
-    entrada : approved_translations.csv (offset, text_pt) + data_dir (bundles)
+    entrada : approved_translations.csv (offset, text_target; text_pt legado aceito) + data_dir (bundles)
     saída   : output/<bundle>.bundle (cópia modificada com ::PT:: preenchido)
               artifacts/reinsertion_report.md
 
@@ -15,6 +15,7 @@ Regras:
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import io
 import sys
@@ -138,7 +139,7 @@ def read_table(table_name: str, data: bytes) -> dict[str, str]:
         for row in csv.DictReader(io.StringIO(text), delimiter=_CSV_DELIMITER):
             row_id = row.get(_ID_COL, "").strip().strip('"')
             if row_id:
-                out[row_id] = row.get(pt_col, "").strip().strip('"')
+                out[row_id] = row.get(pt_col, "")   # exato: strip('"') escondia/inventava diferenca em fala entre aspas
         break
     return out
 
@@ -151,21 +152,16 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
     try:
         import UnityPy  # noqa: F401  (checagem antecipada de dependência; rebuild_table importa de novo)
     except ImportError:
-        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy")
+        raise ImportError("UnityPy não instalado. Execute: pip install UnityPy") from None
 
     artifacts = project_root / "artifacts"
     approved_csv = artifacts / "approved_translations.csv"
     if not approved_csv.is_file():
         raise FileNotFoundError(f"Arquivo de traduções não encontrado: {approved_csv}")
 
-    # Carrega traduções aprovadas: offset → text_pt
-    translations: dict[str, str] = {}
-    with approved_csv.open(encoding="utf-8", newline="") as f:
-        for row in csv.DictReader(f):
-            key = row.get("offset", "").strip()
-            val = row.get("text_pt", "").strip()
-            if key and val:
-                translations[key] = val
+    # Carrega traduções aprovadas: offset → text_target (canonica) / text_pt (legado)
+    translations = connector_io.load_approved(
+        approved_csv, "reinsercao copiaria os bundles originais sem traducao")
 
     output_dir = project_root / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -192,6 +188,11 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
         )
         print(f"  {table_name}: {table_inserted} linhas → {out_bundle.name}")
 
+    if total_inserted < len(translations):   # ID aprovado que nao existe em nenhuma tabela (extract re-rodou / key errada)
+        msg = (f"AVISO: {len(translations) - total_inserted} traducao(oes) aprovada(s) sem ::ID:: correspondente "
+               f"nas tabelas -- NAO reinseridas")
+        print(msg)
+        report_lines.append(f"- {msg}\n")
     report_path = artifacts / "reinsertion_report.md"
     report_lines.append(f"\nTotal reinserido: {total_inserted} linhas\n")
     report_path.write_text("".join(report_lines), encoding="utf-8")
@@ -200,10 +201,8 @@ def reinsert(project_root: Path, data_dir: Path) -> int:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     project_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
     data_dir_arg = sys.argv[2] if len(sys.argv) > 2 else None
     project_json = project_root / "project.json"

@@ -33,6 +33,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io  # noqa: E402  (sibling; enumeracao de cenas em disco — leaf, sem dep de context_pack)
 import state_index  # noqa: E402  (sibling no mesmo dir)
 
 FRAMEWORK = _HERE.parent
@@ -78,7 +79,7 @@ def validate_dialogs_csv(path: Path) -> list:
     Chamada em build_pack() antes de load_dialogs() para erros antecipados e legíveis."""
     problems = []
     try:
-        with path.open(encoding="utf-8") as fh:
+        with path.open(encoding="utf-8-sig") as fh:
             rdr = csv.DictReader(fh)
             fields = frozenset(rdr.fieldnames or [])
             for col in ("offset", "byte_budget"):
@@ -106,7 +107,7 @@ def validate_dialogs_csv(path: Path) -> list:
 
 def load_dialogs(p: Path):
     rows = []
-    with p.open(encoding="utf-8") as fh:
+    with p.open(encoding="utf-8-sig") as fh:
         rdr = csv.DictReader(fh)
         textcol = "text_source" if "text_source" in (rdr.fieldnames or []) else "text_en"
         for r in rdr:
@@ -119,7 +120,7 @@ def load_glossary(p: Path):
     out: list[dict] = []
     if not p.is_file():
         return out
-    with p.open(encoding="utf-8") as fh:
+    with p.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             out.append(r)
     return out
@@ -467,14 +468,13 @@ def load_translated_scenes(root: Path, cfg: dict | None = None) -> list:
             by_scene.setdefault(sid, {})[r.get("offset", "")] = {
                 "source": r.get("source") or "", "target": r.get("target") or ""}
         return [(sid, sid, lines) for sid, lines in sorted(by_scene.items())]
-    import artifact_io
     out = []
     for scene in artifact_io.scenes(root):
         sid = scene_id_of(scene)
         src_by_off = {}
         d = paths.dialogs(root, scene)
         if d.is_file():
-            with d.open(encoding="utf-8") as fh:
+            with d.open(encoding="utf-8-sig") as fh:
                 rdr = csv.DictReader(fh)
                 textcol = "text_source" if "text_source" in (rdr.fieldnames or []) else "text_en"
                 for r in rdr:
@@ -663,7 +663,8 @@ def _load_kb(db_path, project_id):
         from store import Store
         with Store(db_path) as db:
             return db.get_kb(project_id)
-    except Exception:
+    except Exception as exc:   # noqa: BLE001  (KB e opcional: qualquer falha degrada p/ sem-lore, mas avisa)
+        print(f"[context_pack] AVISO: KB indisponivel em {db_path} ({exc!r}) -- prompt sem lore.")
         return []
 
 

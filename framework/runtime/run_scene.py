@@ -23,6 +23,7 @@ Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [-
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -36,6 +37,7 @@ if str(_VALIDATION_DIR) not in sys.path:
     sys.path.insert(0, str(_VALIDATION_DIR))
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
+import cost_report  # noqa: E402  (leitor unico do api_ledger.jsonl)
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
@@ -101,21 +103,8 @@ def _checkpoint(root: Path, scene: str, patch: dict):
 def _ledger_scene_cost(root: Path, scene: str) -> float:
     """Custo-VERDADE da cena = soma de TODAS as chamadas no api_ledger.jsonl (cada retry de cobertura e
     cada escalonamento de fitting), nao so a ultima translate/back. E o numero que casa com o saldo."""
-    p = paths.ledger(root)
-    if not p.is_file():
-        return 0.0
-    tot = 0.0
-    for line in p.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            r = json.loads(line)
-        except Exception:
-            continue
-        if r.get("scene") == scene:
-            tot += r.get("cost_usd", 0.0)
-    return round(tot, 5)
+    return round(sum(r.get("cost_usd", 0.0) for r in cost_report.read_ledger(root)
+                     if r.get("scene") == scene), 5)
 
 
 def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, verified):
@@ -135,8 +124,8 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
             ents = json.loads(bpath.read_text(encoding="utf-8")).get("entries", [])
             if ents:
                 bt_pass = sum(1 for e in ents if e.get("verdict") == "pass") / len(ents)
-        except Exception:
-            pass
+        except (OSError, ValueError, AttributeError) as exc:
+            print(f"[run_scene] AVISO: back_translation de {scene} ilegivel ({exc!r}) -- bt_pass omitido.")
     rec = {"scene": scene, "n_lines": n_lines, "n_high": n_high, "verified": verified,
            "reused": tr.get("reused", 0) if isinstance(tr, dict) else 0,
            "translate": {"model": tmodel, "usage": tu, "cost_usd": round(M.cost_of(tmodel, tu or {}), 5)},
@@ -150,8 +139,6 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
     return rec
 
 
-def _high_lines(root: Path, scene: str, scene_id: str):
-    return M.high_risk_lines(root, scene)               # fonte unica (model.high_risk_lines)
 
 
 def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
@@ -299,7 +286,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     return tr, verified, None
 
 
-def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str,
+def _back_phase(root: Path, scene: str, highs: list, backend: str,
                 require_back: bool, defer_back: bool, no_back: bool = False,
                 sample: bool = False) -> tuple:
     """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
@@ -321,7 +308,7 @@ def _back_phase(root: Path, scene: str, scene_id: str, highs: list, backend: str
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
     bt: M.BackTranslateResult | dict
-    try:   # sem fallback "so high": a amostra re-le o mesmo arquivo de plano que _high_lines ja leu sem erro
+    try:   # sem fallback "so high": a amostra re-le o mesmo arquivo de plano que high_risk_lines ja leu sem erro
         bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
               + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
@@ -434,8 +421,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     # cena do batch (tier barato): inclui a amostra low/medium, mesmo conjunto do pos-passe
     # batch_back_translate -- senao o arquivo gravado aqui (--require-back) conta como fresh la e
     # a amostra nunca e revisada
-    highs = _high_lines(root, scene, scene_id)
-    bt, early = _back_phase(root, scene, scene_id, highs, backend, require_back, defer_back, no_back,
+    highs = M.high_risk_lines(root, scene)
+    bt, early = _back_phase(root, scene, highs, backend, require_back, defer_back, no_back,
                             sample=pretranslated)
     if early is not None:
         return early
@@ -469,7 +456,7 @@ def _indent(s: str) -> str:
 
 
 def _audit_spoiler(root: Path):
-    """Report-only, mesma filosofia de run_chapter._audit_spoiler: o driver de capitulo ja audita
+    """Report-only (chamado tambem por run_chapter, ao fim do capitulo): o driver de capitulo ja audita
     o projeto inteiro ao fim (spoiler de nome/titulo + genero pt-BR); aqui cobre quem chama
     run_scene.py DIRETO (fora de run_chapter) -- ex.: `tcf translate` cena-a-cena -- que sem isso
     nunca tinha o spoiler_audit.json gerado/atualizado."""
@@ -489,7 +476,7 @@ def _audit_spoiler(root: Path):
 
 
 def _audit_schema(root: Path):
-    """Report-only, mesma filosofia de run_chapter._audit_schema: o driver de capitulo ja audita o
+    """Report-only (chamado tambem por run_chapter, ao fim do capitulo): o driver de capitulo ja audita o
     projeto inteiro ao fim (1x, cobre toda cena verified naquele run); aqui cobre quem chama
     run_scene.py DIRETO (fora de run_chapter), que sem isso nunca tinha o schema auditado."""
     try:
@@ -507,10 +494,8 @@ def _audit_schema(root: Path):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    except Exception:
-        pass
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
     ap.add_argument("project")
     ap.add_argument("scene", nargs="?", default=None)
@@ -543,6 +528,7 @@ def main():
     if not a.scene:
         ap.error("scene e obrigatorio (exceto com --check-stale)")
     if a.clean:
+        _validate_scene_arg(Path(a.project), a.scene)
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
     state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo

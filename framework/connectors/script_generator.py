@@ -114,6 +114,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -182,7 +184,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = src.read_bytes()
     table = load_table(root / cfg["connector"]["table_schema"])
 
@@ -207,6 +209,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -271,7 +275,7 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = src.read_bytes()
     table = load_table(Path("."))  # pointer table não usa tabela
 
@@ -301,6 +305,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -320,12 +326,12 @@ from pathlib import Path
 # pipeline gravar a tradução aprovada em outro caminho.
 # ---------------------------------------------------------------------------
 _ENCODING = "{encoding}"
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 
 def encode_string(text: str) -> bytes:
-    return text.encode(_ENCODING, errors="replace")
+    return text.encode(_ENCODING)   # strict: char sem mapeamento falha alto, nunca vira "?" em silencio
 
 
 def main(project_json: Path, source_override: str | None = None):
@@ -333,11 +339,11 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
@@ -372,6 +378,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -400,7 +408,7 @@ CONTROL_MAP: list[tuple[bytes, str]] = [
 ]
 TERMINATOR = b"\\x00"
 _UNMAPPED_RX = re.compile(r"\\[([0-9A-Fa-f]{{2}})\\]")  # fallback do decode: byte cru como [XX]
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 CHAR_TO_BYTE = {{v: k for k, v in BYTE_TO_CHAR.items()}}
@@ -439,19 +447,28 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
         offset = int(row[id_col], 16)
         raw = encode_string(row["text_target"])
         end = offset
-        while data[end:end + len(TERMINATOR)] != TERMINATOR:
-            end += 1
+        while end < len(data) and data[end:end + len(TERMINATOR)] != TERMINATOR:
+            # MESMA varredura do decode_string do extract.py: a sequência de controle é consumida
+            # inteira, senão um byte terminador dentro dela seria tomado como fim da string.
+            for seq, _tok in sorted(CONTROL_MAP, key=lambda x: -len(x[0])):
+                if data[end:end + len(seq)] == seq:
+                    end += len(seq)
+                    break
+            else:
+                end += 1
+        if end >= len(data):
+            raise SystemExit(f"ERRO: offset {{row[id_col]}}: string sem terminador (arquivo truncado/corrompido)")
         budget = (end + len(TERMINATOR)) - offset
         if len(raw) > budget:
             raise SystemExit(
@@ -459,7 +476,8 @@ def main(project_json: Path, source_override: str | None = None):
                 f"original ({{budget}}b) -- sem realocação de TOC neste padrão"
             )
         data[offset:offset + len(raw)] = raw
-        data[offset + len(raw):offset + budget] = TERMINATOR * (budget - len(raw))
+        pad = budget - len(raw)   # em BYTES; termina sempre com o terminador completo
+        data[offset + len(raw):offset + budget] = (TERMINATOR * pad)[(len(TERMINATOR) - 1) * pad:]
 
     out_dir = root / "output"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -474,6 +492,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''
@@ -488,12 +508,12 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 _STR_ENCODING = "ascii"  # TODO: mesmo valor de _STR_ENCODING no extract.py gerado
 _TERMINATOR = b"\\x00"
-_APPROVED_CSV = "artifacts/approved.csv"  # TODO: ajustar ao caminho real do pipeline
+_APPROVED_CSV = "artifacts/approved_translations.csv"  # TODO: ajustar ao caminho real do pipeline
 # ---------------------------------------------------------------------------
 
 
 def encode_string(text: str) -> bytes:
-    return text.encode(_STR_ENCODING, errors="replace") + _TERMINATOR
+    return text.encode(_STR_ENCODING) + _TERMINATOR   # strict: char sem mapeamento falha alto, nunca vira "?"
 
 
 def main(project_json: Path, source_override: str | None = None):
@@ -501,19 +521,21 @@ def main(project_json: Path, source_override: str | None = None):
     cfg = json.loads(project_json.read_text(encoding="utf-8"))
     root = project_json.parent
 
-    src = Path(source_override) if source_override else (root / cfg["connector"]["source_binary"])
+    src = Path(source_override) if source_override and Path(source_override).is_file() else (root / cfg["connector"]["source_binary"])
     data = bytearray(src.read_bytes())
     id_col = cfg["source"]["id_column"]
 
-    with (root / _APPROVED_CSV).open(encoding="utf-8") as f:
+    with (root / _APPROVED_CSV).open(encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     for row in rows:
         offset = int(row[id_col], 16)
         raw = encode_string(row["text_target"])
         end = offset
-        while data[end:end + len(_TERMINATOR)] != _TERMINATOR:
+        while end < len(data) and data[end:end + len(_TERMINATOR)] != _TERMINATOR:
             end += 1
+        if end >= len(data):
+            raise SystemExit(f"ERRO: offset {{row[id_col]}}: string sem terminador (arquivo truncado/corrompido)")
         budget = (end + len(_TERMINATOR)) - offset
         if len(raw) > budget:
             # Padrão com TOC explícita -- ADAPTAR aqui p/ realocar o final do arquivo e
@@ -523,7 +545,8 @@ def main(project_json: Path, source_override: str | None = None):
                 f"original ({{budget}}b) -- realocação de TOC não implementada neste candidato"
             )
         data[offset:offset + len(raw)] = raw
-        data[offset + len(raw):offset + budget] = _TERMINATOR * (budget - len(raw))
+        pad = budget - len(raw)   # em BYTES; termina sempre com o terminador completo
+        data[offset + len(raw):offset + budget] = (_TERMINATOR * pad)[(len(_TERMINATOR) - 1) * pad:]
 
     out_dir = root / "output"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -542,6 +565,8 @@ if __name__ == "__main__":
     except Exception:
         pass
     proj = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("project.json")
+    if proj.is_dir():                                 # smoke/connector_mgr passam a RAIZ do projeto
+        proj = proj / "project.json"
     override = sys.argv[2] if len(sys.argv) > 2 else None
     main(proj, override)
 '''

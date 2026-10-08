@@ -19,6 +19,7 @@ Exit: 1 se houver candidatos (alimenta o loop "corrige -> re-roda ate zerar"); 0
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import re
@@ -74,7 +75,7 @@ def _load_glossary(root: Path, cfg: dict | None = None):
         g = paths.glossary(root)
         if not g.is_file():
             return []
-        rows = list(csv.DictReader(g.open(encoding="utf-8")))
+        rows = list(csv.DictReader(g.open(encoding="utf-8-sig")))
     out = []
     for r in rows:
         term = (r.get("term") or "").strip()
@@ -125,10 +126,8 @@ def main():
     ap.add_argument("project")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    with contextlib.suppress(AttributeError, ValueError, OSError):
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     found = lint(a.project)
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
     out.write_text(json.dumps({"count": len(found), "findings": found}, ensure_ascii=False, indent=2),

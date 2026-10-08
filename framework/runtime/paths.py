@@ -40,6 +40,7 @@ def project_json(root) -> Path:
 def run_state(root) -> Path:        return artifacts(root) / "run_state.json"
 def ledger(root) -> Path:           return artifacts(root) / "api_ledger.jsonl"
 def metrics(root) -> Path:          return artifacts(root) / "metrics.jsonl"
+def translate_exhausted(root) -> Path:   return artifacts(root) / "translate_exhausted.jsonl"
 def glossary(root) -> Path:         return artifacts(root) / "glossary.csv"
 def entities(root) -> Path:         return artifacts(root) / "entities.csv"
 def research_log(root) -> Path:     return artifacts(root) / "research_log.md"
@@ -91,6 +92,11 @@ def scene_prompt(root, scene) -> Path:  return scene_dir(root, scene) / "scene_p
 
 def translations(root, scene, scene_id) -> Path:
     return scene_dir(root, scene) / f"translations_{scene_id}.json"
+
+
+def translations_partial(root, scene, scene_id) -> Path:
+    # prefixo NAO pode ser `translations_`: build_plan_chapter.py exige exatamente 1 glob("translations_*.json")
+    return scene_dir(root, scene) / f"partial_translations_{scene_id}.json"
 
 
 def translation_plan(root, scene, scene_id) -> Path:

@@ -36,9 +36,12 @@ vetores por projeto, quando o scan linear passar a pesar na latência do pacote 
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import sqlite3
 import time
+
+from textclean import strip_codes  # forma limpa: vetor/consulta sem ruído dos códigos
 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
@@ -134,16 +137,11 @@ class Embedder:
         self._ensure_vec_table(con, kind)
 
         if force:
-            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — limpa os vetores do
-            # projeto e reindexa do zero (ex.: ao trocar modelo ou a normalização).
-            tids = [r[0] for r in con.execute(
-                f"SELECT id FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
-                (project_id,)).fetchall()]
-            con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in tids])  # nosec B608
-            con.commit()
+            # vec0 não aceita INSERT OR REPLACE confiável (UNIQUE no PK) — reindexa do zero (ex.: ao
+            # trocar modelo ou a normalização); os vetores velhos só saem DEPOIS do encode (abaixo),
+            # senão um encode que falha deixaria o indice do projeto vazio.
             rows = con.execute(
-                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608
+                f"SELECT id, {c['text_col']} FROM {c['table']} t WHERE t.project_id=?{c['filter_sql']}",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (project_id,),
             ).fetchall()
         else:
@@ -157,10 +155,14 @@ class Embedder:
         if not rows:
             return 0
 
-        from store import strip_codes  # noqa: E402  (forma limpa: vetor sem ruído dos códigos)
-        ids = [r[0] for r in rows]
+        ids =[r[0] for r in rows]
         texts = [strip_codes(r[1] or "") for r in rows]
         vecs = self.encode(texts)
+        # force: vetores+metadado velhos; senão: linha cujo texto mudou perdeu o metadado (trigger) mas
+        # ainda tem o vetor velho no vec0
+        con.executemany(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
+        if force:
+            con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
 
         for tid, vec in zip(ids, vecs, strict=True):
             # vetor velho de linha editada (store apagou só o emb_table): OR REPLACE do vec0 não
@@ -193,7 +195,6 @@ class Embedder:
         max_score: exclui hits com score >= max_score NO SQL (antes do LIMIT) — p/ quem quer só
         vizinhos, não o match exato (senão fala curta com >=k exatos consome o top-k inteiro).
         """
-        from store import strip_codes  # noqa: E402  (consulta na mesma forma limpa do índice)
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
 
@@ -210,6 +211,7 @@ class Embedder:
                        t.speaker, t.tone_register, t.risk_level
                 FROM tm_vectors v
                 JOIN translations t ON t.id = v.translation_id
+                JOIN tm_embeddings e ON e.translation_id = v.translation_id  -- linha editada some ate o reindex
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
                 GROUP BY t.source, t.target
@@ -218,7 +220,7 @@ class Embedder:
             (json.dumps(q_vec), project_id,
              # score cru = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score)). Filtro UNICO
              # (so no SQL, sobre o cru): um 2o check no score arredondado discordava na fronteira.
-             *(((2.0 * (1.0 - max_score)) ** 0.5,) if cut else ()),
+             *(((2.0 * (1.0 - max_score)) ** 0.5,) if cut and max_score is not None else ()),
              k),
         ).fetchall()
 
@@ -246,7 +248,6 @@ class Embedder:
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
         forçar as duas formas numa única função genérica. k<0 = todos (LIMIT -1 do SQLite), p/ o
         chamador cortar DEPOIS do seu próprio gate (reveal)."""
-        from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="decision")
         q_vec = self.encode([strip_codes(query)])[0]
 
@@ -278,7 +279,6 @@ class Embedder:
         """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
         shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
         chamador (ver context_pack._reveal_allowed), igual search_decisions() faz."""
-        from store import strip_codes  # noqa: E402
         self._ensure_vec_table(con, kind="kb")
         q_vec = self.encode([strip_codes(query)])[0]
 
@@ -308,10 +308,8 @@ class Embedder:
 
 if __name__ == "__main__":
     import sys
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     if len(sys.argv) < 3:
         print("Uso: python embedder.py <db_path> <project_id> [query]")
         sys.exit(1)

@@ -78,7 +78,7 @@ def test_synthetic_dat_is_recognized():
     section = data[sec_off:sec_off + sec_sz]
     strings = extract_section_strings(section)
     assert len(strings) == len(_STRINGS)
-    for (ptr_idx, _ptr, raw), expected in zip(strings, _STRINGS):
+    for (ptr_idx, _ptr, raw), expected in zip(strings, _STRINGS, strict=False):
         assert raw == expected, (ptr_idx, raw, expected)
 
 
@@ -161,3 +161,58 @@ def test_roundtrip_expansion_updates_toc():
     new_section_bytes = new_data[new_sec_off:new_sec_off + new_sec_sz]
     new_strings = {i: raw for i, _p, raw in extract_section_strings(new_section_bytes)}
     assert decode_string(new_strings[0]) == translations[0]
+
+
+def test_literal_bracket_bytes_roundtrip_not_confused_with_control_code():
+    """ASCII literal '[AB]' (5B 41 42 5D) virava o byte 0xAB no re-encode; agora '[' sai como [5B]."""
+    from extract import encode_string
+    raw = b"x[AB]y\x8f"
+    text = decode_string(raw)
+    assert "[5B]" in text and encode_string(text) == raw
+
+
+def test_encode_strict_rejects_unmappable_char():
+    from extract import encode_string
+    with pytest.raises(ValueError):
+        encode_string("\u65e5\u672c", strict=True)
+    assert encode_string("\u65e5", strict=False) == b"?"
+
+
+def test_patch_dat_file_keeps_size_delta_multiple_of_toc_alignment():
+    original = _build_synthetic_dat()
+    entries = parse_toc(original)
+    entry_idx, sec_off, sec_sz = find_text_section(original, entries)
+    section = original[sec_off:sec_off + sec_sz]
+    translations = {i: decode_string(raw) for i, _p, raw in extract_section_strings(section)}
+    translations[0] = "Oi"
+    new_data = patch_dat_file(original, entry_idx, rebuild_section(section, translations))
+    assert (len(new_data) - len(original)) % 16 == 0
+
+
+def test_rebuild_section_raises_when_pointer_exceeds_uint16():
+    original = _build_synthetic_dat()
+    section = original[32:]
+    with pytest.raises(OverflowError):
+        rebuild_section(section, {0: "x" * 70000})
+
+
+def test_reinsert_main_exits_3_on_pointer_overflow(tmp_path):
+    """Overflow de ponteiro uint16 aborta com exit 3 (antes: traceback cru), sem gravar o .DAT."""
+    from reinsert import main as reinsert_main
+
+    dat_dir = tmp_path / "dat"
+    dat_dir.mkdir()
+    (dat_dir / "A.DAT").write_bytes(_build_synthetic_dat())
+    scene = tmp_path / "artifacts" / "scenes" / "ch_01_01"
+    scene.mkdir(parents=True)
+    rows = ["offset,file,entry_idx,ptr_idx,text_en,byte_budget"]
+    rows += [f"A:{i},A.DAT,1,{i},{s.decode()},{len(s) + 1}" for i, s in enumerate(_STRINGS)]
+    (tmp_path / "artifacts" / "dialogs.csv").write_text("\n".join(rows) + "\n", encoding="utf-8")
+    (scene / "approved_01.csv").write_text(f"offset,text_target\nA:0,{'x' * 70000}\n", encoding="utf-8")
+    (tmp_path / "project.json").write_text(
+        '{"source": {"file": "artifacts/dialogs.csv"}}', encoding="utf-8")
+
+    with pytest.raises(SystemExit) as ei:
+        reinsert_main(tmp_path / "project.json", str(dat_dir))
+    assert ei.value.code == 3
+    assert not (tmp_path / "output" / "A.DAT").exists()

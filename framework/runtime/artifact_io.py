@@ -12,10 +12,15 @@ Tolerante a arquivo ausente/ilegivel: retorna vazio em vez de estourar.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-import context_pack  # noqa: E402  (scene_id_of — fonte unica da derivacao do id de cena)
+_HERE = Path(__file__).resolve().parent
+for _p in (_HERE, _HERE.parent):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 import paths  # noqa: E402
+from text_ids import scene_id_of  # noqa: E402  (fonte unica da derivacao do id de cena — leaf)
 
 
 def scene_chapter(scene: str) -> str:
@@ -51,21 +56,21 @@ def _read_json(p: Path):
 
 def plan_lines(root, scene) -> list:
     """Lista de linhas do translation_plan_<id>.json (ou [] se nao houver). Fonte unica do parse."""
-    sid = context_pack.scene_id_of(scene)
+    sid = scene_id_of(scene)
     data = _read_json(paths.translation_plan(Path(root), scene, sid))
     return (data or {}).get("lines", []) if isinstance(data, dict) else []
 
 
 def translations_map(root, scene) -> dict:
     """Mapa {offset: {t,...}} do translations_<id>.json (ou {} se nao houver/ilegivel)."""
-    sid = context_pack.scene_id_of(scene)
+    sid = scene_id_of(scene)
     data = _read_json(paths.translations(Path(root), scene, sid))
     return (data or {}).get("lines", {}) if isinstance(data, dict) else {}
 
 
 def back_entries(root, scene) -> dict:
     """Mapa {offset: entry} do back_translation_<id>.json (ou {} se nao houver/ilegivel)."""
-    sid = context_pack.scene_id_of(scene)
+    sid = scene_id_of(scene)
     data = _read_json(paths.back_translation(Path(root), scene, sid))
     if not isinstance(data, dict):
         return {}

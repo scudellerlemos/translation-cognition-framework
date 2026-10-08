@@ -5,6 +5,7 @@ Agora gera o PAR (mesma evidência -> mesmo padrão). known_engine/blocked nunca
 (existence_gate() já formaliza isso, coberto em test_tier_classifier_gate.py) -- aqui cobrimos
 o efeito em discover.run() especificamente para unknown_engine.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -145,3 +146,19 @@ def test_run_unknown_engine_prints_top_families(tmp_path, monkeypatch, capsys):
     assert rc == 0
     out = capsys.readouterr().out
     assert "DATA.BIN: 12 arquivos" in out
+
+
+def test_generate_stub_never_overwrites_hand_adapted_files_and_works_with_json(tmp_path, monkeypatch, capsys):
+    """Re-rodar a descoberta nao pode apagar extract.py/reinsert.py adaptados; --json tambem gera stub."""
+    _stub_collect_and_registry(monkeypatch, _UNKNOWN_EVIDENCE)
+    game_dir = tmp_path / "game"
+    game_dir.mkdir()
+    out_dir = tmp_path / "connector"
+    out_dir.mkdir()
+    (out_dir / "extract.py").write_text("# adaptado a mao\n", encoding="utf-8")
+
+    discover.run(game_dir, as_json=True, generate_stub=out_dir)
+
+    assert (out_dir / "extract.py").read_text(encoding="utf-8") == "# adaptado a mao\n"
+    assert "GERADO AUTOMATICAMENTE" in (out_dir / "reinsert.py").read_text(encoding="utf-8")
+    json.loads(capsys.readouterr().out)          # stdout continua JSON puro

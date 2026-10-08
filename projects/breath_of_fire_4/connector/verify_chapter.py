@@ -17,6 +17,7 @@ Protocolo de exit code (consumido por run_scene.py):
 
 Uso: python verify_chapter.py <scene>   ex.: python verify_chapter.py AREAD001
 """
+import contextlib
 import csv
 import json
 import os
@@ -54,10 +55,8 @@ def _section_strings(section: bytes) -> dict[int, bytes]:
 
 
 def main() -> None:
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <scene>  (ex.: AREAD001)")
 
@@ -87,7 +86,7 @@ def main() -> None:
 
     # Aprovados
     approved: dict[str, str] = {}
-    with appr_files[0].open(encoding="utf-8") as f:
+    with appr_files[0].open(encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             approved[row["offset"]] = row["text_target"]
 
@@ -157,7 +156,18 @@ def main() -> None:
                 overflow_count += 1
 
         # --- 4) Leitura de volta ---
-        new_strings = _section_strings(new_section)
+        # o arquivo REAL patchado (TOC, deslocamento dos offsets seguintes, limite de ponteiro) e re-parseado:
+        # antes so o new_section isolado era relido, entao um bug em patch_dat_file/find_text_section passava
+        try:
+            patched = R.patch_dat_file(original_data, entry_idx, new_section)
+            p_res = E.find_text_section(patched, E.parse_toc(patched))
+        except Exception as exc:
+            fails.append(f"{fname}: patch_dat_file falhou com as traducoes: {exc}")
+            continue
+        if p_res is None or p_res[0] != entry_idx:
+            fails.append(f"{fname}: secao de texto nao reencontrada no arquivo patchado")
+            continue
+        new_strings = _section_strings(patched[p_res[1]:p_res[1] + p_res[2]])
         for off, meta in dialogs.items():
             if meta["file"] != fname or off not in approved:
                 continue

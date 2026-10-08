@@ -9,6 +9,19 @@ organizadas por período, não por versão.
 
 ## 2026-09 — versionamento SemVer + CI hardening
 
+- **v1.1.0 — loop de code review + RAG semântico + DB-first** (#205 e anteriores). MINOR (ADR 0013):
+  só adições (`tcf db validate-model`, `rag_min_score`, retrieval semântico da KB, produtores
+  DB-first, tabelas novas no schema via `CREATE TABLE IF NOT EXISTS`). Correções de integridade
+  que **passam a falhar alto onde antes corrompiam em silêncio** — se um pipeline seu depende do
+  comportamento antigo, veja aqui: `--require-back` em modo batch agora bloqueia (`back_incomplete`)
+  se a back-translation não fechar; BoF4 `extract`/`reinsert` com encode estrito; Utawarerumono
+  `load_game` recusa traduções conflitantes pro mesmo offset; `split_scenes` aborta em colisão de
+  id de cena. `connector.target_charset_supported` do BoF4 era a string `"ascii_only"` (o schema
+  declara `bool`), agora `false`: o aviso de charset passa a entrar no prompt do BoF4. O wheel de
+  `pip install .` agora inclui `schema.sql`, a carta de governança, templates e media-profiles
+  (o da v1.0.3 saía só com `.py`). `--project-id` de `tcf db migrate` passa a defaultar em
+  `project.json:db.project_id` (fallback `bof4`, sem mudança pros projetos atuais). `release.yml`
+  agora exige `test.yml` verde no commit taggeado.
 - **Chunking do RAG semântico documentado, `kb` vira kind indexável** (#169, ADR 0014): o embedder
   nunca chunka — `_KIND_CONFIG` ganhou o kind `"kb"` (tabela `kb`, coluna `content`, nova tabela
   `kb_embeddings` no schema) reaproveitando a mesma indexação genérica 1-linha-1-vetor de

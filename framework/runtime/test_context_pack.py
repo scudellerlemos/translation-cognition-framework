@@ -335,3 +335,11 @@ def test_load_tm_semantic_skips_exact_matches_before_cut(tmp_path, monkeypatch):
     monkeypatch.setattr(cp, "_get_embedder", lambda: _Fake())
     got = cp._load_tm_semantic(dbp, "p", [{"source": "Yes."}], k=1)
     assert [h["source"] for h in got] == ["Yes!"]
+
+
+def test_load_glossary_tolerates_utf8_bom(tmp_path):
+    """Excel/Notepad gravam CSV com BOM: sem utf-8-sig a 1a coluna vira '\\ufeffterm' e o glossario some."""
+    p = tmp_path / "glossary.csv"
+    p.write_bytes("\ufeffterm,handling_rule\nOshtor,manter_original\n".encode())
+    rows = cp.load_glossary(p)
+    assert rows and rows[0].get("term") == "Oshtor"

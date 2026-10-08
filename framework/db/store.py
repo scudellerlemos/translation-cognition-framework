@@ -13,23 +13,13 @@ from __future__ import annotations
 
 import contextlib
 import json
-import re
 import sqlite3
 import time
 from pathlib import Path
 
+from textclean import strip_codes  # leaf; `from store import strip_codes` segue valendo
+
 _SCHEMA = Path(__file__).with_name("schema.sql")
-
-_CODE_RX = re.compile(r"\[[0-9A-Fa-f]{2}\]")
-
-
-def strip_codes(text: str) -> str:
-    """Forma LIMPA do texto: remove os códigos de controle do jogo (`[XX]`) e normaliza
-    espaços. Para LEITURA e EMBEDDING semântico — o `target` FIEL (com códigos) continua
-    intacto no banco (round-trip/conector dependem dele). Genérico (multi-game)."""
-    if not text:
-        return text or ""
-    return re.sub(r"\s+", " ", _CODE_RX.sub(" ", text)).strip()
 
 
 def _json_or_none(v: list | None) -> str | None:
@@ -171,7 +161,8 @@ class Store:
                    approved, backend, model_id, created_at)
                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(project_id, scene_id, offset) DO UPDATE SET
-                   target=excluded.target, speaker=excluded.speaker,
+                   source=COALESCE(NULLIF(excluded.source, ''), source), target=excluded.target,
+                   speaker=excluded.speaker,
                    tone_register=excluded.tone_register, intent=excluded.intent,
                    risk_level=excluded.risk_level, risk_notes=excluded.risk_notes,
                    approved=excluded.approved, backend=excluded.backend,
@@ -233,17 +224,11 @@ class Store:
             emb = Embedder()
             return sum(emb.index_project(self._con, project_id, kind=k)
                        for k in ("translation", "decision", "kb"))   # kb: senao search_kb vazio sempre
-        except Exception:
+        except ImportError:
+            return None                        # deps de ML opcionais ausentes: esperado
+        except Exception as exc:   # noqa: BLE001  (busca semantica e opcional: nunca derruba o mirror)
+            print(f"[store] AVISO: indexacao de embeddings falhou ({exc!r}) -- busca semantica desatualizada.")
             return None
-
-    def get_tm_approved(self, project_id: str, limit: int = 5000) -> list[dict]:
-        rows = self._con.execute(
-            """SELECT scene_id, offset, source, target, speaker
-               FROM translations WHERE project_id=? AND approved=1
-               ORDER BY created_at DESC LIMIT ?""",
-            (project_id, limit),
-        ).fetchall()
-        return [dict(r) for r in rows]
 
     # ── Glossário ────────────────────────────────────────────────────────────
 
@@ -367,14 +352,6 @@ class Store:
         )
         self._commit()
 
-    def get_back_translations(self, project_id: str, scene_id: str) -> list[dict]:
-        rows = self._con.execute(
-            "SELECT offset, back_en, verdict, note FROM back_translations "
-            "WHERE project_id=? AND scene_id=? ORDER BY id",
-            (project_id, scene_id),
-        ).fetchall()
-        return [dict(r) for r in rows]
-
     def upsert_glossary(self, project_id: str, term: str, translation: str,
                         handling_rule: str | None = None, domain: str | None = None,
                         category: str | None = None, aliases: str | None = None,
@@ -415,6 +392,8 @@ class Store:
                ON CONFLICT(project_id, name) DO UPDATE SET
                    canonical_pt=COALESCE(excluded.canonical_pt, canonical_pt),
                    entity_type=COALESCE(excluded.entity_type, entity_type),
+                   first_scene=COALESCE(excluded.first_scene, first_scene),
+                   notes=COALESCE(excluded.notes, notes),
                    spoiler_reveal_scene=COALESCE(excluded.spoiler_reveal_scene,
                                                   spoiler_reveal_scene)""",
             (project_id, name, canonical_pt, entity_type, first_scene,
@@ -523,9 +502,7 @@ class Store:
                    pre_reveal=excluded.pre_reveal,
                    forbidden_pre_reveal=excluded.forbidden_pre_reveal,
                    gender_quarantine=excluded.gender_quarantine""",
-            # fact or "": NULL e distinto no UNIQUE(project_id, entity, fact) -> ON CONFLICT nunca
-            # dispararia e cada re-mirror duplicaria a entry sem fact
-            (project_id, entity, fact or "", spoiler_level, reveal,
+            (project_id, entity, fact or "", spoiler_level, reveal,   # NULL em chave UNIQUE = linha duplicada a cada re-migracao
              json.dumps(scenes or [], ensure_ascii=False),
              json.dumps(triggers or [], ensure_ascii=False),
              pre_reveal,
@@ -583,14 +560,16 @@ class Store:
         upsert sozinho deixa no DB o que foi removido do flat). Chave de 1 coluna -> valor;
         de 2+ -> tupla. Embedding FK sai antes (foreign_keys=ON)."""
         cols, emb = self._PRUNABLE[table]
+        # nosec B608 abaixo: table/cols/emb vem de _PRUNABLE (literal da classe), nunca de input
         rows = self._con.execute(
-            f"SELECT id, {', '.join(cols)} FROM {table} WHERE project_id=?", (project_id,)).fetchall()
+            f"SELECT id, {', '.join(cols)} FROM {table} WHERE project_id=?",  # nosec B608
+            (project_id,)).fetchall()
         gone = [(r[0],) for r in rows
                 if (r[1] if len(cols) == 1 else tuple(r)[1:]) not in keep]
         if emb:
             fk = "decision_id" if emb == "decision_embeddings" else "kb_id"
-            self._con.executemany(f"DELETE FROM {emb} WHERE {fk}=?", gone)
-        self._con.executemany(f"DELETE FROM {table} WHERE id=?", gone)
+            self._con.executemany(f"DELETE FROM {emb} WHERE {fk}=?", gone)  # nosec B608
+        self._con.executemany(f"DELETE FROM {table} WHERE id=?", gone)  # nosec B608
         self._commit()
         return len(gone)
 
@@ -642,7 +621,7 @@ class Store:
         self._con.executemany(
             """INSERT INTO warnings(project_id, t, source, warnings) VALUES(?,?,?,?)
                ON CONFLICT(project_id, t, source) DO UPDATE SET warnings=excluded.warnings""",
-            [(project_id, r.get("t"), r.get("source"),
+            [(project_id, r.get("t"), r.get("source") or "",
               json.dumps(r.get("warnings", []), ensure_ascii=False)) for r in rows],
         )
         self._commit()
@@ -668,18 +647,11 @@ class Store:
                    total_marked=excluded.total_marked, applied=excluded.applied,
                    verbatim=excluded.verbatim, ai=excluded.ai,
                    effectiveness_rate=excluded.effectiveness_rate, cost_usd=excluded.cost_usd""",
-            [(project_id, r.get("t"), r.get("source"), r.get("total_marked"),
+            [(project_id, r.get("t"), r.get("source") or "", r.get("total_marked"),
               r.get("applied"), r.get("verbatim"), r.get("ai"),
               r.get("effectiveness_rate"), r.get("cost_usd")) for r in rows],
         )
         self._commit()
-
-    def get_qa_effectiveness(self, project_id: str) -> list[dict]:
-        rows = self._con.execute(
-            "SELECT t, source, total_marked, applied, verbatim, ai, effectiveness_rate, "
-            "cost_usd FROM qa_effectiveness WHERE project_id=? ORDER BY t", (project_id,)
-        ).fetchall()
-        return [dict(r) for r in rows]
 
     # ── Stats ────────────────────────────────────────────────────────────────
 

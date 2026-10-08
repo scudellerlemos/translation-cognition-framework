@@ -24,6 +24,7 @@ Por que isso importa para engine desconhecida:
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import hashlib
 import json
@@ -79,8 +80,8 @@ def smoke(project_root: Path, game_data_dir: Path | None = None, *, roundtrip: b
             try:
                 cfg = json.loads(project_json.read_text(encoding="utf-8"))
                 id_col = cfg.get("source", {}).get("id_column", "offset")
-            except Exception:
-                pass
+            except (OSError, ValueError, AttributeError) as exc:
+                print(f"[connector_smoke] AVISO: project.json ilegivel ({exc!r}) -- id_column='offset'.")
         with dialogs_csv.open(encoding="utf-8", newline="") as f:
             cols = set(next(csv.reader(f), []))
         text_cols = [c for c in cols if c.startswith("text_")]
@@ -101,7 +102,7 @@ def smoke(project_root: Path, game_data_dir: Path | None = None, *, roundtrip: b
         with dialogs_csv.open(encoding="utf-8", newline="") as f:
             rows = list(csv.DictReader(f))
         text_col = next((c for c in (rows[0].keys() if rows else []) if c.startswith("text_")), None)
-        non_empty = [r for r in rows if r.get(text_col, "").strip()] if text_col else []
+        non_empty = [r for r in rows if (r.get(text_col) or "").strip()] if text_col else []
         inv3 = len(non_empty) >= 1
         detail3 = f"{len(non_empty)} linhas não-vazias extraídas"
         if inv3 and non_empty:
@@ -148,7 +149,7 @@ def _run_roundtrip(
         return False, "dialogs.csv não existe — rodar sem --roundtrip primeiro"
 
     # Descobrir fonte original para comparação
-    source_path = _find_source(project_root, project_json, game_data_dir)
+    source_path = _find_source(project_root, project_json)
     if source_path is None:
         return False, (
             "fonte original não encontrada. "
@@ -156,7 +157,7 @@ def _run_roundtrip(
         )
     source_hash = _sha256(source_path)
 
-    # Criar identity approved_translations.csv temporário (3 primeiras strings)
+    # Criar identity approved_translations.csv temporário (amostra espalhada, ate 6 strings)
     with dialogs_csv.open(encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     text_col = next((c for c in (rows[0].keys() if rows else []) if c.startswith("text_")), None)
@@ -166,12 +167,18 @@ def _run_roundtrip(
     # Salvar approved_translations.csv original se existir (restaurar depois)
     approved = project_root / "artifacts" / "approved_translations.csv"
     backup = None
+    stale_bak: tuple[Path, Path] | None = None
     if approved.is_file():
         backup = approved.with_suffix(".smoke_backup")
+        if backup.exists():
+            return False, ("backup pendente de execucao anterior interrompida; restaure "
+                          f"{backup.name} -> {approved.name} antes de rodar o smoke test novamente")
         shutil.copy2(approved, backup)
 
     try:
-        sample = rows[:3]
+        # espalhado pelo arquivo (+ a ultima): so as 3 primeiras escondiam bug de offset/ponteiro no meio/fim
+        sample = rows[::max(1, len(rows) // 5)][:5] + rows[-1:]
+        sample = list({r[id_col]: r for r in sample}.values())
         with approved.open("w", encoding="utf-8", newline="") as f:
             wr = csv.DictWriter(f, fieldnames=[id_col, "text_target"])
             wr.writeheader()
@@ -180,6 +187,10 @@ def _run_roundtrip(
 
         output_dir = project_root / "output"
         output_dir.mkdir(exist_ok=True)
+        stale = _find_output(project_root, source_path)
+        if stale is not None:                # output/ velho faria o SHA passar sem o reinsert rodar de verdade
+            stale_bak = (stale, stale.with_name(stale.name + ".smoke_stale"))
+            stale.replace(stale_bak[1])      # guardado, restaurado no finally (pode ser o output real)
 
         cmd = [sys.executable, str(reinsert_py), str(project_root)]
         if game_data_dir:
@@ -204,6 +215,9 @@ def _run_roundtrip(
                 f"— strings codificadas com bytes diferentes do original"
             )
     finally:
+        if stale_bak is not None:
+            stale_bak[0].unlink(missing_ok=True)
+            stale_bak[1].replace(stale_bak[0])
         if backup and backup.is_file():
             shutil.copy2(backup, approved)
             backup.unlink()
@@ -211,7 +225,7 @@ def _run_roundtrip(
             approved.unlink()  # era temporário
 
 
-def _find_source(project_root: Path, project_json: Path, game_data_dir: Path | None) -> Path | None:
+def _find_source(project_root: Path, project_json: Path) -> Path | None:
     """Localiza o arquivo-fonte original para comparação de round-trip."""
     if project_json.is_file():
         try:
@@ -221,11 +235,8 @@ def _find_source(project_root: Path, project_json: Path, game_data_dir: Path | N
                 p = project_root / declared
                 if p.is_file():
                     return p
-        except Exception:
-            pass
-    if game_data_dir and game_data_dir.is_dir():
-        # Para Unity e similares: não há single-file source; round-trip é diferente
-        return None
+        except (OSError, ValueError, AttributeError) as exc:
+            print(f"[connector_smoke] AVISO: project.json ilegivel ({exc!r}) -- sem source_binary.")
     return None
 
 
@@ -252,10 +263,8 @@ def _sha256(p: Path) -> str:
 
 
 def main() -> None:
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     flags = [a for a in sys.argv[1:] if a.startswith("--")]
 

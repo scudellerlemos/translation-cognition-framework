@@ -13,6 +13,29 @@ if str(_HERE) not in sys.path:
 import connector_io as cio  # noqa: E402
 
 
+def _approved(tmp_path, header, rows):
+    p = tmp_path / "approved_translations.csv"
+    p.write_text("\n".join([header, *rows]) + "\n", encoding="utf-8")
+    return p
+
+
+def test_load_approved_reads_text_target_and_legacy_text_pt(tmp_path):
+    p = _approved(tmp_path, "offset,text_target", ["0x1,Ola", "0x2,  ", ",sem-id"])
+    assert cio.load_approved(p, "x") == {"0x1": "Ola"}          # espaco-so e id vazio ignorados
+    p = _approved(tmp_path, "offset,text_pt", ["0x1,Legado"])
+    assert cio.load_approved(p, "x") == {"0x1": "Legado"}
+
+
+def test_load_approved_raises_when_rows_but_none_filled(tmp_path):
+    p = _approved(tmp_path, "offset,text_en", ["0x1,coluna errada"])      # coluna nao reconhecida
+    with pytest.raises(ValueError, match="nenhuma com coluna text_target/text_pt.*consequencia-x"):
+        cio.load_approved(p, "consequencia-x")
+
+
+def test_load_approved_empty_csv_is_not_an_error(tmp_path):
+    assert cio.load_approved(_approved(tmp_path, "offset,text_target", []), "x") == {}
+
+
 def test_resolve_source_path_prefers_cli_arg(tmp_path, monkeypatch):
     monkeypatch.setenv("FAKE_ENV_VAR", str(tmp_path / "from_env"))
     p = cio.resolve_source_path(cli_arg=str(tmp_path / "from_cli"), env_var="FAKE_ENV_VAR")
@@ -291,3 +314,19 @@ def test_structural_token_rx_wrapped_only_pattern_ok():
 def test_structural_token_config_combined_conflict_keeps_valid_patterns():
     problems, _, patterns = cio.structural_token_config(None, [r"(?P<a>x)", r"(?P<a>y)", "<b>"])
     assert len(problems) == 1 and "<b>" in patterns   # validate segue auditando <b> por linha
+
+
+def test_transliterate_folds_accents_but_keeps_compat_glyphs_and_tokens():
+    # NFD (não NFKD): ①②③ têm de sobreviver (round-trip do Utawarerumono, ch_30_09).
+    assert cio.transliterate("Ação, coração é ótimo") == "Acao, coracao e otimo"
+    assert cio.transliterate("①②③") == "①②③"
+    assert cio.transliterate("{c5}Ação{c-1} [14][0A]") == "{c5}Acao{c-1} [14][0A]"
+
+
+def test_structural_tokens_match_capture_group_pattern_distinguishes_tokens():
+    """Pattern com grupo de captura (BoF4 `\\[([0-9A-Fa-f]{2})\\]`): findall devolvia so o grupo e
+    trocar [01] por [02] passava. Comparacao por match inteiro tem que reprovar."""
+    rx = cio.structural_token_rx([], [r"\[([0-9A-Fa-f]{2})\]"])
+    assert cio.structural_tokens_match(rx, "a [01] b", "x [01] y")
+    assert not cio.structural_tokens_match(rx, "a [01] b", "x [02] y")
+    assert not cio.structural_tokens_match(rx, "a [01] b", "x y")
