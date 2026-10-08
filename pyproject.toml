@@ -4,19 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "translation-cognition-framework"
-dynamic = ["version"]
+dynamic = ["version", "dependencies"]
 description = "Translation Cognition Framework — pipeline SDD de localização narrativa (games/filmes/séries)"
 requires-python = ">=3.11"
-dependencies = [
-    "anthropic~=0.109",
-    "httpx~=0.28",
-]
 
 [project.scripts]
 tcf = "framework.cli:main"
 
 [tool.setuptools.dynamic]
 version = { file = "VERSION" }
+# Fonte unica dos pins: os requirements-*.txt (dependabot atualiza la, o pacote segue junto).
+# requirements-ml.txt = busca semantica, default de todo projeto com `db` (pesado: puxa torch).
+dependencies = { file = ["requirements.txt", "requirements-ml.txt"] }
 
 [tool.setuptools.packages.find]
 include = ["framework*"]

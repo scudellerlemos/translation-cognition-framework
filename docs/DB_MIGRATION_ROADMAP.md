@@ -209,13 +209,13 @@ alvo é **`translation_software`** (com `db` declarado, assim como `demo` e todo
 125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` está **descontinuado**
 (ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
 
-1. **Instalar a stack** (fora da CI, pesada): `pip install -r requirements-ml.txt`
+1. **Instalar a stack** (pesada; já vem no `pip install .`): `pip install -r requirements-ml.txt`
    (`sentence-transformers` + `sqlite-vec`; ~700 MB–1,5 GB com torch + modelo MiniLM).
 2. **Construir os vetores** (compute único, ~minutos em CPU):
    `python framework/cli.py db index projects/translation_software/translation_software.db bof4`
    → popula `tm_embeddings` + a virtual table `vec0` na própria `.db`.
 3. **Pronto**: o `context_pack` em modo DB injeta a seção "falas SIMILARES (adapte)" sozinho
-   (o `_get_embedder` carrega o modelo 1×/processo). Sem a stack, cai p/ `[]` (fallback testado).
+   (o `_get_embedder` carrega o modelo 1×/processo). Sem a stack, o `kb_gate` bloqueia (opt-out: `"db": {..., "semantic": false}`).
 
 **Validação (correção — este parágrafo estava desatualizado):** `embedder.index_project`/`search` JÁ
 rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):

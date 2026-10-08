@@ -70,7 +70,7 @@ cresce). O modelo nunca "lembra" — ele *consulta*.
 **Por que importa em IA.** Consistência vira propriedade do **store**, não da sorte do modelo. Sem
 segundo serviço pago — por padrão só arquivos `.json`/`.csv`/`.jsonl` que você versiona no git, faz diff
 e reconstrói. É RAG levado ao osso: recuperação determinística de estado curado; a busca vetorial
-(SQLite + embeddings locais, opt-in) entra só como suplemento — ver `RAG_ARCHITECTURE.md`.
+(SQLite + embeddings locais, default em projeto novo) entra como suplemento — ver `RAG_ARCHITECTURE.md`.
 
 > No código: `runtime/state_index.py` materializa `artifacts/state/` (idempotente, reconstruível).
 

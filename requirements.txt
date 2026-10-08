@@ -1,0 +1,4 @@
+# requirements.txt — dependências de runtime do núcleo. Lido pelo pyproject.toml (junto com
+# requirements-ml.txt) e incluído pelo requirements-dev.txt: os pins vivem só aqui.
+anthropic~=0.109
+httpx~=0.28
