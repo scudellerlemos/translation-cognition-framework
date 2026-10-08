@@ -167,7 +167,7 @@ Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 Só com a stack de ML instalada (o `db` do Passo 0 funciona sem ela: sem ML o RAG semântico cai p/ vazio, sem erro). Sequência formal —
 substitui ter que lembrar de cabeça (critério de pronto do #174):
 
-1. **Instalar a stack** (fora da CI, pesada — `sentence-transformers` + `sqlite-vec` + `flashrank`,
+1. **Instalar a stack** (fora da CI, pesada — `sentence-transformers` + `sqlite-vec`,
    ~700 MB–1,5 GB com torch): `pip install -r requirements-ml.txt`.
 2. **Popular o índice inicial**: `python framework/cli.py db migrate <project_root> <dest_db> --project-id <id>`
    (corpus ainda flat) já reindexa embeddings no fim (#171); se o corpus já está no DB, use
@@ -177,8 +177,8 @@ substitui ter que lembrar de cabeça (critério de pronto do #174):
    `python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases paraphrases.json]`
    — comparar contra a régua EN→pt-BR (exact_match ≈1.0 / vocab_variation ≈0.944). Score bem
    abaixo → considerar `--model` alternativo (grava `tm_embeddings.model_name`, reindex automático).
-4. **Reindex contínuo é automático desde #182** — toda cena aprovada via `run_scene`/`run_chapter`
-   chama `Store.reindex_pending_embeddings()` no próprio write-path (`connector_io.sync_translations_db`).
+4. **Reindex contínuo é automático desde #182** — toda cena que fecha `verified` via `run_scene`/`run_chapter`
+   chama `Store.reindex_pending_embeddings()` no próprio write-path (`state_index.approve_scene_db`).
    Nenhum passo manual recorrente depois do índice inicial.
 
 **Threshold de score não é item de onboarding**: a ADR 0016 fechou #172 sem evidência de que afinar

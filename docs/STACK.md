@@ -16,7 +16,7 @@ flowchart TB
   end
   subgraph rag["RAG — 2 retrievers ativos + 1 futuro"]
     direction LR
-    r1["nº1 TM semântica<br/>sqlite-vec (vec0) + FlashRank"]
+    r1["nº1 TM semântica<br/>sqlite-vec (vec0)"]
     r2["nº2 KB/lore<br/>gated por spoiler"]
   end
   subgraph exec["EXECUÇÃO — cena = job stateless"]
@@ -92,13 +92,68 @@ push/PR pelo mesmo motivo de custo (torch do zero). Stack (`requirements-ml.txt`
 O `context_pack` já é retrieval-augmented por natureza — a recuperação **padrão é léxica** (match
 exato de TM, glossário por termo, voice card por nome de falante). RAG **semântico** entra só como
 **suplemento rotulado e bounded** em cima disso, nunca substituindo o núcleo determinístico
-(o `context_pack` roda 2× → tem que sair byte-idêntico).
+(o `context_pack` roda 2× → tem que sair byte-idêntico). Arquitetura só do RAG (dados, indexação,
+recuperação, gate de spoiler, degradação) → [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md).
 
 | RAG | Onde | Mecanismo | Status |
 |---|---|---|---|
-| **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto + reranker **FlashRank** (`ms-marco-MiniLM-L-12-v2`, opcional) | ✅ **validado tecnicamente e por ROI real**. ROI medido em produção (10 cenas reais, #175): -24% custo, +2 sucessos/10. Ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) — manter índice atualizado é **requisito obrigatório**. Desde #182, isso é automático: `reindex_pending_embeddings()` roda no próprio write-path de tradução (`connector_io.sync_translations_db`, chamado por `run_scene`/`run_chapter` a cada cena), não só em `db migrate` manual. Calibração de `rag_min_score` com dado real (#184) → ver subseção abaixo |
+| **nº1 — TM semântica** | `embedder.search()` → seção "falas SIMILARES (adapte)" no pacote | `sqlite-vec` (tabela virtual `vec0`) para o índice vetorial dentro do próprio SQLite do projeto | ✅ **validado tecnicamente e por ROI real**. ROI medido em produção (10 cenas reais, #175): -24% custo, +2 sucessos/10. Ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md) — manter índice atualizado é **requisito obrigatório**. Desde #182, isso é automático: `reindex_pending_embeddings()` roda no próprio write-path de tradução (`state_index.approve_scene_db`, chamado por `run_scene`/`run_chapter` quando a cena fecha `verified`), não só em `db migrate` manual. Calibração de `rag_min_score` com dado real (#184) → ver subseção abaixo |
 | **nº2 — KB/lore** | `context_pack.select_kb()` (léxico) + `_load_kb_semantic()` (semântico, #169) → seções "5c." e "5d." do pacote | **léxico**: token do título da seção citado na cena. **semântico** (suplemento, nunca substitui): `embedder.search_kb()` sobre `kb_vectors`, dedupe contra o léxico. Ambos **gated pela mesma trava temporal de spoiler** (default-deny por reveal-por-seção) | ✅ ligado (léxico sempre; semântico se a stack de ML estiver instalada E o projeto tiver `kb` indexada — validado com o KB real do BoF4, mas nenhum projeto hoje tem `reveal` tagueado, então o gate barra a seção semântica em produção até isso mudar) |
 | **nº3 — cross-game/franquia** | corpus compartilhado por série, retrieval por cena | reusa a mesma infra | 🔮 futuro (multi-game) |
+
+### Fluxo em execução — o laço de reuso
+
+O que acontece com **uma cena** em projeto com `db` ligado, e por onde a tradução aprovada volta
+para alimentar a próxima:
+
+```mermaid
+flowchart TB
+  scene["cena N<br/>linhas-fonte"]
+  subgraph pack["context_pack — det., só consulta (vetor pré-computado)"]
+    direction LR
+    ex["match EXATO<br/>tm_exact"]
+    sem["nº1 TM semântica<br/>embedder.search · k=3/linha<br/>rag_min_score ≤ score &lt; 0,999<br/>máx. 8 hits"]
+    kb["nº2 KB / decisões<br/>gate de reveal default-deny"]
+  end
+  split{"_prefilled<br/>fonte já traduzida em OUTRA cena<br/>+ paridade de tokens/quebras?"}
+  reuse["reuso de TM<br/>0 token"]
+  llm{{"translate<br/>IA · Sonnet / Haiku"}}
+  plan["build_plan<br/>grava approved=0"]
+  vf["verify round-trip"]
+  ok["approve_scene<br/>approved=1"]
+  idx["reindex_pending_embeddings<br/>embeda aprovadas ainda sem vetor"]
+  db[("SQLite do projeto<br/>translations + tm_vectors (vec0)")]
+
+  scene --> ex & sem & kb
+  ex --> split
+  split -->|"sim"| reuse
+  split -->|"não: linha nova"| llm
+  sem -. "falas SIMILARES (adapte)" .-> llm
+  kb -. "lore já revelada" .-> llm
+  reuse --> plan
+  llm --> plan
+  plan --> vf --> ok --> idx --> db
+  db -. "cena N+1" .-> ex
+  db -. "cena N+1" .-> sem
+
+  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef rg fill:#e8dff5,stroke:#6a3d9b,color:#000;
+  classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
+  classDef save fill:#fde6c4,stroke:#c97b1f,color:#000;
+  class llm ia;
+  class sem,kb rg;
+  class db,idx,ok st;
+  class reuse save;
+```
+
+- **Onde está a economia** (laranja): linha com match exato de outra cena **não vai ao LLM**
+  (`model._select_reuse`); cena 100% reaproveitada não faz chamada nenhuma. É o caminho que rendeu
+  o −24% do ADR 0016 — o semântico (roxo) só **informa** o prompt das linhas novas, não corta tokens.
+- **Só vira TM o que fechou `verified`**: `build_plan` grava `approved=0`; `approve_scene` promove
+  depois do round-trip (#216). Busca exata e semântica filtram `approved=1`.
+- **O vetor nasce na aprovação**: `reindex_pending_embeddings` só embeda linha aprovada e roda logo
+  depois do `approve_scene` (`state_index.approve_scene_db`) — a cena N+1 já enxerga a cena N nas
+  duas buscas, exata e semântica.
 
 ### `rag_min_score` — calibração com dado real (#184)
 
