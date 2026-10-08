@@ -197,7 +197,7 @@ flowchart TB
 - **Busca exata, não aproximada**: scan linear sobre os vetores do projeto, pelo determinismo.
   Reavaliar ANN a partir de ~50–100 mil vetores por projeto.
 - **Score** = `1 − L2²/2` sobre vetores unit-norm (idêntico 1,0 · ortogonal 0,0). `rag_min_score`
-  é por projeto, em `project.json`; calibração → [`STACK.md`](STACK.md#rag_min_score--calibração-com-dado-real-184).
+  é por projeto, em `project.json`; calibração → [`STACK.md`](STACK.md#rag_min_score--calibração-com-dado-real).
 - **Sem reranker**: o pacote ordena por score (ordem estável). O FlashRank foi removido em
   2026-10-07 — medido, não mudava o que entrava no pacote e custava ~200 ms por linha.
 - **Determinismo**: vetores pré-computados + ordenação estável → `context_pack` rodado 2× sai
