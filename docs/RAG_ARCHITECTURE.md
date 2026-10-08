@@ -131,7 +131,7 @@ flowchart TB
 ```
 
 - **Incremental**: pula o que já tem vetor. **Nunca derruba a escrita**: o dado já está em SQL
-  antes da chamada; embedding é opcional.
+  antes da chamada; falha de embedding nunca derruba a escrita.
 - **Custo é latência, não dinheiro**: ~9–12 s por cena para carregar o modelo (roda local); o
   encode de uma linha é ~0,06 s. Processo isolado por projeto, sem daemon
   ([ADR 0015](adr/0015-embedder-isolado-por-processo-nao-daemon-compartilhado.md)).
@@ -236,8 +236,10 @@ sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2
 ```mermaid
 flowchart LR
   s{"projeto tem<br/>db configurado?"} -->|"não"| e1["[] silencioso<br/>modo flat files"]
-  s -->|"sim"| m{"stack de ML<br/>instalada?"}
-  m -->|"não"| e2["[] silencioso<br/>caso da CI"]
+  s -->|"sim"| o{"db.semantic<br/>= false?"}
+  o -->|"sim"| e4["[] + aviso do kb_gate<br/>opt-out explícito"]
+  o -->|"não"| m{"stack de ML<br/>instalada?"}
+  m -->|"não"| e2["kb_gate BLOQUEIA<br/>(aviso com TCF_ALLOW_NO_ML, caso da CI)"]
   m -->|"sim"| f{"busca falhou?<br/>índice ausente, vec0, OOM"}
   f -->|"sim"| e3["[] + AVISO visível"]
   f -->|"não"| ok["seção semântica no pacote"]
@@ -245,11 +247,12 @@ flowchart LR
   classDef good fill:#d9f2d9,stroke:#2e7d32,color:#000;
   classDef warn fill:#fde6c4,stroke:#c97b1f,color:#000;
   class ok good;
-  class e3 warn;
+  class e3,e4 warn;
 ```
 
-A diferença entre "sem stack" (esperado, silencioso) e "stack presente e quebrou" (avisa) é
-deliberada: mascarar a segunda como "sem vizinhos" esconderia índice desatualizado.
+Nenhum caminho com `db` fica calado: sem a stack o `kb_gate` bloqueia antes de qualquer chamada de
+modelo, o opt-out (`db.semantic: false`) aparece como aviso, e "stack presente e quebrou" avisa —
+mascarar como "sem vizinhos" esconderia índice desatualizado.
 
 ---
 

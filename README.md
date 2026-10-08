@@ -316,14 +316,14 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 
 ## Começar
 
-**Instalar e traduzir um exemplo real, em menos de 2 minutos** (dado fictício, sem jogo real por
+**Instalar e traduzir um exemplo real** (dado fictício, sem jogo real por
 trás — existe só para este README ter algo de verdade pra rodar; você só precisa da sua própria
 chave da Anthropic):
 
 ```bash
 git clone https://github.com/scudellerlemos/translation-cognition-framework
 cd translation-cognition-framework
-pip install .
+pip install .                           # inclui a busca semântica (torch, ~1 GB): a 1ª instalação demora
 cp .env.example .env && $EDITOR .env   # cole sua chave: https://console.anthropic.com/
 tcf translate projects/demo demo01
 ```

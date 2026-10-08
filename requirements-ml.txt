@@ -1,9 +1,10 @@
-# requirements-ml.txt — stack OPCIONAL de TM semântica (RAG nº1). Não é requerida pelo runtime
-# determinístico: sem ela o context_pack cai p/ [] (fallback testado). Instalada e auditada por
-# CVE em quality.yml (job deps, #89) — nunca instalada em test.yml (nenhum teste funcional
-# depende dela).
+# requirements-ml.txt — stack de busca semântica (RAG). OBRIGATÓRIA em projeto com `db`: sem ela o
+# kb_gate bloqueia (opt-out: `"db": {..., "semantic": false}` no project.json). Mesmos pins das
+# dependências do pyproject.toml (`pip install .` já a traz) — manter os dois em sincronia.
+# Auditada por CVE em dep-audit-optional.yml (#89) — nunca instalada em test.yml (torch do zero é
+# caro; os testes rodam com TCF_ALLOW_NO_ML=1, setado no conftest.py da raiz).
 #
-# Instala SÓ quando for LIGAR a busca semântica num projeto com `db` (hoje: translation_software):
+# Checkout de dev (sem `pip install .`):
 #   pip install -r requirements-ml.txt
 #   python framework/cli.py db index projects/translation_software/translation_software.db bof4
 #

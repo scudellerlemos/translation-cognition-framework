@@ -8,7 +8,7 @@ profundo correspondente — este arquivo é o mapa, não o detalhe.
 %%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
   model["<b>MODELO</b> — Anthropic Claude (única parte não-determinística)<br/>translate: Sonnet 4.6 (Haiku 4.5 no tier barato)<br/>back_translate: Opus 4.8 (só alto risco)"]:::mod
-  embed["<b>EMBEDDING</b> — opcional, opt-in por projeto<br/>sentence-transformers · paraphrase-multilingual-MiniLM-L12-v2 (dim 384)"]:::emb
+  embed["<b>EMBEDDING</b> — default em projeto com db<br/>sentence-transformers · paraphrase-multilingual-MiniLM-L12-v2 (dim 384)"]:::emb
   rag["<b>RAG</b> — 3 retrievers semânticos ativos + 1 futuro<br/>TM semântica — sqlite-vec (vec0)<br/>KB/lore e decisões — gated por spoiler"]:::rg
   exec["<b>EXECUÇÃO</b> — cena = job stateless<br/>run_scene / run_chapter<br/>backend in-session (assinatura) ou api (Batch −50%)"]:::ex
   store["<b>PERSISTÊNCIA</b> — SQLite (opt-in) ou flat files<br/>Store (framework/db/) · TM · glossário · voice cards · ledger"]:::st
@@ -49,8 +49,13 @@ Plumbing HTTP/streaming/backoff → `framework/runtime/llm_client.py`.
 
 ## Embedding
 
-**Opcional e opt-in** — não entra no push/PR (`test.yml`) nem é exigido pelo runtime
-determinístico (sem a stack, o retriever semântico cai para `[]`, testado). Testada de verdade
+**Default de todo projeto com `db`** — a stack entra no `pip install .` (dependência do
+`pyproject.toml`). Projeto com `db` e sem a stack instalada é **hard-block no `kb_gate`** (antes o
+retriever semântico caía para `[]` calado e o projeto parecia usar RAG sem usar). Para rodar sem
+busca semântica de propósito: `"db": {..., "semantic": false}` no `project.json` (o gate vira aviso e o pacote usa só o RAG
+léxico). Projeto sem `db` (flat files) não é afetado. A CI de push/PR (`test.yml`) não instala
+torch: os testes rodam com `TCF_ALLOW_NO_ML=1` (setado no `conftest.py` da raiz), que rebaixa o
+bloqueio a aviso. Testada de verdade
 (sem mock) semanalmente por `ml-coverage-optional.yml` (#181), piso de 85% em `embedder.py`/
 `validate_model.py` — mesma cadência do audit de CVE (`dep-audit-optional.yml`, #89), fora do
 push/PR pelo mesmo motivo de custo (torch do zero). Stack (`requirements-ml.txt`):
@@ -60,7 +65,8 @@ push/PR pelo mesmo motivo de custo (torch do zero). Stack (`requirements-ml.txt`
 - **Hardware**: CPU por padrão; roda em GPU automaticamente se torch+ROCm detectado (alvo:
   AMD RX 6650 XT). No Windows fica CPU (ok para corpus de milhares de linhas, poucos minutos).
 - **Onde mora**: `framework/db/embedder.py` (`Embedder.encode`/`index_project`/`search`).
-- **Como ligar**: `pip install -r requirements-ml.txt` (pesado: ~700 MB–1,5 GB, puxa torch) e
+- **Como instalar**: `pip install .` já traz; num checkout de dev, `pip install -r requirements-ml.txt`
+  (pesado: ~700 MB–1,5 GB, puxa torch). Índice inicial de corpus já existente:
   `python framework/cli.py db index <projeto>.db <project_id>`.
 - **Multi-projeto**: processo isolado por projeto, sem daemon compartilhado — cache de download do
   modelo já é por-máquina (default do Hugging Face Hub), reload por processo aceito (ver ADR 0015).

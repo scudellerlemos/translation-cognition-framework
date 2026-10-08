@@ -10,6 +10,8 @@ Checagens (deterministas, sem rede):
   HARD (bloqueiam):
     - research_log.md existe e tem `status: reconciled` (pesquisa IA+humano conciliada).
     - artefatos de KB presentes e nao-vazios: glossary.csv, universe_knowledge_base.md, voice_cards.json.
+    - projeto com `db` exige a stack de ML (requirements-ml.txt) instalada -- busca semantica e o
+      default. Opt-out explicito: `"db": {..., "semantic": false}` (ou TCF_ALLOW_NO_ML=1 no ambiente).
   FRONTEIRA: project.json `kb_frontier` = scene_id max coberto pela pesquisa (ex.: "12_17"). Cena
     alem disso -> a KB nao cobre este ponto narrativo -> rode a Fase 0 ate aqui. `kb_frontier` NAO
     declarado tambem e HARD (sem ele o gate nao tem como validar posicao de cena — tradução as cegas).
@@ -24,7 +26,9 @@ from __future__ import annotations
 
 import contextlib
 import csv
+import importlib.util
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -270,6 +274,24 @@ def _check_ratified_dates(root: Path, res: dict) -> None:
         res["warnings"].append(f"kb_ratified.csv ilegivel ({exc!r}) — data de ratificacao nao checada.")
 
 
+def _check_semantic_stack(cfg: dict, res: dict) -> None:
+    """Projeto com `db` usa busca semantica por default: sem a stack de ML o RAG caia p/ vazio CALADO
+    (o projeto parecia usar embedding e nao usava). Agora bloqueia, salvo opt-out explicito."""
+    if not (cfg.get("db") or {}).get("path"):
+        return
+    if not context_pack.semantic_enabled(cfg):
+        res["warnings"].append("busca semantica DESLIGADA de proposito (project.json: db.semantic=false).")
+        return
+    missing = [m for m in ("sentence_transformers", "sqlite_vec") if importlib.util.find_spec(m) is None]
+    if not missing:
+        return
+    msg = (f"project.json declara `db` mas a stack de ML nao esta instalada ({', '.join(missing)}) — "
+           "rode `pip install -r requirements-ml.txt`, ou declare `\"semantic\": false` em `db` p/ "
+           "rodar sem busca semantica.")
+    # TCF_ALLOW_NO_ML: escape de ambiente (CI/test.yml nunca instala torch) -- vira aviso, nao bloqueio.
+    res["warnings" if os.environ.get("TCF_ALLOW_NO_ML") else "hard_problems"].append(msg)
+
+
 def check(root, scene) -> dict:
     """Retorna {hard_problems: [...], problems: [...], warnings: [...], pending_decisions: [...]}.
     hard_problems != []    => bloquear sempre (nao bypassavel).
@@ -295,6 +317,7 @@ def check(root, scene) -> dict:
     _check_glossary_dated(root, gl_db, g_rows, res)
     _check_frontier(cfg, scene, res)
     _check_ratified_dates(root, res)
+    _check_semantic_stack(cfg, res)
     return res
 
 
