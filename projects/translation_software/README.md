@@ -13,7 +13,7 @@ O `translation_software.db` não é versionado. Para recriá-lo a partir dos fla
 
 ```
 tcf db migrate projects/breath_of_fire_4 projects/translation_software/translation_software.db
-pip install -r requirements-ml.txt        # só se for usar a busca semântica
+pip install -r requirements-ml.txt        # obrigatória em projeto com `db` (já vem no `pip install .`)
 tcf db index projects/translation_software/translation_software.db bof4
 ```
 

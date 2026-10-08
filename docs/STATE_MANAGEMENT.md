@@ -37,7 +37,7 @@ Ver `adr/0003-state-substrate-flatfiles-then-index.md`.
 |---|---|---|
 | Flat files + índice (atual) | sempre — o 80/20 | **adotado**. Portável, versionável, diff-ável, zero infra. |
 | Banco relacional | múltiplos projetos + consultas transacionais | **adotado como opt-in**: SQLite local por projeto (`project.json:db`) — ver `STACK.md`. |
-| Banco vetorial / RAG | recuperação **semântica** sobre lore/decisões grandes | **adotado como opt-in** (sqlite-vec + MiniLM) sobre TM, KB e decisões — ver `RAG_ARCHITECTURE.md`. Sem `db`, a TM segue lookup por chave exata + voz por falante. |
+| Banco vetorial / RAG | recuperação **semântica** sobre lore/decisões grandes | **adotado**, ligado por default em projeto com `db` (sqlite-vec + MiniLM), sobre TM, KB e decisões — ver `RAG_ARCHITECTURE.md`. Sem `db`, a TM segue lookup por chave exata + voz por falante. |
 | Knowledge Graph | relações densas entre entidades | overengineering. `entities.csv` + `aliases_map.json` bastam (P3). |
 
 **Gatilho para evoluir** (já ocorreu — ver `RAG_ARCHITECTURE.md`): o `context_pack` passar a precisar de "decisões/lore
