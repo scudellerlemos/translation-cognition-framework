@@ -43,6 +43,21 @@ flowchart TB
   classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
 ```
 
+## Onde está o detalhe
+
+Este documento é a visão geral. Cada tema tem um documento próprio:
+
+| Tema | Documento |
+|---|---|
+| Como o prompt de cada cena é montado | [`CONTEXT_PACK.md`](CONTEXT_PACK.md) |
+| Contrato do modelo, formato da resposta, benchmarks | [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md) |
+| Busca semântica: dados, indexação, recuperação, calibração | [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) |
+| Onde o custo é cortado e a origem de cada número | [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md) |
+| Conector, round-trip e falta de espaço | [`CONNECTORS.md`](CONNECTORS.md) |
+| Passos do pipeline e checkpoints | [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md) |
+| Revisão humana | [`QA_REVIEW.md`](QA_REVIEW.md) |
+| Jogo novo | [`NEW_PROJECT_ONBOARDING.md`](NEW_PROJECT_ONBOARDING.md) |
+
 ## Vocabulário usado neste documento
 
 | Termo | O que é |
@@ -74,134 +89,11 @@ projeto, seleciona um subconjunto de cada fonte e grava dois arquivos no diretó
 `pack.json` (estruturado, consumido pelo backend `api`) e `scene_prompt.md` (o mesmo conteúdo como
 prompt pronto, usado pelo backend `in-session`).
 
-### Como a seleção funciona
+A seleção é **léxica**: por termo, por nome de falante e por hash do texto, sem embedding. É
+determinística (a mesma cena gera o mesmo prompt, byte a byte), auditável e não custa nada.
 
-O texto-fonte de todas as falas da cena é concatenado e passado para minúsculas (`blob_low`). Cada
-fonte é filtrada por **presença de termo** nesse texto. A primitiva é uma só, `_present`:
-
-```python
-# termo alfanumérico: limite de palavra, com plural inglês opcional
-re.search(r"\b" + re.escape(termo) + r"(?:e?s)?\b", blob_low)
-# termo com espaço ou pontuação: substring simples
-termo in blob_low
-```
-
-O limite de palavra evita falso positivo de substring (o termo `system` não casa dentro de outra
-palavra); o sufixo opcional faz `cohort` casar `cohorts` sem abrir para substring solta.
-
-| Seção do pacote | Regra de seleção | Limite | Função |
-|---|---|---|---|
-| Glossário | o termo ou um de seus aliases está presente na cena | 60 entradas, em ordem alfabética | `select_glossary` |
-| Voice cards | o nome ou um alias do personagem está presente; personagens de criticidade alta entram sempre | — | `select_voices` |
-| Decisões | as universais (regras do conector) primeiro; depois as que têm tag igual a um termo ou falante presente, ou que citam um deles no resumo | 12 | `select_decisions` |
-| TM exata | a fala já foi traduzida antes: `sha1(fonte normalizada)[:16]` igual ao de uma entrada da TM | uma por fala | `select_tm` |
-| TM de voz | exemplos de falas já traduzidas do mesmo falante, para fixar o registro | 3 por falante | `select_tm` |
-| KB / lore | uma palavra (≥ 4 letras) do título da seção está presente na cena **e** a seção tem marca de revelação já ultrapassada | 5 seções | `select_kb` |
-| Guardas de spoiler | um fato ainda **não** revelado neste ponto da história tem um gatilho presente na cena; entra a instrução de como manter a ambiguidade | — | `select_spoiler_guards` |
-| Regras do projeto | tokens de formatação, token de quebra de linha, orçamento de bytes por fala | fixo | `project_constraints` |
-
-#### A chave da TM exata
-
-A chave que identifica "a mesma fala" é calculada por duas funções em `framework/text_ids.py`:
-
-```python
-def norm_source(s: str) -> str:
-    # token literal "\n" do jogo vira espaço; minúsculas; espaços colapsados; pontas aparadas
-    return re.sub(r"\s+", " ", (s or "").replace("\\n", " ").lower()).strip()
-
-def tm_key(s: str) -> str:
-    # SHA-1 do texto normalizado em UTF-8; ficam os 16 primeiros caracteres hex
-    return hashlib.sha1(norm_source(s).encode("utf-8"), usedforsecurity=False).hexdigest()[:16]
-```
-
-Exemplo: a fala `Where do you\nwant to go?` é normalizada para `where do you want to go?`, e a
-chave são os 16 primeiros caracteres do SHA-1 desse texto.
-
-- **A normalização define o que conta como a mesma fala.** Caixa, espaços e posição da quebra de
-  linha são ignorados. Qualquer outra diferença (uma vírgula, uma palavra) gera outra chave.
-- **O SHA-1 é só um identificador, não uma medida de segurança.** O `usedforsecurity=False`
-  declara isso. Qualquer hash estável serviria.
-- **16 caracteres hex são 64 bits.** Com milhares de falas por jogo, a chance de duas falas
-  diferentes terem a mesma chave é desprezível.
-- **A chave é a mesma nos dois modos de persistência.** Arquivos e banco usam essa função, então
-  a TM de um é compatível com a do outro.
-
-A busca é um dicionário `chave → tradução`, montado uma vez por cena.
-
-#### Por que hash, e como os dois caminhos se dividem
-
-A chave responde uma pergunta só: "esta fala já foi traduzida?". Ela existe para responder isso
-sem usar modelo nenhum.
-
-- **É a pergunta certa para a decisão mais cara.** Decidir que uma fala **não vai ao LLM** exige
-  certeza. Duas falas com cosseno de 0,97 podem ser "Vá para o norte" e "Vá para o sul"; reusar a
-  tradução de uma na outra seria erro. Só igualdade de texto autoriza o reuso.
-- **Normalizar antes de comparar aumenta os acertos sem risco.** Comparar o texto cru perderia as
-  falas que só mudam em caixa, espaço ou posição da quebra de linha, que são a mesma fala para
-  fins de tradução.
-- **O hash dá uma chave curta e de tamanho fixo.** A consulta é um acesso a dicionário em memória,
-  O(1) por fala.
-
-O sistema identifica uma fala já traduzida por dois caminhos independentes:
-
-| | Caminho exato | Caminho semântico |
-|---|---|---|
-| Pergunta | esta fala já foi traduzida? | que falas traduzidas se parecem com esta? |
-| Como identifica | `tm_key` da fala igual à de uma tradução aprovada | vizinhos por distância em `tm_vectors` |
-| Usa embedding | não | sim |
-| Match exato | é o alvo | é excluído no SQL (score ≥ 0,999), porque o caminho exato já cuidou dele |
-| O que faz com o resultado | a fala **não vai** ao modelo (`_select_reuse`) | o par entra no prompt como referência para as falas novas |
-| Efeito em tokens | corta saída | acrescenta entrada, com teto |
-
-No caminho exato, ao montar o pacote o código carrega as traduções aprovadas do projeto, calcula
-`tm_key` de cada fonte e monta o dicionário; depois calcula a mesma chave para cada fala da cena e
-consulta. No modo arquivos a chave vem gravada na TM (`src_key`); no modo banco ela é calculada na
-hora, em Python, e não é coluna da tabela.
-
-Consequências para o RAG:
-
-- **Divisão de trabalho.** O caminho exato decide o que não traduzir; o semântico só informa. É
-  por isso que a economia medida veio do hash, e não do embedding.
-- **As vagas do top-k ficam para vizinhos de verdade.** Sem a exclusão do match exato, uma fala
-  repetida como "Yes." ocuparia os 3 vizinhos com cópias de si mesma.
-- **Os dois caminhos só leem `approved=1`.** O que alimenta o reuso e as referências já passou no
-  round-trip.
-
-Dois limites conhecidos:
-
-- **A TM é carregada por cena.** No modo banco o dicionário é remontado a cada cena, a partir de
-  todas as traduções aprovadas. Com milhares de linhas o custo é desprezível; com milhões valeria
-  gravar a chave como coluna indexada e consultar só as falas da cena.
-- **"Exato" tem duas definições.** O hash normaliza caixa e espaços; o corte de 0,999 é aplicado
-  ao vetor do texto sem os códigos do jogo. Os critérios são parecidos, mas não idênticos.
-
-O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário e do log de
-decisões. Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
-versão antiga.
-
-### Por que léxico, e não por embedding
-
-Seleção léxica aqui quer dizer comparar strings (match de termo, hash de texto normalizado), sem
-modelo de similaridade. A escolha é deliberada:
-
-- **Os alvos são nomes próprios e termos fechados.** A pergunta "o termo *Gigiri* aparece nesta
-  cena?" tem resposta exata. Embedding responde "que texto se parece com este?", que é outra
-  pergunta: traria termos parecidos que não estão na cena e poderia deixar de fora um termo que
-  está. Um termo de glossário que falta no prompt vira inconsistência de tradução.
-- **Cada item do pacote é auditável.** Tudo o que entrou tem uma causa verificável a olho: uma
-  string que está na cena. Não há limiar de score para calibrar nem resultado que mude com a
-  versão do modelo de embedding.
-- **É determinístico sem depender de mais nada.** O mesmo estado de projeto gera o mesmo
-  `pack.json`, byte a byte (`test_context_pack_deterministic`). Isso permite cachear, comparar
-  runs e reproduzir um bug de tradução a partir do pacote que o gerou.
-- **Não tem dependência.** Roda só com a biblioteca padrão, sem banco e sem a stack de ML. É por
-  isso que os projetos em arquivos funcionam sem embedding.
-- **Custa nada.** São expressões regulares e consultas a dicionário sobre o texto de uma cena.
-
-O que o léxico não cobre é a fala **parecida mas não idêntica** a uma já traduzida: o hash muda
-com uma palavra de diferença. Esse é o único caso em que similaridade ajuda, e é o que a busca
-semântica acrescenta (seção [RAG](#rag-recuperação-semântica)), sempre em seções separadas do
-prompt e sem mexer na seleção acima.
+Regras de seleção, tetos, a chave da TM exata e a justificativa →
+[`CONTEXT_PACK.md`](CONTEXT_PACK.md).
 
 ---
 
@@ -221,11 +113,12 @@ Decisões de engenharia nessa camada:
 
 - **Roteamento por complexidade.** O modelo mais caro só vê o que precisa dele. O contexto curado
   do pacote permite que Sonnet e Haiku façam a tradução; Opus fica para verificar.
-- **Saída estruturada.** A tradução volta em JSON validado por schema (`json_schema`), uma entrada
-  por fala, e não como texto livre a ser parseado.
+- **Saída estruturada.** A tradução volta em JSON validado por schema (`json_schema`), e não como
+  texto livre a ser parseado. Cada fala volta com tradução, falante, registro, intenção e risco; schema e validação em
+  [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md#o-formato-da-resposta).
 - **Prompt caching.** A doutrina de tradução (o `system` prompt, igual para todas as cenas) é
   marcada com `cache_control`. O efeito medido é pequeno, porque o custo está na saída e não na
-  doutrina (ver a tabela de economia na seção de RAG).
+  doutrina (ver [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md)).
 - **Sem thinking na tradução.** Roda com `effort: low` e thinking desligado; ligar custou cerca de
   5× na medição. A back-translation mantém thinking, porque ali o raciocínio pesa.
 - **Dois backends, um contrato.** `api` (padrão) chama a API com streaming e backoff exponencial em
@@ -234,7 +127,7 @@ Decisões de engenharia nessa camada:
 - **Re-tradução por estouro de espaço.** Se a tradução não cabe nos bytes da fala original, só as
   linhas que estouraram são re-traduzidas, escalando de modelo (`MODEL_ESCALATION`).
 
-Contrato, backends e benchmarks → [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md). Cliente HTTP,
+Contrato, formato da resposta, backends e benchmarks → [`MODEL_INTERFACE.md`](MODEL_INTERFACE.md). Cliente HTTP,
 streaming e backoff → `framework/runtime/llm_client.py`.
 
 ---
@@ -281,7 +174,7 @@ Todo projeto com `db` no `project.json` usa busca semântica por padrão. A stac
 ## RAG (recuperação semântica)
 
 RAG (retrieval-augmented generation) é buscar informação relevante e colocá-la no prompt, em vez
-de esperar que o modelo a saiba. O [pacote de contexto](#pacote-de-contexto--a-peça-central) já
+de esperar que o modelo a saiba. O [pacote de contexto](CONTEXT_PACK.md) já
 faz isso de forma **léxica**.
 
 A busca **semântica** (por embedding) é um **suplemento** em cima disso. Ela entra em seções
@@ -292,274 +185,97 @@ Arquitetura completa do RAG (dados, indexação, recuperação, filtro de spoile
 
 | Busca | O que recupera | Como | Estado |
 |---|---|---|---|
-| **TM semântica** | falas já traduzidas parecidas com as da cena; viram a seção "falas SIMILARES (adapte)" do prompt | `Embedder.search()` sobre `tm_vectors` | ativa; ganho medido (ver [ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md)) |
+| **TM semântica** | falas já traduzidas parecidas com as da cena; viram a seção "falas SIMILARES (adapte)" do prompt | `Embedder.search()` sobre `tm_vectors` | ativa; serve à consistência, não à economia ([detalhe](RAG_ARCHITECTURE.md#para-que-serve-a-tm-semântica)) |
 | **KB / lore** | seções da base de conhecimento relevantes para a cena | léxica (`select_kb`, pelo título da seção citado na cena) + semântica (`_load_kb_semantic`, sobre `kb_vectors`), sem duplicar | ativa; a parte semântica só devolve seção com marca de revelação (ver filtro de spoiler abaixo) |
 | **Decisões** | decisões de tradução relacionadas ao conteúdo da cena | `_load_decisions_semantic`, sobre `decision_vectors`, além do índice léxico | ativa |
 | **Entre jogos da mesma série** | TM compartilhada por franquia | mesma infraestrutura | futura |
 
-### Como a recuperação foi implementada
-
-**Indexação.** Cada fala aprovada vira um vetor de 384 dimensões, gravado em `tm_vectors` (tabela
-virtual `vec0` do `sqlite-vec`). Antes de embedar, os códigos de controle do jogo são removidos do
-texto (`strip_codes`), para que a similaridade meça o sentido da fala e não a formatação. Seções
-da KB e decisões têm índices próprios (`kb_vectors`, `decision_vectors`). Uma linha editada perde
-o vetor por trigger e some da busca até ser reindexada, então o índice nunca devolve texto velho.
-
-**Consulta.** A busca é vizinho mais próximo **exato**: varredura linear com `vec_distance_l2`,
-sem índice aproximado (ANN). Para milhares de vetores o custo é desprezível, e a varredura permite
-filtrar **antes** de cortar os `k` vizinhos. Com o operador `MATCH ... k` do `vec0`, o corte vinha
-primeiro, sobre a tabela inteira, e o filtro por projeto e por `approved=1` podia devolver menos
-de `k` resultados.
-
-```sql
-SELECT ..., MIN(vec_distance_l2(v.embedding, :consulta)) AS l2
-FROM tm_vectors v JOIN translations t ON t.id = v.translation_id
-WHERE t.project_id = :projeto AND t.approved = 1
-GROUP BY t.source, t.target          -- o mesmo par em N cenas ocupa 1 vaga, não N
-HAVING l2 > :l2_do_match_exato       -- exclui o que o caminho léxico já trouxe
-ORDER BY l2 LIMIT :k
-```
-
-**Parâmetros de recuperação** (em `context_pack.py`):
-
-| Parâmetro | TM semântica | KB e decisões semânticas |
-|---|---|---|
-| Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
-| `k` (vizinhos por consulta) | 3 | 3 |
-| Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
-| Score mínimo | `rag_min_score` (0,55; calibrado, ver abaixo) | sem limiar; o corte é o `k` |
-| Score máximo | 0,999 (acima disso é match exato) | — |
-| Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
-| Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
-| Ordenação | score decrescente, desempate pelo texto (saída estável) | idem |
-
-Sobre a calibração: o único parâmetro calibrado com dado real é o `rag_min_score`. O `k=3` e o
-teto de 8 são valores fixos de projeto, escolhidos para limitar o tamanho da seção; não houve
-experimento variando `k`. A medição de custo (ADR 0016) mostrou que o ganho não vinha dali, então
-afinar `k` ficou sem prioridade.
-
-Dois detalhes de correção que mudaram o resultado:
-
-- **O corte superior é feito no SQL, antes do `LIMIT`.** Uma fala curta como "Yes." tem dezenas de
-  ocorrências idênticas no corpus. Sem o corte, elas ocupavam todas as `k` vagas e a fala ficava
-  sem vizinho útil.
-- **Em KB e decisões, o `k` é aplicado depois do filtro de spoiler.** A consulta traz todos os
-  candidatos em ordem de distância e o código para ao juntar 3 permitidos. Cortar antes devolvia
-  lista vazia quando os 3 mais próximos ainda não tinham sido revelados.
-
-O filtro de spoiler é default-deny: KB e decisões semânticas só entram com uma marca `reveal`
-provando que o conteúdo já foi revelado no ponto da história em que a cena está. Hoje nenhum
-projeto tem a KB marcada, então a KB semântica fica vazia em produção até isso ser feito.
-
-A busca semântica não entra, de propósito, no glossário (o match por termo é preciso; o semântico
-traria falso positivo) nem nos voice cards (identidade é por nome, não por similaridade).
-
 ### Onde está a economia de tokens
 
-Um ponto que evita confusão: **a busca semântica não reduz tokens; ela acrescenta.** Cada vizinho
-é texto a mais no prompt. O que ela compra é consistência de fraseado, e os tetos acima existem
-para que esse acréscimo seja pequeno e previsível (no máximo 8 pares, 3 decisões e 3 seções por
-cena). A economia vem das técnicas abaixo, em ordem de impacto.
+A busca semântica não reduz tokens; ela acrescenta, com teto. A economia vem de outro lugar:
 
-| Técnica | O que corta | Como | Efeito |
-|---|---|---|---|
-| **Reuso exato de TM** | tokens de saída, os mais caros (5× o preço de entrada) | `model._select_reuse`: fala com o mesmo hash de fonte já aprovada em outra cena não é enviada ao modelo | cena 100% repetida custa zero; responsável pelos −24% do ADR 0016 |
-| **Pacote limitado por cena** | tokens de entrada | seleção por presença de termo, com teto por seção (glossário 60, decisões 12, KB 5, TM de voz 3 por falante) | o prompt não cresce com o projeto |
-| **Thinking desligado na tradução** | tokens de saída | `effort: low`, `thinking: disabled`; thinking é cobrado como saída | cerca de 5× de diferença na medição |
-| **Roteamento por complexidade** | preço por token | no lote, falas de uma linha só vão para Haiku; as com quebra de linha ficam no Sonnet | −67% por fala roteada |
-| **Batch API** | preço por token | `run_chapter` envia as cenas em lote assíncrono | −50% |
-| **Retry por fala** | reenvio | se a saída vem incompleta ou inválida, a nova tentativa manda só as falas que falharam; as já pagas ficam em checkpoint | custo do retry proporcional ao que quebrou |
-| **Verificação amostrada** | chamadas ao modelo mais caro | back-translation só nas falas de risco alto, mais 5% das demais | Opus vê uma fração do corpus |
-| **Prompt caching** | tokens de entrada repetidos | a doutrina de tradução vai no `system` com `cache_control` | pequeno: a doutrina tem cerca de 1.300 tokens, e num capítulo medido custou US$ 0,14 contra US$ 3,41 de saída. No lote as requisições rodam em paralelo e regravam o cache, então o ganho ali é praticamente nulo |
+| Técnica | Efeito medido |
+|---|---|
+| Reuso exato de TM (a fala repetida não vai ao modelo) | −24% de custo em 10 cenas |
+| Thinking desligado na tradução | cerca de 5× menos custo |
+| Haiku para falas de uma linha, no lote | −67% por fala roteada |
 
-As três técnicas de maior efeito são detalhadas a seguir, com o mecanismo e a origem de cada
-número.
+Mecanismo e origem de cada número, e as demais técnicas → [`TOKEN_ECONOMY.md`](TOKEN_ECONOMY.md).
 
-#### Reuso exato de TM: −24% de custo
+Implementação da recuperação, o laço de reuso em execução e a calibração do `rag_min_score` →
+[`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md).
 
-**Mecanismo.** Antes de chamar o modelo, `model._prefilled` separa as falas da cena em dois
-grupos:
+---
 
-1. Para cada fala, calcula a chave `sha1(fonte normalizada)[:16]` e procura na TM exata do pacote
-   (`tm_exact`), que só contém traduções aprovadas.
-2. Se achou, e a entrada veio de **outra** cena, e a tradução guardada tem a mesma contagem de
-   quebras de linha e de tokens de formatação que a fala atual (`_line_ok`), a fala é preenchida
-   com a tradução guardada e marcada como `intent: reuso_tm`.
-3. As falas restantes (`novel`) são as únicas que entram no prompt. Se a lista fica vazia, a
-   função retorna sem criar o cliente da API: uso `{in: 0, out: 0}`.
+## Conector e round-trip — a garantia de que o jogo não quebra
 
-O corte é em tokens de **saída**. Cada fala traduzida devolve um objeto JSON com tradução,
-falante, registro, intenção e risco, em média 66 tokens, e saída custa 5× a entrada (Sonnet:
-US$ 3 por milhão de tokens de entrada, US$ 15 de saída).
+Traduzir o texto é metade do problema. A outra metade é devolver esse texto a um arquivo binário
+que o jogo consiga ler. Essa parte é **determinística**, específica de cada jogo, e é o que o
+conector resolve.
 
-As duas condições do passo 2 existem porque reusar errado custa mais do que traduzir de novo:
+O conector é um conjunto de scripts por jogo (`extract`, `build_plan`, `reinsert`, `verify`). O
+`verify` reconstrói o arquivo sem tradução e exige o original byte a byte; depois aplica a
+tradução e a relê. Se a tradução não cabe, o run re-traduz só as falas que estouraram, com
+orçamento mais apertado.
 
-- **Paridade de estrutura.** A chave ignora quebras de linha, então duas falas com o mesmo texto
-  podem quebrar em pontos diferentes. Reusar uma tradução com quebras diferentes reprova na
-  reinserção.
-- **Nunca a própria cena.** Ao re-traduzir uma cena para encurtar o texto, reusar a saída anterior
-  dela devolveria justamente a tradução que não coube. Por isso o reuso também é desligado nas
-  rodadas de re-tradução por estouro de espaço.
+Contrato, protocolo de saída e tratamento de falta de espaço → [`CONNECTORS.md`](CONNECTORS.md).
 
-**Medição** ([ADR 0016](adr/0016-rag-roi-validado-reindex-obrigatorio.md)). As mesmas 10 cenas do
-Breath of Fire IV foram traduzidas duas vezes: uma sem o banco, outra com o banco reindexado
-depois de cada cena.
+---
 
-| | Sem banco | Com banco | Diferença |
-|---|---:|---:|---:|
-| Custo total das 10 cenas | US$ 1,2797 | US$ 0,9714 | **−24%** |
-| Cenas concluídas | 5 de 10 | 7 de 10 | +2 |
-| Custo por cena concluída | US$ 0,138 | US$ 0,086 | −38% |
+## Verificações antes e depois da tradução
 
-Duas das dez cenas saíram a US$ 0,00 com o banco (todas as falas reusadas), contra US$ 0,066 a
-US$ 0,155 nas mesmas cenas sem ele. Eram cenas de texto de sistema e de menu, repetido entre áreas
-do jogo. O ganho veio daí, e não dos vizinhos semânticos.
+Além do round-trip, três mecanismos cercam a chamada do modelo.
 
-Limites: a amostra é de 10 cenas, e o efeito depende de quanto o jogo repete texto. Em outra
-medição, num capítulo de Utawarerumono, só 2,8% das falas eram reusáveis. O percentual cresce com
-o corpus já traduzido, e por isso a tradução aprovada precisa estar disponível logo na cena
-seguinte: a reindexação acontece a cada aprovação, e não em lote no fim.
+### Gates: bloqueio antes de gastar
 
-#### Thinking desligado na tradução: cerca de 5×
+Dois gates rodam no início de `run_scene` e `run_chapter`, sem rede e sem modelo. A ideia é falhar
+antes do primeiro token pago.
 
-**Mecanismo.** A chamada de tradução é montada com `thinking: {"type": "disabled"}` e
-`output_config.effort: "low"` (constantes `THINK_TRANSLATE` e `EFFORT_TRANSLATE`). Os tokens de
-raciocínio do modelo são cobrados como tokens de saída, ao mesmo preço da resposta.
+| Gate | Bloqueia quando |
+|---|---|
+| `connector_gate` | faltam os scripts de plano ou de verificação; eles ainda são a cópia intocada do esqueleto; ou nenhuma cena do projeto jamais passou no round-trip |
+| `kb_gate` | a pesquisa do universo do jogo não foi revisada e marcada como conciliada; glossário, base de conhecimento ou voice cards estão vazios; a cena está além do ponto da história que a pesquisa cobre (`kb_frontier`); ou o projeto tem banco e a stack de embedding não está instalada |
 
-**Medição.** Na primeira rodada real, com `effort: high` e thinking adaptativo, uma cena de 37
-falas gerou cerca de 20.000 tokens de saída. Com os valores atuais, uma cena de 37 falas gera
-2.529. No custo, a diferença registrada foi de cerca de 5×; projetado para o jogo inteiro, de
-aproximadamente US$ 285 para US$ 36.
+Parte das condições é dura (não há como contornar) e parte aceita uma flag explícita de bypass
+(`--skip-connector-gate`, `--skip-kb-gate`).
 
-**Por que não perde qualidade.** O raciocínio que o thinking faria (que termo usar, como o
-personagem fala, o que já foi decidido) já chega resolvido no pacote de contexto. No benchmark sem
-thinking, uma cena coberta pela TM saiu com 37 de 37 falas idênticas à referência, e uma cena de
-comédia de 408 falas, fora da TM, manteve registro e humor no nível da versão de referência.
+### Back-translation: verificação de sentido
 
-A back-translation mantém thinking: ali o modelo precisa comparar sentido entre duas versões, e
-ela só roda nas falas de risco alto.
+O round-trip prova que os **bytes** estão certos; não diz nada sobre o **sentido**. Para isso há
+uma segunda chamada de modelo (`back_translate.py`):
 
-#### Haiku para falas de uma linha: −67% por fala
+- **O que faz.** O Opus recebe a tradução em português, traduz de volta para o inglês e compara
+  com a fonte. Devolve, por fala, um veredito `pass` ou `revise` e uma nota curta.
+- **Em que falas.** Nas que o próprio modelo de tradução classificou como `high` ou `critical`, e
+  em uma amostra de 5% das demais. A amostra é determinística: depende de
+  `sha1(seed|cena|offset)`, então rodar duas vezes escolhe as mesmas falas.
+- **Não bloqueia.** O resultado marca a fala para revisão humana. Uma divergência de sentido é
+  julgamento, e travar o run por ela trocaria um problema de qualidade por um de disponibilidade.
+- **Invalidação.** Se uma fala é re-traduzida depois do veredito, o veredito é marcado como
+  vencido e ela é julgada de novo.
+- **Custo.** No lote, roda como um passo único no fim do capítulo, pela Batch API.
 
-**Mecanismo.** No caminho de lote, cada fala é classificada por uma regra de uma linha:
+### Filtro de spoiler
 
-```python
-def _tier_of(source):
-    return "main" if TOKEN in source else "cheap"   # TOKEN = marcador de quebra de linha do jogo
-```
+Um tradutor que sabe o fim da história pode entregá-lo sem querer: usar o nome verdadeiro de um
+personagem antes da revelação, ou um pronome que denuncia quem ele é. O mesmo vale para o modelo,
+se o prompt contiver informação do futuro.
 
-As falas `cheap` de uma cena vão em requisições para `claude-haiku-4-5`; as `main`, para
-`claude-sonnet-4-6`. As respostas são fundidas por fala antes da validação.
+O controle é por **posição na história**. O identificador da cena vira uma tupla numérica
+(`12_03` → `(12, 3)`), e todo conteúdo sensível carrega uma marca `reveal` com a cena em que
+aquilo é revelado. Compara-se a marca com a cena atual:
 
-**De onde vem o número.** É a razão de preço, e não uma medição: Haiku custa US$ 1 e US$ 5 por
-milhão de tokens (entrada e saída), Sonnet custa US$ 3 e US$ 15. Um terço do preço nos dois
-sentidos, logo −67% em cada fala roteada.
+| Fonte | Regra |
+|---|---|
+| KB e decisões recuperadas por busca semântica | só entram com `reveal` já ultrapassado; sem marca, não entram (default-deny) |
+| Decisões selecionadas por termo | entram, a menos que tenham `reveal` no futuro |
+| Fatos do registro de spoilers | se o fato ainda não foi revelado e um gatilho dele aparece na cena, o prompt recebe a instrução de como manter a ambiguidade |
 
-**Por que o critério é a quebra de linha.** O benchmark mostrou a voz do Haiku no nível da do
-Sonnet, inclusive em registro arcaico. A fraqueza medida foi outra: em escala, Haiku erra a
-contagem do marcador de quebra de linha, e a tradução reprova na validação. Esse erro só pode
-acontecer em fala que tem quebra. Mandar para o Haiku só as falas sem quebra usa o modelo barato
-exatamente onde a fraqueza dele não se manifesta.
+Quando a posição não pode ser comparada (identificador sem número), o conteúdo é tratado como
+futuro. O erro seguro é esconder demais.
 
-**Alcance.** Medido em 44.116 falas de um jogo: 59% são de uma linha só (26.004 contra 18.112),
-com variação de 56% a 67% entre capítulos. Em tokens a fatia é menor, porque falas de uma linha
-são mais curtas. A economia agregada de um capítulo inteiro não foi medida isoladamente.
-
-O roteamento vale só no lote. O caminho em tempo real (re-tentativas e casos difíceis) fica no
-Sonnet. Um detalhe de API: Haiku 4.5 rejeita o parâmetro `effort` com erro 400, então ele é
-omitido nas requisições desse modelo.
-
-A amostragem de 5% na back-translation existe por causa desse roteamento: as falas de risco baixo
-e médio, que incluem as que vão ao Haiku, não passariam por nenhuma verificação de sentido. A
-amostra dá um piso de qualidade medido para o modelo barato.
-
-### Fluxo em execução — o laço de reuso
-
-O que acontece com **uma cena** em projeto com `db`, e por onde a tradução aprovada volta para
-alimentar a cena seguinte:
-
-```mermaid
-flowchart TB
-  scene["cena N<br/>linhas-fonte"]
-  subgraph pack["context_pack — det., só consulta (vetor pré-computado)"]
-    direction LR
-    ex["match EXATO<br/>tm_exact"]
-    sem["TM semântica<br/>embedder.search · k=3/linha<br/>rag_min_score ≤ score &lt; 0,999<br/>máx. 8 hits"]
-    kb["KB / decisões<br/>filtro de spoiler default-deny"]
-  end
-  split{"_prefilled<br/>fonte já traduzida em OUTRA cena<br/>+ paridade de tokens/quebras?"}
-  reuse["reuso de TM<br/>0 token"]
-  llm{{"translate<br/>IA · Sonnet / Haiku"}}
-  plan["build_plan<br/>grava approved=0"]
-  vf["verify round-trip"]
-  ok["approve_scene<br/>approved=1"]
-  idx["reindex_pending_embeddings<br/>embeda aprovadas ainda sem vetor"]
-  db[("SQLite do projeto<br/>translations + tm_vectors (vec0)")]
-
-  scene --> ex & sem & kb
-  ex --> split
-  split -->|"sim"| reuse
-  split -->|"não: linha nova"| llm
-  sem -. "falas SIMILARES (adapte)" .-> llm
-  kb -. "lore já revelada" .-> llm
-  reuse --> plan
-  llm --> plan
-  plan --> vf --> ok --> idx --> db
-  db -. "cena N+1" .-> ex
-  db -. "cena N+1" .-> sem
-
-  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
-  classDef rg fill:#e8dff5,stroke:#6a3d9b,color:#000;
-  classDef st fill:#d9f2d9,stroke:#2e7d32,color:#000;
-  classDef save fill:#fde6c4,stroke:#c97b1f,color:#000;
-  class llm ia;
-  class sem,kb rg;
-  class db,idx,ok st;
-  class reuse save;
-```
-
-- **Onde está a economia** (laranja): uma fala cuja fonte já foi traduzida em outra cena **não vai
-  ao LLM** (`model._select_reuse`); a tradução aprovada é reusada. Uma cena 100% reaproveitada não
-  faz chamada nenhuma. Foi esse caminho que rendeu a redução de 24% de custo medida em 10 cenas
-  (ADR 0016). A busca semântica (roxo) só **informa** o prompt das falas novas; não corta tokens.
-- **Só vira TM o que passou no round-trip.** O `build_plan` grava a tradução com `approved=0`; o
-  `approve_scene` promove para `approved=1` depois do `verify`. As buscas exata e semântica só
-  leem `approved=1`, então uma tradução reprovada nunca contamina as cenas seguintes.
-- **O vetor nasce na aprovação.** `reindex_pending_embeddings` embeda as linhas aprovadas que ainda
-  não têm vetor, logo depois do `approve_scene`. A cena N+1 já enxerga a cena N. É incremental e
-  não derruba a escrita: o dado já está gravado em SQL antes da indexação.
-
-### `rag_min_score` — calibração com dado real
-
-`rag_min_score` é o score mínimo para um vizinho semântico entrar no prompt. O score é o cosseno
-entre a fala consultada e a fala-fonte indexada: 1,0 é idêntico, 0,0 é sem relação. Só o texto na
-língua de origem entra no cálculo; a tradução vai junto como metadado.
-
-A calibração usou um índice real: 12 cenas do Breath of Fire IV traduzidas pelo pipeline e
-aprovadas (323 falas, 323 vetores), e 40 consultas em 5 categorias.
-
-| Categoria da consulta | Exemplo | Score do melhor hit |
-|---|---|---|
-| Texto idêntico ao do corpus | `"Monsters! They're everywhere!..."` | **1,0** (5 de 5) |
-| Quase idêntico (pontuação ou aspas diferentes) | "Where do you want to go?" | 0,83–0,89 |
-| Paráfrase (mesmo sentido, outras palavras) | "So what is the state of the sacrifice now?" | 0,71–0,89 (um caso em 0,57) |
-| Mesmo tema, conteúdo diferente | "Take this sword, it was forged by ancient smiths" | 0,37–0,51 |
-| Fora do domínio | "Preheat the oven to 200 degrees..." | 0,13–0,38 |
-
-Leitura: acima de 0,71 os hits são paráfrases de verdade, úteis como referência. Abaixo de 0,57
-eles casam só por vocabulário de tema (fantasia/RPG), sem relação de sentido. O maior score de
-ruído observado foi **0,51**.
-
-**Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
-paráfrases (0,57). Fica em `projects/translation_software/project.json`; é configurável por
-projeto, porque depende do par de idiomas.
-
-Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
-para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em
-produção. O modelo também só foi validado para inglês→português; para outro par de idiomas,
-`tcf db validate-model` refaz a medição.
-
-Fases e decisões de design do banco e do índice → [`DB_MIGRATION_ROADMAP.md`](DB_MIGRATION_ROADMAP.md).
+Detalhe → [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md) e
+[`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
 
 ---
 
@@ -591,6 +307,8 @@ run_scene(cena):
 - **Custo auditável.** `api_ledger.jsonl` registra toda chamada cobrada, inclusive as que
   falharam. A recuperação de erro é por fala, não por cena, então o custo de um retry é
   proporcional ao que quebrou.
+- **Ordem de grandeza.** O gasto real acumulado do projeto Utawarerumono, somado pelo ledger, foi
+  de cerca de R$ 338 (Sonnet R$ 260, Opus R$ 40, Haiku R$ 38).
 
 Detalhe e medições → [`ARCHITECTURE.md`](ARCHITECTURE.md) e
 [`TRANSLATION_PIPELINE.md`](TRANSLATION_PIPELINE.md).
@@ -620,6 +338,32 @@ um arquivo local dispensa infraestrutura, e manter dado relacional e vetor no me
 elimina a sincronização entre dois sistemas.
 
 Detalhe → [`STATE_MANAGEMENT.md`](STATE_MANAGEMENT.md).
+
+---
+
+## Qualidade e CI
+
+O código determinístico é a maior parte do sistema, e é testado como software comum. São 7
+workflows no GitHub Actions:
+
+| Workflow | Quando roda | O que verifica |
+|---|---|---|
+| `test.yml` | PR e push no `main` | mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado |
+| `quality.yml` | PR e push no `main` | ruff (lint), bandit (segurança no código), pip-audit (CVE nas dependências), gitleaks (credenciais vazadas) |
+| `api-smoke.yml` | semanal e manual | uma cena mínima enviada de verdade à Batch API, para detectar mudança de contrato da API antes de um capítulo pago |
+| `ml-coverage-optional.yml` | semanal | os testes da stack de embedding sem mock, com piso de 85% |
+| `dep-audit-optional.yml` | semanal | pip-audit nas dependências de ML e de pesquisa |
+| `branch-hygiene.yml` | semanal | branches já incorporadas ao `main` |
+| `release.yml` | tag de versão | gera a release |
+
+Dois pontos de desenho:
+
+- **O binário do jogo não vai para o repositório**, então o teste de round-trip real não roda no
+  CI. Para cobrir a lógica mesmo assim, cada conector tem um `test_roundtrip_synthetic.py`: o
+  Hypothesis gera textos aleatórios, o teste codifica e decodifica numa tabela sintética em
+  memória, e exige o texto e o tamanho em bytes de volta, exatos.
+- **Os testes de PR não chamam a API nem carregam o modelo de embedding.** As duas dependências
+  externas são exercitadas de verdade nos workflows semanais.
 
 ---
 

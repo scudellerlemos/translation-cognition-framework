@@ -14,6 +14,41 @@ Dois papéis de IA, e **apenas** estes:
 - **translate** — traduz a cena a partir do pacote limitado (`context_pack`).
 - **back_translate** — verifica linhas `risk >= high`, mais uma amostra de 5% das demais nas cenas vindas do batch (pt-BR → EN → confere sentido/voz/ambiguidade).
 
+## O formato da resposta
+
+A chamada de tradução usa saída estruturada estrita. O modelo devolve um array com uma entrada por
+fala, e a API rejeita qualquer resposta fora do schema (`_TRANSLATION_SCHEMA` em `model.py`):
+
+```json
+{"lines": [{
+  "offset": "0x1A2B",
+  "speaker": "Ryu",
+  "tone_register": "informal",
+  "intent": "pergunta direta",
+  "risk_level": "low",
+  "risk_notes": "",
+  "t": "Para onde você quer ir?"
+}]}
+```
+
+Os valores acima são ilustrativos.
+
+| Campo | Para que serve |
+|---|---|
+| `offset` | identifica a fala no binário; é a chave que liga a resposta à linha de origem |
+| `t` | a tradução |
+| `speaker`, `tone_register`, `intent` | o que o modelo entendeu da fala; ficam registrados para revisão e alimentam os exemplos de voz |
+| `risk_level` | `low`, `medium`, `high` ou `critical`; decide se a fala passa pela back-translation |
+| `risk_notes` | o motivo do risco, quando houver |
+
+Esses campos explicam a média de 66 tokens de saída por fala: a tradução é só uma parte do objeto.
+Cortar `tone_register` e `intent` para economizar tokens foi avaliado e rejeitado: o gate de
+qualidade depende desses campos.
+
+Depois da resposta, o código confere três coisas por fala, sem modelo: se todo `offset` pedido
+voltou (cobertura), se a contagem do marcador de quebra de linha é igual à da fonte, e se os
+tokens de formatação do jogo foram preservados. A fala que falha volta sozinha na nova tentativa.
+
 ## Dois backends, mesmo contrato
 
 ### (a) `in-session` — caminho ASSINATURA (opt-in: `--backend in-session`; o default é `api`)
@@ -51,7 +86,7 @@ tocar nas aprovadas.
 | Papel | Modelo default | Constante | Razão |
 |---|---|---|---|
 | Tradução | `claude-sonnet-4-6` | `MODEL_TRANSLATE` | barato, suficiente com contexto curado |
-| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no caminho batch (−67%/linha); ativo e medido, ver `STACK.md` |
+| Tradução (tier barato) | `claude-haiku-4-5` | `MODEL_TRANSLATE_CHEAP` | linhas single-line no caminho batch (−67%/linha); ativo e medido, ver `TOKEN_ECONOMY.md` |
 | Back-translation | `claude-opus-4-8` | `MODEL_BACK` | raciocínio p/ ambiguidade/duplo-sentido |
 
 Trocar de modelo = trocar a string. Nenhuma outra parte do harness sabe qual modelo rodou.
