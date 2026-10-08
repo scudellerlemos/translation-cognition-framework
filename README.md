@@ -60,29 +60,18 @@ O sistema inteiro é uma pilha de quatro responsabilidades. A IA vive **só** na
 são **código determinístico** (mesma entrada → mesma saída, sem rede, testável).
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  subgraph C["① COGNITION — o que EXIGE IA (a única parte estocástica)"]
-    c1["translate · back_translate (verificação de alto risco)"]
-  end
-  subgraph S["② STATE — memória FORA da janela do modelo"]
-    s1["translation_memory · glossary · voice_cards · decision_index"]
-  end
-  subgraph E["③ EXECUTION — orquestração determinística"]
-    e1["cena = job stateless O(cena) · context_pack · checkpoint/resume"]
-  end
-  subgraph V["④ VALIDATION — gates que BLOQUEIAM"]
-    v1["round-trip · back-translation · fonte de KB · spoiler · naturalidade"]
-  end
+  C["<b>① COGNITION</b> — o que EXIGE IA (a única parte estocástica)<br/>translate · back_translate (verificação de alto risco)"]:::cog
+  S["<b>② STATE</b> — memória FORA da janela do modelo<br/>translation_memory · glossary · voice_cards · decision_index"]:::sta
+  E["<b>③ EXECUTION</b> — orquestração determinística<br/>cena = job stateless O(cena) · context_pack · checkpoint/resume"]:::exe
+  V["<b>④ VALIDATION</b> — gates que BLOQUEIAM<br/>round-trip · back-translation · fonte de KB · spoiler · naturalidade"]:::val
   C --> S --> E --> V
-  V -->|"reprova → não avança"| E
+  V -.->|"reprova → não avança"| E
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
   classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
-  class C,c1 cog;
-  class S,s1 sta;
-  class E,e1 exe;
-  class V,v1 val;
 ```
 
 > **Paleta (vale para os dois diagramas):** 🩷 Cognition (a única parte de IA) · 🟧 State · 🟦 Execution · 🟩 Validation.
@@ -152,7 +141,7 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 
 ```mermaid
 flowchart LR
-  ia{{"IA<br/>propõe"}} --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
+  ia["IA<br/>propõe"] --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
   human["humano<br/>(palavra final)"] -.->|"revisa & ratifica"| gate
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
   class ia ia;
@@ -284,6 +273,7 @@ O filme inteiro, do binário do jogo até a pessoa jogando em pt-BR. As cores s�
 loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem re-traduzir o jogo.
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
   bin[("binário do jogo<br/>read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
