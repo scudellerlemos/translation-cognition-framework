@@ -1,6 +1,6 @@
 # requirements-ml.txt — stack de busca semântica (RAG). OBRIGATÓRIA em projeto com `db`: sem ela o
-# kb_gate bloqueia (opt-out: `"db": {..., "semantic": false}` no project.json). Mesmos pins das
-# dependências do pyproject.toml (`pip install .` já a traz) — manter os dois em sincronia.
+# kb_gate bloqueia (opt-out: `"db": {..., "semantic": false}` no project.json). O pyproject.toml
+# lê as dependências DESTE arquivo (`pip install .` já a traz) — os pins vivem só aqui.
 # Auditada por CVE em dep-audit-optional.yml (#89) — nunca instalada em test.yml (torch do zero é
 # caro; os testes rodam com TCF_ALLOW_NO_ML=1, setado no conftest.py da raiz).
 #

@@ -13,7 +13,8 @@ organizadas por período, não por versão.
   banco nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run). Projetos
   existentes sem `db` seguem em flat files, sem mudança.
 - **Busca semântica vira default de projeto com `db`**: `sentence-transformers` e `sqlite-vec` entram
-  nas dependências do `pyproject.toml`; projeto com `db` e sem a stack instalada é hard-block no
+  nas dependências do pacote (o `pyproject.toml` passa a ler os pins de `requirements.txt` +
+  `requirements-ml.txt`, fonte única); projeto com `db` e sem a stack instalada é hard-block no
   `kb_gate` (antes o RAG caía para vazio sem aviso). Opt-out explícito: `"db": {..., "semantic": false}` no
   `project.json` (o `demo` usa). `TCF_ALLOW_NO_ML=1` rebaixa o bloqueio a aviso (CI de push/PR).
   **Atenção ao atualizar**: projeto com `db` passa a exigir `pip install -r requirements-ml.txt`.
