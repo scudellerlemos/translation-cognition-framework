@@ -61,6 +61,79 @@ flowchart TB
 
 ---
 
+## Pacote de contexto — a peça central
+
+O problema que ele resolve: um jogo tem milhares de falas, um glossário de centenas de termos e um
+histórico de decisões que só cresce. Colocar tudo isso em cada prompt custa caro e estoura a
+janela do modelo. O pacote de contexto (`framework/runtime/context_pack.py`) monta, para cada
+cena, um prompt que contém **só o que aquela cena precisa**. O tamanho do prompt depende do
+tamanho da cena, e não do tamanho do projeto.
+
+`build_pack(projeto, cena)` é uma função pura sobre arquivos: lê as falas da cena e as fontes do
+projeto, seleciona um subconjunto de cada fonte e grava dois arquivos no diretório da cena:
+`pack.json` (estruturado, consumido pelo backend `api`) e `scene_prompt.md` (o mesmo conteúdo como
+prompt pronto, usado pelo backend `in-session`).
+
+### Como a seleção funciona
+
+O texto-fonte de todas as falas da cena é concatenado e passado para minúsculas (`blob_low`). Cada
+fonte é filtrada por **presença de termo** nesse texto. A primitiva é uma só, `_present`:
+
+```python
+# termo alfanumérico: limite de palavra, com plural inglês opcional
+re.search(r"\b" + re.escape(termo) + r"(?:e?s)?\b", blob_low)
+# termo com espaço ou pontuação: substring simples
+termo in blob_low
+```
+
+O limite de palavra evita falso positivo de substring (o termo `system` não casa dentro de outra
+palavra); o sufixo opcional faz `cohort` casar `cohorts` sem abrir para substring solta.
+
+| Seção do pacote | Regra de seleção | Limite | Função |
+|---|---|---|---|
+| Glossário | o termo ou um de seus aliases está presente na cena | 60 entradas, em ordem alfabética | `select_glossary` |
+| Voice cards | o nome ou um alias do personagem está presente; personagens de criticidade alta entram sempre | — | `select_voices` |
+| Decisões | as universais (regras do conector) primeiro; depois as que têm tag igual a um termo ou falante presente, ou que citam um deles no resumo | 12 | `select_decisions` |
+| TM exata | a fala já foi traduzida antes: `sha1(fonte normalizada)[:16]` igual ao de uma entrada da TM | uma por fala | `select_tm` |
+| TM de voz | exemplos de falas já traduzidas do mesmo falante, para fixar o registro | 3 por falante | `select_tm` |
+| KB / lore | uma palavra (≥ 4 letras) do título da seção está presente na cena **e** a seção tem marca de revelação já ultrapassada | 5 seções | `select_kb` |
+| Guardas de spoiler | um fato ainda **não** revelado neste ponto da história tem um gatilho presente na cena; entra a instrução de como manter a ambiguidade | — | `select_spoiler_guards` |
+| Regras do projeto | tokens de formatação, token de quebra de linha, orçamento de bytes por fala | fixo | `project_constraints` |
+
+A "fonte normalizada" da TM exata é o texto em minúsculas, com quebras de linha trocadas por
+espaço e espaços colapsados (`text_ids.norm_source`). Duas falas que diferem só em caixa ou em
+onde a linha quebra têm a mesma chave.
+
+O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário e do log de
+decisões. Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
+versão antiga.
+
+### Por que léxico, e não por embedding
+
+Seleção léxica aqui quer dizer comparar strings (match de termo, hash de texto normalizado), sem
+modelo de similaridade. A escolha é deliberada:
+
+- **Os alvos são nomes próprios e termos fechados.** A pergunta "o termo *Gigiri* aparece nesta
+  cena?" tem resposta exata. Embedding responde "que texto se parece com este?", que é outra
+  pergunta: traria termos parecidos que não estão na cena e poderia deixar de fora um termo que
+  está. Um termo de glossário que falta no prompt vira inconsistência de tradução.
+- **Cada item do pacote é auditável.** Tudo o que entrou tem uma causa verificável a olho: uma
+  string que está na cena. Não há limiar de score para calibrar nem resultado que mude com a
+  versão do modelo de embedding.
+- **É determinístico sem depender de mais nada.** O mesmo estado de projeto gera o mesmo
+  `pack.json`, byte a byte (`test_context_pack_deterministic`). Isso permite cachear, comparar
+  runs e reproduzir um bug de tradução a partir do pacote que o gerou.
+- **Não tem dependência.** Roda só com a biblioteca padrão, sem banco e sem a stack de ML. É por
+  isso que os projetos em arquivos funcionam sem embedding.
+- **Custa nada.** São expressões regulares e consultas a dicionário sobre o texto de uma cena.
+
+O que o léxico não cobre é a fala **parecida mas não idêntica** a uma já traduzida: o hash muda
+com uma palavra de diferença. Esse é o único caso em que similaridade ajuda, e é o que a busca
+semântica acrescenta (seção [RAG](#rag-recuperação-semântica)), sempre em seções separadas do
+prompt e sem mexer na seleção acima.
+
+---
+
 ## Modelo (LLM)
 
 Usa a família **Claude**, pelo SDK oficial `anthropic`. Há **só duas chamadas de IA** no sistema:
@@ -136,14 +209,11 @@ Todo projeto com `db` no `project.json` usa busca semântica por padrão. A stac
 ## RAG (recuperação semântica)
 
 RAG (retrieval-augmented generation) é buscar informação relevante e colocá-la no prompt, em vez
-de esperar que o modelo a saiba. O pacote de contexto já faz isso desde sempre, de forma
-**léxica**: match exato na TM, glossário pelo termo que aparece na cena, voice card pelo nome de
-quem fala.
+de esperar que o modelo a saiba. O [pacote de contexto](#pacote-de-contexto--a-peça-central) já
+faz isso de forma **léxica**.
 
 A busca **semântica** (por embedding) é um **suplemento** em cima disso. Ela entra em seções
-separadas e rotuladas do prompt, com tamanho limitado, e nunca substitui o núcleo léxico. O motivo
-é o determinismo: o mesmo pacote gerado duas vezes tem que sair idêntico byte a byte, e isso é
-garantido pelo núcleo léxico (contagens, hashes, match exato).
+separadas e rotuladas do prompt, com tamanho limitado, e nunca substitui a seleção léxica.
 
 Arquitetura completa do RAG (dados, indexação, recuperação, filtro de spoiler, degradação) →
 [`RAG_ARCHITECTURE.md`](RAG_ARCHITECTURE.md).
