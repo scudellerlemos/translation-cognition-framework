@@ -11,12 +11,24 @@
     "text_column": "<nome da coluna de texto-fonte, ex: text_en>"
   },
   "formatting_tokens": ["<token1>", "<token2>"],
+  "formatting_token_patterns": [],
   "system_line_convention": "all_caps",
   "length_constraints": {
     "dialogue_max_pct": 140,
     "ui_max_pct": 110
   },
   "batch_size": 200,
+  "kb_frontier": "",
+  "connector": {
+    "type": "<hex_binary | unity_addressables_csv | ...>",
+    "table_schema": "connector/table_schema.md",
+    "encoding": "<utf-8 | ascii_with_ctrl_codes | ...>",
+    "source_binary": "artifacts/<binario-fonte>",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "control_codes": {}
+  },
+  "db": {"path": "<slug>.db", "project_id": "<slug>"},
   "rag_min_score": null,
   "profile": {
     "voice_profiles": "profile/voice_profiles_reference.md",

@@ -35,6 +35,18 @@ from llm_client import (  # noqa: E402
 )
 
 
+def _bt_fresh(out: Path) -> bool:
+    """back_translation existe E nenhuma entry esta stale (invalidate_back_translation marca as linhas
+    re-traduzidas). Stale = julgou texto antigo -> re-julgar; so `is_file()` pulava p/ sempre."""
+    if not out.is_file():
+        return False
+    try:
+        entries = json.loads(out.read_text(encoding="utf-8")).get("entries", [])
+    except (json.JSONDecodeError, OSError, AttributeError):
+        return False
+    return not any(isinstance(e, dict) and e.get("stale") for e in entries)
+
+
 def back_translate(root, scene, high_lines, *, backend="api", model=None) -> BackTranslateResult:
     """high_lines: lista de {offset, source, target, speaker, risk_notes}."""
     root = Path(root)
@@ -44,7 +56,7 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None) -> Bac
         return {"status": DONE, "reviewed": 0, "path": None}
     if backend == "in-session":
         _write_back_prompt(root, scene, scene_id, high_lines)
-        if out.is_file():
+        if _bt_fresh(out):
             return {"status": READY, "path": str(out), "reviewed": len(high_lines)}
         return {"status": AWAITING, "reviewed": len(high_lines),
                 "prompt": str(paths.back_prompt(root, scene, scene_id)),

@@ -13,15 +13,10 @@ IA". Este guia vale para qualquer projeto do framework (troque `<projeto>` pelo 
 ## As duas camadas de QA
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  subgraph A["1. GATES AUTOMÁTICOS (determinísticos, $0, sem IA)"]
-    g1["round-trip byte-idêntico (quebra)"]
-    g2["largura/caixa (balão) — coluna 'Caixa'"]
-  end
-  subgraph B["2. REVISÃO HUMANA (o piso de qualidade)"]
-    r1["REVISOR — lê o texto (XLSX)"]
-    r2["TESTER — joga o .sdat (print + trecho)"]
-  end
+  A["<b>1. GATES AUTOMÁTICOS</b> (determinísticos, $0, sem IA)<br/>round-trip byte-idêntico (quebra)<br/>largura/caixa (balão) — coluna 'Caixa'"]
+  B["<b>2. REVISÃO HUMANA</b> (o piso de qualidade)<br/>REVISOR — lê o texto (XLSX)<br/>TESTER — joga o .sdat (print + trecho)"]
   A --> B --> ap["apply (verbatim $0 / nota = IA por linha)"]
   ap --> rv["re-verify + re-reinsert"]
 ```
@@ -107,7 +102,7 @@ in-game não há offset, o fluxo é **determinístico, sem OCR/IA** — o print 
 ## Depois de aplicar (sempre)
 ```
 verify_chapter <cap>            # round-trip/charset dos capítulos tocados
-state_index.py --rebuild        # a TM passa a reusar o texto corrigido (consistência futura)
+state_index.py <projeto>        # a TM passa a reusar o texto corrigido (consistência futura)
 ```
 A **TM é o coração**: depois do QA, o jogo **não é re-traduzido** — correções entram cirúrgicas e a TM
 propaga a versão certa para conteúdo futuro.

@@ -67,7 +67,7 @@ in-game**. Esse marco destravou tudo o que veio depois.
 | **Passo 08 — reinserção** | `reinsert.py` → `output/ScriptEvent.sdat` + `.ips`. **Resíduo=0**; **ponteiros relocados resolvem dentro do arquivo** |
 | **Gate in-game** | ✅ **validado** — pt-BR exibe (`artifacts/evidence/Fasea*.png`); linha relocada pelo Plano B exibe e o jogo avança (`artifacts/evidence/testeplanob*.png`) |
 
-**Aprendizados** em [`artifacts/decision_log.md`](artifacts/decision_log.md) e [`artifacts/extraction_log.md`](artifacts/extraction_log.md).
+**Aprendizados** em [`artifacts/decision_log.md`](artifacts/decision_log.md).
 Destaques: **modelo de ponteiro é FILE-RELATIVO** (não absoluto — correção crítica); **EOF-append
 reprovado in-game** → `space_strategy` = **in_place + relocação INTRA-ARQUIVO**; tradução aplicada por
 **arquivo aprovado** + script (a IA não edita dados à mão).

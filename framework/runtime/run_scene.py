@@ -83,7 +83,7 @@ def _validate_connector_cfg(cfg: dict) -> list:
     """Retorna lista de avisos sobre chaves desconhecidas em project.json connector.{}."""
     known = CONNECTOR_KNOWN_KEYS | {s.key for s in CONNECTOR_REGISTRY}
     return [f"connector.{k!r} desconhecida — chaves validas: {sorted(known)}"
-            for k in sorted(cfg.get("connector", {})) if k not in known]
+            for k in sorted(cfg.get("connector") or {}) if k not in known]
 
 
 def _checkpoint(root: Path, scene: str, patch: dict):
@@ -287,12 +287,14 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
 
 
 def _back_phase(root: Path, scene: str, highs: list, backend: str,
-                require_back: bool, defer_back: bool, no_back: bool = False) -> tuple:
+                require_back: bool, defer_back: bool, no_back: bool = False,
+                sample: bool = False) -> tuple:
     """FASE 4/6: back-translation das linhas de alto risco (report-only por padrao).
 
     Retorna (bt, early_return): se early_return nao e None, run_scene() deve retorna-lo imediatamente.
     No modo defer_back, apenas registra o checkpoint de deferimento; state_index/metrics ficam em run_scene.
     `no_back`: pula a back-translation inteiramente (economia de custo; usuario confia no 1o passe).
+    `sample`: back tambem da amostra low/medium (back_translate_candidates); `highs` segue so p/ log/checkpoint.
     """
     if no_back and require_back:
         print(f"[4/6] AVISO: --no-back ignorado (--require-back tem precedencia) — "
@@ -305,12 +307,15 @@ def _back_phase(root: Path, scene: str, highs: list, backend: str,
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high -> DEFERIDA p/ batch do capitulo")
         _checkpoint(root, scene, {"high": len(highs), "back_deferred": True})
         return {"status": M.DONE, "reviewed": 0, "path": None}, None
-    print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high")
     bt: M.BackTranslateResult | dict
-    try:
-        bt = M.back_translate(root, scene, highs, backend=backend)
+    try:   # sem fallback "so high": a amostra re-le o mesmo arquivo de plano que high_risk_lines ja leu sem erro
+        bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
+        print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
+              + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
+        bt = M.back_translate(root, scene, bt_lines, backend=backend)
     except Exception as e:
-        print(f"      AVISO: back-translation falhou ({backend}): {e} — seguindo (report-only).")
+        print(f"      AVISO: back-translation falhou ({backend}): {e} — "
+              + ("BLOQUEADA (--require-back)." if require_back else "seguindo (report-only)."))
         bt = {"status": M.DONE, "reviewed": 0, "path": None}
         if require_back:
             _checkpoint(root, scene, {"status": "back_translation_failed", "high": len(highs)})
@@ -413,8 +418,12 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         return early
 
     # [4/6] back-translation (apos fitting OK; report-only; roda 1x — nao re-roda no escalonamento)
+    # cena do batch (tier barato): inclui a amostra low/medium, mesmo conjunto do pos-passe
+    # batch_back_translate -- senao o arquivo gravado aqui (--require-back) conta como fresh la e
+    # a amostra nunca e revisada
     highs = M.high_risk_lines(root, scene)
-    bt, early = _back_phase(root, scene, highs, backend, require_back, defer_back, no_back)
+    bt, early = _back_phase(root, scene, highs, backend, require_back, defer_back, no_back,
+                            sample=pretranslated)
     if early is not None:
         return early
 
@@ -431,6 +440,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
         print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
+    if verified:
+        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB (#216)
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified))
     cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
@@ -520,6 +531,7 @@ def main():
         _validate_scene_arg(Path(a.project), a.scene)
         removed = clean_failed_scene(a.project, a.scene)
         print(f"[clean] {len(removed)} artefato(s) removido(s).")
+    state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                   skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)

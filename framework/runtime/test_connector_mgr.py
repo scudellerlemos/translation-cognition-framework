@@ -39,6 +39,20 @@ def test_connector_hash(tmp_path):
     assert len(cm._connector_hash(tmp_path / "sem_conector", {})) == 12   # ausente -> hash de vazio
 
 
+def test_connector_hash_ignores_crlf(tmp_path):
+    """run_state.json e versionado: o mesmo commit com core.autocrlf (CRLF no Windows, LF no Linux)
+    tem que dar o mesmo hash, senao o demo acusa 'conector mudou' em uma das plataformas."""
+    conn = tmp_path / "connector"
+    conn.mkdir()
+    f = conn / "verify_chapter.py"
+    f.write_bytes(b"a = 1\nb = 2\n")
+    lf = cm._connector_hash(tmp_path, {})
+    f.write_bytes(b"a = 1\r\nb = 2\r\n")
+    assert cm._connector_hash(tmp_path, {}) == lf
+    assert cm._connector_hash(tmp_path, {}, raw=True) != lf
+    assert not cm.connector_changed(tmp_path, {}, cm._connector_hash(tmp_path, {}, raw=True))
+
+
 def test_run_executes_subprocess():
     code, out = cm._run([sys.executable, "-c", "print('ola-mundo')"])
     assert code == 0 and "ola-mundo" in out

@@ -127,12 +127,33 @@ paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan
   legado (flat), e as 447 linhas no `Store` conferem (encoding UTF-8 correto, inclusive
   acentuação pt-BR). Confirma em dado de produção real o que o oráculo sintético já provava.
 
+## Modo DB como default de projeto novo (set/2026)
+
+`framework/templates/project.template.json` declara `db`. O que fechou as lacunas que impediam isso:
+
+- **Bootstrap:** `sync_translations_db` não cria mais o DB (criava um DB só com traduções → o
+  `context_pack` trocava p/ modo DB com KB vazia e "cena sem linhas no DB"). Quem cria é
+  `state_index.mirror_db`, chamado no início de `run_chapter` (após o gate de conector) e do CLI
+  `run_scene` — `build()` + `migrate()`, então KB/linhas/voz entram juntos.
+- **DB velho:** o mirror no início do run traz o que os produtores flat-only
+  (`back_translate`/`metrics`/`quality_review`, KB editada à mão) gravaram desde o último run.
+  `migrate()` agora poda linhas de KB (glossary/entities/voice_cards/decisions/spoiler/kb/
+  kb_ratified) removidas do flat — só quando o arquivo flat existe (arquivo ausente não apaga).
+  Vetores vec0 órfãos ficam (a busca faz JOIN na tabela-mãe antes do LIMIT).
+- **Gates:** flat presente decide no `kb_gate` (KB `.md` sem seção `##` vira 0 linhas no DB e
+  bloqueava; o mirror sempre grava `updated_at` e escondia o check de `updated_date`). Tabela só
+  é lida em projeto só-DB (sem o flat em disco).
+- **ML opcional:** sem `sentence-transformers`/`sqlite-vec`, reindex devolve `None` e as seções
+  semânticas do pacote ficam vazias — sem erro.
+- **Validado:** demo com `db` ligado, do zero (sem `.db`): `run_scene demo01 --backend in-session`
+  → verified; pacote idêntico ao modo flat (linhas/glossário/TM); DB com 1 `scene_id` canônico,
+  5/5 aprovadas.
+
 ## Detalhe das oportunidades de RAG
 
 **🟢 nº1 — TM semântica (Fase 2.5, maior ROI).** Hoje uma fala só reusa tradução se for *idêntica*
-(`src_key`). A infra (`embedder.py` + `sqlite-vec` + reranker + `store.search_tm_semantic`) **já existe
-mas não está plugada** no pipeline (só via `cli db index`). Plugar no `context_pack` (modo DB) como
-seção separada e rotulada ataca o custo (re-tradução = 58% do gasto) e a consistência de voz.
+(`src_key`). A infra (`embedder.py` + `sqlite-vec` + `store.search_tm_semantic`, sem reranker) **já está
+plugada** no `context_pack` (modo DB) como seção separada e rotulada — ataca o custo (re-tradução = 58% do gasto) e a consistência de voz.
 Depende da Fase 2 (corpus no DB), mas dá pra começar já com a TM aprovada que está migrada.
 
 **🟢 nº2 — KB/lore (Fase 3).** `universe_knowledge_base.md` agora está no DB (tabela `kb`, por seção).
@@ -184,12 +205,12 @@ A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Q
 ## Como LIGAR a TM semântica (stack de ML) — projeto `translation_software`
 
 A migração de DADO está completa; ligar a busca semântica é **operacional**, não migração. O projeto
-alvo é **`translation_software`** (único com `db` declarado; corpus do BoF4 já migrado pra dentro dele:
+alvo é **`translation_software`** (com `db` declarado, assim como `demo` e todo projeto novo pelo template; corpus do BoF4 já migrado pra dentro dele:
 125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` está **descontinuado**
 (ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
 
 1. **Instalar a stack** (fora da CI, pesada): `pip install -r requirements-ml.txt`
-   (`sentence-transformers` + `sqlite-vec` + `flashrank`; ~700 MB–1,5 GB com torch + modelo MiniLM).
+   (`sentence-transformers` + `sqlite-vec`; ~700 MB–1,5 GB com torch + modelo MiniLM).
 2. **Construir os vetores** (compute único, ~minutos em CPU):
    `python framework/cli.py db index projects/translation_software/translation_software.db bof4`
    → popula `tm_embeddings` + a virtual table `vec0` na própria `.db`.

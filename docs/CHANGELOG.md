@@ -7,6 +7,28 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10 — pós-v1.1.0 (ainda sem tag)
+
+- **Modo DB vira default de projeto novo** (e3b6921): o template de `project.json` declara `db`; o
+  banco nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run). Projetos
+  existentes sem `db` seguem em flat files, sem mudança.
+- **Scaffold completo** (e0869d1, 6f722fe, ad8c847): `scaffold_project` gera `project.json`, os
+  artefatos de KB e um `connector/` copiado do `_skeleton` (com `test_roundtrip.py`,
+  `test_roundtrip_synthetic.py` e `conftest.py`). A cópia intocada do `_skeleton` é hard-block no
+  `connector_gate` — nenhum placeholder passa.
+- **TM do DB só aprova cena `verified`** (de68c36, 3251bae): `build_plan` grava `approved=0`; a cena
+  vira TM (`approved=1`) ao fechar o verify, em `state_index.approve_scene_db`, que já reindexa os
+  embeddings na hora. A TM flat também passa a ler só cenas `verified` (df6bc41).
+- **FlashRank removido** (3251bae): o ranking da busca semântica é só o cosine do bi-encoder.
+- **`connector_hash` normaliza CRLF** (5745ec8): `run_state.json` versionado não acusa mais
+  "conector mudou" ao trocar de plataforma.
+- **Registros retroativos** (mudanças anteriores que ficaram sem entrada): o backend `ollama` de
+  tradução foi removido (ADR 0008) — `--backend` aceita só `in-session`/`api`; `ollama_client.py` e
+  `tcf ollama` ficam para o pipeline de KB. A issue #119 (console cp1252 no Windows) foi fechada: os
+  CLIs principais forçam stdout UTF-8.
+
+---
+
 ## 2026-09 — versionamento SemVer + CI hardening
 
 - **v1.1.0 — loop de code review + RAG semântico + DB-first** (#205 e anteriores). MINOR (ADR 0013):

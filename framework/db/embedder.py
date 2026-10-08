@@ -3,13 +3,12 @@
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
   sqlite-vec             extensão C para índice vetorial no SQLite
-  flashrank              reranker MiniLM-L-12 quantizado (~4 MB, opcional)
 
 Hardware alvo: AMD RX 6650 XT (ROCm) ou CPU fallback.
 O modelo roda em GPU automaticamente se torch+ROCm detectado.
 
 Dependências (instalar via pip):
-  pip install sentence-transformers sqlite-vec flashrank
+  pip install sentence-transformers sqlite-vec
 
 Uso:
     emb = Embedder()
@@ -39,28 +38,13 @@ from __future__ import annotations
 
 import contextlib
 import json
-import os
 import sqlite3
-import tempfile
 import time
-import warnings
 
 from textclean import strip_codes  # forma limpa: vetor/consulta sem ruído dos códigos
 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
-_RERANKER_MODEL = "ms-marco-MiniLM-L-12-v2"
-_KNN_MAX = 4096   # teto de `k` do vec0 (sqlite-vec)
-
-
-def _knn_k(con: sqlite3.Connection, vec_table: str) -> int:
-    """`k` do KNN do vec0. O KNN roda sobre os vetores de TODOS os projetos e o filtro de project_id
-    (e approved) só vem depois do JOIN -- com k pequeno o top-k podia vir todo de OUTRO projeto e a
-    busca voltar vazia. Pede todos os vetores (até _KNN_MAX) e o LIMIT do SQL aplica o k do chamador
-    já depois do filtro. ponytail: acima de _KNN_MAX vetores o bug volta parcialmente; upgrade path =
-    partition key por projeto na tabela vec0."""
-    n = con.execute(f"SELECT count(*) FROM {vec_table}").fetchone()[0]  # nosec B608 - vec_table é literal interno
-    return max(1, min(n, _KNN_MAX))
 
 # indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
 # a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
@@ -181,8 +165,11 @@ class Embedder:
             con.executemany(f"DELETE FROM {c['emb_table']} WHERE {c['id_col']}=?", [(t,) for t in ids])  # nosec B608
 
         for tid, vec in zip(ids, vecs, strict=True):
+            # vetor velho de linha editada (store apagou só o emb_table): OR REPLACE do vec0 não
+            # é confiável (ver force acima) -> DELETE explícito antes.
+            con.execute(f"DELETE FROM {c['vec_table']} WHERE {c['id_col']}=?", (tid,))  # nosec B608
             con.execute(
-                f"INSERT OR REPLACE INTO {c['vec_table']}({c['id_col']}, embedding) VALUES(?,?)",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
+                f"INSERT INTO {c['vec_table']}({c['id_col']}, embedding) VALUES(?,?)",  # nosec B608 - fragmentos vem de _KIND_CONFIG (literal interno), não input do usuário
                 (tid, json.dumps(vec)),
             )
             con.execute(
@@ -197,30 +184,44 @@ class Embedder:
     def search(self, con: sqlite3.Connection, query: str,
                project_id: str, k: int = 5,
                approved_only: bool = True,
-               min_score: float | None = None) -> list[dict]:
+               min_score: float | None = None,
+               max_score: float | None = None) -> list[dict]:
         """Busca semântica na TM. Retorna top-k hits com score de similaridade.
 
-        min_score (#172): corta hits com score abaixo do threshold antes do rerank. None
+        min_score (#172): corta hits com score abaixo do threshold. None
         (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
         seção rotulada no pacote de contexto.
+
+        max_score: exclui hits com score >= max_score NO SQL (antes do LIMIT) — p/ quem quer só
+        vizinhos, não o match exato (senão fala curta com >=k exatos consome o top-k inteiro).
         """
         self._ensure_vec_table(con)
         q_vec = self.encode([strip_codes(query)])[0]
 
+        # vec_distance_l2 + LIMIT em vez de `MATCH ... AND k = ?`: o k do vec0 escolhe os k mais
+        # próximos da tabela INTEIRA (todos os projetos, aprovados ou não) ANTES do WHERE, então o
+        # filtro podia devolver < k hits. Scan linear = mesmo custo do NN exato do vec0 (#172).
+        # GROUP BY (source, target): o mesmo par repetido em N cenas ocupava N slots do top-k. Com MIN()
+        # o SQLite devolve as colunas "bare" da linha de menor distancia (garantia documentada).
+        # alias `l2`, nao `distance`: o vec0 tem coluna oculta `distance` que venceria o alias no HAVING.
+        cut = max_score is not None and max_score <= 1.0      # >1 = sem corte superior (score max e 1)
         rows = con.execute(
-            f"""SELECT v.translation_id, v.distance,
+            f"""SELECT v.translation_id, MIN(vec_distance_l2(v.embedding, ?)) AS l2,
                        t.scene_id, t.offset, t.source, t.target,
                        t.speaker, t.tone_register, t.risk_level
                 FROM tm_vectors v
                 JOIN translations t ON t.id = v.translation_id
+                JOIN tm_embeddings e ON e.translation_id = v.translation_id  -- linha editada some ate o reindex
                 WHERE t.project_id=?
                   {" AND t.approved=1" if approved_only else ""}
-                  AND EXISTS (SELECT 1 FROM tm_embeddings e WHERE e.translation_id = t.id)
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance
-                LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
-            (project_id, json.dumps(q_vec), _knn_k(con, "tm_vectors"), k),
+                GROUP BY t.source, t.target
+                {" HAVING l2 > ?" if cut else ""}
+                ORDER BY l2 LIMIT ?""",  # nosec B608 - fragmento literal por bool; valores parametrizados
+            (json.dumps(q_vec), project_id,
+             # score cru = 1 - L2²/2  ->  score < max_score  <=>  L2 > sqrt(2*(1-max_score)). Filtro UNICO
+             # (so no SQL, sobre o cru): um 2o check no score arredondado discordava na fronteira.
+             *(((2.0 * (1.0 - max_score)) ** 0.5,) if cut and max_score is not None else ()),
+             k),
         ).fetchall()
 
         results = []
@@ -233,34 +234,33 @@ class Embedder:
             ))
             # vetores são unit-norm (encode normaliza) e a distância é L2 -> cos = 1 - L2²/2.
             # Identica: L2=0 -> 1.0; ortogonal: L2=√2 -> 0.0; oposta: L2=2 -> -1.0.
-            d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
-            if min_score is not None and d["score"] < min_score:
+            raw = 1.0 - float(d["distance"]) ** 2 / 2.0
+            d["score"] = round(raw, 4)            # exibicao; os cortes (min/max_score) usam o cru
+            if min_score is not None and raw < min_score:
                 continue
             results.append(d)
 
-        return self._rerank(query, results) if results else results
+        return results
 
     def search_decisions(self, con: sqlite3.Connection, query: str,
                          project_id: str, k: int = 5) -> list[dict]:
         """Busca semântica em decisions (#105). Retorna top-k hits (title/summary/universal/
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
-        forçar as duas formas numa única função genérica. Sem rerank (FlashRank é ajustado para
-        passagens de tradução, não decisões de processo)."""
+        forçar as duas formas numa única função genérica. k<0 = todos (LIMIT -1 do SQLite), p/ o
+        chamador cortar DEPOIS do seu próprio gate (reveal)."""
         self._ensure_vec_table(con, kind="decision")
         q_vec = self.encode([strip_codes(query)])[0]
 
         rows = con.execute(
-            """SELECT v.decision_id, v.distance,
+            """SELECT v.decision_id, vec_distance_l2(v.embedding, ?) AS distance,
                        d.title, d.summary, d.universal, d.reveal
                 FROM decision_vectors v
                 JOIN decisions d ON d.id = v.decision_id
+                JOIN decision_embeddings e ON e.decision_id = v.decision_id
                 WHERE d.project_id=?
-                  AND EXISTS (SELECT 1 FROM decision_embeddings e WHERE e.decision_id = d.id)
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance
-                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados
-            (project_id, json.dumps(q_vec), _knn_k(con, "decision_vectors"), k),
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search); JOIN emb:
+                                                 # linha editada (trigger apagou o emb) some ate o reindex
+            (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
         results = []
@@ -278,24 +278,20 @@ class Embedder:
                   project_id: str, k: int = 5) -> list[dict]:
         """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
         shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
-        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz. Sem rerank
-        (mesmo motivo de search_decisions: FlashRank é ajustado para tradução, não lore)."""
+        chamador (ver context_pack._reveal_allowed), igual search_decisions() faz."""
         self._ensure_vec_table(con, kind="kb")
         q_vec = self.encode([strip_codes(query)])[0]
 
         rows = con.execute(
-            """SELECT v.kb_id, v.distance,
+            """SELECT v.kb_id, vec_distance_l2(v.embedding, ?) AS distance,
                        kb.section, kb.content, kb.reveal
                 FROM kb_vectors v
                 JOIN kb ON kb.id = v.kb_id
+                JOIN kb_embeddings e ON e.kb_id = v.kb_id
                 WHERE kb.project_id=?
-                  AND EXISTS (SELECT 1 FROM kb_embeddings e WHERE e.kb_id = kb.id)
-                  AND v.embedding MATCH ?
-                  AND k = ?
-                ORDER BY v.distance
-                LIMIT ?""",  # nosec B608 - fragmento literal, valores parametrizados; alias
-                              # "kb" (não "k") -- "k" é o pseudo-param reservado do vec0 p/ top-k
-            (project_id, json.dumps(q_vec), _knn_k(con, "kb_vectors"), k),
+                ORDER BY distance LIMIT ?""",  # nosec B608 - filtro ANTES do top-k (ver search); JOIN emb:
+                                                 # linha editada (trigger apagou o emb) some ate o reindex
+            (json.dumps(q_vec), project_id, k),
         ).fetchall()
 
         results = []
@@ -308,24 +304,6 @@ class Embedder:
             d["score"] = round(1.0 - float(d["distance"]) ** 2 / 2.0, 4)
             results.append(d)
         return results
-
-    def _rerank(self, query: str, hits: list[dict]) -> list[dict]:
-        """Rerank com FlashRank se disponível; caso contrário retorna como está."""
-        try:
-            from flashrank import Ranker, RerankRequest  # type: ignore
-            ranker = Ranker(model_name=_RERANKER_MODEL,
-                            cache_dir=os.path.join(tempfile.gettempdir(), "flashrank"))
-            passages = [{"id": i, "text": h["source"], "meta": h}
-                        for i, h in enumerate(hits)]
-            req = RerankRequest(query=query, passages=passages)
-            results = ranker.rerank(req)
-            return [r["meta"] for r in results]
-        except ImportError:
-            return hits
-        except Exception as exc:   # cache de modelo corrompido/sem rede/onnx quebrado: rerank e refinamento, nao derruba a busca
-            warnings.warn(f"rerank FlashRank indisponivel ({type(exc).__name__}: {str(exc)[:120]}) -- "
-                          f"usando ordem vetorial", RuntimeWarning, stacklevel=2)
-            return hits
 
 
 if __name__ == "__main__":

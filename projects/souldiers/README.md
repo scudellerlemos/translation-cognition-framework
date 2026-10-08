@@ -61,7 +61,7 @@ connector/
   reinsert.py               ← rebuild_table() por tabela; fast-path byte-idêntico quando sem tradução
   build_plan_chapter.py     ← valida cobertura + tokens de timing/tags TMP por cena
   verify_chapter.py         ← round-trip + apply + readback; protocolo exit 0/1/3 + VERIFY_STATUS
-  split_scenes.py           ← agrupa o dialogs.csv global em cenas (AREAD/INGAME por área)
+  split_scenes.py           ← agrupa o dialogs.csv global em cenas (DIALOGS por cena / INGAME por área)
   test_roundtrip.py         ← 6/6 passando (pytest --data-dir <StreamingAssets/aa/StandaloneWindows64>)
   conftest.py               ← opção --data-dir para pytest
 artifacts/

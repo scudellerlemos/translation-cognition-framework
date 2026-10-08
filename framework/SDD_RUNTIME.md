@@ -26,7 +26,7 @@ O runtime automatiza a execução em escala (o harness orquestra sem o chat).
 **Runtime envolvido**: `scaffold_project.py` (setup, antes do primeiro extract), `split_scenes.py` (pós-extract)
 
 ```
-runtime/scaffold_project.py   →  artifacts KB + profile/ inicializados (schema correto desde o início)
+runtime/scaffold_project.py   →  project.json + artifacts KB + profile/ + connector/ (_skeleton) inicializados (schema correto desde o início)
 connector/extract.py          →  artifacts/dialogs.csv (FLAT)
                                   artifacts/extraction_log.md
 runtime/split_scenes.py       →  artifacts/scenes/<scene>/dialogs.csv (agrupado por --by)
@@ -68,10 +68,10 @@ Override via `--skip-kb-gate` (não recomendado; rompe a doutrina de pesquisa re
 ```
 dialogs.csv + glossary.csv + voice_cards + decision_index + TM
     ↓  context_pack.write_pack()
-artifacts/<scene>/pack.json         ← pacote O(cena): só o contexto relevante
-artifacts/<scene>/scene_prompt.md   ← prompt auto-contido e limitado
+artifacts/scenes/<scene>/pack.json         ← pacote O(cena): só o contexto relevante
+artifacts/scenes/<scene>/scene_prompt.md   ← prompt auto-contido e limitado
     ↓  model.translate()
-artifacts/<scene>/translations_<id>.json  ← tradução com risk_level, risk_notes, intent por linha
+artifacts/scenes/<scene>/translations_<id>.json  ← tradução com risk_level, risk_notes, intent por linha
 ```
 
 O **context_pack** implementa o princípio de memória O(cena): em vez de carregar o histórico inteiro
@@ -89,8 +89,8 @@ acúmulo de sessão.
 ```
 translations_<id>.json
     ↓  connector/build_plan_chapter.py  (via run_scene._fitting_loop)
-artifacts/<scene>/translation_plan_<id>.json   ← plano linha a linha com byte_budget
-artifacts/<scene>/approved_<id>.csv            ← projeção (offset, text_target) p/ o conector
+artifacts/scenes/<scene>/translation_plan_<id>.json   ← plano linha a linha com byte_budget
+artifacts/scenes/<scene>/approved_<id>.csv            ← projeção (offset, text_target) p/ o conector
 ```
 
 **Escalonamento de fitting**: se `verify_chapter.py` falhar por estouro de byte (exit 3),
@@ -100,7 +100,7 @@ artifacts/<scene>/approved_<id>.csv            ← projeção (offset, text_targ
 **Backends disponíveis**:
 - `api` (escala headless): Anthropic SDK com tiering Haiku/Sonnet, batch -50%
 - `in-session` (assinatura): sem chamada de rede, prompt auto-contido, 1 cena por sessão limpa
-- Ollama local (`ollama_client.py`): backend plugável de `model.py`, zero custo de API
+- Ollama local (`ollama_client.py`): só no pipeline de KB (`kb_fetch`/`kb_build_ollama`), zero custo de API — não é backend de tradução (ADR 0008)
 
 ---
 
@@ -111,8 +111,8 @@ artifacts/<scene>/approved_<id>.csv            ← projeção (offset, text_targ
 
 ```
 translation_plan_<id>.json  [linhas risk>=high]
-    ↓  model.back_translate()
-artifacts/<scene>/back_translation_<id>.json   ← EN→pt-BR→EN com verdict pass/fail
+    ↓  back_translate.back_translate()
+artifacts/scenes/<scene>/back_translation_<id>.json   ← EN→pt-BR→EN com verdict pass/fail
 ```
 
 A back-translation é **report-only** por padrão: sinaliza mas não bloqueia (exceto `--require-back`).
@@ -168,7 +168,7 @@ dialogs.csv + glossary.csv + tone_analysis.md + decision_log.md + research_log.m
                                     ↓
                           [run_scene() ou run_chapter()]
                                     ↓
-                    state_index.build()  →  voice_cards + decision_index + TM
+                    connector_gate.check()  →  bloqueia se o conector está incompleto
                                     ↓
                     kb_gate.check()  →  bloqueia se KB incompleto
                                     ↓
@@ -182,7 +182,7 @@ dialogs.csv + glossary.csv + tone_analysis.md + decision_log.md + research_log.m
                                     ↓ (exit 0)
                     back_translate()  →  back_translation_<id>.json
                                     ↓
-                    state_index.build()  →  TM atualizada com esta cena
+                    state_index.build()  →  voice_cards + decision_index + TM (com esta cena)
                                     ↓
                     quality_review.export()  →  XLSX para revisão humana
 ```
@@ -203,7 +203,7 @@ dialogs.csv + glossary.csv + tone_analysis.md + decision_log.md + research_log.m
 | `translations_<id>.json` | `model.translate()` | `build_plan_chapter.py` |
 | `translation_plan_<id>.json` | `build_plan_chapter.py` | `verify`, `back_translate`, `quality_review` |
 | `approved_<id>.csv` | `build_plan_chapter.py` | `verify_chapter.py` (conector) |
-| `back_translation_<id>.json` | `model.back_translate()` | `quality_fix`, revisão humana |
+| `back_translation_<id>.json` | `back_translate.back_translate()` | `quality_fix`, revisão humana |
 | `translation_memory.jsonl` | `state_index.build()` | `context_pack` (dedup por TM) |
 | `voice_cards.json` | `state_index.build()` | `context_pack` |
 | `decision_index.json` | `state_index.build()` | `context_pack` |

@@ -42,6 +42,23 @@ def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
     assert "decisions" in result and "spoiler" in result, result
 
 
+def test_migrate_approves_only_verified_scenes(tmp_path):
+    """#216: approved_*.csv existe desde o build_plan (antes do verify) -- cena reprovada entra no DB
+    mas NAO aprovada (fora da TM); sem run_state (legado) tudo aprovado."""
+    (tmp_path / "project.json").write_text(json.dumps({"title": "x"}), encoding="utf-8")
+    for sc in ("ok", "bad"):
+        d = tmp_path / "artifacts" / "scenes" / sc
+        d.mkdir(parents=True)
+        (d / "approved_a.csv").write_text(f"offset,text_target\n0x1,{sc}\n", encoding="utf-8")
+    (tmp_path / "artifacts" / "run_state.json").write_text(json.dumps({"scenes": {
+        "ok": {"status": "verified", "verified": True},
+        "bad": {"status": "verify_failed", "verified": False}}}), encoding="utf-8")
+    res = migrate(tmp_path, tmp_path / "p.db", project_id="p")
+    assert (res["translations"], res["approved"]) == (2, 1)
+    with Store(tmp_path / "p.db") as db:
+        assert [r["target"] for r in db.get_translations("p")] == ["ok"]
+
+
 def test_migrate_counts_roundtrip_to_store(bof4_migrated):
     db_path, result = bof4_migrated
     with Store(db_path) as db:
@@ -134,6 +151,40 @@ def test_migrate_idempotent(tmp_path):
     assert summary["qa_effectiveness"] == first["qa_effectiveness"], (summary, first)
     # jobs não tem UNIQUE; o mirror faz clear+reload p/ não inflar o custo a cada re-index
     assert summary["api_calls"] == first["jobs"], (summary, first)
+
+
+def test_migrate_prunes_kb_rows_removed_from_flat(tmp_path):
+    """Mirror fiel: termo/decisao/spoiler removido do flat saia do DB (upsert-only deixava la ->
+    context_pack em modo DB injetava KB apagada). Arquivo ausente NAO apaga (so arquivo presente
+    e autoritativo); decisao com embedding sai sem violar a FK."""
+    art = tmp_path / "artifacts"
+    (art / "state").mkdir(parents=True)
+    gl, di, sp = art / "glossary.csv", art / "state" / "decision_index.json", art / "spoiler_ledger.json"
+    gl.write_text("term,translation\nDragon,Dragao\nSword,Espada\n", encoding="utf-8")
+    di.write_text(json.dumps([{"title": "A", "summary": "a"}, {"title": "B", "summary": "b"}]),
+                  encoding="utf-8")
+    sp.write_text(json.dumps({"entries": [{"entity": "Nina", "fact": "dragao"}, {"entity": "Ryu"}]}),
+                  encoding="utf-8")
+    db_path = tmp_path / "t.db"
+    migrate(tmp_path, db_path, project_id="p")
+    with Store(db_path) as db:
+        bid = next(d["id"] for d in db.get_decisions("p") if d["title"] == "B")
+        db._con.execute("INSERT OR IGNORE INTO decision_embeddings VALUES(?, 'm', 1, 0)", (bid,))
+        db._con.commit()
+
+    gl.write_text("term,translation\nDragon,Dragao\n", encoding="utf-8")
+    di.write_text(json.dumps([{"title": "A", "summary": "a"}]), encoding="utf-8")
+    sp.write_text(json.dumps({"entries": [{"entity": "Ryu"}]}), encoding="utf-8")
+    migrate(tmp_path, db_path, project_id="p")
+    with Store(db_path) as db:
+        assert [g["term"] for g in db.get_glossary("p")] == ["Dragon"]
+        assert [d["title"] for d in db.get_decisions("p")] == ["A"]
+        assert [e["entity"] for e in db.get_spoiler_entries("p")] == ["Ryu"]
+
+    gl.unlink()
+    migrate(tmp_path, db_path, project_id="p")
+    with Store(db_path) as db:
+        assert [g["term"] for g in db.get_glossary("p")] == ["Dragon"]
 
 
 def test_migrate_translations_have_content(synthetic_migrated):

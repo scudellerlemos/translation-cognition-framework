@@ -38,7 +38,6 @@ def _make_embedder(rows):
     emb = Embedder.__new__(Embedder)
     emb._ensure_vec_table = lambda con, kind="translation": None
     emb.encode = lambda texts: [[0.0]]
-    emb._rerank = lambda query, hits: hits  # sem FlashRank no teste
     con = _FakeCon(rows)
     return emb, con
 

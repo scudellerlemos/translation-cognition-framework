@@ -49,8 +49,9 @@ def test_reinsertion_gate_ok_on_bof4():
 
 def test_qa_skill_runs_deterministic_no_network():
     """e2e determinístico: skill 07 roda sobre o BoF4 (read-only, sem rede) e devolve coverage."""
-    if registry.get("07").check_inputs(BOF4):
-        pytest.skip("BoF4 sem artifacts/scenes")
+    # sem plano nenhum o QA devolve "error" (nada verificado) -- cenas so com dialogs.csv nao servem
+    if registry.get("07").check_inputs(BOF4) or not list(BOF4.glob("artifacts/scenes/*/translation_plan*.json")):
+        pytest.skip("BoF4 sem artifacts/scenes planejadas")
     r = registry.get("07").run(BOF4)
     assert r["status"] in ("ok", "blocked"), r
     assert "coverage" in r and "pct" in r["coverage"], r
@@ -58,8 +59,9 @@ def test_qa_skill_runs_deterministic_no_network():
 
 def test_cli_skill_list_and_run_e2e(capsys):
     """CLI e2e: `skill list` e `skill run 07 <bof4>` via o parser → func, sem exceção/rede."""
-    if registry.get("07").check_inputs(BOF4):
-        pytest.skip("BoF4 sem artifacts/scenes")
+    # sem plano nenhum o QA devolve "error" (nada verificado) -- cenas so com dialogs.csv nao servem
+    if registry.get("07").check_inputs(BOF4) or not list(BOF4.glob("artifacts/scenes/*/translation_plan*.json")):
+        pytest.skip("BoF4 sem artifacts/scenes planejadas")
     import cli
     # list
     rc = cli.build_parser().parse_args(["skill", "list"]).func(

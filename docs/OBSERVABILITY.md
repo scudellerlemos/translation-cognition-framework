@@ -9,16 +9,16 @@ falha), chamado por `run_game.py`. Este doc define o que coletar e onde, para va
 ## Onde instrumentar
 
 `framework/runtime/run_scene.py`, emitindo `artifacts/metrics.jsonl` (1 linha por cena). A chamada de
-IA passa por `model.py` — é lá que tokens in/out são conhecidos (backend `api`) ou estimados
-(backend `in-session`, via `cost_model._toks`).
+IA passa por `model.py` — é lá que tokens in/out são conhecidos (backend `api`); no
+`in-session` não há tokens (`usage: null`).
 
 ## Métricas por cena (consumo)
 
 | Métrica | Como | Uso |
 |---|---|---|
-| tokens_in / tokens_out | resposta da API (`usage`) ou estimativa `cost_model` | custo |
-| **segmentação**: tradução / governança / revisão | por etapa ([2] vs [3-5] vs [4]) | responde "tradução vs governança" |
-| custo_cena / custo_capítulo | tokens × pricing (`cost_model.PRICE`) | $/1k linhas real |
+| tokens_in / tokens_out | resposta da API (`usage`) | custo |
+| **segmentação**: tradução / governança / revisão | por etapa ([2] vs [3-4] vs [5]) | responde "tradução vs governança" |
+| custo_cena / custo_capítulo | tokens × pricing (`runtime/cost.py`, batch a 0,5×) | $/1k linhas real |
 | cache_hits (doutrina) | `usage.cache_read_input_tokens` | prova o ganho do caching |
 
 A proporção a mirar é **tradução : governança ≈ 70:30 ou melhor** (governança é a doutrina cacheada

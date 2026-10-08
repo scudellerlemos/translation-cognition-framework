@@ -15,8 +15,18 @@ from __future__ import annotations
 
 import contextlib
 import csv
+import json
+import shutil
 import sys
 from pathlib import Path
+
+_FRAMEWORK = Path(__file__).resolve().parents[1]
+_TEMPLATE = _FRAMEWORK / "templates" / "project.template.json"
+_SKELETON = _FRAMEWORK / "connectors" / "_skeleton"
+
+# Marcador da KB-stub: kb_gate da hard-block enquanto ele estiver no .md (um placeholder nao-vazio
+# passaria o check de "ausente/vazio" sem pesquisa de verdade).
+KB_PLACEHOLDER = "<!-- scaffold: KB ainda nao sintetizada -->"
 
 # Colunas obrigatórias: context_pack.select_glossary() usa 'term', 'target_translation',
 # 'handling_rule'. 'updated_date' e exigida pelo kb_gate.py (bloqueia sem ela) — faltava aqui
@@ -102,6 +112,39 @@ _KB_WORKLIST_TEMPLATE = """\
 - [ ] Adicionar ao glossary.csv com handling_rule: translate
 """
 
+_KB_TEMPLATE = """\
+# Universe Knowledge Base — {title}
+
+{marker}
+<!-- O kb_gate bloqueia (hard) enquanto a linha acima existir. Sintetizar via skill 03/04: uma -->
+<!-- secao ## por entidade, com **Definicao:** e **Fontes:** (IDs do research_log.md).        -->
+"""
+
+_RESEARCH_LOG_TEMPLATE = """\
+# Research Log — {title}
+
+**Status:** pending
+<!-- trocar pending por reconciled so depois da pesquisa IA+humano conciliada (skill 03). -->
+
+## Fontes Avaliadas
+
+| ID | Fonte | Tier |
+|----|-------|------|
+"""
+
+# kb_ratified.csv: mesmo schema do Utawarerumono (kb_reconcile/kb_review leem 'name'; kb_gate
+# procura a coluna de data).
+_KB_RATIFIED_HEADER = "name,ratified_by,date,note\n"
+
+
+def _project_json(project_root: Path, title: str) -> str:
+    cfg = json.loads(_TEMPLATE.read_text(encoding="utf-8"))
+    slug = project_root.resolve().name
+    cfg["title"] = title
+    cfg["db"] = {"path": f"{slug}.db", "project_id": slug}
+    return json.dumps(cfg, ensure_ascii=False, indent=2) + "\n"
+
+
 # profile/*.md: docs de referencia humana (nenhum script os le), mas o checklist de gate do
 # NEW_PROJECT_ONBOARDING.md exige os 2 primeiros antes de traduzir. Nunca eram criados pelo
 # scaffold apesar do onboarding doc afirmar que sim (linha "cria connector/, profile/, artifacts/")
@@ -148,60 +191,62 @@ aparecendo nas primeiras cenas traduzidas.
 
 
 def scaffold(project_root: Path, title: str = "") -> None:
+    project_root = Path(project_root)
     art = project_root / "artifacts"
     art.mkdir(parents=True, exist_ok=True)
     profile = project_root / "profile"
     profile.mkdir(parents=True, exist_ok=True)
+    conn = project_root / "connector"
+    conn.mkdir(parents=True, exist_ok=True)
 
-    t = title or project_root.name
+    t = title or project_root.resolve().name
     created, skipped = [], []
 
-    # 1. glossary.csv — schema correto para context_pack + state_index
-    gp = art / "glossary.csv"
-    if gp.exists():
-        skipped.append(gp)
-    else:
-        with gp.open("w", encoding="utf-8", newline="") as fh:
+    def emit(fp: Path, write) -> None:
+        if fp.exists():
+            skipped.append(fp)
+        else:
+            write(fp)
+            created.append(fp)
+
+    def text(content: str):
+        return lambda fp: fp.write_text(content, encoding="utf-8")
+
+    # 1. project.json — do template (kb_frontier/connector/db ja declarados; ver o template)
+    emit(project_root / "project.json", text(_project_json(project_root, t)))
+
+    # 2. glossary.csv — schema correto para context_pack + state_index
+    def write_glossary(fp: Path) -> None:
+        with fp.open("w", encoding="utf-8", newline="") as fh:
             csv.writer(fh).writerow(_GLOSSARY_HEADERS)
-        created.append(gp)
+    emit(art / "glossary.csv", write_glossary)
 
-    # 2. tone_analysis.md — com voice card sections obrigatórias
-    tp = art / "tone_analysis.md"
-    if tp.exists():
-        skipped.append(tp)
-    else:
-        tp.write_text(_TONE_ANALYSIS_TEMPLATE.format(title=t), encoding="utf-8")
-        created.append(tp)
+    # 3-5. tone_analysis.md (voice card sections obrigatorias), decision_log.md, kb_phase_worklist.md
+    emit(art / "tone_analysis.md", text(_TONE_ANALYSIS_TEMPLATE.format(title=t)))
+    emit(art / "decision_log.md", text(_DECISION_LOG_TEMPLATE.format(title=t)))
+    emit(art / "kb_phase_worklist.md", text(_KB_WORKLIST_TEMPLATE.format(title=t)))
 
-    # 3. decision_log.md
-    dp = art / "decision_log.md"
-    if dp.exists():
-        skipped.append(dp)
-    else:
-        dp.write_text(_DECISION_LOG_TEMPLATE.format(title=t), encoding="utf-8")
-        created.append(dp)
+    # 6-9. artefatos de KB que o kb_gate/kb_phase/spoiler_check leem — com o schema certo, mas
+    # nenhum satisfaz o gate: KB com KB_PLACEHOLDER (hard), research_log com status pending.
+    emit(art / "universe_knowledge_base.md", text(_KB_TEMPLATE.format(title=t, marker=KB_PLACEHOLDER)))
+    emit(art / "research_log.md", text(_RESEARCH_LOG_TEMPLATE.format(title=t)))
+    emit(art / "kb_ratified.csv", text(_KB_RATIFIED_HEADER))
+    emit(art / "spoiler_ledger.json", text('{"entries": []}\n'))
 
-    # 4. kb_phase_worklist.md
-    kp = art / "kb_phase_worklist.md"
-    if kp.exists():
-        skipped.append(kp)
-    else:
-        kp.write_text(_KB_WORKLIST_TEMPLATE.format(title=t), encoding="utf-8")
-        created.append(kp)
-
-    # 5-8. profile/*.md — referencia humana, exigida pelo checklist de gate do onboarding
+    # 10-13. profile/*.md — referencia humana, exigida pelo checklist de gate do onboarding
     for fname, tmpl in [
         ("voice_profiles_reference.md", _VOICE_PROFILES_TEMPLATE),
         ("terminology_seeds.md", _TERMINOLOGY_SEEDS_TEMPLATE),
         ("identity_pairs_reference.md", _IDENTITY_PAIRS_TEMPLATE),
         ("example_test_suites.md", _EXAMPLE_TEST_SUITES_TEMPLATE),
     ]:
-        fp = profile / fname
-        if fp.exists():
-            skipped.append(fp)
-        else:
-            fp.write_text(tmpl.format(title=t), encoding="utf-8")
-            created.append(fp)
+        emit(profile / fname, text(tmpl.format(title=t)))
+
+    # 14+. connector/ <- _skeleton (scripts + test_roundtrip*.py + conftest.py). A copia intocada
+    # NAO passa o connector_gate (hard) -- ponto de partida da Fase 0, nao stub que engana o gate.
+    for src in sorted(_SKELETON.iterdir()):
+        if src.is_file() and src.suffix in (".py", ".md"):
+            emit(conn / src.name, lambda fp, src=src: shutil.copyfile(src, fp))
 
     for f in created:
         print(f"  CRIADO  {f.relative_to(project_root)}")
@@ -214,7 +259,9 @@ def scaffold(project_root: Path, title: str = "") -> None:
         print("  1. Editar tone_analysis.md — substituir PersonagemA/B/C pelos reais")
         print("  2. Editar glossary.csv — adicionar termos (term,category,target_translation,handling_rule,...)")
         print("  3. Editar decision_log.md — documentar decisões de tradução")
-        print("  4. Rodar: python framework/runtime/state_index.py <projeto>")
+        print("  4. Preencher project.json (placeholders <...>, kb_frontier) e adaptar connector/ (Fase 0)")
+        print("  5. Sintetizar universe_knowledge_base.md/research_log.md (skill 03/04)")
+        print("  6. Rodar: python framework/runtime/state_index.py <projeto>")
 
     _report_connector_gate_status(project_root)
     _report_kb_gate_status(project_root)

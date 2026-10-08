@@ -28,11 +28,11 @@ Aquaplus/SDAT usado no Utawarerumono.
 
 | Item | Tipo |
 |---|---|
-| TM busca semântica (B2: `paraphrase-multilingual-MiniLM-L12-v2` local) — não implementada | débito técnico |
+| TM busca semântica (B2: `paraphrase-multilingual-MiniLM-L12-v2` local) — implementada no core (`framework/db/`); BoF4 segue flat, sem `db` no `project.json` | opt-in |
 
 ### Próximos passos
 
-1. TM semântica (B2) — quando corpus multi-game justificar
+1. Ligar a TM semântica (B2) neste projeto (declarar `db` + `tcf db migrate`) — quando corpus multi-game justificar
 
 ---
 
@@ -65,5 +65,5 @@ output/                   ← 125 DAT files traduzidos e reinseridos
 
 Ver [ROADMAP.md raiz](../../docs/ROADMAP.md). As 4 questões (família de engine,
 versionamento do conector, onboarding mínimo, TM compartilhada) foram parcialmente
-respondidas por este piloto — a TM semântica (B2) é a questão principal em aberto
-para o reuso cross-game.
+respondidas por este piloto — a TM semântica (B2) já existe no core; o reuso cross-game (TM de série) é
+a questão principal em aberto.

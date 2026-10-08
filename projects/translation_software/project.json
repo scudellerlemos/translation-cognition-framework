@@ -54,7 +54,6 @@
   "stack": {
     "embeddings": "paraphrase-multilingual-MiniLM-L12-v2",
     "vector_db": "sqlite-vec",
-    "reranker": "flashrank/MiniLM-L-12",
     "ner": "spacy/xx_ent_wiki_sm",
     "llm_local": "ollama/qwen2.5:14b",
     "llm_api": "anthropic/claude-sonnet-4-6"

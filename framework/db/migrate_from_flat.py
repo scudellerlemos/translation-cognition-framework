@@ -36,6 +36,7 @@ from store import Store  # noqa: E402
 from text_ids import (
     scene_id_of as _sid,  # noqa: E402  (fonte única, framework/text_ids.py — leaf, sem dep de runtime)
 )
+from text_ids import verified_scenes  # noqa: E402
 
 
 def _migrate_scenes(db: Store, project_id: str, root: Path) -> int:
@@ -101,9 +102,14 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     if not scenes_dir.is_dir():
         return 0, 0
     seen: set = set()   # (scene_id, offset) distintos — conta linhas do DB, não linhas de CSV
+    n_ok = 0
+    # approved = cena verified no run_state (sem run_state = legado, tudo aprovado): o approved_*.csv
+    # existe desde o build_plan, ANTES do verify -- cena reprovada nao vira TM do DB (#216)
+    verified = verified_scenes(root / "artifacts" / "run_state.json")
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
             continue
+        ok = verified is None or scene_dir.name in verified
         scene_id = _sid(scene_dir.name)
         # source (EN) por offset — do dialogs.csv (extração completa da cena)
         src_by = {}
@@ -151,11 +157,12 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
                         intent=m.get("intent", ""),
                         risk_level=m.get("risk_level", "low"),
                         risk_notes=m.get("risk_notes", ""),
-                        approved=True,
+                        approved=ok,
                     )
-                    seen.add((scene_id, off))
-    n = len(seen)   # todas migram como approved=True → total == approved
-    return n, n
+                    if (scene_id, off) not in seen:
+                        seen.add((scene_id, off))
+                        n_ok += ok
+    return len(seen), n_ok
 
 
 _KB_REVEAL_RX = re.compile(r"<!--\s*reveal:\s*([^\s>]+)\s*-->", re.IGNORECASE)
@@ -189,6 +196,7 @@ def _migrate_kb(db: Store, project_id: str, root: Path) -> int:
     _flush()
     if entries:
         db.upsert_kb(project_id, entries)
+    db.prune_absent("kb", project_id, {e["section"] for e in entries})
     return len(entries)
 
 
@@ -219,7 +227,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
     g_path = root / "artifacts" / "glossary.csv"
     if not g_path.is_file():
         return 0
-    n = 0
+    keep: set = set()
     with g_path.open(encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -228,6 +236,7 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                            or row.get("target_term", ""))
             if not term or not translation:
                 continue
+            keep.add(term)
             db.upsert_glossary(
                 project_id=project_id,
                 term=term,
@@ -239,21 +248,22 @@ def _migrate_glossary(db: Store, project_id: str, root: Path) -> int:
                 spoiler_level=row.get("spoiler_level"),
                 notes=row.get("notes"),
             )
-            n += 1
-    return n
+    db.prune_absent("glossary", project_id, keep)
+    return len(keep)
 
 
 def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
     e_path = root / "artifacts" / "entities.csv"
     if not e_path.is_file():
         return 0
-    n = 0
+    keep: set = set()
     with e_path.open(encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             name = row.get("name") or row.get("entity") or row.get("canonical_name", "")
             if not name:
                 continue
+            keep.add(name)
             db.upsert_entity(
                 project_id=project_id,
                 name=name,
@@ -263,8 +273,8 @@ def _migrate_entities(db: Store, project_id: str, root: Path) -> int:
                 spoiler_reveal_scene=row.get("spoiler_reveal_scene"),
                 notes=row.get("notes"),
             )
-            n += 1
-    return n
+    db.prune_absent("entities", project_id, keep)
+    return len(keep)
 
 
 def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
@@ -295,6 +305,7 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
                 criticality=card.get("criticality", "medium"),
             )
             n += 1
+        db.prune_absent("voice_cards", project_id, set(data))
         return n
     # Formato legado: lista ou {"cards": [...]}.
     cards = data if isinstance(data, list) else data.get("cards", [])
@@ -314,6 +325,8 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
             criticality=card.get("criticality", "medium"),
         )
         n += 1
+    db.prune_absent("voice_cards", project_id,
+                    {c.get("speaker") or c.get("name", "") for c in cards})
     return n
 
 
@@ -344,6 +357,7 @@ def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
             reveal=reveal,
         )
         n += 1
+    db.prune_absent("decisions", project_id, {d.get("title") for d in items})
     return n
 
 
@@ -370,6 +384,8 @@ def _migrate_spoiler(db: Store, project_id: str, root: Path) -> int:
             gender_quarantine=bool(e.get("gender_quarantine")),
         )
         n += 1
+    db.prune_absent("spoiler_entries", project_id,
+                    {(e.get("entity"), e.get("fact") or "") for e in data.get("entries", [])})
     return n
 
 
@@ -395,6 +411,7 @@ def _migrate_kb_ratified(db: Store, project_id: str, root: Path) -> int:
                             "date": row.get("date"), "note": row.get("note")})
     if entries:
         db.upsert_kb_ratified(project_id, entries)
+    db.prune_absent("kb_ratified", project_id, {e["name"] for e in entries})
     return len(entries)
 
 
@@ -513,33 +530,36 @@ def _default_project_id(root: Path) -> str:
 def migrate(project_root: Path, dest_db: Path, project_id: str | None = None) -> dict:
     project_id = project_id or _default_project_id(project_root)   # sem a flag, migrar outro projeto gravava tudo como 'bof4'
     meta = _project_meta(project_root)
-    with Store(dest_db) as db, db.batch():
-        # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
-        # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
-        # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
-        db.upsert_project(
-            project_id=project_id,
-            title=meta["title"],
-            source_lang=meta["source_lang"],
-            target_lang=meta["target_lang"],
-            media_type=meta["media_type"],
-        )
-        scenes = _migrate_scenes(db, project_id, project_root)
-        scene_lines = _migrate_scene_lines(db, project_id, project_root)
-        translations, approved = _migrate_translations(db, project_id, project_root)
-        glossary = _migrate_glossary(db, project_id, project_root)
-        entities = _migrate_entities(db, project_id, project_root)
-        voice_cards = _migrate_voice_cards(db, project_id, project_root)
-        decisions = _migrate_decisions(db, project_id, project_root)
-        spoiler = _migrate_spoiler(db, project_id, project_root)
-        back_translations = _migrate_back_translations(db, project_id, project_root)
-        kb = _migrate_kb(db, project_id, project_root)
-        research_log = _migrate_research_log(db, project_id, project_root)
-        kb_ratified = _migrate_kb_ratified(db, project_id, project_root)
-        jobs = _migrate_jobs(db, project_id, project_root)
-        metrics = _migrate_metrics(db, project_id, project_root)
-        warnings = _migrate_warnings(db, project_id, project_root)
-        qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
+    with Store(dest_db) as db:
+        with db.batch():
+            # db.batch(): migracao grava milhares de linhas (traducoes/cenas/jobs) via upsert_*
+            # 1-a-1 -- sem isso cada chamada faria seu proprio commit/fsync (achado de eficiencia
+            # da 8a passada de review: commits SQLite nao batelados). 1 commit no fim do bloco.
+            db.upsert_project(
+                project_id=project_id,
+                title=meta["title"],
+                source_lang=meta["source_lang"],
+                target_lang=meta["target_lang"],
+                media_type=meta["media_type"],
+            )
+            scenes = _migrate_scenes(db, project_id, project_root)
+            scene_lines = _migrate_scene_lines(db, project_id, project_root)
+            translations, approved = _migrate_translations(db, project_id, project_root)
+            glossary = _migrate_glossary(db, project_id, project_root)
+            entities = _migrate_entities(db, project_id, project_root)
+            voice_cards = _migrate_voice_cards(db, project_id, project_root)
+            decisions = _migrate_decisions(db, project_id, project_root)
+            spoiler = _migrate_spoiler(db, project_id, project_root)
+            back_translations = _migrate_back_translations(db, project_id, project_root)
+            kb = _migrate_kb(db, project_id, project_root)
+            research_log = _migrate_research_log(db, project_id, project_root)
+            kb_ratified = _migrate_kb_ratified(db, project_id, project_root)
+            jobs = _migrate_jobs(db, project_id, project_root)
+            metrics = _migrate_metrics(db, project_id, project_root)
+            warnings = _migrate_warnings(db, project_id, project_root)
+            qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
+        # Fora do batch(): carga do modelo/encode e lenta e embedder.py faz commit proprio --
+        # dentro do bloco seguraria o lock de escrita e quebraria o tudo-ou-nada.
         # #171: reindexa embeddings pendentes (TM/decisions) no mesmo write-path que espelha
         # flat→DB — uma linha aprovada ou corrigida depois nunca fica esperando reindex manual.
         embeddings = db.reindex_pending_embeddings(project_id)

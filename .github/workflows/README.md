@@ -13,8 +13,8 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 
 | Workflow | Arquivo | Quando roda | Pergunta que responde |
 |---|---|---|---|
-| **Tests** | `test.yml` | Todo push e PR | "O código **funciona**?" |
-| **Quality** | `quality.yml` | Todo push e PR | "O código está **limpo e seguro**?" |
+| **Tests** | `test.yml` | Todo PR e push no `main` | "O código **funciona**?" |
+| **Quality** | `quality.yml` | Todo PR e push no `main` | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
 | **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
 | **Cobertura real (ML)** | `ml-coverage-optional.yml` | Domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
@@ -29,26 +29,29 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 
 ## 1. `test.yml` — "O código funciona?"
 
-Roda a bateria de **testes automatizados** do projeto. Para garantir que funciona em
-mais de uma versão do Python, ele roda **duas vezes em paralelo**: uma no Python 3.11
-e outra no 3.12 (é a "matriz").
+Roda a bateria de **testes automatizados** do projeto, dividida em **tarefas (jobs) que rodam
+ao mesmo tempo** — se uma falha, as outras continuam e você vê exatamente qual quebrou. Só a
+tarefa de cobertura roda **duas vezes**: uma no Python 3.11 e outra no 3.12 (é a "matriz").
 
-Passo a passo, em português:
+O que cada tarefa confere, em português:
 
-1. **Baixa o código** e instala o Python + as ferramentas (`requirements-dev.txt`).
+1. Todas **baixam o código** e instalam o Python + as ferramentas (`requirements-dev.txt`).
 2. **Confere que o `.env` não foi enviado** — o `.env` guarda senhas/chaves e *nunca*
    pode ir pro repositório. Se alguém mandou sem querer, o robô barra.
 3. **Checa os tipos (mypy)** — pega erros de "encaixe" (ex.: passar texto onde se
    esperava número) antes mesmo de rodar o programa.
-4. **Roda os testes do motor (runtime) com cobertura** — além de passar, exige que pelo
-   menos **90%** do código seja exercitado pelos testes (a "cobertura"). Abaixo disso,
-   barra.
-5. **Roda os testes de validação** — as regras de qualidade do harness.
-6. **Roda os testes de contrato dos conectores** (um por jogo) — confere o
+4. **Roda os testes do motor com cobertura** (runtime, validação, banco e skills) — além
+   de passar, exige que pelo menos **90%** do código seja exercitado pelos testes (a
+   "cobertura"). Abaixo disso, barra.
+5. **Roda os testes dos utilitários de conector e dos hooks** — os utilitários também com
+   piso de **90%** de cobertura.
+6. **Roda os testes de contrato dos conectores** (um por jogo, mais o demo e o template) — confere o
    *round-trip*: extrair o texto do jogo e reinserir **sem traduzir** tem que devolver o
    arquivo **byte a byte idêntico** ao original. É a prova de que o conector não corrompe
    o jogo. (Sem o arquivo do jogo, que não vai pro repositório, esses testes se "pulam"
    sozinhos.)
+7. **Agregador (`all-checks`)** — só fica verde se todas as tarefas acima passaram. É ele
+   que a proteção da branch `main` exige pra liberar o merge.
 
 ---
 
@@ -64,9 +67,8 @@ aspecto diferente:
 | **Secret scan** | `gitleaks` | Procura senha/chave/token esquecidos no código ou no histórico. |
 | **Dependências** | `pip-audit` | Confere se alguma biblioteca usada tem falha de segurança conhecida (CVE). |
 
-> O **Lint** e o **SAST** olham só a pasta `framework/` (o "produto" reaproveitável). Os
-> scripts soltos dentro de `projects/*/connector/` são experimentais e já têm os testes
-> de round-trip como rede de segurança, então não entram nesse gate.
+> O **Lint** e o **SAST** olham as pastas `framework/` e `projects/` — os conectores de cada
+> jogo (`projects/*/connector/`) também passam por esse gate.
 
 ---
 
@@ -116,8 +118,9 @@ sentence-transformers do zero ~1min+ por run) — não roda em todo push/PR.
 Dispara só quando alguém cria e envia uma tag no formato `v1.2.3` (`git tag v1.2.3 && git push
 --tags`). Duas etapas:
 
-1. **Valida** — confere que o arquivo `VERSION` na raiz bate com a tag enviada. Se não bater,
-   falha (você esqueceu de atualizar o `VERSION` antes de taguear).
+1. **Valida** — confere que o arquivo `VERSION` na raiz bate com a tag enviada (se não bater,
+   você esqueceu de atualizar o `VERSION` antes de taguear) e que o `test.yml` está verde nesse
+   mesmo commit.
 2. **Publica** — cria a *Release* no GitHub (aba **Releases**), com notas geradas automaticamente
    a partir dos PRs mergeados desde a última tag. Essa etapa **exige aprovação manual**
    (`environment: Production`) — diferente do resto da esteira, aqui faz sentido parar pra

@@ -9,7 +9,7 @@ context_pack consulta estes indices.
 Gera (em `<projeto>/artifacts/state/`):
   - translation_memory.jsonl  : 1 linha por fala ja traduzida -> {scene, offset, speaker,
                                 source, target, src_key}. src_key = sha1(source normalizado).
-                                Fonte: TODOS os translation_plan*.json (raiz + ch_*/), que ja
+                                Fonte: translation_plan*.json (scenes/<cena>/ verified + legado raiz/ch_*/), que ja
                                 carregam text_source + speaker + base_translation.
   - voice_cards.json          : {personagem -> {criticality, lines[]}} destilado do tone_analysis.md
                                 (<=~300 tok/card). So a voz, sem o resto do contexto narrativo.
@@ -36,6 +36,7 @@ if str(_HERE.parent) not in sys.path:
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from config import GLOSSARY_STALENESS_DAYS  # noqa: E402
 from text_ids import norm_source as _norm  # noqa: E402,F401  (fonte única, framework/text_ids.py)
+from text_ids import scene_id_of, verified_scenes  # noqa: E402
 from text_ids import tm_key as _key
 
 # --- caracteristicas universais do conector que TODA cena precisa (decisoes sempre incluidas) ---
@@ -111,11 +112,15 @@ def _slug_tags(title: str) -> list[str]:
 # ----------------------------- Translation Memory -----------------------------
 
 def build_tm(art: Path) -> list[dict]:
-    """Le todos os translation_plan*.json (raiz + subdirs) -> entradas de TM, ordenadas e dedup."""
+    """Le todos os translation_plan*.json (raiz, subdirs legados e scenes/<cena>/) -> entradas de TM,
+    ordenadas e dedup. Planos de scenes/<cena>/ so entram se a cena esta verified no run_state (plano
+    reprovado nao vira TM reusada); sem run_state (legado) entram todos."""
     entries: dict[str, dict] = {}
+    verified = verified_scenes(art / "run_state.json")
     plan_files = sorted(art.glob("translation_plan*.json")) + \
         sorted(art.glob("*/translation_plan*.json")) + \
-        sorted(art.glob("scenes/*/translation_plan*.json"))   # layout atual (paths.scene_dir)
+        [pf for pf in sorted(art.glob("scenes/*/translation_plan*.json"))
+         if verified is None or pf.parent.name in verified]
     for pf in plan_files:
         try:
             data = json.loads(pf.read_text(encoding="utf-8"))
@@ -294,6 +299,25 @@ def _db_target(root: Path):
     return Path(root) / rel, pid
 
 
+def approve_scene_db(root: Path, scene: str) -> None:
+    """Marca approved=1 as traducoes da cena no DB (gated por project.json:db). O build_plan grava
+    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB (#216).
+    Reindexa em seguida (#182): o embedder so embeda approved=1, entao e AQUI que a cena entra na
+    TM semantica -- no build_plan ela ainda era approved=0 e so aparecia uma cena depois."""
+    db_path, project_id = _db_target(root)
+    if not db_path or not db_path.is_file():
+        return
+    db_dir = str(Path(__file__).resolve().parents[1] / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    from store import Store
+    with Store(db_path) as db:
+        db.approve_scene(project_id, scene_id_of(scene))
+        # ponytail: Embedder() recarrega o modelo a cada cena (~9-12s, latencia local, nao $);
+        # incremental e nunca levanta (None sem stack de ML). Batelar por capitulo se pesar.
+        db.reindex_pending_embeddings(project_id)
+
+
 def _sync_db(root: Path):
     """Write-path consolidado: espelha o estado flat COMPLETO no SQLite (gated por
     project.json:db). Reusa migrate_from_flat.migrate (idempotente, upsert) — o DB vira
@@ -308,6 +332,16 @@ def _sync_db(root: Path):
         sys.path.insert(0, db_dir)
     migrate = importlib.import_module("migrate_from_flat").migrate
     return migrate(root, db_path, project_id)
+
+
+def mirror_db(root: Path):
+    """Espelha flat->DB no INICIO do run (run_chapter/run_scene CLI): cria o DB no 1o run de
+    projeto novo e traz o que os produtores flat-only (back_translate/metrics/quality_review,
+    KB editada a mao) gravaram desde o ultimo run. build() antes: voice_cards/decision_index
+    sao derivados e precisam estar frescos. No-op (None) sem project.json:db."""
+    if not _db_target(Path(root))[0]:
+        return None
+    return build(root)["db_synced"]
 
 
 # --------------------------------- driver -------------------------------------

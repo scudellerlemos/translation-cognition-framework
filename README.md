@@ -1,7 +1,7 @@
 # Translation Cognition Framework
 > *AI engineering framework for narrative localization — stateless cognition, deterministic gates, zero wasted cost across 45k lines in production.*
 
-[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![577 testes](https://img.shields.io/badge/testes-577%20passing-brightgreen)
+[![Tests](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml/badge.svg)](https://github.com/scudellerlemos/translation-cognition-framework/actions/workflows/test.yml) ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 
 > **Um framework de engenharia de IA para localizar obras narrativas longas** (jogos, visual novels,
 > filmes, séries) **sem perder consistência, identidade de personagem, terminologia nem controle de
@@ -32,7 +32,7 @@ camadas** → **os princípios** → **o glossário**. Há também um guia conce
 Não é um "tradutor por linha". É um **framework de execução cognitiva governada**, e o mérito está em escolhas de engenharia que se sustentam:
 
 - **LLM só para cognição** → custo previsível, resultado verificável e escala que não depende da memória do chat.
-- **Estado externalizado** → consistência vem do store versionado, não da janela. Só a API Anthropic; nada de 2º serviço.
+- **Estado externalizado** → consistência vem do store versionado, não da janela. Só a API Anthropic; nada de 2º serviço pago (banco e embeddings, quando ligados, são locais).
 - **Governança explícita** → IA propõe, gates aprovam, script aplica; binário read-only; nenhuma tradução à mão no dado.
 - **Anti-overengineering deliberado** → orquestrador determinístico + 2 papéis de IA. Sem multiagentes, sem indireção que não se paga (ver ADRs).
 - **Honestidade operacional** → o ledger conta cada centavo (mesmo em falha); os gates barram base incompleta; spoiler é decisão **por linha**.
@@ -60,29 +60,18 @@ O sistema inteiro é uma pilha de quatro responsabilidades. A IA vive **só** na
 são **código determinístico** (mesma entrada → mesma saída, sem rede, testável).
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
-  subgraph C["① COGNITION — o que EXIGE IA (a única parte estocástica)"]
-    c1["translate · back_translate (verificação de alto risco)"]
-  end
-  subgraph S["② STATE — memória FORA da janela do modelo"]
-    s1["translation_memory · glossary · voice_cards · decision_index"]
-  end
-  subgraph E["③ EXECUTION — orquestração determinística"]
-    e1["cena = job stateless O(cena) · context_pack · checkpoint/resume"]
-  end
-  subgraph V["④ VALIDATION — gates que BLOQUEIAM"]
-    v1["round-trip · back-translation · fonte de KB · spoiler · naturalidade"]
-  end
+  C["<b>① COGNITION</b> — o que EXIGE IA (a única parte estocástica)<br/>translate · back_translate (verificação de alto risco)"]:::cog
+  S["<b>② STATE</b> — memória FORA da janela do modelo<br/>translation_memory · glossary · voice_cards · decision_index"]:::sta
+  E["<b>③ EXECUTION</b> — orquestração determinística<br/>cena = job stateless O(cena) · context_pack · checkpoint/resume"]:::exe
+  V["<b>④ VALIDATION</b> — gates que BLOQUEIAM<br/>round-trip · back-translation · fonte de KB · spoiler · naturalidade"]:::val
   C --> S --> E --> V
-  V -->|"reprova → não avança"| E
+  V -.->|"reprova → não avança"| E
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
   classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
   classDef val fill:#d9f2d9,stroke:#2e7d32,color:#000;
-  class C,c1 cog;
-  class S,s1 sta;
-  class E,e1 exe;
-  class V,v1 val;
 ```
 
 > **Paleta (vale para os dois diagramas):** 🩷 Cognition (a única parte de IA) · 🟧 State · 🟦 Execution · 🟩 Validation.
@@ -107,9 +96,9 @@ As mesmas cores das 4 camadas marcam a que camada cada passo pertence:
 flowchart LR
   pack["context_pack<br/>monta contexto"]:::exe --> tr{{"translate<br/>IA · Sonnet"}}:::cog
   tr --> plan["build_plan<br/>monta plano/approved"]:::exe
-  plan --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}:::cog
-  bt --> vf["verify<br/>round-trip + gates"]:::val
-  vf --> cp[("checkpoint + TM<br/>grava estado")]:::sta
+  plan --> vf["verify<br/>round-trip + gates"]:::val
+  vf --> bt{{"back_translate<br/>IA · Opus (só alto risco)"}}:::cog
+  bt --> cp[("checkpoint + TM<br/>grava estado")]:::sta
   classDef cog fill:#f6d6e8,stroke:#c0397b,color:#000;
   classDef sta fill:#fde6c4,stroke:#c97b1f,color:#000;
   classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
@@ -124,14 +113,15 @@ flowchart LR
 
 ## Princípios arquiteturais
 
-Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
+Sete decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 
 - **Scene as Stateless Job** — cada cena roda isolada, com contexto **O(cena)** (não O(histórico)).
   Mata o estouro de janela e torna o pipeline resumível: cair na cena 40 não perde as 39 anteriores.
 - **Estado externalizado** — consistência vem de arquivos versionados (TM, glossário, voice cards,
-  decision log), não da memória do chat. Sem banco, sem embeddings, sem 2º serviço pago.
+  decision log), não da memória do chat. Flat files por padrão; SQLite + embeddings locais
+  (sqlite-vec) são opcionais, ligados por `project.json:db` — sem 2º serviço pago.
 - **Runtime agnóstico ao modelo** — a lógica não sabe qual LLM roda. Trocar Haiku/Sonnet/Opus por
-  complexidade da linha é configuração, não reescrita (`runtime/model.py` é a única fronteira).
+  complexidade da linha é configuração, não reescrita (`runtime/model.py` + `back_translate.py` são a única fronteira com o LLM pago).
 - **SDD — Specification-Driven Development** — as regras de tradução (glossário, vozes, spoilers) são
   **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..08`), não decisões
   ad-hoc perdidas num chat. Cada etapa tem um *gate* que impede avançar sobre base incompleta.
@@ -152,7 +142,7 @@ Seis decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 
 ```mermaid
 flowchart LR
-  ia{{"IA<br/>propõe"}} --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
+  ia["IA<br/>propõe"] --> gate["gates<br/>aprovam"] --> script["script<br/>aplica"] --> canon[("dado<br/>canônico")]
   human["humano<br/>(palavra final)"] -.->|"revisa & ratifica"| gate
   classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
   class ia ia;
@@ -214,7 +204,7 @@ dinheiro vai (1º passe vs re-tradução vs back-translation) e provar `R$ 0 des
 | Alavanca de custo | Mecanismo | Efeito |
 |---|---|---|
 | Reuso | TM *append-only* + dedup por cena | fala repetida não re-paga; o jogo não é re-traduzido após o QA |
-| Tier por complexidade | Haiku (linha simples) / Sonnet (com quebra) / Opus (só verificação) | paga o modelo certo por linha |
+| Tier por complexidade | Haiku (linha simples) / Sonnet (com quebra) / Opus (verificação + último degrau do re-aperto de budget) | paga o modelo certo por linha |
 | Batch | Batch API −50%, Carta cacheada compartilhada | metade do preço no 1º passe |
 | Recuperação por-linha | re-traduz só o que quebrou | retry barato e previsível |
 | Teto + estimativa | estimativa pré-voo + gate de submissão | gasto de pior-caso ≤ teto, conhecido antes |
@@ -284,6 +274,7 @@ O filme inteiro, do binário do jogo até a pessoa jogando em pt-BR. As cores s�
 loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem re-traduzir o jogo.
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 520}}}%%
 flowchart TB
   bin[("binário do jogo<br/>read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
@@ -389,7 +380,7 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
   + observabilidade de progresso (linhas/min, % do jogo, ETA, taxa de falha) ✅
 - TM por série: jogos da mesma franquia compartilham termos recorrentes, isolamento estrutural ✅
 - Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
-- 577 testes passando (501 runtime+db+skills+validation, cobertura ≥90% · 76 conectores, cobertura ≥75%)
+- Suíte verde no CI, com gate de cobertura ≥90% (runtime+db+skills+validation e `framework/connectors`)
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 

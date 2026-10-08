@@ -57,8 +57,8 @@ flowchart LR
 - [x] **Jogo inteiro extraído, reinserido e round-trip verde** — 16 capítulos (11–23 + 30, 31, 39),
       146 cenas, ~45.100 linhas, pelo harness (`framework/runtime/`). Ordem offset × ordem narrativa
       confirmada em todos (nenhuma divergência pega pela back-translation/QA).
-- [ ] **Pós-produção:** reinsert do **jogo inteiro num passe só** + patch IPS final (hoje é por
-      capítulo) e **gate visual in-game** dos saltos grandes (capítulos 30/39). Ver `ROADMAP.md`.
+- [x] **Pós-produção:** encerrada — reinsert do **jogo inteiro num passe só** disponível em
+      `reinsert_game.py`. Ver `../ROADMAP_history.md`.
 
 ## Como rodar
 

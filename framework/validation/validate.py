@@ -66,19 +66,21 @@ def _check_risk(label: str, lines: list[dict]) -> list[Issue]:
     return out
 
 
-def _check_manifest(cfg: dict) -> tuple[list[Issue], list[re.Pattern]]:
-    """Campos obrigatórios do project.json + compila formatting_token_patterns (regex, nao literais:
-    tokens parametrizados de indice variavel, ex.: cor {c<N>}/{c-1}/{c-})."""
+def _check_manifest(cfg: dict) -> tuple[list[Issue], list[str], list[tuple[str, re.Pattern]]]:
+    """Campos obrigatórios do project.json + tokens literais validos + formatting_token_patterns
+    compilados (regex, nao literais: tokens parametrizados de indice variavel, ex.: cor {c<N>}/{c-1}/{c-})."""
     out = [_E("project.json", f"campo obrigatório ausente: {k}")
-           for k in ("title", "source_language", "target_language", "source", "formatting_tokens")
+           for k in ("title", "source_language", "target_language", "source")
            if not cfg.get(k)]
-    rx_tokens: list[re.Pattern] = []
-    for p in (cfg.get("formatting_token_patterns", []) or []):
-        try:
-            rx_tokens.append(re.compile(p))
-        except re.error as e:
-            out.append(_E("project.json", f"formatting_token_patterns: regex inválida {p!r} ({e})"))
-    return out, rx_tokens
+    if "formatting_tokens" not in cfg:   # [] explicito = "sem tokens", valido (mesma regra do runtime)
+        out.append(_E("project.json", "campo obrigatório ausente: formatting_tokens"))
+    # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o; as
+    # checagens por linha usam so os itens validos (item ruim ja virou 1 ERROR, nao 1 por linha)
+    tok_problems, tokens, patterns = connector_io.structural_token_config(
+        cfg.get("formatting_tokens"), cfg.get("formatting_token_patterns"))
+    out += [_E("project.json", msg) for msg in tok_problems]
+    # Forma envolvida (?:p), a mesma do runtime -- "a)|(b" so compila assim.
+    return out, tokens, [(p, re.compile(f"(?:{p})")) for p in patterns]
 
 
 def _check_glossary(art: Path) -> list[Issue]:
@@ -130,10 +132,12 @@ def _check_target(label: str, i, s: str, tgt: str, tokens: list, rx_tokens: list
             out.append(_E(label, f"{i}: token {tk} {s.count(tk)}→{tgt.count(tk)}"))
     # tokens parametrizados: o multiset de ocorrências deve ser idêntico (pega drop,
     # troca de índice {c5}→{c6} e desbalanceamento que a contagem literal não veria)
-    for rx in rx_tokens:
-        ms, mt = sorted(rx.findall(s)), sorted(rx.findall(tgt))
+    for pat, rx in rx_tokens:
+        # group(0), nao findall: com grupo de captura findall compara so o grupo
+        ms = sorted(m.group(0) for m in rx.finditer(s))
+        mt = sorted(m.group(0) for m in rx.finditer(tgt))
         if ms != mt:
-            out.append(_E(label, f"{i}: token de padrão /{rx.pattern}/ não preservado verbatim {ms}→{mt}"))
+            out.append(_E(label, f"{i}: token de padrão /{pat}/ não preservado verbatim {ms}→{mt}"))
     if s.count("\\n") != tgt.count("\\n"):
         out.append(_W(label, f"{i}: nº de quebras '\\n' difere do source"))
     return out
@@ -250,10 +254,9 @@ def validate_project(root: Path) -> list[Issue]:
     if not pj.is_file():
         return [_E("project.json", f"manifesto não encontrado em {root}")]
     cfg = _json(pj)
-    issues, rx_tokens = _check_manifest(cfg)
+    issues, tokens, rx_tokens = _check_manifest(cfg)
     src = cfg.get("source", {}) or {}
     idc = src.get("id_column", "offset")
-    tokens = cfg.get("formatting_tokens", []) or []
     art = root / "artifacts"
 
     def has(name): return (art / name).is_file()
