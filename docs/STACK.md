@@ -100,9 +100,33 @@ palavra); o sufixo opcional faz `cohort` casar `cohorts` sem abrir para substrin
 | Guardas de spoiler | um fato ainda **não** revelado neste ponto da história tem um gatilho presente na cena; entra a instrução de como manter a ambiguidade | — | `select_spoiler_guards` |
 | Regras do projeto | tokens de formatação, token de quebra de linha, orçamento de bytes por fala | fixo | `project_constraints` |
 
-A "fonte normalizada" da TM exata é o texto em minúsculas, com quebras de linha trocadas por
-espaço e espaços colapsados (`text_ids.norm_source`). Duas falas que diferem só em caixa ou em
-onde a linha quebra têm a mesma chave.
+#### A chave da TM exata
+
+A chave que identifica "a mesma fala" é calculada por duas funções em `framework/text_ids.py`:
+
+```python
+def norm_source(s: str) -> str:
+    # token literal "\n" do jogo vira espaço; minúsculas; espaços colapsados; pontas aparadas
+    return re.sub(r"\s+", " ", (s or "").replace("\\n", " ").lower()).strip()
+
+def tm_key(s: str) -> str:
+    # SHA-1 do texto normalizado em UTF-8; ficam os 16 primeiros caracteres hex
+    return hashlib.sha1(norm_source(s).encode("utf-8"), usedforsecurity=False).hexdigest()[:16]
+```
+
+Exemplo: a fala `Where do you\nwant to go?` é normalizada para `where do you want to go?`, e a
+chave são os 16 primeiros caracteres do SHA-1 desse texto.
+
+- **A normalização define o que conta como a mesma fala.** Caixa, espaços e posição da quebra de
+  linha são ignorados. Qualquer outra diferença (uma vírgula, uma palavra) gera outra chave.
+- **O SHA-1 é só um identificador, não uma medida de segurança.** O `usedforsecurity=False`
+  declara isso. Qualquer hash estável serviria.
+- **16 caracteres hex são 64 bits.** Com milhares de falas por jogo, a chance de duas falas
+  diferentes terem a mesma chave é desprezível.
+- **A chave é a mesma nos dois modos de persistência.** Arquivos e banco usam essa função, então
+  a TM de um é compatível com a do outro.
+
+A busca é um dicionário `chave → tradução`, montado uma vez por cena.
 
 O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário e do log de
 decisões. Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
