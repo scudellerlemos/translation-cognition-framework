@@ -182,31 +182,17 @@ def test_sync_translations_db_keys_db_by_canonical_scene_id(tmp_path):
     assert sorted({r["scene_id"] for r in rows}) == ["01_02"] and len(rows) == 2
 
 
-def test_sync_translations_db_reindexes_embeddings_no_ml_deps(tmp_path):
-    """#182: sync_translations_db (write-path real de run_scene/run_chapter) chama
-    reindex_pending_embeddings automaticamente, igual ao #171 já fazia em migrate(). Sem
-    sentence-transformers/sqlite-vec (CI), a chamada é silenciosa (None) — não quebra a
-    escrita da TM. Verificamos via Store.reindex_pending_embeddings diretamente (mesma
-    conexão/arquivo que sync_translations_db acabou de escrever) que ela não levanta."""
-    _db_project(tmp_path)
-    _scene(tmp_path)
-    assert cio.sync_translations_db(tmp_path, "s1", "a", _APPROVED, _PLAN_LINES) is True
-
-    from store import Store  # noqa: E402
-    with Store(tmp_path / "p.db") as db:
-        result = db.reindex_pending_embeddings("proj")
-    assert result is None or result >= 0, result
-
-
-def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path):
+def test_verified_scene_is_semantically_searchable_end_to_end(tmp_path):
     """#182 critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
-    stack ML estiver instalada; skip limpo em test.yml (push/PR) -- mesmo padrão de
-    test_index_and_search_kb_end_to_end em framework/db/test_embedder_kind_config.py, mas roda
-    de verdade semanalmente em ml-coverage-optional.yml (#181)), a
-    linha aprovada por sync_translations_db tem que aparecer em Embedder.search() sem
-    NENHUM passo manual (nem db index, nem migrate) entre a escrita e a busca."""
+    stack ML estiver instalada; skip limpo em test.yml (push/PR), roda de verdade semanalmente
+    em ml-coverage-optional.yml (#181)), a cena tem que aparecer em Embedder.search() assim
+    que fecha verified -- pelo write-path REAL (sync_translations_db -> approve_scene_db), sem
+    NENHUM passo manual (nem db index, nem migrate), e sem esperar a cena seguinte. Antes da
+    aprovação (approved=0, #216) ela NÃO pode aparecer."""
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
+    sys.path.insert(0, str(_HERE.parent / "runtime"))
+    import state_index  # noqa: E402
 
     _db_project(tmp_path)
     _scene(tmp_path)
@@ -214,9 +200,12 @@ def test_sync_translations_db_reindex_makes_line_searchable_end_to_end(tmp_path)
 
     from embedder import Embedder  # noqa: E402
     from store import Store  # noqa: E402
+    emb, q = Embedder(), "Hero picks up the Widget."
     with Store(tmp_path / "p.db") as db:
-        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene, #216)
-        hits = Embedder().search(db._con, "Hero picks up the Widget.", project_id="proj", k=2)
+        assert emb.search(db._con, q, project_id="proj", k=2) == []     # ainda nao verificada
+    state_index.approve_scene_db(tmp_path, "s1")    # cena fechou verified (run_scene, #216)
+    with Store(tmp_path / "p.db") as db:
+        hits = emb.search(db._con, q, project_id="proj", k=2)
     assert any(h["offset"] == "0x1" for h in hits), hits
 
 

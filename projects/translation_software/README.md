@@ -34,8 +34,7 @@ LLM (plugável)
 
 Embeddings (sempre local, sempre gratuito)
   ├── sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
-  ├── sqlite-vec             extensão C — índice vetorial no SQLite
-  └── flashrank              MiniLM-L-12 quantizado (~4 MB, reranker)
+  └── sqlite-vec             extensão C — índice vetorial no SQLite
 
 NER (extração de entidades)
   └── spaCy  xx_ent_wiki_sm  (~31 MB, EN+PT)
@@ -79,7 +78,7 @@ python framework/cli.py db summary projects/translation_software/translation_sof
 
 ### Indexar TM semântica
 ```bash
-pip install sentence-transformers sqlite-vec flashrank
+pip install sentence-transformers sqlite-vec
 python framework/cli.py db index projects/translation_software/translation_software.db bof4
 ```
 
@@ -101,7 +100,7 @@ artifacts/                ← traduções e artefatos gerados pelo pipeline novo
 framework/db/
   schema.sql              ← schema versionado (fonte única do contrato)
   store.py                ← CRUD tipado (substitui state_index.py)
-  embedder.py             ← sentence-transformers + sqlite-vec + flashrank
+  embedder.py             ← sentence-transformers + sqlite-vec
   migrate_from_flat.py    ← importa dados do BoF4 para SQLite
 
 framework/skills/
@@ -137,7 +136,6 @@ framework/cli.py          ← CLI unificada
 | Store | SQLite (WAL) | stdlib, consultável, versionável, zero ops |
 | Embedding | paraphrase-multilingual-MiniLM-L12-v2 | melhor multilingual EN+PT no range <500MB |
 | Vector index | sqlite-vec | extensão C, sem servidor separado, filtros SQL nativos |
-| Reranker | flashrank MiniLM-L-12 | ~4 MB, gratuito, melhora precisão top-K |
 | NER | spaCy xx_ent_wiki_sm | ~31 MB, EN+PT, detecta entidades para Skill 01 |
 | LLM local | qwen2.5:14b via Ollama | melhor qualidade que cabe em 8 GB VRAM (partial offload) |
 | CLI | argparse (stdlib) | consistente com o resto do codebase, zero deps extras |
