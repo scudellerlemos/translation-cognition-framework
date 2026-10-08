@@ -240,22 +240,16 @@ flowchart TB
   é por projeto, em `project.json`; calibração → [abaixo](#rag_min_score--calibração-com-dado-real).
 - **Sem reranker**: o pacote ordena por score (ordem estável). O FlashRank foi removido em
   2026-10-07 — medido, não mudava o que entrava no pacote e custava ~200 ms por linha.
+- **Texto embedado sem códigos do jogo**: `strip_codes` remove os códigos de controle antes do
+  encode, para a similaridade medir o sentido da fala e não a formatação.
 - **Determinismo**: vetores pré-computados + ordenação estável → `context_pack` rodado 2× sai
   byte-idêntico.
 
 ### Implementação e parâmetros
 
-**Indexação.** Cada fala aprovada vira um vetor de 384 dimensões, gravado em `tm_vectors` (tabela
-virtual `vec0` do `sqlite-vec`). Antes de embedar, os códigos de controle do jogo são removidos do
-texto (`strip_codes`), para que a similaridade meça o sentido da fala e não a formatação. Seções
-da KB e decisões têm índices próprios (`kb_vectors`, `decision_vectors`). Uma linha editada perde
-o vetor por trigger e some da busca até ser reindexada, então o índice nunca devolve texto velho.
-
-**Consulta.** A busca é vizinho mais próximo **exato**: varredura linear com `vec_distance_l2`,
-sem índice aproximado (ANN). Para milhares de vetores o custo é desprezível, e a varredura permite
-filtrar **antes** de cortar os `k` vizinhos. Com o operador `MATCH ... k` do `vec0`, o corte vinha
-primeiro, sobre a tabela inteira, e o filtro por projeto e por `approved=1` podia devolver menos
-de `k` resultados.
+A consulta da TM semântica, com os filtros antes do `LIMIT`. Com o operador `MATCH ... k` do
+`vec0` o corte vinha primeiro, sobre a tabela inteira, e por isso a busca usa varredura com
+`vec_distance_l2`:
 
 ```sql
 SELECT ..., MIN(vec_distance_l2(v.embedding, :consulta)) AS l2
@@ -283,22 +277,6 @@ Sobre a calibração: o único parâmetro calibrado com dado real é o `rag_min_
 teto de 8 são valores fixos de projeto, escolhidos para limitar o tamanho da seção; não houve
 experimento variando `k`. A medição de custo (ADR 0016) mostrou que o ganho não vinha dali, então
 afinar `k` ficou sem prioridade.
-
-Dois detalhes de correção que mudaram o resultado:
-
-- **O corte superior é feito no SQL, antes do `LIMIT`.** Uma fala curta como "Yes." tem dezenas de
-  ocorrências idênticas no corpus. Sem o corte, elas ocupavam todas as `k` vagas e a fala ficava
-  sem vizinho útil.
-- **Em KB e decisões, o `k` é aplicado depois do filtro de spoiler.** A consulta traz todos os
-  candidatos em ordem de distância e o código para ao juntar 3 permitidos. Cortar antes devolvia
-  lista vazia quando os 3 mais próximos ainda não tinham sido revelados.
-
-O filtro de spoiler é default-deny: KB e decisões semânticas só entram com uma marca `reveal`
-provando que o conteúdo já foi revelado no ponto da história em que a cena está. Hoje nenhum
-projeto tem a KB marcada, então a KB semântica fica vazia em produção até isso ser feito.
-
-A busca semântica não entra, de propósito, no glossário (o match por termo é preciso; o semântico
-traria falso positivo) nem nos voice cards (identidade é por nome, não por similaridade).
 
 ### `rag_min_score` — calibração com dado real
 
@@ -356,7 +334,8 @@ flowchart TB
 ```
 
 A garantia vem do dado explícito por item, não de casar texto. Consequência prática: seção de KB
-sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2 render algo.
+sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2 render algo. Hoje
+nenhum projeto tem a KB marcada, então a KB semântica fica vazia em produção.
 
 ---
 
