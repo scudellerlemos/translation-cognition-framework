@@ -81,10 +81,11 @@ def main():
         if risk not in _RISK:
             errors.append(f"{off}: risk_level ausente/invalido '{risk}'")
             risk = "low"
+        sp = t.get("speaker") or ""     # sem chave / null (narracao) nao pode dar KeyError nem [None]
         line = {
             "offset": off, "text_source": src,
-            "speaker": t.get("speaker", ""),
-            "entities_present": [t["speaker"]] if t.get("speaker") not in ("", "rotulo") else [],
+            "speaker": sp,
+            "entities_present": [sp] if sp not in ("", "rotulo") else [],
             "tone_register": tr, "intent": t.get("intent", ""),
             "risk_level": risk,
             "base_translation": tgt, "byte_budget": budget,

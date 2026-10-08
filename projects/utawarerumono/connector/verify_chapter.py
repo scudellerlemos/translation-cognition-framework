@@ -12,6 +12,7 @@ GOVERNANCA: sem work-text. Le artifacts/<chapter_dir>/{dialogs.csv,approved_<sfx
 
 Uso: python verify_chapter.py <chapter_dir>     ex.: python verify_chapter.py ch_11_04
 """
+import contextlib
 import csv
 import json
 import sys
@@ -29,10 +30,8 @@ def load_csv(p):
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <chapter_dir>  (ex.: ch_11_04)")
     chdir = ROOT / "artifacts" / "scenes" / sys.argv[1]
@@ -85,11 +84,17 @@ def main():
         needs_review = set(json.loads(plan_files[0].read_text(encoding="utf-8")).get("needs_review", []))
 
     def translit_of(off_hex):
-        return R.transliterate(approved.get(off_hex, src_by.get(off_hex, "")))
+        # Fallback reads from ORIGINAL, not "" — empty string would underestimate pos/new_abs for
+        # offsets outside the corpus, corrupting positions of all following strings in the same run.
+        if off_hex in approved:
+            return R.transliterate(approved[off_hex])
+        if off_hex in src_by:
+            return R.transliterate(src_by[off_hex])
+        return R.transliterate(S.read_cstr(original, int(off_hex, 16)).decode("utf-8", "replace"))
 
     # mapear offsets relocados (repactados apos new_local, por arquivo) -> posicao absoluta nova
     new_abs = {}
-    for head_hex, idx, new_local, _ptrs, run in repoints:
+    for _head_hex, idx, new_local, _ptrs, run in repoints:
         fnew = by_name_new[files[idx].name]
         pos = new_local
         for m in run:
@@ -121,11 +126,9 @@ def main():
         want = translit_of(off_hex)
         if got == want:
             checked += 1
-        elif approved.get(off_hex, "") in ("Head", "Head_toriuma") or \
-                json.loads((sorted(chdir.glob('translation_plan_*.json'))[0]).read_text(encoding='utf-8')):
+        elif approved.get(off_hex, "") in ("Head", "Head_toriuma") or off_hex in needs_review:
             # rotulos needs_review reinserem verbatim; se nao bater, reportar como nota
-            if got != want:
-                label_notes.append(f"{off_hex}: lido {got!r} vs {want!r}")
+            label_notes.append(f"{off_hex}: lido {got!r} vs {want!r}")
         else:
             fails.append(f"{off_hex}: lido {got!r} != aprovado(translit) {want!r}")
 

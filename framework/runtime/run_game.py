@@ -28,6 +28,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io  # noqa: E402
 import cost_report  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import progress_report  # noqa: E402
@@ -51,7 +52,7 @@ def _all_scenes(root: Path, chapters: list[str], scenes_glob: str | None) -> lis
     if chapters:
         out: list[str] = []
         for c in chapters:
-            out += run_chapter._scenes_of(root, c)
+            out += artifact_io.scenes(root, c)
         return out
     return run_chapter._scenes_of_glob(root, scenes_glob or "*")
 

@@ -45,7 +45,8 @@ jobs:
         # lá) fica isolado no passo seguinte via --include, com .coveragerc-ml (sem esse omit).
         run: |
           python -m pytest framework/db/test_validate_model.py framework/db/test_embedder_kind_config.py \
-            framework/db/test_embedder_min_score.py framework/runtime/test_context_pack.py \
+            framework/db/test_embedder_min_score.py framework/db/test_embedder_regressions.py \
+            framework/runtime/test_context_pack.py \
             framework/runtime/test_kb_concordance.py framework/connectors/test_connector_io.py \
             -v --tb=short --cov-config=.coveragerc-ml --cov=framework/db --cov-report=
       - name: Gate de cobertura real — embedder.py + validate_model.py (piso 85%)

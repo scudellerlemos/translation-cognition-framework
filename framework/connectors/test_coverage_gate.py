@@ -44,6 +44,12 @@ def load_table(table_path):
 '''   # falta decode_string -- contrato incompleto de proposito
 
 
+_EMPTY_CANDIDATE_SRC = _INCOMPLETE_CANDIDATE_SRC + """
+def decode_string(data, offset, table):
+    return "", 1
+"""
+
+
 def _write_candidate(tmp_path, src=_CANDIDATE_SRC) -> Path:
     p = tmp_path / "candidate.py"
     p.write_text(src, encoding="utf-8")
@@ -186,3 +192,14 @@ def test_check_passes_full_coverage(tmp_path):
     r = cg.check(candidate_path, game_dir, floor=0.85, min_files=3)
     assert r["passed"] is True
     assert r["min_coverage"] >= 0.85
+
+
+def test_check_fails_when_candidate_extracts_nothing_anywhere(tmp_path):
+    """Candidato que devolve 0 strings em todos os arquivos nao pode passar (ratio 1.0 espurio)."""
+    candidate_path = _write_candidate(tmp_path, _EMPTY_CANDIDATE_SRC)
+    game_dir = tmp_path / "game"
+    for i in range(3):
+        _write_game_file(game_dir, f"f{i}.bin", [b"Hello world", b"Another full string here"])
+    r = cg.check(candidate_path, game_dir, floor=0.0, min_files=3)
+    assert r["passed"] is False
+    assert any("nenhuma string" in m for m in r["problems"])

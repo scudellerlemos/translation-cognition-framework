@@ -157,3 +157,14 @@ def test_approve_scene_db_flips_only_that_scene(tmp_path):
     with store.Store(tmp_path / "p.db") as db:
         assert [r["target"] for r in db.get_translations("p")] == ["a"]
     si.approve_scene_db(tmp_path / "sem_db", "a")        # sem project.json:db -> no-op
+
+
+def test_build_tm_reads_scenes_layout(tmp_path):
+    """Layout atual: artifacts/scenes/<scene>/translation_plan_*.json (refactor cbb9a9e)."""
+    art = tmp_path / "artifacts"
+    sc = art / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "translation_plan_ch_01.json").write_text(json.dumps({
+        "lines": [{"offset": "A:0:1", "text_source": "Hi", "base_translation": "Oi", "speaker": "Ryu"}]
+    }), encoding="utf-8")
+    assert {e["source"] for e in si.build_tm(art)} == {"Hi"}

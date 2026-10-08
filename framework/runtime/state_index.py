@@ -24,6 +24,7 @@ Uso:  python state_index.py <dir-do-projeto> [--rebuild]
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import re
 import sys
@@ -80,8 +81,8 @@ def _validate_kb_format(root: Path) -> list[str]:
                     f"Colunas encontradas: {hdr}. "
                     f"Rodar 'python framework/runtime/scaffold_project.py <projeto>' p/ template correto."
                 )
-        except Exception:
-            pass
+        except Exception as exc:
+            issues.append(f"glossary.csv ilegivel ({exc!r}) — schema nao validado.")
 
     # 2. tone_analysis.md — voice cards precisam de '### Nome — `voice_criticality: X`'
     tp = paths.tone_analysis(root)
@@ -138,8 +139,8 @@ def build_tm(art: Path) -> list[dict]:
             try:
                 doctrine_version = json.loads(
                     scene_pack.read_text(encoding="utf-8")).get("doctrine_hash", "")
-            except Exception:
-                pass
+            except (OSError, ValueError, AttributeError) as exc:
+                print(f"[state_index] AVISO: {scene_pack} ilegivel ({exc!r}) -- doctrine_version vazio.")
         for ln in lines:
             src = ln.get("text_source", "")
             tgt = ln.get("base_translation", ln.get("t", ""))
@@ -409,8 +410,8 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
                 if stale:
                     warnings.append(f"{stale} termo(s) do glossario com updated_date "
                                     f"> {GLOSSARY_STALENESS_DAYS} dias — considere revisar.")
-        except Exception:
-            pass
+        except Exception as exc:
+            warnings.append(f"glossary.csv ilegivel ({exc!r}) — governanca de updated_date nao checada.")
 
     # persiste avisos em warnings.jsonl (agregado permanente — nao so stdout)
     if warnings:
@@ -467,10 +468,8 @@ def _check_sync(root: Path) -> None:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    except Exception:
-        pass
     if "--check-sync" in sys.argv:
         flags = [a for a in sys.argv[1:] if not a.startswith("--")]
         root = Path(flags[0]) if flags else Path(".")

@@ -39,6 +39,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import artifact_io  # noqa: E402  (fonte unica de enumeracao de cenas)
 import context_pack  # noqa: E402
 import kb_review  # noqa: E402  (gate de fonte/ratificacao do delta de KB)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
@@ -104,8 +105,7 @@ def _scenes_of(root: Path, chap: str) -> list[str]:
     Capitulo especial "all": usa artifacts/dialogs.csv diretamente (modelo flat, ex: BoF4)."""
     if chap == "all":
         return [_FLAT_SCENE] if paths.dialogs_flat(root).is_file() else []
-    names = [p.parent.name for p in paths.scenes_dir(root).glob(f"ch_{chap}_*/dialogs.csv")]
-    return sorted(set(names), key=scene_id_of)
+    return artifact_io.scenes(root, chap)
 
 
 def _kb_blob_from(glossary_terms, entity_names) -> str:
@@ -120,13 +120,13 @@ def _kb_blob(root: Path) -> str:
     g_parts, e_parts = [], []
     g = paths.glossary(root)
     if g.is_file():
-        with g.open(encoding="utf-8") as fh:
+        with g.open(encoding="utf-8-sig") as fh:
             for r in csv.DictReader(fh):
                 g_parts.append(r.get("term", "") or "")
                 g_parts.append(r.get("aliases", "") or "")
     e = paths.entities(root)
     if e.is_file():
-        with e.open(encoding="utf-8") as fh:
+        with e.open(encoding="utf-8-sig") as fh:
             for r in csv.DictReader(fh):
                 e_parts.append(r.get("canonical_name", "") or "")
                 e_parts.append(r.get("aliases", "") or "")
@@ -243,7 +243,7 @@ def discover(root, chap) -> dict:
     kb_low = _kb_blob(root)
     per = _scan(root, scenes)
     corpus = "\n".join(t for _, t in per)
-    agg = {}
+    agg: dict[str, dict] = {}
     for scene_id, text in per:
         for m in _CAP_RUN.finditer(text):
             cand = _clean_cand(m.group(0))             # limpa ALL-CAPS/gagueira/stopword de borda
@@ -259,7 +259,9 @@ def discover(root, chap) -> dict:
             rec["scenes"].add(scene_id)
             if not rec["example"]:
                 rec["example"] = _excerpt(text, m.start())
-    gap, weak, covered = [], [], []
+    gap: list[dict] = []
+    weak: list[dict] = []
+    covered: list[dict] = []
     for _low, rec in agg.items():
         rec["scenes"] = sorted(rec["scenes"], key=_pos)
         if _covered(rec["cand"], kb_low):

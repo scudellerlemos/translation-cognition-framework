@@ -62,8 +62,6 @@ def parse_pack(data: bytes) -> list[ScriptFile]:
     count = struct.unpack_from("<I", data, p + 4)[0]
     base = p + 8
     files = []
-    # tabela de nomes: começa logo após o array de u32 do header 'Filename'
-    name_base = data.find(b"\x00", len(FILENAME_MAGIC) + 4) + 1
     # alinhar: o primeiro nome real é o 1º registro CC_SS_...; localizado de forma robusta
     first = data.find(b".BIN")
     name_base = first - 10  # 'CC_SS_NNNT' = 10 chars antes de '.BIN'

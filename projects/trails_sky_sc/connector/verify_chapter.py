@@ -44,8 +44,8 @@ def _rebuild(scene: str, dialogs: dict, approved: dict, data_dir_arg: str | None
 
     budgets = {off: meta["byte_budget"] for off, meta in dialogs.items()}
     touched_files = sorted({meta["file"] for meta in dialogs.values()})
-    touched = [e for e in entries if "scena/" + e[0].split("/scena/", 1)[-1] in touched_files
-               if "/scena/" in e[0] and e[0].endswith(".dat")]
+    touched = [e for e in entries if "/scena/" in e[0] and e[0].endswith(".dat")
+               if "scena/" + e[0].split("/scena/", 1)[-1] in touched_files]
     if not touched:
         return False, False, [f"nenhum entry scena/ do .pac corresponde aos arquivos da cena {touched_files}"]
 
@@ -67,7 +67,7 @@ def _rebuild(scene: str, dialogs: dict, approved: dict, data_dir_arg: str | None
     new_bytes, changed = R.rebuild_pac(pac_bytes, entries, real, budgets)
 
     # 4 + 5. overflow individual + readback por offset
-    for name, size, addr, _crc in touched:
+    for name, _size, addr, _crc in touched:
         rel_name = "scena/" + name.split("/scena/", 1)[1]
         for off, meta in dialogs.items():
             if meta["file"] != rel_name:

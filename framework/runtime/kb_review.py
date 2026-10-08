@@ -22,6 +22,7 @@ Governanca: read-only, sem rede, sem work-text. Uso:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import json
 import re
@@ -72,11 +73,11 @@ def _research_section(md: str, chap: str) -> str:
 
 def _rows_for_chapter(path: Path, name_col: str, chap: str) -> list[dict]:
     """Linhas do CSV cujas notas marcam '(cap.<chap>)'. Retorna dicts crus (com name_col garantido)."""
-    out = []
+    out: list[dict] = []
     if not path.is_file():
         return out
     marker = f"(cap.{chap})"
-    with path.open(encoding="utf-8") as fh:
+    with path.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             if marker in (r.get("notes", "") or ""):
                 out.append(r)
@@ -169,10 +170,8 @@ def blocking(root, chapter, *, strict=False) -> list[dict]:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = argparse.ArgumentParser(description="Digest/gate do delta de KB por capitulo.")
     ap.add_argument("project")
     ap.add_argument("chapter", help="prefixo do capitulo, ex.: 19")

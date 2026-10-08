@@ -71,3 +71,55 @@ def test_write_worklist(tmp_path):
     _flat_project(tmp_path, ["When Oshtor came, Oshtor left."])
     out = kp.write_worklist(tmp_path, "all")
     assert out.is_file() and "worklist" in out.read_text(encoding="utf-8").lower()
+
+
+# --- ramos de borda ---------------------------------------------------------------------------------
+def test_kb_blob_includes_entities_csv(tmp_path):
+    _flat_project(tmp_path, ["x"])
+    paths.entities(tmp_path).write_text("canonical_name,aliases\nUkon,Ukon-sama\n", encoding="utf-8")
+    blob = kp._kb_blob(tmp_path)
+    assert kp._covered("Ukon", blob) is True and kp._covered("Haku", blob) is True
+
+
+def test_clean_cand_drops_empty_tokens_and_trailing_stopword():
+    assert kp._clean_cand("- Oshtor") == "Oshtor"                   # token so de pontuacao some
+    assert kp._clean_cand("Oshtor The") == "Oshtor"                 # stopword na borda final
+
+
+def test_scan_skips_scene_without_dialogs(tmp_path):
+    assert kp._scan(tmp_path, ["ch_99_01"]) == []
+
+
+def test_strong_rejects_adverbs_and_contractions():
+    assert kp._strong({"cand": "Really", "multi": False, "count": 9}, "x Really y") is False
+    assert kp._strong({"cand": "Couldn't", "multi": False, "count": 9}, "x") is False
+
+
+def test_coverage_reports_unanchored_entities_and_one_off_warning(tmp_path, monkeypatch):
+    _flat_project(tmp_path, ["Then Oshtor spoke, Oshtor left."])    # 2x na mesma cena: gap, mas nao bloqueia
+    paths.research_log(tmp_path).write_text("**Status:** reconciled\n", encoding="utf-8")
+    monkeypatch.setattr(kp.kb_review, "blocking",
+                        lambda r, c, strict=False: [{"name": "Haku", "blockers": ["fonte", "ratificacao"]}])
+    cov = kp.coverage(tmp_path, "all", strict=True)
+    assert any("Haku (fonte/ratificacao)" in p and "kb_ratified.csv" in p for p in cov["problems"])
+    assert any("baixa confianca" in w for w in cov["warnings"])
+
+
+def test_apply_frontier_without_scenes_or_field_is_noop(tmp_path):
+    _flat_project(tmp_path, ["Haku spoke."])
+    assert kp.apply_frontier(tmp_path, "ch_99") is None             # capitulo sem cenas
+    (tmp_path / "project.json").write_text('{"title":"T"}', encoding="utf-8")
+    assert kp.apply_frontier(tmp_path, "all") is None               # sem campo kb_frontier: nao insere
+
+
+def test_worklist_says_so_when_nothing_is_uncovered(tmp_path):
+    _flat_project(tmp_path, ["Haku spoke."])
+    txt = kp.write_worklist(tmp_path, "all").read_text(encoding="utf-8")
+    assert "nenhum — todos os nomes proprios fortes" in txt
+
+
+def test_worklist_lists_weak_candidates_and_truncates_at_40(tmp_path):
+    names = [f"Kq{chr(97 + i // 26)}{chr(97 + i % 26)}" for i in range(45)]
+    _flat_project(tmp_path, [f"{n} came." for n in names])
+    txt = kp.write_worklist(tmp_path, "all").read_text(encoding="utf-8")
+    assert "Candidatos FRACOS" in txt and "(+5 mais)" in txt

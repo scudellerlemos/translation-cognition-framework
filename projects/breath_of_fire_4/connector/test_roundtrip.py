@@ -175,7 +175,7 @@ def test_round_trip_byte_identical(dat_dir, tmp_path):
 
         if new_data != original:
             # Encontra primeira diferença
-            for i, (a, b) in enumerate(zip(original, new_data)):
+            for i, (a, b) in enumerate(zip(original, new_data, strict=False)):
                 if a != b:
                     errors.append(f"{fname}: primeiro byte diferente em 0x{i:X} (orig={a:02X} new={b:02X})")
                     break

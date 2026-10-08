@@ -17,6 +17,7 @@ Sem instalar, roda igual via `python framework/cli.py <comando>`.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -223,7 +224,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_mig = db_sub.add_parser("migrate", help="Migra flat files para SQLite")
     p_mig.add_argument("project_root", help="Raiz do projeto")
     p_mig.add_argument("dest_db", help="Banco de destino (.db)")
-    p_mig.add_argument("--project-id", default="bof4")
+    p_mig.add_argument("--project-id", default=None, help="default: db.project_id do project.json, senao bof4")
     p_mig.set_defaults(func=cmd_db_migrate)
 
     p_sum = db_sub.add_parser("summary", help="Resumo do banco")
@@ -295,10 +296,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     ap = build_parser()
     args = ap.parse_args()
     sys.exit(args.func(args) or 0)

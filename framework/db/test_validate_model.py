@@ -94,3 +94,37 @@ def test_validate_model_no_approved_translations_raises(tmp_path):
     with pytest.raises(ValueError):
         validate_model(con, "p")
     con.close()
+
+
+def test_validate_model_restores_default_model_index_and_validates_before_reindex(tmp_path, monkeypatch):
+    """--model X faz force-reindex do projeto com X: sem restaurar, a busca em producao ficaria com
+    vetores do modelo candidato. Stub do Embedder (sem stack ML)."""
+    import types
+    calls = []
+
+    class _Emb:
+        def __init__(self, model_name="default-model"):
+            self.model_name = model_name
+
+        def index_project(self, con, project_id, force=False, kind="translation"):
+            calls.append((self.model_name, force))
+
+        def search(self, con, q, project_id, k=1):
+            return [{"translation_id": 1, "score": 1.0, "source": q}]
+
+    fake = types.ModuleType("embedder")
+    fake.Embedder, fake._MODEL_NAME = _Emb, "default-model"   # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "embedder", fake)
+    from validate_model import validate_model
+
+    dbp = tmp_path / "p.db"
+    with Store(dbp) as db:
+        db.upsert_project("p", "T")
+        db.upsert_translation("p", "S1", "0:1", "Hello", target="Ola", approved=True)
+    con = sqlite3.connect(dbp)
+    with pytest.raises(ValueError):
+        validate_model(con, "p", sample_size=0)
+    assert calls == []                                   # argumento invalido nao reindexa nada
+    validate_model(con, "p", model_name="candidate", sample_size=1)
+    con.close()
+    assert calls == [("candidate", True), ("default-model", True)]

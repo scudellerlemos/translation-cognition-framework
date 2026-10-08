@@ -70,10 +70,29 @@ def load_series_tm(series: str) -> list[dict]:
 def lookup(series: str, src_key: str) -> dict | None:
     """Match EXATO por src_key (mesma normalizacao tm_key da TM por-projeto). Primeira entrada
     encontrada vence (a TM da serie e append-only, entradas mais recentes ficam no fim)."""
+    return _index(series).get(src_key)
+
+
+_INDEX_CACHE: dict = {}
+
+
+def _index(series: str) -> dict:
+    """src_key -> primeira entrada. Cacheado por (mtime, tamanho): o context_pack chama lookup()
+    uma vez POR LINHA e cada chamada re-parseava o JSON inteiro da serie."""
+    p = series_tm_path(series)
+    try:
+        st = p.stat()
+        sig = (st.st_mtime_ns, st.st_size)
+    except OSError:
+        sig = None
+    cached = _INDEX_CACHE.get(str(p))
+    if cached and cached[0] == sig:
+        return cached[1]
+    idx: dict = {}
     for e in load_series_tm(series):
-        if e.get("src_key") == src_key:
-            return e
-    return None
+        idx.setdefault(e.get("src_key"), e)   # primeira entrada vence
+    _INDEX_CACHE[str(p)] = (sig, idx)
+    return idx
 
 
 def lookup_by_source(series: str, source_text: str) -> dict | None:

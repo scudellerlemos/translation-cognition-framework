@@ -17,7 +17,6 @@ import json
 import re
 import struct
 import sys
-import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -82,22 +81,22 @@ def decode_string(raw: bytes) -> str:
     """Bytes sem terminador → string CSV. ASCII → chr, outros → [XX]."""
     parts = []
     for b in raw:
-        if b in _ASCII_RANGE:
+        if b in _ASCII_RANGE and b != 0x5B:      # '[' literal vira [5B]: senao "[AB]" ASCII re-encodava como 0xAB
             parts.append(chr(b))
         else:
             parts.append(f'[{b:02X}]')
     return ''.join(parts)
 
 
-def encode_string(text: str) -> bytes:
+def encode_string(text: str, strict: bool = False) -> bytes:
     """String CSV → bytes sem terminador. Inverso de decode_string.
 
     O font do jogo so tem ASCII — acentos pt-BR (ã, é, ç, ô...) sao transliterados via NFD
-    (á->a, ç->c, ...) ANTES do encode, mesmo padrao ja usado em
-    utawarerumono/connector/reinsert.py:transliterate. Sem isso, todo acento virava '?' (0x3F)
+    (á->a, ç->c, ...) ANTES do encode, via connector_io.transliterate (compartilhado com o
+    Utawarerumono). Sem isso, todo acento virava '?' (0x3F)
     silenciosamente: verify_chapter.py compara decode(rebuild(encode(x))) contra encode_string(x),
     entao o round-trip comparava corrompido-com-corrompido e passava verde."""
-    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+    text = connector_io.transliterate(text)
     text = "".join(_PUNCT_FALLBACK.get(c, c) for c in text)
     out = bytearray()
     i = 0
@@ -110,6 +109,8 @@ def encode_string(text: str) -> bytes:
             ch = text[i]
             if ord(ch) in _ASCII_RANGE:
                 out.append(ord(ch))
+            elif strict:
+                raise ValueError(f"caractere sem mapeamento ASCII: {ch!r} (U+{ord(ch):04X}) em {text!r}")
             else:
                 # ainda nao mapeavel apos NFD+_PUNCT_FALLBACK (ex.: CJK) — ultimo recurso, mas
                 # avisado (verify_chapter.py nao pega isso: compara encode_string(x) contra

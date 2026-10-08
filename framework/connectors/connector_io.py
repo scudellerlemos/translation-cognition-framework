@@ -12,8 +12,19 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from collections import Counter
 from pathlib import Path
+
+
+def transliterate(s: str) -> str:
+    """Dobra diacríticos para ASCII (NFD canônico + descarte de combining marks). Mantém tudo o mais.
+    NFD (não NFKD): decomposição CANÔNICA dobra acento (á->a, ç->c), mas PRESERVA glifos de compat.
+    que o jogo já usa (ex.: dígitos circulados ①②③ de sequências de puzzle: NFKD os reduzia a 1/2/3,
+    corrompendo o round-trip do binário original — ver ch_30_09). Tokens {..}/[XX] são ASCII e
+    não são afetados. Conectores cujo font não tem acento (ASCII-only) devem usar esta função."""
+    nfd = unicodedata.normalize("NFD", s)
+    return "".join(c for c in nfd if not unicodedata.combining(c))
 
 
 def resolve_source_path(
@@ -51,13 +62,36 @@ def resolve_source_path(
     raise exc(error_hint)
 
 
+def load_approved(path: Path, consequence: str) -> dict[str, str]:
+    """approved_translations.csv -> {offset: texto}. Coluna canonica `text_target` (mesmo contrato de
+    export_to_flat/build_plan_chapter); `text_pt` = legado. Linha so com espaco = vazia (identity).
+    Levanta ValueError se o CSV tem linhas mas NENHUMA preenchida: reinserir assim e no-op silencioso
+    (coluna errada) -- `consequence` diz o que aconteceria, p/ a mensagem."""
+    out: dict[str, str] = {}
+    n_rows = 0
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            n_rows += 1
+            key = (row.get("offset") or "").strip()
+            val = row.get("text_target") or row.get("text_pt") or ""
+            if key and val.strip():
+                out[key] = val
+    if n_rows and not out:
+        raise ValueError(f"{path} tem {n_rows} linha(s) mas nenhuma com coluna text_target/text_pt "
+                         f"preenchida -- {consequence}")
+    return out
+
+
 def write_dialogs_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
-    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda."""
+    """mkdir + csv.DictWriter — mecânica idêntica nos 3 conectores, só fieldnames muda.
+    Atômico (tmp + replace): extract que morre no meio não trunca o dialogs.csv bom anterior."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as f:
+    tmp = path.with_name(path.name + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)
+    os.replace(tmp, path)
 
 
 def write_extraction_log(path: Path, text: str) -> None:

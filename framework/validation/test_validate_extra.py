@@ -120,3 +120,15 @@ def test_validate_checks_wrapped_only_pattern_per_line(tmp_path):
     (art / "approved_translations.csv").write_text("offset,text_target\n1,a b\n", encoding="utf-8")
     errs = [i[2] for i in validate.validate_project(tmp_path) if i[0] == "ERROR"]
     assert any("não preservado" in m for m in errs), errs
+
+
+def test_scenes_layout_checks_token_preservation(tmp_path):
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"title": "T", "source_language": "en", "target_language": "pt-BR",
+         "source": {"id_column": "offset"}, "formatting_tokens": ["[01]"]}), encoding="utf-8")
+    sd = tmp_path / "artifacts" / "scenes" / "s1"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\na,Hi [01],10\nb,Yo,5\n", encoding="utf-8")
+    (sd / "approved_s1.csv").write_text("offset,text_target\na,Oi\nz,Ola\n", encoding="utf-8")
+    msgs = [i[2] for i in validate.validate_project(tmp_path)]
+    assert any("token [01] 1→0" in m for m in msgs) and any("'z' não existe" in m for m in msgs)

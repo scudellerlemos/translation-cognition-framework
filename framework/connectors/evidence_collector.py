@@ -104,18 +104,13 @@ def _sample_files(files: list[Path], n: int) -> list[Path]:
     for f in files:
         by_ext.setdefault(f.suffix.lower(), []).append(f)
     sample: list[Path] = []
-    exts = list(by_ext.keys())
-    i = 0
-    while len(sample) < n:
-        ext = exts[i % len(exts)]
-        candidates = by_ext[ext]
-        idx = len(sample) // len(exts)
-        if idx < len(candidates):
-            sample.append(candidates[idx])
-        i += 1
-        if i > n * len(exts):
-            break
-    return sample[:n]
+    queues = [iter(v) for v in by_ext.values()]   # round-robin por extensao, 1 iterador por extensao (sem repetir arquivo)
+    while len(sample) < n:                         # len(files) > n garante que enche
+        for q in queues:
+            f = next(q, None)
+            if f is not None and len(sample) < n:
+                sample.append(f)
+    return sample
 
 
 def _estimate_encoding(data: bytes) -> str:

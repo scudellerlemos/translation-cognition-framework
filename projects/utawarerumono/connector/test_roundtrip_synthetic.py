@@ -25,6 +25,8 @@ import struct
 import sys
 from pathlib import Path
 
+import pytest
+
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "connector"))
 import reinsert as R  # noqa: E402
@@ -80,7 +82,7 @@ def _build_synthetic_sdat(file_strings: list[list[bytes]] = _FILE_STRINGS) -> by
     for b in bodies:
         offsets.append(cur)
         cur += len(b)
-    entries = b"".join(struct.pack("<II", o, len(b)) for o, b in zip(offsets, bodies))
+    entries = b"".join(struct.pack("<II", o, len(b)) for o, b in zip(offsets, bodies, strict=False))
 
     header = region_a + region_b + region_c_head + entries + filler
     assert len(header) == header_total
@@ -94,9 +96,9 @@ def test_synthetic_sdat_is_recognized():
     files = S.parse_pack(data)
     assert [f.name for f in files] == ["11_01_000S.BIN", "11_02_000S.BIN"]
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in files), "alinhamento não replicado"
-    assert all(a.end == b.offset for a, b in zip(files, files[1:])), "arquivos não contíguos"
+    assert all(a.end == b.offset for a, b in zip(files, files[1:], strict=False)), "arquivos não contíguos"
 
-    for f, expected in zip(files, _FILE_STRINGS):
+    for f, expected in zip(files, _FILE_STRINGS, strict=False):
         block = S.extract_text_block(data, f)
         assert [t for _, t, _ in block] == [s.decode() for s in expected]
 
@@ -200,7 +202,7 @@ def test_rebuild_container_preserves_pack_integrity():
     new_files = S.parse_pack(bytes(buf))
 
     assert [f.name for f in new_files] == [f.name for f in files]
-    assert all(a.end == b.offset for a, b in zip(new_files, new_files[1:]))
+    assert all(a.end == b.offset for a, b in zip(new_files, new_files[1:], strict=False))
     assert all(f.offset % 16 == 8 and f.size % 16 == 0 for f in new_files)
 
 
@@ -213,3 +215,109 @@ def test_head_of_finds_head_at_file_start_no_padding():
     pidx = {0: []}                    # is_head() só faz `off in idx`
     assert R._head_of(body, 4, pidx, [f]) == 0          # 4 = início de "BBB"
     assert R._head_of(body, 0, pidx, [f]) == 0          # já é head, atalho direto
+
+
+def test_load_game_reads_scenes_layout(tmp_path, monkeypatch):
+    """Layout atual artifacts/scenes/ch_*/ (refactor cbb9a9e): load_game lia artifacts/ch_* e agregava 0 cenas."""
+    import reinsert_game as G
+    sd = tmp_path / "scenes" / "ch_01"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hello,6\n", encoding="utf-8")
+    (sd / "approved_ch_01.csv").write_text("offset,text_target\n0x10,Ola\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    budgets, approved, scenes = G.load_game()
+    assert scenes == 1 and budgets == [("0x10", "Hello", 6)] and approved == {"0x10": "Ola"}
+
+
+def test_load_game_rejects_conflicting_duplicate_approved(tmp_path, monkeypatch):
+    import reinsert_game as G
+    sd = tmp_path / "scenes" / "ch_01"
+    sd.mkdir(parents=True)
+    (sd / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hello,6\n", encoding="utf-8")
+    (sd / "approved_a.csv").write_text("offset,text_target\n0x10,Ola\n", encoding="utf-8")
+    (sd / "approved_b.csv").write_text("offset,text_target\n0x10,Oi\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    with pytest.raises(ValueError, match="traducoes diferentes"):
+        G.load_game()
+
+
+def _apply_ips(base: bytes, patch: bytes) -> bytes:
+    assert patch[:5] == b"PATCH"
+    out, i = bytearray(base), 5
+    while patch[i:i + 3] != b"EOF":
+        off, n = int.from_bytes(patch[i:i + 3], "big"), int.from_bytes(patch[i + 3:i + 5], "big")
+        chunk = patch[i + 5:i + 5 + n]
+        out[off:off + n] = chunk
+        i += 5 + n
+    return bytes(out)
+
+
+def test_make_ips_never_emits_record_at_eof_marker_offset():
+    """Registro no offset 0x454F46 tem os mesmos 3 bytes de 'EOF': o patch era truncado ali."""
+    import reinsert as R
+    original = bytes(0x454F46 + 8)
+    modified = bytearray(original)
+    modified[0x454F46:0x454F46 + 3] = b"abc"
+    patch = R.make_ips(original, bytes(modified))
+    assert int.from_bytes(patch[5:8], "big") == 0x454F45
+    assert _apply_ips(original, patch) == bytes(modified)
+
+
+def test_loaders_aggregate_scenes_when_flat_csv_absent(tmp_path, monkeypatch):
+    import reinsert as R
+    sc = tmp_path / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x10,Hi,2\n", encoding="utf-8")
+    (sc / "approved_ch_01.csv").write_text("offset,text_target\n0x10,Oi\n", encoding="utf-8")
+    monkeypatch.setattr(R, "ART", tmp_path)
+    assert R.load_budgets() == [("0x10", "Hi", 2)]
+    assert R.load_approved() == {"0x10": "Oi"}
+
+
+def _run_verify_chapter(tmp_path, monkeypatch, *, needs_review: bool):
+    """verify_chapter.main() sobre o sdat sintetico, com o buffer aplicado corrompido em 1 offset
+    (got != want) -- exercita o ramo `off_hex in needs_review` (nota) vs falha dura."""
+    import json
+
+    import verify_chapter as V
+
+    data = _build_synthetic_sdat()
+    budgets = _budgets_from(data, S.parse_pack(data))
+    off_hex = budgets[0][0]
+    (tmp_path / "game.bin").write_bytes(data)
+    (tmp_path / "project.json").write_text(
+        json.dumps({"connector": {"source_binary": "game.bin"}}), encoding="utf-8")
+    sc = tmp_path / "artifacts" / "scenes" / "ch_01"
+    sc.mkdir(parents=True)
+    (sc / "dialogs.csv").write_text(
+        "offset,text_source,byte_budget\n" + "".join(f"{o},{t},{b}\n" for o, t, b in budgets),
+        encoding="utf-8")
+    (sc / "approved_01.csv").write_text(f"offset,text_target\n{off_hex},Oi amigo\n", encoding="utf-8")
+    if needs_review:
+        (sc / "translation_plan_01.json").write_text(
+            json.dumps({"needs_review": [off_hex]}), encoding="utf-8")
+
+    real = R.build_output
+
+    def corrupting(original, b, approved):
+        buf, repoints, report = real(original, b, approved)
+        if approved:                      # so a aplicacao, nao o round-trip com approved vazio
+            buf = bytearray(buf)
+            buf[int(off_hex, 16)] = ord("Z")
+        return buf, repoints, report
+
+    monkeypatch.setattr(R, "build_output", corrupting)
+    monkeypatch.setattr(V, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["verify_chapter.py", "ch_01"])
+    V.main()
+
+
+def test_verify_chapter_needs_review_mismatch_is_a_note_not_a_failure(tmp_path, monkeypatch, capsys):
+    _run_verify_chapter(tmp_path, monkeypatch, needs_review=True)      # sem SystemExit
+    assert "NOTAS" in capsys.readouterr().out
+
+
+def test_verify_chapter_plain_mismatch_is_a_hard_failure(tmp_path, monkeypatch):
+    with pytest.raises(SystemExit) as ei:
+        _run_verify_chapter(tmp_path, monkeypatch, needs_review=False)
+    assert ei.value.code == 1

@@ -16,9 +16,9 @@ jobs:
     name: Smoke da Batch API (~$0.002; pula sem a key)
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
-    env:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    # ANTHROPIC_API_KEY so nos 2 steps que usam (nao no job): pip install e actions de terceiros nao a veem.
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -37,6 +37,8 @@ jobs:
       # Settings > Secrets and variables > Actions.
       - name: Check API key present
         id: key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           if [ -z "$ANTHROPIC_API_KEY" ]; then
             echo "::warning::ANTHROPIC_API_KEY não configurada — pulando o smoke (adicione em Settings > Secrets > Actions)"
@@ -47,6 +49,8 @@ jobs:
 
       - name: Batch API smoke (~$0.002)
         if: steps.key.outputs.present == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python framework/runtime/batch_smoke.py
 
       # Cron falho passa batido se ninguém abrir a aba Actions. Abre (ou comenta numa já

@@ -38,15 +38,20 @@ Uso: python reinsert.py [<caminho-binário>] [--validate-one <offset_hex>]
   container idêntico ao original (blast radius mínimo para um teste in-game isolado).
 Caminho do binário (NUNCA hardcoded): CLI > connector.source_binary do project.json.
 """
+import contextlib
 import csv
 import json
 import struct
 import sys
-import unicodedata
 from pathlib import Path
 
 import sdat_format as S
 from sdat_format import find_pointers, is_head, read_cstr, read_run
+
+_FRAMEWORK_CONNECTORS = Path(__file__).resolve().parent.parent.parent.parent / "framework" / "connectors"
+if str(_FRAMEWORK_CONNECTORS) not in sys.path:
+    sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
+from connector_io import transliterate  # noqa: E402  (compartilhado; usado em final_text_bytes)
 
 ROOT = Path(__file__).resolve().parent.parent          # raiz do projeto
 ART = ROOT / "artifacts"
@@ -90,31 +95,36 @@ def resolve_source(path: str | None = None) -> Path:
     return p
 
 
-# ----------------------------------------------------------------------------- transliteração (charset)
-# Acentos pt-BR -> ASCII. Determinístico, sem LLM. Tokens {..} são ASCII e não são afetados.
-def transliterate(s: str) -> str:
-    """Dobra diacríticos para ASCII (NFD canônico + descarte de combining marks). Mantém tudo o mais.
-    NFD (não NFKD): decomposição CANÔNICA dobra acento (á->a, ç->c), mas PRESERVA glifos de compat.
-    que o jogo já usa (ex.: dígitos circulados ①②③ de sequências de puzzle: NFKD os reduzia a 1/2/3,
-    corrompendo o round-trip do binário original — ver ch_30_09)."""
-    nfd = unicodedata.normalize("NFD", s)
-    return "".join(c for c in nfd if not unicodedata.combining(c))
-
+# transliterate() (charset pt-BR -> ASCII): vem de connector_io (importado no topo).
 
 # Leitura do binário (read_cstr/find_pointers/is_head/read_run): vêm de sdat_format (módulo único
 # compartilhado com extract.py — garante o mesmo entendimento de formato dos dois lados do round-trip).
 
 
 # ----------------------------------------------------------------------------- carga de artefatos
+def _scene_dirs():
+    """Layout atual: artifacts/scenes/<cena>/ (dialogs.csv + approved_*.csv por cena), ordem estavel."""
+    return sorted((p for p in (ART / "scenes").glob("*") if p.is_dir()), key=lambda p: p.name)
+
+
+def _rows(files):
+    for f in files:
+        with f.open(encoding="utf-8-sig") as fh:
+            yield from csv.DictReader(fh)
+
+
 def load_budgets():
-    """offset(hex str) -> (text_source, byte_budget). Preserva ordem do dialogs.csv."""
-    rows = list(csv.DictReader((ART / "dialogs.csv").open(encoding="utf-8")))
-    return [(r["offset"], r["text_source"], int(r["byte_budget"])) for r in rows]
+    """offset(hex str) -> (text_source, byte_budget). Preserva ordem do dialogs.csv.
+    Layout antigo (artifacts/dialogs.csv plano) tem prioridade; senao agrega as cenas."""
+    flat = ART / "dialogs.csv"
+    files = [flat] if flat.is_file() else [d / "dialogs.csv" for d in _scene_dirs() if (d / "dialogs.csv").is_file()]
+    return [(r["offset"], r["text_source"], int(r["byte_budget"])) for r in _rows(files)]
 
 
 def load_approved():
-    return {r["offset"]: r["text_target"]
-            for r in csv.DictReader((ART / "approved_translations.csv").open(encoding="utf-8"))}
+    flat = ART / "approved_translations.csv"
+    files = [flat] if flat.is_file() else [ap for d in _scene_dirs() for ap in sorted(d.glob("approved_*.csv"))]
+    return {r["offset"]: r["text_target"] for r in _rows(files)}
 
 
 # ----------------------------------------------------------------------------- núcleo do encaixe
@@ -204,7 +214,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
     report = []
     file_inplace = {}   # idx -> [(local_off, enc, budget, off_hex)]
     if do_inplace:
-        for off_hex, source, budget in budgets:
+        for off_hex, _source, budget in budgets:
             off = int(off_hex, 16)
             enc, _ = encoded[off_hex]
             if off in relocated_offsets:
@@ -231,7 +241,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
         f = by_index[idx]
         nd = bytearray(original[f.offset:f.end])
         # 4a) in_place: grava no slot local e zera a sobra (até o terminador do slot original)
-        for local_off, enc, budget, off_hex in file_inplace.get(idx, []):
+        for local_off, enc, budget, _off_hex in file_inplace.get(idx, []):
             nd[local_off:local_off + len(enc)] = enc
             for k in range(local_off + len(enc), local_off + budget + 1):
                 nd[k] = 0x00
@@ -245,7 +255,7 @@ def build_output(original: bytes, budgets, approved, only_offset=None):
                 else:                            # continuação fora do corpus -> mantém original (translit.)
                     enc = transliterate(read_cstr(original, m).decode("utf-8", "replace")).encode("utf-8")
                 nd += enc + b"\x00"
-            for site, fs in sites:               # site é absoluto e está NESTE arquivo (ponteiros não cruzam)
+            for site, _fs in sites:               # site é absoluto e está NESTE arquivo (ponteiros não cruzam)
                 nd[site - f.offset: site - f.offset + 4] = struct.pack("<I", new_local)
             repoints.append((f"0x{head:x}", idx, new_local, [f"0x{s:x}" for s, _ in sites], run))
             for m in run:
@@ -317,6 +327,9 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
                 break
         if start > 0xFFFFFF:
             raise ValueError("offset excede o limite de 3 bytes do IPS")
+        if start == 0x454F46:      # b"EOF" em 3 bytes: o parser IPS leria como fim do patch -> comeca 1 byte antes
+            start -= 1
+            chunk.insert(0, modified[start] if start < len(modified) else 0x00)
         patch += struct.pack(">I", start)[1:]      # 3 bytes big-endian
         patch += struct.pack(">H", len(chunk))     # tamanho 2 bytes
         patch += bytes(chunk)
@@ -326,16 +339,16 @@ def make_ips(original: bytes, modified: bytes) -> bytes:
 
 # ----------------------------------------------------------------------------- main
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
     path, only = parse_args()
     src = resolve_source(path)
     OUT = ROOT / "output" / src.name
     original = src.read_bytes()
     budgets = load_budgets()
     approved = load_approved()
+    if not budgets:
+        sys.exit(f"ERRO: nenhum dialogs.csv em {ART} (nem artifacts/scenes/<cena>/) -- rode o extract primeiro")
 
     # 1) GATE DE ROUND-TRIP: reinserir o source (transliterado = idêntico p/ ASCII) reproduz o original
     rt_buf, rt_repoints, _ = build_output(original, budgets, approved={})

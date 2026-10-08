@@ -48,7 +48,7 @@ def report(root, scenes, *, elapsed_s: float | None = None) -> dict:
     lines_total = _count_lines(root, scenes)
     lines_verified = _count_lines(root, verified_scenes)
 
-    out = {
+    out: dict[str, float | None] = {
         "scenes_total": len(scenes), "scenes_verified": len(verified_scenes),
         "lines_total": lines_total, "lines_verified": lines_verified,
         "pct_done": round(100 * lines_verified / lines_total, 1) if lines_total else 0.0,

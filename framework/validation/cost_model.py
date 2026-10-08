@@ -21,6 +21,7 @@ Uso:  python cost_model.py <dir-do-projeto> [--report]   (--report grava artifac
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import json
 import sys
@@ -52,7 +53,7 @@ def _read(p: Path) -> str:
 
 
 def estimate(root: Path) -> dict:
-    root = Path(root)
+    root = Path(root).resolve()   # Carta = root.parent.parent: com Path('.') resolvia errado
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
     batch = int(cfg["batch_size"]) if cfg.get("batch_size") is not None else 200   # 0 vai pro guard
     if batch <= 0:
@@ -67,9 +68,11 @@ def estimate(root: Path) -> dict:
     ctx_tok = _toks(" " * ctx_chars) + _toks(carta)
 
     # corpus: tokens de source e alvo por linha; nº de linhas; nº de alto risco
-    plan_f = art / "translation_plan.json"
-    if plan_f.is_file():
-        lines = json.loads(plan_f.read_text(encoding="utf-8")).get("lines", [])
+    plan_files = [f for f in [art / "translation_plan.json", *sorted((art / "scenes").glob("*/translation_plan_*.json"))]
+                  if f.is_file()]
+    if plan_files:
+        lines = [l for f in plan_files
+                 for l in json.loads(f.read_text(encoding="utf-8-sig")).get("lines", [])]
         src_tok = sum(_toks(l.get("text_source", "")) for l in lines)
         tgt_tok = sum(_toks(l.get("base_translation", "")) for l in lines)
         n = len(lines)
@@ -78,7 +81,11 @@ def estimate(root: Path) -> dict:
                 "medium": sum(1 for l in lines if l.get("risk_level") == "medium"),
                 "high": n_high}
     else:
-        rows = list(csv.DictReader((art / "dialogs.csv").open(encoding="utf-8")))
+        rows = []
+        for f in [art / "dialogs.csv", *sorted((art / "scenes").glob("*/dialogs.csv"))]:
+            if f.is_file():
+                with f.open(encoding="utf-8-sig") as fh:
+                    rows += list(csv.DictReader(fh))
         src_tok = sum(_toks(r.get("text_source", "")) for r in rows)
         n = len(rows); tgt_tok = src_tok; n_high = 0; risk = {"low": n, "medium": 0, "high": 0}
 
@@ -157,10 +164,8 @@ def cost_scenarios(root: Path) -> dict:
 
 
 def main():
-    try:                                              # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     args = sys.argv[1:]
     report = "--report" in args
     root = Path(next((a for a in args if not a.startswith("--")), "."))

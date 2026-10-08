@@ -25,7 +25,7 @@ def _load_dotenv():
         f = base / ".env"
         if not f.is_file():
             continue
-        for line in f.read_text(encoding="utf-8").splitlines():
+        for line in f.read_text(encoding="utf-8-sig").splitlines():
             s = line.strip()
             if not s or s.startswith("#") or "=" not in s:
                 continue
