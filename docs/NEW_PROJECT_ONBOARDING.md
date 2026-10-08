@@ -162,13 +162,14 @@ Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 - `terminology_seeds.md`: termos canônicos do universo que precisam de handling rule.
 - `identity_pairs_reference.md`: pares de identidade dupla (se houver).
 
-### 5b. RAG semântico (opcional, #174)
+### 5b. RAG semântico (default em projeto com `db`, #174)
 
-Só com a stack de ML instalada (o `db` do Passo 0 funciona sem ela: sem ML o RAG semântico cai p/ vazio, sem erro). Sequência formal —
+O `db` do Passo 0 exige a stack de ML: sem ela o `kb_gate` bloqueia a tradução (hard). Para rodar sem
+busca semântica de propósito, declare `"db": {..., "semantic": false}` no `project.json`. Sequência formal —
 substitui ter que lembrar de cabeça (critério de pronto do #174):
 
-1. **Instalar a stack** (fora da CI, pesada — `sentence-transformers` + `sqlite-vec`,
-   ~700 MB–1,5 GB com torch): `pip install -r requirements-ml.txt`.
+1. **Instalar a stack** (pesada — `sentence-transformers` + `sqlite-vec`, ~700 MB–1,5 GB com torch):
+   já vem no `pip install .`; num checkout de dev, `pip install -r requirements-ml.txt`.
 2. **Popular o índice inicial**: `python framework/cli.py db migrate <project_root> <dest_db> --project-id <id>`
    (corpus ainda flat) já reindexa embeddings no fim (#171); se o corpus já está no DB, use
    `python framework/cli.py db index <db_path> <project_id>` direto.

@@ -10,6 +10,10 @@ requires-python = ">=3.11"
 dependencies = [
     "anthropic~=0.109",
     "httpx~=0.28",
+    # Busca semantica: default de todo projeto com `db` (kb_gate bloqueia sem ela). Pesado (puxa torch);
+    # mesmos pins do requirements-ml.txt -- manter os dois em sincronia.
+    "sentence-transformers~=6.0.1",
+    "sqlite-vec~=0.1.9",
 ]
 
 [project.scripts]
