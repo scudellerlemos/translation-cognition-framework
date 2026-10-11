@@ -37,6 +37,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0   # content_guard --commits precisa do range do PR
+      # Conteudo de jogo (binario, roteiro, traducao de cena, print, planilha de revisao, saida de
+      # descompilador) nunca entra no repo -- extensao e allowlist. Regras em .claude/hooks/content_guard.py.
+      - name: Content guard (arquivos rastreados)
+        run: python3 .claude/hooks/content_guard.py --tree
+      - name: Content guard (e-mail pessoal nos commits do PR)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 .claude/hooks/content_guard.py --commits "$BASE_SHA..$HEAD_SHA"
       - name: Verify .env is not tracked
         run: |
           if git ls-files --error-unmatch .env 2>/dev/null; then
