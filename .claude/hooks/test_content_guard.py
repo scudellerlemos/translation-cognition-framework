@@ -1,0 +1,77 @@
+import sys
+from pathlib import Path
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from content_guard import _DECOMP, _GIT_WRITE, _OK_EMAIL, path_problem, scan_tree  # noqa: E402
+
+DENY = [
+    ".env",
+    "projects/bof4/.env",
+    "RISCOS.local.md",
+    "projects/utawarerumono/output/ScriptEvent.sdat",
+    "projects/bof4/source_dat/AREAD001.DAT",
+    "projects/bof4/artifacts/scenes/AREAD001/dialogs.csv",
+    "projects/bof4/artifacts/scenes/AREAD012/translations_AREAD012.json",
+    "projects/bof4/artifacts/scenes/AREAD012/approved_AREAD012.csv",
+    "projects/utawarerumono/artifacts/evidence/tela.png",
+    "projects/souldiers/artifacts/qa_revisao/para_revisar/review_cap_None.xlsx",
+    "projects/utawarerumono/artifacts/review_cap_11.csv",
+    "projects/utawarerumono/artifacts/archive/interjection_corrections.csv",
+    "projects/bof4/artifacts/kb_phase_worklist_all.md",
+    "projects/utawarerumono/artifacts/scenes/ch_12_13/bench_12_13.haiku.json",
+    "projects/trails_sky_sc/artifacts/scenes/mp0010_01/_build_translations.py",
+    "docs/print.png",
+    "docs/planilha.xlsx",
+    "tools/sora_2nd.exe",
+    "arquivo_sem_extensao",
+]
+ALLOW = [
+    ".env.example",
+    "LICENSE",
+    "VERSION",
+    ".gitignore",
+    "README.md",
+    "framework/runtime/kb_gate.py",
+    "projects/demo/artifacts/scenes/demo01/dialogs.csv",
+    "projects/bof4/artifacts/kb_phase_worklist.md",
+    "projects/bof4/artifacts/glossary.csv",
+    "projects/utawarerumono/artifacts/qa_revisao/devolvido/.gitkeep",
+    "projects/utawarerumono/artifacts/archive/interjection_reference.md",
+    "projects/utawarerumono/output/.gitignore",
+]
+
+
+@pytest.mark.parametrize("path", DENY)
+def test_denied(path):
+    assert path_problem(path)
+
+
+@pytest.mark.parametrize("path", ALLOW)
+def test_allowed(path):
+    assert path_problem(path) is None
+
+
+def test_decompiler_signature():
+    assert _DECOMP.search(b"  iVar1 = FUN" + b"_0044a2f0(param_1);")
+    assert _DECOMP.search(b"mov eax, DAT" + b"_005c1a20")
+    assert not _DECOMP.search(b"def FUN_helper(): pass  # offset 0x44a2f0")
+
+
+def test_email():
+    assert _OK_EMAIL.search("108143319+scudellerlemos@users.noreply.github.com")
+    assert _OK_EMAIL.search("noreply@github.com")
+    assert not _OK_EMAIL.search("alguem@gmail.com")
+
+
+def test_hook_only_on_git_writes():
+    assert _GIT_WRITE.search("git add . && git commit -m x")
+    assert _GIT_WRITE.search("git push origin main")
+    assert not _GIT_WRITE.search("git status")
+    assert not _GIT_WRITE.search("python -m pytest")
+
+
+def test_repo_is_clean():
+    """O proprio repo passa no guard -- e o teste que falha se alguem versionar conteudo de jogo."""
+    assert scan_tree() == []

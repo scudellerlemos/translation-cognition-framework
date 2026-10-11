@@ -12,6 +12,17 @@
           }
         ],
         "description": "Bloqueia git commit/push que pulam hooks/assinatura (falha fechado, Bash e PowerShell)"
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR}/.claude/hooks/content_guard.py\" || exit 2",
+            "shell": "bash"
+          }
+        ],
+        "description": "Bloqueia git add/commit/push com conteudo de jogo ou arquivo fora da allowlist no repo (falha fechado)"
       }
     ]
   }
