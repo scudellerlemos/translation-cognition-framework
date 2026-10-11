@@ -435,7 +435,7 @@ def _load_sources(root: Path, cfg: dict):
 
 
 def load_spoiler_ledger(root: Path, cfg: dict | None = None) -> dict:
-    """#85: ledger de spoiler DB-gated (mesmo switch de _load_sources) — reuso por spoiler_check.py,
+    """#22: ledger de spoiler DB-gated (mesmo switch de _load_sources) — reuso por spoiler_check.py,
     que antes lia SEMPRE o flat mesmo em projetos com `db` populado (divergência silenciosa entre
     o que o gate valida e a fonte real de verdade em projetos DB-first)."""
     root = Path(root)
@@ -452,7 +452,7 @@ def load_spoiler_ledger(root: Path, cfg: dict | None = None) -> dict:
 
 
 def load_translated_scenes(root: Path, cfg: dict | None = None) -> list:
-    """#85: [(scene_display, scene_id, {offset: {"source":.., "target":..}})] das cenas JÁ
+    """#22: [(scene_display, scene_id, {offset: {"source":.., "target":..}})] das cenas JÁ
     TRADUZIDAS — DB-gated se o projeto tem `db` populado (lê translations.source/target por
     scene_id), senão flat (dialogs.csv + translations_<id>.json por diretório de cena, via
     artifact_io). Usado por spoiler_check/glossary_lint: antes só enxergavam cenas em disco
@@ -527,7 +527,7 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
     """Vizinhos SEMÂNTICOS (similares, NÃO idênticos) das linhas da cena — p/ reuso de
     voz/fraseado em falas parecidas (RAG). Suplemento ROTULADO; nunca entra no match exato.
 
-    min_score (#172): repassado a Embedder.search(); vem de project.json (`rag_min_score`,
+    min_score (#56): repassado a Embedder.search(); vem de project.json (`rag_min_score`,
     por projeto/par de idiomas — source_language/target_language já vivem no mesmo arquivo).
     None (default) preserva o comportamento atual, sem corte.
 
@@ -570,7 +570,7 @@ def _load_tm_semantic(db_path, project_id, rows, k: int = 3, max_hits: int = 8,
 
 def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
                              k: int = 3, max_hits: int = 8):
-    """Decisões SEMANTICAMENTE similares ao conteúdo da cena (#105) — RAG paralelo a
+    """Decisões SEMANTICAMENTE similares ao conteúdo da cena (#40) — RAG paralelo a
     select_decisions (léxico, por tag/speaker/universal). Mesmo gate default-deny por `reveal`
     do select_kb (ver _reveal_allowed): só injeta decisão já revelada/segura.
 
@@ -614,7 +614,7 @@ def _load_decisions_semantic(db_path, project_id, rows, blob_low, scene_id,
 
 def _load_kb_semantic(db_path, project_id, blob_low, scene_id,
                       k: int = 3, max_hits: int = 5):
-    """Seções da KB SEMANTICAMENTE similares ao conteúdo da cena (#169) — RAG paralelo a
+    """Seções da KB SEMANTICAMENTE similares ao conteúdo da cena (#53) — RAG paralelo a
     select_kb (léxico, por título de seção citado). Mesmo gate default-deny por `reveal`
     (ver _reveal_allowed) de select_kb/_load_decisions_semantic: só injeta seção já
     revelada/segura.
@@ -681,7 +681,7 @@ _KB_SAFE = {"safe", "always", "sempre", "public", "publico"}
 
 def _reveal_allowed(reveal: str | None, here: tuple) -> bool:
     """GATE de spoiler DEFAULT-DENY compartilhado por select_kb (léxico) e
-    _load_decisions_semantic (semântico, #105): só permite se PROVADAMENTE seguro — `reveal`
+    _load_decisions_semantic (semântico, #40): só permite se PROVADAMENTE seguro — `reveal`
     marcado 'safe' (_KB_SAFE), ou `reveal` = uma cena JÁ passada (≤ `here`). Sem `reveal`, ou
     'beyond_frontier', ou reveal FUTURO → nega. A garantia de não-vazamento vem do dado
     explícito por item (não de matching de texto EN↔PT)."""
@@ -731,10 +731,10 @@ def build_pack(root: Path, scene: str) -> dict:
     tm_series = _load_tm_series(cfg, root, rows)
     # KB com gate default-deny por seção (só injeta reveal já-passado/safe). Seguro por construção.
     kb = select_kb(_load_kb(db_path, db_pid), blob_low, scene_id_of(scene)) if db_path else []
-    # Decisions semânticas (#105) -- mesmo gate default-deny por reveal do select_kb.
+    # Decisions semânticas (#40) -- mesmo gate default-deny por reveal do select_kb.
     decisions_semantic = _load_decisions_semantic(
         sem_db, db_pid, rows, blob_low, scene_id_of(scene))
-    # KB semântica (#169) -- idem, RAG paralelo a select_kb (léxico).
+    # KB semântica (#53) -- idem, RAG paralelo a select_kb (léxico).
     kb_semantic = _load_kb_semantic(sem_db, db_pid, blob_low, scene_id_of(scene))
 
     spoiler_guards = select_spoiler_guards(ledger, blob_low, scene_id_of(scene))

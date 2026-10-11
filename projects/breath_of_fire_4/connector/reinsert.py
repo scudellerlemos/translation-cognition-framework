@@ -29,7 +29,7 @@ _FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
 for _p in (_FRAMEWORK, _FRAMEWORK_CONNECTORS):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
-import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #23)
 import paths as _paths  # noqa: E402
 from extract import (
     encode_string,

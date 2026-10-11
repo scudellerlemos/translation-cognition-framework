@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS kb (
     UNIQUE(project_id, section)
 );
 
--- ── Research log (pesquisa reconciliada IA+humano — research_log.md, #94) ─────
+-- ── Research log (pesquisa reconciliada IA+humano — research_log.md, #29) ─────
 -- Espelho do arquivo inteiro (1 linha/projeto): kb_phase/kb_review já sabem parsear a seção
 -- '## cap.N' e o marcador 'status: reconciled' de uma string markdown — aqui só troca a FONTE
 -- dessa string (DB em vez de disco), sem duplicar o parsing.
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS research_log (
     updated_at  REAL
 );
 
--- ── Ratificação humana de KB (kb_ratified.csv, #94) ────────────────────────────
+-- ── Ratificação humana de KB (kb_ratified.csv, #29) ────────────────────────────
 -- Segundo par de olhos: só o humano grava aqui (a IA nunca se auto-ratifica).
 CREATE TABLE IF NOT EXISTS kb_ratified (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -273,7 +273,7 @@ CREATE TABLE IF NOT EXISTS tm_embeddings (
     indexed_at      REAL
 );
 
--- ── Embeddings (decisions semânticas — RAG sobre decision_log, #105) ──────────
+-- ── Embeddings (decisions semânticas — RAG sobre decision_log, #40) ──────────
 -- Mesmo mecanismo de tm_embeddings, aplicado a decisions.summary. Vetores na
 -- tabela virtual vec0 (decision_vectors, criada por embedder.py em runtime).
 CREATE TABLE IF NOT EXISTS decision_embeddings (
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS decision_embeddings (
     indexed_at      REAL
 );
 
--- ── Embeddings (KB semântica — RAG sobre kb.content, #169) ─────────────────────
+-- ── Embeddings (KB semântica — RAG sobre kb.content, #53) ─────────────────────
 -- Mesmo mecanismo de tm_embeddings/decision_embeddings, aplicado a kb.content. A KB já
 -- chega pré-chunkada (1 linha = 1 seção do markdown, ver migrate_from_flat._migrate_kb) —
 -- não precisa de chunk_fn no embedder, só de um kind novo em _KIND_CONFIG. Vetores na

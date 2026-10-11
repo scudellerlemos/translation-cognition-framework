@@ -104,7 +104,7 @@ O job `coverage` de `test.yml` mede `framework/db` inteiro, mas **exclui de prop
 `embedder.py` (`setup.cfg`) — sem `sentence-transformers`/`sqlite-vec` instalados, os únicos
 testes que exercitam a lógica real de indexação/busca vetorial (não os que usam
 `_FakeEmbedder`) ficam pulados via `pytest.importorskip`. Resultado: uma regressão na busca
-semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar (#181).
+semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar (#60).
 
 Este job instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
 um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Mesma

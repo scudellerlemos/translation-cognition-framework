@@ -248,7 +248,7 @@ class ConnectorConfig(TypedDict, total=False):
 
 
 def validate_connector_types(cfg: dict) -> list:
-    """A3/#65: valida o TIPO dos valores em project.json connector.{} contra ConnectorConfig.
+    """A3/#2: valida o TIPO dos valores em project.json connector.{} contra ConnectorConfig.
     Reusa o TypedDict já existente via introspeccao (get_type_hints) — sem dependencia nova
     (pydantic/jsonschema). Chaves desconhecidas nao sao erro aqui (isso e _validate_connector_cfg
     em run_scene.py, que so avisa). Retorna lista de mensagens de erro; lista vazia = tudo ok."""

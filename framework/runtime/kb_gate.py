@@ -100,7 +100,7 @@ def _fetch_db_rows(db_path, db_pid) -> tuple[list, list]:
 
 
 def _check_kb_present(art: Path, db_path, kb_rows, res: dict) -> None:
-    """universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #85: DB-aware (mesma
+    """universe_knowledge_base.md: HARD — nao passa nem com --skip-kb-gate. #22: DB-aware (mesma
     lacuna do check de glossario) -- projeto com `db` populado nao tem o .md em disco."""
     if db_path:
         if not any((r.get("content") or "").strip() for r in kb_rows):
@@ -164,7 +164,7 @@ def _check_research_log(root: Path, art: Path, res: dict) -> None:
 
 
 def _check_glossary_present(art: Path, db_path, g_rows, res: dict) -> None:
-    """glossary.csv: #85 DB-aware -- projeto com `db` populado nao tem o CSV em disco."""
+    """glossary.csv: #22 DB-aware -- projeto com `db` populado nao tem o CSV em disco."""
     if db_path:
         if not g_rows:
             res["problems"].append("glossario vazio no DB (tabela glossary) — KB incompleta (skills 03/04).")
@@ -193,7 +193,7 @@ def _check_voice_cards(root: Path, res: dict) -> None:
 
 def _check_glossary_dated(root: Path, db_path, g_rows, res: dict) -> None:
     """Glossario: updated_date/updated_at e gate obrigatorio (nao so aviso de state_index).
-    #85: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
+    #22: DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
     entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header."""
     if db_path:
         undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
@@ -305,7 +305,7 @@ def check(root, scene) -> dict:
     db_path, db_pid = context_pack._db_path(root, cfg)
     kb_rows, g_rows = _fetch_db_rows(db_path, db_pid) if db_path else (None, None)
 
-    # #85: DB-aware so p/ projeto so-DB (sem o flat em disco): com o flat presente ele decide, o DB e
+    # #22: DB-aware so p/ projeto so-DB (sem o flat em disco): com o flat presente ele decide, o DB e
     # mirror dele (KB sem secao ##/### vira 0 linhas no DB e bloqueava projeto flat valido ao ligar o
     # db; o mirror sempre grava updated_at, entao o check de updated_date sumiria).
     kb_db = db_path and not (art / _KB_HARD[0]).is_file()

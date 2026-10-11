@@ -21,7 +21,7 @@ regex que ja usa (status seguido de 'reconciled') so casa depois da promocao, ex
 
 Uso:  python kb_reconcile.py <projeto>              # --check (default, read-only)
       python kb_reconcile.py <projeto> --promote     # promove SE --check estiver limpo
-      python kb_reconcile.py <projeto> --concordance # triagem alta/baixa concordancia (#67)
+      python kb_reconcile.py <projeto> --concordance # triagem alta/baixa concordancia (#4)
 """
 from __future__ import annotations
 
@@ -163,7 +163,7 @@ def main():
                     help="promove SE o check estiver limpo; senao recusa (exit 1), nada e alterado")
     ap.add_argument("--concordance", action="store_true",
                     help="triagem alta/baixa concordancia rascunho x pesquisa humana (read-only, "
-                         "nao substitui --promote; ver kb_concordance.py, #67)")
+                         "nao substitui --promote; ver kb_concordance.py, #4)")
     a = ap.parse_args()
 
     if a.concordance and a.promote:

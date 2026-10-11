@@ -2,7 +2,7 @@
 """
 residual_text.py — texto legivel que ficou no binario de origem FORA do que o extract.py extraiu.
 
-Contexto (BoF4, issue #222): o conector cortava cada string no primeiro 0x00, mas 0x00 tambem era
+Contexto (BoF4, issue #76): o conector cortava cada string no primeiro 0x00, mas 0x00 tambem era
 parametro de control code -- ~25% das falas saiam truncadas. O round-trip sem traducao passava byte
 a byte (extract e reinsert cortavam no mesmo lugar), entao o connector_gate ficou verde e o defeito
 so apareceu in-game. Round-trip identico prova que nada foi CORROMPIDO, nao que tudo foi EXTRAIDO.

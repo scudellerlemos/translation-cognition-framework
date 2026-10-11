@@ -1,7 +1,7 @@
 # requirements-ml.txt — stack de busca semântica (RAG). OBRIGATÓRIA em projeto com `db`: sem ela o
 # kb_gate bloqueia (opt-out: `"db": {..., "semantic": false}` no project.json). O pyproject.toml
 # lê as dependências DESTE arquivo (`pip install .` já a traz) — os pins vivem só aqui.
-# Auditada por CVE em dep-audit-optional.yml (#89) — nunca instalada em test.yml (torch do zero é
+# Auditada por CVE em dep-audit-optional.yml (#26) — nunca instalada em test.yml (torch do zero é
 # caro; os testes rodam com TCF_ALLOW_NO_ML=1, setado no conftest.py da raiz).
 #
 # Checkout de dev (sem `pip install .`):
@@ -14,7 +14,7 @@
 # GPU: o torch default é CPU. Aceleração AMD via ROCm é Linux-only; no Windows fica CPU (ok p/
 # ~6k linhas, poucos minutos) — ou instale um torch-directml ANTES, à parte.
 #
-# #89: 1º install real feito (2026-07-05) — floors travados em ~= (compatible release, mesma
+# #26: 1º install real feito (2026-07-05) — floors travados em ~= (compatible release, mesma
 # política do requirements-dev.txt) nas versões confirmadas nesse install. torch NÃO é pinado
 # aqui: é dependência TRANSITIVA de sentence-transformers (resolveu 2.12.1), não direta —
 # pinar direto mudaria o contrato do arquivo sem necessidade; pip-audit audita a árvore inteira

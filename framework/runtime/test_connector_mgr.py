@@ -22,7 +22,7 @@ def test_connector_script_accept_and_reject(tmp_path):
 
 
 def test_connector_script_rejects_non_string_override(tmp_path):
-    """#65: override de tipo errado (ex.: lista em vez de string) deve falhar com mensagem
+    """#2: override de tipo errado (ex.: lista em vez de string) deve falhar com mensagem
     clara, ANTES de tentar resolver como path."""
     (tmp_path / "connector").mkdir()
     with pytest.raises(ValueError, match="deveria ser string"):

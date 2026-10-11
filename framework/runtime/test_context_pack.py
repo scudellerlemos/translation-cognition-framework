@@ -47,8 +47,8 @@ def test_build_pack_db_mode(tmp_path):
     assert any(k["section"] == "Dragon lore" for k in pack["kb"]), "KB safe deveria injetar"
     assert pack["spoiler_guards"], "guard de spoiler (beyond_frontier + trigger) deveria disparar"
     assert pack["tm_semantic"] == []          # sem deps de ML → fallback esperado
-    assert pack["decisions_semantic"] == []   # idem (#105) — sem deps de ML → fallback esperado
-    assert pack["kb_semantic"] == []          # idem (#169) — sem deps de ML → fallback esperado
+    assert pack["decisions_semantic"] == []   # idem (#40) — sem deps de ML → fallback esperado
+    assert pack["kb_semantic"] == []          # idem (#53) — sem deps de ML → fallback esperado
 
 
 def test_write_pack_db_mode_renders_and_writes(tmp_path):
@@ -71,9 +71,9 @@ def test_load_lines_db_missing_scene_raises(tmp_path):
 
 
 def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
-    """#105 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    """#40 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
     instalada localmente (requirements-ml.txt); skip limpo em test.yml (push/PR, que não instala
-    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181).
+    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#60).
     Decision 'safe' deve entrar; decision com reveal futuro deve ficar de fora (mesmo gate de
     select_kb, ver _reveal_allowed)."""
     import pytest
@@ -101,7 +101,7 @@ def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
 
 
 def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch):
-    """#172: project.json.rag_min_score deve chegar em Embedder.search(min_score=...) sem
+    """#56: project.json.rag_min_score deve chegar em Embedder.search(min_score=...) sem
     precisar da stack de ML real -- _get_embedder é trocado por um fake que só grava o kwarg."""
     _make_db_project(tmp_path)
     cfg = json.loads((tmp_path / "project.json").read_text(encoding="utf-8"))
@@ -125,7 +125,7 @@ def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch
 
 def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
     """Sem `rag_min_score` no project.json (caso comum hoje), min_score chega como None ->
-    Embedder.search não corta nada (comportamento pré-#172 preservado)."""
+    Embedder.search não corta nada (comportamento pré-#56 preservado)."""
     _make_db_project(tmp_path)
     seen = {}
 
@@ -143,9 +143,9 @@ def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
 
 
 def test_load_kb_semantic_respects_reveal_gate(tmp_path):
-    """#169 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    """#53 smoke test com o Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
     instalada localmente (requirements-ml.txt); skip limpo em test.yml (push/PR, que não instala
-    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181).
+    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#60).
     Seção 'safe' deve entrar; seção com reveal futuro deve ficar de fora (mesmo gate de
     select_kb/_load_decisions_semantic, ver _reveal_allowed)."""
     import pytest
@@ -297,7 +297,7 @@ def test_select_kb_default_deny_semantics():
 
 
 def test_reveal_allowed_shared_gate(tmp_path):
-    """_reveal_allowed (#105): mesmo gate default-deny usado por select_kb (KB léxica) e
+    """_reveal_allowed (#40): mesmo gate default-deny usado por select_kb (KB léxica) e
     _load_decisions_semantic (decisions semânticas) -- contrato direto, sem passar por seleção."""
     here = cp._pos("1_05")
     assert cp._reveal_allowed("safe", here) is True

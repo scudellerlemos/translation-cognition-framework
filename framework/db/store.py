@@ -52,7 +52,7 @@ class Store:
         self._commit()
 
     def _migrate_schema(self):
-        """#85: migrações ADITIVAS de coluna (ALTER TABLE) — CREATE TABLE IF NOT EXISTS não
+        """#22: migrações ADITIVAS de coluna (ALTER TABLE) — CREATE TABLE IF NOT EXISTS não
         adiciona coluna nova a uma tabela já existente num banco criado antes dela existir."""
         cols = {r["name"] for r in self._con.execute("PRAGMA table_info(spoiler_entries)").fetchall()}
         if "forbidden_pre_reveal" not in cols:
@@ -173,7 +173,7 @@ class Store:
         self._commit()
 
     def approve_scene(self, project_id: str, scene_id: str):
-        """approved=1 em todas as traducoes da cena (chamado quando a cena fecha verified, #216)."""
+        """approved=1 em todas as traducoes da cena (chamado quando a cena fecha verified, #73)."""
         self._con.execute("UPDATE translations SET approved=1 WHERE project_id=? AND scene_id=?",
                           (project_id, scene_id))
         self._commit()
@@ -211,7 +211,7 @@ class Store:
             return self.search_tm_exact(source, project_id)
 
     def reindex_pending_embeddings(self, project_id: str) -> int | None:
-        """#171: embeda TM/decisions ainda sem vetor (incremental — embedder.index_project
+        """#55: embeda TM/decisions ainda sem vetor (incremental — embedder.index_project
         pula o que já tem embedding). Chamado do write-path (migrate_from_flat) a cada
         mirror flat→DB, pra uma linha aprovada/corrigida nunca ficar esperando reindex
         manual. None se sentence-transformers/sqlite-vec (deps de ML, opcionais) não
@@ -300,7 +300,7 @@ class Store:
         ).fetchall()
         return [dict(r) for r in rows]
 
-    # ── Research log (#94) ──────────────────────────────────────────────────────
+    # ── Research log (#29) ──────────────────────────────────────────────────────
 
     def upsert_research_log(self, project_id: str, content: str):
         self._con.execute(
@@ -317,7 +317,7 @@ class Store:
         ).fetchone()
         return row["content"] if row else None
 
-    # ── Ratificação humana de KB (#94) ──────────────────────────────────────────
+    # ── Ratificação humana de KB (#29) ──────────────────────────────────────────
 
     def upsert_kb_ratified(self, project_id: str, entries: list):
         """Nomes ratificados em LOTE (1 commit). entries: [{name, ratified_by, date, note}]."""

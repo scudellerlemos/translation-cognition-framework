@@ -282,7 +282,7 @@ def discover(root, chap) -> dict:
 
 
 def _reconciled(root: Path) -> bool:
-    """#94: DB-gated via kb_review.research_log_text (SQLite se `db` populado, senao flat)."""
+    """#29: DB-gated via kb_review.research_log_text (SQLite se `db` populado, senao flat)."""
     return bool(re.search(r"status[:*\s]+reconciled", kb_review.research_log_text(root), re.I))
 
 

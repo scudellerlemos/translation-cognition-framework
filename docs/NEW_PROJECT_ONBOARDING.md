@@ -13,7 +13,7 @@
 - A branch de trabalho está criada.
 - O framework está em `framework/` e os testes passam (`pytest framework/`).
 - **No Windows**: os CLIs principais (`discover.py`, `tcf`, `run_scene`, `run_chapter`, scaffold e o
-  `_skeleton`) já forçam stdout UTF-8 (issue #119, fechada). `PYTHONIOENCODING=utf-8` (ou
+  `_skeleton`) já forçam stdout UTF-8 (issue #48, fechada). `PYTHONIOENCODING=utf-8` (ou
   `chcp 65001`) continua recomendado para os CLIs auxiliares sem esse guard (`kb_fetch.py`,
   `kb_phase.py`, `split_scenes.py`, `coverage_gate.py`), onde `print()` com acento/seta ainda pode
   quebrar com `UnicodeEncodeError` em console cp1252.
@@ -37,7 +37,7 @@ reduzem o custo de dar início a um projeto novo de ~40k para ~5k tokens de sess
      Addressables): aponta direto pro conector de referência — copiar e adaptar, pular a etapa
      manual de mapeamento hex.
    - **engine desconhecida**: `--generate-stub` gera o PAR `extract.py` + `reinsert.py`
-     pré-preenchidos (#108; mesmo padrão nos dois — linear_scan/token_table/pointer_table,
+     pré-preenchidos (#43; mesmo padrão nos dois — linear_scan/token_table/pointer_table,
      escolhido pelas evidências) — ponto de partida bem mais adiantado que o `_skeleton/`
      genérico. Validar cobertura ANTES do round-trip completo:
      `python framework/connectors/coverage_gate.py <candidato.py> <game_dir>`. Loop de
@@ -162,27 +162,27 @@ Adaptar `framework/connectors/_skeleton/reinsert.py`. O script deve:
 - `terminology_seeds.md`: termos canônicos do universo que precisam de handling rule.
 - `identity_pairs_reference.md`: pares de identidade dupla (se houver).
 
-### 5b. RAG semântico (default em projeto com `db`, #174)
+### 5b. RAG semântico (default em projeto com `db`, #58)
 
 O `db` do Passo 0 exige a stack de ML: sem ela o `kb_gate` bloqueia a tradução (hard). Para rodar sem
 busca semântica de propósito, declare `"db": {..., "semantic": false}` no `project.json`. Sequência formal —
-substitui ter que lembrar de cabeça (critério de pronto do #174):
+substitui ter que lembrar de cabeça (critério de pronto do #58):
 
 1. **Instalar a stack** (pesada — `sentence-transformers` + `sqlite-vec`, ~700 MB–1,5 GB com torch):
    já vem no `pip install .`; num checkout de dev, `pip install -r requirements-ml.txt`.
 2. **Popular o índice inicial**: `python framework/cli.py db migrate <project_root> <dest_db> --project-id <id>`
-   (corpus ainda flat) já reindexa embeddings no fim (#171); se o corpus já está no DB, use
+   (corpus ainda flat) já reindexa embeddings no fim (#55); se o corpus já está no DB, use
    `python framework/cli.py db index <db_path> <project_id>` direto.
-3. **Revalidar o modelo pro par de idiomas do projeto** (checklist #170 — o modelo pinado,
+3. **Revalidar o modelo pro par de idiomas do projeto** (checklist #54 — o modelo pinado,
    `paraphrase-multilingual-MiniLM-L12-v2`, só foi medido em EN→pt-BR):
    `python framework/cli.py db validate-model <db_path> <project_id> [--paraphrases paraphrases.json]`
    — comparar contra a régua EN→pt-BR (exact_match ≈1.0 / vocab_variation ≈0.944). Score bem
    abaixo → considerar `--model` alternativo (grava `tm_embeddings.model_name`, reindex automático).
-4. **Reindex contínuo é automático desde #182** — toda cena que fecha `verified` via `run_scene`/`run_chapter`
+4. **Reindex contínuo é automático desde #61** — toda cena que fecha `verified` via `run_scene`/`run_chapter`
    chama `Store.reindex_pending_embeddings()` no próprio write-path (`state_index.approve_scene_db`).
    Nenhum passo manual recorrente depois do índice inicial.
 
-**Threshold de score não é item de onboarding**: a ADR 0016 fechou #172 sem evidência de que afinar
+**Threshold de score não é item de onboarding**: a ADR 0016 fechou #56 sem evidência de que afinar
 threshold por projeto traga ROI — o alavancador medido é reuso exato via índice atualizado, não
 afinamento de score. Não perder tempo tunando isso por padrão.
 

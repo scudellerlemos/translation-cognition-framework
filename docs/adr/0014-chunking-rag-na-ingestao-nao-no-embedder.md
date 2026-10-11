@@ -4,14 +4,14 @@
 
 ## Contexto
 
-`framework/db/embedder.py` (#105, generalizado sobre #109) indexa 1 vetor por linha de
+`framework/db/embedder.py` (#40, generalizado sobre #44) indexa 1 vetor por linha de
 `translations.source` ou `decisions.summary` — 1-linha-1-vetor, sem chunking, porque diálogo de
 jogo e resumos de decisão já chegam pré-segmentados em unidades atômicas (1 fala = 1 linha, 1
 decisão = 1 linha).
 
 Isso não se generaliza sozinho pra conteúdo tipo documento: `universe_knowledge_base.md` é lore
 extensa, hoje "chunkada" manualmente por seção markdown com curadoria humana (tag
-`<!-- reveal: ... -->` por seção `##`/`###`). A pergunta do #169 era se o embedder devia ganhar um
+`<!-- reveal: ... -->` por seção `##`/`###`). A pergunta do #53 era se o embedder devia ganhar um
 `chunk_fn` por kind (parâmetro configurável de estratégia de chunking — por seção, por parágrafo,
 por N tokens com overlap) pra cobrir esse caso e generalizar pra projeto futuro.
 

@@ -301,8 +301,8 @@ def _db_target(root: Path):
 
 def approve_scene_db(root: Path, scene: str) -> None:
     """Marca approved=1 as traducoes da cena no DB (gated por project.json:db). O build_plan grava
-    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB (#216).
-    Reindexa em seguida (#182): o embedder so embeda approved=1, entao e AQUI que a cena entra na
+    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB (#73).
+    Reindexa em seguida (#61): o embedder so embeda approved=1, entao e AQUI que a cena entra na
     TM semantica -- no build_plan ela ainda era approved=0 e so aparecia uma cena depois."""
     db_path, project_id = _db_target(root)
     if not db_path or not db_path.is_file():

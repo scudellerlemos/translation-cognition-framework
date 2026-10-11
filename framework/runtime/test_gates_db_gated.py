@@ -1,4 +1,4 @@
-"""test_gates_db_gated.py — #85: gates de governança sob projeto DB-gated.
+"""test_gates_db_gated.py — #22: gates de governança sob projeto DB-gated.
 
 spoiler_check.py, glossary_lint.py e o check de glossário do kb_gate.py liam SEMPRE os flat
 files (paths.spoiler_ledger/dialogs.csv/glossary.csv), mesmo em projeto com `db` populado —
@@ -172,7 +172,7 @@ def test_load_spoiler_ledger_db_gated_carries_new_fields(tmp_path):
     assert e["forbidden_pre_reveal"] == ["Oshtor"] and e["gender_quarantine"] is True
 
 
-# ── #94: kb_phase.py / kb_review.py — research_log / kb_ratified DB-gated ──────
+# ── #29: kb_phase.py / kb_review.py — research_log / kb_ratified DB-gated ──────
 
 def test_kb_phase_reconciled_db_gated(tmp_path):
     """_reconciled le research_log do SQLite (nao ha research_log.md em disco)."""
@@ -201,8 +201,8 @@ def test_kb_review_research_section_db_gated(tmp_path):
 
 
 def test_kb_review_digest_db_gated_source_and_ratification(tmp_path):
-    """digest() cruza glossary.csv flat (leitura de glossario/entities e fora do escopo de #94)
-    com research_log/kb_ratified — estes 2 lidos do SQLite (#94), no projeto DB-gated."""
+    """digest() cruza glossary.csv flat (leitura de glossario/entities e fora do escopo de #29)
+    com research_log/kb_ratified — estes 2 lidos do SQLite (#29), no projeto DB-gated."""
     db_path = _db_project(tmp_path)
     with Store(db_path) as db:
         db.upsert_project("p1", "T")

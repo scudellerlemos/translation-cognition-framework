@@ -65,7 +65,7 @@ def _write_stubs(evidence: dict, out_dir: Path) -> None:
     mao depois de gerado, e re-rodar a descoberta apagaria o trabalho. (stderr: nao suja o --json.)"""
     from script_generator import generate, generate_reinsert
     out_dir.mkdir(parents=True, exist_ok=True)
-    # #108: gera o PAR reinsert.py junto (mesma evidência -> mesmo padrão)
+    # #43: gera o PAR reinsert.py junto (mesma evidência -> mesmo padrão)
     for name, code in (("extract.py", generate(evidence)), ("reinsert.py", generate_reinsert(evidence))):
         out = out_dir / name
         if out.exists():
@@ -122,7 +122,7 @@ def _print_report(result: dict, game_dir: Path, registry: list[dict]) -> None:
         print("    6. Testar round-trip completo (extract + reinsert):")
         print("         python framework/connectors/connector_smoke.py projects/<jogo> [game_dir] --roundtrip")
         print("    7. Round-trip byte-idêntico = conector aprovado → registrar no registry")
-        print("\n  Loop propõe→verifica→refina (#108): repetir 3-6 ajustando o candidato a cada")
+        print("\n  Loop propõe→verifica→refina (#43): repetir 3-6 ajustando o candidato a cada")
         print("  falha, até passar ou esgotar o teto de iterações — ver")
         print("  framework/connectors/agentic_synthesis.md. Ratificação final é SEMPRE humana.")
 

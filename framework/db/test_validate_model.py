@@ -1,7 +1,7 @@
-"""test_validate_model.py — smoke test do validate_model (#170) com Embedder/sqlite-vec
+"""test_validate_model.py — smoke test do validate_model (#54) com Embedder/sqlite-vec
 REAIS. Só roda se a stack ML estiver instalada localmente (requirements-ml.txt); skip
 limpo em test.yml (push/PR, que não instala essa stack, mesmo padrão de
-test_context_pack.py), mas roda de verdade semanalmente em ml-coverage-optional.yml (#181)."""
+test_context_pack.py), mas roda de verdade semanalmente em ml-coverage-optional.yml (#60)."""
 import sqlite3
 import sys
 from pathlib import Path
@@ -38,7 +38,7 @@ def test_validate_model_exact_match_high_score(tmp_path):
 
 
 def test_validate_model_seed_is_reproducible(tmp_path):
-    """#185: amostragem é aleatória sobre todas as linhas aprovadas (não mais as N primeiras
+    """#64: amostragem é aleatória sobre todas as linhas aprovadas (não mais as N primeiras
     via LIMIT); --seed fixa a amostra pra reprodutibilidade (mesma seed -> mesmo resultado)."""
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
@@ -61,7 +61,7 @@ def test_validate_model_seed_is_reproducible(tmp_path):
 
 
 def test_validate_model_zero_or_negative_sample_size_raises(tmp_path):
-    """Review do #185: sample_size<=0 não pode cair no random.sample()/divisão por zero —
+    """Review do #64: sample_size<=0 não pode cair no random.sample()/divisão por zero —
     tem que falhar limpo com ValueError, como o LIMIT 0 antigo fazia."""
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")

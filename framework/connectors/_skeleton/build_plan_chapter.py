@@ -54,7 +54,7 @@ def main() -> None:
     dialogs, order = load_dialogs(scene_dir / "dialogs.csv")
     trans = json.loads(trans_files[0].read_text(encoding="utf-8"))["lines"]
     # tokens estruturais do engine (timing/markup) que sobrevivem VERBATIM: declarados em
-    # project.json formatting_tokens/_patterns -- MESMA regex do retry do model.py (#124)
+    # project.json formatting_tokens/_patterns -- MESMA regex do retry do model.py (#51)
     cfg = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))
     rx = connector_io.structural_token_rx(cfg.get("formatting_tokens"), cfg.get("formatting_token_patterns"))
 

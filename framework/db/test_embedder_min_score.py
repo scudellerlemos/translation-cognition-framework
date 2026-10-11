@@ -1,4 +1,4 @@
-"""test_embedder_min_score.py — cobre o corte por min_score em Embedder.search() (#172).
+"""test_embedder_min_score.py — cobre o corte por min_score em Embedder.search() (#56).
 
 Nao carrega sentence-transformers/sqlite-vec (stack pesada, pode nao estar instalada):
 Embedder e construido sem __init__ e encode()/_ensure_vec_table()/con.execute() sao stubados.

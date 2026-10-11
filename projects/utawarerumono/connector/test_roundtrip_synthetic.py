@@ -1,7 +1,7 @@
 """
 test_roundtrip_synthetic.py — oráculo de round-trip SEMPRE ativo em CI, sem o binário comercial.
 
-Mesmo problema fechado para BoF4 na issue #84 (ver test_roundtrip_synthetic.py de lá): o oráculo
+Mesmo problema fechado para BoF4 na issue #21 (ver test_roundtrip_synthetic.py de lá): o oráculo
 central do projeto (round-trip byte-idêntico extract->reinsert->re-extract) só rodava contra
 `artifacts/ScriptEvent.sdat`, que é gitignored (licenciamento) — em CI o binário nunca existe, então
 todo `test_roundtrip.py` marcado `@requires_bin` pula (`pytest.skip`).
