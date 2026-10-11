@@ -128,3 +128,40 @@ def test_corrupt_run_state_counts_as_no_green_roundtrip(tmp_path):
     rs.parent.mkdir(parents=True)
     rs.write_text("{nao e json", encoding="utf-8")
     assert cg._has_green_roundtrip(tmp_path) is False
+
+
+def _hex_project(root: Path, texts, monkeypatch):
+    """Conector hex_binary com scripts presentes e 1 binario cujas falas tem 0x00 no meio."""
+    _project(root, {"type": "hex_binary", "data_dir_env": "T_DATA_DIR"})
+    monkeypatch.setenv("T_DATA_DIR", str(root / "src"))
+    conn = root / "connector"
+    conn.mkdir()
+    (conn / "build_plan_chapter.py").write_text("# stub", encoding="utf-8")
+    (conn / "verify_chapter.py").write_text("# stub", encoding="utf-8")
+    (root / "src").mkdir()
+    (root / "src" / "A.DAT").write_bytes(
+        b'\x14\x00\x00So what was in this crater you found today?\x00You hear all kinds of things here.\x00')
+    (root / "artifacts").mkdir()
+    (root / "artifacts" / "dialogs.csv").write_text(
+        "file,text_en\n" + "".join(f'A.DAT,"{t}"\n' for t in texts), encoding="utf-8")
+
+
+def test_blocks_when_extract_leaves_text_behind(tmp_path, monkeypatch):
+    """issue #222: string cortada no primeiro 0x00 -- round-trip passa, texto fica no binario."""
+    _hex_project(tmp_path, ["[14]", "You hear all kinds of things here."], monkeypatch)
+    assert any("extracao incompleta" in p for p in cg.check(tmp_path)["problems"])
+
+
+def test_full_extraction_has_no_residual_problem(tmp_path, monkeypatch):
+    _hex_project(tmp_path, ["[14][00][00]So what was in this crater you found today?",
+                            "You hear all kinds of things here."], monkeypatch)
+    r = cg.check(tmp_path)
+    assert not any("extracao" in p for p in r["problems"]) and not any("residual" in w for w in r["warnings"])
+
+
+def test_hex_binary_without_source_dir_blocks(tmp_path, monkeypatch):
+    _hex_project(tmp_path, ["[14]"], monkeypatch)
+    monkeypatch.delenv("T_DATA_DIR")
+    r = cg.check(tmp_path)
+    assert any("residual NAO checado" in p for p in r["problems"])
+

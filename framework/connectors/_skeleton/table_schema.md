@@ -46,7 +46,9 @@ FC ??=  {COLOR}
 
 ## SEÇÃO 3 — TERMINADORES E ESTRUTURA
 
-- **Terminador de string:** byte(s) que encerram uma string (ex: `00` ou `FF`)
+- **Terminador de string:** byte(s) que encerram uma string (ex: `00` ou `FF`). Conferir se o mesmo
+  byte aparece como PARÂMETRO de control code no meio da string (BoF4: `[14][00][00]`); se sim, o fim
+  da string é o próximo ponteiro distinto, e o terminador só vale no fim
 - **Alinhamento:** strings começam em offsets alinhados? (ex: múltiplos de 2/4)
 - **Base de offset:** offset absoluto no arquivo, ou relativo a uma base?
 

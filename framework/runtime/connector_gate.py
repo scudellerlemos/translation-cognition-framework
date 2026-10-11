@@ -20,6 +20,11 @@ Checagens (deterministas, sem rede):
       a cada verify bem-sucedido) -- nao precisa de manifest/timestamp novo. Excecao: run_scene
       de 1 cena COM verify (o piloto) nao e bloqueado por isto -- e ele que produz o 1o round-trip
       verde; o bloqueio vale p/ a escala (run_chapter) e p/ run_scene sem verify.
+    - conector hex_binary com texto legivel no binario de origem que nao esta em nenhuma string
+      extraida (residual_text.py) -- extract cortando/pulando string. Round-trip identico nao pega
+      isso: extract e reinsert erram no mesmo lugar (BoF4, issue #222).
+    - conector hex_binary sem connector.data_dir_env (ou env nao setada) -- o check acima nao tem
+      como rodar, e check que nao roda nao pode contar como verde.
   warnings (nunca bloqueiam):
     - connector/test_roundtrip.py ausente -- dev-only (pytest), nao e chamado pelo runtime.
 
@@ -32,13 +37,16 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+sys.path.insert(0, str(_HERE.parent / "connectors"))
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import residual_text  # noqa: E402  (framework/connectors: texto que o extract deixou para tras)
 from connector_mgr import (
     _connector_script,  # noqa: E402  (mesmo resolvedor de path que run_scene usa)
 )
@@ -69,6 +77,39 @@ def _has_green_roundtrip(root: Path) -> bool:
     except (json.JSONDecodeError, OSError):
         return False
     return any(v.get("verified") is True for v in scenes.values())
+
+
+def _source_dir(conn: dict) -> Path | None:
+    """Pasta dos binarios de origem: a env var nomeada em connector.data_dir_env (o caminho nunca
+    vai para o project.json). None = projeto nao declarou ou a env nao esta setada."""
+    env = os.environ.get(conn.get("data_dir_env") or "")
+    return Path(env) if env else None
+
+
+def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
+    """(problems, warnings) do check de texto residual -- so conector hex_binary. Round-trip
+    identico nao prova extracao completa: ver framework/connectors/residual_text.py (issue #222)."""
+    conn = cfg.get("connector") or {}
+    if conn.get("type") != "hex_binary":
+        return [], []
+    src_cfg = cfg.get("source") or {}
+    csv_path = root / src_cfg.get("file", "artifacts/dialogs.csv")
+    src = _source_dir(conn)
+    if src is None or not src.is_dir() or not csv_path.is_file():
+        return ["texto residual NAO checado — declare connector.data_dir_env e sete essa env "
+                "apontando para os binarios de origem; sem isso string truncada na extracao "
+                "passa despercebida (round-trip continua verde)."], []
+    try:
+        r = residual_text.check(csv_path, src, text_column=src_cfg.get("text_column", "text_en"))
+    except KeyError as e:
+        return [], [f"texto residual NAO checado — {csv_path.name} sem a coluna {e}."]
+    if r["passed"]:
+        return [], []
+    worst = ", ".join(f"{n} {m}/{t}" for n, m, t in r["per_file"][:3])
+    return [f"extracao incompleta: {r['n_residual']}/{r['n_runs']} trecho(s) de texto legivel do "
+            f"binario ({r['ratio']:.1%}) nao estao em nenhuma string extraida — o extract.py esta "
+            f"cortando ou pulando strings (ex.: {r['examples'][0]!r}; piores: {worst}). Detalhe: "
+            f"python framework/connectors/residual_text.py {csv_path} {src}"], []
 
 
 def check(root) -> dict:
@@ -105,6 +146,10 @@ def check(root) -> dict:
             "via run_scene.py (com verify) antes de traduzir em escala."
         )
     warnings: list[str] = []
+    if not hard_problems:
+        residual_problem, residual_warning = _residual_text(root, cfg)
+        problems += residual_problem
+        warnings += residual_warning
     if not (root / "connector" / "test_roundtrip.py").is_file():
         warnings.append(
             "connector/test_roundtrip.py ausente — round-trip nunca validado via teste automatizado "

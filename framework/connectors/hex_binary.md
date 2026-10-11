@@ -58,7 +58,11 @@ extract.py(source_binary, table_schema) → dialogs.csv + extraction_log.md
 ```
 
 **Determinístico.** Para cada string localizada no binário:
-1. Ler bytes a partir do offset até o terminador
+1. Ler bytes a partir do offset até o FIM da string. Com tabela de ponteiros, o fim é o **próximo
+   ponteiro distinto**, não o primeiro byte terminador: o mesmo byte pode ser parâmetro de control
+   code no meio da string (BoF4: `[14][00][00]` = id do falante — cortar no primeiro `00` truncou
+   ~25% das falas com round-trip verde, issue #222). Só confiar no terminador depois de provar que
+   nenhum control code o carrega como parâmetro
 2. Decodificar via tabela (byte→caractere)
 3. Substituir sequências de control code pelos tokens correspondentes
 4. Registrar a linha em `dialogs.csv` com:
@@ -174,6 +178,10 @@ tratá-las como texto normal. (POC: a linha `0x33f9` vinha meio PT/EN corrompida
 □ extract.py e reinsert.py consomem o MESMO table_schema?
 □ extract.py emite byte_budget por string?
 □ Round-trip (extract → reinsert idêntico === original) passa byte-a-byte?
+□ Extração COMPLETA? Round-trip idêntico não prova isso (extract e reinsert cortam no mesmo lugar):
+  `python framework/connectors/residual_text.py <dialogs.csv> <pasta_dos_binarios>` sem texto legível
+  sobrando, e `connector.data_dir_env` declarado e a env setada — sem isso o `connector_gate` bloqueia
+□ Fim de string pelo próximo ponteiro distinto (se há tabela de ponteiros), não pelo primeiro terminador?
 □ Control codes mapeiam para os formatting_tokens do project.json?
 □ space_strategy declarada (repoint p/ alvo mais longo) e taxa de fit reportada?
 □ Gate de charset avaliado inspecionando a FONTE (não só presença no texto)?
