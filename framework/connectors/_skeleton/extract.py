@@ -49,6 +49,10 @@ def load_table(table_path: Path):
 def decode_string(data: bytes, offset: int, table) -> tuple[str, int]:
     """
     Lê do offset até o terminador. Retorna (texto_com_tokens, n_bytes_consumidos).
+    ATENÇÃO: parar no 1º terminador só é correto se nenhum control code leva esse byte como
+    parâmetro. Se leva (BoF4: [14][00][00]), a string TRUNCA e o round-trip continua verde --
+    delimite pelo próximo ponteiro distinto (receba `end` de iter_string_offsets) em vez disso.
+    Confira com framework/connectors/residual_text.py antes de fechar a Fase 0.
     n_bytes_consumidos é o byte_budget da string (espaço ocupado no binário).
     """
     byte_to_char, control_map, terminator = table

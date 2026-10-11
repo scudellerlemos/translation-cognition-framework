@@ -236,8 +236,8 @@ antes do primeiro token pago.
 | `connector_gate` | faltam os scripts de plano ou de verificação; eles ainda são a cópia intocada do esqueleto; ou nenhuma cena do projeto jamais passou no round-trip |
 | `kb_gate` | a pesquisa do universo do jogo não foi revisada e marcada como conciliada; glossário, base de conhecimento ou voice cards estão vazios; a cena está além do ponto da história que a pesquisa cobre (`kb_frontier`); ou o projeto tem banco e a stack de embedding não está instalada |
 
-Parte das condições é dura (não há como contornar) e parte aceita uma flag explícita de bypass
-(`--skip-connector-gate`, `--skip-kb-gate`).
+O `connector_gate` não tem bypass: a primeira cena passa por `run_scene.py` com verify e registra o
+round-trip. No `kb_gate`, parte das condições é dura e parte aceita a flag explícita `--skip-kb-gate`.
 
 ### Back-translation: verificação de sentido
 
@@ -372,7 +372,8 @@ Dois pontos de desenho:
 | Projeto | Persistência / RAG | Modelo | Estado |
 |---|---|---|---|
 | `utawarerumono` | arquivos | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
-| `breath_of_fire_4` | arquivos (o corpus também foi migrado para `translation_software`) | Haiku/Sonnet/Opus | concluído — 125 cenas |
+| `breath_of_fire_4` | arquivos (o corpus também foi migrado para `translation_software`) | Haiku/Sonnet/Opus | **descontinuado** como instância de tradução (substituído por `bof4`); parou concluído, com 125 cenas. Segue como conector de referência Capcom e fixture de testes |
+| `bof4` | **SQLite + busca semântica** (obrigatória) | — (ainda não traduzido) | instanciado — mesmo corpus, KB e conector do `breath_of_fire_4`; tradução começa do zero |
 | `souldiers` | arquivos | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceira engine (Unity Addressables) |
 | `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 67 cenas extraídas, cena-piloto com round-trip fechado |
 | `translation_software` | **SQLite + busca semântica** | — | referência de arquitetura do modo banco, com o corpus do BoF4; não é uma tradução em andamento |

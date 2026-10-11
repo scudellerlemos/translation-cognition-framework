@@ -291,7 +291,7 @@ def _report_connector_gate_status(project_root: Path) -> None:
     for p in r.get("hard_problems", []):
         print(f"  [HARD] {p}")
     for p in r.get("problems", []):
-        print(f"  [bloqueia sem --skip-connector-gate] {p}")
+        print(f"  [bloqueia a escala ate o piloto de 1 cena] {p}")
 
 
 def _report_kb_gate_status(project_root: Path) -> None:

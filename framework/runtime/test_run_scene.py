@@ -120,26 +120,30 @@ def test_connector_hard_block(env):
     assert r["status"] == "connector_incomplete" and r["problems"]
 
 
-def test_connector_hard_block_never_bypassed(env):
-    root, scene, st = env
-    st["connector"]["hard_problems"] = ["verify_script ausente"]
-    r = rs.run_scene(root, scene, skip_connector_gate=True)   # hard nao tem bypass
-    assert r["status"] == "connector_incomplete"
-
-
-def test_connector_soft_block_without_skip(env):
+def test_connector_soft_block_without_verify(env):
     root, scene, st = env
     st["connector"]["problems"] = ["nenhum round-trip verde ainda"]
-    r = rs.run_scene(root, scene, skip_connector_gate=False)
-    assert r["status"] == "connector_incomplete"
+    r = rs.run_scene(root, scene, do_verify=False)
+    assert r["status"] == "connector_incomplete"   # sem verify nao ha como provar o round-trip
 
 
-def test_connector_soft_bypassed_with_skip(env):
+def test_connector_soft_pilot_runs_with_verify(env):
+    # 1a cena do projeto: nenhum round-trip verde ainda, mas o verify desta cena e que o produz --
+    # passa SEM flag de bypass e sem registrar gate ignorado
     root, scene, st = env
     st["connector"]["problems"] = ["nenhum round-trip verde ainda"]
     st["runs"] = [(0, ""), (0, "")]
-    r = rs.run_scene(root, scene, skip_connector_gate=True)
+    r = rs.run_scene(root, scene)
     assert r["status"] == "verified"
+    state = json.loads((root / "artifacts" / "run_state.json").read_text(encoding="utf-8"))
+    assert state["scenes"][scene]["bypassed_gates"] == []
+
+
+def test_connector_soft_pilot_verify_fails(env):
+    root, scene, st = env
+    st["connector"]["problems"] = ["nenhum round-trip verde ainda"]
+    st["runs"] = [(0, ""), (1, "")]                  # build_plan ok, verify falha dura
+    assert rs.run_scene(root, scene)["status"] == "verify_failed"
 
 
 def test_connector_gate_runs_before_kb_gate(env, monkeypatch):

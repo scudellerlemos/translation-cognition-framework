@@ -30,7 +30,7 @@ está em [`STACK.md`](STACK.md#onde-cada-projeto-está-hoje)):
 | Projeto | Engine / formato | Restrição de espaço |
 |---|---|---|
 | `utawarerumono` | Aquaplus (SDAT) | orçamento em bytes por fala; reinserção no lugar, com realocação dentro do arquivo |
-| `breath_of_fire_4` | Capcom (PS1/PC), tabela de ponteiros por seção | orçamento em bytes por fala; a seção é reconstruída |
+| `breath_of_fire_4`, `bof4` | Capcom (PS1/PC), tabela de ponteiros por seção | orçamento em bytes por fala; a seção é reconstruída |
 | `souldiers` | Unity 2021 (Addressables) | sem limite de bytes; a engine quebra a linha sozinha |
 | `trails_sky_sc` | engine própria da Falcom | quebra automática, sem quebra manual |
 

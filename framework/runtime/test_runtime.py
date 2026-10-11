@@ -2222,20 +2222,20 @@ def _stub_pipeline_after_gates(monkeypatch):
 
 
 def test_run_scene_records_bypassed_gates_in_checkpoint(monkeypatch, tmp_path):
-    # #79: bypass de --skip-kb-gate/--skip-connector-gate deve deixar rastro no checkpoint -- antes,
+    # #79: bypass de --skip-kb-gate deve deixar rastro no checkpoint -- antes,
     # o mesmo status "verified" de uma cena limpa nao distinguia de uma cena traduzida as cegas.
     (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
     (tmp_path / "artifacts").mkdir()
     monkeypatch.setattr(run_scene.connector_gate, "check",
-                        lambda r: {"hard_problems": [], "problems": ["conector incompleto"], "warnings": []})
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
     monkeypatch.setattr(run_scene.kb_gate, "check",
                         lambda r, s: {"hard_problems": [], "problems": ["kb sem cobertura"], "warnings": []})
     _stub_pipeline_after_gates(monkeypatch)
 
-    r = run_scene.run_scene(tmp_path, "ch_50_01", skip_kb_gate=True, skip_connector_gate=True)
+    r = run_scene.run_scene(tmp_path, "ch_50_01", skip_kb_gate=True)
     assert r["status"] == "verified"
     state = json.loads(paths.run_state(tmp_path).read_text(encoding="utf-8"))
-    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == ["connector", "kb"]
+    assert state["scenes"]["ch_50_01"]["bypassed_gates"] == ["kb"]
 
 
 def test_run_scene_bypassed_gates_empty_when_clean(monkeypatch, tmp_path):

@@ -338,13 +338,12 @@ def _back_phase(root: Path, scene: str, highs: list, backend: str,
 
 
 def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
-              pretranslated=False, defer_back=False, rebuild_index=True, skip_connector_gate=False,
+              pretranslated=False, defer_back=False, rebuild_index=True,
               no_back=False, opts: RunSceneOptions | None = None) -> RunSceneResult:
     if opts is not None:
         backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
         skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
         rebuild_index = opts.rebuild_index
-        skip_connector_gate = opts.skip_connector_gate
         no_back = opts.no_back
     root = Path(root)
     _validate_scene_arg(root, scene)
@@ -370,14 +369,18 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
         return {"status": "connector_incomplete", "scene": scene, "problems": cg["hard_problems"]}
     if cg["problems"]:
-        if not skip_connector_gate:
+        # PILOTO: o unico problema soft e "nenhum round-trip verde ainda", e quem grava verified=True
+        # e este run_scene (apos o verify) -- bloquear aqui era um impasse (a 1a cena nunca passava).
+        # Com verify ligado a propria cena prova o round-trip logo adiante;
+        # so bloqueia quem roda SEM verify. Escala (run_chapter) segue bloqueada pelo gate dela.
+        if not do_verify:
             print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
             for p in cg["problems"]:
                 print(f"      - {p}")
-            print("      -> rode build_plan+verify de 1 cena manualmente, ou use --skip-connector-gate p/ ignorar (nao recomendado).")
+            print("      -> rode esta cena COM verify (sem --no-verify): o piloto registra o round-trip.")
             _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
             return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
-        bypassed.append("connector")
+        print("[connector] piloto: nenhum round-trip verde ainda — esta cena prova o round-trip no verify.")
 
     # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
     kb = kb_gate.check(root, scene)
@@ -505,8 +508,6 @@ def main():
     ap.add_argument("--no-verify", action="store_true", help="pula o round-trip (verify_chapter)")
     ap.add_argument("--skip-kb-gate", action="store_true",
                     help="ignora o gate de cobertura de KB (nao recomendado)")
-    ap.add_argument("--skip-connector-gate", action="store_true",
-                    help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--no-back", action="store_true",
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
     ap.add_argument("--clean", action="store_true",
@@ -534,7 +535,7 @@ def main():
     state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
     r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
                   do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
-                  skip_connector_gate=a.skip_connector_gate, no_back=a.no_back)
+                  no_back=a.no_back)
     _audit_spoiler(Path(a.project))
     _audit_schema(Path(a.project))
     sys.exit(0 if r["status"] in SCENE_OK_STATUSES else 1)

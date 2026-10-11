@@ -57,4 +57,8 @@ projects/*/artifacts/qa_revisao/devolvido/
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
 .claude/worktrees/
+# texto bruto de fontes de KB (manual, wiki) — refaz com kb_fetch; proveniencia fica no research_log.md
+projects/*/artifacts/research_cache/
 
+# Cópia intocada dos DAT originais do jogo (fonte do extract/reinsert/verify — copyright, nunca versionar)
+projects/*/source_dat/
