@@ -6,8 +6,8 @@ Tres usos, mesma regra:
   python .claude/hooks/content_guard.py --commits A..B   # CI: e-mail de autor/committer do range
   (PreToolUse Bash|PowerShell, JSON no stdin)            # barra `git add/commit/push` do agente
 
-Extensao e ALLOWLIST (o que nao esta na lista falha): arquivo novo de tipo desconhecido exige
-decisao explicita aqui. Falha FECHADO como o block_no_verify.
+Extensao e ALLOWLIST, e projects/*/artifacts/ tambem (ARTIFACTS_ALLOWED): o que nao esta na
+lista falha -- tipo novo ou artefato gerado novo exige decisao explicita aqui. Falha FECHADO como o block_no_verify.
 """
 import json
 import re
@@ -31,6 +31,23 @@ DENIED_PATHS = [(re.compile(rx), why) for rx, why in [
     (r"^projects/[^/]+/artifacts/kb_phase_worklist_[^/]*\.md$", "worklist gerada (trechos do jogo)"),
     (r"(^|/)(bench_[^/]*\.json|_build_translations\.py)$", "traducao de cena embutida"),
 ]]
+# projects/<jogo>/artifacts/ e DEFAULT-DENY: so entra o que esta nesta lista (caminho relativo a
+# artifacts/). E onde os geradores escrevem -- um gerador novo que cite fala do jogo (caso das
+# worklists de kb_phase) nasce bloqueado ate alguem decidir aqui, olhando o conteudo, que pode.
+ARTIFACTS_ALLOWED = {
+    "api_ledger.jsonl", "cost_report.md", "decision_log.md", "entities.csv", "entities_candidates.json",
+    "extraction_log.md", "glossary.csv", "kb_phase_worklist.md", "kb_ratified.csv", "metrics.jsonl",
+    "qa_effectiveness.jsonl", "qa_report.md", "reinsertion_report.md", "research_log.md", "residue.json",
+    "run_state.json", "scenes_index.json", "spoiler_audit.json", "spoiler_ledger.json", "tone_analysis.md",
+    "universe_knowledge_base.md", "warnings.jsonl",
+    "state/decision_index.json", "state/portrait_codes.json", "state/voice_cards.json",
+    "qa_revisao/LEIA-ME.md", "qa_revisao/teste_ingame/relato_tester.csv",
+    # legado do Utawarerumono (piloto, pre-padronizacao) -- nao usar como precedente
+    "archive/aliases_map.json", "archive/entities_candidates.json", "archive/extraction_log.md",
+    "archive/interjection_reference.md", "archive/micro_qa_log.json", "archive/translation_status.json",
+    "scenes/ch_11_03/calibration_report.md",
+}
+_ARTIFACT = re.compile(r"^projects/[^/]+/artifacts/(.+)$")
 # Saida de descompilador (Ghidra/IDA): nota de RE fica local, nunca no repo.
 _DECOMP = re.compile(rb"\b(?:FUN|DAT|LAB|PTR|sub)_[0-9a-fA-F]{6,8}\b")
 _OK_EMAIL = re.compile(r"(@users\.noreply\.github\.com|^noreply@github\.com)$")
@@ -44,6 +61,9 @@ def path_problem(path: str) -> str | None:
     for rx, why in DENIED_PATHS:
         if rx.search(path):
             return why
+    art = _ARTIFACT.match(path)
+    if art and art[1] not in ARTIFACTS_ALLOWED:
+        return "artefato fora da allowlist (ARTIFACTS_ALLOWED) -- gerado novo: ignore, ou libere apos conferir o conteudo"
     ext = name.rsplit(".", 1)[-1] if "." in name else ""
     if name not in ALLOWED_NAMES and ext not in ALLOWED_EXT:
         return f"extensao fora da allowlist (.{ext or '?'})"

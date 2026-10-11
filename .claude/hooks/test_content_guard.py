@@ -26,6 +26,10 @@ DENY = [
     "docs/planilha.xlsx",
     "tools/sora_2nd.exe",
     "arquivo_sem_extensao",
+    # artefato gerado de nome desconhecido, em extensao permitida: default-deny
+    "projects/bof4/artifacts/novo_relatorio_gerado.md",
+    "projects/bof4/artifacts/scenes/AREAD001/qualquer_coisa.json",
+    "projects/jogo_novo/artifacts/state/cache_de_falas.json",
 ]
 ALLOW = [
     ".env.example",
@@ -37,6 +41,8 @@ ALLOW = [
     "projects/demo/artifacts/scenes/demo01/dialogs.csv",
     "projects/bof4/artifacts/kb_phase_worklist.md",
     "projects/bof4/artifacts/glossary.csv",
+    "projects/jogo_novo/artifacts/state/voice_cards.json",
+    "projects/jogo_novo/connector/extract.py",
     "projects/utawarerumono/artifacts/qa_revisao/devolvido/.gitkeep",
     "projects/utawarerumono/artifacts/archive/interjection_reference.md",
     "projects/utawarerumono/output/.gitignore",

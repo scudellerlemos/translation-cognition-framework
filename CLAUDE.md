@@ -33,8 +33,9 @@ O repo é público e contém só o framework. Antes de qualquer `git add`/`commi
   de assembly do executável), fala do jogo além de citação curta e pontual, cópia literal de wiki, chave de
   API, e-mail pessoal. Nota de RE do executável fica fora do repo.
 - **Commit sempre com o e-mail noreply do GitHub** (`git config user.email`), nunca o pessoal.
-- **Arquivo gerado novo que cita texto do jogo:** entra no `.gitignore` e em `DENIED_PATHS` do guard no mesmo
-  PR que o cria. Extensão nova é allowlist no guard — adicionar só com motivo.
+- **`projects/*/artifacts/` é default-deny:** só é versionado o que está em `ARTIFACTS_ALLOWED` no guard.
+  Arquivo gerado novo nasce bloqueado; se cita texto do jogo, vai pro `.gitignore`; se não cita, libera-se
+  na allowlist depois de conferir o conteúdo. Extensão nova também é allowlist — adicionar só com motivo.
 - Issue, PR e mensagem de commit são públicos: mesma regra (sem fala do jogo, sem inventário de risco).
 
 ## Processo — seguir rigidamente, sem pular passo
