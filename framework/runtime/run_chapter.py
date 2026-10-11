@@ -217,21 +217,21 @@ def _chapter_cost(root, chap) -> float:
         return 0.0
 
 
-def _connector_blocked(root, chap, scenes_glob, skip_connector_gate) -> dict | None:
+def _connector_blocked(root, chap, scenes_glob) -> dict | None:
     """GATE DE COMPLETUDE DE CONECTOR: checa 1x pro CAPITULO INTEIRO (completude de conector nao
     depende de cena) -- ANTES de qualquer descoberta/estimativa. Sem conector, nada aqui tem sentido.
     Retorna o resultado de run_chapter se bloqueou (audits ja rodados), senao None."""
     cg = connector_gate.check(root)
     for w in cg["warnings"]:
         print(f"[connector] aviso: {w}")
-    if not (cg["hard_problems"] or (cg["problems"] and not skip_connector_gate)):
+    blockers = cg["hard_problems"] + cg["problems"]
+    if not blockers:
         return None
-    blockers = cg["hard_problems"] + (cg["problems"] if not skip_connector_gate else [])
     print(f"BLOQUEADO por completude de conector ({len(blockers)}):")
     for p in blockers:
         print(f"  - {p}")
     if cg["problems"] and not cg["hard_problems"]:
-        print("  -> use --skip-connector-gate p/ ignorar (nao recomendado).")
+        print("  -> rode o piloto de 1 cena via run_scene.py (com verify) antes da escala.")
     # scenes_glob: chap e so um rotulo (nao um capitulo real) -- filtrar por ele faria os audits
     # varrerem zero cenas em vez do projeto inteiro (mesmo `cost_chap = None` de _discover_scenes).
     _run_mandatory_audits(root, None if scenes_glob else chap)
@@ -341,9 +341,9 @@ def _post_pass(root, scenes, cost_chap, *, no_back, require_back, max_usd, spent
 
 def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do_verify=True,
                 skip_kb_gate=False, batch=True, max_usd=None, scenes_glob=None,
-                skip_connector_gate=False, no_back=False, allow_interactive_fallback=False):
+                no_back=False, allow_interactive_fallback=False):
     root = Path(root)
-    blocked = _connector_blocked(root, chap, scenes_glob, skip_connector_gate)
+    blocked = _connector_blocked(root, chap, scenes_glob)
     if blocked:
         return blocked
     state_index.mirror_db(root)   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
@@ -383,7 +383,7 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
     results, stopped = _scene_loop(
         root, chap, scenes, cost_chap, batch_status, budget_excluded, backend=backend, batch=batch,
         redo=redo, max_usd=max_usd, spent0=spent0, require_back=require_back, do_verify=do_verify,
-        skip_kb_gate=skip_kb_gate, skip_connector_gate=skip_connector_gate, no_back=no_back)
+        skip_kb_gate=skip_kb_gate, no_back=no_back)
     # rebuild do state_index DEFERIDO no batch (rebuild_index=False por cena) -> 1x apos o loop, em fim
     # E parada por status/teto. Excecao NAO reconstroi (propaga limpa, sem mascarar o erro nem reescrever
     # a TM durante Ctrl-C) -- o rebuild antes do _batch_phase da proxima execucao cobre.
@@ -487,8 +487,6 @@ def main():
     ap.add_argument("--redo", action="store_true", help="reprocessa mesmo cenas ja verified")
     ap.add_argument("--no-verify", action="store_true")
     ap.add_argument("--skip-kb-gate", action="store_true", help="ignora o gate de cobertura de KB")
-    ap.add_argument("--skip-connector-gate", action="store_true",
-                    help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--no-batch", action="store_true",
                     help="desliga o modo batch (default: ligado -- 50%% off, assincrono); "
                          "use p/ debug interativo com feedback imediato por cena")
@@ -507,7 +505,7 @@ def main():
     r = run_chapter(a.project, a.chapter, backend=a.backend, require_back=a.require_back,
                     redo=a.redo, do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                     batch=not a.no_batch, max_usd=a.max_usd, scenes_glob=a.scenes_glob,
-                    skip_connector_gate=a.skip_connector_gate, no_back=a.no_back,
+                    no_back=a.no_back,
                     allow_interactive_fallback=a.allow_interactive_fallback)
     sys.exit(0 if r["status"] in ("complete", "empty") else 1)
 

@@ -11,7 +11,7 @@ Agrupados por concern (a fronteira com o LLM pago é só `model.py` + `back_tran
 
 | Arquivo | Função |
 |---|---|
-| `run_scene.py` | Orquestrador de 1 cena: `connector_gate` (completude de conector) → `kb_gate` → `_pack_and_translate` → `_fitting_loop` (build_plan + verify, com escalonamento de budget) → `_back_phase` → `state_index.build` → checkpoint. Grava `connector_hash` + `_ts` junto com `verified=True`. Resumível. Flags: `--check-stale`, `--purge-discontinued DAYS`, `--skip-kb-gate`, `--skip-connector-gate`. |
+| `run_scene.py` | Orquestrador de 1 cena: `connector_gate` (completude de conector) → `kb_gate` → `_pack_and_translate` → `_fitting_loop` (build_plan + verify, com escalonamento de budget) → `_back_phase` → `state_index.build` → checkpoint. Grava `connector_hash` + `_ts` junto com `verified=True`. Resumível. Flags: `--check-stale`, `--purge-discontinued DAYS`, `--skip-kb-gate`. |
 | `scene_lifecycle.py` | Housekeeping/diagnóstico extraído de `run_scene.py` (P4 hardening): `clean_failed_scene`, `prune_discontinued`, `_check_stale`. Reimportado em `run_scene.py` (mesmo nome, zero mudança de caller). |
 | `connector_mgr.py` | Interface do conector (A1): `_run`, `_verify_status`, `_connector_script`, `_connector_hash`, `_warn_if_connector_stale`. Detecta conector stale via `run_state.json` antes de executar (S3). |
 | `connector_gate.py` | Gate de completude de conector (D6, espelha `kb_gate.py`): hard-block se scripts ausentes; soft-block se nunca houve round-trip verde. `assert_fresh_read()` (D5): prova de leitura completa antes de editar um conector (hash do conteúdo alegado vs. disco). |

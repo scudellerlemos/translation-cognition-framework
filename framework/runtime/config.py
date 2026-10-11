@@ -193,6 +193,8 @@ CONNECTOR_KNOWN_KEYS: frozenset = frozenset({
     "space_strategy", "patch_format",
     # — charset —
     "target_charset_supported", "charset_note",
+    # — byte_budget ja reserva 1 byte pro terminador (lido por context_pack/model) —
+    "budget_reserves_terminator",
     # — tabela de ponteiros (binários com ponteiro central) —
     "pointer_table",
     # — control codes —
@@ -279,5 +281,4 @@ class RunSceneOptions:
     pretranslated: bool = False
     defer_back: bool = False
     rebuild_index: bool = True
-    skip_connector_gate: bool = False
     no_back: bool = False

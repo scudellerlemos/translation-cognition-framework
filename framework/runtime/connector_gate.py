@@ -14,10 +14,12 @@ Checagens (deterministas, sem rede):
       existem no disco. Sem eles, nenhum round-trip e fisicamente possivel.
     - e NAO sao a copia intocada do _skeleton (scaffold_project copia o skeleton p/ connector/ --
       a copia sem adaptar nao pode passar o gate, mesma governanca do placeholder de KB).
-  problems (bloqueiam salvo --skip-connector-gate):
+  problems (bloqueiam, sem flag de bypass):
     - nenhuma cena do projeto tem verified=True em run_state.json -- round-trip nunca rodou verde
       nem uma vez. Reusa o `run_state.json` que ja existe (connector_mgr grava `connector_hash` la
-      a cada verify bem-sucedido) -- nao precisa de manifest/timestamp novo.
+      a cada verify bem-sucedido) -- nao precisa de manifest/timestamp novo. Excecao: run_scene
+      de 1 cena COM verify (o piloto) nao e bloqueado por isto -- e ele que produz o 1o round-trip
+      verde; o bloqueio vale p/ a escala (run_chapter) e p/ run_scene sem verify.
   warnings (nunca bloqueiam):
     - connector/test_roundtrip.py ausente -- dev-only (pytest), nao e chamado pelo runtime.
 
@@ -99,8 +101,8 @@ def check(root) -> dict:
     problems: list[str] = []
     if not hard_problems and not _has_green_roundtrip(root):
         problems.append(
-            "nenhuma cena com round-trip verde registrado (run_state.json) — rode build_plan+verify "
-            "de ao menos 1 cena antes de traduzir em escala, ou use --skip-connector-gate (nao recomendado)."
+            "nenhuma cena com round-trip verde registrado (run_state.json) — rode o piloto de 1 cena "
+            "via run_scene.py (com verify) antes de traduzir em escala."
         )
     warnings: list[str] = []
     if not (root / "connector" / "test_roundtrip.py").is_file():

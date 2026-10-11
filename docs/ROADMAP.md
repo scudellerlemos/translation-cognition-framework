@@ -202,7 +202,7 @@ novo jogo
 
 - [x] **D6a.** ✅ **feito (2026-07-03)** `framework/runtime/connector_gate.py` (espelha `kb_gate.py`)
   — hard-block se `build_plan_script`/`verify_script` (via `connector_mgr`) não existirem no disco;
-  soft-block (bypassável via `--skip-connector-gate`) se nenhuma cena do projeto tem `verified=True`
+  soft-block (sem flag de bypass desde 2026-10-11: o piloto de 1 cena com verify destrava) se nenhuma cena do projeto tem `verified=True`
   em `run_state.json` (reusa o estado que já existe — sem manifest/timestamp novo). `run_scene.py` e
   `run_chapter.py` chamam ANTES do `kb_gate` (conector é pré-requisito mais fundamental). Testes:
   `test_connector_gate.py` (6) + integração em `test_run_scene.py`/`test_run_chapter.py`.

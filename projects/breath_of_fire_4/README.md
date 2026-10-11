@@ -1,7 +1,10 @@
 # Breath of Fire IV — Tradução PT-BR
 
 > Framework SDD — segunda instância. Piloto de portabilidade multi-engine.
-> Status: **CICLO DE TRADUÇÃO COMPLETO**
+> Status: **DESCONTINUADO como instância de tradução** (2026-10-10) — substituído por [`projects/bof4/`](../bof4/README.md)
+> (modo banco, busca semântica obrigatória). O conector Capcom DAT continua aqui como referência do
+> `connector_registry.json`, e os artefatos seguem como fixture dos testes de `framework/db/` e `framework/skills/`.
+> Estado em que parou: ciclo de tradução completo (abaixo).
 
 ## O que é este projeto
 

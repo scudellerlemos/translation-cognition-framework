@@ -340,7 +340,8 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
 2. Veja a instância de referência em [`projects/utawarerumono/`](projects/utawarerumono/README.md) —
    um jogo (visual novel) real, EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
 3. Veja a segunda instância em [`projects/breath_of_fire_4/`](projects/breath_of_fire_4/README.md) —
-   piloto de portabilidade para novo engine Capcom.
+   piloto de portabilidade para novo engine Capcom (descontinuado; a instância ativa do jogo é
+   [`projects/bof4/`](projects/bof4/README.md), em modo banco com busca semântica obrigatória).
 4. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
    pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
 5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem

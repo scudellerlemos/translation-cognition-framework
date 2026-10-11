@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR)
 
 > Última atualização: 2026-07-03
-> Status atual: **CICLO DE TRADUÇÃO COMPLETO**
+> Status atual: **DESCONTINUADO** (2026-10-10) — substituído por `projects/bof4/`; parou com o ciclo de tradução completo
 
 ---
 

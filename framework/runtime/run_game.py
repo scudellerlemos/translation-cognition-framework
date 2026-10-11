@@ -58,7 +58,7 @@ def _all_scenes(root: Path, chapters: list[str], scenes_glob: str | None) -> lis
 
 
 def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
-            skip_kb_gate=False, require_back=False, skip_connector_gate=False,
+            skip_kb_gate=False, require_back=False,
             no_back=False, started_at=None, allow_interactive_fallback=False) -> dict:
     root = Path(root)
     chapters = _discover_chapters(root)
@@ -84,7 +84,7 @@ def run_game(root, *, backend="api", batch=True, max_usd=None, scenes_glob=None,
         r = run_chapter.run_chapter(root, chap_label, backend=backend, batch=batch,
                                     max_usd=remaining, scenes_glob=chap_glob,
                                     skip_kb_gate=skip_kb_gate, require_back=require_back,
-                                    skip_connector_gate=skip_connector_gate, no_back=no_back,
+                                    no_back=no_back,
                                     allow_interactive_fallback=allow_interactive_fallback)
         results.append(r)
         elapsed = (time.time() - started_at) if started_at is not None else None
@@ -111,8 +111,6 @@ def main():
     ap.add_argument("--scenes-glob", default=None,
                     help="glob(s) p/ projetos flat (ex.: Souldiers); ignorado em projetos capitulados")
     ap.add_argument("--skip-kb-gate", action="store_true")
-    ap.add_argument("--skip-connector-gate", action="store_true",
-                    help="ignora o gate de completude de conector (nao recomendado)")
     ap.add_argument("--require-back", action="store_true")
     ap.add_argument("--no-back", action="store_true",
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
@@ -122,7 +120,7 @@ def main():
     a = ap.parse_args()
     r = run_game(a.project, backend=a.backend, batch=a.batch, max_usd=a.max_usd,
                 scenes_glob=a.scenes_glob, skip_kb_gate=a.skip_kb_gate,
-                require_back=a.require_back, skip_connector_gate=a.skip_connector_gate,
+                require_back=a.require_back,
                 no_back=a.no_back, started_at=time.time(),
                 allow_interactive_fallback=a.allow_interactive_fallback)
     sys.exit(0 if r["status"] == "complete" else 1)

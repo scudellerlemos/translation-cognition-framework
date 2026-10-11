@@ -97,27 +97,27 @@ def test_connector_blocked_hard_problem_runs_audits_and_returns_status(tmp_path,
                                    "warnings": ["sem test_roundtrip"]})
     audited = []
     monkeypatch.setattr(rc, "_run_mandatory_audits", lambda root, chap: audited.append(chap))
-    r = rc._connector_blocked(tmp_path, "12", None, skip_connector_gate=True)
+    r = rc._connector_blocked(tmp_path, "12", None)
     out = capsys.readouterr().out
     assert r == {"chapter": "12", "scenes": [], "status": "connector_incomplete"}
-    assert audited == ["12"] and "sem build_plan" in out and "sem round-trip" not in out   # skip nao vale p/ hard
+    assert audited == ["12"] and "sem build_plan" in out and "sem round-trip" in out
     assert "aviso: sem test_roundtrip" in out
 
 
-def test_connector_blocked_soft_problem_suggests_skip_flag_and_glob_audits_whole_project(
+def test_connector_blocked_soft_problem_points_to_pilot_and_glob_audits_whole_project(
         tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(rc.connector_gate, "check",
                         lambda r: {"hard_problems": [], "problems": ["sem round-trip"], "warnings": []})
     audited = []
     monkeypatch.setattr(rc, "_run_mandatory_audits", lambda root, chap: audited.append(chap))
-    assert rc._connector_blocked(tmp_path, "rotulo", "ch_*", False)["status"] == "connector_incomplete"
-    assert audited == [None] and "--skip-connector-gate" in capsys.readouterr().out
+    assert rc._connector_blocked(tmp_path, "rotulo", "ch_*")["status"] == "connector_incomplete"
+    assert audited == [None] and "run_scene.py" in capsys.readouterr().out
 
 
-def test_connector_not_blocked_when_only_soft_and_skipped(tmp_path, monkeypatch):
+def test_connector_not_blocked_when_clean(tmp_path, monkeypatch):
     monkeypatch.setattr(rc.connector_gate, "check",
-                        lambda r: {"hard_problems": [], "problems": ["sem round-trip"], "warnings": []})
-    assert rc._connector_blocked(tmp_path, "12", None, True) is None
+                        lambda r: {"hard_problems": [], "problems": [], "warnings": []})
+    assert rc._connector_blocked(tmp_path, "12", None) is None
 
 
 def test_chapter_cost_returns_total(tmp_path, monkeypatch):

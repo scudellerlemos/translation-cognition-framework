@@ -31,9 +31,15 @@ de QA mais focado. Validado empiricamente: Utawarerumono usou escopo de cena (na
 limitado a diálogo) e BoF4 confirmou a regra ao incluir itens/UI acidentalmente na primeira
 extração.
 
-**No conector:** `extract.py` declara `_DIALOGUE_FAMILIES` e `_ITEM_DESC_RE`. O `dialogs.csv`
+**No conector:** `extract.py` declara `_DIALOGUE_FAMILIES` (o filtro por `[05][03]` do BoF4 foi
+removido: era cor de destaque, não item, e cortava fala). O `dialogs.csv`
 de saída inclui coluna `speaker_code` ([14][XX] no início da string) para identificar o falante
 — necessário para voice cards e QA de voz consistente.
+
+**Rótulo dentro de arquivo de cena conta como cena:** opção de menu, label de minijogo ou aviso
+("You got:") gravado no mesmo arquivo do diálogo aparece na tela junto da fala e entra na Fase 0.
+Fica de fora só a UI que mora em arquivo próprio (loja, menu de batalha, tela de status). Deixar o
+rótulo de fora gera tela misturada (fala traduzida, opções no idioma original).
 
 ---
 
