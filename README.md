@@ -436,3 +436,14 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 | Packaging `.exe` (E4) | pós-validação, só se for publicar externamente |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 
+
+---
+
+## Licença e aviso
+
+O código deste repositório é distribuído sob a licença [MIT](LICENSE).
+
+Este repositório contém apenas o framework e as ferramentas de apoio à tradução. Ele **não distribui**
+arquivos, textos, imagens, áudio nem qualquer outro conteúdo dos jogos citados: para usar um conector é
+preciso ter a sua própria cópia legítima do jogo. Os jogos, seus nomes e marcas pertencem aos respectivos
+donos; este projeto não tem vínculo com eles nem é endossado por eles.
