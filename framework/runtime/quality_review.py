@@ -700,7 +700,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
     scenes_touched[], stopped_budget, total_marked, effectiveness_rate}.
     Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo.
-    `reviewer`: identidade de quem aprovou esta revisao (#82) -- None se nao informado (nao bloqueia)."""
+    `reviewer`: identidade de quem aprovou esta revisao (#19) -- None se nao informado (nao bloqueia)."""
     import time as _time
     root = Path(root)
     returned = read_returned(csv_path)
@@ -770,7 +770,7 @@ def main():
     pa.add_argument("--model", default=None)
     pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
     pa.add_argument("--reviewer", default=None,
-                    help="identidade de quem aprovou a revisao (#82) -- gravado em qa_effectiveness.jsonl")
+                    help="identidade de quem aprovou a revisao (#19) -- gravado em qa_effectiveness.jsonl")
     pw = sub.add_parser("width", help="GATE deterministico 'fora do balao': lista SO as linhas que estouram "
                                       "a largura visual (exit 1 se houver); loop ate zerar")
     pw.add_argument("project")

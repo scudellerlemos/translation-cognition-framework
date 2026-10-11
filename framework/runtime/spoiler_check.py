@@ -20,7 +20,7 @@ um vazamento real e pior que um falso-positivo extra), mas agora ATRIBUI o token
 mais provavel: cada flag carrega `confident` (True se a mencao da entidade em quarentena e a mais proxima,
 em distancia de caracteres, do marcador entre as entidades do ledger citadas na linha; False se outra
 entidade do ledger esta mais perto — ainda flagrado, so com prioridade de revisao menor). Nao e
-coreferencia real (sem parser sintatico). Ver #106.
+coreferencia real (sem parser sintatico). Ver #41.
 Governanca: read-only, sem rede, sem work-text.
 
 Uso:  python spoiler_check.py <projeto> [--json]   (exit 1 se houver vazamento; 0 se limpo)

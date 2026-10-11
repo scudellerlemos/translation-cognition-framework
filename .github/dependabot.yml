@@ -3,7 +3,7 @@ updates:
   # Dependências Python — o ecossistema pip do Dependabot descobre por convenção de nome
   # (requirements.txt, requirements-*.txt, pyproject.toml) dentro de `directory`, então já
   # cobre os 3 arquivos na raiz sem entrada separada: requirements-dev.txt, requirements-kb.txt
-  # e requirements-ml.txt (#89 — confirmado: cada um vira PR de update independente).
+  # e requirements-ml.txt (#26 — confirmado: cada um vira PR de update independente).
   - package-ecosystem: "pip"
     directory: "/"
     schedule:

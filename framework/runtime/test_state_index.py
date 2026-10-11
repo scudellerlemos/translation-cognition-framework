@@ -86,7 +86,7 @@ def test_build_decision_index_splits_sections():
 
 
 def test_build_decision_index_extracts_reveal_tag():
-    """#105: tag opcional '<!-- reveal: ... -->' na linha do titulo vira campo reveal, e e
+    """#40: tag opcional '<!-- reveal: ... -->' na linha do titulo vira campo reveal, e e
     removida do titulo. Secao sem a tag -> reveal=None (default-deny decidido na migracao)."""
     md = (
         "# Decision Log\n"
@@ -144,7 +144,7 @@ def test_check_sync_reports_no_version(tmp_path, capsys):
 
 
 def test_approve_scene_db_flips_only_that_scene(tmp_path):
-    """#216: build_plan grava approved=0 no DB; run_scene aprova a cena quando fecha verified."""
+    """#73: build_plan grava approved=0 no DB; run_scene aprova a cena quando fecha verified."""
     sys.path.insert(0, str(_HERE.parent / "db"))
     import store
     (tmp_path / "project.json").write_text(

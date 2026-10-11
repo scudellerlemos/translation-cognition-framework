@@ -1,4 +1,4 @@
-"""connector_io.py — utilitários compartilhados entre extract.py de conectores (#86).
+"""connector_io.py — utilitários compartilhados entre extract.py de conectores (#23).
 
 Extrai SÓ o que é genuinamente comum aos 3 conectores hoje (BoF4/Souldiers/Utawarerumono):
 resolução de caminho de origem, escrita de dialogs.csv e de extraction_log.md. O parsing
@@ -202,9 +202,9 @@ def structural_tokens_match(rx: re.Pattern, source: str, text: str) -> bool:
 
 def sync_translations_db(root: Path, scene: str, sfx: str,
                           approved: list[tuple[str, str]], plan_lines: list[dict]) -> bool:
-    """Write-path DB-first do build_plan_chapter (#109, Fase 6b). Gated por project.json:db
+    """Write-path DB-first do build_plan_chapter (#44, Fase 6b). Gated por project.json:db
     (mesmo formato de state_index._db_target) — MESMO shape em todo conector, extraído aqui p/
-    nunca divergir entre eles (espirito do #86).
+    nunca divergir entre eles (espirito do #23).
 
     Se gated: grava cada offset aprovado direto no Store (fonte de verdade) e regenera
     artifacts/scenes/<scene>/approved_<sfx>.csv a PARTIR do DB — o flat vira export derivado,
@@ -253,7 +253,7 @@ def sync_translations_db(root: Path, scene: str, sfx: str,
                 risk_notes=m.get("risk_notes", ""), approved=False,
             )
         # approved=False: build_plan roda ANTES do verify; a cena so vira TM do DB quando fecha
-        # verified (run_scene -> state_index.approve_scene_db, #216), e e la que o vetor nasce
+        # verified (run_scene -> state_index.approve_scene_db, #73), e e la que o vetor nasce
         # (reindex so embeda approved=1). O CSV e o que o verify le.
         rows = [r for r in db.get_translations(project_id, approved_only=False)
                 if r["scene_id"] == scene_id]

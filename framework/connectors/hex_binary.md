@@ -61,7 +61,7 @@ extract.py(source_binary, table_schema) → dialogs.csv + extraction_log.md
 1. Ler bytes a partir do offset até o FIM da string. Com tabela de ponteiros, o fim é o **próximo
    ponteiro distinto**, não o primeiro byte terminador: o mesmo byte pode ser parâmetro de control
    code no meio da string (BoF4: `[14][00][00]` = id do falante — cortar no primeiro `00` truncou
-   ~25% das falas com round-trip verde, issue #222). Só confiar no terminador depois de provar que
+   ~25% das falas com round-trip verde, issue #76). Só confiar no terminador depois de provar que
    nenhum control code o carrega como parâmetro
 2. Decodificar via tabela (byte→caractere)
 3. Substituir sequências de control code pelos tokens correspondentes

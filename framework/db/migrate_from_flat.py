@@ -104,7 +104,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     seen: set = set()   # (scene_id, offset) distintos — conta linhas do DB, não linhas de CSV
     n_ok = 0
     # approved = cena verified no run_state (sem run_state = legado, tudo aprovado): o approved_*.csv
-    # existe desde o build_plan, ANTES do verify -- cena reprovada nao vira TM do DB (#216)
+    # existe desde o build_plan, ANTES do verify -- cena reprovada nao vira TM do DB (#73)
     verified = verified_scenes(root / "artifacts" / "run_state.json")
     for scene_dir in sorted(scenes_dir.iterdir()):
         if not scene_dir.is_dir():
@@ -333,7 +333,7 @@ def _migrate_voice_cards(db: Store, project_id: str, root: Path) -> int:
 def _migrate_decisions(db: Store, project_id: str, root: Path) -> int:
     """decision_index.json -> tabela decisions. reveal explicito (tag <!-- reveal: ... --> no
     decision_log.md, ver state_index.build_decision_index) tem prioridade; sem tag E
-    universal=1 (regra de processo/conector, nao de trama) -> reveal='safe' automatico (#105,
+    universal=1 (regra de processo/conector, nao de trama) -> reveal='safe' automatico (#40,
     atalho aprovado: reduz custo de curadoria sem abrir risco). Decisao NAO-universal sem tag
     fica reveal=NULL (default-deny no context_pack) ate revisao humana explicita."""
     p = root / "artifacts" / "state" / "decision_index.json"
@@ -560,7 +560,7 @@ def migrate(project_root: Path, dest_db: Path, project_id: str | None = None) ->
             qa_effectiveness = _migrate_qa_effectiveness(db, project_id, project_root)
         # Fora do batch(): carga do modelo/encode e lenta e embedder.py faz commit proprio --
         # dentro do bloco seguraria o lock de escrita e quebraria o tudo-ou-nada.
-        # #171: reindexa embeddings pendentes (TM/decisions) no mesmo write-path que espelha
+        # #55: reindexa embeddings pendentes (TM/decisions) no mesmo write-path que espelha
         # flat→DB — uma linha aprovada ou corrigida depois nunca fica esperando reindex manual.
         embeddings = db.reindex_pending_embeddings(project_id)
         return {

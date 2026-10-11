@@ -1,4 +1,4 @@
-"""test_s00_extraction.py — cobre o sandbox contra path traversal (#87): s00_extraction deve
+"""test_s00_extraction.py — cobre o sandbox contra path traversal (#24): s00_extraction deve
 reusar connector_mgr._connector_script(), a mesma validacao ja aplicada por run_scene/connector_mgr,
 em vez de concatenar project/extract_script diretamente."""
 import json

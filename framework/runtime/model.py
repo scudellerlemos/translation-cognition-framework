@@ -265,7 +265,7 @@ def _structural_rx(pc: dict) -> re.Pattern:
     feita AQUI tambem (dentro do retry de traducao) pra pegar token perdido/trocado ANTES de persistir,
     em vez de so falhar num gate sem auto-reparo rio abaixo (bug real: 7/447 linhas em mp0010_01,
     2026-08-24, o LLM as vezes derruba ou corrompe <C1>/<P2> e o retry existente so checava `\\n`).
-    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py, #124)."""
+    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py, #51)."""
     pc = pc or {}
     return connector_io.structural_token_rx(
         pc.get("formatting_tokens", []), pc.get("formatting_token_patterns", []))

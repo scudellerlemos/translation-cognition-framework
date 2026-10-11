@@ -147,7 +147,7 @@ def _hex_project(root: Path, texts, monkeypatch):
 
 
 def test_blocks_when_extract_leaves_text_behind(tmp_path, monkeypatch):
-    """issue #222: string cortada no primeiro 0x00 -- round-trip passa, texto fica no binario."""
+    """issue #76: string cortada no primeiro 0x00 -- round-trip passa, texto fica no binario."""
     _hex_project(tmp_path, ["[14]", "You hear all kinds of things here."], monkeypatch)
     assert any("extracao incompleta" in p for p in cg.check(tmp_path)["problems"])
 

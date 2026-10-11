@@ -55,7 +55,7 @@ def _load_portrait_codes(root: Path) -> dict:
 def _resolve_speaker(code: str, llm_guess: str, portrait_codes: dict, canonical: frozenset) -> str:
     """speaker_code determinístico tem precedência sobre o guess do LLM.
 
-    Código presente e mapeado em portrait_codes -> nome canônico direto (#64).
+    Código presente e mapeado em portrait_codes -> nome canônico direto (#1).
     Caso contrário, cai no comportamento anterior: guess do LLM normalizado.
     """
     if code and code in portrait_codes:

@@ -1,4 +1,4 @@
-"""test_embedder_kind_config.py — contrato de _KIND_CONFIG (#169).
+"""test_embedder_kind_config.py — contrato de _KIND_CONFIG (#53).
 
 embedder.py só importa sentence-transformers/sqlite-vec DENTRO das funções que precisam (lazy),
 então _KIND_CONFIG é inspecionável sem as deps de ML instaladas — roda em CI (STACK.md: o
@@ -17,7 +17,7 @@ _SCHEMA = (HERE / "schema.sql").read_text(encoding="utf-8")
 
 
 def test_kb_kind_registered_without_chunk_fn():
-    """kb reaproveita a MESMA estrutura de translation/decision (#169: sem chunk_fn no
+    """kb reaproveita a MESMA estrutura de translation/decision (#53: sem chunk_fn no
     embedder — a KB já chega pré-chunkada por seção na ingestão, ver migrate_from_flat)."""
     assert "kb" in _KIND_CONFIG
     assert set(_KIND_CONFIG["kb"]) == set(_KIND_CONFIG["translation"])
@@ -42,10 +42,10 @@ def test_all_kinds_share_the_same_key_shape():
 
 
 def test_index_and_search_kb_end_to_end(tmp_path):
-    """#169 smoke test com Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
+    """#53 smoke test com Embedder/sqlite-vec REAIS -- só roda se a stack ML estiver
     instalada (requirements-ml.txt); skip limpo em test.yml (push/PR, mesmo padrão de
     test_load_kb_semantic_respects_reveal_gate em framework/runtime/test_context_pack.py), mas
-    roda de verdade semanalmente em ml-coverage-optional.yml (#181)."""
+    roda de verdade semanalmente em ml-coverage-optional.yml (#60)."""
     import pytest
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")

@@ -1,4 +1,4 @@
-"""embedder.py — Embeddings locais para busca semântica na TM, em decisions (#105) e na KB (#169).
+"""embedder.py — Embeddings locais para busca semântica na TM, em decisions (#40) e na KB (#53).
 
 Stack:
   sentence-transformers  paraphrase-multilingual-MiniLM-L12-v2  (~470 MB)
@@ -21,14 +21,14 @@ Uso:
     emb.index_project(con, project_id="bof4", kind="kb")  # indexa kb.content (seções da KB)
     hits = emb.search_kb(con, "quem é o dragão do vento", project_id="bof4", k=5)
 
-Convenção de chunking (#169, ver docs/adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md):
+Convenção de chunking (#53, ver docs/adr/0014-chunking-rag-na-ingestao-nao-no-embedder.md):
 o embedder NUNCA chunka — sempre 1 linha da tabela-fonte = 1 vetor. Conteúdo que não é
 naturalmente atômico (ex.: universe_knowledge_base.md) é quebrado em unidades ANTES de
 chegar aqui, na ingestão (migrate_from_flat._migrate_kb quebra por seção `##`/`###` do
 markdown). Kind novo = tabela-fonte já atômica + entrada em _KIND_CONFIG; nunca um chunk_fn
 no embedder.
 
-NN exato vs ANN (#172): search()/search_decisions() fazem NN exato (cosine sobre TODOS os
+NN exato vs ANN (#56): search()/search_decisions() fazem NN exato (cosine sobre TODOS os
 vetores do projeto via vec0, sem índice aproximado) — decisão deliberada para corpus pequeno
 (~6 mil linhas / 1 jogo, validado em docs/STACK.md), favorece determinismo sobre latência.
 Considerar migrar para ANN (sqlite-vec suporta índice aproximado) a partir de ~50-100 mil
@@ -46,7 +46,7 @@ from textclean import strip_codes  # forma limpa: vetor/consulta sem ruído dos 
 _MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 _DIM = 384
 
-# indexação genérica por "kind" -- traduções (TM), decisions (#105) e kb (#169) compartilham
+# indexação genérica por "kind" -- traduções (TM), decisions (#40) e kb (#53) compartilham
 # a MESMA estrutura de indexação (vec0 + tabela de metadados), só trocando tabela/coluna de
 # origem. Nenhum kind aqui precisa de chunk_fn: a tabela-fonte já é 1-linha-1-unidade —
 # translations/decisions porque diálogo já vem atômico, kb porque a ingestão (ver
@@ -128,7 +128,7 @@ class Embedder:
     def index_project(self, con: sqlite3.Connection, project_id: str,
                       force: bool = False, kind: str = "translation") -> int:
         """Indexa as traduções aprovadas (kind='translation', default) ou as decisions
-        (kind='decision', #105) de um projeto.
+        (kind='decision', #40) de um projeto.
 
         Pula entradas já indexadas (salvo force=True).
         Retorna número de vetores gravados.
@@ -188,7 +188,7 @@ class Embedder:
                max_score: float | None = None) -> list[dict]:
         """Busca semântica na TM. Retorna top-k hits com score de similaridade.
 
-        min_score (#172): corta hits com score abaixo do threshold. None
+        min_score (#56): corta hits com score abaixo do threshold. None
         (default) preserva o comportamento atual — sem corte, decisão fica com quem lê a
         seção rotulada no pacote de contexto.
 
@@ -200,7 +200,7 @@ class Embedder:
 
         # vec_distance_l2 + LIMIT em vez de `MATCH ... AND k = ?`: o k do vec0 escolhe os k mais
         # próximos da tabela INTEIRA (todos os projetos, aprovados ou não) ANTES do WHERE, então o
-        # filtro podia devolver < k hits. Scan linear = mesmo custo do NN exato do vec0 (#172).
+        # filtro podia devolver < k hits. Scan linear = mesmo custo do NN exato do vec0 (#56).
         # GROUP BY (source, target): o mesmo par repetido em N cenas ocupava N slots do top-k. Com MIN()
         # o SQLite devolve as colunas "bare" da linha de menor distancia (garantia documentada).
         # alias `l2`, nao `distance`: o vec0 tem coluna oculta `distance` que venceria o alias no HAVING.
@@ -244,7 +244,7 @@ class Embedder:
 
     def search_decisions(self, con: sqlite3.Connection, query: str,
                          project_id: str, k: int = 5) -> list[dict]:
-        """Busca semântica em decisions (#105). Retorna top-k hits (title/summary/universal/
+        """Busca semântica em decisions (#40). Retorna top-k hits (title/summary/universal/
         reveal/score) — shape diferente de search() (TM), por isso método separado em vez de
         forçar as duas formas numa única função genérica. k<0 = todos (LIMIT -1 do SQLite), p/ o
         chamador cortar DEPOIS do seu próprio gate (reveal)."""
@@ -276,7 +276,7 @@ class Embedder:
 
     def search_kb(self, con: sqlite3.Connection, query: str,
                   project_id: str, k: int = 5) -> list[dict]:
-        """Busca semântica na KB (#169). Retorna top-k hits (section/content/reveal/score) —
+        """Busca semântica na KB (#53). Retorna top-k hits (section/content/reveal/score) —
         shape análogo a search_decisions(); GATE de spoiler por `reveal` fica por conta do
         chamador (ver context_pack._reveal_allowed), igual search_decisions() faz."""
         self._ensure_vec_table(con, kind="kb")
