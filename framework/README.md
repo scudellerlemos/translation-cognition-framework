@@ -51,7 +51,6 @@ docs/               ← (raiz do repo) ARCHITECTURE, STACK (modelo/embedding/RAG
 projects/
   utawarerumono/    ← primeira instância de referência (jogo, EN→pt-BR) — completa
     connector/      ← extract.py, reinsert.py, table_schema (adaptados ao binário)
-  breath_of_fire_4/ ← segunda instância (engine Capcom) — descontinuada, substituída por bof4/
   bof4/             ← BoF4 em modo banco + busca semântica obrigatória
   souldiers/        ← terceira instância (Unity Addressables) — concluída
   trails_sky_sc/    ← quarta instância (Falcom) — em andamento
@@ -171,10 +170,9 @@ pares de identidade dupla e gestão crítica de spoilers. **CONCLUÍDO:** 16 cap
 ~45.100 linhas, round-trip byte-idêntico, custo ~R$ 338,46, pt-BR in-game. Use como
 exemplo de manifesto, perfil e artefatos do pipeline.
 
-**`projects/breath_of_fire_4/`** — segunda instância. Valida a portabilidade para engine Capcom. **CONCLUÍDO:**
-125 cenas, pipeline 00–08 completo, QA humana + output (125 DAT files) gerados, custo ~$11 USD.
-**DESCONTINUADO** como instância de tradução em 2026-10-10 — substituído por `projects/bof4/` (modo banco,
-busca semântica obrigatória); segue como conector de referência Capcom e fixture de testes.
+**`projects/bof4/`** — segunda instância. Valida a portabilidade para engine Capcom, em modo banco com busca
+semântica obrigatória; é o conector de referência Capcom e fixture de testes. Substituiu `projects/breath_of_fire_4/`
+(arquivos; 125 cenas, pipeline 00–08 completo, custo ~$11 USD), removido do repositório.
 
 **`projects/souldiers/`** — terceira instância. Valida engine Unity Addressables (CSV tilde-delimited
 em bundle) e o pipeline de onboarding de baixo custo (P1.7: scaffold + templates + KB híbrida via

@@ -313,8 +313,8 @@ def approve_scene_db(root: Path, scene: str) -> None:
     from store import Store
     with Store(db_path) as db:
         db.approve_scene(project_id, scene_id_of(scene))
-        # ponytail: Embedder() recarrega o modelo a cada cena (~9-12s, latencia local, nao $);
-        # incremental e nunca levanta (None sem stack de ML). Batelar por capitulo se pesar.
+        # incremental e nunca levanta (None sem stack de ML). O modelo e cacheado por processo
+        # (embedder._MODELS): em lote (run_scene com varias cenas) carrega 1x.
         db.reindex_pending_embeddings(project_id)
 
 

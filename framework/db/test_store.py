@@ -268,3 +268,15 @@ def test_upserts_with_null_key_columns_are_idempotent(tmp_path):
         assert len(db.get_spoiler_entries("p1")) == 1
         assert len(db.get_warnings("p1")) == 1
         assert db._con.execute("SELECT COUNT(*) FROM qa_effectiveness").fetchone()[0] == 1
+
+
+def test_upsert_scene_lines_drops_lines_gone_from_source(tmp_path):
+    """Re-extracao tira uma linha do dialogs.csv: ela tem de sair do DB, senao o prompt lista offset morto."""
+    with Store(tmp_path / "t.db") as db:
+        db.upsert_project("p1", "Projeto Teste")
+        db.upsert_scene_lines("p1", "s1", [{"offset": "a", "source": "x", "byte_budget": 1},
+                                           {"offset": "b", "source": "y", "byte_budget": 1}])
+        db.upsert_scene_lines("p1", "s2", [{"offset": "b", "source": "z", "byte_budget": 1}])
+        db.upsert_scene_lines("p1", "s1", [{"offset": "a", "source": "x2", "byte_budget": 1}])
+        assert [(r["offset"], r["source"]) for r in db.get_scene_lines("p1", "s1")] == [("a", "x2")]
+        assert len(db.get_scene_lines("p1", "s2")) == 1      # outra cena intacta

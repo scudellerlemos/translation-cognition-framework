@@ -41,6 +41,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import artifact_io  # noqa: E402  (fonte unica de enumeracao de cenas)
 import context_pack  # noqa: E402
+import events  # noqa: E402  (rastro do gate: passou/bloqueou e quando)
 import kb_review  # noqa: E402  (gate de fonte/ratificacao do delta de KB)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from context_pack import _pos, _present, scene_id_of  # noqa: E402
@@ -403,6 +404,8 @@ def main():
 
     if a.check:
         cov = coverage(root, a.chapter, strict=a.strict)
+        events.emit(root, "gate.kb_phase", "block" if cov["problems"] else "pass", chapter=a.chapter,
+                    strict=a.strict, problems=len(cov["problems"]), warnings=len(cov["warnings"]))
         for w in cov["warnings"]:
             print(f"[warn] {w}")
         for p in cov["problems"]:

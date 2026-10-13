@@ -13,7 +13,37 @@ nao derivamos aqui p/ nao duplicar essa logica. Tudo retorna `pathlib.Path` (nun
 NB de governanca: estes nomes sao CONGELADOS (caps ja traduzidos dependem deles). Mudar um exige
 migracao dos artefatos em disco — nao e refactor livre. Ver NAMING.md (contrato estavel).
 """
+import contextlib
+import os
+import time
 from pathlib import Path
+
+
+@contextlib.contextmanager
+def locked(p, timeout: float = 30.0):
+    """Trava entre processos p/ ler-alterar-gravar `p` (run_state.json com cenas rodando em paralelo:
+    sem ela um processo regrava o estado sem o checkpoint que o outro acabou de gravar).
+    Lock-file O_CREAT|O_EXCL (atomico em POSIX e Windows). Trava orfa (dono morreu ha > timeout) e
+    quebrada; quem nao consegue a trava em `timeout` s levanta TimeoutError em vez de gravar sem ela."""
+    lock = Path(str(p) + ".lock")
+    end = time.time() + timeout
+    while True:
+        try:
+            os.close(os.open(str(lock), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+            break
+        except (FileExistsError, PermissionError):   # PermissionError: Windows, lock sendo apagado
+            with contextlib.suppress(OSError):
+                if time.time() - lock.stat().st_mtime > timeout:
+                    lock.unlink()
+                    continue
+            if time.time() > end:
+                raise TimeoutError(f"trava ocupada ha mais de {timeout:.0f} s: {lock}") from None
+            time.sleep(0.02)
+    try:
+        yield
+    finally:
+        with contextlib.suppress(OSError):
+            lock.unlink()
 
 
 def artifacts(root) -> Path:
@@ -39,6 +69,7 @@ def project_json(root) -> Path:
 # ---- raiz de artifacts/ (estado de execucao + KB) ----
 def run_state(root) -> Path:        return artifacts(root) / "run_state.json"
 def ledger(root) -> Path:           return artifacts(root) / "api_ledger.jsonl"
+def events(root) -> Path:           return artifacts(root) / "events.jsonl"
 def metrics(root) -> Path:          return artifacts(root) / "metrics.jsonl"
 def translate_exhausted(root) -> Path:   return artifacts(root) / "translate_exhausted.jsonl"
 def glossary(root) -> Path:         return artifacts(root) / "glossary.csv"

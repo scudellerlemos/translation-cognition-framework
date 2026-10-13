@@ -23,7 +23,9 @@ import json
 import sys
 from pathlib import Path
 
+import cost
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import session_usage
 
 
 def read_ledger(root: Path) -> list[dict]:
@@ -89,17 +91,52 @@ def report(root, chapter=None) -> dict:
     by_kind: dict[str, float] = {}
     by_scene: dict[str, dict] = {}
     tok_in = tok_out = tok_cache_r = tok_cache_w = 0
+    by_source: dict[str, dict] = {}
+    by_activity: dict[str, dict] = {}
+    by_stage: dict[str, dict] = {}      # fase do projeto por marca explicita (session_usage mark)
+    out_est = 0
+    split = {"translate": 0.0, "governance": 0.0, "other": 0.0}    # valor de API, pago ou equivalente
     for r in rows:
+        ph = r.get("phase") or ("back" if "back" in str(r.get("kind", "")) else "translate")
+        ph = {"back": "governance"}.get(ph, ph)     # linha de sessao sem `phase` (ledger antigo) -> other
+        ph = "other" if r.get("source") == "session" and not r.get("phase") else ph
+        split[ph] = round(split[ph] + (r.get("api_equiv_usd") or r.get("cost_usd", 0.0)), 5)
+        out_est += r.get("out_est", 0)
+        if r.get("stage"):
+            st = by_stage.setdefault(r["stage"], {"usd": 0.0, "calls": 0})
+            st["usd"] = round(st["usd"] + (r.get("api_equiv_usd") or r.get("cost_usd", 0.0)), 5)
+            st["calls"] += r.get("n_requests", 1)
+        if r.get("activity"):       # sessao fora de cena: em que o "resto" foi gasto (heuristico)
+            act = by_activity.setdefault(r["activity"], {"usd": 0.0, "calls": 0})
+            act["usd"] = round(act["usd"] + (r.get("api_equiv_usd") or 0.0), 5)
+            act["calls"] += r.get("n_requests", 1)
+        s = by_source.setdefault(r.get("source", "api"), {"calls": 0, "cost_usd": 0.0, "api_equiv_usd": 0.0, "cache_usd": 0.0,
+                                                          "in": 0, "out": 0, "cache_read": 0, "cache_write": 0})
+        s["calls"] += r.get("n_requests", 1)
+        s["cost_usd"] = round(s["cost_usd"] + r.get("cost_usd", 0.0), 5)
+        # o que custaria na API: na linha de API e o proprio custo; na de sessao, o equivalente calculado
+        s["api_equiv_usd"] = round(s["api_equiv_usd"] + (r.get("api_equiv_usd") or r.get("cost_usd", 0.0)), 5)
+        # parte do valor que e cache (lido + escrito); modelo sem preco em _PRICE entra como 0
+        if r.get("model") in cost._PRICE:
+            s["cache_usd"] = round(s["cache_usd"] + cost.cost_of(r["model"], {
+                k: v for k, v in (r.get("usage") or {}).items() if k.startswith("cache_")}, batch=r.get("batch", False)), 5)
+        for k in ("in", "out", "cache_read"):
+            s[k] += (r.get("usage") or {}).get(k, 0)
+        s["cache_write"] += (r.get("usage") or {}).get("cache_write", 0) + (r.get("usage") or {}).get("cache_write_1h", 0)
         c = r.get("cost_usd", 0.0)
         by_model[r.get("model", "?")] = round(by_model.get(r.get("model", "?"), 0.0) + c, 5)
         by_kind[r.get("kind", "?")] = round(by_kind.get(r.get("kind", "?"), 0.0) + c, 5)
         sc = r.get("scene", "?")
-        d = by_scene.setdefault(sc, {"cost_usd": 0.0, "calls": 0})
+        d = by_scene.setdefault(sc, {"cost_usd": 0.0, "calls": 0, "session_equiv_usd": 0.0, "session_tokens": 0})
         d["cost_usd"] = round(d["cost_usd"] + c, 5)
-        d["calls"] += 1
+        d["calls"] += r.get("n_requests", 1)
+        if r.get("source") == "session":
+            d["session_equiv_usd"] = round(d["session_equiv_usd"] + (r.get("api_equiv_usd") or 0.0), 5)
+            d["session_tokens"] += sum((r.get("usage") or {}).values())
+            d["attribution"] = "+".join(sorted({*d.get("attribution", "").split("+"), r.get("attribution", "")} - {""}))
         u = r.get("usage", {}) or {}
         tok_in += u.get("in", 0); tok_out += u.get("out", 0)
-        tok_cache_r += u.get("cache_read", 0); tok_cache_w += u.get("cache_write", 0)
+        tok_cache_r += u.get("cache_read", 0); tok_cache_w += u.get("cache_write", 0) + u.get("cache_write_1h", 0)
 
     # gasto DESPERDICADO: chamadas em cenas que NAO terminaram verified (falha/retry abandonado).
     # uma cena com >1 chamada que terminou verified NAO e desperdicio (retries que convergiram);
@@ -112,6 +149,10 @@ def report(root, chapter=None) -> dict:
         "by_model": dict(sorted(by_model.items(), key=lambda x: -x[1])),
         "by_kind": dict(sorted(by_kind.items(), key=lambda x: -x[1])),
         "by_scene": dict(sorted(by_scene.items())),
+        "by_activity": dict(sorted(by_activity.items(), key=lambda x: -x[1]["usd"])),
+        "by_stage": by_stage, "out_est": out_est,
+        "split": split,             # traducao x governanca (back-translation) x resto, API + sessao
+        "by_source": by_source,     # "api" = chamada do harness (cobrada); "session" = sessao do Claude Code
         "tokens": {"in": tok_in, "out": tok_out, "cache_read": tok_cache_r, "cache_write": tok_cache_w},
         "verified_scenes": len(verified),
         "exhausted": _exhausted(root, chapter),
@@ -144,12 +185,37 @@ def _fmt(rep: dict, by_scene: bool) -> str:
         # a cada cena (o gap "cache morto" — cenas espacadas > TTL de 5min, ou 1a cena de cada run).
         ct = "bom" if hit >= 0.6 else ("baixo" if hit >= 0.2 else "MORTO (re-escreve a cada cena)")
         L.append(f"  cache       : {100*hit:.0f}% lido (read/{cr+cw:,}) [{ct}]")
+    for src, s in rep.get("by_source", {}).items():
+        L.append(f"  origem {src:8s}: in={s['in']:,} out={s['out']:,} cache_read={s['cache_read']:,} "
+                 f"cache_write={s['cache_write']:,} | {s['calls']} requisicao(oes) | pago ${s['cost_usd']:.4f} | "
+                 f"equivalente API ${s['api_equiv_usd']:.4f}")
+        ent = s["in"] + s["cache_read"] + s["cache_write"]
+        L.append(f"         cache  : {100 * s['cache_read'] / ent if ent else 0:.1f}% da entrada lida do cache, "
+                 f"{100 * s['cache_write'] / ent if ent else 0:.1f}% escrita no cache | cache = ${s['cache_usd']:.4f} "
+                 f"({100 * s['cache_usd'] / s['api_equiv_usd'] if s['api_equiv_usd'] else 0:.0f}% do valor)")
+    sp = rep["split"]
+    tg = sp["translate"] + sp["governance"]
+    if tg:
+        L.append(f"  trad:gov    : {100 * sp['translate'] / tg:.0f}:{100 * sp['governance'] / tg:.0f}  "
+                 f"(traducao ${sp['translate']:.4f} | governanca ${sp['governance']:.4f} | "
+                 f"resto ${sp['other']:.4f}; meta 70:30 ou melhor)")
+    if rep.get("by_stage"):
+        L.append("  por fase (marca explicita): " + ", ".join(
+            f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_stage"].items()))
+    if rep.get("out_est"):
+        L.append(f"  saida estimada: {rep['out_est']:,} de {rep['tokens']['out']:,} tokens de saida "
+                 f"({100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}%) vem de mensagem sem usage final na transcricao")
+    if rep["by_activity"]:
+        L.append("  resto por atividade (sessao fora de cena, heuristico): " + ", ".join(
+            f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_activity"].items()))
     L.append("  por modelo  : " + ", ".join(f"{k} ${v:.4f}" for k, v in rep["by_model"].items()))
     L.append("  por tipo    : " + ", ".join(f"{k} ${v:.4f}" for k, v in rep["by_kind"].items()))
     if by_scene:
         L.append("  por cena:")
         for s, d in rep["by_scene"].items():
-            L.append(f"    {s:14s} ${d['cost_usd']:.4f}  ({d['calls']} chamada(s))")
+            L.append(f"    {s:14s} ${d['cost_usd']:.4f}  ({d['calls']} chamada(s))" + (
+                f"  sessao: {d['session_tokens']:,} tok, equivalente ${d['session_equiv_usd']:.4f} [{d['attribution']}]"
+                if d.get("session_tokens") else ""))
     return "\n".join(L)
 
 
@@ -170,6 +236,7 @@ def main():
     ap.add_argument("--summary", action="store_true",
                     help="G5: linha única para substituir valores hardcoded em READMEs")
     a = ap.parse_args()
+    session_usage.sync(a.project)   # traz o que as transcricoes do Claude Code tem de novo
     rep = report(a.project, chapter=a.chapter)
     if a.json:
         print(json.dumps(rep, ensure_ascii=False, indent=2))

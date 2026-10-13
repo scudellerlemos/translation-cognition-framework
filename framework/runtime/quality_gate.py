@@ -112,15 +112,18 @@ def main():
     a = ap.parse_args()
     r = check(a.project, a.chapter)
     rev, unc, cov = r["revise"], r["uncovered"], r["coverage"]
+    import hitl  # fila de escalonamento aberta = decisao humana pendente -> bloqueia (projeto com "hitl")
+    esc = hitl.open_items(a.project) if hitl.enabled(a.project) else []
+    r["escalations"] = len(esc)
     if a.export:
         n = export_revise(rev, a.export)
         print(f"[export] {n} linha(s) 'revise' -> {a.export}")
     if a.json:
         print(json.dumps(r, ensure_ascii=False, indent=2))
-        sys.exit(1 if (rev or unc) else 0)
+        sys.exit(1 if (rev or unc or esc) else 0)
     print(f"[cobertura] {cov['with_back']}/{cov['lines']} linha(s) com crivo de qualidade "
           f"({cov['pct']}%) | high/critical={cov['high']} + amostra low/medium={cov['sampled_low']}")
-    if not rev and not unc:
+    if not rev and not unc and not esc:
         scope = f"cap.{a.chapter}" if a.chapter else "todos os capitulos"
         print(f"OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura ({scope}).")
         sys.exit(0)
@@ -136,6 +139,9 @@ def main():
         for k in unc:
             print(f"  {k['scene']} {k['offset']} ({k['speaker']}): {k['reason']}")
             print(f"      pt  : {k['target'][:90]}")
+    if esc:
+        print(f"ESCALONAMENTO — {len(esc)} fala(s) esperando decisao humana em {hitl.queue_path(Path(a.project))} "
+              f"(preencha alias ou correcao e rode hitl.py resolve).")
     sys.exit(1)
 
 

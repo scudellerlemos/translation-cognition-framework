@@ -7,7 +7,7 @@ roda em CI sem rede/backend (ao contrário de 00/07/08).
 
 Uso:
     skill = TranslationSkill()
-    result = skill.run("projects/breath_of_fire_4", scene="AREAD001", backend="api")
+    result = skill.run("projects/bof4", scene="AREAD001", backend="api")
 """
 from __future__ import annotations
 

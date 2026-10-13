@@ -40,6 +40,37 @@ def _fold(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip().lower()
 
 
+_TOKEN = re.compile(r"\[[0-9A-Fa-f]{2}\]")          # codigo de controle do conector (quebra de linha, cor...)
+_SUFFIX = re.compile(r"(oes|aes|ais|eis|ois|es|os|as|ar|er|ir|al|el|s|o|a|e|l)$")
+
+
+def _stem(word: str) -> str:
+    """Radical grosseiro p/ aceitar flexao (Imperial/Imperiais, Eternos/Eterna, selecionar/selecione)."""
+    stem = _SUFFIX.sub("", word)
+    return stem if len(stem) >= 3 else word
+
+
+def _has_form(expected: str, target_words: list[str]) -> bool:
+    """A forma canonica esta no alvo? Cada palavra dela (>2 letras) precisa de uma palavra do alvo que seja
+    flexao (mesmo radical) ou abreviacao dela ('Penhas.' p/ 'penhasco', rotulo que nao coube no orcamento).
+    # ponytail: radical por sufixo e prefixo de >=3 letras; trocar por lematizador se der falso-negativo."""
+    words = [w for w in expected.split() if len(w) > 2] or expected.split()
+    return all(any(t.startswith(_stem(w)) or (len(t) >= 3 and w.startswith(t)) for t in target_words)
+               for w in words)
+
+
+def _only_sentence_initial(term: str, source: str) -> bool:
+    """Termo de UMA palavra capitalizada que so aparece abrindo frase (ou apos ':' / codigo de controle), numa
+    linha que nao e so o rotulo: a maiuscula ali e da frase, nao do termo -> nao audita. No meio da frase
+    ('the Endless') ou como linha inteira (rotulo de menu 'Select') continua auditado."""
+    if " " in term or term == term.lower():
+        return False
+    plain = _TOKEN.sub("\n", source)
+    if plain.strip(" \n\t.,;:!?\"'()@") == term:
+        return False
+    return not re.search(r"[\w,;] " + re.escape(term) + r"(?!\w)", plain)
+
+
 # Palavras-comuns/papeis genericos: traduzidos POR CONTEXTO (man->homem/cara/rapaz/...), NAO sao termo
 # fixo -> auditar consistencia deles e so ruido. So filtramos a regra `traduzir` (nome 'manter_original'
 # e sempre auditado). Game-agnostico (papeis genericos de qualquer obra).
@@ -101,20 +132,29 @@ def lint(root) -> list[dict]:
     gloss = _load_glossary(root)
     if not gloss:
         return []
-    # pre-compila regex de presenca do termo EN (limite de palavra, case-insensitive)
+    # pre-compila regex de presenca do termo EN (limite de palavra). Termo com maiuscula casa na caixa
+    # exata: 'Mind' (atributo) nao pode acusar todo "mind" de frase comum; termo todo minusculo casa livre.
     compiled = [(term, [_fold(e) for e in expected], rule,
-                 re.compile(r"(?<!\w)" + re.escape(term) + r"(?!\w)", re.I)) for term, expected, rule in gloss]
+                 re.compile(r"(?<!\w)" + re.escape(term) + r"(?!\w)", 0 if term != term.lower() else re.I))
+                for term, expected, rule in gloss]
+    # nome preservado ('Ring of Ice') esconde a palavra comum de dentro dele ('Ice' -> 'gelo' nao se aplica)
+    kept = [re.escape(t) for t, _e, r in gloss if r == "manter_original"]
+    kept_rx = re.compile(r"(?<!\w)(?:" + "|".join(sorted(kept, key=len, reverse=True)) + r")s?(?!\w)") if kept else None
     found = []
     for scene, _sid, lines in context_pack.load_translated_scenes(root):
         for off, v in lines.items():
             s, t = v.get("source", ""), v.get("target", "")
             if not s or not t:
                 continue
-            tf = _fold(t)
+            tf = _fold(_TOKEN.sub(" ", t))                    # token no meio do termo nao quebra o casamento
+            words = [w.strip(".,;:!?\"'()") for w in tf.split()]
+            s_free = kept_rx.sub(" ", s) if kept_rx else s
             for term, exp_folded, rule, rx in compiled:
-                if not rx.search(s):
+                if not rx.search(s if rule == "manter_original" else s_free):
                     continue                                  # termo nao esta na fonte desta linha
-                if any(e and e in tf for e in exp_folded):
+                if rule != "manter_original" and _only_sentence_initial(term, s):
+                    continue                                  # 'Try looking...' nao e o rotulo 'Try'
+                if any(e and (e in tf or _has_form(e, words)) for e in exp_folded):
                     continue                                  # forma canonica (ou alias) presente -> ok
                 found.append({"scene": scene, "offset": off, "term": term, "rule": rule,
                               "expected": exp_folded[0], "source": s, "target": t})

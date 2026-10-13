@@ -748,6 +748,15 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
         tm_updater.sync_scenes(root, cfg, touched, approved_at=datetime.now(UTC).isoformat())
     except Exception as e:
         print(f"[tm_updater] AVISO: falha ao sincronizar TM da serie ({e}).")
+    import hitl  # tardio: hitl importa este modulo
+    if hitl.enabled(root):
+        # correcao humana que contraria o glossario vai para a fila: o humano decide se a forma vira regra
+        # (alias) em vez de a divergencia ficar so naquela fala.
+        import state_index
+        state_index.mirror_db(root)
+        n_q = hitl.enqueue(root, hitl.collect(root, touched))
+        if n_q:
+            print(f"[hitl] {n_q} correcao(oes) divergem do glossario -> {hitl.queue_path(root)} (hitl.py resolve)")
     return {"verbatim": verbatim_n, "ai": ai_n, "scenes": len(touched),
             "cost_usd": round(cost, 4), "scenes_touched": touched, "stopped_budget": stopped,
             "total_marked": total_marked, "effectiveness_rate": eff}

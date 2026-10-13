@@ -17,7 +17,7 @@ sys.path.insert(0, str(HERE))
 from migrate_from_flat import migrate  # noqa: E402
 from store import Store  # noqa: E402
 
-BOF4 = ROOT / "projects" / "breath_of_fire_4"
+BOF4 = ROOT / "projects" / "bof4"
 
 
 def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
@@ -267,11 +267,17 @@ def test_migrate_metrics_content(bof4_migrated):
     assert "translate" in withraw["raw"], "raw perdeu o bloco translate (lossy)"
 
 
-def test_migrate_warnings_content(bof4_migrated):
+def test_migrate_warnings_content(tmp_path):
     """warnings: lista de strings reidratada (não fica como string JSON crua)."""
-    db_path, _ = bof4_migrated
+    proj = tmp_path / "p"
+    (proj / "artifacts").mkdir(parents=True)
+    (proj / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
+    (proj / "artifacts" / "warnings.jsonl").write_text(
+        '{"t": 1.0, "source": "state_index", "warnings": ["falante sem voice card"]}\n', encoding="utf-8")
+    db_path = tmp_path / "p.db"
+    migrate(proj, db_path, project_id="p")
     with Store(db_path) as db:
-        w = db.get_warnings("bof4")
+        w = db.get_warnings("p")
     assert w, "warnings vazio"
     assert any(isinstance(r.get("warnings"), list) and r["warnings"] for r in w), \
         "warnings não reidratou p/ lista"

@@ -18,7 +18,7 @@ for _p in (str(HERE), str(FRAMEWORK), str(FRAMEWORK / "runtime")):
 
 import registry  # noqa: E402
 
-BOF4 = ROOT / "projects" / "breath_of_fire_4"
+BOF4 = ROOT / "projects" / "bof4"
 
 
 def test_registry_has_core_skills():

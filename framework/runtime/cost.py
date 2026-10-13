@@ -17,7 +17,15 @@ import paths  # noqa: E402
 # precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
 _PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
           "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
-          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6}}
+          "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6},
+          # tabela oficial (platform.claude.com/docs/en/about-claude/pricing), lida em 2026-10-11.
+          # "cache_read" = multiplicador do cache lido quando nao e o 0.10x padrao.
+          "claude-opus-5-5":   {"in": 4.00e-6, "out": 20.00e-6, "cache_read": 0.05},
+          "claude-sonnet-5-5": {"in": 2.00e-6, "out": 10.00e-6, "cache_read": 0.05},
+          "claude-sonnet-5":   {"in": 2.00e-6, "out": 10.00e-6},
+          # Haiku 5.5 cobra por tamanho do prompt: acima de 100 mil tokens (entrada + cache) TUDO sai 5x.
+          # Conferido na tabela oficial em 2026-10-12, junto com as linhas acima (sem divergencia).
+          "claude-haiku-5-5":  {"in": 0.10e-6, "out":  0.50e-6, "long": (100_000, 5.0)}}
 
 
 def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
@@ -33,8 +41,13 @@ def cost_of(model: str, u: dict, *, batch: bool = False) -> float:
             f"(orcamento --max-usd NAO detecta gasto real deste modelo; adicione o preco em _PRICE).",
             RuntimeWarning, stacklevel=2)
         return 0.0
-    base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * 0.10
-            + u.get("cache_write", 0) * p["in"] * 1.25 + u.get("out", 0) * p["out"])
+    base = (u.get("in", 0) * p["in"] + u.get("cache_read", 0) * p["in"] * p.get("cache_read", 0.10)
+            + u.get("cache_write", 0) * p["in"] * 1.25          # escrita de cache, TTL 5 min
+            + u.get("cache_write_1h", 0) * p["in"] * 2.0        # escrita de cache, TTL 1 h (sessao do Claude Code)
+            + u.get("out", 0) * p["out"])
+    limit, mult = p.get("long", (None, 1.0))
+    if limit and sum(u.get(k, 0) for k in ("in", "cache_read", "cache_write", "cache_write_1h")) > limit:
+        base *= mult        # `u` tem de ser de UMA requisicao: o degrau e por requisicao
     return base * (0.5 if batch else 1.0)
 
 

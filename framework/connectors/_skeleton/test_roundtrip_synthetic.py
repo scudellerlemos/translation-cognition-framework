@@ -8,7 +8,7 @@ texto e o byte_budget exatos, isolado e com várias strings contíguas no mesmo 
 
 ADAPTAR: _TABLE ao formato real (largura de caractere, control codes, terminador) e, se o formato
 tiver contêiner/tabela de ponteiros, acrescentar um fixture sintético do arquivo inteiro (ver
-projects/breath_of_fire_4/connector/test_roundtrip_synthetic.py). Enquanto encode_string ainda for
+projects/bof4/connector/test_roundtrip_synthetic.py). Enquanto encode_string ainda for
 o esqueleto (NotImplementedError) o módulo pula — não conta como round-trip verde.
 """
 import pytest

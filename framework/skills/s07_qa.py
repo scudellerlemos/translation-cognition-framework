@@ -7,7 +7,7 @@ PODE rodar em CI sem IA (ao contrário do 06c, que é correção cognitiva).
 
 Uso:
     skill = QaSkill()
-    result = skill.run("projects/breath_of_fire_4", chapter="19")  # chapter=None varre tudo
+    result = skill.run("projects/bof4", chapter="19")  # chapter=None varre tudo
 """
 from __future__ import annotations
 

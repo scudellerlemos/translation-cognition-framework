@@ -15,7 +15,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "framework" / "runtime"))
 sys.path.insert(0, str(HERE))
 
-BOF4 = ROOT / "projects" / "breath_of_fire_4"
+BOF4 = ROOT / "projects" / "bof4"
 
 
 @pytest.fixture(scope="session")

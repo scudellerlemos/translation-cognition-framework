@@ -372,10 +372,7 @@ Dois pontos de desenho:
 | Projeto | Persistência / RAG | Modelo | Estado |
 |---|---|---|---|
 | `utawarerumono` | arquivos | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
-| `breath_of_fire_4` | arquivos (o corpus também foi migrado para `translation_software`) | Haiku/Sonnet/Opus | **descontinuado** como instância de tradução (substituído por `bof4`); parou concluído, com 125 cenas. Segue como conector de referência Capcom e fixture de testes |
-| `bof4` | **SQLite + busca semântica** (obrigatória) | — (ainda não traduzido) | instanciado — mesmo corpus, KB e conector do `breath_of_fire_4`; tradução começa do zero |
+| `bof4` | **SQLite + busca semântica** (obrigatória) | modelo da sessão (`in-session`) | piloto — 14 de 223 cenas verificadas; conector de referência Capcom e fixture de testes. Substituiu `breath_of_fire_4` (arquivos, 125 cenas), removido do repositório |
 | `souldiers` | arquivos | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceira engine (Unity Addressables) |
 | `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 67 cenas extraídas, cena-piloto com round-trip fechado |
-| `translation_software` | **SQLite + busca semântica** | — | referência de arquitetura do modo banco, com o corpus do BoF4; não é uma tradução em andamento |
 | `demo` | SQLite, busca semântica desligada (`semantic: false`) | — | exemplo sintético do README |
-| `translation_local` | — | — | **descontinuado** (ADR 0008): prova de conceito de tradução com modelo local via Ollama, abandonada por regressão de velocidade e erro de terminologia |

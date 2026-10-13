@@ -18,14 +18,18 @@ override em project.json connector.{build_plan_script,verify_script}). A unica p
 e a chamada de IA (isolada em model.py). Sob CONGELAMENTO de traducao: nao gera traducao nova; roda
 as gates sobre cenas ja traduzidas (dry-run/dogfood).
 
-Uso:  python run_scene.py <dir-do-projeto> <scene> [--backend in-session|api] [--require-back] [--no-verify]
+Uso:  python run_scene.py <dir-do-projeto> <scene> [<scene> ...] [--backend in-session|api] [--require-back]
+                          [--no-verify]
+      Varias cenas = lote em fila num processo so (modelo de busca, mirror do DB e auditorias 1x).
 """
 from __future__ import annotations
 
 import argparse
 import contextlib
 import json
+import os
 import sys
+import time
 from pathlib import Path
 from typing import cast
 
@@ -38,9 +42,12 @@ if str(_VALIDATION_DIR) not in sys.path:
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402  (leitor unico do api_ledger.jsonl)
+import events  # noqa: E402  (log estruturado: tempo por etapa, resultado, falha)
+import hitl  # noqa: E402  (humano no laco: escopo, ratificacao, onda, fila -- so no CLI, ver main())
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
+import session_usage  # noqa: E402  (tokens reais da sessao no backend in-session)
 import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero -- so quando rodado como entry point, ver main())
 import state_index  # noqa: E402
 import validate  # noqa: E402  (auditoria de schema dos artefatos -- so quando rodado como entry point, ver main())
@@ -87,17 +94,17 @@ def _validate_connector_cfg(cfg: dict) -> list:
 
 
 def _checkpoint(root: Path, scene: str, patch: dict):
-    import time as _time
     p = paths.run_state(root)
-    state = {}
-    if p.is_file():
-        state = json.loads(p.read_text(encoding="utf-8"))
-    scenes = state.setdefault("scenes", {})
-    # S4: _ts = epoch do último checkpoint desta cena (audit trail temporal)
-    scenes[scene] = {**scenes.get(scene, {}), **patch, "_ts": round(_time.time(), 3)}
-    state["scenes"] = dict(sorted(scenes.items()))
-    state["managed_by"] = "framework/runtime/run_scene.py"
-    p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    with paths.locked(p):   # ler-alterar-gravar sob trava: cenas em paralelo nao perdem o checkpoint uma da outra
+        state = {}
+        if p.is_file():
+            state = json.loads(p.read_text(encoding="utf-8"))
+        scenes = state.setdefault("scenes", {})
+        # S4: _ts = epoch do último checkpoint desta cena (audit trail temporal)
+        scenes[scene] = {**scenes.get(scene, {}), **patch, "_ts": round(time.time(), 3)}
+        state["scenes"] = dict(sorted(scenes.items()))
+        state["managed_by"] = "framework/runtime/run_scene.py"
+        p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _ledger_scene_cost(root: Path, scene: str) -> float:
@@ -107,7 +114,7 @@ def _ledger_scene_cost(root: Path, scene: str) -> float:
                      if r.get("scene") == scene), 5)
 
 
-def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, verified):
+def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, verified, backend="api"):
     """Anexa 1 linha a artifacts/metrics.jsonl: RESUMO por cena (tokens/custo segmentados da ultima
     translate/back, pass-rate). O custo-verdade (`cost_usd`) vem do api_ledger.jsonl — soma TODAS as
     chamadas cobradas da cena (retries + escalonamento), nao so a ultima. O metrics.jsonl segue sendo
@@ -132,10 +139,23 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
            "back": {"model": bmodel, "usage": bu, "cost_usd": round(M.cost_of(bmodel, bu or {}), 5)},
            "back_pass_rate": bt_pass,
            "cost_usd_last": round(M.cost_of(tmodel, tu or {}) + M.cost_of(bmodel, bu or {}), 5)}
+    rec["source"] = "session" if backend == "in-session" else "api"
+    if backend == "in-session":     # tokens reais da sessao (transcricao do Claude Code) -> ledger
+        session_usage.sync(root)
+        rec["session"] = session_usage.scene_total(root, scene)
     rec["cost_usd"] = _ledger_scene_cost(root, scene)   # VERDADE: soma o ledger (retries + escalonamento)
     p = paths.metrics(root)
-    with p.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    # reexecucao que nao mudou nada (cena ja fechada, mesmos numeros) nao vira linha nova. O gasto de
+    # sessao cresce a cada rodada e mora no ledger, por isso fica fora da comparacao.
+    last = None
+    for line in p.read_text(encoding="utf-8").splitlines() if p.is_file() else []:
+        with contextlib.suppress(json.JSONDecodeError):
+            row = json.loads(line)
+            last = row if row.get("scene") == scene else last
+    skip = ("session", "t", "run")
+    if last is None or {k: v for k, v in last.items() if k not in skip} != {k: v for k, v in rec.items() if k not in skip}:
+        with p.open("a", encoding="utf-8") as f:
+            f.write(json.dumps({**rec, "t": round(time.time(), 3), "run": events.RUN}, ensure_ascii=False) + "\n")
     return rec
 
 
@@ -159,7 +179,9 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
             print("      batch nao produziu a traducao; traduzindo agora (fallback).")
     if tr is None:
         try:
-            tr = M.translate(root, scene, backend=backend)
+            with events.stage(root, "translate", scene) as ev:
+                tr = M.translate(root, scene, backend=backend)
+                ev.update(result=tr["status"], backend=backend, n_lines=tr.get("n_lines"))
         except Exception as e:                              # backend api: erro de rede/saida invalida
             print(f"      ERRO na traducao ({backend}): {e}")
             _checkpoint(root, scene, {"scene_id": scene_id, "status": "api_translate_failed"})
@@ -185,17 +207,20 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
         print(f"      prompt : {tr['prompt']}")
         print(f"      saida  : {tr['expected_output']}")
         print("      -> rode novamente apos o arquivo aparecer. (checkpoint: 'packed')")
+        print("      -> no Claude Code: 1 cena = 1 subagente dedicado (ele roda este comando, traduz e roda de novo);")
+        print("         so assim o gasto de tokens da cena sai exato no ledger (atribuicao 'agent').")
         return None, {"status": "awaiting_translation", "scene": scene}
     print(f"[2/6] traducao presente ({tr['status']}).")
     return tr, None
 
 
-def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str) -> None:
+def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str, backend: str = "api") -> None:
     """Na falha final de verify (fitting exaurido OU falha dura), persiste os offsets acima do
     byte_budget em disco — diagnostico backend-agnostico e PASSIVO (so le arquivos ja gravados;
     nao pede nenhum trabalho extra de nenhum backend/modelo)."""
     try:
-        over = M.over_budget_offsets(root, scene, tolerance=1.0, detail=True)
+        over = M.over_budget_offsets(root, scene, tolerance=1.0, detail=True,
+                                     reuse_pack=backend == "in-session")
     except Exception as e:
         print(f"      AVISO: diagnostico de fitting falhou: {e}")
         return
@@ -253,7 +278,9 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
                 return tr, None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
 
         print(f"[3/6] build_plan_chapter {scene} ...")
-        code, out = _run([sys.executable, str(build_plan_script), scene])
+        with events.stage(root, "build_plan", scene) as ev:
+            code, out = _run([sys.executable, str(build_plan_script), scene])
+            ev.update(result="ok" if code == 0 else "fail", exit=code, tolerance=tol)
         print(_indent(out))
         if code != 0:
             _checkpoint(root, scene, {"status": "build_plan_failed"})
@@ -264,9 +291,22 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
             print("[5/6] verify pulado (--no-verify).")
             break
         print(f"[5/6] verify_chapter {scene} (round-trip) ...")
-        code, out = _run([sys.executable, str(verify_script), scene])
+        with events.stage(root, "verify", scene) as ev:
+            code, out = _run([sys.executable, str(verify_script), scene])
+            # VERIFY_STATUS do conector (so contagens: overflow, falhas) entra inteiro no evento
+            ev.update(result="ok" if code == 0 else "fail", exit=code, tolerance=tol,
+                      **{k: v for k, v in _verify_status(out).items() if isinstance(v, bool | int | float)})
         print(_indent(out))
         if code == 0:
+            # token de controle/quebra fora do lugar passa no round-trip (bytes) mas quebra a caixa de texto:
+            # erro de schema NESTA cena bloqueia o verified (a auditoria do fim do lote so avisava).
+            bad = [m for sev, art, m in validate.validate_project(root)
+                   if sev == "ERROR" and f"approved_{scene_id}." in str(art)]
+            if bad:
+                print(f"      SCHEMA: {len(bad)} erro(s) de token -- corrija a traducao:")
+                print(_indent(chr(10).join(bad[:20])))
+                _checkpoint(root, scene, {"status": "schema_failed", "verified": False})
+                return tr, None, {"status": "schema_failed", "scene": scene}
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True,
                                       "connector_hash": _connector_hash(root, cfg)})
@@ -279,7 +319,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         if fitting and ti < len(tolerances) - 1:
             print("      verify falhou por FITTING (cena apertada); escalando aperto de budget ...")
             continue
-        _persist_fitting_diagnostics(root, scene, scene_id)
+        _persist_fitting_diagnostics(root, scene, scene_id, backend)
         _checkpoint(root, scene, {"status": "verify_failed", "verified": False})
         return tr, None, {"status": "verify_failed", "scene": scene}
 
@@ -312,7 +352,9 @@ def _back_phase(root: Path, scene: str, highs: list, backend: str,
         bt_lines = M.back_translate_candidates(root, scene) if sample else highs   # lazy: so se o back roda
         print(f"[4/6] back-translation: {len(highs)} linha(s) risco>=high"
               + (f" + {len(bt_lines) - len(highs)} da amostra low/medium" if len(bt_lines) > len(highs) else ""))
-        bt = M.back_translate(root, scene, bt_lines, backend=backend)
+        with events.stage(root, "back_translate", scene) as ev:
+            bt = M.back_translate(root, scene, bt_lines, backend=backend)
+            ev.update(result=bt["status"], backend=backend, high=len(highs), reviewed=bt.get("reviewed"))
     except Exception as e:
         print(f"      AVISO: back-translation falhou ({backend}): {e} — "
               + ("BLOQUEADA (--require-back)." if require_back else "seguindo (report-only)."))
@@ -337,9 +379,19 @@ def _back_phase(root: Path, scene: str, highs: list, backend: str,
     return bt, None
 
 
-def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
-              pretranslated=False, defer_back=False, rebuild_index=True,
-              no_back=False, opts: RunSceneOptions | None = None) -> RunSceneResult:
+def run_scene(root, scene, **kw) -> RunSceneResult:
+    """Envelope de observabilidade: 1 evento `scene` por execucao, com o status final e a duracao total —
+    inclusive quando a cena para num gate ou estoura excecao no meio de um lote."""
+    with events.stage(root, "scene", scene) as ev:
+        r = _run_scene(root, scene, **kw)
+        ev.update(result=r["status"], **{k: len(v) if isinstance(v, list) else v for k, v in r.items()
+                                         if k in ("high", "verified", "problems")})
+        return r
+
+
+def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True, skip_kb_gate=False,
+               pretranslated=False, defer_back=False, rebuild_index=True,
+               no_back=False, opts: RunSceneOptions | None = None) -> RunSceneResult:
     if opts is not None:
         backend, require_back, do_verify = opts.backend, opts.require_back, opts.do_verify
         skip_kb_gate, pretranslated, defer_back = opts.skip_kb_gate, opts.pretranslated, opts.defer_back
@@ -434,7 +486,8 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
         print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
         # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
         # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
-        si = state_index.build(root, sync_db=False)
+        with events.stage(root, "state_index", scene):
+            si = state_index.build(root, sync_db=False)
         print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
         for w in si.get("warnings", []):
             print(f"      [state_index] AVISO: {w}")
@@ -446,7 +499,19 @@ def run_scene(root, scene, *, backend="api", require_back=False, do_verify=True,
     if verified:
         state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB (#73)
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
-                  n_high=len(highs), verified=bool(verified))
+                  n_high=len(highs), verified=bool(verified), backend=backend)
+    events.emit(root, "quality", "ok" if verified else "unverified", scene, n_lines=mr["n_lines"],
+                n_high=mr["n_high"], back_pass_rate=mr["back_pass_rate"], reused=mr["reused"],
+                bypassed_gates=bypassed)
+    if mr.get("session"):
+        _u = mr["session"]["usage"]
+        _eq = mr["session"]["api_equiv_usd"]
+        print(f"      sessao : in={_u['in']:,} out={_u['out']:,} cache_read={_u['cache_read']:,} "
+              f"cache_write={_u['cache_write'] + _u['cache_write_1h']:,} | {mr['session']['n_requests']} requisicao(oes) | "
+              f"atribuicao={'+'.join(mr['session']['attribution'])} | equivalente API "
+              + (f"${_eq:.4f}" if _eq is not None else "sem preco"))
+    elif backend == "in-session":
+        print("      sessao : nada medido (fora do Claude Code, ou a cena nao aparece na transcricao).")
     cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
     print(f"      metrics: custo ~${mr['cost_usd']:.4f} {cost_note}")
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
@@ -468,6 +533,8 @@ def _audit_spoiler(root: Path):
     except Exception as e:
         print(f"[spoiler-audit] AVISO: falha ao auditar ({e}).")
         return
+    events.emit(root, "audit.spoiler", "ok" if rep["clean"] else "flag",
+                name_leaks=len(rep["name_leaks"]), gender_flags=len(rep["gender_flags"]))
     if rep["name_leaks"]:
         print(f"[spoiler-audit] ALERTA: {len(rep['name_leaks'])} vazamento(s) de NOME/TITULO "
               f"pos-reveal -- ver {paths.spoiler_audit(root)}")
@@ -488,6 +555,7 @@ def _audit_schema(root: Path):
         print(f"[schema-audit] AVISO: falha ao auditar ({e}).")
         return
     errs = [i for i in issues if i[0] == "ERROR"]
+    events.emit(root, "audit.schema", "fail" if errs else "ok", errors=len(errs), issues=len(issues))
     if errs:
         print(f"[schema-audit] ALERTA: {len(errs)} erro(s) de schema -- rode validate.py p/ detalhe.")
         for sev, art, msg in errs[:10]:
@@ -496,12 +564,43 @@ def _audit_schema(root: Path):
         print("[schema-audit] OK: nenhum erro de schema.")
 
 
+def backend_preflight(root: Path, scenes, backend: str, env=None) -> tuple[list, list]:
+    """Troca de caminho (sessao <-> api) explicita: (bloqueios, avisos). A API so traduz dialogo: cena de
+    sistema (`system_scenes` no project.json, escopo `completo`) e so do caminho de sessao. Sem chave nao ha
+    API. Cena ja traduzida pelo outro caminho nao bloqueia, mas e dita (modelo/estilo podem diferir)."""
+    env = os.environ if env is None else env
+    cfgp = root / "project.json"
+    cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}
+    src = "session" if backend == "in-session" else "api"
+    problems = []
+    if backend == "api":
+        system = sorted(set(scenes) & set(cfg.get("system_scenes", [])))
+        if system:
+            problems.append(f"{len(system)} cena(s) de sistema fora do escopo da API (so dialogo): "
+                            f"{', '.join(system[:8])} — use --backend in-session")
+        if not env.get("ANTHROPIC_API_KEY"):
+            problems.append("ANTHROPIC_API_KEY ausente no ambiente (carregue o .env do projeto)")
+    last = {}
+    mp = paths.metrics(root)
+    for line in mp.read_text(encoding="utf-8").splitlines() if mp.is_file() else ():
+        r = json.loads(line)
+        last[r.get("scene")] = r.get("source", "api")
+    other = sorted(s for s in scenes if last.get(s, src) != src)
+    notes = [f"caminho: {src} | escopo do projeto: {cfg.get('extraction_scope', 'dialogo')}"]
+    if other:
+        notes.append(f"AVISO: {len(other)} cena(s) ja traduzida(s) pelo outro caminho (modelo/estilo podem diferir): "
+                     f"{', '.join(other[:8])}")
+    return problems, notes
+
+
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena.")
+    ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena (ou de um lote: varias cenas\n"
+                                             "num processo so, em fila).")
     ap.add_argument("project")
-    ap.add_argument("scene", nargs="?", default=None)
+    ap.add_argument("scene", nargs="*",
+                    help="uma ou mais cenas; em lote o modelo de busca carrega 1x e as auditorias rodam 1x")
     ap.add_argument("--backend", default="api", choices=["in-session", "api"])
     ap.add_argument("--require-back", action="store_true",
                     help="bloqueia se a back-translation de alto risco faltar")
@@ -528,17 +627,49 @@ def main():
         return
     if not a.scene:
         ap.error("scene e obrigatorio (exceto com --check-stale)")
-    if a.clean:
-        _validate_scene_arg(Path(a.project), a.scene)
-        removed = clean_failed_scene(a.project, a.scene)
-        print(f"[clean] {len(removed)} artefato(s) removido(s).")
+    for s in a.scene if a.clean else ():
+        _validate_scene_arg(Path(a.project), s)
+        removed = clean_failed_scene(a.project, s)
+        print(f"[clean] {s}: {len(removed)} artefato(s) removido(s).")
     state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
-    r = run_scene(a.project, a.scene, backend=a.backend, require_back=a.require_back,
-                  do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
-                  no_back=a.no_back)
+    hitl_on = hitl.enabled(a.project)
+    if hitl_on:                                # humano no laco: escopo aceito e caminho escolhido (glossario e onda so avisam)
+        problems = hitl.gate(a.project, a.scene, backend=a.backend)
+        if problems:
+            print("BLOQUEADO (humano no laco):")
+            for p in problems:
+                print(f"  - {p}")
+            sys.exit(2)
+    problems, notes = backend_preflight(Path(a.project), a.scene, a.backend)
+    for n in notes:
+        print(n)
+    if problems:
+        print(f"BLOQUEADO (troca de caminho -> {a.backend}):")
+        for p in problems:
+            print(f"  - {p}")
+        sys.exit(2)
+    rs = paths.run_state(Path(a.project))
+    before = json.loads(rs.read_text(encoding="utf-8")).get("scenes", {}) if rs.is_file() else {}
+    was_verified = {s for s in a.scene if before.get(s, {}).get("status") == "verified"}
+    # Lote = mesma execucao por cena, em fila (a TM cresce de uma cena para a seguinte); so o custo fixo
+    # do processo (carga do modelo de busca, mirror do DB, auditorias) deixa de se repetir a cada cena.
+    bad, done = [], []
+    for s in a.scene:
+        r = run_scene(a.project, s, backend=a.backend, require_back=a.require_back,
+                      do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
+                      no_back=a.no_back)
+        if r["status"] not in SCENE_OK_STATUSES:
+            bad.append(f"{s}={r['status']}")
+        elif r.get("verified"):
+            done.append(s)
     _audit_spoiler(Path(a.project))
     _audit_schema(Path(a.project))
-    sys.exit(0 if r["status"] in SCENE_OK_STATUSES else 1)
+    if hitl_on and done:
+        state_index.mirror_db(Path(a.project))     # o lint le do banco: precisa das falas deste lote
+        hitl.after_batch(a.project, done, [s for s in done if s not in was_verified])
+    if len(a.scene) > 1:
+        print(f"LOTE: {len(a.scene) - len(bad)}/{len(a.scene)} cena(s) OK" + (f" | falhou: {', '.join(bad)}" if bad else ""))
+    sys.exit(1 if bad else 0)
 
 
 if __name__ == "__main__":

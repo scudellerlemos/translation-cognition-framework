@@ -4,7 +4,7 @@ Substitui state_index.py (flat files → SQLite). Fonte única de verdade
 para TM, glossário, voice cards, entidades e ledger de jobs.
 
 Uso:
-    db = Store("projects/translation_software/translation_software.db")
+    db = Store("projects/bof4/bof4.db")
     db.upsert_translation(project_id="bof4", scene_id="AREAD001", offset="X:0:1",
                           source="Hello", target="Olá", speaker="Ryu")
     hits = db.search_tm_exact("Hello", project_id="bof4")
@@ -260,6 +260,12 @@ class Store:
 
     def upsert_scene_lines(self, project_id: str, scene_id: str, lines: list):
         """Insere/atualiza as linhas de uma cena em LOTE (1 commit) — dialogs.csv → DB."""
+        # linha que saiu do dialogs.csv (re-extracao) sai do DB: senao o prompt lista um offset que o
+        # source nao tem mais e o plano rejeita a traducao dele.
+        offs = [ln.get("offset", "") for ln in lines]
+        self._con.execute(
+            "DELETE FROM scene_lines WHERE project_id=? AND scene_id=? AND offset NOT IN ("
+            + ",".join("?" * len(offs)) + ")", (project_id, scene_id, *offs))
         self._con.executemany(
             """INSERT INTO scene_lines(project_id, scene_id, offset, source, byte_budget)
                VALUES(?,?,?,?,?)

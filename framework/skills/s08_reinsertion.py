@@ -6,7 +6,7 @@ patch. DETERMINÍSTICA: a reinserção é código do conector; a IA nunca escrev
 
 Uso:
     skill = ReinsertionSkill()
-    result = skill.run("projects/breath_of_fire_4", dat_dir="/path/to/DAT")
+    result = skill.run("projects/bof4", dat_dir="/path/to/DAT")
 """
 from __future__ import annotations
 

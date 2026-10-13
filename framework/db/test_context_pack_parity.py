@@ -23,7 +23,7 @@ sys.path.insert(0, str(HERE))
 import context_pack as cp  # noqa: E402
 from store import Store  # noqa: E402
 
-BOF4 = ROOT / "projects" / "breath_of_fire_4"
+BOF4 = ROOT / "projects" / "bof4"
 
 
 def _flat_sources():

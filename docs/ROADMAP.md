@@ -21,7 +21,7 @@
 ## BoF4 — CONCLUÍDO ✅
 
 > 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, 0 overflows.
-> Custo: ~$11,04 USD. Plano detalhado: `projects/breath_of_fire_4/ROADMAP.md`.
+> Custo: ~$11,04 USD. Esse ciclo rodou em `projects/breath_of_fire_4` (removido do repositório; o jogo segue em `projects/bof4/`).
 
 Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framework/db/`).
 
@@ -66,7 +66,7 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   `_load_tm_semantic()` (linha 394) e `_load_kb()` (linha 437), que usam `framework/db/embedder.py` +
   `framework/db/store.py` (SQLite + extensão `sqlite-vec`) — gated por `_db_path(root, cfg)`: só
   ativa se o projeto tiver banco `.db` configurado (switch deliberado; sem `.db`, cai pro fallback de
-  sempre, testado). Validado com 6046 vetores no `translation_software` (busca exata → score 1.0,
+  sempre, testado). Validado com 6046 vetores no `translation_software` (shell de validação, depois removido) (busca exata → score 1.0,
   variação de vocabulário → 0.944). Testes: `framework/db/test_context_pack_parity.py`,
   `test_export.py`, `test_migrate.py`. Ver memória `semantic-stack-validated`.
 
@@ -96,7 +96,7 @@ de filme/série + stack de voz ASR/diarização/prosódia).
 
 ### Fase D — Generic Connector System
 
-> Jogo-piloto: **Breath of Fire IV** — ver `projects/breath_of_fire_4/ROADMAP.md`.
+> Jogo-piloto: **Breath of Fire IV** — ver `projects/bof4/ROADMAP.md`.
 > Score do framework: **86/100** (jun/2026, pós-gap-closure) → alvo após D4: **97/100**.
 
 **Visão:** quando o framework encontra um novo jogo, descobre automaticamente os arquivos de diálogo, entende a estrutura, gera um conector determinístico, valida via round-trip. O LLM participa **apenas no bootstrap** — após aprovação, o conector roda sem IA.
