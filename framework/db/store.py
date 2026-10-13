@@ -265,7 +265,7 @@ class Store:
         offs = [ln.get("offset", "") for ln in lines]
         self._con.execute(
             "DELETE FROM scene_lines WHERE project_id=? AND scene_id=? AND offset NOT IN ("
-            + ",".join("?" * len(offs)) + ")", (project_id, scene_id, *offs))
+            + ",".join("?" * len(offs)) + ")", (project_id, scene_id, *offs))  # nosec B608 - so placeholders "?"
         self._con.executemany(
             """INSERT INTO scene_lines(project_id, scene_id, offset, source, byte_budget)
                VALUES(?,?,?,?,?)

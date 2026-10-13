@@ -15,7 +15,7 @@ from pathlib import Path
 import paths  # noqa: E402
 
 # precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
-_PRICE = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
+_PRICE: dict[str, dict] = {"claude-opus-4-8":   {"in": 5.00e-6, "out": 25.00e-6},
           "claude-sonnet-4-6": {"in": 3.00e-6, "out": 15.00e-6},
           "claude-haiku-4-5":  {"in": 1.00e-6, "out":  5.00e-6},
           # tabela oficial (platform.claude.com/docs/en/about-claude/pricing), lida em 2026-10-11.

@@ -425,7 +425,7 @@ def main():
     if a.cmd == "status":
         n_scenes, n_lines, text = corpus(root)
         cfg = _cfg(root)
-        print(f"hitl {'LIGADO' if cfg.get('hitl') else 'desligado (project.json sem \"hitl\")'}")
+        print("hitl " + ("LIGADO" if cfg.get("hitl") else 'desligado (project.json sem "hitl")'))
         for p in scope_problems(root, n_scenes, n_lines) or [f"escopo aceito ({n_scenes} cenas, {n_lines} linhas)"]:
             print(f"  escopo   : {p}")
         ch = chosen_path(root)
