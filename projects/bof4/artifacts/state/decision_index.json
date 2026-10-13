@@ -1,0 +1,183 @@
+[
+  {
+    "title": "Charset e acentos",
+    "tags": [
+      "charset",
+      "acentos"
+    ],
+    "universal": true,
+    "summary": "A tradução usa acento e cedilha (pedido do usuário em 2026-10-11). `project.json` declara `diacritic_strategy: combining_overlay` e `target_charset_supported: true`: cada letra acentuada custa 2 bytes. Vale para a caixa de diálogo; a fonte de menu ainda não tem acento.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Grafia de nomes próprios",
+    "tags": [
+      "grafia",
+      "nomes",
+      "próprios"
+    ],
+    "universal": false,
+    "summary": "Quando as fontes divergem (wiki de fãs, manual, Wikipedia), vale a grafia do corpus do jogo. Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Nome do protagonista: Ryu",
+    "tags": [
+      "nome",
+      "protagonista"
+    ],
+    "universal": false,
+    "summary": "Nome personalizável pelo jogador; o padrão canônico é \"Ryu\". Aparece via control code `[04][00]` (`[04][01]` = Nina, `[04][02]` = Cray, `[04][05]` = Ershin; conferido na cena `AREAE015`), nunca como texto literal — não se traduz. Ratificado pelo usuário em 2026-06-21.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Abbess: manter original",
+    "tags": [
+      "abbess",
+      "manter",
+      "original"
+    ],
+    "universal": false,
+    "summary": "Nome próprio de NPC; manter \"Abbess\", sem traduzir. Ratificado pelo usuário em 2026-06-21.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Endless → Eternos",
+    "tags": [
+      "endless",
+      "eternos"
+    ],
+    "universal": false,
+    "summary": "Usar \"Eternos\" em todo o texto narrativo e diálogo. Ratificado pelo usuário em 2026-06-21.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Hex → maldição",
+    "tags": [
+      "maldição"
+    ],
+    "universal": false,
+    "summary": "Usar \"maldição\" em diálogos e narrativa. Ratificado pelo usuário em 2026-06-21.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Dragon's Eye → Olho do Dragão",
+    "tags": [
+      "dragon",
+      "olho",
+      "dragão"
+    ],
+    "universal": false,
+    "summary": "Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Sandflier Valley → Vale dos Sandfliers",
+    "tags": [
+      "sandflier",
+      "valley",
+      "vale",
+      "sandfliers"
+    ],
+    "universal": false,
+    "summary": "Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Oracle of Wind → Oráculo do Vento",
+    "tags": [
+      "oracle",
+      "wind",
+      "oráculo",
+      "vento"
+    ],
+    "universal": false,
+    "summary": "Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "King of Wyndia → Rei de Wyndia",
+    "tags": [
+      "king",
+      "wyndia"
+    ],
+    "universal": false,
+    "summary": "Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Gênero de Elina e Deis: feminino",
+    "tags": [
+      "gênero",
+      "elina",
+      "deis",
+      "feminino"
+    ],
+    "universal": false,
+    "summary": "Confirmado pelo corpus. Resolvido em 2026-06-21.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Elina e Cray: amiga de infância",
+    "tags": [
+      "elina",
+      "cray",
+      "amiga",
+      "infância"
+    ],
+    "universal": false,
+    "summary": "Elina é amiga de infância de Cray e prometida ao príncipe de Ludia — nunca \"noiva de Cray\". Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Registro arcaico: thee/thou → \"tu\"",
+    "tags": [
+      "registro",
+      "arcaico",
+      "thee",
+      "thou"
+    ],
+    "universal": false,
+    "summary": "Fala arcaica do inglês (thee, thou, art) vira segunda pessoa \"tu\", consistente dentro da fala (ex.: \"ordeno-te\", \"eu te invoco\"). Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Acento que muda a palavra: evitar só em menu",
+    "tags": [
+      "acento",
+      "muda",
+      "palavra",
+      "evitar",
+      "menu"
+    ],
+    "universal": true,
+    "summary": "Na caixa de diálogo o acento aparece, então a forma acentuada pode ser usada. Em texto de menu (fonte sem acento) segue valendo: evitar forma que vira outra palavra sem acento (ex.: \"Sê\" → \"Se\"). Ratificado pelo usuário em 2026-10-11; escopo reduzido quando a fonte de diálogo ganhou acento.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Chamba e Synesta: manter original",
+    "tags": [
+      "chamba",
+      "synesta",
+      "manter",
+      "original"
+    ],
+    "universal": false,
+    "summary": "Topônimos; manter a grafia do corpus, sem traduzir. Ratificado pelo usuário em 2026-10-11.",
+    "reveal": "safe"
+  },
+  {
+    "title": "Quem fala com Fou-Lu: \"Vossa Majestade\" formal, sem arcaísmo",
+    "tags": [
+      "quem",
+      "fala",
+      "vossa",
+      "majestade",
+      "formal",
+      "arcaísmo"
+    ],
+    "universal": false,
+    "summary": "O arcaísmo (tu/vós) é só de Fou-Lu e dos Eternos, como no original; os capítulos dele se passam no presente. Corte e soldados falam com ele em registro formal moderno: \"Vossa Majestade\" / \"Majestade\" / \"meu senhor\" com verbo e possessivo em 3ª pessoa (\"parece cansado\", \"seus poderes\"), nunca \"vós so",
+    "reveal": "safe"
+  }
+]
