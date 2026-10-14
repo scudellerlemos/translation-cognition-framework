@@ -354,7 +354,7 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
    rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
-Aprofundar: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
+Aprofundar: [`DIAGRAMAS.md`](docs/DIAGRAMAS.md) (o fluxo de ponta a ponta desenhado) · [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
 [`GOVERNANCE.md`](docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
 [`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·

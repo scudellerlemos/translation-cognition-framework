@@ -212,7 +212,7 @@ comprovado vivo, além do alvo acima:
 - `MODEL_INTERFACE.md` — contrato `translate`/`back_translate`; caminhos assinatura vs API.
 - `TRANSLATION_PIPELINE.md` — o fluxo de 1 cena ponta-a-ponta; checkpoint/resume.
 - `OBSERVABILITY.md` — métricas a coletar.
-- `DIAGRAMAS.md` — C4 (contexto, contêineres, componentes) do pipeline e do patcher, com sequências.
+- `DIAGRAMAS.md` — fluxo de ponta a ponta (humano e IA em cada passo), C4 (contexto, contêineres, componentes) do pipeline e do patcher, com sequências.
 - `benchmark_sessao/` — PRD, HLD e FDD do benchmark do caminho de sessão.
 - `ROADMAP.md` — backlog priorizado (P0–P3) + fases.
 - `adr/` — decisões arquiteturais registradas.

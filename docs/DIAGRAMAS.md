@@ -7,6 +7,80 @@ renderiza mal no GitHub). Nenhum diagrama traz fala de jogo.
 
 ## 1. Pipeline de tradução
 
+### Fluxo de ponta a ponta (hoje)
+
+```
+═══════════════════ A. PREPARAÇÃO (uma vez por projeto) ═══════════════════
+
+ jogo ─► 00 extração (conector) ──► dialogs.csv + byte_budget
+              │                      gate: round-trip extract→reinsert idêntico
+              ▼
+         [HITL] humano aceita o ESCOPO ──► [HITL] humano escolhe o CAMINHO
+              │                                   (sessão ou API; um só por projeto)
+              ▼
+         01 entidades/tom ─► 02 resolução ─► 03 KB (pesquisa IA+humano)
+              │                                   gate: kb_gate (reconciled)
+              ▼
+         04 glossário + 04b decision_log ─► 05 plano ─► 05b corpus sintético
+              │
+              ▼
+         PILOTO: poucas cenas ─► instala ─► humano confere no jogo
+              └── só escala se o piloto fechar (retrotradução + gate visual)
+
+══════════════ B. LAÇO POR CENA / ONDA (repete até tudo `verified`) ═══════════
+
+   escolha do caminho (hitl.choose-path)
+        │
+        ├── API ────────► run_chapter (lote, Sonnet pelo código, só diálogo)
+        └── SESSÃO ─────► wave.py / session_lot.py (subagente Sonnet na sessão)
+                                    │
+   ┌────────────────────────────────▼─────────────────────────────────────┐
+   │ run_scene  (job resumível; checkpoint em run_state.json)              │
+   │                                                                      │
+   │ [0] GATES ──► connector_gate + kb_gate ... bloqueia antes de modelo  │
+   │ [1] context_pack ──► scene_prompt.md (glossário, voz, TM, falas)     │
+   │ [2] TRADUZ (IA) ──► translations_<cena>.json                         │
+   │       └ antes: scene_dedup (texto repetido traduz 1 vez)             │
+   │ [3] build_plan ──► cobertura, tokens, orçamento de bytes             │
+   │ [4] verify_chapter ──► round-trip byte a byte (resíduo = 0)          │
+   │ [5] retrotradução (IA) ──► por fala, risco alto + 5% amostra         │
+   │ [6] checkpoint ──► `verified`; TM e banco crescem                    │
+   │                                                                      │
+   │ pula cena `verified` sem fala tocada (touched.py; --full força)      │
+   └──────────────────────────────────────────────────────────────────────┘
+        │ na onda, depois: glossary_lint ─► quality_gate ─► cost/obs_report
+        │                      │
+        │        06b micro-QA: reprovou ─► correção cirúrgica ─► revalida
+        │                      │
+        │        fila de escalonamento (ambiguidade) ─► HUMANO decide
+        ▼
+   a cada 10 cenas: amostra de 15 falas para o humano (aviso, não bloqueia)
+
+══════════════════════ C. FECHAMENTO ══════════════════════════════════════
+
+   triagem de risco (juiz barato; paga) ─► sobe falas suspeitas p/ `high`
+        ▼
+   07 amostra de qualidade (200 pares) ─► humano marca ok/erro ─► taxa + IC 95%
+        ▼
+   08 reinserção (determinística) ─► 08b texto de sistema e rótulos em imagem
+        ▼
+   instalação ─► 08c teste no jogo (print do humano ─► causa raiz)
+        ▼
+   09 distribuição: delta + patcher .exe de um clique ─► release (só com aval)
+
+══════════════════════════ RETORNOS ════════════════════════════════════════
+
+   07 achou erro ─────┐
+   08c achou no jogo ─┼──► 06b corrige SÓ as falas tocadas ──► volta ao laço B
+   glossário mudou ───┘    (cenas viram `stale` ─► re-QA)
+
+ Em todo o fluxo: nenhum gate tem bypass; a IA nunca escreve byte nem ponteiro.
+```
+
+Quem decide: humano em escopo, caminho, escalonamento, amostra de qualidade, print do jogo e release; o resto é
+gate automático. O bloco B é o que o benchmark do caminho de sessão vai medir nos dois caminhos
+(`benchmark_sessao/`).
+
 ### Skills: três blocos e dois retornos
 
 As skills `00..09` são lidas em ordem, mas executadas em três blocos; o laço do meio repete por cena.
