@@ -81,3 +81,13 @@ def test_has_stale_only_for_candidate_offsets(tmp_path):
     assert bt._has_stale(out, [{"offset": "a"}])                 # verdict velho -> re-julgar
     assert not bt._has_stale(out, [{"offset": "b"}])             # so 'b' e candidato e nao esta stale
     assert not bt._has_stale(tmp_path / "nope.json", [{"offset": "a"}])
+
+
+def test_merge_back_replaces_only_rejudged_lines(tmp_path):
+    out = tmp_path / "bt.json"
+    out.write_text(json.dumps({"entries": [{"offset": "a", "stale": True, "verdict": "pass"},
+                                           {"offset": "b", "verdict": "pass"}]}), encoding="utf-8")
+    assert bt._stale_offsets(out) == {"a"}
+    merged = bt._merge_back(out, {"entries": [{"offset": "a", "verdict": "revise"}]})
+    assert sorted((e["offset"], e["verdict"], e.get("stale", False)) for e in merged["entries"]) == [
+        ("a", "revise", False), ("b", "pass", False)]            # 'b' (valido) preservado, 'a' re-julgado
