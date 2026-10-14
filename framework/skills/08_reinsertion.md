@@ -118,5 +118,5 @@ jogo. O script **informa o caminho** ao concluir.
 - **A IA executa o `reinsert.py`; não grava bytes à mão.** Criar o script só com permissão (governança acima).
 - **Nunca sobrescrever o binário-fonte em disco** — saída em `output/`, nome e extensão preservados.
 - **Informar o diretório de saída** ao usuário ao final.
-- Strings que falham mesmo após a cascata → issues no `reinsertion_report.md`, voltam para o ciclo 06c/07.
+- Strings que falham mesmo após a cascata → issues no `reinsertion_report.md`, voltam para o ciclo 06b/07.
 - Reinserção sem QA aprovado e sem round-trip é proibida.

@@ -104,7 +104,7 @@ artifacts/scenes/<scene>/approved_<id>.csv            ← projeção (offset, te
 
 ---
 
-### Skill 06b — Micro-QA / 06c — Ciclo de Correção
+### Skill 06b — Micro-QA e Ciclo de Correção
 
 **Responsável**: `back_translate.py`, `quality_fix.py`
 **Runtime envolvido**: `run_scene._back_phase()` (back-translation), `quality_fix.apply()`

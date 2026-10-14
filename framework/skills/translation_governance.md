@@ -6,7 +6,7 @@
 > Para rastrear qual governança gerou uma tradução, use esta data + `git log --follow`.
 
 > **Natureza:** não é um passo do pipeline — é o **contrato** que rege *como* traduzir em todos os
-> passos cognitivos (05 planejamento, 06 tradução, 06b/06c QA, 07 QA final). Genérico: nenhum dado de
+> passos cognitivos (05 planejamento, 06 tradução, 06b QA, 07 QA final). Genérico: nenhum dado de
 > obra vive aqui; tudo específico vem de `project.json` + artefatos.
 >
 > **Regra-mãe:** **a IA traduz conforme esta Carta — não improvisa fora dela.** Quando uma linha não
@@ -115,7 +115,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 | 05 planejamento | metadados reais por linha (speaker/situação/risco) — base da QA |
 | 06 tradução | traduzir conforme as 4 diretrizes + checklist por linha |
 | 06b micro-QA | naturalidade contextual + interjeições + back-translation de alto risco |
-| 06c correção | só toca o que a QA/linter reprovou; re-valida |
+| 06b correção | só toca o que a QA/linter reprovou; re-valida |
 | 07 QA final | adequação contextual por arco de personagem; spoilers cross-segmento |
 | 08 reinserção | respeita a restrição do conector (byte/translit.); LLM só no resíduo |
 

@@ -3,7 +3,7 @@
 FRONTEIRA cognitivo↔determinístico (valor central do framework): SÓ entram aqui skills cuja
 substância é código — determinísticas (00 extract, 07 qa, 08 reinsert) ou orquestração com a IA
 ISOLADA (06 translate). As skills puramente cognitivas (01 discovery, 02 entity_resolution,
-03 knowledge_building, 04 glossary, 04b, 05b, 06b, 06c) NÃO entram: são playbooks .md que a IA
+03 knowledge_building, 04 glossary, 04b, 05b, 06b) NÃO entram: são playbooks .md que a IA
 executa, sem lógica determinística a encapsular. Esta lista É a fronteira, em código.
 """
 from __future__ import annotations

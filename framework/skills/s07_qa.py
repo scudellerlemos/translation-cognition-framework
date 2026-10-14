@@ -3,7 +3,7 @@
 Wraps `quality_gate.check` — varre as back_translation gravadas x linhas high/critical do
 plano e levanta 'revise' (verdict do modelo divergiu) e 'uncovered' (linha crítica sem crivo).
 DETERMINÍSTICA: read-only, sem rede, sem work-text — lê artefato já pago. É o passo de QA que
-PODE rodar em CI sem IA (ao contrário do 06c, que é correção cognitiva).
+PODE rodar em CI sem IA (ao contrário do 06b, que é correção cognitiva).
 
 Uso:
     skill = QaSkill()

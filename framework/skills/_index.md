@@ -47,9 +47,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 06_translation  (lotes + auto-revisão de voz + orçamento de bytes / shift-left)
     ↓
-06b_micro_qa  (após cada lote)
-    ↓
-06c_correction_cycle  (se o lote for reprovado — correção cirúrgica + re-validação)
+06b_micro_qa  (após cada lote; se reprovar, a Parte 2 corrige cirurgicamente e re-valida)
     ↓
 07_qa  (após cada arco/segmento maior e ao final do corpus)
     ↓
@@ -75,8 +73,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `05_translation_planning.md` | 5 | Plano de tradução por linha |
 | `05b_synthetic_test_corpus.md` | 5b | Geração de suites de teste para pontos críticos |
 | `06_translation.md` | 6 | Execução da tradução com controle de progresso |
-| `06b_micro_qa.md` | 6b | QA por lote após cada bloco |
-| `06c_correction_cycle.md` | 6c | Correções cirúrgicas pós-QA com re-validação |
+| `06b_micro_qa.md` | 6b | QA por lote após cada bloco + ciclo de correção cirúrgica com re-validação |
 | `07_qa.md` | 7 | QA final de consistência global |
 | `08_reinsertion.md` | 8 | Reinserir a tradução no meio via conector + patch (determinístico, LLM só no resíduo) |
 | `09_distribution.md` | 9 | Pacote de delta + patcher `.exe` de um clique para o jogador (`framework/distribution/`) |
@@ -118,9 +115,9 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `<corpus-fonte>` | — | Corpus source (todas as linhas, imutável) — caminho em `project.json` |
 | `approved_translations.csv` | Passo 6 | Traduções aprovadas (`id_column`, `text_target`) — fonte de verdade aplicada no Passo 8 |
 | `translation_status.json` | Passo 6 | Progresso + next_offset + length_warnings + needs_human_review |
-| `micro_qa_log.json` | Passo 6b/6c | Log acumulativo de issues e correções por lote |
+| `micro_qa_log.json` | Passo 6b | Log acumulativo de issues e correções por lote |
 | `qa_report.md` | Passo 7 | Relatório de QA final |
-| `fix_suggestions.json` | Passo 7 | Issues com sugestões de correção (input do Passo 6c) |
+| `fix_suggestions.json` | Passo 7 | Issues com sugestões de correção (input do Passo 6b (Parte 2)) |
 | binário traduzido + `patch.<fmt>` | Passo 8 | Build com a tradução gravada + patch (ips/bps/xdelta) |
 | `reinsertion_report.md` | Passo 8 | Tier por string, overflows, repoints, falhas |
 
@@ -136,8 +133,8 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 6. **Issues críticos no QA final bloqueiam entrega** — sem exceção.
 7. **Em caso de conflito** entre `translation_rules.md` e `glossary.csv`, o CSV prevalece na forma final.
 8. **Cada passo tem um Input Gate.** Não executar sem verificar os artefatos do passo anterior.
-9. **Correções passam pelo Passo 06c.** Não editar `approved_translations.csv` diretamente fora do protocolo 06c.
-10. **Atualização de glossário mid-project** exige identificação de impacto + agendamento de re-QA via 06c.
+9. **Correções passam pelo Passo 06b.** Não editar `approved_translations.csv` diretamente fora do protocolo 06b.
+10. **Atualização de glossário mid-project** exige identificação de impacto + agendamento de re-QA via 06b.
 11. **Nenhum dado de obra específica vive nas skills.** Tudo específico vem de `project.json` + artefatos.
 12. **O corpus é output do Passo 00 (extração); a tradução é devolvida no Passo 08 (reinserção).** O ciclo meio→corpus→meio é fechado.
 13. **Reinserção é determinística.** LLM nunca escreve bytes nem recalcula ponteiros — só reescreve o resíduo de overflow, em lote.

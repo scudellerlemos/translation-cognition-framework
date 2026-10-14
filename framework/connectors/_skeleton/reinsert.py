@@ -122,7 +122,7 @@ def main(project_json: Path, source_override: str | None = None):
     emit_patch(original, bytes(buf), conn.get("patch_format", "ips"),
                root / "output" / f"patch.{conn.get('patch_format', 'ips')}")
 
-    # reinsertion_report.md — overflows/repoints/falhas viram issues p/ 06c/07
+    # reinsertion_report.md — overflows/repoints/falhas viram issues p/ 06b/07
     lines = "\n".join(f"- {i} [{t}] {n}/{b} bytes" for i, t, n, b in report)
     (root / "artifacts" / "reinsertion_report.md").write_text(
         f"# Reinsertion Report\n\n"

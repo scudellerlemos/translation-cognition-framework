@@ -9,7 +9,7 @@ sao 5 modulos espalhados -- e uma fachada, nao uma camada nova de logica.
 
 A parte de Skill DSL nao precisou de codigo novo: `framework/skills/skill_base.py` (Skill ABC) +
 `framework/skills/registry.py` ja sao a forma declarativa dos passos 00/06/07/08 (os com
-substancia de codigo). Skills cognitivas puras (01-04b/05b/06c) ficam .md por decisao deliberada
+substancia de codigo). Skills cognitivas puras (01-04b/05b/06b) ficam .md por decisao deliberada
 (ver skills-registry-boundary) -- nao e lacuna, e fronteira.
 
 Uso: `from kernel import run_scene, run_chapter, run_game, validate_project, write_pack`

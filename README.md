@@ -307,7 +307,7 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 04 glossário     → regras normativas de tradução (+ decision log)
 05 planejamento  → plano linha a linha (+ corpus de teste sintético)
 06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)
-06b/06c QA       → micro-QA por lote + ciclo de correção cirúrgica
+06b QA       → micro-QA por lote + ciclo de correção cirúrgica
 07 QA final      → consistência global, spoilers cross-segmento
 08 reinserção    → conector: tradução → binário + patch (determinístico; LLM só no resíduo)
 ```

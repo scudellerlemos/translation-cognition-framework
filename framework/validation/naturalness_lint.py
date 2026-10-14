@@ -2,7 +2,7 @@
 """
 naturalness_lint.py — Linter de naturalidade (governança de tradução), irmão heurístico do
 `validate.py`. Sinaliza "smells" de tradução que a amostragem humana costuma deixar passar — saída
-são CANDIDATOS para revisão (06c), não auto-fix.
+são CANDIDATOS para revisão (06b), não auto-fix.
 
 Genérico e sem dados de obra: lê `project.json` + artefatos (`translation_plan.json` ou
 `dialogs.csv`+`approved_translations.csv`) e o `glossary.csv` (whitelist). Checagens de alta precisão:

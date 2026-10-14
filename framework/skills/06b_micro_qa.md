@@ -1,7 +1,7 @@
-# SKILL 06b — MICRO-QA
-## QA por lote — executar após cada bloco de tradução
+# SKILL 06b — MICRO-QA E CICLO DE CORREÇÃO
+## QA por lote e correção cirúrgica do que ele reprova
 
-> **Quando usar:** Automaticamente após cada lote traduzido no passo 6. Antes de prosseguir para o próximo lote.
+> **Quando usar:** Automaticamente após cada lote traduzido no passo 6. Antes de prosseguir para o próximo lote. A Parte 2 roda quando o micro-QA reprova ou o passo 07 gera `fix_suggestions.json`.
 
 ---
 
@@ -131,8 +131,131 @@ Append a cada lote (não sobrescrever — acumular):
 
 ## REGRAS CRÍTICAS
 
-- **O micro-QA é executado antes do próximo lote, não depois.** A ordem é: traduzir lote → micro-QA → **06c se reprovado** → aprovar → traduzir próximo lote.
-- Quando `batch_approved: false`: executar o Passo 06c (Correction Cycle) antes de avançar. Não corrigir inline no mesmo passo — o 06c tem o protocolo de escopo cirúrgico.
+- **O micro-QA é executado antes do próximo lote, não depois.** A ordem é: traduzir lote → micro-QA → **Parte 2 (correção) se reprovado** → aprovar → traduzir próximo lote.
+- Quando `batch_approved: false`: executar a **Parte 2 — Ciclo de correção** (abaixo) antes de avançar. Não corrigir inline — a Parte 2 tem o protocolo de escopo cirúrgico.
 - Issues de tom que aparecem em ≥ 3 linhas do mesmo personagem no mesmo lote são **problemas sistêmicos**, não pontuais. Revisar o perfil de voz no prompt do passo 6 antes de continuar.
 - O `micro_qa_log.json` é a memória do processo — não apagar entre lotes.
 - Issues com `escalated: true` (segundo failure no mesmo id) devem ser resolvidos pelo usuário antes da entrega.
+
+---
+
+# PARTE 2 — CICLO DE CORREÇÃO
+## Aplicar correções ao corpus sem corromper traduções existentes
+
+> **Quando usar:** após a Parte 1 emitir `batch_approved: false`, ou após o passo 07 produzir `fix_suggestions.json`. Fecha o loop detectar → corrigir → re-validar.
+
+---
+
+## OBJETIVO (Parte 2)
+
+Aplicar correções identificadas pelo Micro-QA ou pelo QA Final ao `approved_translations.csv` (a tradução aprovada), com escopo cirúrgico (apenas os IDs identificados), verificação inline de cada correção, e registro auditável do que foi alterado.
+
+---
+
+## INPUTS (Parte 2)
+
+- `micro_qa_log.json` (se vindo do Parte 1) **ou** `fix_suggestions.json` (se vindo do passo 07)
+- `approved_translations.csv` (traduções aprovadas — alvo das correções)
+- `project.json` (tokens, length_constraints)
+- `glossary.csv`
+- `translation_rules.md`
+- `tone_analysis.md`
+
+---
+
+## PROTOCOLO DE EXECUÇÃO
+
+### Passo 1 — Separar issues por severidade
+
+| Severidade | Ação neste ciclo |
+|------------|-----------------|
+| Crítica | Corrigir obrigatoriamente |
+| Alta | Corrigir obrigatoriamente |
+| Média | Corrigir se possível; marcar como `deferred` caso contrário |
+| Baixa | Opcional |
+
+### Passo 2 — Definir o escopo cirúrgico
+
+Montar a lista de IDs (`id_column`) a corrigir. **Esta lista é o único escopo do ciclo.** Nenhuma linha fora desses IDs deve ser tocada — qualquer edição fora do escopo é uma regressão potencial.
+
+### Passo 3 — Aplicar correções
+
+Para cada ID na lista:
+1. Localizar a linha em `approved_translations.csv`
+2. Aplicar a `suggested` do log, ou uma nova tradução fundamentada na análise
+3. Antes de aceitar, verificar checklist obrigatório:
+
+```
+CHECKLIST DE CORREÇÃO:
+□ O registro está correto para o personagem (ver perfil em tone_analysis.md)?
+□ A entidade está tratada conforme glossary.csv?
+□ Os tokens (project.json → formatting_tokens) e quebras de linha estão preservados (mesma contagem)?
+□ O comprimento respeita project.json → length_constraints?
+□ Se risk_level: high ou critical: back-translation confirma sentido?
+```
+
+### Passo 4 — Mini-QA pós-correção
+
+Após aplicar todas as correções, executar verificação reduzida **somente nas linhas corrigidas**:
+- Re-verificar voz para cada linha alterada
+- Re-verificar tokens de cada linha alterada
+- Re-verificar entidades de cada linha alterada
+- Se a linha é `risk_level: high` ou `critical`: back-translation obrigatória
+
+Se uma linha falhar no mini-QA:
+- Registrar novo issue no log
+- Se for a segunda tentativa no mesmo ID: escalar para revisão humana com `escalated: true`
+
+### Passo 5 — Atualizar os logs
+
+**Se vindo da Parte 1** — adicionar entrada ao `micro_qa_log.json` (append):
+
+```json
+{
+  "batch": "1_correction",
+  "offsets": "[ids corrigidos]",
+  "lines_reviewed": 0,
+  "issues_found": [],
+  "corrections_applied": [
+    {
+      "offset": "[id]",
+      "original_issue": "[descrição]",
+      "previous_pt": "[tradução anterior]",
+      "corrected_pt": "[tradução corrigida]",
+      "mini_qa_passed": true
+    }
+  ],
+  "batch_approved": true,
+  "notes": "Todas as correções aplicadas e verificadas. Lote liberado."
+}
+```
+
+**Se vindo do 07** — marcar cada issue resolvido no `fix_suggestions.json`:
+```json
+{
+  "id": "FIX-001",
+  "status": "applied",
+  "applied_pt": "[tradução aplicada]",
+  "verified": true
+}
+```
+
+---
+
+## OUTPUTS OBRIGATÓRIOS (Parte 2)
+
+| Arquivo | Modificação |
+|---------|-------------|
+| `approved_translations.csv` | Linhas corrigidas atualizadas (somente os IDs do escopo) |
+| `micro_qa_log.json` | Nova entrada de correção adicionada (append) |
+| `fix_suggestions.json` | Issues resolvidos marcados com `"status": "applied"` |
+
+---
+
+## REGRAS CRÍTICAS (Parte 2)
+
+- **Escopo cirúrgico é inviolável.** Nunca modificar linhas fora da lista de IDs do ciclo.
+- **Nunca aceitar uma correção sem passar pelo checklist.** A correção pode introduzir um novo issue.
+- Após o ciclo: se `micro_qa_log.json` ainda contém issues críticos não resolvidos → **o bloqueio de avanço para o próximo lote permanece ativo**.
+- Issues escalados (`escalated: true`) devem ser resolvidos pelo usuário antes da entrega.
+- Este passo é **sempre sequencial** — não aplicar correções em paralelo no mesmo arquivo.

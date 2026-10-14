@@ -37,7 +37,7 @@ rodar antes de consumir os artefatos. Cresce incrementalmente (novos invariantes
 ## `naturalness_lint.py` — Linter de naturalidade
 
 Heurístico, complementa a **Carta de Governança** (`framework/skills/translation_governance.md`).
-Sinaliza **candidatos** para revisão (06c) — não auto-fix. Checagens de alta precisão:
+Sinaliza **candidatos** para revisão (06b) — não auto-fix. Checagens de alta precisão:
 
 - **`copia_crua`** — alvo idêntico ao source, fora da whitelist (nomes do glossário `manter_original`
   por conteúdo alfabético; gritos puros tipo `Aaaah!`/`Aaagh--`; linhas só de número/token).
@@ -46,7 +46,7 @@ Sinaliza **candidatos** para revisão (06c) — não auto-fix. Checagens de alta
 - **`rotulo_cru`** — rótulo de falante (alias/UI) idêntico ao source.
 
 Saída: imprime os achados + grava `<projeto>/artifacts/naturalness_lint.json` (`offset`, `check`,
-`source`, `target`, `note`) — input do 06c.
+`source`, `target`, `note`) — input do 06b.
 
 ## Uso
 

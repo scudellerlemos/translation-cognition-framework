@@ -122,7 +122,7 @@ Resultado da reinserção. Seções obrigatórias:
 |---------------|-------------|----------|
 | Strings gravadas | ✅ | Total + distribuição por tier de encaixe (nomes descritivos por conector, ex.: direct/repoint/trimmed/residue) |
 | Resíduo | ✅ | IDs que precisaram de reescrita LLM em lote |
-| Overflows não resolvidos | ✅ | IDs que falharam mesmo após a cascata → viram issues p/ 06c/07 |
+| Overflows não resolvidos | ✅ | IDs que falharam mesmo após a cascata → viram issues p/ 06b/07 |
 | Repoints | ✅ se `repoint` | Ponteiros recalculados |
 | Patch | ✅ | Formato emitido (ips/bps/xdelta) + caminho |
 
@@ -343,7 +343,7 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
           "escalated": bool         // opcional — true se segunda tentativa falhou
         }
       ],
-      "corrections_applied": [],    // presente apenas em entradas de correção (06c)
+      "corrections_applied": [],    // presente apenas em entradas de correção (06b)
       "token_errors": [str],        // OBRIGATÓRIO — lista vazia se nenhum
       "spoiler_flags": [str],       // OBRIGATÓRIO — lista vazia se nenhum
       "back_translation_flags": [str], // OBRIGATÓRIO — lista vazia se nenhum

@@ -188,7 +188,7 @@ Quando uma entrada existente do `glossary.csv` for modificada após o início do
 
 **3. Registrar no decision_log.md** com tipo `revision` (razão + impacto + ação).
 
-**4. Agendar correção:** adicionar IDs afetados ao próximo ciclo de correção (Passo 06c).
+**4. Agendar correção:** adicionar IDs afetados ao próximo ciclo de correção (Passo 06b).
 
 ---
 
