@@ -7,6 +7,28 @@ renderiza mal no GitHub). Nenhum diagrama traz fala de jogo.
 
 ## 1. Pipeline de tradução
 
+### Skills: três blocos e dois retornos
+
+As skills `00..09` são lidas em ordem, mas executadas em três blocos; o laço do meio repete por cena.
+
+```mermaid
+flowchart LR
+  subgraph A["A. Preparação (uma vez)"]
+    s0["00 extração"] --> s1["01–03 entidades, tom, KB"] --> s4["04 glossário<br/>04b decisões"] --> s5["05 plano<br/>05b corpus sintético"]
+  end
+  subgraph B["B. Laço por cena/onda"]
+    s6["06 tradução<br/>(api ou sessão)"] --> s6b["06b micro-QA<br/>e correção cirúrgica"]
+  end
+  subgraph C["C. Fechamento"]
+    s7["07 amostra de qualidade"] --> s8["08 reinserção<br/>08b texto de sistema"] --> s8c["08c teste no jogo"] --> s9["09 distribuição"]
+  end
+  A -->|gates: connector_gate, kb_gate, HITL| B
+  B -->|cenas verified| C
+  s7 -.->|erro achado: só as falas tocadas| s6b
+  s8c -.->|print: causa raiz| s6b
+  s4 -.->|glossário ou doutrina mudou: stale, re-QA| B
+```
+
 ### Nível 1 — Contexto
 
 ```mermaid

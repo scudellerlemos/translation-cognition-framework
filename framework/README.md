@@ -105,7 +105,7 @@ Copiar os templates de `framework/templates/profile/` e preencher com o que já 
 No pipeline real, o conteúdo equivalente é **gerado** pelos passos 1–4; o perfil curado serve de
 semente e referência.
 
-### 5. Rodar o pipeline
+Executar as skills em ordem de leitura (`framework/skills/_index.md` tem o fluxo `00..09` e os três blocos: preparação, laço por cena, fechamento). Cada skill:
 Executar as skills em ordem (`framework/skills/_index.md` tem o fluxo `00..09`). Cada skill:
 - Lê `project.json` + os artefatos do passo anterior
 - Tem um **Input Gate** que bloqueia execução fora de ordem

@@ -129,7 +129,7 @@ o que separa "pedi pro ChatGPT traduzir" de "tenho um pipeline cujas decisões e
 versionar e re-executar". O "spec-driven" é a aplicação, à IA, da velha lição de engenharia: torne o
 implícito explícito.
 
-> As etapas vivem em `framework/skills/00..09` (prosa) + `framework/runtime/` (executável).
+> As etapas vivem em `framework/skills/00..09` (prosa) + `framework/runtime/` (executável). Em execução formam três blocos (preparação, laço por cena, fechamento) com retornos de correção: ver `framework/skills/_index.md` e `docs/DIAGRAMAS.md`.
 
 ---
 

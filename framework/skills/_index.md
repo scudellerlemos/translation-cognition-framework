@@ -60,6 +60,21 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 09_distribution  (delta + patcher .exe de um clique; só diferenças, nunca conteúdo do jogo)
 ```
 
+**A fila acima é a ordem de leitura, não a forma de execução.** Na prática o processo tem três blocos e
+dois retornos (detalhe em `docs/TRANSLATION_PIPELINE.md`; desenho em `docs/DIAGRAMAS.md`):
+
+| Bloco | Skills | Quando roda | Quem executa |
+|-------|--------|-------------|--------------|
+| **A. Preparação** | `00`–`05b` | uma vez por projeto (re-extração reabre o escopo) | conector + humano/IA; gates `connector_gate` e `kb_gate`; HITL aceita o escopo |
+| **B. Laço por cena/onda** | `06` + `06b` (micro-QA e correção cirúrgica, já fundidos) | cena a cena, em ondas (`wave.py`) ou lotes (`session_lot.py`/`run_chapter`) | `run_scene`: gates → pacote de contexto → tradução → plano → round-trip → retrotradução por fala → checkpoint |
+| **C. Fechamento** | `07`, `08`, `08b`, `08c`, `09` | amostra de qualidade, instalação, teste no jogo, pacote | `quality_sample`, conector/patcher, humano com print |
+
+- **Dois caminhos no bloco B** (`api` ou sessão), escolha humana por projeto (`hitl.choose-path`); mesmos artefatos e gates.
+- **Retornos:** achado no `07` ou no `08c` volta ao `06b` só para as falas tocadas (`touched.py` pula o resto); mudança de
+  glossário ou de doutrina marca cenas como `stale` (`run_scene --check-stale`) e agenda re-QA.
+- **Transversais:** Carta de Governança, `_pre_task`, `04b_decision_log` (acumula do passo 4 em diante), medidores de custo
+  (`session_usage`, `cost_report`, `obs_report`) e texto repetido traduzido uma vez (`scene_dedup`).
+
 **Quem executa o quê.** Só as skills com código por trás estão em `skills/registry.py`: `00` (`s00_extraction.py`), `06`
 (`s06_translation.py`), `07` (`s07_qa.py`) e `08` (`s08_reinsertion.py`); as demais são playbooks cognitivos que a IA segue.
 Na prática, o passo 6 em diante de **uma cena** roda inteiro no `framework/runtime/run_scene.py` (contexto → tradução → plano
