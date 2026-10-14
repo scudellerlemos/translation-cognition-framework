@@ -71,6 +71,13 @@ Rodar `extract.py`. Para cada string: decodificar via tabela, mapear control cod
 o offset como `id_column`. **Sinalizar anomalias** (idiomas misturados, truncamento, bytes inesperados)
 no `extraction_log.md` em vez de tratá-las como texto normal.
 
+### 2b. Varredura de escopo (antes de fechar o escopo)
+Rodar `python framework/connectors/scope_scan.py <projeto/artifacts/scenes> <pasta do jogo>`: lista por
+extensão quantos arquivos o `dialogs.csv` cobre e quantos bytes ficaram sem dono. Extensão sem nenhum arquivo
+coberto (folha de imagem com rótulo, menu, texto de sistema) exige decisão **explícita** registrada em
+`extraction_scope` (`dialogo` | `completo`) — não se descobre no teste dentro do jogo. Complementa o
+`residual_text.py` (texto legível dentro de arquivo já coberto).
+
 ### 3. Registrar o byte budget (SHIFT-LEFT)
 Para cada string, gravar `byte_budget` = nº de bytes que ela ocupa no binário. **Este campo é o que
 permite a tradução caber na 1ª passada (Passo 06) e evita custo de LLM na reinserção.** Não omitir.
