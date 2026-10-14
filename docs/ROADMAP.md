@@ -34,7 +34,7 @@ Nenhum débito remanescente no pipeline — TM semântica (B2) implementada e at
 
 > Backlog acionável migrado do markdown pro GitHub Project — deixa de viver espalhado em
 > seções de roadmap. Ver [Translation Cognition Framework — Backlog](https://github.com/users/scudellerlemos/projects/4)
-> (issues #32–#44).
+> (as issues do backlog).
 
 O que estava aqui (P2.5: run_game/observabilidade/rebuild de state_index) já está **entregue** —
 histórico fica nos commits, não precisa de linha de "próximos passos" pra trabalho concluído.
@@ -132,9 +132,8 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 
 ### Outras Mídias (Filmes e Séries)
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issue
-[#32](https://github.com/scudellerlemos/translation-cognition-framework/issues/97) (perfis
-de filme/série + stack de voz ASR/diarização/prosódia).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issue de
+perfis de filme/série + stack de voz ASR/diarização/prosódia).
 
 ---
 
@@ -281,12 +280,9 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** round-trip do BoF4 verde + Generic Connector System validado (ambos entregues).
 > **Valor:** comunicação externa (portfolio, open-source) — zero valor operacional para uso interno.
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#33](https://github.com/scudellerlemos/translation-cognition-framework/issues/98) (CLI `tcf`),
-[#34](https://github.com/scudellerlemos/translation-cognition-framework/issues/99) (README de produto),
-[#35](https://github.com/scudellerlemos/translation-cognition-framework/issues/100) (consolidar docs),
-[#36](https://github.com/scudellerlemos/translation-cognition-framework/issues/101) (`.exe`).
-#33, #34 e #35 já foram entregues; a #36 tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); resta o teste no jogo real, a máquina sem Python e a release.
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+CLI `tcf`, README de produto, consolidar docs e `.exe`.
+As três primeiras já foram entregues; o `.exe` tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); resta o teste no jogo real, a máquina sem Python e a release.
 
 ---
 
@@ -297,15 +293,14 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 
 - [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12 (números da época; hoje são 7 workflows, ver `.github/workflows/README.md`). ✅
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#37](https://github.com/scudellerlemos/translation-cognition-framework/issues/102) (CI de packaging),
-[#38](https://github.com/scudellerlemos/translation-cognition-framework/issues/103) (LLM judge).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+CI de packaging e LLM judge.
 
 ---
 
 ## Histórico detalhado (pré-migração ao GitHub Project #4)
 
-> Fundido de `framework/docs/ROADMAP.md` (#35) — narrativa técnica original de P0–P4, incidentes e
+> Fundido de `framework/docs/ROADMAP.md` — narrativa técnica original de P0–P4, incidentes e
 > lições aprendidas durante o desenvolvimento do harness (`framework/runtime/`). O backlog acionável
 > que ainda estava em aberto nesse arquivo já migrou pro GitHub Project #4 (seção acima); o que segue
 > é registro histórico (o "porquê" e os war stories por trás do que hoje aparece resumido como ✅ na
@@ -356,7 +351,7 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | Bundle de custo | bundle de custo (dedup TM/intra-corpus, ~~slim de schema~~, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; **dedup por TM ✅** (linhas com fonte já traduzida em outra cena não vão ao modelo — corta tokens de saída; medido 2,8% no cap.12 sobre TM cap.11+12, **cresce com o corpus**; guard de paridade + nunca reusa a própria cena; desligado no escalonamento). **slim de schema: REJEITADO por qualidade** (ver abaixo). **cache da Carta: observável, BECO SEM SAÍDA** ✅ (medido cap.13: Carta ~1.3k tok, custa $0,14 vs output $3,41; com cache_control fica até levemente net-negativo pois o batch paraleliza e re-escreve ~27×; cache perfeito é impossível no batch e economizaria só $0,12/cap). **batch API ✅ comprovado vivo** (cap.13 9/9; −50% real; resume idempotente; re-batch acumulativo entre rodadas). **tiering por complexidade ✅ codado** (linhas SEM `\n` → Haiku −67%/linha; COM `\n` → Sonnet; benchmark: voz do Haiku no nível do Sonnet inclusive registro arcaico, mas Haiku derrapa na paridade de `\n` em escala → o split dribla a fraqueza; só no batch; falta run viva tiered p/ medir). **back-translation em BATCH ✅ codado** (Tier 1: a back-translation Opus — passo mais caro/linha, $25/M de saída — vira PÓS-PASSE do capítulo; `batch_back_translate` coleta as linhas high/critical de todas as cenas verificadas e roda 1 batch −50%; `run_chapter --batch` difere a back-translation por cena e batcheia ao fim; resume idempotente; report-only, não bloqueia; ledger marca `batch=True`. Falta run viva p/ medir). |
 
 > **slim de schema — REJEITADO (não tentar de novo).** Decisão registrada e fechada como "not planned"
-> em [issue #46](https://github.com/scudellerlemos/translation-cognition-framework/issues/111)
+> numa issue do backlog
 > (cortar `tone_register`/`intent` do schema quebraria o gate de qualidade e a única cognição
 > estruturada por linha com o thinking desligado).
 
@@ -522,10 +517,9 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#39](https://github.com/scudellerlemos/translation-cognition-framework/issues/104) (multi-projeto/paralelismo)
-e [#40](https://github.com/scudellerlemos/translation-cognition-framework/issues/105) (RAG sobre `decision_log`
-— KB/lore já ativo, ver Fase 3 do `DB_MIGRATION_ROADMAP.md`).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+multi-projeto/paralelismo e RAG sobre `decision_log`
+(KB/lore já ativo, ver Fase 3 do `DB_MIGRATION_ROADMAP.md`).
 
 ### P2.5 — Maturidade de execução (paralelismo, orquestração, observabilidade)
 > Gap reconhecido: o roadmap tratava "paralelizar cenas" como uma linha vaga. Esta seção torna explícito
@@ -558,11 +552,10 @@ overengineering. **Feito (2026-07-03):** `run_game` driver + `progress_report` +
 tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
 Testes: `test_run_game.py` (5), `test_progress_report.py` (5), `test_batch_mode_rebuilds_state_index_once_per_chapter`
 + 2 em `test_run_scene.py`. **Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo,
-multi-projeto — ver [issue #39](https://github.com/scudellerlemos/translation-cognition-framework/issues/104).
+multi-projeto — ver o [Project #4](https://github.com/users/scudellerlemos/projects/4).
 
 ### P3 — não fazer agora (overengineering)
-Decisão registrada e fechada como "not planned" em
-[issue #45](https://github.com/scudellerlemos/translation-cognition-framework/issues/110)
+Decisão registrada e fechada como "not planned" numa issue do backlog
 (banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços").
 
 ### P4 — Pós-produção & hardening (PRIORIDADE, **depois** de entregar o jogo)
@@ -587,7 +580,7 @@ Decisão registrada e fechada como "not planned" em
 | run_scene coeso | `run_scene` acretando responsabilidade (492 linhas quando documentado, era ~300; hoje 713 depois dos blocos do pós-bof4) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` da época passam sem alteração (hoje são 55) |
 | Repro: gate ≠ geração | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
 | Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ✅ **feito (2026-07-03)** — `kb_gate.py` generalizou a exigência de ratificação humana por entidade (`kb_ratified.csv`) para QUALQUER `research_log.md` com `status: reconciled`, não só o caminho `draft_ollama` do `kb_reconcile.py`. Toda entidade com conteúdo afirmado (≠ UNSOURCED) no `universe_knowledge_base.md` agora exige uma linha em `kb_ratified.csv`; bypassável via `--skip-kb-gate` como qualquer `problem` (soft, não quebra continuidade de projetos já em produção). **Escopo deliberadamente reduzido**: o tripwire de conteúdo mínimo em "Conflitos Resolvidos" do `kb_reconcile.py` NÃO foi generalizado — um projeto sem nenhum conflito de verdade (fonte única) é um caso legítimo que só o placeholder EXATO do `kb_build_ollama.py` consegue distinguir de "não revisado"; não generaliza sem uma âncora textual conhecida. **Custo aceito**: Utawarerumono/BoF4/Souldiers (as 3 KBs já reconciliadas) agora mostram esse `problem` novo até serem ratificadas por entidade — não bloqueia trabalho já feito, só torna visível o que faltava. Testes: 3 novos em `test_kb_gate.py` |
-| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. `check_gender` (extensão de [issue #41](https://github.com/scudellerlemos/translation-cognition-framework/issues/106)) continua flagrando por co-ocorrência (RECALL preservado — perder um vazamento real é pior que um falso-positivo extra) mas agora ATRIBUI o token de gênero ao referente mais provável: cada flag carrega `confident` (True se a menção da entidade em quarentena é a mais próxima, em distância de caracteres, do marcador entre as entidades do ledger citadas na linha) |
+| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. `check_gender` (extensão de uma issue do backlog) continua flagrando por co-ocorrência (RECALL preservado — perder um vazamento real é pior que um falso-positivo extra) mas agora ATRIBUI o token de gênero ao referente mais provável: cada flag carrega `confident` (True se a menção da entidade em quarentena é a mais próxima, em distância de caracteres, do marcador entre as entidades do ledger citadas na linha) |
 
 **Riscos de engenharia (avaliação crítica — mitigações offline):**
 | # | Risco | Mitigação | Status |
@@ -614,13 +607,11 @@ linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 
 
 **Evolução da camada de conector (norte de "plataforma") — ENTREGUE:**
 
-Issues [#42](https://github.com/scudellerlemos/translation-cognition-framework/issues/107) (registry
-por família de engine) e
-[#43](https://github.com/scudellerlemos/translation-cognition-framework/issues/108) (síntese agêntica
-de conector novo via round-trip como oráculo) **fechadas** — ambas cobertas pelo Generic Connector
+As issues de registry por família de engine e de síntese agêntica
+de conector novo via round-trip como oráculo **fechadas** — ambas cobertas pelo Generic Connector
 System (Fase D, `docs/ROADMAP.md` raiz: D1–D6 entregues, 3 engines validadas + 4ª em onboarding).
 Ver [Project #4](https://github.com/users/scudellerlemos/projects/4) pro backlog de plataforma que
-segue em aberto (ex. issue #39 — generalizar `state_index` + paralelismo/pipelining cross-capítulo).
+segue em aberto (ex. generalizar `state_index` + paralelismo/pipelining cross-capítulo).
 
 ## Fases
 
