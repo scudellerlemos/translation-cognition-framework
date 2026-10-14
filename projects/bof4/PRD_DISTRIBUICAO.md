@@ -1,6 +1,6 @@
 # PRD — Distribuição da tradução PT-BR de Breath of Fire IV (Steam)
 
-> Status: rascunho de 2026-10-14. Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
+> Status: decisões confirmadas em 2026-10-14. Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
 > binário; só processo, decisões e critérios. Nada aqui é parecer jurídico.
 
 ## 1. Contexto e problema
@@ -162,7 +162,6 @@ gantt
     axisFormat  %d/%m
     section Decisão
     Escolher empacotamento e canal       :d1, 2026-10-15, 3d
-    Avaliação jurídica                   :d2, after d1, 7d
     section Construção
     Gerar deltas e manifesto             :c1, after d1, 4d
     Patcher (instalar, verificar, desinstalar) :c2, after c1, 7d
@@ -173,14 +172,15 @@ gantt
 
 As datas são estimativas de planejamento, não compromisso.
 
-## 13. Decisões (propostas, a confirmar)
+## 13. Decisões (confirmadas por Felipe Scudeller em 2026-10-14)
 
-| # | Decisão | Proposta | Motivo |
+| # | Decisão | Definido | Motivo |
 |---|---|---|---|
-| 1 | Empacotamento | **A. Delta binário** (`xdelta3`) | Não publica o arquivo do jogo; verificável por hash. Ainda depende do aviso jurídico |
-| 2 | Canal | **GitHub Releases** no início; Nexus Mods depois, se houver demanda | Já usamos o repositório; zero custo |
+| 1 | Empacotamento | **A. Delta binário** (`xdelta3`), dentro de um patcher `.exe` de um clique (sem Python no jogador) | Prioridade é a facilidade para o jogador; não publica o arquivo do jogo; verificável por hash |
+| 2 | Canal | **GitHub Releases + guia na comunidade Steam** apontando para a release | Release versionada e gratuita; o guia dá visibilidade sem hospedar arquivo. Nexus Mods fica para depois, se houver demanda |
 | 3 | Versão | `v0.1.0-beta` (SemVer); nova release a cada build da Steam ou lote de correções | Marca que a qualidade ainda é medida |
 | 4 | Limites conhecidos | **Publicar como limitações** na release; corrigir depois | Os cortes dependem de arte sem letras, fora do escopo de texto |
 | 5 | Amostra de qualidade | Beta sai com a linha de base de 14,5% (anterior às correções); **reamostrar antes da `v1.0.0`** | Beta serve para coletar erros reais; a reamostra custa revisão humana |
+| 6 | Posição sobre direitos | Sem parecer jurídico prévio: a tradução é apresentada como **mod** da comunidade, só delta, sem asset do jogo, com plano de retirada | Decisão do Felipe; risco aceito por ele (seção 11) |
 
-Até o OK explícito, nada daqui é compromisso.
+Próximo passo: gerar deltas e manifesto (seção 12).
