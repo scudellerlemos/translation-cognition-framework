@@ -42,6 +42,12 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 
 > Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Nada abaixo
 > está levado ao framework ainda; o projeto novo só começa depois de 1 e 2 levados e do benchmark de 3.
+>
+> Bloco A (código) levado em 2026-10-14, branch `feat/framework-pos-bof4`: medidor de tokens com erro reportado,
+> saída ≠ 0 fora de projeto, `budget.py`, `tm_correct` por linha, portão de caminho também no lote
+> (`run_chapter`/`run_game`), `scene_dedup.py`, retrotradução re-julgada por fala, `run_scene --jobs N`.
+> Falta do item 1: tudo do bloco B (conectores/Fase 0). Falta da reconferência: só as falas tocadas (hoje a
+> cena inteira, em paralelo).
 
 - [ ] **1. Processo e gates.** Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
   `completo`); largura de linha por caixa, derivada do inglês do jogo; tabela de opcodes com parâmetros (e valor
