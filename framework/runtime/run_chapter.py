@@ -42,6 +42,7 @@ import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import quality_gate  # noqa: E402  (piso de qualidade obrigatorio: verdicts de back-translation)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
+import hitl  # noqa: E402
 import run_scene as RS  # noqa: E402
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 
@@ -357,6 +358,15 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
         _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "empty"}
+    problems = hitl.gate(root, scenes, backend=backend) if hitl.enabled(root) else []   # mesmo portao do run_scene.main
+    pf, notes = RS.backend_preflight(root, scenes, backend)
+    for n in notes:
+        print(n)
+    if problems or pf:
+        print(f"BLOQUEADO (caminho {backend}):")
+        for m in problems + pf:
+            print(f"  - {m}")
+        return {"chapter": chap, "scenes": [], "status": "blocked_path"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
 

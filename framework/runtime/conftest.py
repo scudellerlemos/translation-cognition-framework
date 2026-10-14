@@ -8,6 +8,11 @@ import model
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def _api_key(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test")   # run_chapter confere o caminho (chave) antes de rodar
+
+
 @pytest.fixture
 def fake_pack_ctx(monkeypatch):
     """E6: elimina 3 monkeypatches repetidos em testes de batch.
