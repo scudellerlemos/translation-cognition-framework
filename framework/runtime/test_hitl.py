@@ -1,5 +1,6 @@
 """test_hitl.py — humano no laco (escopo, ratificacao, onda, fila) e triagem de risco, em projeto sintetico."""
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -187,3 +188,20 @@ def test_path_is_a_human_choice_and_switching_needs_a_new_one(tmp_path):
     assert "decidido para o caminho 'in-session'" in hitl.path_problems(root, "api")[0]
     hitl._log(root, kind="caminho", by="ana", backend="api", action="choose")
     assert hitl.path_problems(root, "api") == []
+
+
+def test_pattern_lint_blocks_sample_export(tmp_path, monkeypatch):
+    import pattern_lint
+    import pytest
+    import quality_review
+    import quality_sample
+    root = _project(tmp_path, n_scenes=3)
+    assert pattern_lint.lint(root)["blocking"] == {}
+    monkeypatch.setattr(quality_review, "_PTPT", re.compile("."))   # toda traducao vira "pt-PT?"
+    r = pattern_lint.lint(root)
+    assert r["counts"]["pt-PT?"] > 0 and r["blocking"] == {}   # heuristica: avisa, nao bloqueia
+    import box_width
+    monkeypatch.setattr(box_width, "widths", lambda t, tbl: [999])
+    assert set(pattern_lint.lint(root)["blocking"]) == {"largura"}
+    with pytest.raises(SystemExit, match="lint de padroes"):
+        quality_sample.export(root, n=10)

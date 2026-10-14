@@ -137,6 +137,17 @@ Depois do round-trip verde, a tradução sai como **delta**, nunca como DAT remo
 
 Dependências: `bsdiff4`, `pyinstaller`, `Pillow` (só para arte/ícone).
 
+## Largura de caixa e tabela de opcodes (`project.json`)
+
+- `"line_width": "derive"` — o limite de largura é o maior segmento visível do **inglês** das falas que o autor
+  quebrou em 2+ linhas (`box_width.py`); `"line_width_max": N` fixa o valor (vence); sem nenhum, vale 62.
+  `python framework/runtime/box_width.py <projeto>` mostra o limite.
+- `connector.control_codes` aceita, além de `"01": "newline"`, `{"name", "params", "width", "values"}`:
+  `params` = tokens `[xx]` colados que são valor do código (não quebram nem contam como código), `width` =
+  glifos que a variável ocupa na tela, `values` = valores possíveis (`opcodes.py` valida e mede por isso).
+- `pattern_lint.py <projeto>` roda antes da amostra de qualidade (`quality_sample.export` recusa se reprovar):
+  `largura` e `parametro` bloqueiam; `pt-PT?` e `identico-fonte` só são contados.
+
 ## Verificação ponta-a-ponta
 
 ```

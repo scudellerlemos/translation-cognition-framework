@@ -48,8 +48,8 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import artifact_io  # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
 import back_translate  # noqa: E402  (invalidate_back_translation -- crivo antigo nao vale mais)
-import context_pack  # noqa: E402
 import budget as _bud  # noqa: E402  (fonte unica da conta de bytes)
+import context_pack  # noqa: E402
 import paths  # noqa: E402
 
 

@@ -40,7 +40,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io  # noqa: E402  (leitura compartilhada: scenes/translations_map)
+import artifact_io  # noqa: E402
+import box_width  # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
 import model  # noqa: E402
 import paths  # noqa: E402
@@ -174,6 +175,11 @@ WIDTH_MAX = 62
 _VISIBLE_RX = re.compile(r"\{c-?\d*\}|\{W\d+\}|\{COLOR\}|\{END\}")   # tokens que NAO ocupam largura visual
 
 
+def configure(root) -> int:
+    return box_width.configure(root)
+
+
+
 # BoF4: detecta codigos de controle do DAT no formato [XX] (hex 1-2 chars)
 _BOF4_HEX_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\]")
 # par: codigo de controle + byte de face (@=0x40, A=0x41, B=0x42 ... G=0x47)
@@ -262,6 +268,7 @@ def _box_verdict(source: str, target: str) -> str:
 def export(root, chapter) -> list[dict]:
     """CSV-rows do capitulo inteiro, cada linha marcada. Determinista (sem rede)."""
     root = Path(root)
+    configure(root)
     rows = []
     for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)

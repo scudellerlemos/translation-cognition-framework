@@ -31,6 +31,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import paths  # noqa: E402
+import pattern_lint  # noqa: E402
 import risk_triage  # noqa: E402
 
 NAME = "amostra_qualidade"
@@ -43,6 +44,10 @@ def _h(seed: str, pid: str) -> str:
 
 def export(root, n: int = 200, seed: str = "q1") -> dict:
     root = Path(root)
+    bl = pattern_lint.lint(root)["blocking"]
+    if bl:   # a amostra e o ultimo passo: padrao mecanico se conserta antes (rode pattern_lint.py)
+        raise SystemExit("ERRO: lint de padroes reprova antes da amostra: "
+                         + "; ".join(f"{f} em {len(w)} fala(s)" for f, w in bl.items()))
     allp = risk_triage.pairs(root, everything=True)
     seen, flagged = risk_triage.judged(root)
     sample = sorted(allp, key=lambda pid: _h(seed, pid))[:n]          # sorteio estavel: mesma seed, mesma amostra

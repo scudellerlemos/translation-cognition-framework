@@ -37,12 +37,12 @@ import config  # noqa: E402  (fonte unica de SCENE_OK_STATUSES -- ver _OK abaixo
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
+import hitl  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import quality_gate  # noqa: E402  (piso de qualidade obrigatorio: verdicts de back-translation)
 import quality_review  # noqa: E402  (QA obrigatorio: export do XLSX de revisao humana ao fim do cap.)
-import hitl  # noqa: E402
 import run_scene as RS  # noqa: E402
 import state_index  # noqa: E402  (rebuild 1x/capitulo em modo batch, ver _rebuild_index_phase)
 

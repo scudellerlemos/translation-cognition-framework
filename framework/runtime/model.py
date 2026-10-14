@@ -24,15 +24,14 @@ import json
 import re
 import sys
 import time  # noqa: F401  (re-exportado p/ test_batch_retries fazer monkeypatch de model.time.sleep)
-import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import budget as _bud  # noqa: E402  (budget.py: fonte unica da conta de bytes)
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-import budget as _bud  # noqa: E402  (budget.py: fonte unica da conta de bytes)
 import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
 import translate_checkpoint as ckpt  # noqa: E402  (L01: nao perder linhas pagas quando os retries esgotam)
 

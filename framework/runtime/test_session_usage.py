@@ -119,6 +119,7 @@ def test_missing_final_usage_is_estimated_and_stage_mark_applies(tmp_path):
 
 def test_sonnet5_has_own_fit_and_report_states_estimate_error():
     assert "claude-sonnet-5" in su._OUT_FIT
-    import cost_report as cr
     import inspect
+
+    import cost_report as cr
     assert "erro da estimativa na soma" in inspect.getsource(cr)
