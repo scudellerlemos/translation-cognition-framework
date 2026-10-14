@@ -65,7 +65,7 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   `revisar`, `install`) e descrevê-lo na `06_translation`.
   Subiu tudo — `session_lot.py`, `scene_dedup.py`, `review_page.py`, `risk_triage_run.py` (a triagem, que chama o CLI
   do modelo e é paga) — e a `06_translation` descreve os dois caminhos.
-- [ ] **3. Benchmark do caminho de sessão (próximo passo a testar).** No projeto novo, rodar o mesmo recorte
+- [ ] **3. Benchmark do caminho de sessão (próximo passo a testar; PRD, HLD e FDD em [`benchmark_sessao/`](benchmark_sessao/PRD.md)).** No projeto novo, rodar o mesmo recorte
   (por exemplo, um capítulo) pelo caminho de sessão e pelo de API e comparar: taxa de erro da amostra de
   qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos da transcrição; só a saída de mensagem sem usage final
   é estimada, com erro declarado no relatório), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com

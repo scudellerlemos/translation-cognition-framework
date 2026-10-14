@@ -470,6 +470,9 @@ def _check_sync(root: Path) -> None:
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     if "--check-sync" in sys.argv:
         flags = [a for a in sys.argv[1:] if not a.startswith("--")]
         root = Path(flags[0]) if flags else Path(".")

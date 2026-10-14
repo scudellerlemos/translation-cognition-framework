@@ -215,6 +215,13 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
 
 ### `translation_plan.json`
 
+> **Legado (poc).** O plano de produção é **por cena**: `artifacts/scenes/<cena>/translation_plan_<sufixo>.json`
+> (montado pelo `build_plan_chapter.py` do conector; contrato em `skills/05_translation_planning.md`). Ele traz
+> `offset`, `text_source`, `speaker`, `risk_level`, `risk_notes` (obrigatório se `risk ≥ medium`),
+> `base_translation`, `byte_budget`, `total_lines` e `plan_version`; **não** traz `entities_present`,
+> `glossary_flags`, `spoiler_flags` nem `critical_lines`. O validador (`validate.py`) exige os campos extras
+> só do arquivo global legado. O bloco abaixo descreve esse arquivo global.
+
 ```
 {
   "lines": [
@@ -254,7 +261,7 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
   "last_offset": string,        // OBRIGATÓRIO — último id traduzido no lote
   "next_offset": string,        // OBRIGATÓRIO — próximo id a traduzir
   "last_updated": string,       // OBRIGATÓRIO — "YYYY-MM-DD"
-  "batch_size": int,            // OBRIGATÓRIO — de project.json (default 200)
+  "batch_size": int,            // OBRIGATÓRIO neste arquivo (legado) — de project.json (opcional lá; default 200)
   "batches_completed": int,     // OBRIGATÓRIO
   "length_warnings": [string],  // OBRIGATÓRIO — ids que excedem length_constraints
   "needs_human_review": [string], // OBRIGATÓRIO — ids com risk_level: critical

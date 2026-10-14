@@ -189,6 +189,9 @@ def assert_fresh_read(script_path, claimed_content: str) -> None:
 
 
 def main():
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     ap_project = sys.argv[1] if len(sys.argv) > 1 else None
     if not ap_project:
         print("uso: python connector_gate.py <projeto>")

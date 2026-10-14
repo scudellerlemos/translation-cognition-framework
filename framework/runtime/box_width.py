@@ -78,6 +78,9 @@ def rewrap(text: str, width: int, token: str = r"\n") -> str:
 
 
 def main():
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     root = paths.require_project(sys.argv[1] if len(sys.argv) > 1 else "")
     print(f"limite do projeto: {limit(root)} | derivado do ingles: {derive(root)} | padrao: {DEFAULT}")
 

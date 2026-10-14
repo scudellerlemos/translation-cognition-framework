@@ -57,6 +57,9 @@ def _section_strings(section: bytes) -> dict[int, bytes]:
 def main() -> None:
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <scene>  (ex.: AREAD001)")
 

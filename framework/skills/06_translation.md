@@ -91,7 +91,7 @@ Criado/atualizado ao final de cada lote:
 3. Traduzir as próximas `batch_size` linhas a partir desse ponto
 4. Atualizar `translation_status.json` com o novo `next_offset` e contagem
 
-**Tamanho do lote:** `project.json → batch_size` (default 200).
+**Tamanho do lote:** `project.json → batch_size` (opcional, default 200; hoje só o `cost_model.py` o lê — no runtime a unidade é a cena, e o lote do caminho de sessão é `session_lot.py plan --max N`).
 
 ---
 
