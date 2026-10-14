@@ -118,10 +118,10 @@ flowchart LR
 > [`../SDD_RUNTIME.md`](../SDD_RUNTIME.md).
 
 > Governança (quem propõe, quem aprova, quem aplica, o que é imutável) com desenhos:
-> [`../docs/GOVERNANCE.md`](../../docs/GOVERNANCE.md).
+> [`docs/GOVERNANCE.md`](../../docs/GOVERNANCE.md).
 
 > Convenção de nomes (identificadores em inglês, glossário de abreviações aceitas — KB/TM/scene_id… — e o
-> **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`../docs/NAMING.md`](../../docs/NAMING.md).
+> **contrato congelado** de nomes de artefato/CLI/`project.json`): ver [`docs/NAMING.md`](../../docs/NAMING.md).
 
 ## Uso
 

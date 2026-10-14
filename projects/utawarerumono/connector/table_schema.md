@@ -81,7 +81,7 @@ placeholders abstratos `{COLOR}` (abre) / `{END}` (fecha). `{W<N>}` (timers) é 
   Pack é reescrito por `sdat_format.rebuild_container`, com todos os offsets recalculados e padding a 16
   bytes). Cada ponteiro `50 00`+rel32 do head é reescrito com o valor **`offset_local_no_arquivo`**
   (= `novo_offset − file_start`). Continuações viajam contíguas → ordem preservada.
-- **T4 resíduo:** caso irredutível (overflow sem head) → issue para o Passo 06c. (Com o modelo
+- **T4 resíduo:** caso irredutível (overflow sem head) → issue para o Passo 06b. (Com o modelo
   file-relativo, tudo é repointável → resíduo = 0 no corpus testado.)
 
 > ⚠️ **EOF-append (fim do CONTAINER) foi REPROVADO in-game** (`artifacts/evidence/Fasea*.png`): o engine carrega
