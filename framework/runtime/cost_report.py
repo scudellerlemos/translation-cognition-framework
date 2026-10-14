@@ -204,7 +204,8 @@ def _fmt(rep: dict, by_scene: bool) -> str:
             f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_stage"].items()))
     if rep.get("out_est"):
         L.append(f"  saida estimada: {rep['out_est']:,} de {rep['tokens']['out']:,} tokens de saida "
-                 f"({100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}%) vem de mensagem sem usage final na transcricao")
+                 f"({100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}%) vem de mensagem sem usage final na transcricao; "
+                 f"erro da estimativa na soma: +-{rep['out_est'] * 0.07:,.0f} tokens (~7%, medido)")
     if rep["by_activity"]:
         L.append("  resto por atividade (sessao fora de cena, heuristico): " + ", ".join(
             f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_activity"].items()))
