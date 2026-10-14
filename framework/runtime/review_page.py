@@ -77,7 +77,8 @@ def main():
     box.mkdir(parents=True, exist_ok=True)
     out = box / "revisar.html"
     out.write_text(render(box), encoding="utf-8")
-    print(f"{out}  ({', '.join(f'{k}: {len(v['rows'])}' for k, v in load(box).items())})")
+    counts = ", ".join(f"{k}: {len(v['rows'])}" for k, v in load(box).items())
+    print(f"{out}  ({counts})")
     if a.serve:
         serve(box, a.port)
 
