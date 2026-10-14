@@ -2,7 +2,7 @@
 
 Wraps o reinsert_script do conector — aplica approved_translations.csv no binário e gera o
 patch. DETERMINÍSTICA: a reinserção é código do conector; a IA nunca escreve bytes (invariante
-#13). Espelha o s00 (extração): gate por project.json:connector.reinsert_script + subprocess.
+Espelha o s00 (extração): gate por project.json:connector.reinsert_script + subprocess.
 
 Uso:
     skill = ReinsertionSkill()

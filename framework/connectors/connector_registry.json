@@ -17,7 +17,7 @@
       },
       "reference_project": "bof4",
       "reference_connector": "projects/bof4/connector",
-      "notes": "Container TOC Capcom: offsets little-endian uint32, 16 bytes/entrada. String sharing: ponteiros podem apontar para o interior de outras strings. Encoding ASCII puro (0x20-0x7E) + tokens de controle [XX]. Fim de string = proximo ponteiro distinto: 0x00 tambem e parametro de control code ([14][00][00]), cortar no primeiro 0x00 trunca a fala (issue #222)."
+      "notes": "Container TOC Capcom: offsets little-endian uint32, 16 bytes/entrada. String sharing: ponteiros podem apontar para o interior de outras strings. Encoding ASCII puro (0x20-0x7E) + tokens de controle [XX]. Fim de string = proximo ponteiro distinto: 0x00 tambem e parametro de control code ([14][00][00]), cortar no primeiro 0x00 trunca a fala (issue do backlog)."
     },
     {
       "id": "aquaplus_sdat",

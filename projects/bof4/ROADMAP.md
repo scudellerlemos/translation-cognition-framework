@@ -106,7 +106,7 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
 - [x] **1.2.** `research_log.md` reconciliado; ratificações do usuário em `kb_ratified.csv`.
 - [x] **1.3.** `decision_log.md` com as 16 decisões ratificadas (eram 15 quando o item fechou), indexadas no banco.
 - [x] **1.4.** `kb_gate` verde, com busca semântica ativa.
-- [x] **1.5.** Candidatos da re-extração reconciliados (`Buy`, `Sell`, `Stop`, `Normal`, `Sink`, golpes `Pilfer…`/`Spray…`): glossário + `research_log`, `kb_phase.py all --check` verde (issue #221).
+- [x] **1.5.** Candidatos da re-extração reconciliados (`Buy`, `Sell`, `Stop`, `Normal`, `Sink`, golpes `Pilfer…`/`Spray…`): glossário + `research_log`, `kb_phase.py all --check` verde ( do backlog).
 - [x] **1.6.** Worklist da re-extração com `AREAM`/`AREAE` reconciliada: +152 termos no glossário, +9 entidades, seção nova no `research_log`; `kb_phase.py all --check` e `kb_gate` verdes. Propostas de lore aguardando ratificação do usuário: Purifiers→Purificadores, Elders→Anciões, Nameless→Sem Nome, Gateway→Portal, Dragon of Doom→Dragão da Perdição.
 
 - [x] **1.7.** Worklist da re-extração 0.4 reconciliada: +159 termos no glossário, +6 entidades, seção nova no `research_log`; `kb_phase.py all --check` verde. Traduções são proposta, aguardando ratificação do usuário.
@@ -158,7 +158,7 @@ Resumo do que foi feito, para quem retomar o projeto. Sem falas do jogo; detalhe
 ### Repositório e proteção de conteúdo
 
 - Repositório público recriado com histórico limpo; o antigo ficou privado.
-- `content_guard.py` (hook local + job `Guard` da CI, PR #80): bloqueia binário de jogo, roteiro extraído,
+- `content_guard.py` (hook local + job `Guard` da CI): bloqueia binário de jogo, roteiro extraído,
   tradução de cena, planilha de revisão, print, worklist gerada, saída de descompilador, chave de API e e-mail
   pessoal. `projects/*/artifacts/` é default-deny (só entra o que está em `ARTIFACTS_ALLOWED`). Vale para
   todos os projetos. Regras resumidas no `CLAUDE.md` da raiz.

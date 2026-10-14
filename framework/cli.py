@@ -3,7 +3,7 @@
 Ponto de entrada único para operações do pipeline. Substitui os 15+ scripts
 invocados manualmente por subcomandos organizados.
 
-Instalável via `pip install .` (entrypoint `tcf`, #33). Uso:
+Instalável via `pip install .` (entrypoint `tcf`). Uso:
   tcf translate <project> <scene> [--backend api|in-session]
   tcf extract <project> [--dat-dir DIR]
   tcf verify <project> [--chapter ID]
@@ -77,7 +77,7 @@ def cmd_db_export(args):
 
 
 def cmd_db_index(args):
-    """Indexa embeddings da TM (default) ou de decisions (--kind decision, #40) no SQLite."""
+    """Indexa embeddings da TM (default) ou de decisions (--kind decision) no SQLite."""
     import sqlite3
 
     from embedder import Embedder
@@ -95,7 +95,7 @@ def cmd_db_index(args):
 
 def cmd_db_validate_model(args):
     """Revalida o modelo de embedding pro par de idiomas do projeto antes de habilitar RAG
-    em produção (#54) — ver docs/DB_MIGRATION_ROADMAP.md."""
+    em produção — ver docs/DB_MIGRATION_ROADMAP.md."""
     import sqlite3
 
     from store import Store
@@ -112,7 +112,7 @@ def cmd_db_validate_model(args):
     return 0
 
 
-# ── extract / verify (aliases finos p/ skill 00/07 — #33) ─────────────────────
+# ── extract / verify (aliases finos p/ skill 00/07) ─────────────────────
 
 def cmd_extract(args):
     args.skill_id = "00"
@@ -238,7 +238,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp.add_argument("out_dir", help="Diretório de saída (ex.: projects/<x>/artifacts)")
     p_exp.set_defaults(func=cmd_db_export)
 
-    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM ou de decisions (#40)")
+    p_idx = db_sub.add_parser("index", help="Indexa embeddings da TM ou de decisions")
     p_idx.add_argument("db_path")
     p_idx.add_argument("project_id")
     p_idx.add_argument("--force", action="store_true")
@@ -248,7 +248,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_val = db_sub.add_parser(
         "validate-model",
-        help="Revalida modelo de embedding pro par de idiomas antes de produção (#54)")
+        help="Revalida modelo de embedding pro par de idiomas antes de produção")
     p_val.add_argument("db_path")
     p_val.add_argument("project_id")
     p_val.add_argument("--model", default=None,

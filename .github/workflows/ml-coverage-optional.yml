@@ -1,4 +1,4 @@
-# Cobertura real (ML) — job dedicado, fora do push/PR (#60). embedder.py/validate_model.py só
+# Cobertura real (ML) — job dedicado, fora do push/PR. embedder.py/validate_model.py só
 # eram exercitados por testes que usam pytest.importorskip("sentence_transformers"/"sqlite_vec")
 # e ficam pulados sem essa stack — o que é o caso de test.yml (nunca a instala, ver
 # requirements-ml.txt) e, até aqui, deste job. Resultado: nenhum gate automatizado verificava
@@ -6,13 +6,13 @@
 # regressão nessa lógica (ex.: inverter a métrica de distância) passava pela suíte inteira.
 #
 # Mesma stack pesada (~700MB-1,5GB, torch+modelo via HuggingFace) que já levou o audit de CVE
-# (dep-audit-optional.yml, #26) pra cadência semanal em vez de todo push/PR — reaproveita o
+# (dep-audit-optional.yml) pra cadência semanal em vez de todo push/PR — reaproveita o
 # mesmo raciocínio de custo aqui. Upgrade natural se uma regressão passar batido entre domingos:
 # mover pra test.yml (push/pull_request) e aceitar o tempo extra por PR.
 #
 # Todo test file com pytest.importorskip("sentence_transformers"/"sqlite_vec") no repo entra
 # aqui (grep -rl "importorskip(\"sentence_transformers\")\|importorskip(\"sqlite_vec\")"
-# framework/) -- inclui framework/connectors/test_connector_io.py (#61, reindex no write-path).
+# framework/) -- inclui framework/connectors/test_connector_io.py (reindex no write-path).
 name: Cobertura real (ML) — embedder/validate_model
 
 on:

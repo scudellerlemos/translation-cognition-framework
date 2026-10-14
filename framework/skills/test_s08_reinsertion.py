@@ -1,4 +1,4 @@
-"""test_s08_reinsertion.py — cobre o sandbox contra path traversal (#24): s08_reinsertion deve
+"""test_s08_reinsertion.py — cobre o sandbox contra path traversal: s08_reinsertion deve
 reusar connector_mgr._connector_script(), a mesma validacao ja aplicada por run_scene/connector_mgr,
 em vez de concatenar project/reinsert_script diretamente."""
 import json

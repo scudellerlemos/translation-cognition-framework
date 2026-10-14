@@ -33,8 +33,8 @@ def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
     assert result["voice_cards"] > 0, "voice_cards.json existe (artifacts/state/) mas importou 0 — path errado?"
     assert result["back_translations"] > 0, "back_translation_*.json existe mas importou 0"
     assert result["kb"] > 0, "universe_knowledge_base.md existe mas importou 0 seções"
-    assert result["research_log"] > 0, "research_log.md existe mas importou 0 (#29)"
-    assert result["kb_ratified"] > 0, "kb_ratified.csv existe mas importou 0 (#29)"
+    assert result["research_log"] > 0, "research_log.md existe mas importou 0"
+    assert result["kb_ratified"] > 0, "kb_ratified.csv existe mas importou 0"
     assert result["jobs"] > 0, result
     assert result["metrics"] > 0, "metrics.jsonl existe mas importou 0 — mismatch?"
     assert result["warnings"] > 0, "warnings.jsonl existe mas importou 0"
@@ -43,7 +43,7 @@ def test_migrate_imports_all_present_artifact_types(synthetic_migrated):
 
 
 def test_migrate_approves_only_verified_scenes(tmp_path):
-    """#73: approved_*.csv existe desde o build_plan (antes do verify) -- cena reprovada entra no DB
+    """approved_*.csv existe desde o build_plan (antes do verify) -- cena reprovada entra no DB
     mas NAO aprovada (fora da TM); sem run_state (legado) tudo aprovado."""
     (tmp_path / "project.json").write_text(json.dumps({"title": "x"}), encoding="utf-8")
     for sc in ("ok", "bad"):
@@ -98,7 +98,7 @@ def test_migrate_voice_cards_keep_lines(bof4_migrated):
 
 
 def test_migrate_research_log_and_kb_ratified_lossless(synthetic_migrated):
-    """#29: research_log.md/kb_ratified.csv migram byte-fiel (conteudo) e sem perder colunas."""
+    """research_log.md/kb_ratified.csv migram byte-fiel (conteudo) e sem perder colunas."""
     _root, db_path, _ = synthetic_migrated
     with Store(db_path) as db:
         content = db.get_research_log("syn")
@@ -127,7 +127,7 @@ def test_get_translations_exposes_clean(synthetic_migrated):
 
 
 def test_migrate_reindexes_embeddings_no_ml_deps(synthetic_migrated):
-    """#55: migrate() chama reindex_pending_embeddings automaticamente (write-path); sem
+    """migrate() chama reindex_pending_embeddings automaticamente (write-path); sem
     sentence-transformers/sqlite-vec instalados (CI), o resultado é None — silencioso, não
     quebra a migração. Com deps de ML instaladas, embeddings > 0 (linhas aprovadas indexadas)."""
     _root, _db, result = synthetic_migrated
@@ -201,7 +201,7 @@ def test_migrate_translations_have_content(synthetic_migrated):
 
 
 def test_migrate_decisions_reveal_explicit_tag_and_universal_shortcut(tmp_path):
-    """#40: reveal explicito (tag <!-- reveal: ... --> no decision_log.md, ja extraido em
+    """reveal explicito (tag <!-- reveal: ... --> no decision_log.md, ja extraido em
     decision_index.json por state_index.build_decision_index) tem prioridade; sem tag, universal=1
     ganha reveal='safe' automatico (atalho aprovado); universal=0 sem tag fica None (default-deny,
     ate revisao humana)."""

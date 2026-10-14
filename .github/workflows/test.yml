@@ -209,11 +209,11 @@ jobs:
   # script_generator.py, coverage_gate.py, adversarial_validator.py, connector_smoke.py e seus testes)
   # nunca era coletado por nenhum job -- nem aqui nem no `coverage` (que só varre runtime/db/skills/
   # validation). Achado em code review (2026-07-04): uma regressão em connector_io.resolve_source_path
-  # (usado por BoF4/Souldiers/Utawarerumono extract.py via #23) passaria verde e só apareceria rodando
-  # contra o jogo real. #28: piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
+  # (usado por BoF4/Souldiers/Utawarerumono extract.py) passaria verde e só apareceria rodando
+  # contra o jogo real. piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
   # tier_classifier.py, script_generator.py, coverage_gate.py, evidence_collector.py e
   # adversarial_validator.py já estavam em 98-100%; discover.py (23%) e connector_smoke.py (61%) puxavam
-  # a média pra baixo. #30: testes adicionados p/ discover.py/connector_smoke.py -- pacote em 98.52%,
+  # a média pra baixo. testes adicionados p/ discover.py/connector_smoke.py -- pacote em 98.52%,
   # piso alinhado com o do job `coverage` (90%).
   connector-io:
     name: Connector shared utilities (framework/connectors/)

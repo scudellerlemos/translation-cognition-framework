@@ -1,6 +1,6 @@
 """test_discover.py — cobre run()/--generate-stub do CLI de descoberta.
 
-#43: --generate-stub gerava só extract.py, forçando reinsert.py a ser sempre 100% manual.
+--generate-stub gerava só extract.py, forçando reinsert.py a ser sempre 100% manual.
 Agora gera o PAR (mesma evidência -> mesmo padrão). known_engine/blocked nunca geram nada
 (existence_gate() já formaliza isso, coberto em test_tier_classifier_gate.py) -- aqui cobrimos
 o efeito em discover.run() especificamente para unknown_engine.
@@ -73,7 +73,7 @@ def test_generate_stub_not_written_when_dir_missing_flag(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# #30: cobertura de erro/relatório de discover.run() e _print_report()
+# cobertura de erro/relatório de discover.run() e _print_report()
 # ---------------------------------------------------------------------------
 
 _KNOWN_REGISTRY = [{

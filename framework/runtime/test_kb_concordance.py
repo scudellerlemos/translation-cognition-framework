@@ -169,7 +169,7 @@ def test_concordance_name_matching_respects_word_boundary(tmp_path):
 def test_concordance_real_embedder_wiring(tmp_path):
     """Smoke test com o Embedder REAL (sentence-transformers) -- so roda se a stack ML estiver
     instalada localmente (requirements-ml.txt); skip limpo em test.yml (push/PR, que nao instala
-    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml (#60)."""
+    essa stack), mas roda de verdade semanalmente em ml-coverage-optional.yml."""
     pytest.importorskip("sentence_transformers")
     _write_entities(tmp_path, [("Oshtor", "main")])
     texto = "Oshtor e um guerreiro Woren, companheiro leal de Nina desde a infancia."

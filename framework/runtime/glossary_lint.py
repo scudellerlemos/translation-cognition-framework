@@ -87,7 +87,7 @@ man's woman's people person folk crowd enemy enemies ally allies
 def _load_glossary(root: Path, cfg: dict | None = None):
     """[(term, expected[list], rule)] — expected = formas validas no pt-BR (target + aliases).
     `traduzir` de palavra-comum generica (ver _GENERIC) e PULADO (traducao por contexto = ruido).
-    #22: DB-gated se o projeto tem `db` populado; senao flat (glossary.csv)."""
+    DB-gated se o projeto tem `db` populado; senao flat (glossary.csv)."""
     if cfg is None:
         cfgp = root / "project.json"
         cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}

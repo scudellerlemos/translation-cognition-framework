@@ -409,7 +409,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     for w in _validate_connector_cfg(cfg):
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)
-    bypassed: list = []   # #16: rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
+    bypassed: list = []   # rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
 
     # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
     # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
@@ -499,7 +499,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
         print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
     if verified:
-        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB (#73)
+        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified), backend=backend)
     events.emit(root, "quality", "ok" if verified else "unverified", scene, n_lines=mr["n_lines"],

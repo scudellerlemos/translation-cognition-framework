@@ -109,7 +109,7 @@ connectors/
   hex_binary.md      ← contrato do conector de jogos antigos (tabela, ponteiros, byte-space, cascata)
   archive_script.md  ← contrato do conector p/ containers de engine de terceiro (Unity etc.); estratégia
                         de fixture sintética por família de engine (template + patch-helper)
-  agentic_synthesis.md ← loop propõe→verifica→refina p/ engine desconhecida (#43); round-trip
+  agentic_synthesis.md ← loop propõe→verifica→refina p/ engine desconhecida; round-trip
                         como oráculo automático; ratificação final sempre humana
   _skeleton/
     extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)

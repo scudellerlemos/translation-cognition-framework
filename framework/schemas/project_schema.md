@@ -32,7 +32,7 @@
 | `kb_frontier` | string | — | `scene_id` máximo coberto pela pesquisa de KB; o `kb_gate` bloqueia cenas além dela |
 | `series` | string | — | Série para a TM compartilhada (`tm_lookup`); sem o campo = slug do título |
 | `hitl` | bool | — | `true` liga os pontos de humano no laço (`hitl.py`) |
-| `rag_min_score` | float | — | Score mínimo (#56) p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte (default) |
+| `rag_min_score` | float | — | Score mínimo p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte (default) |
 | `profile` | object | — | Caminhos para os arquivos de perfil curado (ver abaixo) |
 | `notes` | string | — | Observações livres sobre o título |
 
