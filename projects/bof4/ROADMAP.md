@@ -10,25 +10,33 @@ Os passos são seguidos na ordem. Nenhum gate é pulado; item aberto bloqueia o 
 
 Atualizar antes de cada `/clear`. Estado em 2026-10-13:
 
-- **PENDENTE PARA A PRÓXIMA SESSÃO (anotado em 2026-10-13, a pedido do Felipe):**
-  1. **115 cenas divergentes.** O disco tem o texto de 2026-10-13 (requebra de linha larga em 191 textos, 56 falas
-     reescritas, "flats" unificado em "baixio" com entrada no glossário, o "?" da fada em `AREAE024`), **sem passar
-     por gate**; o jogo tem a versão da 4.4b. A reconferência foi cancelada no meio (log vazio). Decidir: terminar
-     (reconferir as 115 cenas, retrotraduzir o alto risco que mudou, gates, reinserir, instalar; 30 a 40 min) ou
-     desfazer (sem atalho: as cenas nunca foram commitadas e não há cópia do texto anterior). Recomendação: terminar.
-     A lista das cenas está em `tools_local/cenas_pendentes_2026-10-13.txt` (fora do git); se sumir, refazer comparando `translations_*.json`
-     com o que está instalado.
-  2. **Fechamento no ROADMAP.** Registrar que a 4.4c (amostra de qualidade) foi dispensada pelo Felipe em
-     2026-10-13 ("nao precisa, vamos fechar o projeto aqui"), que o projeto fecha sem taxa de erro medida, e
-     atualizar "Onde estamos". Fazer junto com o item 1.
+- **Fechado em 2026-10-14:**
+  1. **115 cenas divergentes: resolvido.** Reconferidas (116 de 116, round-trip íntegro, 0 overflow); 23 falas de
+     risco alto cujo texto mudou foram rejulgadas (23 `pass`, revisor Opus em agente separado); gates verdes;
+     305 arquivos reinseridos e 116 instalados no jogo (`.bak` mantido; o jogo está igual ao disco).
+     Lição: `BOF4_DAT_DIR` tem de apontar para `source_dat` (originais), não para a pasta do jogo, que agora
+     tem o texto traduzido. Sem a variável o round-trip falha em todas as cenas.
+  2. **4.4c feita** (o Felipe voltou atrás da dispensa e quis medir): amostra de 227 falas, taxa de erro
+     **14,5%** (29/200 sorteadas; IC 95%: 10,3% a 20,1%), **26,1%** pesada por repetição; o juiz apontou 0,7%
+     do que leu, precisão 51,9%, alcance 0,0% (não pegou nenhum erro da amostra sorteada). Revisor: Felipe
+     Scudeller. Os erros reais se repetem em poucos textos: "fl" = "and." nos rótulos de andar, "Wgt" = "Pes.",
+     "em alvo(s)" no lugar de "no(s) alvo(s)", "Golpe Sorte", "Região Wyndia". **Correção desses padrões: em aberto**
+     (decisão do Felipe; mexe em texto instalado e exige reconferência e gates).
+     **Correção feita em 2026-10-14, depois da amostra:** "Região Wyndia" = "Região de Wyndia" (5 cenas) e
+     "Golpe Sorte" = "Golpe de Sorte" (`BTLEND` e glossário); na lista de habilidades (`AB000_00:10100:30`)
+     fica "Golpe Sorte", porque a forma com "de" custa +2 bytes. 6 arquivos reinstalados, gates verdes.
+     **Segunda rodada (2026-10-14):** "Wgt" = "Peso" por extenso (mesmo tamanho de "Pes."); rótulos de andar do
+     elevador só com o número (`5`, `B1`) e nas faixas "Castelo, andar 5"; a frase de alvo passou de "em um
+     alvo(s)" para "em um alvo" / "em todo alvo" (`[07][00]` = tabela "one/all" de cada cena; "1 alvo" daria +2
+     bytes, acima da regra de +1). 30 arquivos reinstalados.
+     **A taxa de 14,5% vale para o texto de antes dessas correções.** Linha `AB000_00:2:256` ainda tem "[07][04][01]alvo(s)" (variável diferente, não conferida).
   3. **Distribuir a tradução na Steam.** Pedido do Felipe; falta planejar formato e canal.
-  4. **Commit.** Feito em 2026-10-13 na `feat/bof4-instance`, em dois commits locais (framework e bof4), sem push
-     e sem PR. Ficaram de fora: `tm/` (ignorado e negado no guard), `hitl_log.jsonl` e `phase_marks.jsonl`
-     (ignorados até o guard da `main` liberar) e `qa_effectiveness.jsonl` (aguarda o Felipe decidir o texto do
-     campo de revisor).
+  4. **Commit.** Os da `feat/bof4-instance` (framework e bof4) foram feitos em 2026-10-13, sem push e sem PR.
+     Ficaram de fora: `tm/`, `hitl_log.jsonl` e `phase_marks.jsonl` (ignorados) e `qa_effectiveness.jsonl`
+     (aguarda o Felipe decidir o texto do campo de revisor).
   - O levantamento de fim de projeto está no fim deste arquivo, com os quatro blocos aceitos.
 
-- **Onde estamos:** Fase 4, 4.4a e 4.4b fechados; falta 4.4c (amostra de qualidade, depende do usuário). Projeto em escopo `completo`
+- **Onde estamos:** Fase 4, 4.4a e 4.4b fechados; 4.4c fechado (taxa de erro 14,5%). Projeto em escopo `completo`
   (diálogo + sistema), caminho `in-session`; 305 cenas, 27.021 linhas, todas traduzidas e instaladas no jogo
   (`.bak` de todos os arquivos).
   - Feito desde a última retomada: texto de sistema traduzido e instalado; rótulos em imagem das folhas
@@ -48,8 +56,7 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
   marcada guardada em `artifacts/qa_revisao/aplicado/` (fora do git). Fila de escalonamento: 0.
   - Na mesma rodada, a pedido do usuário: fala do Manillo unificada em "oui?" (`CAMP`, `MASTER`) e "stamps" =
     "selos" em todo lugar (`MSHOP`). Print da batalha dispensado pelo usuário.
-- **Depois disso:** 4.4c (`quality_sample.py export .` já gerado com o texto final; o usuário marca `ok`/`erro`;
-  `score . --reviewer NOME`). A coluna `veredito` não é preenchida pelo agente.
+- **Depois disso:** 4.4c feita em 2026-10-14. A coluna `veredito` não é preenchida pelo agente.
   No fechamento: levantamento para o framework; projeto novo só depois.
 - **Retirado do fluxo pelo usuário:** gate visual 4.3 (jogar o trajeto inteiro), no bof4 e no framework.
 - **Ficam em inglês por decisão do usuário:** nomes de item, arma, armadura, acessório, habilidade e item-chave;
@@ -125,7 +132,7 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
 - [x] **4.3.** Gate visual in-game. **Retirado do fluxo por decisão do usuário (2026-10-12):** não há mais a passada única pelo trajeto inteiro; a conferência visual ficou nos prints das runs 1 a 5 e nos oks pontuais de cada instalação.
 - [x] **4.4a.** Triagem de risco (`risk_triage.py export` → juiz barato em sessão → `apply`) e retrotradução das falas que subirem (`run_scene --require-back`). Corpus medido em 2026-10-12: 4.532 pares únicos cobrindo 15.048 falas, em 12 lotes.
 - [x] **4.4b.** QA humana via `quality_review.py` sobre a fila priorizada; fila de escalonamento zerada (`hitl.py resolve`).
-- [ ] **4.4c.** Medida de qualidade: `quality_sample.py export` depois da triagem completa, veredito humano na planilha, `score` (taxa de erro, taxa da triagem, acerto do juiz).
+- [x] **4.4c.** Medida de qualidade (2026-10-14: 14,5%, ver Retomada): `quality_sample.py export` depois da triagem completa, veredito humano na planilha, `score` (taxa de erro, taxa da triagem, acerto do juiz).
 
 Humano no laço ligado em 2026-10-12 (`"hitl": true`): o `run_scene` só roda com escopo aceito (`hitl.py accept-scope`) e os 30 termos mais frequentes do glossário ratificados (`hitl.py ratify`). Descrição em `docs/TRANSLATION_PIPELINE.md`.
 
@@ -310,6 +317,8 @@ sem frase literal do usuário não há registro.
 
 ### Para o levantamento de fim de projeto
 
+- A planilha da amostra deixa à vista a letra do código de retrato (`A"…`, `@"…`) e isso levou o revisor a
+  marcar 31 falas corretas como `erro` até explicarmos. Mostrar o retrato como rótulo separado, não como letra.
 - Planilha de QA mostra o texto sem os códigos de controle, e o filtro que os remove come a letra seguinte
   quando ela é A–F; a correção verbatim precisa do texto com códigos. Revisão a partir da planilha exige
   reencaixe. Uma correção passou na conta de bytes e estourou no `verify` por 1 byte (causa não investigada).
