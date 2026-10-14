@@ -63,14 +63,14 @@ os dados do projeto ficam em `projects/`.
   "conector mudou" ao trocar de plataforma.
 - **Registros retroativos** (mudanças anteriores que ficaram sem entrada): o backend `ollama` de
   tradução foi removido (ADR 0008) — `--backend` aceita só `in-session`/`api`; `ollama_client.py` e
-  `tcf ollama` ficam para o pipeline de KB. A issue #48 (console cp1252 no Windows) foi fechada: os
+  `tcf ollama` ficam para o pipeline de KB. A issue do console cp1252 no Windows foi fechada: os
   CLIs principais forçam stdout UTF-8.
 
 ---
 
 ## 2026-09 — versionamento SemVer + CI hardening
 
-- **v1.1.0 — loop de code review + RAG semântico + DB-first** (#205 e anteriores). MINOR (ADR 0013):
+- **v1.1.0 — loop de code review + RAG semântico + DB-first**. MINOR (ADR 0013):
   só adições (`tcf db validate-model`, `rag_min_score`, retrieval semântico da KB, produtores
   DB-first, tabelas novas no schema via `CREATE TABLE IF NOT EXISTS`). Correções de integridade
   que **passam a falhar alto onde antes corrompiam em silêncio** — se um pipeline seu depende do
@@ -83,7 +83,7 @@ os dados do projeto ficam em `projects/`.
   (o da v1.0.3 saía só com `.py`). `--project-id` de `tcf db migrate` passa a defaultar em
   `project.json:db.project_id` (fallback `bof4`, sem mudança pros projetos atuais). `release.yml`
   agora exige `test.yml` verde no commit taggeado.
-- **Chunking do RAG semântico documentado, `kb` vira kind indexável** (#53, ADR 0014): o embedder
+- **Chunking do RAG semântico documentado, `kb` vira kind indexável** (ADR 0014): o embedder
   nunca chunka — `_KIND_CONFIG` ganhou o kind `"kb"` (tabela `kb`, coluna `content`, nova tabela
   `kb_embeddings` no schema) reaproveitando a mesma indexação genérica 1-linha-1-vetor de
   `translation`/`decision`, porque a KB já chega pré-chunkada por seção markdown na ingestão
@@ -223,7 +223,7 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
   foi gravado, não gera trabalho extra de modelo). `model.py::over_budget_offsets` ganhou
   `detail=True` pra devolver offset/budget/atual/source/tradução em vez da lista nua de offsets
 - **Bug pré-existente documentado (não corrigido)**: `PYTHONIOENCODING`/console cp1252 no Windows
-  quebra `print()` com acento/seta com `UnicodeEncodeError` — issue #48, reproduzido de novo
+  quebra `print()` com acento/seta com `UnicodeEncodeError` — reproduzido de novo
   23/08/2026 no bring-up do `trails_sky_sc`. `NEW_PROJECT_ONBOARDING.md` agora exige setar
   `PYTHONIOENCODING=utf-8` (ou `chcp 65001`) antes de rodar qualquer CLI do framework em ambiente
   novo — nenhum projeto até hoje foi bloqueado porque o texto-fonte é ASCII, mas é verificação

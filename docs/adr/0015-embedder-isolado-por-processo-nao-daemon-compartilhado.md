@@ -4,8 +4,8 @@
 
 ## Contexto
 
-Issue [#57](https://github.com/scudellerlemos/translation-cognition-framework/issues/173), aberta na
-esteira do #44: `framework/db/embedder.py` carrega `sentence-transformers` (~470 MB de modelo,
+Issue do backlog, aberta na
+esteira DB-first: `framework/db/embedder.py` carrega `sentence-transformers` (~470 MB de modelo,
 stack ~700 MB–1,5 GB com torch) via `python embedder.py <db> <project_id>`, um processo por projeto.
 A pergunta era se, quando **mais de 1 projeto** rodar RAG semântico ao mesmo tempo, vale a pena um
 processo compartilhado carregando o modelo 1× pra indexar N projetos, versus manter isolado por
@@ -19,7 +19,7 @@ Levantamento do estado real antes de decidir:
   **N projetos rodando RAG simultaneamente é cenário hipotético, não observado.**
 - **Multi-projeto/paralelismo já é low-priority reconhecido**: `ROADMAP.md` P2.5 lista "multi-projeto:
   generalizar `state_index`/paths por projeto" como ❌, empurrado explicitamente pra P4 (plataforma,
-  vários jogos) via [issue #39](https://github.com/scudellerlemos/translation-cognition-framework/issues/104).
+  vários jogos) via a issue de multi-projeto do backlog.
   Não existe hoje nenhum orquestrador que rode 2 projetos no mesmo processo — construir um servidor de
   embedding compartilhado adiantaria uma peça de infra pra um orquestrador que ainda nem existe.
 - **O recarregamento repetido dentro de 1 execução já não acontece**: `context_pack.py::_get_embedder()`
@@ -40,7 +40,7 @@ default do Hugging Face Hub, sem precisar de decisão nem código.
 Razão: nenhum dos dois pré-requisitos que justificariam um daemon existe ainda —
 (a) mais de um projeto com RAG ativo ao mesmo tempo, e (b) um orquestrador que efetivamente dispare N
 projetos no mesmo processo. Construir um servidor de embedding compartilhado agora seria infra pra um
-cenário não observado, adiantando uma peça de um problema (#39, multi-projeto) que o próprio roadmap
+cenário não observado, adiantando uma peça de um problema (multi-projeto) que o próprio roadmap
 já decidiu adiar pra P4.
 
 ## Consequências
@@ -54,11 +54,11 @@ já decidiu adiar pra P4.
 - (−) Se dois projetos indexarem ao mesmo tempo (hoje: manual, dois terminais), cada um paga o custo de
   carregar o modelo (segundos a ~1 min em CPU) — aceito, é custo one-time por processo, não por linha
   indexada.
-- Fora de escopo: reavaliar quando existir orquestrador multi-projeto real (#39) **e** medição mostrar
+- Fora de escopo: reavaliar quando existir orquestrador multi-projeto real **e** medição mostrar
   que o reload por processo é gargalo — nesse ponto, considerar processo compartilhado como parte do
   design do orquestrador, não isolado.
 
-**Reabrir se:** #39 (orquestração multi-projeto) sair de "não planejado" E houver medição real de N
+**Reabrir se:** a orquestração multi-projeto sair de "não planejado" E houver medição real de N
 projetos rodando RAG ao mesmo tempo com custo de reload de modelo dominando o tempo total.
 
 **Atualização 2026-10-14:** o levantamento de projetos ficou datado: `translation_software` não existe mais em `projects/` (ADR 0008) e o `bof4` hoje roda em modo banco (SQLite + embedder). Há ainda um único projeto com RAG por vez em prática; a decisão (processo isolado, sem daemon) não muda.

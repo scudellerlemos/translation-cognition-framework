@@ -153,7 +153,7 @@ erDiagram
 flowchart TB
   a["db index (CLI)<br/>manual, --force = do zero"]
   b["migrate_from_flat<br/>mirror flat→DB no início do run"]
-  c["approve_scene_db<br/>cena fechou verified (#61, #73)"]
+  c["approve_scene_db<br/>cena fechou verified"]
   r["Store.reindex_pending_embeddings"]
   q["linhas SEM vetor<br/>translations: só approved=1<br/>decisions · kb: todas"]
   e["Embedder.encode<br/>batch 64, normalizado"]
@@ -449,8 +449,8 @@ flowchart TB
 |---|---|
 | 2026-06-11 | precursor: retrieval por keyword reforçado no `context_pack` |
 | 2026-06-29 | TM semântica (nº1) e KB com gate de spoiler (nº2) entram no pacote |
-| 2026-07-05 | decisões semelhantes (#40) |
-| 2026-09-09 | ROI medido (ADR 0016) e reindex no write-path (#61) |
-| 2026-09-10 | `rag_min_score` calibrado com dado real (#63) |
+| 2026-07-05 | decisões semelhantes |
+| 2026-09-09 | ROI medido (ADR 0016) e reindex no write-path |
+| 2026-09-10 | `rag_min_score` calibrado com dado real |
 | 2026-09-25 | leva de correções: filtro antes do top-k, gate antes do corte, linha editada fora da busca |
 | 2026-10-07 | reindex movido para a aprovação da cena (fim do atraso de uma cena); FlashRank removido |
