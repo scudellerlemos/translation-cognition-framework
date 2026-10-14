@@ -53,6 +53,10 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 08_reinsertion  (conector: approved_translations.csv → binário traduzido em output/; cascata det., LLM só no resíduo)
     ↓
+08b_system_text_labels  (escopo completo: texto de sistema + rótulos em imagem)
+    ↓
+08c_ingame_test  (print do usuário → causa raiz → reinstalação)
+    ↓
 09_distribution  (delta + patcher .exe de um clique; só diferenças, nunca conteúdo do jogo)
 ```
 
@@ -76,6 +80,8 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `06b_micro_qa.md` | 6b | QA por lote após cada bloco + ciclo de correção cirúrgica com re-validação |
 | `07_qa.md` | 7 | QA final de consistência global |
 | `08_reinsertion.md` | 8 | Reinserir a tradução no meio via conector + patch (determinístico, LLM só no resíduo) |
+| `08b_system_text_labels.md` | 8b | Texto de sistema (limite duro) e rótulos em imagem (letras da folha, por hash, régua antes) |
+| `08c_ingame_test.md` | 8c | Teste no jogo: do print à causa raiz, sem tentativa e erro |
 | `09_distribution.md` | 9 | Pacote de delta + patcher `.exe` de um clique para o jogador (`framework/distribution/`) |
 | `translation_governance.md` | — | **Carta de Governança** — contrato de qualidade (voz/lore/situação/processo) que rege os Passos 05–08 |
 

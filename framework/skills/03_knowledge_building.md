@@ -213,6 +213,15 @@ documentar a progressão. Isso alimenta a verificação de tom por fase no QA Fi
 
 ---
 
+## DECISÕES DE VOZ (antes do piloto — lista fechada pelo usuário)
+
+Decisões que, tomadas depois, obrigam a retraduzir o corpus. Registrar cada uma no `decision_log` (04b) **antes** do
+piloto: sotaque/dialeto de cada grupo (e se há), gentílico de povos e lugares, gênero de cada personagem e criatura
+(o inglês esconde), registro arcaico (quem fala "tu"/mesóclise e quem não), tratamento (senhor/você/tu) por relação e
+nomes mantidos × traduzidos. Piloto só começa com a lista fechada (regra do processo, decisão do usuário caso a caso).
+
+---
+
 ## SPOILER LEDGER — fatos além da fronteira (`spoiler_ledger.json`)
 
 Quando a pesquisa (Fase 1A/1B) encontra fatos que revelam plot além da fronteira do corpus atual,

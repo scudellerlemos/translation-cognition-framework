@@ -146,6 +146,22 @@ Ver `04b_decision_log.md` para o protocolo completo. O `decision_log.md` começa
 
 ---
 
+## REGRAS DE GLOSSÁRIO (lições do 1º projeto longo; conferidas pelo lint do passo 06 quando ele cobre)
+
+- **Por sentido, não por palavra:** o mesmo termo em inglês com dois sentidos (ex.: item × comando) tem uma entrada
+  por sentido, com `context`. Glossário "uma palavra = uma tradução" gera erro sistemático.
+- **Título inteiro:** nome composto/título é uma entrada só ("Mestre das Sombras" inteiro); a entrada por pedaço
+  traduz o título pela metade.
+- **Nome mantido que atravessa quebra de linha:** o termo `manter_original` pode vir cortado por `[01]`; a conferência
+  deve buscar o nome também sem a quebra (normalizar a quebra para espaço antes de buscar).
+- **Palavra comum não vira termo automático:** filtro de palavra comum antes de entrar no glossário (verbo, artigo,
+  adjetivo corrente). Termo que também é palavra corrente exige `context` e fica fora do lint por substring.
+- **Folga de bytes por contexto:** termo traduzido mais longo que o original (sistema, menu, rótulo) anota na
+  coluna de contexto quanto de folga exige; onde o orçamento de bytes não cobre, o termo ganha forma curta explícita.
+- **O lint lê o banco:** rodar `state_index` (rebuild) antes do lint, senão ele confere contra glossário velho.
+
+---
+
 ## VERIFICAÇÃO DE COBERTURA DO GLOSSÁRIO
 
 Após criar o `glossary.csv`, executar esta verificação antes de avançar:

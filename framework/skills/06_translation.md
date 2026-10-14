@@ -209,6 +209,25 @@ A IA **propõe** a tradução; ela **não** edita o binário nem um CSV de dados
 
 ---
 
+## DOIS CAMINHOS DE EXECUÇÃO (`run_scene --backend api | in-session`)
+
+Mesmos artefatos, gates, banco e humano no laço; muda quem traduz.
+
+| | `api` | `in-session` |
+|---|---|---|
+| Quem traduz | subagente/modelo chamado pelo código (Sonnet) | a IA da própria sessão, por arquivo |
+| Custo | por token (chave `ANTHROPIC_API_KEY`) | dentro da assinatura da sessão |
+| Escopo | só diálogo (`system_scenes` é recusado) | diálogo e sistema |
+| Lote | `wave`/`run_chapter` (batch API) | `session_lot.py`: `plan` → `prompt` → traduzir → `go` |
+
+- **Texto repetido** entre cenas é traduzido uma vez (`scene_dedup.py plan|copy`; no lote, `prompt --dedup`).
+- **Paralelismo:** `run_scene --jobs N` reconfere cenas em processos separados.
+- **Regra de entrada:** caminho de sessão em projeto novo só entra depois de um benchmark do projeto (qualidade
+  e custo medidos contra o caminho de API); o caminho de API continua o padrão do framework.
+- O passo `go` só fecha se a conferência passar (tokens, orçamento de bytes, cobertura) e o `run_scene` verificar.
+
+---
+
 ## OUTPUTS OBRIGATÓRIOS
 
 | Arquivo | Conteúdo |
