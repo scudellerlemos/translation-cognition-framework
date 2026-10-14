@@ -593,6 +593,22 @@ def backend_preflight(root: Path, scenes, backend: str, env=None) -> tuple[list,
     return problems, notes
 
 
+def _run_parallel(a) -> tuple[list, list]:
+    """Cada cena num processo proprio (mesmo comando, 1 cena): sem estado global compartilhado; o run_state
+    grava sob trava (paths.locked). Devolve (falhas, verificadas) como o laco em fila."""
+    import subprocess
+    from concurrent.futures import ThreadPoolExecutor
+    flags = ["--backend", a.backend] + [f for f, on in (("--require-back", a.require_back), ("--no-verify", a.no_verify),
+                                                       ("--skip-kb-gate", a.skip_kb_gate), ("--no-back", a.no_back)) if on]
+
+    def one(sc):
+        return sc, subprocess.run([sys.executable, str(Path(__file__).resolve()), a.project, sc, *flags]).returncode
+
+    with ThreadPoolExecutor(max_workers=a.jobs) as ex:
+        res = list(ex.map(one, a.scene))
+    return [f"{sc}=rc{rc}" for sc, rc in res if rc], [sc for sc, rc in res if not rc]
+
+
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
@@ -609,6 +625,9 @@ def main():
                     help="ignora o gate de cobertura de KB (nao recomendado)")
     ap.add_argument("--no-back", action="store_true",
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
+    ap.add_argument("--jobs", type=int, default=1, metavar="N",
+                    help="N cenas ao mesmo tempo, cada uma em seu processo (reconferencia: o run_state tem trava). "
+                         "A TM so cresce entre cenas em fila; para traduzir em sequencia use 1")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
     ap.add_argument("--check-stale", action="store_true",
@@ -654,7 +673,10 @@ def main():
     # Lote = mesma execucao por cena, em fila (a TM cresce de uma cena para a seguinte); so o custo fixo
     # do processo (carga do modelo de busca, mirror do DB, auditorias) deixa de se repetir a cada cena.
     bad, done = [], []
-    for s in a.scene:
+    par = a.jobs > 1 and len(a.scene) > 1
+    if par:
+        bad, done = _run_parallel(a)
+    for s in () if par else a.scene:
         r = run_scene(a.project, s, backend=a.backend, require_back=a.require_back,
                       do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                       no_back=a.no_back)

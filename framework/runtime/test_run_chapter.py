@@ -188,3 +188,13 @@ def test_run_chapter_blocks_api_without_key(env, monkeypatch):
     r = rc.run_chapter(root, "12", backend="api")
     assert r["status"] == "blocked_path"
     assert rc.run_chapter(root, "12", backend="in-session")["status"] != "blocked_path"
+
+
+def test_run_parallel_collects_per_scene_rc(monkeypatch):
+    import argparse
+    import subprocess
+    codes = {"s1": 0, "s2": 1, "s3": 0}
+    monkeypatch.setattr(subprocess, "run", lambda cmd, **k: argparse.Namespace(returncode=codes[cmd[3]]))
+    a = argparse.Namespace(project="p", scene=list(codes), backend="api", jobs=2, require_back=False,
+                           no_verify=True, skip_kb_gate=False, no_back=False)
+    assert rc.RS._run_parallel(a) == (["s2=rc1"], ["s1", "s3"])
