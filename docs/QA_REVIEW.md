@@ -43,6 +43,10 @@ A coluna **"Caixa (cresceu vs EN?)"** no relatório de revisão classifica cada 
 - **`rever +Nc`** = cresceu vs o original (provável OK, usa a folga da caixa);
 - **`ESTOUROU +Nc`** = mais largo que **qualquer** diálogo EN que o jogo mostrou → quebra quase certa.
 
+O limite de largura do projeto vem de `box_width.py` (`line_width: "derive"` = maior segmento visível do inglês
+quebrado pelo autor; `line_width_max: N` fixa; sem nenhum, 62) e da tabela de opcodes do conector
+(`choice_start`/`page_break`/`newline` quebram a caixa; `[xx]` parâmetro não conta como código).
+
 Gate de loop (opcional, pós-reinserção):
 ```
 quality_review.py width <projeto>     # lista só as 'ESTOUROU' (exit 1 se houver); conserte e repita até 0
@@ -80,6 +84,12 @@ qa_revisao/
    quality_review.py apply <projeto>      # lê o inbox; processa só o marcado
    ```
 
+**Página de revisão (opcional, `review_page.py`).** Para as planilhas CSV da fila humana
+(`escalonamento.csv`, `onda_amostra.csv`, `amostra_qualidade.csv` em `para_revisar/`), `python
+framework/runtime/review_page.py <projeto> [--serve] [--port 8765]` gera `para_revisar/revisar.html` (local, fora do git), que só
+lê os CSVs e devolve o mesmo CSV com o que você digitou; `[xx]` aparecem esmaecidos. Com `--serve` o botão Salvar
+grava os CSVs direto em `para_revisar/`.
+
 ### Papel B — TESTER (joga o resultado)
 Acha o que só aparece **na tela**: balão estourado, texto cortado, termo errado no contexto. Como
 in-game não há offset, o fluxo é **determinístico, sem OCR/IA** — o print é **prova**, não a fonte:
@@ -104,6 +114,9 @@ in-game não há offset, o fluxo é **determinístico, sem OCR/IA** — o print 
 verify_chapter <cap>            # round-trip/charset dos capítulos tocados
 state_index.py <projeto>        # a TM passa a reusar o texto corrigido (consistência futura)
 ```
+Correção de termo em massa e governada: `tm_correct.py <projeto> <correcoes.csv>` (dry-run; `--apply` grava) —
+colunas `find,replace,note[,mode,scene,offset]`; `scene`/`offset` restringem a regra a uma cena e/ou a uma linha, e o
+dry-run mostra os bytes antes → depois contra o `byte_budget` (marca `ESTOURA`).
 A **TM é o coração**: depois do QA, o jogo **não é re-traduzido** — correções entram cirúrgicas e a TM
 propaga a versão certa para conteúdo futuro.
 

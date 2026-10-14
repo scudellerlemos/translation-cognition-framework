@@ -42,7 +42,7 @@ projects/*/artifacts/hitl_state.json
 projects/*/artifacts/evidence/
 
 # Exceção: projects/demo é sintético (dialogo ficticio, sem copyright) — precisa estar
-# versionado pra README (#34) prometer "clone e rode" de verdade. Traduções/plan/approved
+# versionado pra README prometer "clone e rode" de verdade. Traduções/plan/approved
 # do demo continuam ignorados (regeneráveis, mesmo padrão dos projetos reais).
 !projects/demo/artifacts/**/dialogs.csv
 
@@ -125,3 +125,6 @@ tm/
 # registro de decisao humana e marcas de fase: locais ate o guard da main liberar
 projects/*/artifacts/hitl_log.jsonl
 projects/*/artifacts/phase_marks.jsonl
+
+# Pacote do patcher (deltas + manifest + exe): vai para a Release, nunca para o repo
+projects/*/dist/

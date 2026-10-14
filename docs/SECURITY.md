@@ -32,7 +32,7 @@ correspondentemente restrito.
 **Controles:**
 - `.env` explicitamente em `.gitignore` (com comentário de aviso)
 - `.env.example` commitado em vez do `.env` real
-- CI verifica (`git ls-files --error-unmatch .env`) que `.env` não está rastreado
+- CI verifica (`git ls-files --error-unmatch .env`, job `env-guard` de `test.yml`) que `.env` não está rastreado
 - `_load_dotenv` em `llm_client.py` carrega da variável de ambiente ou `.env` local
 
 **Gap residual:** sem processo de rotação de chave (a detecção de chave no diff e no histórico é do gitleaks, no CI).
@@ -45,6 +45,7 @@ correspondentemente restrito.
 
 **Controles:**
 - `_validate_scene_arg` em `run_scene.py` verifica que o path resolvido está sob `artifacts/scenes/`
+- `paths.require_project` sai com código 2 quando a pasta passada não tem `project.json` (gate não "passa" sobre pasta errada)
 - `_connector_script` verifica que o script do conector está sob o diretório do projeto
 - Testes: `test_run_scene_rejects_path_traversal_scene`, `test_connector_sandbox_blocks_external_path`
 
@@ -80,7 +81,10 @@ posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono
 **Ameaça:** arquivo `.sdat`/`.dat` malformado causa comportamento inesperado no conector.
 
 **Controles:**
-- `*.sdat` em `.gitignore` (nunca versionado)
+- `*.sdat` e `*.dat` em `.gitignore` (nunca versionados)
+- `.claude/hooks/content_guard.py` (hook local nos comandos `git add/commit/push` do agente + job de `test.yml`) barra
+  binário do jogo, roteiro/tradução de cena, planilha de revisão e e-mail pessoal nos commits; falha fechado, e
+  `projects/*/artifacts/` é default-deny (só o que está na allowlist do guard é versionado)
 - `game_dat_dir` nunca persistido em `project.json` (passado via CLI)
 - Round-trip gate (byte-idêntico): rejeita qualquer modificação que altere bytes não traduzidos
 

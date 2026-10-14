@@ -1,4 +1,4 @@
-# .coveragerc-ml — usado só pelo job ml-coverage-optional.yml (#60), NUNCA pelo job `coverage`
+# .coveragerc-ml — usado só pelo job ml-coverage-optional.yml, NUNCA pelo job `coverage`
 # de test.yml (que usa setup.cfg, cujo omit exclui embedder.py de propósito -- ver comentário lá).
 # source aqui restringe a medição aos dois módulos que só funcionam de verdade com a stack ML
 # instalada; --cov=framework/db na CLI ainda mede o pacote inteiro (--cov de linha de comando

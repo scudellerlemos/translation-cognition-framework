@@ -6,7 +6,7 @@
 > Para rastrear qual governança gerou uma tradução, use esta data + `git log --follow`.
 
 > **Natureza:** não é um passo do pipeline — é o **contrato** que rege *como* traduzir em todos os
-> passos cognitivos (05 planejamento, 06 tradução, 06b/06c QA, 07 QA final). Genérico: nenhum dado de
+> passos cognitivos (05 planejamento, 06 tradução, 06b QA, 07 QA final). Genérico: nenhum dado de
 > obra vive aqui; tudo específico vem de `project.json` + artefatos.
 >
 > **Regra-mãe:** **a IA traduz conforme esta Carta — não improvisa fora dela.** Quando uma linha não
@@ -29,7 +29,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ### 1. Contexto de PERSONAGEM (voz)
 
 > **HIERARQUIA DE REGISTRO — leia antes de tudo:**
-> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json`.
+> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json` (`artifacts/state/voice_cards.json`, gerado do `tone_analysis.md`).
 >    Se o falante (`speaker`) tiver um card registrado ali — mesmo que a entrada seja mínima —
 >    *toda* linha desse personagem segue o perfil de voz documentado (3ª pessoa, `tu`,
 >    registro arcaico/formal/solene, gíria própria, comprimento de frase etc.).
@@ -82,8 +82,8 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
   `risk ≥ high` → **back-translation obrigatória** (06b/07).
 - **Camadas de verificação:** linter determinístico de naturalidade (pega o sistemático barato) →
   revisão contextual por personagem × situação (06b/07) → **aprovação humana**.
-- **Fluxo:** a IA **PROPÕE** no `translation_plan.json` (`base_translation`) → o usuário **APROVA**
-  (`approved_translations.csv`) → o script **APLICA** (Passo 08). A IA nunca edita dados/binário à mão.
+- **Fluxo:** a IA **PROPÕE** no plano (`translation_plan_<cena>.json`, `base_translation`) → o usuário **APROVA**
+  (`approved_<cena>.csv`; `approved_translations.csv` no formato global) → o script **APLICA** (Passo 08). A IA nunca edita dados/binário à mão.
 - **Decisões não-óbvias** vão para o `decision_log.md`.
 
 ---
@@ -115,7 +115,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 | 05 planejamento | metadados reais por linha (speaker/situação/risco) — base da QA |
 | 06 tradução | traduzir conforme as 4 diretrizes + checklist por linha |
 | 06b micro-QA | naturalidade contextual + interjeições + back-translation de alto risco |
-| 06c correção | só toca o que a QA/linter reprovou; re-valida |
+| 06b correção | só toca o que a QA/linter reprovou; re-valida |
 | 07 QA final | adequação contextual por arco de personagem; spoilers cross-segmento |
 | 08 reinserção | respeita a restrição do conector (byte/translit.); LLM só no resíduo |
 

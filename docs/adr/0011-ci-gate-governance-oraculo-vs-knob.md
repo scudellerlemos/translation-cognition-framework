@@ -124,3 +124,5 @@ Implementação:
   "enfraquecimento" do `gate-drift` (regex por knob-file); threshold de mutation score pra virar
   sinal acionável; se `doctor.py` é CLI separada ou flag de `run_chapter.py`; lista definitiva de
   knob-files da Fase 1 (a tabela acima é o ponto de partida, não exaustiva).
+
+**Atualização 2026-10-14:** o status segue `proposto` e nenhuma das três fases foi implementada: não há job `gate-drift` em `.github/workflows/`, nem `framework/runtime/doctor.py`, nem mutmut em cron ou nos `requirements*.txt`; o `TypedDict` do plano de linha também não existe (os `TypedDict` de `config.py` cobrem só os retornos das chamadas de IA). `sync-prd.yml` foi aposentado (ADR 0012) e o `merge-gate` virou o agregador `all-checks` do `test.yml`. Os workflows atuais são 7 (ver `.github/workflows/README.md`).

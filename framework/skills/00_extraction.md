@@ -67,12 +67,24 @@ de string, localização por ponteiro/varredura. Determinístico — nunca LLM.
 > tokens). Só reescrever o script se o formato do binário mudar.
 
 ### 2. Extrair o corpus
-Rodar `extract.py`. Para cada string: decodificar via tabela, mapear control codes → tokens, registrar
+Rodar `extract.py` (ou, pela skill registrada: `python framework/skills/s00_extraction.py <projeto> [--dat-dir <pasta>]`,
+que chama `connector.extract_script` com timeout de 300 s, exporta a pasta em `connector.data_dir_env` e confere que
+`source.file` foi gerado; exit 1 se o input gate falhar). Para cada string: decodificar via tabela, mapear control codes → tokens, registrar
 o offset como `id_column`. **Sinalizar anomalias** (idiomas misturados, truncamento, bytes inesperados)
 no `extraction_log.md` em vez de tratá-las como texto normal.
 
+### 2b. Varredura de escopo (antes de fechar o escopo)
+Rodar `python framework/connectors/scope_scan.py <dialogs.csv | pasta do projeto> <pasta do jogo>`: lista por
+extensão quantos arquivos o `dialogs.csv` cobre e quantos bytes ficaram sem dono. Extensão sem nenhum arquivo
+coberto (folha de imagem com rótulo, menu, texto de sistema) exige decisão **explícita** registrada em
+`extraction_scope` (`dialogo` | `completo`) — não se descobre no teste dentro do jogo. Complementa o
+`residual_text.py <dialogs.csv> <pasta do jogo> [--ceiling 0.05]` (texto legível dentro de arquivo já coberto; round-trip idêntico prova
+que nada foi corrompido, não que tudo foi extraído). Engine desconhecida: `connectors/discover.py <pasta do jogo>` + `coverage_gate.py` (ver `connectors/00_index.md`).
+
 ### 3. Registrar o byte budget (SHIFT-LEFT)
-Para cada string, gravar `byte_budget` = nº de bytes que ela ocupa no binário. **Este campo é o que
+Para cada string, gravar `byte_budget` = nº de bytes que ela ocupa no binário (com `connector.budget_reserves_terminator: true`
+o CSV já traz o byte do `\0` reservado — ADR 0006; a conta única é `runtime/budget.py`, e exceção pontual de +bytes decidida
+pelo humano vai em `byte_budget_exceptions` no `project.json`, nunca no CSV). **Este campo é o que
 permite a tradução caber na 1ª passada (Passo 06) e evita custo de LLM na reinserção.** Não omitir.
 
 ### 4. Gate de charset do idioma-alvo
@@ -107,7 +119,7 @@ binário' === binário  (byte-a-byte)
 | Arquivo | Conteúdo |
 |---------|----------|
 | `connector/extract.py` (na instância) | Extrator determinístico do projeto |
-| `dialogs.csv` | Corpus canônico: `id_column`, `text_source`, `byte_budget` |
+| `dialogs.csv` | Corpus canônico: `id_column`, `text_source`, `byte_budget` (a coluna de texto é a declarada em `source.text_column`; projetos antigos como o bof4 usam `text_en` — `context_pack.load_dialogs` e `scene_dedup` aceitam as duas) |
 | `extraction_log.md` | Tabela, encoding, control codes, total, offsets, gates (round-trip/charset), anomalias, **taxa de fit do byte-budget** |
 
 ---

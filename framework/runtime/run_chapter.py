@@ -37,6 +37,7 @@ import config  # noqa: E402  (fonte unica de SCENE_OK_STATUSES -- ver _OK abaixo
 import connector_gate  # noqa: E402  (gate de completude de conector, roda ANTES do kb_gate)
 import context_pack  # noqa: E402
 import cost_report  # noqa: E402
+import hitl  # noqa: E402
 import kb_gate  # noqa: E402
 import model as M  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
@@ -357,6 +358,15 @@ def run_chapter(root, chap, *, backend="api", require_back=False, redo=False, do
         print(f"nenhuma cena encontrada p/ {chap} (esperado {hint})")
         _run_mandatory_audits(root, cost_chap)
         return {"chapter": chap, "scenes": [], "status": "empty"}
+    problems = hitl.gate(root, scenes, backend=backend) if hitl.enabled(root) else []   # mesmo portao do run_scene.main
+    pf, notes = RS.backend_preflight(root, scenes, backend)
+    for n in notes:
+        print(n)
+    if problems or pf:
+        print(f"BLOQUEADO (caminho {backend}):")
+        for m in problems + pf:
+            print(f"  - {m}")
+        return {"chapter": chap, "scenes": [], "status": "blocked_path"}
     print(f"capitulo {chap}: {len(scenes)} cena(s) -> {', '.join(scenes)}"
           + (f" | teto de gasto: ${max_usd:.2f}" if max_usd is not None else ""))
 

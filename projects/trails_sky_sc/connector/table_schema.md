@@ -314,6 +314,11 @@ existem) confirmado verde. O soft-check ("nenhuma cena com round-trip verde regi
 (`artifacts/kb_phase_worklist.md`) ainda não foi iniciada.** Nenhuma tradução de verdade foi feita
 ou testada contra o `.pac` real nesta seção — só contra fixture sintético.
 
+> Atualização 2026-10-14: o item 5 acima (e os números "41.834 strings" das seções anteriores) descreve o estado de 2026-08-23.
+> Depois disso: a Fase 0 de KB foi fechada (`artifacts/kb_phase_worklist.md`), um patch do Steam subiu o corpus flat para
+> 41.890 linhas (2026-08-26) e a cena-piloto `mp0010_01` consta `verified` no `run_state.json` (round-trip real contra o `.pac`).
+> As demais cenas seguem sem tradução. Ver `artifacts/decision_log.md`.
+
 ### RETOMADA (2026-08-23, sessão seguinte #4) — pendência "tabela de nomes de Arts/Crafts" RESOLVIDA
 
 Contexto: ao popular `artifacts/glossary.csv` (Fase 3, ver seção acima), só 3 nomes de Art apareciam

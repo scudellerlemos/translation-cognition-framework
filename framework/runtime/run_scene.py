@@ -50,6 +50,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 import session_usage  # noqa: E402  (tokens reais da sessao no backend in-session)
 import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero -- so quando rodado como entry point, ver main())
 import state_index  # noqa: E402
+import touched  # noqa: E402
 import validate  # noqa: E402  (auditoria de schema dos artefatos -- so quando rodado como entry point, ver main())
 from config import (  # noqa: E402
     CONNECTOR_KNOWN_KEYS,
@@ -309,7 +310,8 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
                 return tr, None, {"status": "schema_failed", "scene": scene}
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True,
-                                      "connector_hash": _connector_hash(root, cfg)})
+                                      "connector_hash": _connector_hash(root, cfg),
+                                      "t_hashes": touched.fingerprint(root, scene)})
             break
         # PROTOCOLO ESTRUTURADO DE SAIDA: exit-code do conector decide, NAO grep de prosa. exit 3 = falha
         # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
@@ -407,7 +409,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     for w in _validate_connector_cfg(cfg):
         print(f"[cfg] AVISO: {w}")
     scene_id = context_pack.scene_id_of(scene)
-    bypassed: list = []   # #16: rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
+    bypassed: list = []   # rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
 
     # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
     # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
@@ -497,7 +499,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
         print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
     _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
     if verified:
-        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB (#73)
+        state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB
     mr = _metrics(root, scene, scene_id, n_lines=tr.get("n_lines"), tr=tr, bt=bt,
                   n_high=len(highs), verified=bool(verified), backend=backend)
     events.emit(root, "quality", "ok" if verified else "unverified", scene, n_lines=mr["n_lines"],
@@ -593,6 +595,28 @@ def backend_preflight(root: Path, scenes, backend: str, env=None) -> tuple[list,
     return problems, notes
 
 
+def _unchanged(project, scenes) -> list:
+    root = Path(project)
+    ch = _connector_hash(root, json.loads((root / "project.json").read_text(encoding="utf-8")))
+    return [x for x in scenes if touched.unchanged(root, x, ch)]
+
+
+def _run_parallel(a) -> tuple[list, list]:
+    """Cada cena num processo proprio (mesmo comando, 1 cena): sem estado global compartilhado; o run_state
+    grava sob trava (paths.locked). Devolve (falhas, verificadas) como o laco em fila."""
+    import subprocess
+    from concurrent.futures import ThreadPoolExecutor
+    flags = ["--backend", a.backend] + [f for f, on in (("--require-back", a.require_back), ("--no-verify", a.no_verify),
+                                                       ("--skip-kb-gate", a.skip_kb_gate), ("--no-back", a.no_back)) if on]
+
+    def one(sc):
+        return sc, subprocess.run([sys.executable, str(Path(__file__).resolve()), a.project, sc, *flags]).returncode
+
+    with ThreadPoolExecutor(max_workers=a.jobs) as ex:
+        res = list(ex.map(one, a.scene))
+    return [f"{sc}=rc{rc}" for sc, rc in res if rc], [sc for sc, rc in res if not rc]
+
+
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
@@ -609,6 +633,11 @@ def main():
                     help="ignora o gate de cobertura de KB (nao recomendado)")
     ap.add_argument("--no-back", action="store_true",
                     help="pula a back-translation (Opus) inteiramente (economia de custo)")
+    ap.add_argument("--jobs", type=int, default=1, metavar="N",
+                    help="N cenas ao mesmo tempo, cada uma em seu processo (reconferencia: o run_state tem trava). "
+                         "A TM so cresce entre cenas em fila; para traduzir em sequencia use 1")
+    ap.add_argument("--full", action="store_true",
+                    help="reconfere tambem as cenas verified sem fala tocada (padrao: pula, ver touched.py)")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
     ap.add_argument("--check-stale", action="store_true",
@@ -653,8 +682,16 @@ def main():
     was_verified = {s for s in a.scene if before.get(s, {}).get("status") == "verified"}
     # Lote = mesma execucao por cena, em fila (a TM cresce de uma cena para a seguinte); so o custo fixo
     # do processo (carga do modelo de busca, mirror do DB, auditorias) deixa de se repetir a cada cena.
-    bad, done = [], []
-    for s in a.scene:
+    bad: list[str] = []
+    done: list[str] = []
+    same = [] if a.full or a.clean else _unchanged(a.project, a.scene)
+    if same:
+        print(f"[skip] {len(same)} cena(s) verified sem fala tocada (use --full para reconferir): {', '.join(same)}")
+        a.scene = [x for x in a.scene if x not in same]
+    par = a.jobs > 1 and len(a.scene) > 1
+    if par:
+        bad, done = _run_parallel(a)
+    for s in () if par else a.scene:
         r = run_scene(a.project, s, backend=a.backend, require_back=a.require_back,
                       do_verify=not a.no_verify, skip_kb_gate=a.skip_kb_gate,
                       no_back=a.no_back)

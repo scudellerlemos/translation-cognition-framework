@@ -313,7 +313,7 @@ if __name__ == "__main__":
 
 
 # ---------------------------------------------------------------------------
-# REINSERT — pares de decode_string() acima. #43: candidato pré-preenchido,
+# REINSERT — pares de decode_string() acima. candidato pré-preenchido,
 # não um conector completo — o agente/dev ainda adapta e valida via round-trip.
 # ---------------------------------------------------------------------------
 _LINEAR_SCAN_REINSERT_STUB = '''\
@@ -641,7 +641,7 @@ def generate(evidence: dict, engine_hint: str | None = None) -> str:
 
 def generate_reinsert(evidence: dict, engine_hint: str | None = None) -> str:
     """Gera candidato de reinsert.py PAREADO com o extract.py de generate() -- mesmo padrão
-    (evidência decide o mesmo jeito nos dois), inverte encode/decode. #43: candidato pré-
+    (evidência decide o mesmo jeito nos dois), inverte encode/decode. candidato pré-
     preenchido, não um conector completo -- o loop propõe→verifica→refina (ou o dev) ainda
     adapta e valida via round-trip (connector_smoke --roundtrip é o oráculo final).
 

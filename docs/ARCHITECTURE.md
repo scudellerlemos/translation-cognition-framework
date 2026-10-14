@@ -27,6 +27,7 @@ framework/media-profiles/  ← A CATEGORIA (jogos/filmes/séries). Formato, toke
 framework/connectors/      ← A I/O (código det.). Extração/reinserção meio↔corpus.
 framework/runtime/         ← O HARNESS (orquestração det. + interface de modelo).  [NOVO]
 framework/validation/      ← OS GATES (código det.). Schemas, naturalidade, custo.
+framework/distribution/    ← A ENTREGA: build_package (deltas bsdiff + manifest), patcher, build_exe (.exe de um clique).
 docs/                      ← ARQUITETURA + ADRs + ROADMAP (documentação, fora de framework/).
         +
 projects/<título>/         ← A INSTÂNCIA (o quê). Manifesto + perfil + artefatos + conector do título.
@@ -36,7 +37,7 @@ projects/<título>/         ← A INSTÂNCIA (o quê). Manifesto + perfil + arte
 flowchart TB
   subgraph framework["framework/ — genérico, reutilizável (zero dado de obra)"]
     direction TB
-    skills["skills/ 00–08<br/>o processo (SDD)"]
+    skills["skills/ 00–09<br/>o processo (SDD)"]
     runtime["runtime/<br/>harness: cena = job stateless"]
     connectors["connectors/<br/>I/O determinística (binário ↔ corpus)"]
     validation["validation/<br/>gates determinísticos"]
@@ -74,6 +75,13 @@ run_scene(cena)
   6. checkpoint (run_state.json) + state_index (TM cresce)
 ```
 
+Reconferência barata: ao fechar `verified`, o `run_scene` grava em `run_state.json` o `t_hashes` (impressão
+digital por fala da tradução, `runtime/touched.py`) junto com `connector_hash`/`doctrine_hash`. Numa nova
+rodada, cena `verified` sem fala tocada (mesma doutrina e mesmo conector) é pulada; `--full` força a
+reconferência. Texto repetido entre cenas é traduzido uma vez (`runtime/scene_dedup.py`), e
+`runtime/wave.py` junta os passos mecânicos de uma onda (run_scene, scene_dedup, glossary_lint,
+quality_gate, cost_report, obs_report) num comando só, com a saída longa em `artifacts/wave_last.log`.
+
 ```mermaid
 flowchart LR
   pack["context_pack<br/>det."] --> tr{{"translate<br/>IA · Sonnet"}}
@@ -93,8 +101,8 @@ flowchart LR
 > reproduzível é **a orquestração + os gates**: dado um `translations_*.json` fixo, `context_pack`
 > (`pack.json` byte-idêntico), `build_plan`, `verify` (round-trip byte-idêntico) e a reinserção rodam
 > igual toda vez. Em outras palavras: **o veredito é reproduzível; a geração não.** É por isso que o
-> `translations_*.json` é trackeado no git (o artefato caro/estocástico) e o `pack.json` é regenerável
-> (determinístico). Não confundir "pipeline determinístico" com "tradução determinística".
+> `translations_*.json` é o artefato caro/estocástico (guardado como dado do projeto; no repo público o
+> `content_guard.py` o barra por conter fala do jogo) e o `pack.json` é regenerável (determinístico). Não confundir "pipeline determinístico" com "tradução determinística".
 
 **Estado externo consultável** (não na janela): `glossary.csv`, `state/translation_memory.jsonl`,
 `state/voice_cards.json`, `state/decision_index.json`, `translation_status.json`, `run_state.json`.
@@ -128,7 +136,7 @@ isoladas. Ver `MODEL_INTERFACE.md`.
 ## Por que isto escala e roda em Sonnet
 
 - **Contexto constante por execução** → a janela não cresce com o nº de capítulos (mata o estouro).
-- **Doutrina cacheável (~4K tok)** cobrada ~1× via prompt-caching, não a cada cena.
+- **Doutrina cacheável (~2,2K tok)** (estimativa por caracteres, 7,5 mil, não medida no tokenizer) cobrada ~1× via prompt-caching, não a cada cena.
 - **Consistência vem do store** (TM/glossário/voice cards), não da memória do chat.
 - **Model-mix**: Sonnet traduz, Opus verifica alto risco e re-traduz só o resíduo de fitting (ver `validation/cost_model.py`).
 
@@ -191,8 +199,8 @@ comprovado vivo, além do alvo acima:
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
   Contagem corrente em [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 - **CI paralela:** 7 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
-  push/PR (sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
-  maior job); `api-smoke.yml`, `dep-audit-optional.yml`, `ml-coverage-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
+  PR (e em push na `main`), sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
+  maior job; `api-smoke.yml`, `dep-audit-optional.yml`, `ml-coverage-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
   sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em
   [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
 
@@ -204,5 +212,7 @@ comprovado vivo, além do alvo acima:
 - `MODEL_INTERFACE.md` — contrato `translate`/`back_translate`; caminhos assinatura vs API.
 - `TRANSLATION_PIPELINE.md` — o fluxo de 1 cena ponta-a-ponta; checkpoint/resume.
 - `OBSERVABILITY.md` — métricas a coletar.
+- `DIAGRAMAS.md` — fluxo de ponta a ponta (humano e IA em cada passo), C4 (contexto, contêineres, componentes) do pipeline e do patcher, com sequências.
+- `benchmark_sessao/` — PRD, HLD e FDD do benchmark do caminho de sessão.
 - `ROADMAP.md` — backlog priorizado (P0–P3) + fases.
 - `adr/` — decisões arquiteturais registradas.

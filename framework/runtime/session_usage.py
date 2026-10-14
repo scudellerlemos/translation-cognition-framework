@@ -61,7 +61,10 @@ _ACTIVITY = [(a, re.compile(rx, re.I)) for a, rx in [
 # tokens de saida por caractere de (conteudo visivel, assinatura do raciocinio), ajustado nas mensagens que
 # TEM o usage final (2026-10-12; erro agregado de 1% a 16% por modelo).
 # ponytail: constantes medidas, nao recalculadas; refazer o ajuste se o formato da transcricao mudar.
-_OUT_FIT = {"claude-opus-5-5": (0.34, 0.32), "claude-sonnet-5-5": (0.52, 0.36), "claude-haiku-5-5": (0.72, 0.30)}
+# Ajuste medido em mensagens com saida exata (7.000+ mensagens do projeto): vies na SOMA entre -7% e +5% por modelo;
+# por mensagem o erro e de 8% a 18%. Reajustar com tools de calibracao se um modelo novo aparecer.
+_OUT_FIT = {"claude-opus-5-5": (0.34, 0.32), "claude-sonnet-5-5": (0.52, 0.36), "claude-haiku-5-5": (0.72, 0.30),
+            "claude-sonnet-5": (0.39, 0.27)}
 _OUT_FIT_DEFAULT = (0.44, 0.28)
 
 

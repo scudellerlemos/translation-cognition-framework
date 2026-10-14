@@ -19,6 +19,11 @@ status: reconciled
 | T1 | Manual oficial do jogo (PC, 2003) — `english/manual.pdf` da instalação; texto em `research_cache/91074abab54433a8.md` | Premissa, descrição dos 7 personagens, sistema de jogo | Humano |
 | T2 | Wiki de fãs — https://bof.fandom.com/wiki/Breath_of_Fire_IV (via `api.php`, wikitext em `research_cache/413185b2524bd869.md`) | Ambientação, enredo completo, notas de localização e censura | Humano |
 
+**Atribuição e licença das fontes abertas:** o texto abaixo é síntese própria, sem cópia literal. A Wikipedia PT
+(CC BY-SA 4.0) e a wiki de fãs do Fandom (em geral CC BY-SA 3.0) são citadas como fonte; qualquer trecho
+reaproveitado delas mantém atribuição e a mesma licença. O manual oficial e o corpus do jogo são consultados só
+para conferir grafia e uso, sem reproduzi-los.
+
 **Reconciliação humana:** usuário forneceu Wikipedia PT como fonte principal (2026-06-20).
 Novos termos confirmados pela Wikipedia: **Aliança do Leste** (Eastern Alliance), **Synesta** (cidade onde Elina desapareceu), **Sandflier** (veículos que navegam no oceano de areia), **Império Fou** (grafia PT confirmada).
 
@@ -215,7 +220,7 @@ Síntese por IA. Fonte por item: wiki de fãs (wikitext em `research_cache/`) qu
 - **Wyd** (Criatura): Inimigo de Mt. Glom; vira Firewyd se atingido por fogo. 3x. Manter grafia. Fonte: wiki de fãs + corpus.
 - **Drake** (Criatura): Inimigo de Mt. Glom, citado junto de Wyd. 3x. Manter grafia. Fonte: wiki de fãs + corpus.
 - **Status** (Mecânica): tipo de ataque/condição ('Status attacks', 276x no corpus). Manter 'Status', termo usual em JRPG em pt-BR. Fonte: corpus.
-- **Buy / Sell / Stop / Normal** (UI): rótulos de menu que vivem nos arquivos de cena (loja em AREAS021/041, modo do minijogo em AREAS041). Entraram no corpus com a correção do extrator (issue #221). Traduzir: Comprar / Vender / Parar / Normal. Fonte: corpus.
+- **Buy / Sell / Stop / Normal** (UI): rótulos de menu que vivem nos arquivos de cena (loja em AREAS021/041, modo do minijogo em AREAS041). Entraram no corpus com a correção do extrator (issue do backlog). Traduzir: Comprar / Vender / Parar / Normal. Fonte: corpus.
 - **Sink** (Mecânica): movimento de isca na ajuda da pesca (AREAD075, (fala do corpus)). Verbo comum: afundar. Fonte: corpus.
 - **Pilfer, Blitz, Spray, Clip, Egghead** (Mecânica): nomes de habilidade, listados como rótulo em AREAS015/016/020 e AREAS002/017/018/019, junto de 'Super Combo' (já no glossário, mantido). Manter em inglês: o menu de batalha, onde o jogador usa esses nomes, está fora do escopo e continua em inglês. Rever se a UI de batalha for traduzida. 'Oracle' na mesma lista é a habilidade homônima e segue a mesma regra nesse rótulo. Fonte: wiki de fãs (List of Breath of Fire IV Abilities) + corpus.
 

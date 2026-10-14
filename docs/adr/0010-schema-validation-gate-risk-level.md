@@ -39,3 +39,5 @@ inline no bloco de `translation_plan.json`.
   `_audit_schema`, não derruba o capítulo se `validate.py` falhar).
 - Fora de escopo (dívida conhecida): nenhum teste novo cobre `_audit_schema` diretamente nem o novo
   bloco de `validate.py` sobre `translation_plan_<scene_id>.json` — candidato a próxima sessão.
+
+**Atualização 2026-10-14:** `_audit_schema` vive em `run_scene.py:550` (o `run_chapter` o chama como `RS._audit_schema`, `run_chapter.py:435`) e tem teste (`test_run_scene.py:424,430`); a dívida do último item foi paga. Os `build_plan_chapter.py` com `_RISK` são hoje 6: `_skeleton`, `bof4`, `demo`, `souldiers`, `trails_sky_sc`, `utawarerumono` (o projeto `breath_of_fire_4` virou `projects/bof4`).

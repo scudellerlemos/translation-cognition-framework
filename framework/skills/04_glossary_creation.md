@@ -49,6 +49,9 @@ Colunas obrigatórias:
 | `spoiler_level` | none / moderate / major / critical |
 | `aliases` | Aliases do termo (separados por `;`) |
 | `notes` | Instruções específicas de uso |
+| `updated_date` | Data da última revisão do termo (`YYYY-MM-DD`). **Exigida pelo `kb_gate`** (sem a coluna o gate bloqueia; no modo banco é `updated_at`) |
+
+> Não existe coluna `context`: o contexto/sentido de uso de um termo vai em `notes`.
 
 > **Valores do runtime:** `context_pack.select_glossary()` casa termo/entidade pelo texto da cena —
 > não lê o valor de `handling_rule` (qualquer string passa). Quem lê o valor literalmente é
@@ -146,6 +149,22 @@ Ver `04b_decision_log.md` para o protocolo completo. O `decision_log.md` começa
 
 ---
 
+## REGRAS DE GLOSSÁRIO (lições do 1º projeto longo; conferidas pelo lint do passo 06 quando ele cobre)
+
+- **Por sentido, não por palavra:** o mesmo termo em inglês com dois sentidos (ex.: item × comando) tem uma entrada
+  por sentido, com o contexto em `notes`. Glossário "uma palavra = uma tradução" gera erro sistemático.
+- **Título inteiro:** nome composto/título é uma entrada só ("Mestre das Sombras" inteiro); a entrada por pedaço
+  traduz o título pela metade.
+- **Nome mantido que atravessa quebra de linha:** o termo `manter_original` pode vir cortado por `[01]`; a conferência
+  deve buscar o nome também sem a quebra (normalizar a quebra para espaço antes de buscar).
+- **Palavra comum não vira termo automático:** filtro de palavra comum antes de entrar no glossário (verbo, artigo,
+  adjetivo corrente). Termo que também é palavra corrente exige o contexto em `notes`. O `glossary_lint` já ignora a regra `traduzir` de papéis genéricos (man, lord, soldier…; `_GENERIC`) e termo de uma palavra que só aparece abrindo frase.
+- **Folga de bytes por contexto:** termo traduzido mais longo que o original (sistema, menu, rótulo) anota em
+  `notes` quanto de folga exige; onde o orçamento de bytes não cobre, o termo ganha forma curta explícita.
+- **O lint lê o banco:** rodar `state_index` (rebuild) antes do lint, senão ele confere contra glossário velho. Uso: `python framework/runtime/glossary_lint.py <projeto> [--json]` (candidatos p/ revisão, não é gate).
+
+---
+
 ## VERIFICAÇÃO DE COBERTURA DO GLOSSÁRIO
 
 Após criar o `glossary.csv`, executar esta verificação antes de avançar:
@@ -188,7 +207,7 @@ Quando uma entrada existente do `glossary.csv` for modificada após o início do
 
 **3. Registrar no decision_log.md** com tipo `revision` (razão + impacto + ação).
 
-**4. Agendar correção:** adicionar IDs afetados ao próximo ciclo de correção (Passo 06c).
+**4. Agendar correção:** adicionar IDs afetados ao próximo ciclo de correção (Passo 06b).
 
 ---
 

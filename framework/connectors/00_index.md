@@ -109,7 +109,7 @@ connectors/
   hex_binary.md      ← contrato do conector de jogos antigos (tabela, ponteiros, byte-space, cascata)
   archive_script.md  ← contrato do conector p/ containers de engine de terceiro (Unity etc.); estratégia
                         de fixture sintética por família de engine (template + patch-helper)
-  agentic_synthesis.md ← loop propõe→verifica→refina p/ engine desconhecida (#43); round-trip
+  agentic_synthesis.md ← loop propõe→verifica→refina p/ engine desconhecida; round-trip
                         como oráculo automático; ratificação final sempre humana
   _skeleton/
     extract.py                 ← esqueleto comentado do extrator (a IA adapta por projeto)
@@ -120,6 +120,14 @@ connectors/
     test_roundtrip.py          ← contrato: round-trip byte-idêntico real (cópia em tmp) + sem texto/path hardcoded
     test_roundtrip_synthetic.py ← oráculo sempre ativo em CI: encode→decode via Hypothesis sobre tabela sintética
     conftest.py                ← connector/ no sys.path + opção --source-binary (binário real fica fora do repo)
+  Código genérico (Generic Connector System, usado pelo fluxo manual e pelo `agentic_synthesis.md`):
+    connector_io.py            ← utilitários comuns aos `extract.py` (caminho de origem, escrita de dialogs.csv/extraction_log.md)
+    discover.py                ← CLI: detecta a engine de uma pasta de jogo e orienta o próximo passo (`--generate-stub`)
+    evidence_collector.py / tier_classifier.py ← evidências da pasta → tier (engine conhecida, desconhecida, bloqueado)
+    script_generator.py        ← candidato de `extract.py`/`reinsert.py` para engine desconhecida
+    coverage_gate.py / adversarial_validator.py / connector_smoke.py ← dry-run de cobertura, overfitting, round-trip (oráculo)
+    scope_scan.py / residual_text.py ← o que a pasta do jogo tem e o `dialogs.csv` não cobre (Fase 0)
+    unity_addressables/        ← `extract_template.py` (família Unity Addressables)
 ```
 
 Ver `docs/NEW_PROJECT_ONBOARDING.md` para o guia passo a passo de criação de um novo projeto.

@@ -110,6 +110,7 @@ def main():
     ap.add_argument("--export", metavar="CSV", default=None,
                     help="grava a worklist 'revise' nesse CSV (entrada do quality_fix)")
     a = ap.parse_args()
+    paths.require_project(a.project)
     r = check(a.project, a.chapter)
     rev, unc, cov = r["revise"], r["uncovered"], r["coverage"]
     import hitl  # fila de escalonamento aberta = decisao humana pendente -> bloqueia (projeto com "hitl")

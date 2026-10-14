@@ -99,6 +99,6 @@ placeholders abstratos `{COLOR}` (abre) / `{END}` (fecha). `{W<N>}` (timers) é 
 á é í ó ú  â ê ô  ã õ  ç  (e maiúsculas)  -> AUSENTES na fonte (renderizam como '@')
 ```
 
-**Decisão:** **transliteração na gravação** (NFKD + descarte de combining marks; `ç→c`). A tradução
+**Decisão:** **transliteração na gravação** (NFD canônica + descarte de combining marks; `ç→c`; NFKD foi descartada por reduzir ①②③ a `1/2/3` — ver `connector_io.py`). A tradução
 canônica (`approved_translations.csv`) permanece com acento (correta para QA); só os bytes gravados
 no jogo são dobrados para ASCII. Registrado no `decision_log.md`.

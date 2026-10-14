@@ -1,4 +1,4 @@
-"""test_script_generator_reinsert.py — cobre generate_reinsert() (#43): candidato de
+"""test_script_generator_reinsert.py — cobre generate_reinsert(): candidato de
 reinsert.py PAREADO com o extract.py de generate() (mesma evidência -> mesmo padrão).
 
 Além do conteúdo gerado (mesmo estilo de test_script_generator.py p/ generate()), EXECUTA

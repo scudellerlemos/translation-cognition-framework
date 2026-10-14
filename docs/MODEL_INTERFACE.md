@@ -58,6 +58,10 @@ já produziu `translations_<scene_id>.json`:
   pequeno, o contexto nunca acumula → sem estouro, sem conta de API).
 - presente → `status: ready` (segue para as gates determinísticas).
 
+Também no `in-session`, a fala cuja fonte já foi traduzida em outra cena sai do prompt e é preenchida
+pela TM (`_select_reuse`, a mesma do caminho `api`); e na reconferência de uma cena já traduzida, sem
+mudança de falas, projeto ou doutrina, o `pack.json` gravado é reaproveitado (`saved_pack`).
+
 Resumível: rode `run_scene` de novo após o arquivo aparecer; o checkpoint diz onde retomar.
 
 **Medição de tokens.** No Claude Code, cada cena é traduzida por **um subagente dedicado** (ele roda o

@@ -21,6 +21,9 @@ exercitar o pipeline de onboarding de baixo custo (P1.7) numa estrutura de proje
   (3 tabelas CSV tilde-delimited embutidas em `TextAsset` dentro de bundles: `texts_DIALOGS`,
   `texts_INGAME_DIALOGS`, `texts_SIDE_DIALOGS` — a última usa coluna `::BR::`, não `::PT::`)
 - **470/470 cenas verified** — round-trip byte-idêntico, 100% cobertura de back-translation ✅
+  (Atualização 2026-10-14: o `run_state.json` versionado registra 485 cenas — as 470 de `scenes_index.json` + 15 extras
+  (armas de Gartua, INGAME_*, QS_NUN_DONATEPART1_1_*, etc.): 484 verified e 1 `build_plan_failed`
+  (`QS_NUN_DONATEPART1_1_NEGATIVE`, 1 fala). Os "470/470" acima valem para o índice de cenas.)
 - KB reconstruída a partir de material já pesquisado (decision_log, tone_analysis, terminology
   seeds) + evidência real do corpus; 22 entidades UNSOURCED resolvidas (fonte ou verbatim) ✅
 - Batch API (−50%) segmentado em pacotes menores (translate + back-translation) — mitiga o risco

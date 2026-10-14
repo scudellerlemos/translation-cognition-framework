@@ -4,14 +4,14 @@
 
 ## Contexto
 
-`framework/db/embedder.py` (#40, generalizado sobre #44) indexa 1 vetor por linha de
+`framework/db/embedder.py` (generalizado sobre a esteira DB-first) indexa 1 vetor por linha de
 `translations.source` ou `decisions.summary` — 1-linha-1-vetor, sem chunking, porque diálogo de
 jogo e resumos de decisão já chegam pré-segmentados em unidades atômicas (1 fala = 1 linha, 1
 decisão = 1 linha).
 
 Isso não se generaliza sozinho pra conteúdo tipo documento: `universe_knowledge_base.md` é lore
 extensa, hoje "chunkada" manualmente por seção markdown com curadoria humana (tag
-`<!-- reveal: ... -->` por seção `##`/`###`). A pergunta do #53 era se o embedder devia ganhar um
+`<!-- reveal: ... -->` por seção `##`/`###`). A pergunta era se o embedder devia ganhar um
 `chunk_fn` por kind (parâmetro configurável de estratégia de chunking — por seção, por parágrafo,
 por N tokens com overlap) pra cobrir esse caso e generalizar pra projeto futuro.
 
@@ -72,3 +72,5 @@ sempre a mesma receita: 1 entrada em `_KIND_CONFIG` + 1 tabela `<kind>_embedding
   a KB do BoF4 não tem nenhuma tag `<!-- reveal: ... -->`, então toda seção fica com `reveal=NULL`
   — o gate default-deny bloqueia a seção semântica inteira até o projeto tagueá-la, ou seja, hoje
   esse caminho não muda o pacote de nenhum projeto real (só o léxico `select_kb` está ativo neles).
+
+**Atualização 2026-10-14:** a ressalva sobre o BoF4 envelheceu: a KB de `projects/bof4/artifacts/universe_knowledge_base.md` hoje tem tag `<!-- reveal: ... -->` nas seções (15 ocorrências), então o gate default-deny deixa de bloquear a seção semântica inteira naquele projeto. O projeto se chamava `breath_of_fire_4` na data da medição.

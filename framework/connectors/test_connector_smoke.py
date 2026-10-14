@@ -1,4 +1,4 @@
-"""test_connector_smoke.py — cobre a protecao de encoding/timeout de connector_smoke.py (#13):
+"""test_connector_smoke.py — cobre a protecao de encoding/timeout de connector_smoke.py:
 o smoke test de conector novo deve delegar em connector_mgr._run (mesma defesa Windows-safe
 ja usada por run_scene), nunca chamar subprocess.run cru sem timeout/encoding."""
 import csv
@@ -83,7 +83,7 @@ def test_roundtrip_delegates_timeout_to_connector_mgr(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# #30: cobertura de smoke() -- invariantes 1/2/3, flag --roundtrip, extract.py ausente
+# cobertura de smoke() -- invariantes 1/2/3, flag --roundtrip, extract.py ausente
 # ---------------------------------------------------------------------------
 
 def _write_dialogs_csv(tmp_path, rows, fieldnames=("offset", "text_en", "byte_budget")):
@@ -178,7 +178,7 @@ def test_smoke_roundtrip_flag_delegates_to_run_roundtrip(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# #30: cobertura de _run_roundtrip() -- pre-condicoes ausentes
+# cobertura de _run_roundtrip() -- pre-condicoes ausentes
 # ---------------------------------------------------------------------------
 
 def test_run_roundtrip_missing_reinsert_py(tmp_path):
@@ -315,7 +315,7 @@ def test_run_roundtrip_ignores_stale_output_when_reinsert_writes_nothing(tmp_pat
 
 
 # ---------------------------------------------------------------------------
-# #30: cobertura de _find_source() e _find_output()
+# cobertura de _find_source() e _find_output()
 # ---------------------------------------------------------------------------
 
 def test_find_source_bad_json_returns_none(tmp_path):

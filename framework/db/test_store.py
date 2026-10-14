@@ -1,6 +1,6 @@
 """test_store.py — cobre Store diretamente (schema/migração aditiva de coluna, roundtrip).
 
-#22: spoiler_entries ganhou forbidden_pre_reveal/gender_quarantine (colunas ausentes no schema
+spoiler_entries ganhou forbidden_pre_reveal/gender_quarantine (colunas ausentes no schema
 original — spoiler_check dependia delas mas o DB nunca as carregava). Este teste prova o
 roundtrip via upsert/get e a migração idempotente (ALTER TABLE ADD COLUMN) para bancos criados
 antes das colunas existirem. Só stdlib.
@@ -85,7 +85,7 @@ def test_migrate_schema_adds_columns_to_preexisting_db(tmp_path):
 
 
 def test_decision_reveal_roundtrip(tmp_path):
-    """#40: upsert_decision/get_decisions preserva reveal (None por default -- default-deny)."""
+    """upsert_decision/get_decisions preserva reveal (None por default -- default-deny)."""
     db_path = tmp_path / "t.db"
     with Store(db_path) as db:
         db.upsert_project("p1", "Projeto Teste")
@@ -115,7 +115,7 @@ def test_migrate_schema_adds_reveal_column_to_preexisting_decisions(tmp_path):
 
 
 def test_reindex_pending_embeddings_never_raises(tmp_path, monkeypatch):
-    """#55: uma falha de embedding (extensão nativa incompatível, hardware ROCm indisponível,
+    """uma falha de embedding (extensão nativa incompatível, hardware ROCm indisponível,
     etc. — qualquer coisa além de ImportError) nunca pode derrubar o write-path. Embedding é
     busca semântica opcional sobre dados já persistidos em SQL; regressão real encontrada ao
     conectar reindex_pending_embeddings no migrate() (a exceção só era pega se ImportError)."""

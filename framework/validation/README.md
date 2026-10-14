@@ -5,6 +5,7 @@ Genéricos: descobrem tudo lendo o `project.json` da instância; **não contêm 
 
 - **`validate.py`** — schemas + invariantes estruturais.
 - **`naturalness_lint.py`** — smells de naturalidade/tradução (apoio à Carta de Governança).
+- **`cost_model.py`** — custo de produção via API em 3 cenários (`python cost_model.py <projeto> [--report]` grava `artifacts/cost_report.md`); tokens estimados (~chars/3,8), ordem de grandeza.
 
 ---
 
@@ -17,17 +18,16 @@ Validadores **executáveis** dos artefatos do pipeline — a contraparte de cód
 
 `validate.py` → `validate_project(<dir>)` checa, para os artefatos que existirem:
 
-- **`project.json`** — campos obrigatórios (title, idiomas, source, formatting_tokens).
+- **`project.json`** — campos obrigatórios (title, source_language, target_language, source, formatting_tokens); `formatting_tokens`/`formatting_token_patterns` válidos (regra única de `connector_io`).
 - **`glossary.csv`** — `handling_rule` não-vazio e no enum; `target_translation` quando
-  `traduzir`/`traduzir_parcial`; `spoiler_level` no enum.
-- **`dialogs.csv`** — `id_column` único; `byte_budget` inteiro ≥ 0.
-- **`approved_translations.csv`** — cada id casa com `dialogs.csv`; **tokens preservados** vs source.
-- **`translation_plan.json`** — campos obrigatórios por linha; `risk_level` no enum; **`risk_notes`
-  obrigatório quando `risk ≥ medium`**; `total_lines` e `critical_lines` coerentes.
+  `traduzir`/`traduzir_parcial`; `spoiler_level` no enum (WARN).
+- **`dialogs.csv`** — `id_column` único; `byte_budget` inteiro ≥ 0 (coluna de texto: `text_source`, ou `source.text_column` em projetos antigos).
+- **`approved_translations.csv`** (flat) e **`scenes/<cena>/approved_*.csv`** (layout por cena, o dos projetos atuais, contra o `dialogs.csv` da cena) — cada id casa com o source; **tokens preservados** vs source (literais por contagem; padrões parametrizados por multiset verbatim); nº de `
+` divergente é WARN.
+- **`scenes/<cena>/translation_plan_*.json`** (plano por cena, o de produção) — campos obrigatórios por linha (`offset`, `text_source`, `speaker`, `risk_level`, `base_translation`); `risk_level` no enum; **`risk_notes`
+  obrigatório quando `risk ≥ medium`**; `total_lines` coerente. O `translation_plan.json` global (legado do poc) ainda é aceito e exige também `entities_present`, `tone_register`, `intent`, `glossary_flags`, `spoiler_flags` e `critical_lines` coerente.
 - **`entities.csv`** — `canonical_name` único; enums de category/importance/confidence.
 - **`aliases_map.json`** — campos obrigatórios; `reveal_timing` quando `spoiler_level ≠ none`.
-
-Severidades: **ERROR** (viola schema/invariante → exit 1) e **WARN** (suspeita não-bloqueante).
 
 Severidades: **ERROR** (viola schema/invariante → exit 1) e **WARN**. É um **Input Gate executável**:
 rodar antes de consumir os artefatos. Cresce incrementalmente (novos invariantes → novas checagens + testes).
@@ -37,7 +37,7 @@ rodar antes de consumir os artefatos. Cresce incrementalmente (novos invariantes
 ## `naturalness_lint.py` — Linter de naturalidade
 
 Heurístico, complementa a **Carta de Governança** (`framework/skills/translation_governance.md`).
-Sinaliza **candidatos** para revisão (06c) — não auto-fix. Checagens de alta precisão:
+Sinaliza **candidatos** para revisão (06b) — não auto-fix. Checagens de alta precisão:
 
 - **`copia_crua`** — alvo idêntico ao source, fora da whitelist (nomes do glossário `manter_original`
   por conteúdo alfabético; gritos puros tipo `Aaaah!`/`Aaagh--`; linhas só de número/token).
@@ -45,8 +45,10 @@ Sinaliza **candidatos** para revisão (06c) — não auto-fix. Checagens de alta
   `U... Argh...`), com o resto traduzido. Ignora palavras curtas reais (`a short` → `a pouca`).
 - **`rotulo_cru`** — rótulo de falante (alias/UI) idêntico ao source.
 
-Saída: imprime os achados + grava `<projeto>/artifacts/naturalness_lint.json` (`offset`, `check`,
-`source`, `target`, `note`) — input do 06c.
+Entrada: planos por cena (ou `translation_plan.json`), senão `dialogs.csv` + `approved_translations.csv`; whitelist do `glossary.csv`/`aliases_map.json`. O lint de 1 letra respeita iniciais legítimas em pt-BR (`a`, `e`, `o`, `é`).
+
+Saída: imprime os achados + grava `<projeto>/artifacts/naturalness_lint.json` (`offset`, `check`, `speaker`,
+`source`, `target`, `note`) — input do 06b.
 
 ## Uso
 

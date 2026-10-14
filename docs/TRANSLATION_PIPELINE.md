@@ -6,7 +6,7 @@ a sequência, os artefatos e os pontos de retomada.
 ## Fluxo
 
 ```
-python framework/runtime/run_scene.py <projeto> <cena> [<cena> ...] [--backend in-session|api] [--require-back] [--no-verify]
+python framework/runtime/run_scene.py <projeto> <cena> [<cena> ...] [--backend in-session|api] [--require-back] [--no-verify] [--jobs N] [--full]
 
 [0] gates          →  connector_gate + kb_gate (bloqueiam antes de qualquer chamada de modelo)
 [1] context_pack   →  artifacts/scenes/<cena>/{scene_prompt.md, pack.json}     (determinístico)
@@ -18,6 +18,12 @@ python framework/runtime/run_scene.py <projeto> <cena> [<cena> ...] [--backend i
 ```
 
 `<scene_id>` = nome da cena sem o prefixo `ch_` (ex.: `ch_12_01` → `12_01`).
+
+**Reconferência só do que mudou (`touched.py`).** Ao fechar `verified`, o `run_scene` grava no `run_state` uma
+impressão digital por fala da tradução. Cena `verified` sem fala nova/alterada, com a mesma doutrina e o mesmo
+conector, é **pulada** (`[skip] ... use --full para reconferir`); `--full` força a passada completa
+(`--clean` também reconfere). `--jobs N` roda N cenas ao mesmo tempo, cada uma em seu processo (reconferência;
+o `run_state` tem trava) — a TM só cresce entre cenas em fila, então para traduzir em sequência use 1.
 
 ## Gates (bloqueiam o avanço)
 
@@ -54,7 +60,8 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
   bloqueia o `quality_gate`. Correção do `quality_review apply` que diverge do glossário também cai aqui.
 - **Triagem de risco** (`risk_triage.py`, só caminho de sessão) — antes da QA humana, um juiz barato lê
   os pares únicos fonte+tradução de risco baixo e devolve só os ids que merecem segundo olhar; `apply`
-  sobe essas falas para `high`, e a retrotradução (`--require-back`) e o `quality_review export` cuidam delas.
+  sobe essas falas para `high`, e a retrotradução (`--require-back`) e o `quality_review export` cuidam delas. `risk_triage_run.py <projeto>` orquestra os lotes do `export` (uma chamada headless `claude -p` por
+  lote, em paralelo, formato conferido, até 3 tentativas) e grava os `veredito_NNN.tsv`; cada chamada **é paga**, então sem `--go` o comando só lista os lotes.
 - **Medida de qualidade** (`quality_sample.py`, $0) — `export` sorteia 200 pares únicos do jogo inteiro e
   mistura os que o juiz apontou, sem dizer a origem; o humano marca `ok`/`erro`; `score` calcula a taxa de
   erro com intervalo de 95%, a taxa da triagem e o acerto do juiz (precisão e alcance), e grava o registro
@@ -62,10 +69,29 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
 
 ## Onda num comando (`wave.py`, caminho de sessão)
 
-`python framework/runtime/wave.py <projeto> [cena ...] [--require-back]` roda `run_scene` (se houver cenas),
-`glossary_lint`, `quality_gate`, `cost_report --summary` e `obs_report` em sequência, para no primeiro passo
-que falhar, grava a saída inteira em `artifacts/wave_last.log` e devolve uma linha por passo. Mesmos comandos
+`python framework/runtime/wave.py <projeto> [cena ...] [--backend in-session|api] [--require-back]` roda
+`run_scene` (se houver cenas), `scene_dedup copy` (se alguma cena repete o texto de outra) e o `run_scene` das
+cópias, `glossary_lint`, `quality_gate`, `cost_report --summary` e `obs_report` em sequência; o escopo é só das
+cenas pedidas (sem cena, roda só os gates e relatórios). Para no primeiro passo que falhar, grava a saída inteira em `artifacts/wave_last.log` e devolve uma linha por passo. Mesmos comandos
 e gates; só troca N requisições da janela por uma. `obs_report` é enxuto por padrão (`--all` = todas as cenas).
+
+## Texto repetido entre cenas (`scene_dedup.py`, os dois caminhos)
+
+Cenas com a mesma sequência da coluna de texto-fonte (`text_source`; `text_en` no bof4) formam um grupo: traduz-se
+só a primeira (representante). `scene_dedup.py <projeto> plan` lista grupos e falas poupadas; `copy [CENA ...]`
+leva tradução e retrotradução verificadas do representante para as cópias ainda não `verified` (só as CENAs
+citadas; sem CENA = todas), remapeando os offsets por **posição** também dentro do JSON parseado. A cópia não
+pula gate: o `run_scene` passa cada uma pelos gates.
+
+## Caminho de sessão em lote (`session_lot.py`)
+
+A IA da sessão traduz um lote de cenas num prompt só e o `run_scene` fecha cada uma: `plan` (lotes de até 150
+falas, texto repetido só 1x), `prompt` (junta os `scene_prompt.md` em `tools_local/lot_<id>.md`), `check`
+(tokens, orçamento de bytes e cobertura), `go` (converte o TSV, replica falas deduplicadas e roda
+`run_scene --backend in-session --require-back`), `split`/`join` e `install` (copia os `.DAT` remontados para o
+jogo). A conta de bytes vem de `budget.py` (fonte única: UTF-8 real quando o conector não translitera, forma
+transliterada senão; exceção de +1 byte decidida pelo humano em `byte_budget_exceptions` no `project.json`).
+Os arquivos de trabalho ficam em `projects/<p>/tools_local/` (gitignored: trazem fala do jogo).
 
 ## Sessão: contexto e medição de custo (caminho de sessão)
 
@@ -121,6 +147,35 @@ Como cada cena é uma sessão independente e limitada, o contexto **nunca acumul
 `<projeto>/connector/build_plan_chapter.py` e `verify_chapter.py` (override em `project.json`
 → `connector.build_plan_script` / `connector.verify_script`). Esses scripts são determinísticos,
 read-only no binário, e nunca contêm work-text.
+
+## Distribuição (patcher de um clique, `framework/distribution/`, skill `09_distribution`)
+
+Depois do round-trip verde, a tradução sai como **delta**, nunca como DAT remontado. Config por projeto em
+`projects/<p>/distribution.json` (título, autor, pasta do jogo, processos que travam os arquivos, aviso, recorte do ícone).
+
+1. `python -I framework/distribution/build_package.py distribution.json source_dat output dist <versao> [arte [capa]]`
+   (de dentro do projeto): deltas bsdiff + `manifest.json` com hashes e o bloco `app`. Arte e ícone só no pacote.
+2. `python framework/distribution/build_exe.py dist [saida]`: `.exe` único (PyInstaller; sem Python no jogador).
+   Sem `saida`, grava em `<projeto>/output/` (ignorada no git); recusa saída dentro de `dist/` (o PyInstaller
+   embute o `dist` inteiro) e deixa `work/`/`spec` numa pasta temporária.
+3. Teste: `patcher.py verificar|instalar|desinstalar --jogo <pasta> --pacote dist` numa cópia dos originais; depois
+   o `.exe` no jogo real. Regras do patcher: só toca arquivo com hash original, backup `.bak`, confere hash final,
+   desfaz tudo se falhar, recusa com o jogo aberto (confere os processos do `distribution.json` via `tasklist`, tolerante a saída fora do UTF-8).
+4. Publicar: release no GitHub (só o `.exe` e o hash) + guia na comunidade Steam. `dist/` está no `.gitignore`.
+
+Dependências: `bsdiff4`, `pyinstaller`, `Pillow` (só para arte/ícone) — não estão nos `requirements*.txt`; instalar à mão.
+
+## Largura de caixa e tabela de opcodes (`project.json`)
+
+- `"line_width": "derive"` — o limite de largura é o maior segmento visível do **inglês** das falas que o autor
+  quebrou em 2+ linhas (`box_width.py`); `"line_width_max": N` fixa o valor (vence); sem nenhum, vale 62.
+  `python framework/runtime/box_width.py <projeto>` mostra o limite.
+- `connector.control_codes` aceita, além de `"01": "newline"`, `{"name", "params", "width", "values"}`:
+  `params` = tokens `[xx]` colados que são valor do código (não quebram nem contam como código), `width` =
+  glifos que a variável ocupa na tela, `values` = valores possíveis (`opcodes.py` valida e mede por isso).
+  `name` `newline`, `page_break` e `choice_start` (abre o menu) quebram a caixa; qualquer outro não quebra.
+- `pattern_lint.py <projeto>` roda antes da amostra de qualidade (`quality_sample.export` recusa se reprovar):
+  `largura` e `parametro` bloqueiam; `pt-PT?` (regex `quality_review._PTPT`: 2ª pessoa de verbo e `tem de` + verbo) e `identico-fonte` só são contados.
 
 ## Verificação ponta-a-ponta
 

@@ -1,4 +1,4 @@
-# CONECTOR — síntese agêntica (#43)
+# CONECTOR — síntese agêntica
 ## Loop propõe → verifica → refina para engine desconhecida, com round-trip como oráculo
 
 > **Status:** processo definido, ferramental existente reutilizado (não é um motor novo).
@@ -34,13 +34,15 @@ registry (`connector_registry.json`), nunca gera nada do zero (`existence_gate()
 ```
 1. PROPÕE   script_generator.generate(evidence)              -> extract.py candidato
             script_generator.generate_reinsert(evidence)     -> reinsert.py candidato (MESMO padrão)
-            (discover.py <game_dir> --generate-stub <dir> gera o PAR de uma vez)
+            (discover.py <game_dir> --generate-stub <dir> gera o PAR de uma vez; nunca sobrescreve arquivo
+            existente — apagar para regerar; só grava se o tier for unknown_engine)
 
 2. VERIFICA (a) coverage_gate.check(candidato, game_dir)     -> dry-run contra N maiores arquivos
                falha aqui = candidato não cobre o corpus real, sem gastar tempo com round-trip
-            (b) adversarial_validator.check(candidato)        -> overfitting/variância/offsets
-               sobrepostos — pega candidato que só "decorou" 1 amostra
-            (c) connector_smoke.smoke(projeto, roundtrip=True) -> ORÁCULO FINAL: SHA256 do
+            (b) adversarial_validator.check(per_file)         -> overfitting/variância/offsets
+               sobrepostos — pega candidato que só "decorou" 1 amostra (recebe o `per_file` que
+               o `coverage_gate.check` já devolveu; o `coverage_gate.py` CLI roda (a)+(b) e sai 1 se qualquer falhar)
+            (c) connector_smoke.smoke(projeto, roundtrip=True) -> ORÁCULO FINAL (CLI: `connector_smoke.py <project_root> [pasta_dados] --roundtrip`): SHA256 do
                round-trip extract→reinsert-sem-mudanças === original
 
 3. REFINA   se (a)/(b)/(c) falhar: o diagnóstico (`problems: [...]`) é preciso o bastante pra guiar
@@ -48,7 +50,7 @@ registry (`connector_registry.json`), nunca gera nada do zero (`existence_gate()
             se sobrepõem"). Quem refina é a mesma sessão/agente que propôs — edita as constantes de
             CONFIG do candidato (nunca a lógica de round-trip em si) e volta pro passo 2.
 
-            GATE DE LEITURA (#11): antes de cada edição do candidato, chamar
+            GATE DE LEITURA: antes de cada edição do candidato, chamar
             `connector_gate.assert_fresh_read(candidato_path, conteudo_que_acabei_de_ler)` com o
             conteúdo lido NESTA iteração (não reaproveitar leitura de uma iteração anterior nem de
             memória) — protege contra editar em cima de um diagnóstico desatualizado quando o loop
@@ -68,7 +70,7 @@ O loop NUNCA faz esse registro sozinho.
 
 ## O QUE JÁ EXISTIA vs. O QUE ESTE ISSUE ADICIONOU
 
-| Peça | Status antes do #43 |
+| Peça | Status antes |
 |------|----------------------|
 | Propõe `extract.py` | ✅ já existia (`script_generator.generate()`, 3 padrões por evidência) |
 | Propõe `reinsert.py` | ❌ **não existia** — só `extract.py` era gerado; reinsert sempre 100% manual. Adicionado: `script_generator.generate_reinsert()`, mesmo padrão pareado. |
@@ -77,7 +79,7 @@ O loop NUNCA faz esse registro sozinho.
 | Verifica round-trip (oráculo) | ✅ já existia (`connector_smoke.py --roundtrip`) |
 | `discover.py --generate-stub` gera o par | ❌ **só gerava extract.py**. Adicionado: gera extract.py + reinsert.py juntos. |
 | Loop de refino automatizado | Documentado aqui como PROCESSO (quem faz o quê, teto de iterações) — a mecânica de cada iteração reusa as peças acima, não há motor novo de execução. |
-| Gate de leitura fresca antes de editar (#11) | `connector_gate.assert_fresh_read()` já existia implementado e testado, mas **sem nenhum caller em produção** — não havia fluxo formalizado de "editar um conector existente" pra plugar. O passo REFINA acima é esse fluxo: primeiro caller real da função. |
+| Gate de leitura fresca antes de editar | `connector_gate.assert_fresh_read()` já existia implementado e testado, mas **sem nenhum caller em produção** — não havia fluxo formalizado de "editar um conector existente" pra plugar. O passo REFINA acima é esse fluxo: primeiro caller real da função. |
 
 ---
 
@@ -92,7 +94,7 @@ O loop NUNCA faz esse registro sozinho.
   (extract/reinsert) — quem refina precisa preencher lendo a tabela de caracteres real do jogo
   (mesmo trabalho que já era manual antes; o loop não inventa a tabela).
 - Sem candidato real de engine verdadeiramente nova disponível hoje pra validar o loop
-  ponta-a-ponta (mesma limitação que o `connector_registry.json` teve com "Mask of Truth", #42)
+  ponta-a-ponta (mesma limitação que o `connector_registry.json` teve com "Mask of Truth")
   — validado até aqui só com fixture sintética (`test_script_generator_reinsert.py`).
 
 ---

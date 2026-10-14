@@ -65,6 +65,9 @@ def main():
     import json
     import sys
     from pathlib import Path
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     if len(sys.argv) < 2:
         sys.exit("uso: python adversarial_validator.py <per_file.json> "
                  "(lista 'per_file' de uma saida de coverage_gate.check())")

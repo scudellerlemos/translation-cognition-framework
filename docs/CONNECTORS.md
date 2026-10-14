@@ -24,7 +24,7 @@ de um esqueleto em `framework/connectors/_skeleton/`. O que não dá para genera
 reconstrução byte a byte do formato: tabela de caracteres, códigos de controle, ponteiros,
 contêiner. Isso é escrito por jogo.
 
-Quatro jogos têm conector, cada um com uma restrição de espaço diferente (o estágio de cada um
+Quatro jogos têm conector (mais o `demo`, fixture de teste), cada um com uma restrição de espaço diferente (o estágio de cada um
 está em [`STACK.md`](STACK.md#onde-cada-projeto-está-hoje)):
 
 | Projeto | Engine / formato | Restrição de espaço |
@@ -66,6 +66,19 @@ gradual:
   modelo caro só vê o resíduo que provou ser difícil. Vale só no backend de API, que roda sem
   intervenção humana.
 - **O orçamento é medido nos bytes que serão gravados.** Se o conector translitera os acentos na
-  reinserção, conta o texto transliterado; se grava UTF-8, contam os bytes UTF-8.
+  reinserção, conta o texto transliterado; se grava UTF-8, contam os bytes UTF-8. A conta tem
+  fonte única em `framework/runtime/budget.py`: `target_charset_supported` estritamente `true` conta
+  UTF-8, `budget_reserves_terminator` reserva 1 byte para o terminador, e uma exceção pontual decidida
+  pelo humano vai em `byte_budget_exceptions` do `project.json` (`effective_budget`).
+
+## Largura da caixa
+
+O limite de largura por linha (para a fala caber na caixa) não é um número fixo: com `"line_width":
+"derive"` no `project.json`, `framework/runtime/box_width.py` usa como limite o maior segmento visível
+do inglês do próprio jogo (o que o jogo já exibe), e `"line_width_max": N` fixa um valor que vence o
+derivado; sem nenhum dos dois vale 62. A tabela `connector.control_codes` diz quais códigos quebram a
+caixa (`newline`, `page_break` e `choice_start`, que abre o menu) e quais só são parâmetro de outro
+código (`framework/runtime/opcodes.py`). `python framework/runtime/box_width.py <projeto>` mostra o
+limite e a distribuição.
 
 Como criar um conector para um jogo novo → [`NEW_PROJECT_ONBOARDING.md`](NEW_PROJECT_ONBOARDING.md).

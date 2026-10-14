@@ -22,7 +22,7 @@ Checagens (deterministas, sem rede):
       verde; o bloqueio vale p/ a escala (run_chapter) e p/ run_scene sem verify.
     - conector hex_binary com texto legivel no binario de origem que nao esta em nenhuma string
       extraida (residual_text.py) -- extract cortando/pulando string. Round-trip identico nao pega
-      isso: extract e reinsert erram no mesmo lugar (BoF4, issue #76).
+      isso: extract e reinsert erram no mesmo lugar (BoF4, issue do backlog).
     - conector hex_binary sem connector.data_dir_env (ou env nao setada) -- o check acima nao tem
       como rodar, e check que nao roda nao pode contar como verde.
   warnings (nunca bloqueiam):
@@ -92,7 +92,7 @@ _RESIDUAL_MEMO: dict = {}
 
 def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
     """(problems, warnings) do check de texto residual -- so conector hex_binary. Round-trip
-    identico nao prova extracao completa: ver framework/connectors/residual_text.py (issue #76)."""
+    identico nao prova extracao completa: ver framework/connectors/residual_text.py (issue do backlog)."""
     conn = cfg.get("connector") or {}
     if conn.get("type") != "hex_binary":
         return [], []
@@ -189,6 +189,9 @@ def assert_fresh_read(script_path, claimed_content: str) -> None:
 
 
 def main():
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     ap_project = sys.argv[1] if len(sys.argv) > 1 else None
     if not ap_project:
         print("uso: python connector_gate.py <projeto>")

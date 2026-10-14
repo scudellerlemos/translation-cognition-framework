@@ -301,8 +301,8 @@ def _db_target(root: Path):
 
 def approve_scene_db(root: Path, scene: str) -> None:
     """Marca approved=1 as traducoes da cena no DB (gated por project.json:db). O build_plan grava
-    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB (#73).
-    Reindexa em seguida (#61): o embedder so embeda approved=1, entao e AQUI que a cena entra na
+    approved=0 (connector_io.sync_translations_db) -- so cena que fecha verified vira TM do DB.
+    Reindexa em seguida: o embedder so embeda approved=1, entao e AQUI que a cena entra na
     TM semantica -- no build_plan ela ainda era approved=0 e so aparecia uma cena depois."""
     db_path, project_id = _db_target(root)
     if not db_path or not db_path.is_file():
@@ -470,6 +470,9 @@ def _check_sync(root: Path) -> None:
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     if "--check-sync" in sys.argv:
         flags = [a for a in sys.argv[1:] if not a.startswith("--")]
         root = Path(flags[0]) if flags else Path(".")

@@ -9,7 +9,7 @@
 
 | Camada | Status |
 |---|---|
-| Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
+| Processo genérico (skills 00–09) | 🟢 maduro (~92/100) |
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
 | Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
@@ -18,12 +18,15 @@
 
 ---
 
-## BoF4 — CONCLUÍDO ✅
+## BoF4 — TRADUZIDO E INSTALADO ✅ (release pendente)
 
-> 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, 0 overflows.
-> Custo: ~$11,04 USD. Esse ciclo rodou em `projects/breath_of_fire_4` (removido do repositório; o jogo segue em `projects/bof4/`).
+> 305 cenas (27.021 falas) `verified`, diálogo + sistema + rótulos em imagem, 0 overflows, instância em modo banco
+> (`projects/bof4/`). Erro de 14,5% na amostra de qualidade (antes das correções posteriores). Patcher `.exe`
+> em beta (`framework/distribution/`), testado em cópia dos originais; falta o teste no jogo real, a conferência
+> de largura de caixa na tela e a release (pública, só com aval do autor).
+> O ciclo anterior (125 cenas, ~$11,04) rodou em `projects/breath_of_fire_4`, removido do repositório.
 
-Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framework/db/`).
+Nenhum débito remanescente no pipeline — TM semântica (B2) implementada e ativa (`framework/db/`).
 
 ---
 
@@ -31,7 +34,7 @@ Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framew
 
 > Backlog acionável migrado do markdown pro GitHub Project — deixa de viver espalhado em
 > seções de roadmap. Ver [Translation Cognition Framework — Backlog](https://github.com/users/scudellerlemos/projects/4)
-> (issues #32–#44).
+> (as issues do backlog).
 
 O que estava aqui (P2.5: run_game/observabilidade/rebuild de state_index) já está **entregue** —
 histórico fica nos commits, não precisa de linha de "próximos passos" pra trabalho concluído.
@@ -40,10 +43,15 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 
 ### Pós-bof4 (instância em modo banco) — levantamento e próximo passo
 
-> Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Nada abaixo
-> está levado ao framework ainda; o projeto novo só começa depois de 1 e 2 levados e do benchmark de 3.
+> Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Itens 1 e 2
+> já levados ao framework (abaixo); o projeto novo só começa depois do benchmark de 3.
+>
+> Bloco A (código) levado em 2026-10-14, branch `feat/framework-pos-bof4`: medidor de tokens com erro reportado,
+> saída ≠ 0 fora de projeto, `budget.py`, `tm_correct` por linha, portão de caminho também no lote
+> (`run_chapter`/`run_game`), `scene_dedup.py`, retrotradução re-julgada por fala, `run_scene --jobs N`.
+> Item 1 fechado: reconferência só das falas tocadas (`touched.py`: cena `verified` sem fala alterada é pulada; `--full` força) e `scene_dedup` ligado ao `wave`.
 
-- [ ] **1. Processo e gates.** Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
+- [x] **1. Processo e gates.** *(feito nos blocos A e B e no fechamento: medidor, `paths.require_project`, `budget.py`, `tm_correct` por linha, `scene_dedup` (ligado ao `wave`), retrotradução por fala, `--jobs`, reconferência só das falas tocadas, portão de caminho no `run_chapter`, `review_page`, `box_width`, `opcodes` (`choice_start` quebra caixa; tabela do bof4 com parâmetros; largura em glifos por código ainda a medir no jogo, skill 08c), `pattern_lint`, `scope_scan`, regras de glossário e decisões de voz nas skills. O `verify_chapter` do bof4 segue medindo com o encoder real, que é a verdade do conector.)* Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
   `completo`); largura de linha por caixa, derivada do inglês do jogo; tabela de opcodes com parâmetros (e valor
   possível de cada variável); glossário por sentido, com folga de bytes por contexto; lista de decisões de voz
   antes do piloto; reconferência por fala tocada e em paralelo; retrotradução invalidada por fala; página de
@@ -51,19 +59,26 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   lint de padrões; uma só função de contagem de bytes (exceção de +1 no `project.json`); `tm_correct` com
   escopo por linha e medida de bytes no dry-run; texto repetido entre cenas traduzido uma vez; comando que
   falha de ambiente sai com código diferente de zero.
-- [ ] **2. Skills (13 → 14 ou 15).** Juntar `06b_micro_qa` e `06c_correction_cycle`; criar uma para texto de
+- [x] **2. Skills (13 → 14 ou 15).** Juntar `06b_micro_qa` e `06c_correction_cycle`; criar uma para texto de
   sistema e rótulos em imagem e outra para o teste dentro do jogo; ampliar `00_extraction`,
   `04_glossary_creation` e `07_qa`; subir o caminho de sessão (`lot`, `dup`, `plan`, `part`, `triagem`,
   `revisar`, `install`) e descrevê-lo na `06_translation`.
-- [ ] **3. Benchmark do caminho de sessão (próximo passo a testar).** No projeto novo, rodar o mesmo recorte
+  Subiu tudo — `session_lot.py`, `scene_dedup.py`, `review_page.py`, `risk_triage_run.py` (a triagem, que chama o CLI
+  do modelo e é paga) — e a `06_translation` descreve os dois caminhos.
+- [ ] **3. Benchmark do caminho de sessão (próximo passo a testar; PRD, HLD e FDD em [`benchmark_sessao/`](benchmark_sessao/PRD.md)).** No projeto novo, rodar o mesmo recorte
   (por exemplo, um capítulo) pelo caminho de sessão e pelo de API e comparar: taxa de erro da amostra de
-  qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos, não
-  estimados), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com
+  qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos da transcrição; só a saída de mensagem sem usage final
+  é estimada, com erro declarado no relatório), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com
   `/clear` entre elas, Sonnet traduz e Opus retrotraduz, Haiku só para rótulo curto, lote de correção
-  automático. Só entra no framework o que o benchmark mostrar ganho. Antes: corrigir o medidor (37% dos tokens
-  de saída são estimados).
-- [ ] **4. Portões do caminho.** Uma só escolha de caminho por projeto, com HITL; o caminho de API recusa
-  projeto de sessão.
+  automático. Só entra no framework o que o benchmark mostrar ganho. O medidor já foi corrigido (`77dbe7f`: ajuste próprio do
+  `claude-sonnet-5` em `session_usage._OUT_FIT`; `cost_report` imprime o erro da estimativa, ~7% na soma, viés
+  de −7% a +5% medido em 7 mil mensagens com saída exata) — o "37% estimado" era o retrato de antes dele.
+- [x] **4. Portões do caminho.** Uma só escolha de caminho por projeto, com HITL; o caminho de API recusa
+  projeto de sessão. *(feito: `hitl.choose-path` grava a decisão humana e `hitl.path_problems` bloqueia qualquer
+  backend diferente do escolhido, inclusive `api` em projeto de sessão (`framework/runtime/hitl.py:130-146`,
+  teste `test_hitl.py:186-189`); `run_scene.main` e `run_chapter` (e, por ele, `run_game`) chamam `hitl.gate`
+  (`run_scene.py:666`, `run_chapter.py:361`, commit `81029a9`). Vale só com `hitl` ligado no `project.json`
+  (`hitl.enabled`); sem a chave não há portão.)*
 
 ---
 
@@ -110,16 +125,15 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 - [x] **B4. Skill DSL** — ✅ **já feito, descoberto na auditoria (nenhum código novo necessário)**.
   `framework/skills/skill_base.py` (`Skill` ABC: `skill_id`/`required_inputs`/`check_inputs`/`run`)
   + `registry.py` (`get`/`all_skills`) já são a forma declarativa dos passos 00/06/07/08 (os com
-  substância de código). Cognitivas puras (01-04b/05b/06c) ficam `.md` por decisão deliberada — não
+  substância de código). Cognitivas puras (01-05b/06b/08b/08c/09; a 06c foi incorporada à 06b) ficam `.md` por decisão deliberada — não
   é lacuna, é a fronteira já documentada em `skills-registry-boundary`.
 
 ---
 
 ### Outras Mídias (Filmes e Séries)
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issue
-[#32](https://github.com/scudellerlemos/translation-cognition-framework/issues/97) (perfis
-de filme/série + stack de voz ASR/diarização/prosódia).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issue de
+perfis de filme/série + stack de voz ASR/diarização/prosódia).
 
 ---
 
@@ -266,12 +280,9 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** round-trip do BoF4 verde + Generic Connector System validado (ambos entregues).
 > **Valor:** comunicação externa (portfolio, open-source) — zero valor operacional para uso interno.
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#33](https://github.com/scudellerlemos/translation-cognition-framework/issues/98) (CLI `tcf`),
-[#34](https://github.com/scudellerlemos/translation-cognition-framework/issues/99) (README de produto),
-[#35](https://github.com/scudellerlemos/translation-cognition-framework/issues/100) (consolidar docs),
-[#36](https://github.com/scudellerlemos/translation-cognition-framework/issues/101) (`.exe`).
-#33, #34 e #35 já foram entregues; resta a #36.
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+CLI `tcf`, README de produto, consolidar docs e `.exe`.
+As três primeiras já foram entregues; o `.exe` tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); resta o teste no jogo real, a máquina sem Python e a release.
 
 ---
 
@@ -280,17 +291,16 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** framework estável com ≥2 projetos ativos (atingido — BoF4/Uta/Souldiers).
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
-- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12. ✅
+- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12 (números da época; hoje são 7 workflows, ver `.github/workflows/README.md`). ✅
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#37](https://github.com/scudellerlemos/translation-cognition-framework/issues/102) (CI de packaging),
-[#38](https://github.com/scudellerlemos/translation-cognition-framework/issues/103) (LLM judge).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+CI de packaging e LLM judge.
 
 ---
 
 ## Histórico detalhado (pré-migração ao GitHub Project #4)
 
-> Fundido de `framework/docs/ROADMAP.md` (#35) — narrativa técnica original de P0–P4, incidentes e
+> Fundido de `framework/docs/ROADMAP.md` — narrativa técnica original de P0–P4, incidentes e
 > lições aprendidas durante o desenvolvimento do harness (`framework/runtime/`). O backlog acionável
 > que ainda estava em aberto nesse arquivo já migrou pro GitHub Project #4 (seção acima); o que segue
 > é registro histórico (o "porquê" e os war stories por trás do que hoje aparece resumido como ✅ na
@@ -341,7 +351,7 @@ vinha da janela (ver `adr/0002`). **Menor conjunto de mudanças** que destrava: 
 | Bundle de custo | bundle de custo (dedup TM/intra-corpus, ~~slim de schema~~, batch API) → ~$36→~$15 | 🟡 | **parcial**: effort/thinking já cortou ~5×; **dedup por TM ✅** (linhas com fonte já traduzida em outra cena não vão ao modelo — corta tokens de saída; medido 2,8% no cap.12 sobre TM cap.11+12, **cresce com o corpus**; guard de paridade + nunca reusa a própria cena; desligado no escalonamento). **slim de schema: REJEITADO por qualidade** (ver abaixo). **cache da Carta: observável, BECO SEM SAÍDA** ✅ (medido cap.13: Carta ~1.3k tok, custa $0,14 vs output $3,41; com cache_control fica até levemente net-negativo pois o batch paraleliza e re-escreve ~27×; cache perfeito é impossível no batch e economizaria só $0,12/cap). **batch API ✅ comprovado vivo** (cap.13 9/9; −50% real; resume idempotente; re-batch acumulativo entre rodadas). **tiering por complexidade ✅ codado** (linhas SEM `\n` → Haiku −67%/linha; COM `\n` → Sonnet; benchmark: voz do Haiku no nível do Sonnet inclusive registro arcaico, mas Haiku derrapa na paridade de `\n` em escala → o split dribla a fraqueza; só no batch; falta run viva tiered p/ medir). **back-translation em BATCH ✅ codado** (Tier 1: a back-translation Opus — passo mais caro/linha, $25/M de saída — vira PÓS-PASSE do capítulo; `batch_back_translate` coleta as linhas high/critical de todas as cenas verificadas e roda 1 batch −50%; `run_chapter --batch` difere a back-translation por cena e batcheia ao fim; resume idempotente; report-only, não bloqueia; ledger marca `batch=True`. Falta run viva p/ medir). |
 
 > **slim de schema — REJEITADO (não tentar de novo).** Decisão registrada e fechada como "not planned"
-> em [issue #46](https://github.com/scudellerlemos/translation-cognition-framework/issues/111)
+> numa issue do backlog
 > (cortar `tone_register`/`intent` do schema quebraria o gate de qualidade e a única cognição
 > estruturada por linha com o thinking desligado).
 
@@ -353,7 +363,7 @@ paridade, cobertura-merge, retry de conexão, budget best-effort).
 SO-DE-SUCESSO (1 linha por cena que fechou no verify) → perdia o que **falhou depois de já cobrar a API**
 (cobertura estourou → exceção; verify reprovou), cada **re-tradução do escalonamento** (1.40→1.15→1.0) e
 **back-translations que quebraram no parse**. Por isso a estimativa (~$9–10) ficou abaixo do real (~$15).
-**Conserto:** `model.log_api_call` grava `api_ledger.jsonl` (1 linha por chamada CONCLUÍDA, **antes** de
+**Conserto:** `cost.log_api_call` (re-exportado por `model`) grava `api_ledger.jsonl` (1 linha por chamada CONCLUÍDA, **antes** de
 qualquer parse/gate) → captura TODA chamada cobrada. `cost_report.py` agrega (total, por modelo/tipo/cena)
 e cruza com `run_state.json` p/ marcar gasto **desperdiçado** (cenas que não fecharam `verified`).
 `run_chapter` imprime o resumo de gasto ao fim **e na parada por falha**. O `cost_usd` do `metrics.jsonl`
@@ -442,7 +452,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 | C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. Para engine desconhecida: `connector_smoke.py` (smoke test round-trip por iteração) + `script_generator.py` com 3 padrões de stub pré-preenchidos (linear_scan/token_table/pointer_table) baseados nas evidências do `discover.py`. | ~15k tok/jogo | ✅ |
 | D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ✅ (skill 04 atualizada) |
 | E | **`kb_fetch.py` + `kb_build_ollama.py` + `kb_reconcile.py`** — pipeline híbrido para KB sem custo de API: `kb_fetch.py` baixa fontes e `kb_build_ollama.py` usa Ollama local para extração factual por entidade (rascunho `draft_ollama`); `kb_reconcile.py` promove pra `reconciled` só após ratificação humana (`kb_ratified.csv`). Elimina a leitura/extração de texto bruto da sessão Claude, sem abrir mão da reconciliação humana obrigatória. Ver nota abaixo. | ~30k tok/jogo | ✅ |
-| F | **`split_scenes.py`** — gap achado no onboarding do Trails Sky SC (2026-08-23): `run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (contrato congelado, `paths.py`), mas `extract.py` de todo conector só escreve o `dialogs.csv` FLAT — não havia nenhuma ferramenta genérica no framework pra fazer essa ponte; BoF4/Souldiers/Utawarerumono resolveram isso ad hoc, fora do framework versionado. Escopo deliberado: só cobre o caso em que 1 coluna do corpus já identifica a cena 1:1 (`--by file`, padrão do BoF4/Trails Sky SC) — Souldiers (prefixo no offset) e Utawarerumono (`extract.py` já roda 1×/cena) continuam fora do escopo, não força um contrato que os 3 não compartilham. `framework/runtime/split_scenes.py` + `test_split_scenes.py` (4 testes); documentado em `NEW_PROJECT_ONBOARDING.md` (passo 2b). | — | ✅ |
+| F | **`split_scenes.py`** — gap achado no onboarding do Trails Sky SC (2026-08-23): `run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (contrato congelado, `paths.py`), mas `extract.py` de todo conector só escreve o `dialogs.csv` FLAT — não havia nenhuma ferramenta genérica no framework pra fazer essa ponte; BoF4/Souldiers/Utawarerumono resolveram isso ad hoc, fora do framework versionado. Escopo deliberado: só cobre o caso em que 1 coluna do corpus já identifica a cena 1:1 (`--by file`, padrão do BoF4/Trails Sky SC) — Souldiers (prefixo no offset) e Utawarerumono (`extract.py` já roda 1×/cena) continuam fora do escopo, não força um contrato que os 3 não compartilham. `framework/runtime/split_scenes.py` + `test_split_scenes.py` (4 testes na entrega; hoje 5); documentado em `NEW_PROJECT_ONBOARDING.md` (passo 2b). | — | ✅ |
 
 > **Nota E — fontes de KB aceitas pelo `kb_fetch.py`:**
 > O humano pode passar qualquer tipo de fonte — o fetch tool deve normalizar tudo para texto
@@ -473,7 +483,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > gate de `kb_review.py --strict`: a IA nunca propõe E aprova a própria KB sozinha). `confiança` do
 > Ollama é travada por schema em `low|medium` — `high` é estruturalmente impossível antes de
 > reconciliação humana (mesmo se o modelo "alucinar" o valor, `_clamp_confidence` rebaixa p/ `low`).
-> Testes: `test_kb_fetch.py` (8), `test_kb_build_ollama.py` (9).
+> Testes: `test_kb_fetch.py` (8 na entrega; hoje 11), `test_kb_build_ollama.py` (9; hoje 12).
 >
 > ✅ **Fechamento do loop (2026-07-03) — `kb_reconcile.py`.** A ressalva acima deixava a promoção
 > `draft_ollama → reconciled` só "manual/via sessão Claude", sem mecanismo formal. `kb_reconcile.py`
@@ -498,7 +508,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > falso). (2) o tripwire de "Conflitos Resolvidos" só checava a AUSÊNCIA do placeholder — um "xxx"
 > qualquer passava; agora exige um mínimo de conteúdo substantivo (`_MIN_CONFLICTS_CHARS`), não
 > valida qualidade semântica (exigiria modelo, fora de escopo) mas mata o caso mais preguiçoso.
-> Testes: `test_kb_reconcile.py` (11, inclui `--found-por`, decoy de status, tripwire trivial e
+> Testes: `test_kb_reconcile.py` (11 na entrega, hoje 15; inclui `--found-por`, decoy de status, tripwire trivial e
 > chamada dupla de `promote()`).
 
 > **Lição do Souldiers:** o maior gasto individual foi C (investigação de engine + iterações do conector).
@@ -507,10 +517,9 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 
 ### P2 — quando amadurecer (reuso/escala 40–100k)
 
-→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
-[#39](https://github.com/scudellerlemos/translation-cognition-framework/issues/104) (multi-projeto/paralelismo)
-e [#40](https://github.com/scudellerlemos/translation-cognition-framework/issues/105) (RAG sobre `decision_log`
-— KB/lore já ativo, ver Fase 3 do `DB_MIGRATION_ROADMAP.md`).
+→ ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues:
+multi-projeto/paralelismo e RAG sobre `decision_log`
+(KB/lore já ativo, ver Fase 3 do `DB_MIGRATION_ROADMAP.md`).
 
 ### P2.5 — Maturidade de execução (paralelismo, orquestração, observabilidade)
 > Gap reconhecido: o roadmap tratava "paralelizar cenas" como uma linha vaga. Esta seção torna explícito
@@ -543,11 +552,10 @@ overengineering. **Feito (2026-07-03):** `run_game` driver + `progress_report` +
 tudo offline (orquestração sobre o `run_chapter` que já existe), tira o humano do "invocar cap. a cap.".
 Testes: `test_run_game.py` (5), `test_progress_report.py` (5), `test_batch_mode_rebuilds_state_index_once_per_chapter`
 + 2 em `test_run_scene.py`. **Fica p/ P4 (plataforma, vários jogos):** pipelining, paralelismo cross-capítulo,
-multi-projeto — ver [issue #39](https://github.com/scudellerlemos/translation-cognition-framework/issues/104).
+multi-projeto — ver o [Project #4](https://github.com/users/scudellerlemos/projects/4).
 
 ### P3 — não fazer agora (overengineering)
-Decisão registrada e fechada como "not planned" em
-[issue #45](https://github.com/scudellerlemos/translation-cognition-framework/issues/110)
+Decisão registrada e fechada como "not planned" numa issue do backlog
 (banco relacional pesado, knowledge graph, fila/broker, multi-agente "de serviços").
 
 ### P4 — Pós-produção & hardening (PRIORIDADE, **depois** de entregar o jogo)
@@ -569,10 +577,10 @@ Decisão registrada e fechada como "not planned" em
 |---|---|---|---|
 | Saída estruturada do conector | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ✅ **feito** — `verify_chapter` emite exit 0/1/3 + linha `VERIFY_STATUS:{json}`; `run_scene` usa o exit-code (grep morto). Bug latente corrigido: o grep procurava `"fora do arquivo"` (espaços) vs `"fora-do-arquivo"` (hifens) → out-of-file nunca escalonava |
 | Fonte única de paths | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** | ✅ **feito** — `paths.py` (módulo leaf, fonte única); 42 call sites migrados em 8 módulos; `test_paths_contract` fixa as strings; NAMING.md aponta |
-| run_scene coeso | `run_scene` acretando responsabilidade (hoje 492 linhas, era ~300 quando documentado) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` passam sem alteração |
+| run_scene coeso | `run_scene` acretando responsabilidade (492 linhas quando documentado, era ~300; hoje 713 depois dos blocos do pós-bof4) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` da época passam sem alteração (hoje são 55) |
 | Repro: gate ≠ geração | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
 | Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ✅ **feito (2026-07-03)** — `kb_gate.py` generalizou a exigência de ratificação humana por entidade (`kb_ratified.csv`) para QUALQUER `research_log.md` com `status: reconciled`, não só o caminho `draft_ollama` do `kb_reconcile.py`. Toda entidade com conteúdo afirmado (≠ UNSOURCED) no `universe_knowledge_base.md` agora exige uma linha em `kb_ratified.csv`; bypassável via `--skip-kb-gate` como qualquer `problem` (soft, não quebra continuidade de projetos já em produção). **Escopo deliberadamente reduzido**: o tripwire de conteúdo mínimo em "Conflitos Resolvidos" do `kb_reconcile.py` NÃO foi generalizado — um projeto sem nenhum conflito de verdade (fonte única) é um caso legítimo que só o placeholder EXATO do `kb_build_ollama.py` consegue distinguir de "não revisado"; não generaliza sem uma âncora textual conhecida. **Custo aceito**: Utawarerumono/BoF4/Souldiers (as 3 KBs já reconciliadas) agora mostram esse `problem` novo até serem ratificadas por entidade — não bloqueia trabalho já feito, só torna visível o que faltava. Testes: 3 novos em `test_kb_gate.py` |
-| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. `check_gender` (extensão de [issue #41](https://github.com/scudellerlemos/translation-cognition-framework/issues/106)) continua flagrando por co-ocorrência (RECALL preservado — perder um vazamento real é pior que um falso-positivo extra) mas agora ATRIBUI o token de gênero ao referente mais provável: cada flag carrega `confident` (True se a menção da entidade em quarentena é a mais próxima, em distância de caracteres, do marcador entre as entidades do ledger citadas na linha) |
+| Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. `check_gender` (extensão de uma issue do backlog) continua flagrando por co-ocorrência (RECALL preservado — perder um vazamento real é pior que um falso-positivo extra) mas agora ATRIBUI o token de gênero ao referente mais provável: cada flag carrega `confident` (True se a menção da entidade em quarentena é a mais próxima, em distância de caracteres, do marcador entre as entidades do ledger citadas na linha) |
 
 **Riscos de engenharia (avaliação crítica — mitigações offline):**
 | # | Risco | Mitigação | Status |
@@ -583,7 +591,7 @@ Decisão registrada e fechada como "not planned" em
 | Vazamento de gênero | **vazamento de GÊNERO pt-BR** (ele/ela onde o EN é neutro) — o que o `spoiler_check` de nomes NÃO pegava | contraparte observável de gênero | ✅ **feito** — `spoiler_check.check_gender`: campo `gender_quarantine` no ledger + heurística de co-ocorrência (marcador de gênero pt-BR junto a entidade pré-reveal, recall preservado) com campo `confident` de atribuição por referente mais próximo (distância de caracteres entre entidades do ledger citadas na linha — não substitui a co-ocorrência, prioriza a revisão humana). Mecanismo ativo; marcação real aguarda caso confirmado por fonte (não fabricar spoiler = não recair em "IA reconcilia a própria KB") |
 | IA reconcilia a própria KB | **a IA reconcilia a própria KB** (sem segundo par de olhos no delta) | gate de fonte (hard) + ratificação humana | ✅ **feito (gate)** — `kb_review.py` + `kb_phase --check`: FALHA (hard) se entidade nova não citar **fonte** no research_log (âncora externa checável = mata "IA propõe E aprova"). `--strict` exige **ratificação humana** (`kb_ratified.csv`, só o humano edita) + gênero confirmado. Evoluiu de digest → gate |
 | Gênero pt-BR inativo | **gênero pt-BR inativo** (mecanismo pronto, zero entidades marcadas) | pesquisa + resolução com fonte | ✅ **feito** — faixa 11-19 auditada (wiki): NENHUM gender-spoiler (o twist é Haku→Oshtor = identidade, já no ledger) → `gender_quarantine` dormente por estar CORRETO, documentado. Shichirya→MASCULINO, Honoka→FEMININO (com fonte); restantes flagrados no `--strict` p/ ratificação (não-fabricado) |
-| Auditoria de gênero dependia de lembrar rodar | **`spoiler_check.check_gender` só existia como CLI manual** (`python spoiler_check.py <projeto>`) — foi assim que Uta foi auditado (caps 11-19), mas o Souldiers nunca chegou a ser, porque depende de alguém lembrar de rodar. Mesma classe do gap de `onboarding-scaffold-kb-gate-drift` (fase "pronta" sem gate automático) | cabear como passo OBRIGATÓRIO e automático do pipeline, sempre, com resultado persistido | ✅ **feito** (2026-07-03) — `spoiler_check.audit_and_persist(root)` roda `check()` (vazamento de nome/título, alta confiança) + `check_gender()` (heurística, pode ter falso-positivo) sobre o **projeto inteiro** e grava `artifacts/spoiler_audit.json`. `run_chapter._audit_spoiler` chama isso **incondicionalmente** ao fim de todo capítulo (ao lado do `_export_qa`), report-only (nunca bloqueia), com aviso alto/baixo diferenciado por confiança. Não depende mais de ninguém lembrar de rodar o CLI. Teste: `test_complete_persists_spoiler_audit` |
+| Auditoria de gênero dependia de lembrar rodar | **`spoiler_check.check_gender` só existia como CLI manual** (`python spoiler_check.py <projeto>`) — foi assim que Uta foi auditado (caps 11-19), mas o Souldiers nunca chegou a ser, porque depende de alguém lembrar de rodar. Mesma classe do gap de `onboarding-scaffold-kb-gate-drift` (fase "pronta" sem gate automático) | cabear como passo OBRIGATÓRIO e automático do pipeline, sempre, com resultado persistido | ✅ **feito** (2026-07-03) — `spoiler_check.audit_and_persist(root)` roda `check()` (vazamento de nome/título, alta confiança) + `check_gender()` (heurística, pode ter falso-positivo) sobre o **projeto inteiro** e grava `artifacts/spoiler_audit.json`. `run_scene._audit_spoiler` (chamado por `run_chapter` ao fim do capítulo, `run_chapter.py:433`) chama isso **incondicionalmente** ao fim de todo capítulo (ao lado do `_export_qa`), report-only (nunca bloqueia), com aviso alto/baixo diferenciado por confiança. Não depende mais de ninguém lembrar de rodar o CLI. Teste: `test_complete_persists_spoiler_audit` |
 | Contador de batch engana | **`request_counts.succeeded` não reflete progresso real durante `in_progress`** (batch de 146 requests ficou 0/146 por 111min; cancelar por achar travado matou 12 já quase prontas — 134/146 tinham sucedido de verdade) | ferramenta de checagem honesta, nunca cancela sozinha; polling loga status periódico | ✅ **feito** — `batch_status.py`: reporta status/idade/counts de qualquer batch in_progress com o aviso embutido na própria saída ("não cancelar por contador zerado"); cancelamento continua manual e deliberado (`client.messages.batches.cancel`). `_await_batch` (llm_client.py) agora loga a cada ~5min em vez de silêncio total. Ver `anthropic-batch-progress-unreliable` (memory) |
 | Batch gigante = risco concentrado | **1 batch de back-translation com 146 requests** ficou lento (motivo real não identificável do nosso lado — conteúdo de cada request era pequeno, nada anômalo); esperar/cancelar um batch gigante é tudo-ou-nada | segmentar em vários batches menores + timeout curto (report-only não é crítico) | ✅ **feito (as 2 pontas)** — `batch_back_translate` (back_translate.py) divide requests em chunks de `chunk_size=40`, cada 1 um batch **separado**; `max_wait_seconds` default caiu de 24h → **2h** (report-only, não vale esperar o SLA inteiro). Teste: `test_batch_back_translate_segments_large_batches`. **`batch_translate` (tradução, a op CRÍTICA) também segmentada agora** (2026-07-03): `_TRANSLATE_SUBMIT_CHUNK=40` (config.py) fatia as requisições de cada rodada em batches separados via `_submit_translate_chunk`; um chunk que trava/estoura o timeout só fica sem cobertura DELE — a rodada seguinte re-tenta o que faltou (não aborta mais o batch inteiro no 1º timeout, como fazia antes). Teste: `test_batch_translate_segments_large_submissions`. |
 
@@ -599,13 +607,11 @@ linha**). `apply` processa exatamente o devolvido. Mede no cap.19: 4196 linhas, 
 
 **Evolução da camada de conector (norte de "plataforma") — ENTREGUE:**
 
-Issues [#42](https://github.com/scudellerlemos/translation-cognition-framework/issues/107) (registry
-por família de engine) e
-[#43](https://github.com/scudellerlemos/translation-cognition-framework/issues/108) (síntese agêntica
-de conector novo via round-trip como oráculo) **fechadas** — ambas cobertas pelo Generic Connector
+As issues de registry por família de engine e de síntese agêntica
+de conector novo via round-trip como oráculo **fechadas** — ambas cobertas pelo Generic Connector
 System (Fase D, `docs/ROADMAP.md` raiz: D1–D6 entregues, 3 engines validadas + 4ª em onboarding).
 Ver [Project #4](https://github.com/users/scudellerlemos/projects/4) pro backlog de plataforma que
-segue em aberto (ex. issue #39 — generalizar `state_index` + paralelismo/pipelining cross-capítulo).
+segue em aberto (ex. generalizar `state_index` + paralelismo/pipelining cross-capítulo).
 
 ## Fases
 
@@ -613,7 +619,7 @@ segue em aberto (ex. issue #39 — generalizar `state_index` + paralelismo/pipel
 - **Fase 2 — reduzir custo operacional:** P1 (entregue e **comprovado em produção**: métricas + API
   endurecida + `run_chapter` + benchmark Sonnet aprovado + telemetria de gasto real via `api_ledger.jsonl`).
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (riscos de cognição). Ligar/comprovar API, KB-gate, spoiler-filter,
-  bundle de custo. **É aqui que estamos.**
+  bundle de custo. *(Retrato de quando o histórico foi escrito; hoje o projeto bof4 já fechou 305/305 cenas e tem patcher, ver o topo.)*
 - **Fase 2.7 — maturidade de execução:** P2.5. Orquestração ponta-a-ponta (`run_game`) + observabilidade
   de progresso + rebuild de state_index 1×/capítulo (barato, agora). Paralelismo de LLM já resolvido (batch);
   pipelining/cross-capítulo ficam p/ plataforma.
@@ -633,6 +639,6 @@ por execução para de crescer e cai bem abaixo de 30% do atual → Sonnet vira 
 
 ## MVP arquitetural recomendado (entregue neste ciclo)
 
-`framework/runtime/` (context_pack + state_index + model + run_scene + testes) + `framework/docs/`.
+`framework/runtime/` (context_pack + state_index + model + run_scene + testes) + `docs/`.
 É o mínimo que torna a tradução sustentável e model-agnostic **sem** interromper a entrega: as próximas
 cenas rodam pelo harness, uma sessão limpa por cena.

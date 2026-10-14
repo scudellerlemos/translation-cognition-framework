@@ -24,6 +24,10 @@ UI, itens, batalha e outros textos de sistema ficam para fases futuras separadas
 | Menus e UI de sistema | ❌ | ✅ |
 | Nomes de local sem fala associada | ❌ | ✅ |
 
+> O default acima é `project.json → extraction_scope: "dialogo"`. Com `"completo"` entram também as cenas de interface listadas em
+> `system_scenes` (traduzidas só pelo caminho de sessão, nunca pela API) e os rótulos em imagem — ver `skills/08b_system_text_labels.md`.
+> A varredura `connectors/scope_scan.py` mostra o que ficou fora antes de fechar o escopo.
+
 **Por quê:** o valor central de uma tradução narrativa está na voz dos personagens e na história.
 UI/itens/batalha na Fase 0 poluem a KB de entidades e sobrecarregam o worklist de descoberta
 sem gerar valor imediato. O escopo reduzido também torna o round-trip mais preciso e o harness
@@ -102,7 +106,9 @@ Há duas restrições de comprimento em jogos, e elas são diferentes:
 número de **bytes** que a string pode ocupar no binário. É o `byte_budget` extraído no Passo 00
 (`length_constraints.mode: byte_space`). Estourar bytes corrompe o jogo — é mais sério que estourar a caixa.
 
-Medir **por segmento entre quebras de linha**, não a linha inteira de uma vez.
+Medir **por segmento entre quebras de linha**, não a linha inteira de uma vez. Largura da caixa em caracteres:
+`line_width: "derive"` (maior segmento visível do inglês do próprio jogo) ou `line_width_max: N` fixo (vence o derive); sem nenhum dos dois
+vale 62 (`runtime/box_width.py <projeto>` mostra o limite). Escolha de código com parâmetro (`[07][03]`) não é quebra — mede-se pela tabela de opcodes do conector.
 
 **Prioridade quando há conflito:** tom > caber > literalidade. Nunca sacrificar voz para encurtar.
 
@@ -130,7 +136,7 @@ Regra: linhas de sistema mantêm a convenção na tradução (CAPS permanece CAP
 ## 5. SEGMENTAÇÃO E LOTES
 
 O corpus é processado em **lotes de tamanho fixo** (`project.json → batch_size`, default 200).
-Lotes permitem Micro-QA incremental (Passo 6b) e retomada.
+Lotes permitem Micro-QA incremental (Passo 6b) e retomada. No runtime a unidade de trabalho é a **cena** (`run_scene`; o lote do caminho de sessão é `session_lot.py plan --max N`, 150 falas por padrão); `batch_size` hoje só alimenta o `cost_model.py`.
 
 **Dois modelos de corpus:**
 
@@ -148,9 +154,9 @@ Lotes permitem Micro-QA incremental (Passo 6b) e retomada.
 
 ## 6. RETOMADA
 
-Como o corpus é grande, a tradução (Passo 6) é interrompível e retomável. O `translation_status.json`
-guarda `next_offset` (o próximo `id_column` a traduzir). Retomar = ler o status e continuar do
-`next_offset`, nunca do zero. Ver Passo 6 para o protocolo completo.
+Como o corpus é grande, a tradução (Passo 6) é interrompível e retomável. No runtime o estado é `artifacts/run_state.json`
+(status por cena; cada etapa é idempotente) — rodar `run_scene` de novo retoma, e cena `verified` sem fala nova é pulada (`--full` força a
+reconferência). O `translation_status.json` com `next_offset` é o formato do playbook, sem script que o grave. Retomar = continuar do que falta, nunca do zero. Ver Passo 6 para o protocolo completo.
 
 ---
 
@@ -181,4 +187,7 @@ acento). Detalhes do processo: `skills/06_translation.md` (regra) e `skills/06b_
 | `formatting_tokens` | Tokens de engine a preservar |
 | `system_line_convention` | Como detectar texto de sistema |
 | `length_constraints` | Limites de overflow de UI |
-| `batch_size` | Tamanho do lote de tradução |
+| `batch_size` | Tamanho do lote de tradução (hoje só no `cost_model.py`) |
+| `extraction_scope` / `system_scenes` | `dialogo` (default) ou `completo`; cenas de sistema do escopo completo |
+| `line_width` / `line_width_max` | Largura da caixa (`derive` ou N fixo) |
+| `byte_budget_exceptions` | `{offset: bytes}` — exceção pontual de orçamento decidida pelo humano |

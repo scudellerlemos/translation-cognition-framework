@@ -43,7 +43,7 @@ def _cfg(root: Path) -> dict:
 
 def research_log_text(root: Path, cfg: dict | None = None) -> str:
     """Conteudo integral do research_log.md — do SQLite se o projeto tem `db` populado
-    (#29: mesmo switch DB-gated do context_pack), senao do arquivo flat. Retorna '' se ausente
+    (mesmo switch DB-gated do context_pack), senao do arquivo flat. Retorna '' se ausente
     em ambas as fontes."""
     root = Path(root)
     if cfg is None:
@@ -86,7 +86,7 @@ def _rows_for_chapter(path: Path, name_col: str, chap: str) -> list[dict]:
 
 def _ratified_set(root, cfg: dict | None = None) -> set:
     """Nomes ja ratificados pelo HUMANO (coluna 'name'). Do SQLite se o projeto tem `db`
-    populado (#29), senao do kb_ratified.csv flat. Vazio se nenhuma fonte tiver o nome.
+    populado, senao do kb_ratified.csv flat. Vazio se nenhuma fonte tiver o nome.
     E o SEGUNDO PAR DE OLHOS: so o humano grava aqui (a IA nunca se auto-ratifica)."""
     root = Path(root)
     if cfg is None:

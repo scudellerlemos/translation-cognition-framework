@@ -145,6 +145,7 @@ def main():
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--all", action="store_true", help="tabela com todas as cenas (padrao: enxuto)")
     a = ap.parse_args()
+    paths.require_project(a.project)
     rep = report(a.project)
     print(json.dumps(rep, ensure_ascii=False, indent=2) if a.json else _fmt(rep, a.scene, a.all))
 

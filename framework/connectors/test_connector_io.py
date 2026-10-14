@@ -1,4 +1,4 @@
-"""test_connector_io.py — cobre os utilitarios compartilhados entre conectores (#23):
+"""test_connector_io.py — cobre os utilitarios compartilhados entre conectores:
 resolucao de caminho (CLI > env var > project.json) e escrita de dialogs.csv/extraction_log.md."""
 import csv
 import json
@@ -121,7 +121,7 @@ def test_normalize_speaker_unknown_for_empty():
     assert cio.normalize_speaker("", frozenset()) == "unknown"
 
 
-# ── sync_translations_db (#44, Fase 6b: produtores DB-first) ──────────────────────────────
+# ── sync_translations_db (Fase 6b: produtores DB-first) ──────────────────────────────
 
 _DB_DIR = str(Path(__file__).resolve().parents[1] / "db")
 if _DB_DIR not in sys.path:
@@ -177,7 +177,7 @@ def test_sync_translations_db_writes_db_and_derives_csv(tmp_path):
 
     from store import Store  # noqa: E402
     with Store(tmp_path / "p.db") as db:
-        # #73: build_plan roda antes do verify -> nada aprovado (nao vira TM) ate a cena fechar verified
+        # build_plan roda antes do verify -> nada aprovado (nao vira TM) ate a cena fechar verified
         assert db.get_translations("proj") == []
         rows = {r["offset"]: r for r in db.get_translations("proj", approved_only=False)}
         db.approve_scene("proj", "s1")
@@ -206,12 +206,12 @@ def test_sync_translations_db_keys_db_by_canonical_scene_id(tmp_path):
 
 
 def test_verified_scene_is_semantically_searchable_end_to_end(tmp_path):
-    """#61 critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
+    """critério de pronto, versão forte: com Embedder/sqlite-vec REAIS (só roda se a
     stack ML estiver instalada; skip limpo em test.yml (push/PR), roda de verdade semanalmente
-    em ml-coverage-optional.yml (#60)), a cena tem que aparecer em Embedder.search() assim
+    em ml-coverage-optional.yml), a cena tem que aparecer em Embedder.search() assim
     que fecha verified -- pelo write-path REAL (sync_translations_db -> approve_scene_db), sem
     NENHUM passo manual (nem db index, nem migrate), e sem esperar a cena seguinte. Antes da
-    aprovação (approved=0, #73) ela NÃO pode aparecer."""
+    aprovação (approved=0) ela NÃO pode aparecer."""
     pytest.importorskip("sentence_transformers")
     pytest.importorskip("sqlite_vec")
     sys.path.insert(0, str(_HERE.parent / "runtime"))
@@ -226,14 +226,14 @@ def test_verified_scene_is_semantically_searchable_end_to_end(tmp_path):
     emb, q = Embedder(), "Hero picks up the Widget."
     with Store(tmp_path / "p.db") as db:
         assert emb.search(db._con, q, project_id="proj", k=2) == []     # ainda nao verificada
-    state_index.approve_scene_db(tmp_path, "s1")    # cena fechou verified (run_scene, #73)
+    state_index.approve_scene_db(tmp_path, "s1")    # cena fechou verified (run_scene)
     with Store(tmp_path / "p.db") as db:
         hits = emb.search(db._con, q, project_id="proj", k=2)
     assert any(h["offset"] == "0x1" for h in hits), hits
 
 
 def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
-    """Inverso do oráculo de round-trip do #44 (mesma ideia de test_export_roundtrip_lossless,
+    """Inverso do oráculo de round-trip (mesma ideia de test_export_roundtrip_lossless,
     invertida): produtor DB-first (sync_translations_db) direto no Store DEVE bater com o
     caminho legado (produtor grava flat -> migrate_from_flat.migrate() espelha pro Store) para
     os MESMOS dados de entrada — nenhuma regressão de paridade na virada de fonte de verdade."""
@@ -269,7 +269,7 @@ def test_sync_translations_db_matches_legacy_flat_then_migrate_oracle(tmp_path):
         legacy_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                        for r in db.get_translations("proj")}
     with Store(dbfirst_root / "p.db") as db:
-        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene, #73)
+        db.approve_scene("proj", "s1")          # cena fechou verified (run_scene)
         dbfirst_rows = {r["offset"]: (r["target"], r["speaker"], r["source"])
                         for r in db.get_translations("proj")}
     assert dbfirst_rows == legacy_rows

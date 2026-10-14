@@ -115,3 +115,11 @@ def test_missing_final_usage_is_estimated_and_stage_mark_applies(tmp_path):
     # Haiku 5.5: prompt acima de 100 mil tokens paga 5x em tudo
     hk = "claude-haiku-5-5"
     assert abs(_c.cost_of(hk, {"in": 100_001}) / _c.cost_of(hk, {"in": 100_000}) - 5) < 0.01
+
+
+def test_sonnet5_has_own_fit_and_report_states_estimate_error():
+    assert "claude-sonnet-5" in su._OUT_FIT
+    import inspect
+
+    import cost_report as cr
+    assert "erro da estimativa na soma" in inspect.getsource(cr)

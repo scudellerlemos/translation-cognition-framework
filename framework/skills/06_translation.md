@@ -91,7 +91,7 @@ Criado/atualizado ao final de cada lote:
 3. Traduzir as próximas `batch_size` linhas a partir desse ponto
 4. Atualizar `translation_status.json` com o novo `next_offset` e contagem
 
-**Tamanho do lote:** `project.json → batch_size` (default 200).
+**Tamanho do lote:** `project.json → batch_size` (opcional, default 200; hoje só o `cost_model.py` o lê — no runtime a unidade é a cena, e o lote do caminho de sessão é `session_lot.py plan --max N`).
 
 ---
 
@@ -206,6 +206,27 @@ A IA **propõe** a tradução; ela **não** edita o binário nem um CSV de dados
 
 > ⚠️ A IA **não preenche `text_target` à mão** num arquivo que contém o source. Isso evita
 > contaminar o source e mantém a separação cognição/mecânica. Ver `schemas/artifacts_schema.md`.
+
+---
+
+## DOIS CAMINHOS DE EXECUÇÃO (`run_scene --backend api | in-session`)
+
+Mesmos artefatos, gates, banco e humano no laço; muda quem traduz.
+
+| | `api` | `in-session` |
+|---|---|---|
+| Quem traduz | subagente/modelo chamado pelo código (Sonnet) | a IA da própria sessão, por arquivo |
+| Custo | por token (chave `ANTHROPIC_API_KEY`) | dentro da assinatura da sessão |
+| Escopo | só diálogo (`system_scenes` é recusado) | diálogo e sistema |
+| Lote | `run_chapter` (batch API) | `session_lot.py`: `plan` → `prompt` → traduzir → `go` |
+
+- **Texto repetido** entre cenas é traduzido uma vez (`scene_dedup.py plan|copy`; no lote, `prompt --dedup`).
+- **Onda num comando** (`wave.py <projeto> [cena ...]`, padrão `--backend in-session`): `run_scene` → `scene_dedup copy` → `glossary_lint` → `quality_gate` → `cost_report --summary` → `obs_report`; mesmos gates, passo que falha para a onda, saída em `artifacts/wave_last.log`.
+- **Reconferência:** `run_scene` pula cena `verified` sem fala tocada (`touched.py`); `--full` força.
+- **Paralelismo:** `run_scene --jobs N` reconfere cenas em processos separados.
+- **Regra de entrada:** caminho de sessão em projeto novo só entra depois de um benchmark do projeto (qualidade
+  e custo medidos contra o caminho de API); o caminho de API continua o padrão do framework.
+- O passo `go` só fecha se a conferência passar (tokens, orçamento de bytes, cobertura) e o `run_scene` verificar.
 
 ---
 

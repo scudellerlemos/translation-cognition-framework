@@ -201,6 +201,27 @@ def invalidate_back_translation(root, scene, offsets) -> int:
     return n
 
 
+def _stale_offsets(out) -> set:
+    """Offsets com entry STALE na back_translation ja gravada (vazio se nao existe/ilegivel)."""
+    try:
+        entries = json.loads(out.read_text(encoding="utf-8")).get("entries", [])
+    except (json.JSONDecodeError, OSError):
+        return set()
+    return {e.get("offset") for e in entries if isinstance(e, dict) and e.get("stale")}
+
+
+def _merge_back(out, data) -> dict:
+    """Re-julgamento por FALA: as entries novas substituem so as do mesmo offset; o resto do arquivo
+    (veredictos ainda validos) fica. Sem arquivo anterior, devolve `data` como veio."""
+    try:
+        old = json.loads(out.read_text(encoding="utf-8")).get("entries", [])
+    except (json.JSONDecodeError, OSError):
+        return data
+    new_offs = {e.get("offset") for e in data.get("entries", [])}
+    data["entries"] = [e for e in old if e.get("offset") not in new_offs] + data.get("entries", [])
+    return data
+
+
 def _has_stale(out, cands) -> bool:
     """True se `out` (back_translation ja gravada) tem entry STALE de algum candidato: o verdict julgou o
     texto antigo (ver invalidate_back_translation) -> a cena precisa ser re-julgada, nao pulada."""
@@ -237,10 +258,11 @@ def _submit_back_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, m, ro
         log_api_call(root, scene, "back", m, _usage_of(msg), batch=True)   # registra antes do parse
         try:
             data = json.loads(_text_of(msg))
-            data["reviewed"] = len(data.get("entries", []))
             scene_id = context_pack.scene_id_of(scene)
-            (paths.back_translation(root, scene, scene_id)).write_text(
-                json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            out = paths.back_translation(root, scene, scene_id)
+            data = _merge_back(out, data)
+            data["reviewed"] = len(data.get("entries", []))
+            out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
             status[scene] = "reviewed"
         except Exception:
             status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
@@ -284,6 +306,9 @@ def batch_back_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_
         if out.is_file() and not _has_stale(out, hl):    # ja revisada (run anterior) -> nao re-cobra
             status[scene] = "reviewed"
             continue
+        if out.is_file():                                # re-julga so as falas stale, nao a cena inteira
+            stale = _stale_offsets(out)
+            hl = [c for c in hl if c["offset"] in stale]
         highs[scene] = hl
         reqs.append(Request(custom_id=scene,
                             params=cast(MessageCreateParamsNonStreaming, _back_params(hl, m))))

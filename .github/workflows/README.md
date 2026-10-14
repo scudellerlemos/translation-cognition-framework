@@ -37,7 +37,10 @@ O que cada tarefa confere, em português:
 
 1. Todas **baixam o código** e instalam o Python + as ferramentas (`requirements-dev.txt`).
 2. **Confere que o `.env` não foi enviado** — o `.env` guarda senhas/chaves e *nunca*
-   pode ir pro repositório. Se alguém mandou sem querer, o robô barra.
+   pode ir pro repositório. Se alguém mandou sem querer, o robô barra. No mesmo job
+   (`env-guard`), o **content guard** (`.claude/hooks/content_guard.py`) barra conteúdo de
+   jogo/dado pessoal: arquivo rastreado fora da allowlist (`--tree`) e e-mail pessoal nos
+   commits do PR (`--commits`).
 3. **Checa os tipos (mypy)** — pega erros de "encaixe" (ex.: passar texto onde se
    esperava número) antes mesmo de rodar o programa.
 4. **Roda os testes do motor com cobertura** (runtime, validação, banco e skills) — além
@@ -104,7 +107,7 @@ O job `coverage` de `test.yml` mede `framework/db` inteiro, mas **exclui de prop
 `embedder.py` (`setup.cfg`) — sem `sentence-transformers`/`sqlite-vec` instalados, os únicos
 testes que exercitam a lógica real de indexação/busca vetorial (não os que usam
 `_FakeEmbedder`) ficam pulados via `pytest.importorskip`. Resultado: uma regressão na busca
-semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar (#60).
+semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar.
 
 Este job instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
 um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Mesma

@@ -1,15 +1,28 @@
 # Roadmap — Breath of Fire IV (PT-BR, modo banco)
 
-> Última atualização: 2026-10-11
-> Status atual: **piloto = trajeto do início do jogo até a saída de Sarai e o primeiro trecho do Fou-Lu** — 32 de 286 cenas traduzidas e verificadas; Fase 2 fechada com o OK do usuário (2026-10-12). Escala liberada (Fase 3).
+> Última atualização: 2026-10-14
+> Status atual: **305/305 cenas `verified` (27.021 falas), Fases 0 a 4 fechadas; distribuição: patcher `.exe` beta testado em cópia, falta o teste no jogo real e a release** (ver "Retomada").
 > Histórico da Fase 0 (mapeamento do conector): estava em `projects/breath_of_fire_4/ROADMAP.md`, removido do repositório (segue no histórico do git).
 
 Os passos são seguidos na ordem. Nenhum gate é pulado; item aberto bloqueia o seguinte.
 
 ## Retomada (ler primeiro numa sessão nova)
 
-Atualizar antes de cada `/clear`. Estado em 2026-10-13:
+Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
 
+- **Próximo passo (2026-10-14):** teste do `.exe` no jogo real (`projects/bof4/output/Patch_BoF4_PTBR_Gajshield.exe`,
+  SHA-256 `5bfebb461e8b0cef8b20ef6c30d7bf2f056847d467e710b3f6503afcc2c7fa66`, v0.1.0-beta; só o Felipe opera a
+  janela), depois máquina sem Python e trajeto do piloto; em paralelo, print da tela para conferir a largura de
+  44 colunas e as 2 descrições reescritas (`artifacts/qa_revisao/teste_ingame/prints/`). Só então release (aval
+  do Felipe), guia da Steam (`Desktop/teste_bof4/guia_steam.txt`) e `v1.0.0` com reamostragem de qualidade.
+- **Fechado em 2026-10-14 (tarde/noite):** 305/305 cenas `verified` (`AREAS032`, `AREAS054` e `AREAM024`/`AREAS048`
+  fechadas); fala 7 de `AREAD115` corrigida ("Vossa Majestade", decisão de 2026-10-12); 10 falas com "tu" mantidas
+  como registro arcaico de Fou-Lu e dos Eternos (revisão do Felipe); 2 descrições acima da caixa corrigidas
+  (`AB000_00`, `CAMP`, `COMMU03`, `MASTER`, `MSHOP`, `SGAMEN`, `SHOP`); reinserção refeita (8 arquivos mudaram),
+  instalada no jogo e pacote do patcher regenerado (305 deltas). Patcher: corrigido estouro quando o `tasklist`
+  devolve saída fora do UTF-8; teste instalar/idempotente/desinstalar/arquivo modificado/jogo aberto passou numa cópia.
+  Framework: `scene_dedup` lia a coluna errada (`text_en`) e corrompia JSON com aspas escapadas — corrigido, com teste.
+  Não provado: limite de 44 colunas (inferido do inglês), 27 falas `pt-PT?` sem revisão humana além das 10 acima.
 - **Fechado em 2026-10-14:**
   1. **115 cenas divergentes: resolvido.** Reconferidas (116 de 116, round-trip íntegro, 0 overflow); 23 falas de
      risco alto cujo texto mudou foram rejulgadas (23 `pass`, revisor Opus em agente separado); gates verdes;
@@ -20,8 +33,8 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
      **14,5%** (29/200 sorteadas; IC 95%: 10,3% a 20,1%), **26,1%** pesada por repetição; o juiz apontou 0,7%
      do que leu, precisão 51,9%, alcance 0,0% (não pegou nenhum erro da amostra sorteada). Revisor: Felipe
      Scudeller. Os erros reais se repetem em poucos textos: "fl" = "and." nos rótulos de andar, "Wgt" = "Pes.",
-     "em alvo(s)" no lugar de "no(s) alvo(s)", "Golpe Sorte", "Região Wyndia". **Correção desses padrões: em aberto**
-     (decisão do Felipe; mexe em texto instalado e exige reconferência e gates).
+     "em alvo(s)" no lugar de "no(s) alvo(s)", "Golpe Sorte", "Região Wyndia". **Correção desses padrões: feita em parte**
+     (decisão do Felipe; mexe em texto instalado e exige reconferência e gates; ver as duas correções abaixo).
      **Correção feita em 2026-10-14, depois da amostra:** "Região Wyndia" = "Região de Wyndia" (5 cenas) e
      "Golpe Sorte" = "Golpe de Sorte" (`BTLEND` e glossário); na lista de habilidades (`AB000_00:10100:30`)
      fica "Golpe Sorte", porque a forma com "de" custa +2 bytes. 6 arquivos reinstalados, gates verdes.
@@ -30,7 +43,8 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
      alvo(s)" para "em um alvo" / "em todo alvo" (`[07][00]` = tabela "one/all" de cada cena; "1 alvo" daria +2
      bytes, acima da regra de +1). 30 arquivos reinstalados.
      **A taxa de 14,5% vale para o texto de antes dessas correções.** Linha `AB000_00:2:256` ainda tem "[07][04][01]alvo(s)" (variável diferente, não conferida).
-  3. **Distribuir a tradução na Steam.** Pedido do Felipe; falta planejar formato e canal.
+  3. **Distribuir a tradução na Steam.** Formato e canal decididos (patcher `.exe` com deltas, release no GitHub);
+     pacote e `.exe` beta prontos e testados em cópia; falta teste no jogo real e a release.
   4. **Commit.** Os da `feat/bof4-instance` (framework e bof4) foram feitos em 2026-10-13, sem push e sem PR.
      Ficaram de fora: `tm/`, `hitl_log.jsonl` e `phase_marks.jsonl` (ignorados) e `qa_effectiveness.jsonl`
      (aguarda o Felipe decidir o texto do campo de revisor).
@@ -90,9 +104,9 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
 
 - [x] **1.1.** Entidades, glossário, voice cards e base de conhecimento migrados e ampliados.
 - [x] **1.2.** `research_log.md` reconciliado; ratificações do usuário em `kb_ratified.csv`.
-- [x] **1.3.** `decision_log.md` com as 15 decisões ratificadas, indexadas no banco.
+- [x] **1.3.** `decision_log.md` com as 16 decisões ratificadas (eram 15 quando o item fechou), indexadas no banco.
 - [x] **1.4.** `kb_gate` verde, com busca semântica ativa.
-- [x] **1.5.** Candidatos da re-extração reconciliados (`Buy`, `Sell`, `Stop`, `Normal`, `Sink`, golpes `Pilfer…`/`Spray…`): glossário + `research_log`, `kb_phase.py all --check` verde (issue #221).
+- [x] **1.5.** Candidatos da re-extração reconciliados (`Buy`, `Sell`, `Stop`, `Normal`, `Sink`, golpes `Pilfer…`/`Spray…`): glossário + `research_log`, `kb_phase.py all --check` verde ( do backlog).
 - [x] **1.6.** Worklist da re-extração com `AREAM`/`AREAE` reconciliada: +152 termos no glossário, +9 entidades, seção nova no `research_log`; `kb_phase.py all --check` e `kb_gate` verdes. Propostas de lore aguardando ratificação do usuário: Purifiers→Purificadores, Elders→Anciões, Nameless→Sem Nome, Gateway→Portal, Dragon of Doom→Dragão da Perdição.
 
 - [x] **1.7.** Worklist da re-extração 0.4 reconciliada: +159 termos no glossário, +6 entidades, seção nova no `research_log`; `kb_phase.py all --check` verde. Traduções são proposta, aguardando ratificação do usuário.
@@ -144,7 +158,7 @@ Resumo do que foi feito, para quem retomar o projeto. Sem falas do jogo; detalhe
 ### Repositório e proteção de conteúdo
 
 - Repositório público recriado com histórico limpo; o antigo ficou privado.
-- `content_guard.py` (hook local + job `Guard` da CI, PR #80): bloqueia binário de jogo, roteiro extraído,
+- `content_guard.py` (hook local + job `Guard` da CI): bloqueia binário de jogo, roteiro extraído,
   tradução de cena, planilha de revisão, print, worklist gerada, saída de descompilador, chave de API e e-mail
   pessoal. `projects/*/artifacts/` é default-deny (só entra o que está em `ARTIFACTS_ALLOWED`). Vale para
   todos os projetos. Regras resumidas no `CLAUDE.md` da raiz.
@@ -287,7 +301,7 @@ BTLRET, BTLEND). Nada disso foi reinserido nem instalado ainda.
   história (Purifiers, Elders, Nameless, Gateway, Dragon of Doom).
 
 Atualização (2026-10-12, 23h): visto da onda dado e cinco termos de história ratificados pelo usuário
-(`hitl.py ratify` passou a aceitar termo nomeado fora dos 30 mais frequentes). Glossário limpo: 414 entradas,
+(`hitl.py ratify` passou a aceitar termo nomeado fora dos 30 mais frequentes). Glossário limpo: 414 entradas na época (hoje 415),
 títulos entram inteiros. As nove cenas de sistema restantes vieram 100% por reuso; 305 cenas verificadas, lint 0,
 `quality_gate` e `pilot_gate` OK. Reinserção feita e instalada no jogo com a régua nas folhas de imagem
 (`tools_local/probe.py`): a régua é só de medição e sai na próxima instalação. Próximo: prints do usuário

@@ -61,7 +61,7 @@ extract.py(source_binary, table_schema) → dialogs.csv + extraction_log.md
 1. Ler bytes a partir do offset até o FIM da string. Com tabela de ponteiros, o fim é o **próximo
    ponteiro distinto**, não o primeiro byte terminador: o mesmo byte pode ser parâmetro de control
    code no meio da string (BoF4: `[14][00][00]` = id do falante — cortar no primeiro `00` truncou
-   ~25% das falas com round-trip verde, issue #76). Só confiar no terminador depois de provar que
+   ~25% das falas com round-trip verde). Só confiar no terminador depois de provar que
    nenhum control code o carrega como parâmetro
 2. Decodificar via tabela (byte→caractere)
 3. Substituir sequências de control code pelos tokens correspondentes
@@ -186,9 +186,13 @@ tratá-las como texto normal. (POC: a linha `0x33f9` vinha meio PT/EN corrompida
 □ space_strategy declarada (repoint p/ alvo mais longo) e taxa de fit reportada?
 □ Gate de charset avaliado inspecionando a FONTE (não só presença no texto)?
 □ Anomalias de fonte sinalizadas no extraction_log?
-□ Build de saída com a mesma extensão do fonte, em artifacts/build/?
+□ Build de saída com a mesma extensão do fonte, em `output/` (`paths.output_dir`; ignorada pelo git)?
 □ Saída inclui o patch no patch_format declarado?
 ```
+
+> **Esqueleto completo** (`_skeleton/`): `extract.py`, `reinsert.py`, `build_plan_chapter.py` (plano por cena), `verify_chapter.py`
+> (protocolo de saída exit 0/1/3 + `VERIFY_STATUS:{json}`, lido por `connector_mgr`/`run_scene`) e os testes `test_roundtrip*.py`.
+> A reconstrução byte-a-byte do `verify_chapter` (`_rebuild`) é específica do formato — marcada `# ADAPTAR`.
 
 > **Os scripts são executados, não refeitos.** Uma vez escritos, `extract.py`/`reinsert.py` são
 > **rodados como ferramenta** — a IA não re-extrai nem re-grava bytes manualmente (determinismo +

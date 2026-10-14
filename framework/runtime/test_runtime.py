@@ -38,7 +38,7 @@ REPO = _HERE.parents[1]
 PROJECT = REPO / "projects" / "utawarerumono"
 SCENE = "ch_12_01"           # cena leve, sem dependencia de traducao
 # PROJECT (instancia real) so e usado por baixo pra LEITURA (guard de governanca) e como
-# origem da copia do fixture `integ_project` (#31) -- a integracao real roda so na copia,
+# origem da copia do fixture `integ_project` -- a integracao real roda so na copia,
 # nunca na instancia real. O fixture `built` acima ja usa uma COPIA em tmp_path.
 
 
@@ -235,7 +235,7 @@ def test_kb_gate_passes_when_reconciled_and_present(tmp_path):
 
 
 def test_kb_gate_blocks_when_frontier_not_declared(tmp_path):
-    # #18: kb_frontier ausente e HARD (nao bypassavel nem com --skip-kb-gate)
+    # kb_frontier ausente e HARD (nao bypassavel nem com --skip-kb-gate)
     root = _kb_project(tmp_path)   # sem kb_frontier
     hard = kb_gate.check(root, "ch_12_03")["hard_problems"]
     assert any("kb_frontier" in p for p in hard), "ausencia de kb_frontier deve ser hard-block"
@@ -490,7 +490,7 @@ def test_run_chapter_orders_and_resumes(monkeypatch, tmp_path):
 
 
 def test_run_chapter_calls_quality_gate(monkeypatch, tmp_path):
-    # #17: quality_gate.check() se autodeclara bloqueante/observavel no docstring mas nao tinha
+    # quality_gate.check() se autodeclara bloqueante/observavel no docstring mas nao tinha
     # nenhum caller real — run_chapter deve chama-lo ao fim do capitulo, mesmo padrao ja aplicado
     # a spoiler_check.audit_and_persist (_audit_spoiler).
     root = _fake_chapter(tmp_path, ("99_01",))
@@ -974,7 +974,7 @@ def test_glossary_lint_consistency(tmp_path):
 
 
 def test_glossary_lint_consistency_text_en_column(tmp_path):
-    """#22: dialogs.csv com coluna 'text_en' (BoF4/Souldiers) em vez de 'text_source' (Uta) --
+    """dialogs.csv com coluna 'text_en' (BoF4/Souldiers) em vez de 'text_source' (Uta) --
     load_translated_scenes precisa do mesmo fallback de coluna que load_dialogs ja tinha."""
     import glossary_lint
     art = tmp_path / "artifacts"
@@ -1103,7 +1103,7 @@ def test_run_chapter_batch_marks_pretranslated(monkeypatch, tmp_path):
 
 
 def test_run_chapter_batch_no_back_skips_back_batch(monkeypatch, tmp_path):
-    # #12: --no-back tambem deve pular o pos-passe de back-translation em lote (modo batch).
+    # --no-back tambem deve pular o pos-passe de back-translation em lote (modo batch).
     root = _fake_chapter(tmp_path, ("99_01",))
     monkeypatch.setattr(run_chapter.M, "batch_translate",
                         lambda r, scenes, **kw: {s: "written" for s in scenes})
@@ -1781,7 +1781,7 @@ def test_quality_review_apply_verbatim_and_nota(tmp_path, monkeypatch):
 
 
 def test_quality_review_apply_records_reviewer_identity(tmp_path, monkeypatch):
-    # #19: qa_effectiveness.jsonl deve registrar QUEM aprovou a revisao (None se nao informado).
+    # qa_effectiveness.jsonl deve registrar QUEM aprovou a revisao (None se nao informado).
     import paths
     d = paths.scene_dir(tmp_path, "ch_72_01")
     d.mkdir(parents=True)
@@ -1919,7 +1919,7 @@ _INTEG_SCENES = _first_translated_scenes(5)
 def integ_project(tmp_path_factory):
     """Copia utawarerumono pra tmp: build_plan_chapter/verify_chapter (subprocess) escrevem
     translation_plan/pack/warnings em disco e nao podem mutar os artefatos reais versionados
-    de projects/utawarerumono (#31)."""
+    de projects/utawarerumono."""
     if not (PROJECT / "project.json").is_file():
         pytest.skip("projeto utawarerumono nao disponivel")
     project = tmp_path_factory.mktemp("utawarerumono_integ")
@@ -2146,7 +2146,7 @@ def test_run_scene_options_defaults():
 
 
 def test_back_phase_no_back_skips_translation(tmp_path, monkeypatch):
-    # #12: --no-back deve pular a back-translation inteiramente, sem chamar M.back_translate.
+    # --no-back deve pular a back-translation inteiramente, sem chamar M.back_translate.
     (tmp_path / "artifacts").mkdir()
 
     def _boom(*a, **k):
@@ -2209,7 +2209,7 @@ def test_run_scene_opts_overrides_kwargs(monkeypatch, tmp_path):
 
 def _stub_pipeline_after_gates(monkeypatch):
     """Stuba as fases apos os gates (translate/fitting/back/state_index) — usado pelos testes de
-    #16 (bypassed_gates), que so precisam validar o que acontece ANTES/no checkpoint final."""
+    o rastro de bypass (bypassed_gates), que so precisam validar o que acontece ANTES/no checkpoint final."""
     monkeypatch.setattr(run_scene, "_pack_and_translate",
                         lambda r, s, sid, backend, pretranslated: ({"n_lines": 0, "status": "done"}, None))
     monkeypatch.setattr(run_scene, "_fitting_loop",
@@ -2222,7 +2222,7 @@ def _stub_pipeline_after_gates(monkeypatch):
 
 
 def test_run_scene_records_bypassed_gates_in_checkpoint(monkeypatch, tmp_path):
-    # #16: bypass de --skip-kb-gate deve deixar rastro no checkpoint -- antes,
+    # bypass de --skip-kb-gate deve deixar rastro no checkpoint -- antes,
     # o mesmo status "verified" de uma cena limpa nao distinguia de uma cena traduzida as cegas.
     (tmp_path / "project.json").write_text('{"connector": {}}', encoding="utf-8")
     (tmp_path / "artifacts").mkdir()
@@ -2666,3 +2666,24 @@ def test_run_chapter_batch_exception_skips_rebuild(monkeypatch, tmp_path):
     with pytest.raises(OSError):
         run_chapter.run_chapter(root, "99", backend="api", batch=True)
     assert events == ["rebuild", "batch"]
+
+def test_tm_correct_line_scope_and_byte_measure(tmp_path):
+    """Regra com scene+offset so mexe naquela linha; o dry-run mede bytes e marca o que estoura o byte_budget."""
+    import paths
+    (tmp_path / "project.json").write_text(json.dumps({"connector": {"target_charset_supported": True}}), encoding="utf-8")
+    for sc, sid in (("ch_32_01", "32_01"), ("ch_32_02", "32_02")):
+        d = paths.scene_dir(tmp_path, sc)
+        d.mkdir(parents=True)
+        (d / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x1,x,10\n0x2,x,10\n", encoding="utf-8")
+        paths.translations(tmp_path, sc, sid).write_text(
+            _trans({"0x1": {"t": "Ukon aqui"}, "0x2": {"t": "Ukon ali"}}), encoding="utf-8")
+    csvp = tmp_path / "c3.csv"
+    csvp.write_text("find,replace,note,scene,offset\nUkon,Oshtor-Grande,so uma linha,ch_32_01,0x1\n", encoding="utf-8")
+    corr = tm_correct.load_corrections(csvp)
+    hits = tm_correct.plan(tmp_path, corr)
+    assert [(h["scene"], h["offset"]) for h in hits] == [("ch_32_01", "0x1")]       # as outras 3 linhas ficam de fora
+    h = hits[0]
+    assert (h["bytes_before"], h["bytes_after"], h["byte_budget"], h["over"]) == (9, 18, 10, True)
+    assert tm_correct.apply(tmp_path, corr)["replacements"] == 1
+    t2 = json.loads(paths.translations(tmp_path, "ch_32_02", "32_02").read_text("utf-8"))["lines"]
+    assert t2["0x1"]["t"] == "Ukon aqui"

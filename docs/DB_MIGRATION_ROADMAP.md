@@ -27,11 +27,11 @@
 | **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ✅ |
 | **3** | derivados de `.md` gravam no DB (`decisions`/`voice_cards`/`spoiler`/`kb`) — cobertos pelo mesmo espelho gated da Fase 2 | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ✅ |
 | **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas — cobertos pelo mesmo espelho gated | — | ✅ |
-| **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05b/06b/06c) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
-| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** ✅ `build_plan_chapter` (translations) DB-first via `connector_io.sync_translations_db` — ver [[db-first-6b-escopo]] e [issue #44](https://github.com/scudellerlemos/translation-cognition-framework/issues/109) | — | ✅ 6a+6b feito (escopo: translations) |
+| **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05/05b/06b/08b/08c/09; a 06c foi incorporada à 06b) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
+| **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** ✅ `build_plan_chapter` (translations) DB-first via `connector_io.sync_translations_db` — ver [[db-first-6b-escopo]] e a issue do cutover do backlog | — | ✅ 6a+6b feito (escopo: translations) |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
 
-## Gates de governança sob o switch DB-gated (#22)
+## Gates de governança sob o switch DB-gated
 
 Os módulos de gate (`kb_gate`/`kb_phase`/`kb_review`/`glossary_lint`/`spoiler_check`) foram
 auditados quanto ao mesmo switch DB-gated do `context_pack`. Achado: **liam sempre o flat**,
@@ -47,10 +47,10 @@ podia não ser mais a de verdade). Corrigido em duas frentes:
 - **`kb_gate.py`**: só o check de `glossary` (coluna `updated_date`) virou DB-aware (lê
   `updated_at` do banco). Os demais hard/soft-checks deste módulo (`research_log.md`
   reconciliado, `kb_ratified.csv`) permanecem **flat-only** — não faziam parte do escopo de
-  #22 (não têm um ponto único de leitura equivalente a `_reconciled`/`_ratified_set`, ver
-  abaixo, que valesse a pena rotear antes de #29 decidir o schema).
+  esta issue de gates DB-gated (não têm um ponto único de leitura equivalente a `_reconciled`/`_ratified_set`, ver
+  abaixo, que valesse a pena rotear antes da issue do schema do DB decidir).
 
-**Fechado por #29:** `kb_phase.py` (`_reconciled`) e `kb_review.py` (`digest`/`blocking`, via
+**Fechado pela issue do schema do DB:** `kb_phase.py` (`_reconciled`) e `kb_review.py` (`digest`/`blocking`, via
 `_research_section`/`_ratified_set`) dependiam de `research_log.md`/`kb_ratified.csv` sem
 tabela equivalente no schema. Decisão tomada: **opção 1** do issue — duas tabelas novas:
 
@@ -65,9 +65,9 @@ Ambas migradas via `migrate_from_flat.py` (mirror automático — já entram no 
 Fases 2/3, sem hook novo) e lidas via `kb_review.research_log_text()`/`kb_review._ratified_set()`,
 DB-gated pelo mesmo switch `context_pack._db_path` dos outros 3 módulos. **Fora do escopo:**
 a leitura de `glossary.csv`/`entities.csv` dentro de `kb_review.digest()` (linhas marcadas
-`(cap.N)`) continua flat-only — não foi citada no issue #29, é uma lacuna separada e não foi
+`(cap.N)`) continua flat-only — não foi citada na issue do schema do DB, é uma lacuna separada e não foi
 fechada aqui. Ver
-[issue #29](https://github.com/scudellerlemos/translation-cognition-framework/issues/94).
+a issue do schema do DB no backlog.
 
 ## Write-path consolidado (Fases 2/3/4) — decisão de design
 
@@ -89,19 +89,19 @@ warnings, qa_effectiveness). Por quê:
 `migrate()` passou a ler `title`/`media_type`/langs do `project.json` (era hardcoded
 "Breath of Fire IV") — pré-requisito p/ o write-path ser multi-projeto.
 
-## Fase 6b — produtores DB-first (#44) — decisão de escopo
+## Fase 6b — produtores DB-first — decisão de escopo
 
 **Decisão (set/2026):** o critério de pronto original da issue ("1 projeto rodando end-to-end
 com produtores DB-first") não é atingível hoje sem run vivo — **nenhum projeto ativo tem
 `db` populado** (`translation_software`, depois removido, era um shell DB-only, corpus BoF4 migrado uma vez, sem
-connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguem flat). Em vez de esperar
+connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguiam flat — hoje o `bof4` e o `demo` declaram `db`). Em vez de esperar
 esse pré-requisito (fora do controle desta issue), o escopo foi reduzido ao que o oráculo de
 paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan_chapter.py`.
 
 - **`connector_io.sync_translations_db(root, scene_id, sfx, approved, plan_lines)`** — novo,
   único ponto compartilhado pelas 6 cópias de `build_plan_chapter.py` (mesmo gate-shape de
   `state_index._db_target`, extraído aqui pra nunca divergir entre conectores, espírito do
-  #23). Se `project.json:db` não populado → no-op, `False`, caller escreve o CSV como sempre
+  issue do connector_io). Se `project.json:db` não populado → no-op, `False`, caller escreve o CSV como sempre
   (BoF4/Uta/Souldiers/Trails/Demo hoje: comportamento intacto, zero risco).
 - Se gated: grava cada offset aprovado direto no `Store` (fonte de verdade) e regenera
   `approved_<sfx>.csv` a **partir do DB** — o flat vira export derivado, não mais o dado
@@ -220,7 +220,7 @@ rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a st
 6046 vetores no `translation_software` (depois removido), busca exata → score 1.0, variação de vocabulário → 0.944. Ver
 memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).
 
-### Checklist de revalidação de modelo (projeto novo, #54; amostragem e 2º par, #64)
+### Checklist de revalidação de modelo (projeto novo; amostragem e 2º par)
 
 `_MODEL_NAME` (`paraphrase-multilingual-MiniLM-L12-v2`, em `embedder.py`) cobre ~50 idiomas com
 qualidade desigual — o 1.0/0.944 acima só foi medido no par EN→pt-BR. Antes de confiar no
@@ -237,15 +237,15 @@ python framework/cli.py db validate-model <db_path> <project_id> [--seed N] [--p
 - Comparar os dois contra a régua EN→pt-BR (1.0 / 0.944). Score bem abaixo disso → o modelo
   pinado não serve bem pro par de idiomas; considerar `--model` alternativo (grava
   `tm_embeddings.model_name` por vetor, reindex é automático dentro do próprio comando).
-- **Amostragem (#64):** a amostra de `exact_match` é aleatória sobre TODAS as linhas aprovadas
+- **Amostragem:** a amostra de `exact_match` é aleatória sobre TODAS as linhas aprovadas
   do projeto (antes era `LIMIT N` sem `ORDER BY`, sempre as N primeiras linhas inseridas —
   enviesado pra early game/capítulos iniciais). `--seed` fixa a amostra pra reprodutibilidade
   (comparação antes/depois, CI); sem `--seed`, cada rodada amostra de novo (mais representativo
   em validação manual pontual).
 
-**Segundo par de idiomas validado (#64, corpus de teste dedicado, não produção):** JA→pt-BR,
+**Segundo par de idiomas validado (corpus de teste dedicado, não produção):** JA→pt-BR,
 10 frases sintéticas estilo diálogo de RPG + 5 paráfrases curadas manualmente (script do
-exercício não versionado, mesmo padrão do paraphrases.json do #54) —
+exercício não versionado, mesmo padrão do paraphrases.json) —
 `exact_match_avg=1.0`, `vocab_variation_avg=0.8962` (seed=42). Levemente abaixo do EN→pt-BR
 (0.944), mas ainda alto — o modelo pinado generaliza razoavelmente pra um par com fonte de
 morfologia bem diferente (JA, sem espaços/aglutinante, vs. EN). Não é um par 1:1 com projeto

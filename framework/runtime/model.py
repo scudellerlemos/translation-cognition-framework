@@ -24,12 +24,12 @@ import json
 import re
 import sys
 import time  # noqa: F401  (re-exportado p/ test_batch_retries fazer monkeypatch de model.time.sleep)
-import unicodedata
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import budget as _bud  # noqa: E402  (budget.py: fonte unica da conta de bytes)
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
@@ -245,29 +245,18 @@ def _check_translation(data, offsets):
 
 
 def _translit_len(t) -> int:
-    """Comprimento em bytes da forma TRANSLITERADA (NFKD + drop combining) — o que o reinsert grava."""
-    s = unicodedata.normalize("NFKD", t or "")
-    return len("".join(c for c in s if not unicodedata.combining(c)))
+    """Comprimento em bytes da forma TRANSLITERADA — o que o reinsert grava (conta em budget.py)."""
+    return _bud.translit_len(t)
 
 
 def _budget_len(t, pc: dict | None) -> int:
-    """Bytes UTF-8 REAIS quando o conector NAO translitera na gravacao (target_charset_supported
-    ESTRITAMENTE True); senao a forma TRANSLITERADA — o que bof4/uta gravam de fato. Fonte unica
-    da metrica de orcamento (espelha o que verify_chapter.py realmente confere)."""
-    if (pc or {}).get("target_charset_supported") is True:
-        return len((t or "").encode("utf-8"))
-    return _translit_len(t)
+    """Metrica de orcamento do projeto (fonte unica: budget.py; espelha o que verify_chapter.py confere)."""
+    return _bud.budget_len(t, pc)
 
 
-def _over_budget(t, budget, pc, tol) -> bool:
-    """True se `t` excede budget*tol pela metrica correta do projeto (ver _budget_len). Quando o
-    conector reserva 1 byte pro terminador \\0 dentro do proprio byte_budget (budget_reserves_terminator,
-    ver ADR sobre off-by-one), o limiar usavel e budget-1 antes de aplicar tol — casa com o oraculo
-    real de verify_chapter.py (`len(encoded) + 1 <= budget`)."""
-    if budget is None:          # None = sem budget declarado; 0 = orcamento ZERO real (deve ENFORCAR)
-        return False
-    reserve = 1 if (pc or {}).get("budget_reserves_terminator") else 0
-    return _budget_len(t, pc) > (budget - reserve) * tol
+def _over_budget(t, budget_, pc, tol) -> bool:
+    """True se `t` excede budget*tol pela metrica do projeto, com a reserva do terminador (ver budget.py)."""
+    return _bud.over_budget(t, budget_, pc, tol)
 
 
 def _budget_note(over: list, pc: dict) -> str:
@@ -314,7 +303,7 @@ def _structural_rx(pc: dict) -> re.Pattern:
     feita AQUI tambem (dentro do retry de traducao) pra pegar token perdido/trocado ANTES de persistir,
     em vez de so falhar num gate sem auto-reparo rio abaixo (bug real: 7/447 linhas em mp0010_01,
     2026-08-24, o LLM as vezes derruba ou corrompe <C1>/<P2> e o retry existente so checava `\\n`).
-    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py, #51)."""
+    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py)."""
     pc = pc or {}
     return connector_io.structural_token_rx(
         pc.get("formatting_tokens", []), pc.get("formatting_token_patterns", []))

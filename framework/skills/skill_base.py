@@ -28,7 +28,7 @@ class Skill(ABC):
     FRONTEIRA cognitivo↔determinístico (valor central do framework): SÓ skills com
     substância de código entram no registry Python. As puramente cognitivas
     (01 discovery, 02 entity_resolution, 03 knowledge_building, 04 glossary, 04b, 05b,
-    06b, 06c) permanecem playbooks .md — a IA as executa; não há lógica determinística a
+    06b) permanecem playbooks .md — a IA as executa; não há lógica determinística a
     encapsular. O atributo `kind` torna a fronteira consultável:
       - 'deterministic'        — sem IA (extract, qa-checks, reinsert): testável em CI sem rede.
       - 'cognitive'            — harness determinístico com a IA ISOLADA no miolo (translate).

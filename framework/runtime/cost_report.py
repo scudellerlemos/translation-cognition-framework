@@ -204,7 +204,8 @@ def _fmt(rep: dict, by_scene: bool) -> str:
             f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_stage"].items()))
     if rep.get("out_est"):
         L.append(f"  saida estimada: {rep['out_est']:,} de {rep['tokens']['out']:,} tokens de saida "
-                 f"({100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}%) vem de mensagem sem usage final na transcricao")
+                 f"({100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}%) vem de mensagem sem usage final na transcricao; "
+                 f"erro da estimativa na soma: +-{rep['out_est'] * 0.07:,.0f} tokens (~7%, medido)")
     if rep["by_activity"]:
         L.append("  resto por atividade (sessao fora de cena, heuristico): " + ", ".join(
             f"{k} ${v['usd']:.2f} ({v['calls']} req)" for k, v in rep["by_activity"].items()))
@@ -236,6 +237,7 @@ def main():
     ap.add_argument("--summary", action="store_true",
                     help="G5: linha única para substituir valores hardcoded em READMEs")
     a = ap.parse_args()
+    paths.require_project(a.project)
     session_usage.sync(a.project)   # traz o que as transcricoes do Claude Code tem de novo
     rep = report(a.project, chapter=a.chapter)
     if a.json:

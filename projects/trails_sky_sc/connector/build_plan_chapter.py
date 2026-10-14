@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 _FRAMEWORK_CONNECTORS = ROOT.parent.parent / "framework" / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
-import connector_io  # noqa: E402  (structural_token_rx e RISK_LEVELS compartilhados com model.py, #51)
+import connector_io  # noqa: E402  (structural_token_rx e RISK_LEVELS compartilhados com model.py)
 
 _RISK = connector_io.RISK_LEVELS
 

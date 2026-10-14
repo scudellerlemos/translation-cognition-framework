@@ -1,4 +1,4 @@
-# Example Test Suites — Soldiers
+# Example Test Suites — Souldiers
 
 > Exemplos de referência para avaliação de qualidade de tradução.
 > Preencher após extração + análise do corpus (Passos 01-02).

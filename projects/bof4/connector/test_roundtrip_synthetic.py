@@ -1,5 +1,5 @@
 """
-test_roundtrip_synthetic.py — oracle de round-trip SEMPRE ativo em CI (#84).
+test_roundtrip_synthetic.py — oracle de round-trip SEMPRE ativo em CI.
 
 Problema que fecha: `.github/workflows/test.yml` só roda o round-trip byte-idêntico contra o
 binário REAL do jogo, que é gitignored (licenciamento) — no runner do GitHub Actions ele nunca

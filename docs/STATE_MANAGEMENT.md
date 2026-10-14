@@ -13,7 +13,7 @@ O harness opera sem usar a janela da LLM como memória. Esta é a separação de
 | Lore / universo | `artifacts/universe_knowledge_base.md` | passo 03 | mundo, spoilers, reveal_timing |
 | Decisões (fonte) | `artifacts/decision_log.md` | passos 04b+ | auditoria acumulativa (nunca apagar) |
 | Progresso narrativo | `artifacts/translation_status.json` | passo 06 | next_offset, needs_human_review |
-| Checkpoint do harness | `artifacts/run_state.json` | `run_scene.py` (det.) | status por cena (resume) |
+| Checkpoint do harness | `artifacts/run_state.json` | `run_scene.py` (det.) | status por cena (resume) + `connector_hash`/`doctrine_hash`/`t_hashes` (reconferência só do tocado, `touched.py`) |
 
 ## Contexto TEMPORÁRIO (por cena; descartável e regenerável)
 
@@ -30,7 +30,8 @@ que tira a leitura desses fontes grandes da janela.
 
 ## Substrato: por que flat files + índice fino AGORA (e não banco/vetor)
 
-Escolha: **arquivos estruturados (CSV/JSONL/JSON) + um índice materializado leve**, versionados em git.
+Escolha: **arquivos estruturados (CSV/JSONL/JSON) + um índice materializado leve**, diff-áveis. No repo público,
+`content_guard.py` barra o que cita fala do jogo (ex.: `translation_memory.jsonl`); esse estado fica local.
 Ver `adr/0003-state-substrate-flatfiles-then-index.md`.
 
 | Abordagem | Quando | Veredito atual |

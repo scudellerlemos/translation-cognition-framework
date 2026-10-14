@@ -83,6 +83,7 @@ def main():
     ap.add_argument("--scenes-glob", default=None,
                     help="glob(s) customizados (projeto flat); senao descobre todas as ch_<N>_*")
     a = ap.parse_args()
+    paths.require_project(a.project)
     root = Path(a.project)
     if a.scenes_glob:
         scenes = run_chapter._scenes_of_glob(root, a.scenes_glob)

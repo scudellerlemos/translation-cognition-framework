@@ -1,4 +1,4 @@
-"""validate_model.py — Revalidação de modelo de embedding por par de idiomas (#54).
+"""validate_model.py — Revalidação de modelo de embedding por par de idiomas.
 
 Antes de habilitar RAG semântico em produção para um projeto novo, mede a qualidade de
 retrieval do modelo (embedder._MODEL_NAME por default, ou --model) contra o par de idiomas
@@ -9,7 +9,7 @@ do projeto:
     já instalada (exigiria um LLM externo) — curadoria humana por par de idiomas, como foi
     feito para EN->pt-BR.
 
-Baseline de referência (EN->pt-BR, translation_software, medido no #54):
+Baseline de referência (EN->pt-BR, translation_software, medido):
     exact_match_avg      = 1.0
     vocab_variation_avg  = 0.944
 Não é threshold universal (qualidade de embedding varia por par de idiomas) — serve de régua
@@ -22,7 +22,7 @@ Uso:
 Formato de paraphrases.json: lista de {"query": "...", "source": "..."}, onde "source" casa
 exatamente com translations.source de uma linha aprovada do projeto.
 
-Amostragem (#64): aleatória sobre TODAS as linhas aprovadas do projeto, via `random.Random`
+Amostragem: aleatória sobre TODAS as linhas aprovadas do projeto, via `random.Random`
 (não `ORDER BY RANDOM()` do SQLite — evita registrar função seedável na conexão só pra isso).
 --seed fixa a amostra pra reprodutibilidade (CI/comparação antes-depois); sem --seed, usa
 entropia do SO (amostra diferente a cada rodada, mais representativa em validação manual).
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     con.close()
 
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    print("\nBaseline de referência (EN->pt-BR, translation_software, #54): "
+    print("\nBaseline de referência (EN->pt-BR, translation_software): "
           "exact_match_avg=1.0, vocab_variation_avg=0.944.")
     if result["vocab_variation_avg"] is None:
         print("Sem --paraphrases: curar um JSON com paráfrases do par de idiomas antes de "

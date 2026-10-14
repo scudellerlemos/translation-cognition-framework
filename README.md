@@ -123,7 +123,7 @@ Sete decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 - **Runtime agnóstico ao modelo** — a lógica não sabe qual LLM roda. Trocar Haiku/Sonnet/Opus por
   complexidade da linha é configuração, não reescrita (`runtime/model.py` + `back_translate.py` são a única fronteira com o LLM pago).
 - **SDD — Specification-Driven Development** — as regras de tradução (glossário, vozes, spoilers) são
-  **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..08`), não decisões
+  **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..09`), não decisões
   ad-hoc perdidas num chat. Cada etapa tem um *gate* que impede avançar sobre base incompleta.
 - **Gates explícitos** — a IA **propõe**, gates determinísticos **aprovam**, um script **aplica**.
   Nada entra no dado canônico sem passar por uma verificação reproduzível. Ver
@@ -255,10 +255,12 @@ projects/      → AS INSTÂNCIAS. Cada obra traduzida vive em projects/<título
 
 | Pasta | Papel | Camada(s) |
 |---|---|---|
-| `framework/skills/` | As etapas do SDD (`00..08`) — o processo, em prosa | Cognition (guia) + Validation (gates) |
+| `framework/skills/` | As etapas do SDD (`00..09`, 15 arquivos `.md`) — o processo, em prosa | Cognition (guia) + Validation (gates) |
 | `framework/runtime/` | O harness executável (cena = job stateless, interface de modelo) | State + Execution + Cognition |
 | `framework/connectors/` | I/O determinística: binário ↔ corpus (round-trip) | Execution + Validation |
 | `framework/validation/` | Validadores determinísticos (schemas, naturalidade, custo) | Validation |
+| `framework/db/` | Banco SQLite + embeddings locais (opcional, `project.json:db`): store, migração flat→DB, embedder | State |
+| `framework/distribution/` | Patcher de um clique: `build_package.py` (deltas + manifesto), `patcher.py`, `build_exe.py` | Execution (pós-build) |
 | `framework/media-profiles/` | Preocupações por tipo de mídia (jogos ✅, filmes/séries 🚧) | — |
 | `docs/` | ARCHITECTURE, CONCEPTS, GOVERNANCE, NAMING, ADRs, ROADMAP | — |
 | `projects/<obra>/` | `project.json` (manifesto) + `profile/` + `artifacts/` + `connector/` | A instância (os dados) |
@@ -278,7 +280,7 @@ loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem 
 flowchart TB
   bin[("binário do jogo<br/>read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
-  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
+  f0 --> pipe["PIPELINE 00–09<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
   pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
   build --> qa["QA HUMANO<br/>REVISOR no texto + TESTER in-game"]:::val
   qa -->|"correção cirúrgica via TM · não re-traduz o jogo"| pipe
@@ -295,7 +297,7 @@ flowchart TB
 > (determinístico). A Fase 0 e o QA humano **cercam** a parte de IA — nada é traduzido sem KB de fonte,
 > nada é entregue sem revisão humana.
 
-## O pipeline (00 → 08)
+## O pipeline (00 → 09)
 
 As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entrada.
 
@@ -307,9 +309,12 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 04 glossário     → regras normativas de tradução (+ decision log)
 05 planejamento  → plano linha a linha (+ corpus de teste sintético)
 06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)
-06b/06c QA       → micro-QA por lote + ciclo de correção cirúrgica
+06b micro-QA     → micro-QA por lote + ciclo de correção cirúrgica
 07 QA final      → consistência global, spoilers cross-segmento
 08 reinserção    → conector: tradução → binário + patch (determinístico; LLM só no resíduo)
+08b texto de sistema/rótulos → escopo completo além do diálogo
+08c teste no jogo → print do usuário → causa raiz → reinstalação
+09 distribuição  → delta + patcher .exe de um clique (só diferenças, nunca conteúdo do jogo)
 ```
 
 ---
@@ -346,10 +351,10 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
 5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
    `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
 6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
-   rode o pipeline `00..08` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
+   rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
-Aprofundar: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
+Aprofundar: [`DIAGRAMAS.md`](docs/DIAGRAMAS.md) (o fluxo de ponta a ponta desenhado) · [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
 [`GOVERNANCE.md`](docs/GOVERNANCE.md) (quem propõe/aprova/aplica) ·
 [`SDD_RUNTIME.md`](framework/SDD_RUNTIME.md) (mapa skill↔runtime, quem produz/consome cada artefato) ·
 [`QA_REVIEW.md`](docs/QA_REVIEW.md) (revisão humana: papéis REVISOR + TESTER) ·
@@ -358,7 +363,7 @@ Aprofundar: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
 
 ---
 
-## Status — setembro 2026
+## Status — outubro 2026
 
 Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/ROADMAP.md) (detalhamento técnico).
 
@@ -390,18 +395,22 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
 - Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
 - Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
 
-### Breath of Fire IV — CONCLUÍDO ✅
+### Breath of Fire IV — TRADUZIDO E INSTALADO ✅ · patcher em beta, release pendente 🚧
 
-**125 cenas (AREAD + AREAS), todas `verified`. Reinserção concluída** (125 DAT files em `output/`, 0 overflows).
-Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
+**305 cenas (27.021 falas), todas `verified`**: diálogo, texto de sistema e rótulos em imagem. Instância em modo
+banco (SQLite + busca semântica), caminho de sessão, em `projects/bof4/`. Custo pago: $0; equivalente a ~$239 de API.
 
-**Objetivos alcançados:**
-- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico ✅
-- Pipeline completo (Fases 00–08): KB, glossário, planejamento, 125 cenas traduzidas e reinseridas ✅
-- QA humana concluída; DAT files de output gerados ✅
-- Validação in-game: OK (foco do projeto era o pipeline, não QA in-game extensiva) ✅
+- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico; 0 overflow de bytes ✅
+- Gates verdes (`quality_gate`, `connector_gate`, `pilot_gate`) e retrotradução das falas de risco alto ✅
+- Qualidade medida: amostra de 200 falas, **erro de 14,5%** (IC 95%: 10,3%–20,1%), antes das correções feitas
+  depois da amostra; os erros se concentravam em poucos padrões de texto, já corrigidos ✅
+- Patcher de um clique para a Steam (`framework/distribution/`: `build_package.py` gera deltas bsdiff + manifesto,
+  `patcher.py` instala/desinstala/verifica, `build_exe.py` empacota). Testado numa cópia dos originais: instalar
+  é idempotente, desinstalar volta byte a byte, arquivo modificado é recusado sem alterar nada, jogo aberto trava ✅
+- **Falta:** teste do `.exe` no jogo real e em máquina sem Python, conferência da largura de caixa na tela do
+  jogo e a release (pública; só com aval do autor) 🚧
 
-**Débito técnico:** nenhum aberto — TM semântica (B2) foi implementada e integrada ao harness core
+**Débito técnico:** nenhum aberto no pipeline; TM semântica (B2) integrada ao harness core
 (sqlite-vec + embedder, ver `framework/db/`), disponível a qualquer projeto com banco `.db` configurado.
 
 ### Souldiers (Unity, terceiro jogo) — CONCLUÍDO ✅
@@ -421,7 +430,7 @@ engine distinto validado pelo Generic Connector System.
 
 Engine do remake *Sora no Kiseki 2nd Chapter* (2026), sem entrada prévia no `connector_registry.json`
 — conector escrito do zero, `target_charset_supported: true` (grava UTF-8 real). Extração + split das
-67 cenas completos; cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
+71 cenas completos (corpus após o patch do Steam); cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
 instalado após o off-by-one do terminador ser corrigido por conector (ADR 0006). Demais cenas ainda
 não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifacts/decision_log.md`.
 
@@ -432,7 +441,7 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 | Dívida | Quando |
 |---|---|
 | Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| Packaging `.exe` (E4) | pós-validação, só se for publicar externamente |
+| Packaging `.exe` (E4) | entregue em `framework/distribution/` (beta); falta publicar a release |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 
 
@@ -446,3 +455,13 @@ Este repositório contém apenas o framework e as ferramentas de apoio à tradu�
 arquivos, textos, imagens, áudio nem qualquer outro conteúdo dos jogos citados: para usar um conector é
 preciso ter a sua própria cópia legítima do jogo. Os jogos, seus nomes e marcas pertencem aos respectivos
 donos; este projeto não tem vínculo com eles nem é endossado por eles.
+
+**Não afiliação.** Este é um projeto de fã, sem fins lucrativos. Não é afiliado, patrocinado nem endossado por
+Capcom, Falcom, Aquaplus, Valve (Steam) nem por qualquer outro detentor de direitos dos jogos citados. *Breath of
+Fire*, *The Legend of Heroes: Trails in the Sky*, *Utawarerumono*, *Souldiers*, *Steam* e os demais nomes e marcas
+são de seus respectivos donos e aparecem aqui só para identificar o jogo com o qual um conector trabalha.
+
+**Fontes externas.** As notas de pesquisa de cada projeto (por exemplo `projects/bof4/artifacts/research_log.md`)
+são síntese própria, com a fonte citada ao lado. As fontes de texto aberto são a Wikipedia (CC BY-SA 4.0) e wikis de
+fãs hospedadas no Fandom (em geral CC BY-SA 3.0); quem reutilizar essas notas deve manter a atribuição e a mesma
+licença nesse trecho. O resto do repositório é MIT.

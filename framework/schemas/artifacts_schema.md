@@ -60,6 +60,7 @@
 **Invariantes:**
 - `dialogs.csv` é **gerado pelo Passo 00** (não é dado pré-existente) quando há `connector`
 - É **somente leitura** a partir do Passo 01
+- Projetos antigos usam a coluna `text_en` no lugar de `text_source`; `context_pack.load_dialogs` e `scene_dedup` aceitam as duas (prefere `text_source`)
 - `byte_budget` ≥ 0; presente em todas as linhas quando o meio tem restrição de bytes
 
 ---
@@ -122,7 +123,7 @@ Resultado da reinserção. Seções obrigatórias:
 |---------------|-------------|----------|
 | Strings gravadas | ✅ | Total + distribuição por tier de encaixe (nomes descritivos por conector, ex.: direct/repoint/trimmed/residue) |
 | Resíduo | ✅ | IDs que precisaram de reescrita LLM em lote |
-| Overflows não resolvidos | ✅ | IDs que falharam mesmo após a cascata → viram issues p/ 06c/07 |
+| Overflows não resolvidos | ✅ | IDs que falharam mesmo após a cascata → viram issues p/ 06b/07 |
 | Repoints | ✅ se `repoint` | Ponteiros recalculados |
 | Patch | ✅ | Formato emitido (ips/bps/xdelta) + caminho |
 
@@ -214,6 +215,13 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
 
 ### `translation_plan.json`
 
+> **Legado (poc).** O plano de produção é **por cena**: `artifacts/scenes/<cena>/translation_plan_<sufixo>.json`
+> (montado pelo `build_plan_chapter.py` do conector; contrato em `skills/05_translation_planning.md`). Ele traz
+> `offset`, `text_source`, `speaker`, `risk_level`, `risk_notes` (obrigatório se `risk ≥ medium`),
+> `base_translation`, `byte_budget`, `total_lines` e `plan_version`; **não** traz `entities_present`,
+> `glossary_flags`, `spoiler_flags` nem `critical_lines`. O validador (`validate.py`) exige os campos extras
+> só do arquivo global legado. O bloco abaixo descreve esse arquivo global.
+
 ```
 {
   "lines": [
@@ -253,7 +261,7 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
   "last_offset": string,        // OBRIGATÓRIO — último id traduzido no lote
   "next_offset": string,        // OBRIGATÓRIO — próximo id a traduzir
   "last_updated": string,       // OBRIGATÓRIO — "YYYY-MM-DD"
-  "batch_size": int,            // OBRIGATÓRIO — de project.json (default 200)
+  "batch_size": int,            // OBRIGATÓRIO neste arquivo (legado) — de project.json (opcional lá; default 200)
   "batches_completed": int,     // OBRIGATÓRIO
   "length_warnings": [string],  // OBRIGATÓRIO — ids que excedem length_constraints
   "needs_human_review": [string], // OBRIGATÓRIO — ids com risk_level: critical
@@ -343,7 +351,7 @@ Seção **Gaps de Pesquisa** — presente sempre (vazia se não houve gap).
           "escalated": bool         // opcional — true se segunda tentativa falhou
         }
       ],
-      "corrections_applied": [],    // presente apenas em entradas de correção (06c)
+      "corrections_applied": [],    // presente apenas em entradas de correção (06b)
       "token_errors": [str],        // OBRIGATÓRIO — lista vazia se nenhum
       "spoiler_flags": [str],       // OBRIGATÓRIO — lista vazia se nenhum
       "back_translation_flags": [str], // OBRIGATÓRIO — lista vazia se nenhum

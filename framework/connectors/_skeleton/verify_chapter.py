@@ -49,6 +49,9 @@ def _rebuild(scene: str, dialogs: dict, approved: dict) -> tuple[bool, bool, lis
 
 
 def main() -> None:
+    if {"-h", "--help"} & set(sys.argv[1:]):
+        print(__doc__)
+        return
     if len(sys.argv) < 2:
         sys.exit("uso: python verify_chapter.py <scene>")
     scene = sys.argv[1]

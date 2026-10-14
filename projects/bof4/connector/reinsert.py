@@ -30,7 +30,7 @@ for _p in (_FRAMEWORK, _FRAMEWORK_CONNECTORS):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 import cards  # noqa: E402
-import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #86)
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores)
 import font  # noqa: E402
 import labels  # noqa: E402
 import paths as _paths  # noqa: E402

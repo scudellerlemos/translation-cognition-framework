@@ -28,7 +28,7 @@ _HERE = Path(__file__).resolve().parent
 _FRAMEWORK_CONNECTORS = _HERE.parent.parent.parent / "framework" / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
-import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores, #23)
+import connector_io  # noqa: E402  (utilitarios compartilhados entre conectores)
 
 # ---------------------------------------------------------------------------
 # Escopo — Fase 0: diálogo de personagem com falante

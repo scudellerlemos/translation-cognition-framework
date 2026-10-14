@@ -1,7 +1,7 @@
 """
 test_build_plan_chapter.py — Breath of Fire IV
 
-Cobre #64: speaker_code (determinístico, extraído do binário) deve ter
+Cobre speaker_code (determinístico, extraído do binário) deve ter
 precedência sobre o guess do LLM ao resolver o falante de cada linha.
 
 Rodar: pytest connector/test_build_plan_chapter.py -v
@@ -63,6 +63,6 @@ def test_load_portrait_codes_skips_meta_key(tmp_path):
 
 
 def test_load_portrait_codes_real_file_has_no_code_entries_yet():
-    """A tabela real do projeto ainda não tem nenhum código confirmado (#64 continuação)."""
+    """A tabela real do projeto ainda não tem nenhum código confirmado."""
     codes = _load_portrait_codes(PROJECT_ROOT)
     assert codes == {}

@@ -7,6 +7,39 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10-14 — pós-bof4: o que subiu do projeto para o framework
+
+Lições do bof4 levadas ao framework (branch `feat/framework-pos-bof4`, ainda sem tag). Só framework;
+os dados do projeto ficam em `projects/`.
+
+- **Distribuição** (fee19ba, e5821a3, 33100ca): `framework/distribution/` com patcher genérico de
+  um clique (delta binário, sem conteúdo do jogo) e a skill `09_distribution`. O patcher não estoura
+  quando o `tasklist` devolve saída fora do UTF-8; `build_exe` grava em `<projeto>/output/` por padrão,
+  recusa saída dentro de `dist/` e deixa `work/` numa pasta temporária.
+- **Reconferência só do que mudou** (19452bb, 6084b1e): `touched.py` + `run_scene` pulam cena `verified`
+  sem fala tocada (`--full` força); `run_scene --jobs N` reconfere cenas em paralelo (processo por cena,
+  `run_state` sob trava); a retrotradução é re-julgada por fala (só as stale), não por cena (3d289d5).
+- **Texto repetido e lote** (e93d4c2, 47530b3, b39a4de): `scene_dedup.py` (traduz uma vez o texto repetido
+  entre cenas; agrupa pela coluna de texto-fonte e remapeia offsets no JSON parseado), ligado ao
+  `wave.py`; `session_lot.py` (`plan/prompt/check/go/split/join/install`).
+- **Triagem de risco e onda** (ae11e96, 8ab904c): `risk_triage_run.py` só lista e só chama o modelo
+  (pago) com `--go`; `wave.py` copia só as cenas pedidas.
+- **Bytes e largura de caixa** (d0c1e30, 5c7827a, 80f55da): `budget.py` vira fonte única da conta de
+  bytes (+ `byte_budget_exceptions` no `project.json`), usada também pelo `session_lot`; largura de caixa
+  derivada do inglês (`box_width.py`), tabela de opcodes com parâmetros (`choice_start` quebra caixa) e
+  lint de largura antes da amostra; a regex `_PTPT` do `quality_review` ficou mais estreita.
+- **Revisão e correção** (00fa261, 29a7578): `review_page.py` (página de revisão local, `--serve`);
+  `tm_correct` com escopo por linha e medida de bytes no dry-run.
+- **Fase 0 e portões** (300509e, 81029a9, 4b6027e): `connectors/scope_scan.py` (o que o `dialogs.csv`
+  não cobre); `run_chapter`/`run_game` passam pelo portão de caminho (HITL + chave + cena de sistema);
+  gates e relatórios saem com código != 0 em pasta que não é projeto.
+- **Medição** (77dbe7f): o medidor de tokens ganha o ajuste do sonnet-5 e o erro da estimativa entra no relatório.
+- **Skills** (280a7b6, ce51986): a 06c foi incorporada à 06b; entram `08b` (texto de sistema/rótulos) e
+  `08c` (teste no jogo); a 06 ganha os dois caminhos de tradução; glossário, QA final e decisões de voz
+  detalhados. As skills numeradas vão de 00 a 09.
+
+---
+
 ## 2026-10 — pós-v1.1.0 (ainda sem tag)
 
 - **Modo DB vira default de projeto novo** (e3b6921): o template de `project.json` declara `db`; o
@@ -30,14 +63,14 @@ organizadas por período, não por versão.
   "conector mudou" ao trocar de plataforma.
 - **Registros retroativos** (mudanças anteriores que ficaram sem entrada): o backend `ollama` de
   tradução foi removido (ADR 0008) — `--backend` aceita só `in-session`/`api`; `ollama_client.py` e
-  `tcf ollama` ficam para o pipeline de KB. A issue #48 (console cp1252 no Windows) foi fechada: os
+  `tcf ollama` ficam para o pipeline de KB. A issue do console cp1252 no Windows foi fechada: os
   CLIs principais forçam stdout UTF-8.
 
 ---
 
 ## 2026-09 — versionamento SemVer + CI hardening
 
-- **v1.1.0 — loop de code review + RAG semântico + DB-first** (#205 e anteriores). MINOR (ADR 0013):
+- **v1.1.0 — loop de code review + RAG semântico + DB-first**. MINOR (ADR 0013):
   só adições (`tcf db validate-model`, `rag_min_score`, retrieval semântico da KB, produtores
   DB-first, tabelas novas no schema via `CREATE TABLE IF NOT EXISTS`). Correções de integridade
   que **passam a falhar alto onde antes corrompiam em silêncio** — se um pipeline seu depende do
@@ -50,7 +83,7 @@ organizadas por período, não por versão.
   (o da v1.0.3 saía só com `.py`). `--project-id` de `tcf db migrate` passa a defaultar em
   `project.json:db.project_id` (fallback `bof4`, sem mudança pros projetos atuais). `release.yml`
   agora exige `test.yml` verde no commit taggeado.
-- **Chunking do RAG semântico documentado, `kb` vira kind indexável** (#53, ADR 0014): o embedder
+- **Chunking do RAG semântico documentado, `kb` vira kind indexável** (ADR 0014): o embedder
   nunca chunka — `_KIND_CONFIG` ganhou o kind `"kb"` (tabela `kb`, coluna `content`, nova tabela
   `kb_embeddings` no schema) reaproveitando a mesma indexação genérica 1-linha-1-vetor de
   `translation`/`decision`, porque a KB já chega pré-chunkada por seção markdown na ingestão
@@ -190,7 +223,7 @@ da CI, onboarding de baixo custo, Generic Connector System completo e terceiro j
   foi gravado, não gera trabalho extra de modelo). `model.py::over_budget_offsets` ganhou
   `detail=True` pra devolver offset/budget/atual/source/tradução em vez da lista nua de offsets
 - **Bug pré-existente documentado (não corrigido)**: `PYTHONIOENCODING`/console cp1252 no Windows
-  quebra `print()` com acento/seta com `UnicodeEncodeError` — issue #48, reproduzido de novo
+  quebra `print()` com acento/seta com `UnicodeEncodeError` — reproduzido de novo
   23/08/2026 no bring-up do `trails_sky_sc`. `NEW_PROJECT_ONBOARDING.md` agora exige setar
   `PYTHONIOENCODING=utf-8` (ou `chcp 65001`) antes de rodar qualquer CLI do framework em ambiente
   novo — nenhum projeto até hoje foi bloqueado porque o texto-fonte é ASCII, mas é verificação

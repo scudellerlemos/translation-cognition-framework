@@ -1,8 +1,8 @@
-# Tests — verificação funcional do harness em cada push/PR (7 jobs paralelos, sem
+# Tests — verificação funcional do harness em cada PR e push na main (11 jobs paralelos, sem
 # dependência entre si — cada um roda em runner própria e falha aparece nomeada no PR).
 #   env-guard          : .env nunca rastreado pelo git
 #   mypy                : type-check de todo framework/ (exceto connectors/ e _skeleton/)
-#   coverage            : testes de runtime/validation/db/skills com piso de 90% (matrix 3.11/3.12)
+#   coverage            : testes de runtime/validation/db/skills/distribution com piso de 90% (matrix 3.11/3.12)
 #   connector-bof4      : contrato round-trip do conector BoF4
 #   connector-uta       : contrato round-trip do conector Utawarerumono
 #   connector-souldiers : contrato round-trip do conector Souldiers
@@ -80,7 +80,7 @@ jobs:
   # omit/exclude de dev-tools/clientes de rede/stack de ML/CLI mains fica no setup.cfg
   # ([coverage:*]). Também cobre o contrato de migração (silent-zero) e o e2e das skills.
   # --cov aponta só p/ os pacotes que este job testa: framework/connectors/ tem gate proprio
-  # (job "Connector shared utilities", piso 75%) -- medir aqui tambem so puniria os 90% com
+  # (job "Connector shared utilities", piso 90%) -- medir aqui tambem so puniria os 90% com
   # codigo que este job nunca executa (so importado de passagem por model.py/split_scenes.py).
   # Paralelizado pela matriz de versões de Python (2 runners).
   coverage:
@@ -102,7 +102,7 @@ jobs:
         # Escopo (runtime/validation/db/skills/cli.py) vive só em setup.cfg ([coverage:run] source=)
         # pra não divergir do que roda localmente.
         run: |
-          python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ \
+          python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ framework/distribution/ \
             -v --tb=short --cov --cov-report=term-missing --cov-fail-under=90
 
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
@@ -209,11 +209,11 @@ jobs:
   # script_generator.py, coverage_gate.py, adversarial_validator.py, connector_smoke.py e seus testes)
   # nunca era coletado por nenhum job -- nem aqui nem no `coverage` (que só varre runtime/db/skills/
   # validation). Achado em code review (2026-07-04): uma regressão em connector_io.resolve_source_path
-  # (usado por BoF4/Souldiers/Utawarerumono extract.py via #23) passaria verde e só apareceria rodando
-  # contra o jogo real. #28: piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
+  # (usado por BoF4/Souldiers/Utawarerumono extract.py) passaria verde e só apareceria rodando
+  # contra o jogo real. piso PARCIAL de 75% (não 90% como o job `coverage`) -- connector_io.py,
   # tier_classifier.py, script_generator.py, coverage_gate.py, evidence_collector.py e
   # adversarial_validator.py já estavam em 98-100%; discover.py (23%) e connector_smoke.py (61%) puxavam
-  # a média pra baixo. #30: testes adicionados p/ discover.py/connector_smoke.py -- pacote em 98.52%,
+  # a média pra baixo. testes adicionados p/ discover.py/connector_smoke.py -- pacote em 98.52%,
   # piso alinhado com o do job `coverage` (90%).
   connector-io:
     name: Connector shared utilities (framework/connectors/)
@@ -250,7 +250,7 @@ jobs:
         run: python -m pytest .claude/hooks -v --tb=short
 
   # Agregador automático: um single status check pra branch protection não precisar listar os
-  # 8 jobs acima individualmente. Sem aprovação manual (isso virou teatro pra dev solo — é sempre
+  # jobs acima individualmente. Sem aprovação manual (isso virou teatro pra dev solo — é sempre
   # a mesma pessoa aprovando o próprio PR; a aprovação de verdade agora só existe no environment
   # Production do release.yml, evento raro/deliberado, não em todo merge). needs: encadeia os jobs
   # deste arquivo — se algum falhar, este nunca fica verde. Só roda em PR.

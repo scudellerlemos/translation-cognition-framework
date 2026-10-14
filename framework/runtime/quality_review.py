@@ -40,7 +40,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import artifact_io  # noqa: E402  (leitura compartilhada: scenes/translations_map)
+import artifact_io  # noqa: E402
+import box_width  # noqa: E402  (leitura compartilhada: scenes/translations_map)
 import context_pack  # noqa: E402
 import model  # noqa: E402
 import paths  # noqa: E402
@@ -51,7 +52,7 @@ COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt
         "caixa", "marcar", "correcao", "nota", "repete"]
 
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
-_PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
+_PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de (?=\w*(?:ar|er|ir|or)\b)|\bhás de\b", re.IGNORECASE)
 
 # Expressoes culturais/idiomaticas EN (americana/britanica) na FONTE — sinal p/ o revisor checar se a
 # localizacao pt-BR ficou equivalente (nao so traduzida literalmente). Deterministico, $0, varre o source.
@@ -174,6 +175,11 @@ WIDTH_MAX = 62
 _VISIBLE_RX = re.compile(r"\{c-?\d*\}|\{W\d+\}|\{COLOR\}|\{END\}")   # tokens que NAO ocupam largura visual
 
 
+def configure(root) -> int:
+    return box_width.configure(root)
+
+
+
 # BoF4: detecta codigos de controle do DAT no formato [XX] (hex 1-2 chars)
 _BOF4_HEX_RX = re.compile(r"\[[0-9A-Fa-f]{1,2}\]")
 # par: codigo de controle + byte de face (@=0x40, A=0x41, B=0x42 ... G=0x47)
@@ -262,6 +268,7 @@ def _box_verdict(source: str, target: str) -> str:
 def export(root, chapter) -> list[dict]:
     """CSV-rows do capitulo inteiro, cada linha marcada. Determinista (sem rede)."""
     root = Path(root)
+    configure(root)
     rows = []
     for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)
@@ -700,7 +707,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
     limita o caminho de IA (verbatim e sempre $0). Retorna {verbatim, ai, scenes, cost_usd,
     scenes_touched[], stopped_budget, total_marked, effectiveness_rate}.
     Persiste um registro em artifacts/qa_effectiveness.jsonl para rastrear o ciclo ao longo do tempo.
-    `reviewer`: identidade de quem aprovou esta revisao (#19) -- None se nao informado (nao bloqueia)."""
+    `reviewer`: identidade de quem aprovou esta revisao -- None se nao informado (nao bloqueia)."""
     import time as _time
     root = Path(root)
     returned = read_returned(csv_path)
@@ -779,7 +786,7 @@ def main():
     pa.add_argument("--model", default=None)
     pa.add_argument("--max-usd", type=float, default=None, help="teto p/ o caminho de IA (notas); verbatim e $0")
     pa.add_argument("--reviewer", default=None,
-                    help="identidade de quem aprovou a revisao (#19) -- gravado em qa_effectiveness.jsonl")
+                    help="identidade de quem aprovou a revisao -- gravado em qa_effectiveness.jsonl")
     pw = sub.add_parser("width", help="GATE deterministico 'fora do balao': lista SO as linhas que estouram "
                                       "a largura visual (exit 1 se houver); loop ate zerar")
     pw.add_argument("project")

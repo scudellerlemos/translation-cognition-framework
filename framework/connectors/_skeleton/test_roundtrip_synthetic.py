@@ -1,5 +1,5 @@
 """
-test_roundtrip_synthetic.py — oráculo de round-trip SEMPRE ativo em CI (padrão BoF4/Trails, #21).
+test_roundtrip_synthetic.py — oráculo de round-trip SEMPRE ativo em CI (padrão BoF4/Trails).
 
 O binário real é gitignored, então test_roundtrip.py pula no CI. Este arquivo exercita a MESMA
 lógica determinística (decode_string do extract.py / encode_string do reinsert.py) sobre uma

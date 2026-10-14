@@ -213,6 +213,15 @@ documentar a progressão. Isso alimenta a verificação de tom por fase no QA Fi
 
 ---
 
+## DECISÕES DE VOZ (antes do piloto — lista fechada pelo usuário)
+
+Decisões que, tomadas depois, obrigam a retraduzir o corpus. Registrar cada uma no `decision_log` (04b) **antes** do
+piloto: sotaque/dialeto de cada grupo (e se há), gentílico de povos e lugares, gênero de cada personagem e criatura
+(o inglês esconde), registro arcaico (quem fala "tu"/mesóclise e quem não), tratamento (senhor/você/tu) por relação e
+nomes mantidos × traduzidos. Piloto só começa com a lista fechada (regra do processo, decisão do usuário caso a caso).
+
+---
+
 ## SPOILER LEDGER — fatos além da fronteira (`spoiler_ledger.json`)
 
 Quando a pesquisa (Fase 1A/1B) encontra fatos que revelam plot além da fronteira do corpus atual,
@@ -368,3 +377,22 @@ Só avançar para o Passo 4 (Glossário) se a saída for `OK: cobertura de KB su
 `[HARD-BLOCK]` ou `[BLOCK]` significa que algo desta skill não produziu o artefato no formato/local
 que o gate espera (ex.: `universe_knowledge_base.md` ausente, `glossary.csv` sem coluna
 `updated_date`). Corrigir e rodar de novo até o gate passar — não prosseguir "no fiado".
+
+O que o gate confere (`kb_gate.check`): **`[HARD-BLOCK]`** (nem `--skip-kb-gate` passa) — KB ausente/vazia/ainda com a
+linha-placeholder do scaffold; `kb_frontier` não declarada no `project.json`; projeto com `db` sem a stack de ML
+(`requirements-ml.txt`; opt-out `db.semantic: false`). **`[BLOCK]`** — `research_log.md` sem `status: reconciled` ou
+sem ratificação humana por entidade em `kb_ratified.csv`; `glossary.csv` ausente/sem `updated_date`; `voice_cards.json`
+ausente ou vazio (gerado pelo `state_index` a partir do `tone_analysis.md`); cena além de `kb_frontier`. Aviso:
+`human_input: pending` com `reconciled`; `kb_ratified.csv` sem data. Decisões pendentes do `research_log.md` são sempre
+listadas ao usuário.
+
+### Ferramentas determinísticas da Fase 0 (todas `framework/runtime/`)
+
+| Script | Uso |
+|--------|-----|
+| `kb_fetch.py <projeto> <fonte...> [--found-por ia\|usuario]` | URL/PDF/.docx/.xlsx/arquivo → texto em `artifacts/research_cache/` (sem LLM; o cache traz texto bruto de fonte, não se versiona) |
+| `kb_phase.py <projeto> <cap> [--check [--apply-frontier]] [--strict]` | sem flag: grava a worklist de candidatos sem cobertura; `--check`: exit 1 se gap aberto ou log não reconciled; `--apply-frontier` avança `kb_frontier`; `--strict` exige também ratificação e gênero confirmado. `<cap>` = prefixo do capítulo ou `all` (corpus flat, como o bof4) |
+| `kb_review.py <projeto> <cap> [--gate [--strict]] [--json]` | digest/gate do delta de KB do capítulo |
+| `kb_reconcile.py <projeto> [--promote] [--concordance]` | promove `draft_ollama` → `reconciled` só após ratificação humana (`kb_ratified.csv`); a IA nunca se auto-ratifica. `kb_concordance.py` é a triagem rascunho × pesquisa humana (não é gate) |
+
+O rascunho local via Ollama (`kb_build_ollama.py`) segue disponível como insumo, mas o tier Ollama não foi adotado (ADR 0008).

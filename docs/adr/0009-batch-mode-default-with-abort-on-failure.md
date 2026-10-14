@@ -36,3 +36,5 @@ o teto `--max-usd` existe pra evitar (ver `_chapter_cost`/`max_usd` em `run_chap
 - Fora de escopo (dívida conhecida): nenhum teste novo cobre `_batch_phase`'s aborto/fallback nem
   `--allow-interactive-fallback` diretamente — só os 4 testes ajustados pra manter o comportamento
   anterior. Candidato a próxima sessão.
+
+**Atualização 2026-10-14:** a dívida do último item foi paga: o aborto `batch_failed` e o `--allow-interactive-fallback` têm teste (`test_run_chapter.py:146,157`; `_batch_phase` direto em `test_run_chapter_edges.py:27-49`).

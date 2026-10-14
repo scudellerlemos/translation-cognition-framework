@@ -12,7 +12,7 @@ Conceitos, arquitetura e o "porquê" das decisões → [README raiz](../README.m
 
 | Pasta | Papel | Camadas |
 |---|---|---|
-| `framework/skills/` | Passos 00..08 do SDD — o processo, em prosa | Cognition + Validation |
+| `framework/skills/` | Passos 00..09 do SDD (inclui 04b, 05b, 06b, 08b, 08c) — o processo, em prosa | Cognition + Validation |
 | `framework/media-profiles/` | Preocupações por tipo de mídia (jogos/filmes/séries) | — |
 | `framework/connectors/` | I/O binário ↔ corpus (extração + reinserção, round-trip) | Execution + Validation |
 | `framework/runtime/` | Harness executável — cena = job stateless | State + Execution + Cognition |
@@ -27,19 +27,22 @@ Conceitos, arquitetura e o "porquê" das decisões → [README raiz](../README.m
 
 ```
 framework/
-  skills/           ← 00..08 — o processo genérico (comece por skills/_index.md)
+  skills/           ← 00..09 — o processo genérico (comece por skills/_index.md)
   schemas/          ← artifacts_schema.md (outputs) + project_schema.md (manifesto)
   media-profiles/   ← games.md (validado), films.md / series.md (stubs)
   connectors/       ← 00_index.md, hex_binary.md, _skeleton/ (extract.py, reinsert.py, table_schema.md)
-  SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–08) + quem produz/consome cada artefato
+  SDD_RUNTIME.md    ← mapa skill→runtime: qual módulo executa cada etapa do SDD (00–09) + quem produz/consome cada artefato
   runtime/          ← harness (cena = job stateless): orquestração (run_scene/run_chapter/run_game,
                        kernel.py como fachada), contexto (context_pack), estado (state_index), IA
                        (model + back_translate), KB (kb_gate/kb_review/kb_phase/kb_fetch/
                        kb_build_ollama/kb_reconcile — pipeline híbrido Ollama + ratificação humana),
                        conector (connector_gate/connector_mgr/fingerprint_monitor), spoiler
                        (spoiler_check), TM por série (tm_lookup/tm_updater), qualidade
-                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~41
-                       módulos. Ver runtime/README.md
+                       (quality_review/gate/fix, tm_correct), custo (cost, cost_report) — ~59
+                       módulos (`ls runtime/*.py` sem testes). Ver runtime/README.md
+  db/               ← store.py (SQLite: TM, glossário, voice cards, ledger), embedder, migrate_from_flat/export_to_flat
+  distribution/     ← build_package.py, build_exe.py, patcher.py — delta + patcher .exe de um clique (skill 09)
+  cli.py            ← CLI unificada (subcomandos do pipeline)
   validation/       ← validate.py, naturalness_lint.py, cost_model.py (gates determinísticos)
   templates/        ← project.template.json + profile/ para novos projetos
   README.md         ← este arquivo
@@ -102,13 +105,13 @@ Copiar os templates de `framework/templates/profile/` e preencher com o que já 
 No pipeline real, o conteúdo equivalente é **gerado** pelos passos 1–4; o perfil curado serve de
 semente e referência.
 
-### 5. Rodar o pipeline
-Executar as skills em ordem (`framework/skills/_index.md` tem o fluxo `00..08`). Cada skill:
+Executar as skills em ordem de leitura (`framework/skills/_index.md` tem o fluxo `00..09` e os três blocos: preparação, laço por cena, fechamento). Cada skill:
+Executar as skills em ordem (`framework/skills/_index.md` tem o fluxo `00..09`). Cada skill:
 - Lê `project.json` + os artefatos do passo anterior
 - Tem um **Input Gate** que bloqueia execução fora de ordem
 - Produz artefatos em `projects/<seu-título>/artifacts/`
 
-A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelta).
+A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelta); o Passo 09 empacota o delta e o patcher `.exe` para o jogador.
 
 ---
 
@@ -116,7 +119,7 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 | Genérico (framework) | Específico (projeto) |
 |----------------------|----------------------|
-| Os passos 00..08 e seus gates | Título, idiomas, tipo de mídia |
+| Os passos 00..09 e seus gates | Título, idiomas, tipo de mídia |
 | Schemas de artefatos | Corpus-fonte e seu formato |
 | Regra de geração de suites de teste | Tokens de engine deste jogo |
 | Categorias de `handling_rule` | Quais termos caem em cada categoria |
@@ -130,7 +133,7 @@ A entrega final (Passo 08) é o **binário traduzido + um patch** (ips/bps/xdelt
 
 - **Jogos** — ✅ validado em três engines distintos:
   - *Utawarerumono* (Aquaplus): **CONCLUÍDO** — 16 capítulos, 146 cenas, ~45.100 linhas, pt-BR in-game.
-  - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 125 cenas, pipeline completo 00–08, QA + output gerados.
+  - *Breath of Fire IV* (Capcom DAT): **CONCLUÍDO** — 305 cenas `verified` (27.021 falas), patcher em beta, release pendente (ver `projects/bof4/`).
   - *Souldiers* (Unity Addressables): **CONCLUÍDO** — 470 cenas, round-trip 100%, KB via Ollama híbrido.
   - *Trails in the Sky SC* (Falcom): **EM ANDAMENTO** — 4º engine, conector novo (`target_charset_supported`),
     cena-piloto com round-trip real fechado; 67 cenas extraídas, tradução em curso.
