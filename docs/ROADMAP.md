@@ -18,12 +18,15 @@
 
 ---
 
-## BoF4 — CONCLUÍDO ✅
+## BoF4 — TRADUZIDO E INSTALADO ✅ (release pendente)
 
-> 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, 0 overflows.
-> Custo: ~$11,04 USD. Esse ciclo rodou em `projects/breath_of_fire_4` (removido do repositório; o jogo segue em `projects/bof4/`).
+> 305 cenas (27.021 falas) `verified`, diálogo + sistema + rótulos em imagem, 0 overflows, instância em modo banco
+> (`projects/bof4/`). Erro de 14,5% na amostra de qualidade (antes das correções posteriores). Patcher `.exe`
+> em beta (`framework/distribution/`), testado em cópia dos originais; falta o teste no jogo real, a conferência
+> de largura de caixa na tela e a release (pública, só com aval do autor).
+> O ciclo anterior (125 cenas, ~$11,04) rodou em `projects/breath_of_fire_4`, removido do repositório.
 
-Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framework/db/`).
+Nenhum débito remanescente no pipeline — TM semântica (B2) implementada e ativa (`framework/db/`).
 
 ---
 
@@ -278,7 +281,7 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 [#34](https://github.com/scudellerlemos/translation-cognition-framework/issues/99) (README de produto),
 [#35](https://github.com/scudellerlemos/translation-cognition-framework/issues/100) (consolidar docs),
 [#36](https://github.com/scudellerlemos/translation-cognition-framework/issues/101) (`.exe`).
-#33, #34 e #35 já foram entregues; resta a #36.
+#33, #34 e #35 já foram entregues; a #36 tem o código entregue (`build_package`, `patcher`, `build_exe`, beta testado em cópia); resta o teste no jogo real, a máquina sem Python e a release.
 
 ---
 

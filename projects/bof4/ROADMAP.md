@@ -8,8 +8,21 @@ Os passos são seguidos na ordem. Nenhum gate é pulado; item aberto bloqueia o 
 
 ## Retomada (ler primeiro numa sessão nova)
 
-Atualizar antes de cada `/clear`. Estado em 2026-10-13:
+Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
 
+- **Próximo passo (2026-10-14):** teste do `.exe` no jogo real (`projects/bof4/output/Patch_BoF4_PTBR_Gajshield.exe`,
+  SHA-256 `5bfebb461e8b0cef8b20ef6c30d7bf2f056847d467e710b3f6503afcc2c7fa66`, v0.1.0-beta; só o Felipe opera a
+  janela), depois máquina sem Python e trajeto do piloto; em paralelo, print da tela para conferir a largura de
+  44 colunas e as 2 descrições reescritas (`artifacts/qa_revisao/teste_ingame/prints/`). Só então release (aval
+  do Felipe), guia da Steam (`Desktop/teste_bof4/guia_steam.txt`) e `v1.0.0` com reamostragem de qualidade.
+- **Fechado em 2026-10-14 (tarde/noite):** 305/305 cenas `verified` (`AREAS032`, `AREAS054` e `AREAM024`/`AREAS048`
+  fechadas); fala 7 de `AREAD115` corrigida ("Vossa Majestade", decisão de 2026-10-12); 10 falas com "tu" mantidas
+  como registro arcaico de Fou-Lu e dos Eternos (revisão do Felipe); 2 descrições acima da caixa corrigidas
+  (`AB000_00`, `CAMP`, `COMMU03`, `MASTER`, `MSHOP`, `SGAMEN`, `SHOP`); reinserção refeita (8 arquivos mudaram),
+  instalada no jogo e pacote do patcher regenerado (305 deltas). Patcher: corrigido estouro quando o `tasklist`
+  devolve saída fora do UTF-8; teste instalar/idempotente/desinstalar/arquivo modificado/jogo aberto passou numa cópia.
+  Framework: `scene_dedup` lia a coluna errada (`text_en`) e corrompia JSON com aspas escapadas — corrigido, com teste.
+  Não provado: limite de 44 colunas (inferido do inglês), 27 falas `pt-PT?` sem revisão humana além das 10 acima.
 - **Fechado em 2026-10-14:**
   1. **115 cenas divergentes: resolvido.** Reconferidas (116 de 116, round-trip íntegro, 0 overflow); 23 falas de
      risco alto cujo texto mudou foram rejulgadas (23 `pass`, revisor Opus em agente separado); gates verdes;
@@ -30,7 +43,8 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-13:
      alvo(s)" para "em um alvo" / "em todo alvo" (`[07][00]` = tabela "one/all" de cada cena; "1 alvo" daria +2
      bytes, acima da regra de +1). 30 arquivos reinstalados.
      **A taxa de 14,5% vale para o texto de antes dessas correções.** Linha `AB000_00:2:256` ainda tem "[07][04][01]alvo(s)" (variável diferente, não conferida).
-  3. **Distribuir a tradução na Steam.** Pedido do Felipe; falta planejar formato e canal.
+  3. **Distribuir a tradução na Steam.** Formato e canal decididos (patcher `.exe` com deltas, release no GitHub);
+     pacote e `.exe` beta prontos e testados em cópia; falta teste no jogo real e a release.
   4. **Commit.** Os da `feat/bof4-instance` (framework e bof4) foram feitos em 2026-10-13, sem push e sem PR.
      Ficaram de fora: `tm/`, `hitl_log.jsonl` e `phase_marks.jsonl` (ignorados) e `qa_effectiveness.jsonl`
      (aguarda o Felipe decidir o texto do campo de revisor).

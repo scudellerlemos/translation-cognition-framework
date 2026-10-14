@@ -1,8 +1,8 @@
 # Breath of Fire IV — Tradução PT-BR (modo banco)
 
-> **Status (2026-10-14): tradução concluída e instalada; falta a distribuição.**
+> **Status (2026-10-14): tradução concluída e instalada; patcher em beta (testado em cópia), falta a release.**
 > 305 cenas traduzidas (27.021 falas), gates verdes, amostra de qualidade feita (erro de 14,5% antes das
-> correções pós-amostra). Próximo marco: [`PRD_DISTRIBUICAO.md`](PRD_DISTRIBUICAO.md) (patcher para a Steam).
+> correções pós-amostra). Próximo marco: testar o `.exe` no jogo real e publicar ([`PRD_DISTRIBUICAO.md`](PRD_DISTRIBUICAO.md)).
 
 Instância do framework para o jogo da Steam (conector Capcom DAT), em modo banco: SQLite (`bof4.db`, não
 versionado) como store e busca semântica obrigatória (`kb_gate`, stack de `requirements-ml.txt`).

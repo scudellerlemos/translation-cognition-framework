@@ -390,18 +390,22 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
 - Custo: **~R$ 338,46** (Sonnet R$ 260,17 · Opus R$ 40,01 · Haiku R$ 38,28) · **R$ 0 desperdiçado** ✅
 - Validado in-game: pt-BR renderiza na tela, jogo avança sem travar ✅
 
-### Breath of Fire IV — CONCLUÍDO ✅
+### Breath of Fire IV — TRADUZIDO E INSTALADO ✅ · patcher em beta, release pendente 🚧
 
-**125 cenas (AREAD + AREAS), todas `verified`. Reinserção concluída** (125 DAT files em `output/`, 0 overflows).
-Custo: **~$11,04 USD** (Haiku $6,04 · Opus $2,61 · Sonnet $2,40).
+**305 cenas (27.021 falas), todas `verified`**: diálogo, texto de sistema e rótulos em imagem. Instância em modo
+banco (SQLite + busca semântica), caminho de sessão, em `projects/bof4/`. Custo pago: $0; equivalente a ~$239 de API.
 
-**Objetivos alcançados:**
-- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico ✅
-- Pipeline completo (Fases 00–08): KB, glossário, planejamento, 125 cenas traduzidas e reinseridas ✅
-- QA humana concluída; DAT files de output gerados ✅
-- Validação in-game: OK (foco do projeto era o pipeline, não QA in-game extensiva) ✅
+- Conector Capcom DAT: extração + reinserção + round-trip byte-idêntico; 0 overflow de bytes ✅
+- Gates verdes (`quality_gate`, `connector_gate`, `pilot_gate`) e retrotradução das falas de risco alto ✅
+- Qualidade medida: amostra de 200 falas, **erro de 14,5%** (IC 95%: 10,3%–20,1%), antes das correções feitas
+  depois da amostra; os erros se concentravam em poucos padrões de texto, já corrigidos ✅
+- Patcher de um clique para a Steam (`framework/distribution/`: `build_package.py` gera deltas bsdiff + manifesto,
+  `patcher.py` instala/desinstala/verifica, `build_exe.py` empacota). Testado numa cópia dos originais: instalar
+  é idempotente, desinstalar volta byte a byte, arquivo modificado é recusado sem alterar nada, jogo aberto trava ✅
+- **Falta:** teste do `.exe` no jogo real e em máquina sem Python, conferência da largura de caixa na tela do
+  jogo e a release (pública; só com aval do autor) 🚧
 
-**Débito técnico:** nenhum aberto — TM semântica (B2) foi implementada e integrada ao harness core
+**Débito técnico:** nenhum aberto no pipeline; TM semântica (B2) integrada ao harness core
 (sqlite-vec + embedder, ver `framework/db/`), disponível a qualquer projeto com banco `.db` configurado.
 
 ### Souldiers (Unity, terceiro jogo) — CONCLUÍDO ✅
@@ -432,7 +436,7 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 | Dívida | Quando |
 |---|---|
 | Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
-| Packaging `.exe` (E4) | pós-validação, só se for publicar externamente |
+| Packaging `.exe` (E4) | entregue em `framework/distribution/` (beta); falta publicar a release |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 
 
