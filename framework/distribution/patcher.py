@@ -21,9 +21,9 @@ def jogo_aberto(app):
     """True se o jogo (ou o launcher) esta rodando: com ele aberto os arquivos ficam bloqueados."""
     import subprocess
     for exe in app['processos']:
-        r = subprocess.run(['tasklist', '/FI', f'IMAGENAME eq {exe}', '/NH'], capture_output=True, text=True,
+        r = subprocess.run(['tasklist', '/FI', f'IMAGENAME eq {exe}', '/NH'], capture_output=True, text=True, errors='replace',
                            creationflags=0x08000000)  # sem janela de console
-        if exe.lower() in r.stdout.lower():
+        if exe.lower() in (r.stdout or '').lower():
             return True
     return False
 
