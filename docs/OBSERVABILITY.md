@@ -69,7 +69,9 @@ A segmentação tradução:governança vale também para o `in-session`: cada li
 - **Reprodutibilidade** — qualquer cena reexecutável a partir dos artefatos sem o chat.
 - **Custo previsível** — `$/1k linhas` medido bate (ordem de grandeza) com `cost_model` cenário `mix_cache`.
 
-## Benchmark de modelos (P1)
+## Benchmark de modelos (P1) — proposto, não implementado
+
+Nenhum script grava `model_benchmark.md` hoje; a escolha de modelo por papel vem de `runtime/config.py`.
 
 Suite fixa de cenas-gold (com tradução de referência aprovada). Para cada modelo (Opus 4.8 / Sonnet 4.6
 / Haiku 4.5) rodar o mesmo `context_pack` e comparar: back-translation pass-rate (fidelidade),

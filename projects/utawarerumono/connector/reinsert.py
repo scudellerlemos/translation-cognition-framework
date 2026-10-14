@@ -26,7 +26,7 @@ Estratégia de encaixe (cascata determinística, sem LLM):
                 com o valor FILE-RELATIVO = posição local no arquivo. Continuações viajam junto.
                 (O gate in-game REPROVOU anexar ao fim do CONTAINER — o engine carrega cada arquivo
                 num buffer próprio dimensionado pelo `size` do Pack; ver artifacts/decision_log.md.)
-- resíduo  : caso irredutível (overflow sem head identificável) -> issue para o Passo 06c.
+- resíduo  : caso irredutível (overflow sem head identificável) -> issue para o Passo 06b.
 
 Regras de governança:
 - NUNCA escreve no binário-fonte. Lê o original (read-only) e grava em output/ no projeto.

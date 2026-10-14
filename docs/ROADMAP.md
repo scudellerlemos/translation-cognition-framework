@@ -13,7 +13,7 @@
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
 | Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
-| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — versão atual `v1.1.0` (tags `v1.0.0`–`v1.1.0`) |
+| Versionamento SemVer manual (`VERSION` + tag) | 🟢 entregue (ADR 0013) — versão `2.0.0` (tag `v2.0.0` depois do merge; anteriores `v1.0.0`–`v1.1.0`) |
 | Perfis filme/série + subtitle_file | 🔴 stub / não iniciado |
 
 ---
