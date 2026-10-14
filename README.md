@@ -455,3 +455,13 @@ Este repositório contém apenas o framework e as ferramentas de apoio à tradu�
 arquivos, textos, imagens, áudio nem qualquer outro conteúdo dos jogos citados: para usar um conector é
 preciso ter a sua própria cópia legítima do jogo. Os jogos, seus nomes e marcas pertencem aos respectivos
 donos; este projeto não tem vínculo com eles nem é endossado por eles.
+
+**Não afiliação.** Este é um projeto de fã, sem fins lucrativos. Não é afiliado, patrocinado nem endossado por
+Capcom, Falcom, Aquaplus, Valve (Steam) nem por qualquer outro detentor de direitos dos jogos citados. *Breath of
+Fire*, *The Legend of Heroes: Trails in the Sky*, *Utawarerumono*, *Souldiers*, *Steam* e os demais nomes e marcas
+são de seus respectivos donos e aparecem aqui só para identificar o jogo com o qual um conector trabalha.
+
+**Fontes externas.** As notas de pesquisa de cada projeto (por exemplo `projects/bof4/artifacts/research_log.md`)
+são síntese própria, com a fonte citada ao lado. As fontes de texto aberto são a Wikipedia (CC BY-SA 4.0) e wikis de
+fãs hospedadas no Fandom (em geral CC BY-SA 3.0); quem reutilizar essas notas deve manter a atribuição e a mesma
+licença nesse trecho. O resto do repositório é MIT.

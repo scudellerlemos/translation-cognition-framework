@@ -19,6 +19,11 @@ status: reconciled
 | T1 | Manual oficial do jogo (PC, 2003) — `english/manual.pdf` da instalação; texto em `research_cache/91074abab54433a8.md` | Premissa, descrição dos 7 personagens, sistema de jogo | Humano |
 | T2 | Wiki de fãs — https://bof.fandom.com/wiki/Breath_of_Fire_IV (via `api.php`, wikitext em `research_cache/413185b2524bd869.md`) | Ambientação, enredo completo, notas de localização e censura | Humano |
 
+**Atribuição e licença das fontes abertas:** o texto abaixo é síntese própria, sem cópia literal. A Wikipedia PT
+(CC BY-SA 4.0) e a wiki de fãs do Fandom (em geral CC BY-SA 3.0) são citadas como fonte; qualquer trecho
+reaproveitado delas mantém atribuição e a mesma licença. O manual oficial e o corpus do jogo são consultados só
+para conferir grafia e uso, sem reproduzi-los.
+
 **Reconciliação humana:** usuário forneceu Wikipedia PT como fonte principal (2026-06-20).
 Novos termos confirmados pela Wikipedia: **Aliança do Leste** (Eastern Alliance), **Synesta** (cidade onde Elina desapareceu), **Sandflier** (veículos que navegam no oceano de areia), **Império Fou** (grafia PT confirmada).
 
