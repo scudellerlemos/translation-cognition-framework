@@ -21,9 +21,11 @@ Esta ferramenta aplica um lote de correcoes find->replace nos artefatos de tradu
   - `--check-sync`: GATE de coerencia (sem correcoes) — falha se algum `approved_<id>.csv` divergir do
     `translations_<id>.json` (qualquer fonte de drift, nao so este script). Use no CI/pre-commit.
 
-CSV de correcoes (cabecalho obrigatorio): colunas `find,replace,note[,mode]`.
+CSV de correcoes (cabecalho obrigatorio): colunas `find,replace,note[,mode,scene,offset]`.
   find    = texto pt-BR a substituir (ex.: nome/termo errado)   replace = texto correto
   note    = motivo (rastro humano)                              mode    = word (default) | literal
+  scene/offset (opcionais) = restringem a regra a UMA cena e/ou UMA linha (vazio = vale pra todas).
+  O dry-run mostra os bytes antes -> depois e marca ESTOURA quando passa do byte_budget da linha.
 
 DEPOIS de --apply (loop governado, NAO automatizado aqui de proposito):
   1) `python state_index.py <projeto> --rebuild`  -> a TM passa a refletir as correcoes.
@@ -47,6 +49,7 @@ if str(_HERE) not in sys.path:
 import artifact_io  # noqa: E402  (leitura compartilhada: scenes/scene_chapter)
 import back_translate  # noqa: E402  (invalidate_back_translation -- crivo antigo nao vale mais)
 import context_pack  # noqa: E402
+import budget as _bud  # noqa: E402  (fonte unica da conta de bytes)
 import paths  # noqa: E402
 
 
@@ -63,7 +66,8 @@ def load_corrections(csv_path) -> list[dict]:
                 continue
             out.append({"find": find, "replace": r.get("replace", ""),
                         "note": (r.get("note") or "").strip(),
-                        "mode": (r.get("mode") or "word").strip().lower()})
+                        "mode": (r.get("mode") or "word").strip().lower(),
+                        "scene": (r.get("scene") or "").strip(), "offset": (r.get("offset") or "").strip()})
     return out
 
 
@@ -76,6 +80,11 @@ def _compile(find: str, mode: str):
     return re.compile(r"(?<!\w)" + esc + r"(?!\w)")
 
 
+def _in_scope(c: dict, scene, off) -> bool:
+    """A regra vale pra esta (cena, offset)? Campos vazios na regra = sem restricao."""
+    return (not c.get("scene") or c["scene"] == scene) and (not c.get("offset") or c["offset"] == off)
+
+
 def _apply_text(text: str, rules) -> tuple[str, int]:
     """Aplica todas as regras (compiladas) a um texto. Retorna (novo_texto, n_substituicoes)."""
     total = 0
@@ -83,6 +92,33 @@ def _apply_text(text: str, rules) -> tuple[str, int]:
         text, n = rx.subn(lambda _m, _r=repl: _r, text)   # literal: '\n'/'\1' do replace nao sao template de regex
         total += n
     return text, total
+
+
+def _measure(root, hits) -> None:
+    """Acrescenta a cada hit os bytes antes/depois e o budget da linha (dialogs.csv da cena + project.json), pela
+    conta unica de budget.py. Sem dialogs.csv/offset conhecido, so os bytes (budget None)."""
+    root = Path(root)
+    try:
+        cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        cfg = {}
+    conn = cfg.get("connector") or {}
+    pc = {"target_charset_supported": conn.get("target_charset_supported", True),
+          "budget_reserves_terminator": conn.get("budget_reserves_terminator", False)}
+    cache: dict = {}
+    for h in hits:
+        if h["scene"] not in cache:
+            cache[h["scene"]] = {}
+            dp = paths.dialogs(root, h["scene"])
+            if dp.is_file():
+                with dp.open(encoding="utf-8-sig", newline="") as fh:
+                    for r in csv.DictReader(fh):
+                        bv = (r.get("byte_budget") or "").strip()
+                        if bv.isdigit():
+                            cache[h["scene"]][r.get("offset", "")] = int(bv)
+        b = _bud.effective_budget(h["offset"], cache[h["scene"]].get(h["offset"]), cfg)
+        h["bytes_before"], h["bytes_after"] = _bud.budget_len(h["before"], pc), _bud.budget_len(h["after"], pc)
+        h["byte_budget"], h["over"] = b, _bud.over_budget(h["after"], b, pc)
 
 
 def plan(root, corrections, chapter=None) -> list[dict]:
@@ -102,6 +138,7 @@ def plan(root, corrections, chapter=None) -> list[dict]:
         _collect(hits, pf, scene, sid, "plan", "base_translation", _iter_plan, compiled)
         # approved_<id>.csv: linhas (offset,text_target) — o que o conector reinsere
         _collect_approved(hits, paths.approved(root, scene, sid), scene, sid, compiled)
+    _measure(root, hits)
     return hits
 
 
@@ -137,11 +174,13 @@ def _write_approved(path: Path, rows: list[dict]) -> None:
         w.writerows([(r.get("offset", ""), r.get("text_target", "")) for r in rows])
 
 
-def _rewrite(before, compiled):
-    """Aplica as regras em sequencia sobre `before`. Retorna (after, regra_que_mudou_por_ultimo)
-    ou (before, None) se nada mudou o texto."""
+def _rewrite(before, compiled, scene=None, off=None):
+    """Aplica as regras (do escopo de cena/offset) em sequencia sobre `before`. Retorna
+    (after, regra_que_mudou_por_ultimo) ou (before, None) se nada mudou o texto."""
     after, applied = before, None
     for c, rx, repl in compiled:
+        if not _in_scope(c, scene, off):
+            continue
         new, n = rx.subn(lambda _m, _r=repl: _r, after)
         if n:
             after, applied = new, c
@@ -160,7 +199,7 @@ def _collect_approved(hits, path, scene, sid, compiled):
         before = r.get("text_target", "")
         if not before:
             continue
-        after, applied = _rewrite(before, compiled)
+        after, applied = _rewrite(before, compiled, scene, r.get("offset", ""))
         if applied is not None:
             hits.append(_hit(scene, sid, "approved", r.get("offset", ""), "text_target",
                              before, after, applied))
@@ -178,7 +217,7 @@ def _collect(hits, path, scene, sid, artifact, field, iterator, compiled):
         before = v.get(field, "")
         if not before:
             continue
-        after, applied = _rewrite(before, compiled)
+        after, applied = _rewrite(before, compiled, scene, off)
         if applied is not None:
             hits.append(_hit(scene, sid, artifact, off, field, before, after, applied))
 
@@ -207,7 +246,7 @@ def apply(root, corrections, chapter=None) -> dict:
                 before = v.get(field, "")
                 if not before:
                     continue
-                rules = [(rx, repl) for _, rx, repl in compiled]
+                rules = [(rx, repl) for c, rx, repl in compiled if _in_scope(c, scene, off)]
                 after, n = _apply_text(before, rules)
                 if n:
                     v[field] = after
@@ -228,7 +267,8 @@ def apply(root, corrections, chapter=None) -> dict:
                 before = r.get("text_target", "")
                 if not before:
                     continue
-                after, n = _apply_text(before, [(rx, repl) for _, rx, repl in compiled])
+                after, n = _apply_text(before, [(rx, repl) for c, rx, repl in compiled
+                                                if _in_scope(c, scene, r.get("offset", ""))])
                 if n:
                     r["text_target"] = after
                     repl_count += n
@@ -307,8 +347,13 @@ def main():
             for h in hits:
                 print(f"  {h['scene']}/{h['artifact']} {h['offset']} '{h['find']}' -> '{h['replace']}'"
                       + (f"  ({h['note']})" if h["note"] else ""))
+                print(f"      bytes {h['bytes_before']} -> {h['bytes_after']} / budget {h['byte_budget']}"
+                      + ("  ** ESTOURA **" if h["over"] else ""))
                 print(f"      antes: {h['before'][:90]}")
                 print(f"      depois: {h['after'][:90]}")
+            n_over = sum(1 for h in hits if h["over"])
+            if n_over:
+                print(f"  ATENCAO: {n_over} substituicao(oes) passam do byte_budget; revise antes do --apply.")
         sys.exit(0)
     r = apply(a.project, corr, a.chapter)
     if a.json:

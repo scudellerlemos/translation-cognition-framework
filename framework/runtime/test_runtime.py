@@ -2666,3 +2666,24 @@ def test_run_chapter_batch_exception_skips_rebuild(monkeypatch, tmp_path):
     with pytest.raises(OSError):
         run_chapter.run_chapter(root, "99", backend="api", batch=True)
     assert events == ["rebuild", "batch"]
+
+def test_tm_correct_line_scope_and_byte_measure(tmp_path):
+    """Regra com scene+offset so mexe naquela linha; o dry-run mede bytes e marca o que estoura o byte_budget."""
+    import paths
+    (tmp_path / "project.json").write_text(json.dumps({"connector": {"target_charset_supported": True}}), encoding="utf-8")
+    for sc, sid in (("ch_32_01", "32_01"), ("ch_32_02", "32_02")):
+        d = paths.scene_dir(tmp_path, sc)
+        d.mkdir(parents=True)
+        (d / "dialogs.csv").write_text("offset,text_source,byte_budget\n0x1,x,10\n0x2,x,10\n", encoding="utf-8")
+        paths.translations(tmp_path, sc, sid).write_text(
+            _trans({"0x1": {"t": "Ukon aqui"}, "0x2": {"t": "Ukon ali"}}), encoding="utf-8")
+    csvp = tmp_path / "c3.csv"
+    csvp.write_text("find,replace,note,scene,offset\nUkon,Oshtor-Grande,so uma linha,ch_32_01,0x1\n", encoding="utf-8")
+    corr = tm_correct.load_corrections(csvp)
+    hits = tm_correct.plan(tmp_path, corr)
+    assert [(h["scene"], h["offset"]) for h in hits] == [("ch_32_01", "0x1")]       # as outras 3 linhas ficam de fora
+    h = hits[0]
+    assert (h["bytes_before"], h["bytes_after"], h["byte_budget"], h["over"]) == (9, 18, 10, True)
+    assert tm_correct.apply(tmp_path, corr)["replacements"] == 1
+    t2 = json.loads(paths.translations(tmp_path, "ch_32_02", "32_02").read_text("utf-8"))["lines"]
+    assert t2["0x1"]["t"] == "Ukon aqui"
