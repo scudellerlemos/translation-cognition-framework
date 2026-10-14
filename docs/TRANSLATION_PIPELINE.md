@@ -54,7 +54,8 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
   bloqueia o `quality_gate`. Correção do `quality_review apply` que diverge do glossário também cai aqui.
 - **Triagem de risco** (`risk_triage.py`, só caminho de sessão) — antes da QA humana, um juiz barato lê
   os pares únicos fonte+tradução de risco baixo e devolve só os ids que merecem segundo olhar; `apply`
-  sobe essas falas para `high`, e a retrotradução (`--require-back`) e o `quality_review export` cuidam delas.
+  sobe essas falas para `high`, e a retrotradução (`--require-back`) e o `quality_review export` cuidam delas. `risk_triage_run.py <projeto>` orquestra os lotes do `export` (uma chamada headless `claude -p` por
+  lote, em paralelo, formato conferido, até 3 tentativas) e grava os `veredito_NNN.tsv`; cada chamada **é paga**.
 - **Medida de qualidade** (`quality_sample.py`, $0) — `export` sorteia 200 pares únicos do jogo inteiro e
   mistura os que o juiz apontou, sem dizer a origem; o humano marca `ok`/`erro`; `score` calcula a taxa de
   erro com intervalo de 95%, a taxa da triagem e o acerto do juiz (precisão e alcance), e grava o registro
