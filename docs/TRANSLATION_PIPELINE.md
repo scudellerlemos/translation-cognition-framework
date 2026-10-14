@@ -122,6 +122,21 @@ Como cada cena é uma sessão independente e limitada, o contexto **nunca acumul
 → `connector.build_plan_script` / `connector.verify_script`). Esses scripts são determinísticos,
 read-only no binário, e nunca contêm work-text.
 
+## Distribuição (patcher de um clique, `framework/distribution/`, skill `09_distribution`)
+
+Depois do round-trip verde, a tradução sai como **delta**, nunca como DAT remontado. Config por projeto em
+`projects/<p>/distribution.json` (título, autor, pasta do jogo, processos que travam os arquivos, aviso, recorte do ícone).
+
+1. `python -I framework/distribution/build_package.py distribution.json source_dat output dist <versao> [arte [capa]]`
+   (de dentro do projeto): deltas bsdiff + `manifest.json` com hashes e o bloco `app`. Arte e ícone só no pacote.
+2. `python framework/distribution/build_exe.py dist <saida>`: `.exe` único (PyInstaller; sem Python no jogador).
+3. Teste: `patcher.py verificar|instalar|desinstalar --jogo <pasta> --pacote dist` numa cópia dos originais; depois
+   o `.exe` no jogo real. Regras do patcher: só toca arquivo com hash original, backup `.bak`, confere hash final,
+   desfaz tudo se falhar, recusa com o jogo aberto.
+4. Publicar: release no GitHub (só o `.exe` e o hash) + guia na comunidade Steam. `dist/` está no `.gitignore`.
+
+Dependências: `bsdiff4`, `pyinstaller`, `Pillow` (só para arte/ícone).
+
 ## Verificação ponta-a-ponta
 
 ```

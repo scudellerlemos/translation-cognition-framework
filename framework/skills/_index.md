@@ -54,6 +54,8 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 07_qa  (após cada arco/segmento maior e ao final do corpus)
     ↓
 08_reinsertion  (conector: approved_translations.csv → binário traduzido em output/; cascata det., LLM só no resíduo)
+    ↓
+09_distribution  (delta + patcher .exe de um clique; só diferenças, nunca conteúdo do jogo)
 ```
 
 ---
@@ -77,6 +79,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `06c_correction_cycle.md` | 6c | Correções cirúrgicas pós-QA com re-validação |
 | `07_qa.md` | 7 | QA final de consistência global |
 | `08_reinsertion.md` | 8 | Reinserir a tradução no meio via conector + patch (determinístico, LLM só no resíduo) |
+| `09_distribution.md` | 9 | Pacote de delta + patcher `.exe` de um clique para o jogador (`framework/distribution/`) |
 | `translation_governance.md` | — | **Carta de Governança** — contrato de qualidade (voz/lore/situação/processo) que rege os Passos 05–08 |
 
 ### Suporte do framework
