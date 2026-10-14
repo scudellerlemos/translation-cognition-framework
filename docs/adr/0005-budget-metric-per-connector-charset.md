@@ -47,3 +47,5 @@ backend fica com o humano (`--backend`), sem que uma opção seja uma "armadilha
   contagem) — um veredito errado agora tem consequência maior. Mitigado exigindo o método mais confiável
   (inspeção de fonte/atlas ou teste in-game) antes de gravar `true`, e documentando em
   `framework/skills/00_extraction.md` que `likely`/`unknown` devem resolver para `false`.
+
+**Atualização 2026-10-14:** a métrica deixou de morar em `model.py`: `framework/runtime/budget.py` é a fonte única da conta de bytes (commit `d0c1e30`); `model._budget_len`/`_over_budget` só delegam a ela. O conector pode declarar exceção pontual de +1 byte por linha via `byte_budget_exceptions` no `project.json`. A decisão (charset estrito `True` → UTF-8, senão transliterado) segue valendo.

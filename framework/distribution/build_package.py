@@ -7,6 +7,8 @@ import sys
 
 import bsdiff4
 
+if len(sys.argv) < 6 or sys.argv[1] in ('-h', '--help'):
+    sys.exit(__doc__)
 cfg = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
 src, out, dist = map(pathlib.Path, sys.argv[2:5])
 versao, arte = sys.argv[5], sys.argv[6:]
@@ -44,7 +46,7 @@ if arte:  # arte do painel lateral: 320x480, PNG (o tkinter nao le webp), com o 
                                      (f"by {cfg['autor']}", 'segoeui.ttf', 38, (91, 99, 133), H - 110)):
         d.text((W // 2, y), texto, font=fonte(nome, tam), fill=cor, anchor='mt')
     img.convert('RGB').resize((320, 480), Image.LANCZOS).save(dist / 'arte.png')
-    if len(arte) > 1:  # close no Ryu (cabelo azul) da capa; sem a capa, recorta o rosto da propria arte
+    if len(arte) > 1:  # recorte de rosto da capa (icone_recorte); sem a capa, recorta o rosto da propria arte
         ic = Image.open(arte[1]).convert('RGBA').crop(tuple(cfg['icone_recorte'])).resize((512, 512), Image.LANCZOS)
     else:
         ic = Image.open(arte[0]).convert('RGBA').crop((300, 440, 800, 940)).resize((512, 512), Image.LANCZOS)

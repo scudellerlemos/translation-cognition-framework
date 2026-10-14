@@ -34,13 +34,15 @@ registry (`connector_registry.json`), nunca gera nada do zero (`existence_gate()
 ```
 1. PROPÕE   script_generator.generate(evidence)              -> extract.py candidato
             script_generator.generate_reinsert(evidence)     -> reinsert.py candidato (MESMO padrão)
-            (discover.py <game_dir> --generate-stub <dir> gera o PAR de uma vez)
+            (discover.py <game_dir> --generate-stub <dir> gera o PAR de uma vez; nunca sobrescreve arquivo
+            existente — apagar para regerar; só grava se o tier for unknown_engine)
 
 2. VERIFICA (a) coverage_gate.check(candidato, game_dir)     -> dry-run contra N maiores arquivos
                falha aqui = candidato não cobre o corpus real, sem gastar tempo com round-trip
-            (b) adversarial_validator.check(candidato)        -> overfitting/variância/offsets
-               sobrepostos — pega candidato que só "decorou" 1 amostra
-            (c) connector_smoke.smoke(projeto, roundtrip=True) -> ORÁCULO FINAL: SHA256 do
+            (b) adversarial_validator.check(per_file)         -> overfitting/variância/offsets
+               sobrepostos — pega candidato que só "decorou" 1 amostra (recebe o `per_file` que
+               o `coverage_gate.check` já devolveu; o `coverage_gate.py` CLI roda (a)+(b) e sai 1 se qualquer falhar)
+            (c) connector_smoke.smoke(projeto, roundtrip=True) -> ORÁCULO FINAL (CLI: `connector_smoke.py <project_root> [pasta_dados] --roundtrip`): SHA256 do
                round-trip extract→reinsert-sem-mudanças === original
 
 3. REFINA   se (a)/(b)/(c) falhar: o diagnóstico (`problems: [...]`) é preciso o bastante pra guiar

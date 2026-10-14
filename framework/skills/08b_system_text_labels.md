@@ -13,19 +13,21 @@ existem só como pixels numa folha de imagem.
 
 ## PARTE 1 — Texto de sistema (vai pela sessão, não pela API)
 
-- Cena de sistema listada em `project.json → system_scenes`; speaker `system`, risco `low` salvo dúvida real.
+- Cena de sistema listada em `project.json → system_scenes`; speaker `system`, risco `low` salvo dúvida real. Só roda pelo
+  caminho de sessão: `run_scene --backend api` bloqueia cena de `system_scenes` (`backend_preflight`).
 - Orçamento de bytes é teto duro: não coube → abreviar com ponto (`Def.`, `Pes.`). Rótulo curto de menu sem acento
   quando a fonte do menu não tem; frase e descrição com acento normal (ver `charset_note` do conector).
-- Nome de item/arma/habilidade/inimigo segue a decisão do glossário (`keep_names`); mesma palavra do original =
+- Nome de item/arma/habilidade/inimigo segue a decisão do glossário (a lista de nomes mantidos fica em `tools_local/keep_names.txt`, gitignored); mesma palavra do original =
   mesma tradução no lote inteiro (atributos, estados, elementos, comandos).
-- Lote por seção do arquivo (`session_lot.py split`), com a lista dos nomes mantidos que aparecem nele.
+- Lote por seção do arquivo (`session_lot.py <projeto> split <id>`, depois `join <id>`; `plan`/`prompt`/`check`/`go`/`install` completam o caminho de sessão),
+  com a lista dos nomes mantidos que aparecem em cada seção.
 
 ## PARTE 2 — Rótulos em imagem
 
-1. **Inventário:** cada folha vira uma tabela em `project.json → image_labels` (`[y, x0, x1, original, candidatas…,
-   largura_medida]`). O texto da obra fica aí; o script do conector não carrega texto.
+1. **Inventário:** cada folha vira uma tabela em `project.json → image_labels` (no bof4: `principal`, `sistema`, `batalha`, `botoes`;
+   linha `[y, x0, x1, original, candidatas…, largura_medida]`, a largura medida é opcional). O texto da obra fica aí; o script do conector não carrega texto.
 2. **Reconhecer a folha pelo conteúdo** (hash da área de rótulos), nunca pelo nome do arquivo: a mesma folha se
-   repete em vários arquivos e há variantes. Aplicar por hash; arquivo de folha desconhecida não é tocado.
+   repete em vários arquivos e há variantes. Aplicar por hash (`SHEETS` em `labels.py`: sha1[:16] da área de rótulos → tabela + quais rótulos a variante cobre com arte); arquivo de folha desconhecida não é tocado.
 3. **Compor com as letras da própria folha:** cortar os rótulos originais em letras e montar a palavra nova com
    elas (nenhum pixel do jogo entra no repo). Letra que a folha não tem vem do outro estilo ou é desenhada à mão
    (lista curta e registrada: acentos, letras raras).

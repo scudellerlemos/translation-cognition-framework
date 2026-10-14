@@ -7,6 +7,10 @@
 > **Campo-chave:** `voice_criticality` (high / medium / low) — personagens `high` exigem
 > auto-revisão de voz em cada linha (Passo 6) e verificação dedicada no Micro-QA (Passo 6b).
 
+> **Formato que o runtime lê:** `voice_cards.json` (que o `kb_gate` exige não-vazio) é extraído **só do `tone_analysis.md`**
+> (`state_index.build_voice_cards`), não deste arquivo. Lá, cada perfil precisa de cabeçalho `### Nome — `` `voice_criticality: high` `` e
+> bullets logo abaixo (até 6 por card, 240 caracteres cada); aliases separados por `/` no cabeçalho.
+
 ---
 
 ## [Nome do Personagem]

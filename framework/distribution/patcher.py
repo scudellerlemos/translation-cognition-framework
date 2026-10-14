@@ -98,6 +98,8 @@ def verificar(jogo, man):
 
 def main():
     a = sys.argv[1:]
+    if '-h' in a or '--help' in a:
+        return print(__doc__)
     arg = lambda k: pathlib.Path(a[a.index(k) + 1]) if k in a else None
     cmd = a[0] if a and not a[0].startswith('--') else 'instalar'
     pkg = arg('--pacote') or pathlib.Path(getattr(sys, '_MEIPASS', pathlib.Path(__file__).parent / 'dist'))

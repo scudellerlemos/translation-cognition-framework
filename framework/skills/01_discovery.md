@@ -93,6 +93,8 @@ Personagens `voice_criticality: high` recebem auto-revisão em **cada linha** no
 verificação dedicada no Micro-QA (Passo 6b). Este campo é o gancho que torna a verificação de
 voz genérica — as skills posteriores leem o perfil, não nomes hardcoded.
 
+> Formato do cabeçalho exigido pelo runtime (`state_index.build_voice_cards` → `voice_cards.json`, que o `kb_gate` exige não-vazio): ``### Nome — `voice_criticality: high|medium|low` `` — ver `04_glossary_creation.md`.
+>
 > Exemplo de perfis preenchidos: `projects/utawarerumono/profile/voice_profiles_reference.md`.
 
 ---

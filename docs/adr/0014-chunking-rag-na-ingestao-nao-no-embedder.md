@@ -72,3 +72,5 @@ sempre a mesma receita: 1 entrada em `_KIND_CONFIG` + 1 tabela `<kind>_embedding
   a KB do BoF4 não tem nenhuma tag `<!-- reveal: ... -->`, então toda seção fica com `reveal=NULL`
   — o gate default-deny bloqueia a seção semântica inteira até o projeto tagueá-la, ou seja, hoje
   esse caminho não muda o pacote de nenhum projeto real (só o léxico `select_kb` está ativo neles).
+
+**Atualização 2026-10-14:** a ressalva sobre o BoF4 envelheceu: a KB de `projects/bof4/artifacts/universe_knowledge_base.md` hoje tem tag `<!-- reveal: ... -->` nas seções (15 ocorrências), então o gate default-deny deixa de bloquear a seção semântica inteira naquele projeto. O projeto se chamava `breath_of_fire_4` na data da medição.

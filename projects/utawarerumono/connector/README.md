@@ -83,3 +83,7 @@ identidade byte-a-byte, binário-fonte intacto, modelo file-relativo, cada head 
 **dentro do seu arquivo** com a string traduzida correta (`test_planob_within_file`), integridade do
 Pack reconstruído (contíguo/alinhado/nomes/footer — `test_pack_rebuild_integrity`), patch IPS
 aplicável, e o **guard de governança** (nenhum texto da obra hardcoded em `.py`). Rodar antes de entregar.
+
+`connector/test_roundtrip_synthetic.py` (12 testes) roda o mesmo oráculo (extract → reinsert → re-extract) sobre um
+`.sdat` sintético montado em memória, sem o binário comercial — é o que a CI executa sempre; os testes de
+`test_roundtrip.py` que exigem `artifacts/ScriptEvent.sdat` fazem `pytest.skip` sem ele.

@@ -60,3 +60,5 @@ já decidiu adiar pra P4.
 
 **Reabrir se:** #39 (orquestração multi-projeto) sair de "não planejado" E houver medição real de N
 projetos rodando RAG ao mesmo tempo com custo de reload de modelo dominando o tempo total.
+
+**Atualização 2026-10-14:** o levantamento de projetos ficou datado: `translation_software` não existe mais em `projects/` (ADR 0008) e o `bof4` hoje roda em modo banco (SQLite + embedder). Há ainda um único projeto com RAG por vez em prática; a decisão (processo isolado, sem daemon) não muda.

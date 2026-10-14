@@ -1,0 +1,6 @@
+# requirements-dist.txt — empacotamento do patcher (framework/distribution/): bsdiff4 (deltas e patch),
+# Pillow (arte e icone do build_package) e PyInstaller (build_exe). Incluido pelo requirements-dev.txt:
+# test_patcher.py importa o patcher, que importa bsdiff4. Quem so traduz nao precisa deste arquivo.
+bsdiff4~=1.2
+pillow~=12.3
+pyinstaller~=6.22

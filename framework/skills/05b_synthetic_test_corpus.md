@@ -7,6 +7,8 @@
 
 ## OBJETIVO
 
+> Playbook cognitivo: não há script nem skill registrada para este passo (ver `skills/registry.py`); os artefatos abaixo são escritos pela IA e conferidos pelo usuário.
+
 Testar a capacidade de manter vozes distintas e tratar spoilers corretamente **antes** de entrar no corpus real. Um erro no corpus sintético custa zero — o mesmo erro em centenas de linhas de corpus real custa revisão completa.
 
 ---

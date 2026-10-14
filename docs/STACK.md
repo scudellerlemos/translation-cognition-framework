@@ -375,5 +375,5 @@ Dois pontos de desenho:
 | `utawarerumono` | arquivos | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
 | `bof4` | **SQLite + busca semântica** (obrigatória) | modelo da sessão (`in-session`) | traduzido e instalado — 305 cenas `verified` (27.021 falas); patcher em beta, release pendente; conector de referência Capcom e fixture de testes. Substituiu `breath_of_fire_4` (arquivos, 125 cenas), removido do repositório |
 | `souldiers` | arquivos | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceira engine (Unity Addressables) |
-| `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 67 cenas extraídas, cena-piloto com round-trip fechado |
+| `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 71 cenas extraídas, cena-piloto com round-trip fechado |
 | `demo` | SQLite, busca semântica desligada (`semantic: false`) | — | exemplo sintético do README |

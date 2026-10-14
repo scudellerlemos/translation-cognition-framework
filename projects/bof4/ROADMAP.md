@@ -104,7 +104,7 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
 
 - [x] **1.1.** Entidades, glossário, voice cards e base de conhecimento migrados e ampliados.
 - [x] **1.2.** `research_log.md` reconciliado; ratificações do usuário em `kb_ratified.csv`.
-- [x] **1.3.** `decision_log.md` com as 15 decisões ratificadas, indexadas no banco.
+- [x] **1.3.** `decision_log.md` com as 16 decisões ratificadas (eram 15 quando o item fechou), indexadas no banco.
 - [x] **1.4.** `kb_gate` verde, com busca semântica ativa.
 - [x] **1.5.** Candidatos da re-extração reconciliados (`Buy`, `Sell`, `Stop`, `Normal`, `Sink`, golpes `Pilfer…`/`Spray…`): glossário + `research_log`, `kb_phase.py all --check` verde (issue #221).
 - [x] **1.6.** Worklist da re-extração com `AREAM`/`AREAE` reconciliada: +152 termos no glossário, +9 entidades, seção nova no `research_log`; `kb_phase.py all --check` e `kb_gate` verdes. Propostas de lore aguardando ratificação do usuário: Purifiers→Purificadores, Elders→Anciões, Nameless→Sem Nome, Gateway→Portal, Dragon of Doom→Dragão da Perdição.
@@ -301,7 +301,7 @@ BTLRET, BTLEND). Nada disso foi reinserido nem instalado ainda.
   história (Purifiers, Elders, Nameless, Gateway, Dragon of Doom).
 
 Atualização (2026-10-12, 23h): visto da onda dado e cinco termos de história ratificados pelo usuário
-(`hitl.py ratify` passou a aceitar termo nomeado fora dos 30 mais frequentes). Glossário limpo: 414 entradas,
+(`hitl.py ratify` passou a aceitar termo nomeado fora dos 30 mais frequentes). Glossário limpo: 414 entradas na época (hoje 415),
 títulos entram inteiros. As nove cenas de sistema restantes vieram 100% por reuso; 305 cenas verificadas, lint 0,
 `quality_gate` e `pilot_gate` OK. Reinserção feita e instalada no jogo com a régua nas folhas de imagem
 (`tools_local/probe.py`): a régua é só de medição e sai na próxima instalação. Próximo: prints do usuário

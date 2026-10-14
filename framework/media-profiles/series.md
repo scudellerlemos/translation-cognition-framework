@@ -25,6 +25,10 @@ no episódio 1 precisam valer no episódio 50. Implicações:
 - O `tone_analysis.md` (perfis de voz) evolui: personagens podem mudar ao longo das temporadas —
   documentar **arcos de voz**, não só voz estática
 
+> **Atenção:** no runtime o campo `series` do `project.json` já existe com outro sentido — é uma **string** (slug) que
+> agrupa projetos numa mesma Translation Memory (`tm/<serie>.json`, `runtime/tm_lookup.py`; sem o campo, a série é o slug
+> do título). A proposta abaixo (objeto) é só do perfil e colide com isso: usar outro nome de chave ao implementar.
+
 Proposta para `project.json`:
 ```json
 "series": {
@@ -55,7 +59,7 @@ inconsistentemente. O QA final deve rodar busca global **sobre todos os episódi
 
 ## O QUE SE MANTÉM IGUAL
 
-- Todo o processo dos passos 1–6c por episódio
+- Todo o processo dos passos 1–6b por episódio
 - A estrutura de artefatos (por episódio, exceto glossário/decision_log que são compartilhados)
 
 ---

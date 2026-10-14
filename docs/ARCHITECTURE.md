@@ -136,7 +136,7 @@ isoladas. Ver `MODEL_INTERFACE.md`.
 ## Por que isto escala e roda em Sonnet
 
 - **Contexto constante por execução** → a janela não cresce com o nº de capítulos (mata o estouro).
-- **Doutrina cacheável (~4K tok)** cobrada ~1× via prompt-caching, não a cada cena.
+- **Doutrina cacheável (~2,2K tok)** (estimativa por caracteres, 7,5 mil, não medida no tokenizer) cobrada ~1× via prompt-caching, não a cada cena.
 - **Consistência vem do store** (TM/glossário/voice cards), não da memória do chat.
 - **Model-mix**: Sonnet traduz, Opus verifica alto risco e re-traduz só o resíduo de fitting (ver `validation/cost_model.py`).
 

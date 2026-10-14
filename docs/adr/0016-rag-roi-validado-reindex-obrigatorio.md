@@ -73,3 +73,5 @@ requisito obrigatório** para qualquer projeto com `db.path`/`project_id` config
 **Reabrir se:** medição em corpus maior/produção real mostrar que o ganho medido aqui não se
 sustenta (ex.: reuso exato cai a zero fora do caso "texto de sistema repetido entre áreas"), ou se
 #61 revelar que reindex por cena tem custo de latência/infra que muda o cálculo.
+
+**Atualização 2026-10-14:** a reindexação incremental no write-path foi entregue (commit `204c06d`, "automatiza reindexação de embeddings no write-path (#171)"): `Store.reindex_pending_embeddings` (`framework/db/store.py:213`, kinds translation/decision/kb) roda a cada espelhamento flat→DB (`migrate_from_flat.py:565`) e na reconstrução do índice (`state_index.py:318`). O requisito 2 (`db index --force` manual após cada lote) deixou de ser a regra de operação; a obrigatoriedade de índice fresco continua, agora garantida pelo código.

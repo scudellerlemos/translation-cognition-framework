@@ -102,6 +102,9 @@ Cada `projects/<título>/connector/test_roundtrip_synthetic.py` de um jogo daque
 helper compartilhado — reuso real de família, sem reimplementar a leitura/escrita do container em
 cada projeto.
 
+**Estado atual:** só existe `framework/connectors/unity_addressables/extract_template.py`; os diretórios `fixtures/<engine>/` e
+`<engine>/fixture_helper.py` acima são o padrão-alvo, **ainda não criados**.
+
 **Se ainda não há o template gerado** (caso atual do Souldiers/Unity): não force uma fixture frágil
 que finja cobrir o round-trip do container inteiro. Alternativa honesta: extrair e testar **só a
 lógica pura de transformação do payload interno** (ex: reescrita da coluna do CSV dentro do

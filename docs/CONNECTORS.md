@@ -24,7 +24,7 @@ de um esqueleto em `framework/connectors/_skeleton/`. O que não dá para genera
 reconstrução byte a byte do formato: tabela de caracteres, códigos de controle, ponteiros,
 contêiner. Isso é escrito por jogo.
 
-Quatro jogos têm conector, cada um com uma restrição de espaço diferente (o estágio de cada um
+Quatro jogos têm conector (mais o `demo`, fixture de teste), cada um com uma restrição de espaço diferente (o estágio de cada um
 está em [`STACK.md`](STACK.md#onde-cada-projeto-está-hoje)):
 
 | Projeto | Engine / formato | Restrição de espaço |

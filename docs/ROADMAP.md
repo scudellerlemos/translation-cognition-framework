@@ -67,13 +67,18 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   do modelo e é paga) — e a `06_translation` descreve os dois caminhos.
 - [ ] **3. Benchmark do caminho de sessão (próximo passo a testar).** No projeto novo, rodar o mesmo recorte
   (por exemplo, um capítulo) pelo caminho de sessão e pelo de API e comparar: taxa de erro da amostra de
-  qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos, não
-  estimados), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com
+  qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos da transcrição; só a saída de mensagem sem usage final
+  é estimada, com erro declarado no relatório), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com
   `/clear` entre elas, Sonnet traduz e Opus retrotraduz, Haiku só para rótulo curto, lote de correção
-  automático. Só entra no framework o que o benchmark mostrar ganho. Antes: corrigir o medidor (37% dos tokens
-  de saída são estimados).
-- [ ] **4. Portões do caminho.** Uma só escolha de caminho por projeto, com HITL; o caminho de API recusa
-  projeto de sessão.
+  automático. Só entra no framework o que o benchmark mostrar ganho. O medidor já foi corrigido (`77dbe7f`: ajuste próprio do
+  `claude-sonnet-5` em `session_usage._OUT_FIT`; `cost_report` imprime o erro da estimativa, ~7% na soma, viés
+  de −7% a +5% medido em 7 mil mensagens com saída exata) — o "37% estimado" era o retrato de antes dele.
+- [x] **4. Portões do caminho.** Uma só escolha de caminho por projeto, com HITL; o caminho de API recusa
+  projeto de sessão. *(feito: `hitl.choose-path` grava a decisão humana e `hitl.path_problems` bloqueia qualquer
+  backend diferente do escolhido, inclusive `api` em projeto de sessão (`framework/runtime/hitl.py:130-146`,
+  teste `test_hitl.py:186-189`); `run_scene.main` e `run_chapter` (e, por ele, `run_game`) chamam `hitl.gate`
+  (`run_scene.py:666`, `run_chapter.py:361`, commit `81029a9`). Vale só com `hitl` ligado no `project.json`
+  (`hitl.enabled`); sem a chave não há portão.)*
 
 ---
 
@@ -363,7 +368,7 @@ paridade, cobertura-merge, retry de conexão, budget best-effort).
 SO-DE-SUCESSO (1 linha por cena que fechou no verify) → perdia o que **falhou depois de já cobrar a API**
 (cobertura estourou → exceção; verify reprovou), cada **re-tradução do escalonamento** (1.40→1.15→1.0) e
 **back-translations que quebraram no parse**. Por isso a estimativa (~$9–10) ficou abaixo do real (~$15).
-**Conserto:** `model.log_api_call` grava `api_ledger.jsonl` (1 linha por chamada CONCLUÍDA, **antes** de
+**Conserto:** `cost.log_api_call` (re-exportado por `model`) grava `api_ledger.jsonl` (1 linha por chamada CONCLUÍDA, **antes** de
 qualquer parse/gate) → captura TODA chamada cobrada. `cost_report.py` agrega (total, por modelo/tipo/cena)
 e cruza com `run_state.json` p/ marcar gasto **desperdiçado** (cenas que não fecharam `verified`).
 `run_chapter` imprime o resumo de gasto ao fim **e na parada por falha**. O `cost_usd` do `metrics.jsonl`
@@ -452,7 +457,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 | C | **Connector template por família de engine** — Unity Addressables é engine conhecida. Novo jogo Unity = template configurável (bundle paths, CSV columns), não reescrita. Para engine desconhecida: `connector_smoke.py` (smoke test round-trip por iteração) + `script_generator.py` com 3 padrões de stub pré-preenchidos (linear_scan/token_table/pointer_table) baseados nas evidências do `discover.py`. | ~15k tok/jogo | ✅ |
 | D | **KB research como skill estruturada** — skill que recebe título do jogo + URL wiki e produz artefatos já no formato correto (glossary.csv + tone_analysis.md com `###` voice cards), em vez de fork ad-hoc + iterações de correção de formato. | ~8k tok/jogo | ✅ (skill 04 atualizada) |
 | E | **`kb_fetch.py` + `kb_build_ollama.py` + `kb_reconcile.py`** — pipeline híbrido para KB sem custo de API: `kb_fetch.py` baixa fontes e `kb_build_ollama.py` usa Ollama local para extração factual por entidade (rascunho `draft_ollama`); `kb_reconcile.py` promove pra `reconciled` só após ratificação humana (`kb_ratified.csv`). Elimina a leitura/extração de texto bruto da sessão Claude, sem abrir mão da reconciliação humana obrigatória. Ver nota abaixo. | ~30k tok/jogo | ✅ |
-| F | **`split_scenes.py`** — gap achado no onboarding do Trails Sky SC (2026-08-23): `run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (contrato congelado, `paths.py`), mas `extract.py` de todo conector só escreve o `dialogs.csv` FLAT — não havia nenhuma ferramenta genérica no framework pra fazer essa ponte; BoF4/Souldiers/Utawarerumono resolveram isso ad hoc, fora do framework versionado. Escopo deliberado: só cobre o caso em que 1 coluna do corpus já identifica a cena 1:1 (`--by file`, padrão do BoF4/Trails Sky SC) — Souldiers (prefixo no offset) e Utawarerumono (`extract.py` já roda 1×/cena) continuam fora do escopo, não força um contrato que os 3 não compartilham. `framework/runtime/split_scenes.py` + `test_split_scenes.py` (4 testes); documentado em `NEW_PROJECT_ONBOARDING.md` (passo 2b). | — | ✅ |
+| F | **`split_scenes.py`** — gap achado no onboarding do Trails Sky SC (2026-08-23): `run_scene`/`build_plan_chapter` exigem `artifacts/scenes/<cena>/dialogs.csv` (contrato congelado, `paths.py`), mas `extract.py` de todo conector só escreve o `dialogs.csv` FLAT — não havia nenhuma ferramenta genérica no framework pra fazer essa ponte; BoF4/Souldiers/Utawarerumono resolveram isso ad hoc, fora do framework versionado. Escopo deliberado: só cobre o caso em que 1 coluna do corpus já identifica a cena 1:1 (`--by file`, padrão do BoF4/Trails Sky SC) — Souldiers (prefixo no offset) e Utawarerumono (`extract.py` já roda 1×/cena) continuam fora do escopo, não força um contrato que os 3 não compartilham. `framework/runtime/split_scenes.py` + `test_split_scenes.py` (4 testes na entrega; hoje 5); documentado em `NEW_PROJECT_ONBOARDING.md` (passo 2b). | — | ✅ |
 
 > **Nota E — fontes de KB aceitas pelo `kb_fetch.py`:**
 > O humano pode passar qualquer tipo de fonte — o fetch tool deve normalizar tudo para texto
@@ -483,7 +488,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > gate de `kb_review.py --strict`: a IA nunca propõe E aprova a própria KB sozinha). `confiança` do
 > Ollama é travada por schema em `low|medium` — `high` é estruturalmente impossível antes de
 > reconciliação humana (mesmo se o modelo "alucinar" o valor, `_clamp_confidence` rebaixa p/ `low`).
-> Testes: `test_kb_fetch.py` (8), `test_kb_build_ollama.py` (9).
+> Testes: `test_kb_fetch.py` (8 na entrega; hoje 11), `test_kb_build_ollama.py` (9; hoje 12).
 >
 > ✅ **Fechamento do loop (2026-07-03) — `kb_reconcile.py`.** A ressalva acima deixava a promoção
 > `draft_ollama → reconciled` só "manual/via sessão Claude", sem mecanismo formal. `kb_reconcile.py`
@@ -508,7 +513,7 @@ porque a escalada rodou antes do fix — re-traduzir a 1.40 (~$0.15) recupera na
 > falso). (2) o tripwire de "Conflitos Resolvidos" só checava a AUSÊNCIA do placeholder — um "xxx"
 > qualquer passava; agora exige um mínimo de conteúdo substantivo (`_MIN_CONFLICTS_CHARS`), não
 > valida qualidade semântica (exigiria modelo, fora de escopo) mas mata o caso mais preguiçoso.
-> Testes: `test_kb_reconcile.py` (11, inclui `--found-por`, decoy de status, tripwire trivial e
+> Testes: `test_kb_reconcile.py` (11 na entrega, hoje 15; inclui `--found-por`, decoy de status, tripwire trivial e
 > chamada dupla de `promote()`).
 
 > **Lição do Souldiers:** o maior gasto individual foi C (investigação de engine + iterações do conector).
@@ -579,7 +584,7 @@ Decisão registrada e fechada como "not planned" em
 |---|---|---|---|
 | Saída estruturada do conector | fronteira do conector **stringly-typed** (`run_scene` dá grep no stdout do conector p/ decidir escalonamento) | **protocolo de saída estruturado** (exit codes + JSON de status) | ✅ **feito** — `verify_chapter` emite exit 0/1/3 + linha `VERIFY_STATUS:{json}`; `run_scene` usa o exit-code (grep morto). Bug latente corrigido: o grep procurava `"fora do arquivo"` (espaços) vs `"fora-do-arquivo"` (hifens) → out-of-file nunca escalonava |
 | Fonte única de paths | contrato de nomes de artefato espalhado por ~18 arquivos | **módulo único de paths/contrato** | ✅ **feito** — `paths.py` (módulo leaf, fonte única); 42 call sites migrados em 8 módulos; `test_paths_contract` fixa as strings; NAMING.md aponta |
-| run_scene coeso | `run_scene` acretando responsabilidade (hoje 492 linhas, era ~300 quando documentado) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` passam sem alteração |
+| run_scene coeso | `run_scene` acretando responsabilidade (492 linhas quando documentado, era ~300; hoje 713 depois dos blocos do pós-bof4) | extrair **quando cruzar o limiar de leitura** (não o split-em-6 do GPT) | ✅ **feito (2026-07-03)** — extraídas as 3 funções de housekeeping/diagnóstico (`clean_failed_scene`/`prune_discontinued`/`_check_stale`, todas pós-`run_scene()`, sem relação com o fluxo de tradução) para `scene_lifecycle.py` novo; `run_scene.py` caiu de ~510 → 442 linhas e reimporta os nomes (mesmo padrão de re-export de `model.py`/`back_translate.py`) — nenhum caller mudou, os 26 testes de `test_run_scene.py` da época passam sem alteração (hoje são 55) |
 | Repro: gate ≠ geração | "reprodutível" com asterisco | doc: *gates* reprodutíveis ≠ *tradução* reprodutível | ✅ **feito** — ARCHITECTURE.md: "o veredito reproduz; a geração não" |
 | Profundidade da Fase 0 | Fase 0 meio-cabeada ("reconciled" = marcador, não garantia de qualidade) | cabear a **profundidade** da reconciliação no runtime | ✅ **feito (2026-07-03)** — `kb_gate.py` generalizou a exigência de ratificação humana por entidade (`kb_ratified.csv`) para QUALQUER `research_log.md` com `status: reconciled`, não só o caminho `draft_ollama` do `kb_reconcile.py`. Toda entidade com conteúdo afirmado (≠ UNSOURCED) no `universe_knowledge_base.md` agora exige uma linha em `kb_ratified.csv`; bypassável via `--skip-kb-gate` como qualquer `problem` (soft, não quebra continuidade de projetos já em produção). **Escopo deliberadamente reduzido**: o tripwire de conteúdo mínimo em "Conflitos Resolvidos" do `kb_reconcile.py` NÃO foi generalizado — um projeto sem nenhum conflito de verdade (fonte única) é um caso legítimo que só o placeholder EXATO do `kb_build_ollama.py` consegue distinguir de "não revisado"; não generaliza sem uma âncora textual conhecida. **Custo aceito**: Utawarerumono/BoF4/Souldiers (as 3 KBs já reconciliadas) agora mostram esse `problem` novo até serem ratificadas por entidade — não bloqueia trabalho já feito, só torna visível o que faltava. Testes: 3 novos em `test_kb_gate.py` |
 | Spoiler observável | spoiler pouco observável (ledger incompleto = vazamento silencioso de gênero pt-BR) | **teste sistemático de não-vazamento** | ✅ **feito** — `spoiler_check.py`: contraparte OBSERVÁVEL do guard preventivo; flagra nome/título pós-reveal vazando pré-reveal (`forbidden_pre_reveal` no ledger); auditoria dos caps 11–18 LIMPA; teste de regressão sobre as traduções commitadas. `check_gender` (extensão de [issue #41](https://github.com/scudellerlemos/translation-cognition-framework/issues/106)) continua flagrando por co-ocorrência (RECALL preservado — perder um vazamento real é pior que um falso-positivo extra) mas agora ATRIBUI o token de gênero ao referente mais provável: cada flag carrega `confident` (True se a menção da entidade em quarentena é a mais próxima, em distância de caracteres, do marcador entre as entidades do ledger citadas na linha) |
@@ -593,7 +598,7 @@ Decisão registrada e fechada como "not planned" em
 | Vazamento de gênero | **vazamento de GÊNERO pt-BR** (ele/ela onde o EN é neutro) — o que o `spoiler_check` de nomes NÃO pegava | contraparte observável de gênero | ✅ **feito** — `spoiler_check.check_gender`: campo `gender_quarantine` no ledger + heurística de co-ocorrência (marcador de gênero pt-BR junto a entidade pré-reveal, recall preservado) com campo `confident` de atribuição por referente mais próximo (distância de caracteres entre entidades do ledger citadas na linha — não substitui a co-ocorrência, prioriza a revisão humana). Mecanismo ativo; marcação real aguarda caso confirmado por fonte (não fabricar spoiler = não recair em "IA reconcilia a própria KB") |
 | IA reconcilia a própria KB | **a IA reconcilia a própria KB** (sem segundo par de olhos no delta) | gate de fonte (hard) + ratificação humana | ✅ **feito (gate)** — `kb_review.py` + `kb_phase --check`: FALHA (hard) se entidade nova não citar **fonte** no research_log (âncora externa checável = mata "IA propõe E aprova"). `--strict` exige **ratificação humana** (`kb_ratified.csv`, só o humano edita) + gênero confirmado. Evoluiu de digest → gate |
 | Gênero pt-BR inativo | **gênero pt-BR inativo** (mecanismo pronto, zero entidades marcadas) | pesquisa + resolução com fonte | ✅ **feito** — faixa 11-19 auditada (wiki): NENHUM gender-spoiler (o twist é Haku→Oshtor = identidade, já no ledger) → `gender_quarantine` dormente por estar CORRETO, documentado. Shichirya→MASCULINO, Honoka→FEMININO (com fonte); restantes flagrados no `--strict` p/ ratificação (não-fabricado) |
-| Auditoria de gênero dependia de lembrar rodar | **`spoiler_check.check_gender` só existia como CLI manual** (`python spoiler_check.py <projeto>`) — foi assim que Uta foi auditado (caps 11-19), mas o Souldiers nunca chegou a ser, porque depende de alguém lembrar de rodar. Mesma classe do gap de `onboarding-scaffold-kb-gate-drift` (fase "pronta" sem gate automático) | cabear como passo OBRIGATÓRIO e automático do pipeline, sempre, com resultado persistido | ✅ **feito** (2026-07-03) — `spoiler_check.audit_and_persist(root)` roda `check()` (vazamento de nome/título, alta confiança) + `check_gender()` (heurística, pode ter falso-positivo) sobre o **projeto inteiro** e grava `artifacts/spoiler_audit.json`. `run_chapter._audit_spoiler` chama isso **incondicionalmente** ao fim de todo capítulo (ao lado do `_export_qa`), report-only (nunca bloqueia), com aviso alto/baixo diferenciado por confiança. Não depende mais de ninguém lembrar de rodar o CLI. Teste: `test_complete_persists_spoiler_audit` |
+| Auditoria de gênero dependia de lembrar rodar | **`spoiler_check.check_gender` só existia como CLI manual** (`python spoiler_check.py <projeto>`) — foi assim que Uta foi auditado (caps 11-19), mas o Souldiers nunca chegou a ser, porque depende de alguém lembrar de rodar. Mesma classe do gap de `onboarding-scaffold-kb-gate-drift` (fase "pronta" sem gate automático) | cabear como passo OBRIGATÓRIO e automático do pipeline, sempre, com resultado persistido | ✅ **feito** (2026-07-03) — `spoiler_check.audit_and_persist(root)` roda `check()` (vazamento de nome/título, alta confiança) + `check_gender()` (heurística, pode ter falso-positivo) sobre o **projeto inteiro** e grava `artifacts/spoiler_audit.json`. `run_scene._audit_spoiler` (chamado por `run_chapter` ao fim do capítulo, `run_chapter.py:433`) chama isso **incondicionalmente** ao fim de todo capítulo (ao lado do `_export_qa`), report-only (nunca bloqueia), com aviso alto/baixo diferenciado por confiança. Não depende mais de ninguém lembrar de rodar o CLI. Teste: `test_complete_persists_spoiler_audit` |
 | Contador de batch engana | **`request_counts.succeeded` não reflete progresso real durante `in_progress`** (batch de 146 requests ficou 0/146 por 111min; cancelar por achar travado matou 12 já quase prontas — 134/146 tinham sucedido de verdade) | ferramenta de checagem honesta, nunca cancela sozinha; polling loga status periódico | ✅ **feito** — `batch_status.py`: reporta status/idade/counts de qualquer batch in_progress com o aviso embutido na própria saída ("não cancelar por contador zerado"); cancelamento continua manual e deliberado (`client.messages.batches.cancel`). `_await_batch` (llm_client.py) agora loga a cada ~5min em vez de silêncio total. Ver `anthropic-batch-progress-unreliable` (memory) |
 | Batch gigante = risco concentrado | **1 batch de back-translation com 146 requests** ficou lento (motivo real não identificável do nosso lado — conteúdo de cada request era pequeno, nada anômalo); esperar/cancelar um batch gigante é tudo-ou-nada | segmentar em vários batches menores + timeout curto (report-only não é crítico) | ✅ **feito (as 2 pontas)** — `batch_back_translate` (back_translate.py) divide requests em chunks de `chunk_size=40`, cada 1 um batch **separado**; `max_wait_seconds` default caiu de 24h → **2h** (report-only, não vale esperar o SLA inteiro). Teste: `test_batch_back_translate_segments_large_batches`. **`batch_translate` (tradução, a op CRÍTICA) também segmentada agora** (2026-07-03): `_TRANSLATE_SUBMIT_CHUNK=40` (config.py) fatia as requisições de cada rodada em batches separados via `_submit_translate_chunk`; um chunk que trava/estoura o timeout só fica sem cobertura DELE — a rodada seguinte re-tenta o que faltou (não aborta mais o batch inteiro no 1º timeout, como fazia antes). Teste: `test_batch_translate_segments_large_submissions`. |
 
@@ -623,7 +628,7 @@ segue em aberto (ex. issue #39 — generalizar `state_index` + paralelismo/pipel
 - **Fase 2 — reduzir custo operacional:** P1 (entregue e **comprovado em produção**: métricas + API
   endurecida + `run_chapter` + benchmark Sonnet aprovado + telemetria de gasto real via `api_ledger.jsonl`).
 - **Fase 2.5 — cabear cognição no runtime:** P1.5 (riscos de cognição). Ligar/comprovar API, KB-gate, spoiler-filter,
-  bundle de custo. **É aqui que estamos.**
+  bundle de custo. *(Retrato de quando o histórico foi escrito; hoje o projeto bof4 já fechou 305/305 cenas e tem patcher, ver o topo.)*
 - **Fase 2.7 — maturidade de execução:** P2.5. Orquestração ponta-a-ponta (`run_game`) + observabilidade
   de progresso + rebuild de state_index 1×/capítulo (barato, agora). Paralelismo de LLM já resolvido (batch);
   pipelining/cross-capítulo ficam p/ plataforma.
@@ -643,6 +648,6 @@ por execução para de crescer e cai bem abaixo de 30% do atual → Sonnet vira 
 
 ## MVP arquitetural recomendado (entregue neste ciclo)
 
-`framework/runtime/` (context_pack + state_index + model + run_scene + testes) + `framework/docs/`.
+`framework/runtime/` (context_pack + state_index + model + run_scene + testes) + `docs/`.
 É o mínimo que torna a tradução sustentável e model-agnostic **sem** interromper a entrega: as próximas
 cenas rodam pelo harness, uma sessão limpa por cena.

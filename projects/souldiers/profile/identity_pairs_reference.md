@@ -1,4 +1,4 @@
-# Identity Pairs — Soldiers
+# Identity Pairs — Souldiers
 
 > Pares de identidade ocultos/revelados — relevantes para controle de spoilers.
 > Preencher após Passo 02 (Resolução de Entidades) e leitura do corpus.

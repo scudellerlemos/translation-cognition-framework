@@ -94,7 +94,7 @@ sobreposto: `á` = `[A0]a` (2 bytes). A célula do acento começa ~2 px antes da
 `connector/font.py` desenha os 12 acentos (`0xA0`–`0xAB`: agudo, grave, circunflexo, til e cedilha, em
 minúscula e maiúscula, mais agudo de `i`/`I`), `encode_string` converte, e `reinsert.py` grava o `INIT.DAT`
 estendido em `output/` (precisa do `INIT.DAT` original em `BOF4_DAT_DIR`). `0x88`–`0x9F` ficam em branco.
-Só a fonte de 24 px foi tratada; pelos prints do jogo é ela que desenha diálogo, menus, caixa Info e faixa do mapa. A de 16 px (seção 8) segue sem acento e não apareceu em nenhuma tela conferida.
+Só a fonte de 24 px foi tratada; pelos prints do jogo é ela que desenha diálogo, menus, caixa Info e faixa do mapa. A de 16 px (seção 8) segue sem acento e não apareceu em nenhuma tela conferida (a legenda de botões do mapa-múndi talvez a use; o ROADMAP registra como não confirmado, a régua do próximo teste no jogo decide).
 Run3 (2026-10-12): glifo próprio para `í` na vaga de `]` (`0x5D`) falhou — o jogo não desenha as colunas onde o `]` original tem tinta (só um fiapo do desenho apareceu) e avança ~14 px. A janela e o avanço de cada código vêm do executável; medir com sonda antes de reaproveitar uma vaga.
 Sonda 3 (2026-10-12, print `run3/ascento2.png`, régua diagonal em cada vaga): cada código tem uma janela de
 colunas da célula e um avanço; o jogo desenha a janela a partir do cursor.
@@ -133,7 +133,7 @@ destino na VRAM do PS1); codec na seção 9.
 | `01` | `[01]` | newline dentro da caixa de diálogo |
 | `02` | `[02]` | page break (aguarda input, abre nova caixa) |
 | `04` | `[04]` | variável: nome de personagem (dinâmico) |
-| `05` | `[05]` | no `project.json` chama-se `var_item_name` (1 parâmetro); `extract.py` e a nota abaixo da tabela de filtros (seção 1) descrevem `[05][03]…[06]` como **cor de destaque (azul)**, usada em fala comum. **Divergência não resolvida:** o nome do `project.json` e a leitura de cor de destaque não batem; não confirmado qual é o significado real |
+| `05` | `[05]` | no `project.json` chama-se `var_item_name` (1 parâmetro); `extract.py` e a nota abaixo da tabela de filtros (seção 1) descrevem `[05][03]…[06]` como **cor de destaque (azul)**, usada em fala comum. **Divergência não resolvida:** o nome do `project.json` e a leitura de cor de destaque não batem; não confirmado qual é o significado real. Pelo uso nos artefatos, `[05][NN]` abre um trecho destacado (o parâmetro varia: 02, 03, 04, 0C, 0D) e `[06]` fecha; "item" seria só um dos usos, então `var_item_name` é nome enganoso. Regra segura para o tradutor, independente do nome: preservar `[05][NN]…[06]` como par literal. O nome só muda com teste no jogo |
 | `07` | `[07]` | `var_value` no `project.json` (1 parâmetro, valores `00`–`08`); ex.: `[07][00]` é a tabela "um/todos" de cada cena |
 | `09` | `[09]` | `unmapped` no `project.json` (1 parâmetro) |
 | `0F` | `[0F]` | `unmapped` no `project.json` (1 parâmetro, valores `00`–`03`, `08`, `09`) |
@@ -202,7 +202,7 @@ Seção com `flags & 0xFFFF == 1`. `flags >> 16` × 256 = tamanho descomprimido;
 árvore. A reconstrução divide as folhas por 2 arredondando para cima, como o LHA, mas o desempate entre nós
 de mesma frequência não é o do LHA e não foi decodificado (o `reconst` do LHA acerta ~82% dos códigos
 seguintes). `imgcodec` levanta `NotImplementedError` nesse ponto: seções pequenas (cartões, ícones) abrem e
-regravam; 424 fluxos grandes (fundos, retratos) ainda não.
+regravam; 417 dos 1.197 fluxos de imagem dos DAT originais (por entrada de TOC, contando repetidas entre arquivos; varredura de 2026-10-14) chegam à reconstrução e ainda não abrem (fundos, retratos).
 
 **Layout** — a imagem descomprimida são blocos de 64×32 bytes em ordem de leitura. 4bpp: nibble baixo
 primeiro; 8bpp: um byte por pixel. A paleta (15 bits, 2 bytes por cor) fica numa seção separada, sem compressão.

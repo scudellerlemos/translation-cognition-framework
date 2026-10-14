@@ -6,7 +6,7 @@ da stack inteira → [`STACK.md`](STACK.md).
 Um ponto que evita confusão: **a busca semântica não reduz tokens; ela acrescenta.** Cada vizinho
 é texto a mais no prompt. O que ela compra é consistência de fraseado, e os tetos de recuperação existem
 para que esse acréscimo seja pequeno e previsível (no máximo 8 pares, 3 decisões e 3 seções por
-cena). A economia vem das técnicas abaixo, em ordem de impacto.
+cena). A economia vem das técnicas abaixo; a tabela segue a ordem do pipeline e o impacto de cada uma está na coluna "Efeito", onde foi medido.
 
 | Técnica | O que corta | Como | Efeito |
 |---|---|---|---|
@@ -19,7 +19,7 @@ cena). A economia vem das técnicas abaixo, em ordem de impacto.
 | **Reconferência só do tocado** | reprocessar cena já verificada | `run_scene` grava `t_hashes` (impressão digital por fala) ao fechar `verified`; cena `verified` sem fala tocada, com a mesma doutrina e o mesmo conector, é pulada (`--full` reconfere), e o `pack.json` gravado é reaproveitado (`touched.py`, `model.saved_pack`) | uma correção pontual não reabre o capítulo |
 | **Texto repetido entre cenas** | tokens de saída | `scene_dedup.py`: cenas com a mesma sequência de texto-fonte formam um grupo; só o representante vai ao modelo e `copy` leva tradução e retrotradução às outras, remapeando os offsets por posição (as cópias passam pelos mesmos gates) | cada texto repetido é traduzido uma vez |
 | **Verificação amostrada** | chamadas ao modelo mais caro | back-translation só nas falas de risco alto, mais 5% das demais | Opus vê uma fração do corpus |
-| **Prompt caching** | tokens de entrada repetidos | a doutrina de tradução vai no `system` com `cache_control` | pequeno: a doutrina tem cerca de 1.300 tokens, e num capítulo medido custou US$ 0,14 contra US$ 3,41 de saída. No lote as requisições rodam em paralelo e regravam o cache, então o ganho ali é praticamente nulo |
+| **Prompt caching** | tokens de entrada repetidos | a doutrina de tradução vai no `system` com `cache_control` | pequeno: a doutrina (a Carta, `translation_governance.md`) tem 7,5 mil caracteres, cerca de 2,2K tokens por estimativa de caracteres, e num capítulo medido custou US$ 0,14 contra US$ 3,41 de saída. No lote as requisições rodam em paralelo e regravam o cache, então o ganho ali é praticamente nulo |
 
 As três técnicas de maior efeito são detalhadas a seguir, com o mecanismo e a origem de cada
 número.

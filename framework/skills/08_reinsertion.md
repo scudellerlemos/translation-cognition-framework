@@ -93,6 +93,26 @@ seu formato, ex.: `in_place`/`residuo` no Utawarerumono):
 
 ---
 
+## COMO O RUNTIME EXECUTA ESTE PASSO
+
+- Skill registrada: `python framework/skills/s08_reinsertion.py <projeto> [--dat-dir <pasta>]` (`kind = deterministic`):
+  exige `connector.reinsert_script` declarado e existente (sandbox contra path traversal em `connector_mgr`), roda o script
+  com `cwd` na raiz do projeto e timeout de 600 s, exporta a pasta do jogo em `connector.data_dir_env` (default
+  `BOF4_DAT_DIR`) e devolve a lista de `output/*`. Exit 1 se o script falhar.
+- No bof4 (`projects/bof4/connector/reinsert.py <raiz> [<pasta DAT>]`; a pasta vem do CLI ou da env, nunca do `project.json`):
+  lê os `approved_*.csv` **por cena** (`artifacts/scenes/<cena>/`), não um `approved_translations.csv` único; `byte_budget_exceptions`
+  do `project.json` sobrepõe o `byte_budget` de offsets pontuais; **antes de gravar**, aborta se alguma tradução tiver caractere
+  fora da fonte (encode estrito; `?` silencioso no jogo seria corrupção); `approved` sem linha no `dialogs.csv` é só avisado
+  (não reinserido); string sem tradução volta ao original (garante o round-trip). Reconstrói a seção de texto (estratégia
+  `reconstrucao_secao`; `patch_format: full_file` — o patch é o próprio DAT modificado, sem ips/bps), estende a fonte do `INIT.DAT`
+  com os acentos e grava só os arquivos que mudaram em `output/`. Overflow individual de string não bloqueia a gravação:
+  vai para `artifacts/reinsertion_report.md` (tier `unchanged|shrunk|expanded` por seção) e o resíduo sai pela retradução dirigida
+  (`quality_fix.py`, ver `07_qa.md`), não por um `residue.json`; `OverflowError` da seção = exit 3. O fitting por cena é gate do
+  `run_scene` (`verify_chapter.py <cena>`: exit 0 ok, 3 só fitting, 1 round-trip/leitura).
+- O empacotamento para o jogador (patcher/exe) é o passo 09 (`09_distribution.md`).
+
+---
+
 ## SAÍDA — pasta `output/`
 
 O arquivo final fica em **`projects/<título>/output/<nome-original>`**, com **nome e extensão do

@@ -59,3 +59,5 @@ para quem não seta).
 - Fora de escopo: as 9 linhas de overflow genuíno (resolvidas manualmente, não por mudança de
   arquitetura), truncamento em fronteira de palavra, e resíduo/relocação pro conector do Trails Sky
   (candidatos registrados em `ROADMAP.md`, não implementados).
+
+**Atualização 2026-10-14:** a reserva do terminador é aplicada hoje em `framework/runtime/budget.py` (`usable`, `over_budget`; commit `d0c1e30`), não mais em `model.py`. `projects/translation_local` e `projects/translation_software` não existem mais (ADR 0008); os conectores com `budget_reserves_terminator: true` são os que sobraram em `projects/` (bof4, trails_sky_sc), conforme o `project.json` de cada um.

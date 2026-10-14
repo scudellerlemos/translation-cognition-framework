@@ -107,7 +107,21 @@ Afeta linhas de diálogo casual entre personagens familiarizados que mencionem o
 
 O arquivo `decision_log.md` no projeto começa com o cabeçalho e uma seção vazia. É preenchido ao longo de todo o projeto.
 
-**Localização:** raiz do projeto (mesmo nível do `glossary.csv`).
+**Localização:** `artifacts/decision_log.md` (mesmo nível do `glossary.csv`; `paths.decision_log`).
+
+### Como o runtime lê o log
+
+`state_index.build_decision_index` quebra o arquivo em seções `## ` (o preâmbulo e um título "Decision Log" são ignorados) e
+guarda por seção: título (vira as tags), `summary` (~300 caracteres do corpo, sem as linhas `**Data/Passo/Tipo**`) e `universal`
+(título com `ponteiro`, `opcode`, `charset`, `translit`, `token`, `cor`, `conector`, `reinser`, `byte`, `relocac`, `pack` ou
+`acento`). O `context_pack` injeta as universais + as casadas por termo/falante presente, no máximo `MAX_DECISIONS = 12`.
+Consequência prática: **título específico, conclusão logo nas primeiras linhas, uma decisão por `##`** — o que vem depois
+dos ~300 caracteres não chega ao tradutor.
+
+Spoiler: o título aceita a tag opcional `## Título <!-- reveal: safe|<scene_id>|beyond_frontier -->`. No caminho léxico
+(tag/falante/universal) sem tag = sem filtro; `beyond_frontier` ou cena futura = fora do pacote da cena. No caminho semântico
+(RAG de decisões, só com o stack de ML e o DB) o gate é default-deny: **sem tag a decisão não entra** — decisão cuja razão revela trama
+precisa da tag, e a que deve valer por similaridade precisa de `safe`.
 
 ---
 

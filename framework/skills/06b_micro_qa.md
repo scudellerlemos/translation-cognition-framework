@@ -17,12 +17,12 @@ Detectar drift de tom, erros de entidade e quebras de registro enquanto o corpus
 
 ## INPUTS
 
-- O lote recém-proposto (`translation_plan.json → base_translation`, consolidado em `approved_translations.csv`) confrontado com o `dialogs.csv` (source)
+- O lote recém-proposto (plano da cena `translation_plan_<cena>.json → base_translation`, consolidado em `approved_<cena>.csv`) confrontado com o `dialogs.csv` (source)
 - `project.json` (tokens, convenção de sistema)
 - `glossary.csv`
 - `translation_rules.md`
 - `tone_analysis.md`
-- `translation_plan.json` (para comparar `base_translation` com o resultado final)
+- plano da cena (para comparar `base_translation` com o resultado final)
 
 ---
 
@@ -71,6 +71,15 @@ podem ser cópia do source.** Verificar **todas** as linhas curtas / `tone_regis
 - Sobrevive à transliteração do conector, se houver (não vira outra coisa sem o acento)?
 - Qualquer interjeição idêntica ao source (`base_translation == text_source`) é um **issue**, salvo
   justificativa (ex.: grito puro de vogais `Aaaah!`, ou nome próprio sendo soletrado).
+
+---
+
+> **No runtime:** o micro-QA por lote é, na prática, o `run_scene` (gates de cobertura, tokens, fitting, round-trip e
+> `spoiler_check`) mais o `naturalness_lint.py`; `micro_qa_log.json` e `fix_suggestions.json` descritos abaixo são o
+> formato do **playbook cognitivo** — nenhum script os grava hoje (o `quality_gate`/`quality_review` usam
+> `back_translation_<cena>.json` e as planilhas de `qa_revisao/`). A Parte 2 em produção é `quality_fix.py`
+> (retradução dirigida, pago com `--apply`), `quality_review.py apply` (correção humana verbatim) e `tm_correct.py`
+> (find→replace por cena/offset nos três artefatos) — ver `07_qa.md`.
 
 ---
 

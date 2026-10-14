@@ -430,7 +430,7 @@ engine distinto validado pelo Generic Connector System.
 
 Engine do remake *Sora no Kiseki 2nd Chapter* (2026), sem entrada prévia no `connector_registry.json`
 — conector escrito do zero, `target_charset_supported: true` (grava UTF-8 real). Extração + split das
-67 cenas completos; cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
+71 cenas completos (corpus após o patch do Steam); cena-piloto `mp0010_01` (447 linhas) fechou round-trip real contra o `.pac`
 instalado após o off-by-one do terminador ser corrigido por conector (ADR 0006). Demais cenas ainda
 não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifacts/decision_log.md`.
 

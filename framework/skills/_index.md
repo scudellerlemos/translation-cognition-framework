@@ -51,7 +51,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 07_qa  (após cada arco/segmento maior e ao final do corpus)
     ↓
-08_reinsertion  (conector: approved_translations.csv → binário traduzido em output/; cascata det., LLM só no resíduo)
+08_reinsertion  (conector: aprovadas → binário traduzido em output/; cascata det., LLM só no resíduo)
     ↓
 08b_system_text_labels  (escopo completo: texto de sistema + rótulos em imagem)
     ↓
@@ -59,6 +59,11 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
     ↓
 09_distribution  (delta + patcher .exe de um clique; só diferenças, nunca conteúdo do jogo)
 ```
+
+**Quem executa o quê.** Só as skills com código por trás estão em `skills/registry.py`: `00` (`s00_extraction.py`), `06`
+(`s06_translation.py`), `07` (`s07_qa.py`) e `08` (`s08_reinsertion.py`); as demais são playbooks cognitivos que a IA segue.
+Na prática, o passo 6 em diante de **uma cena** roda inteiro no `framework/runtime/run_scene.py` (contexto → tradução → plano
+→ retrotradução de risco alto → round-trip → checkpoint em `run_state.json`); ver `framework/runtime/README.md`.
 
 ---
 
@@ -83,6 +88,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `08b_system_text_labels.md` | 8b | Texto de sistema (limite duro) e rótulos em imagem (letras da folha, por hash, régua antes) |
 | `08c_ingame_test.md` | 8c | Teste no jogo: do print à causa raiz, sem tentativa e erro |
 | `09_distribution.md` | 9 | Pacote de delta + patcher `.exe` de um clique para o jogador (`framework/distribution/`) |
+| `_pre_task.md` | — | Meta-gate de decisões fechadas (labels do engine, retomada de lote, spoiler, custo, TM) — consultar antes de propor solução |
 | `translation_governance.md` | — | **Carta de Governança** — contrato de qualidade (voz/lore/situação/processo) que rege os Passos 05–08 |
 
 ### Suporte do framework
@@ -103,7 +109,7 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 
 | Arquivo | Gerado em | Descrição |
 |---------|-----------|-----------|
-| `dialogs.csv` | Passo 0 | Corpus canônico extraído do meio (id, text_source, byte_budget) |
+| `dialogs.csv` | Passo 0 | Corpus canônico extraído do meio (id, text_source, byte_budget; projetos antigos como o bof4 usam `text_en`) |
 | `extraction_log.md` | Passo 0 | Metadados da extração + gates de round-trip e charset |
 | `entities_candidates.json` | Passo 1 | Entidades brutas extraídas |
 | `aliases_map.json` | Passo 1 | Mapa alias → canônico com spoiler levels |
@@ -115,17 +121,17 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 | `glossary.csv` | Passo 4 | Fonte de verdade operacional dos termos |
 | `translation_rules.md` | Passo 4 | Documento normativo com justificativas |
 | `decision_log.md` | Passo 4b | Registro acumulativo de decisões |
-| `translation_plan.json` | Passo 5 | Plano linha a linha com intenção e risco |
-| `synthetic_test_corpus.json` | Passo 5b | Casos de teste sintéticos por suite |
-| `synthetic_test_results.json` | Passo 5b | Resultados das execuções de teste |
+| `translation_plan.json` | Passo 5 | Plano linha a linha com intenção e risco — por cena: `scenes/<cena>/translation_plan_<sufixo>.json` (ver `05_translation_planning.md`) |
+| `synthetic_test_corpus.json` | Passo 5b | Casos de teste sintéticos por suite (playbook cognitivo; nenhum script o gera) |
+| `synthetic_test_results.json` | Passo 5b | Resultados das execuções de teste (idem) |
 | `<corpus-fonte>` | — | Corpus source (todas as linhas, imutável) — caminho em `project.json` |
-| `approved_translations.csv` | Passo 6 | Traduções aprovadas (`id_column`, `text_target`) — fonte de verdade aplicada no Passo 8 |
-| `translation_status.json` | Passo 6 | Progresso + next_offset + length_warnings + needs_human_review |
-| `micro_qa_log.json` | Passo 6b | Log acumulativo de issues e correções por lote |
+| `approved_translations.csv` | Passo 6 | Traduções aprovadas (`id_column`, `text_target`) — fonte de verdade aplicada no Passo 8; no layout por cena é `scenes/<cena>/approved_<sufixo>.csv` |
+| `translation_status.json` | Passo 6 | Progresso + next_offset + length_warnings + needs_human_review — formato do playbook; o runtime guarda o progresso em `run_state.json` (status por cena) e a fila humana em `hitl_state.json` |
+| `micro_qa_log.json` | Passo 6b | Log acumulativo de issues e correções por lote (playbook; nenhum script o grava) |
 | `qa_report.md` | Passo 7 | Relatório de QA final |
 | `fix_suggestions.json` | Passo 7 | Issues com sugestões de correção (input do Passo 6b (Parte 2)) |
-| binário traduzido + `patch.<fmt>` | Passo 8 | Build com a tradução gravada + patch (ips/bps/xdelta) |
-| `reinsertion_report.md` | Passo 8 | Tier por string, overflows, repoints, falhas |
+| binário traduzido + `patch.<fmt>` | Passo 8 | Build com a tradução gravada + patch (`patch_format`: ips/bps/xdelta, ou `full_file` = o próprio arquivo modificado, como no bof4) |
+| `reinsertion_report.md` | Passo 8 | Tier por string, overflows, repoints, falhas (no bof4 em `artifacts/`) |
 
 ---
 
@@ -169,10 +175,10 @@ As skills resolvem tudo que é específico lendo `project.json` e os artefatos g
 
 O projeto está completo quando:
 
-- [ ] `translation_status.json` com `completion_pct: 1.00`
+- [ ] Todas as cenas em `verified` no `run_state.json` (ou `translation_status.json` com `completion_pct: 1.00`, no formato do playbook)
 - [ ] `qa_report.md` com status: **aprovado** (0 issues críticos, ≤ aceitável de altos)
 - [ ] `fix_suggestions.json` com todos os issues críticos com `status: applied`
-- [ ] `needs_human_review` no `translation_status.json` está vazio ou todos revisados
+- [ ] `needs_human_review` (campo `needs_review` do plano da cena / fila do `hitl.py`) está vazio ou todos revisados
 - [ ] Nenhum `length_warning` sem revisão documentada
 - [ ] `decision_log.md` atualizado com todas as decisões não-óbvias do projeto
 - [ ] Passo 08 concluído: binário traduzido + patch gerados; `reinsertion_report.md` sem overflows não resolvidos

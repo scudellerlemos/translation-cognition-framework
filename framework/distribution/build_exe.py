@@ -6,9 +6,12 @@ import subprocess
 import sys
 import tempfile
 
+if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
+    sys.exit(__doc__)
 dist = pathlib.Path(sys.argv[1]).resolve()
 saida = pathlib.Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else dist.parent / 'output'
-assert dist not in (saida, *saida.parents), 'saida dentro de dist/ seria embutida no proprio exe'
+if dist in (saida, *saida.parents):  # nao 'assert': some com python -O
+    raise AssertionError('saida dentro de dist/ seria embutida no proprio exe')
 nome = json.loads((dist / 'manifest.json').read_text(encoding='utf-8'))['app']['exe']
 ico = [f'--icon={dist / "icone.ico"}'] if (dist / 'icone.ico').is_file() else []
 with tempfile.TemporaryDirectory() as work:  # work/spec do PyInstaller fora da pasta de saida

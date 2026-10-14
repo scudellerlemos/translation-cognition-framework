@@ -140,7 +140,7 @@ Rodar: `python connector/extract.py <bin>` → `python connector/reinsert.py <bi
 ## Como rodar
 
 O processo é definido em [`/framework/skills/`](../../framework/skills/_index.md).
-Executar as skills na ordem do pipeline (00 → 08), cada uma lendo `project.json` +
+Executar as skills na ordem do pipeline (00 → 09), cada uma lendo `project.json` +
 os artefatos do passo anterior. Os Input Gates de cada skill bloqueiam execução fora de ordem.
 O Passo 00 (extração) só avança se o gate de round-trip passar.
 

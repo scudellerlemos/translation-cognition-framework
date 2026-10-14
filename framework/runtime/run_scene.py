@@ -682,7 +682,8 @@ def main():
     was_verified = {s for s in a.scene if before.get(s, {}).get("status") == "verified"}
     # Lote = mesma execucao por cena, em fila (a TM cresce de uma cena para a seguinte); so o custo fixo
     # do processo (carga do modelo de busca, mirror do DB, auditorias) deixa de se repetir a cada cena.
-    bad, done = [], []
+    bad: list[str] = []
+    done: list[str] = []
     same = [] if a.full or a.clean else _unchanged(a.project, a.scene)
     if same:
         print(f"[skip] {len(same)} cena(s) verified sem fala tocada (use --full para reconferir): {', '.join(same)}")

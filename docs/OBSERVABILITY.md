@@ -24,7 +24,7 @@ entrada, saída, cache lido e cache escrito por requisição, `cost_usd: 0` (ass
 | cache_hits (doutrina) | `usage.cache_read_input_tokens` | prova o ganho do caching |
 
 A proporção a mirar é **tradução : governança ≈ 70:30 ou melhor** (governança é a doutrina cacheada
-~4K tok + as gates determinísticas, que custam ~0 em tokens de IA).
+~2,2K tok (estimativa) + as gates determinísticas, que custam ~0 em tokens de IA).
 
 ## Métricas por cena (qualidade)
 

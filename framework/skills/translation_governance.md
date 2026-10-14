@@ -29,7 +29,7 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
 ### 1. Contexto de PERSONAGEM (voz)
 
 > **HIERARQUIA DE REGISTRO — leia antes de tudo:**
-> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json`.
+> 1. **VOZ DO KB (máxima prioridade, inegociável):** consulte `state/voice_cards.json` (`artifacts/state/voice_cards.json`, gerado do `tone_analysis.md`).
 >    Se o falante (`speaker`) tiver um card registrado ali — mesmo que a entrada seja mínima —
 >    *toda* linha desse personagem segue o perfil de voz documentado (3ª pessoa, `tu`,
 >    registro arcaico/formal/solene, gíria própria, comprimento de frase etc.).
@@ -82,8 +82,8 @@ palavra. Toda linha é avaliada **no contexto do personagem, do mundo e da cena*
   `risk ≥ high` → **back-translation obrigatória** (06b/07).
 - **Camadas de verificação:** linter determinístico de naturalidade (pega o sistemático barato) →
   revisão contextual por personagem × situação (06b/07) → **aprovação humana**.
-- **Fluxo:** a IA **PROPÕE** no `translation_plan.json` (`base_translation`) → o usuário **APROVA**
-  (`approved_translations.csv`) → o script **APLICA** (Passo 08). A IA nunca edita dados/binário à mão.
+- **Fluxo:** a IA **PROPÕE** no plano (`translation_plan_<cena>.json`, `base_translation`) → o usuário **APROVA**
+  (`approved_<cena>.csv`; `approved_translations.csv` no formato global) → o script **APLICA** (Passo 08). A IA nunca edita dados/binário à mão.
 - **Decisões não-óbvias** vão para o `decision_log.md`.
 
 ---

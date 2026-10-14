@@ -94,6 +94,30 @@ Estrutura por linha:
 | `critical_lines` | Contagem de linhas com `risk_level: critical` |
 | `plan_version` | Data de criação "YYYY-MM-DD" |
 
+### Como o plano nasce na implementação (conector `hex_binary`, ex.: bof4)
+
+O plano é **por cena**, não um `translation_plan.json` único: `artifacts/scenes/<cena>/translation_plan_<sufixo>.json`
+(`paths.translation_plan`). Quem o monta é o `build_plan_chapter.py <cena>` do conector (esqueleto em
+`connectors/_skeleton/`), a partir do `dialogs.csv` da cena + o `translations_<sufixo>.json` que o tradutor devolve — cada
+linha dele traz a tradução `t` **e** os metadados do plano (`speaker`, `tone_register`, `intent`, `risk_level`, `risk_notes`,
+`glossary_flags`, `spoiler_flags`). Ou seja, o `base_translation` é a própria tradução da cena e o plano é o registro auditável
+dela (`run_scene` o chama; ver `06_translation.md`). Diferenças em relação ao formato acima, verificadas no código:
+
+- cabeçalho: `scene`, `scene_group`, `lines`, `total_lines`, `high_lines` (high+critical), `medium_lines`, `needs_review`
+  (offsets), `plan_version` (`bof4-<sufixo>-v1` no bof4) — não há `critical_lines`;
+- linha: `text_source` (não `text_en`), sem `entities_present`; `needs_human_review: true` quando o tradutor marcou;
+  `risk_notes` obrigatório a partir de `medium`;
+- `speaker` (bof4): o `speaker_code` determinístico do binário (`artifacts/state/portrait_codes.json`) tem precedência sobre o palpite
+  do modelo;
+- o build **falha** (exit 1) se faltar tradução de algum offset, sobrar offset, `risk_level` inválido (`low|medium|high|critical`),
+  token estrutural divergente (esqueleto: `formatting_tokens`/`formatting_token_patterns` do `project.json`; bof4: só `[02]`) ou `risk_notes` ausente; também sincroniza o DB (`connector_io.sync_translations_db`) ou grava o
+  `approved_<sufixo>.csv` (`offset,text_target`).
+
+**Triagem de risco (passo 4.4a).** O tradutor marca pouco risco alto, e só `high`/`critical` passa pela retrotradução.
+`python framework/runtime/risk_triage.py export <projeto> [--batch 400]` grava lotes (fala repetida entra uma vez) para um juiz
+barato; `risk_triage_run.py <projeto> [--go] [--model haiku] [--jobs 6] [N ...]` orquestra o juiz — **sem `--go` só lista os
+lotes; `--go` chama o modelo (pago)**; `risk_triage.py apply <projeto>` sobe para `high` as falas apontadas.
+
 ### Critérios de risk_level
 
 | Nível | Quando usar |
@@ -129,7 +153,7 @@ Checklist obrigatório para cada linha crítica:
 | 5 | Registro no decision_log | A decisão está documentada com tipo, razão e impacto? |
 
 **Aprovação:** todas as 5 verificações devem passar.
-**Se reprovada:** bloquear inclusão + registrar no `decision_log.md` (tipo `revision`) + marcar no `translation_status.json` com `needs_human_review`.
+**Se reprovada:** bloquear inclusão + registrar no `decision_log.md` (tipo `revision`) + marcar a linha com `needs_human_review` (no plano da cena vira `needs_review` no cabeçalho; a fila humana é do `hitl.py`). `translation_status.json` não é gerado por nenhum script — o progresso real está em `artifacts/run_state.json`.
 
 ---
 
