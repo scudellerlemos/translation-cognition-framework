@@ -109,13 +109,62 @@ def _no_effort_model(model: str) -> bool:
 
 # ------------------------------- TRANSLATE ------------------------------------
 
+def saved_pack(root, scene) -> dict | None:
+    """RECONFERENCIA (so caminho de sessao): o pack.json ja gravado, se a cena ja tem traducao e nada do que
+    alimenta o pack mudou desde entao (falas da cena, project.json, doutrina = carta+glossario+decisoes+tom).
+    Remontar o pack de uma cena pronta so para reconferir um conserto custava minutos em cena grande.
+    None = nao da para reaproveitar -> quem chama remonta.
+    So vale com a traducao COMPLETA: faltando fala, a TM que cresceu no banco depois do pack pode preenche-la,
+    entao remonta. Com todas as falas presentes a TM nao e consultada e o pack gravado basta."""
+    root = Path(root)
+    pk = paths.pack(root, scene)
+    if not pk.is_file():
+        return None
+    try:
+        pack = json.loads(pk.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    out = paths.translations(root, scene, pack.get("scene_id", ""))
+    try:
+        have = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
+    except (OSError, ValueError):
+        return None
+    if any(r["offset"] not in have for r in pack.get("lines", [])):
+        return None
+    if pack.get("doctrine_hash", "") != context_pack._doctrine_hash(root):
+        return None
+    made = pk.stat().st_mtime
+    deps = [paths.dialogs(root, scene), root / "project.json"]
+    if any(d.is_file() and d.stat().st_mtime > made for d in deps):
+        return None
+    return pack
+
+
 def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) -> TranslateResult:
     """Traduz uma cena (use run_chapter --max-usd para teto duro por capitulo)."""
     root = Path(root)
-    pack = context_pack.write_pack(root, scene)            # (re)gera prompt+pack (determinista)
+    pack = saved_pack(root, scene) if backend == "in-session" else None
+    if pack:
+        print("      reconferencia: contexto da cena reaproveitado (falas e doutrina nao mudaram).")
+    else:
+        pack = context_pack.write_pack(root, scene)        # (re)gera prompt+pack (determinista)
     scene_id = pack["scene_id"]
     out = paths.translations(root, scene, scene_id)
     if backend == "in-session":
+        # mesmo DEDUP por TM do caminho api: fala ja traduzida em outra cena nao vai ao agente (sai do
+        # prompt) e e acrescentada aqui. So preenche offset AUSENTE -- o que o agente escreveu prevalece.
+        reuse = _select_reuse(pack, enabled=True)
+        if reuse and (out.is_file() or len(reuse) == pack["n_lines"]):
+            data = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
+            add = {o: e for o, e in reuse.items() if o not in data.setdefault("lines", {})}
+            if add:
+                data["lines"].update(add)
+                out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        elif reuse:
+            novel = [r for r in pack["lines"] if r["offset"] not in reuse]   # copia: o pack (e o caminho api) nao muda
+            paths.scene_prompt(root, scene).write_text(
+                context_pack.render_prompt({**pack, "lines": novel, "n_lines": len(novel)},
+                                           context_pack._read(context_pack.CARTA_PATH)), encoding="utf-8")
         if out.is_file():
             return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
         return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],
@@ -548,12 +597,13 @@ def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0, pc: dict |
     return sorted(over)
 
 
-def over_budget_offsets(root, scene, *, tolerance: float = 1.0, detail: bool = False) -> list:
+def over_budget_offsets(root, scene, *, tolerance: float = 1.0, detail: bool = False,
+                        reuse_pack: bool = False) -> list:
     """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a
     estouro). `detail=True` devolve [{offset, byte_budget, actual, source, t}, ...] em vez da lista
     nua de offsets (diagnostico persistivel, ver run_scene._persist_fitting_diagnostics)."""
     root = Path(root)
-    pack = context_pack.build_pack(root, scene)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
     out = paths.translations(root, scene, pack['scene_id'])
     if not out.is_file():
         return []

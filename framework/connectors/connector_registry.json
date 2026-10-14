@@ -8,16 +8,16 @@
       "tier": "known_engine",
       "family": "capcom_dat",
       "signatures": {
-        "file_patterns": ["AREAD*.DAT", "AREAS*.DAT", "AREAD*.dat", "AREAS*.dat"],
+        "file_patterns": ["AREAD*.DAT", "AREAS*.DAT", "AREAM*.DAT", "AREAE*.DAT", "AREAD*.dat", "AREAS*.dat", "AREAM*.dat", "AREAE*.dat"],
         "magic_bytes": null,
         "encoding": "ascii",
         "control_token_pattern": "\\[[0-9A-Fa-f]{2}\\]",
         "min_file_count": 5,
         "string_density_min": 0.15
       },
-      "reference_project": "breath_of_fire_4",
-      "reference_connector": "projects/breath_of_fire_4/connector",
-      "notes": "Container TOC Capcom: offsets little-endian uint32, 16 bytes/entrada. String sharing: ponteiros podem apontar para o interior de outras strings. Encoding ASCII puro (0x20-0x7E) + tokens de controle [XX]."
+      "reference_project": "bof4",
+      "reference_connector": "projects/bof4/connector",
+      "notes": "Container TOC Capcom: offsets little-endian uint32, 16 bytes/entrada. String sharing: ponteiros podem apontar para o interior de outras strings. Encoding ASCII puro (0x20-0x7E) + tokens de controle [XX]. Fim de string = proximo ponteiro distinto: 0x00 tambem e parametro de control code ([14][00][00]), cortar no primeiro 0x00 trunca a fala (issue #222)."
     },
     {
       "id": "aquaplus_sdat",

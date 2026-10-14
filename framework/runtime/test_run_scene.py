@@ -71,7 +71,7 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(rs.M, "translate", fake_translate)
     monkeypatch.setattr(rs.M, "high_risk_lines", lambda r, s: st["highs"])
     monkeypatch.setattr(rs.M, "back_translate", fake_back)
-    def fake_over_budget_offsets(r, s, tolerance=1.0, detail=False):
+    def fake_over_budget_offsets(r, s, tolerance=1.0, detail=False, **k):
         if not st["over"]:
             return []
         if detail:
@@ -94,6 +94,60 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(rs.state_index, "build",
                         lambda r, **k: {"tm": 0, "cards": 0, "decisions": 0, "warnings": []})
     return root, scene, st
+
+
+def test_in_session_reuses_tm_lines(tmp_path, monkeypatch):
+    """in-session: fala ja traduzida em OUTRA cena sai do prompt e entra sozinha no translations (so offset ausente)."""
+    import context_pack
+    import model
+    pack = {"scene": "B.DAT", "scene_id": "B", "n_lines": 2, "project_constraints": {},
+            "tm_exact": [{"source": "Hello", "target": "Ola", "speaker": "npc", "from_scene": "A.DAT"}],
+            "lines": [{"offset": "B.DAT:0:0", "source": "Hello", "byte_budget": 9},
+                      {"offset": "B.DAT:0:1", "source": "New", "byte_budget": 9}]}
+    monkeypatch.setattr(context_pack, "write_pack", lambda root, scene: pack)
+    monkeypatch.setattr(context_pack, "render_prompt", lambda p, carta: "|".join(r["offset"] for r in p["lines"]))
+    out = model.paths.translations(tmp_path, "B.DAT", "B")
+    out.parent.mkdir(parents=True)
+    assert model.translate(tmp_path, "B.DAT", backend="in-session")["status"] == model.AWAITING
+    assert model.paths.scene_prompt(tmp_path, "B.DAT").read_text(encoding="utf-8") == "B.DAT:0:1"
+    out.write_text('{"lines": {"B.DAT:0:1": {"t": "Novo"}}}', encoding="utf-8")
+    assert model.translate(tmp_path, "B.DAT", backend="in-session")["status"] == model.READY
+    lines = json.loads(out.read_text(encoding="utf-8"))["lines"]
+    assert lines["B.DAT:0:0"]["t"] == "Ola" and lines["B.DAT:0:1"]["t"] == "Novo"
+
+
+def test_in_session_recheck_reuses_saved_pack_until_something_changes(tmp_path, monkeypatch):
+    """Reconferencia: cena ja traduzida e sem mudanca nas falas/doutrina nao remonta o pack; api sempre remonta."""
+    import os
+
+    import context_pack
+    import model
+    pack = {"scene": "B.DAT", "scene_id": "B", "n_lines": 1, "project_constraints": {}, "doctrine_hash": "h1",
+            "lines": [{"offset": "B.DAT:0:0", "source": "New", "byte_budget": 9}]}
+    built = []
+    monkeypatch.setattr(context_pack, "write_pack", lambda root, scene: built.append(scene) or pack)
+    monkeypatch.setattr(context_pack, "build_pack", lambda root, scene: built.append(scene) or pack)
+    monkeypatch.setattr(context_pack, "_doctrine_hash", lambda root: "h1")
+    P = model.paths
+    d = P.dialogs(tmp_path, "B.DAT")
+    d.parent.mkdir(parents=True)
+    d.write_text("offset,text_en", encoding="utf-8")
+    P.pack(tmp_path, "B.DAT").write_text(json.dumps(pack), encoding="utf-8")
+    assert model.saved_pack(tmp_path, "B.DAT") is None                       # sem traducao ainda: monta
+    P.translations(tmp_path, "B.DAT", "B").write_text('{"lines": {}}', encoding="utf-8")
+    assert model.saved_pack(tmp_path, "B.DAT") is None                       # falta fala: a TM nova pode preencher
+    P.translations(tmp_path, "B.DAT", "B").write_text('{"lines": {"B.DAT:0:0": {"t": "Novissimo!"}}}', encoding="utf-8")
+    assert model.translate(tmp_path, "B.DAT", backend="in-session")["status"] == model.READY
+    assert model.over_budget_offsets(tmp_path, "B.DAT", reuse_pack=True) == ["B.DAT:0:0"]
+    assert built == []                                                       # nada remontado
+    model.over_budget_offsets(tmp_path, "B.DAT")                             # caminho api: remonta como sempre
+    assert built == ["B.DAT"]
+    monkeypatch.setattr(context_pack, "_doctrine_hash", lambda root: "h2")   # glossario/carta mudou
+    assert model.saved_pack(tmp_path, "B.DAT") is None
+    monkeypatch.setattr(context_pack, "_doctrine_hash", lambda root: "h1")
+    late = P.pack(tmp_path, "B.DAT").stat().st_mtime + 5
+    os.utime(d, (late, late))                                                # falas re-extraidas depois do pack
+    assert model.saved_pack(tmp_path, "B.DAT") is None
 
 
 def test_success_verified(env):
@@ -560,3 +614,29 @@ def test_audit_spoiler_failure_only_warns(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(rs.spoiler_check, "audit_and_persist", boom)
     rs._audit_spoiler(tmp_path)
     assert "[spoiler-audit] AVISO" in capsys.readouterr().out
+
+
+def test_checkpoint_parallel_writers_keep_every_scene(tmp_path):
+    """Trava do run_state: 40 checkpoints concorrentes, nenhum some."""
+    from concurrent.futures import ThreadPoolExecutor
+    (tmp_path / "artifacts").mkdir()
+    with ThreadPoolExecutor(8) as ex:
+        list(ex.map(lambda i: rs._checkpoint(tmp_path, f"S{i:02}", {"status": "verified"}), range(40)))
+    state = json.loads((tmp_path / "artifacts" / "run_state.json").read_text(encoding="utf-8"))
+    assert len(state["scenes"]) == 40
+    assert not (tmp_path / "artifacts" / "run_state.json.lock").exists()
+
+
+def test_backend_preflight_switch(tmp_path):
+    (tmp_path / "project.json").write_text(json.dumps(
+        {"extraction_scope": "completo", "system_scenes": ["INIT"]}), encoding="utf-8")
+    m = paths.metrics(tmp_path)
+    m.parent.mkdir(parents=True, exist_ok=True)
+    m.write_text(json.dumps({"scene": "A", "source": "session"}) + "\n", encoding="utf-8")
+    key = {"ANTHROPIC_API_KEY": "x"}
+    probs, notes = rs.backend_preflight(tmp_path, ["A", "INIT"], "api", env=key)
+    assert len(probs) == 1 and "INIT" in probs[0]            # API so traduz dialogo
+    assert any("AVISO" in n and "A" in n for n in notes)     # cena veio do outro caminho: avisa, nao bloqueia
+    assert any("ANTHROPIC_API_KEY" in p for p in rs.backend_preflight(tmp_path, ["A"], "api", env={})[0])
+    probs, notes = rs.backend_preflight(tmp_path, ["A", "INIT"], "in-session", env={})
+    assert probs == [] and len(notes) == 1                   # sessao: escopo completo, sem chave, sem aviso

@@ -28,6 +28,7 @@ import re
 import sys
 from pathlib import Path
 
+import events  # noqa: E402  (etapa `pack` medida a parte da traducao)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 
 _HERE = Path(__file__).resolve().parent
@@ -919,7 +920,9 @@ def render_prompt(pack: dict, carta: str) -> str:
 
 
 def write_pack(root: Path, scene: str) -> dict:
-    pack = build_pack(root, scene)
+    with events.stage(root, "pack", scene) as ev:
+        pack = build_pack(root, scene)
+        ev["n_lines"] = pack.get("n_lines")
     scene_dir = paths.scene_dir(root, scene)
     scene_dir.mkdir(parents=True, exist_ok=True)   # projeto DB-only não tem o dir da cena em disco
     carta = _read(CARTA_PATH)

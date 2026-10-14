@@ -128,7 +128,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Connector contract — BoF4
-        run: python -m pytest projects/breath_of_fire_4/connector/ -v --tb=short
+        run: python -m pytest projects/bof4/connector/ -v --tb=short
 
   connector-uta:
     name: Connector contract — Utawarerumono

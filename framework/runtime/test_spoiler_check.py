@@ -128,8 +128,12 @@ def test_audit_and_persist_writes_report_with_leaks(tmp_path):
     assert rep["clean"] is False
     assert rep["name_leaks"] and rep["name_leaks"][0]["forbidden"] == "Oshtor"
     assert rep["gender_flags"] and rep["gender_flags"][0]["marker"] == "ela"
-    saved = json.loads(paths.spoiler_audit(tmp_path).read_text(encoding="utf-8"))
-    assert saved == rep
+    raw = paths.spoiler_audit(tmp_path).read_text(encoding="utf-8")
+    saved = json.loads(raw)
+    # o arquivo e versionado: mesmo relatorio, sem a fala
+    assert "Oshtor aparece" not in raw and "disfar" not in raw
+    assert saved["clean"] is False and saved["name_leaks"][0]["forbidden"] == "Oshtor"
+    assert saved["gender_flags"][0]["offset"] == rep["gender_flags"][0]["offset"]
 
 
 def test_future_helper():

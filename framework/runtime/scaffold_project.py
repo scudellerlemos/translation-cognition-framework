@@ -137,11 +137,40 @@ _RESEARCH_LOG_TEMPLATE = """\
 _KB_RATIFIED_HEADER = "name,ratified_by,date,note\n"
 
 
+_ROADMAP_TEMPLATE = """# ROADMAP — {title}
+
+## Retomada (ler primeiro numa sessão nova)
+
+Atualizar antes de cada `/clear` (toda virada de fase). `/compact` manual nunca: a compactação é a automática.
+Primeiro comando da sessão nova: `python ../../framework/runtime/session_usage.py mark . <fase>`.
+
+- **Onde estamos:** Fase 0, nada fechado.
+- **Bloqueios que só o usuário desfaz:** (aprovações pendentes; `hitl.py status .` mostra as do HITL)
+- **Regras que só valem neste projeto:** (ex.: o que exige ok explícito, fora de escopo)
+- **Ferramentas locais:** `tools_local/` (fora do git)
+
+## Fase 0 — Conector
+
+## Fase 1 — KB
+
+## Fase 2 — Piloto
+
+A conferência visual no jogo é aqui: o humano vê o trajeto do piloto instalado antes de escalar.
+
+## Fase 3 — Tradução em escala
+
+## Fase 4 — Fechamento
+
+Sem passada pelo jogo inteiro: depois do piloto, a conferência visual é por print a cada instalação.
+"""
+
+
 def _project_json(project_root: Path, title: str) -> str:
     cfg = json.loads(_TEMPLATE.read_text(encoding="utf-8"))
     slug = project_root.resolve().name
     cfg["title"] = title
     cfg["db"] = {"path": f"{slug}.db", "project_id": slug}
+    cfg["hitl"] = True      # projeto novo nasce com humano no laco (hitl.py); projeto antigo sem a chave nao muda
     return json.dumps(cfg, ensure_ascii=False, indent=2) + "\n"
 
 
@@ -225,6 +254,9 @@ def scaffold(project_root: Path, title: str = "") -> None:
     emit(art / "tone_analysis.md", text(_TONE_ANALYSIS_TEMPLATE.format(title=t)))
     emit(art / "decision_log.md", text(_DECISION_LOG_TEMPLATE.format(title=t)))
     emit(art / "kb_phase_worklist.md", text(_KB_WORKLIST_TEMPLATE.format(title=t)))
+
+    # ROADMAP.md com a secao "Retomada": o que uma sessao sem contexto le primeiro (regra do /clear por fase)
+    emit(project_root / "ROADMAP.md", text(_ROADMAP_TEMPLATE.format(title=t)))
 
     # 6-9. artefatos de KB que o kb_gate/kb_phase/spoiler_check leem — com o schema certo, mas
     # nenhum satisfaz o gate: KB com KB_PLACEHOLDER (hard), research_log com status pending.

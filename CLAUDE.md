@@ -49,3 +49,31 @@ seguidos à risca, na ordem, sem atalho.
   back-translation e gate visual do piloto fechados).
 - Se um passo parecer desnecessário ou impossível de cumprir, parar e perguntar ao usuário — a decisão
   de pular é só dele, explícita e caso a caso.
+
+## Sessão — contexto e medição de custo
+
+- Nunca rodar nem sugerir `/compact` manual: a compactação é a automática.
+- Virada de fase = `/clear`. Antes dele, atualizar a seção "Retomada" do ROADMAP do projeto; depois dele, o
+  primeiro comando é `python framework/runtime/session_usage.py mark <projeto> <fase>`.
+- Ao fechar uma fase, avisar o usuário que é hora do `/clear` (quem digita é ele).
+- Detalhe e motivo em `docs/TRANSLATION_PIPELINE.md` ("Sessão: contexto e medição de custo").
+
+## Sessão — só ferramenta do projeto ligada
+
+Servidor MCP, conector do claude.ai ou plugin sem relação com o projeto não fica ligado aqui: cada um entra
+no contexto de toda requisição (nomes de ferramenta + instruções), mesmo sem uso.
+
+- `.claude/settings.json` já desliga os conectores do claude.ai (`disableClaudeAiConnectors`) e nega os
+  servidores listados em `deniedMcpServers`. Servidor novo na máquina que não serve ao projeto: acrescentar
+  o nome ali, na mesma ação.
+- Nunca remover essas chaves nem ligar um servidor "só para testar" sem pedido explícito do usuário.
+- Integração com o Chrome não tem chave de projeto: abrir a sessão com `claude --no-chrome`.
+- Conferir: `/mcp` na sessão tem de vir vazio.
+
+## Sessão — modelo
+
+- A janela principal roda em **Sonnet** (`"model": "sonnet"` em `.claude/settings.json`), igual ao tradutor
+  do caminho de API. Não trocar o padrão do projeto sem pedido explícito do usuário.
+- Opus só quando o usuário trocar à mão (`/model opus`), para bring-up de conector ou diagnóstico difícil;
+  ao terminar, voltar para Sonnet.
+- Subagentes seguem o próprio arquivo: `scene-translator` em Sonnet, retrotradução em Opus.

@@ -6,7 +6,7 @@
 #
 # Checkout de dev (sem `pip install .`):
 #   pip install -r requirements-ml.txt
-#   python framework/cli.py db index projects/translation_software/translation_software.db bof4
+#   python framework/cli.py db index projects/bof4/bof4.db bof4
 #
 # Pesado (~700 MB–1,5 GB): puxa torch + baixa o modelo MiniLM (~470 MB) no cache do HuggingFace
 # (~/.cache/huggingface). Os vetores ficam na própria <projeto>.db (tabela tm_embeddings + vec0).

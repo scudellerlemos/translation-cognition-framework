@@ -66,6 +66,30 @@ def test_ratified_csv_header_only_is_ignored_and_unreadable_only_warns(tmp_path)
 
 
 # --- glossary_lint ----------------------------------------------------------------------------------
+
+def test_glossary_lint_has_form_accepts_inflection_and_abbreviation():
+    def has(expected, target):
+        return glossary_lint._has_form(expected, target.split())
+    assert has("imperial", "as tropas imperiais")           # plural
+    assert has("eternos", "uma eterna")                     # genero
+    assert has("selecionar", "selecione um topico")         # verbo
+    assert has("penhasco", "penhas")                        # abreviacao
+    assert has("planicies douradas", "nas planicies douradas")
+    assert not has("mausoleu", "a tumba")
+    assert not has("ponto de oceano", "ponto de mar")
+
+
+def test_glossary_lint_skips_term_that_only_opens_a_sentence():
+    skip = glossary_lint._only_sentence_initial
+    assert skip("Try", '"Did you see him? Try looking north."')      # maiuscula da frase
+    assert skip("Select", "Setas: Select um item")              # apos ':'
+    assert skip("Love", "Gatos[0B]Love[0B]Viagens")             # codigo de controle separa opcoes
+    assert not skip("Select", '[14]"Select"')                       # a linha e o rotulo
+    assert not skip("Endless", "Behold the Endless!")               # meio da frase
+    assert not skip("Ocean Spot", "Ocean Spot 1")                   # termo composto: sempre audita
+    assert not skip("village", "Village of the wind")               # termo minusculo: sempre audita
+
+
 def test_load_glossary_flat_filters_what_is_not_auditable(tmp_path):
     _put(paths.glossary(tmp_path),
          "term,handling_rule,target_translation,aliases\n"
@@ -78,6 +102,19 @@ def test_load_glossary_flat_filters_what_is_not_auditable(tmp_path):
         ("Kuon", ["Kuon", "alias1", "alias2"], "manter_original"),
         ("Warmaster", ["Mestre de Guerra"], "traduzir"),
     ]
+
+
+def test_lint_kept_name_hides_the_common_word_inside_it(tmp_path, monkeypatch):
+    _put(paths.glossary(tmp_path),
+         "term,handling_rule,target_translation,aliases\n"
+         "Ice,traduzir,Gelo,\n"
+         "Ring of Ice,manter_original,,\n")
+    lines = {"a": {"source": "Ring of Ice", "target": "Ring of Ice"},          # nome preservado: ok
+             "b": {"source": "Two Ring of Ices.", "target": "Dois Ring of Ice."},   # plural do nome: ok
+             "c": {"source": "The Ice melts.", "target": "O frio derrete."},    # termo solto: acusa
+             "d": {"source": "Ring of Ice", "target": "Anel de Gelo"}}          # nome traduzido: acusa
+    monkeypatch.setattr(glossary_lint.context_pack, "load_translated_scenes", lambda root: [("s", "s", lines)])
+    assert [(f["offset"], f["term"]) for f in glossary_lint.lint(tmp_path)] == [("c", "Ice"), ("d", "Ring of Ice")]
 
 
 def test_lint_without_glossary_is_empty(tmp_path):

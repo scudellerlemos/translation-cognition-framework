@@ -93,7 +93,7 @@ warnings, qa_effectiveness). Por quê:
 
 **Decisão (set/2026):** o critério de pronto original da issue ("1 projeto rodando end-to-end
 com produtores DB-first") não é atingível hoje sem run vivo — **nenhum projeto ativo tem
-`db` populado** (`translation_software` é um shell DB-only, corpus BoF4 migrado uma vez, sem
+`db` populado** (`translation_software`, depois removido, era um shell DB-only, corpus BoF4 migrado uma vez, sem
 connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguem flat). Em vez de esperar
 esse pré-requisito (fora do controle desta issue), o escopo foi reduzido ao que o oráculo de
 paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan_chapter.py`.
@@ -200,24 +200,24 @@ helper genérico (risco de comer texto real).
 A migração É o que viabiliza o RAG: o **DB com vetores é o store de RAG**. Quanto mais corpus migrado
 (Fases 2–3), mais rico o retrieval. Por isso a ordem: encher o DB primeiro, ativar semântica em cima.
 
-## Como LIGAR a TM semântica (stack de ML) — projeto `translation_software`
+## Como LIGAR a TM semântica (stack de ML) — projeto `bof4`
 
 A migração de DADO está completa; ligar a busca semântica é **operacional**, não migração. O projeto
-alvo é **`translation_software`** (com `db` declarado, assim como `demo` e todo projeto novo pelo template; corpus do BoF4 já migrado pra dentro dele:
-125 cenas / 6046 linhas). BoF4/Uta seguem flat (`db=null`); `translation_local` está **descontinuado**
-(ADR 0008 — POC de tier Ollama local pra tradução, não embeddings).
+alvo é **`bof4`** (com `db` declarado, assim como `demo` e todo projeto novo pelo template). A validação
+original foi feita no `translation_software`, um shell DB-only com o corpus antigo do BoF4 (125 cenas /
+6046 linhas), removido do repositório junto com `breath_of_fire_4` e `translation_local`.
 
 1. **Instalar a stack** (pesada; já vem no `pip install .`): `pip install -r requirements-ml.txt`
    (`sentence-transformers` + `sqlite-vec`; ~700 MB–1,5 GB com torch + modelo MiniLM).
 2. **Construir os vetores** (compute único, ~minutos em CPU):
-   `python framework/cli.py db index projects/translation_software/translation_software.db bof4`
+   `python framework/cli.py db index projects/bof4/bof4.db bof4`
    → popula `tm_embeddings` + a virtual table `vec0` na própria `.db`.
 3. **Pronto**: o `context_pack` em modo DB injeta a seção "falas SIMILARES (adapte)" sozinho
    (o `_get_embedder` carrega o modelo 1×/processo). Sem a stack, o `kb_gate` bloqueia (opt-out: `"db": {..., "semantic": false}`).
 
 **Validação (correção — este parágrafo estava desatualizado):** `embedder.index_project`/`search` JÁ
 rodaram com as deps reais (a CI usa o fallback de propósito, mas fora dela a stack real foi validada):
-6046 vetores no `translation_software`, busca exata → score 1.0, variação de vocabulário → 0.944. Ver
+6046 vetores no `translation_software` (depois removido), busca exata → score 1.0, variação de vocabulário → 0.944. Ver
 memória `semantic-stack-validated` e `docs/ROADMAP.md` (seção B2, Histórico detalhado).
 
 ### Checklist de revalidação de modelo (projeto novo, #54; amostragem e 2º par, #64)

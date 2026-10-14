@@ -1,0 +1,14 @@
+print,texto_visto,problema,sugestao
+run1/ascento1.png,saímos,"acento do í sai como pingo + risco solto à direita (fonte: font.py, _ACUTE_I)",redesenhar o agudo do i partindo do pingo ou usar glifo í inteiro num código ASCII livre
+run1/ascento2.png,aí,mesmo defeito do í na caixa de diálogo,idem
+run1/nao_traduzido.png,I: Awakening,"título de capítulo em inglês: é imagem, não texto (não existe como string em nenhum DAT)",decidir se títulos de capítulo entram no escopo (edição de textura)
+run1/trecho_fou_lu_nao traduzido.png,fala do Fou-Lu em ingles,"fala em inglês: AREAD014 nunca entrou no corpus — o detector de seção de texto descartava cena curta (tabela de 256 ponteiros, ~10 falas); 20 cenas AREA* nessa situação e AREAS056 lia a seção errada",detector corrigido em connector/extract.py; falta re-extrair e passar a cena pelo pipeline
+run1/trecho_fou_lu_nao traduzido2.png,fala em ingles (segunda cena do Fou-Lu),"fala em inglês: AREAD024 está no corpus (16 linhas) mas ficou fora das 14 cenas do piloto",incluir AREAD024 no trajeto do piloto
+run1/sem traducao.png,fala em ingles na taverna,"fala em inglês: AREAE020 (=AREAE044) está no corpus (16 linhas) mas ficou fora das 14 cenas do piloto",incluir AREAE020/AREAE044 no trajeto do piloto
+run1/bar_serai.png,aviso de item obtido e rotulos da taverna,"texto de diálogo ok; Min/Max e Zenny são imagem de interface, não texto",Min/Max e Zenny ficam fora do escopo (decisão do usuário); conferir nome do item no glossário
+run1/informante.png,tela de negociacao do informante,sem defeito visível (acento do ê ok),-
+run1/primeira run fechada.png,(sem texto),fim do trajeto da run1; nada a corrigir,-
+run2/ascento.png,fala com i agudo antes de hifen,"agudo do i mais colado, mas ainda nao parece letra: o pingo continua embaixo do traco",i agudo vira glifo proprio sem pingo (vaga de 0x5D); conferir forma e espacamento na run3
+run2/ainda_sem_traducao.png,fala em ingles na ponte,cena AREAD059 extraida (6 linhas) mas fora da lista do piloto; nao e defeito do conector,cena passada pelo piloto
+run3/ascento.png,narracao de abertura,i agudo como glifo proprio saiu cortado (fiapo) e com buraco de uma letra depois,revertido para o acento sobreposto; sonda 3 para medir a vaga antes de redesenhar
+run3/ascento2.png,narracao de abertura (sonda 3),regua diagonal nas vagas sem uso: janela e avanco de cada codigo medidos,"i agudo redesenhado na vaga de > (0x3E), dentro da janela medida; aguardando conferencia na tela"

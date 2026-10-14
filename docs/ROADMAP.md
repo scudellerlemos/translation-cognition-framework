@@ -1,6 +1,6 @@
 # Roadmap — Translation Cognition Framework (SDD)
 
-> Última atualização: 2026-09-07
+> Última atualização: 2026-10-14
 > Histórico do projeto piloto Utawarerumono em `projects/utawarerumono/ROADMAP_history.md`.
 
 ---
@@ -21,7 +21,7 @@
 ## BoF4 — CONCLUÍDO ✅
 
 > 125 cenas (AREAD + AREAS), pipeline 00–08, QA humana, 125 DAT files em `output/`, 0 overflows.
-> Custo: ~$11,04 USD. Plano detalhado: `projects/breath_of_fire_4/ROADMAP.md`.
+> Custo: ~$11,04 USD. Esse ciclo rodou em `projects/breath_of_fire_4` (removido do repositório; o jogo segue em `projects/bof4/`).
 
 Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framework/db/`).
 
@@ -35,6 +35,35 @@ Nenhum débito remanescente — TM semântica (B2) implementada e ativa (`framew
 
 O que estava aqui (P2.5: run_game/observabilidade/rebuild de state_index) já está **entregue** —
 histórico fica nos commits, não precisa de linha de "próximos passos" pra trabalho concluído.
+
+---
+
+### Pós-bof4 (instância em modo banco) — levantamento e próximo passo
+
+> Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Nada abaixo
+> está levado ao framework ainda; o projeto novo só começa depois de 1 e 2 levados e do benchmark de 3.
+
+- [ ] **1. Processo e gates.** Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
+  `completo`); largura de linha por caixa, derivada do inglês do jogo; tabela de opcodes com parâmetros (e valor
+  possível de cada variável); glossário por sentido, com folga de bytes por contexto; lista de decisões de voz
+  antes do piloto; reconferência por fala tocada e em paralelo; retrotradução invalidada por fala; página de
+  revisão (com `--serve`) e planilha com texto codificado; amostra de qualidade como último passo, precedida de
+  lint de padrões; uma só função de contagem de bytes (exceção de +1 no `project.json`); `tm_correct` com
+  escopo por linha e medida de bytes no dry-run; texto repetido entre cenas traduzido uma vez; comando que
+  falha de ambiente sai com código diferente de zero.
+- [ ] **2. Skills (13 → 14 ou 15).** Juntar `06b_micro_qa` e `06c_correction_cycle`; criar uma para texto de
+  sistema e rótulos em imagem e outra para o teste dentro do jogo; ampliar `00_extraction`,
+  `04_glossary_creation` e `07_qa`; subir o caminho de sessão (`lot`, `dup`, `plan`, `part`, `triagem`,
+  `revisar`, `install`) e descrevê-lo na `06_translation`.
+- [ ] **3. Benchmark do caminho de sessão (próximo passo a testar).** No projeto novo, rodar o mesmo recorte
+  (por exemplo, um capítulo) pelo caminho de sessão e pelo de API e comparar: taxa de erro da amostra de
+  qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos, não
+  estimados), tempo e retrabalho. Variáveis a testar: um comando por onda em vez de ~13, ondas menores com
+  `/clear` entre elas, Sonnet traduz e Opus retrotraduz, Haiku só para rótulo curto, lote de correção
+  automático. Só entra no framework o que o benchmark mostrar ganho. Antes: corrigir o medidor (37% dos tokens
+  de saída são estimados).
+- [ ] **4. Portões do caminho.** Uma só escolha de caminho por projeto, com HITL; o caminho de API recusa
+  projeto de sessão.
 
 ---
 
@@ -66,7 +95,7 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   `_load_tm_semantic()` (linha 394) e `_load_kb()` (linha 437), que usam `framework/db/embedder.py` +
   `framework/db/store.py` (SQLite + extensão `sqlite-vec`) — gated por `_db_path(root, cfg)`: só
   ativa se o projeto tiver banco `.db` configurado (switch deliberado; sem `.db`, cai pro fallback de
-  sempre, testado). Validado com 6046 vetores no `translation_software` (busca exata → score 1.0,
+  sempre, testado). Validado com 6046 vetores no `translation_software` (shell de validação, depois removido) (busca exata → score 1.0,
   variação de vocabulário → 0.944). Testes: `framework/db/test_context_pack_parity.py`,
   `test_export.py`, `test_migrate.py`. Ver memória `semantic-stack-validated`.
 
@@ -96,7 +125,7 @@ de filme/série + stack de voz ASR/diarização/prosódia).
 
 ### Fase D — Generic Connector System
 
-> Jogo-piloto: **Breath of Fire IV** — ver `projects/breath_of_fire_4/ROADMAP.md`.
+> Jogo-piloto: **Breath of Fire IV** — ver `projects/bof4/ROADMAP.md`.
 > Score do framework: **86/100** (jun/2026, pós-gap-closure) → alvo após D4: **97/100**.
 
 **Visão:** quando o framework encontra um novo jogo, descobre automaticamente os arquivos de diálogo, entende a estrutura, gera um conector determinístico, valida via round-trip. O LLM participa **apenas no bootstrap** — após aprovação, o conector roda sem IA.

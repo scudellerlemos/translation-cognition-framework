@@ -37,6 +37,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import events  # noqa: E402  (rastro do gate: passou/bloqueou e quando)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from scaffold_project import KB_PLACEHOLDER  # noqa: E402  (marcador da KB-stub do scaffold)
 
@@ -318,6 +319,9 @@ def check(root, scene) -> dict:
     _check_frontier(cfg, scene, res)
     _check_ratified_dates(root, res)
     _check_semantic_stack(cfg, res)
+    events.emit(root, "gate.kb", "block" if res.get("hard_problems") or res["problems"] else "pass", scene,
+                hard=len(res.get("hard_problems") or []), problems=len(res["problems"]),
+                warnings=len(res["warnings"]), pending_decisions=len(res.get("pending_decisions") or []))
     return res
 
 

@@ -9,8 +9,10 @@ falha), chamado por `run_game.py`. Este doc define o que coletar e onde, para va
 ## Onde instrumentar
 
 `framework/runtime/run_scene.py`, emitindo `artifacts/metrics.jsonl` (1 linha por cena). A chamada de
-IA passa por `model.py` — é lá que tokens in/out são conhecidos (backend `api`); no
-`in-session` não há tokens (`usage: null`).
+IA passa por `model.py` — é lá que tokens in/out são conhecidos (backend `api`). No `in-session` os
+tokens vêm das transcrições do Claude Code (`session_usage.py`): linhas `source: "session"` no ledger, com
+entrada, saída, cache lido e cache escrito por requisição, `cost_usd: 0` (assinatura) e `api_equiv_usd`
+(o que custaria na API). `cost_report.py` separa API e sessão e mostra a parcela de cache de cada uma.
 
 ## Métricas por cena (consumo)
 
@@ -34,6 +36,30 @@ A proporção a mirar é **tradução : governança ≈ 70:30 ou melhor** (gover
 | **taxa de retrabalho** | linhas reprovadas no QA / total | qualidade do 1º passe |
 | back-translation pass-rate | `back_translation_<scene_id>.json` (pass/revise) | risco real pego |
 | resíduo | `verify_chapter` | overflow não resolvido (deve ser 0) |
+
+## Log de eventos e visão única
+
+`framework/runtime/events.py` grava `artifacts/events.jsonl` (fora do git): uma linha JSON por
+acontecimento, com `t`, `run` (id da execução, herdado pelos processos filhos via `TCF_RUN_ID`), `scene`,
+`stage`, `result` e, quando medido, `dur_s`. Só contagem, status e duração — nenhum texto do jogo.
+
+| `stage` | Quem emite | O que traz |
+|---|---|---|
+| `gate.connector`, `gate.kb`, `gate.kb_phase` | os gates | `pass`/`block`, nº de problemas e avisos |
+| `pack`, `translate`, `build_plan`, `verify`, `back_translate`, `state_index` | `run_scene` | duração; no `verify`, as contagens do `VERIFY_STATUS` (overflow, falhas) |
+| `quality` | `run_scene` | linhas, alto risco, pass-rate da back-translation, gates ignorados |
+| `scene` | `run_scene` | status final e duração total — inclusive quando para num gate ou estoura exceção (`result: "error"`) |
+| `audit.spoiler`, `audit.schema` | `run_scene` (entry point) | contagem de achados |
+
+`python framework/runtime/obs_report.py <projeto> [--scene CENA] [--json]` junta tudo por cena: status,
+linhas, pass-rate, overflow, nº de execuções, falhas de verify, tempo por etapa, tempo de espera da sessão,
+tokens e valor; mais o último resultado de cada gate e a lista de falhas e bloqueios.
+
+O `metrics.jsonl` ganhou `t` e `run`, e uma reexecução que não muda nada não anexa linha nova.
+
+A segmentação tradução:governança vale também para o `in-session`: cada linha de sessão do ledger traz
+`phase` (`translate`, `back` = governança, `other`), pelo que o último `run_scene` ficou aguardando.
+`cost_report.py` imprime a proporção (`trad:gov`).
 
 ## Sinais de saúde da arquitetura (o que validar)
 

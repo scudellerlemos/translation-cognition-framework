@@ -37,6 +37,8 @@ projects/*/artifacts/**/translation_plan*.json
 projects/*/artifacts/**/approved_*.csv
 projects/*/artifacts/**/back_translation_*.json
 projects/*/artifacts/**/translation_memory.jsonl
+projects/*/artifacts/glossary_lint.json
+projects/*/artifacts/hitl_state.json
 projects/*/artifacts/evidence/
 
 # Exceção: projects/demo é sintético (dialogo ficticio, sem copyright) — precisa estar
@@ -66,6 +68,8 @@ projects/*/artifacts/qa_revisao/para_revisar/
 projects/*/artifacts/scenes/*/_build_translations.py
 projects/utawarerumono/artifacts/archive/interjection_*.csv
 projects/*/artifacts/kb_phase_worklist_*.md
+# escopo do piloto: a coluna de evidencia descreve o conteudo das cenas
+projects/*/artifacts/pilot_scope.csv
 projects/*/artifacts/scenes/*/bench_*.json
 
 # Guardrail de conteudo (espelha .claude/hooks/content_guard.py, que a CI roda): nada de binario
@@ -103,3 +107,21 @@ projects/*/artifacts/scenes/*/bench_*.json
 *.idb
 *.local.md
 review_*.csv
+
+# Prints do teste in-game (telas do jogo, pesados) — ficam locais; o relato_tester.csv e versionado
+projects/*/artifacts/qa_revisao/teste_ingame/prints/*
+!projects/*/artifacts/qa_revisao/teste_ingame/prints/.gitkeep
+# Diagnostico do verify por cena (regeneravel, mesmo padrao de plan/approved)
+projects/*/artifacts/**/verify_diagnostics_*.json
+# Log estruturado de eventos (regeneravel; mensagem de excecao pode citar conteudo).
+projects/*/artifacts/events.jsonl
+projects/*/artifacts/wave_last.log
+
+# ferramentas locais de sessao (instalacao no jogo, lotes): fora do repo, sobrevivem ao /clear
+projects/*/tools_local/
+
+# memoria de traducao entre jogos da serie: roteiro + traducao, nunca versionar
+tm/
+# registro de decisao humana e marcas de fase: locais ate o guard da main liberar
+projects/*/artifacts/hitl_log.jsonl
+projects/*/artifacts/phase_marks.jsonl

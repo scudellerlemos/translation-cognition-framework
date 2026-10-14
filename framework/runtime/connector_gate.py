@@ -45,6 +45,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 sys.path.insert(0, str(_HERE.parent / "connectors"))
+import events  # noqa: E402  (rastro do gate: passou/bloqueou e quando)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 import residual_text  # noqa: E402  (framework/connectors: texto que o extract deixou para tras)
 from connector_mgr import (
@@ -86,6 +87,9 @@ def _source_dir(conn: dict) -> Path | None:
     return Path(env) if env else None
 
 
+_RESIDUAL_MEMO: dict = {}
+
+
 def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
     """(problems, warnings) do check de texto residual -- so conector hex_binary. Round-trip
     identico nao prova extracao completa: ver framework/connectors/residual_text.py (issue #76)."""
@@ -100,7 +104,12 @@ def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
                 "apontando para os binarios de origem; sem isso string truncada na extracao "
                 "passa despercebida (round-trip continua verde)."], []
     try:
-        r = residual_text.check(csv_path, src, text_column=src_cfg.get("text_column", "text_en"))
+        # memo por processo: o check varre o corpus inteiro e nao depende de cena -- num lote o run_scene
+        # chama o gate a cada cena. A chave muda se o dialogs.csv for regravado (re-extracao).
+        key = (str(csv_path), csv_path.stat().st_mtime_ns, str(src), src_cfg.get("text_column", "text_en"))
+        if key not in _RESIDUAL_MEMO:
+            _RESIDUAL_MEMO[key] = residual_text.check(csv_path, src, text_column=key[3])
+        r = _RESIDUAL_MEMO[key]
     except KeyError as e:
         return [], [f"texto residual NAO checado — {csv_path.name} sem a coluna {e}."]
     if r["passed"]:
@@ -155,6 +164,8 @@ def check(root) -> dict:
             "connector/test_roundtrip.py ausente — round-trip nunca validado via teste automatizado "
             "(dev-only, nao bloqueia o runtime)."
         )
+    events.emit(root, "gate.connector", "block" if hard_problems or problems else "pass",
+                hard=len(hard_problems), problems=len(problems), warnings=len(warnings))
     return {"hard_problems": hard_problems, "problems": problems, "warnings": warnings}
 
 

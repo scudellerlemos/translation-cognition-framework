@@ -186,7 +186,9 @@ def audit_and_persist(root) -> dict:
     rep = {"name_leaks": leaks, "gender_flags": gender, "clean": not (leaks or gender)}
     out = paths.spoiler_audit(root)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+    # o arquivo e versionado: grava cena/offset/marcador, nunca a fala (o retorno em memoria mantem o texto)
+    disk = {k: [{f: x for f, x in e.items() if f != "text"} for e in v] for k, v in (("name_leaks", leaks), ("gender_flags", gender))}
+    out.write_text(json.dumps({**disk, "clean": rep["clean"]}, ensure_ascii=False, indent=2), encoding="utf-8")
     return rep
 
 

@@ -30,6 +30,7 @@ DENIED_PATHS = [(re.compile(rx), why) for rx, why in [
     (r"(^|/)(review_[^/]*\.csv|interjection_(corrections|revisions)\.csv)$", "planilha de revisao"),
     (r"^projects/[^/]+/artifacts/kb_phase_worklist_[^/]*\.md$", "worklist gerada (trechos do jogo)"),
     (r"(^|/)(bench_[^/]*\.json|_build_translations\.py)$", "traducao de cena embutida"),
+    (r"^tm/", "memoria de traducao (roteiro + traducao)"),
 ]]
 # projects/<jogo>/artifacts/ e DEFAULT-DENY: so entra o que esta nesta lista (caminho relativo a
 # artifacts/). E onde os geradores escrevem -- um gerador novo que cite fala do jogo (caso das

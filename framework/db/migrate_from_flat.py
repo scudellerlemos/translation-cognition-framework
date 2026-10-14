@@ -15,7 +15,7 @@ Grava em: <dest_db> (cria se não existir)
 
 Uso:
   python migrate_from_flat.py <project_root> <dest_db> [--project-id bof4]
-  python migrate_from_flat.py projects/breath_of_fire_4 projects/translation_software/translation_software.db
+  python migrate_from_flat.py projects/bof4 projects/bof4/bof4.db
 """
 from __future__ import annotations
 
@@ -97,7 +97,7 @@ def _migrate_translations(db: Store, project_id: str, root: Path) -> tuple[int, 
     FINAL que o jogo mostra — preserva os segmentos após [02] e os códigos de controle);
     `source` (EN) vem do dialogs.csv; speaker/metadata do translation_plan. NÃO usa
     base_translation/t: são rascunhos legíveis porém INCOMPLETOS em linhas multi-segmento
-    (largam o trecho após [02], ex.: "Certo, Poko?"). Retorna (total, aprovadas)."""
+    (largam o trecho após [02]). Retorna (total, aprovadas)."""
     scenes_dir = root / "artifacts" / "scenes"
     if not scenes_dir.is_dir():
         return 0, 0
@@ -476,7 +476,7 @@ def _migrate_metrics(db: Store, project_id: str, root: Path) -> int:
         })
     if rows:
         db.upsert_metrics(project_id, rows)
-    return len(rows)
+    return len({r["scene_id"] for r in rows})   # 1 linha por cena no DB: cena re-rodada conta UMA vez
 
 
 def _migrate_warnings(db: Store, project_id: str, root: Path) -> int:

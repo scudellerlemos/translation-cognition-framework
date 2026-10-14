@@ -75,7 +75,7 @@ numa seção rotulada:
 
 ```
 **Falas SIMILARES (nao identicas) — use p/ voz/fraseado, ADAPTE ao contexto:**
-- (~0.87) `Where do you want to go?` -> `Para onde você quer ir?`
+- (~0.87) `<fala parecida>` -> `<tradução aprovada>`
 ```
 
 O par acima é ilustrativo. O número entre parênteses é o score de similaridade, que o modelo vê
@@ -289,8 +289,8 @@ aprovadas (323 falas, 323 vetores), e 40 consultas em 5 categorias.
 
 | Categoria da consulta | Exemplo | Score do melhor hit |
 |---|---|---|
-| Texto idêntico ao do corpus | `"Monsters! They're everywhere!..."` | **1,0** (5 de 5) |
-| Quase idêntico (pontuação ou aspas diferentes) | "Where do you want to go?" | 0,83–0,89 |
+| Texto idêntico ao do corpus | (fala copiada do corpus) | **1,0** (5 de 5) |
+| Quase idêntico (pontuação ou aspas diferentes) | (mesma fala, pontuação diferente) | 0,83–0,89 |
 | Paráfrase (mesmo sentido, outras palavras) | "So what is the state of the sacrifice now?" | 0,71–0,89 (um caso em 0,57) |
 | Mesmo tema, conteúdo diferente | "Take this sword, it was forged by ancient smiths" | 0,37–0,51 |
 | Fora do domínio | "Preheat the oven to 200 degrees..." | 0,13–0,38 |
@@ -300,8 +300,8 @@ eles casam só por vocabulário de tema (fantasia/RPG), sem relação de sentido
 ruído observado foi **0,51**.
 
 **Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
-paráfrases (0,57). Fica em `projects/translation_software/project.json`; é configurável por
-projeto, porque depende do par de idiomas.
+paráfrases (0,57). Foi medido no `translation_software` (shell de validação, depois removido); é configurável por
+projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas.
 
 Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
 para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em

@@ -54,7 +54,7 @@ Colunas obrigatórias:
 > não lê o valor de `handling_rule` (qualquer string passa). Quem lê o valor literalmente é
 > `glossary_lint.py`, que espera `manter_original` (os demais valores com `target_translation`
 > preenchido caem no caminho `traduzir`). Os demais skills (05–08, `translation_governance.md`) e
-> 3 dos 4 projetos existentes (`breath_of_fire_4`, `trails_sky_sc`, `utawarerumono`) usam os valores
+> 3 dos 4 projetos existentes (`bof4`, `trails_sky_sc`, `utawarerumono`) usam os valores
 > em português abaixo — só `souldiers` usa `verbatim`/`translate` (equivalente aceito pelo caminho
 > `traduzir`, mas fora do audit de `manter_original`). Preferir os valores em português para casar
 > com o linter e o restante do processo.

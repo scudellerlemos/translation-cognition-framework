@@ -60,6 +60,12 @@ já produziu `translations_<scene_id>.json`:
 
 Resumível: rode `run_scene` de novo após o arquivo aparecer; o checkpoint diz onde retomar.
 
+**Medição de tokens.** No Claude Code, cada cena é traduzida por **um subagente dedicado** (ele roda o
+`run_scene`, escreve a tradução e a back-translation, e roda de novo até `verified`). A transcrição do
+subagente só contém aquela cena, então `session_usage.py` registra no `api_ledger.jsonl` o gasto exato dela
+(`source: "session"`, `attribution: "agent"`). Tradução feita direto na sessão principal também é medida,
+mas a divisão por cena é aproximada (`attribution: "window"`); o resto da sessão vai para a cena `_session`.
+
 ### (b) `api` — caminho ESCALA HEADLESS
 Anthropic SDK (import preguiçoso; erro claro se faltar `anthropic`/`ANTHROPIC_API_KEY`):
 - **Doutrina (Carta) no `system` com `cache_control`** → cobrada ~1× via prompt-caching, não a cada cena.
