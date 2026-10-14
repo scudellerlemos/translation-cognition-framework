@@ -9,73 +9,67 @@ renderiza mal no GitHub). Nenhum diagrama traz fala de jogo.
 
 ### Fluxo de ponta a ponta (hoje)
 
+```mermaid
+flowchart TB
+  subgraph A["A. Preparação (uma vez por projeto)"]
+    direction TB
+    a0["00 extração (conector)<br/>dialogs.csv + byte_budget<br/>gate: round-trip idêntico"]
+    h1{{"HITL: humano aceita o escopo"}}
+    h2{{"HITL: humano escolhe o caminho<br/>sessão ou API, um só por projeto"}}
+    a1["01–03 entidades, tom, KB<br/>gate: kb_gate (reconciled)"]
+    a4["04 glossário + 04b decision_log<br/>05 plano · 05b corpus sintético"]
+    pil{{"Piloto: instala e o humano confere no jogo<br/>só escala se fechar"}}
+    a0 --> h1 --> h2 --> a1 --> a4 --> pil
+  end
+
+  subgraph B["B. Laço por cena ou onda (até tudo verified)"]
+    direction TB
+    via{"caminho"}
+    api["API: run_chapter<br/>lote, só diálogo"]
+    ses["Sessão: wave.py / session_lot.py<br/>subagente na sessão"]
+    subgraph RS["run_scene (job resumível, checkpoint em run_state.json)"]
+      direction TB
+      g0["0 gates: connector_gate + kb_gate"]
+      g1["1 context_pack: scene_prompt.md"]
+      g2{{"2 traduz (IA), após scene_dedup"}}
+      g3["3 build_plan: cobertura, tokens, bytes"]
+      g4["4 verify_chapter: round-trip byte a byte"]
+      g5{{"5 retrotradução (IA)<br/>por fala, risco alto + 5%"}}
+      g6["6 checkpoint: verified, TM e banco crescem"]
+      g0 --> g1 --> g2 --> g3 --> g4 --> g5 --> g6
+    end
+    qa["06b micro-QA<br/>reprovou: correção cirúrgica e revalida"]
+    esc{{"Fila de escalonamento:<br/>humano decide"}}
+    via --> api --> g0
+    via --> ses --> g0
+    g6 --> qa
+    qa --> esc
+  end
+
+  subgraph C["C. Fechamento"]
+    direction TB
+    tri{{"Triagem de risco (juiz barato, paga)"}}
+    q7{{"07 amostra de qualidade, 200 pares<br/>humano marca ok/erro: taxa + IC 95%"}}
+    r8["08 reinserção determinística<br/>08b texto de sistema e rótulos"]
+    t8c{{"Instalação + 08c teste no jogo<br/>print do humano: causa raiz"}}
+    d9["09 distribuição: delta + patcher .exe<br/>release só com aval"]
+    tri --> q7 --> r8 --> t8c --> d9
+  end
+
+  pil --> via
+  esc --> tri
+  q7 -.->|erro achado| qa
+  t8c -.->|erro no jogo| qa
+  a4 -.->|glossário mudou: cenas stale, re-QA| g0
+
+  classDef ia fill:#f6d6e8,stroke:#c0397b,color:#000;
+  classDef hum fill:#fde6c4,stroke:#c97b1f,color:#000;
+  class g2,g5,tri ia;
+  class h1,h2,pil,esc,q7,t8c hum;
 ```
-═══════════════════ A. PREPARAÇÃO (uma vez por projeto) ═══════════════════
 
- jogo ─► 00 extração (conector) ──► dialogs.csv + byte_budget
-              │                      gate: round-trip extract→reinsert idêntico
-              ▼
-         [HITL] humano aceita o ESCOPO ──► [HITL] humano escolhe o CAMINHO
-              │                                   (sessão ou API; um só por projeto)
-              ▼
-         01 entidades/tom ─► 02 resolução ─► 03 KB (pesquisa IA+humano)
-              │                                   gate: kb_gate (reconciled)
-              ▼
-         04 glossário + 04b decision_log ─► 05 plano ─► 05b corpus sintético
-              │
-              ▼
-         PILOTO: poucas cenas ─► instala ─► humano confere no jogo
-              └── só escala se o piloto fechar (retrotradução + gate visual)
-
-══════════════ B. LAÇO POR CENA / ONDA (repete até tudo `verified`) ═══════════
-
-   escolha do caminho (hitl.choose-path)
-        │
-        ├── API ────────► run_chapter (lote, Sonnet pelo código, só diálogo)
-        └── SESSÃO ─────► wave.py / session_lot.py (subagente Sonnet na sessão)
-                                    │
-   ┌────────────────────────────────▼─────────────────────────────────────┐
-   │ run_scene  (job resumível; checkpoint em run_state.json)              │
-   │                                                                      │
-   │ [0] GATES ──► connector_gate + kb_gate ... bloqueia antes de modelo  │
-   │ [1] context_pack ──► scene_prompt.md (glossário, voz, TM, falas)     │
-   │ [2] TRADUZ (IA) ──► translations_<cena>.json                         │
-   │       └ antes: scene_dedup (texto repetido traduz 1 vez)             │
-   │ [3] build_plan ──► cobertura, tokens, orçamento de bytes             │
-   │ [4] verify_chapter ──► round-trip byte a byte (resíduo = 0)          │
-   │ [5] retrotradução (IA) ──► por fala, risco alto + 5% amostra         │
-   │ [6] checkpoint ──► `verified`; TM e banco crescem                    │
-   │                                                                      │
-   │ pula cena `verified` sem fala tocada (touched.py; --full força)      │
-   └──────────────────────────────────────────────────────────────────────┘
-        │ na onda, depois: glossary_lint ─► quality_gate ─► cost/obs_report
-        │                      │
-        │        06b micro-QA: reprovou ─► correção cirúrgica ─► revalida
-        │                      │
-        │        fila de escalonamento (ambiguidade) ─► HUMANO decide
-        ▼
-   a cada 10 cenas: amostra de 15 falas para o humano (aviso, não bloqueia)
-
-══════════════════════ C. FECHAMENTO ══════════════════════════════════════
-
-   triagem de risco (juiz barato; paga) ─► sobe falas suspeitas p/ `high`
-        ▼
-   07 amostra de qualidade (200 pares) ─► humano marca ok/erro ─► taxa + IC 95%
-        ▼
-   08 reinserção (determinística) ─► 08b texto de sistema e rótulos em imagem
-        ▼
-   instalação ─► 08c teste no jogo (print do humano ─► causa raiz)
-        ▼
-   09 distribuição: delta + patcher .exe de um clique ─► release (só com aval)
-
-══════════════════════════ RETORNOS ════════════════════════════════════════
-
-   07 achou erro ─────┐
-   08c achou no jogo ─┼──► 06b corrige SÓ as falas tocadas ──► volta ao laço B
-   glossário mudou ───┘    (cenas viram `stale` ─► re-QA)
-
- Em todo o fluxo: nenhum gate tem bypass; a IA nunca escreve byte nem ponteiro.
-```
+Rosa: modelo (IA). Laranja: decisão humana. Em todo o fluxo nenhum gate tem bypass e a IA nunca escreve byte nem
+ponteiro. A cada 10 cenas verificadas sai uma amostra de 15 falas para o humano (aviso, não bloqueia).
 
 Quem decide: humano em escopo, caminho, escalonamento, amostra de qualidade, print do jogo e release; o resto é
 gate automático. O bloco B é o que o benchmark do caminho de sessão vai medir nos dois caminhos
