@@ -3,7 +3,9 @@ Depois de `risk_triage.py export`, para cada lote sem veredito faz uma chamada h
 ferramenta) ao juiz barato (CLI `claude -p`), em paralelo; confere o formato, grava veredito_NNN.tsv e devolve UMA
 linha por lote. Depois: risk_triage.py apply.
 
-  python risk_triage_run.py <projeto> [--out PASTA] [--model haiku] [--jobs 6] [N ...]
+  python risk_triage_run.py <projeto> [--go] [--out PASTA] [--model haiku] [--jobs 6] [N ...]
+
+Sem `--go` so LISTA os lotes que seriam julgados (cada chamada ao modelo e paga).
 
 Sem N = todos os lotes ainda sem veredito. --out = gravar em outra pasta (teste; nao toca nos vereditos).
 """
@@ -70,12 +72,16 @@ def main():
     ap.add_argument('--out')
     ap.add_argument('--model', default='haiku')
     ap.add_argument('--jobs', type=int, default=6)
+    ap.add_argument('--go', action='store_true', help='chama o modelo (pago); sem isso so lista os lotes')
     a = ap.parse_args()
     src = risk_triage._dir(paths.require_project(a.project))
     out = pathlib.Path(a.out) if a.out else src
-    out.mkdir(parents=True, exist_ok=True)
     lots = a.lots or [int(f.stem[5:]) for f in sorted(src.glob('lote_*.tsv'))
                       if not (out / f.name.replace('lote_', 'veredito_')).is_file()]
+    if not a.go:
+        print(f'{len(lots)} lote(s) sem veredito: {lots}  (use --go para chamar o modelo, pago)')
+        return
+    out.mkdir(parents=True, exist_ok=True)
     with ThreadPoolExecutor(a.jobs) as ex:
         for line in ex.map(lambda n: one(n, out, a.model, src), lots):
             print(line, flush=True)

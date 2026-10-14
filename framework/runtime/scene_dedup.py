@@ -6,7 +6,8 @@ dialogs.csv (o indice de secao pode diferir). A copia nao pula gate: devolve a l
 passar cada uma pelos gates.
 
   python scene_dedup.py <projeto> plan     lista os grupos (representante <- copias) e as falas poupadas
-  python scene_dedup.py <projeto> copy     copia do representante verified para as copias ainda nao verified
+  python scene_dedup.py <projeto> copy [CENA ...]   copia do representante verified para as copias ainda nao
+                                           verified (so as CENAs citadas; sem CENA = todas)
 """
 import contextlib
 import csv
@@ -40,16 +41,16 @@ def groups(root) -> dict[str, list[str]]:
     return {g[0]: g[1:] for k, g in by.items() if len(g) > 1 and k}
 
 
-def copy(root) -> list[str]:
+def copy(root, only=None) -> list[str]:
     """Copia traducao/retrotraducao do representante verified para cada copia nao verified. Regrava sempre
-    (o representante pode ter sido corrigido depois). Devolve as cenas tocadas."""
+    (o representante pode ter sido corrigido depois). `only` limita as copias gravadas. Devolve as cenas tocadas."""
     todo = []
     for rep, dups in groups(root).items():
         if not _verified(root, rep):
             continue
         rid = context_pack.scene_id_of(rep)
         for d in dups:
-            if _verified(root, d):
+            if _verified(root, d) or (only is not None and d not in only):
                 continue
             m = dict(zip((o for o, _ in _rows(root, rep)), (o for o, _ in _rows(root, d)), strict=True))
             did = context_pack.scene_id_of(d)
@@ -66,7 +67,7 @@ def copy(root) -> list[str]:
 def main():
     with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    if len(sys.argv) != 3 or sys.argv[2] not in ("plan", "copy"):
+    if len(sys.argv) < 3 or sys.argv[2] not in ("plan", "copy") or (sys.argv[2] == "plan" and len(sys.argv) != 3):
         sys.exit(__doc__)
     root = paths.require_project(sys.argv[1])
     g = groups(root)
@@ -76,7 +77,7 @@ def main():
             print(f"{r} <- {', '.join(d)}")
         print(f"{len(g)} grupo(s); {saved} fala(s) a menos para traduzir")
     else:
-        print(" ".join(copy(root)))
+        print(" ".join(copy(root, sys.argv[3:] or None)))
 
 
 if __name__ == "__main__":

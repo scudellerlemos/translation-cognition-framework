@@ -38,7 +38,7 @@ def steps(project: str, scenes: list[str], backend: str, require_back: bool) -> 
         out.append(("run_scene", ["run_scene.py", project, *own, "--backend", backend]
                     + (["--require-back"] if require_back else [])))
     if len(own) < len(scenes):                       # ha copias: o passo `scene_dedup` gera o run_scene delas
-        out.append(("scene_dedup", ["scene_dedup.py", project, "copy"]))
+        out.append(("scene_dedup", ["scene_dedup.py", project, "copy", *scenes]))
     return out + [("glossary_lint", ["glossary_lint.py", project]), ("quality_gate", ["quality_gate.py", project]),
                   ("cost_report", ["cost_report.py", project, "--summary"]), ("obs_report", ["obs_report.py", project])]
 

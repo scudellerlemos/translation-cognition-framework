@@ -135,13 +135,15 @@ def test_migrate_reindexes_embeddings_no_ml_deps(synthetic_migrated):
     assert result["embeddings"] is None or result["embeddings"] > 0, result
 
 
-def test_migrate_idempotent(tmp_path):
-    """Rodar a migração 2x no mesmo banco não duplica (upsert, não insert)."""
+def test_migrate_idempotent(tmp_path, synthetic_migrated):
+    """Rodar a migração 2x no mesmo banco não duplica (upsert, não insert). Projeto sintético, não o bof4 vivo:
+    o bof4 muda entre as duas leituras (ledger/run_state) e leva minutos."""
+    root = synthetic_migrated[0]
     db_path = tmp_path / "t.db"
-    first = migrate(BOF4, db_path, project_id="bof4")
-    migrate(BOF4, db_path, project_id="bof4")
+    first = migrate(root, db_path, project_id="syn")
+    migrate(root, db_path, project_id="syn")
     with Store(db_path) as db:
-        summary = db.summary("bof4")
+        summary = db.summary("syn")
     assert summary["translations"] == first["translations"], (summary, first)
     assert summary["tm_approved"] == first["approved"], (summary, first)
     assert summary["scene_lines"] == first["scene_lines"], (summary, first)
