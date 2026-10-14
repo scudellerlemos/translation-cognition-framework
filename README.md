@@ -306,8 +306,10 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 01 discovery     → entidades, tom, aliases, spoilers
 02 entidades     → registro canônico
 03 conhecimento  → pesquisa reconciliada (IA + humano, por fonte) → Knowledge Base
-04 glossário     → regras normativas de tradução (+ decision log)
-05 planejamento  → plano linha a linha (+ corpus de teste sintético)
+04 glossário     → regras normativas de tradução
+04b decision log → decisões de tradução registradas, com o porquê
+05 planejamento  → plano linha a linha
+05b corpus sintético → corpus de teste para o conector
 06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)
 06b micro-QA     → micro-QA por lote + ciclo de correção cirúrgica
 07 QA final      → consistência global, spoilers cross-segmento
@@ -316,6 +318,11 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 08c teste no jogo → print do usuário → causa raiz → reinstalação
 09 distribuição  → delta + patcher .exe de um clique (só diferenças, nunca conteúdo do jogo)
 ```
+
+Em três blocos: **A** preparação (`00`–`05b`, uma vez por obra), **B** laço por cena ou onda (`06` + `06b`) e
+**C** fechamento (`07`, `08`, `08b`, `08c`, `09`), com dois retornos (o QA final e o teste no jogo voltam à `06b`
+so para as falas tocadas). Tabela em [`framework/skills/_index.md`](framework/skills/_index.md), desenho em
+[`docs/DIAGRAMAS.md`](docs/DIAGRAMAS.md).
 
 ---
 
@@ -346,7 +353,7 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
    um jogo (visual novel) real, EN→pt-BR, com identidades duplas e gestão crítica de spoilers.
 3. Veja a segunda instância em [`projects/bof4/`](projects/bof4/README.md) — engine Capcom, em modo
    banco com busca semântica obrigatória.
-4. Veja a terceira instância em `projects/souldiers/` — terceiro engine (Unity Addressables),
+4. Veja a terceira instância em [`projects/souldiers/`](projects/souldiers/README.md) — terceiro engine (Unity Addressables),
    pipeline de KB híbrida (Ollama local + ratificação humana) e onboarding de baixo custo.
 5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
    `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
@@ -386,6 +393,9 @@ Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/RO
 - TM por série: jogos da mesma franquia compartilham termos recorrentes, isolamento estrutural ✅
 - Protocolo estruturado do conector (exit codes + `VERIFY_STATUS`), `paths.py`, `batch_smoke.py` ✅
 - Suíte verde no CI, com gate de cobertura ≥90% (runtime+db+skills+validation e `framework/connectors`)
+- Caminho de sessão em lote (`session_lot`, `wave`, `scene_dedup`, `touched`): a tradução roda na sessão do Claude Code, sem
+  API, com os mesmos gates; reconferência só das falas tocadas e retrotradução julgada por fala ✅
+- Patcher de um clique (`framework/distribution/`): deltas bsdiff + manifesto, instalar/desinstalar reversível ✅
 
 ### Utawarerumono: Mask of Deception — CONCLUÍDO ✅
 
@@ -442,6 +452,7 @@ não traduzidas. Detalhe em `docs/CHANGELOG.md` e `projects/trails_sky_sc/artifa
 |---|---|
 | Filmes / séries: pontos de extensão documentados, sem validação em produção (sem projeto real pra justificar) | quando houver piloto |
 | Packaging `.exe` (E4) | entregue em `framework/distribution/` (beta); falta publicar a release |
+| Benchmark do caminho de sessão contra o da API (PRD/HLD/FDD em `docs/benchmark_sessao/`): precisa de projeto novo e de teto de gasto | quando houver projeto novo |
 | Bundle de custo: tiering + back-batch codados mas sem medição viva pós-Souldiers | quando rodar próximo capítulo pago |
 
 
