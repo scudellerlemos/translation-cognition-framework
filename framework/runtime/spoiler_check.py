@@ -213,6 +213,7 @@ def main():
     ap.add_argument("--list-guards", action="store_true",
                     help="lista todos os guards ativos no ledger (inspecao, nao verifica vazamentos)")
     a = ap.parse_args()
+    paths.require_project(a.project)
 
     if a.list_guards:
         guards = list_guards(a.project)

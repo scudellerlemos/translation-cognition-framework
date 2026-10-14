@@ -160,3 +160,12 @@ def qa_effectiveness(root) -> Path:
 # nos arquivos de terceiros — saída vai sempre para output/ dentro do projeto.
 def output_dir(root) -> Path:
     return Path(root) / "output"
+
+
+def require_project(root) -> Path:
+    """Sai com codigo 2 se `root` nao e um projeto (sem project.json). Evita gate que "passa" sobre pasta errada."""
+    root = Path(root)
+    if not (root / "project.json").is_file():
+        raise SystemExit(f"ERRO: project.json nao encontrado em {root}")
+    return root
+

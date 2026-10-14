@@ -132,3 +132,13 @@ def test_verify_status_bad_json_is_empty_dict():
     import connector_mgr
     assert connector_mgr._verify_status("ok\nVERIFY_STATUS: {torto") == {}
     assert connector_mgr._verify_status('VERIFY_STATUS: {"a": 1}') == {"a": 1}
+
+
+def test_gates_exit_nonzero_on_a_path_that_is_not_a_project(tmp_path):
+    """Gate/relatorio sobre pasta errada nao pode 'passar': sai com codigo != 0 e explica."""
+    import subprocess
+    import sys
+    rt = Path(__file__).parent
+    for cli in ("quality_gate", "spoiler_check", "progress_report", "cost_report", "obs_report"):
+        r = subprocess.run([sys.executable, str(rt / f"{cli}.py"), str(tmp_path)], capture_output=True, text=True)
+        assert r.returncode != 0 and "project.json nao encontrado" in r.stderr, cli

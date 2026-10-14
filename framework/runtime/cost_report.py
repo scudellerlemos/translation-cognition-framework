@@ -237,6 +237,7 @@ def main():
     ap.add_argument("--summary", action="store_true",
                     help="G5: linha única para substituir valores hardcoded em READMEs")
     a = ap.parse_args()
+    paths.require_project(a.project)
     session_usage.sync(a.project)   # traz o que as transcricoes do Claude Code tem de novo
     rep = report(a.project, chapter=a.chapter)
     if a.json:
