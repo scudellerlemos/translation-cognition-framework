@@ -22,11 +22,13 @@ import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import budget  # noqa: E402
 import context_pack  # noqa: E402
 import opcodes  # noqa: E402
 import paths  # noqa: E402
 
 ROOT = TMP = None            # definidos por _init(projeto)
+CFG = {}                     # project.json (excecoes de orcamento)
 BR = '[01]'                  # token de quebra de linha (o `newline` da tabela de opcodes)
 TOK = re.compile(r'\[[0-9A-Fa-f]{2}\]')
 ROW = re.compile(r'^\| (\S+:\d+:\d+) \| (\d*) \| (.*) \|$')
@@ -225,7 +227,6 @@ def cmd_check(lot, scenes, run):
     moved = 0
     for s in scenes:
         pack = json.loads(paths.pack(ROOT, s).read_text(encoding='utf-8'))
-        resv = 1 if pack.get('project_constraints', {}).get('budget_reserves_terminator') else 0
         lines = data[s]['lines']
         for r in pack['lines']:
             off, e = r['offset'], lines.get(r['offset'])
@@ -248,9 +249,11 @@ def cmd_check(lot, scenes, run):
                     moved += 1
             if sorted(TOK.findall(t)) != sorted(TOK.findall(src)):
                 bad.append(f'{off}: tokens {sorted(TOK.findall(t))} != original {sorted(TOK.findall(src))}')
-            size = len(TOK.sub('x', t).encode('utf-8'))
-            if r.get('byte_budget') and size > int(r['byte_budget']) - resv:
-                bad.append(f'{off}: {size} bytes > {int(r["byte_budget"]) - resv} (token conta 1 byte)')
+            pc = pack.get('project_constraints', {})
+            bb = r.get('byte_budget') and budget.effective_budget(off, int(r['byte_budget']), CFG)
+            if bb and budget.over_budget(t, bb, pc, token_rx=TOK):
+                bad.append(f"{off}: {budget.budget_len(t, pc, TOK)} bytes > {budget.usable(bb, pc)} "
+                           "(conta de budget.py; token conta 1 byte)")
             if e.get('risk_level', 'low') not in ('low', 'medium', 'high', 'critical'):
                 bad.append(f'{off}: risk_level invalido')
         bad += [f'{o}: offset nao existe na cena' for o in lines if o not in {r['offset'] for r in pack['lines']}]
@@ -272,11 +275,12 @@ def cmd_check(lot, scenes, run):
 
 
 def _init(project):
-    global ROOT, TMP, TOK, BR
+    global ROOT, TMP, TOK, BR, CFG
     ROOT = paths.require_project(project)
     TMP = ROOT / 'tools_local'
     TMP.mkdir(exist_ok=True)
-    pats = json.loads(paths.project_json(ROOT).read_text(encoding='utf-8')).get('formatting_token_patterns')
+    CFG = json.loads(paths.project_json(ROOT).read_text(encoding='utf-8'))
+    pats = CFG.get('formatting_token_patterns')
     TOK = re.compile(pats[0]) if pats else TOK
     BR = next((f'[{c}]' for c, v in opcodes.table(ROOT).items() if v['name'] == 'newline'), BR)
     return ROOT

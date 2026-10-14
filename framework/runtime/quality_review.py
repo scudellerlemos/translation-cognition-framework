@@ -52,7 +52,7 @@ COLS = ["scene", "offset", "speaker", "risk", "revisar", "source_en", "target_pt
         "caixa", "marcar", "correcao", "nota", "repete"]
 
 # Marcadores pt-PT de ALTA precisao (raros no pt-BR falado) — heuristica, por isso a tag leva '?'.
-_PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de\b|\bhás de\b", re.IGNORECASE)
+_PTPT = re.compile(r"\b(tens|estás|fazes|podes|queres|deves|vês|hás)\b|\btem de (?=\w*(?:ar|er|ir|or)\b)|\bhás de\b", re.IGNORECASE)
 
 # Expressoes culturais/idiomaticas EN (americana/britanica) na FONTE — sinal p/ o revisor checar se a
 # localizacao pt-BR ficou equivalente (nao so traduzida literalmente). Deterministico, $0, varre o source.

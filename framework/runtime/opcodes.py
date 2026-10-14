@@ -3,7 +3,7 @@
 Em `project.json` -> `connector.control_codes`, cada codigo e o nome (forma curta) ou um objeto:
     "01": "newline"
     "07": {"name": "var_value", "params": 1, "width": 3, "values": ["00", "03", "07"]}
-  name    papel: `newline` e `page_break` quebram a caixa; qualquer outro nome nao quebra
+  name    papel: `newline`, `page_break` e `choice_start` (abre o menu) quebram a caixa; qualquer outro nome nao quebra
   params  quantos tokens `[xx]` seguintes sao parametro do codigo (nao sao codigos); padrao 0
   width   glifos que o codigo exibe na tela (variavel como numero/nome); padrao 0
   values  valores possiveis do parametro (documenta e valida); vazio = livre
@@ -16,7 +16,7 @@ import re
 from pathlib import Path
 
 _TOK = re.compile(r"\[([0-9A-Fa-f]{2})\]")
-BREAKS = ("newline", "page_break")
+BREAKS = ("newline", "page_break", "choice_start")   # choice_start: o menu e outra janela, nao continua a linha do dialogo
 
 
 def table(root) -> dict:

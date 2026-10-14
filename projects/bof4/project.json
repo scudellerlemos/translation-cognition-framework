@@ -37,13 +37,17 @@
     "control_codes": {
       "01": "newline",
       "02": "page_break",
-      "04": "var_char_name",
-      "05": "var_item_name",
+      "04": {"name": "var_char_name", "params": 1, "values": ["00", "01", "02", "03", "04", "05", "06"]},
+      "05": {"name": "var_item_name", "params": 1, "values": ["01", "02", "03", "04", "05", "06", "07", "08", "0A", "0D"]},
+      "07": {"name": "var_value", "params": 1, "values": ["00", "01", "02", "03", "04", "05", "06", "07", "08"]},
+      "09": {"name": "unmapped", "params": 1},
       "0A": "voice_sfx",
       "0B": "pause",
-      "0C": "event_cmd",
-      "12": "choice_start",
-      "14": "speaker_id"
+      "0C": {"name": "event_cmd", "params": 1},
+      "0F": {"name": "unmapped", "params": 1, "values": ["00", "01", "02", "03", "08", "09"]},
+      "12": {"name": "choice_start", "params": 1},
+      "14": {"name": "speaker_id", "params": 2},
+      "16": {"name": "unmapped", "params": 1}
     },
     "space_strategy": "reconstrucao_secao",
     "patch_format": "full_file",

@@ -24,3 +24,8 @@ def test_limit_default_derive_and_explicit(tmp_path):
 
 def test_rewrap_never_cuts_a_word():
     assert box_width.rewrap("aaa bbb ccc dddddddddd", 7, "|") == "aaa bbb|ccc|dddddddddd"
+
+
+def test_choice_menu_is_a_separate_box():
+    tbl = {"12": {"name": "choice_start", "params": 1, "width": 0, "values": []}}
+    assert box_width.widths("dialogo[12][06]opcao um", tbl) == [7, 8]
