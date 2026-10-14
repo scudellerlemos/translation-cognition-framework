@@ -12,7 +12,6 @@ passar cada uma pelos gates.
 import contextlib
 import csv
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -23,7 +22,9 @@ import paths  # noqa: E402
 
 def _rows(root, scene):
     with paths.dialogs(root, scene).open(encoding="utf-8-sig", newline="") as fh:
-        return [(r["offset"], r.get("text_source", "")) for r in csv.DictReader(fh)]
+        rd = csv.DictReader(fh)
+        col = "text_source" if "text_source" in (rd.fieldnames or []) else "text_en"   # idem context_pack.load_dialogs
+        return [(r["offset"], r.get(col, "")) for r in rd]
 
 
 def _verified(root, scene) -> bool:
@@ -39,6 +40,15 @@ def groups(root) -> dict[str, list[str]]:
         if paths.dialogs(root, d.name).is_file():
             by.setdefault(tuple(t for _, t in _rows(root, d.name)), []).append(d.name)
     return {g[0]: g[1:] for k, g in by.items() if len(g) > 1 and k}
+
+
+def _remap(x, m):
+    """Troca offsets (chave ou valor string) por `m` no JSON ja parseado; texto de fala nunca casa."""
+    if isinstance(x, dict):
+        return {m.get(k, k): _remap(v, m) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_remap(v, m) for v in x]
+    return m.get(x, x) if isinstance(x, str) else x
 
 
 def copy(root, only=None) -> list[str]:
@@ -57,9 +67,8 @@ def copy(root, only=None) -> list[str]:
             for fn in (paths.translations, paths.back_translation):
                 src = fn(root, rep, rid)
                 if src.is_file():
-                    txt = re.sub(r'"([^"\\]+)"', lambda g, m=m: json.dumps(m.get(g.group(1), g.group(1))),
-                                 src.read_text(encoding="utf-8"))
-                    fn(root, d, did).write_text(txt, encoding="utf-8")
+                    data = _remap(json.loads(src.read_text(encoding="utf-8")), m)
+                    fn(root, d, did).write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
             todo.append(d)
     return todo
 
