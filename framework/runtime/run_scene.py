@@ -50,6 +50,7 @@ import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de ar
 import session_usage  # noqa: E402  (tokens reais da sessao no backend in-session)
 import spoiler_check  # noqa: E402  (auditoria obrigatoria de spoiler/genero -- so quando rodado como entry point, ver main())
 import state_index  # noqa: E402
+import touched  # noqa: E402
 import validate  # noqa: E402  (auditoria de schema dos artefatos -- so quando rodado como entry point, ver main())
 from config import (  # noqa: E402
     CONNECTOR_KNOWN_KEYS,
@@ -309,7 +310,8 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
                 return tr, None, {"status": "schema_failed", "scene": scene}
             verified = True
             _checkpoint(root, scene, {"status": "verified", "verified": True,
-                                      "connector_hash": _connector_hash(root, cfg)})
+                                      "connector_hash": _connector_hash(root, cfg),
+                                      "t_hashes": touched.fingerprint(root, scene)})
             break
         # PROTOCOLO ESTRUTURADO DE SAIDA: exit-code do conector decide, NAO grep de prosa. exit 3 = falha
         # SO de fitting (escalonavel); 1 = falha dura. Fallback (conector legado sem o exit 3): le a linha
@@ -593,6 +595,12 @@ def backend_preflight(root: Path, scenes, backend: str, env=None) -> tuple[list,
     return problems, notes
 
 
+def _unchanged(project, scenes) -> list:
+    root = Path(project)
+    ch = _connector_hash(root, json.loads((root / "project.json").read_text(encoding="utf-8")))
+    return [x for x in scenes if touched.unchanged(root, x, ch)]
+
+
 def _run_parallel(a) -> tuple[list, list]:
     """Cada cena num processo proprio (mesmo comando, 1 cena): sem estado global compartilhado; o run_state
     grava sob trava (paths.locked). Devolve (falhas, verificadas) como o laco em fila."""
@@ -628,6 +636,8 @@ def main():
     ap.add_argument("--jobs", type=int, default=1, metavar="N",
                     help="N cenas ao mesmo tempo, cada uma em seu processo (reconferencia: o run_state tem trava). "
                          "A TM so cresce entre cenas em fila; para traduzir em sequencia use 1")
+    ap.add_argument("--full", action="store_true",
+                    help="reconfere tambem as cenas verified sem fala tocada (padrao: pula, ver touched.py)")
     ap.add_argument("--clean", action="store_true",
                     help="remove artefatos de run anterior antes de rodar (retry limpo)")
     ap.add_argument("--check-stale", action="store_true",
@@ -673,6 +683,10 @@ def main():
     # Lote = mesma execucao por cena, em fila (a TM cresce de uma cena para a seguinte); so o custo fixo
     # do processo (carga do modelo de busca, mirror do DB, auditorias) deixa de se repetir a cada cena.
     bad, done = [], []
+    same = [] if a.full or a.clean else _unchanged(a.project, a.scene)
+    if same:
+        print(f"[skip] {len(same)} cena(s) verified sem fala tocada (use --full para reconferir): {', '.join(same)}")
+        a.scene = [x for x in a.scene if x not in same]
     par = a.jobs > 1 and len(a.scene) > 1
     if par:
         bad, done = _run_parallel(a)
