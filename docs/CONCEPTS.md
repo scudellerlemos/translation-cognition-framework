@@ -68,7 +68,7 @@ O passo de cena **lê** desse estado (via Context Pack) e **escreve** de volta (
 cresce). O modelo nunca "lembra" — ele *consulta*.
 
 **Por que importa em IA.** Consistência vira propriedade do **store**, não da sorte do modelo. Sem
-segundo serviço pago — por padrão só arquivos `.json`/`.csv`/`.jsonl` que você versiona no git, faz diff
+segundo serviço pago — por padrão só arquivos `.json`/`.csv`/`.jsonl` que você guarda por projeto, faz diff
 e reconstrói. É RAG levado ao osso: recuperação determinística de estado curado; a busca vetorial
 (SQLite + embeddings locais, default em projeto novo) entra como suplemento — ver `RAG_ARCHITECTURE.md`.
 
@@ -119,7 +119,7 @@ somem, ninguém sabe *por que* tal termo foi escolhido, e não dá para checar s
 regras.
 
 **A solução.** As regras viram **especificações versionadas e checáveis**, produzidas por **etapas
-explícitas** (`00..08`): descobrir entidades → reconciliar conhecimento → fixar glossário → planejar →
+explícitas** (`00..09`): descobrir entidades → reconciliar conhecimento → fixar glossário → planejar →
 traduzir → revisar → reinserir. Cada etapa **lê** os artefatos da anterior, **produz** os seus, e tem
 um **gate de entrada** que impede rodar fora de ordem ou sobre base incompleta. A "spec" (glossário,
 vozes, spoilers) é um artefato de primeira classe, não um comentário perdido.
@@ -129,7 +129,7 @@ o que separa "pedi pro ChatGPT traduzir" de "tenho um pipeline cujas decisões e
 versionar e re-executar". O "spec-driven" é a aplicação, à IA, da velha lição de engenharia: torne o
 implícito explícito.
 
-> As etapas vivem em `framework/skills/00..08` (prosa) + `framework/runtime/` (executável).
+> As etapas vivem em `framework/skills/00..09` (prosa) + `framework/runtime/` (executável).
 
 ---
 
@@ -156,8 +156,8 @@ Cuidado com uma confusão comum: **o pipeline é determinístico; a tradução n
 **não** produz os mesmos bytes de tradução (o LLM é estocástico). O que é reproduzível é **a
 orquestração + os gates**: dado um `translations_*.json` fixo, a montagem de contexto, o plano, o
 round-trip e a reinserção rodam idênticos toda vez. Em outras palavras: **o veredito é reproduzível; a
-geração, não.** Por isso o artefato caro/estocástico (a tradução) é versionado no git, e os derivados
-determinísticos são regeneráveis. Não confunda "pipeline determinístico" com "tradução determinística".
+geração, não.** Por isso o artefato caro/estocástico (a tradução) é guardado como dado do projeto (no
+repo público o `content_guard.py` o barra por conter fala do jogo), e os derivados determinísticos são regeneráveis. Não confunda "pipeline determinístico" com "tradução determinística".
 
 ---
 

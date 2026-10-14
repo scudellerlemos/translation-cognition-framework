@@ -9,7 +9,7 @@
 
 | Camada | Status |
 |---|---|
-| Processo genérico (skills 00–08) | 🟢 maduro (~92/100) |
+| Processo genérico (skills 00–09) | 🟢 maduro (~92/100) |
 | Harness de escala (`framework/runtime/`) | 🟢 em produção — validado em 16 capítulos, ~45.100 linhas, R$ 0 desperdiçado |
 | Conector hex_binary (Utawarerumono) | 🟢 completo — round-trip byte-idêntico, validado in-game |
 | Generic Connector System (Fase D) | 🟢 D1–D6 entregues — validado em 3 engines distintos (Aquaplus, Capcom DAT, Unity Addressables); 4º engine (Falcom, `trails_sky_sc`) em onboarding |
@@ -43,8 +43,8 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 
 ### Pós-bof4 (instância em modo banco) — levantamento e próximo passo
 
-> Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Nada abaixo
-> está levado ao framework ainda; o projeto novo só começa depois de 1 e 2 levados e do benchmark de 3.
+> Fonte: "Levantamento de fim de projeto" em `projects/bof4/ROADMAP.md`, aceito em 2026-10-13. Itens 1 e 2
+> já levados ao framework (abaixo); o projeto novo só começa depois do benchmark de 3.
 >
 > Bloco A (código) levado em 2026-10-14, branch `feat/framework-pos-bof4`: medidor de tokens com erro reportado,
 > saída ≠ 0 fora de projeto, `budget.py`, `tm_correct` por linha, portão de caminho também no lote
@@ -120,7 +120,7 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 - [x] **B4. Skill DSL** — ✅ **já feito, descoberto na auditoria (nenhum código novo necessário)**.
   `framework/skills/skill_base.py` (`Skill` ABC: `skill_id`/`required_inputs`/`check_inputs`/`run`)
   + `registry.py` (`get`/`all_skills`) já são a forma declarativa dos passos 00/06/07/08 (os com
-  substância de código). Cognitivas puras (01-04b/05b/06c) ficam `.md` por decisão deliberada — não
+  substância de código). Cognitivas puras (01-05b/06b/08b/08c/09; a 06c foi incorporada à 06b) ficam `.md` por decisão deliberada — não
   é lacuna, é a fronteira já documentada em `skills-registry-boundary`.
 
 ---
@@ -290,7 +290,7 @@ Formatos cifrados/ofuscados exigem engenharia reversa — fora do escopo. O `evi
 > **Pré-requisito:** framework estável com ≥2 projetos ativos (atingido — BoF4/Uta/Souldiers).
 > **Valor:** garante que nenhum commit regride o harness silenciosamente — crítico quando virar produto.
 
-- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12. ✅
+- [x] **F1. CI offline** — 3 workflows paralelos (quality, test, api-smoke); 316 testes, cobertura 90.17%; matrix 3.11/3.12 (números da época; hoje são 7 workflows, ver `.github/workflows/README.md`). ✅
 
 → ver [Project #4](https://github.com/users/scudellerlemos/projects/4), issues
 [#37](https://github.com/scudellerlemos/translation-cognition-framework/issues/102) (CI de packaging),

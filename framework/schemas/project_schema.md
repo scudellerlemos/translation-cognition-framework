@@ -22,6 +22,16 @@
 | `system_line_convention` | enum/string | — | Como detectar texto de sistema (ex: `all_caps`, `none`) |
 | `length_constraints` | object | — | Limites de comprimento (ver abaixo) |
 | `batch_size` | int | — | Linhas por lote de tradução (default 200) |
+| `formatting_token_patterns` | array[string] | — | Regex dos tokens estruturais (ex: `\[([0-9A-Fa-f]{2})\]`); somam-se a `formatting_tokens` (lido por `context_pack`/`connector_io`) |
+| `line_width` | string | — | `"derive"`: limite de largura de linha = maior segmento visível do texto-fonte entre quebras de caixa (`box_width.py`). Sem `line_width`/`line_width_max`: 62 |
+| `line_width_max` | int | — | Limite fixo de largura de linha (vence o `derive`) |
+| `byte_budget_exceptions` | object | — | `{offset: novo_budget}` — exceção pontual de orçamento de bytes decidida pelo humano (`budget.effective_budget`) |
+| `image_labels` | object | — | Inventário de rótulos em imagem (tabelas `[y, x0, x1, original, candidatas…]`, chave `principal` etc.); lido pelo conector da instância (ver `08b_system_text_labels.md`) |
+| `system_scenes` | array[string] | — | Cenas de texto de sistema (escopo `completo`); só caminho de sessão (`run_scene`) |
+| `extraction_scope` | string | — | Escopo da extração (`dialogo` por padrão; `completo` inclui texto de sistema) |
+| `kb_frontier` | string | — | `scene_id` máximo coberto pela pesquisa de KB; o `kb_gate` bloqueia cenas além dela |
+| `series` | string | — | Série para a TM compartilhada (`tm_lookup`); sem o campo = slug do título |
+| `hitl` | bool | — | `true` liga os pontos de humano no laço (`hitl.py`) |
 | `rag_min_score` | float | — | Score mínimo (#56) p/ hits da TM semântica no pacote de contexto; `null`/ausente = sem corte (default) |
 | `profile` | object | — | Caminhos para os arquivos de perfil curado (ver abaixo) |
 | `notes` | string | — | Observações livres sobre o título |
@@ -51,12 +61,22 @@ legendas), pode ser omitido ou simplificado.
 | `extract_script` | string | ✅ p/ `hex_binary` | Caminho do `extract.py` da instância |
 | `reinsert_script` | string | ✅ p/ `hex_binary` | Caminho do `reinsert.py` da instância |
 | `encoding` | string | — | `custom` / `ascii` / `shift-jis` / ... |
-| `control_codes` | object | — | Mapa token → bytes (deve cobrir os `formatting_tokens`) |
+| `control_codes` | object | — | Tabela de opcodes (deve cobrir os `formatting_tokens`): chave = código hex (`"01"`), valor = nome curto **ou** objeto `{name, params, width, values}` (ver abaixo; `opcodes.py`) |
+| `budget_reserves_terminator` | bool | — | O `byte_budget` já reserva 1 byte para o terminador (default `false`; `budget.usable`) |
 | `pointer_table` | object | — | `{ location, format }` da tabela de ponteiros |
 | `space_strategy` | enum | ✅ p/ `hex_binary` | `in_place` (cabe em bytes) / `repoint` (recalcula ponteiros). **Prefira `repoint` p/ alvo mais longo/multibyte** (ex: pt-BR). |
 | `patch_format` | enum | ✅ p/ `hex_binary` | `ips` / `bps` / `xdelta` |
 | `target_charset_supported` | enum | — | `true` / `false` / `likely` / `unknown` — veredito do gate de charset (ver `00_extraction.md`) |
 | `charset_note` | string | — | Observação do gate de charset (glifos confirmados, ação pendente) |
+
+#### `control_codes` — valor em forma de objeto
+
+| Campo | Tipo | Default | Descrição |
+|-------|------|---------|-----------|
+| `name` | string | `""` | Papel do código. `newline`, `page_break` e `choice_start` (abre o menu) **quebram a caixa**; qualquer outro nome não quebra |
+| `params` | int | 0 | Quantos tokens `[xx]` seguintes são parâmetro deste código (não são códigos nem quebram) |
+| `width` | int | 0 | Glifos que o código exibe na tela (variável como número/nome) |
+| `values` | array[string] | `[]` | Valores possíveis do parâmetro (documenta e valida); vazio = livre |
 
 ### `length_constraints` (object)
 

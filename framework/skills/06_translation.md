@@ -218,9 +218,11 @@ Mesmos artefatos, gates, banco e humano no laço; muda quem traduz.
 | Quem traduz | subagente/modelo chamado pelo código (Sonnet) | a IA da própria sessão, por arquivo |
 | Custo | por token (chave `ANTHROPIC_API_KEY`) | dentro da assinatura da sessão |
 | Escopo | só diálogo (`system_scenes` é recusado) | diálogo e sistema |
-| Lote | `wave`/`run_chapter` (batch API) | `session_lot.py`: `plan` → `prompt` → traduzir → `go` |
+| Lote | `run_chapter` (batch API) | `session_lot.py`: `plan` → `prompt` → traduzir → `go` |
 
 - **Texto repetido** entre cenas é traduzido uma vez (`scene_dedup.py plan|copy`; no lote, `prompt --dedup`).
+- **Onda num comando** (`wave.py <projeto> [cena ...]`, padrão `--backend in-session`): `run_scene` → `scene_dedup copy` → `glossary_lint` → `quality_gate` → `cost_report --summary` → `obs_report`; mesmos gates, passo que falha para a onda, saída em `artifacts/wave_last.log`.
+- **Reconferência:** `run_scene` pula cena `verified` sem fala tocada (`touched.py`); `--full` força.
 - **Paralelismo:** `run_scene --jobs N` reconfere cenas em processos separados.
 - **Regra de entrada:** caminho de sessão em projeto novo só entra depois de um benchmark do projeto (qualidade
   e custo medidos contra o caminho de API); o caminho de API continua o padrão do framework.

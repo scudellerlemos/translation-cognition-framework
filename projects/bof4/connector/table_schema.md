@@ -15,10 +15,11 @@ se aplica a todos os tipos:
 | `AREAS*.DAT` | Scripts de área (cutscenes, NPCs com fala) | ✅ **incluído** |
 | `AREAE*.DAT` | Eventos de área (narração de abertura, cutscenes, tutoriais) | ✅ **incluído** |
 | `AREAM*.DAT` | Cidades e mapas (NPCs, lojas, minijogos — ex.: `AREAM000` = Sarai) | ✅ **incluído** |
-| `SHOP.DAT`, `CAMP.DAT`, `DEMO.DAT`, `AB*.DAT` | UI, loja, batalha, menu | ❌ fase futura |
+| `SHOP.DAT`, `CAMP.DAT`, `DEMO.DAT`, `AB*.DAT`, `INIT.DAT` e demais de sistema | UI, loja, batalha, menu | ✅ **incluído depois** (`extraction_scope: completo` no `project.json`; eram "fase futura" na Fase 0) |
 
 > **Regra do framework (Fase 0):** o extrator inclui SOMENTE famílias com diálogo
-> de personagem identificado por falante. UI, itens e batalha são fases separadas.
+> de personagem identificado por falante. UI, itens e batalha são fases separadas
+> (no bof4 o escopo foi ampliado para `completo`; ver `ROADMAP.md`).
 > Ver `framework/media-profiles/games.md` — seção "Escopo de extração".
 
 ### Filtros de conteúdo aplicados dentro das famílias incluídas
@@ -132,10 +133,14 @@ destino na VRAM do PS1); codec na seção 9.
 | `01` | `[01]` | newline dentro da caixa de diálogo |
 | `02` | `[02]` | page break (aguarda input, abre nova caixa) |
 | `04` | `[04]` | variável: nome de personagem (dinâmico) |
-| `05` | `[05]` | variável: nome de item/magia (dinâmico) |
+| `05` | `[05]` | no `project.json` chama-se `var_item_name` (1 parâmetro); `extract.py` e a nota abaixo da tabela de filtros (seção 1) descrevem `[05][03]…[06]` como **cor de destaque (azul)**, usada em fala comum. **Divergência não resolvida:** o nome do `project.json` e a leitura de cor de destaque não batem; não confirmado qual é o significado real |
+| `07` | `[07]` | `var_value` no `project.json` (1 parâmetro, valores `00`–`08`); ex.: `[07][00]` é a tabela "um/todos" de cada cena |
+| `09` | `[09]` | `unmapped` no `project.json` (1 parâmetro) |
+| `0F` | `[0F]` | `unmapped` no `project.json` (1 parâmetro, valores `00`–`03`, `08`, `09`) |
+| `16` | `[16]` | `unmapped` no `project.json` (1 parâmetro) |
 | `0A` | `[0A]` | efeito sonoro / voz |
 | `0B` | `[0B]` | pausa breve (ellipsis beat) |
-| `0C` | `[0C]` | comando de evento (seguido de bytes de parâmetro) |
+| `0C` | `[0C]` | comando de evento (`event_cmd`, 1 parâmetro) |
 | `12` | `[12]` | início de menu de escolha |
 | `14` | `[14]` | ID de speaker (seguido de byte de personagem) |
 | `8B` | `[8B]` | marcador de opção de menu |

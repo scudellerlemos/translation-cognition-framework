@@ -27,7 +27,7 @@
 | **2.5** | — | 🟢 **nº1 TM semântica**: plugar `embedder.search` no `context_pack` como seção rotulada "falas SIMILARES (adapte)" | ✅ |
 | **3** | derivados de `.md` gravam no DB (`decisions`/`voice_cards`/`spoiler`/`kb`) — cobertos pelo mesmo espelho gated da Fase 2 | 🟢 **nº2 KB/lore RAG**: retrieval semântico sobre a KB, **gated pela trava temporal de spoiler** | ✅ |
 | **4** | observabilidade: `metrics`/`warnings`/`qa_effectiveness` → tabelas — cobertos pelo mesmo espelho gated | — | ✅ |
-| **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05b/06b/06c) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
+| **5** | skills como módulos + CLI e2e — registry SÓ com skills de código (det.: 00/07/08; orquestração: 06); cognitivas (01–04b/05/05b/06b/08b/08c/09; a 06c foi incorporada à 06b) ficam playbooks `.md`. `Skill.kind` torna a fronteira estrutural | retrieval disponível às skills (reuso da infra) | ✅ |
 | **6** | cutover: **6a** ✅ export DB→flat (`approved_translations.csv`/`translation_memory.jsonl`) + oráculo round-trip lossless; remoção de leitura flat já feita pelo switch gated (Fases 1–3). **6b** ✅ `build_plan_chapter` (translations) DB-first via `connector_io.sync_translations_db` — ver [[db-first-6b-escopo]] e [issue #44](https://github.com/scudellerlemos/translation-cognition-framework/issues/109) | — | ✅ 6a+6b feito (escopo: translations) |
 | **7** | — (multi-game) | 🟢 **nº3 RAG cross-game/franquia**: corpus compartilhado por série, retrieval por cena | 🔮 futuro |
 
@@ -94,7 +94,7 @@ warnings, qa_effectiveness). Por quê:
 **Decisão (set/2026):** o critério de pronto original da issue ("1 projeto rodando end-to-end
 com produtores DB-first") não é atingível hoje sem run vivo — **nenhum projeto ativo tem
 `db` populado** (`translation_software`, depois removido, era um shell DB-only, corpus BoF4 migrado uma vez, sem
-connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguem flat). Em vez de esperar
+connector/artifacts próprios; BoF4/Uta/Souldiers/Trails/Demo seguiam flat — hoje o `bof4` e o `demo` declaram `db`). Em vez de esperar
 esse pré-requisito (fora do controle desta issue), o escopo foi reduzido ao que o oráculo de
 paridade da Fase 6a realmente mede: **translations**, via o produtor `build_plan_chapter.py`.
 

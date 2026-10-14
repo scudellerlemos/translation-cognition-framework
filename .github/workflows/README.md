@@ -37,7 +37,10 @@ O que cada tarefa confere, em português:
 
 1. Todas **baixam o código** e instalam o Python + as ferramentas (`requirements-dev.txt`).
 2. **Confere que o `.env` não foi enviado** — o `.env` guarda senhas/chaves e *nunca*
-   pode ir pro repositório. Se alguém mandou sem querer, o robô barra.
+   pode ir pro repositório. Se alguém mandou sem querer, o robô barra. No mesmo job
+   (`env-guard`), o **content guard** (`.claude/hooks/content_guard.py`) barra conteúdo de
+   jogo/dado pessoal: arquivo rastreado fora da allowlist (`--tree`) e e-mail pessoal nos
+   commits do PR (`--commits`).
 3. **Checa os tipos (mypy)** — pega erros de "encaixe" (ex.: passar texto onde se
    esperava número) antes mesmo de rodar o programa.
 4. **Roda os testes do motor com cobertura** (runtime, validação, banco e skills) — além

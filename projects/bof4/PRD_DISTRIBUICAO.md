@@ -1,6 +1,8 @@
 # PRD — Distribuição da tradução PT-BR de Breath of Fire IV (Steam)
 
-> Status: decisões confirmadas em 2026-10-14. Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
+> Status: decisões confirmadas em 2026-10-14; pacote (305 deltas, `v0.1.0-beta`) e `.exe` gerados, testados numa cópia dos originais
+> (instalar, idempotência, desinstalar, arquivo modificado, jogo aberto). Pendente: `.exe` no jogo real, máquina sem Python e
+> trajeto do piloto, release (com aval do Felipe). Responsável: Felipe Scudeller. Este documento não contém texto do jogo nem
 > binário; só processo, decisões e critérios. Nada aqui é parecer jurídico.
 
 ## 1. Contexto e problema
@@ -65,7 +67,7 @@ flowchart TB
     end
     subgraph MJ["Máquina do jogador"]
         J1[Pasta do jogo<br/>Steam english/DAT]
-        J2[Pasta de backup]
+        J2[Backup *.bak<br/>ao lado de cada arquivo]
     end
     P1 -->|1. localiza o jogo| J1
     P1 -->|2. confere hash do original| P3
@@ -101,7 +103,7 @@ sequenceDiagram
     J->>P: Executa de novo (ou desinstala)
 ```
 
-## 7. Opções de empacotamento (decisão pendente)
+## 7. Opções de empacotamento (decidido: A, ver seção 13)
 
 | Opção | Como | Vantagem | Risco |
 |---|---|---|---|
@@ -109,7 +111,7 @@ sequenceDiagram
 | B. Texto + reinserção no PC do jogador | Distribui o texto traduzido e roda o conector no jogador | Menor pacote | Distribui o texto da tradução em si; exige Python e os DATs originais do jogador |
 | C. DAT completo | Publica os arquivos remontados | Mais simples | **Proibido**: é conteúdo do jogo |
 
-## 8. Canais de publicação (decisão pendente)
+## 8. Canais de publicação (decidido: GitHub Releases + guia na Steam, ver seção 13)
 
 | Canal | Observação |
 |---|---|
@@ -176,11 +178,13 @@ As datas são estimativas de planejamento, não compromisso.
 
 | # | Decisão | Definido | Motivo |
 |---|---|---|---|
-| 1 | Empacotamento | **A. Delta binário** (`xdelta3`), dentro de um patcher `.exe` de um clique (sem Python no jogador) | Prioridade é a facilidade para o jogador; não publica o arquivo do jogo; verificável por hash |
+| 1 | Empacotamento | **A. Delta binário** (implementado com `bsdiff` via `bsdiff4`, não `xdelta3`; `framework/distribution/build_package.py`), dentro de um patcher `.exe` de um clique (sem Python no jogador) | Prioridade é a facilidade para o jogador; não publica o arquivo do jogo; verificável por hash |
 | 2 | Canal | **GitHub Releases + guia na comunidade Steam** apontando para a release | Release versionada e gratuita; o guia dá visibilidade sem hospedar arquivo. Nexus Mods fica para depois, se houver demanda |
 | 3 | Versão | `v0.1.0-beta` (SemVer); nova release a cada build da Steam ou lote de correções | Marca que a qualidade ainda é medida |
 | 4 | Limites conhecidos | **Publicar como limitações** na release; corrigir depois | Os cortes dependem de arte sem letras, fora do escopo de texto |
 | 5 | Amostra de qualidade | Beta sai com a linha de base de 14,5% (anterior às correções); **reamostrar antes da `v1.0.0`** | Beta serve para coletar erros reais; a reamostra custa revisão humana |
 | 6 | Posição sobre direitos | Sem parecer jurídico prévio: a tradução é apresentada como **mod** da comunidade, só delta, sem asset do jogo, com plano de retirada | Decisão do Felipe; risco aceito por ele (seção 11) |
 
-Próximo passo: gerar deltas e manifesto (seção 12).
+Estado (2026-10-14): deltas, manifesto e patcher `.exe` feitos (`build_package.py`, `patcher.py`, `build_exe.py`; o `.exe` sai em
+`projects/bof4/output/`, ignorada no git; hash do manifesto confere com os 305 arquivos de `source_dat`/`output`). Próximo passo: teste do
+`.exe` no jogo real, máquina sem Python e trajeto do piloto; só então release, com aval do Felipe (seção 10 segue aberta até lá).

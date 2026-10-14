@@ -7,6 +7,39 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10-14 — pós-bof4: o que subiu do projeto para o framework
+
+Lições do bof4 levadas ao framework (branch `feat/framework-pos-bof4`, ainda sem tag). Só framework;
+os dados do projeto ficam em `projects/`.
+
+- **Distribuição** (fee19ba, e5821a3, 33100ca): `framework/distribution/` com patcher genérico de
+  um clique (delta binário, sem conteúdo do jogo) e a skill `09_distribution`. O patcher não estoura
+  quando o `tasklist` devolve saída fora do UTF-8; `build_exe` grava em `<projeto>/output/` por padrão,
+  recusa saída dentro de `dist/` e deixa `work/` numa pasta temporária.
+- **Reconferência só do que mudou** (19452bb, 6084b1e): `touched.py` + `run_scene` pulam cena `verified`
+  sem fala tocada (`--full` força); `run_scene --jobs N` reconfere cenas em paralelo (processo por cena,
+  `run_state` sob trava); a retrotradução é re-julgada por fala (só as stale), não por cena (3d289d5).
+- **Texto repetido e lote** (e93d4c2, 47530b3, b39a4de): `scene_dedup.py` (traduz uma vez o texto repetido
+  entre cenas; agrupa pela coluna de texto-fonte e remapeia offsets no JSON parseado), ligado ao
+  `wave.py`; `session_lot.py` (`plan/prompt/check/go/split/join/install`).
+- **Triagem de risco e onda** (ae11e96, 8ab904c): `risk_triage_run.py` só lista e só chama o modelo
+  (pago) com `--go`; `wave.py` copia só as cenas pedidas.
+- **Bytes e largura de caixa** (d0c1e30, 5c7827a, 80f55da): `budget.py` vira fonte única da conta de
+  bytes (+ `byte_budget_exceptions` no `project.json`), usada também pelo `session_lot`; largura de caixa
+  derivada do inglês (`box_width.py`), tabela de opcodes com parâmetros (`choice_start` quebra caixa) e
+  lint de largura antes da amostra; a regex `_PTPT` do `quality_review` ficou mais estreita.
+- **Revisão e correção** (00fa261, 29a7578): `review_page.py` (página de revisão local, `--serve`);
+  `tm_correct` com escopo por linha e medida de bytes no dry-run.
+- **Fase 0 e portões** (300509e, 81029a9, 4b6027e): `connectors/scope_scan.py` (o que o `dialogs.csv`
+  não cobre); `run_chapter`/`run_game` passam pelo portão de caminho (HITL + chave + cena de sistema);
+  gates e relatórios saem com código != 0 em pasta que não é projeto.
+- **Medição** (77dbe7f): o medidor de tokens ganha o ajuste do sonnet-5 e o erro da estimativa entra no relatório.
+- **Skills** (280a7b6, ce51986): a 06c foi incorporada à 06b; entram `08b` (texto de sistema/rótulos) e
+  `08c` (teste no jogo); a 06 ganha os dois caminhos de tradução; glossário, QA final e decisões de voz
+  detalhados. As skills numeradas vão de 00 a 09.
+
+---
+
 ## 2026-10 — pós-v1.1.0 (ainda sem tag)
 
 - **Modo DB vira default de projeto novo** (e3b6921): o template de `project.json` declara `db`; o

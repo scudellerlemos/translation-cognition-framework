@@ -109,6 +109,9 @@ O objetivo é entender **como o texto está guardado** no binário antes de escr
 2. Documentar em `connector/table_schema.md`: charset, encoding, terminadores, tokens de controle.
 3. Identificar a estratégia de ponteiros: inline, tabela central, ou nenhum.
 4. Preencher `connector.control_codes` e `connector.pointer_table` no `project.json`.
+5. Conferir o escopo: `python framework/connectors/scope_scan.py <dialogs.csv | pasta_do_projeto> <pasta_do_jogo>`
+   lista, por extensão, quantos arquivos do jogo o `dialogs.csv` cobre; extensão sem nenhum arquivo coberto é
+   candidata a escopo esquecido (folha de imagem com rótulo, menu, texto de sistema) — decide-se entre `dialogo` e `completo`.
 
 Referência: `projects/utawarerumono/connector/table_schema.md` e `framework/connectors/hex_binary.md`.
 

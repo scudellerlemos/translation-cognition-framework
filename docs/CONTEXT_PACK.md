@@ -32,11 +32,12 @@ palavra); o sufixo opcional faz `cohort` casar `cohorts` sem abrir para substrin
 
 | Seção do pacote | Regra de seleção | Limite | Função |
 |---|---|---|---|
-| Glossário | o termo ou um de seus aliases está presente na cena | 60 entradas, em ordem alfabética | `select_glossary` |
+| Glossário | o termo ou um de seus aliases está presente na cena | 60 entradas, em ordem alfabética (acima disso trunca e avisa) | `select_glossary` |
 | Voice cards | o nome ou um alias do personagem está presente; personagens de criticidade alta entram sempre | — | `select_voices` |
-| Decisões | as universais (regras do conector) primeiro; depois as que têm tag igual a um termo ou falante presente, ou que citam um deles no resumo | 12 | `select_decisions` |
+| Decisões | as universais (regras do conector) primeiro; depois as que têm tag igual a um termo ou falante presente, ou que citam um deles no resumo; decisão com `reveal` futuro para a cena fica de fora | 12 | `select_decisions` |
 | TM exata | a fala já foi traduzida antes: `sha1(fonte normalizada)[:16]` igual ao de uma entrada da TM | uma por fala | `select_tm` |
 | TM de voz | exemplos de falas já traduzidas do mesmo falante, para fixar o registro | 3 por falante | `select_tm` |
+| TM da série | a mesma chave `tm_key` casa uma entrada de `tm/<série>.json`, de outro jogo da mesma franquia (nunca mistura séries) | uma por fala | `_load_tm_series` (`tm_lookup.py`) |
 | KB / lore | uma palavra (≥ 4 letras) do título da seção está presente na cena **e** a seção tem marca de revelação já ultrapassada | 5 seções | `select_kb` |
 | Guardas de spoiler | um fato ainda **não** revelado neste ponto da história tem um gatilho presente na cena; entra a instrução de como manter a ambiguidade | — | `select_spoiler_guards` |
 | Regras do projeto | tokens de formatação, token de quebra de linha, orçamento de bytes por fala | fixo | `project_constraints` |
@@ -116,8 +117,8 @@ Dois limites conhecidos:
 - **"Exato" tem duas definições.** O hash normaliza caixa e espaços; o corte de 0,999 é aplicado
   ao vetor do texto sem os códigos do jogo. Os critérios são parecidos, mas não idênticos.
 
-O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário e do log de
-decisões. Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
+O pacote também grava `doctrine_hash`: um SHA-1 da doutrina de tradução, do glossário, do log de
+decisões e da análise de tom (`tone_analysis.md`). Se qualquer um deles mudar depois, dá para saber quais cenas foram traduzidas com a
 versão antiga.
 
 ## Por que léxico, e não por embedding

@@ -86,7 +86,9 @@ flowchart TB
 | **Round-trip** | Extrair→reinserir regenera os bytes? (oráculo de correção) | `connector/verify_chapter.py` · `test_roundtrip.py` |
 | **Back-translation** | A linha de alto risco preserva o sentido? | `model.back_translate` (Opus) → `quality_gate.py` |
 | **Lint** | pt-BR natural? cabe no balão? | `naturalness_lint.py` · `quality_review` (largura) |
-| **Schema** | `risk_level` é um enum válido? `risk_notes` presente quando ≥ medium? | `validate.py` (report-only, roda 1x/capítulo via `run_scene._audit_schema`) |
+| **Conector completo** | Os scripts de build_plan/verify existem e há ao menos 1 round-trip verde registrado? | `connector_gate.py` (roda antes do `kb_gate` em todo `run_scene`; sem os scripts, bloqueia sem bypass) |
+| **Schema** | `risk_level` é um enum válido? `risk_notes` presente quando ≥ medium? Token de controle fora do lugar? | `validate.py`: auditoria report-only 1x/capítulo (`run_scene._audit_schema`); erro de token numa cena com round-trip verde bloqueia o `verified` dela (status `schema_failed`) |
+| **Humano no laço** | Escopo aceito, caminho escolhido e fila de escalonamento sem item aberto? (só com `"hitl": true`) | `hitl.py` (gate no CLI do `run_scene`; item aberto na fila bloqueia o `quality_gate`) |
 
 > **O round-trip prova bytes, não qualidade.** Ele garante que a tradução **reentra** no jogo sem
 > corromper o arquivo — não que ela está *boa*. A qualidade vem dos outros gates + da revisão humana (§5).

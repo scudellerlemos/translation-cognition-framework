@@ -1,7 +1,7 @@
 # Roadmap — Breath of Fire IV (PT-BR, modo banco)
 
-> Última atualização: 2026-10-11
-> Status atual: **piloto = trajeto do início do jogo até a saída de Sarai e o primeiro trecho do Fou-Lu** — 32 de 286 cenas traduzidas e verificadas; Fase 2 fechada com o OK do usuário (2026-10-12). Escala liberada (Fase 3).
+> Última atualização: 2026-10-14
+> Status atual: **305/305 cenas `verified` (27.021 falas), Fases 0 a 4 fechadas; distribuição: patcher `.exe` beta testado em cópia, falta o teste no jogo real e a release** (ver "Retomada").
 > Histórico da Fase 0 (mapeamento do conector): estava em `projects/breath_of_fire_4/ROADMAP.md`, removido do repositório (segue no histórico do git).
 
 Os passos são seguidos na ordem. Nenhum gate é pulado; item aberto bloqueia o seguinte.
@@ -33,8 +33,8 @@ Atualizar antes de cada `/clear`. Estado em 2026-10-14 (fim do dia):
      **14,5%** (29/200 sorteadas; IC 95%: 10,3% a 20,1%), **26,1%** pesada por repetição; o juiz apontou 0,7%
      do que leu, precisão 51,9%, alcance 0,0% (não pegou nenhum erro da amostra sorteada). Revisor: Felipe
      Scudeller. Os erros reais se repetem em poucos textos: "fl" = "and." nos rótulos de andar, "Wgt" = "Pes.",
-     "em alvo(s)" no lugar de "no(s) alvo(s)", "Golpe Sorte", "Região Wyndia". **Correção desses padrões: em aberto**
-     (decisão do Felipe; mexe em texto instalado e exige reconferência e gates).
+     "em alvo(s)" no lugar de "no(s) alvo(s)", "Golpe Sorte", "Região Wyndia". **Correção desses padrões: feita em parte**
+     (decisão do Felipe; mexe em texto instalado e exige reconferência e gates; ver as duas correções abaixo).
      **Correção feita em 2026-10-14, depois da amostra:** "Região Wyndia" = "Região de Wyndia" (5 cenas) e
      "Golpe Sorte" = "Golpe de Sorte" (`BTLEND` e glossário); na lista de habilidades (`AB000_00:10100:30`)
      fica "Golpe Sorte", porque a forma com "de" custa +2 bytes. 6 arquivos reinstalados, gates verdes.

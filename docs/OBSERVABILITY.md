@@ -45,17 +45,18 @@ acontecimento, com `t`, `run` (id da execução, herdado pelos processos filhos 
 
 | `stage` | Quem emite | O que traz |
 |---|---|---|
-| `gate.connector`, `gate.kb`, `gate.kb_phase` | os gates | `pass`/`block`, nº de problemas e avisos |
+| `gate.connector`, `gate.kb`, `gate.kb_phase`, `gate.hitl` | os gates (`gate.hitl` só em projeto com `"hitl": true`) | `pass`/`block`, nº de problemas e avisos |
 | `pack`, `translate`, `build_plan`, `verify`, `back_translate`, `state_index` | `run_scene` | duração; no `verify`, as contagens do `VERIFY_STATUS` (overflow, falhas) |
 | `quality` | `run_scene` | linhas, alto risco, pass-rate da back-translation, gates ignorados |
 | `scene` | `run_scene` | status final e duração total — inclusive quando para num gate ou estoura exceção (`result: "error"`) |
 | `audit.spoiler`, `audit.schema` | `run_scene` (entry point) | contagem de achados |
 
-`python framework/runtime/obs_report.py <projeto> [--scene CENA] [--json]` junta tudo por cena: status,
+`python framework/runtime/obs_report.py <projeto> [--scene CENA] [--json] [--all]` (`--all`: tabela com todas as cenas; o padrão é enxuto) junta tudo por cena: status,
 linhas, pass-rate, overflow, nº de execuções, falhas de verify, tempo por etapa, tempo de espera da sessão,
 tokens e valor; mais o último resultado de cada gate e a lista de falhas e bloqueios.
 
-O `metrics.jsonl` ganhou `t` e `run`, e uma reexecução que não muda nada não anexa linha nova.
+O `metrics.jsonl` ganhou `t` e `run`, e uma reexecução que não muda nada não anexa linha nova. O `wave.py` termina
+cada onda com `cost_report.py --summary` e `obs_report.py`.
 
 A segmentação tradução:governança vale também para o `in-session`: cada linha de sessão do ledger traz
 `phase` (`translate`, `back` = governança, `other`), pelo que o último `run_scene` ficou aguardando.

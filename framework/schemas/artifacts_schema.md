@@ -60,6 +60,7 @@
 **Invariantes:**
 - `dialogs.csv` é **gerado pelo Passo 00** (não é dado pré-existente) quando há `connector`
 - É **somente leitura** a partir do Passo 01
+- Projetos antigos usam a coluna `text_en` no lugar de `text_source`; `context_pack.load_dialogs` e `scene_dedup` aceitam as duas (prefere `text_source`)
 - `byte_budget` ≥ 0; presente em todas as linhas quando o meio tem restrição de bytes
 
 ---

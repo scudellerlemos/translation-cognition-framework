@@ -24,8 +24,9 @@ no jogador. Instalar, verificar e desinstalar, tudo conferido por hash.
 2. **Pacote** (de dentro do projeto):
    `python -I ../../framework/distribution/build_package.py distribution.json source_dat output dist <versao> [arte [capa]]`
    Só entram arquivos que existem em `source_dat` e diferem dele; sondas de teste ficam de fora.
-3. **Executável:** `python ../../framework/distribution/build_exe.py dist` (saída padrão em `projects/<projeto>/output/`, ignorada no git;
-   nunca dentro de `dist/`, que o PyInstaller embute no próprio `.exe`).
+3. **Executável:** `python ../../framework/distribution/build_exe.py dist [saida_dir]` (sem `saida_dir`, grava em `<projeto>/output/`,
+   ignorada no git; recusa saída dentro de `dist/`, que o PyInstaller embute no próprio `.exe`; o `work/`/spec do
+   PyInstaller vai para pasta temporária, não para a saída).
 4. **Teste obrigatório**, nesta ordem:
    a. CLI numa **cópia** dos originais: `patcher.py verificar|instalar|desinstalar --jogo <pasta> --pacote dist`;
       instalar é idempotente, desinstalar volta byte a byte, arquivo modificado é recusado sem alterar nada.
@@ -51,4 +52,4 @@ no jogador. Instalar, verificar e desinstalar, tudo conferido por hash.
 
 ## OUTPUTS
 
-`dist/` (deltas, `manifest.json`, `arte.png`, `icone.ico`) e o `.exe` — fora do repositório.
+`dist/` (deltas, `manifest.json`, `arte.png`, `icone.ico`) e o `.exe` (em `<projeto>/output/` por padrão) — fora do repositório.

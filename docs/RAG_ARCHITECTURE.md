@@ -267,7 +267,7 @@ ORDER BY l2 LIMIT :k
 | Consulta | uma por fala da cena | uma por cena (os primeiros 2.000 caracteres do texto da cena) |
 | `k` (vizinhos por consulta) | 3 | 3 |
 | Teto por cena | 8 pares fonte→tradução | 3 decisões e 3 seções de KB |
-| Score mínimo | `rag_min_score` (0,55; calibrado, ver abaixo) | sem limiar; o corte é o `k` |
+| Score mínimo | `rag_min_score` (calibrado em 0,55, ver abaixo; `null` = sem corte, que é o que o template e o bof4 trazem) | sem limiar; o corte é o `k` |
 | Score máximo | 0,999 (acima disso é match exato) | — |
 | Filtro | só `approved=1`, só do projeto | marca `reveal` já ultrapassada (default-deny) |
 | Deduplicação | por par (fonte, tradução), no SQL e no pacote | o que já entrou pelo caminho léxico não repete |
@@ -301,7 +301,8 @@ ruído observado foi **0,51**.
 
 **Valor escolhido: `rag_min_score = 0.55`**, acima do teto de ruído (0,51) e abaixo do piso das
 paráfrases (0,57). Foi medido no `translation_software` (shell de validação, depois removido); é configurável por
-projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas.
+projeto, em `rag_min_score` do `project.json`, porque depende do par de idiomas. O default do template é `null`
+(sem corte): o 0,55 só vale onde o projeto o declara.
 
 Limite dessa medição: 323 falas são uma fração do corpus completo (6.046 falas). A amostra serve
 para ver a **forma** da distribuição de scores, que depende só do texto, mas não mede cobertura em
@@ -334,8 +335,9 @@ flowchart TB
 ```
 
 A garantia vem do dado explícito por item, não de casar texto. Consequência prática: seção de KB
-sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2 render algo. Hoje
-nenhum projeto tem a KB marcada, então a KB semântica fica vazia em produção.
+sem `reveal` tagueado nunca aparece — projeto novo precisa taguear para o nº2 render algo. A KB do
+bof4 tem `<!-- reveal: safe -->` por seção; a do utawarerumono, do souldiers e do demo não tem marca,
+então lá a KB semântica sai vazia.
 
 ---
 

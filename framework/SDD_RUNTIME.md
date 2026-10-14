@@ -160,6 +160,31 @@ Se passar, a cena entra na TM e influencia todas as cenas futuras (dedup e consi
 
 ---
 
+### Skills 08b, 08c e 09 — Rótulos, teste no jogo, distribuição
+
+**Responsável**: conector do projeto (08b: `image_labels` no `project.json`), humano (08c) e `framework/distribution/` (09)
+
+```
+distribution/build_package.py  →  dist/ (deltas bsdiff + manifest.json com hashes [+ arte.png, icone.ico])
+distribution/build_exe.py      →  .exe de um clique (padrão: <projeto>/output/; recusa saída dentro de dist/)
+distribution/patcher.py        →  instalar | verificar | desinstalar (só arquivo cujo hash bate com o original)
+```
+
+---
+
+### Caminho de sessão (orquestração barata)
+
+Atalhos determinísticos em volta do `run_scene` quando a IA da sessão traduz (`--backend in-session`):
+
+- `run_scene` pula cena `verified` sem fala tocada (`touched.py`); `--full` reconfere.
+- `wave.py`: `run_scene` → `scene_dedup copy` → `glossary_lint` → `quality_gate` → `cost_report --summary` → `obs_report`, num comando, log em `artifacts/wave_last.log`.
+- `scene_dedup.py`: texto repetido entre cenas é traduzido uma vez; as cópias passam pelos mesmos gates.
+- `session_lot.py` (usa `budget.py`): prompt/conferência/fechamento de várias cenas num lote.
+- `risk_triage.py` / `risk_triage_run.py`: triagem de risco; `--go` chama o modelo (pago), sem ele só lista os lotes.
+- `session_usage.py`: tokens reais das sessões no ledger (`source: "session"`).
+
+---
+
 ## Fluxo completo de dados
 
 ```
@@ -207,6 +232,6 @@ dialogs.csv + glossary.csv + tone_analysis.md + decision_log.md + research_log.m
 | `translation_memory.jsonl` | `state_index.build()` | `context_pack` (dedup por TM) |
 | `voice_cards.json` | `state_index.build()` | `context_pack` |
 | `decision_index.json` | `state_index.build()` | `context_pack` |
-| `run_state.json` | `run_scene._checkpoint()` | `run_chapter` (skip se verified) |
+| `run_state.json` | `run_scene._checkpoint()` | `run_chapter` (skip se verified), `touched.py` (`t_hashes`), `scene_dedup` |
 | `api_ledger.jsonl` | `cost.log_api_call()` | `cost_report`, `_ledger_scene_cost()` |
 | `review_cap_<N>.xlsx` | `quality_review.export()` | revisor humano → `quality_review.apply()` |

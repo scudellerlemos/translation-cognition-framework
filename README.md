@@ -123,7 +123,7 @@ Sete decisões sustentam tudo. Cada uma resolve um dos problemas acima.
 - **Runtime agnóstico ao modelo** — a lógica não sabe qual LLM roda. Trocar Haiku/Sonnet/Opus por
   complexidade da linha é configuração, não reescrita (`runtime/model.py` + `back_translate.py` são a única fronteira com o LLM pago).
 - **SDD — Specification-Driven Development** — as regras de tradução (glossário, vozes, spoilers) são
-  **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..08`), não decisões
+  **especificações versionadas e checáveis**, produzidas por etapas explícitas (`00..09`), não decisões
   ad-hoc perdidas num chat. Cada etapa tem um *gate* que impede avançar sobre base incompleta.
 - **Gates explícitos** — a IA **propõe**, gates determinísticos **aprovam**, um script **aplica**.
   Nada entra no dado canônico sem passar por uma verificação reproduzível. Ver
@@ -255,10 +255,12 @@ projects/      → AS INSTÂNCIAS. Cada obra traduzida vive em projects/<título
 
 | Pasta | Papel | Camada(s) |
 |---|---|---|
-| `framework/skills/` | As etapas do SDD (`00..08`) — o processo, em prosa | Cognition (guia) + Validation (gates) |
+| `framework/skills/` | As etapas do SDD (`00..09`, 15 arquivos `.md`) — o processo, em prosa | Cognition (guia) + Validation (gates) |
 | `framework/runtime/` | O harness executável (cena = job stateless, interface de modelo) | State + Execution + Cognition |
 | `framework/connectors/` | I/O determinística: binário ↔ corpus (round-trip) | Execution + Validation |
 | `framework/validation/` | Validadores determinísticos (schemas, naturalidade, custo) | Validation |
+| `framework/db/` | Banco SQLite + embeddings locais (opcional, `project.json:db`): store, migração flat→DB, embedder | State |
+| `framework/distribution/` | Patcher de um clique: `build_package.py` (deltas + manifesto), `patcher.py`, `build_exe.py` | Execution (pós-build) |
 | `framework/media-profiles/` | Preocupações por tipo de mídia (jogos ✅, filmes/séries 🚧) | — |
 | `docs/` | ARCHITECTURE, CONCEPTS, GOVERNANCE, NAMING, ADRs, ROADMAP | — |
 | `projects/<obra>/` | `project.json` (manifesto) + `profile/` + `artifacts/` + `connector/` | A instância (os dados) |
@@ -278,7 +280,7 @@ loop de QA mostra que correções humanas **voltam pela TM** (cirúrgicas), sem 
 flowchart TB
   bin[("binário do jogo<br/>read-only")]:::sta
   bin --> f0["FASE 0 — Conhecimento<br/>KB reconciliada de fonte · humano RATIFICA"]:::val
-  f0 --> pipe["PIPELINE 00–08<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
+  f0 --> pipe["PIPELINE 00–09<br/>extrai → traduz IA → micro-QA por lote → reinsere"]:::cog
   pipe --> build["BUILD GLOBAL<br/>jogo inteiro reinserido + patch · round-trip byte-idêntico"]:::exe
   build --> qa["QA HUMANO<br/>REVISOR no texto + TESTER in-game"]:::val
   qa -->|"correção cirúrgica via TM · não re-traduz o jogo"| pipe
@@ -295,7 +297,7 @@ flowchart TB
 > (determinístico). A Fase 0 e o QA humano **cercam** a parte de IA — nada é traduzido sem KB de fonte,
 > nada é entregue sem revisão humana.
 
-## O pipeline (00 → 08)
+## O pipeline (00 → 09)
 
 As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entrada.
 
@@ -307,9 +309,12 @@ As etapas do SDD. Cada uma lê os artefatos da anterior e tem um *gate* de entra
 04 glossário     → regras normativas de tradução (+ decision log)
 05 planejamento  → plano linha a linha (+ corpus de teste sintético)
 06 tradução      → execução em lotes, auto-revisão de voz, orçamento de bytes (shift-left)
-06b QA       → micro-QA por lote + ciclo de correção cirúrgica
+06b micro-QA     → micro-QA por lote + ciclo de correção cirúrgica
 07 QA final      → consistência global, spoilers cross-segmento
 08 reinserção    → conector: tradução → binário + patch (determinístico; LLM só no resíduo)
+08b texto de sistema/rótulos → escopo completo além do diálogo
+08c teste no jogo → print do usuário → causa raiz → reinstalação
+09 distribuição  → delta + patcher .exe de um clique (só diferenças, nunca conteúdo do jogo)
 ```
 
 ---
@@ -346,7 +351,7 @@ o modelo, valida o plano, roda o round-trip do conector e grava o resultado veri
 5. A quarta instância, `projects/trails_sky_sc/` (engine Falcom, em andamento), ainda não tem
    `README.md` próprio — ver [Status](#status) e `docs/CHANGELOG.md` pelo estado atual.
 6. Para um projeto novo: copie `framework/templates/project.template.json`, preencha o manifesto e
-   rode o pipeline `00..08` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
+   rode o pipeline `00..09` — ou use `python framework/connectors/discover.py <dir-do-jogo>` para
    descoberta automática de engine (Generic Connector System).
 
 Aprofundar: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
@@ -358,7 +363,7 @@ Aprofundar: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) (o porquê medido) ·
 
 ---
 
-## Status — setembro 2026
+## Status — outubro 2026
 
 Ver [CHANGELOG](docs/CHANGELOG.md) (histórico de mudanças) e [ROADMAP](docs/ROADMAP.md) (detalhamento técnico).
 

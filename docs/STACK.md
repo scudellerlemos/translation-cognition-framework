@@ -22,6 +22,7 @@ controlar custo) é código Python comum, testado e reprodutível.
 | Índice vetorial | `sqlite-vec` (tabela virtual `vec0`) | guarda e consulta os vetores dentro do próprio SQLite |
 | Persistência | SQLite (biblioteca padrão, modo WAL) ou arquivos JSON/CSV | memória de tradução, glossário, base de conhecimento, estado do run |
 | Execução | CLI `tcf` + Message Batches API da Anthropic | uma cena por job; lote assíncrono com 50% de desconto |
+| Distribuição | `bsdiff4` (delta binário), PyInstaller (`.exe` único), Pillow (arte/ícone do pacote); `framework/distribution/` | patcher de um clique para o jogador, sem conteúdo do jogo (só diferenças); dependências fora dos `requirements*.txt` |
 | Qualidade | pytest, Hypothesis, ruff, mypy, bandit, pip-audit, gitleaks | 7 workflows no GitHub Actions; cobertura mínima de 90% |
 
 ```mermaid
@@ -348,7 +349,7 @@ workflows no GitHub Actions:
 
 | Workflow | Quando roda | O que verifica |
 |---|---|---|
-| `test.yml` | PR e push no `main` | mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado |
+| `test.yml` | PR e push no `main` | guarda de conteúdo e de `.env` (`env-guard`); mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado; testes dos hooks |
 | `quality.yml` | PR e push no `main` | ruff (lint), bandit (segurança no código), pip-audit (CVE nas dependências), gitleaks (credenciais vazadas) |
 | `api-smoke.yml` | semanal e manual | uma cena mínima enviada de verdade à Batch API, para detectar mudança de contrato da API antes de um capítulo pago |
 | `ml-coverage-optional.yml` | semanal | os testes da stack de embedding sem mock, com piso de 85% |
@@ -372,7 +373,7 @@ Dois pontos de desenho:
 | Projeto | Persistência / RAG | Modelo | Estado |
 |---|---|---|---|
 | `utawarerumono` | arquivos | Sonnet/Opus (API) | concluído — 16 capítulos, Batch API |
-| `bof4` | **SQLite + busca semântica** (obrigatória) | modelo da sessão (`in-session`) | piloto — 14 de 223 cenas verificadas; conector de referência Capcom e fixture de testes. Substituiu `breath_of_fire_4` (arquivos, 125 cenas), removido do repositório |
+| `bof4` | **SQLite + busca semântica** (obrigatória) | modelo da sessão (`in-session`) | traduzido e instalado — 305 cenas `verified` (27.021 falas); patcher em beta, release pendente; conector de referência Capcom e fixture de testes. Substituiu `breath_of_fire_4` (arquivos, 125 cenas), removido do repositório |
 | `souldiers` | arquivos | Haiku/Sonnet/Opus (Batch API) | concluído — 470 cenas, terceira engine (Unity Addressables) |
 | `trails_sky_sc` | arquivos | — (ainda não traduzido pelo framework) | em andamento — quarta engine (Falcom); 67 cenas extraídas, cena-piloto com round-trip fechado |
 | `demo` | SQLite, busca semântica desligada (`semantic: false`) | — | exemplo sintético do README |
