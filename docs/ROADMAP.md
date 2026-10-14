@@ -49,7 +49,7 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
 > Falta do item 1: tudo do bloco B (conectores/Fase 0). Falta da reconferência: só as falas tocadas (hoje a
 > cena inteira, em paralelo).
 
-- [ ] **1. Processo e gates.** Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
+- [ ] **1. Processo e gates.** *(feito nos blocos A e B: medidor, `paths.require_project`, `budget.py`, `tm_correct` por linha, `scene_dedup`, retrotradução por fala, `--jobs`, portão de caminho no `run_chapter`, `review_page`, `box_width`, `opcodes`, `pattern_lint`, `scope_scan`, regras de glossário e decisões de voz nas skills. Falta: reconferir só as falas tocadas; ligar `scene_dedup` ao `wave`; `lot.py`/`verify_chapter.py` do bof4 ainda contam bytes por conta própria; parâmetros em `connector.control_codes` do bof4 ainda não preenchidos.)* Varredura completa na Fase 0 (inclui folhas de imagem; escopos `dialogo` e
   `completo`); largura de linha por caixa, derivada do inglês do jogo; tabela de opcodes com parâmetros (e valor
   possível de cada variável); glossário por sentido, com folga de bytes por contexto; lista de decisões de voz
   antes do piloto; reconferência por fala tocada e em paralelo; retrotradução invalidada por fala; página de
@@ -57,10 +57,12 @@ histórico fica nos commits, não precisa de linha de "próximos passos" pra tra
   lint de padrões; uma só função de contagem de bytes (exceção de +1 no `project.json`); `tm_correct` com
   escopo por linha e medida de bytes no dry-run; texto repetido entre cenas traduzido uma vez; comando que
   falha de ambiente sai com código diferente de zero.
-- [ ] **2. Skills (13 → 14 ou 15).** Juntar `06b_micro_qa` e `06c_correction_cycle`; criar uma para texto de
+- [x] **2. Skills (13 → 14 ou 15).** Juntar `06b_micro_qa` e `06c_correction_cycle`; criar uma para texto de
   sistema e rótulos em imagem e outra para o teste dentro do jogo; ampliar `00_extraction`,
   `04_glossary_creation` e `07_qa`; subir o caminho de sessão (`lot`, `dup`, `plan`, `part`, `triagem`,
   `revisar`, `install`) e descrevê-lo na `06_translation`.
+  `triagem` (chama o CLI do modelo, específico do ambiente) não subiu; o resto sim — `session_lot.py`, `scene_dedup.py`,
+  `review_page.py` — e a `06_translation` descreve os dois caminhos.
 - [ ] **3. Benchmark do caminho de sessão (próximo passo a testar).** No projeto novo, rodar o mesmo recorte
   (por exemplo, um capítulo) pelo caminho de sessão e pelo de API e comparar: taxa de erro da amostra de
   qualidade (bof4 mediu 14,5% antes das correções, 26,1% pesada por repetição), custo (tokens lidos, não
