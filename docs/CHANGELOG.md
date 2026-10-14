@@ -7,9 +7,9 @@ organizadas por período, não por versão.
 
 ---
 
-## 2026-10-14 — pós-bof4: o que subiu do projeto para o framework
+## 2026-10-14 — v1.2.0: pós-bof4, o que subiu do projeto para o framework
 
-Lições do bof4 levadas ao framework (branch `feat/framework-pos-bof4`, ainda sem tag). Só framework;
+MINOR (ADR 0013): só adições (caminho de sessão em lote, patcher, `touched`, `scene_dedup`, `budget`, skills `08b`/`08c`). Lições do bof4 levadas ao framework (tag `v1.2.0` depois do merge da PR). Só framework;
 os dados do projeto ficam em `projects/`.
 
 - **Distribuição** (fee19ba, e5821a3, 33100ca): `framework/distribution/` com patcher genérico de
@@ -40,7 +40,7 @@ os dados do projeto ficam em `projects/`.
 
 ---
 
-## 2026-10 — pós-v1.1.0 (ainda sem tag)
+## 2026-10 — entre v1.1.0 e v1.2.0
 
 - **Modo DB vira default de projeto novo** (e3b6921): o template de `project.json` declara `db`; o
   banco nasce sozinho no 1º `run_scene`/`run_chapter` (mirror flat→DB no início do run). Projetos
