@@ -91,6 +91,7 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
 - `test_docs_integrity.py`: ADRs sequenciais, com título e status válidos; `VERSION` igual à última versão do
   CHANGELOG; todo teste do embedder listado no workflow de cobertura de ML (a falha de cobertura do PR #86 teria
   sido pega aqui).
+- `.github/CODEOWNERS` (dono em todo o repo); `content_guard.py` aceita o nome `CODEOWNERS` (o GitHub exige esse nome exato, sem extensão).
 - `SECURITY.md`: seção "Texto do jogo como dado não confiável" e runbook de rotação de chave;
   `test_untrusted_text_boundary.py` falha se uma chamada de LLM ganhar `tools`/`tool_choice`, se a triagem perder
   `--allowedTools ''` ou se as ferramentas do `scene-translator` forem alargadas.
