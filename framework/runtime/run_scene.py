@@ -204,13 +204,7 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
               f"(nao re-traduzidas; {tr_done.get('novel', 0)} novas ao modelo)")
     _checkpoint(root, scene, {"scene_id": scene_id, "n_lines": tr["n_lines"], "status": "packed"})
 
-    # V2/V3: registra doctrine_hash e prompt_hash no checkpoint — computados direto das fontes
-    import hashlib as _hl
-    _cp_hash = context_pack._doctrine_hash(root)
-    _sp = paths.scene_prompt(root, scene)
-    _pr_hash = _hl.sha1(_sp.read_bytes(), usedforsecurity=False).hexdigest()[:16] if _sp.is_file() else ""
-    if _cp_hash or _pr_hash:
-        _checkpoint(root, scene, {"doctrine_hash": _cp_hash, "prompt_hash": _pr_hash})
+    _registrar_hashes(root, scene)
 
     if tr["status"] == M.AWAITING:
         tr = cast(M.TranslateAwaiting, tr)
@@ -242,6 +236,62 @@ def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str, backend:
     paths.atomic_write(paths.verify_diagnostics(root, scene, scene_id), json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2))
 
 
+def _registrar_hashes(root: Path, scene: str) -> None:
+    # V2/V3: registra doctrine_hash e prompt_hash no checkpoint — computados direto das fontes
+    import hashlib as _hl
+    _cp_hash = context_pack._doctrine_hash(root)
+    _sp = paths.scene_prompt(root, scene)
+    _pr_hash = _hl.sha1(_sp.read_bytes(), usedforsecurity=False).hexdigest()[:16] if _sp.is_file() else ""
+    if _cp_hash or _pr_hash:
+        _checkpoint(root, scene, {"doctrine_hash": _cp_hash, "prompt_hash": _pr_hash})
+
+
+def _normalizar_antes_do_plano(root: Path, scene: str, backend: str) -> None:
+    """Pre-passe mecanico da 1a rodada: normaliza quebras de linha e lista problemas antes do build_plan."""
+    with contextlib.suppress(Exception, SystemExit):  # o build_plan/verify seguem decidindo
+        fixed = M.fix_newlines(root, scene, reuse_pack=backend == "in-session")
+        if fixed:
+            print(f"[pre] {fixed} fala(s) com quebra de linha real/token a mais: normalizadas (mecanico).")
+        bad = M.precheck(root, scene, reuse_pack=backend == "in-session")
+        if bad:
+            print(f"[pre] {len(bad)} fala(s) com problema ANTES do build_plan (corrija todas de uma vez):")
+            print(_indent(chr(10).join(f"{o}: {m}" for o, m in bad[:30])))
+
+
+def _erros_de_schema_da_cena(root: Path, scene_id: str) -> list:
+    return [m for sev, art, m in validate.validate_project(root)
+            if sev == "ERROR" and f"approved_{scene_id}." in str(art)]
+
+
+def _retraduzir_apertado(root: Path, scene: str, backend: str, tol, ti: int, tr) -> tuple:
+    """Re-traducao de fitting (rodadas ti>0 do _fitting_loop). Devolve (tr, early): `early` e o resultado de
+    parada se a re-traducao falhou (e `tr` segue sendo a traducao anterior); None se deu certo."""
+    # CIRURGICO: re-traduzir SO as linhas acima do budget (nao a cena inteira). Numa cena grande
+    # com poucos estouros isso troca centenas de re-traducoes por umas poucas (medido: ~$3,4
+    # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
+    # ESCALONAMENTO DE MODELO (so backend "api"): pareado por indice com BUDGET_ESCALATION —
+    # tol=1.15 (folga maior) tenta o modelo barato; tol=1.0 (residuo que nem 1.15 resolveu,
+    # sinal real de dificuldade) escala pro caro.
+    model = (M.MODEL_ESCALATION[ti - 1]
+             if backend == "api" and ti - 1 < len(M.MODEL_ESCALATION) else None)
+    try:
+        over = M.over_budget_offsets(root, scene, tolerance=1.0)
+        if over:
+            print(f"[retighten] verify falhou por fitting -> re-traduzindo SO {len(over)} "
+                  f"linha(s) acima do budget (tol={tol}, model={model or 'default'}) ...")
+            tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol, backend=backend,
+                                       model=model)
+        else:
+            print(f"[retighten] verify falhou por fitting (nenhuma linha acima do budget) -> "
+                  f"re-traduzindo a cena (tol={tol}, model={model or 'default'}) ...")
+            tr = M.translate(root, scene, backend=backend, budget_tolerance=tol, model=model)
+    except Exception as e:
+        print(f"      ERRO na re-traducao ({backend}): {e}")
+        _checkpoint(root, scene, {"status": "api_translate_failed"})
+        return tr, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+    return tr, None
+
+
 def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,
                   do_verify: bool, tr: M.TranslateResult | dict) -> tuple:
     """FASE 3/5: build_plan + verify com escalonamento de fitting.
@@ -262,39 +312,12 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
     verified = None
     for ti, tol in enumerate(tolerances):
         if ti > 0:
-            # CIRURGICO: re-traduzir SO as linhas acima do budget (nao a cena inteira). Numa cena grande
-            # com poucos estouros isso troca centenas de re-traducoes por umas poucas (medido: ~$3,4
-            # economizados em 2 cenas do cap.13). Fallback p/ cena inteira so se nada estiver acima.
-            # ESCALONAMENTO DE MODELO (so backend "api"): pareado por indice com BUDGET_ESCALATION —
-            # tol=1.15 (folga maior) tenta o modelo barato; tol=1.0 (residuo que nem 1.15 resolveu,
-            # sinal real de dificuldade) escala pro caro.
-            model = (M.MODEL_ESCALATION[ti - 1]
-                     if backend == "api" and ti - 1 < len(M.MODEL_ESCALATION) else None)
-            try:
-                over = M.over_budget_offsets(root, scene, tolerance=1.0)
-                if over:
-                    print(f"[retighten] verify falhou por fitting -> re-traduzindo SO {len(over)} "
-                          f"linha(s) acima do budget (tol={tol}, model={model or 'default'}) ...")
-                    tr = M.retranslate_offsets(root, scene, over, budget_tolerance=tol, backend=backend,
-                                               model=model)
-                else:
-                    print(f"[retighten] verify falhou por fitting (nenhuma linha acima do budget) -> "
-                          f"re-traduzindo a cena (tol={tol}, model={model or 'default'}) ...")
-                    tr = M.translate(root, scene, backend=backend, budget_tolerance=tol, model=model)
-            except Exception as e:
-                print(f"      ERRO na re-traducao ({backend}): {e}")
-                _checkpoint(root, scene, {"status": "api_translate_failed"})
-                return tr, None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+            tr, early = _retraduzir_apertado(root, scene, backend, tol, ti, tr)
+            if early is not None:
+                return tr, None, early
 
         if ti == 0:
-            with contextlib.suppress(Exception, SystemExit):  # o build_plan/verify seguem decidindo
-                fixed = M.fix_newlines(root, scene, reuse_pack=backend == "in-session")
-                if fixed:
-                    print(f"[pre] {fixed} fala(s) com quebra de linha real/token a mais: normalizadas (mecanico).")
-                bad = M.precheck(root, scene, reuse_pack=backend == "in-session")
-                if bad:
-                    print(f"[pre] {len(bad)} fala(s) com problema ANTES do build_plan (corrija todas de uma vez):")
-                    print(_indent(chr(10).join(f"{o}: {m}" for o, m in bad[:30])))
+            _normalizar_antes_do_plano(root, scene, backend)
         print(f"[3/6] build_plan_chapter {scene} ...")
         with events.stage(root, "build_plan", scene) as ev:
             code, out = _run([sys.executable, str(build_plan_script), scene])
@@ -320,8 +343,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
         if code == 0:
             # token de controle/quebra fora do lugar passa no round-trip (bytes) mas quebra a caixa de texto:
             # erro de schema NESTA cena bloqueia o verified (a auditoria do fim do lote so avisava).
-            bad = [m for sev, art, m in validate.validate_project(root)
-                   if sev == "ERROR" and f"approved_{scene_id}." in str(art)]
+            bad = _erros_de_schema_da_cena(root, scene_id)
             if bad:
                 print(f"      SCHEMA: {len(bad)} erro(s) de token -- corrija a traducao:")
                 print(_indent(chr(10).join(bad[:20])))
@@ -400,6 +422,100 @@ def _back_phase(root: Path, scene: str, highs: list, backend: str,
     return bt, None
 
 
+def _gate_conector(root: Path, scene: str, scene_id: str, do_verify: bool) -> RunSceneResult | None:
+    """Gate de completude do conector. Devolve o resultado de parada (cena bloqueada) ou None se segue."""
+    # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
+    # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
+    cg = connector_gate.check(root)
+    for w in cg["warnings"]:
+        print(f"[connector] aviso: {w}")
+    if cg["hard_problems"]:
+        print(f"[0/6] BLOQUEADO (conector, hard) — {len(cg['hard_problems'])} problema(s) sem bypass possivel:")
+        for p in cg["hard_problems"]:
+            print(f"      - {p}")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
+        return {"status": "connector_incomplete", "scene": scene, "problems": cg["hard_problems"]}
+    if cg["problems"]:
+        # PILOTO: o unico problema soft e "nenhum round-trip verde ainda", e quem grava verified=True
+        # e este run_scene (apos o verify) -- bloquear aqui era um impasse (a 1a cena nunca passava).
+        # Com verify ligado a propria cena prova o round-trip logo adiante;
+        # so bloqueia quem roda SEM verify. Escala (run_chapter) segue bloqueada pelo gate dela.
+        if not do_verify:
+            print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
+            for p in cg["problems"]:
+                print(f"      - {p}")
+            print("      -> rode esta cena COM verify (sem --no-verify): o piloto registra o round-trip.")
+            _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
+            return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
+        print("[connector] piloto: nenhum round-trip verde ainda — esta cena prova o round-trip no verify.")
+    return None
+
+
+def _gate_kb(root: Path, scene: str, scene_id: str, skip_kb_gate: bool, bypassed: list) -> RunSceneResult | None:
+    """Gate de cobertura de KB e exibicao das decisoes pendentes. Devolve o resultado de parada ou None se segue.
+    Soma 'kb' em `bypassed` quando o gate soft foi ignorado via --skip-kb-gate."""
+    # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
+    kb = kb_gate.check(root, scene)
+    for w in kb["warnings"]:
+        print(f"[kb] aviso: {w}")
+    # hard_problems: nunca bypassavel (nem com --skip-kb-gate)
+    if kb.get("hard_problems"):
+        print(f"[0/6] BLOQUEADO (hard) — {len(kb['hard_problems'])} problema(s) sem bypass possivel:")
+        for p in kb["hard_problems"]:
+            print(f"      - {p}")
+        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
+        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["hard_problems"]}
+    if kb["problems"]:
+        if not skip_kb_gate:
+            print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
+            for p in kb["problems"]:
+                print(f"      - {p}")
+            print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
+            _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
+            return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
+        bypassed.append("kb")
+
+    # Decisoes pendentes: sempre exibidas ao usuario antes de traduzir (nao bloqueia, mas obrigatorio)
+    if kb.get("pending_decisions"):
+        pd = kb["pending_decisions"]
+        print(f"[kb] DECISOES PENDENTES ({len(pd)}) — requerem revisao humana antes do merge final:")
+        for i, d in enumerate(pd, 1):
+            print(f"      {i}. {d}")
+    return None
+
+
+def _reconstruir_indice(root: Path, scene: str, rebuild_index: bool) -> None:
+    """Passo 6/6: reconstroi o state_index (ou adia, no modo batch)."""
+    if rebuild_index:
+        print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
+        # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
+        # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
+        with events.stage(root, "state_index", scene):
+            si = state_index.build(root, sync_db=False)
+        print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
+        for w in si.get("warnings", []):
+            print(f"      [state_index] AVISO: {w}")
+    else:
+        # BATCH: o rebuild por-cena e redundante (a rodada de traducao ja terminou; TM so importa
+        # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
+        print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
+
+
+def _imprimir_resumo(mr: dict, backend: str, defer_back: bool) -> None:
+    """Resumo de sessao e custo da cena (so impressao)."""
+    if mr.get("session"):
+        _u = mr["session"]["usage"]
+        _eq = mr["session"]["api_equiv_usd"]
+        print(f"      sessao : in={_u['in']:,} out={_u['out']:,} cache_read={_u['cache_read']:,} "
+              f"cache_write={_u['cache_write'] + _u['cache_write_1h']:,} | {mr['session']['n_requests']} requisicao(oes) | "
+              f"atribuicao={'+'.join(mr['session']['attribution'])} | equivalente API "
+              + (f"${_eq:.4f}" if _eq is not None else "sem preco"))
+    elif backend == "in-session":
+        print("      sessao : nada medido (fora do Claude Code, ou a cena nao aparece na transcricao).")
+    cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
+    print(f"      metrics: custo ~${mr['cost_usd']:.4f} {cost_note}")
+
+
 def run_scene(root, scene, **kw) -> RunSceneResult:
     """Envelope de observabilidade: 1 evento `scene` por execucao, com o status final e a duracao total —
     inclusive quando a cena para num gate ou estoura excecao no meio de um lote."""
@@ -431,58 +547,12 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     scene_id = context_pack.scene_id_of(scene)
     bypassed: list = []   # rastro de todo gate soft ignorado via --skip-* — nunca invisivel no checkpoint
 
-    # GATE DE COMPLETUDE DE CONECTOR: roda ANTES do kb_gate -- sem conector completo (scripts
-    # existentes + ao menos 1 round-trip verde ja registrado), uma KB reconciliada nao serve de nada.
-    cg = connector_gate.check(root)
-    for w in cg["warnings"]:
-        print(f"[connector] aviso: {w}")
-    if cg["hard_problems"]:
-        print(f"[0/6] BLOQUEADO (conector, hard) — {len(cg['hard_problems'])} problema(s) sem bypass possivel:")
-        for p in cg["hard_problems"]:
-            print(f"      - {p}")
-        _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
-        return {"status": "connector_incomplete", "scene": scene, "problems": cg["hard_problems"]}
-    if cg["problems"]:
-        # PILOTO: o unico problema soft e "nenhum round-trip verde ainda", e quem grava verified=True
-        # e este run_scene (apos o verify) -- bloquear aqui era um impasse (a 1a cena nunca passava).
-        # Com verify ligado a propria cena prova o round-trip logo adiante;
-        # so bloqueia quem roda SEM verify. Escala (run_chapter) segue bloqueada pelo gate dela.
-        if not do_verify:
-            print(f"[0/6] BLOQUEADO por completude de conector ({len(cg['problems'])}):")
-            for p in cg["problems"]:
-                print(f"      - {p}")
-            print("      -> rode esta cena COM verify (sem --no-verify): o piloto registra o round-trip.")
-            _checkpoint(root, scene, {"scene_id": scene_id, "status": "connector_incomplete"})
-            return {"status": "connector_incomplete", "scene": scene, "problems": cg["problems"]}
-        print("[connector] piloto: nenhum round-trip verde ainda — esta cena prova o round-trip no verify.")
-
-    # GATE DE COBERTURA DE KB (cabeia a doutrina: pesquisa reconciliada ANTES de traduzir)
-    kb = kb_gate.check(root, scene)
-    for w in kb["warnings"]:
-        print(f"[kb] aviso: {w}")
-    # hard_problems: nunca bypassavel (nem com --skip-kb-gate)
-    if kb.get("hard_problems"):
-        print(f"[0/6] BLOQUEADO (hard) — {len(kb['hard_problems'])} problema(s) sem bypass possivel:")
-        for p in kb["hard_problems"]:
-            print(f"      - {p}")
-        _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
-        return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["hard_problems"]}
-    if kb["problems"]:
-        if not skip_kb_gate:
-            print(f"[0/6] BLOQUEADO por cobertura de KB ({len(kb['problems'])}):")
-            for p in kb["problems"]:
-                print(f"      - {p}")
-            print("      -> rode a Fase 0 (skill 03) ou use --skip-kb-gate p/ ignorar (nao recomendado).")
-            _checkpoint(root, scene, {"scene_id": scene_id, "status": "kb_coverage_failed"})
-            return {"status": "kb_coverage_failed", "scene": scene, "problems": kb["problems"]}
-        bypassed.append("kb")
-
-    # Decisoes pendentes: sempre exibidas ao usuario antes de traduzir (nao bloqueia, mas obrigatorio)
-    if kb.get("pending_decisions"):
-        pd = kb["pending_decisions"]
-        print(f"[kb] DECISOES PENDENTES ({len(pd)}) — requerem revisao humana antes do merge final:")
-        for i, d in enumerate(pd, 1):
-            print(f"      {i}. {d}")
+    early = _gate_conector(root, scene, scene_id, do_verify)
+    if early is not None:
+        return early
+    early = _gate_kb(root, scene, scene_id, skip_kb_gate, bypassed)
+    if early is not None:
+        return early
 
     print(f"[1/6] context_pack {scene} ...")
     tr, early = _pack_and_translate(root, scene, scene_id, backend, pretranslated)
@@ -504,19 +574,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     if early is not None:
         return early
 
-    if rebuild_index:
-        print("[6/6] reconstruindo state_index (TM cresce com esta cena) ...")
-        # sync_db=False: o checkpoint por-cena reconstroi os indices flat (barato), mas NAO espelha
-        # o corpus inteiro no DB a cada cena. O mirror roda no rebuild deliberado (CLI state_index).
-        with events.stage(root, "state_index", scene):
-            si = state_index.build(root, sync_db=False)
-        print(f"      TM: {si['tm']} entradas | cards: {si['cards']} | decisoes: {si['decisions']}")
-        for w in si.get("warnings", []):
-            print(f"      [state_index] AVISO: {w}")
-    else:
-        # BATCH: o rebuild por-cena e redundante (a rodada de traducao ja terminou; TM so importa
-        # pra proxima cena/capitulo) -- run_chapter faz 1 rebuild p/ o capitulo inteiro apos o loop.
-        print("[6/6] state_index: rebuild deferido p/ pos-capitulo (modo batch).")
+    _reconstruir_indice(root, scene, rebuild_index)
     _checkpoint(root, scene, {"status": "verified" if verified else "planned", "bypassed_gates": bypassed})
     if verified:
         state_index.approve_scene_db(root, scene)   # build_plan gravou approved=0 no DB
@@ -525,17 +583,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     events.emit(root, "quality", "ok" if verified else "unverified", scene, n_lines=mr["n_lines"],
                 n_high=mr["n_high"], back_pass_rate=mr["back_pass_rate"], reused=mr["reused"],
                 bypassed_gates=bypassed)
-    if mr.get("session"):
-        _u = mr["session"]["usage"]
-        _eq = mr["session"]["api_equiv_usd"]
-        print(f"      sessao : in={_u['in']:,} out={_u['out']:,} cache_read={_u['cache_read']:,} "
-              f"cache_write={_u['cache_write'] + _u['cache_write_1h']:,} | {mr['session']['n_requests']} requisicao(oes) | "
-              f"atribuicao={'+'.join(mr['session']['attribution'])} | equivalente API "
-              + (f"${_eq:.4f}" if _eq is not None else "sem preco"))
-    elif backend == "in-session":
-        print("      sessao : nada medido (fora do Claude Code, ou a cena nao aparece na transcricao).")
-    cost_note = "(back-translation deferida p/ batch)" if defer_back else f"| back_pass_rate={mr['back_pass_rate']}"
-    print(f"      metrics: custo ~${mr['cost_usd']:.4f} {cost_note}")
+    _imprimir_resumo(mr, backend, defer_back)
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,
             "high": len(highs), "verified": verified}
@@ -680,9 +728,7 @@ def _run_parallel(a) -> tuple[list, list]:
     return [f"{sc}=rc{rc}" for sc, rc in res if rc], [sc for sc, rc in res if not rc]
 
 
-def main():
-    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
-        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+def _parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description="Orquestrador determinista de 1 cena (ou de um lote: varias cenas\n"
                                              "num processo so, em fila).")
     ap.add_argument("project")
@@ -709,25 +755,12 @@ def main():
                     help="V3: lista cenas com doctrine_hash diferente do atual (sem rodar traducao)")
     ap.add_argument("--purge-discontinued", type=int, metavar="DAYS",
                     help="G4: remove dirs de artifacts/discontinued/ mais antigos que DAYS dias")
-    a = ap.parse_args()
-    if not (Path(a.project) / "project.json").is_file() and (Path("projects") / a.project / "project.json").is_file():
-        a.project = f"projects/{a.project}"             # aceita so o nome do projeto
-    if a.check_stale:
-        if not a.project:
-            ap.error("--check-stale requer <project>")
-        _check_stale(a.project)
-        return
-    if a.purge_discontinued is not None:
-        removed = prune_discontinued(Path(a.project), a.purge_discontinued)
-        print(f"[prune] {len(removed)} dir(s) removido(s) de discontinued/.")
-        return
-    if not a.scene:
-        ap.error("scene e obrigatorio (exceto com --check-stale)")
-    for s in a.scene if a.clean else ():
-        _validate_scene_arg(Path(a.project), s)
-        removed = clean_failed_scene(a.project, s)
-        print(f"[clean] {s}: {len(removed)} artefato(s) removido(s).")
-    state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
+    return ap
+
+
+def _gates_de_entrada(a) -> bool:
+    """Gates antes de rodar o lote (humano no laco e troca de caminho): sai com codigo 2 se bloquear.
+    Devolve se o humano no laco esta ligado."""
     hitl_on = hitl.enabled(a.project)
     if hitl_on:                                # humano no laco: escopo aceito e caminho escolhido (glossario e onda so avisam)
         problems = hitl.gate(a.project, a.scene, backend=a.backend)
@@ -744,6 +777,11 @@ def main():
         for p in problems:
             print(f"  - {p}")
         sys.exit(2)
+    return hitl_on
+
+
+def _executar_lote(a) -> tuple:
+    """Roda as cenas (em fila ou em paralelo). Devolve (falhas, verificadas, ja_verificadas_antes)."""
     rs = paths.run_state(Path(a.project))
     before = json.loads(rs.read_text(encoding="utf-8")).get("scenes", {}) if rs.is_file() else {}
     was_verified = {s for s in a.scene if before.get(s, {}).get("status") == "verified"}
@@ -766,6 +804,34 @@ def main():
             bad.append(f"{s}={r['status']}")
         elif r.get("verified"):
             done.append(s)
+    return bad, done, was_verified
+
+
+def main():
+    with contextlib.suppress(AttributeError, ValueError, OSError):  # Windows cp1252: permitir setas/acentos no stdout
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    ap = _parser()
+    a = ap.parse_args()
+    if not (Path(a.project) / "project.json").is_file() and (Path("projects") / a.project / "project.json").is_file():
+        a.project = f"projects/{a.project}"             # aceita so o nome do projeto
+    if a.check_stale:
+        if not a.project:
+            ap.error("--check-stale requer <project>")
+        _check_stale(a.project)
+        return
+    if a.purge_discontinued is not None:
+        removed = prune_discontinued(Path(a.project), a.purge_discontinued)
+        print(f"[prune] {len(removed)} dir(s) removido(s) de discontinued/.")
+        return
+    if not a.scene:
+        ap.error("scene e obrigatorio (exceto com --check-stale)")
+    for s in a.scene if a.clean else ():
+        _validate_scene_arg(Path(a.project), s)
+        removed = clean_failed_scene(a.project, s)
+        print(f"[clean] {s}: {len(removed)} artefato(s) removido(s).")
+    state_index.mirror_db(Path(a.project))   # DB-mode: cria/atualiza o DB antes do context_pack le-lo
+    hitl_on = _gates_de_entrada(a)
+    bad, done, was_verified = _executar_lote(a)
     _audit_spoiler(Path(a.project))
     _audit_schema(Path(a.project))
     if hitl_on and done:
