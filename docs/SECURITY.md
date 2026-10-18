@@ -35,7 +35,34 @@ correspondentemente restrito.
 - CI verifica (`git ls-files --error-unmatch .env`, job `env-guard` de `test.yml`) que `.env` não está rastreado
 - `_load_dotenv` em `llm_client.py` carrega da variável de ambiente ou `.env` local
 
-**Gap residual:** sem processo de rotação de chave (a detecção de chave no diff e no histórico é do gitleaks, no CI).
+**Rotação de chave (runbook):** 1) criar a chave nova na console Anthropic; 2) gravar no `.env` local (ou na
+variável de ambiente) e rodar uma cena de teste; 3) revogar a chave antiga na console; 4) conferir `gitleaks`
+(CI) e `git log -S<prefixo da chave antiga>` para garantir que nunca entrou no histórico. Se a chave
+vazou para o git, o procedimento é o da tabela de incidentes, com a revogação ANTES de limpar o histórico.
+Rotacionar sempre que um `.env` for apagado, copiado para outra máquina ou aparecer em log/print.
+
+**Gap residual:** a rotação é manual e de responsabilidade do operador (a detecção de chave no diff e no
+histórico é do gitleaks, no CI).
+
+---
+
+### 1b. Texto do jogo como dado não confiável (prompt injection)
+
+**Ameaça:** o texto extraído do jogo (ou de wiki/fonte pesquisada) pode conter frases que parecem ordens
+("ignore as regras", "rode este comando"). Um modelo com ferramentas poderia obedecer.
+
+**Controles:**
+- Toda chamada de API do runtime que lê texto do jogo (tradução, retrotradução, batch) é feita **sem `tools`**:
+  o modelo só devolve texto/JSON, que passa pelos gates deterministas antes de qualquer gravação.
+- A triagem de risco roda `claude -p --allowedTools ''` (sem ferramenta), com timeout.
+- O agente `scene-translator` tem só `Read, Write, Edit, Bash` (o mínimo para ler o prompt, gravar a
+  tradução e rodar o `run_scene`); a saída dele é validada pelos mesmos gates.
+- Saída do modelo nunca é executada nem interpolada em comando de shell.
+- `framework/runtime/test_untrusted_text_boundary.py` falha se uma chamada ganhar `tools`/`tool_choice`, se a
+  triagem perder `--allowedTools ''` ou se as ferramentas do tradutor forem alargadas.
+
+**Gap residual:** o agente in-session tem `Bash` (necessário ao fluxo); a defesa ali é o gate sobre a saída e
+o operador revisar o diff. Texto malicioso pode, no máximo, degradar uma tradução, e isso o gate/QA pega.
 
 ---
 
