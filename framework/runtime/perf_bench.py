@@ -97,7 +97,9 @@ def medir(repeticoes: int = REPETICOES) -> dict[str, float]:
         tempos = []
         for _ in range(repeticoes):
             with tempfile.TemporaryDirectory() as d:
-                tempos.append(_tempo(lambda op=op, d=d: op(Path(d))))
+                t0 = time.perf_counter()
+                op(Path(d))
+                tempos.append(time.perf_counter() - t0)
         out[nome] = round(statistics.median(tempos) / cal, 3)
     return out
 

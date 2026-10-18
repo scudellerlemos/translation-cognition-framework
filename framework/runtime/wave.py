@@ -22,6 +22,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import alerts
 import paths
 
 _HERE = Path(__file__).resolve().parent
@@ -109,6 +110,7 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
     probs = entry_problems(project, scenes)
     if probs:
         print("BLOQUEADO na entrada da onda: " + " | ".join(probs))
+        alerts.notify(project, "entrada", "blocked", scenes[0] if scenes else None, 1)
         return 1
     log = Path(project) / "artifacts" / log_name(scenes)
     rc = 0
@@ -122,6 +124,7 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
             except subprocess.TimeoutExpired:
                 fh.write(f"===== {name} (TIMEOUT apos {step_timeout:.0f} s) =====\n")
                 print(f"PAROU em {name}: sem resposta em {step_timeout:.0f} s (--step-timeout); detalhe em {log}")
+                alerts.notify(project, name, "timeout", scenes[0] if scenes else None, 124)
                 return 124
             text = (p.stdout or "") + (p.stderr or "")
             fh.write(f"===== {name} (exit {p.returncode}) =====\n{text}\n")
@@ -133,6 +136,7 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
             if p.returncode:
                 rc = p.returncode
                 print(f"PAROU em {name}: resolva a causa e rode de novo (detalhe em {log})")
+                alerts.notify(project, name, "failed", scenes[0] if scenes else None, p.returncode)
                 break
             if name == "scene_dedup":                # as copias feitas passam pelos mesmos gates
                 made = [x for x in last.split() if x in set(scenes)]

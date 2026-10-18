@@ -121,6 +121,7 @@ projects/*/artifacts/qa_revisao/teste_ingame/prints/*
 projects/*/artifacts/**/verify_diagnostics_*.json
 # Log estruturado de eventos (regeneravel; mensagem de excecao pode citar conteudo).
 projects/*/artifacts/events.jsonl
+projects/*/artifacts/alerts.jsonl
 projects/*/artifacts/wave_last*.log
 # Travas e temporarios da gravacao de estado (ADR 0018): transitorios, nunca versionar
 projects/*/artifacts/**/*.lock

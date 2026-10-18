@@ -50,10 +50,17 @@ acontecimento, com `t`, `run` (id da execução, herdado pelos processos filhos 
 | `quality` | `run_scene` | linhas, alto risco, pass-rate da back-translation, gates ignorados |
 | `scene` | `run_scene` | status final e duração total — inclusive quando para num gate ou estoura exceção (`result: "error"`) |
 | `audit.spoiler`, `audit.schema` | `run_scene` (entry point) | contagem de achados |
+| `alert` | `alerts.notify` (chamado pelo `wave.py`) | passo, resultado (`failed`, `timeout`, `blocked`) e código de saída |
 
 `python framework/runtime/obs_report.py <projeto> [--scene CENA] [--json] [--all]` (`--all`: tabela com todas as cenas; o padrão é enxuto) junta tudo por cena: status,
 linhas, pass-rate, overflow, nº de execuções, falhas de verify, tempo por etapa, tempo de espera da sessão,
 tokens e valor; mais o último resultado de cada gate e a lista de falhas e bloqueios.
+
+### Schema, indicadores e alerta (Onda 3)
+
+- **Schema:** `events.validate(rec)` exige `t` (número), `run`, `stage`, `result` (texto) e `scene` (texto ou null); `stage` tem de estar em `events.ETAPAS` ou numa família `gate.*`/`audit.*`; todo valor é escalar e nenhum texto passa de 200 caracteres (evento não carrega fala). `emit` avisa e mantém o evento se violar; `test_observability_onda3.py` falha se o código emitir uma etapa fora do schema. O `obs_report` mostra quantos eventos do projeto estão fora dele.
+- **Indicadores:** *taxa de sucesso da onda* = execuções de cena que terminaram verified/planned ÷ as que terminaram (as paradas em AGUARDANDO não entram); *custo por cena* = gasto (API paga + equivalente de sessão) ÷ cenas verified. Saem no `obs_report` (texto e `--json`).
+- **Alerta:** passo de onda que falha (rc ≠ 0), estoura o `--step-timeout` ou é barrado na entrada chama `alerts.notify`: grava o evento `alert`, uma linha em `artifacts/alerts.jsonl` (fora do git) e, se a variável de ambiente `TCF_ALERT_WEBHOOK` apontar para um endereço http(s) (Slack, Discord, ntfy…), faz um POST JSON com projeto, cena, passo, resultado e código, sem texto do jogo. Webhook fora do ar só avisa no stderr. O `obs_report` lista os últimos alertas.
 
 O `metrics.jsonl` ganhou `t` e `run`, e uma reexecução que não muda nada não anexa linha nova. O `wave.py` termina
 cada onda com `cost_report.py --summary` e `obs_report.py`.

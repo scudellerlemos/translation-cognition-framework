@@ -17,6 +17,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import alerts  # noqa: E402
 import cost_report  # noqa: E402
 import events  # noqa: E402
 import paths  # noqa: E402
@@ -86,7 +87,21 @@ def report(root) -> dict:
             if res.startswith("awaiting"):
                 awaiting[e["scene"]] = e["t"]
     return {"scenes": scenes, "gates": gates, "failures": failures, "n_events": len(evs),
-            "runs": len({e.get("run") for e in evs}), "split": cost["split"], "by_activity": cost["by_activity"]}
+            "runs": len({e.get("run") for e in evs}), "split": cost["split"], "by_activity": cost["by_activity"],
+            "indicators": indicators(evs, scenes), "alerts": alerts.read(root),
+            "schema_problems": sum(bool(events.validate(e)) for e in evs)}
+
+
+def indicators(evs: list[dict], scenes: dict) -> dict:
+    """Os dois indicadores da onda. `wave_success_rate`: das execucoes de cena que terminaram (evento `scene`;
+    as que pararam AGUARDANDO a sessao ficam fora), a fracao que fechou verified/planned; None sem execucao.
+    `cost_per_scene_usd`: gasto (API paga + equivalente de sessao) dividido pelas cenas verified; None sem cena verified."""
+    fim = [e for e in evs if e.get("stage") == "scene" and not str(e.get("result", "")).startswith("awaiting")]
+    ok = sum(e.get("result") in ("verified", "planned") for e in fim)
+    verified = sum(s["status"] == "verified" for s in scenes.values())
+    gasto = sum(s["cost_usd"] + s["session_equiv_usd"] for s in scenes.values())
+    return {"wave_success_rate": round(ok / len(fim), 3) if fim else None, "scene_runs": len(fim),
+            "cost_per_scene_usd": round(gasto / verified, 4) if verified else None, "verified_scenes": verified}
 
 
 def _when(t) -> str:
@@ -129,6 +144,16 @@ def _fmt(rep: dict, only: str | None = None, full: bool = False) -> str:
     L.append("  gates e auditorias:")
     for g, v in sorted(rep["gates"].items()):
         L.append(f"    {g:16s} ultimo={v['last']:6s} em {_when(v['last_t'])} | passou {v['pass']}x, bloqueou {v['block']}x")
+    ind = rep["indicators"]
+    taxa = "-" if ind["wave_success_rate"] is None else f"{100 * ind['wave_success_rate']:.0f}% ({ind['scene_runs']} execucao(oes))"
+    custo = "-" if ind["cost_per_scene_usd"] is None else f"${ind['cost_per_scene_usd']:.4f} ({ind['verified_scenes']} verified)"
+    L.append(f"  indicadores: taxa de sucesso da onda {taxa} | custo por cena {custo}")
+    if rep["schema_problems"]:
+        L.append(f"  ATENCAO: {rep['schema_problems']} evento(s) fora do schema (events.validate)")
+    if rep["alerts"]:
+        L.append(f"  alertas de onda: {len(rep['alerts'])}")
+        for al in rep["alerts"][-5:]:
+            L.append(f"    {_when(al.get('t'))} {al.get('scene') or '-':12s} {al.get('step')}/{al.get('result')} rc={al.get('rc')}")
     L.append(f"  falhas e bloqueios: {len(rep['failures'])}")
     for f in rep["failures"][-10:]:
         L.append(f"    {_when(f['t'])} run={f['run']} {f['scene'] or '-':12s} {f['stage']}/{f['result']} "
