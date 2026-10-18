@@ -28,7 +28,7 @@ import perf_bench  # noqa: E402
 
 
 def agregar(medidas: list[dict[str, float]]) -> dict[str, float]:
-    """Menor razao de cada operacao entre as rodadas (o ruido so atrasa, nunca adianta)."""
+    """Menor valor de cada operacao entre as rodadas (o ruido so atrasa, nunca adianta)."""
     return {n: min(m[n] for m in medidas if n in m) for n in {n for m in medidas for n in m}}
 
 
@@ -46,9 +46,10 @@ def _copiar_arvore(raiz: Path, destino: Path) -> None:
 
 
 def _medir(codigo: Path, saida: Path, op: str) -> float:
-    """Razao de UMA operacao (1 repeticao) no codigo de `codigo`, num processo novo."""
+    """Segundos de UMA operacao (1 repeticao) no codigo de `codigo`, num processo novo (sem calibracao: a
+    calibracao de 1 repeticao injetava o proprio ruido em cada medida; no A/B, mesma maquina, ela nao e necessaria)."""
     subprocess.run([sys.executable, str(codigo / "framework" / "runtime" / "perf_bench.py"), "--op", op,
-                    "--repeticoes", "1", "--salvar", str(saida)], check=True, capture_output=True)
+                    "--repeticoes", "1", "--bruto", "--salvar", str(saida)], check=True, capture_output=True)
     return float(json.loads(saida.read_text(encoding="utf-8"))[op])
 
 

@@ -199,9 +199,10 @@ def _tempo(fn: Callable[[], None]) -> float:
     return time.perf_counter() - t0
 
 
-def medir(repeticoes: int = REPETICOES, ops: list[str] | None = None) -> dict[str, float]:
+def medir(repeticoes: int = REPETICOES, ops: list[str] | None = None, bruto: bool = False) -> dict[str, float]:
     """Razao tempo(op) / tempo(calibracao), pela mediana de `repeticoes` rodadas (cada op em pasta nova).
-    `ops` restringe a medida a algumas operacoes (o A/B intercalado mede uma por vez)."""
+    `ops` restringe a medida a algumas operacoes (o A/B intercalado mede uma por vez). `bruto` devolve segundos,
+    sem dividir pela calibracao: serve so p/ comparar duas medidas feitas na MESMA maquina e sessao (A/B)."""
     cal = statistics.median(_tempo(_calibracao) for _ in range(max(repeticoes, 3)))
     out = {}
     for nome, op in OPS.items():
@@ -213,7 +214,7 @@ def medir(repeticoes: int = REPETICOES, ops: list[str] | None = None) -> dict[st
                 t0 = time.perf_counter()
                 op(Path(d))
                 tempos.append(time.perf_counter() - t0)
-        out[nome] = round(statistics.median(tempos) / cal, 3)
+        out[nome] = round(statistics.median(tempos) / (1.0 if bruto else cal), 5 if bruto else 3)
     return out
 
 
@@ -256,9 +257,10 @@ def main() -> None:
     ap.add_argument("--antes", help="guardrail do ADR 0019: compara a medida atual com este JSON (limite 10%%, sem desequilibrio)")
     ap.add_argument("--op", action="append", help="mede so esta operacao (repetivel)")
     ap.add_argument("--repeticoes", type=int, default=REPETICOES)
+    ap.add_argument("--bruto", action="store_true", help="segundos, sem calibracao (so p/ A/B na mesma maquina)")
     ap.add_argument("--out", help="grava o JSON (atual, baseline, regressoes) neste arquivo")
     a = ap.parse_args()
-    atual = medir(a.repeticoes, a.op)
+    atual = medir(a.repeticoes, a.op, a.bruto)
     if a.salvar:
         paths.atomic_write(a.salvar, json.dumps(atual, indent=2, sort_keys=True) + "\n")
         print(f"medida gravada em {a.salvar}")

@@ -30,7 +30,7 @@ def test_cada_operacao_roda_sobre_dados_sinteticos(nome, tmp_path):
 def test_main_strict_sai_1_quando_regride(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(pb, "BASELINE", tmp_path / "b.json")
     (tmp_path / "b.json").write_text(json.dumps({n: 0.001 for n in pb.OPS}), encoding="utf-8")
-    monkeypatch.setattr(pb, "medir", lambda: {n: 5.0 for n in pb.OPS})
+    monkeypatch.setattr(pb, "medir", lambda *a, **k: {n: 5.0 for n in pb.OPS})
     monkeypatch.setattr("sys.argv", ["perf_bench.py", "--strict"])
     with pytest.raises(SystemExit) as e:
         pb.main()
