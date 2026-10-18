@@ -102,10 +102,11 @@ def _activity(blocks: list) -> str | None:
 
 
 def _usage(u: dict) -> dict:
-    h1 = int((u.get("cache_creation") or {}).get("ephemeral_1h_input_tokens") or 0)
+    total = max(0, int(u.get("cache_creation_input_tokens") or 0))
+    h1 = min(total, max(0, int((u.get("cache_creation") or {}).get("ephemeral_1h_input_tokens") or 0)))  # nunca > total
     return {"in": int(u.get("input_tokens") or 0), "out": int(u.get("output_tokens") or 0),
             "cache_read": int(u.get("cache_read_input_tokens") or 0),
-            "cache_write": int(u.get("cache_creation_input_tokens") or 0) - h1,   # TTL 5 min (1.25x)
+            "cache_write": total - h1,                                            # TTL 5 min (1.25x)
             "cache_write_1h": h1}                                                 # TTL 1 h (2x)
 
 
