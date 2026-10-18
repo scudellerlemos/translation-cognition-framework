@@ -45,7 +45,7 @@ def _post(url: str, rec: dict) -> bool:
     body = json.dumps({"text": texto, **rec}).encode("utf-8")      # `text` serve a Slack/Discord/Mattermost
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=WEBHOOK_TIMEOUT):  # noqa: S310 (esquema validado acima)
+        with urllib.request.urlopen(req, timeout=WEBHOOK_TIMEOUT):  # nosec B310 - esquema restrito a http(s) acima; URL vem do ambiente do operador
             return True
     except (OSError, ValueError) as e:
         print(f"[alerts] AVISO: webhook falhou ({type(e).__name__}); o alerta continua em alerts.jsonl.", file=sys.stderr)
