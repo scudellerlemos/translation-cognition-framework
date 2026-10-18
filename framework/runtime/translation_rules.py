@@ -6,6 +6,7 @@ caminho de sessao nem do de API. `model` reexporta todos os nomes (compat com ch
 """
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import budget as _bud  # noqa: E402  (budget.py: fonte unica da conta de bytes)
 import context_pack  # noqa: E402
+import paths  # noqa: E402
 import state_index  # noqa: E402  (_key p/ dedup por TM)
 
 _FRAMEWORK_CONNECTORS = _HERE.parent / "connectors"
@@ -217,3 +219,114 @@ def _line_ok(src, t, rx=None):
     """Paridade de `\\n` E (com rx) de tokens de formatacao -- o mesmo par que o _api_translate retenta."""
     tok = context_pack.TOKEN
     return t.count(tok) == src.count(tok) and (rx is None or _struct_ok(rx, src, t))
+
+
+def saved_pack(root, scene) -> dict | None:
+    """RECONFERENCIA (so caminho de sessao): o pack.json ja gravado, se a cena ja tem traducao e nada do que
+    alimenta o pack mudou desde entao (falas da cena, project.json, doutrina = carta+glossario+decisoes+tom).
+    Remontar o pack de uma cena pronta so para reconferir um conserto custava minutos em cena grande.
+    None = nao da para reaproveitar -> quem chama remonta.
+    So vale com a traducao COMPLETA: faltando fala, a TM que cresceu no banco depois do pack pode preenche-la,
+    entao remonta. Com todas as falas presentes a TM nao e consultada e o pack gravado basta."""
+    root = Path(root)
+    pk = paths.pack(root, scene)
+    if not pk.is_file():
+        return None
+    try:
+        pack = json.loads(pk.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    out = paths.translations(root, scene, pack.get("scene_id", ""))
+    try:
+        have = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
+    except (OSError, ValueError):
+        return None
+    if any(r["offset"] not in have for r in pack.get("lines", [])):
+        return None
+    if pack.get("doctrine_hash", "") != context_pack._doctrine_hash(root):
+        return None
+    made = pk.stat().st_mtime
+    deps = [paths.dialogs(root, scene), root / "project.json"]
+    if any(d.is_file() and d.stat().st_mtime > made for d in deps):
+        return None
+    return pack
+
+
+def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0, pc: dict | None = None) -> list:
+    """Offsets cuja traducao excede byte_budget*tolerance pela metrica correta do projeto (ver
+    _budget_len). Puro/deterministico (testavel sem rede)."""
+    over = []
+    for off, b in budgets.items():
+        if b is None:            # None = sem budget declarado; 0 = orcamento ZERO real (deve ENFORCAR)
+            continue
+        v = lines.get(off)
+        if v and _over_budget((v or {}).get("t", ""), b, pc, tolerance):
+            over.append(off)
+    return sorted(over)
+
+
+def over_budget_offsets(root, scene, *, tolerance: float = 1.0, detail: bool = False,
+                        reuse_pack: bool = False) -> list:
+    """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a
+    estouro). `detail=True` devolve [{offset, byte_budget, actual, source, t}, ...] em vez da lista
+    nua de offsets (diagnostico persistivel, ver run_scene._persist_fitting_diagnostics)."""
+    root = Path(root)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
+    out = paths.translations(root, scene, pack['scene_id'])
+    if not out.is_file():
+        return []
+    data = json.loads(out.read_text(encoding="utf-8"))
+    lines = data.get("lines", {})
+    budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
+    pc = pack.get("project_constraints")
+    offsets = _over_offsets(budgets, lines, tolerance, pc=pc)
+    if not detail:
+        return offsets
+    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
+    return [{"offset": o, "byte_budget": budgets[o],
+             "actual": _budget_len(lines[o].get("t", ""), pc),
+             "source": srcmap.get(o, ""), "t": lines[o].get("t", "")} for o in offsets]
+
+
+def fix_newlines(root, scene, *, reuse_pack: bool = False) -> int:
+    """Conserta o que e mecanico: quebra de linha REAL no `t` vira o token literal (_norm_t) e o token que a fonte
+    nao tem sai (_parity_fit) -- o mesmo que o caminho api faz ao gravar. Devolve quantas falas mudou."""
+    root = Path(root)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
+    out = paths.translations(root, scene, pack["scene_id"])
+    if not out.is_file():
+        return 0
+    data = json.loads(out.read_text(encoding="utf-8"))
+    n = 0
+    for r in pack["lines"]:
+        v = data.get("lines", {}).get(r["offset"])
+        if isinstance(v, dict) and isinstance(v.get("t"), str):
+            new = _parity_fit(r.get("source"), _norm_t(v["t"]))
+            if new != v["t"]:
+                v["t"], n = new, n + 1
+    if n:
+        paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
+    return n
+
+
+def precheck(root, scene, *, reuse_pack: bool = False) -> list:
+    """Pre-checagem barata ANTES do build_plan (so le): [(offset, problema)] para quebra de linha real no JSON,
+    contagem do token `\n` diferente da fonte. Estouro de byte_budget NAO entra: no utawarerumono 7 de 26 cenas
+    verified tem fala acima do budget por linha (o conector nao o impoe por fala), entao seria falso positivo; o
+    `_fitting_loop` reage ao exit 3 do verify. Nao bloqueia: quem decide e o build_plan/verify."""
+    root = Path(root)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
+    out = paths.translations(root, scene, pack["scene_id"])
+    if not out.is_file():
+        return []
+    lines = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
+    tok, found = context_pack.TOKEN, {}
+    for r in pack["lines"]:
+        t = (lines.get(r["offset"]) or {}).get("t")
+        if not isinstance(t, str):
+            continue
+        if chr(10) in t or chr(13) in t:
+            found[r["offset"]] = "quebra de linha real (use o token literal)"
+        elif t.count(tok) != (r.get("source") or "").count(tok) and (r.get("source") or "").count(tok):
+            found[r["offset"]] = f"{t.count(tok)} token(s) de quebra, a fonte tem {r['source'].count(tok)}"
+    return sorted(found.items())

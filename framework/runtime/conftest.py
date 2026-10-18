@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import context_pack
-import model
+import model_api
 import pytest
 
 
@@ -26,5 +26,5 @@ def fake_pack_ctx(monkeypatch):
     packs: dict = {}
     monkeypatch.setattr(context_pack, "write_pack", lambda _r, s: packs[s])
     monkeypatch.setattr(context_pack, "render_prompt", lambda pack, carta="": "PROMPT")
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
+    monkeypatch.setattr(model_api, "_carta_text", lambda: "CARTA")
     return packs

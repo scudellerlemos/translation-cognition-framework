@@ -5,6 +5,7 @@ import json
 
 import context_pack
 import model
+import model_api
 import pytest
 import test_translate_checkpoint as ckpt
 
@@ -162,14 +163,14 @@ def _client_with(results):
 
 
 def test_submit_chunk_timeout_leaves_scene_without_coverage(monkeypatch, tmp_path, capsys):
-    monkeypatch.setattr(model, "_await_batch", lambda *a, **k: False)
+    monkeypatch.setattr(model_api, "_await_batch", lambda *a, **k: False)
     merged = {"s": {}}
     model._submit_translate_chunk(_client_with([]), [object()], 0, 1, {}, {}, {}, merged, tmp_path, "m")
     assert "nao concluiu" in capsys.readouterr().out and merged == {"s": {}}
 
 
 def test_submit_chunk_ignores_failed_tier(monkeypatch, tmp_path):
-    monkeypatch.setattr(model, "_await_batch", lambda *a, **k: True)
+    monkeypatch.setattr(model_api, "_await_batch", lambda *a, **k: True)
     merged = {"s": {}}
     model._submit_translate_chunk(_client_with([_Res("s__cheap__0", "errored")]), [object()], 0, 1,
                                   {}, {}, {"s": {"lines": []}}, merged, tmp_path, "m")

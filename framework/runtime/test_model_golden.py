@@ -15,6 +15,7 @@ for _p in (_HERE, _HERE.parent / "db"):
         sys.path.insert(0, str(_p))
 import context_pack  # noqa: E402
 import model  # noqa: E402
+import model_api  # noqa: E402
 import paths  # noqa: E402
 from store import Store  # noqa: E402
 
@@ -58,12 +59,12 @@ def _captura_api(tmp_path, monkeypatch):
         enviado.append({k: kw[k] for k in ("model", "max_tokens", "system", "messages", "thinking", "output_config")})
         return respostas.pop(0)
 
-    monkeypatch.setattr(model, "_client", lambda: object())
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
-    monkeypatch.setattr(model, "_stream_final", fake_stream)
-    monkeypatch.setattr(model, "_text_of", lambda m: json.dumps(m))
-    monkeypatch.setattr(model, "_usage_of", lambda m: dict(_ZERO))
-    monkeypatch.setattr(model, "log_api_call", lambda *a, **k: None)
+    monkeypatch.setattr(model_api, "_client", lambda: object())
+    monkeypatch.setattr(model_api, "_carta_text", lambda: "CARTA")
+    monkeypatch.setattr(model_api, "_stream_final", fake_stream)
+    monkeypatch.setattr(model_api, "_text_of", lambda m: json.dumps(m))
+    monkeypatch.setattr(model_api, "_usage_of", lambda m: dict(_ZERO))
+    monkeypatch.setattr(model_api, "log_api_call", lambda *a, **k: None)
     data, usage, meta = model._api_translate(root, SCENE, pack, model.MODEL_TRANSLATE)
     return enviado, data, usage, meta
 

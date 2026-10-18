@@ -29,6 +29,7 @@ import context_pack  # noqa: E402
 import cost_report  # noqa: E402
 import kb_gate  # noqa: E402
 import model  # noqa: E402
+import model_api  # noqa: E402
 import paths  # noqa: E402
 import run_chapter  # noqa: E402
 import run_scene  # noqa: E402
@@ -748,7 +749,7 @@ def test_batch_translate_accumulates_across_rounds(monkeypatch, tmp_path, fake_p
         "ch_99_02": [_btext(["0x9"]), _btext(["0xa"])],      # rodada 0 dropa 0xa; rodada 1 completa
         "ch_99_03": [_btext([]), _btext([])],                # nunca cobre
     })))
-    monkeypatch.setattr(model, "_client", lambda: fake)
+    monkeypatch.setattr(model_api, "_client", lambda: fake)
     st = model.batch_translate(tmp_path, ["ch_99_01", "ch_99_02", "ch_99_03"],
                                poll_seconds=0, max_rounds=2)
     assert st == {"ch_99_01": "written", "ch_99_02": "written", "ch_99_03": "coverage_failed"}
@@ -791,9 +792,9 @@ def test_batch_translate_segments_large_submissions(monkeypatch, tmp_path, fake_
         create_calls.append(len(requests))
         return orig_create(requests)
     monkeypatch.setattr(fb, "create", _counting_create)
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
-    monkeypatch.setattr(model, "_TRANSLATE_SUBMIT_CHUNK", 2)
+    monkeypatch.setattr(model_api, "_TRANSLATE_SUBMIT_CHUNK", 2)
 
     st = model.batch_translate(tmp_path, scenes, poll_seconds=0, max_rounds=1)
 
@@ -823,14 +824,14 @@ def test_batch_tiering_routes_models(monkeypatch, tmp_path, fake_pack_ctx):
         {"offset": "0x2", "speaker": "X", "tone_register": "n", "intent": "i",
          "risk_level": "low", "risk_notes": "", "t": f"a{tok}b"}]})
     fb.scene_rounds["ch_99_01"] = [good]
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
     model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0, max_rounds=1)
     # os DOIS modelos foram submetidos (Haiku p/ single-line, Sonnet p/ multi-linha)
     assert model.MODEL_TRANSLATE_CHEAP in fb.models and model.MODEL_TRANSLATE in fb.models
     # tiering desligado -> tudo no modelo principal
     fb2 = _FakeBatches({"ch_99_01": [good]})
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb2)))
     model._write_translations(tmp_path, "ch_99_01", {"lines": {}})   # limpa p/ re-rodar
     (paths.scene_dir(tmp_path, "ch_99_01") / "translations_99_01.json").unlink()
@@ -877,8 +878,8 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path, fake_pack_ctx):
     trunc = _FakeTruncating(5)        # o "modelo" so devolve 5 linhas por resposta
 
     # SEM chunking (chunk grande): 1 request de 20 -> volta 5; em 2 rodadas nao alcança as 20 -> falha
-    monkeypatch.setattr(model, "_BATCH_CHUNK", 100)
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_BATCH_CHUNK", 100)
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=trunc)))
     st = model.batch_translate(tmp_path, ["ch_96_01"], poll_seconds=0, max_rounds=2)
     assert st["ch_96_01"] == "coverage_failed", "sem chunking, a truncação impede a cobertura no orçamento de rodadas"
@@ -886,8 +887,8 @@ def test_batch_chunking_beats_truncation(monkeypatch, tmp_path, fake_pack_ctx):
     # COM chunking (5 linhas/chunk <= teto de truncação): cada chunk volta completo -> converge na rodada 0
     (paths.scene_dir(tmp_path, "ch_96_01") / "translations_96_01.json").unlink(missing_ok=True)
     trunc2 = _FakeTruncating(5)
-    monkeypatch.setattr(model, "_BATCH_CHUNK", 5)
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_BATCH_CHUNK", 5)
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=trunc2)))
     st = model.batch_translate(tmp_path, ["ch_96_01"], poll_seconds=0, max_rounds=2)
     assert st["ch_96_01"] == "written", "com chunking (<= teto) a cena CONVERGE no batch (-50% capturado)"
@@ -919,7 +920,7 @@ def test_batch_retries_transient_network(monkeypatch, tmp_path, fake_pack_ctx):
             return super().results(_id)
 
     fb = _Flaky({"ch_98_01": [_btext(["0x1"])]})
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=fb)))
     st = model.batch_translate(tmp_path, ["ch_98_01"], poll_seconds=0, max_rounds=1)
     assert st["ch_98_01"] == "written", "retry de rede -> o batch ainda converge (nao morre no timeout)"
@@ -1044,10 +1045,10 @@ def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
     # render_prompt -> lista os offsets das linhas-alvo (assim o conteudo enviado revela o subconjunto)
     monkeypatch.setattr(context_pack, "render_prompt",
                         lambda p, carta="": " ".join(r["offset"] for r in p["lines"]))
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
-    monkeypatch.setattr(model, "_client", lambda: object())
-    monkeypatch.setattr(model, "_text_of", lambda msg: json.dumps(msg))
-    monkeypatch.setattr(model, "_usage_of",
+    monkeypatch.setattr(model_api, "_carta_text", lambda: "CARTA")
+    monkeypatch.setattr(model_api, "_client", lambda: object())
+    monkeypatch.setattr(model_api, "_text_of", lambda msg: json.dumps(msg))
+    monkeypatch.setattr(model_api, "_usage_of",
                         lambda msg: {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0})
 
     def _good(off):
@@ -1060,7 +1061,7 @@ def test_api_translate_retry_is_line_granular(monkeypatch, tmp_path):
     def fake_stream(client, **kw):
         sent.append(kw["messages"][0]["content"])
         return rounds[len(sent) - 1]
-    monkeypatch.setattr(model, "_stream_final", fake_stream)
+    monkeypatch.setattr(model_api, "_stream_final", fake_stream)
 
     data, usage, meta = model._api_translate(tmp_path, "ch_95_01", pack, model.MODEL_TRANSLATE)
     assert set(data["lines"]) == {"0x1", "0x2", "0x3"}, "convergiu cobrindo tudo"
@@ -1080,7 +1081,7 @@ def test_batch_translate_resumes_existing(monkeypatch, tmp_path, fake_pack_ctx):
         def create(self, requests): raise AssertionError("nao deveria submeter batch (cena ja traduzida)")
         def retrieve(self, _id): raise AssertionError("nao deveria")
         def results(self, _id): raise AssertionError("nao deveria")
-    monkeypatch.setattr(model, "_client",
+    monkeypatch.setattr(model_api, "_client",
                         lambda: _types.SimpleNamespace(messages=_types.SimpleNamespace(batches=_Exploding())))
     st = model.batch_translate(tmp_path, ["ch_99_01"], poll_seconds=0)
     assert st["ch_99_01"] == "written"

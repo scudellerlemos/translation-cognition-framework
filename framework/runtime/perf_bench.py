@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import importlib
 import json
 import statistics
 import subprocess
@@ -128,22 +129,26 @@ def _op_session_translate(tmp: Path) -> None:
 
 @contextlib.contextmanager
 def _api_falsa(model: Any):
-    """Troca o cliente da API por um que responde na hora: so o overhead MECANICO do caminho de API entra na medida."""
+    """Troca o cliente da API por um que responde na hora: so o overhead MECANICO do caminho de API entra na medida.
+
+    O alvo do patch e o modulo onde o codigo de API usa os nomes (`model_api`); numa arvore antiga, sem a divisao,
+    e o proprio `model` (o A/B mede os dois lados com o mesmo script)."""
+    alvo: Any = importlib.import_module("model_api") if (_HERE / "model_api.py").is_file() else model
     nomes = ("_client", "_carta_text", "_stream_final", "_text_of", "_usage_of", "log_api_call")
-    antes = {n: getattr(model, n) for n in nomes}
+    antes = {n: getattr(alvo, n) for n in nomes}
     zero = {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
     resp: dict = {}
-    model._client = lambda: object()
-    model._carta_text = lambda: "CARTA"
-    model._stream_final = lambda client, **kw: resp
-    model._text_of = lambda msg: json.dumps(msg)
-    model._usage_of = lambda msg: dict(zero)
-    model.log_api_call = lambda *a, **k: None
+    alvo._client = lambda: object()
+    alvo._carta_text = lambda: "CARTA"
+    alvo._stream_final = lambda client, **kw: resp
+    alvo._text_of = lambda msg: json.dumps(msg)
+    alvo._usage_of = lambda msg: dict(zero)
+    alvo.log_api_call = lambda *a, **k: None
     try:
         yield resp
     finally:
         for n, v in antes.items():
-            setattr(model, n, v)
+            setattr(alvo, n, v)
 
 
 def _op_api_overhead(tmp: Path) -> None:

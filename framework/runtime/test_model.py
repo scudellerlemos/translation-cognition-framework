@@ -15,6 +15,7 @@ for _p in (_HERE, _DB):
         sys.path.insert(0, str(_p))
 import context_pack  # noqa: E402
 import model as M  # noqa: E402
+import model_api  # noqa: E402
 import paths  # noqa: E402
 from store import Store  # noqa: E402
 
@@ -158,11 +159,11 @@ def test_over_budget_offsets_integration(tmp_path):
 
 def test_retranslate_offsets_mocked(tmp_path, monkeypatch):
     _db_scene(tmp_path, byte_budget=5, t="longo demais")
-    monkeypatch.setattr(M, "_api_translate",
+    monkeypatch.setattr(model_api, "_api_translate",
                         lambda root, scene, sub, m, **k: ({"lines": {"X:0:1": {"t": "curto"}}},
                                                           {"in": 1, "out": 1},
                                                           {"reused": 0, "novel": 1}))
-    monkeypatch.setattr(M, "invalidate_back_translation", lambda *a, **k: None)
+    monkeypatch.setattr(model_api, "invalidate_back_translation", lambda *a, **k: None)
     r = M.retranslate_offsets(tmp_path, "S1", ["X:0:1"], budget_tolerance=1.0)
     assert r["status"] == M.DONE and r["n_lines"] == 1
     data = json.loads(paths.translations(tmp_path, "S1", "S1").read_text(encoding="utf-8"))

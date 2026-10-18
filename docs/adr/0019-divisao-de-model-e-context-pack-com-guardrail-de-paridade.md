@@ -63,3 +63,17 @@ Camadas: `test_layering.py` trava que o núcleo não importa API nem sessão e q
 testes existentes fazem monkeypatch (`model._client`, `model._stream_final`, `model.time`): a função movida resolveria
 esses nomes no módulo novo e o patch em `model` deixaria de valer. Fazer isso sem editar teste exigiria que `model_api`
 importasse a fachada, o que o contrato de camadas proíbe. Decisão pendente do dono do projeto.
+
+**Decisão e resultado (B7).** O dono do projeto autorizou editar testes existentes só no alvo do monkeypatch, sem tocar em
+assert. `model_api.py` (cliente, streaming, lote, `retranslate_offsets`) e `model_session.py` (`saved_pack` fica no núcleo;
+aqui ficam `read_translation`, `InvalidTranslationFile` e o ramo in-session de `translate`) saíram de `model.py`, que
+virou fachada e mantém o despacho de `translate`. As funções puras de pacote (`saved_pack`, `fix_newlines`, `precheck`,
+`over_budget_offsets`) foram para `translation_rules.py`. Nos testes, os patches de rede passaram de `model.X` para
+`model_api.X` (`_client`, `_stream_final`, `_text_of`, `_usage_of`, `_carta_text`, `_await_batch`, `_BATCH_CHUNK`,
+`_TRANSLATE_SUBMIT_CHUNK`, `log_api_call`, `invalidate_back_translation` e `_api_translate` onde o chamador é código de API);
+`translate` da fachada continua patchável em `model._api_translate`. Nenhum assert mudou.
+
+Medição: suíte completa (1066 verdes), goldens e `test_layering.py` intactos, ruff e mypy limpos (71 arquivos). A/B de 5
+rodadas: sessão `session_translate` +2,9%, API `api_overhead` +4,2%, `import_model` +3,8%; demais operações entre -2,5% e
++3,6%. Dentro dos 10% e com o mesmo sinal nos dois caminhos. Comparação com o estado de 16/10 sobre 4 cenas reais
+(3 a 456 linhas): `pack.json`, plano e CSV aprovado idênticos; o prompt difere só pela linha de cabeçalho da TM, de 17/10.
