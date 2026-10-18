@@ -114,7 +114,7 @@ def sync_scenes(root, cfg: dict, scenes: list, *, approved_at: str) -> int:
                 existing.append(entry)
             n += 1
     if n:
-        tm_path.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(tm_path, json.dumps(existing, ensure_ascii=False, indent=2))
     return n
 
 
@@ -133,7 +133,7 @@ def reset_game(series: str, source_game: str) -> int:
     if removed:
         print(f"[tm_updater] AVISO: removendo {removed} entrada(s) de '{source_game}' da TM da "
               f"serie '{series}' (retraducao) — acao IRREVERSIVEL sem backup manual.")
-        tm_path.write_text(json.dumps(kept, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(tm_path, json.dumps(kept, ensure_ascii=False, indent=2))
     return removed
 
 

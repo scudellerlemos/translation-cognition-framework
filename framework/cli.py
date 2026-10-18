@@ -180,6 +180,9 @@ def cmd_ollama_status(args):
 
 def cmd_ollama_pull(args):
     import subprocess
+    if args.model.startswith("-"):                # nome de modelo nao pode virar flag do ollama
+        print(f"ERRO: nome de modelo invalido: {args.model!r}", file=sys.stderr)
+        return 2
     print(f"Baixando {args.model}...")
     result = subprocess.run(["ollama", "pull", args.model])
     return result.returncode

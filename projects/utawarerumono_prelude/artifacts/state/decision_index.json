@@ -1,0 +1,89 @@
+[
+  {
+    "title": "Convenções gerais",
+    "tags": [
+      "convenções",
+      "gerais"
+    ],
+    "universal": false,
+    "summary": "[Descrever as convenções gerais de tradução adotadas para este projeto.]",
+    "reveal": null
+  },
+  {
+    "title": "Nomes próprios",
+    "tags": [
+      "nomes",
+      "próprios"
+    ],
+    "universal": false,
+    "summary": "[Listar decisões sobre nomes próprios: verbatim ou traduzir, razão.]",
+    "reveal": null
+  },
+  {
+    "title": "Traduções canônicas",
+    "tags": [
+      "traduções",
+      "canônicas"
+    ],
+    "universal": false,
+    "summary": "[Listar termos com tradução canônica fixada e o porquê da escolha.]",
+    "reveal": null
+  },
+  {
+    "title": "Acentos pt-BR (fonte)",
+    "tags": [
+      "acentos",
+      "fonte"
+    ],
+    "universal": true,
+    "summary": "- Decisão do usuário: estender a fonte (não transliterar). Implementado e aprovado in-game: acentos desenhados no `font.tex` original + entradas reaproveitadas na tabela ENG do exe (`connector/font.py`, table_schema.md Seção 5); patch global de fonte (Font.fnt) descartado: mudava a fonte de tudo. Pl",
+    "reveal": null
+  },
+  {
+    "title": "Escopo e caminho",
+    "tags": [
+      "escopo",
+      "caminho"
+    ],
+    "universal": false,
+    "summary": "- Caminho: in-session (hitl choose-path, Felipe). Escopo: `completo` = cenas (ScriptTextData) + NameTextData + SysMessageTextData + UnitTextData (349 membros, 23.933 strings). StageTextData fora: o ponteiro EN do próprio jogo aponta para o meio da string. Decisão do usuário: \"é sessao, entao é compe",
+    "reveal": null
+  },
+  {
+    "title": "Decisões de voz (Fase 1, 2026-10-14, usuário)",
+    "tags": [
+      "decisões",
+      "fase",
+      "2026",
+      "usuário"
+    ],
+    "universal": false,
+    "summary": "- Nomes de personagens e lugares: mantidos como no jogo (grafia do site oficial SRC-003; Camyu, Karulau, Ulthury, não Kamyu/Karura). - `owlo` e `onkami`: mantidos sem tradução. - Tratamento: Lord/Lady → Senhor/Senhora; Your Majesty → Majestade; Big Sis → Irmã mais velha/Mana conforme o caso.",
+    "reveal": null
+  },
+  {
+    "title": "Interjeições e onomatopeias (onda 2, 2026-10-14, usuário)",
+    "tags": [
+      "interjeições",
+      "onomatopeias",
+      "onda",
+      "2026",
+      "usuário"
+    ],
+    "universal": false,
+    "summary": "- Não ficam no glossário: o alvo `(adaptar)` (23 entradas) era marcador, não tradução, e reprovava qualquer forma localizada no `glossary_lint` (e o schema não aceita `traduzir` sem alvo). - Regra: adaptar à interjeição natural em pt-BR, mantendo o comprimento e o alongamento da fala original;",
+    "reveal": null
+  },
+  {
+    "title": "Lore da onda +1 (2026-10-15, usuário)",
+    "tags": [
+      "lore",
+      "onda",
+      "2026",
+      "usuário"
+    ],
+    "universal": false,
+    "summary": "- Tsetse Grass → \"Erva Tsetse\" (traduz o genérico, mantém o nome próprio). \"Gran Tuskur\" do levantamento é falso positivo (fala cortada \"Gran--\" + Tuskur, já no glossário).",
+    "reveal": null
+  }
+]

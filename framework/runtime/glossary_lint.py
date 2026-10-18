@@ -13,8 +13,10 @@ Saida = CANDIDATOS p/ revisao humana (como o naturalness_lint): alta precisao, m
 falso-positivo legitimo (ex.: nome trocado por pronome — "Kuon disse" -> "ela disse"). Por isso o humano
 confere; a correcao em massa de um termo errado e do `tm_correct` (find->replace governado).
 
-Uso:  python glossary_lint.py <projeto> [--json]
+Uso:  python glossary_lint.py <projeto> [--scenes C1 C2 ...] [--json]
 Exit: 1 se houver candidatos (alimenta o loop "corrige -> re-roda ate zerar"); 0 se limpo.
+Com `--scenes` (o `wave.py` passa as cenas da onda): so achado dessas cenas bloqueia; achado de outra cena
+sai como AVISO (exit 0, listado no JSON em `outside`), para uma onda nao parar por cena que nao e dela.
 """
 from __future__ import annotations
 
@@ -161,17 +163,26 @@ def lint(root) -> list[dict]:
     return found
 
 
+def split_scope(found: list[dict], scenes: list[str] | None) -> tuple[list[dict], list[dict]]:
+    """(bloqueia, avisa): sem `scenes` tudo bloqueia; com `scenes`, so o achado das cenas do pedido."""
+    if not scenes:
+        return found, []
+    want = set(scenes)
+    return [f for f in found if f["scene"] in want], [f for f in found if f["scene"] not in want]
+
+
 def main():
     ap = argparse.ArgumentParser(description="Consistencia de glossario cross-capitulo (candidatos p/ revisao).")
     ap.add_argument("project")
+    ap.add_argument("--scenes", nargs="+", help="so achado destas cenas bloqueia; os demais viram aviso")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
     with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
-    found = lint(a.project)
+    found, outside = split_scope(lint(a.project), a.scenes)
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
-    out.write_text(json.dumps({"count": len(found), "findings": found}, ensure_ascii=False, indent=2),
-                   encoding="utf-8")
+    out.write_text(json.dumps({"count": len(found), "findings": found, "outside": outside},
+                              ensure_ascii=False, indent=2), encoding="utf-8")
     if a.json:
         print(json.dumps({"count": len(found)}, ensure_ascii=False))
     else:
@@ -180,6 +191,9 @@ def main():
         print(f"glossary_lint: {len(found)} candidato(s) de inconsistencia -> {out}")
         for term, n in by_term.most_common(25):
             print(f"  {term:24} {n}")
+        if outside:
+            where = sorted({f["scene"] for f in outside})
+            print(f"  AVISO: {len(outside)} candidato(s) fora das cenas do pedido (nao bloqueiam): {', '.join(where)}")
     sys.exit(1 if found else 0)
 
 

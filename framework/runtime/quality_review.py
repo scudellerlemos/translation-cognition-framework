@@ -604,8 +604,8 @@ def _apply_verbatim(root, scene, pairs) -> int:
             if ln.get("offset") == off:
                 ln["base_translation"] = fitted
         n += 1
-    tf.write_text(json.dumps(tdata, ensure_ascii=False, indent=2), encoding="utf-8")
-    pf.write_text(json.dumps(pdata, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(tf, json.dumps(tdata, ensure_ascii=False, indent=2))
+    paths.atomic_write(pf, json.dumps(pdata, ensure_ascii=False, indent=2))
     model.invalidate_back_translation(root, scene, [o for o, _ in pairs])  # crivo antigo nao vale mais
     return n
 
@@ -739,8 +739,7 @@ def apply(root, csv_path, *, model_name=None, max_usd=None, reviewer=None) -> di
            "verbatim": verbatim_n, "ai": ai_n,
            "effectiveness_rate": eff, "cost_usd": round(cost, 4)}
     try:
-        with paths.qa_effectiveness(root).open("a", encoding="utf-8") as _fh:
-            _fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        paths.append_line(paths.qa_effectiveness(root), json.dumps(rec, ensure_ascii=False) + "\n")
     except OSError:
         pass
     # traducoes APROVADAS pelo QA alimentam a TM da SERIE de volta (so as cenas tocadas nesta

@@ -46,8 +46,9 @@ import kb_review  # noqa: E402  (gate de fonte/ratificacao do delta de KB)
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
 from context_pack import _pos, _present, scene_id_of  # noqa: E402
 
-# sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's").
-_CAP_RUN = re.compile(r"[A-Z][A-Za-z'’\-]+(?:\s+[A-Z][A-Za-z'’\-]+)*")
+# sequencia de 1+ palavras capitalizadas (pega "Oshtor", "Eight Pillar Generals", "Oshtor's"); so espaco/tab entre
+# elas, para nao juntar o fim de uma fala com o inicio da seguinte (a fala cortada "Gran--" + "Tuskur").
+_CAP_RUN = re.compile(r"[A-Z][A-Za-z'’\-]+(?:[ \t]+[A-Z][A-Za-z'’\-]+)*")
 
 # STOPLIST de palavras COMUNS do ingles: um nome proprio, por definicao, NAO esta aqui. Filtra a
 # capitalizacao de inicio de frase ("What", "She", "And"...) que vaza mesmo do teste de meio-de-frase
@@ -98,6 +99,9 @@ bro eep hmhmhm hope later they'd welcome almighty ngh hee speak follow open osh 
 """.split())
 
 
+# fala inteira entre colchetes ("[About Battle Results]") e titulo de interface, nao fala: sem nome de lore.
+_HEADING = re.compile(r"^\s*\[[^\]]*\]\s*$")
+
 _FLAT_SCENE = "_flat"  # pseudo-cena para corpus flat (chap == "all")
 
 
@@ -134,13 +138,14 @@ def _kb_blob(root: Path) -> str:
     return _kb_blob_from(g_parts, e_parts)
 
 
+# possessivo e contracao colados no fim ('s, 'll, 'd, 're, 've, 'm): nao fazem parte do nome ("Tsetse Grass'll").
+_CLITIC = re.compile(r"['’](?:s|ll|d|re|ve|m)$", re.I)
+
+
 def _norm_tok(s: str) -> str:
     """Normaliza UM token: tira pontuacao das bordas e o possessivo final ('s)."""
     s = (s or "").strip().strip("-'’.,!?;:\"")
-    low = s.lower()
-    if low.endswith("'s") or low.endswith("’s"):
-        s = s[:-2]
-    return s.strip()
+    return _CLITIC.sub("", s).strip()
 
 
 def _clean_cand(run: str) -> str:
@@ -151,6 +156,8 @@ def _clean_cand(run: str) -> str:
     Stopword INTERIOR ('General of the Right') e mantida. Retorna '' se nada sobrar."""
     toks = []
     for raw in run.split():
+        if raw.endswith("-"):                          # palavra cortada ("Wha--", "Gran--"): nao e nome
+            continue
         t = _norm_tok(raw)
         if not t:
             continue
@@ -186,14 +193,16 @@ def _scan(root: Path, scenes: list[str]):
             continue
         rows = context_pack.load_dialogs(f)  # suporta text_en e text_source
         sid = "all" if scene == _FLAT_SCENE else scene_id_of(scene)
-        per.append((sid, "\n".join(r["source"] for r in rows)))
+        # token literal de quebra (barra-n) vira espaco: senao gruda na palavra seguinte ("nbecause")
+        per.append((sid, "\n".join(
+            r["source"].replace("\\n", " ") for r in rows if not _HEADING.match(r["source"]))))
     return per
 
 
 def _midsentence(word: str, corpus: str) -> bool:
     """True se `word` aparece ao menos 1x em MEIO de frase (precedido por minuscula/digito/virgula) —
     forte sinal de nome proprio (vs. capitalizacao so de inicio de frase)."""
-    pat = re.compile(r"[a-z0-9,;:)\"'’]\s+" + re.escape(word) + r"\b")
+    pat = re.compile(r"[a-z0-9,;:)\"'’][ \t]+" + re.escape(word) + r"\b")
     return pat.search(corpus) is not None
 
 
@@ -230,24 +239,43 @@ def _strong(rec: dict, corpus: str) -> bool:
     (aviso): nome citado 1x e baixa confianca; o humano revisa, mas nao trava a fronteira."""
     low = rec["cand"].lower()
     if rec["multi"]:
-        return True
+        return _midsentence(rec["cand"], corpus)       # maiuscula de inicio de fala ("Battle Results") nao prova nome
     if low.endswith(("n't", "'t", "ly")) or "-" in low:
         return False
     return rec["count"] >= 2 and _midsentence(rec["cand"], corpus)
 
 
-def discover(root, chap) -> dict:
+def _lower_vocab(root: Path) -> set[str]:
+    """Palavras que aparecem EM MINUSCULA em algum ponto do jogo todo (nao so na onda): palavra comum. Nome proprio
+    quase nunca aparece assim (truecasing): 'Guide' tem 'guide'; 'Matsuo' nao tem 'matsuo'."""
+    allsc = [_FLAT_SCENE] if paths.dialogs_flat(root).is_file() else artifact_io.scenes(root)
+    return set(re.findall(r"\b[a-z][a-z'’]+\b", " ".join(t for _, t in _scan(root, allsc))))
+
+
+def _trim_common_lead(cand: str, vocab: set[str]) -> str:
+    """'Guide Mutikapa' -> 'Mutikapa': tira palavra comum do INICIO quando o resto nunca aparece em minuscula
+    (so nome). 'Eight Pillar Generals' fica: o resto tem palavra comum, e nome composto legitimo."""
+    toks = cand.split()
+    while len(toks) > 1 and toks[0].lower() in vocab and all(t.lower() not in vocab for t in toks[1:]):
+        toks.pop(0)
+    return " ".join(toks)
+
+
+def discover(root, chap, only: list[str] | None = None) -> dict:
     """Descobre candidatos de lore/nome no capitulo e os classifica vs. a KB. Retorna
-    {chapter, scenes, gap:[fortes nao cobertos], weak:[fracos nao cobertos], covered:[ja na KB]}."""
+    {chapter, scenes, gap:[fortes nao cobertos], weak:[fracos nao cobertos], covered:[ja na KB]}.
+    `only`: so essas cenas (a onda), nao o capitulo inteiro -- ver `onda()`."""
     root = Path(root)
-    scenes = _scenes_of(root, chap)
+    scenes = list(only) if only else _scenes_of(root, chap)
     kb_low = _kb_blob(root)
     per = _scan(root, scenes)
     corpus = "\n".join(t for _, t in per)
+    vocab = _lower_vocab(root)
     agg: dict[str, dict] = {}
     for scene_id, text in per:
         for m in _CAP_RUN.finditer(text):
             cand = _clean_cand(m.group(0))             # limpa ALL-CAPS/gagueira/stopword de borda
+            cand = _trim_common_lead(cand, vocab)
             low = cand.lower()
             # ruido se vazio, single-letter, ou TODOS os tokens comuns ("What", "Oh No").
             if not cand or len(low) <= 2 or all(tok in _STOP for tok in low.split()):
@@ -269,6 +297,9 @@ def discover(root, chap) -> dict:
             covered.append(rec)
             continue
         rec["strong"] = _strong(rec, corpus)
+        rec["nl"] = (len(rec["cand"]) > 3 and all(t.lower() not in vocab for t in rec["cand"].split())
+                     and _company(rec["cand"], corpus) >= 2)
+        rec["mid"] = rec["strong"] or _midsentence(rec["cand"], corpus)   # 1x em meio de frase: nome provavel
         (gap if rec["strong"] else weak).append(rec)
     gap.sort(key=lambda r: (-r["count"], r["cand"].lower()))
     weak.sort(key=lambda r: (-r["count"], r["cand"].lower()))
@@ -280,6 +311,29 @@ def discover(root, chap) -> dict:
     scenes_out = ["all" if s == _FLAT_SCENE else scene_id_of(s) for s in scenes]
     return {"chapter": chap, "scenes": scenes_out,
             "gap": gap, "block": block, "weak": weak, "covered": covered}
+
+
+def _company(cand: str, corpus: str) -> int:
+    """Frases do corpus em que `cand` aparece COM outras palavras. Som solto ("Flinch!", "Plop") fica em 0; nome
+    citado em frase de verdade recorre com companhia."""
+    n = len(cand.split())
+    return sum(1 for s in re.split(r"[.!?…~\n]+", corpus)
+               if re.search(r"\b" + re.escape(cand) + r"\b", s) and len(re.findall(r"[A-Za-z']+", s)) > n)
+
+
+def _interj(cand: str) -> bool:
+    """Interjeicao/gemido (Mmm, Uhhh, Ewww, Nrgh): letra 3x seguida ou sem vogal. Ruido que a stoplist nao pega."""
+    return " " not in cand and bool(re.search(r"(.)\1\1|(h[aeiou])\2|^[^aeiouy]+$", cand.lower()))
+
+
+def onda(root, scenes: list[str], max_n: int = 15) -> list[dict]:
+    """Candidatos de lore/nome NAO cobertos pela KB nas cenas da onda (so elas, com teto): inclui os que
+    aparecem uma vez so, que o `coverage` deixa passar e viram escalonamento no meio da traducao.
+    Ordem: mais frequentes primeiro; o teto evita despejar ruido no humano (so a cabeca da lista)."""
+    d = discover(root, "onda", only=scenes)
+    cands = [r for r in d["gap"] if not _interj(r["cand"])] + [r for r in d["weak"] if (r["mid"] or r["nl"]) and not r["cand"].lower().endswith(("n't", "'t", "ly"))
+                        and "-" not in r["cand"] and not _interj(r["cand"])]
+    return sorted(cands, key=lambda r: (-r["count"], r["cand"].lower()))[:max_n]
 
 
 def _reconciled(root: Path) -> bool:
@@ -399,8 +453,17 @@ def main():
                     help="com --check OK, avanca project.json kb_frontier p/ o ultimo scene_id do capitulo")
     ap.add_argument("--strict", action="store_true",
                     help="gate de KB tambem exige ratificacao humana (kb_ratified.csv) + genero confirmado")
+    ap.add_argument("--scenes", nargs="+", help="so estas cenas (a onda): lista os candidatos nao cobertos, com teto")
+    ap.add_argument("--max", type=int, default=15, help="teto de candidatos com --scenes (padrao 15)")
     a = ap.parse_args()
     root = Path(a.project)
+
+    if a.scenes:
+        got = onda(root, a.scenes, a.max)
+        print(f"kb_phase onda: {len(got)} candidato(s) de lore/nome sem forma na KB (teto {a.max}) em {len(a.scenes)} cena(s)")
+        for r in got:
+            print(f"  {r['cand']}  ({r['count']}x, cenas: {', '.join(r['scenes'])})")
+        sys.exit(0)
 
     if a.check:
         cov = coverage(root, a.chapter, strict=a.strict)

@@ -247,3 +247,37 @@ def test_batch_coverage_ignores_engine_labels():
     assert "o1" in M._prefilled(pack)
     missing, _bad = M._batch_coverage(pack, {"o2": {"t": "Oi amigo"}})
     assert missing == []
+
+
+def test_precheck_flags_real_newline_and_token_count_but_not_budget(tmp_path):
+    for n, (budget, t, want) in enumerate([
+            (100, "a" + chr(10) + "b", [("X:0:1", "quebra de linha real (use o token literal)")]),
+            (5, "uma tradução bem longa demais", []),      # budget por fala nao e checado aqui
+            (100, "ok", [])]):
+        root = tmp_path / str(n)
+        (root / "artifacts").mkdir(parents=True)
+        _db_scene(root, byte_budget=budget, t=t)
+        assert M.precheck(root, "S1") == want
+
+
+def test_fix_newlines_normalizes_real_break_and_parity(tmp_path):
+    _db_scene(tmp_path, byte_budget=100, t="a" + chr(10) + "b")
+    assert M.fix_newlines(tmp_path, "S1") == 1
+    assert json.loads(paths.translations(tmp_path, "S1", "S1").read_text(encoding="utf-8"))["lines"]["X:0:1"]["t"] == "a b"
+    assert M.fix_newlines(tmp_path, "S1") == 0
+
+
+def test_read_translation_names_the_problem_and_never_accepts_other_encodings(tmp_path):
+    import pytest
+    f = tmp_path / "translations_x.json"
+    f.write_bytes('{"lines": {"a": {"t": "caf\xe9"}}}'.encode("cp1252"))
+    with pytest.raises(M.InvalidTranslationFile, match="UTF-8.*ensure_ascii=False"):
+        M.read_translation(f)
+    f.write_text("{'lines': {}}", encoding="utf-8")
+    with pytest.raises(M.InvalidTranslationFile, match="linha 1"):
+        M.read_translation(f)
+    f.write_text('{"lines": []}', encoding="utf-8")
+    with pytest.raises(M.InvalidTranslationFile, match="lines"):
+        M.read_translation(f)
+    f.write_text('{"lines": {"a": {"t": "café"}}}', encoding="utf-8")
+    assert M.read_translation(f)["lines"]["a"]["t"] == "café"

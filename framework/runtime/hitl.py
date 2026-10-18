@@ -12,7 +12,7 @@ Liga com `"hitl": true` no project.json (projeto sem a chave segue como antes). 
              AVISO: nao bloqueia.                                   -> `ack`
   FILA       escalonamento: fala em que a forma do glossario nao entrou, ou que o tradutor marcou com
              `escalate`, vai para uma planilha em vez de a IA decidir sozinha. O humano responde com
-             `alias` (a forma usada passa a valer: vira regra no glossario) ou `correcao` (texto certo).
+             `alias` (a forma usada passa a valer: vira regra no glossario; em escalonamento do tradutor sem `term`, aceita a fala como esta) ou `correcao` (texto certo).
              Item aberto bloqueia o quality_gate.                   -> `resolve`
 
 So bloqueia o que e decisao de verdade: escopo, caminho e a fila (ambiguidade). Glossario frequente e onda
@@ -76,8 +76,8 @@ _VIA: dict = {}     # {"via": "conversa", "quote": ...} quando a decisao veio da
 
 def _log(root: Path, **rec) -> None:
     rec = {**rec, **_VIA}
-    with (paths.artifacts(root) / "hitl_log.jsonl").open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps({"t": round(time.time(), 3), **rec}, ensure_ascii=False) + "\n")
+    paths.append_line(paths.artifacts(root) / "hitl_log.jsonl",
+                      json.dumps({"t": round(time.time(), 3), **rec}, ensure_ascii=False) + "\n")
 
 
 def _state_path(root: Path) -> Path:
@@ -90,7 +90,7 @@ def _state(root: Path) -> dict:
 
 
 def _save_state(root: Path, state: dict) -> None:
-    _state_path(root).write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(_state_path(root), json.dumps(state, ensure_ascii=False, indent=2))
 
 
 # --- escopo -----------------------------------------------------------------------------------------
@@ -337,26 +337,41 @@ def _add_alias(root: Path, term: str, alias: str) -> bool:
     return hit
 
 
+def _clear_escalate(root: Path, scene: str, offset: str) -> None:
+    """Pedido do tradutor decidido: tira `escalate` da fala, senao o `collect` da proxima onda o recolhe de novo."""
+    tf = paths.translations(root, scene, context_pack.scene_id_of(scene))
+    if not tf.is_file():
+        return
+    data = json.loads(tf.read_text(encoding="utf-8"))
+    v = data.get("lines", {}).get(offset)
+    if isinstance(v, dict) and v.pop("escalate", None) is not None:
+        paths.atomic_write(tf, json.dumps(data, ensure_ascii=False, indent=2))
+
+
 def resolve(root, reviewer: str) -> dict:
     """Aplica as respostas da planilha: `alias` vira regra no glossario; `correcao` entra verbatim na cena."""
     root = Path(root)
     import quality_review  # tardio: puxa o model
-    rows, left, fixes = read_queue(root), [], {}
-    n_alias = 0
+    rows, left = read_queue(root), []
+    fixes: dict[str, list] = {}
+    n_alias = n_ok = 0
     for r in rows:
         alias, fix = (r.get("alias") or "").strip(), (r.get("correcao") or "").strip()
         if fix:
             fixes.setdefault(r["scene"], []).append((r["offset"], fix))
         elif alias and r.get("term") and _add_alias(root, r["term"], alias):
             n_alias += 1
+        elif alias and not r.get("term") and r.get("kind") == "tradutor":
+            n_ok += 1  # escalonamento do tradutor sem termo: o humano aceitou a forma que a fala ja usa (nao toca o glossario)
         else:
             left.append(r)
             continue
+        _clear_escalate(root, r["scene"], r["offset"])
         _log(root, kind="escalonamento", by=reviewer, scene=r["scene"], offset=r["offset"],
              term=r.get("term", ""), action="correcao" if fix else "alias", alias=alias if not fix else "")
-    n_fix = sum(quality_review._apply_verbatim(root, s, pairs) for s, pairs in fixes.items())
+    n_fix = sum(int(quality_review._apply_verbatim(root, s, pairs)) for s, pairs in fixes.items())
     _write_queue(root, left)
-    return {"alias": n_alias, "correcao": n_fix, "open": len(left), "scenes": sorted(fixes)}
+    return {"alias": n_alias, "aceito": n_ok, "correcao": n_fix, "open": len(left), "scenes": sorted(fixes)}
 
 
 # --- CLI --------------------------------------------------------------------------------------------
@@ -461,7 +476,8 @@ def main():
         print(f"visto de {a.reviewer} em {len(wave)} cena(s); proxima onda liberada.")
     else:
         r = resolve(root, a.reviewer)
-        print(f"fila: {r['alias']} alias no glossario, {r['correcao']} correcao(oes) aplicada(s), {r['open']} em aberto.")
+        print(f"fila: {r['alias']} alias no glossario, {r['aceito']} aceite(s) do tradutor, "
+              f"{r['correcao']} correcao(oes) aplicada(s), {r['open']} em aberto.")
         if r["alias"]:
             print("  glossario mudou: rode state_index.py <projeto> (projeto com banco) antes do proximo lint.")
         if r["scenes"]:

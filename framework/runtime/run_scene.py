@@ -28,6 +28,7 @@ import argparse
 import contextlib
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -105,7 +106,7 @@ def _checkpoint(root: Path, scene: str, patch: dict):
         scenes[scene] = {**scenes.get(scene, {}), **patch, "_ts": round(time.time(), 3)}
         state["scenes"] = dict(sorted(scenes.items()))
         state["managed_by"] = "framework/runtime/run_scene.py"
-        p.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(p, json.dumps(state, ensure_ascii=False, indent=2))
 
 
 def _ledger_scene_cost(root: Path, scene: str) -> float:
@@ -155,8 +156,7 @@ def _metrics(root: Path, scene: str, scene_id: str, *, n_lines, tr, bt, n_high, 
             last = row if row.get("scene") == scene else last
     skip = ("session", "t", "run")
     if last is None or {k: v for k, v in last.items() if k not in skip} != {k: v for k, v in rec.items() if k not in skip}:
-        with p.open("a", encoding="utf-8") as f:
-            f.write(json.dumps({**rec, "t": round(time.time(), 3), "run": events.RUN}, ensure_ascii=False) + "\n")
+        paths.append_line(p, json.dumps({**rec, "t": round(time.time(), 3), "run": events.RUN}, ensure_ascii=False) + "\n")
     return rec
 
 
@@ -180,13 +180,25 @@ def _pack_and_translate(root: Path, scene: str, scene_id: str, backend: str,
             print("      batch nao produziu a traducao; traduzindo agora (fallback).")
     if tr is None:
         try:
+            bad_file = None
             with events.stage(root, "translate", scene) as ev:
-                tr = M.translate(root, scene, backend=backend)
-                ev.update(result=tr["status"], backend=backend, n_lines=tr.get("n_lines"))
+                ev["backend"] = backend
+                try:
+                    tr = M.translate(root, scene, backend=backend)
+                except M.InvalidTranslationFile as e:               # arquivo do subagente ilegivel
+                    bad_file = e
+                    ev.update(result="invalid_output", msg=str(e)[:200])
+                else:
+                    ev.update(result=tr["status"], n_lines=tr.get("n_lines"))
+            if bad_file is not None:
+                print(f"      ERRO: {bad_file}")
+                _checkpoint(root, scene, {"scene_id": scene_id, "status": "invalid_translation_file"})
+                return None, {"status": "invalid_translation_file", "scene": scene, "error": str(bad_file)}
         except Exception as e:                              # backend api: erro de rede/saida invalida
             print(f"      ERRO na traducao ({backend}): {e}")
             _checkpoint(root, scene, {"scene_id": scene_id, "status": "api_translate_failed"})
             return None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
+    assert tr is not None                                   # pretranslated ou M.translate preencheram
     print(f"      glossario/vozes/decisoes/TM montados; status traducao = {tr['status']}")
     if isinstance(tr, dict) and tr.get("reused"):
         tr_done = cast(M.TranslateDone, tr)
@@ -278,10 +290,20 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
                 _checkpoint(root, scene, {"status": "api_translate_failed"})
                 return tr, None, {"status": "api_translate_failed", "scene": scene, "error": str(e)}
 
+        if ti == 0:
+            with contextlib.suppress(Exception, SystemExit):  # o build_plan/verify seguem decidindo
+                fixed = M.fix_newlines(root, scene, reuse_pack=backend == "in-session")
+                if fixed:
+                    print(f"[pre] {fixed} fala(s) com quebra de linha real/token a mais: normalizadas (mecanico).")
+                bad = M.precheck(root, scene, reuse_pack=backend == "in-session")
+                if bad:
+                    print(f"[pre] {len(bad)} fala(s) com problema ANTES do build_plan (corrija todas de uma vez):")
+                    print(_indent(chr(10).join(f"{o}: {m}" for o, m in bad[:30])))
         print(f"[3/6] build_plan_chapter {scene} ...")
         with events.stage(root, "build_plan", scene) as ev:
             code, out = _run([sys.executable, str(build_plan_script), scene])
-            ev.update(result="ok" if code == 0 else "fail", exit=code, tolerance=tol)
+            ev.update(result="ok" if code == 0 else "fail", exit=code, tolerance=tol,
+                      **(_fail_fields(out) if code != 0 else {}))
         print(_indent(out))
         if code != 0:
             _checkpoint(root, scene, {"status": "build_plan_failed"})
@@ -296,6 +318,7 @@ def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str
             code, out = _run([sys.executable, str(verify_script), scene])
             # VERIFY_STATUS do conector (so contagens: overflow, falhas) entra inteiro no evento
             ev.update(result="ok" if code == 0 else "fail", exit=code, tolerance=tol,
+                      **(_fail_fields(out) if code != 0 else {}),
                       **{k: v for k, v in _verify_status(out).items() if isinstance(v, bool | int | float)})
         print(_indent(out))
         if code == 0:
@@ -402,6 +425,7 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     root = Path(root)
     _validate_scene_arg(root, scene)
     cfg = json.loads((root / "project.json").read_text(encoding="utf-8"))
+    _default_data_dir_env(root, cfg)
     type_errors = validate_connector_types(cfg)
     if type_errors:
         raise ValueError("project.json connector{} mal configurado:\n" +
@@ -519,6 +543,39 @@ def _run_scene(root, scene, *, backend="api", require_back=False, do_verify=True
     print(f"OK run_scene {scene}: status final = {'verified' if verified else 'planned'}")
     return {"status": "verified" if verified else "planned", "scene": scene,
             "high": len(highs), "verified": verified}
+
+
+def _default_data_dir_env(root: Path, cfg: dict) -> None:
+    """Env do conector sem valor: usa connector.data_dir_default (relativo ao projeto), em vez de exigir
+    que cada subagente a exporte. A env ja setada sempre vence. Vale para o processo e os filhos (verify)."""
+    conn = cfg.get("connector") or {}
+    name, rel = conn.get("data_dir_env"), conn.get("data_dir_default")
+    if name and rel and not os.environ.get(name) and not Path(rel).is_absolute() and (root / rel).exists():
+        os.environ[name] = str((root / rel).resolve())
+
+
+_FAIL_CODES = (  # (code, regex) na ordem: o primeiro que casa com o texto das linhas de erro
+    ("token", r"token|estrutural"),
+    ("newline", r"quebra|newline|\n"),
+    ("byte_budget", r"byte|budget|orcamento|overflow|estour|exced"),
+    ("tabela", r"sem traducao|inexistente|offset"),
+    ("risk", r"risk"),
+    ("round_trip", r"round-trip|reinser"),
+)
+
+
+def _fail_fields(out: str) -> dict:
+    """Causa da falha para o events.jsonl: `reason` = 1a linha de erro DEPOIS do cabecalho (`ERROS:`/`FALHAS:`),
+    curta; `code` = classe (token, newline, byte_budget, tabela, risk, round_trip, outro) para contar por tipo."""
+    lines = [ln.strip() for ln in out.splitlines() if ln.strip()]
+    body = [ln.lstrip("- ").strip() for ln in lines if not re.fullmatch(r"(ERROS|FALHAS):?", ln)
+            and not ln.startswith(("VERIFY_STATUS", "Cena "))]
+    errs = [ln for ln in body if re.search(r"erro|error|fail|falh|estour|exced|diverg|sem |invalid|ausente|"
+                                           r"token|budget|overflow", ln, re.I)]
+    reason = (errs or body or lines or [""])[0][:160]
+    text = " ".join(errs or body)
+    code = next((c for c, rx in _FAIL_CODES if re.search(rx, text, re.I)), "outro")
+    return {"reason": reason, "code": code}
 
 
 def _indent(s: str) -> str:
@@ -645,6 +702,8 @@ def main():
     ap.add_argument("--purge-discontinued", type=int, metavar="DAYS",
                     help="G4: remove dirs de artifacts/discontinued/ mais antigos que DAYS dias")
     a = ap.parse_args()
+    if not (Path(a.project) / "project.json").is_file() and (Path("projects") / a.project / "project.json").is_file():
+        a.project = f"projects/{a.project}"             # aceita so o nome do projeto
     if a.check_stale:
         if not a.project:
             ap.error("--check-stale requer <project>")

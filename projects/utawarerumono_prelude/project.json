@@ -1,0 +1,65 @@
+{
+  "title": "Utawarerumono: Prelude to the Fallen",
+  "media_type": "game",
+  "media_profile": "games",
+  "source_language": "en",
+  "target_language": "pt-BR",
+  "source": {
+    "file": "artifacts/dialogs.csv",
+    "format": "csv_offset",
+    "id_column": "offset",
+    "text_column": "text_en"
+  },
+  "formatting_tokens": [
+    "\\n",
+    "\\R"
+  ],
+  "formatting_token_patterns": [
+    "\\{[A-Za-z]+-?\\d+\\}"
+  ],
+  "system_line_convention": "all_caps",
+  "length_constraints": {
+    "dialogue_max_pct": 140,
+    "ui_max_pct": 110
+  },
+  "byte_budget_exceptions": {"11_32_00:14": 6},
+  "batch_size": 200,
+  "kb_frontier": "all",
+  "connector": {
+    "type": "hex_binary",
+    "container_format": "aquaplus_sdat",
+    "data_dir_env": "UTAP_DATA_DIR",
+    "data_dir_default": "backup_original/DataBase2.sdat",
+    "table_schema": "connector/table_schema.md",
+    "extract_script": "connector/extract.py",
+    "reinsert_script": "connector/reinsert.py",
+    "encoding": "utf-8",
+    "control_codes": {
+      "{W#}": "pausa",
+      "{c#}": "cor",
+      "{i#}": "icone",
+      "{g#}": "glifo_botao",
+      "\\n": "quebra_de_linha",
+      "\\R": "opaco"
+    },
+    "space_strategy": "reconstrucao_secao",
+    "patch_format": "full_file",
+    "budget_reserves_terminator": true,
+    "target_charset_supported": true,
+    "charset_note": "Acentos pt-BR desenhados no atlas font.tex original + entradas reaproveitadas na tabela ENG do exe (connector/font.py; table_schema.md Secao 5). Aspas curvas, reticencias e travessao sao normalizados em reinsert.py."
+  },
+  "db": {
+    "path": "utawarerumono_prelude.db",
+    "project_id": "utawarerumono_prelude"
+  },
+  "rag_min_score": null,
+  "profile": {
+    "voice_profiles": "profile/voice_profiles_reference.md",
+    "identity_pairs": "profile/identity_pairs_reference.md",
+    "terminology_seeds": "profile/terminology_seeds.md",
+    "example_test_suites": "profile/example_test_suites.md"
+  },
+  "notes": "Projeto independente (nao reaproveita nada do projeto Utawarerumono anterior). Texto em Data/DataBase2.sdat, coluna EN.",
+  "hitl": true,
+  "series": "utawarerumono_prelude"
+}

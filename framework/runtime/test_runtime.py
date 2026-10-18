@@ -2584,7 +2584,7 @@ def test_ledger_append_takes_over_stale_lock(tmp_path):
 
     import cost
     led = tmp_path / "api_ledger.jsonl"
-    lock = led.with_suffix(".lock")
+    lock = led.with_name(led.name + ".lock")        # trava comum de paths.locked
     lock.write_text("")
     old = time.time() - 60
     os.utime(lock, (old, old))

@@ -17,7 +17,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **Quality** | `quality.yml` | Todo PR e push no `main` | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
 | **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
-| **Cobertura real (ML)** | `ml-coverage-optional.yml` | Domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
+| **Cobertura real (ML)** | `ml-coverage-optional.yml` | PR, push na main, domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
 | **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 

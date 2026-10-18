@@ -86,3 +86,11 @@ def test_skill_check_ok(tmp_path, capsys):
     (tmp_path / "project.json").write_text('{"title":"T","media_type":"game"}', encoding="utf-8")
     rc = _run(["skill", "check", "07", str(tmp_path)])
     assert rc in (0, 1)                                    # gate roda (0 ok / 1 bloqueado)
+
+
+def test_ollama_pull_recusa_nome_que_parece_flag(monkeypatch, capsys):
+    import argparse
+    import subprocess
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(AssertionError("nao deveria chamar o ollama")))
+    assert cli.cmd_ollama_pull(argparse.Namespace(model="--insecure")) == 2
+    assert "nome de modelo invalido" in capsys.readouterr().err

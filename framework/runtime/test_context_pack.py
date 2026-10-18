@@ -9,6 +9,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 _HERE = Path(__file__).resolve().parent
 _DB = _HERE.parents[0] / "db"
 for _p in (_HERE, _DB):
@@ -100,6 +102,7 @@ def test_load_decisions_semantic_respects_reveal_gate(tmp_path):
     assert "Segredo futuro do dragão" not in titles
 
 
+@pytest.mark.filterwarnings("error:KB sem")   # fake incompleto cairia no fallback com warning: aqui vira falha
 def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch):
     """project.json.rag_min_score deve chegar em Embedder.search(min_score=...) sem
     precisar da stack de ML real -- _get_embedder é trocado por um fake que só grava o kwarg."""
@@ -118,11 +121,15 @@ def test_build_pack_passes_rag_min_score_from_project_json(tmp_path, monkeypatch
         def search_decisions(self, con, query, project_id, k=3):
             return []
 
+        def search_kb(self, con, query, project_id, k):
+            return []
+
     monkeypatch.setattr(cp, "_get_embedder", lambda: _FakeEmbedder())
     cp.build_pack(tmp_path, "S1")
     assert seen["min_score"] == 0.55
 
 
+@pytest.mark.filterwarnings("error:KB sem")   # fake incompleto cairia no fallback com warning: aqui vira falha
 def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
     """Sem `rag_min_score` no project.json (caso comum hoje), min_score chega como None ->
     Embedder.search não corta nada (comportamento anterior preservado)."""
@@ -135,6 +142,9 @@ def test_build_pack_rag_min_score_default_none_sem_campo(tmp_path, monkeypatch):
             return []
 
         def search_decisions(self, con, query, project_id, k=3):
+            return []
+
+        def search_kb(self, con, query, project_id, k):
             return []
 
     monkeypatch.setattr(cp, "_get_embedder", lambda: _FakeEmbedder())

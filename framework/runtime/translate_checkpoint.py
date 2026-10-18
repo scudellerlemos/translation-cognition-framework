@@ -56,8 +56,8 @@ def save(root, scene, scene_id, doctrine_hash, merged, srcmap, bad, *, enabled=T
         return 0
     p = paths.translations_partial(Path(root), scene, scene_id)
     try:
-        p.write_text(json.dumps({"doctrine_hash": doctrine_hash, "lines": good}, ensure_ascii=False,
-                                indent=2), encoding="utf-8")
+        paths.atomic_write(p, json.dumps({"doctrine_hash": doctrine_hash, "lines": good}, ensure_ascii=False,
+                                         indent=2))
     except OSError as exc:
         print(f"[translate_checkpoint] AVISO: nao gravei {p.name} ({exc!r}) -- as {len(good)} linha(s) "
               f"pagas serao re-traduzidas na proxima rodada.")
@@ -82,7 +82,6 @@ def log_exhausted(root, scene, model, usage, last, kept, *, stage) -> None:
            "missing": len(last["missing"]), "bad_parity": len(last["bad_parity"]),
            "bad_structural": len(last["bad_structural"]), "kept": kept}
     try:
-        with paths.translate_exhausted(Path(root)).open("a", encoding="utf-8") as f:
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        paths.append_line(paths.translate_exhausted(Path(root)), json.dumps(rec, ensure_ascii=False) + "\n")
     except OSError as exc:
         print(f"[translate_checkpoint] AVISO: nao registrei o esgotamento de {scene} ({exc!r}).")

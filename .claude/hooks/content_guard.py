@@ -14,7 +14,7 @@ import re
 import subprocess
 import sys
 
-ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg",
+ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg", "ps1",
                "gitignore", "gitkeep", "gitattributes", "example", "coveragerc-ml"}
 ALLOWED_NAMES = {"LICENSE", "VERSION"}
 # projects/demo e sintetico (dialogo ficticio) -- unico lugar onde dialogs.csv e versionado.

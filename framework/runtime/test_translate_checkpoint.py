@@ -148,7 +148,7 @@ def test_load_returns_empty_when_checkpoint_already_covers_every_line(tmp_path):
 def test_save_returns_zero_and_warns_when_write_fails(tmp_path, monkeypatch, capsys):
     import translate_checkpoint as ckpt
     paths.scene_dir(tmp_path, SCENE).mkdir(parents=True)
-    monkeypatch.setattr(type(paths.scene_dir(tmp_path, SCENE)), "write_text", _boom)
+    monkeypatch.setattr(paths, "atomic_write", _boom)
     assert ckpt.save(tmp_path, SCENE, "95_01", "d1", {"0x1": _good("0x1")}, {"0x1": "Hello"}, bad=set()) == 0
     assert "nao gravei" in capsys.readouterr().out
 

@@ -205,7 +205,7 @@ CONNECTOR_KNOWN_KEYS: frozenset = frozenset({
     "mapping_status", "mapping_note",
     # — conectores CSV/Unity Addressables (Souldiers) — allowlist nunca cobria este formato,
     # descoberto no onboarding do Souldiers (2026-07-02); ver connector-evolution-vision —
-    "engine", "data_dir_env", "data_dir_note", "csv_delimiter", "id_column", "text_column",
+    "engine", "data_dir_env", "data_dir_default", "data_dir_note", "csv_delimiter", "id_column", "text_column",
     "target_column", "target_column_note", "dialogue_tables", "dep",
 })
 
@@ -237,6 +237,7 @@ class ConnectorConfig(TypedDict, total=False):
     mapping_note: str
     engine: str                     # "Unity 2021 (Mono, Addressables 1.x)" | ...
     data_dir_env: str               # nome da env var (ex.: "SOULDIERS_DATA_DIR") — nunca o path
+    data_dir_default: str           # caminho RELATIVO ao projeto usado se a env nao estiver setada (nunca absoluto)
     data_dir_note: str
     csv_delimiter: str              # conectores CSV embutido (Unity Addressables)
     id_column: str

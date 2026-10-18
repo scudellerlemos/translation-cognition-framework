@@ -254,7 +254,7 @@ def apply(root, corrections, chapter=None) -> dict:
                     changed = True
                     corrected_offsets.append(off)
             if changed:
-                path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                paths.atomic_write(path, json.dumps(data, ensure_ascii=False, indent=2))
                 files_changed += 1
                 if field == "t":     # texto TRADUZIDO mudou -> o verdict de back-translation antigo
                     back_translate.invalidate_back_translation(root, scene, corrected_offsets)

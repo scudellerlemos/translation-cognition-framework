@@ -96,7 +96,7 @@ def _update_plan_base(root, scene, offsets):
                 ln["base_translation"] = new_t
                 n += 1
     if n:
-        pf.write_text(json.dumps(pdata, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(pf, json.dumps(pdata, ensure_ascii=False, indent=2))
     return n
 
 

@@ -364,12 +364,10 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
 
     # TM como JSONL ordenado e estavel
     tm_txt = "\n".join(json.dumps(e, ensure_ascii=False, sort_keys=True) for e in tm)
-    (paths.translation_memory(root)).write_text(tm_txt + ("\n" if tm else ""), encoding="utf-8")
+    paths.atomic_write(paths.translation_memory(root), tm_txt + ("\n" if tm else ""))
 
-    (paths.voice_cards(root)).write_text(
-        json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
-    (paths.decision_index(root)).write_text(
-        json.dumps(decisions, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(paths.voice_cards(root), json.dumps(cards, ensure_ascii=False, indent=2, sort_keys=True))
+    paths.atomic_write(paths.decision_index(root), json.dumps(decisions, ensure_ascii=False, indent=2))
 
     # Voice cards completeness: falantes com falas na TM mas sem card de voz
     tm_speakers = {e["speaker"] for e in tm if e.get("speaker")}
@@ -419,8 +417,7 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
         rec = {"t": round(_time.time(), 3), "source": "state_index", "warnings": warnings}
         wlog = paths.warnings_log(root)
         try:
-            with wlog.open("a", encoding="utf-8") as f:
-                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            paths.append_line(wlog, json.dumps(rec, ensure_ascii=False) + "\n")
         except OSError:
             pass
 

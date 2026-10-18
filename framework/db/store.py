@@ -28,12 +28,13 @@ def _json_or_none(v: list | None) -> str | None:
 
 
 class Store:
-    """Interface sobre o banco SQLite. Thread-safe via WAL + check_same_thread=False."""
+    """Interface sobre o banco SQLite. check_same_thread=False; espera ate 30 s por escrita de outra conexao
+    (busy_timeout) em vez de falhar com "database is locked" apos os 5 s padrao. Journal padrao (sem WAL)."""
 
     def __init__(self, db_path: str | Path):
         self.path = Path(db_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._con = sqlite3.connect(str(self.path), check_same_thread=False)
+        self._con = sqlite3.connect(str(self.path), check_same_thread=False, timeout=30.0)
         self._con.row_factory = sqlite3.Row
         self._in_batch = False   # ver batch() abaixo
         self._init_schema()

@@ -280,3 +280,12 @@ def test_upsert_scene_lines_drops_lines_gone_from_source(tmp_path):
         db.upsert_scene_lines("p1", "s1", [{"offset": "a", "source": "x2", "byte_budget": 1}])
         assert [(r["offset"], r["source"]) for r in db.get_scene_lines("p1", "s1")] == [("a", "x2")]
         assert len(db.get_scene_lines("p1", "s2")) == 1      # outra cena intacta
+
+
+def test_store_espera_ate_30s_por_escrita_concorrente(tmp_path):
+    """Auditoria 2026-10-17: o timeout padrao do sqlite3 (5 s) derrubava o 2o escritor com 'database is locked'."""
+    s = Store(tmp_path / "t.db")
+    try:
+        assert s._con.execute("PRAGMA busy_timeout").fetchone()[0] == 30000
+    finally:
+        s.close()

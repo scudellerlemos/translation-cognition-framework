@@ -27,8 +27,8 @@ def emit(root, stage: str, result: str, scene: str | None = None, **fields) -> N
     """Anexa um evento. Nunca derruba o pipeline: observabilidade que falha so avisa."""
     rec = {"t": round(time.time(), 3), "run": RUN, "scene": scene, "stage": stage, "result": result, **fields}
     try:
-        with paths.events(Path(root)).open("a", encoding="utf-8") as f:
-            f.write(json.dumps(rec, ensure_ascii=False, default=str) + "\n")
+        paths.append_line(paths.events(Path(root)), json.dumps(rec, ensure_ascii=False, default=str) + "\n",
+                          timeout=5.0)
     except FileNotFoundError:       # projeto sem artifacts/ ainda: nada a observar
         pass
     except OSError as e:

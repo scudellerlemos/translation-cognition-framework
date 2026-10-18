@@ -2,9 +2,17 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "model": "sonnet",
   "disableClaudeAiConnectors": true,
+  "enabledPlugins": {
+    "ponytail@ponytail": false,
+    "linkedin-agent@synced": false
+  },
   "deniedMcpServers": [
-    { "serverName": "higgsfield" },
-    { "serverName": "nano-banana" }
+    {
+      "serverName": "higgsfield"
+    },
+    {
+      "serverName": "nano-banana"
+    }
   ],
   "hooks": {
     "PreToolUse": [
@@ -31,5 +39,22 @@
         "description": "Bloqueia git add/commit/push com conteudo de jogo ou arquivo fora da allowlist no repo (falha fechado)"
       }
     ]
+  },
+  "skillOverrides": {
+    "banner-design": "off",
+    "built-in-browser": "off",
+    "career-helper": "off",
+    "chrome-browser": "off",
+    "computer-use": "off",
+    "deep-research": "off",
+    "docs": "off",
+    "docx": "off",
+    "import-memory": "off",
+    "letra-certa-quiz-episodio": "off",
+    "morning": "off",
+    "pdf": "off",
+    "pptx": "off",
+    "skill-creator": "off",
+    "xlsx": "off"
   }
 }
