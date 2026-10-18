@@ -32,8 +32,8 @@ def split(TMP: pathlib.Path, lot: str) -> None:
     head = [x for x in src[a:b] if not ROW.match(x)]
     kn = TMP / 'keep_names.txt'
     names = [n for n in kn.read_text(encoding='utf-8').splitlines() if n.strip()] if kn.is_file() else []
-    for sec in sorted({ROW.match(x).group(1) for x in rows}, key=int):
-        mine = [x for x in rows if ROW.match(x).group(1) == sec]
+    for sec in sorted({ROW.match(x).group(1) for x in rows}, key=int):  # type: ignore[union-attr]
+        mine = [x for x in rows if ROW.match(x).group(1) == sec]  # type: ignore[union-attr]
         text = '\n'.join(mine)
         used = [n for n in names if re.search(r'(?<!\w)' + re.escape(n) + r'(?!\w)', text)]
         tail = '\n'.join(src[b:]).replace(f'lot_{lot}.tsv', f'lot_{lot}_{sec}.tsv')
