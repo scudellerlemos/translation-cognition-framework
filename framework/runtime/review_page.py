@@ -42,7 +42,7 @@ def save(box: Path, name: str, body: bytes) -> bool:
     """Grava so planilha editavel conhecida (nome vindo da URL nunca vira caminho)."""
     if not SHEETS.get(name):
         return False
-    (box / name).write_bytes(body)
+    paths.atomic_write(box / name, body)      # planilha do revisor: queda no meio nao a trunca
     return True
 
 

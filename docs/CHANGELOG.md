@@ -83,6 +83,12 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
   onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
 - Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
 
+## Não lançado — Onda 2, fechamento para a nota 4 (PATCH, sem bump ainda)
+
+- Varredura em `test_state_writers.py`: todo `write_text`/`write_bytes`/`open("w"|"a")` do framework tem de estar em ESTADO (usa escrita atomica) ou em DERIVADO (com o motivo de ser regeneravel). Escritor novo nao classificado falha o teste; entrada morta na lista tambem.
+- Quatro escritores de estado que a lista antiga nao enxergava foram migrados para `paths.atomic_write`: fila de revisao (`hitl._write_queue`), alias no glossario (`hitl._add_alias`, agora sob `paths.locked`, preserva BOM e CRLF), planilha do revisor (`review_page.save`) e `connector_manifest.json` (`fingerprint_monitor.write_manifest`). `atomic_write` passa a aceitar bytes.
+- `run_scene --jobs` ganha `--scene-timeout` (padrao 3600 s): cena travada vira rc 124 e nao trava o lote. Com isso todo subprocesso do pipeline tem timeout; `claude -p` ja tinha (900 s, ate 3 tentativas).
+
 ## Não lançado — ML obrigatório e lock com hash
 
 - `requirements-dev.txt` passa a ser lock com hashes (`requirements-dev-src.txt` é a fonte; `uv pip compile --universal --generate-hashes`). Instalação verificada com `--require-hashes` em Python 3.11 e 3.12, hash adulterado recusado, `pip-audit` limpo sobre o lock. Teste novo em `test_docs_integrity.py`.

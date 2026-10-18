@@ -29,6 +29,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import paths  # noqa: E402
 from connector_mgr import (  # noqa: E402  (reusa o hash de scripts existente, nao duplica)
     connector_changed,
 )
@@ -65,7 +66,7 @@ def write_manifest(root, *, tier, engine_id, connector_version, scripts_fingerpr
         "last_validated": {"status": status, "at_scene": at_scene, "timestamp_iso": timestamp_iso},
     }
     out = _manifest_path(root)
-    out.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps(manifest, ensure_ascii=False, indent=2))
     return out
 
 

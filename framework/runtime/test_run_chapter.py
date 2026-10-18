@@ -198,3 +198,21 @@ def test_run_parallel_collects_per_scene_rc(monkeypatch):
     a = argparse.Namespace(project="p", scene=list(codes), backend="api", jobs=2, require_back=False,
                            no_verify=True, skip_kb_gate=False, no_back=False)
     assert rc.RS._run_parallel(a) == (["s2=rc1"], ["s1", "s3"])
+
+
+def test_run_parallel_cena_travada_vira_rc124_e_nao_trava_o_lote(monkeypatch, capsys):
+    import argparse
+    import subprocess
+
+    def fake(cmd, **k):
+        assert k["timeout"] == 5
+        if cmd[3] == "trava":
+            raise subprocess.TimeoutExpired(cmd, k["timeout"])
+        return argparse.Namespace(returncode=0)
+
+    monkeypatch.setattr(subprocess, "run", fake)
+    a = argparse.Namespace(project="p", scene=["ok", "trava"], backend="api", jobs=2, require_back=False,
+                           no_verify=True, skip_kb_gate=False, no_back=False, scene_timeout=5)
+    assert rc.RS._run_parallel(a) == (["trava=rc124"], ["ok"])
+    assert "sem resposta em 5 s" in capsys.readouterr().err
+

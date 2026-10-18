@@ -231,10 +231,11 @@ def read_queue(root: Path) -> list[dict]:
 def _write_queue(root: Path, rows: list[dict]) -> None:
     p = queue_path(root)
     p.parent.mkdir(parents=True, exist_ok=True)
-    with p.open("w", encoding="utf-8-sig", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=QUEUE_COLS)
-        w.writeheader()
-        w.writerows({c: r.get(c, "") for c in QUEUE_COLS} for r in rows)
+    buf = io.StringIO(newline="")
+    w = csv.DictWriter(buf, fieldnames=QUEUE_COLS)
+    w.writeheader()
+    w.writerows({c: r.get(c, "") for c in QUEUE_COLS} for r in rows)
+    paths.atomic_write(p, buf.getvalue(), encoding="utf-8-sig", newline="")      # queda no meio nao trunca a fila
 
 
 def open_items(root) -> list[dict]:
@@ -314,27 +315,28 @@ def _add_alias(root: Path, term: str, alias: str) -> bool:
     p = paths.glossary(root)
     if not p.is_file():
         return False
-    raw = p.read_bytes()
-    bom = raw.startswith(b"\xef\xbb\xbf")
-    txt = raw.decode("utf-8-sig")
-    nl = "\r\n" if "\r\n" in txt else "\n"
-    rows = list(csv.DictReader(io.StringIO(txt)))
-    hit = False
-    for r in rows:
-        if r.get("term") == term:
-            have = [a for a in re.split(r"[;|]", r.get("aliases") or "") if a.strip()]
-            if alias not in have:
-                r["aliases"] = ";".join(have + [alias])
-                if "updated_date" in r:
-                    r["updated_date"] = date.today().isoformat()
-            hit = True
-    if hit:
-        buf = io.StringIO()
-        w = csv.DictWriter(buf, fieldnames=list(rows[0]), lineterminator=nl)
-        w.writeheader()
-        w.writerows(rows)
-        p.write_bytes((b"\xef\xbb\xbf" if bom else b"") + buf.getvalue().encode("utf-8"))
-    return hit
+    with paths.locked(p):      # le-altera-grava: dois aliases ao mesmo tempo nao podem perder um
+        raw = p.read_bytes()
+        bom = raw.startswith(b"\xef\xbb\xbf")
+        txt = raw.decode("utf-8-sig")
+        nl = "\r\n" if "\r\n" in txt else "\n"
+        rows = list(csv.DictReader(io.StringIO(txt)))
+        hit = False
+        for r in rows:
+            if r.get("term") == term:
+                have = [a for a in re.split(r"[;|]", r.get("aliases") or "") if a.strip()]
+                if alias not in have:
+                    r["aliases"] = ";".join(have + [alias])
+                    if "updated_date" in r:
+                        r["updated_date"] = date.today().isoformat()
+                hit = True
+        if hit:
+            buf = io.StringIO(newline="")
+            w = csv.DictWriter(buf, fieldnames=list(rows[0]), lineterminator=nl)
+            w.writeheader()
+            w.writerows(rows)
+            paths.atomic_write(p, buf.getvalue(), encoding="utf-8-sig" if bom else "utf-8", newline="")
+        return hit
 
 
 def _clear_escalate(root: Path, scene: str, offset: str) -> None:

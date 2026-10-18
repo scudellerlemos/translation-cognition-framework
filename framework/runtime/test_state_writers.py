@@ -26,6 +26,10 @@ ESTADO = [
     (RUNTIME / "session_usage.py", "rebuild", "locked"),
     (RUNTIME / "hitl.py", "_ratify_csv", "locked"),
     (CONNECTORS / "connector_io.py", "sync_translations_db", "replace"),
+    (RUNTIME / "hitl.py", "_write_queue", "atomic_write"),
+    (RUNTIME / "hitl.py", "_add_alias", "atomic_write"),
+    (RUNTIME / "review_page.py", "save", "atomic_write"),
+    (RUNTIME / "fingerprint_monitor.py", "write_manifest", "atomic_write"),
 ]
 
 
@@ -131,3 +135,182 @@ def test_rebuild_do_ledger_nao_perde_linha_de_api_gravada_em_paralelo(tmp_path, 
     rows = [json.loads(x) for x in lp.read_text(encoding="utf-8").splitlines()]
     assert {(r["w"], r["k"]) for r in rows} == {(w, k) for w in range(3) for k in range(40)}
     assert all(r["source"] == "api" for r in rows) and len(rows) == 120
+
+
+# ---- varredura: todo ponto de escrita do framework e ESTADO (acima) ou DERIVADO (abaixo, com motivo) ----------
+FRAMEWORK = RUNTIME.parent
+_MODOS_ESCRITA = {"w", "a", "x", "wb", "ab", "xb", "w+", "a+"}
+
+# (arquivo relativo a framework/, funcao) -> por que pode gravar direto. Regeneravel = refaz-se a partir de outra fonte.
+DERIVADO = {
+    ("connectors/connector_io.py", "write_dialogs_csv"): "saida da extracao: regenera do jogo",
+    ("connectors/connector_io.py", "write_extraction_log"): "log da extracao",
+    ("connectors/connector_smoke.py", "_run_roundtrip"): "arquivo temporario do smoke test",
+    ("connectors/discover.py", "_write_stubs"): "scaffold de conector novo",
+    ("db/export_to_flat.py", "export_approved"): "exportacao regeneravel do banco",
+    ("db/export_to_flat.py", "export_tm"): "exportacao regeneravel do banco",
+    ("distribution/build_package.py", "<modulo>"): "empacotamento em dist/",
+    ("distribution/patcher.py", "instalar"): "patch no jogo: grava em .tmp e troca, com .bak do original",
+    ("runtime/back_translate.py", "_write_back_prompt"): "prompt regeneravel",
+    ("runtime/bench_translate.py", "main"): "relatorio de benchmark",
+    ("runtime/context_pack.py", "write_pack"): "pack e prompt da cena: regeneram do KB",
+    ("runtime/glossary_lint.py", "main"): "relatorio do lint",
+    ("runtime/hitl.py", "note_verified"): "CSV de amostra para revisao: regenera do estado da onda",
+    ("runtime/hitl.py", "_ratify_csv"): "append sob paths.locked (ver ESTADO)",
+    ("runtime/kb_build_ollama.py", "_write_research_log"): "log de pesquisa bruto",
+    ("runtime/kb_build_ollama.py", "_write_kb"): "KB gerado: regenera da pesquisa",
+    ("runtime/kb_fetch.py", "fetch_and_cache"): "cache de fonte baixada",
+    ("runtime/kb_phase.py", "write_worklist"): "worklist regeneravel",
+    ("runtime/model.py", "translate"): "scene_prompt.md regeneravel",
+    ("runtime/paths.py", "append_line"): "append sob locked",
+    ("runtime/quality_gate.py", "export_revise"): "CSV de revisao regeneravel",
+    ("runtime/quality_review.py", "write_csv"): "planilha de revisao regeneravel",
+    ("runtime/quality_sample.py", "export"): "amostra de qualidade regeneravel",
+    ("runtime/review_page.py", "main"): "pagina HTML gerada",
+    ("runtime/risk_triage.py", "export"): "lotes de triagem regeneraveis",
+    ("runtime/risk_triage_run.py", "_one"): "resposta e veredito por lote; rodar de novo refaz",
+    ("runtime/run_scene.py", "_persist_fitting_diagnostics"): "diagnostico regeneravel",
+    ("runtime/scaffold_project.py", "text"): "criacao de projeto novo",
+    ("runtime/scaffold_project.py", "write_glossary"): "criacao de projeto novo",
+    ("runtime/session_lot.py", "cmd_prompt"): "lote temporario (TMP)",
+    ("runtime/session_lot.py", "cmd_plan"): "plano temporario",
+    ("runtime/session_part.py", "split"): "lote temporario (TMP)",
+    ("runtime/session_part.py", "join"): "lote temporario (TMP)",
+    ("runtime/spoiler_check.py", "audit_and_persist"): "relatorio da auditoria",
+    ("runtime/wave.py", "run"): "log da onda",
+    ("validation/cost_model.py", "main"): "relatorio",
+    ("validation/naturalness_lint.py", "main"): "relatorio",
+}
+
+
+def _pontos_de_escrita(path: Path, base: Path = FRAMEWORK) -> set[tuple[str, str]]:
+    achados: set[tuple[str, str]] = set()
+
+    def modo(call: ast.Call) -> str | None:
+        arg = call.args[1:2] if isinstance(call.func, ast.Name) else call.args[:1]
+        cand = [a for a in arg if isinstance(a, ast.Constant)] + [k.value for k in call.keywords
+                                                                  if k.arg == "mode" and isinstance(k.value, ast.Constant)]
+        return next((c.value for c in cand if isinstance(c.value, str)), None)
+
+    def visita(no, fn):
+        for ch in ast.iter_child_nodes(no):
+            f = ch.name if isinstance(ch, ast.FunctionDef | ast.AsyncFunctionDef) else fn
+            if isinstance(ch, ast.Call):
+                func = ch.func
+                if isinstance(func, ast.Attribute) and func.attr in ("write_text", "write_bytes"):
+                    achados.add((path.relative_to(base).as_posix(), f))
+                elif (isinstance(func, ast.Attribute) and func.attr == "open") or (isinstance(func, ast.Name) and func.id == "open"):
+                    if modo(ch) in _MODOS_ESCRITA:
+                        achados.add((path.relative_to(base).as_posix(), f))
+            visita(ch, f)
+
+    visita(ast.parse(path.read_text(encoding="utf-8")), "<modulo>")
+    return achados
+
+
+def _fontes_do_framework():
+    for p in sorted(FRAMEWORK.rglob("*.py")):
+        rel = p.relative_to(FRAMEWORK).as_posix()
+        if p.name.startswith("test_") or p.name == "conftest.py" or "/_skeleton/" in rel or "__pycache__" in rel:
+            continue
+        if rel.startswith("connectors/") and rel.count("/") > 1:       # conectores por jogo
+            continue
+        yield p
+
+
+def test_todo_ponto_de_escrita_e_estado_protegido_ou_derivado_declarado():
+    """Escritor novo que grava direto (write_text/open('w')) falha aqui ate ser migrado para atomic_write
+    (e entrar em ESTADO) ou declarado em DERIVADO com o motivo de ser regeneravel."""
+    achados: set[tuple[str, str]] = set()
+    for p in _fontes_do_framework():
+        achados |= _pontos_de_escrita(p)
+    estado = {(f.relative_to(FRAMEWORK).as_posix(), fn) for f, fn, _ in ESTADO}
+    novos = sorted(achados - set(DERIVADO) - estado)
+    assert not novos, f"escrita direta nao classificada (use paths.atomic_write ou declare em DERIVADO): {novos}"
+
+
+def test_derivado_nao_guarda_entrada_morta():
+    achados: set[tuple[str, str]] = set()
+    for p in _fontes_do_framework():
+        achados |= _pontos_de_escrita(p)
+    mortas = sorted(set(DERIVADO) - achados)
+    assert not mortas, f"DERIVADO cita ponto que nao grava mais (remova): {mortas}"
+
+
+def test_derivado_nao_contem_funcao_de_estado():
+    estado = {(f.relative_to(FRAMEWORK).as_posix(), fn) for f, fn, _ in ESTADO}
+    dupla = sorted(k for k in DERIVADO if k in estado and k[1] not in {"_ratify_csv"})
+    assert not dupla, f"ponto em ESTADO e DERIVADO ao mesmo tempo: {dupla}"
+
+
+def test_varredura_pega_escrita_direta_nova(tmp_path):
+    fonte = tmp_path / "runtime" / "_x.py"
+    fonte.parent.mkdir()
+    fonte.write_text('''
+def grava(p):
+    p.write_text("x")
+
+def le(p):
+    return open(p).read()
+
+def grava2(p):
+    with open(p, "w") as fh:
+        fh.write("x")
+
+def anexa(p):
+    p.open("a").close()
+''', encoding="utf-8")
+    achados = _pontos_de_escrita(fonte, tmp_path)
+    assert achados == {("runtime/_x.py", "grava"), ("runtime/_x.py", "grava2"), ("runtime/_x.py", "anexa")}
+
+
+# --- migrados na re-auditoria (nota 4): queda na troca preserva o original ------------------------------
+def _fila(root):
+    import hitl
+    hitl._write_queue(root, [{"scene": "a", "offset": "0x1", "kind": "k"}])
+    return hitl.queue_path(root), lambda: hitl._write_queue(root, [{"scene": "b", "offset": "0x2", "kind": "k"}])
+
+
+def _alias(root):
+    import hitl
+    g = paths.glossary(root)
+    g.parent.mkdir(parents=True, exist_ok=True)
+    g.write_bytes(b"\xef\xbb\xbfterm,aliases\r\nfoo,\r\nbar,\r\n")
+    return g, lambda: hitl._add_alias(root, "foo", "baz")
+
+
+def _planilha(root):
+    import review_page
+    box = root / "box"
+    box.mkdir()
+    review_page.save(box, "escalonamento.csv", b"a,b\r\n1,2\r\n")
+    return box / "escalonamento.csv", lambda: review_page.save(box, "escalonamento.csv", b"novo")
+
+
+def _manifesto(root):
+    import fingerprint_monitor as fm
+    kw = dict(tier="t", engine_id="e", connector_version="1", scripts_fingerprint="x", source_sample_files=[],
+              source_fingerprint="y", timestamp_iso="2026-10-18T00:00:00Z")
+    fm.write_manifest(root, **kw)
+    return fm._manifest_path(root), lambda: fm.write_manifest(root, **{**kw, "tier": "outro"})
+
+
+@pytest.mark.parametrize("montar", [_fila, _alias, _planilha, _manifesto])
+def test_estado_migrado_nao_fica_truncado_se_a_troca_falha(tmp_path, monkeypatch, montar):
+    alvo, regrava = montar(tmp_path)
+    antes = alvo.read_bytes()
+
+    def _boom(*_a, **_k):
+        raise OSError("disco cheio")
+    monkeypatch.setattr(os, "replace", _boom)
+    with pytest.raises(OSError, match="disco cheio"):
+        regrava()
+    assert alvo.read_bytes() == antes, "o arquivo bom anterior tem de sobreviver"
+    assert not [x for x in alvo.parent.iterdir() if x.name.endswith(".tmp")], "sem temporario sobrando"
+
+
+def test_alias_preserva_bom_e_crlf_do_glossario(tmp_path):
+    g, regrava = _alias(tmp_path)
+    regrava()
+    raw = g.read_bytes()
+    assert raw.startswith(b"\xef\xbb\xbf") and b"\r\n" in raw and b"foo,baz" in raw
