@@ -40,3 +40,26 @@ Benefício estrutural (menos complexidade, import mais leve) vale como ganho de 
 - Mais arquivos, cada um menor; a fachada mantém a compatibilidade.
 - O custo do guardrail são os goldens e as operações novas no benchmark, feitos antes de mover qualquer código.
 - Reverter = voltar o commit do passo (cada módulo sai num commit próprio).
+
+## Medições e andamento (2026-10-18)
+
+**Ruído do guardrail.** `perf_ab.py` mede cada operação alternando antes/depois em sequência, em segundos brutos, com o
+menor tempo de cada lado, os dois códigos extraídos para Temp. Com código idêntico (A/A) o delta ficou dentro de ±4% em
+todas as rodadas finais, contra +10% a +190% nas versões anteriores (que mediam um lado no repo e o outro fora, ou
+normalizavam por uma calibração de 1 repetição). O limite de 10% fica acima do ruído; uma lentidão injetada de +20% só no
+caminho da sessão reprovou, e uma de +7% passou, como esperado.
+
+**Passos feitos (um commit cada):**
+
+| passo | efeito medido |
+|---|---|
+| `pack_render.py`: `render_prompt` movido | A/B dentro do ruído nos dois caminhos |
+| `render_prompt` dividido por seção | complexidade 30 → abaixo de 10; saída idêntica em 3840 variações de pacote |
+| `translation_rules.py`: 20 definições de regra | fonte idêntica; suíte completa e goldens intactos; A/B dentro do ruído |
+
+Camadas: `test_layering.py` trava que o núcleo não importa API nem sessão e que a API e a sessão não se importam.
+
+**Limite encontrado.** Mover o código específico da API (`_api_translate`, lote) para `model_api.py` mudaria onde os
+testes existentes fazem monkeypatch (`model._client`, `model._stream_final`, `model.time`): a função movida resolveria
+esses nomes no módulo novo e o patch em `model` deixaria de valer. Fazer isso sem editar teste exigiria que `model_api`
+importasse a fachada, o que o contrato de camadas proíbe. Decisão pendente do dono do projeto.
