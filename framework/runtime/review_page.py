@@ -42,7 +42,7 @@ def save(box: Path, name: str, body: bytes) -> bool:
     """Grava so planilha editavel conhecida (nome vindo da URL nunca vira caminho)."""
     if not SHEETS.get(name):
         return False
-    (box / name).write_bytes(body)
+    paths.atomic_write(box / name, body)      # planilha do revisor: queda no meio nao a trunca
     return True
 
 
@@ -76,7 +76,7 @@ def main():
     box = paths.qa_outbox(paths.require_project(a.project))
     box.mkdir(parents=True, exist_ok=True)
     out = box / "revisar.html"
-    out.write_text(render(box), encoding="utf-8")
+    paths.atomic_write(out, render(box))
     counts = ", ".join(f"{k}: {len(v['rows'])}" for k, v in load(box).items())
     print(f"{out}  ({counts})")
     if a.serve:

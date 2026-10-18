@@ -27,6 +27,11 @@ import json
 import sys
 from pathlib import Path
 
+_RUNTIME = Path(__file__).resolve().parents[1] / "runtime"
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+import paths  # noqa: E402
+
 # --- preços US$ por TOKEN (Mtok/1e6). Fonte: skill claude-api, cache 2026-05-26 ---
 PRICE = {
     "opus":   {"in": 5.00e-6, "out": 25.00e-6},
@@ -191,10 +196,10 @@ def main():
     print(out)
     if report:
         rp = root / "artifacts" / "cost_report.md"
-        rp.write_text("# Cost Report — modelo de custo de PRODUÇÃO (via API)\n\n"
+        paths.atomic_write(rp, "# Cost Report — modelo de custo de PRODUÇÃO (via API)\n\n"
                       "> Estima o custo de produção (API, lotes + caching), **não** o desta sessão.\n"
                       "> Tokens ≈chars/3.8 (refinar com `messages.count_tokens`). Preços: skill claude-api 2026-05-26.\n\n"
-                      "```\n" + out + "\n```\n", encoding="utf-8")
+                      "```\n" + out + "\n```\n")
         print(f"\nrelatório -> {rp}")
 
 

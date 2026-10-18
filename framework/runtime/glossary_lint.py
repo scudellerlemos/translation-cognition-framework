@@ -181,8 +181,8 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     found, outside = split_scope(lint(a.project), a.scenes)
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
-    out.write_text(json.dumps({"count": len(found), "findings": found, "outside": outside},
-                              ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps({"count": len(found), "findings": found, "outside": outside},
+                              ensure_ascii=False, indent=2))
     if a.json:
         print(json.dumps({"count": len(found)}, ensure_ascii=False))
     else:

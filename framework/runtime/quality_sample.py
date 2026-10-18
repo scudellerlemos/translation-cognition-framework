@@ -54,15 +54,12 @@ def export(root, n: int = 200, seed: str = "q1") -> dict:
     rows = sorted(set(sample) | (flagged & set(allp)), key=lambda pid: _h(seed + "|ordem", pid))   # embaralhado
     out = paths.qa_outbox(root)
     out.mkdir(parents=True, exist_ok=True)
-    with (out / f"{NAME}.csv").open("w", encoding="utf-8-sig", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(COLS)
-        for pid in rows:
-            scene, off = allp[pid]["where"][0]
-            w.writerow([pid, scene, off, allp[pid]["source"], allp[pid]["target"], "", ""])
-    (out / f"{NAME}.json").write_text(json.dumps({
+    paths.atomic_write_csv(out / f"{NAME}.csv", COLS,
+                           ([pid, *allp[pid]["where"][0], allp[pid]["source"], allp[pid]["target"], "", ""] for pid in rows),
+                           encoding="utf-8-sig")
+    paths.atomic_write(out / f"{NAME}.json", json.dumps({
         "seed": seed, "population": len(allp), "sample": sample, "flagged": sorted(flagged), "seen": len(seen),
-        "weight": {pid: len(allp[pid]["where"]) for pid in rows}}), encoding="utf-8")
+        "weight": {pid: len(allp[pid]["where"]) for pid in rows}}))
     return {"rows": len(rows), "sample": len(sample), "flagged": len(flagged), "population": len(allp),
             "path": str(out / f"{NAME}.csv")}
 

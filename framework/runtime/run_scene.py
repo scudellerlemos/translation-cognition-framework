@@ -239,9 +239,7 @@ def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str, backend:
         return
     print(f"[diag] {len(over)} linha(s) acima do byte_budget -> "
           f"{paths.verify_diagnostics(root, scene, scene_id).name}")
-    paths.verify_diagnostics(root, scene, scene_id).write_text(
-        json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2),
-        encoding="utf-8")
+    paths.atomic_write(paths.verify_diagnostics(root, scene, scene_id), json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2))
 
 
 def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,
@@ -656,6 +654,9 @@ def _unchanged(project, scenes) -> list:
     return [x for x in scenes if touched.unchanged(root, x, ch)]
 
 
+SCENE_TIMEOUT = 3600.0     # mesmo teto do session_lot: cena travada nao trava o lote
+
+
 def _run_parallel(a) -> tuple[list, list]:
     """Cada cena num processo proprio (mesmo comando, 1 cena): sem estado global compartilhado; o run_state
     grava sob trava (paths.locked). Devolve (falhas, verificadas) como o laco em fila."""
@@ -665,7 +666,14 @@ def _run_parallel(a) -> tuple[list, list]:
                                                        ("--skip-kb-gate", a.skip_kb_gate), ("--no-back", a.no_back)) if on]
 
     def one(sc):
-        return sc, subprocess.run([sys.executable, str(Path(__file__).resolve()), a.project, sc, *flags]).returncode
+        try:
+            rc = subprocess.run([sys.executable, str(Path(__file__).resolve()), a.project, sc, *flags],
+                                timeout=getattr(a, "scene_timeout", SCENE_TIMEOUT)).returncode
+        except subprocess.TimeoutExpired:      # o run mata o filho; a cena fica sem checkpoint novo e roda de novo
+            print(f"ERRO: cena {sc} sem resposta em {getattr(a, 'scene_timeout', SCENE_TIMEOUT):.0f} s "
+                  "(--scene-timeout); rode de novo, o checkpoint das cenas feitas fica", file=sys.stderr)
+            rc = 124
+        return sc, rc
 
     with ThreadPoolExecutor(max_workers=a.jobs) as ex:
         res = list(ex.map(one, a.scene))
@@ -691,6 +699,8 @@ def main():
     ap.add_argument("--jobs", type=int, default=1, metavar="N",
                     help="N cenas ao mesmo tempo, cada uma em seu processo (reconferencia: o run_state tem trava). "
                          "A TM so cresce entre cenas em fila; para traduzir em sequencia use 1")
+    ap.add_argument("--scene-timeout", type=float, default=SCENE_TIMEOUT, metavar="S",
+                    help=f"com --jobs: segundos que cada cena pode levar antes de ser abortada (padrao {SCENE_TIMEOUT:.0f})")
     ap.add_argument("--full", action="store_true",
                     help="reconfere tambem as cenas verified sem fala tocada (padrao: pula, ver touched.py)")
     ap.add_argument("--clean", action="store_true",

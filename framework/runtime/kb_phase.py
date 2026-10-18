@@ -439,7 +439,7 @@ def write_worklist(root, chap) -> Path:
     L.append(", ".join(r["cand"] for r in d["covered"]) or "_(nenhum)_")
     L.append("")
     out = paths.kb_worklist(root, chap)
-    out.write_text("\n".join(L), encoding="utf-8")
+    paths.atomic_write(out, "\n".join(L))
     return out
 
 

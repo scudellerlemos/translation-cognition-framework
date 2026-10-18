@@ -83,7 +83,7 @@ def _write_back_prompt(root, scene, scene_id, high_lines):
         if h.get("risk_notes"):
             L.append(f"- notas  : {h['risk_notes']}")
         L.append("")
-    (paths.back_prompt(root, scene, scene_id)).write_text("\n".join(L), encoding="utf-8")
+    paths.atomic_write(paths.back_prompt(root, scene, scene_id), "\n".join(L))
 
 
 # Schema ESTRITO p/ a back-translation (garante JSON parseavel — sem ele o Opus as vezes devolvia

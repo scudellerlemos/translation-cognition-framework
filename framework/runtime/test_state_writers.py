@@ -1,8 +1,8 @@
-"""Onda 2 (integridade): os escritores de ESTADO real nao gravam direto no destino.
+"""Onda 2 (integridade): nenhum escritor do framework grava direto no destino.
 
-Estado = o que nao se regenera sozinho (traducao, aprovados, project.json, research_log, ledger, ratificacao).
-Relatorio regeneravel (prompt, pack, csv de revisao) pode continuar com write_text. Quem entrar na lista abaixo
-tem de usar atomic_write / os.replace / locked; esta lista so cresce.
+Duas camadas: (1) ESTADO = lista de escritores cuja prova e checada por nome; (2) a varredura no fim do arquivo,
+que cobre TODO write_text/write_bytes/open('w'|'a') do framework sem lista de excecoes: a funcao que grava tem
+de usar atomic_write(_csv), append_line, locked ou tmp + replace. "Regeneravel" nao e criterio.
 """
 import ast
 import csv
@@ -26,6 +26,10 @@ ESTADO = [
     (RUNTIME / "session_usage.py", "rebuild", "locked"),
     (RUNTIME / "hitl.py", "_ratify_csv", "locked"),
     (CONNECTORS / "connector_io.py", "sync_translations_db", "replace"),
+    (RUNTIME / "hitl.py", "_write_queue", "atomic_write"),
+    (RUNTIME / "hitl.py", "_add_alias", "atomic_write"),
+    (RUNTIME / "review_page.py", "save", "atomic_write"),
+    (RUNTIME / "fingerprint_monitor.py", "write_manifest", "atomic_write"),
 ]
 
 
@@ -131,3 +135,167 @@ def test_rebuild_do_ledger_nao_perde_linha_de_api_gravada_em_paralelo(tmp_path, 
     rows = [json.loads(x) for x in lp.read_text(encoding="utf-8").splitlines()]
     assert {(r["w"], r["k"]) for r in rows} == {(w, k) for w in range(3) for k in range(40)}
     assert all(r["source"] == "api" for r in rows) and len(rows) == 120
+
+
+# ---- varredura: TODO ponto de escrita do framework prova, na propria funcao, que grava com seguranca --------
+# Sem lista de excecoes e sem classificacao manual: "regeneravel" nao e criterio. Quem grava direto usa uma das
+# primitivas abaixo (tmp + replace, escrita atomica, anexo sob trava) ou o teste falha.
+FRAMEWORK = RUNTIME.parent
+_MODOS_ESCRITA = {"w", "a", "x", "wb", "ab", "xb", "w+", "a+"}
+_PROVAS = {"atomic_write", "atomic_write_csv", "append_line", "locked", "replace"}
+
+
+def _nome_chamado(call: ast.Call) -> str:
+    f = call.func
+    return f.attr if isinstance(f, ast.Attribute) else f.id if isinstance(f, ast.Name) else ""
+
+
+def _modo_literal(call: ast.Call) -> str | None:
+    arg = call.args[1:2] if isinstance(call.func, ast.Name) else call.args[:1]
+    cand = [a for a in arg if isinstance(a, ast.Constant)]
+    cand += [k.value for k in call.keywords if k.arg == "mode" and isinstance(k.value, ast.Constant)]
+    return next((c.value for c in cand if isinstance(c.value, str)), None)
+
+
+def _escreve(call: ast.Call) -> bool:
+    nome = _nome_chamado(call)
+    if nome in ("write_text", "write_bytes"):
+        return isinstance(call.func, ast.Attribute)
+    return nome == "open" and _modo_literal(call) in _MODOS_ESCRITA
+
+
+def _pontos_de_escrita(path: Path, base: Path = FRAMEWORK) -> list[tuple[str, str, bool]]:
+    """(arquivo, funcao, tem_prova) de cada escrita direta; escrita fora de funcao nunca tem prova."""
+    achados: list[tuple[str, str, bool]] = []
+    rel = path.relative_to(base).as_posix()
+
+    def visita(no, fn, chamadas):
+        for ch in ast.iter_child_nodes(no):
+            if isinstance(ch, ast.FunctionDef | ast.AsyncFunctionDef):
+                prova = {_nome_chamado(c) for c in ast.walk(ch) if isinstance(c, ast.Call)} & _PROVAS
+                visita(ch, ch.name, bool(prova))
+                continue
+            if isinstance(ch, ast.Call) and _escreve(ch):
+                achados.append((rel, fn, chamadas))
+            visita(ch, fn, chamadas)
+
+    visita(ast.parse(path.read_text(encoding="utf-8")), "<modulo>", False)
+    return achados
+
+
+def _fontes_do_framework():
+    for p in sorted(FRAMEWORK.rglob("*.py")):
+        rel = p.relative_to(FRAMEWORK).as_posix()
+        if p.name.startswith("test_") or p.name == "conftest.py" or "/_skeleton/" in rel or "__pycache__" in rel:
+            continue
+        if rel.startswith("connectors/") and rel.count("/") > 1:       # conectores por jogo
+            continue
+        yield p
+
+
+def test_todo_ponto_de_escrita_prova_gravacao_segura_na_propria_funcao():
+    """write_text/write_bytes/open('w'|'a') so passam se a funcao usa atomic_write(_csv), append_line, locked
+    ou tmp + replace. Escrita direta nova (ou fora de funcao) falha aqui; nao ha lista de excecoes."""
+    sem_prova = sorted({(f, fn) for p in _fontes_do_framework() for f, fn, ok in _pontos_de_escrita(p) if not ok})
+    assert not sem_prova, f"escrita direta sem prova de gravacao segura (use paths.atomic_write): {sem_prova}"
+
+
+def test_a_varredura_enxerga_pontos_de_escrita_conhecidos():
+    """Guarda do guarda: se o scanner parasse de achar escrita, o teste acima passaria vazio."""
+    achados = {(f, fn) for p in _fontes_do_framework() for f, fn, _ in _pontos_de_escrita(p)}
+    conhecidos = {("connectors/connector_io.py", "write_dialogs_csv"), ("distribution/patcher.py", "instalar"),
+                  ("runtime/hitl.py", "_ratify_csv"), ("runtime/paths.py", "append_line")}
+    assert conhecidos <= achados, f"scanner nao achou: {sorted(conhecidos - achados)}"
+
+
+def test_varredura_pega_escrita_direta_nova(tmp_path):
+    fonte = tmp_path / "runtime" / "_x.py"
+    fonte.parent.mkdir()
+    fonte.write_text('''
+def grava(p):
+    p.write_text("x")
+
+def le(p):
+    return open(p).read()
+
+def grava2(p):
+    with open(p, "w") as fh:
+        fh.write("x")
+
+def anexa(p):
+    p.open("a").close()
+''', encoding="utf-8")
+    achados = _pontos_de_escrita(fonte, tmp_path)
+    assert achados == [("runtime/_x.py", "grava", False), ("runtime/_x.py", "grava2", False),
+                       ("runtime/_x.py", "anexa", False)]
+
+
+def test_varredura_aceita_escrita_com_prova_e_rejeita_a_sem_prova(tmp_path):
+    fonte = tmp_path / "m.py"
+    fonte.write_text('''
+import os
+
+def segura(p, t):
+    tmp = p.with_name("x.tmp")
+    tmp.write_text(t)
+    os.replace(tmp, p)
+
+def direta(p, t):
+    p.write_text(t)
+
+p0 = open("a", "w")
+''', encoding="utf-8")
+    assert _pontos_de_escrita(fonte, tmp_path) == [("m.py", "segura", True), ("m.py", "direta", False),
+                                                   ("m.py", "<modulo>", False)]
+
+
+# --- migrados na re-auditoria (nota 4): queda na troca preserva o original ------------------------------
+def _fila(root):
+    import hitl
+    hitl._write_queue(root, [{"scene": "a", "offset": "0x1", "kind": "k"}])
+    return hitl.queue_path(root), lambda: hitl._write_queue(root, [{"scene": "b", "offset": "0x2", "kind": "k"}])
+
+
+def _alias(root):
+    import hitl
+    g = paths.glossary(root)
+    g.parent.mkdir(parents=True, exist_ok=True)
+    g.write_bytes(b"\xef\xbb\xbfterm,aliases\r\nfoo,\r\nbar,\r\n")
+    return g, lambda: hitl._add_alias(root, "foo", "baz")
+
+
+def _planilha(root):
+    import review_page
+    box = root / "box"
+    box.mkdir()
+    review_page.save(box, "escalonamento.csv", b"a,b\r\n1,2\r\n")
+    return box / "escalonamento.csv", lambda: review_page.save(box, "escalonamento.csv", b"novo")
+
+
+def _manifesto(root):
+    import fingerprint_monitor as fm
+    kw = dict(tier="t", engine_id="e", connector_version="1", scripts_fingerprint="x", source_sample_files=[],
+              source_fingerprint="y", timestamp_iso="2026-10-18T00:00:00Z")
+    fm.write_manifest(root, **kw)
+    return fm._manifest_path(root), lambda: fm.write_manifest(root, **{**kw, "tier": "outro"})
+
+
+@pytest.mark.parametrize("montar", [_fila, _alias, _planilha, _manifesto])
+def test_estado_migrado_nao_fica_truncado_se_a_troca_falha(tmp_path, monkeypatch, montar):
+    alvo, regrava = montar(tmp_path)
+    antes = alvo.read_bytes()
+
+    def _boom(*_a, **_k):
+        raise OSError("disco cheio")
+    monkeypatch.setattr(os, "replace", _boom)
+    with pytest.raises(OSError, match="disco cheio"):
+        regrava()
+    assert alvo.read_bytes() == antes, "o arquivo bom anterior tem de sobreviver"
+    assert not [x for x in alvo.parent.iterdir() if x.name.endswith(".tmp")], "sem temporario sobrando"
+
+
+def test_alias_preserva_bom_e_crlf_do_glossario(tmp_path):
+    g, regrava = _alias(tmp_path)
+    regrava()
+    raw = g.read_bytes()
+    assert raw.startswith(b"\xef\xbb\xbf") and b"\r\n" in raw and b"foo,baz" in raw

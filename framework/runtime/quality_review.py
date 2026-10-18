@@ -325,11 +325,7 @@ def width_violations(root, chapter=None) -> list:
 
 
 def write_csv(rows, out_path):
-    with Path(out_path).open("w", encoding="utf-8-sig", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=COLS)
-        w.writeheader()
-        for r in rows:
-            w.writerow({c: r.get(c, "") for c in COLS})
+    paths.atomic_write_csv(out_path, COLS, ([r.get(c, "") for c in COLS] for r in rows), encoding="utf-8-sig")
 
 
 # rotulos amigaveis (PT) p/ o XLSX, na MESMA ordem de COLS (a leitura mapeia por posicao)

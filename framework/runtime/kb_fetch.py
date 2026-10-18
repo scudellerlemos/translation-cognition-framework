@@ -185,7 +185,7 @@ def fetch_and_cache(root, source: str, *, fetched_em: str, found_by: str = "ia")
         f"encontrada_por: {found_by}\n"
         "---\n"
     )
-    out.write_text(front + r["texto"], encoding="utf-8")
+    paths.atomic_write(out, front + r["texto"])
     return out
 
 

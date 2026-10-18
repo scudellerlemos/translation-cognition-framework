@@ -64,11 +64,11 @@ def _one(n, out, model, DIR):
         j = json.loads(p.stdout)
     except ValueError:
         return f'lote {n:03d} FALHOU: resposta nao e JSON (exit {p.returncode})'
-    (out / f'resposta_{n:03d}.txt').write_text(j.get('result', ''), encoding='utf-8')   # bruto, para diagnostico
+    paths.atomic_write(out / f'resposta_{n:03d}.txt', j.get('result', ''))   # bruto, para diagnostico
     good, bad = parse(j.get('result', ''), ids)
     if bad:                       # resposta fora do formato nao vira veredito: rodar de novo
         return f'lote {n:03d} FALHOU: {bad} linha(s) fora do formato; nada gravado'
-    (out / f'veredito_{n:03d}.tsv').write_text(''.join(g + '\n' for g in good), encoding='utf-8')
+    paths.atomic_write(out / f'veredito_{n:03d}.tsv', ''.join(g + '\n' for g in good))
     return f'lote {n:03d} ok | falas {len(ids)} | apontadas {len(good)} | ${j.get("total_cost_usd", 0):.3f}'
 
 

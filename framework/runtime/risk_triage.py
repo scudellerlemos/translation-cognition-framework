@@ -100,9 +100,8 @@ def export(root, batch: int = 400) -> dict:
     items = sorted(pairs(root).items(), key=lambda kv: kv[1]["where"][0])     # ordem do jogo: contexto vizinho
     n = 0
     for n, i in enumerate(range(0, len(items), batch), 1):
-        (d / f"lote_{n:03}.tsv").write_text(
-            "".join(f"{pid}\t{v['source']}\t{v['target']}\n" for pid, v in items[i:i + batch]), encoding="utf-8")
-    (d / "triagem_prompt.md").write_text(PROMPT, encoding="utf-8")
+        paths.atomic_write(d / f"lote_{n:03}.tsv", "".join(f"{pid}\t{v['source']}\t{v['target']}\n" for pid, v in items[i:i + batch]))
+    paths.atomic_write(d / "triagem_prompt.md", PROMPT)
     return {"pairs": len(items), "lines": sum(len(v["where"]) for _, v in items), "batches": n, "dir": str(d)}
 
 

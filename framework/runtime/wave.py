@@ -22,6 +22,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import paths
+
 _HERE = Path(__file__).resolve().parent
 LOG = "wave_last.log"
 STEP_TIMEOUT = 3600        # s por passo: passo travado para a onda com mensagem, em vez de prender a sessao
@@ -74,7 +76,6 @@ def entry_problems(project: str, scenes: list[str]) -> list[str]:
     """Bloqueio global na ENTRADA da onda: escalonamento aberto de cena fora do pedido (onda anterior) impede
     abrir onda nova. O gate da onda e por cena; isto garante que nenhuma pendencia fique esquecida."""
     import hitl
-    import paths
     if not scenes or not hitl.enabled(project):
         return []
     if all(paths.pack(Path(project), s).is_file() for s in scenes):
@@ -83,6 +84,24 @@ def entry_problems(project: str, scenes: list[str]) -> list[str]:
     other = sorted({r["scene"] for r in hitl.open_items(project) if r["scene"] not in want})
     return [f"escalonamento aberto de outra onda ({', '.join(other)}): responda em {hitl.queue_path(Path(project))} "
             f"e rode hitl.py resolve antes de abrir esta onda"] if other else []
+
+
+class _LogAnexo:
+    """Log da onda: comeca vazio (troca atomica) e cada `write` anexa sob trava, para o log ir aparecendo
+    durante a onda e uma queda no meio nao deixar arquivo truncado nem linhas misturadas."""
+
+    def __init__(self, path):
+        self.path = path
+
+    def __enter__(self):
+        paths.atomic_write(self.path, "")
+        return self
+
+    def __exit__(self, *_exc):
+        return False
+
+    def write(self, texto: str) -> None:
+        paths.append_line(self.path, texto)
 
 
 def run(project: str, scenes: list[str], backend: str = "in-session", require_back: bool = False,
@@ -94,7 +113,7 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
     log = Path(project) / "artifacts" / log_name(scenes)
     rc = 0
     todo = steps(project, scenes, backend, require_back)
-    with log.open("w", encoding="utf-8") as fh:
+    with _LogAnexo(log) as fh:
         while todo:
             name, cmd = todo.pop(0)
             try:

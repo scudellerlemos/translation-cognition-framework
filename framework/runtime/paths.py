@@ -53,14 +53,15 @@ def locked(p, timeout: float = 30.0, stale: float | None = None):
             lock.unlink()
 
 
-def atomic_write(p, text: str, encoding: str = "utf-8", newline: str | None = None) -> None:
-    """Grava `text` em `p` sem deixar arquivo truncado se o processo cair no meio: escreve num temporario
+def atomic_write(p, text: str | bytes, encoding: str = "utf-8", newline: str | None = None) -> None:
+    """Grava `text` (ou bytes, em modo binario) em `p` sem deixar arquivo truncado se o processo cair no meio: escreve num temporario
     do mesmo diretorio e troca por `os.replace` (atomico nos dois SOs). Windows: `replace` falha com
     PermissionError enquanto outro processo le o destino; repete por ~1 s antes de desistir."""
     p = Path(p)
     tmp = p.with_name(f"{p.name}.{os.getpid()}.tmp")
     try:
-        with tmp.open("w", encoding=encoding, newline=newline) as f:
+        binario = isinstance(text, bytes)
+        with tmp.open("wb" if binario else "w", **({} if binario else {"encoding": encoding, "newline": newline})) as f:
             f.write(text)
             f.flush()
             os.fsync(f.fileno())

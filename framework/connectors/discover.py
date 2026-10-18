@@ -19,6 +19,10 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
+_RUNTIME = _HERE.parents[0] / "runtime"
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+import paths  # noqa: E402
 from evidence_collector import collect
 from tier_classifier import existence_gate, load_registry
 
@@ -71,7 +75,7 @@ def _write_stubs(evidence: dict, out_dir: Path) -> None:
         if out.exists():
             print(f"\n{out} ja existe -- mantido (apague-o para regerar o stub)", file=sys.stderr)
             continue
-        out.write_text(code, encoding="utf-8")
+        paths.atomic_write(out, code)
         print(f"\nStub gerado em: {out}", file=sys.stderr)
 
 
