@@ -48,6 +48,8 @@ projects/*/artifacts/evidence/
 
 # Saída do conector (binários remontados com copyright — nunca versionar)
 projects/*/output/
+projects/*/backup_original/
+projects/*/artifacts/qa_revisao/test_ingame/
 
 # Pastas de teste manual no jogo (fixtures .pac reconstruídos pra validação visual — nunca versionar)
 projects/*/manual_tests/
@@ -66,8 +68,12 @@ projects/*/artifacts/research_cache/
 projects/*/source_dat/
 projects/*/artifacts/qa_revisao/para_revisar/
 projects/*/artifacts/scenes/*/_build_translations.py
+projects/*/artifacts/scenes/*/_*.py
 projects/utawarerumono/artifacts/archive/interjection_*.csv
 projects/*/artifacts/kb_phase_worklist_*.md
+projects/*/artifacts/historico_melhorias.md
+projects/*/artifacts/plano_melhorias.md
+projects/*/artifacts/auditoria_arquitetura.md
 # escopo do piloto: a coluna de evidencia descreve o conteudo das cenas
 projects/*/artifacts/pilot_scope.csv
 projects/*/artifacts/scenes/*/bench_*.json
@@ -115,7 +121,10 @@ projects/*/artifacts/qa_revisao/teste_ingame/prints/*
 projects/*/artifacts/**/verify_diagnostics_*.json
 # Log estruturado de eventos (regeneravel; mensagem de excecao pode citar conteudo).
 projects/*/artifacts/events.jsonl
-projects/*/artifacts/wave_last.log
+projects/*/artifacts/wave_last*.log
+# Travas e temporarios da gravacao de estado (ADR 0018): transitorios, nunca versionar
+projects/*/artifacts/**/*.lock
+projects/*/artifacts/**/*.tmp
 
 # ferramentas locais de sessao (instalacao no jogo, lotes): fora do repo, sobrevivem ao /clear
 projects/*/tools_local/
@@ -128,3 +137,17 @@ projects/*/artifacts/phase_marks.jsonl
 
 # Pacote do patcher (deltas + manifest + exe): vai para a Release, nunca para o repo
 projects/*/dist/
+
+# utawarerumono_prelude: medicao local de custo e notas de onda (citam cenas/termos do jogo)
+projects/utawarerumono_prelude/artifacts/baseline_gaps_custo_pre_onda1.txt
+projects/utawarerumono_prelude/artifacts/historico_retomada.md
+projects/utawarerumono_prelude/artifacts/ordem_cenas.txt
+projects/utawarerumono_prelude/artifacts/panorama_ondas.md
+projects/utawarerumono_prelude/artifacts/pendencias_finais.md
+
+# rascunho de subagente
+scratch/
+
+.claude/skills/rodar-onda/logs/
+# lancador local ate o guard da main aceitar .ps1 (a allowlist ja inclui na branch; o pre-commit usa a da main)
+.claude/skills/rodar-onda/rodar_ondas.ps1

@@ -38,6 +38,7 @@ ALLOW = [
     ".gitignore",
     "README.md",
     "framework/runtime/kb_gate.py",
+    ".claude/skills/rodar-onda/rodar_ondas.ps1",
     "projects/demo/artifacts/scenes/demo01/dialogs.csv",
     "projects/bof4/artifacts/kb_phase_worklist.md",
     "projects/bof4/artifacts/glossary.csv",

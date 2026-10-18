@@ -5,6 +5,10 @@
 # Embedder.index_project/search/search_kb/search_decisions ou validate_model.py de verdade; uma
 # regressão nessa lógica (ex.: inverter a métrica de distância) passava pela suíte inteira.
 #
+# DECISAO 2026-10-17 (auditoria de arquitetura): o job passa a rodar tambem em push na main e em todo
+# pull_request (antes so semanal), para o RAG semantico ser exercitado sempre; o semanal fica como rede
+# de seguranca. O nome do arquivo ("optional") ficou por compatibilidade com as referencias.
+#
 # Mesma stack pesada (~700MB-1,5GB, torch+modelo via HuggingFace) que já levou o audit de CVE
 # (dep-audit-optional.yml) pra cadência semanal em vez de todo push/PR — reaproveita o
 # mesmo raciocínio de custo aqui. Upgrade natural se uma regressão passar batido entre domingos:
@@ -16,6 +20,10 @@
 name: Cobertura real (ML) — embedder/validate_model
 
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["**"]
   workflow_dispatch:   # disparo manual
   schedule:
     - cron: '30 5 * * 0'   # domingo 05:30 UTC (30min depois do audit de CVE opcional)
@@ -58,7 +66,7 @@ jobs:
       # Cron falho passa batido se ninguém abrir a aba Actions. Mesmo padrão do
       # dep-audit-optional.yml/api-smoke.yml: abre (ou comenta numa já aberta) uma issue.
       - name: Notifica falha (abre/atualiza issue)
-        if: failure()
+        if: failure() && github.event_name == 'schedule'      # em push/PR o proprio check vermelho avisa
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
