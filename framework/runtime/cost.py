@@ -10,6 +10,7 @@ import json
 import time
 from pathlib import Path
 
+import events  # noqa: E402  (events.RUN: id da execucao, o mesmo de events.jsonl e metrics.jsonl)
 import paths  # noqa: E402
 
 # precos US$/token (skill claude-api 2026-05-26); cache_read=0.1x in, cache_write=1.25x in.
@@ -82,7 +83,7 @@ def log_api_call(root, scene, kind, model, usage, *, batch=False):
     Best-effort (nunca derruba a traducao por falha de log). Ver cost_report.py p/ o agregado."""
     if not usage:
         return None
-    rec = {"t": round(time.time(), 3), "scene": scene, "kind": kind, "model": model,
+    rec = {"t": round(time.time(), 3), "run": events.RUN, "scene": scene, "kind": kind, "model": model,
            "batch": bool(batch), "usage": dict(usage),
            "cost_usd": round(cost_of(model, usage, batch=batch), 5)}
     lp = paths.ledger(root)
