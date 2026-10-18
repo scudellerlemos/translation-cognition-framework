@@ -239,9 +239,7 @@ def _persist_fitting_diagnostics(root: Path, scene: str, scene_id: str, backend:
         return
     print(f"[diag] {len(over)} linha(s) acima do byte_budget -> "
           f"{paths.verify_diagnostics(root, scene, scene_id).name}")
-    paths.verify_diagnostics(root, scene, scene_id).write_text(
-        json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2),
-        encoding="utf-8")
+    paths.atomic_write(paths.verify_diagnostics(root, scene, scene_id), json.dumps({"tolerance": 1.0, "over_budget": over}, ensure_ascii=False, indent=2))
 
 
 def _fitting_loop(root: Path, scene: str, scene_id: str, cfg: dict, backend: str,

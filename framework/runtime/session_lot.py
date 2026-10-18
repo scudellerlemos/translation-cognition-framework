@@ -136,8 +136,8 @@ def cmd_prompt(lot, scenes, flags):
         text = text.replace('As linhas a traduzir vem por cena, na secao 7.',
                             'As linhas a traduzir vem por cena, na secao 7. Fala repetida no lote aparece UMA vez '
                             '(o comando replica nas demais cenas): traduza so o que esta nas tabelas.')
-    (TMP / f'lot_{lot}.md').write_text(text, encoding='utf-8')
-    (TMP / f'lot_{lot}.meta.json').write_text(json.dumps({'dup': dup, 'offsets': offsets}), encoding='utf-8')
+    paths.atomic_write(TMP / f'lot_{lot}.md', text)
+    paths.atomic_write(TMP / f'lot_{lot}.meta.json', json.dumps({'dup': dup, 'offsets': offsets}))
     tot = sum(len(''.join(p)) for p in docs.values())
     print(f'lot_{lot}.md: {len(text)} chars (separados: {tot}) | falas na tabela {len(offsets)} | deduplicadas {len(dup)}')
 
@@ -314,7 +314,7 @@ def cmd_plan(out, max_lines=150):
         n += size
     if cur:
         lots.append({'scenes': cur, 'lines': n})
-    pathlib.Path(out).write_text(json.dumps({'lots': lots, 'dups': dups}, indent=1), encoding='utf-8')
+    paths.atomic_write(pathlib.Path(out), json.dumps({'lots': lots, 'dups': dups}, indent=1))
     print(len(lots), 'lotes;', sum(len(v) for v in dups.values()), 'copias em', len(dups), 'grupos (scene_dedup.py copy leva a traducao)')
 
 

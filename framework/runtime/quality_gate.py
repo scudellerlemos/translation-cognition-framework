@@ -100,13 +100,8 @@ def split_scope(items: list[dict], scenes: list[str] | None) -> tuple[list[dict]
 
 def export_revise(revise, csv_path):
     """Grava a worklist 'revise' como DADOS (entrada do quality_fix). Colunas estaveis."""
-    import csv
     cols = ["scene", "scene_id", "offset", "speaker", "source", "target", "back_en", "note"]
-    with Path(csv_path).open("w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=cols)
-        w.writeheader()
-        for r in revise:
-            w.writerow({c: r.get(c, "") for c in cols})
+    paths.atomic_write_csv(csv_path, cols, ([r.get(c, "") for c in cols] for r in revise))
     return len(revise)
 
 

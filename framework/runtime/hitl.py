@@ -181,10 +181,8 @@ def note_verified(root: Path, scenes: list[str]) -> bool:
             rows.append((h, s, ln.get("offset", ""), ln.get("text_source", ""), ln.get("base_translation", "")))
     out = paths.qa_outbox(root)
     out.mkdir(parents=True, exist_ok=True)
-    with (out / "onda_amostra.csv").open("w", encoding="utf-8-sig", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["scene", "offset", "source_en", "target_pt"])
-        w.writerows(r[1:] for r in sorted(rows)[:WAVE_SAMPLE])   # ordem do hash = amostra estavel
+    paths.atomic_write_csv(out / "onda_amostra.csv", ["scene", "offset", "source_en", "target_pt"],
+                           (r[1:] for r in sorted(rows)[:WAVE_SAMPLE]), encoding="utf-8-sig")   # ordem do hash = amostra estavel
     return True
 
 

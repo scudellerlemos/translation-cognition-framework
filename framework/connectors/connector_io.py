@@ -97,7 +97,9 @@ def write_dialogs_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> No
 def write_extraction_log(path: Path, text: str) -> None:
     """mkdir + write_text — o texto formatado (contagens etc.) continua responsabilidade do conector."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
 
 
 _SYSTEM_RX = re.compile(r"\b(?:narrador|narrator|sistema|system|tutorial|instruc\w*)\b", re.I)

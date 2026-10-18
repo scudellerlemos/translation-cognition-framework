@@ -14,11 +14,12 @@ Não sobrescreve arquivos existentes (skip seguro).
 from __future__ import annotations
 
 import contextlib
-import csv
 import json
 import shutil
 import sys
 from pathlib import Path
+
+import paths
 
 _FRAMEWORK = Path(__file__).resolve().parents[1]
 _TEMPLATE = _FRAMEWORK / "templates" / "project.template.json"
@@ -239,15 +240,14 @@ def scaffold(project_root: Path, title: str = "") -> None:
             created.append(fp)
 
     def text(content: str):
-        return lambda fp: fp.write_text(content, encoding="utf-8")
+        return lambda fp: paths.atomic_write(fp, content)
 
     # 1. project.json — do template (kb_frontier/connector/db ja declarados; ver o template)
     emit(project_root / "project.json", text(_project_json(project_root, t)))
 
     # 2. glossary.csv — schema correto para context_pack + state_index
     def write_glossary(fp: Path) -> None:
-        with fp.open("w", encoding="utf-8", newline="") as fh:
-            csv.writer(fh).writerow(_GLOSSARY_HEADERS)
+        paths.atomic_write_csv(fp, list(_GLOSSARY_HEADERS), [])
     emit(art / "glossary.csv", write_glossary)
 
     # 3-5. tone_analysis.md (voice card sections obrigatorias), decision_log.md, kb_phase_worklist.md

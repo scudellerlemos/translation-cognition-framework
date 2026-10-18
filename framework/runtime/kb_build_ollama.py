@@ -222,7 +222,7 @@ def _write_research_log(root: Path, cache: list[dict]):
     )
     out = paths.research_log(root)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(txt, encoding="utf-8")
+    paths.atomic_write(out, txt)
 
 
 def _write_kb(root: Path, sections: list[str]):
@@ -234,7 +234,7 @@ def _write_kb(root: Path, sections: list[str]):
     )
     out = paths.artifacts(root) / "universe_knowledge_base.md"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(header + "\n---\n\n".join(sections), encoding="utf-8")
+    paths.atomic_write(out, header + "\n---\n\n".join(sections))
 
 
 def main():

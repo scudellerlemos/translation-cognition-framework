@@ -36,7 +36,8 @@ _HERE = Path(__file__).resolve().parent
 _RUNTIME = _HERE.parent / "runtime"
 if str(_RUNTIME) not in sys.path:
     sys.path.insert(0, str(_RUNTIME))
-import connector_mgr  # noqa: E402  (encoding robusto + timeout — mesma protecao do run_scene)
+import connector_mgr  # noqa: E402
+import paths  # noqa: E402  (encoding robusto + timeout — mesma protecao do run_scene)
 
 _REQUIRED_COLS = {"byte_budget"}  # offset ou id_col checado dinamicamente; text_* pelo prefixo
 
@@ -179,11 +180,7 @@ def _run_roundtrip(
         # espalhado pelo arquivo (+ a ultima): so as 3 primeiras escondiam bug de offset/ponteiro no meio/fim
         sample = rows[::max(1, len(rows) // 5)][:5] + rows[-1:]
         sample = list({r[id_col]: r for r in sample}.values())
-        with approved.open("w", encoding="utf-8", newline="") as f:
-            wr = csv.DictWriter(f, fieldnames=[id_col, "text_target"])
-            wr.writeheader()
-            for row in sample:
-                wr.writerow({id_col: row[id_col], "text_target": row[text_col]})
+        paths.atomic_write_csv(approved, [id_col, "text_target"], ([row[id_col], row[text_col]] for row in sample))
 
         output_dir = project_root / "output"
         output_dir.mkdir(exist_ok=True)

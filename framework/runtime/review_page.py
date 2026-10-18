@@ -76,7 +76,7 @@ def main():
     box = paths.qa_outbox(paths.require_project(a.project))
     box.mkdir(parents=True, exist_ok=True)
     out = box / "revisar.html"
-    out.write_text(render(box), encoding="utf-8")
+    paths.atomic_write(out, render(box))
     counts = ", ".join(f"{k}: {len(v['rows'])}" for k, v in load(box).items())
     print(f"{out}  ({counts})")
     if a.serve:

@@ -7,6 +7,8 @@
 import pathlib
 import re
 
+import paths
+
 ROW = re.compile(r'^\| \S+:(\d+):\d+ \| ')
 NOTE = """## 7a. Texto de SISTEMA (menu, ajuda de batalha, bestiario) -- regras deste lote
 - NAO e dialogo: speaker `system`, risco `low` salvo duvida real. Frase curta, direta, de manual de jogo.
@@ -36,12 +38,12 @@ def split(TMP: pathlib.Path, lot: str) -> None:
         used = [n for n in names if re.search(r'(?<!\w)' + re.escape(n) + r'(?!\w)', text)]
         tail = '\n'.join(src[b:]).replace(f'lot_{lot}.tsv', f'lot_{lot}_{sec}.tsv')
         out = src[:a] + NOTE.format(names='; '.join(used) or '(nenhum)').splitlines() + [''] + head + mine + ['', tail]
-        (TMP / f'lot_{lot}_{sec}.md').write_text('\n'.join(out) + '\n', encoding='utf-8')
+        paths.atomic_write(TMP / f'lot_{lot}_{sec}.md', '\n'.join(out) + '\n')
         print(f'lot_{lot}_{sec}.md: {len(mine)} falas, {len(used)} nomes, {sum(map(len, out))} chars')
 
 
 def join(TMP: pathlib.Path, lot: str) -> None:
     parts = sorted(TMP.glob(f'lot_{lot}_*.tsv'))
     lines = [x for p in parts for x in p.read_text(encoding='utf-8').splitlines() if x.strip()]
-    (TMP / f'lot_{lot}.tsv').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    paths.atomic_write(TMP / f'lot_{lot}.tsv', '\n'.join(lines) + '\n')
     print(f'lot_{lot}.tsv: {len(lines)} falas de {len(parts)} parte(s)')

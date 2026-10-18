@@ -21,6 +21,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
 import model as M  # noqa: E402
+import paths  # noqa: E402
 
 
 def main():
@@ -41,7 +42,7 @@ def main():
     dt = time.time() - t0
     # NAO usar prefixo 'translations_' (colide com o glob do build_plan_chapter, que exige exatamente 1)
     out = root / "artifacts" / a.scene / f"bench_{scene_id}.{tag}.json"
-    out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
     n = len(data.get("lines", {}))
     print(f"OK {a.scene} via {a.model}: {n} linhas em {dt:.1f}s -> {out}")
     print(f"   usage: in={usage['in']} out={usage['out']} "

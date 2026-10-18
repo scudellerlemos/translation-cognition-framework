@@ -1,8 +1,8 @@
-"""Onda 2 (integridade): os escritores de ESTADO real nao gravam direto no destino.
+"""Onda 2 (integridade): nenhum escritor do framework grava direto no destino.
 
-Estado = o que nao se regenera sozinho (traducao, aprovados, project.json, research_log, ledger, ratificacao).
-Relatorio regeneravel (prompt, pack, csv de revisao) pode continuar com write_text. Quem entrar na lista abaixo
-tem de usar atomic_write / os.replace / locked; esta lista so cresce.
+Duas camadas: (1) ESTADO = lista de escritores cuja prova e checada por nome; (2) a varredura no fim do arquivo,
+que cobre TODO write_text/write_bytes/open('w'|'a') do framework sem lista de excecoes: a funcao que grava tem
+de usar atomic_write(_csv), append_line, locked ou tmp + replace. "Regeneravel" nao e criterio.
 """
 import ast
 import csv
@@ -137,74 +137,49 @@ def test_rebuild_do_ledger_nao_perde_linha_de_api_gravada_em_paralelo(tmp_path, 
     assert all(r["source"] == "api" for r in rows) and len(rows) == 120
 
 
-# ---- varredura: todo ponto de escrita do framework e ESTADO (acima) ou DERIVADO (abaixo, com motivo) ----------
+# ---- varredura: TODO ponto de escrita do framework prova, na propria funcao, que grava com seguranca --------
+# Sem lista de excecoes e sem classificacao manual: "regeneravel" nao e criterio. Quem grava direto usa uma das
+# primitivas abaixo (tmp + replace, escrita atomica, anexo sob trava) ou o teste falha.
 FRAMEWORK = RUNTIME.parent
 _MODOS_ESCRITA = {"w", "a", "x", "wb", "ab", "xb", "w+", "a+"}
-
-# (arquivo relativo a framework/, funcao) -> por que pode gravar direto. Regeneravel = refaz-se a partir de outra fonte.
-DERIVADO = {
-    ("connectors/connector_io.py", "write_dialogs_csv"): "saida da extracao: regenera do jogo",
-    ("connectors/connector_io.py", "write_extraction_log"): "log da extracao",
-    ("connectors/connector_smoke.py", "_run_roundtrip"): "arquivo temporario do smoke test",
-    ("connectors/discover.py", "_write_stubs"): "scaffold de conector novo",
-    ("db/export_to_flat.py", "export_approved"): "exportacao regeneravel do banco",
-    ("db/export_to_flat.py", "export_tm"): "exportacao regeneravel do banco",
-    ("distribution/build_package.py", "<modulo>"): "empacotamento em dist/",
-    ("distribution/patcher.py", "instalar"): "patch no jogo: grava em .tmp e troca, com .bak do original",
-    ("runtime/back_translate.py", "_write_back_prompt"): "prompt regeneravel",
-    ("runtime/bench_translate.py", "main"): "relatorio de benchmark",
-    ("runtime/context_pack.py", "write_pack"): "pack e prompt da cena: regeneram do KB",
-    ("runtime/glossary_lint.py", "main"): "relatorio do lint",
-    ("runtime/hitl.py", "note_verified"): "CSV de amostra para revisao: regenera do estado da onda",
-    ("runtime/hitl.py", "_ratify_csv"): "append sob paths.locked (ver ESTADO)",
-    ("runtime/kb_build_ollama.py", "_write_research_log"): "log de pesquisa bruto",
-    ("runtime/kb_build_ollama.py", "_write_kb"): "KB gerado: regenera da pesquisa",
-    ("runtime/kb_fetch.py", "fetch_and_cache"): "cache de fonte baixada",
-    ("runtime/kb_phase.py", "write_worklist"): "worklist regeneravel",
-    ("runtime/model.py", "translate"): "scene_prompt.md regeneravel",
-    ("runtime/paths.py", "append_line"): "append sob locked",
-    ("runtime/quality_gate.py", "export_revise"): "CSV de revisao regeneravel",
-    ("runtime/quality_review.py", "write_csv"): "planilha de revisao regeneravel",
-    ("runtime/quality_sample.py", "export"): "amostra de qualidade regeneravel",
-    ("runtime/review_page.py", "main"): "pagina HTML gerada",
-    ("runtime/risk_triage.py", "export"): "lotes de triagem regeneraveis",
-    ("runtime/risk_triage_run.py", "_one"): "resposta e veredito por lote; rodar de novo refaz",
-    ("runtime/run_scene.py", "_persist_fitting_diagnostics"): "diagnostico regeneravel",
-    ("runtime/scaffold_project.py", "text"): "criacao de projeto novo",
-    ("runtime/scaffold_project.py", "write_glossary"): "criacao de projeto novo",
-    ("runtime/session_lot.py", "cmd_prompt"): "lote temporario (TMP)",
-    ("runtime/session_lot.py", "cmd_plan"): "plano temporario",
-    ("runtime/session_part.py", "split"): "lote temporario (TMP)",
-    ("runtime/session_part.py", "join"): "lote temporario (TMP)",
-    ("runtime/spoiler_check.py", "audit_and_persist"): "relatorio da auditoria",
-    ("runtime/wave.py", "run"): "log da onda",
-    ("validation/cost_model.py", "main"): "relatorio",
-    ("validation/naturalness_lint.py", "main"): "relatorio",
-}
+_PROVAS = {"atomic_write", "atomic_write_csv", "append_line", "locked", "replace"}
 
 
-def _pontos_de_escrita(path: Path, base: Path = FRAMEWORK) -> set[tuple[str, str]]:
-    achados: set[tuple[str, str]] = set()
+def _nome_chamado(call: ast.Call) -> str:
+    f = call.func
+    return f.attr if isinstance(f, ast.Attribute) else f.id if isinstance(f, ast.Name) else ""
 
-    def modo(call: ast.Call) -> str | None:
-        arg = call.args[1:2] if isinstance(call.func, ast.Name) else call.args[:1]
-        cand = [a for a in arg if isinstance(a, ast.Constant)] + [k.value for k in call.keywords
-                                                                  if k.arg == "mode" and isinstance(k.value, ast.Constant)]
-        return next((c.value for c in cand if isinstance(c.value, str)), None)
 
-    def visita(no, fn):
+def _modo_literal(call: ast.Call) -> str | None:
+    arg = call.args[1:2] if isinstance(call.func, ast.Name) else call.args[:1]
+    cand = [a for a in arg if isinstance(a, ast.Constant)]
+    cand += [k.value for k in call.keywords if k.arg == "mode" and isinstance(k.value, ast.Constant)]
+    return next((c.value for c in cand if isinstance(c.value, str)), None)
+
+
+def _escreve(call: ast.Call) -> bool:
+    nome = _nome_chamado(call)
+    if nome in ("write_text", "write_bytes"):
+        return isinstance(call.func, ast.Attribute)
+    return nome == "open" and _modo_literal(call) in _MODOS_ESCRITA
+
+
+def _pontos_de_escrita(path: Path, base: Path = FRAMEWORK) -> list[tuple[str, str, bool]]:
+    """(arquivo, funcao, tem_prova) de cada escrita direta; escrita fora de funcao nunca tem prova."""
+    achados: list[tuple[str, str, bool]] = []
+    rel = path.relative_to(base).as_posix()
+
+    def visita(no, fn, chamadas):
         for ch in ast.iter_child_nodes(no):
-            f = ch.name if isinstance(ch, ast.FunctionDef | ast.AsyncFunctionDef) else fn
-            if isinstance(ch, ast.Call):
-                func = ch.func
-                if isinstance(func, ast.Attribute) and func.attr in ("write_text", "write_bytes"):
-                    achados.add((path.relative_to(base).as_posix(), f))
-                elif (isinstance(func, ast.Attribute) and func.attr == "open") or (isinstance(func, ast.Name) and func.id == "open"):
-                    if modo(ch) in _MODOS_ESCRITA:
-                        achados.add((path.relative_to(base).as_posix(), f))
-            visita(ch, f)
+            if isinstance(ch, ast.FunctionDef | ast.AsyncFunctionDef):
+                prova = {_nome_chamado(c) for c in ast.walk(ch) if isinstance(c, ast.Call)} & _PROVAS
+                visita(ch, ch.name, bool(prova))
+                continue
+            if isinstance(ch, ast.Call) and _escreve(ch):
+                achados.append((rel, fn, chamadas))
+            visita(ch, fn, chamadas)
 
-    visita(ast.parse(path.read_text(encoding="utf-8")), "<modulo>")
+    visita(ast.parse(path.read_text(encoding="utf-8")), "<modulo>", False)
     return achados
 
 
@@ -218,29 +193,19 @@ def _fontes_do_framework():
         yield p
 
 
-def test_todo_ponto_de_escrita_e_estado_protegido_ou_derivado_declarado():
-    """Escritor novo que grava direto (write_text/open('w')) falha aqui ate ser migrado para atomic_write
-    (e entrar em ESTADO) ou declarado em DERIVADO com o motivo de ser regeneravel."""
-    achados: set[tuple[str, str]] = set()
-    for p in _fontes_do_framework():
-        achados |= _pontos_de_escrita(p)
-    estado = {(f.relative_to(FRAMEWORK).as_posix(), fn) for f, fn, _ in ESTADO}
-    novos = sorted(achados - set(DERIVADO) - estado)
-    assert not novos, f"escrita direta nao classificada (use paths.atomic_write ou declare em DERIVADO): {novos}"
+def test_todo_ponto_de_escrita_prova_gravacao_segura_na_propria_funcao():
+    """write_text/write_bytes/open('w'|'a') so passam se a funcao usa atomic_write(_csv), append_line, locked
+    ou tmp + replace. Escrita direta nova (ou fora de funcao) falha aqui; nao ha lista de excecoes."""
+    sem_prova = sorted({(f, fn) for p in _fontes_do_framework() for f, fn, ok in _pontos_de_escrita(p) if not ok})
+    assert not sem_prova, f"escrita direta sem prova de gravacao segura (use paths.atomic_write): {sem_prova}"
 
 
-def test_derivado_nao_guarda_entrada_morta():
-    achados: set[tuple[str, str]] = set()
-    for p in _fontes_do_framework():
-        achados |= _pontos_de_escrita(p)
-    mortas = sorted(set(DERIVADO) - achados)
-    assert not mortas, f"DERIVADO cita ponto que nao grava mais (remova): {mortas}"
-
-
-def test_derivado_nao_contem_funcao_de_estado():
-    estado = {(f.relative_to(FRAMEWORK).as_posix(), fn) for f, fn, _ in ESTADO}
-    dupla = sorted(k for k in DERIVADO if k in estado and k[1] not in {"_ratify_csv"})
-    assert not dupla, f"ponto em ESTADO e DERIVADO ao mesmo tempo: {dupla}"
+def test_a_varredura_enxerga_pontos_de_escrita_conhecidos():
+    """Guarda do guarda: se o scanner parasse de achar escrita, o teste acima passaria vazio."""
+    achados = {(f, fn) for p in _fontes_do_framework() for f, fn, _ in _pontos_de_escrita(p)}
+    conhecidos = {("connectors/connector_io.py", "write_dialogs_csv"), ("distribution/patcher.py", "instalar"),
+                  ("runtime/hitl.py", "_ratify_csv"), ("runtime/paths.py", "append_line")}
+    assert conhecidos <= achados, f"scanner nao achou: {sorted(conhecidos - achados)}"
 
 
 def test_varredura_pega_escrita_direta_nova(tmp_path):
@@ -261,7 +226,27 @@ def anexa(p):
     p.open("a").close()
 ''', encoding="utf-8")
     achados = _pontos_de_escrita(fonte, tmp_path)
-    assert achados == {("runtime/_x.py", "grava"), ("runtime/_x.py", "grava2"), ("runtime/_x.py", "anexa")}
+    assert achados == [("runtime/_x.py", "grava", False), ("runtime/_x.py", "grava2", False),
+                       ("runtime/_x.py", "anexa", False)]
+
+
+def test_varredura_aceita_escrita_com_prova_e_rejeita_a_sem_prova(tmp_path):
+    fonte = tmp_path / "m.py"
+    fonte.write_text('''
+import os
+
+def segura(p, t):
+    tmp = p.with_name("x.tmp")
+    tmp.write_text(t)
+    os.replace(tmp, p)
+
+def direta(p, t):
+    p.write_text(t)
+
+p0 = open("a", "w")
+''', encoding="utf-8")
+    assert _pontos_de_escrita(fonte, tmp_path) == [("m.py", "segura", True), ("m.py", "direta", False),
+                                                   ("m.py", "<modulo>", False)]
 
 
 # --- migrados na re-auditoria (nota 4): queda na troca preserva o original ------------------------------

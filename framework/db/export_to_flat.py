@@ -16,16 +16,16 @@ Uso:
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 _FRAMEWORK = _HERE.parent
-for _p in (_HERE, _FRAMEWORK):
+for _p in (_HERE, _FRAMEWORK, _FRAMEWORK / "runtime"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
+import paths  # noqa: E402
 from store import Store  # noqa: E402
 from text_ids import (
     tm_key as _src_key,  # noqa: E402  (fonte única, framework/text_ids.py — leaf, sem dep de runtime)
@@ -37,11 +37,7 @@ def export_approved(db: Store, project_id: str, out_csv: Path) -> int:
     É o arquivo que o conector (reinsert.py) aplica no binário — a borda determinística."""
     rows = db.get_translations(project_id, approved_only=True)
     out_csv.parent.mkdir(parents=True, exist_ok=True)
-    with out_csv.open("w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["offset", "text_target"])
-        w.writeheader()
-        for r in rows:
-            w.writerow({"offset": r.get("offset", ""), "text_target": r.get("target", "")})
+    paths.atomic_write_csv(out_csv, ["offset", "text_target"], ([r.get("offset", ""), r.get("target", "")] for r in rows))
     return len(rows)
 
 
@@ -61,7 +57,7 @@ def export_tm(db: Store, project_id: str, out_jsonl: Path) -> int:
             "target": r.get("target", ""),
             "src_key": _src_key(src),
         }, ensure_ascii=False, sort_keys=True))
-    out_jsonl.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    paths.atomic_write(out_jsonl, "\n".join(lines) + ("\n" if lines else ""))
     return len(lines)
 
 

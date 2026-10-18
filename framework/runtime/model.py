@@ -184,9 +184,8 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) 
                 paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
         elif reuse:
             novel = [r for r in pack["lines"] if r["offset"] not in reuse]   # copia: o pack (e o caminho api) nao muda
-            paths.scene_prompt(root, scene).write_text(
-                context_pack.render_prompt({**pack, "lines": novel, "n_lines": len(novel)},
-                                           context_pack._read(context_pack.CARTA_PATH)), encoding="utf-8")
+            paths.atomic_write(paths.scene_prompt(root, scene), context_pack.render_prompt({**pack, "lines": novel, "n_lines": len(novel)},
+                                           context_pack._read(context_pack.CARTA_PATH)))
         if out.is_file():
             return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
         return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],

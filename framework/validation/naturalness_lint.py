@@ -28,6 +28,11 @@ import unicodedata
 import warnings
 from pathlib import Path
 
+_RUNTIME = Path(__file__).resolve().parents[1] / "runtime"
+if str(_RUNTIME) not in sys.path:
+    sys.path.insert(0, str(_RUNTIME))
+import paths  # noqa: E402
+
 VOWELS_H = set("aeiouh")              # onomatopeia "pura" (gritos/suspiros) — cópia aceitável
 # Inícios de 1 letra que são palavra/grafema pt-BR legítimo num "X..." (artigo/conjunção/vogal):
 # "E... bem...", "A... loja?", "O... leite?". Copiar ESTES do source não é resíduo. Já uma inicial
@@ -220,8 +225,8 @@ def main():
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
     found = lint_project(root)
     out = root / "artifacts" / "naturalness_lint.json"
-    out.write_text(json.dumps({"count": len(found), "findings": found},
-                              ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps({"count": len(found), "findings": found},
+                              ensure_ascii=False, indent=2))
     by: dict[str, int] = {}
     for f in found:
         by[f["check"]] = by.get(f["check"], 0) + 1

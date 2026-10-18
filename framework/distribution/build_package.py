@@ -7,6 +7,14 @@ import sys
 
 import bsdiff4
 
+
+def _grava(p, dados):
+    """tmp + replace: build que cai no meio nao deixa delta/manifest truncado no pacote."""
+    tmp = p.with_name(p.name + '.tmp')
+    tmp.write_bytes(dados)
+    tmp.replace(p)
+
+
 if len(sys.argv) < 6 or sys.argv[1] in ('-h', '--help'):
     sys.exit(__doc__)
 cfg = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
@@ -23,9 +31,9 @@ for f in sorted(out.glob(cfg['padrao_arquivos'])):
         continue
     d = bsdiff4.diff(a, b)
     assert bsdiff4.patch(a, d) == b, f.name
-    (dist / 'deltas' / (f.name + '.bsdiff')).write_bytes(d)
+    _grava(dist / 'deltas' / (f.name + '.bsdiff'), d)
     files.append({'name': f.name, 'sha_original': sha(a), 'sha_final': sha(b)})
-(dist / 'manifest.json').write_text(json.dumps({'version': versao, 'app': cfg, 'files': files}, indent=1), encoding='utf-8')
+_grava(dist / 'manifest.json', json.dumps({'version': versao, 'app': cfg, 'files': files}, indent=1).encode('utf-8'))
 if arte:  # arte do painel lateral: 320x480, PNG (o tkinter nao le webp), com o titulo. Fica so no pacote, nunca no repo
     from PIL import Image, ImageDraw, ImageFont
     W, H = 640, 960  # desenha em 2x e reduz, para o texto sair suave
