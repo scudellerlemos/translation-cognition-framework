@@ -23,7 +23,7 @@ controlar custo) é código Python comum, testado e reprodutível.
 | Persistência | SQLite (biblioteca padrão, modo WAL) ou arquivos JSON/CSV | memória de tradução, glossário, base de conhecimento, estado do run |
 | Execução | CLI `tcf` + Message Batches API da Anthropic | uma cena por job; lote assíncrono com 50% de desconto |
 | Distribuição | `bsdiff4` (delta binário), PyInstaller (`.exe` único), Pillow (arte/ícone do pacote); `framework/distribution/` | patcher de um clique para o jogador, sem conteúdo do jogo (só diferenças); dependências fora dos `requirements*.txt` |
-| Qualidade | pytest, Hypothesis, ruff, mypy, bandit, pip-audit, gitleaks | 7 workflows no GitHub Actions; cobertura mínima de 90% |
+| Qualidade | pytest, Hypothesis, ruff, mypy, bandit, pip-audit, gitleaks | 8 workflows no GitHub Actions; cobertura mínima de 90% |
 
 ```mermaid
 %%{init: {'flowchart': {'wrappingWidth': 520}}}%%
@@ -351,6 +351,7 @@ workflows no GitHub Actions:
 |---|---|---|
 | `test.yml` | PR e push no `main` | guarda de conteúdo e de `.env` (`env-guard`); mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado; testes dos hooks |
 | `quality.yml` | PR e push no `main` | ruff (lint), bandit (segurança no código), pip-audit (CVE nas dependências), gitleaks (credenciais vazadas) |
+| `perf.yml` | PR e push no `main` | benchmarks de `append_line`, `build_pack` e `state_index_tm` contra o baseline; regressão de mais de 2× vira aviso (não bloqueia) |
 | `api-smoke.yml` | semanal e manual | uma cena mínima enviada de verdade à Batch API, para detectar mudança de contrato da API antes de um capítulo pago |
 | `ml-coverage-optional.yml` | PR, push na main e semanal | os testes da stack de embedding sem mock, com piso de 85% |
 | `dep-audit-optional.yml` | semanal | pip-audit nas dependências de ML e de pesquisa |

@@ -18,6 +18,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
 | **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
 | **Cobertura real (ML)** | `ml-coverage-optional.yml` | **obrigatório**: job `ml-coverage` de `test.yml` (PR, push na main) + domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
+| **Performance** | `perf.yml` | Todo PR e push no `main` (não bloqueia, fora do agregador) | "Alguma operação ficou **mais de 2× mais lenta** que o baseline?" |
 | **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 

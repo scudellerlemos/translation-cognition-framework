@@ -198,7 +198,7 @@ comprovado vivo, além do alvo acima:
   (basename `test_roundtrip.py` repetido colidiria numa coleta única do pytest). Determinismo,
   idempotência e um guard que barra texto da obra hardcoded em `.py`. Convenção de nomes em `NAMING.md`.
   Contagem corrente em [`framework/README.md`](../framework/README.md#ci--esteira-de-verificação-paralela-sem-encadeamento).
-- **CI paralela:** 7 workflows GitHub Actions — só `quality.yml` e `test.yml` disparam em todo
+- **CI paralela:** 8 workflows GitHub Actions — só `quality.yml`, `test.yml` e `perf.yml` (tendência de performance, fora do agregador, não bloqueia) disparam em todo
   PR (e em push na `main`), sem nenhum `needs:` entre eles — checks independentes, falha nomeada por job, wall-clock =
   maior job; `ml-coverage-optional.yml` roda também em PR e push na `main` (decisão de 2026-10-17), chamado por `test.yml` e portanto dentro do agregador obrigatório; `api-smoke.yml`, `dep-audit-optional.yml` e `branch-hygiene.yml` são cron/`workflow_dispatch`
   sob demanda; `release.yml` dispara só em tag `v*.*.*`. Detalhe do desenho em

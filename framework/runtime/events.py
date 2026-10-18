@@ -22,10 +22,40 @@ import paths
 
 RUN = os.environ.setdefault("TCF_RUN_ID", uuid.uuid4().hex[:8])
 
+# Schema (Onda 3): campos obrigatorios e etapas conhecidas. `gate.*` e `audit.*` sao familias abertas.
+OBRIGATORIOS = {"t": (int, float), "run": (str,), "stage": (str,), "result": (str,)}
+ETAPAS = frozenset({"pack", "translate", "build_plan", "verify", "back_translate", "state_index", "scene",
+                    "quality", "alert"})
+FAMILIAS = ("gate.", "audit.")
+MAX_TEXTO = 200
+
+
+def validate(rec: dict) -> list[str]:
+    """Problemas de um evento (lista vazia = valido): campo obrigatorio ausente/de tipo errado, etapa fora do
+    conjunto conhecido, valor nao escalar ou texto longo (evento so leva contagem, status e duracao; nada de fala)."""
+    out = []
+    for k, tipos in OBRIGATORIOS.items():
+        v = rec.get(k)
+        if v is None or isinstance(v, bool) or not isinstance(v, tipos):
+            out.append(f"campo `{k}` ausente ou de tipo errado")
+    if "scene" not in rec or not (rec["scene"] is None or isinstance(rec["scene"], str)):
+        out.append("campo `scene` deve existir (str ou null)")
+    stg = rec.get("stage")
+    if isinstance(stg, str) and stg not in ETAPAS and not stg.startswith(FAMILIAS):
+        out.append(f"etapa desconhecida `{stg}`")
+    for k, v in rec.items():
+        if isinstance(v, str) and len(v) > MAX_TEXTO:
+            out.append(f"`{k}` com {len(v)} caracteres (maximo {MAX_TEXTO}): evento nao carrega texto")
+        elif not (v is None or isinstance(v, str | int | float | bool)):
+            out.append(f"`{k}` nao e escalar ({type(v).__name__})")
+    return out
+
 
 def emit(root, stage: str, result: str, scene: str | None = None, **fields) -> None:
     """Anexa um evento. Nunca derruba o pipeline: observabilidade que falha so avisa."""
     rec = {"t": round(time.time(), 3), "run": RUN, "scene": scene, "stage": stage, "result": result, **fields}
+    if (probs := validate(rec)):
+        print(f"[events] AVISO: evento {stage}/{result} fora do schema: {'; '.join(probs)}.")
     try:
         paths.append_line(paths.events(Path(root)), json.dumps(rec, ensure_ascii=False, default=str) + "\n",
                           timeout=5.0)
