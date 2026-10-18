@@ -199,11 +199,14 @@ def _tempo(fn: Callable[[], None]) -> float:
     return time.perf_counter() - t0
 
 
-def medir(repeticoes: int = REPETICOES) -> dict[str, float]:
-    """Razao tempo(op) / tempo(calibracao), pela mediana de `repeticoes` rodadas (cada op em pasta nova)."""
-    cal = statistics.median(_tempo(_calibracao) for _ in range(repeticoes))
+def medir(repeticoes: int = REPETICOES, ops: list[str] | None = None) -> dict[str, float]:
+    """Razao tempo(op) / tempo(calibracao), pela mediana de `repeticoes` rodadas (cada op em pasta nova).
+    `ops` restringe a medida a algumas operacoes (o A/B intercalado mede uma por vez)."""
+    cal = statistics.median(_tempo(_calibracao) for _ in range(max(repeticoes, 3)))
     out = {}
     for nome, op in OPS.items():
+        if ops is not None and nome not in ops:
+            continue
         tempos = []
         for _ in range(repeticoes):
             with tempfile.TemporaryDirectory() as d:
@@ -251,9 +254,11 @@ def main() -> None:
     ap.add_argument("--update-baseline", action="store_true")
     ap.add_argument("--salvar", help="grava as razoes medidas (serve de 'antes' no --antes)")
     ap.add_argument("--antes", help="guardrail do ADR 0019: compara a medida atual com este JSON (limite 10%%, sem desequilibrio)")
+    ap.add_argument("--op", action="append", help="mede so esta operacao (repetivel)")
+    ap.add_argument("--repeticoes", type=int, default=REPETICOES)
     ap.add_argument("--out", help="grava o JSON (atual, baseline, regressoes) neste arquivo")
     a = ap.parse_args()
-    atual = medir()
+    atual = medir(a.repeticoes, a.op)
     if a.salvar:
         paths.atomic_write(a.salvar, json.dumps(atual, indent=2, sort_keys=True) + "\n")
         print(f"medida gravada em {a.salvar}")
