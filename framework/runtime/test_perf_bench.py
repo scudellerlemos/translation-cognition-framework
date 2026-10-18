@@ -71,3 +71,8 @@ def test_grupos_cobrem_so_operacoes_que_existem_e_ambos_os_caminhos():
     ops = {n for g in pb.GRUPOS.values() for n in g}
     assert ops <= set(pb.OPS)
     assert pb.GRUPOS["sessao"] and pb.GRUPOS["api"]
+
+
+def test_ab_agrega_pelo_menor_tempo_de_cada_operacao():
+    import perf_ab
+    assert perf_ab.agregar([{"a": 3.0, "b": 2.0}, {"a": 2.5, "b": 2.4}, {"a": 2.9}]) == {"a": 2.5, "b": 2.0}
