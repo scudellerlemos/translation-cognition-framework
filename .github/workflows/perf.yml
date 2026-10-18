@@ -28,7 +28,13 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - run: pip install -r requirements-dev.txt
       - name: Medir
-        run: python framework/runtime/perf_bench.py --out perf.json
+        # baseline do PROPRIO runner (perf_baseline_ci.json), nao o medido no Windows local; sem ele, cai no padrao.
+        # Para criar/atualizar: rodar este workflow, baixar perf.json e gravar o campo `atual` como perf_baseline_ci.json.
+        run: |
+          B=''
+          if [ -f framework/runtime/perf_baseline_ci.json ]; then B='--baseline framework/runtime/perf_baseline_ci.json'
+          else echo '::notice::sem perf_baseline_ci.json: comparando com o baseline local (Windows)'; fi
+          python framework/runtime/perf_bench.py $B --out perf.json
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:

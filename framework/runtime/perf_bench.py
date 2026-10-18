@@ -259,7 +259,9 @@ def main() -> None:
     ap.add_argument("--repeticoes", type=int, default=REPETICOES)
     ap.add_argument("--bruto", action="store_true", help="segundos, sem calibracao (so p/ A/B na mesma maquina)")
     ap.add_argument("--out", help="grava o JSON (atual, baseline, regressoes) neste arquivo")
+    ap.add_argument("--baseline", help="baseline a usar/gravar (padrao: perf_baseline.json, medido localmente); o CI usa o proprio, medido no runner")
     a = ap.parse_args()
+    baseline = Path(a.baseline) if a.baseline else BASELINE
     atual = medir(a.repeticoes, a.op, a.bruto)
     if a.salvar:
         paths.atomic_write(a.salvar, json.dumps(atual, indent=2, sort_keys=True) + "\n")
@@ -273,10 +275,10 @@ def main() -> None:
             print(f"GUARDRAIL: {pr}")
         sys.exit(1 if probs else 0)
     if a.update_baseline:
-        paths.atomic_write(BASELINE, json.dumps(atual, indent=2, sort_keys=True) + "\n")
-        print(f"baseline gravado em {BASELINE}")
+        paths.atomic_write(baseline, json.dumps(atual, indent=2, sort_keys=True) + "\n")
+        print(f"baseline gravado em {baseline}")
         return
-    base = json.loads(BASELINE.read_text(encoding="utf-8")) if BASELINE.is_file() else {}
+    base = json.loads(baseline.read_text(encoding="utf-8")) if baseline.is_file() else {}
     regs = regressoes(atual, base)
     if a.out:
         paths.atomic_write(a.out, json.dumps({"atual": atual, "baseline": base, "regressoes": regs}, indent=2))
