@@ -1,0 +1,17 @@
+# FONTE do requirements-dev.txt (que e o LOCK com hashes, gerado por este arquivo; nao edite o .txt a mao).
+# Mudou uma dependencia aqui ou em requirements.txt / requirements-dist.txt? Regere o lock (resolucao universal:
+# Linux/Windows/macOS e Python >= 3.11 num arquivo so):
+#   uv pip compile requirements-dev-src.txt --universal --generate-hashes --python-version 3.11 -o requirements-dev.txt
+# O pip liga a verificacao de hash sozinho quando o arquivo tem hashes (pip install -r requirements-dev.txt).
+# requirements-kb.txt e requirements-ml.txt seguem com faixas (~=): stacks opcionais, torch transitivo.
+pytest~=9.1
+pytest-cov>=7.1.0,<8
+hypothesis>=6.156.1
+openpyxl~=3.1
+mypy~=2.1
+-r requirements.txt
+-r requirements-dist.txt
+ruff~=0.15
+bandit~=1.9
+pip-audit>=2.10.1
+pre-commit>=4.6.2

@@ -269,6 +269,17 @@ jobs:
       - name: Hook tests
         run: python -m pytest .claude/hooks -v --tb=short
 
+  # Cobertura real do RAG (sentence-transformers + sqlite-vec, sem mock). Workflow reutilizavel para a
+  # semanal e o disparo manual continuarem no mesmo arquivo; aqui entra no agregador (obrigatorio).
+  # `issues: write` e so para a issue de falha do cron (so abre em schedule); o chamado nao pode ter mais
+  # permissao que o chamador, por isso declarada aqui.
+  ml-coverage:
+    name: Cobertura real (ML)
+    permissions:
+      contents: read
+      issues: write
+    uses: ./.github/workflows/ml-coverage-optional.yml
+
   # Agregador automático: um single status check pra branch protection não precisar listar os
   # jobs acima individualmente. Sem aprovação manual (isso virou teatro pra dev solo — é sempre
   # a mesma pessoa aprovando o próprio PR; a aprovação de verdade agora só existe no environment
@@ -277,7 +288,7 @@ jobs:
   all-checks:
     name: All checks — agregador (branch protection)
     if: github.event_name == 'pull_request'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows, ml-coverage]
     runs-on: ubuntu-latest
     steps:
       - run: echo "Todos os checks de test.yml passaram."
@@ -289,7 +300,7 @@ jobs:
   mark-staging:
     name: Marca Staging (main validado)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows, ml-coverage]
     runs-on: ubuntu-latest
     environment: Staging
     steps:
