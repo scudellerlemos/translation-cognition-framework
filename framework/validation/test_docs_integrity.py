@@ -43,3 +43,7 @@ def test_workflow_de_ml_roda_todo_teste_do_embedder():
     existentes.add("framework/db/test_validate_model.py")
     assert existentes <= listados, f"fora da lista do workflow de ML: {sorted(existentes - listados)}"
 
+
+def test_codeowners_existe_e_cobre_o_repo_todo():
+    co = (RAIZ / ".github" / "CODEOWNERS").read_text(encoding="utf-8")
+    assert re.search(r"^\*\s+@\S+", co, re.M)
