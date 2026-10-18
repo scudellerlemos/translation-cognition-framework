@@ -274,7 +274,7 @@ flowchart LR
   recorrentes, isolamento estrutural entre séries, alimentada pelo QA aprovado ✅
 - CI paralela reestruturada: 2 workflows por PR (+ 5 sob demanda: cron/dispatch/tag), checks sem
   encadeamento (só o agregador `all-checks` usa `needs:`), falha nomeada por job ✅
-- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão `2.0.0` (tag `v2.0.0` depois do merge) ✅
+- Versionamento SemVer manual (`VERSION` + tag `vX.Y.Z`, ADR 0013): versão `2.1.0` (tag `v2.1.0` depois do merge) ✅
 - Suíte verde no CI (cobertura ≥90%)
 
 ### Dívidas técnicas do framework

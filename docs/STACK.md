@@ -167,7 +167,7 @@ Todo projeto com `db` no `project.json` usa busca semântica por padrão. A stac
   corpus que já existe: `python framework/cli.py db index <projeto>.db <project_id>`.
 - **No CI**: os testes de push/PR (`test.yml`) não instalam torch, pelo custo. Eles rodam com
   `TCF_ALLOW_NO_ML=1` (setado no `conftest.py` da raiz), que rebaixa o bloqueio a aviso. A stack
-  real é testada sem mock uma vez por semana (`ml-coverage-optional.yml`, piso de 85% de cobertura
+  real é testada sem mock em todo PR, em push na main e uma vez por semana (`ml-coverage-optional.yml`, piso de 85% de cobertura
   em `embedder.py` e `validate_model.py`) e auditada por CVE (`dep-audit-optional.yml`).
 
 ---
@@ -352,7 +352,7 @@ workflows no GitHub Actions:
 | `test.yml` | PR e push no `main` | guarda de conteúdo e de `.env` (`env-guard`); mypy; pytest com cobertura mínima de 90%; os testes de cada conector em job separado; testes dos hooks |
 | `quality.yml` | PR e push no `main` | ruff (lint), bandit (segurança no código), pip-audit (CVE nas dependências), gitleaks (credenciais vazadas) |
 | `api-smoke.yml` | semanal e manual | uma cena mínima enviada de verdade à Batch API, para detectar mudança de contrato da API antes de um capítulo pago |
-| `ml-coverage-optional.yml` | semanal | os testes da stack de embedding sem mock, com piso de 85% |
+| `ml-coverage-optional.yml` | PR, push na main e semanal | os testes da stack de embedding sem mock, com piso de 85% |
 | `dep-audit-optional.yml` | semanal | pip-audit nas dependências de ML e de pesquisa |
 | `branch-hygiene.yml` | semanal | branches já incorporadas ao `main` |
 | `release.yml` | tag de versão | gera a release |

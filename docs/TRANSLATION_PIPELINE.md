@@ -71,8 +71,8 @@ Projeto novo nasce com a chave (scaffold); projeto sem ela segue como antes. Tod
 
 `python framework/runtime/wave.py <projeto> [cena ...] [--backend in-session|api] [--require-back]` roda
 `run_scene` (se houver cenas), `scene_dedup copy` (se alguma cena repete o texto de outra) e o `run_scene` das
-cópias, `glossary_lint`, `quality_gate`, `cost_report --summary` e `obs_report` em sequência; o escopo é só das
-cenas pedidas (sem cena, roda só os gates e relatórios). Para no primeiro passo que falhar, grava a saída inteira em `artifacts/wave_last.log` e devolve uma linha por passo. Mesmos comandos
+cópias, `glossary_lint`, `quality_gate`, `session_usage rebuild`, `cost_report --summary` (mais `--by-scene` no log) e `obs_report` em sequência; a linha de custo traz o equivalente API da sessão por fase e o erro do medidor (caminho de sessão não paga API, então "$0" sozinho esconderia o gasto); o escopo é só das
+cenas pedidas (sem cena, roda só os gates e relatórios). Para no primeiro passo que falhar, grava a saída inteira em `artifacts/wave_last.log` (`wave_last_<cena>.log` se o pedido é de uma cena só, para subagentes em paralelo não se sobrescreverem) e devolve uma linha por passo. Mesmos comandos
 e gates; só troca N requisições da janela por uma. `obs_report` é enxuto por padrão (`--all` = todas as cenas).
 
 ## Texto repetido entre cenas (`scene_dedup.py`, os dois caminhos)

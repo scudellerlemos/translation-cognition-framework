@@ -7,6 +7,92 @@ organizadas por período, não por versão.
 
 ---
 
+## 2026-10-17 — v2.1.0: conserto de atrito da onda
+
+MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`quality_gate`, `code` nos eventos, `entry_problems` no `wave`) com default que preserva o uso anterior; nenhuma flag removida nem schema quebrado.
+
+- Estado gravado com segurança (ADR 0018): `paths.atomic_write` (temporário + `os.replace`) para `run_state.json`,
+  `translations_*.json`, estado do `hitl` e `state/`; `paths.append_line` (append sob trava) para `events.jsonl`,
+  `metrics.jsonl`, `hitl_log.jsonl`, `warnings.jsonl`, ledger e demais logs `.jsonl`. No Windows o `open('a')` com
+  vários processos perdeu/misturou linhas em medição (27 de 1800 corrompidas); sem trava, queda no meio deixava JSON
+  truncado. `cost._ledger_append` perde o fallback sem trava. `locked` ganha o parâmetro `stale` (padrão = `timeout`).
+- CI: `ml-coverage-optional.yml` roda também em PR e push na `main` (antes só semanal); issue de falha só no agendado.
+- Auditoria ciclo 2: gravação atômica também em `scene_lifecycle` (`run_state` ao descontinuar), `quality_review`,
+  `back_translate`, `scene_dedup`, `tm_updater`, `tm_correct`, `risk_triage`, `quality_fix` e `translate_checkpoint`
+  (relatórios regeneráveis ficam com `write_text`). `wave.py` ganha `--step-timeout` (padrão 3600 s; passo travado
+  para a onda com exit 124); `risk_triage_run` (900 s) e `session_lot check` (3600 s) também têm timeout.
+  Tipos: mypy passa sem `--follow-imports=silent` (anotações em `opcodes`, `hitl`, `session_usage`).
+- `db/store.py`: espera de até 30 s por escrita concorrente (`timeout`), docstring deixa de dizer WAL (não é usado).
+- `wave.py`: onda de várias cenas grava `wave_last_<primeira>_+N.log` (antes sobrescrevia `wave_last.log`).
+- `risk_triage_run.py`: `claude` fora do PATH vira mensagem clara; `cli ollama-pull` recusa nome começando com `-`.
+- `session_part.py`: erro claro quando o lote não tem as seções 7 e 8; testes novos (`session_part`, `session_lot`).
+- Gate da onda por cena (ADR 0017): `quality_gate.py --scenes` bloqueia só item das cenas do pedido (resto vira aviso);
+  `wave.py` passa as cenas aos dois gates e, para não perder pendência, recusa abrir onda nova (cena sem pack) com
+  escalonamento aberto de outra cena (`wave.entry_problems`).
+- `run_scene`: os eventos `build_plan`/`verify` com `result=fail` ganham `code` (token, newline, byte_budget, tabela,
+  risk, round_trip, outro) e `reason` passa a ser a 1ª linha de erro depois do cabeçalho `ERROS:`/`FALHAS:`.
+- `model.read_translation`: `translations_<cena>.json` do subagente em cp1252, JSON quebrado ou sem `lines` vira
+  `invalid_translation_file` (evento `translate` com `result=invalid_output` e `backend`), com a instrução de regravar em
+  UTF-8; antes saía `api_translate_failed` sem causa. A outra codificação nunca é aceita.
+- `hitl.py resolve`: aceite de escalonamento do tradutor (sem `term`) passa a ser contado à parte ("N aceite(s) do
+  tradutor"); "alias no glossário" e o aviso de `state_index.py` só aparecem quando o glossário mudou de fato.
+- `glossary_lint.py --scenes` (o `wave.py` passa as cenas do pedido): só achado dessas cenas bloqueia; achado de outra
+  cena vira aviso (exit 0, lista em `outside` no JSON). Antes um achado de cena fora da onda parava o `wave`.
+- `hitl.py resolve`: escalonamento do tradutor (`kind=tradutor`) sem `term` e com `alias` preenchido é aceito
+  como está (limpa `escalate`, entra no `hitl_log`); antes ficava em aberto para sempre (17 de 23 no utawarerumono_prelude).
+- `run_scene`: os eventos `build_plan`/`verify` com `result=fail` ganham `reason` (1ª linha de erro da saída, até 160
+  caracteres) no `events.jsonl`; antes só o `exit`.
+- `connector.data_dir_default` (caminho relativo ao projeto, nunca absoluto) em `project.json`: o `run_scene` usa
+  quando a env de `data_dir_env` não está setada (a env setada sempre vence); subagente deixa de exportar a variável.
+- `phase_marks.jsonl` do utawarerumono_prelude: rótulos soltos `translate` e `3.` fundidos na fase `3` (dado local).
+- `content_guard.py`: `.ps1` entra na allowlist de extensões (e na CI, que usa o mesmo guard), para versionar o
+  lançador `.claude/skills/rodar-onda/rodar_ondas.ps1` (modo contínuo da skill `rodar-onda`: uma sessão
+  `claude -p` por onda, para na primeira `PARADA`/`FIM`/erro; Windows/PowerShell). Teste em `test_content_guard.py`.
+  Enquanto a allowlist com `.ps1` não chega à `main` (o hook de `pre-commit` usa o guard de lá), o lançador fica
+  no `.gitignore` e só existe na máquina local; remover a linha do `.gitignore` depois do merge.
+- Camada de controle `.claude/` (modo contínuo, sem mudança no runtime): `rodar_ondas.ps1` ganha `-Lote N`,
+  `logs/estado.json` (próxima onda e nº do lote), espera do limite de sessão da assinatura (refaz a onda após o
+  horário de liberação, até 3 vezes) e chama `resumo_lote.py` na saída (cenas e falas do lote, custo, overhead, fim
+  de cada onda; lê só `api_ledger.jsonl` e `run_state.json`). Skill `rodar-onda`: passo 5c (retrotradução Opus das
+  falas `high` quando o `quality_gate` acusa `SEM COBERTURA`) e escalonamento que **para** a onda com tabela, em vez
+  de ser adiado (o gate bloqueia a onda seguinte com escalonamento aberto). `scene-translator.md`: nunca cortar termo
+  `manter_original` ao abreviar para o `byte_budget` e conferir o `glossary_lint` das próprias cenas antes de
+  encerrar (as paradas das ondas 6 e 8 vinham disso). Ainda sem teste de ponta a ponta.
+
+- `run_scene`: antes do `build_plan` imprime `[pre]` com as falas que já se sabe que vão falhar (quebra de linha
+  real no JSON; contagem do token de quebra diferente da fonte; `model.precheck`) e conserta o mecânico
+  (`model.fix_newlines`: quebra real → token, token a mais que a fonte não tem sai; o que o caminho api já fazia).
+  Estouro de `byte_budget` fica de fora de propósito: no utawarerumono 7 de 26 cenas verified têm fala acima do
+  budget por linha (o conector não o impõe por fala), então seria falso positivo; o `_fitting_loop` segue
+  reagindo ao exit 3 do verify. Antes cada erro custava uma rodada.
+- `hitl.py resolve` tira o `escalate` da fala decidida; antes o `collect` da onda seguinte a recolhia de novo.
+- `wave.py` com uma cena só grava `artifacts/wave_last_<cena>.log` (subagentes em paralelo não se sobrescrevem);
+  o `scene-translator` passa a usar `scratch/<CENA>/` para temporários.
+- `kb_phase.py <projeto> onda --scenes <cenas> [--max N]`: lista os candidatos de lore/nome sem forma na KB só
+  nas cenas da onda (vizinhança com teto, como o RAG da API), inclusive os que aparecem 1x; filtra gemidos
+  (`Mmm`, `Uhhh`). Roda antes de traduzir, para a decisão vir uma vez só em vez de virar escalonamento por cena.
+  Não bloqueia. Limite medido: só enxerga nome com inicial maiúscula (ver benchmark no ROADMAP do projeto).
+- `kb_phase._scan`: o token literal de quebra (barra-n) vira espaço (antes grudava na palavra seguinte: "nbecause") e
+  nome composto não cruza mais o fim de uma fala com o início da próxima (`_CAP_RUN` só junta espaço/tab).
+- `kb_phase.discover`, causa raiz do ruído: maiúscula de início de fala não prova nome. Nome composto só é forte
+  com ocorrência em meio de frase (antes bastava ser composto: "Battle Results", "Guide X", "Including X"); palavra
+  cortada por `--` ("Wha--") deixa de ser candidata; 's/'ll/'d/'re/'ve/'m colados saem do candidato. No jogo todo,
+  `gap` 91 → 65 e `onda` 128 → 100, só removendo composto de verbo/título + nome , interjeição e título de interface entre colchetes (`[About ...]`).
+- `kb_phase onda`, truecasing: vocabulário em minúscula do jogo todo (`_lower_vocab`). Palavra comum no início de um
+  composto é aparada quando o resto nunca aparece em minúscula ("Guide X" → "X"); candidato que nunca aparece em
+  minúscula e recorre em 2 frases com companhia (`_company`; som solto como "Plop!" fica de fora) entra na lista da
+  onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
+- Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
+
+## Não lançado — correção de medição (PATCH, sem bump ainda)
+
+`session_usage.py`: o custo de sessão sumia do ledger quando a sessão só chamava `wave.py`, porque a cena só
+era aberta por `run_scene.py` na linha de comando e `wave.py` chama o `run_scene` por dentro. Agora os dois
+abrem a cena (`_RUNNER`); teste de regressão em `test_session_usage.py`. O `rebuild` recupera o custo perdido.
+`wave.py` agora ecoa (`phase_lines`) as linhas `AGUARDANDO traducao|back-translation` e `status final =` do
+`run_scene`, que são o que o `session_usage` lê para separar tradução de governança e fechar a cena na janela;
+teste em `test_wave.py`. Sessões gravadas antes disso ficam sem a divisão por fase (a transcrição não tem o sinal).
+
 ## 2026-10-14 — v2.0.0: pós-bof4, o que subiu do projeto para o framework
 
 MAJOR (ADR 0013): a flag `--skip-connector-gate` foi removida (o gate não tem mais bypass), projeto com `db` passa a exigir `requirements-ml.txt` e a cópia intocada do `_skeleton` é bloqueada pelo `connector_gate`. Além disso, só adições (caminho de sessão em lote, patcher, `touched`, `scene_dedup`, `budget`, skills `08b`/`08c`). Lições do bof4 levadas ao framework (tag `v2.0.0` depois do merge da PR). Só framework;
