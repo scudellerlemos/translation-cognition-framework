@@ -105,6 +105,26 @@ jobs:
           python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ framework/distribution/ \
             -v --tb=short --cov --cov-report=term-missing --cov-fail-under=90
 
+  # Windows e o ambiente real do operador (ADR 0018: atomic_write/lock de arquivo se comportam diferente do
+  # Linux -- 27/1800 linhas corrompidas medidas la). Mesma suite do job coverage, sem medir cobertura.
+  windows:
+    name: Suite no Windows (estado atomico, locks, caminhos)
+    runs-on: windows-latest
+    env:
+      PYTHONIOENCODING: utf-8
+      TCF_ALLOW_NO_ML: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Suite (sem cobertura)
+        run: python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ framework/distribution/ -q --tb=short -p no:cacheprovider
+
   # Contrato do conector (round-trip byte-idêntico = oráculo). Jobs SEPARADOS por projeto:
   # test_roundtrip.py tem basename repetido entre bof4/uta e colidiria numa coleta única.
   # Sem o binário/bundle do jogo (gitignored), os testes que o exigem fazem pytest.skip;
@@ -257,7 +277,7 @@ jobs:
   all-checks:
     name: All checks — agregador (branch protection)
     if: github.event_name == 'pull_request'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows]
     runs-on: ubuntu-latest
     steps:
       - run: echo "Todos os checks de test.yml passaram."
@@ -269,7 +289,7 @@ jobs:
   mark-staging:
     name: Marca Staging (main validado)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks]
+    needs: [env-guard, mypy, coverage, connector-bof4, connector-uta, connector-souldiers, connector-trails, connector-demo, connector-skeleton, connector-io, hooks, windows]
     runs-on: ubuntu-latest
     environment: Staging
     steps:
