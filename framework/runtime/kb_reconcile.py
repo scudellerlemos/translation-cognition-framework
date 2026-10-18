@@ -133,7 +133,7 @@ def promote(root) -> dict:
         return {"promoted": False, **c,
                 "note": "research_log.md nao esta no formato esperado ('**Status:**'/'**human_input:**') "
                         "-- nao foi possivel promover automaticamente. Corrija o formato manualmente."}
-    rl.write_text(new_txt, encoding="utf-8")
+    paths.atomic_write(rl, new_txt)
     return {"promoted": True, **c}
 
 

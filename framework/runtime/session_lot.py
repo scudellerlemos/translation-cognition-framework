@@ -154,8 +154,8 @@ def _load(s):
 
 
 def _save(s, data):
-    paths.translations(ROOT, s, context_pack.scene_id_of(s)).write_text(
-        json.dumps(data, ensure_ascii=False, indent=1), encoding='utf-8')
+    paths.atomic_write(paths.translations(ROOT, s, context_pack.scene_id_of(s)),
+                       json.dumps(data, ensure_ascii=False, indent=1))
 
 
 # palavra que nao pode ficar pendurada no fim da linha (artigo, preposicao, conjuncao, pronome atono)

@@ -390,7 +390,7 @@ def apply_frontier(root, chap):
     if chap != "all" and cur and _pos(cur) >= _pos(last):
         return cur                                     # nunca regride (so no modelo por-cena)
     new = txt[:m.start()] + m.group(1) + last + m.group(3) + txt[m.end():]
-    cfgp.write_text(new, encoding="utf-8")
+    paths.atomic_write(cfgp, new)
     return last
 
 

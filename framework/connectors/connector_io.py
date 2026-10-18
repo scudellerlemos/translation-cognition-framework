@@ -259,8 +259,11 @@ def sync_translations_db(root: Path, scene: str, sfx: str,
                 if r["scene_id"] == scene_id]
 
     scene_dir = root / "artifacts" / "scenes" / scene
-    with (scene_dir / f"approved_{sfx}.csv").open("w", newline="", encoding="utf-8") as fh:
+    dest = scene_dir / f"approved_{sfx}.csv"
+    tmp = dest.with_name(dest.name + ".tmp")          # atomico: tmp + replace (mesmo padrao de write_dialogs_csv)
+    with tmp.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["offset", "text_target"])
         w.writerows((r["offset"], r["target"]) for r in rows)
+    os.replace(tmp, dest)
     return True

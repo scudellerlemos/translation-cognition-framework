@@ -98,9 +98,7 @@ def _validate_connector_cfg(cfg: dict) -> list:
 def _checkpoint(root: Path, scene: str, patch: dict):
     p = paths.run_state(root)
     with paths.locked(p):   # ler-alterar-gravar sob trava: cenas em paralelo nao perdem o checkpoint uma da outra
-        state = {}
-        if p.is_file():
-            state = json.loads(p.read_text(encoding="utf-8"))
+        state = paths.read_json(p, {})
         scenes = state.setdefault("scenes", {})
         # S4: _ts = epoch do último checkpoint desta cena (audit trail temporal)
         scenes[scene] = {**scenes.get(scene, {}), **patch, "_ts": round(time.time(), 3)}

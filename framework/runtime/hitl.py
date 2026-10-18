@@ -111,7 +111,7 @@ def corpus(root: Path) -> tuple[int, int, str]:
 def accepted_scope(root: Path) -> dict | None:
     """Ultimo aceite de escopo registrado no hitl_log.jsonl (versionado: o aceite acompanha o projeto)."""
     p = paths.artifacts(root) / "hitl_log.jsonl"
-    recs = [json.loads(ln) for ln in p.read_text(encoding="utf-8").splitlines() if ln.strip()] if p.is_file() else []
+    recs = paths.read_jsonl(p)
     return next((r for r in reversed(recs) if r.get("kind") == "escopo"), None)
 
 
@@ -129,7 +129,7 @@ def scope_problems(root: Path, n_scenes: int, n_lines: int) -> list[str]:
 # --- caminho (sessao ou api) ------------------------------------------------------------------------
 def chosen_path(root: Path) -> dict | None:
     p = paths.artifacts(root) / "hitl_log.jsonl"
-    recs = [json.loads(ln) for ln in p.read_text(encoding="utf-8").splitlines() if ln.strip()] if p.is_file() else []
+    recs = paths.read_jsonl(p)
     return next((r for r in reversed(recs) if r.get("kind") == "caminho"), None)
 
 
@@ -408,14 +408,15 @@ def _ratify_csv(root: Path, reviewer: str, terms: list[str]) -> int:
     else:
         todo = [p[0] for p in pending_glossary(root, corpus(root)[2])]
     kr = paths.kb_ratified(root)
-    new = not kr.is_file()
-    with kr.open("a", encoding="utf-8", newline="") as fh:
-        w = csv.writer(fh)
-        if new:
-            w.writerow(["name", "ratified_by", "date", "note"])
-        for t in todo:
-            w.writerow([t, reviewer, date.today().isoformat(), "glossario: termo ratificado (hitl)"])
-            _log(root, kind="glossario", by=reviewer, term=t, action="ratify")
+    with paths.locked(kr):            # dois ratificadores ao mesmo tempo nao misturam linhas nem duplicam o cabecalho
+        new = not kr.is_file()
+        with kr.open("a", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            if new:
+                w.writerow(["name", "ratified_by", "date", "note"])
+            for t in todo:
+                w.writerow([t, reviewer, date.today().isoformat(), "glossario: termo ratificado (hitl)"])
+                _log(root, kind="glossario", by=reviewer, term=t, action="ratify")
     return len(todo)
 
 

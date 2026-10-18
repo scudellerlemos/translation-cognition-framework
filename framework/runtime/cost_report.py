@@ -62,10 +62,7 @@ def _line_counts(root: Path, verified: set[str]) -> tuple[int, int] | None:
 
 
 def _verified_scenes(root: Path) -> set[str]:
-    p = paths.run_state(root)
-    if not p.is_file():
-        return set()
-    scenes = json.loads(p.read_text(encoding="utf-8")).get("scenes", {})
+    scenes = paths.read_json(paths.run_state(root), {}).get("scenes", {})
     return {s for s, st in scenes.items()
             if st.get("status") == "verified" and st.get("verified") is True}
 
