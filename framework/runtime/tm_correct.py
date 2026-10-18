@@ -168,10 +168,8 @@ def _read_approved(path: Path) -> list[dict]:
 
 
 def _write_approved(path: Path, rows: list[dict]) -> None:
-    with path.open("w", encoding="utf-8", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["offset", "text_target"])
-        w.writerows([(r.get("offset", ""), r.get("text_target", "")) for r in rows])
+    paths.atomic_write_csv(path, ["offset", "text_target"],
+                           [(r.get("offset", ""), r.get("text_target", "")) for r in rows])
 
 
 def _rewrite(before, compiled, scene=None, off=None):

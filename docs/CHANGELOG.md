@@ -89,6 +89,20 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
 - Cobertura real do ML virou obrigatória: `ml-coverage-optional.yml` é workflow reutilizável chamado pelo job `ml-coverage` de `test.yml`, que entra no `needs` de `all-checks` e `mark-staging` (a branch protection não muda). Teste impede remover do agregador.
 - "Require review from Code Owners" fica desligado de propósito: com um único autor, travaria os PRs dele mesmo.
 
+## Não lançado — Onda 2: integridade e concorrência do estado (PATCH, sem bump ainda)
+
+- Escrita segura de estado que ainda gravava direto: `project.json` (`kb_phase.apply_frontier`, uma queda no meio
+  destruía o manifesto), tradução (`session_lot._save`), `research_log.md` (`kb_reconcile.promote`), CSV de aprovados
+  (`tm_correct`, `connector_io.sync_translations_db`). Novo `paths.atomic_write_csv`.
+- Concorrência: `session_usage.rebuild` reescrevia o ledger sem trava e perdia linhas de API anexadas ao mesmo
+  tempo (teste com processos paralelos falha 3 de 3 no código antigo); `hitl._ratify_csv` passa a gravar sob trava.
+- Leitura: `paths.read_json` (arquivo corrompido levanta `StateCorrupt` com arquivo, posição e como recuperar, sem
+  recriar o estado em silêncio) e `paths.read_jsonl` (linha truncada de ledger/log é ignorada com um aviso, em vez
+  de derrubar a leitura). Adotados em `run_scene._checkpoint`, `cost_report`, `session_usage.marks`, `hitl`,
+  `state_index`.
+- `test_state_writers.py`: lista de escritores de estado que não podem usar `write_text` direto (só cresce) e testes
+  de queda no meio da troca, corrupção e concorrência.
+
 ## Não lançado — Onda 1: CI, segurança, configuração e docs (PATCH, sem bump ainda)
 
 - `validate.py`: `project.json` com campo de tipo errado (ex.: `"hitl": "true"`, `"batch_size": "30"`) agora é

@@ -85,7 +85,7 @@ def _size(blocks: list) -> tuple[int, int]:
 
 def marks(root) -> list[tuple[float, str]]:
     p = paths.artifacts(root) / "phase_marks.jsonl"
-    rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()] if p.is_file() else []
+    rows = paths.read_jsonl(p)
     return sorted((r["t"], r["stage"]) for r in rows)
 
 
@@ -258,8 +258,9 @@ def rebuild(root) -> list[dict]:
     """Refaz as linhas de sessao a partir das transcricoes inteiras (1 requisicao = 1 message.id). Use ao fechar
     uma medicao: o sync incremental pode pegar mensagem ainda em andamento. As linhas de API ficam intactas."""
     lp = paths.ledger(root)
-    keep = [x for x in lp.read_text(encoding="utf-8").splitlines() if json.loads(x).get("source") != "session"]
-    lp.write_text("".join(x + "\n" for x in keep), encoding="utf-8")
+    with paths.locked(lp):          # appenders do ledger usam a mesma trava: nenhuma linha de API se perde
+        keep = [x for x in lp.read_text(encoding="utf-8").splitlines() if json.loads(x).get("source") != "session"]
+        paths.atomic_write(lp, "".join(x + "\n" for x in keep))
     return sync(root)
 
 

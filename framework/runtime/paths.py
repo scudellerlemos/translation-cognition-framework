@@ -14,7 +14,11 @@ NB de governanca: estes nomes sao CONGELADOS (caps ja traduzidos dependem deles)
 migracao dos artefatos em disco — nao e refactor livre. Ver NAMING.md (contrato estavel).
 """
 import contextlib
+import csv
+import io
+import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -71,6 +75,51 @@ def atomic_write(p, text: str, encoding: str = "utf-8", newline: str | None = No
     finally:
         with contextlib.suppress(OSError):
             tmp.unlink()
+
+
+class StateCorrupt(ValueError):
+    """Arquivo de estado ilegivel (JSON invalido). Nunca e recriado em silencio: seguir adiante apagaria o historico."""
+
+
+def read_json(p, default=None):
+    """Le um JSON de estado. Ausente -> `default`. Invalido -> StateCorrupt dizendo o arquivo, o ponto do erro e
+    como recuperar (o estado e gravado com atomic_write, entao corrupcao e rara: edicao manual ou disco)."""
+    p = Path(p)
+    if not p.is_file():
+        return default
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise StateCorrupt(f"estado corrompido: {p} (linha {e.lineno}, coluna {e.colno}: {e.msg}). Nada foi alterado. "
+                           f"Restaure a versao anterior (`git checkout -- {p.name}` ou backup) e rode de novo.") from e
+
+
+def read_jsonl(p) -> list[dict]:
+    """Le um .jsonl de ledger/log. Linha invalida (tipicamente a ultima, truncada por uma queda) e ignorada com
+    UM aviso em stderr, em vez de derrubar a leitura inteira. Ausente -> []."""
+    p = Path(p)
+    if not p.is_file():
+        return []
+    rows, bad = [], 0
+    for ln in p.read_text(encoding="utf-8").splitlines():
+        if not ln.strip():
+            continue
+        try:
+            rows.append(json.loads(ln))
+        except json.JSONDecodeError:
+            bad += 1
+    if bad:
+        print(f"AVISO: {bad} linha(s) invalida(s) ignorada(s) em {p}", file=sys.stderr)
+    return rows
+
+
+def atomic_write_csv(p, header: list[str], rows, encoding: str = "utf-8") -> None:
+    """CSV (cabecalho + linhas) gravado com `atomic_write`: nunca deixa o CSV de aprovados/estado pela metade."""
+    buf = io.StringIO(newline="")
+    w = csv.writer(buf)
+    w.writerow(header)
+    w.writerows(rows)
+    atomic_write(p, buf.getvalue(), encoding=encoding, newline="")
 
 
 def append_line(p, line: str, encoding: str = "utf-8", timeout: float = 30.0, stale: float | None = None) -> None:

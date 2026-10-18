@@ -447,7 +447,7 @@ def _check_sync(root: Path) -> None:
     if not tm_path.is_file():
         print("TM vazia — nenhuma cena traduzida.")
         return
-    entries = [json.loads(ln) for ln in tm_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    entries = paths.read_jsonl(tm_path)
     stale = {e["scene"] for e in entries
              if e.get("doctrine_version") and e["doctrine_version"] != current}
     no_ver = {e["scene"] for e in entries if not e.get("doctrine_version")}
