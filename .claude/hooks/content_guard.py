@@ -16,7 +16,7 @@ import sys
 
 ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg", "ps1",
                "gitignore", "gitkeep", "gitattributes", "example", "coveragerc-ml"}
-ALLOWED_NAMES = {"LICENSE", "VERSION"}
+ALLOWED_NAMES = {"LICENSE", "VERSION", "CODEOWNERS"}
 # projects/demo e sintetico (dialogo ficticio) -- unico lugar onde dialogs.csv e versionado.
 _DEMO = re.compile(r"^projects/demo/artifacts/.*/dialogs\.csv$")
 DENIED_PATHS = [(re.compile(rx), why) for rx, why in [

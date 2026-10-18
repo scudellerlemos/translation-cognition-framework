@@ -35,6 +35,7 @@ ALLOW = [
     ".env.example",
     "LICENSE",
     "VERSION",
+    ".github/CODEOWNERS",
     ".gitignore",
     "README.md",
     "framework/runtime/kb_gate.py",
