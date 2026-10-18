@@ -6,6 +6,14 @@ Uma funcao por secao do prompt; a ordem das secoes e a de `render_prompt`.
 """
 from __future__ import annotations
 
+import state_index
+
+
+def _linhas_com_tm(pack: dict) -> int:
+    """Quantas linhas do pacote tem traducao exata na TM (a TM pode trazer fala de fora do pacote, entao nao basta contar)."""
+    chaves = {state_index._key(e.get("source", "")) for e in pack["tm_exact"]}
+    return sum(1 for r in pack["lines"] if state_index._key(r.get("source", "")) in chaves)
+
 
 def _cabecalho(pack: dict) -> list[str]:
     return [
@@ -13,7 +21,7 @@ def _cabecalho(pack: dict) -> list[str]:
         "",
         "> Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR",
         "> seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.",
-        f"> Memoria de traducao: {len(pack['tm_exact'])} de {pack['n_lines']} linhas ja tem traducao exata (secao TM).",
+        f"> Memoria de traducao: {_linhas_com_tm(pack)} de {pack['n_lines']} linhas ja tem traducao exata (secao TM).",
         "",
         "---",
         "",
