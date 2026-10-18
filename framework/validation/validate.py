@@ -66,12 +66,34 @@ def _check_risk(label: str, lines: list[dict]) -> list[Issue]:
     return out
 
 
+# Tipo esperado dos campos opcionais do project.json que o runtime le. Campo ausente e valido; campo com
+# tipo errado (ex.: "hitl": "true", "batch_size": "30") deixaria de funcionar sem aviso. bool nao conta como int.
+_MANIFEST_TYPES: dict[str, tuple[type, ...]] = {
+    "title": (str,), "source_language": (str,), "target_language": (str,), "source": (dict,),
+    "batch_size": (int,), "hitl": (bool,), "db": (dict,), "connector": (dict,), "profile": (dict,),
+    "rag_min_score": (int, float, type(None)), "formatting_tokens": (list,), "formatting_token_patterns": (list,),
+    "length_constraints": (dict,), "byte_budget_exceptions": (dict,), "system_scenes": (list,),
+    "kb_frontier": (str,), "media_type": (str,), "media_profile": (str,), "system_line_convention": (str,),
+}
+
+
+def _check_manifest_types(cfg: dict) -> list[Issue]:
+    out = []
+    for k, ok in _MANIFEST_TYPES.items():
+        v = cfg.get(k)
+        if k in cfg and (not isinstance(v, ok) or (isinstance(v, bool) and bool not in ok)):
+            names = "/".join("null" if t is type(None) else t.__name__ for t in ok)
+            out.append(_E("project.json", f"{k}: esperado {names}, veio {type(v).__name__}"))
+    return out
+
+
 def _check_manifest(cfg: dict) -> tuple[list[Issue], list[str], list[tuple[str, re.Pattern]]]:
     """Campos obrigatórios do project.json + tokens literais validos + formatting_token_patterns
     compilados (regex, nao literais: tokens parametrizados de indice variavel, ex.: cor {c<N>}/{c-1}/{c-})."""
     out = [_E("project.json", f"campo obrigatório ausente: {k}")
            for k in ("title", "source_language", "target_language", "source")
            if not cfg.get(k)]
+    out += _check_manifest_types(cfg)
     if "formatting_tokens" not in cfg:   # [] explicito = "sem tokens", valido (mesma regra do runtime)
         out.append(_E("project.json", "campo obrigatório ausente: formatting_tokens"))
     # regra UNICA compartilhada com o runtime (connector_io) -- todos os erros, nao so o 1o; as

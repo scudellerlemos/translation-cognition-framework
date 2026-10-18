@@ -48,8 +48,7 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
 - `content_guard.py`: `.ps1` entra na allowlist de extensões (e na CI, que usa o mesmo guard), para versionar o
   lançador `.claude/skills/rodar-onda/rodar_ondas.ps1` (modo contínuo da skill `rodar-onda`: uma sessão
   `claude -p` por onda, para na primeira `PARADA`/`FIM`/erro; Windows/PowerShell). Teste em `test_content_guard.py`.
-  Enquanto a allowlist com `.ps1` não chega à `main` (o hook de `pre-commit` usa o guard de lá), o lançador fica
-  no `.gitignore` e só existe na máquina local; remover a linha do `.gitignore` depois do merge.
+  O lançador passou a ser versionado depois que a allowlist com `.ps1` chegou à `main` (Onda 1).
 - Camada de controle `.claude/` (modo contínuo, sem mudança no runtime): `rodar_ondas.ps1` ganha `-Lote N`,
   `logs/estado.json` (próxima onda e nº do lote), espera do limite de sessão da assinatura (refaz a onda após o
   horário de liberação, até 3 vezes) e chama `resumo_lote.py` na saída (cenas e falas do lote, custo, overhead, fim
@@ -83,6 +82,20 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
   minúscula e recorre em 2 frases com companhia (`_company`; som solto como "Plop!" fica de fora) entra na lista da
   onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
 - Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
+
+## Não lançado — Onda 1: CI, segurança, configuração e docs (PATCH, sem bump ainda)
+
+- `validate.py`: `project.json` com campo de tipo errado (ex.: `"hitl": "true"`, `"batch_size": "30"`) agora é
+  ERROR na validação, em vez de falhar sem aviso no runtime. Campo ausente continua válido. Teste confere também
+  todos os `projects/*/project.json`.
+- `test_docs_integrity.py`: ADRs sequenciais, com título e status válidos; `VERSION` igual à última versão do
+  CHANGELOG; todo teste do embedder listado no workflow de cobertura de ML (a falha de cobertura do PR #86 teria
+  sido pega aqui).
+- `SECURITY.md`: seção "Texto do jogo como dado não confiável" e runbook de rotação de chave;
+  `test_untrusted_text_boundary.py` falha se uma chamada de LLM ganhar `tools`/`tool_choice`, se a triagem perder
+  `--allowedTools ''` ou se as ferramentas do `scene-translator` forem alargadas.
+- CI: job `windows` (suíte completa em `windows-latest`) entra no agregador `all-checks`.
+- `rodar_ondas.ps1` versionado (linha do `.gitignore` removida).
 
 ## Não lançado — correção de medição (PATCH, sem bump ainda)
 
