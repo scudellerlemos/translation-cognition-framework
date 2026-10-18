@@ -264,7 +264,8 @@ def _submit_back_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, m, ro
             data["reviewed"] = len(data.get("entries", []))
             paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
             status[scene] = "reviewed"
-        except Exception:
+        except Exception as exc:
+            print(f"[back-batch] AVISO: saida de {scene} nao processada ({type(exc).__name__}) -- parse_failed.")
             status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
     return status
 

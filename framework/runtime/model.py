@@ -618,7 +618,8 @@ def _parse_batch_lines(pack, text):
     struct_rx = _structural_rx(pack.get("project_constraints", {}))
     try:
         parsed = _to_map(json.loads(text))
-    except Exception:
+    except Exception as exc:
+        print(f"[batch] AVISO: resposta de batch ilegivel ({type(exc).__name__}) -- rodada sem linhas novas.")
         return {}
     out = {}
     for off, v in parsed.get("lines", {}).items():
