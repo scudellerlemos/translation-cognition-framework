@@ -18,16 +18,79 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
+import os
+import signal
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import alerts
+import cost_report
 import paths
 
 _HERE = Path(__file__).resolve().parent
 LOG = "wave_last.log"
 STEP_TIMEOUT = 3600        # s por passo: passo travado para a onda com mensagem, em vez de prender a sessao
+BUDGET_RC = 4              # a onda parou porque o gasto dela chegou ao teto
+BUDGET_POLL = 1.0          # s entre leituras do ledger enquanto um passo roda
+
+
+class _Teto(Exception):
+    """O gasto da onda chegou ao teto enquanto o passo rodava (o passo ja foi morto)."""
+
+
+def wave_budget(project: str, cli: float | None) -> float | None:
+    """Teto da onda em USD: `--max-usd` vence; senao `budget.max_usd_per_wave` do project.json; senao sem teto."""
+    if cli is not None:
+        return cli
+    p = paths.project_json(Path(project))
+    cfg = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else {}
+    v = (cfg.get("budget") or {}).get("max_usd_per_wave")
+    return float(v) if v is not None else None
+
+
+def spent_since(project: str, t0: float) -> float:
+    """Gasto (API paga + equivalente de sessao) das linhas do ledger gravadas desde `t0`."""
+    return sum(r.get("api_equiv_usd") or r.get("cost_usd", 0.0)
+               for r in cost_report.read_ledger(Path(project)) if r.get("t", 0.0) >= t0)
+
+
+def _matar(p: subprocess.Popen) -> None:
+    """Mata o passo E os processos que ele abriu (run_scene --jobs abre um por cena)."""
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True, check=False)
+    else:
+        with contextlib.suppress(ProcessLookupError, PermissionError):
+            os.killpg(p.pid, signal.SIGKILL)  # type: ignore[attr-defined]
+    with contextlib.suppress(OSError):
+        p.kill()
+
+
+def _executa(argv: list[str], timeout: float, estourou=None):
+    """Roda um passo. Sem `estourou` (sem teto) e o subprocess.run de sempre. Com `estourou` (callable -> bool),
+    confere o teto a cada BUDGET_POLL s e mata o passo (e os filhos) quando passar: parada dura, nao so aviso."""
+    if estourou is None:
+        return subprocess.run(argv, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                              timeout=timeout)
+    flags = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
+    p = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8",
+                         errors="replace", **flags)    # type: ignore[call-overload]
+    fim = time.monotonic() + timeout
+    while True:
+        try:
+            out, err = p.communicate(timeout=BUDGET_POLL)
+            return subprocess.CompletedProcess(argv, p.returncode, out, err)
+        except subprocess.TimeoutExpired:
+            if estourou():
+                _matar(p)
+                p.communicate()
+                raise _Teto from None
+            if time.monotonic() > fim:
+                _matar(p)
+                p.communicate()
+                raise
 
 
 def _copies(project: str, scenes: list[str]) -> set[str]:
@@ -106,7 +169,7 @@ class _LogAnexo:
 
 
 def run(project: str, scenes: list[str], backend: str = "in-session", require_back: bool = False,
-        step_timeout: float = STEP_TIMEOUT) -> int:
+        step_timeout: float = STEP_TIMEOUT, max_usd: float | None = None) -> int:
     probs = entry_problems(project, scenes)
     if probs:
         print("BLOQUEADO na entrada da onda: " + " | ".join(probs))
@@ -115,12 +178,28 @@ def run(project: str, scenes: list[str], backend: str = "in-session", require_ba
     log = Path(project) / "artifacts" / log_name(scenes)
     rc = 0
     todo = steps(project, scenes, backend, require_back)
+    teto = wave_budget(project, max_usd)
+    t0 = time.time()
+    estourou = (lambda: spent_since(project, t0) >= teto) if teto is not None else None
+    sc0 = scenes[0] if scenes else None
+
+    def parar_por_teto(name: str, fh) -> int:
+        gasto = spent_since(project, t0)
+        fh.write(f"===== {name} (TETO DA ONDA: gasto ${gasto:.2f} >= ${teto:.2f}) =====\n")
+        print(f"PAROU em {name}: o gasto da onda (${gasto:.2f}) chegou ao teto de ${teto:.2f} "
+              f"(--max-usd ou budget.max_usd_per_wave); detalhe em {log}")
+        alerts.notify(project, name, "budget", sc0, BUDGET_RC)
+        return BUDGET_RC
+
     with _LogAnexo(log) as fh:
         while todo:
             name, cmd = todo.pop(0)
+            if estourou and estourou():
+                return parar_por_teto(name, fh)
             try:
-                p = subprocess.run([sys.executable, "-X", "utf8", str(_HERE / cmd[0]), *cmd[1:]], capture_output=True,
-                                   text=True, encoding="utf-8", errors="replace", timeout=step_timeout)
+                p = _executa([sys.executable, "-X", "utf8", str(_HERE / cmd[0]), *cmd[1:]], step_timeout, estourou)
+            except _Teto:
+                return parar_por_teto(name, fh)
             except subprocess.TimeoutExpired:
                 fh.write(f"===== {name} (TIMEOUT apos {step_timeout:.0f} s) =====\n")
                 print(f"PAROU em {name}: sem resposta em {step_timeout:.0f} s (--step-timeout); detalhe em {log}")
@@ -156,8 +235,10 @@ def main():
     ap.add_argument("--backend", default="in-session", choices=["in-session", "api"])
     ap.add_argument("--require-back", action="store_true")
     ap.add_argument("--step-timeout", type=float, default=STEP_TIMEOUT, help="segundos maximos por passo (padrao 3600)")
+    ap.add_argument("--max-usd", type=float, default=None,
+                    help="teto de gasto da onda em USD (padrao: budget.max_usd_per_wave do project.json; sem ele, sem teto)")
     a = ap.parse_args()
-    sys.exit(run(a.project, a.scene, a.backend, a.require_back, a.step_timeout))
+    sys.exit(run(a.project, a.scene, a.backend, a.require_back, a.step_timeout, a.max_usd))
 
 
 if __name__ == "__main__":

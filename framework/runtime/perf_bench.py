@@ -54,9 +54,9 @@ def _op_state_index_tm(tmp: Path) -> None:
     for n in range(20):
         pf = paths.translation_plan(tmp, f"s{n}", f"s{n}")
         pf.parent.mkdir(parents=True, exist_ok=True)
-        pf.write_text(json.dumps({"lines": [
+        paths.atomic_write(pf, json.dumps({"lines": [
             {"offset": f"{n}:{k}", "text_source": f"fonte {n} {k}", "base_translation": f"alvo {n} {k}"}
-            for k in range(50)]}), encoding="utf-8")
+            for k in range(50)]}))
     state_index.build_tm(paths.artifacts(tmp))
 
 
@@ -70,9 +70,8 @@ def _op_build_pack(tmp: Path) -> None:
         db.upsert_glossary("p", "termo", "alvo")
         db.upsert_voice_card("p", "Ana", lines=["fala"])
         db.upsert_decision("p", "Regra", summary="resumo", tags=["termo"])
-    (tmp / "project.json").write_text(json.dumps(
-        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p", "semantic": False}, "connector": {}}),
-        encoding="utf-8")
+    paths.atomic_write(tmp / "project.json", json.dumps(
+        {"title": "T", "media_type": "game", "db": {"path": "p.db", "project_id": "p", "semantic": False}, "connector": {}}))
     context_pack.build_pack(tmp, "S1")
 
 

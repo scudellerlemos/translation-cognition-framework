@@ -87,6 +87,7 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
 
 - Performance: `runtime/perf_bench.py` mede `append_line`, `build_pack` (sem busca semântica) e `state_index_tm` sobre dados sintéticos, como razão contra uma carga de calibração da própria máquina; `perf_baseline.json` guarda o baseline e regressão acima de 2× vira `::warning::` (`--strict` sai com 1). Workflow `perf.yml` registra a tendência a cada PR/push sem bloquear. `test_perf_bench.py` falha se o baseline não cobrir uma operação ou a detecção de regressão quebrar.
 - Observabilidade: `events.validate` define o schema dos eventos (campos, etapas conhecidas, só escalares, texto ≤ 200) e um teste falha se o código emitir etapa fora dele; `obs_report` ganha os indicadores taxa de sucesso da onda e custo por cena; `alerts.py` + `wave.py`: falha, timeout ou bloqueio de entrada geram evento `alert`, `alerts.jsonl` e webhook opcional (`TCF_ALERT_WEBHOOK`). `alerts.py` e `perf_bench.py` entram no mypy.
+- Custo: teto de gasto por onda com parada dura. `wave.py --max-usd N` (ou `budget.max_usd_per_wave` no project.json) soma o ledger desde o início da onda, confere a cada segundo enquanto um passo roda e mata o passo (e os processos filhos) quando passa do teto; não abre o passo seguinte acima dele. Sai com código 4 e gera alerta `budget`.
 
 ## Não lançado — Onda 2, fechamento para a nota 4 (PATCH, sem bump ainda)
 
