@@ -191,8 +191,8 @@ Ainda sem `README.md` próprio — ver `docs/CHANGELOG.md` e `artifacts/decision
 
 ## CI — esteira de verificação (paralela, sem encadeamento)
 
-Existem 7 workflows do GitHub Actions no repo; cada PR (e cada push no `main`) dispara **2** deles
-(`quality.yml` + `test.yml`). Os checks desses 2 rodam em paralelo, em runners isoladas — o tempo
+Existem 8 workflows do GitHub Actions no repo; cada PR (e cada push no `main`) dispara **3** deles
+(`quality.yml` + `test.yml` + `perf.yml`, este só mede tendência e não bloqueia). Os checks rodam em paralelo, em runners isoladas — o tempo
 total é o do maior job, não a soma, e uma falha aparece nomeada por job no PR. Os únicos `needs:`
 são os dois jobs finais do `test.yml`: `all-checks` (agregador exigido pela branch protection) e
 `mark-staging` (só em push no `main`). Os outros 5 são sob demanda: `api-smoke.yml`,

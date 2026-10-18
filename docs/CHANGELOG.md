@@ -83,6 +83,10 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
   onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
 - Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
 
+## Não lançado — Onda 3: medição (PATCH, sem bump ainda)
+
+- Performance: `runtime/perf_bench.py` mede `append_line`, `build_pack` (sem busca semântica) e `state_index_tm` sobre dados sintéticos, como razão contra uma carga de calibração da própria máquina; `perf_baseline.json` guarda o baseline e regressão acima de 2× vira `::warning::` (`--strict` sai com 1). Workflow `perf.yml` registra a tendência a cada PR/push sem bloquear. `test_perf_bench.py` falha se o baseline não cobrir uma operação ou a detecção de regressão quebrar.
+
 ## Não lançado — Onda 2, fechamento para a nota 4 (PATCH, sem bump ainda)
 
 - Varredura em `test_state_writers.py` sem lista de excecoes: todo `write_text`/`write_bytes`/`open("w"|"a")` do framework tem de estar numa funcao que usa `atomic_write`/`atomic_write_csv`, `append_line`, `locked` ou tmp + `replace`. Nao ha classificacao manual de "estado" x "regeneravel": os ~38 pontos que gravavam direto (prompts, packs, CSVs de revisao, relatorios, lotes temporarios, log da onda, scripts de `distribution/`) foram migrados. Escritor novo, ou escrita fora de funcao, falha o teste.
