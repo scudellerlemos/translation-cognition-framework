@@ -6,9 +6,7 @@ custo de uma chamada, e o append ao api_ledger.jsonl. `model`/`run_scene`/`cost_
 """
 from __future__ import annotations
 
-import contextlib
 import json
-import os
 import time
 from pathlib import Path
 
@@ -69,32 +67,11 @@ def _warn_ledger_size(p: Path) -> None:
 
 
 def _ledger_append(p: Path, line: str):
-    """Append atomico ao ledger: usa lock-file cross-platform (O_CREAT|O_EXCL e atomico em POSIX e
-    Windows). Best-effort: se nao conseguir o lock em 1 s, escreve sem lock (ledger e auditoria, nao
-    banco de dados — corrida improvavel e aceitavel como fallback)."""
-    lock = p.with_suffix(".lock")
-    acquired = False
-    for _ in range(50):
-        try:
-            fd = os.open(str(lock), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.close(fd)
-            acquired = True
-            break
-        except FileExistsError:
-            try:                                  # lock orfao (processo morreu segurando): 1 s de espera por append, pra sempre
-                if time.time() - lock.stat().st_mtime > 5:
-                    lock.unlink()
-                    continue
-            except OSError:
-                pass
-            time.sleep(0.02)
-    try:
-        with p.open("a", encoding="utf-8") as f:
-            f.write(line)
-    finally:
-        if acquired:
-            with contextlib.suppress(OSError):        # lock orfao e quebrado pelo proximo writer (>5 s)
-                lock.unlink()
+    """Append atomico ao ledger sob a trava comum de `paths` (a mesma dos demais logs). Trava orfa (dono
+    morreu) e quebrada depois de 5 s. Sem fallback sem trava: no Windows o append concorrente sem trava
+    perde ou mistura linhas; quem nao pega a trava em 30 s recebe TimeoutError (um OSError), que
+    `log_api_call` ja trata avisando."""
+    paths.append_line(p, line, stale=5.0)
 
 
 def log_api_call(root, scene, kind, model, usage, *, batch=False):

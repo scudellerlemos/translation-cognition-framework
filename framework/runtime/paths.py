@@ -20,12 +20,15 @@ from pathlib import Path
 
 
 @contextlib.contextmanager
-def locked(p, timeout: float = 30.0):
+def locked(p, timeout: float = 30.0, stale: float | None = None):
     """Trava entre processos p/ ler-alterar-gravar `p` (run_state.json com cenas rodando em paralelo:
     sem ela um processo regrava o estado sem o checkpoint que o outro acabou de gravar).
-    Lock-file O_CREAT|O_EXCL (atomico em POSIX e Windows). Trava orfa (dono morreu ha > timeout) e
-    quebrada; quem nao consegue a trava em `timeout` s levanta TimeoutError em vez de gravar sem ela."""
+    Lock-file O_CREAT|O_EXCL (atomico em POSIX e Windows). Trava orfa (dono morreu ha > `stale` s,
+    padrao = `timeout`) e quebrada; quem nao consegue a trava em `timeout` s levanta TimeoutError em
+    vez de gravar sem ela. `timeout` (quanto esperar) e `stale` (quanto tempo uma trava vale) sao
+    independentes: dono lento nao perde a trava se `stale` for maior que a sua secao critica."""
     lock = Path(str(p) + ".lock")
+    stale = timeout if stale is None else stale
     end = time.time() + timeout
     while True:
         try:
@@ -33,7 +36,7 @@ def locked(p, timeout: float = 30.0):
             break
         except (FileExistsError, PermissionError):   # PermissionError: Windows, lock sendo apagado
             with contextlib.suppress(OSError):
-                if time.time() - lock.stat().st_mtime > timeout:
+                if time.time() - lock.stat().st_mtime > stale:
                     lock.unlink()
                     continue
             if time.time() > end:
@@ -44,6 +47,40 @@ def locked(p, timeout: float = 30.0):
     finally:
         with contextlib.suppress(OSError):
             lock.unlink()
+
+
+def atomic_write(p, text: str, encoding: str = "utf-8", newline: str | None = None) -> None:
+    """Grava `text` em `p` sem deixar arquivo truncado se o processo cair no meio: escreve num temporario
+    do mesmo diretorio e troca por `os.replace` (atomico nos dois SOs). Windows: `replace` falha com
+    PermissionError enquanto outro processo le o destino; repete por ~1 s antes de desistir."""
+    p = Path(p)
+    tmp = p.with_name(f"{p.name}.{os.getpid()}.tmp")
+    try:
+        with tmp.open("w", encoding=encoding, newline=newline) as f:
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        for i in range(50):
+            try:
+                os.replace(tmp, p)
+                return
+            except PermissionError:
+                if i == 49:
+                    raise
+                time.sleep(0.02)
+    finally:
+        with contextlib.suppress(OSError):
+            tmp.unlink()
+
+
+def append_line(p, line: str, encoding: str = "utf-8", timeout: float = 30.0, stale: float | None = None) -> None:
+    """Anexa `line` a `p` sob trava entre processos. No Windows o `open('a')` do Python nao e um append
+    atomico: com varios processos linhas se perdem ou se misturam (medido na auditoria de 2026-10-17).
+    Quem nao pega a trava em `timeout` s levanta TimeoutError (e um OSError) em vez de gravar sem ela.
+    `stale`: idade (s) a partir da qual uma trava e orfa; o append dura ms, entao um valor curto serve."""
+    p = Path(p)
+    with locked(p, timeout=timeout, stale=stale), p.open("a", encoding=encoding) as f:
+        f.write(line)
 
 
 def artifacts(root) -> Path:

@@ -19,6 +19,7 @@ Uso:  python cost_report.py <projeto> [--by-scene] [--json]
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
 from pathlib import Path
@@ -45,6 +46,19 @@ def read_ledger(root: Path) -> list[dict]:
         print(f"[cost_report] AVISO: {bad} linha(s) ilegivel(is) em {p.name} ignorada(s) -- "
               f"o gasto real pode ser MAIOR que o reportado.", file=sys.stderr)   # stdout = --json
     return out
+
+
+def _line_counts(root: Path, verified: set[str]) -> tuple[int, int] | None:
+    """(falas das cenas verified, falas de todas as cenas) pelos dialogs.csv; None se o projeto nao os tem.
+    Progresso sem o total do jogo engana ("26 cenas" nao diz que sao 8% das falas)."""
+    sd = paths.scenes_dir(root)
+    sizes = {}
+    for d in sd.iterdir() if sd.is_dir() else []:
+        f = d / "dialogs.csv"
+        if f.is_file():
+            with f.open(encoding="utf-8-sig", newline="") as fh:
+                sizes[d.name] = sum(1 for _ in csv.DictReader(fh))
+    return (sum(n for s, n in sizes.items() if s in verified), sum(sizes.values())) if sizes else None
 
 
 def _verified_scenes(root: Path) -> set[str]:
@@ -155,6 +169,7 @@ def report(root, chapter=None) -> dict:
         "by_source": by_source,     # "api" = chamada do harness (cobrada); "session" = sessao do Claude Code
         "tokens": {"in": tok_in, "out": tok_out, "cache_read": tok_cache_r, "cache_write": tok_cache_w},
         "verified_scenes": len(verified),
+        "lines": _line_counts(root, verified),
         "exhausted": _exhausted(root, chapter),
         "chapter": chapter,
     }
@@ -222,10 +237,21 @@ def _fmt(rep: dict, by_scene: bool) -> str:
 
 def summary_line(rep: dict) -> str:
     """G5: linha única para embutir em READMEs — substitui valores hardcoded nos docs.
+    Caminho de sessão não paga API: o `total` fica $0 e esconderia o custo real, então a linha traz também o
+    equivalente API da sessão (por fase) e o erro do medidor.
     Uso: python cost_report.py <projeto> --summary"""
-    return (f"custo real: ${rep['total_usd']:.2f} "
-            f"({rep['verified_scenes']} cenas verified, "
-            f"{rep['n_calls']} chamadas)")
+    head = f"custo real (API paga): ${rep['total_usd']:.2f}"
+    ses = (rep.get("by_source") or {}).get("session")
+    if ses:
+        head += f" | sessao: equivalente API ${ses['api_equiv_usd']:.2f} ({ses['calls']} req)"
+        if rep.get("by_stage"):
+            head += " [fase " + ", ".join(f"{k} ${v['usd']:.2f}" for k, v in rep["by_stage"].items()) + "]"
+        if rep.get("out_est"):
+            head += (f" | saida estimada {100 * rep['out_est'] / max(rep['tokens']['out'], 1):.0f}% "
+                     f"(erro ~7%)")
+    ln = rep.get("lines")
+    done = f"{rep['verified_scenes']} cenas verified" + (f" ({ln[0]} de {ln[1]} falas)" if ln else "")
+    return f"{head} | {done}, {rep['n_calls']} chamadas"
 
 
 def main():

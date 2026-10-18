@@ -140,6 +140,27 @@ def saved_pack(root, scene) -> dict | None:
     return pack
 
 
+class InvalidTranslationFile(ValueError):
+    """translations_<scene_id>.json do subagente ilegivel (nao-UTF-8, JSON quebrado ou sem `lines`)."""
+
+
+def read_translation(path) -> dict:
+    """Le o translations_<scene_id>.json com erro claro. Nao aceita nem converte outra codificacao (cp1252 e
+    afins sao so diagnosticados): o subagente regrava o arquivo em UTF-8."""
+    path = Path(path)
+    fix = "regrave com json.dumps(..., ensure_ascii=False) e open(..., 'w', encoding='utf-8')"
+    try:
+        data = json.loads(path.read_bytes().decode("utf-8"))
+    except UnicodeDecodeError as e:
+        raise InvalidTranslationFile(f"{path.name} nao esta em UTF-8 (byte {e.start}); {fix}") from e
+    except json.JSONDecodeError as e:
+        raise InvalidTranslationFile(f"{path.name} nao e JSON valido (linha {e.lineno}, coluna {e.colno}: "
+                                     f"{e.msg}); {fix}") from e
+    if not isinstance(data, dict) or not isinstance(data.get("lines"), dict):
+        raise InvalidTranslationFile(f"{path.name} sem o objeto `lines` ({{offset: {{...}}}}); {fix}")
+    return data
+
+
 def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) -> TranslateResult:
     """Traduz uma cena (use run_chapter --max-usd para teto duro por capitulo)."""
     root = Path(root)
@@ -154,12 +175,13 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) 
         # mesmo DEDUP por TM do caminho api: fala ja traduzida em outra cena nao vai ao agente (sai do
         # prompt) e e acrescentada aqui. So preenche offset AUSENTE -- o que o agente escreveu prevalece.
         reuse = _select_reuse(pack, enabled=True)
-        if reuse and (out.is_file() or len(reuse) == pack["n_lines"]):
-            data = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
+        data = read_translation(out) if out.is_file() else None      # ilegivel: erro claro, nao api_translate_failed
+        if reuse and (data is not None or len(reuse) == pack["n_lines"]):
+            data = data if data is not None else {"lines": {}}
             add = {o: e for o, e in reuse.items() if o not in data.setdefault("lines", {})}
             if add:
                 data["lines"].update(add)
-                out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
         elif reuse:
             novel = [r for r in pack["lines"] if r["offset"] not in reuse]   # copia: o pack (e o caminho api) nao muda
             paths.scene_prompt(root, scene).write_text(
@@ -179,7 +201,7 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) 
             "doctrine_hash": pack.get("doctrine_hash", ""),
             "skills_revision": pack.get("skills_revision", ""),
         }
-        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
         return {"status": DONE, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"],
                 "model": m, "usage": usage, "reused": meta["reused"], "novel": meta["novel"]}
     raise ValueError(f"backend desconhecido: {backend}")
@@ -609,6 +631,50 @@ def over_budget_offsets(root, scene, *, tolerance: float = 1.0, detail: bool = F
              "source": srcmap.get(o, ""), "t": lines[o].get("t", "")} for o in offsets]
 
 
+def fix_newlines(root, scene, *, reuse_pack: bool = False) -> int:
+    """Conserta o que e mecanico: quebra de linha REAL no `t` vira o token literal (_norm_t) e o token que a fonte
+    nao tem sai (_parity_fit) -- o mesmo que o caminho api faz ao gravar. Devolve quantas falas mudou."""
+    root = Path(root)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
+    out = paths.translations(root, scene, pack["scene_id"])
+    if not out.is_file():
+        return 0
+    data = json.loads(out.read_text(encoding="utf-8"))
+    n = 0
+    for r in pack["lines"]:
+        v = data.get("lines", {}).get(r["offset"])
+        if isinstance(v, dict) and isinstance(v.get("t"), str):
+            new = _parity_fit(r.get("source"), _norm_t(v["t"]))
+            if new != v["t"]:
+                v["t"], n = new, n + 1
+    if n:
+        paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
+    return n
+
+
+def precheck(root, scene, *, reuse_pack: bool = False) -> list:
+    """Pre-checagem barata ANTES do build_plan (so le): [(offset, problema)] para quebra de linha real no JSON,
+    contagem do token `\n` diferente da fonte. Estouro de byte_budget NAO entra: no utawarerumono 7 de 26 cenas
+    verified tem fala acima do budget por linha (o conector nao o impoe por fala), entao seria falso positivo; o
+    `_fitting_loop` reage ao exit 3 do verify. Nao bloqueia: quem decide e o build_plan/verify."""
+    root = Path(root)
+    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
+    out = paths.translations(root, scene, pack["scene_id"])
+    if not out.is_file():
+        return []
+    lines = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
+    tok, found = context_pack.TOKEN, {}
+    for r in pack["lines"]:
+        t = (lines.get(r["offset"]) or {}).get("t")
+        if not isinstance(t, str):
+            continue
+        if chr(10) in t or chr(13) in t:
+            found[r["offset"]] = "quebra de linha real (use o token literal)"
+        elif t.count(tok) != (r.get("source") or "").count(tok) and (r.get("source") or "").count(tok):
+            found[r["offset"]] = f"{t.count(tok)} token(s) de quebra, a fonte tem {r['source'].count(tok)}"
+    return sorted(found.items())
+
+
 # invalidate_back_translation -> back_translate.py (importado acima).
 
 
@@ -640,7 +706,7 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, q
     else:
         raise ValueError(f"backend desconhecido: {backend}")
     full.setdefault("lines", {}).update(data.get("lines", {}))   # merge: so os offsets re-traduzidos
-    out.write_text(json.dumps(full, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps(full, ensure_ascii=False, indent=2))
     invalidate_back_translation(root, scene, offset_set)         # o verdict antigo nao vale mais
     return {"status": DONE, "model": m, "usage": usage, "n_lines": sub["n_lines"],
             "reused": meta["reused"], "novel": meta["novel"]}
@@ -696,7 +762,7 @@ def _translate_params(pack, model, note=""):
 
 def _write_translations(root, scene, data):
     out = paths.translations(root, scene, context_pack.scene_id_of(scene))
-    out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
 
 
 def _tier_of(source: str) -> str:

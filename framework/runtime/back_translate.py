@@ -64,7 +64,7 @@ def back_translate(root, scene, high_lines, *, backend="api", model=None) -> Bac
     if backend == "api":
         m = model or MODEL_BACK
         data, usage = _api_back_translate(root, scene, high_lines, m)
-        out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
         return {"status": DONE, "path": str(out), "reviewed": len(high_lines),
                 "model": m, "usage": usage}
     raise ValueError(f"backend desconhecido: {backend}")
@@ -197,7 +197,7 @@ def invalidate_back_translation(root, scene, offsets) -> int:
             e["stale"] = True
             n += 1
     if n:
-        bt.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.atomic_write(bt, json.dumps(data, ensure_ascii=False, indent=2))
     return n
 
 
@@ -262,7 +262,7 @@ def _submit_back_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, m, ro
             out = paths.back_translation(root, scene, scene_id)
             data = _merge_back(out, data)
             data["reviewed"] = len(data.get("entries", []))
-            out.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
             status[scene] = "reviewed"
         except Exception:
             status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou

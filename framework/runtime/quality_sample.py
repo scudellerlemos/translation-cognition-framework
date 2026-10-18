@@ -113,8 +113,7 @@ def score(root, reviewer: str, path=None) -> dict:
         "judge_recall": round(sum(p in flagged for p in s_err) / len(s_err), 3) if s_err and meta["seen"] else None,
         "unjudged": len(sample - set(verdict)),
     }
-    with paths.qa_effectiveness(root).open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    paths.append_line(paths.qa_effectiveness(root), json.dumps(rec, ensure_ascii=False) + "\n")
     return rec
 
 

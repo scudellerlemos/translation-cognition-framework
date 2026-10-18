@@ -94,7 +94,7 @@ def test_translate_in_session_awaits_then_reports_ready(tmp_path, monkeypatch):
     assert r["status"] == model.AWAITING and r["expected_output"].endswith(".json")
     out = model.paths.translations(tmp_path, ckpt.SCENE, "95_01")
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text("{}", encoding="utf-8")
+    out.write_text('{"lines": {}}', encoding="utf-8")
     assert model.translate(tmp_path, ckpt.SCENE, backend="in-session")["status"] == model.READY
 
 

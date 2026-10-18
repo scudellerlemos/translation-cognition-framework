@@ -770,6 +770,7 @@ def render_prompt(pack: dict, carta: str) -> str:
     L.append("")
     L.append("> Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR")
     L.append("> seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.")
+    L.append(f"> Memoria de traducao: {len(pack['tm_exact'])} de {pack['n_lines']} linhas ja tem traducao exata (secao TM).")
     L.append("")
     L.append("---")
     L.append("")

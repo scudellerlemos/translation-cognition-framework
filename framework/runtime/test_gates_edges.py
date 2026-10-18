@@ -120,3 +120,18 @@ def test_lint_kept_name_hides_the_common_word_inside_it(tmp_path, monkeypatch):
 def test_lint_without_glossary_is_empty(tmp_path):
     assert glossary_lint._load_glossary(tmp_path, cfg={}) == []
     assert glossary_lint.lint(tmp_path) == []
+
+
+def test_lint_scope_blocks_only_requested_scenes_and_warns_about_the_rest():
+    found = [{"scene": "a", "offset": "a:1"}, {"scene": "b", "offset": "b:1"}]
+    assert glossary_lint.split_scope(found, None) == (found, [])          # sem --scenes: tudo bloqueia
+    assert glossary_lint.split_scope(found, []) == (found, [])
+    assert glossary_lint.split_scope(found, ["a"]) == ([found[0]], [found[1]])
+    assert glossary_lint.split_scope(found, ["c"]) == ([], found)          # cena limpa fecha com aviso
+
+
+def test_quality_gate_scope_blocks_only_requested_scenes():
+    import quality_gate
+    items = [{"scene": "a", "offset": "a:1"}, {"scene": "b", "offset": "b:1"}]
+    assert quality_gate.split_scope(items, None) == (items, [])
+    assert quality_gate.split_scope(items, ["a"]) == ([items[0]], [items[1]])

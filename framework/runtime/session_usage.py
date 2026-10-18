@@ -46,6 +46,8 @@ import paths  # noqa: E402
 
 OVERHEAD = "_session"
 _CLOSE = re.compile(r"run_scene (\S+): status final = verified")
+# comando que roda uma cena: o run_scene direto ou o wave.py (que o chama por dentro; sem ele a sessao some do ledger)
+_RUNNER = re.compile(r"(?<![\w])(?:run_scene|wave)\.py")
 # ponytail: classificacao por palavra-chave no comando/caminho; trocar por marcacao explicita se as
 # categorias passarem a decidir orcamento.
 _ACTIVITY = [(a, re.compile(rx, re.I)) for a, rx in [
@@ -90,8 +92,8 @@ def marks(root) -> list[tuple[float, str]]:
 def mark(root, stage: str, t: float | None = None) -> None:
     """Marca a virada de fase: as requisicoes a partir de agora entram em `stage`."""
     import time
-    with (paths.artifacts(root) / "phase_marks.jsonl").open("a", encoding="utf-8") as f:
-        f.write(json.dumps({"t": round(t or time.time(), 3), "stage": stage}, ensure_ascii=False) + "\n")
+    paths.append_line(paths.artifacts(root) / "phase_marks.jsonl",
+                      json.dumps({"t": round(t or time.time(), 3), "stage": stage}, ensure_ascii=False) + "\n")
 
 
 def _activity(blocks: list) -> str | None:
@@ -125,7 +127,7 @@ def _scan(path: Path, scene_re: re.Pattern) -> tuple[dict, set]:
     sizes: dict[str, list] = {}     # message.id -> [chars visiveis, chars de raciocinio, tem usage final?]
     with path.open(encoding="utf-8") as f:
         for line in f:
-            rs = "run_scene" in line
+            rs = "run_scene" in line or "wave.py" in line
             res = next((i for i in pending if i in line), None) if pending else None
             if not rs and not res and '"usage"' not in line:
                 continue
@@ -135,7 +137,7 @@ def _scan(path: Path, scene_re: re.Pattern) -> tuple[dict, set]:
                 if rs and d.get("type") == "assistant":     # comando que roda o run_scene: abre a(s) cena(s)
                     for b in msg.get("content") or []:
                         cmd = str((b.get("input") or {}).get("command", "")) if b.get("type") == "tool_use" else ""
-                        for s in scene_re.findall(cmd) if "run_scene.py" in cmd else []:
+                        for s in scene_re.findall(cmd) if _RUNNER.search(cmd) else []:
                             touched.add(s)
                             opened = [x for x in opened if x != s] + [s]
                             pending.setdefault(b.get("id", ""), []).append(s)
@@ -273,13 +275,15 @@ def scene_total(root, scene: str) -> dict | None:
     eq = [r.get("api_equiv_usd") for r in rows]
     return {"usage": usage, "n_requests": sum(r["n_requests"] for r in rows),
             "models": sorted({r["model"] for r in rows}), "attribution": sorted({r["attribution"] for r in rows}),
-            "api_equiv_usd": None if None in eq else round(sum(eq), 5)}
+            "api_equiv_usd": None if None in eq else round(sum(x for x in eq if x is not None), 5)}
 
 
 if __name__ == "__main__":      # python session_usage.py <projeto> [pasta] | mark <projeto> <fase> | rebuild <projeto>
     if sys.argv[1] == "rebuild":
         raise SystemExit(print(f"session_usage: ledger refeito, {len(rebuild(sys.argv[2]))} linha(s) de sessao."))
     if sys.argv[1] == "mark":
+        if not re.fullmatch(r"\d+", sys.argv[3]):      # rotulo = numero da fase; "translate" etc. viram fase solta no ledger
+            raise SystemExit(f"ERRO: fase '{sys.argv[3]}' invalida: use o numero da fase (ex.: 3).")
         sync(sys.argv[2])           # fecha a fase anterior antes de marcar a nova
         mark(sys.argv[2], sys.argv[3])
         raise SystemExit(print(f"session_usage: fase '{sys.argv[3]}' marcada."))

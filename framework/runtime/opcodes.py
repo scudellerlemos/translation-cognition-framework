@@ -34,7 +34,8 @@ def table(root) -> dict:
 
 def tokens(text: str, tbl: dict) -> list[tuple]:
     """Quebra `text` em ('text', s) e ('code', CODIGO, [parametros]); os parametros saem do fluxo de codigos."""
-    out, pos = [], 0
+    out: list[tuple] = []
+    pos = 0
     ms = list(_TOK.finditer(text or ""))
     i = 0
     while i < len(ms):
@@ -43,7 +44,8 @@ def tokens(text: str, tbl: dict) -> list[tuple]:
             out.append(("text", text[pos:m.start()]))
         code = m.group(1).upper()
         n = tbl.get(code, {}).get("params", 0)
-        params, end = [], m.end()
+        params: list[str] = []
+        end = m.end()
         j = i + 1
         while len(params) < n and j < len(ms) and ms[j].start() == end:   # parametro vem colado ao codigo
             params.append(ms[j].group(1).upper())

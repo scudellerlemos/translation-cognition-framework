@@ -68,7 +68,7 @@ def copy(root, only=None) -> list[str]:
                 src = fn(root, rep, rid)
                 if src.is_file():
                     data = _remap(json.loads(src.read_text(encoding="utf-8")), m)
-                    fn(root, d, did).write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+                    paths.atomic_write(fn(root, d, did), json.dumps(data, ensure_ascii=False, indent=1))
             todo.append(d)
     return todo
 

@@ -6,6 +6,7 @@ UM caminho: sucesso verified/planned, bloqueio de KB (hard/soft/skip), falhas de
 verify, escalonamento de fitting, back-translation (defer/require/awaiting). Sem rede, sem conector.
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -234,6 +235,15 @@ def test_kb_soft_bypassed_with_skip(env):
     st["runs"] = [(0, ""), (0, "")]
     r = rs.run_scene(root, scene, skip_kb_gate=True)
     assert r["status"] == "verified"
+
+
+def test_invalid_translation_file_is_not_an_api_failure(env):
+    root, scene, st = env
+    st["translate_exc"] = rs.M.InvalidTranslationFile("t.json nao esta em UTF-8 (byte 12); regrave")
+    r = rs.run_scene(root, scene, backend="in-session")
+    assert r["status"] == "invalid_translation_file" and "UTF-8" in r["error"]
+    ev = [e for e in rs.events.read(root) if e["stage"] == "translate"][-1]
+    assert (ev["result"], ev["backend"]) == ("invalid_output", "in-session")
 
 
 def test_api_translate_failed(env):
@@ -640,3 +650,26 @@ def test_backend_preflight_switch(tmp_path):
     assert any("ANTHROPIC_API_KEY" in p for p in rs.backend_preflight(tmp_path, ["A"], "api", env={})[0])
     probs, notes = rs.backend_preflight(tmp_path, ["A", "INIT"], "in-session", env={})
     assert probs == [] and len(notes) == 1                   # sessao: escopo completo, sem chave, sem aviso
+
+
+def test_fail_fields_reason_skips_header_and_code_classifies_cause():
+    f = rs._fail_fields("ERROS:\n  - S00:3: tokens estruturais divergentes (src=['[01]'] tgt=[])\n  - S00:4: risk=high sem risk_notes\n")
+    assert f == {"reason": "S00:3: tokens estruturais divergentes (src=['[01]'] tgt=[])", "code": "token"}
+    assert rs._fail_fields("FALHAS:\n  - S00:9 estoura byte_budget (31 > 29)")["code"] == "byte_budget"
+    assert rs._fail_fields("ERROS:\n  - 2 offset(s) sem traducao: ['a', 'b']")["code"] == "tabela"
+    assert rs._fail_fields("ERROS:\n  - S00:1: risk=high sem risk_notes")["code"] == "risk"
+    assert rs._fail_fields("ERROS:\n  - algo estranho")["code"] == "outro"
+    assert rs._fail_fields("so isto") == {"reason": "so isto", "code": "outro"}
+    assert rs._fail_fields("") == {"reason": "", "code": "outro"}
+    assert len(rs._fail_fields("erro " + "x" * 500)["reason"]) == 160
+
+
+def test_data_dir_default_fills_missing_env_but_never_overrides(tmp_path, monkeypatch):
+    (tmp_path / "bk").mkdir()
+    cfg = {"connector": {"data_dir_env": "T_DD", "data_dir_default": "bk"}}
+    monkeypatch.delenv("T_DD", raising=False)
+    rs._default_data_dir_env(tmp_path, cfg)
+    assert os.environ["T_DD"] == str((tmp_path / "bk").resolve())
+    monkeypatch.setenv("T_DD", "outro")
+    rs._default_data_dir_env(tmp_path, cfg)
+    assert os.environ["T_DD"] == "outro"

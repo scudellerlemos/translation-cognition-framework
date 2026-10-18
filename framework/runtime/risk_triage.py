@@ -132,7 +132,7 @@ def apply(root) -> dict:
                 e["risk_level"] = "high"
                 e["risk_notes"] = f"triagem: {reason}" if reason else "triagem"
                 raised += 1
-        tf.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        paths.atomic_write(tf, json.dumps(data, ensure_ascii=False, indent=1))
     return {"raised": raised, "unknown_ids": unknown, "scenes": sorted(by_scene)}
 
 

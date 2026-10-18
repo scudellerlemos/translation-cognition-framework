@@ -90,6 +90,37 @@ def test_scan_skips_scene_without_dialogs(tmp_path):
     assert kp._scan(tmp_path, ["ch_99_01"]) == []
 
 
+def test_scan_does_not_glue_break_token_nor_join_rows(tmp_path):
+    _flat_project(tmp_path, ["Oh no\\nbecause so.", "Gran--", "Tuskur came."])
+    text = kp._scan(tmp_path, [kp._FLAT_SCENE])[0][1]
+    assert "nbecause" not in text and "no because" in text
+    assert "Gran-- Tuskur" not in kp._CAP_RUN.findall(text)
+
+
+def test_scan_skips_bracketed_interface_headings(tmp_path):
+    _flat_project(tmp_path, ["[About Battle Results]", "Oshtor spoke."])
+    text = kp._scan(tmp_path, [kp._FLAT_SCENE])[0][1]
+    assert "Battle" not in text and "Oshtor" in text
+
+
+def test_truecasing_trim_company_and_laughter():
+    vocab = {"guide", "eight", "pillar", "generals"}
+    assert kp._trim_common_lead("Guide Mutikapa", vocab) == "Mutikapa"            # resto nunca em minuscula
+    assert kp._trim_common_lead("Eight Pillar Generals", vocab) == "Eight Pillar Generals"
+    corpus = "Plop!" + chr(10) + "Flinch." + chr(10) + "Kwese came home. Then Kwese left."
+    assert kp._company("Plop", corpus) == 0 and kp._company("Kwese", corpus) == 2
+    assert kp._interj("Nyahaha") and kp._interj("Hohoho") and not kp._interj("Kwese")
+
+
+def test_capitalization_alone_is_not_evidence_of_a_name():
+    assert kp._clean_cand("Tsetse Grass'll") == "Tsetse Grass"      # contracao nao e parte do nome
+    assert kp._clean_cand("Wha--") == "" and kp._clean_cand("Gran--") == ""   # palavra cortada
+    corpus = "Battle Results" + chr(10) + "Then Oshtor Haku spoke, Oshtor Haku left."
+    assert kp._strong({"cand": "Battle Results", "multi": True, "count": 1}, corpus) is False
+    assert kp._midsentence("Battle Results", "so far" + chr(10) + "Battle Results") is False   # linha nova nao e meio de frase
+    assert kp._strong({"cand": "Oshtor Haku", "multi": True, "count": 2}, corpus) is True
+
+
 def test_strong_rejects_adverbs_and_contractions():
     assert kp._strong({"cand": "Really", "multi": False, "count": 9}, "x Really y") is False
     assert kp._strong({"cand": "Couldn't", "multi": False, "count": 9}, "x") is False
@@ -123,3 +154,13 @@ def test_worklist_lists_weak_candidates_and_truncates_at_40(tmp_path):
     _flat_project(tmp_path, [f"{n} came." for n in names])
     txt = kp.write_worklist(tmp_path, "all").read_text(encoding="utf-8")
     assert "Candidatos FRACOS" in txt and "(+5 mais)" in txt
+
+
+def test_onda_lists_one_off_and_respects_cap(tmp_path):
+    _flat_project(tmp_path, ["When Oshtor arrived, Zarkul bowed.", "Then Qwerin left."])
+    got = [r["cand"] for r in kp.onda(tmp_path, ["_flat"], max_n=2)]
+    assert len(got) == 2 and set(got) <= {"Oshtor", "Zarkul", "Qwerin"}
+
+
+def test_onda_drops_interjections():
+    assert kp._interj("Uhhh") and kp._interj("Mmm") and kp._interj("Nrgh") and not kp._interj("Potum")

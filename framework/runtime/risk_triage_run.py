@@ -51,8 +51,15 @@ def _one(n, out, model, DIR):
     lot = (DIR / f'lote_{n:03d}.tsv').read_text(encoding='utf-8')
     ids = {ln.split('\t')[0] for ln in lot.splitlines() if ln.strip()}
     prompt = HEAD + (DIR / 'triagem_prompt.md').read_text(encoding='utf-8') + f'\n\n## lote_{n:03d}.tsv\n\n' + lot
-    p = subprocess.run([shutil.which('claude'), '-p', '--model', model, '--output-format', 'json', '--allowedTools', ''],
-                       input=prompt, capture_output=True, text=True, encoding='utf-8', errors='replace')
+    exe = shutil.which('claude')
+    if not exe:
+        return f'lote {n:03d} FALHOU: comando `claude` nao esta no PATH (instale o Claude Code ou ajuste o PATH)'
+    try:
+        p = subprocess.run([exe, '-p', '--model', model, '--output-format', 'json', '--allowedTools', ''],
+                           input=prompt, capture_output=True, text=True, encoding='utf-8', errors='replace',
+                           timeout=900)
+    except subprocess.TimeoutExpired:
+        return f'lote {n:03d} FALHOU: `claude` sem resposta em 900 s'
     try:
         j = json.loads(p.stdout)
     except ValueError:

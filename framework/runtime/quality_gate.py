@@ -23,7 +23,9 @@ nao tem piso aqui; o crivo delas e o risco_level atribuido no plano + o round-tr
 (amostragem das low, ou um juiz barato) e extensao futura (ver ROADMAP). Governanca: read-only, sem
 rede, sem work-text — le artefato ja pago.
 
-Uso:  python quality_gate.py <projeto> [<capitulo>] [--json]   (exit 1 se houver revise/uncovered)
+Uso:  python quality_gate.py <projeto> [<capitulo>] [--scenes C1 C2 ...] [--json]   (exit 1 se houver revise/uncovered)
+Com `--scenes` (o `wave.py` passa as cenas da onda) so bloqueia o que e dessas cenas; o resto sai como AVISO.
+O bloqueio global nao some: o `wave.py` recusa abrir onda nova com escalonamento aberto de outra cena.
 """
 from __future__ import annotations
 
@@ -88,6 +90,14 @@ def check(root, chapter=None) -> dict:
     return {"revise": revise, "uncovered": uncovered, "coverage": cov}
 
 
+def split_scope(items: list[dict], scenes: list[str] | None) -> tuple[list[dict], list[dict]]:
+    """(bloqueia, avisa): sem `scenes` tudo bloqueia; com `scenes`, so o item das cenas do pedido."""
+    if not scenes:
+        return items, []
+    want = set(scenes)
+    return [i for i in items if i.get("scene") in want], [i for i in items if i.get("scene") not in want]
+
+
 def export_revise(revise, csv_path):
     """Grava a worklist 'revise' como DADOS (entrada do quality_fix). Colunas estaveis."""
     import csv
@@ -106,18 +116,27 @@ def main():
     ap = argparse.ArgumentParser(description="Piso de qualidade observavel (verdicts de back-translation).")
     ap.add_argument("project")
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")
+    ap.add_argument("--scenes", nargs="+", help="so bloqueia item destas cenas; o resto vira aviso")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--export", metavar="CSV", default=None,
                     help="grava a worklist 'revise' nesse CSV (entrada do quality_fix)")
     a = ap.parse_args()
     paths.require_project(a.project)
     r = check(a.project, a.chapter)
-    rev, unc, cov = r["revise"], r["uncovered"], r["coverage"]
+    cov = r["coverage"]
+    rev, rev_out = split_scope(r["revise"], a.scenes)
+    unc, unc_out = split_scope(r["uncovered"], a.scenes)
     import hitl  # fila de escalonamento aberta = decisao humana pendente -> bloqueia (projeto com "hitl")
-    esc = hitl.open_items(a.project) if hitl.enabled(a.project) else []
+    esc, esc_out = split_scope(hitl.open_items(a.project) if hitl.enabled(a.project) else [], a.scenes)
     r["escalations"] = len(esc)
+    outside = len(rev_out) + len(unc_out) + len(esc_out)
+    if outside:
+        r["outside"] = {"revise": len(rev_out), "uncovered": len(unc_out), "escalations": len(esc_out)}
+        where = sorted({i["scene"] for i in rev_out + unc_out + esc_out})
+        print(f"AVISO: {outside} pendencia(s) fora das cenas do pedido (nao bloqueiam esta onda, "
+              f"bloqueiam a proxima): {', '.join(where)}")
     if a.export:
-        n = export_revise(rev, a.export)
+        n = export_revise(r["revise"], a.export)
         print(f"[export] {n} linha(s) 'revise' -> {a.export}")
     if a.json:
         print(json.dumps(r, ensure_ascii=False, indent=2))

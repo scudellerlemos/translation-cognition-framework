@@ -29,3 +29,22 @@ def test_main_without_go_only_lists_and_never_calls_model(tmp_path, monkeypatch,
     monkeypatch.setattr(rtr.sys, 'argv', ['x', 'p'])
     rtr.main()
     assert '1 lote(s)' in capsys.readouterr().out
+
+
+def test_one_sem_claude_no_path_falha_com_mensagem_clara(tmp_path, monkeypatch):
+    (tmp_path / 'lote_001.tsv').write_text('a1\tsrc\ttgt\n', encoding='utf-8')
+    (tmp_path / 'triagem_prompt.md').write_text('p', encoding='utf-8')
+    monkeypatch.setattr(rtr.shutil, 'which', lambda n: None)
+    r = rtr.one(1, tmp_path, 'haiku', tmp_path)
+    assert 'FALHOU' in r and 'nao esta no PATH' in r              # antes: TypeError dentro do subprocess.run
+
+
+def test_one_claude_travado_vira_falha_com_timeout(tmp_path, monkeypatch):
+    (tmp_path / 'lote_001.tsv').write_text('a1\tsrc\ttgt\n', encoding='utf-8')
+    (tmp_path / 'triagem_prompt.md').write_text('p', encoding='utf-8')
+    monkeypatch.setattr(rtr.shutil, 'which', lambda n: 'claude')
+
+    def trava(*a, **k):
+        raise subprocess.TimeoutExpired('claude', k['timeout'])
+    monkeypatch.setattr(subprocess, 'run', trava)
+    assert 'sem resposta em 900 s' in rtr.one(1, tmp_path, 'haiku', tmp_path)

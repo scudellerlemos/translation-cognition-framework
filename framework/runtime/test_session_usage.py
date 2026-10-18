@@ -83,6 +83,20 @@ def test_sync_attributes_requests_and_is_incremental(tmp_path):
     assert su._activity([{"type": "tool_use", "input": {"file_path": "projects/x/connector/extract.py"}}]) == "conector"
 
 
+def test_session_that_only_runs_wave_py_is_not_dropped(tmp_path):
+    """wave.py chama o run_scene por dentro: o comando da transcricao nao cita run_scene.py (bug: custo da onda sumia)."""
+    root, tdir = _env(tmp_path)
+    for p in list(tdir.glob("*.jsonl")) + list((tdir / SID / "subagents").glob("*.jsonl")):
+        p.unlink()
+    wave = "python framework/runtime/wave.py projects/p {} --backend in-session"
+    (tdir / SID / "subagents" / "agent-a1.jsonl").write_text(
+        "\n".join([_req("a0", 41, 5, 50, wave.format("S2")), _req("a1", 42, 5, 50)]), encoding="utf-8")
+    (tdir / f"{SID}.jsonl").write_text(_req("m0", 5, 1, 1, wave.format("S1 S2")), encoding="utf-8")
+    rows = su.sync(root, tdir)
+    assert {r["agent"]: (r["scene"], r["attribution"], r["n_requests"]) for r in rows if r["agent"]} == {"a1": ("S2", "agent", 2)}
+    assert sum(r["n_requests"] for r in rows) == 3                    # o subagente (2) e a sessao principal (1) entram
+
+
 def test_price_uses_model_cache_multiplier_and_1h_write():
     u = {"in": 0, "out": 0, "cache_read": 1_000_000, "cache_write": 0, "cache_write_1h": 1_000_000}
     assert round(cost.cost_of(OPUS, u), 6) == 0.20 + 8.00             # 0.05x lido, 2x escrita de 1 h
@@ -123,3 +137,11 @@ def test_sonnet5_has_own_fit_and_report_states_estimate_error():
 
     import cost_report as cr
     assert "erro da estimativa na soma" in inspect.getsource(cr)
+
+
+def test_mark_cli_rejects_non_numeric_stage(tmp_path):
+    import subprocess
+    import sys
+    r = subprocess.run([sys.executable, str(Path(su.__file__)), "mark", str(tmp_path), "translate"],
+                       capture_output=True, text=True)
+    assert r.returncode and "numero da fase" in r.stderr

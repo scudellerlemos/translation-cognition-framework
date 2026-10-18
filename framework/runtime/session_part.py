@@ -10,7 +10,8 @@ import re
 ROW = re.compile(r'^\| \S+:(\d+):\d+ \| ')
 NOTE = """## 7a. Texto de SISTEMA (menu, ajuda de batalha, bestiario) -- regras deste lote
 - NAO e dialogo: speaker `system`, risco `low` salvo duvida real. Frase curta, direta, de manual de jogo.
-- O orcamento de bytes (coluna byte_budget) e teto duro: se nao couber, abrevie com ponto ("Def.", "Pes.").
+- O orcamento de bytes (coluna byte_budget) e o alvo de cada fala (a conta esta em budget.py);
+  o conferir do lote aponta o que passa. Se nao couber, abrevie com ponto ("Def.", "Pes.").
 - Rotulo curto de menu (uma ou duas palavras, sem pontuacao) vai SEM acento; frase e descricao vao com acento normal.
 - Nome de item, arma, armadura, acessorio, habilidade e inimigo FICA EM INGLES, identico ao original.
   Nomes que aparecem neste lote: {names}
@@ -21,8 +22,10 @@ NOTE = """## 7a. Texto de SISTEMA (menu, ajuda de batalha, bestiario) -- regras 
 
 def split(TMP: pathlib.Path, lot: str) -> None:
     src = (TMP / f'lot_{lot}.md').read_text(encoding='utf-8').splitlines()
-    a = next(i for i, x in enumerate(src) if x.startswith('## 7.'))
-    b = next(i for i, x in enumerate(src) if x.startswith('## 8.'))
+    a = next((i for i, x in enumerate(src) if x.startswith('## 7.')), None)
+    b = next((i for i, x in enumerate(src) if x.startswith('## 8.')), None)
+    if a is None or b is None or b < a:
+        raise ValueError(f"lot_{lot}.md sem as secoes '## 7.' e '## 8.' (nessa ordem): nada a dividir")
     rows = [x for x in src[a:b] if ROW.match(x)]
     head = [x for x in src[a:b] if not ROW.match(x)]
     kn = TMP / 'keep_names.txt'

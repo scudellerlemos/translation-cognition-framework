@@ -138,6 +138,37 @@ def test_collect_reads_translator_escalation(tmp_path):
     assert [(i["offset"], i["reason"]) for i in items] == [("S00:0", "titulo sem forma no glossario")]
 
 
+def test_resolve_clears_translator_escalation(tmp_path):
+    root = _project(tmp_path)
+    tf = paths.translations(root, "S00", "S00")
+    data = json.loads(tf.read_text(encoding="utf-8"))
+    data["lines"]["S00:0"]["escalate"] = "titulo sem forma"
+    tf.write_text(json.dumps(data), encoding="utf-8")
+    hitl.enqueue(root, [i for i in hitl.collect(root, ["S00"]) if i["kind"] == "tradutor"])
+    rows = hitl.read_queue(root)
+    rows[0]["correcao"] = "Texto decidido"
+    hitl._write_queue(root, rows)
+    hitl.resolve(root, "ana")
+    assert "escalate" not in json.loads(tf.read_text(encoding="utf-8"))["lines"]["S00:0"]
+    assert [i for i in hitl.collect(root, ["S00"]) if i["kind"] == "tradutor"] == []
+
+
+def test_resolve_accepts_translator_escalation_without_term(tmp_path):
+    root = _project(tmp_path)
+    tf = paths.translations(root, "S00", "S00")
+    data = json.loads(tf.read_text(encoding="utf-8"))
+    data["lines"]["S00:0"]["escalate"] = "nome sem forma"
+    tf.write_text(json.dumps(data), encoding="utf-8")
+    hitl.enqueue(root, [i for i in hitl.collect(root, ["S00"]) if i["kind"] == "tradutor"])
+    rows = hitl.read_queue(root)
+    assert not rows[0]["term"]
+    rows[0]["alias"] = "forma da fala"
+    hitl._write_queue(root, rows)
+    r = hitl.resolve(root, "ana")
+    assert (r["alias"], r["aceito"], r["open"]) == (0, 1, 0)      # aceite do tradutor nao conta como alias de glossario
+    assert "escalate" not in json.loads(tf.read_text(encoding="utf-8"))["lines"]["S00:0"]
+
+
 def test_triage_dedups_repeats_and_raises_every_copy(tmp_path):
     root = _project(tmp_path, n_scenes=3)
     r = risk_triage.export(root, batch=10)

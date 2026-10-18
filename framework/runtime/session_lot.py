@@ -267,9 +267,13 @@ def cmd_check(lot, scenes, run):
         sys.exit(1)
     print(f'CONFERENCIA: ok ({sum(len(d["lines"]) for d in data.values())} falas)')
     if run:
-        p = subprocess.run([sys.executable, str(HERE / 'run_scene.py'), str(ROOT), *scenes,
-                            '--backend', 'in-session', '--require-back'],
-                           capture_output=True, text=True, encoding='utf-8', errors='replace')
+        try:
+            p = subprocess.run([sys.executable, str(HERE / 'run_scene.py'), str(ROOT), *scenes,
+                                '--backend', 'in-session', '--require-back'],
+                               capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=3600)
+        except subprocess.TimeoutExpired:
+            print('ERRO: run_scene sem resposta em 3600 s; rode de novo (o checkpoint das cenas ja feitas fica)')
+            sys.exit(1)
         keep = re.compile(r'AGUARDANDO|SCHEMA|ERRO|offsets|token|overflow|LOTE|status final')
         print('\n'.join(x[:240] for x in (p.stdout + p.stderr).splitlines() if keep.search(x)))
 
