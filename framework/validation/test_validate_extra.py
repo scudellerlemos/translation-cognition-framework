@@ -132,3 +132,18 @@ def test_scenes_layout_checks_token_preservation(tmp_path):
     (sd / "approved_s1.csv").write_text("offset,text_target\na,Oi\nz,Ola\n", encoding="utf-8")
     msgs = [i[2] for i in validate.validate_project(tmp_path)]
     assert any("token [01] 1→0" in m for m in msgs) and any("'z' não existe" in m for m in msgs)
+
+
+def test_manifest_types_flag_wrong_type_and_accept_all_real_projects():
+    import json
+    from pathlib import Path
+
+    import validate
+    bad = validate._check_manifest_types({"hitl": "true", "batch_size": "30", "rag_min_score": None, "db": []})
+    assert sorted(m for _, _, m in bad) == ["batch_size: esperado int, veio str", "db: esperado dict, veio list",
+                                            "hitl: esperado bool, veio str"]
+    assert validate._check_manifest_types({"batch_size": True})        # bool nao vale como int
+    assert validate._check_manifest_types({}) == []                     # campo ausente e valido
+    raiz = Path(__file__).resolve().parents[2] / "projects"
+    for pj in sorted(raiz.glob("*/project.json")):
+        assert validate._check_manifest_types(json.loads(pj.read_text(encoding="utf-8"))) == [], pj
