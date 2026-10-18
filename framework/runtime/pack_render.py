@@ -2,29 +2,36 @@
 
 Nucleo compartilhado: o caminho de sessao grava o prompt, o de API monta a mensagem de usuario com ele. Funcao pura
 (pacote + Carta -> texto), sem I/O e sem dependencia dos dois caminhos. `context_pack` reexporta `render_prompt`.
+Uma funcao por secao do prompt; a ordem das secoes e a de `render_prompt`.
 """
 from __future__ import annotations
 
 
-def render_prompt(pack: dict, carta: str) -> str:
-    pc = pack["project_constraints"]
-    L = []
-    L.append(f"# Cena {pack['scene']} — pacote de traducao ({pack['n_lines']} linhas)")
-    L.append("")
-    L.append("> Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR")
-    L.append("> seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.")
-    L.append(f"> Memoria de traducao: {len(pack['tm_exact'])} de {pack['n_lines']} linhas ja tem traducao exata (secao TM).")
-    L.append("")
-    L.append("---")
-    L.append("")
-    L.append("## 1. CARTA DE GOVERNANCA (contrato de qualidade)")
-    L.append("")
+def _cabecalho(pack: dict) -> list[str]:
+    return [
+        f"# Cena {pack['scene']} — pacote de traducao ({pack['n_lines']} linhas)",
+        "",
+        "> Pacote AUTO-CONTIDO e LIMITADO (so o que esta cena precisa). Traduza EN -> pt-BR",
+        "> seguindo a Carta abaixo. Saida exigida ao final. Nao precisa de contexto externo.",
+        f"> Memoria de traducao: {len(pack['tm_exact'])} de {pack['n_lines']} linhas ja tem traducao exata (secao TM).",
+        "",
+        "---",
+        "",
+    ]
+
+
+def _carta(carta: str) -> list[str]:
+    L = ["## 1. CARTA DE GOVERNANCA (contrato de qualidade)", ""]
     if carta.strip():
         L.append(carta.strip())
     else:
         L.append("> (Carta fornecida no system cacheado — `framework/skills/translation_governance.md`.)")
     L.append("")
-    L.append("## 2. Regras do conector / projeto")
+    return L
+
+
+def _regras(pc: dict) -> list[str]:
+    L = ["## 2. Regras do conector / projeto"]
     L.append(f"- Token de quebra de linha: `{pc['newline_token']}` (literal; preservar EXATO, mesma posicao).")
     L.append(f"- Tokens de formatacao a preservar verbatim: {pc['formatting_tokens']} "
              f"+ padroes {pc['formatting_token_patterns']}.")
@@ -45,7 +52,11 @@ def render_prompt(pack: dict, carta: str) -> str:
                  "nao remova acentos voce mesmo. Apenas nao dependa do acento para DISTINGUIR sentido "
                  "(ex.: evite pares que so diferem por acento), pois ele some no jogo.")
     L.append("")
-    L.append("## 3. Glossario relevante (subconjunto desta cena)")
+    return L
+
+
+def _glossario(pack: dict) -> list[str]:
+    L = ["## 3. Glossario relevante (subconjunto desta cena)"]
     if pack["glossary_subset"]:
         L.append("| termo | categoria | traducao | regra | spoiler |")
         L.append("|---|---|---|---|---|")
@@ -55,14 +66,22 @@ def render_prompt(pack: dict, carta: str) -> str:
     else:
         L.append("_(nenhum termo do glossario aparece nesta cena)_")
     L.append("")
-    L.append("## 4. Vozes presentes")
+    return L
+
+
+def _vozes(pack: dict) -> list[str]:
+    L = ["## 4. Vozes presentes"]
     for name, card in pack["voice_cards"].items():
         al = f" (aliases: {', '.join(card['aliases'])})" if card.get("aliases") else ""
         L.append(f"### {name} — criticality: {card.get('criticality','')}{al}")
         for b in card.get("lines", []):
             L.append(f"- {b}")
     L.append("")
-    L.append("## 5. Decisoes relevantes (do decision_log)")
+    return L
+
+
+def _decisoes(pack: dict) -> list[str]:
+    L = ["## 5. Decisoes relevantes (do decision_log)"]
     for d in pack["decisions"]:
         flag = " [universal]" if d.get("universal") else ""
         L.append(f"- **{d['title']}**{flag}: {d['summary']}")
@@ -73,14 +92,24 @@ def render_prompt(pack: dict, carta: str) -> str:
         for d in dec_sem:
             L.append(f"- (~{d['score']}) **{d['title']}**: {d['summary']}")
     L.append("")
+    return L
+
+
+def _spoiler(pack: dict) -> list[str]:
     guards = pack.get("spoiler_guards", [])
-    if guards:
-        L.append("## 5b. CONTROLE DE SPOILER — fatos AINDA NAO revelados nesta cena")
-        L.append("> Estes fatos so se revelam DEPOIS desta cena. Preserve a ambiguidade do original; a")
-        L.append("> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).")
-        for g in guards:
-            L.append(f"- **{g['entity']}** ({g['spoiler_level']}): {g['guard']}")
-        L.append("")
+    if not guards:
+        return []
+    L = ["## 5b. CONTROLE DE SPOILER — fatos AINDA NAO revelados nesta cena"]
+    L.append("> Estes fatos so se revelam DEPOIS desta cena. Preserve a ambiguidade do original; a")
+    L.append("> traducao NAO pode antecipa-los (cuidado especial com genero/identidade/relacao em pt-BR).")
+    for g in guards:
+        L.append(f"- **{g['entity']}** ({g['spoiler_level']}): {g['guard']}")
+    L.append("")
+    return L
+
+
+def _kb(pack: dict) -> list[str]:
+    L: list[str] = []
     if pack.get("kb"):
         L.append("## 5c. Lore relevante (KB — apenas fatos JA revelados ate esta cena)")
         for s in pack["kb"]:
@@ -95,7 +124,11 @@ def render_prompt(pack: dict, carta: str) -> str:
             L.append(f"### {s['section']} (~{s['score']})")
             L.append(s["content"])
         L.append("")
-    L.append("## 6. Memoria de traducao (consistencia — nao reinventar)")
+    return L
+
+
+def _memoria(pack: dict) -> list[str]:
+    L = ["## 6. Memoria de traducao (consistencia — nao reinventar)"]
     if pack["tm_exact"]:
         L.append("**Falas identicas ja traduzidas (reusar):**")
         for e in pack["tm_exact"]:
@@ -117,7 +150,11 @@ def render_prompt(pack: dict, carta: str) -> str:
     if not pack["tm_exact"] and not pack["tm_voice"] and not pack.get("tm_semantic") and not pack.get("tm_series"):
         L.append("_(sem memoria previa para esta cena)_")
     L.append("")
-    L.append("## 7. Linhas a traduzir")
+    return L
+
+
+def _disciplina_orcamento(pc: dict) -> list[str]:
+    L: list[str] = []
     if pc.get("target_charset_supported") is True:
         L.append("> **DISCIPLINA DE ORCAMENTO (byte_budget):** a traducao em **bytes UTF-8 REAIS**")
         L.append("> (acentos NAO somem na gravacao — cada `c` de cedilha/acento custa byte(s) extra) deve")
@@ -134,13 +171,23 @@ def render_prompt(pack: dict, carta: str) -> str:
     if pc.get("budget_reserves_terminator"):
         L.append("> O byte_budget listado ja reserva 1 byte para o terminador `\\0` — o texto")
         L.append("> traduzido precisa caber em `byte_budget - 1` bytes, nao no byte_budget cheio.")
+    return L
+
+
+def _linhas(pack: dict, pc: dict) -> list[str]:
+    L = ["## 7. Linhas a traduzir"]
+    L += _disciplina_orcamento(pc)
     L.append("| offset | byte_budget | source |")
     L.append("|---|---|---|")
     for r in pack["lines"]:
         src = r["source"].replace("|", "\\|")
         L.append(f"| {r['offset']} | {r['byte_budget']} | {src} |")
     L.append("")
-    L.append("## 8. Formato de saida EXIGIDO")
+    return L
+
+
+def _formato_saida(pack: dict) -> list[str]:
+    L = ["## 8. Formato de saida EXIGIDO"]
     L.append(f"Escreva `translations_{pack['scene_id']}.json` com a forma:")
     _known_voices = sorted(pack.get("voice_cards", {}).keys())
     _voice_hint = (", ".join(f"'{v}'" for v in _known_voices) + " ") if _known_voices else ""
@@ -160,4 +207,21 @@ def render_prompt(pack: dict, carta: str) -> str:
     L.append("risk_notes; interjeicoes/onomatopeias = traducao (localizar, nao copiar). O build_plan")
     L.append("valida cobertura/tokens/risk_notes; linhas risco>=high passam por back-translation.")
     L.append("")
+    return L
+
+
+def render_prompt(pack: dict, carta: str) -> str:
+    pc = pack["project_constraints"]
+    L: list[str] = []
+    L += _cabecalho(pack)
+    L += _carta(carta)
+    L += _regras(pc)
+    L += _glossario(pack)
+    L += _vozes(pack)
+    L += _decisoes(pack)
+    L += _spoiler(pack)
+    L += _kb(pack)
+    L += _memoria(pack)
+    L += _linhas(pack, pc)
+    L += _formato_saida(pack)
     return "\n".join(L)
