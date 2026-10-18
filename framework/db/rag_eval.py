@@ -16,8 +16,10 @@ import tempfile
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
+for _p in (_HERE, _HERE.parent / "runtime"):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
+import paths  # noqa: E402
 
 BASELINE = _HERE / "rag_eval_baseline.json"
 KS = (1, 3, 5)
@@ -112,7 +114,7 @@ def main() -> int:
     res = executar()
     print(json.dumps(res, indent=2))
     if a.write_baseline:
-        BASELINE.write_text(json.dumps(res, indent=2) + "\n", encoding="utf-8")
+        paths.atomic_write(BASELINE, json.dumps(res, indent=2) + "\n")
         return 0
     base = json.loads(BASELINE.read_text(encoding="utf-8")) if BASELINE.is_file() else None
     probs = problemas(res, base)
