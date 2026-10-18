@@ -8,6 +8,9 @@
 # DECISAO 2026-10-17 (auditoria de arquitetura): o job passa a rodar tambem em push na main e em todo
 # pull_request (antes so semanal), para o RAG semantico ser exercitado sempre; o semanal fica como rede
 # de seguranca. O nome do arquivo ("optional") ficou por compatibilidade com as referencias.
+# OBRIGATORIO: este arquivo e um workflow reutilizavel (workflow_call) chamado pelo job `ml-coverage` de
+# test.yml, que entra em `needs` do agregador `All checks` (unico contexto da branch protection). Rodar
+# direto em push/pull_request aqui criaria um check fora do agregador.
 #
 # Mesma stack pesada (~700MB-1,5GB, torch+modelo via HuggingFace) que já levou o audit de CVE
 # (dep-audit-optional.yml) pra cadência semanal em vez de todo push/PR — reaproveita o
@@ -20,10 +23,7 @@
 name: Cobertura real (ML) — embedder/validate_model
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["**"]
+  workflow_call:       # chamado por test.yml (job ml-coverage): entra no agregador All checks, logo e obrigatorio
   workflow_dispatch:   # disparo manual
   schedule:
     - cron: '30 5 * * 0'   # domingo 05:30 UTC (30min depois do audit de CVE opcional)

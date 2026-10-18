@@ -17,7 +17,7 @@ missão. Eles aparecem na aba **Actions** do GitHub.
 | **Quality** | `quality.yml` | Todo PR e push no `main` | "O código está **limpo e seguro**?" |
 | **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
 | **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
-| **Cobertura real (ML)** | `ml-coverage-optional.yml` | PR, push na main, domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
+| **Cobertura real (ML)** | `ml-coverage-optional.yml` | **obrigatório**: job `ml-coverage` de `test.yml` (PR, push na main) + domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
 | **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
 | **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
 
@@ -109,7 +109,7 @@ testes que exercitam a lógica real de indexação/busca vetorial (não os que u
 `_FakeEmbedder`) ficam pulados via `pytest.importorskip`. Resultado: uma regressão na busca
 semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar.
 
-Este job instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
+Este workflow é reutilizável (`workflow_call`): `test.yml` o chama no job `ml-coverage`, que está no `needs` do agregador `All checks` — por isso é obrigatório sem mexer na branch protection. Ele instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
 um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Mesma
 cadência semanal do `dep-audit-optional.yml` e pelo mesmo motivo de custo (torch +
 sentence-transformers do zero ~1min+ por run) — não roda em todo push/PR.

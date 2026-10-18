@@ -83,6 +83,12 @@ MINOR (ADR 0013): parâmetros e campos novos (`--scenes` em `glossary_lint`/`qua
   onda mesmo só em início de fala; risada (`Nyahaha`, `Hohoho`) é interjeição.
 - Testes em `test_model.py`, `test_hitl.py`, `test_wave.py`, `test_kb_phase.py`; suíte 626 passed.
 
+## Não lançado — ML obrigatório e lock com hash
+
+- `requirements-dev.txt` passa a ser lock com hashes (`requirements-dev-src.txt` é a fonte; `uv pip compile --universal --generate-hashes`). Instalação verificada com `--require-hashes` em Python 3.11 e 3.12, hash adulterado recusado, `pip-audit` limpo sobre o lock. Teste novo em `test_docs_integrity.py`.
+- Cobertura real do ML virou obrigatória: `ml-coverage-optional.yml` é workflow reutilizável chamado pelo job `ml-coverage` de `test.yml`, que entra no `needs` de `all-checks` e `mark-staging` (a branch protection não muda). Teste impede remover do agregador.
+- "Require review from Code Owners" fica desligado de propósito: com um único autor, travaria os PRs dele mesmo.
+
 ## Não lançado — Onda 1: CI, segurança, configuração e docs (PATCH, sem bump ainda)
 
 - `validate.py`: `project.json` com campo de tipo errado (ex.: `"hitl": "true"`, `"batch_size": "30"`) agora é

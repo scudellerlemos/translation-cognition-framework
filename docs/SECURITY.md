@@ -122,7 +122,7 @@ posterior via hash); sem assinatura de código. Aceitável para uso pessoal/mono
 ### 5. Dependências (supply chain)
 
 **Controles atuais:**
-- `requirements-dev.txt` com versões compatíveis fixas (`~=`)
+- `requirements-dev.txt` é lock com hash (`uv pip compile requirements-dev-src.txt --universal --generate-hashes`): o pip recusa pacote adulterado; teste em `test_docs_integrity.py` garante hash em todas as linhas e que as fontes estão no lock. `requirements-kb.txt`/`-ml.txt` seguem com faixas (`~=`)
 - `pip-audit` roda em `quality.yml` (job `deps`) — CVEs em `requirements-dev`
 - `dependabot.yml` configurado — PRs automáticos de atualização de dependência
 - `gitleaks` roda em `quality.yml` (job `secrets`) — segredo commitado no diff + histórico
