@@ -43,6 +43,7 @@ def _fold(s: str) -> str:
 
 
 _TOKEN = re.compile(r"\[[0-9A-Fa-f]{2}\]")          # codigo de controle do conector (quebra de linha, cor...)
+_GENDER_MARK = re.compile(r"\(\w{1,2}\)")           # marca de flexao no glossario: '(a)', '(as)'
 _SUFFIX = re.compile(r"(oes|aes|ais|eis|ois|es|os|as|ar|er|ir|al|el|s|o|a|e|l)$")
 
 
@@ -56,6 +57,7 @@ def _has_form(expected: str, target_words: list[str]) -> bool:
     """A forma canonica esta no alvo? Cada palavra dela (>2 letras) precisa de uma palavra do alvo que seja
     flexao (mesmo radical) ou abreviacao dela ('Penhas.' p/ 'penhasco', rotulo que nao coube no orcamento).
     # ponytail: radical por sufixo e prefixo de >=3 letras; trocar por lematizador se der falso-negativo."""
+    expected = _GENDER_MARK.sub("", expected)               # 'evenkurugano(a)' casa 'evenkurugana'
     words = [w for w in expected.split() if len(w) > 2] or expected.split()
     return all(any(t.startswith(_stem(w)) or (len(t) >= 3 and w.startswith(t)) for t in target_words)
                for w in words)
