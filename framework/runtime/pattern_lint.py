@@ -4,7 +4,7 @@
   python pattern_lint.py <projeto>     imprime a contagem por padrao; sai com 2 se houver padrao que bloqueia
 
 `largura` e `parametro` (valor fora da tabela de opcodes) bloqueiam (mecanicos, consertaveis); `identico-fonte` so e contado (nome mantido e normal).
-Largura pela tabela de opcodes do conector e pelo limite do box_width; pt-PT pela regex do quality_review.
+Largura pela tabela de opcodes do conector e pelo limite do box_width, so onde a fonte tem quebra do autor (linha unica = o motor quebra); pt-PT pela regex do quality_review.
 """
 import argparse
 import sys
@@ -33,7 +33,8 @@ def lint(root) -> dict:
             if not tgt:
                 continue
             found = []
-            if max(box_width.widths(tgt, tbl), default=0) > lim:
+            # fonte em linha unica = texto corrido, o motor quebra: nao ha largura de caixa para estourar
+            if len(box_width.widths(src, tbl)) > 1 and max(box_width.widths(tgt, tbl), default=0) > lim:
                 found.append("largura")
             if quality_review._PTPT.search(tgt):
                 found.append("pt-PT?")

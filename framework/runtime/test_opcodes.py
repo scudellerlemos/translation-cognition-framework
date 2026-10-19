@@ -21,3 +21,10 @@ def test_parameter_is_not_a_code_and_breaks_split_segments(tmp_path):
 def test_invalid_param_value_is_reported(tmp_path):
     t = _tbl(tmp_path)
     assert opcodes.invalid_params("a [07][03] b [07][09]", t) == ["[07][09]"]
+
+
+def test_literal_text_break_splits_segments_and_width_not_summed(tmp_path):
+    cc = {"\\n": "quebra_de_linha"}
+    (tmp_path / "project.json").write_text(json.dumps({"connector": {"control_codes": cc}}), encoding="utf-8")
+    tbl = opcodes.table(tmp_path)
+    assert opcodes.segments("abc\\ndefgh", tbl) == [(3, "abc"), (5, "defgh")]
