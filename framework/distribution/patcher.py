@@ -35,8 +35,9 @@ def bibliotecas_steam(vdf=None):
     vistos, saida = set(), []
     for r in raizes:
         c = r / 'steamapps' / 'common'
-        if str(c).lower() not in vistos:
-            vistos.add(str(c).lower())
+        chave = str(c).replace('\\', '/').lower()  # 'C:\x' e 'C:/x' sao a mesma pasta (e a mesma entrada fora do Windows)
+        if chave not in vistos:
+            vistos.add(chave)
             saida.append(c)
     return saida
 

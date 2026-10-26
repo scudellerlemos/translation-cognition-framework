@@ -63,7 +63,7 @@ def scan(project: Path) -> dict:
 def report(res: dict) -> str:
     out = ["ORDEM: " + ("confirmada (ordem_cenas.txt)" if res["ordem_confirmada"]
                         else "NAO confirmada (sem ordem_cenas.txt: o conector deve gera-lo a partir dos dados do jogo)"),
-           f"{'categoria':24} {'tipo':10} {'unid':>5} {'strings':>8} {'c/ orcamento':>12} {'bytes min-max':>14} {'<=%d B' % _ROTULO_BYTES:>7}"]
+           f"{'categoria':24} {'tipo':10} {'unid':>5} {'strings':>8} {'c/ orcamento':>12} {'bytes min-max':>14} {'<=' + str(_ROTULO_BYTES) + ' B':>7}"]
     for name, c in sorted(res["cats"].items(), key=lambda kv: (kv[1]["kind"] != "sequencia", kv[0])):
         b = c["budgets"]
         faixa = f"{min(b)}-{max(b)}" if b else "-"
