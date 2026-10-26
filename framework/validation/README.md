@@ -1,60 +1,64 @@
-# Validação executável
+# framework/validation — gates executáveis
 
-Camada de **gates executáveis** do pipeline — a contraparte de código dos schemas/regras em prosa.
-Genéricos: descobrem tudo lendo o `project.json` da instância; **não contêm dados de obra**.
+A contraparte em **código** dos schemas e regras escritos em prosa. Genérico: descobre tudo lendo o
+`project.json` da instância e **não contém dado de obra**.
 
-- **`validate.py`** — schemas + invariantes estruturais.
-- **`naturalness_lint.py`** — smells de naturalidade/tradução (apoio à Carta de Governança).
-- **`test_docs_integrity.py`** — testes de integridade do repositório: ADRs sequenciais com status válido, `VERSION` igual à entrada mais recente do `docs/CHANGELOG.md`, `CODEOWNERS` cobrindo o repo, lock de dependências com hash e cobertura de ML obrigatória via o agregador.
-- **`cost_model.py`** — custo de produção via API em 3 cenários (`python cost_model.py <projeto> [--report]` grava `artifacts/cost_report.md`); tokens estimados (~chars/3,8), ordem de grandeza.
-
----
+```mermaid
+flowchart LR
+  art[("artefatos do projeto<br/>project.json, glossary, dialogs,<br/>approved, planos por cena")]:::dado
+  v["validate.py<br/>schemas e invariantes<br/>(Input Gate)"]:::gate
+  n["naturalness_lint.py<br/>cheiro de tradução ruim<br/>(candidatos p/ micro-QA)"]:::gate
+  c["cost_model.py<br/>custo estimado em 3 cenários"]:::exe
+  d["test_docs_integrity.py<br/>integridade do repositório"]:::gate
+  art --> v -->|"exit 0 ou 1"| ok(["segue o pipeline"])
+  art --> n -->|"naturalness_lint.json"| qa(["06b micro-QA"])
+  art --> c -->|"cost_report.md"| dec(["decisão de orçamento"])
+  classDef dado fill:#fde6c4,stroke:#c97b1f,color:#000;
+  classDef gate fill:#d9f2d9,stroke:#2e7d32,color:#000;
+  classDef exe fill:#d6e8f6,stroke:#1f6f9b,color:#000;
+```
 
 ## `validate.py`
 
-Validadores **executáveis** dos artefatos do pipeline — a contraparte de código dos schemas em prosa
-(`framework/schemas/artifacts_schema.md`).
+`validate_project(<dir>)` confere, para os artefatos que existirem:
 
-## O que valida
+| Artefato | O que confere |
+|---|---|
+| `project.json` | campos obrigatórios; tokens de formatação válidos |
+| `glossary.csv` | `handling_rule` no enum; tradução presente quando manda traduzir; `spoiler_level` válido (WARN) |
+| `dialogs.csv` | id único; `byte_budget` inteiro ≥ 0 |
+| `approved_*.csv` | cada id casa com o source; **tokens preservados** |
+| `translation_plan_*.json` | campos por linha; `risk_level` válido; `risk_notes` obrigatório quando risco ≥ medium |
+| `entities.csv`, `aliases_map.json` | unicidade, enums, `reveal_timing` quando há spoiler |
 
-`validate.py` → `validate_project(<dir>)` checa, para os artefatos que existirem:
+**ERROR** (viola o invariante, exit 1) e **WARN**. Cresce aos poucos: invariante novo vira checagem e teste.
 
-- **`project.json`** — campos obrigatórios (title, source_language, target_language, source, formatting_tokens); `formatting_tokens`/`formatting_token_patterns` válidos (regra única de `connector_io`).
-- **`glossary.csv`** — `handling_rule` não-vazio e no enum; `target_translation` quando
-  `traduzir`/`traduzir_parcial`; `spoiler_level` no enum (WARN).
-- **`dialogs.csv`** — `id_column` único; `byte_budget` inteiro ≥ 0 (coluna de texto: `text_source`, ou `source.text_column` em projetos antigos).
-- **`approved_translations.csv`** (flat) e **`scenes/<cena>/approved_*.csv`** (layout por cena, o dos projetos atuais, contra o `dialogs.csv` da cena) — cada id casa com o source; **tokens preservados** vs source (literais por contagem; padrões parametrizados por multiset verbatim); nº de `
-` divergente é WARN.
-- **`scenes/<cena>/translation_plan_*.json`** (plano por cena, o de produção) — campos obrigatórios por linha (`offset`, `text_source`, `speaker`, `risk_level`, `base_translation`); `risk_level` no enum; **`risk_notes`
-  obrigatório quando `risk ≥ medium`**; `total_lines` coerente. O `translation_plan.json` global (legado do poc) ainda é aceito e exige também `entities_present`, `tone_register`, `intent`, `glossary_flags`, `spoiler_flags` e `critical_lines` coerente.
-- **`entities.csv`** — `canonical_name` único; enums de category/importance/confidence.
-- **`aliases_map.json`** — campos obrigatórios; `reveal_timing` quando `spoiler_level ≠ none`.
+## `naturalness_lint.py`
 
-Severidades: **ERROR** (viola schema/invariante → exit 1) e **WARN**. É um **Input Gate executável**:
-rodar antes de consumir os artefatos. Cresce incrementalmente (novos invariantes → novas checagens + testes).
+Heurístico, complementa a Carta de Governança ([`skills/translation_governance.md`](../skills/translation_governance.md)).
+Aponta **candidatos** para a revisão (06b); não conserta sozinho.
 
----
+- `copia_crua`: alvo idêntico ao source (fora da whitelist de nomes, gritos e números).
+- `fragmento_residual`: hesitação de 1 letra com reticências igual nos dois lados, com o resto traduzido.
+- `rotulo_cru`: rótulo de falante idêntico ao source.
 
-## `naturalness_lint.py` — Linter de naturalidade
+Saída: `artifacts/naturalness_lint.json` com `offset`, `check`, `speaker`, `source`, `target`, `note`.
 
-Heurístico, complementa a **Carta de Governança** (`framework/skills/translation_governance.md`).
-Sinaliza **candidatos** para revisão (06b) — não auto-fix. Checagens de alta precisão:
+## `cost_model.py`
 
-- **`copia_crua`** — alvo idêntico ao source, fora da whitelist (nomes do glossário `manter_original`
-  por conteúdo alfabético; gritos puros tipo `Aaaah!`/`Aaagh--`; linhas só de número/token).
-- **`fragmento_residual`** — hesitação de 1 letra + reticências idêntica nos dois lados (ex.: `U...` em
-  `U... Argh...`), com o resto traduzido. Ignora palavras curtas reais (`a short` → `a pouca`).
-- **`rotulo_cru`** — rótulo de falante (alias/UI) idêntico ao source.
+Estima o custo de produção via API em 3 cenários (`--report` grava `artifacts/cost_report.md`).
+Tokens estimados a ~chars/3,8: serve de **ordem de grandeza**, não de fatura.
 
-Entrada: planos por cena (ou `translation_plan.json`), senão `dialogs.csv` + `approved_translations.csv`; whitelist do `glossary.csv`/`aliases_map.json`. O lint de 1 letra respeita iniciais legítimas em pt-BR (`a`, `e`, `o`, `é`).
+## `test_docs_integrity.py`
 
-Saída: imprime os achados + grava `<projeto>/artifacts/naturalness_lint.json` (`offset`, `check`, `speaker`,
-`source`, `target`, `note`) — input do 06b.
+Testes de integridade do repositório (ADRs sequenciais com status válido, `VERSION` igual à entrada mais recente do
+`docs/CHANGELOG.md`, `CODEOWNERS`, lock de dependências com hash, entre outros). Roda junto com a suíte.
 
-## Uso
+## Usar
 
-```
-python framework/validation/validate.py         projects/<título>   # schemas/invariantes (exit code)
-python framework/validation/naturalness_lint.py projects/<título>   # smells -> naturalness_lint.json
-pytest  framework/validation/                                        # gate (passa na ref + pega violações injetadas)
+```bash
+python framework/validation/validate.py          projects/<titulo>   # schemas e invariantes (exit code)
+python framework/validation/naturalness_lint.py  projects/<titulo>   # gera naturalness_lint.json
+python framework/validation/cost_model.py        projects/<titulo> --report
+pytest framework/validation/                                          # passa na referência e pega violação injetada
 ```
