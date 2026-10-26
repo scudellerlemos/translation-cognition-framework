@@ -1,5 +1,6 @@
 """Gera o pacote do patcher: deltas bsdiff + manifest.json. Uso: build_package.py <distribution.json> <source_dat> <output> <dist> <versao> [arte.webp|png [capa.jpg]]
-So entram arquivos de output/ que existem em source_dat e diferem dele (sondas de teste ficam de fora)."""
+So entram arquivos de output/ que existem em source_dat e diferem dele (sondas de teste ficam de fora).
+Com `arquivos` no distribution.json, a lista e explicita (name/origem/original/path) em vez do glob."""
 import hashlib
 import json
 import pathlib
@@ -23,21 +24,29 @@ versao, arte = sys.argv[5], sys.argv[6:]
 (dist / 'deltas').mkdir(parents=True, exist_ok=True)
 sha = lambda b: hashlib.sha256(b).hexdigest()
 files = []
-for f in sorted(out.glob(cfg['padrao_arquivos'])):
-    if not (src / f.name).is_file():
+# `arquivos` (opcional): jogo com arquivos em pastas diferentes ou com nome diferente do original.
+# Cada item: name (do delta), origem (em output), original (em source_dat), path (relativo a pasta do jogo).
+# Sem `arquivos`, vale o glob `padrao_arquivos` (tudo na mesma pasta, mesmo nome).
+if 'arquivos' in cfg:
+    itens = [(i['name'], out / i['origem'], src / i['original'], i.get('path')) for i in cfg['arquivos']]
+else:
+    itens = [(f.name, f, src / f.name, None) for f in sorted(out.glob(cfg['padrao_arquivos']))]
+for nome, f, orig, path in itens:
+    if not orig.is_file() or not f.is_file():
         continue
-    a, b = (src / f.name).read_bytes(), f.read_bytes()
+    a, b = orig.read_bytes(), f.read_bytes()
     if a == b:
         continue
     d = bsdiff4.diff(a, b)
-    assert bsdiff4.patch(a, d) == b, f.name
-    _grava(dist / 'deltas' / (f.name + '.bsdiff'), d)
-    files.append({'name': f.name, 'sha_original': sha(a), 'sha_final': sha(b)})
+    assert bsdiff4.patch(a, d) == b, nome
+    _grava(dist / 'deltas' / (nome + '.bsdiff'), d)
+    files.append({'name': nome, **({'path': path} if path else {}), 'sha_original': sha(a), 'sha_final': sha(b)})
 _grava(dist / 'manifest.json', json.dumps({'version': versao, 'app': cfg, 'files': files}, indent=1).encode('utf-8'))
 if arte:  # arte do painel lateral: 320x480, PNG (o tkinter nao le webp), com o titulo. Fica so no pacote, nunca no repo
     from PIL import Image, ImageDraw, ImageFont
     W, H = 640, 960  # desenha em 2x e reduz, para o texto sair suave
-    img = Image.open(arte[0]).convert('RGB').resize((W, H), Image.LANCZOS).convert('RGBA')
+    from PIL import ImageOps
+    img = ImageOps.fit(Image.open(arte[0]).convert('RGB'), (W, H), Image.LANCZOS).convert('RGBA')  # corta no 2:3, sem esticar
     veu = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     vd = ImageDraw.Draw(veu)
     for y in range(H - 420, H):  # degrade branco embaixo: garante a leitura do texto sobre a nevoa
@@ -49,10 +58,14 @@ if arte:  # arte do painel lateral: 320x480, PNG (o tkinter nao le webp), com o 
         except OSError:
             return ImageFont.load_default(tam)
     d = ImageDraw.Draw(img)
+    def cabe(texto, nome, tam):  # encolhe o corpo ate o texto caber na largura do painel (titulo longo nao corta)
+        while tam > 20 and d.textlength(texto, font=fonte(nome, tam)) > W - 60:
+            tam -= 2
+        return tam
     for texto, nome, tam, cor, y in (('PATCH TRADUÇÃO', 'segoeuib.ttf', 34, (58, 79, 168), H - 255),
                                      (cfg['titulo_curto'], 'segoeuib.ttf', 70, (31, 42, 92), H - 205),
                                      (f"by {cfg['autor']}", 'segoeui.ttf', 38, (91, 99, 133), H - 110)):
-        d.text((W // 2, y), texto, font=fonte(nome, tam), fill=cor, anchor='mt')
+        d.text((W // 2, y), texto, font=fonte(nome, cabe(texto, nome, tam)), fill=cor, anchor='mt')
     img.convert('RGB').resize((320, 480), Image.LANCZOS).save(dist / 'arte.png')
     if len(arte) > 1:  # recorte de rosto da capa (icone_recorte); sem a capa, recorta o rosto da propria arte
         ic = Image.open(arte[1]).convert('RGBA').crop(tuple(cfg['icone_recorte'])).resize((512, 512), Image.LANCZOS)
