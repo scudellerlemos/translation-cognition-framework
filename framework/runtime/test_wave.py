@@ -115,3 +115,18 @@ def test_step_that_hangs_stops_the_wave_with_timeout_message(tmp_path, monkeypat
     assert wave.run(str(tmp_path), ["ch_1_03"], step_timeout=5) == 124
     assert "sem resposta em 5 s" in capsys.readouterr().out
     assert "TIMEOUT apos 5 s" in (tmp_path / "artifacts" / "wave_last_ch_1_03.log").read_text(encoding="utf-8")
+
+
+def test_espera_esperada_nao_alerta_so_com_marca_de_espera_e_sem_erro():
+    assert wave.espera_esperada("run_scene", "[3/6] AGUARDANDO back-translation: x\nLOTE: 0/1")
+    assert wave.espera_esperada("run_scene_copias", "AGUARDANDO traducao (caminho assinatura)")
+    assert wave.espera_esperada("quality_gate", "SEM COBERTURA - 3 linha(s) high/critical")
+    assert not wave.espera_esperada("run_scene", "AGUARDANDO traducao\nTraceback (most recent call last)")
+    assert not wave.espera_esperada("quality_gate", "SEM COBERTURA\nERRO: schema")
+    assert not wave.espera_esperada("glossary_lint", "SEM COBERTURA")
+    assert not wave.espera_esperada("run_scene", "falhou por outro motivo")
+    # defeito da traducao (token/schema/glifo): a sessao corrige e roda de novo; so Traceback segue sendo falha
+    corrige = f"{wave.events.CORRECAO_MARCA} (build_plan): ajuste\nSCHEMA: 1 erro(s)"
+    assert wave.espera_esperada("run_scene", corrige) and wave.espera_esperada("run_scene_copias", corrige)
+    assert not wave.espera_esperada("run_scene", corrige + "\nTraceback (most recent call last)")
+    assert not wave.espera_esperada("quality_gate", corrige)

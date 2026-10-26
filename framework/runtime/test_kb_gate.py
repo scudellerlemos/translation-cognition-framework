@@ -115,6 +115,17 @@ def test_glossary_without_updated_date_blocks(tmp_path):
     assert any("updated_date" in p for p in r["problems"])
 
 
+def test_private_glossary_is_checked_for_updated_date_too(tmp_path):
+    _good(tmp_path)
+    loc = paths.glossary_local(tmp_path)
+    loc.write_text("term,translation\nSegredo,Segredo\n", encoding="utf-8")                     # sem a coluna
+    assert any("glossary.local.csv sem coluna" in p for p in kb_gate.check(tmp_path, "12_01")["problems"])
+    loc.write_text("term,translation,updated_date\nSegredo,Segredo,\n", encoding="utf-8")       # coluna, linha sem data
+    assert any("glossary.local.csv" in p and "Segredo" in p for p in kb_gate.check(tmp_path, "12_01")["problems"])
+    loc.write_text("term,translation,updated_date\nSegredo,Segredo,2026-10-21\n", encoding="utf-8")
+    assert not any("glossary.local.csv" in p for p in kb_gate.check(tmp_path, "12_01")["problems"])
+
+
 def test_kb_frontier_missing_blocks(tmp_path):
     """kb_frontier ausente e HARD (nao bypassavel) -- sem ela o gate nao sabe se a KB cobre a cena."""
     _good(tmp_path)
@@ -149,3 +160,17 @@ def test_kb_ratified_without_date_col_warns(tmp_path):
     paths.kb_ratified(tmp_path).write_text("entity,note\nFou-lu,vilao\n", encoding="utf-8")
     r = kb_gate.check(tmp_path, "12_01")
     assert any("kb_ratified" in w for w in r["warnings"])
+
+
+def test_private_glossary_consistency(tmp_path):
+    _good(tmp_path)
+    loc = paths.glossary_local(tmp_path)
+    cab = "term,handling_rule,target_translation,updated_date\n"
+    loc.write_text(cab + "A,traduzir,,2026-10-21\nB,inventada,x,2026-10-21\nC,manter_original,,2026-10-21\n"
+                   "c,manter_original,,2026-10-21\n", encoding="utf-8")
+    probs = " | ".join(kb_gate.check(tmp_path, "12_01")["problems"])
+    assert "A: target_translation obrigatorio" in probs
+    assert "B: handling_rule invalido" in probs
+    assert "termo repetido: c" in probs
+    loc.write_text(cab + "C,manter_original,,2026-10-21\n", encoding="utf-8")
+    assert not any("glossary.local.csv" in p for p in kb_gate.check(tmp_path, "12_01")["problems"])

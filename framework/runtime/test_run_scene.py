@@ -16,6 +16,7 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 import context_pack  # noqa: E402
+import events  # noqa: E402
 import model  # noqa: E402
 import paths  # noqa: E402
 import run_scene as rs  # noqa: E402
@@ -192,6 +193,9 @@ def test_connector_soft_pilot_runs_with_verify(env):
     assert r["status"] == "verified"
     state = json.loads((root / "artifacts" / "run_state.json").read_text(encoding="utf-8"))
     assert state["scenes"][scene]["bypassed_gates"] == []
+    evs = [json.loads(ln) for ln in (root / "artifacts" / "events.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [e for e in evs if events.validate(e)] == []          # evento so leva escalar (bypassed_gates era lista)
+    assert next(e for e in evs if e["stage"] == "quality")["bypassed_gates"] == ""
 
 
 def test_connector_soft_pilot_verify_fails(env):
@@ -673,3 +677,24 @@ def test_data_dir_default_fills_missing_env_but_never_overrides(tmp_path, monkey
     monkeypatch.setenv("T_DD", "outro")
     rs._default_data_dir_env(tmp_path, cfg)
     assert os.environ["T_DD"] == "outro"
+
+
+def _tr_com_risco(root, scene, scene_id, riscos):
+    paths.scene_dir(root, scene).mkdir(parents=True, exist_ok=True)
+    paths.translations(root, scene, scene_id).write_text(
+        json.dumps({"lines": {off: {"risk_level": r, "t": "x"} for off, r in riscos.items()}}), encoding="utf-8")
+
+
+def test_piso_de_risco_barra_rebaixamento_e_deixa_subir(tmp_path):
+    _tr_com_risco(tmp_path, "S1", "S1", {"a": "high", "b": "low"})
+    assert rs._piso_de_risco(tmp_path, "S1", "S1") == []          # 1a rodada grava o piso
+    _tr_com_risco(tmp_path, "S1", "S1", {"a": "medium", "b": "high"})    # a rebaixada, b subiu
+    assert rs._piso_de_risco(tmp_path, "S1", "S1") == ["a: high -> medium"]
+    _tr_com_risco(tmp_path, "S1", "S1", {"a": "critical", "b": "high"})  # corrigiu e subiu
+    assert rs._piso_de_risco(tmp_path, "S1", "S1") == []
+    _tr_com_risco(tmp_path, "S1", "S1", {"a": "high", "b": "high"})      # piso agora e critical
+    assert rs._piso_de_risco(tmp_path, "S1", "S1") == ["a: critical -> high"]
+
+
+def test_piso_de_risco_sem_traducao_nao_trava(tmp_path):
+    assert rs._piso_de_risco(tmp_path, "S9", "S9") == []

@@ -3,6 +3,7 @@ import ast
 import http.server
 import json
 import threading
+import time
 import wave
 from pathlib import Path
 
@@ -87,6 +88,26 @@ def test_notify_grava_evento_e_alerts_jsonl(tmp_path, monkeypatch):
     assert all(events.validate(e) == [] for e in events.read(root))
 
 
+def test_correcao_pendente_alerta_so_o_que_sobrou_parado(tmp_path, monkeypatch):
+    monkeypatch.delenv(alerts.WEBHOOK_ENV, raising=False)
+    root = _projeto(tmp_path)
+    rs = paths.run_state(root)
+    rs.parent.mkdir(parents=True, exist_ok=True)
+    velho, novo = time.time() - 7200, time.time()
+    rs.write_text(json.dumps({"scenes": {
+        "a": {"status": "build_plan_failed", "_ts": velho}, "b": {"status": "verified", "_ts": velho},
+        "c": {"status": "schema_failed", "_ts": velho}, "d": {"status": "awaiting_translation", "_ts": velho},
+        "e": {"status": "verify_failed", "_ts": novo}}}), encoding="utf-8")
+    assert alerts.correcoes_pendentes(root, 1800) == ["a", "c"]               # "e" ainda esta na carencia
+    assert alerts.correcoes_pendentes(root, 1800, fora=("c",)) == ["a"]       # "c" esta sendo refeita agora
+    assert alerts.alertar_correcoes_pendentes(root, 1800) == ["a", "c"]
+    assert [(r["scene"], r["result"]) for r in alerts.read(root)] == [("a", "correcao_pendente"), ("c", "correcao_pendente")]
+    assert alerts.alertar_correcoes_pendentes(root, 1800) == []               # mesma parada: nao alerta de novo
+    assert alerts.alertar_correcoes_pendentes(root) == ["e"]                  # fim de lote: sem carencia
+    rs.write_text(json.dumps({"scenes": {"a": {"status": "verified", "_ts": novo}}}), encoding="utf-8")
+    assert alerts.correcoes_pendentes(root) == [] and alerts.correcoes_pendentes(tmp_path / "sem_projeto") == []
+
+
 def test_notify_posta_no_webhook_sem_texto_de_jogo(tmp_path, monkeypatch):
     recebido = []
 
@@ -169,3 +190,17 @@ def test_obs_report_mostra_indicadores_e_alertas(tmp_path):
     txt = obs_report._fmt(obs_report.report(root))
     assert "indicadores: taxa de sucesso da onda 100%" in txt
     assert "alertas de onda: 1" in txt and "cost_report/failed rc=2" in txt
+
+
+def test_alerts_cli_correcoes_alerta_a_parada_pendente(tmp_path, capsys, monkeypatch):
+    import sys
+    monkeypatch.delenv(alerts.WEBHOOK_ENV, raising=False)
+    root = _projeto(tmp_path)
+    rs = paths.run_state(root)
+    rs.parent.mkdir(parents=True, exist_ok=True)
+    rs.write_text(json.dumps({"scenes": {"a": {"status": "verify_failed", "_ts": time.time() - 7200}}}), encoding="utf-8")
+    monkeypatch.setattr(sys, "argv", ["alerts.py", "correcoes", str(root), "--carencia", "1800"])
+    alerts.main()
+    assert "a" in capsys.readouterr().out
+    alerts.main()                                       # a mesma parada nao alerta duas vezes
+    assert capsys.readouterr().out == ""

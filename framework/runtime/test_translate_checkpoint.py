@@ -4,6 +4,7 @@ import json
 import context_pack
 import cost_report
 import model
+import model_api
 import paths
 import pytest
 
@@ -32,16 +33,16 @@ def env(monkeypatch, tmp_path):
     # o conteudo enviado revela o subconjunto de linhas-alvo
     monkeypatch.setattr(context_pack, "render_prompt",
                         lambda p, carta="": " ".join(r["offset"] for r in p["lines"]))
-    monkeypatch.setattr(model, "_carta_text", lambda: "CARTA")
-    monkeypatch.setattr(model, "_client", lambda: object())
-    monkeypatch.setattr(model, "_text_of", lambda msg: json.dumps(msg))
-    monkeypatch.setattr(model, "_usage_of", lambda msg: dict(_ZERO))
+    monkeypatch.setattr(model_api, "_carta_text", lambda: "CARTA")
+    monkeypatch.setattr(model_api, "_client", lambda: object())
+    monkeypatch.setattr(model_api, "_text_of", lambda msg: json.dumps(msg))
+    monkeypatch.setattr(model_api, "_usage_of", lambda msg: dict(_ZERO))
     sent, replies = [], []
 
     def fake_stream(client, **kw):
         sent.append(kw["messages"][0]["content"])
         return replies.pop(0)
-    monkeypatch.setattr(model, "_stream_final", fake_stream)
+    monkeypatch.setattr(model_api, "_stream_final", fake_stream)
     return tmp_path, sent, replies
 
 

@@ -4,11 +4,15 @@ vira problema explícito (nunca passa calado), e o filtro de termos do glossári
 import sys
 from pathlib import Path
 
+import pytest
+
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+import context_pack  # noqa: E402
 import glossary_lint  # noqa: E402
 import kb_gate  # noqa: E402
+import kb_phase  # noqa: E402
 import paths  # noqa: E402
 
 
@@ -94,6 +98,18 @@ def test_glossary_lint_skips_term_that_only_opens_a_sentence():
     assert not skip("village", "Village of the wind")               # termo minusculo: sempre audita
 
 
+def test_load_glossary_placeholder_target_is_not_a_literal_form(tmp_path):
+    _put(paths.glossary(tmp_path),
+         "term,handling_rule,target_translation,aliases\n"
+         "Mmm,traduzir,(adaptar),\n"                   # marcador sem alias: nada a auditar
+         "Hmm,traduzir,(adaptar),Hum\n"                # marcador com alias: so o alias vale
+         "Warmaster,traduzir,Mestre de Guerra,\n")
+    assert glossary_lint._load_glossary(tmp_path, cfg={}) == [
+        ("Hmm", ["Hum"], "traduzir"),
+        ("Warmaster", ["Mestre de Guerra"], "traduzir"),
+    ]
+
+
 def test_load_glossary_flat_filters_what_is_not_auditable(tmp_path):
     _put(paths.glossary(tmp_path),
          "term,handling_rule,target_translation,aliases\n"
@@ -134,8 +150,57 @@ def test_lint_scope_blocks_only_requested_scenes_and_warns_about_the_rest():
     assert glossary_lint.split_scope(found, ["c"]) == ([], found)          # cena limpa fecha com aviso
 
 
+def test_quality_gate_defer_only_with_diferida_and_not_fechar():
+    import quality_gate
+    items = [{"scene": "a", "offset": "a:1"}]
+    assert quality_gate.defer(items, False, False) == (items, [])      # sem hitl_fila: bloqueia como sempre
+    assert quality_gate.defer(items, True, False) == ([], items)       # diferida: espera o fim do lote
+    assert quality_gate.defer(items, True, True) == (items, [])        # --fechar: volta a bloquear
+
+
+def _gate_exit(tmp_path, monkeypatch, capsys, cfg, argv_extra=()):
+    import json as _json
+
+    import quality_gate
+    (tmp_path / "project.json").write_text(_json.dumps(cfg), encoding="utf-8")
+    rev = [{"scene": "S00", "scene_id": "S00", "offset": "S00:1", "speaker": "", "source": "x", "target": "y",
+            "back_en": "z", "note": "n"}]
+    monkeypatch.setattr(quality_gate, "check", lambda root, chapter=None: {
+        "revise": rev, "uncovered": [], "coverage": {"lines": 1, "high": 1, "with_back": 1, "sampled_low": 0, "pct": 100.0}})
+    monkeypatch.setattr(sys, "argv", ["quality_gate.py", str(tmp_path), "--scenes", "S00", *argv_extra])
+    with pytest.raises(SystemExit) as e:
+        quality_gate.main()
+    return e.value.code, capsys.readouterr().out
+
+
+def test_quality_gate_revise_is_deferred_in_diferida_and_blocks_on_fechar(tmp_path, monkeypatch, capsys):
+    code, out = _gate_exit(tmp_path, monkeypatch, capsys, {"hitl": True, "hitl_fila": "diferida"})
+    assert code == 0 and "fila diferida" in out and "S00:S00:1" in out and "adiada" in out
+    code, out = _gate_exit(tmp_path, monkeypatch, capsys, {"hitl": True, "hitl_fila": "diferida"}, ("--fechar",))
+    assert code == 1 and "REVISAR" in out
+    code, _ = _gate_exit(tmp_path, monkeypatch, capsys, {"hitl": True})          # padrao bloqueante intacto
+    assert code == 1
+
+
 def test_quality_gate_scope_blocks_only_requested_scenes():
     import quality_gate
     items = [{"scene": "a", "offset": "a:1"}, {"scene": "b", "offset": "b:1"}]
     assert quality_gate.split_scope(items, None) == (items, [])
     assert quality_gate.split_scope(items, ["a"]) == ([items[0]], [items[1]])
+
+
+def test_private_glossary_adds_to_lint_context_pack_and_kb_coverage(tmp_path):
+    """glossary.local.csv (nome de spoiler, fora do git) soma ao glossary.csv em quem le o glossario."""
+    _put(paths.glossary(tmp_path), "term,handling_rule,target_translation,aliases\nWarmaster,traduzir,Mestre de Guerra,\n")
+    _put(paths.glossary_local(tmp_path), "term,handling_rule,target_translation,aliases\nSegredo,manter_original,,\n")
+    assert glossary_lint._load_glossary(tmp_path, cfg={}) == [
+        ("Warmaster", ["Mestre de Guerra"], "traduzir"), ("Segredo", ["Segredo"], "manter_original")]
+    assert [r["term"] for r in context_pack.load_glossary(paths.glossary(tmp_path))] == ["Warmaster", "Segredo"]
+    assert "segredo" in kb_phase._kb_blob(tmp_path)                   # coberto: nao volta como candidato a nome
+    _put(paths.glossary_local(tmp_path), "term,handling_rule,target_translation,aliases\n")
+    assert [r["term"] for r in context_pack.load_glossary(paths.glossary(tmp_path))] == ["Warmaster"]
+
+
+def test_private_glossary_alone_is_enough(tmp_path):
+    _put(paths.glossary_local(tmp_path), "term,handling_rule,target_translation,aliases\nSegredo,manter_original,,\n")
+    assert glossary_lint._load_glossary(tmp_path, cfg={}) == [("Segredo", ["Segredo"], "manter_original")]

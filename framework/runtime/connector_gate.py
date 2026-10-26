@@ -90,6 +90,23 @@ def _source_dir(conn: dict) -> Path | None:
 _RESIDUAL_MEMO: dict = {}
 
 
+def _container_members(root: Path, cfg: dict, src: Path) -> dict[str, bytes] | None:
+    """Origem em arquivo de container: o `extract.py` do projeto abre com `residual_members(src) -> {nome: bytes}`.
+    None = o conector nao expoe (o check segue como nao checado) ou a leitura falhou."""
+    import importlib.util
+    script = _connector_script(root, cfg, "extract_script", "extract.py")
+    if not script.is_file():
+        return None
+    try:
+        spec = importlib.util.spec_from_file_location("_residual_extract", script)
+        mod = importlib.util.module_from_spec(spec)           # type: ignore[arg-type]
+        spec.loader.exec_module(mod)                          # type: ignore[union-attr]
+        fn = getattr(mod, "residual_members", None)
+        return fn(src) if fn else None
+    except Exception:                                         # noqa: BLE001 -- conector alheio: nao derruba o gate
+        return None
+
+
 def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
     """(problems, warnings) do check de texto residual -- so conector hex_binary. Round-trip
     identico nao prova extracao completa: ver framework/connectors/residual_text.py (issue do backlog)."""
@@ -99,16 +116,18 @@ def _residual_text(root: Path, cfg: dict) -> tuple[list[str], list[str]]:
     src_cfg = cfg.get("source") or {}
     csv_path = root / src_cfg.get("file", "artifacts/dialogs.csv")
     src = _source_dir(conn)
-    if src is None or not src.is_dir() or not csv_path.is_file():
+    members = _container_members(root, cfg, src) if src is not None and src.is_file() else None
+    if src is None or not (src.is_dir() or members is not None) or not csv_path.is_file():
         return ["texto residual NAO checado — declare connector.data_dir_env e sete essa env "
-                "apontando para os binarios de origem; sem isso string truncada na extracao "
+                "apontando para os binarios de origem (pasta, ou arquivo de container se o extract.py "
+                "expuser residual_members(src)); sem isso string truncada na extracao "
                 "passa despercebida (round-trip continua verde)."], []
     try:
         # memo por processo: o check varre o corpus inteiro e nao depende de cena -- num lote o run_scene
         # chama o gate a cada cena. A chave muda se o dialogs.csv for regravado (re-extracao).
         key = (str(csv_path), csv_path.stat().st_mtime_ns, str(src), src_cfg.get("text_column", "text_en"))
         if key not in _RESIDUAL_MEMO:
-            _RESIDUAL_MEMO[key] = residual_text.check(csv_path, src, text_column=key[3])
+            _RESIDUAL_MEMO[key] = residual_text.check(csv_path, src, text_column=key[3], members=members)
         r = _RESIDUAL_MEMO[key]
     except KeyError as e:
         return [], [f"texto residual NAO checado — {csv_path.name} sem a coluna {e}."]

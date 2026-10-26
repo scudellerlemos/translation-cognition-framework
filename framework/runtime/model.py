@@ -21,7 +21,6 @@ do context_pack; a chamada de IA e a unica parte nao-determinista (por isso isol
 from __future__ import annotations
 
 import json
-import re
 import sys
 import time  # noqa: F401  (re-exportado p/ test_batch_retries fazer monkeypatch de model.time.sleep)
 from pathlib import Path
@@ -29,16 +28,12 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
-import budget as _bud  # noqa: E402  (budget.py: fonte unica da conta de bytes)
 import context_pack  # noqa: E402
 import paths  # noqa: E402  (paths.py: fonte unica do contrato de caminhos de artefato)
-import state_index  # noqa: E402  (sibling; _key p/ dedup por TM)
-import translate_checkpoint as ckpt  # noqa: E402  (L01: nao perder linhas pagas quando os retries esgotam)
 
 _FRAMEWORK_CONNECTORS = _HERE.parent / "connectors"
 if str(_FRAMEWORK_CONNECTORS) not in sys.path:
     sys.path.insert(0, str(_FRAMEWORK_CONNECTORS))
-import connector_io  # noqa: E402  (structural_token_rx/structural_tokens_match compartilhados com o conector)
 
 # Concern de back-translation extraido p/ back_translate.py (re-exportado aqui p/ compat).
 from back_translate import (  # noqa: E402,F401
@@ -100,65 +95,67 @@ from llm_client import (  # noqa: E402,F401
     _with_backoff,
 )
 
+# Caminhos de traducao (ADR 0019): API em model_api.py, sessao em model_session.py (re-exportados aqui p/ compat).
+from model_api import (  # noqa: E402,F401
+    _LINE_PROPS,
+    _NL_RULE,
+    _TRANSLATION_SCHEMA,
+    _api_translate,
+    _batch_coverage,
+    _budget_note,
+    _coverage_note,
+    _merge_best_parity,
+    _no_effort_model,
+    _parse_batch_lines,
+    _submit_translate_chunk,
+    _tier_of,
+    _to_map,
+    _translate_params,
+    _write_translations,
+    batch_translate,
+    retranslate_offsets,
+)
+from model_session import (  # noqa: E402,F401
+    InvalidTranslationFile,
+    read_translation,
+    translate_in_session,
+)
 
-def _no_effort_model(model: str) -> bool:
-    """Modelos que NAO aceitam output_config.effort nem adaptive thinking (400): Haiku 4.5 e Sonnet 4.5.
-    Opus 4.x e Sonnet 4.6 aceitam. Usado p/ montar params validos por modelo (tiering de custo)."""
-    return model.startswith("claude-haiku") or model == "claude-sonnet-4-5"
-
+# Regras compartilhadas extraidas p/ translation_rules.py (re-exportadas aqui p/ compat).
+from translation_rules import (  # noqa: E402,F401
+    _BLOWUP_FACTOR,
+    _BLOWUP_FLOOR,
+    _ENGINE_LABEL_RX,
+    _ENGINE_LABELS,
+    _STRICT_ID,
+    _TOKISH,
+    _budget_len,
+    _check_translation,
+    _is_blowup,
+    _is_tokish,
+    _label_passthrough,
+    _line_ok,
+    _norm_t,
+    _over_budget,
+    _over_offsets,
+    _parity_fit,
+    _prefilled,
+    _select_reuse,
+    _struct_ok,
+    _structural_rx,
+    _translit_len,
+    fix_newlines,
+    over_budget_offsets,
+    precheck,
+    saved_pack,
+)
 
 # ------------------------------- TRANSLATE ------------------------------------
 
-def saved_pack(root, scene) -> dict | None:
-    """RECONFERENCIA (so caminho de sessao): o pack.json ja gravado, se a cena ja tem traducao e nada do que
-    alimenta o pack mudou desde entao (falas da cena, project.json, doutrina = carta+glossario+decisoes+tom).
-    Remontar o pack de uma cena pronta so para reconferir um conserto custava minutos em cena grande.
-    None = nao da para reaproveitar -> quem chama remonta.
-    So vale com a traducao COMPLETA: faltando fala, a TM que cresceu no banco depois do pack pode preenche-la,
-    entao remonta. Com todas as falas presentes a TM nao e consultada e o pack gravado basta."""
-    root = Path(root)
-    pk = paths.pack(root, scene)
-    if not pk.is_file():
-        return None
-    try:
-        pack = json.loads(pk.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return None
-    out = paths.translations(root, scene, pack.get("scene_id", ""))
-    try:
-        have = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
-    except (OSError, ValueError):
-        return None
-    if any(r["offset"] not in have for r in pack.get("lines", [])):
-        return None
-    if pack.get("doctrine_hash", "") != context_pack._doctrine_hash(root):
-        return None
-    made = pk.stat().st_mtime
-    deps = [paths.dialogs(root, scene), root / "project.json"]
-    if any(d.is_file() and d.stat().st_mtime > made for d in deps):
-        return None
-    return pack
 
 
-class InvalidTranslationFile(ValueError):
-    """translations_<scene_id>.json do subagente ilegivel (nao-UTF-8, JSON quebrado ou sem `lines`)."""
 
 
-def read_translation(path) -> dict:
-    """Le o translations_<scene_id>.json com erro claro. Nao aceita nem converte outra codificacao (cp1252 e
-    afins sao so diagnosticados): o subagente regrava o arquivo em UTF-8."""
-    path = Path(path)
-    fix = "regrave com json.dumps(..., ensure_ascii=False) e open(..., 'w', encoding='utf-8')"
-    try:
-        data = json.loads(path.read_bytes().decode("utf-8"))
-    except UnicodeDecodeError as e:
-        raise InvalidTranslationFile(f"{path.name} nao esta em UTF-8 (byte {e.start}); {fix}") from e
-    except json.JSONDecodeError as e:
-        raise InvalidTranslationFile(f"{path.name} nao e JSON valido (linha {e.lineno}, coluna {e.colno}: "
-                                     f"{e.msg}); {fix}") from e
-    if not isinstance(data, dict) or not isinstance(data.get("lines"), dict):
-        raise InvalidTranslationFile(f"{path.name} sem o objeto `lines` ({{offset: {{...}}}}); {fix}")
-    return data
 
 
 def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) -> TranslateResult:
@@ -172,25 +169,7 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) 
     scene_id = pack["scene_id"]
     out = paths.translations(root, scene, scene_id)
     if backend == "in-session":
-        # mesmo DEDUP por TM do caminho api: fala ja traduzida em outra cena nao vai ao agente (sai do
-        # prompt) e e acrescentada aqui. So preenche offset AUSENTE -- o que o agente escreveu prevalece.
-        reuse = _select_reuse(pack, enabled=True)
-        data = read_translation(out) if out.is_file() else None      # ilegivel: erro claro, nao api_translate_failed
-        if reuse and (data is not None or len(reuse) == pack["n_lines"]):
-            data = data if data is not None else {"lines": {}}
-            add = {o: e for o, e in reuse.items() if o not in data.setdefault("lines", {})}
-            if add:
-                data["lines"].update(add)
-                paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
-        elif reuse:
-            novel = [r for r in pack["lines"] if r["offset"] not in reuse]   # copia: o pack (e o caminho api) nao muda
-            paths.atomic_write(paths.scene_prompt(root, scene), context_pack.render_prompt({**pack, "lines": novel, "n_lines": len(novel)},
-                                           context_pack._read(context_pack.CARTA_PATH)))
-        if out.is_file():
-            return {"status": READY, "path": str(out), "scene_id": scene_id, "n_lines": pack["n_lines"]}
-        return {"status": AWAITING, "scene_id": scene_id, "n_lines": pack["n_lines"],
-                "prompt": str(paths.scene_prompt(root, scene)),
-                "expected_output": str(out)}
+        return translate_in_session(root, scene, pack, out)
     if backend == "api":
         m = model or MODEL_TRANSLATE
         data, usage, meta = _api_translate(root, scene, pack, m, budget_tolerance=budget_tolerance)
@@ -214,40 +193,11 @@ def translate(root, scene, *, backend="api", model=None, budget_tolerance=None) 
 # Endurecido p/ producao: streaming (.get_final_message) p/ saidas longas, output_config json_schema,
 # backoff em erro transitorio, e guard do token de quebra + cobertura com retry (ver _api_translate).
 
-# Structured output ESTRITO exige additionalProperties:false em todo objeto -> nao da p/ usar mapa
-# {offset: {...}} (chaves dinamicas). Logo: ARRAY de entradas com 'offset' por item; convertido p/ o
-# mapa {offset: {...}} (formato canonico do translations_<scene_id>.json) apos parsear (ver _api_translate).
-_LINE_PROPS = {
-    "offset": {"type": "string"}, "speaker": {"type": "string"},
-    "tone_register": {"type": "string"}, "intent": {"type": "string"},
-    "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
-    "risk_notes": {"type": "string"}, "t": {"type": "string"},
-}
-_TRANSLATION_SCHEMA = {
-    "type": "object", "additionalProperties": False, "required": ["lines"],
-    "properties": {"lines": {"type": "array", "items": {
-        "type": "object", "additionalProperties": False,
-        "properties": _LINE_PROPS,
-        "required": ["offset", "speaker", "tone_register", "intent",
-                     "risk_level", "risk_notes", "t"],
-    }}},
-}
 
 
 # _load_dotenv / _client / _carta_text -> llm_client.py (importados acima).
 
 
-# Regra do token de quebra reforcada na borda da API: em JSON, o literal barra+n e escrito `\\n`.
-# O modelo as vezes colapsa isso numa quebra de linha REAL (o bug recorrente) — instruimos e validamos.
-_NL_RULE = (
-    "\n\n## FORMATO DE SAIDA (sobrepoe a secao 8)\n"
-    "Responda um objeto JSON com a chave \"lines\" = ARRAY de entradas; cada entrada tem os campos "
-    "`offset, speaker, tone_register, intent, risk_level, risk_notes, t` (preencha todos; `risk_notes` "
-    "pode ser \"\" quando risco baixo). Uma entrada por offset da secao 7 — cubra TODOS, sem excecao.\n"
-    "## REGRA CRITICA (token de quebra)\n"
-    "Onde o source contem o token literal de quebra de linha, o campo \"t\" deve conte-lo como os DOIS "
-    "caracteres literais barra-invertida + n (no JSON: escreva `\\\\n`), NUNCA uma quebra de linha real."
-)
 
 
 # _text_of / _usage_of / _add_usage -> llm_client.py (importados acima).
@@ -257,336 +207,10 @@ from cost import _PRICE, cost_of, log_api_call  # noqa: E402,F401
 # _transient_errors / _with_backoff / _stream_final -> llm_client.py (importados acima).
 
 
-def _check_translation(data, offsets):
-    """Retorna (offsets_com_quebra_real, offsets_faltando). Guard do bug do token \\n + cobertura."""
-    lines = data.get("lines", {}) if isinstance(data, dict) else {}
-    bad_nl = [off for off, v in lines.items() if "\n" in ((v or {}).get("t", "") or "")]
-    missing = [o for o in offsets if o not in lines]
-    return bad_nl, missing
 
 
-def _translit_len(t) -> int:
-    """Comprimento em bytes da forma TRANSLITERADA — o que o reinsert grava (conta em budget.py)."""
-    return _bud.translit_len(t)
 
 
-def _budget_len(t, pc: dict | None) -> int:
-    """Metrica de orcamento do projeto (fonte unica: budget.py; espelha o que verify_chapter.py confere)."""
-    return _bud.budget_len(t, pc)
-
-
-def _over_budget(t, budget_, pc, tol) -> bool:
-    """True se `t` excede budget*tol pela metrica do projeto, com a reserva do terminador (ver budget.py)."""
-    return _bud.over_budget(t, budget_, pc, tol)
-
-
-def _budget_note(over: list, pc: dict) -> str:
-    """Texto de correcao de retry p/ offsets acima do budget — usado por _api_translate."""
-    metric = ("bytes UTF-8 reais — cada acento custa byte extra, NAO e removido na gravacao"
-              if (pc or {}).get("target_charset_supported") is True
-              else "TRANSLITERADO, sem acentos")
-    if (pc or {}).get("budget_reserves_terminator"):
-        metric += "; o byte_budget ja reserva 1 byte pro terminador, o texto precisa caber em budget-1"
-    note = (f"- Estes offsets passam do byte_budget ({metric}); ENCURTE preservando o sentido "
-            "(corte redundancia; ex.: 'adicionado ao'->'no'):\n")
-    for off, b, cur in over[:25]:
-        note += f"  - {off}: budget {b}, atual {cur}\n"
-    return note
-
-
-def _norm_t(t):
-    """Normaliza o campo: CR/LF real -> token literal `\\n` (o modelo as vezes colapsa o token numa
-    quebra real). Deterministico/idempotente. A PARIDADE com a fonte e ajustada em _parity_fit."""
-    if not isinstance(t, str):
-        return t
-    tok = context_pack.TOKEN
-    return t.replace("\r\n", tok).replace("\n", tok).replace("\r", tok)
-
-
-def _parity_fit(source, t):
-    """Ciente da fonte: se a FONTE nao tem token de quebra, o ALVO tambem nao pode ter (o modelo as
-    vezes adiciona uma quebra espuria -> build_plan reprova por paridade). Troca token por espaco e
-    colapsa. Se a fonte TEM quebra(s), mantem (o modelo costuma casar; mismatch multi-token -> retry)."""
-    if not isinstance(t, str):
-        return t
-    tok = context_pack.TOKEN
-    if tok not in (source or ""):
-        out = t.replace(tok, " ")
-        while "  " in out:
-            out = out.replace("  ", " ")
-        return out.strip()
-    return t
-
-
-def _structural_rx(pc: dict) -> re.Pattern:
-    """Regex dos tokens de formatacao do engine (<C1>/<P2>/etc., de project.json via pc['formatting_tokens']
-    + pc['formatting_token_patterns']). MESMA checagem que o build_plan_chapter do conector faz depois —
-    feita AQUI tambem (dentro do retry de traducao) pra pegar token perdido/trocado ANTES de persistir,
-    em vez de so falhar num gate sem auto-reparo rio abaixo (bug real: 7/447 linhas em mp0010_01,
-    2026-08-24, o LLM as vezes derruba ou corrompe <C1>/<P2> e o retry existente so checava `\\n`).
-    Constroi via connector_io.structural_token_rx (compartilhada com build_plan_chapter.py)."""
-    pc = pc or {}
-    return connector_io.structural_token_rx(
-        pc.get("formatting_tokens", []), pc.get("formatting_token_patterns", []))
-
-
-def _struct_ok(rx: re.Pattern, source: str, t: str) -> bool:
-    """True se `t` preserva o MESMO multiset de tokens de formatacao que `source` (conta E tipo)."""
-    return connector_io.structural_tokens_match(rx, source, t)
-
-
-# Guarda contra BLOW-UP patologico de comprimento: o modelo (raro) emite centenas/milhares de chars de
-# lixo p/ uma linha curta (medido: um grito de ~17 chars virou 5872 chars de ruido num batch -> passou o
-# fitting so porque AQUELA linha tinha byte_budget; uma sem budget escaparia). Rejeitamos a traducao cuja
-# forma TRANSLITERADA passa de _BLOWUP_FACTOR x a fonte (piso _BLOWUP_FLOOR p/ nao punir linha curta
-# legitima) -> a linha conta como NAO retornada (re-roda / fica 'missing' -> coverage a pega), nunca aceita.
-_BLOWUP_FACTOR = 8
-_BLOWUP_FLOOR = 200
-
-
-def _is_blowup(source, t) -> bool:
-    """True se `t` e patologicamente mais longa que `source` (lixo provavel do modelo)."""
-    if not isinstance(t, str):
-        return False
-    return _translit_len(t) > max(_translit_len(source or "") * _BLOWUP_FACTOR, _BLOWUP_FLOOR)
-
-
-# RÓTULO DE ENGINE: identificadores internos de rig/asset que NAO sao dialogo — body, face,
-# hair, mask, Leg_2_B_L, ch120_01, env_bone, lightA02. O LLM os TRADUZIA, estourava o byte_budget e
-# disparava o retighten (re-traducao = 58% do custo medido no ledger). Solucao: PASSTHROUGH
-# deterministico (t = fonte), fora do lote do LLM.
-#
-# ALLOWLIST EXPLICITA: labels conhecidos que NUNCA sao dialogo (qualquer um desses => passthrough imediato).
-# Adicionar aqui quando aparecer um novo label traduzido indevidamente no ledger.
-_ENGINE_LABELS = frozenset({
-    "body", "face", "hair", "mask", "env_bone", "bone",
-    "light", "lightA", "lightB", "lightC",
-})
-_ENGINE_LABEL_RX = re.compile(
-    r"^(body|face|hair|mask|env_bone|bone|light[A-Za-z0-9]*"
-    r"|ch\d+_\d+|Leg_\d+_[A-Z]_[LR]|Spine\d*|Root|Hips"
-    r"|[A-Z][a-z]+(?:[A-Z][a-z]+)+\d*"   # CamelCase strict (LeftFoot, RightArm...)
-    r"|[a-z]+[A-Z]\w+\d*"                # camelCase (lightA02)
-    r")\Z"
-)
-# Deteccao HEURISTICA de bloco de rotulos (corrida de tokens-unicos com >=1 STRICT_ID):
-# detecta casos nao cobertos pela allowlist — nao substitui, complementa.
-_TOKISH = re.compile(r"[A-Za-z][\w]*\Z")
-_STRICT_ID = re.compile(r"[A-Za-z]\w*_\w+\Z|[A-Za-z]+\d\w*\Z|[A-Z][a-z]+(?:[A-Z][a-z]+)+\Z")
-
-
-def _is_tokish(s: str) -> bool:
-    s = (s or "").strip()
-    return bool(s) and len(s) <= 16 and bool(_TOKISH.match(s))
-
-
-def _label_passthrough(pack) -> dict:
-    """Mapa {offset: entry} das linhas que sao rotulo de engine (t = fonte, sem ir ao LLM).
-    Prioridade: allowlist explicita (_ENGINE_LABELS / _ENGINE_LABEL_RX) -> heuristica de bloco."""
-    lines = pack.get("lines", [])
-    out, i, n = {}, 0, len(lines)
-
-    def _passthrough(r):
-        return {"speaker": "", "tone_register": "", "intent": "rotulo_engine",
-                "risk_level": "low", "risk_notes": "", "t": r.get("source", "") or ""}
-
-    while i < n:
-        s = (lines[i].get("source", "") or "").strip()
-        # Allowlist explicita: passthrough imediato, sem precisar de bloco vizinho
-        if s.lower() in _ENGINE_LABELS or _ENGINE_LABEL_RX.match(s):
-            out[lines[i]["offset"]] = _passthrough(lines[i])
-            i += 1
-            continue
-        # Heuristica de bloco: corrida de tokens-unicos com >=1 STRICT_ID
-        if not _is_tokish(s):
-            i += 1
-            continue
-        j = i
-        while j < n and _is_tokish((lines[j].get("source", "") or "").strip()):
-            j += 1
-        run = lines[i:j]
-        if any(_STRICT_ID.match((r.get("source", "") or "").strip()) for r in run):
-            for r in run:
-                rs = (r.get("source", "") or "").strip()
-                if _STRICT_ID.match(rs) or rs.islower():   # capitalizada (Sim/OK) fica no LLM
-                    out[r["offset"]] = _passthrough(r)
-        i = j
-    return out
-
-
-def _prefilled(pack, *, enabled=True) -> dict:
-    """Linhas que NUNCA vao ao LLM: reuso de TM (se enabled) + rotulo de engine (passthrough sempre).
-    Fonte unica -- cada call site que montava os dois a mao podia esquecer um (bug do rotulo sobrescrito)."""
-    out = _select_reuse(pack, enabled=enabled)
-    out.update(_label_passthrough(pack))
-    return out
-
-
-def _select_reuse(pack, *, enabled):
-    """DEDUP por TM: linhas cuja fonte JA foi traduzida em OUTRA cena -> reusa a traducao estabelecida
-    em vez de re-gerar (corta tokens de SAIDA, 5x o custo de entrada; e a consistencia ja vem de graca).
-    Guards: (1) nunca reusa a PROPRIA cena — a TM e reconstruida apos cada cena, entao re-rodar a poria
-    na TM e a dedup reusaria a saida velha, sabotando o escalonamento de fitting (que quer ENCURTAR);
-    (2) paridade de quebra: a chave de TM normaliza ignorando `\\n`, entao so reusa se a contagem do token
-    na traducao casar a da fonte ATUAL (senao o build_plan reprova por paridade), idem tokens de formatacao. Desligado (vazio) no
-    escalonamento (enabled=False) p/ re-traduzir fresco e mais curto. Determinista (testavel sem rede)."""
-    if not enabled:
-        return {}
-    rx = _structural_rx(pack.get("project_constraints", {}))
-    scene_id_here = pack.get("scene_id", "")
-    by_key: dict[str, dict] = {}
-    for e in pack.get("tm_exact", []):
-        if context_pack.scene_id_of(str(e.get("from_scene", ""))) == scene_id_here:
-            continue                                  # nunca reusar a propria cena
-        by_key.setdefault(state_index._key(e.get("source", "")), e)
-    reuse = {}
-    for r in pack.get("lines", []):
-        e = by_key.get(state_index._key(r.get("source", "")))
-        if not e:
-            continue
-        tgt = e.get("target", "")
-        if not tgt or not _line_ok(r.get("source", "") or "", tgt, rx):
-            continue                                  # paridade de quebra/tokens com a fonte ATUAL
-        reuse[r["offset"]] = {"speaker": e.get("speaker", ""), "tone_register": "",
-                              "intent": "reuso_tm", "risk_level": "low", "risk_notes": "",
-                              "t": _norm_t(tgt)}
-    return reuse
-
-
-def _to_map(data):
-    """Converte a saida estruturada {lines:[{offset,...}]} no formato canonico {lines:{offset:{...}}}.
-    Tolera ja vir em mapa (idempotente). Remove 'offset' do corpo da entrada e normaliza o `t`."""
-    lines = (data or {}).get("lines")
-    if isinstance(lines, dict):
-        for v in lines.values():
-            if isinstance(v, dict) and "t" in v:
-                v["t"] = _norm_t(v["t"])
-        return data
-    out = {}
-    for e in (lines or []):
-        off = e.get("offset")
-        if not off:
-            continue
-        body = {k: v for k, v in e.items() if k != "offset"}
-        if "t" in body:
-            body["t"] = _norm_t(body["t"])
-        out[off] = body
-    return {"lines": out}
-
-
-def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=THINK_TRANSLATE,
-                   budget_tolerance=None, quality_note=""):
-    tol = budget_tolerance or BUDGET_TOLERANCE
-    tok = context_pack.TOKEN
-    pc = pack.get("project_constraints", {})
-    struct_rx = _structural_rx(pc)
-    # DEDUP por TM (so no 1o passe; desligado no escalonamento de fitting p/ re-traduzir mais curto):
-    # linhas com fonte ja traduzida em OUTRA cena nao vao ao modelo (corta tokens de saida).
-    reuse = _prefilled(pack, enabled=(budget_tolerance is None))   # rotulo: passthrough SEMPRE (ate no retighten)
-    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
-    meta = {"reused": len(reuse), "novel": len(novel), "n_lines": len(pack["lines"])}
-    if not novel:                                     # cena 100% reaproveitada -> zero chamada de API
-        return {"lines": dict(reuse)}, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}, meta
-
-    client = _client()
-    # system = doutrina estavel (cacheada ~1x via cache_control); user = pacote da cena (so as novas)
-    system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
-    novel_by_off = {r["offset"]: r for r in novel}
-    offsets = [r["offset"] for r in novel]
-    offset_set = set(offsets)
-    budgets = {r["offset"]: r.get("byte_budget") for r in novel}
-    srcmap = {r["offset"]: r.get("source", "") for r in novel}
-    last, usage = None, {"in": 0, "out": 0, "cache_read": 0, "cache_write": 0}
-    # L01: so o 1o passe usa checkpoint (no escalonamento de fitting a traducao e mais curta de proposito)
-    sid, use_ckpt, dh = context_pack.scene_id_of(scene), budget_tolerance is None, pack.get("doctrine_hash", "")
-    seed = ckpt.load(root, scene, sid, dh, srcmap, enabled=use_ckpt)   # linhas ja pagas de uma rodada que esgotou
-    merged = dict(seed)  # ACUMULA linhas entre tentativas: cada retry preenche lacunas -> cobertura converge
-    # thinking custa como saida ($15/M). Traducao com contexto curado raramente exige raciocinio
-    # profundo -> default sem thinking + effort baixo (medido: corta ~5x o custo; ver OBSERVABILITY).
-    # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort nem adaptive thinking (400) -> omitir.
-    no_effort = _no_effort_model(model)
-    thinking = {"type": "adaptive"} if (think and not no_effort) else {"type": "disabled"}
-    out_cfg: dict = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
-    if not no_effort:
-        out_cfg["effort"] = effort
-
-    def _over(off, v):
-        return _over_budget((v or {}).get("t", ""), budgets.get(off), pc, tol)
-
-    def _render(target, note):
-        # PREVISIBILIDADE (recuperacao por-linha): o 1o passe manda TODAS as linhas novas; a re-rodada manda
-        # SO as quebradas (faltantes/paridade-ruim/acima-do-budget), nunca a cena inteira de novo. O
-        # context_pack (glossario/vozes/decisoes/TM) vai junto em qualquer caso -> a coerencia de cena se
-        # preserva; muda so a LISTA de linhas a traduzir -> custo de retry ∝ linhas quebradas, nao ∝ cena.
-        red = dict(pack); red["lines"] = target; red["n_lines"] = len(target)
-        return context_pack.render_prompt(red, carta="") + _NL_RULE + quality_note + note
-
-    target, note = [r for r in novel if r["offset"] not in seed], ""   # quality_note (back-translation/quality_fix) entra via _render; "" no fluxo normal
-    for attempt in range(_MAX_TRIES):
-        msg = _stream_final(
-            client, model=model, max_tokens=MAX_OUTPUT_TOKENS,
-            system=system,
-            messages=[{"role": "user", "content": _render(target, note)}],
-            thinking=thinking,
-            output_config=out_cfg,
-        )
-        u_attempt = _usage_of(msg)
-        _add_usage(usage, u_attempt)
-        log_api_call(root, scene, "translate", model, u_attempt)   # registra ANTES de qualquer parse/gate
-        data = _to_map(json.loads(_text_of(msg)))   # array -> mapa {offset:{...}}; CR/LF real -> token
-        for off, v in data.get("lines", {}).items():
-            if off not in offset_set or not isinstance(v, dict):
-                continue
-            v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))   # quebra espuria -> espaco
-            if _is_blowup(srcmap.get(off, ""), v["t"]):
-                continue                                 # lixo patologico -> descarta (vira 'missing' -> retry)
-            good_parity = _line_ok(srcmap.get(off, ""), v["t"], struct_rx)
-            if off not in merged:
-                merged[off] = v                      # preenche lacuna
-            else:
-                old = merged[off]
-                old_parity = _line_ok(srcmap.get(off, ""), old.get("t", ""), struct_rx)
-                if good_parity and not old_parity:
-                    merged[off] = v                  # prioriza paridade correta
-                elif good_parity == old_parity and _over(off, old) and \
-                        _budget_len(v.get("t", ""), pc) < _budget_len(old.get("t", ""), pc):
-                    merged[off] = v                  # mesma paridade: prefere a mais curta (budget)
-        missing = [o for o in offsets if o not in merged]
-        bad_par = [o for o in merged if merged[o].get("t", "").count(tok) != srcmap.get(o, "").count(tok)]
-        bad_struct = [o for o in merged if not _struct_ok(struct_rx, srcmap.get(o, ""), merged[o].get("t", ""))]
-        over = [(o, budgets[o], _budget_len(merged[o].get("t", ""), pc))
-                for o in merged if _over(o, merged[o])]
-        last = {"missing": missing, "bad_parity": bad_par, "bad_structural": bad_struct, "over_budget": over}
-        # HARD (bloqueia): cobertura + paridade de quebra + tokens de formatacao do engine (build_plan
-        # reprova ambos). SOFT (best-effort): byte_budget — o conector absorve via head-reloc; a VERIFY
-        # (round-trip) e o juiz de residuo.
-        if not missing and not bad_par and not bad_struct and (not over or attempt == _MAX_TRIES - 1):
-            merged.update(reuse)                      # reanexa as linhas reaproveitadas da TM
-            ckpt.clear(root, scene, sid, enabled=use_ckpt)
-            return {"lines": merged}, usage, meta
-        # PROXIMA RODADA = SO as linhas quebradas (recuperacao por-linha, nao re-traduz a cena inteira)
-        broken = set(missing) | set(bad_par) | set(bad_struct) | {o for o, _b, _c in over}
-        target = [novel_by_off[o] for o in offsets if o in broken]
-        note = "\n\n## CORRECAO NECESSARIA (traduza SO as linhas acima; vamos MESCLAR com o resto ja pronto)\n"
-        if missing:
-            note += f"- Faltam estes offsets — INCLUA todos: {missing[:40]}\n"
-        if bad_par:
-            note += (f"- Estes offsets tem nº de quebras `\\n` DIFERENTE da fonte — case EXATO (mesma "
-                     f"quantidade e posicao do token): {bad_par[:30]}\n")
-        if bad_struct:
-            note += (f"- Estes offsets perderam ou trocaram tokens de formatacao do engine (ex.: <C1>, "
-                     f"<P2>) — preserve EXATAMENTE os mesmos tokens da fonte, na mesma quantidade e sem "
-                     f"remover os `<>`: {bad_struct[:30]}\n")
-        if over:
-            note += _budget_note(over, pc)
-    assert last is not None  # _MAX_TRIES > 0 -> loop roda >=1x -> last sempre atribuido aqui
-    kept = ckpt.save(root, scene, sid, dh, merged, srcmap,
-                     set(last["bad_parity"]) | set(last["bad_structural"]), enabled=use_ckpt)
-    ckpt.log_exhausted(root, scene, model, usage, last, kept, stage="first" if use_ckpt else "retighten")
-    raise RuntimeError(f"_api_translate: cobertura/paridade incompletas apos {_MAX_TRIES} tentativas: "
-                       f"faltam={last['missing']} paridade={last['bad_parity']} "
-                       f"formatacao={last['bad_structural']}"
-                       + (f" | {kept} linha(s) boa(s) salvas em checkpoint: rode de novo p/ retomar" if kept else ""))
 
 
 # --------------------------- escalonamento CIRURGICO --------------------------
@@ -594,121 +218,17 @@ def _api_translate(root, scene, pack, model, *, effort=EFFORT_TRANSLATE, think=T
 # Numa cena de 500 linhas com 2 estouros, re-traduz 2 (nao 500) -> corte de custo grande no caminho caro
 # (medido na run viva do cap.13: o re-translate full custou ~$3,4 em 2 cenas).
 
-def _over_offsets(budgets: dict, lines: dict, tolerance: float = 1.0, pc: dict | None = None) -> list:
-    """Offsets cuja traducao excede byte_budget*tolerance pela metrica correta do projeto (ver
-    _budget_len). Puro/deterministico (testavel sem rede)."""
-    over = []
-    for off, b in budgets.items():
-        if b is None:            # None = sem budget declarado; 0 = orcamento ZERO real (deve ENFORCAR)
-            continue
-        v = lines.get(off)
-        if v and _over_budget((v or {}).get("t", ""), b, pc, tolerance):
-            over.append(off)
-    return sorted(over)
 
 
-def over_budget_offsets(root, scene, *, tolerance: float = 1.0, detail: bool = False,
-                        reuse_pack: bool = False) -> list:
-    """Le o translations_<scene_id>.json atual e devolve os offsets acima do budget (candidatos a
-    estouro). `detail=True` devolve [{offset, byte_budget, actual, source, t}, ...] em vez da lista
-    nua de offsets (diagnostico persistivel, ver run_scene._persist_fitting_diagnostics)."""
-    root = Path(root)
-    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
-    out = paths.translations(root, scene, pack['scene_id'])
-    if not out.is_file():
-        return []
-    data = json.loads(out.read_text(encoding="utf-8"))
-    lines = data.get("lines", {})
-    budgets = {r["offset"]: r.get("byte_budget") for r in pack["lines"]}
-    pc = pack.get("project_constraints")
-    offsets = _over_offsets(budgets, lines, tolerance, pc=pc)
-    if not detail:
-        return offsets
-    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
-    return [{"offset": o, "byte_budget": budgets[o],
-             "actual": _budget_len(lines[o].get("t", ""), pc),
-             "source": srcmap.get(o, ""), "t": lines[o].get("t", "")} for o in offsets]
 
 
-def fix_newlines(root, scene, *, reuse_pack: bool = False) -> int:
-    """Conserta o que e mecanico: quebra de linha REAL no `t` vira o token literal (_norm_t) e o token que a fonte
-    nao tem sai (_parity_fit) -- o mesmo que o caminho api faz ao gravar. Devolve quantas falas mudou."""
-    root = Path(root)
-    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
-    out = paths.translations(root, scene, pack["scene_id"])
-    if not out.is_file():
-        return 0
-    data = json.loads(out.read_text(encoding="utf-8"))
-    n = 0
-    for r in pack["lines"]:
-        v = data.get("lines", {}).get(r["offset"])
-        if isinstance(v, dict) and isinstance(v.get("t"), str):
-            new = _parity_fit(r.get("source"), _norm_t(v["t"]))
-            if new != v["t"]:
-                v["t"], n = new, n + 1
-    if n:
-        paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
-    return n
 
 
-def precheck(root, scene, *, reuse_pack: bool = False) -> list:
-    """Pre-checagem barata ANTES do build_plan (so le): [(offset, problema)] para quebra de linha real no JSON,
-    contagem do token `\n` diferente da fonte. Estouro de byte_budget NAO entra: no utawarerumono 7 de 26 cenas
-    verified tem fala acima do budget por linha (o conector nao o impoe por fala), entao seria falso positivo; o
-    `_fitting_loop` reage ao exit 3 do verify. Nao bloqueia: quem decide e o build_plan/verify."""
-    root = Path(root)
-    pack = (saved_pack(root, scene) if reuse_pack else None) or context_pack.build_pack(root, scene)
-    out = paths.translations(root, scene, pack["scene_id"])
-    if not out.is_file():
-        return []
-    lines = json.loads(out.read_text(encoding="utf-8")).get("lines", {})
-    tok, found = context_pack.TOKEN, {}
-    for r in pack["lines"]:
-        t = (lines.get(r["offset"]) or {}).get("t")
-        if not isinstance(t, str):
-            continue
-        if chr(10) in t or chr(13) in t:
-            found[r["offset"]] = "quebra de linha real (use o token literal)"
-        elif t.count(tok) != (r.get("source") or "").count(tok) and (r.get("source") or "").count(tok):
-            found[r["offset"]] = f"{t.count(tok)} token(s) de quebra, a fonte tem {r['source'].count(tok)}"
-    return sorted(found.items())
 
 
 # invalidate_back_translation -> back_translate.py (importado acima).
 
 
-def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, quality_note="",
-                        backend: str = "api"):
-    """Re-traduz APENAS `offsets` (apertado por budget_tolerance) e MESCLA no translations_<scene_id>.json,
-    preservando todas as outras linhas. Caminho cirurgico do escalonamento de fitting (e do quality_fix).
-    Reusa _api_translate sobre um pack reduzido (dedup ja vem OFF com
-    budget_tolerance != None -> traduz fresco e mais curto). `backend` despacha igual translate()
-    (default "api" preserva o comportamento de todo caller anterior). `quality_note` opcional anexa
-    feedback de revisao da back-translation ao prompt (so suportado no backend api; quality_fix so
-    roda nesse caminho hoje)."""
-    root = Path(root)
-    pack = context_pack.build_pack(root, scene)
-    scene_id = pack["scene_id"]
-    out = paths.translations(root, scene, scene_id)
-    full = json.loads(out.read_text(encoding="utf-8")) if out.is_file() else {"lines": {}}
-    offset_set = set(offsets)
-    sub = dict(pack)
-    sub["lines"] = [r for r in pack["lines"] if r["offset"] in offset_set]
-    sub["n_lines"] = len(sub["lines"])
-    if not sub["lines"]:
-        return {"status": DONE, "model": model or MODEL_TRANSLATE, "usage": None,
-                "n_lines": 0, "reused": 0, "novel": 0}
-    if backend == "api":
-        m = model or MODEL_TRANSLATE
-        data, usage, meta = _api_translate(root, scene, sub, m, budget_tolerance=budget_tolerance,
-                                           quality_note=quality_note)
-    else:
-        raise ValueError(f"backend desconhecido: {backend}")
-    full.setdefault("lines", {}).update(data.get("lines", {}))   # merge: so os offsets re-traduzidos
-    paths.atomic_write(out, json.dumps(full, ensure_ascii=False, indent=2))
-    invalidate_back_translation(root, scene, offset_set)         # o verdict antigo nao vale mais
-    return {"status": DONE, "model": m, "usage": usage, "n_lines": sub["n_lines"],
-            "reused": meta["reused"], "novel": meta["novel"]}
 
 
 # ------------------------------- BATCH backend --------------------------------
@@ -718,263 +238,25 @@ def retranslate_offsets(root, scene, offsets, *, model=None, budget_tolerance, q
 # caminho interativo (streaming, com retry/escalonamento). Quem faz fitting (verify) continua sendo cada
 # cena no run_scene. Determinismo da montagem do request isolado em _translate_params (testavel sem rede).
 
-def _coverage_note(missing, bad_par) -> str:
-    """Nota CORRETIVA p/ a re-rodada: quais offsets faltam (incluir TODOS) e quais tem paridade de `\\n`
-    errada (casar EXATO). Vazia se nada a corrigir. Mesma redacao da retry interativa (_api_translate) —
-    e o que faz a cena de narracao CONVERGIR no batch em vez de cair pro interativo full-price."""
-    if not missing and not bad_par:
-        return ""
-    note = "\n\n## CORRECAO NECESSARIA (gere a cena COMPLETA de novo; vamos MESCLAR com o anterior)\n"
-    if missing:
-        note += f"- Faltam estes offsets — INCLUA todos: {sorted(missing)[:40]}\n"
-    if bad_par:
-        note += ("- Estes offsets tem nº de quebras `\\n` ou tokens de formatacao DIFERENTES da fonte — case EXATO (mesma "
-                 f"quantidade e posicao do token): {sorted(bad_par)[:30]}\n")
-    return note
 
 
-def _translate_params(pack, model, note=""):
-    """Params de UMA requisicao de traducao (compartilhado por batch). Aplica dedup; retorna
-    (params|None, reuse, novel). params=None quando a cena e 100% reaproveitada da TM (sem chamada).
-    `note`: feedback corretivo (ver _coverage_note) anexado ao prompt nas re-rodadas do batch."""
-    reuse = _prefilled(pack)
-    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
-    if not novel:
-        return None, reuse, novel
-    system = [{"type": "text", "text": _carta_text(), "cache_control": {"type": "ephemeral"}}]
-    red = dict(pack); red["lines"] = novel; red["n_lines"] = len(novel)
-    base_user = context_pack.render_prompt(red, carta="") + _NL_RULE + note
-    # Haiku 4.5 / Sonnet 4.5 NAO aceitam output_config.effort (400) — igual ao _api_translate, OMITE o
-    # effort nesses modelos. BUG MEDIDO (cap.15): o batch sempre mandava effort -> todo request do tier
-    # cheap (Haiku) dava 400 -> as linhas single-line nunca voltavam (MISSING) -> coverage_failed.
-    out_cfg: dict = {"format": {"type": "json_schema", "schema": _TRANSLATION_SCHEMA}}
-    if not _no_effort_model(model):
-        out_cfg["effort"] = EFFORT_TRANSLATE
-    params = {
-        "model": model, "max_tokens": MAX_OUTPUT_TOKENS, "system": system,
-        "messages": [{"role": "user", "content": base_user}],
-        "thinking": {"type": "disabled"},
-        "output_config": out_cfg,
-    }
-    return params, reuse, novel
 
 
-def _write_translations(root, scene, data):
-    out = paths.translations(root, scene, context_pack.scene_id_of(scene))
-    paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
 
 
-def _tier_of(source: str) -> str:
-    """Tier de modelo por COMPLEXIDADE: 'main' (Sonnet) p/ linha com token de quebra (multi-linha);
-    'cheap' (Haiku) p/ single-line. Driblar a fraqueza medida do Haiku (paridade de \\n so falha onde
-    HA \\n)."""
-    return "main" if context_pack.TOKEN in (source or "") else "cheap"
 
 
-def _parse_batch_lines(pack, text):
-    """Parseia UMA resposta de batch -> {offset: entry} so das linhas NOVAS validas (parity-fitted).
-    Tolera incompletude (devolve o que veio); {} se o JSON quebrar. Usado p/ ACUMULAR entre rodadas."""
-    reuse = _prefilled(pack)                          # rotulo tambem: resposta que o ecoe nao sobrescreve o passthrough
-    novel_offsets = {r["offset"] for r in pack["lines"]} - set(reuse)
-    srcmap = {r["offset"]: r.get("source", "") for r in pack["lines"]}
-    struct_rx = _structural_rx(pack.get("project_constraints", {}))
-    try:
-        parsed = _to_map(json.loads(text))
-    except Exception:
-        return {}
-    out = {}
-    for off, v in parsed.get("lines", {}).items():
-        if off in novel_offsets and isinstance(v, dict):
-            v["t"] = _parity_fit(srcmap.get(off, ""), v.get("t", ""))
-            if _is_blowup(srcmap.get(off, ""), v["t"]):
-                continue                                 # lixo patologico -> descarta (re-roda / missing)
-            if not _struct_ok(struct_rx, srcmap.get(off, ""), v["t"]):
-                continue                                 # token de formatacao perdido/trocado (paridade com o caminho interativo)
-            out[off] = v
-    return out
 
 
-def _line_ok(src, t, rx=None):
-    """Paridade de `\\n` E (com rx) de tokens de formatacao -- o mesmo par que o _api_translate retenta."""
-    tok = context_pack.TOKEN
-    return t.count(tok) == src.count(tok) and (rx is None or _struct_ok(rx, src, t))
 
 
-def _merge_best_parity(dest, new, srcmap, rx=None):
-    """Mescla `new` em `dest` ACUMULANDO entre rodadas, preferindo paridade de `\\n` correta — igual ao
-    _api_translate (interativo). NUNCA troca uma linha de paridade BOA por uma RUIM: assim uma re-rodada
-    que regride uma linha ja boa nao desfaz o ganho (o `dict.update` cego perdia isso e a cena nao
-    convergia). Mesma paridade -> usa a mais nova (consistente com o comportamento anterior)."""
-    for off, v in new.items():
-        src = srcmap.get(off, "")
-        good = _line_ok(src, v.get("t", ""), rx)
-        old = dest.get(off)
-        if old is None:
-            dest[off] = v
-            continue
-        old_good = _line_ok(src, old.get("t", ""), rx)
-        if good or not old_good:        # melhora a paridade, ou ambas ruins -> aceita a nova
-            dest[off] = v
-    return dest
-
-
-def _batch_coverage(pack, merged):
-    """(missing, bad_parity) das linhas NOVAS, dado o acumulado `merged` (offset->entry). bad_parity =
-    `\\n` OU tokens de formatacao divergentes (batch sem isso deixava <C1> perdido ir pro build_plan)."""
-    rx = _structural_rx(pack.get("project_constraints", {}))
-    reuse = _prefilled(pack)                          # rotulo de engine nunca vai ao lote (_translate_params)
-    novel = [r for r in pack["lines"] if r["offset"] not in reuse]
-    srcmap = {r["offset"]: r.get("source", "") for r in novel}
-    missing = [r["offset"] for r in novel if r["offset"] not in merged]
-    bad_par = [o for o in srcmap if o in merged and not _line_ok(srcmap[o], merged[o].get("t", ""), rx)]
-    return missing, bad_par
 
 
 # _await_batch -> llm_client.py (importado acima).
 
 
-def _submit_translate_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, req_model, req_offsets,
-                            packs, merged, root, default_model):
-    """Submete e mescla UM chunk de requests de traducao (ate _TRANSLATE_SUBMIT_CHUNK requests por
-    batch). Isola a rodada inteira de virar tudo-ou-nada: um chunk que trava/estoura o timeout so fica
-    SEM cobertura dele agora -- a rodada seguinte (ou o coverage_failed final, se acabarem as rodadas)
-    trata o que faltar, exatamente como qualquer request perdido hoje (mesmo caminho do
-    _batch_coverage/_merge_best_parity). Ver feedback-segment-large-batches / _TRANSLATE_SUBMIT_CHUNK.
-
-    req_offsets[cid] = offsets REALMENTE pedidos NESTE chunk/tier -- restringe o merge a eles, pra uma
-    resposta que "vaze" um offset de OUTRO chunk da mesma cena (alucinado/duplicado) nao ser aceita sem
-    nunca ter sido validada no contexto/orcamento do chunk a que aquele offset pertence de verdade."""
-    batch = _with_backoff(lambda: client.messages.batches.create(requests=chunk_reqs))  # noqa: B023  (_with_backoff invoca na hora)
-    if not _await_batch(client, batch.id, poll_seconds, max_wait_seconds):
-        print(f"  [translate-batch] chunk {batch.id} nao concluiu em {max_wait_seconds}s "
-              f"({len(chunk_reqs)} requisicao(oes)) -- segue sem essa cobertura agora; "
-              f"a rodada seguinte re-tenta o que faltar.")
-        return
-    # materializa os resultados DENTRO do backoff (a iteracao faz I/O lazy -> timeout no meio)
-    results = _with_backoff(lambda: list(client.messages.batches.results(batch.id)))  # noqa: B023  (_with_backoff invoca na hora)
-    for result in results:
-        cid = result.custom_id
-        scene = cid.split("__", 1)[0]
-        if getattr(result.result, "type", None) != "succeeded":
-            continue                                  # tier falho -> cobertura decide (re-batch/fallback)
-        msg = result.result.message
-        log_api_call(root, scene, "translate", req_model.get(cid, default_model), _usage_of(msg), batch=True)
-        srcmap = {r["offset"]: r.get("source", "") for r in packs[scene]["lines"]}
-        parsed = _parse_batch_lines(packs[scene], _text_of(msg))
-        wanted = req_offsets.get(cid)
-        if wanted is not None:
-            parsed = {off: v for off, v in parsed.items() if off in wanted}
-        _merge_best_parity(merged[scene], parsed, srcmap,
-                           _structural_rx(packs[scene].get("project_constraints", {})))
 
 
-def batch_translate(root, scenes, *, model=None, poll_seconds=30, max_wait_seconds=24 * 3600,
-                    max_rounds=3, tiered=True):
-    """Traduz VARIAS cenas em batches (50% off), ACUMULANDO cobertura entre RODADAS. O batch e 1-tiro
-    por requisicao (sem retry interno) -> cenas grandes as vezes dropam linhas. Em vez de cair pro
-    caminho interativo a preco CHEIO, cada rodada re-batcha SO o que falta (cena inteira na 1a; depois
-    apenas os offsets faltantes/de paridade ruim) e mescla — convergindo a -50%.
-
-    TIERING (tiered=True, default): por cena/rodada, as linhas SEM token de quebra vao num request Haiku
-    (-67%/linha) e as COM `\\n` num request Sonnet (confiabilidade de paridade). custom_id = 'scene__tier'
-    (separador `__` — a Batch API rejeita custom_id fora de ^[a-zA-Z0-9_-]{1,64}$, ex.: '@' dá 400).
-
-    SEGMENTACAO (`_TRANSLATE_SUBMIT_CHUNK`, ver _submit_translate_chunk): as requisicoes de CADA rodada
-    sao submetidas em chunks (nao 1 batch gigante) — um chunk que trava so fica sem cobertura dele,
-    a rodada seguinte re-tenta o que faltar (ou vira coverage_failed apos max_rounds).
-
-    Grava translations_<scene_id>.json das cenas completas; retorna {scene: status} em
-    {all_reused, written, coverage_failed, errored:<tipo>}. Cenas != (written|all_reused) ainda
-    caem p/ o caminho interativo (run_scene). NAO roda build_plan/verify (isso e por-cena)."""
-    from typing import cast
-
-    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
-    from anthropic.types.messages.batch_create_params import Request
-    root = Path(root)
-    m = model or MODEL_TRANSLATE
-    cheap = MODEL_TRANSLATE_CHEAP if (tiered and MODEL_TRANSLATE_CHEAP) else m
-    tiers = (("cheap", cheap), ("main", m))            # roteamento por complexidade
-    client = _client()
-    packs, merged, status = {}, {}, {}
-    pending = []
-    for scene in scenes:
-        pack = context_pack.write_pack(root, scene)
-        packs[scene] = pack
-        reuse = _prefilled(pack)
-        merged[scene] = dict(reuse)                      # reuso pre-preenche o acumulado
-        # RESUME (idempotente): se ja existe translations_<scene_id>.json, aproveita -> nao re-batcha o que ja
-        # foi pago. Cobertura parcial: re-batcha SO o que falta (ver rodadas). Cobertura completa: pula.
-        existing = paths.translations(root, scene, pack['scene_id'])
-        if existing.is_file():
-            try:
-                ex = json.loads(existing.read_text(encoding="utf-8")).get("lines", {})
-                merged[scene].update({o: v for o, v in ex.items() if isinstance(v, dict)})
-            except Exception as exc:
-                print(f"[batch] AVISO: {existing.name} ilegivel ({exc!r}) -- as linhas ja pagas desse "
-                      f"arquivo serao re-traduzidas e o arquivo sobrescrito.")
-        miss, badpar = _batch_coverage(pack, merged[scene])
-        if not miss and not badpar:
-            _write_translations(root, scene, {"lines": merged[scene]})
-            status[scene] = "all_reused" if all(r["offset"] in reuse for r in pack["lines"]) else "written"
-        else:
-            pending.append(scene)
-
-    for rnd in range(max_rounds):
-        if not pending:
-            break
-        reqs, req_model, req_offsets = [], {}, {}         # req_model/req_offsets[custom_id] = modelo/offsets pedidos
-        for scene in pending:
-            miss, badpar = _batch_coverage(packs[scene], merged[scene])
-            want = (set(miss) | set(badpar)) if rnd > 0 else None   # rnd0: tudo; depois: so o que falta
-            for tier, tmodel in tiers:                    # split por COMPLEXIDADE (cheap=Haiku / main=Sonnet)
-                tier_lines = [r for r in packs[scene]["lines"]
-                              if _tier_of(r.get("source", "")) == tier
-                              and (want is None or r["offset"] in want)]
-                # CHUNKING: cada request = ate _BATCH_CHUNK linhas (o batch trunca saidas longas). Cada
-                # chunk e auto-contido (render so das suas linhas) e volta completo; a cobertura acumula
-                # entre chunks E rodadas via _merge_best_parity.
-                for ci in range(0, len(tier_lines), _BATCH_CHUNK):
-                    chunk = tier_lines[ci:ci + _BATCH_CHUNK]
-                    sub = dict(packs[scene]); sub["lines"] = chunk
-                    # FEEDBACK CORRETIVO na re-rodada (rnd>0): nota com os offsets faltando/paridade-errada
-                    # DESTE chunk, como o _api_translate faz.
-                    note = ""
-                    if rnd > 0:
-                        coffs = {r["offset"] for r in chunk}
-                        note = _coverage_note([o for o in miss if o in coffs],
-                                              [o for o in badpar if o in coffs])
-                    params, _reuse, _novel = _translate_params(sub, tmodel, note=note)
-                    if params is None:                    # tudo reuso nesse chunk -> sem request
-                        continue
-                    # custom_id 'scene__tier__chunk' — ^[a-zA-Z0-9_-]{1,64}$; split('__',1)[0] = scene
-                    cid = f"{scene}__{tier}__{ci // _BATCH_CHUNK}"
-                    req_model[cid] = tmodel
-                    req_offsets[cid] = {r["offset"] for r in chunk}
-                    reqs.append(Request(custom_id=cid, params=cast(MessageCreateParamsNonStreaming, params)))
-        if not reqs:
-            break
-        # SEGMENTACAO: nao submete tudo num batch so -- fatia em chunks de _TRANSLATE_SUBMIT_CHUNK
-        # requests, cada 1 um batch SEPARADO (ver _submit_translate_chunk). Blast radius menor: um
-        # chunk lento/travado nao afeta os demais nem aborta a rodada inteira.
-        for i in range(0, len(reqs), _TRANSLATE_SUBMIT_CHUNK):
-            chunk = reqs[i:i + _TRANSLATE_SUBMIT_CHUNK]
-            _submit_translate_chunk(client, chunk, poll_seconds, max_wait_seconds, req_model, req_offsets,
-                                    packs, merged, root, m)
-        still = []
-        for scene in pending:
-            if str(status.get(scene, "")).startswith("errored"):
-                continue                                 # erro duro -> nao re-tenta; cai p/ interativo
-            miss, badpar = _batch_coverage(packs[scene], merged[scene])
-            if not miss and not badpar:
-                _write_translations(root, scene, {"lines": merged[scene]})
-                status[scene] = "written"
-            else:
-                still.append(scene)
-        pending = still
-
-    for scene in pending:
-        status.setdefault(scene, "coverage_failed")      # nao convergiu apos as rodadas -> interativo
-    return status
 
 
 # _BACK_SCHEMA / _back_params / _api_back_translate / high_risk_lines / sample_low_risk_lines /

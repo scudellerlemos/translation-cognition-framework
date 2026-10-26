@@ -47,6 +47,12 @@ def _env(tmp_path):
         _req("a0", 41, 5, 50, model="claude-sonnet-5"),     # antes do comando: ainda assim e da cena
         _req("a1", 42, 5, 50, RUN.format("S2"), model="claude-sonnet-5"),
     ]), encoding="utf-8")
+    (tdir / SID / "subagents" / "agent-a1.meta.json").write_text('{"agentType": "scene-translator"}', encoding="utf-8")
+    (tdir / SID / "subagents" / "agent-a9.jsonl").write_text(chr(10).join([
+        _req("b0", 43, 2, 20, model="claude-sonnet-5"),                  # subagente de varias cenas, requisicao sem cena
+        _req("b1", 44, 1, 1, RUN.format("S1") + " && " + RUN.format("S2"), model="claude-sonnet-5"),
+    ]), encoding="utf-8")
+    (tdir / SID / "subagents" / "agent-a9.meta.json").write_text('{"agentType": "general-purpose"}', encoding="utf-8")
     (tdir / "outra-sessao.jsonl").write_text(_req("x0", 1, 999, 999), encoding="utf-8")   # nao tocou o projeto
     root = tmp_path / "proj"
     (root / "artifacts").mkdir(parents=True)
@@ -60,10 +66,13 @@ def test_sync_attributes_requests_and_is_incremental(tmp_path):
     assert {(r["scene"], r["phase"]): r["n_requests"] for r in rows if r["scene"] == "S1"} == {
         ("S1", "other"): 1, ("S1", "translate"): 2}                   # m1 abre; m2 e m3 vem depois do AGUARDANDO
     by = {(r["scene"], r["attribution"]): r for r in rows if r["phase"] != "translate"}
-    assert set(by) == {("S1", "window"), ("S2", "agent"), ("_session", "overhead")}
+    assert set(by) == {("S1", "window"), ("S2", "agent"), ("S2", "window"), ("_session", "overhead"), ("_session", "agent")}
     assert su.scene_total(root, "S1")["usage"]["in"] == 7 and su.scene_total(root, "S1")["n_requests"] == 3
     assert by["S2", "agent"]["usage"]["out"] == 100 and by["S2", "agent"]["agent"] == "a1"
     assert by["_session", "overhead"]["usage"]["in"] == 12            # m0 + m4; a outra sessao fica de fora
+    sem_cena = [r for r in rows if r["agent"] == "a9" and r["scene"] == "_session"]
+    assert sem_cena and all(r["attribution"] == "agent" and r["agent_type"] == "general-purpose" for r in sem_cena)
+    assert by["S2", "agent"]["agent_type"] == "scene-translator"
     assert all(r["cost_usd"] == 0.0 and r["api_equiv_usd"] > 0 for r in rows)
     assert su.sync(root, tdir) == []                                  # nada novo -> nada anexado
 
@@ -71,12 +80,12 @@ def test_sync_attributes_requests_and_is_incremental(tmp_path):
         f.write("\n" + _req("a2", 50, 1, 1, model="claude-sonnet-5"))  # cauda do subagente, depois do run_scene
     (tail,) = su.sync(root, tdir)
     assert tail["scene"] == "S2" and tail["n_requests"] == 1
-    assert su.scene_total(root, "S2")["usage"]["in"] == 11 and su.scene_total(root, "S3") is None
+    assert su.scene_total(root, "S2")["usage"]["in"] == 12 and su.scene_total(root, "S3") is None
 
     rep = cost_report.report(root)
-    assert rep["total_usd"] == 0.0 and rep["by_source"]["session"]["calls"] == 8
+    assert rep["total_usd"] == 0.0 and rep["by_source"]["session"]["calls"] == 10
     assert rep["by_source"]["session"]["api_equiv_usd"] > 0
-    assert rep["by_scene"]["S2"]["attribution"] == "agent"
+    assert rep["by_scene"]["S2"]["attribution"] == "agent+window"
     assert rep["split"]["translate"] > 0 and rep["split"]["governance"] == 0
     assert set(rep["by_activity"]) == {"conversa"} and rep["by_activity"]["conversa"]["calls"] == 2   # m0 + m4
     assert su._activity([{"type": "tool_use", "input": {"command": "pytest framework/runtime"}}]) == "framework"

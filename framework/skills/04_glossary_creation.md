@@ -216,6 +216,7 @@ Quando uma entrada existente do `glossary.csv` for modificada após o início do
 | Arquivo | Conteúdo |
 |---------|----------|
 | `glossary.csv` | Fonte de verdade operacional para todos os termos |
+| `glossary.local.csv` | Opcional e **nunca versionado** (`*.local.csv` no `.gitignore` e no `content_guard`): mesmas colunas do `glossary.csv`, para nome que entrega o enredo (spoiler) e que o repo público não pode carregar. Soma ao glossário no pack da cena, no `glossary_lint`, na cobertura da KB e no `kb_gate` (exige `updated_date` em cada linha) |
 | `translation_rules.md` | Documento normativo completo com justificativas |
 | `decision_log.md` | Registro de decisões não-óbvias (inicialmente vazio, preenchido ao longo do projeto) |
 

@@ -38,9 +38,11 @@ def file_residual(data: bytes, texts: list[str]) -> tuple[int, list[str]]:
     return len(runs), [r for r in runs if r.strip() not in hay]
 
 
-def check(dialogs_csv, source_dir, *, ceiling: float = _CEILING, text_column: str = "text_en") -> dict:
+def check(dialogs_csv, source_dir, *, ceiling: float = _CEILING, text_column: str = "text_en",
+          members: dict[str, bytes] | None = None) -> dict:
     """Retorna {passed, ratio, n_runs, n_residual, per_file: [(arquivo, residuais, trechos)], examples}.
-    Texto que nao e ASCII no binario (tabela de caracteres propria) nao gera trecho: n_runs=0, passa."""
+    Texto que nao e ASCII no binario (tabela de caracteres propria) nao gera trecho: n_runs=0, passa.
+    `members` ({nome: bytes}) substitui a pasta quando a origem e um container (o conector sabe abri-lo)."""
     by_file: dict[str, list[str]] = defaultdict(list)
     with open(dialogs_csv, encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
@@ -48,10 +50,14 @@ def check(dialogs_csv, source_dir, *, ceiling: float = _CEILING, text_column: st
     n_runs = n_res = 0
     per_file, examples = [], []
     for name, texts in sorted(by_file.items()):
-        path = Path(source_dir) / name
-        if not path.is_file():
+        if members is not None:
+            data = members.get(name)
+        else:
+            path = Path(source_dir) / name
+            data = path.read_bytes() if path.is_file() else None
+        if data is None:
             continue
-        n, miss = file_residual(path.read_bytes(), texts)
+        n, miss = file_residual(data, texts)
         n_runs += n
         n_res += len(miss)
         if miss:

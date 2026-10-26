@@ -17,9 +17,9 @@ _ROWS = st.lists(st.lists(_STR, min_size=4, max_size=4), min_size=1, max_size=6)
 _SCENES = st.lists(_ROWS, min_size=1, max_size=4)
 
 
-def _sdat(scenes: list[list[list[str]]]) -> bytes:
-    names = [f"ScriptTextData_00_00_{i:02d}.bin".encode() for i in range(len(scenes))] + [b"Other.bin"]
-    members = [build_text_member(len(r), 4, [s.encode() for row in r for s in row]) for r in scenes] + [b"\x01\x02\x03"]
+def _sdat(scenes: list[list[list[str]]], ultimo: tuple[bytes, bytes] = (b"Other.bin", b"\x01\x02\x03")) -> bytes:
+    names = [f"ScriptTextData_00_00_{i:02d}.bin".encode() for i in range(len(scenes))] + [ultimo[0]]
+    members = [build_text_member(len(r), 4, [s.encode() for row in r for s in row]) for r in scenes] + [ultimo[1]]
     nm = b"".join(n + b"\0" for n in names)
     head_len = 16 + 4 + len(nm) + 12 + 8 + 8 * len(members)
     head_len = (head_len + 15) // 16 * 16

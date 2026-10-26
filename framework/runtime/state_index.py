@@ -163,6 +163,10 @@ def build_tm(art: Path) -> list[dict]:
 
 # ------------------------------- Voice Cards ----------------------------------
 
+# falante generico (narracao de sistema, NPC anonimo, nao identificado): nao e personagem, nao pede voice card
+_NAO_PERSONAGEM = {"npc", "system", "unknown", "narrator"}
+
+
 def build_voice_cards(tone_md: str) -> dict:
     """Extrai perfis de voz do tone_analysis.md. Best-effort, tolerante ao formato.
 
@@ -375,7 +379,7 @@ def build(root: Path, *, sync_db: bool = True) -> dict:
         if sp in cards:
             return True
         return any(sp in c.get("aliases", []) for c in cards.values())
-    missing = sorted(s for s in tm_speakers if not _has_card(s))
+    missing = sorted(s for s in tm_speakers if not _has_card(s) and s.lower() not in _NAO_PERSONAGEM)
     if missing:
         warnings.append(f"{len(missing)} falante(s) sem voice card: {missing[:5]}"
                         + (" ..." if len(missing) > 5 else ""))

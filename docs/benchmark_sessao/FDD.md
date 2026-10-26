@@ -48,6 +48,14 @@ o que se registra e quando o resultado vale. Atores: operador (Felipe), agente d
    - V3 Sonnet traduz, Opus retrotraduz (já é o padrão do bof4: serve de controle);
    - V4 Haiku só para rótulo curto;
    - V5 lote de correção automático.
+   - Rodada de cota da assinatura Pro (recorte de 6 cenas, 267 falas, `--seed 42`, cada braço em
+     `output/bench_<braço>/`, cópia do estado B2 com série de TM própria):
+     - V0a e V0b: nada muda, rodado duas vezes (erro do medidor);
+     - V6 cenas curtas agrupadas por subagente (≤ 60 falas, soma ≤ 150);
+     - V7 roteiro de poucas voltas por cena (JSON uma vez, conferência por script);
+     - V8 `scene_prompt` enxuto (glossário e vozes só do que aparece na cena);
+     - V9 Haiku nas falas curtas de baixo risco.
+     Cota real: `/usage` lido antes e depois de cada braço (sem medidor automático).
 6. Braço de API: `run_chapter.py <projeto> <cap> --backend api`, só com aval.
 7. Ao fim de cada onda: `session_usage.py sync`, `cost_report.py --summary`; ao fim do braço: `obs_report.py`.
 8. `quality_sample.py export <projeto> --n N --seed S` por braço; humano julga; `score --reviewer NOME`.

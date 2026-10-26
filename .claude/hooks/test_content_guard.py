@@ -10,6 +10,8 @@ DENY = [
     ".env",
     "projects/bof4/.env",
     "RISCOS.local.md",
+    "projects/utawarerumono_prelude/artifacts/spoiler_audit.json",
+    "projects/utawarerumono_prelude/artifacts/glossary.local.csv",
     "projects/utawarerumono/output/ScriptEvent.sdat",
     "projects/bof4/source_dat/AREAD001.DAT",
     "projects/bof4/artifacts/scenes/AREAD001/dialogs.csv",
@@ -78,6 +80,12 @@ def test_hook_only_on_git_writes():
     assert _GIT_WRITE.search("git push origin main")
     assert not _GIT_WRITE.search("git status")
     assert not _GIT_WRITE.search("python -m pytest")
+    # caminho do repo tem `-git` e script pode citar "add": nao e git write
+    assert not _GIT_WRITE.search(r"cd C:\Users\x\projetos-git\repo && python -c \"s.add(1)\"")
+    assert not _GIT_WRITE.search("python x.py projetos-git/repo commit")
+    assert _GIT_WRITE.search("cd repo && git add -A")
+    assert _GIT_WRITE.search("git -C repo commit -m x")
+    assert _GIT_WRITE.search("echo ok; git push")
 
 
 def test_repo_is_clean():

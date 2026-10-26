@@ -109,7 +109,8 @@ def apply(root) -> dict:
     """Sobe para `high` toda fala cujo par foi apontado. Idempotente; id desconhecido e ignorado e contado."""
     root = Path(root)
     idx = pairs(root)
-    raised, unknown, by_scene = 0, 0, {}
+    raised, unknown = 0, 0
+    by_scene: dict = {}
     for vf in sorted(_dir(root).glob("veredito_*.tsv")):
         for row in vf.read_text(encoding="utf-8").splitlines():
             pid, _, reason = row.strip().partition("\t")

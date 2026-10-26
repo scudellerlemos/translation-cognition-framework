@@ -23,7 +23,7 @@
     "dialogue_max_pct": 140,
     "ui_max_pct": 110
   },
-  "byte_budget_exceptions": {"11_32_00:14": 6},
+  "byte_budget_exceptions": {"11_32_00:14": 6, "StageTextData:16": 23, "StageTextData:27": 9, "StageTextData:41": 14},
   "batch_size": 200,
   "kb_frontier": "all",
   "connector": {
@@ -62,5 +62,7 @@
   },
   "notes": "Projeto independente (nao reaproveita nada do projeto Utawarerumono anterior). Texto em Data/DataBase2.sdat, coluna EN.",
   "hitl": true,
+  "hitl_fila": "diferida",
+  "back_translation_risk": ["critical"],
   "series": "utawarerumono_prelude"
 }

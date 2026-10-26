@@ -16,7 +16,8 @@ import re
 from pathlib import Path
 
 _TOK = re.compile(r"\[([0-9A-Fa-f]{2})\]")
-BREAKS = ("newline", "page_break", "choice_start")   # choice_start: o menu e outra janela, nao continua a linha do dialogo
+BREAKS = ("newline", "page_break", "choice_start", "quebra_de_linha")   # choice_start: o menu e outra janela, nao continua a linha do dialogo
+_HEX = re.compile(r"[0-9A-Fa-f]{2}")
 
 
 def table(root) -> dict:
@@ -27,7 +28,7 @@ def table(root) -> dict:
     out = {}
     for k, v in raw.items():
         v = {"name": v} if isinstance(v, str) else dict(v)
-        out[k.upper()] = {"name": v.get("name", ""), "params": int(v.get("params", 0)),
+        out[k.upper()] = {"raw": k, "name": v.get("name", ""), "params": int(v.get("params", 0)),
                           "width": int(v.get("width", 0)), "values": [x.upper() for x in v.get("values", [])]}
     return out
 
@@ -69,13 +70,25 @@ def invalid_params(text: str, tbl: dict) -> list[str]:
     return bad
 
 
+def _literal_breaks(tbl: dict) -> "re.Pattern | None":
+    """Regex dos codigos de quebra escritos como texto no projeto (ex.: `\n` com papel `quebra_de_linha`), que
+    nao sao `[xx]`: sem isto a fala de varias linhas e medida como uma linha so."""
+    raws = [v["raw"] for v in tbl.values() if v.get("raw") and v.get("name") in BREAKS and not _HEX.fullmatch(v["raw"])]
+    return re.compile("|".join(map(re.escape, raws))) if raws else None
+
+
 def segments(text: str, tbl: dict) -> list[tuple[int, str]]:
     """Segmentos entre quebras de caixa, com a largura em glifos (texto + `width` dos codigos de variavel)."""
     segs, cur, w = [], "", 0
+    lit = _literal_breaks(tbl)
     for t in tokens(text, tbl):
         if t[0] == "text":
-            cur += t[1]
-            w += len(t[1])
+            for i, part in enumerate(lit.split(t[1]) if lit else [t[1]]):
+                if i:
+                    segs.append((w, cur))
+                    cur, w = "", 0
+                cur += part
+                w += len(part)
         elif tbl.get(t[1], {}).get("name") in BREAKS:
             segs.append((w, cur))
             cur, w = "", 0

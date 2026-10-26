@@ -46,3 +46,13 @@
 ## Lore da onda +1 (2026-10-15, usuário)
 
 - Tsetse Grass → "Erva Tsetse" (traduz o genérico, mantém o nome próprio). "Gran Tuskur" do levantamento é falso positivo (fala cortada "Gran--" + Tuskur, já no glossário).
+
+## Retrotradução do Opus só nas `critical` (2026-10-20, usuário)
+
+- `back_translation_risk: ["critical"]` no `project.json`; `high` deixa de exigir retrotradução (Sonnet do passo 5d continua).
+- Motivo: custo do Opus na cota Pro; amostra humana de 40 falas sem erro de sentido. Detalhe no ADR 0022.
+
+## StageTextData entra no escopo (2026-10-25, usuário)
+
+- Reverte a exclusão acima. Os ponteiros do jogo continuam defeituosos; o conector lê o pool de strings (JA, KO, ZH, EN em sequência) e a reinserção aponta as colunas 2 e 3 para o texto traduzido (`connector/table_schema.md`).
+- Escopo aceito em `hitl.py accept-scope` (350 cenas, 23.982 linhas). Cena `StageTextData`: 49 nomes de fase.

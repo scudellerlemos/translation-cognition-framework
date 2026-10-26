@@ -56,10 +56,19 @@ def _future(reveal: str, scene_id: str) -> bool:
     return rp > context_pack._pos(scene_id)
 
 
-def check(root) -> list[dict]:
-    """Retorna a lista de VAZAMENTOS: cada {scene, scene_id, entity, forbidden, offset, text}. Vazio = ok.
-    So considera cenas com translations_<id>.json em disco (cenas ja traduzidas)."""
-    root = Path(root)
+def _historia(root: Path):
+    """Ids das cenas da historia, de `artifacts/ordem_cenas.txt` (o conector grava na extracao). Sem o arquivo
+    devolve None: toda unidade conta como cena (comportamento antigo)."""
+    f = paths.artifacts(root) / "ordem_cenas.txt"
+    if not f.is_file():
+        return None
+    return {ln.strip() for ln in f.read_text(encoding="utf-8").splitlines() if ln.strip()} or None
+
+
+def _scan(root: Path) -> list[dict]:
+    """Todas as ocorrencias de termo proibido pre-reveal; `tabela` marca a unidade fora da ordem da historia
+    (tabela de nomes/unidades do jogo: o dado ja traz o termo, nao e fala lida em sequencia)."""
+    historia = _historia(root)
     entries = context_pack.load_spoiler_ledger(root).get("entries", [])
     guarded = [(e, e.get("forbidden_pre_reveal") or []) for e in entries]
     guarded = [(e, fb) for e, fb in guarded if fb]
@@ -81,8 +90,21 @@ def check(root) -> list[dict]:
                     if context_pack._present(fb.lower(), low):
                         leaks.append({"scene": scene, "scene_id": sid,
                                       "entity": entry.get("entity", ""), "forbidden": fb,
-                                      "offset": off, "text": t})
+                                      "offset": off, "text": t,
+                                      "tabela": historia is not None and sid not in historia})
     return leaks
+
+
+def check(root) -> list[dict]:
+    """Retorna a lista de VAZAMENTOS: cada {scene, scene_id, entity, forbidden, offset, text}. Vazio = ok.
+    So considera cenas com translations_<id>.json em disco (cenas ja traduzidas) e da historia: o termo numa
+    tabela de sistema (fora de `ordem_cenas.txt`) vai para `check_tabelas`, que nao conta como vazamento."""
+    return [{k: v for k, v in x.items() if k != "tabela"} for x in _scan(Path(root)) if not x["tabela"]]
+
+
+def check_tabelas(root) -> list[dict]:
+    """Termo proibido pre-reveal em tabela de sistema: informativo (o dado do jogo ja traz o termo)."""
+    return [{k: v for k, v in x.items() if k not in ("tabela", "text")} for x in _scan(Path(root)) if x["tabela"]]
 
 
 # Marcadores de GENERO pt-BR de alta precisao (palavra inteira). Conservador de proposito: pronomes
@@ -183,12 +205,13 @@ def audit_and_persist(root) -> dict:
     root = Path(root)
     leaks = check(root)
     gender = check_gender(root)
-    rep = {"name_leaks": leaks, "gender_flags": gender, "clean": not (leaks or gender)}
+    tabelas = check_tabelas(root)
+    rep = {"name_leaks": leaks, "gender_flags": gender, "tabelas_com_termo": tabelas, "clean": not (leaks or gender)}
     out = paths.spoiler_audit(root)
     out.parent.mkdir(parents=True, exist_ok=True)
     # o arquivo e versionado: grava cena/offset/marcador, nunca a fala (o retorno em memoria mantem o texto)
     disk = {k: [{f: x for f, x in e.items() if f != "text"} for e in v] for k, v in (("name_leaks", leaks), ("gender_flags", gender))}
-    paths.atomic_write(out, json.dumps({**disk, "clean": rep["clean"]}, ensure_ascii=False, indent=2))
+    paths.atomic_write(out, json.dumps({**disk, "tabelas_com_termo": tabelas, "clean": rep["clean"]}, ensure_ascii=False, indent=2))
     return rep
 
 

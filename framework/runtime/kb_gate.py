@@ -192,10 +192,68 @@ def _check_voice_cards(root: Path, res: dict) -> None:
         res["problems"].append("voice_cards.json invalido — rode state_index apos corrigir tone_analysis.md.")
 
 
+def _check_dated_header(gp: Path, res: dict, rows_dated: bool = False) -> None:
+    """Glossario em CSV (o publico ou o `.local.csv` privado): a coluna `updated_date` tem de existir.
+    `rows_dated`: exige tambem a data em cada linha (o privado e pequeno; o DB ja checa linha a linha)."""
+    if not gp.is_file():
+        return
+    try:
+        with gp.open(encoding="utf-8-sig", newline="") as fh:
+            rd = csv.DictReader(fh)
+            hdr = [h.strip() for h in (rd.fieldnames or [])]
+            undated = [r.get("term", "?") for r in rd if not (r.get("updated_date") or "").strip()]
+        if "updated_date" not in hdr:
+            res["problems"].append(
+                f"{gp.name} sem coluna 'updated_date' — adicione a coluna com a data da "
+                "ultima revisao de cada termo antes de traduzir."
+            )
+        elif rows_dated and undated:
+            res["problems"].append(
+                f"{len(undated)} termo(s) de {gp.name} sem 'updated_date' — grave a data da ultima revisao "
+                f"antes de traduzir: {undated[:5]}{' ...' if len(undated) > 5 else ''}"
+            )
+    except Exception as exc:
+        res["problems"].append(f"{gp.name} ilegivel ({exc!r}) — nao foi possivel checar 'updated_date'.")
+
+
+def _check_local_consistency(root: Path, res: dict) -> None:
+    """Glossario privado: regra de tratamento valida, traducao onde a regra pede, termo nao repetido e nao repetido
+    no publico (o dedupe do lint esconderia a divergencia entre os dois)."""
+    loc = paths.glossary_local(root)
+    if not loc.is_file():
+        return
+    try:
+        with loc.open(encoding="utf-8-sig", newline="") as fh:
+            rows = list(csv.DictReader(fh))
+        pub = paths.glossary(root)
+        with pub.open(encoding="utf-8-sig", newline="") as fh:
+            publicos = {(r.get("term") or "").strip().lower() for r in csv.DictReader(fh)} if pub.is_file() else set()
+    except Exception as exc:
+        res["problems"].append(f"{loc.name} ilegivel ({exc!r}) — nao foi possivel checar a consistencia.")
+        return
+    vistos: set[str] = set()
+    for r in rows:
+        t = (r.get("term") or "").strip()
+        k = t.lower()
+        hr = (r.get("handling_rule") or "").strip()
+        if hr and hr not in ("manter_original", "traduzir", "traduzir_parcial"):
+            res["problems"].append(f"{loc.name}: {t}: handling_rule invalido '{hr}'")
+        if hr in ("traduzir", "traduzir_parcial") and not (r.get("target_translation") or "").strip():
+            res["problems"].append(f"{loc.name}: {t}: target_translation obrigatorio para '{hr}'")
+        if k in vistos:
+            res["problems"].append(f"{loc.name}: termo repetido: {t}")
+        if k in publicos:
+            res["problems"].append(f"{loc.name}: {t} tambem esta no glossario publico — deixe so no privado")
+        vistos.add(k)
+
+
 def _check_glossary_dated(root: Path, db_path, g_rows, res: dict) -> None:
     """Glossario: updated_date/updated_at e gate obrigatorio (nao so aviso de state_index).
     DB-aware -- projeto com `db` populado nao tem glossary.csv (o CSV e so o modelo flat),
-    entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header."""
+    entao o check precisa ler a coluna equivalente (updated_at) do banco em vez de grepar header.
+    O glossario privado (`glossary.local.csv`) entra na checagem nos dois modos."""
+    _check_dated_header(paths.glossary_local(root), res, rows_dated=True)
+    _check_local_consistency(root, res)
     if db_path:
         undated = [r.get("term", "?") for r in g_rows if not r.get("updated_at")]
         if undated:
@@ -204,19 +262,7 @@ def _check_glossary_dated(root: Path, db_path, g_rows, res: dict) -> None:
                 f"ultima revisao antes de traduzir: {undated[:5]}{' ...' if len(undated) > 5 else ''}"
             )
         return
-    gp = paths.glossary(root)
-    if not gp.is_file():
-        return
-    try:
-        with gp.open(encoding="utf-8-sig", newline="") as fh:
-            hdr = next(csv.reader(fh), [])
-        if "updated_date" not in [h.strip() for h in hdr]:
-            res["problems"].append(
-                "glossary.csv sem coluna 'updated_date' — adicione a coluna com a data da "
-                "ultima revisao de cada termo antes de traduzir."
-            )
-    except Exception as exc:
-        res["problems"].append(f"glossary.csv ilegivel ({exc!r}) — nao foi possivel checar 'updated_date'.")
+    _check_dated_header(paths.glossary(root), res)
 
 
 def _check_frontier(cfg: dict, scene, res: dict) -> None:

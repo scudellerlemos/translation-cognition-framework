@@ -73,7 +73,7 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Type-check (mypy)
         # Lista de arquivos vive só em mypy.ini ([mypy] files=) — evita divergir do que roda localmente.
-        run: mypy --follow-imports=silent
+        run: mypy
 
   # E3: piso de cobertura da APLICAÇÃO inteira (framework = runtime + db + skills + validation +
   # cli). Um único passo roda toda a suíte do framework sob coverage e exige 90% da LÓGICA — o
@@ -121,7 +121,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-dev.txt
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: python -m pip install -r requirements-dev.txt
       - name: Suite (sem cobertura)
         run: python -m pytest framework/runtime/ framework/validation/ framework/db/ framework/skills/ framework/distribution/ -q --tb=short -p no:cacheprovider
 

@@ -40,7 +40,12 @@ pool                        strings UTF-8 terminadas em NUL, contíguas, na orde
   string termina exatamente onde a próxima começa, o pool acaba no fim do membro, nenhum ponteiro repetido.
   Nesse layout, reconstruir o membro a partir das strings reproduz os bytes originais.
 - Membros fora do padrão ficam **fora da extração** e são listados no `extraction_log.md` (não são trocados
-  em silêncio): `ScriptTextData_10_84_00` (3 colunas, sem EN) e `StageTextData` (ponteiros fora de ordem).
+  em silêncio): `ScriptTextData_10_84_00` (3 colunas, sem EN).
+- `StageTextData` (nomes das fases de batalha, 50 linhas) entra na extração por um leitor próprio
+  (`read_stage_member`). O pool traz JA, KO, ZH, EN em sequência, mas os ponteiros do jogo estão defeituosos
+  (coluna 3 aponta o ZH; coluna 2 cai de -10 a +21 bytes em torno do EN; a linha 24 tem EN vazio). O leitor lê
+  o pool, não os ponteiros; a reinserção (`build_stage_member`) aponta as colunas 2 e 3 para o EN/PT, e o pool
+  não muda de ordem. Testes: `test_stage_member.py`.
 - `NameTextData`, `SysMessageTextData`, `UnitTextData` têm o mesmo layout, mas são escopo de UI/nomes
   (decisão de escopo `dialogo` × `completo` pendente do usuário; ver ROADMAP).
 

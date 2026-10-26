@@ -3,18 +3,61 @@ Sem argumento, instala (o .exe de um clique). So altera arquivo cujo hash bate c
 import hashlib
 import json
 import pathlib
+import re
 import shutil
 import sys
+import tempfile
 
 import bsdiff4
 
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def achar_jogo(app):
-    raiz = pathlib.Path('C:/Program Files (x86)/Steam/steamapps/common')  # ponytail: so a biblioteca padrao; outras via --jogo
-    for d in raiz.glob(f"{app['pasta_glob']}/{app['subpasta']}"):
-        return d
+def bibliotecas_steam(vdf=None):
+    """Pastas steamapps/common de todas as bibliotecas da Steam: a padrao, a do registro e as de libraryfolders.vdf."""
+    raizes = [pathlib.Path('C:/Program Files (x86)/Steam')]
+    if vdf is None:
+        try:
+            import winreg
+            for hive, chave, nome in ((winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam', 'SteamPath'),
+                                      (winreg.HKEY_LOCAL_MACHINE, r'SOFTWARE\WOW6432Node\Valve\Steam', 'InstallPath')):
+                try:
+                    with winreg.OpenKey(hive, chave) as k:
+                        raizes.append(pathlib.Path(winreg.QueryValueEx(k, nome)[0]))
+                except OSError:
+                    pass
+        except ImportError:  # fora do Windows
+            pass
+        vdf = next((r / 'steamapps' / 'libraryfolders.vdf' for r in raizes if (r / 'steamapps' / 'libraryfolders.vdf').is_file()), None)
+    if vdf and pathlib.Path(vdf).is_file():
+        texto = pathlib.Path(vdf).read_text(encoding='utf-8', errors='replace')
+        raizes += [pathlib.Path(m.replace('\\\\', '\\')) for m in re.findall(r'"path"\s+"([^"]+)"', texto)]
+    vistos, saida = set(), []
+    for r in raizes:
+        c = r / 'steamapps' / 'common'
+        chave = str(c).replace('\\', '/').lower()  # 'C:\x' e 'C:/x' sao a mesma pasta (e a mesma entrada fora do Windows)
+        if chave not in vistos:
+            vistos.add(chave)
+            saida.append(c)
+    return saida
+
+
+def achar_jogo(app, bibliotecas=None):
+    for raiz in bibliotecas if bibliotecas is not None else bibliotecas_steam():
+        for d in raiz.glob(f"{app['pasta_glob']}/{app['subpasta']}"):
+            return d
+
+
+def preflight(jogo, plano):
+    """Antes de tocar em qualquer arquivo: espaco para o .bak + .novo e permissao de escrita. Devolve a frase de erro ou None."""
+    try:
+        with tempfile.TemporaryFile(dir=jogo):
+            pass
+    except OSError as e:
+        return falha_amigavel(PermissionError(e))
+    precisa = 2 * sum(alvo(jogo, f).stat().st_size for f in plano)
+    if shutil.disk_usage(jogo).free < precisa:
+        return falha_amigavel(OSError(28, 'sem espaco'))
 
 
 def jogo_aberto(app):
@@ -31,12 +74,39 @@ def jogo_aberto(app):
 aviso_aberto = lambda app: f"O jogo está aberto. Feche o {app['titulo']} (e o launcher) e tente de novo."
 
 
+def alvo(jogo, f):
+    """Arquivo do jogo que o delta `f` altera: `path` (relativo a pasta do jogo) ou, sem ele, o proprio `name`."""
+    return jogo / f.get('path', f['name'])
+
+
 def estado(jogo, f):
-    g = jogo / f['name']
+    g = alvo(jogo, f)
     if not g.is_file():
         return 'ausente'
     h = sha(g)
     return 'original' if h == f['sha_original'] else 'traduzido' if h == f['sha_final'] else 'desconhecido'
+
+
+def motivo(f, s):
+    """Explica em linguagem de usuario por que o arquivo `f`, no estado `s`, nao serve."""
+    if s == 'ausente':
+        return (f"Não encontrei o arquivo {f['name']} nessa pasta. Confira se é a pasta certa do jogo "
+                "e se a instalação dele está completa.")
+    return (f"O arquivo {f['name']} do jogo é diferente do esperado. Isso acontece quando já existe outra tradução ou "
+            "mod instalado, ou quando o jogo foi atualizado. Na Steam, use 'Verificar integridade dos arquivos' "
+            "e rode este instalador de novo.")
+
+
+def falha_amigavel(e):
+    """Traduz uma excecao da instalacao em uma frase que o usuario final entende."""
+    if isinstance(e, PermissionError):
+        return ("O Windows não deixou alterar os arquivos do jogo. Feche o jogo e programas que possam estar usando a "
+                "pasta (o antivírus, por exemplo) ou abra este instalador como administrador.")
+    if isinstance(e, FileNotFoundError):
+        return "Falta um arquivo dentro deste instalador. Baixe o instalador de novo."
+    if isinstance(e, OSError) and e.errno == 28:
+        return "Não há espaço livre suficiente no disco. Libere espaço e tente de novo."
+    return "Não consegui montar a tradução (o instalador pode estar corrompido). Baixe o instalador de novo."
 
 
 def instalar(jogo, pkg, man):
@@ -48,14 +118,15 @@ def instalar(jogo, pkg, man):
         if s == 'traduzido':
             continue
         if s != 'original':
-            return print(f"{f['name']}: {s} (jogo atualizado ou modificado). Nada foi alterado. "
-                         "Use 'verificar arquivos' da Steam e rode de novo.") or 1
+            return print(motivo(f, s), 'Nada foi alterado no seu jogo.') or 1
         plano.append(f)
+    if plano and (erro := preflight(jogo, plano)):
+        return print(erro, 'Nada foi alterado no seu jogo.') or 1
     print(f'{len(plano)} arquivo(s) a traduzir, {len(man["files"]) - len(plano)} ja em dia.')
     feitos = []
     try:
         for f in plano:
-            g = jogo / f['name']
+            g = alvo(jogo, f)
             bak = g.with_name(g.name + '.bak')
             if not bak.exists() or sha(bak) != f['sha_original']:  # g ja foi conferido como original
                 shutil.copy2(g, bak)
@@ -68,9 +139,10 @@ def instalar(jogo, pkg, man):
             tmp.replace(g)
             feitos.append(f)
     except Exception as e:  # volta tudo ao original: nunca deixa o jogo em estado misto
-        print('Falha:', e, '- restaurando.')
+        print(falha_amigavel(e), 'Os arquivos do jogo foram devolvidos ao original.')
         for f in feitos:
-            shutil.copy2(jogo / (f['name'] + '.bak'), jogo / f['name'])
+            g = alvo(jogo, f)
+            shutil.copy2(g.with_name(g.name + '.bak'), g)
         return 1
     print('Tradução instalada. Backups em *.bak na pasta do jogo.')
 
@@ -80,10 +152,12 @@ def desinstalar(jogo, man):
         return print(aviso_aberto(man['app'])) or 1
     n = 0
     for f in man['files']:
-        g, bak = jogo / f['name'], jogo / (f['name'] + '.bak')
+        g = alvo(jogo, f)
+        bak = g.with_name(g.name + '.bak')
         if estado(jogo, f) == 'traduzido':
             if not bak.is_file() or sha(bak) != f['sha_original']:
-                return print(f"{f['name']}: sem backup valido. Use 'verificar arquivos' da Steam.") or 1
+                return print(f"Não achei a cópia de segurança de {f['name']} para desfazer a tradução. "
+                             "Na Steam, use 'Verificar integridade dos arquivos' para voltar ao original.") or 1
             shutil.copy2(bak, g)
             n += 1
     print(f'{n} arquivo(s) restaurados ao original.')
@@ -106,7 +180,7 @@ def main():
     man = json.loads((pkg / 'manifest.json').read_text(encoding='utf-8'))
     jogo = arg('--jogo') or achar_jogo(man['app'])
     if not jogo or not jogo.is_dir():
-        return print('Pasta do jogo nao encontrada. Rode com --jogo "<pasta do jogo>".') or 1
+        return print('Não encontrei o jogo instalado. Rode com --jogo "<pasta do jogo>".') or 1
     print(f"Tradução para {man['app']['idioma']} v{man['version']} - jogo em {jogo}")
     return {'instalar': lambda: instalar(jogo, pkg, man), 'desinstalar': lambda: desinstalar(jogo, man),
             'verificar': lambda: verificar(jogo, man)}[cmd]()
@@ -116,7 +190,7 @@ def resolver_pasta(p, man):
     """Aceita a pasta do jogo, a DAT ou a english/DAT; devolve a que tem os arquivos do jogo."""
     p = pathlib.Path(p)
     for c in (p, p / pathlib.Path(man['app']['subpasta']).name, p / man['app']['subpasta']):
-        if (c / man['files'][0]['name']).is_file():
+        if alvo(c, man['files'][0]).is_file():
             return c
 
 
@@ -131,7 +205,8 @@ def gui():
     root = tk.Tk()
     app = man['app']
     root.title(f"Patch Tradução {app['titulo_curto']} - by {app['autor']}")
-    root.geometry('820x480')
+    ALTURA = 480
+    root.geometry(f'820x{ALTURA}')
     root.resizable(False, False)
     root.configure(bg=BG)
     if (pkg / 'icone.ico').is_file():
@@ -145,7 +220,7 @@ def gui():
     f.pack(side='left', fill='both', expand=True)
     lbl = lambda parent, t, **k: tk.Label(parent, text=t, bg=k.pop('bg', BG), anchor='w', justify='left', **k)
 
-    lbl(f, app['titulo'], font=('Segoe UI', 20, 'bold'), fg=TXT).pack(fill='x')
+    lbl(f, app['titulo'], font=('Segoe UI', 20, 'bold'), fg=TXT, wraplength=448).pack(fill='x')
     lbl(f, f"Tradução para {app['idioma']}  ·  v{man['version']}  ·  by {app['autor']}", font=('Segoe UI', 10), fg=SUB).pack(fill='x', pady=(0, 14))
 
     aviso = tk.Frame(f, bg='#fff1cc', padx=12, pady=8)
@@ -157,7 +232,10 @@ def gui():
     linha = tk.Frame(f, bg=BG)
     linha.pack(fill='x')
     achado = achar_jogo(app)
-    caminho = tk.StringVar(value=str(achado.parent.parent if achado else ''))  # raiz do jogo, nao a english/DAT
+    raiz = achado
+    for _ in pathlib.Path(app['subpasta']).parts:  # raiz do jogo = achado menos os niveis da subpasta ('.' = nenhum)
+        raiz = raiz.parent if raiz else raiz
+    caminho = tk.StringVar(value=str(raiz or ''))
     tk.Entry(linha, textvariable=caminho, font=('Segoe UI', 9), relief='solid', bd=1).pack(side='left', fill='x', expand=True, ipady=4)
     btn = lambda parent, t, cmd, **k: tk.Button(parent, text=t, command=cmd, relief='flat', cursor='hand2', font=('Segoe UI', 10, 'bold'),
                                                **{'padx': 14, 'pady': 6, **k})
@@ -209,7 +287,8 @@ def gui():
         elif c == {'traduzido': n}:
             msg('A tradução já está instalada neste jogo.', 'ok')
         else:
-            msg('Os arquivos do jogo não são os esperados (outra versão ou já modificados). Na Steam, use "Verificar integridade dos arquivos" e tente de novo.', 'aviso')
+            ruim = next(x for x in man['files'] if estado(j, x) not in ('original', 'traduzido'))
+            msg(motivo(ruim, estado(j, ruim)), 'aviso')
 
     def procurar():
         d = filedialog.askdirectory(title=f"Pasta de instalação do {app['titulo']} (Steam)", initialdir=caminho.get() or None)
@@ -228,11 +307,13 @@ def gui():
         old, sys.stdout = sys.stdout, Saida()
         try:
             r = fn(j)
+        except Exception as e:
+            r = print(falha_amigavel(e)) or 1
         finally:
             sys.stdout = old
         atualizar()
         if r:
-            messagebox.showerror('Algo deu errado', falha + '\nNada foi deixado pela metade. Veja os detalhes na janela.')
+            messagebox.showerror('Algo deu errado', falha + '\n\n' + (log.get('1.0', 'end').strip().splitlines() or [''])[-1])
             mostrar.set(True)
             alternar()
         else:
@@ -240,9 +321,13 @@ def gui():
 
     def alternar():
         if mostrar.get():
+            if not log.get('1.0', 'end').strip():
+                escrever('Nada para mostrar ainda. Aqui aparece o passo a passo quando você instalar ou voltar ao original.\n')
+            root.geometry(f'820x{ALTURA + 150}')
             log.pack(fill='x', pady=(6, 0))
         else:
             log.pack_forget()
+            root.geometry(f'820x{ALTURA}')
 
     def detalhes():
         mostrar.set(not mostrar.get())

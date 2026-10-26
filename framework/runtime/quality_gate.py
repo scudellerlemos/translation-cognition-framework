@@ -55,13 +55,14 @@ def check(root, chapter=None) -> dict:
     root = Path(root)
     revise, uncovered = [], []
     cov: dict[str, float] = {"lines": 0, "high": 0, "with_back": 0, "sampled_low": 0}
+    niveis = artifact_io.back_risk_levels(root)   # padrao high+critical; project.json pode restringir (ADR 0022)
     for scene in artifact_io.scenes(root, chapter):
         plan_lines = model._plan_lines(root, scene)       # le translation_plan; [] se sem plano
         if not plan_lines:
             continue
         sid = context_pack.scene_id_of(scene)
         highs = [model._ln_entry(ln) for ln in plan_lines
-                 if ln.get("risk_level") in ("high", "critical")]
+                 if ln.get("risk_level") in niveis]
         high_offsets = {h["offset"] for h in highs}
         entries = artifact_io.back_entries(root, scene)
         bt_missing = not paths.back_translation(root, scene, sid).is_file()
@@ -98,6 +99,11 @@ def split_scope(items: list[dict], scenes: list[str] | None) -> tuple[list[dict]
     return [i for i in items if i.get("scene") in want], [i for i in items if i.get("scene") not in want]
 
 
+def defer(items: list[dict], diferida: bool, fechar: bool) -> tuple[list[dict], list[dict]]:
+    """(bloqueia, adiado): com a fila diferida o item espera o fim do lote; `--fechar` volta a bloquear tudo."""
+    return ([], items) if (diferida and not fechar) else (items, [])
+
+
 def export_revise(revise, csv_path):
     """Grava a worklist 'revise' como DADOS (entrada do quality_fix). Colunas estaveis."""
     cols = ["scene", "scene_id", "offset", "speaker", "source", "target", "back_en", "note"]
@@ -113,6 +119,8 @@ def main():
     ap.add_argument("chapter", nargs="?", default=None, help="filtra por capitulo (ex.: 19); default: tudo")
     ap.add_argument("--scenes", nargs="+", help="so bloqueia item destas cenas; o resto vira aviso")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--fechar", action="store_true",
+                    help="fim de lote / antes de instalar: escalonamento aberto bloqueia mesmo com hitl_fila=diferida")
     ap.add_argument("--export", metavar="CSV", default=None,
                     help="grava a worklist 'revise' nesse CSV (entrada do quality_fix)")
     a = ap.parse_args()
@@ -124,6 +132,16 @@ def main():
     import hitl  # fila de escalonamento aberta = decisao humana pendente -> bloqueia (projeto com "hitl")
     esc, esc_out = split_scope(hitl.open_items(a.project) if hitl.enabled(a.project) else [], a.scenes)
     r["escalations"] = len(esc)
+    dif = hitl.diferida(a.project)
+    esc, esc_def = defer(esc, dif, a.fechar)   # fila diferida: espera o humano no fim do lote
+    if esc_def:
+        print(f"AVISO: {len(esc_def)} escalonamento(s) na fila diferida (nao bloqueiam a onda; bloqueiam no --fechar)")
+        r["deferred_escalations"] = len(esc_def)
+    rev, rev_def = defer(rev, dif, a.fechar)   # ADR 0021: 'revise' que o Sonnet nao resolveu tambem espera o fim do lote
+    if rev_def:
+        onde = ", ".join(f"{k['scene']}:{k['offset']}" for k in rev_def)
+        print(f"AVISO: {len(rev_def)} linha(s) 'revise' na fila diferida (nao bloqueiam a onda; bloqueiam no --fechar): {onde}")
+        r["deferred_revise"] = len(rev_def)
     outside = len(rev_out) + len(unc_out) + len(esc_out)
     if outside:
         r["outside"] = {"revise": len(rev_out), "uncovered": len(unc_out), "escalations": len(esc_out)}
@@ -140,7 +158,8 @@ def main():
           f"({cov['pct']}%) | high/critical={cov['high']} + amostra low/medium={cov['sampled_low']}")
     if not rev and not unc and not esc:
         scope = f"cap.{a.chapter}" if a.chapter else "todos os capitulos"
-        print(f"OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura ({scope}).")
+        adiada = f" ({len(rev_def)} 'revise' adiada(s) para o --fechar)" if rev_def else ""
+        print(f"OK: nenhuma linha high/critical com verdict 'revise' nem sem cobertura ({scope}){adiada}.")
         sys.exit(0)
     if rev:
         print(f"REVISAR — {len(rev)} linha(s) high/critical com verdict 'revise' (o modelo apontou divergencia):")

@@ -111,7 +111,7 @@ def test_list_guards(tmp_path):
 def test_audit_and_persist_writes_report_clean(tmp_path):
     _scene(tmp_path, "ch_11_01", "texto sem spoiler")
     rep = sc.audit_and_persist(tmp_path)
-    assert rep == {"name_leaks": [], "gender_flags": [], "clean": True}
+    assert rep == {"name_leaks": [], "gender_flags": [], "tabelas_com_termo": [], "clean": True}
     saved = json.loads(paths.spoiler_audit(tmp_path).read_text(encoding="utf-8"))
     assert saved == rep
 
@@ -134,6 +134,30 @@ def test_audit_and_persist_writes_report_with_leaks(tmp_path):
     assert "Oshtor aparece" not in raw and "disfar" not in raw
     assert saved["clean"] is False and saved["name_leaks"][0]["forbidden"] == "Oshtor"
     assert saved["gender_flags"][0]["offset"] == rep["gender_flags"][0]["offset"]
+
+
+def test_termo_em_tabela_de_sistema_nao_e_vazamento(tmp_path):
+    _scene(tmp_path, "ch_11_01", "O Oshtor aparece na porta.")      # cena da historia, antes do reveal
+    _scene(tmp_path, "NameTextData", "Oshtor")                       # tabela de nomes: fora de ordem_cenas
+    _ledger(tmp_path, forbidden_pre_reveal=["Oshtor"])
+    (paths.artifacts(tmp_path) / "ordem_cenas.txt").write_text("11_01\n", encoding="utf-8")
+    assert [x["scene_id"] for x in sc.check(tmp_path)] == ["11_01"]
+    assert [x["scene_id"] for x in sc.check_tabelas(tmp_path)] == ["NameTextData"]
+    assert "text" not in sc.check_tabelas(tmp_path)[0]
+
+
+def test_so_tabela_com_o_termo_deixa_o_audit_limpo(tmp_path):
+    _scene(tmp_path, "NameTextData", "Oshtor")
+    _ledger(tmp_path, forbidden_pre_reveal=["Oshtor"])
+    (paths.artifacts(tmp_path) / "ordem_cenas.txt").write_text("11_01\n", encoding="utf-8")
+    rep = sc.audit_and_persist(tmp_path)
+    assert rep["clean"] is True and rep["name_leaks"] == [] and len(rep["tabelas_com_termo"]) == 1
+
+
+def test_sem_ordem_cenas_toda_unidade_conta_como_cena(tmp_path):
+    _scene(tmp_path, "NameTextData", "Oshtor")
+    _ledger(tmp_path, forbidden_pre_reveal=["Oshtor"])
+    assert len(sc.check(tmp_path)) == 1 and sc.check_tabelas(tmp_path) == []
 
 
 def test_future_helper():

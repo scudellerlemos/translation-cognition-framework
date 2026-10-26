@@ -20,6 +20,10 @@ from pathlib import Path
 
 import paths
 
+# Linha que o run_scene imprime quando a cena parou por defeito da traducao (token, schema, glifo); a sessao
+# corrige e roda de novo, entao o wave nao a trata como falha do pipeline (ver wave.espera_esperada).
+CORRECAO_MARCA = "CORRECAO DA TRADUCAO"
+
 RUN = os.environ.setdefault("TCF_RUN_ID", uuid.uuid4().hex[:8])
 
 # Schema (Onda 3): campos obrigatorios e etapas conhecidas. `gate.*` e `audit.*` sao familias abertas.

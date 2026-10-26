@@ -10,7 +10,9 @@ Como cada requisicao e atribuida (`attribution`):
   window   — sessao principal (ou subagente de varias cenas): enquanto o ultimo `run_scene` da cena
              respondeu AGUARDANDO (traducao ou back-translation). Aproximado: cenas em lote dividem pela
              mais recente, e conversa no meio da janela entra junto.
-  overhead — o resto da sessao (orquestracao, conversa): cena `_session`.
+  overhead — o resto da sessao PRINCIPAL (orquestracao, conversa): cena `_session`.
+  Requisicao de SUBAGENTE sem cena (o de varias cenas: retraducao do passo 5d, retrotraducao) nao e overhead: e `agent`
+  na cena `_session`, com `agent_type` (do .meta.json do subagente) para separar tradução de verificação.
 Cada linha traz tambem `phase`, pelo que o ultimo `run_scene` respondeu: `translate` (AGUARDANDO traducao),
 `back` (AGUARDANDO back-translation = governanca) ou `other` (empacotar, verificar, conversa).
 O TOTAL por sessao e sempre exato (cada requisicao entra uma vez, por id). So entram sessoes que rodaram
@@ -202,6 +204,14 @@ def _session_rows(root: Path) -> list[dict]:
     return rows
 
 
+def _agent_type(transcript: Path) -> str | None:
+    """`agentType` do .meta.json ao lado da transcricao do subagente (None se faltar ou estiver ilegivel)."""
+    try:
+        return json.loads(transcript.with_suffix(".meta.json").read_text(encoding="utf-8")).get("agentType")
+    except (OSError, ValueError):
+        return None
+
+
 def sync(root, tdir: Path | None = None) -> list[dict]:
     """Anexa ao ledger o que as transcricoes tem de novo. Devolve as linhas anexadas."""
     root = Path(root)
@@ -223,6 +233,7 @@ def sync(root, tdir: Path | None = None) -> list[dict]:
         sid = main.stem[:8]
         if all(a.stat().st_mtime <= cursor.get((sid, aid), -1) for aid, a in files):
             continue
+        tipos = {aid: _agent_type(a) for aid, a in files if aid}
         scans = [(aid, *_scan_cached(a, scene_re)) for aid, a in files]
         if not any(touched for _, _, touched in scans):
             continue
@@ -233,7 +244,7 @@ def sync(root, tdir: Path | None = None) -> list[dict]:
             only = next(iter(touched)) if aid and len(touched) == 1 else None
             agg: dict[tuple, dict] = {}
             for ts, model, u, scene, phase, act, est in new:
-                scene, how = (only, "agent") if only else (scene, "window") if scene else (OVERHEAD, "overhead")
+                scene, how = (only, "agent") if only else (scene, "window") if scene else (OVERHEAD, "agent" if aid else "overhead")
                 phase, act = ("other", act or "conversa") if how == "overhead" else (phase, None)
                 stage = next((s for t, s in reversed(stages) if t <= ts), None)
                 a = agg.setdefault((scene, model, phase, act, stage), {"t": 0.0, "n": 0, "how": how, "usd": 0.0, "est": 0,
@@ -247,6 +258,7 @@ def sync(root, tdir: Path | None = None) -> list[dict]:
                 out.append({"t": round(a["t"], 3), "scene": scene, "kind": "session", "source": "session", "phase": phase,
                             **({"activity": act} if act else {}), **({"stage": stage} if stage else {}),
                             **({"out_est": a["est"]} if a["est"] else {}),
+                            **({"agent_type": tipos[aid]} if aid and tipos.get(aid) else {}),
                             "session": sid, "agent": aid, "attribution": a["how"], "model": model, "batch": False,
                             "usage": a["usage"], "n_requests": a["n"], "until": until, "cost_usd": 0.0,
                             "api_equiv_usd": round(a["usd"], 5) if model in cost._PRICE else None})

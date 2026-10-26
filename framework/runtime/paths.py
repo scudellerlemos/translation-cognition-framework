@@ -161,6 +161,7 @@ def metrics(root) -> Path:          return artifacts(root) / "metrics.jsonl"
 def alerts(root) -> Path:           return artifacts(root) / "alerts.jsonl"
 def translate_exhausted(root) -> Path:   return artifacts(root) / "translate_exhausted.jsonl"
 def glossary(root) -> Path:         return artifacts(root) / "glossary.csv"
+def glossary_local(root) -> Path:   return artifacts(root) / "glossary.local.csv"   # nome de spoiler: nunca versionado
 def entities(root) -> Path:         return artifacts(root) / "entities.csv"
 def research_log(root) -> Path:     return artifacts(root) / "research_log.md"
 def spoiler_ledger(root) -> Path:   return artifacts(root) / "spoiler_ledger.json"

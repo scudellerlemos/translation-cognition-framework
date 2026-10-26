@@ -112,6 +112,10 @@ O objetivo é entender **como o texto está guardado** no binário antes de escr
 5. Conferir o escopo: `python framework/connectors/scope_scan.py <dialogs.csv | pasta_do_projeto> <pasta_do_jogo>`
    lista, por extensão, quantos arquivos do jogo o `dialogs.csv` cobre; extensão sem nenhum arquivo coberto é
    candidata a escopo esquecido (folha de imagem com rótulo, menu, texto de sistema) — decide-se entre `dialogo` e `completo`.
+   Depois, `python framework/connectors/scene_scope.py <pasta_do_projeto>` mostra as strings e o `byte_budget` por
+   categoria e separa as tabelas de sistema das cenas da história; leve essa contagem à pergunta de escopo e sugira
+   um piloto cedo das tabelas com orçamento curto. O conector deve gerar `artifacts/ordem_cenas.txt` dos dados do
+   jogo; sem ele a ordem é só numérica e o relatório avisa.
 
 Referência: `projects/utawarerumono/connector/table_schema.md` e `framework/connectors/hex_binary.md`.
 

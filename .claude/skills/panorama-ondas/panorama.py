@@ -4,9 +4,23 @@ import contextlib
 import csv
 import io
 import json
+import re
 import sys
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from pathlib import Path
+
+
+def _shape(sid):
+    return re.sub(r"[A-Za-z]+", "a", re.sub(r"\d+", "0", sid))
+
+
+def classify(units, ordem_l):
+    """{unidade: 'sequencia' | 'tabela'}. Sequencia = id com a forma dos ids da historia (NN_NN_NN): os da lista do jogo,
+    senao a forma mais comum. Copia de framework/connectors/scene_scope.py (a skill nao depende do conector)."""
+    formas = Counter(_shape(o) for o in ordem_l) or Counter(_shape(u) for u in units)
+    forma = formas.most_common(1)[0][0] if formas else ""
+    return {u: "sequencia" if u in ordem_l or _shape(u) == forma else "tabela" for u in units}
+
 
 proj = Path(sys.argv[1]); n_plan = int(sys.argv[2]) if len(sys.argv) > 2 else 8
 art = proj / "artifacts"
@@ -24,14 +38,15 @@ def key(s):  # cena fora da lista do jogo entra logo depois da ultima cena lista
         if pos: return (pos[-1] + .5, s)
     return (len(ordem_l) + 1, s)
 prefs = ordem_l
-cenas = sorted(sizes, key=key)
+tipo = classify(list(sizes), ordem_l)   # tabela de sistema vai por ultimo, de proposito (nao por acaso)
+cenas = sorted(sizes, key=lambda s: (tipo[s] == "tabela", key(s)))
 
 tot, ok = sum(sizes.values()), sum(sizes[s] for s in done if s in sizes)
 print(f"FALAS: {ok} de {tot} ({100*ok/tot:.1f}%) | CENAS: {len(done & set(sizes))} de {len(sizes)} verified")
 print("ORDEM:", "confirmada pelos dados do jogo (EventManagerData, ordem_cenas.txt)" if prefs else "NAO CONFIRMADA (prefixo numerico; ver ROADMAP)")
 g = OrderedDict()
 for s in cenas:
-    a = g.setdefault(s[:2], [0, 0, 0, 0]); a[0] += 1; a[1] += sizes[s]
+    a = g.setdefault("tab" if tipo[s] == "tabela" else s[:2], [0, 0, 0, 0]); a[0] += 1; a[1] += sizes[s]
     if s in done: a[2] += 1; a[3] += sizes[s]
 print("\ngrupo  cenas  falas  feitas(cenas/falas)")
 for k, (c, f, dc, df) in g.items(): print(f"{k:>5} {c:>6} {f:>6}  {dc}/{c}  {df}/{f}")

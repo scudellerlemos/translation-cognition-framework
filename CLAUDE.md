@@ -74,6 +74,11 @@ no contexto de toda requisição (nomes de ferramenta + instruções), mesmo sem
 
 - A janela principal roda em **Sonnet** (`"model": "sonnet"` em `.claude/settings.json`), igual ao tradutor
   do caminho de API. Não trocar o padrão do projeto sem pedido explícito do usuário.
+- A **janela de cada onda de lote** (`claude -p` do `rodar_ondas.ps1`) roda em **Haiku** por padrão (decisão do usuário, 2026-10-21,
+  benchmark A × B em `projects/utawarerumono_prelude/ROADMAP.md`); `-Modelo sonnet|opus` só por pedido explícito. As flags
+  `-Esforco`/`-PrefixoEstavel` ficam opcionais.
 - Opus só quando o usuário trocar à mão (`/model opus`), para bring-up de conector ou diagnóstico difícil;
   ao terminar, voltar para Sonnet.
-- Subagentes seguem o próprio arquivo: `scene-translator` em Sonnet, retrotradução em Opus.
+- Subagentes seguem o próprio arquivo: `scene-translator` em Haiku (benchmark de cota Pro, 2026-10-19: ~65% mais barato, qualidade sem
+  diferença detectável em n=120 por braço), com as falas `critical` retraduzidas em Sonnet
+  (passo 5d da skill `rodar-onda`, ADR 0023: as `high` ficam com o Haiku); retrotradução em Opus.

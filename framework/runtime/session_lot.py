@@ -27,8 +27,9 @@ import context_pack  # noqa: E402
 import opcodes  # noqa: E402
 import paths  # noqa: E402
 
-ROOT = TMP = None            # definidos por _init(projeto)
-CFG = {}                     # project.json (excecoes de orcamento)
+ROOT: pathlib.Path = None  # type: ignore[assignment]   # definidos por _init(projeto)
+TMP: pathlib.Path = None  # type: ignore[assignment]
+CFG: dict = {}               # project.json (excecoes de orcamento)
 BR = '[01]'                  # token de quebra de linha (o `newline` da tabela de opcodes)
 TOK = re.compile(r'\[[0-9A-Fa-f]{2}\]')
 ROW = re.compile(r'^\| (\S+:\d+:\d+) \| (\d*) \| (.*) \|$')
@@ -74,7 +75,10 @@ def cmd_prompt(lot, scenes, flags):
     cap = int(flags.get('--tm-cap', 0))
     L = [f'# Lote de {len(scenes)} cenas: {" ".join(scenes)}', '',
          'As secoes abaixo valem para TODAS as cenas do lote. As linhas a traduzir vem por cena, na secao 7.', '']
-    dup, seen_src, offsets, in_carta = {}, {}, [], False
+    dup: dict = {}
+    seen_src: dict = {}
+    offsets: list = []
+    in_carta = False
     for h in order:
         bodies = [sec for parts in docs.values() for sec in parts[1:] if head(sec) == h]
         if '--short-carta' in flags:            # da "## 1. CARTA" ate antes da "## 2."
@@ -97,10 +101,10 @@ def cmd_prompt(lot, scenes, flags):
                 body = sec.split('\n', 1)[1].split('\n')
                 rows = [i for i, x in enumerate(body) if ROW.match(x)]
                 done = _load(s)['lines'] if '--skip-done' in flags else {}   # ja preenchida pelo reuso da memoria
-                keep = body[:rows[0] - 2] if first else []      # aviso de orcamento so na 1a cena
+                keep: list = body[:rows[0] - 2] if first else []      # aviso de orcamento so na 1a cena
                 keep += ['| offset | byte_budget | source |', '|---|---|---|']
                 for i in rows:
-                    off, bud, src = ROW.match(body[i]).groups()
+                    off, bud, src = ROW.match(body[i]).groups()  # type: ignore[union-attr]
                     if off in done:
                         continue
                     if '--dedup' in flags and src in seen_src:
@@ -298,7 +302,9 @@ def cmd_plan(out, max_lines=150):
     st = json.loads(paths.run_state(ROOT).read_text(encoding='utf-8')).get('scenes', {}) if paths.run_state(ROOT).is_file() else {}
     dups = scene_dedup.groups(ROOT)
     skip = {d for ds in dups.values() for d in ds}
-    lots, cur, n = [], [], 0
+    lots: list = []
+    cur: list = []
+    n = 0
     for sc in sorted(d.name for d in paths.scenes_dir(ROOT).iterdir() if paths.dialogs(ROOT, d.name).is_file()):
         if sc in skip or st.get(sc, {}).get('status') == 'verified':
             continue
@@ -345,19 +351,21 @@ def cmd_install(out, src, game, go):
 
 
 if __name__ == '__main__':
-    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[union-attr]
     _init(sys.argv[1])
     cmd, rest = sys.argv[2], sys.argv[3:]
     if cmd == 'plan':
         cmd_plan(rest[0], int(rest[rest.index('--max') + 1]) if '--max' in rest else 150)
     elif cmd == 'install':
-        cmd_install(*rest[:3], go='--go' in rest)
+        cmd_install(rest[0], rest[1], rest[2], go='--go' in rest)
     elif cmd in ('split', 'join'):
         import session_part
         getattr(session_part, cmd)(TMP, rest[0])
     else:
         lot, rest = rest[0], rest[1:]
-        flags, scenes, it = {}, [], iter(rest)
+        flags: dict = {}
+        scenes: list = []
+        it = iter(rest)
         for a in it:
             if a == '--tm-cap':
                 flags[a] = next(it)

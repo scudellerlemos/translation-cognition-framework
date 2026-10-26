@@ -96,6 +96,7 @@ def _load_glossary(root: Path, cfg: dict | None = None):
         cfgp = root / "project.json"
         cfg = json.loads(cfgp.read_text(encoding="utf-8")) if cfgp.is_file() else {}
     db_path, db_pid = context_pack._db_path(root, cfg)
+    local_rows = context_pack.local_glossary_rows(root)      # glossary.local.csv: privado, soma ao glossario do projeto
     if db_path:
         _db_dir = str(Path(__file__).resolve().parent.parent / "db")
         if _db_dir not in sys.path:
@@ -103,14 +104,15 @@ def _load_glossary(root: Path, cfg: dict | None = None):
         from store import Store
         with Store(db_path) as db:
             db_rows = db.get_glossary(db_pid)
-        rows = [{"term": r.get("term", ""), "handling_rule": r.get("handling_rule", ""),
+        tem = {(r.get("term") or "").lower() for r in db_rows}
+        rows = [r for r in local_rows if (r.get("term") or "").lower() not in tem] + [{"term": r.get("term", ""), "handling_rule": r.get("handling_rule", ""),
                 "target_translation": r.get("translation", ""), "aliases": r.get("aliases", "")}
                for r in db_rows]
     else:
         g = paths.glossary(root)
-        if not g.is_file():
+        if not g.is_file() and not local_rows:
             return []
-        rows = list(csv.DictReader(g.open(encoding="utf-8-sig")))
+        rows = (list(csv.DictReader(g.open(encoding="utf-8-sig"))) if g.is_file() else []) + local_rows
     out = []
     for r in rows:
         term = (r.get("term") or "").strip()
@@ -125,6 +127,10 @@ def _load_glossary(root: Path, cfg: dict | None = None):
             if term.lower() in _GENERIC:
                 continue                                      # palavra-comum -> traducao por contexto, nao audita
             expected = [tgt] + aliases                        # termo coined: a forma canonica
+            if tgt.startswith("(") and tgt.endswith(")"):     # "(adaptar)": marcador, nao forma literal
+                expected = aliases
+                if not expected:
+                    continue
         else:
             continue                                          # sem alvo definido -> nao audita
         out.append((term, expected, rule))
@@ -178,10 +184,18 @@ def main():
     ap.add_argument("project")
     ap.add_argument("--scenes", nargs="+", help="so achado destas cenas bloqueia; os demais viram aviso")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--fechar", action="store_true",
+                    help="fim de lote: achado ja na fila de escalonamento tambem bloqueia (modo hitl_fila=diferida)")
     a = ap.parse_args()
     with contextlib.suppress(AttributeError, ValueError, OSError):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     found, outside = split_scope(lint(a.project), a.scenes)
+    deferred: list[dict] = []
+    import hitl  # hitl_fila=diferida: achado que ja esta na fila do humano espera la, nao para a onda
+    if not a.fechar and hitl.diferida(a.project):
+        queued = {(r["scene"], r["offset"], r["term"]) for r in hitl.open_items(a.project)}
+        deferred = [f for f in found if (f["scene"], f["offset"], f["term"]) in queued]
+        found = [f for f in found if f not in deferred]
     out = paths.artifacts(Path(a.project)) / "glossary_lint.json"
     paths.atomic_write(out, json.dumps({"count": len(found), "findings": found, "outside": outside},
                               ensure_ascii=False, indent=2))
@@ -193,6 +207,8 @@ def main():
         print(f"glossary_lint: {len(found)} candidato(s) de inconsistencia -> {out}")
         for term, n in by_term.most_common(25):
             print(f"  {term:24} {n}")
+        if deferred:
+            print(f"  AVISO: {len(deferred)} candidato(s) na fila de escalonamento (fila diferida; bloqueiam no --fechar)")
         if outside:
             where = sorted({f["scene"] for f in outside})
             print(f"  AVISO: {len(outside)} candidato(s) fora das cenas do pedido (nao bloqueiam): {', '.join(where)}")

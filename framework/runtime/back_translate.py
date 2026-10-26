@@ -144,8 +144,9 @@ def _ln_entry(ln):
 def high_risk_lines(root, scene):
     """Linhas risco>=high/critical do translation_plan_<scene_id>.json (candidatas a back-translation).
     Le o plano do conector (existe apos build_plan). Fonte unica — run_scene e o batch leem daqui."""
+    niveis = artifact_io.back_risk_levels(root)
     return [_ln_entry(ln) for ln in _plan_lines(root, scene)
-            if ln.get("risk_level") in ("high", "critical")]
+            if ln.get("risk_level") in niveis]
 
 
 def sample_low_risk_lines(root, scene, rate=BACK_SAMPLE_RATE, *, seed="bt"):
@@ -156,8 +157,9 @@ def sample_low_risk_lines(root, scene, rate=BACK_SAMPLE_RATE, *, seed="bt"):
         return []
     scene_id = context_pack.scene_id_of(scene)
     out = []
+    niveis = artifact_io.back_risk_levels(root)
     for ln in _plan_lines(root, scene):
-        if ln.get("risk_level") in ("high", "critical"):
+        if ln.get("risk_level") in niveis:
             continue
         h = hashlib.sha1(f"{seed}|{scene_id}|{ln.get('offset','')}".encode(), usedforsecurity=False).hexdigest()
         if int(h[:8], 16) % 10000 < rate * 10000:
@@ -264,7 +266,8 @@ def _submit_back_chunk(client, chunk_reqs, poll_seconds, max_wait_seconds, m, ro
             data["reviewed"] = len(data.get("entries", []))
             paths.atomic_write(out, json.dumps(data, ensure_ascii=False, indent=2))
             status[scene] = "reviewed"
-        except Exception:
+        except Exception as exc:
+            print(f"[back-batch] AVISO: saida de {scene} nao processada ({type(exc).__name__}) -- parse_failed.")
             status[scene] = "parse_failed"                # cobrado (ledger), mas saida nao parseou
     return status
 

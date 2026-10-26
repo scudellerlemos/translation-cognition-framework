@@ -15,7 +15,7 @@ from pathlib import Path
 from extract import (
     EN_COL,
     LANGS,
-    build_text_member,
+    build_member,
     connector_io,
     read_sdat,
     resolve_sdat,
@@ -42,7 +42,7 @@ def rebuild(data: bytes, approved: dict[str, str], transliterate: bool = False) 
                 strings[idx * len(LANGS) + EN_COL] = text.encode("utf-8")
                 changed = True
         if changed:
-            members[i] = build_text_member(n, cols, strings)
+            members[i] = build_member(sd.names[i], n, cols, strings)
     return write_sdat(sd, members), sorted(set(approved) - used)
 
 

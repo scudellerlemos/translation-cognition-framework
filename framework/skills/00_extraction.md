@@ -78,6 +78,11 @@ Rodar `python framework/connectors/scope_scan.py <dialogs.csv | pasta do projeto
 extensão quantos arquivos o `dialogs.csv` cobre e quantos bytes ficaram sem dono. Extensão sem nenhum arquivo
 coberto (folha de imagem com rótulo, menu, texto de sistema) exige decisão **explícita** registrada em
 `extraction_scope` (`dialogo` | `completo`) — não se descobre no teste dentro do jogo. Complementa o
+`python framework/connectors/scene_scope.py <pasta do projeto>`: mostra, por categoria, as strings e o `byte_budget`
+(faixa e quantas cabem em 16 bytes) e separa as **tabelas de sistema** (nome, unidade, mensagem) das cenas da história; ao
+perguntar o escopo (`dialogo` × `completo`), levar essa contagem ao usuário e sugerir um **piloto cedo** das tabelas com
+orçamento curto. A ordem da história (`artifacts/ordem_cenas.txt`) é do conector, gerada dos dados do jogo; sem ela a
+saída avisa "ordem NÃO confirmada". Complementa o
 `residual_text.py <dialogs.csv> <pasta do jogo> [--ceiling 0.05]` (texto legível dentro de arquivo já coberto; round-trip idêntico prova
 que nada foi corrompido, não que tudo foi extraído). Engine desconhecida: `connectors/discover.py <pasta do jogo>` + `coverage_gate.py` (ver `connectors/00_index.md`).
 
