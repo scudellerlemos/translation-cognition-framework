@@ -14,7 +14,7 @@ import re
 import subprocess
 import sys
 
-ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg", "ps1",
+ALLOWED_EXT = {"py", "md", "json", "jsonl", "csv", "yml", "yaml", "txt", "toml", "sql", "ini", "cfg", "ps1", "sh",
                "gitignore", "gitkeep", "gitattributes", "example", "coveragerc-ml"}
 ALLOWED_NAMES = {"LICENSE", "VERSION", "CODEOWNERS"}
 # projects/demo e sintetico (dialogo ficticio) -- unico lugar onde dialogs.csv e versionado.
@@ -22,6 +22,7 @@ _DEMO = re.compile(r"^projects/demo/artifacts/.*/dialogs\.csv$")
 DENIED_PATHS = [(re.compile(rx), why) for rx, why in [
     (r"(^|/)\.env(\.local)?$", "segredo (.env)"),
     (r"\.local\.md$", "nota local (*.local.md)"),
+    (r"\.local\.csv$", "glossario privado / nome de spoiler (*.local.csv)"),
     (r"^projects/[^/]+/(output|source_dat|manual_tests)/", "binario do jogo (original ou remontado)"),
     (r"^projects/[^/]+/artifacts/.*(dialogs\.csv|translations_[^/]*\.json|translation_plan[^/]*\.json"
      r"|approved_[^/]*\.csv|back_translation_[^/]*\.json|translation_memory\.jsonl)$", "roteiro/traducao de cena"),
@@ -39,7 +40,7 @@ ARTIFACTS_ALLOWED = {
     "api_ledger.jsonl", "cost_report.md", "decision_log.md", "entities.csv", "entities_candidates.json",
     "extraction_log.md", "glossary.csv", "kb_phase_worklist.md", "kb_ratified.csv", "metrics.jsonl",
     "qa_effectiveness.jsonl", "qa_report.md", "reinsertion_report.md", "research_log.md", "residue.json",
-    "run_state.json", "scenes_index.json", "spoiler_audit.json", "spoiler_ledger.json", "tone_analysis.md",
+    "run_state.json", "scenes_index.json", "spoiler_ledger.json", "tone_analysis.md",
     "universe_knowledge_base.md", "warnings.jsonl",
     "state/decision_index.json", "state/portrait_codes.json", "state/voice_cards.json",
     "qa_revisao/LEIA-ME.md", "qa_revisao/teste_ingame/relato_tester.csv",
@@ -52,7 +53,8 @@ _ARTIFACT = re.compile(r"^projects/[^/]+/artifacts/(.+)$")
 # Saida de descompilador (Ghidra/IDA): nota de RE fica local, nunca no repo.
 _DECOMP = re.compile(rb"\b(?:FUN|DAT|LAB|PTR|sub)_[0-9a-fA-F]{6,8}\b")
 _OK_EMAIL = re.compile(r"(@users\.noreply\.github\.com|^noreply@github\.com)$")
-_GIT_WRITE = re.compile(r"\bgit\b.*\b(add|commit|push)\b", re.I | re.S)
+# `git` so conta como comando (inicio ou depois de ; & | ( ), nao como pedaco de caminho (projetos-git\...)
+_GIT_WRITE = re.compile(r"(?:^|[;&|(\n])\s*git(?:\.exe)?\s+(?:\S+\s+){0,4}?(?:add|commit|push)\b", re.I)   # {0,4}: `git -C dir add`
 
 
 def path_problem(path: str) -> str | None:

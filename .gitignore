@@ -77,6 +77,7 @@ projects/*/artifacts/auditoria_arquitetura.md
 # escopo do piloto: a coluna de evidencia descreve o conteudo das cenas
 projects/*/artifacts/pilot_scope.csv
 projects/*/artifacts/scenes/*/bench_*.json
+projects/*/artifacts/scenes/*/risk_piso_*.json
 
 # Guardrail de conteudo (espelha .claude/hooks/content_guard.py, que a CI roda): nada de binario
 # de jogo, imagem/print, planilha, nota local nem ferramenta de RE entra no repo, em pasta nenhuma.
@@ -112,6 +113,9 @@ projects/*/artifacts/scenes/*/bench_*.json
 *.i64
 *.idb
 *.local.md
+*.local.csv
+# auditoria de spoiler: traz o par personagem <-> nome verdadeiro que ainda nao foi revelado
+projects/*/artifacts/spoiler_audit.json
 review_*.csv
 
 # Prints do teste in-game (telas do jogo, pesados) — ficam locais; o relato_tester.csv e versionado
@@ -150,3 +154,10 @@ projects/utawarerumono_prelude/artifacts/pendencias_finais.md
 scratch/
 
 .claude/skills/rodar-onda/logs/
+
+# texto de interface do exe (EN/PT), script auxiliar com caminho local, log de onda, wheel de terceiros
+projects/*/artifacts/exe_texts.csv
+projects/*/artifacts/exe_largura.py
+projects/*/artifacts/wave_*.log
+projects/*/connector/*.whl
+projects/demo/artifacts/api_ledger.jsonl
