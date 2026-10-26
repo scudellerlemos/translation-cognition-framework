@@ -39,7 +39,7 @@ framework/
                        conector (connector_gate/connector_mgr/fingerprint_monitor), spoiler
                        (spoiler_check), TM por série (tm_lookup/tm_updater), qualidade
                        (quality_review/gate/fix, tm_correct), custo (cost, cost_report), lote em
-                       sessão (wave, session_lot, touched, onda_fim) — ~75 módulos
+                       sessão (wave, session_lot, touched, onda_fim) — 76 módulos
                        (`ls runtime/*.py` sem testes). Ver runtime/README.md
   db/               ← store.py (SQLite: TM, glossário, voice cards, ledger), embedder, migrate_from_flat/export_to_flat
   distribution/     ← build_package.py, build_exe.py, verificar_exe.py, patcher.py — delta + patcher .exe de um clique (skill 09)
