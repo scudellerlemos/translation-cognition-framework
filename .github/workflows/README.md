@@ -1,201 +1,127 @@
 # CI/CD — o que roda sozinho neste repositório
 
-> **Em uma frase:** toda vez que o código é enviado para o GitHub, alguns "robôs"
-> conferem o código automaticamente. Se está tudo certo fica 🟢 **verde**; se algo
-> quebrou fica 🔴 **vermelho** — assim ninguém sobe código com problema sem perceber.
-
-Esses robôs são os **workflows**: cada arquivo `.yml` nesta pasta é um robô com uma
-missão. Eles aparecem na aba **Actions** do GitHub.
-
----
+> **Em uma frase:** toda vez que o código vai para o GitHub, "robôs" (os *workflows*) conferem tudo.
+> 🟢 verde = passou; 🔴 vermelho = algo quebrou. Cada `.yml` desta pasta é um robô, visível na aba **Actions**.
 
 ## Visão geral
 
-| Workflow | Arquivo | Quando roda | Pergunta que responde |
-|---|---|---|---|
-| **Tests** | `test.yml` | Todo PR e push no `main` | "O código **funciona**?" |
-| **Quality** | `quality.yml` | Todo PR e push no `main` | "O código está **limpo e seguro**?" |
-| **API Smoke** | `api-smoke.yml` | Domingo de manhã + manual | "A **API da Anthropic** ainda responde?" |
-| **Dependências opcionais** | `dep-audit-optional.yml` | Domingo de manhã + manual | "As stacks **opcionais** (kb/ml) têm CVE novo?" |
-| **Cobertura real (ML)** | `ml-coverage-optional.yml` | **obrigatório**: job `ml-coverage` de `test.yml` (PR, push na main) + domingo de manhã + manual | "`embedder.py`/`validate_model.py` ainda funcionam **de verdade** (sem mock)?" |
-| **Performance** | `perf.yml` | Todo PR e push no `main` (não bloqueia, fora do agregador) | "Alguma operação ficou **mais de 2× mais lenta** que o baseline?" |
-| **Release** | `release.yml` | Push de tag `vX.Y.Z` | "Pode **publicar** essa versão do framework?" |
-| **Branch hygiene** | `branch-hygiene.yml` | Domingo de manhã + manual | "Sobrou **branch mergeada** demais pra limpar?" |
+Num PR rodam 3 workflows ao mesmo tempo. Só `quality` e `test` bloqueiam o merge.
 
-> **Vocabulário mínimo:** *push* = enviar código pro GitHub · *PR (pull request)* =
-> pedido pra juntar uma branch na principal · *workflow* = um robô · *job* = uma
-> tarefa dentro do robô · *step* = um passo dentro da tarefa.
+```mermaid
+flowchart LR
+  pr(["PR ou push na main"]) --> q["quality.yml<br/>limpo e seguro?"]
+  pr --> t["test.yml<br/>funciona?"]
+  pr --> p["perf.yml<br/>ficou mais lento?<br/>(só avisa)"]
+  q --> prot{{"proteção da main"}}
+  t --> prot
+  prot --> merge(["merge liberado"])
+  tag(["tag vX.Y.Z"]) --> rel["release.yml<br/>publica a versão"]
+  cron(["domingo de manhã"]) --> w["api-smoke · dep-audit-optional<br/>ml-coverage-optional · branch-hygiene"]
+```
+
+| Workflow | Quando roda | Pergunta que responde |
+|---|---|---|
+| `test.yml` | todo PR e push na `main` | O código **funciona**? |
+| `quality.yml` | todo PR e push na `main` | O código está **limpo e seguro**? |
+| `perf.yml` | todo PR e push na `main` (não bloqueia) | Alguma operação ficou **mais de 2× mais lenta**? |
+| `api-smoke.yml` | domingo + manual | A **API da Anthropic** ainda responde? |
+| `dep-audit-optional.yml` | domingo + manual | As stacks **opcionais** (kb/ml) têm CVE novo? |
+| `ml-coverage-optional.yml` | job de `test.yml` + domingo + manual | A busca semântica funciona **de verdade**, sem mock? |
+| `release.yml` | push de tag `vX.Y.Z` | Pode **publicar** essa versão? |
+| `branch-hygiene.yml` | domingo + manual | Sobrou **branch mergeada** demais? |
+
+> **Vocabulário:** *push* = enviar código · *PR* = pedido para juntar uma branch na principal ·
+> *job* = tarefa dentro de um workflow · *step* = passo dentro do job.
 
 ---
 
 ## 1. `test.yml` — "O código funciona?"
 
-Roda a bateria de **testes automatizados** do projeto, dividida em **tarefas (jobs) que rodam
-ao mesmo tempo** — se uma falha, as outras continuam e você vê exatamente qual quebrou. Só a
-tarefa de cobertura roda **duas vezes**: uma no Python 3.11 e outra no 3.12 (é a "matriz").
+Jobs em paralelo: se um falha, os outros continuam e você vê qual quebrou.
 
-O que cada tarefa confere, em português:
+```mermaid
+flowchart TB
+  subgraph jobs["jobs de test.yml (em paralelo)"]
+    g["env-guard<br/>sem .env no repo + content guard"]
+    m["mypy<br/>tipos"]
+    c["coverage (py 3.11 e 3.12)<br/>piso de 90%"]
+    w["windows<br/>estado atômico, travas, caminhos"]
+    k["connector-*<br/>bof4 · uta · souldiers · trails<br/>demo · skeleton · io"]
+    h["hooks"]
+    ml["ml-coverage<br/>busca semântica real"]
+  end
+  jobs --> all{{"all-checks<br/>só verde se todos passaram"}}
+  all --> merge(["exigido para o merge"])
+  all -.-> ms["mark-staging"]
+```
 
-1. Todas **baixam o código** e instalam o Python + as ferramentas (`requirements-dev.txt`).
-2. **Confere que o `.env` não foi enviado** — o `.env` guarda senhas/chaves e *nunca*
-   pode ir pro repositório. Se alguém mandou sem querer, o robô barra. No mesmo job
-   (`env-guard`), o **content guard** (`.claude/hooks/content_guard.py`) barra conteúdo de
-   jogo/dado pessoal: arquivo rastreado fora da allowlist (`--tree`) e e-mail pessoal nos
-   commits do PR (`--commits`).
-3. **Checa os tipos (mypy)** — pega erros de "encaixe" (ex.: passar texto onde se
-   esperava número) antes mesmo de rodar o programa.
-4. **Roda os testes do motor com cobertura** (runtime, validação, banco e skills) — além
-   de passar, exige que pelo menos **90%** do código seja exercitado pelos testes (a
-   "cobertura"). Abaixo disso, barra.
-5. **Roda a suíte do motor no Windows** (`windows`: runtime, validação, banco, skills e distribuição, sem cobertura) — estado atômico, travas de arquivo e caminhos,
-   que se comportam diferente do Linux (é onde o projeto roda de verdade).
-6. **Roda os testes dos utilitários de conector e dos hooks** — os utilitários também com
-   piso de **90%** de cobertura.
-7. **Roda os testes de contrato dos conectores** (um por jogo, mais o demo e o template) — confere o
-   *round-trip*: extrair o texto do jogo e reinserir **sem traduzir** tem que devolver o
-   arquivo **byte a byte idêntico** ao original. É a prova de que o conector não corrompe
-   o jogo. (Sem o arquivo do jogo, que não vai pro repositório, esses testes se "pulam"
-   sozinhos.)
-8. **Cobertura real da busca semântica** (`ml-coverage`, ver a seção 3.6).
-9. **Agregador (`all-checks`)** — só fica verde se todas as tarefas acima passaram. É ele
-   que a proteção da branch `main` exige pra liberar o merge.
-
----
+- **`env-guard`:** barra `.env` enviado por engano e, pelo *content guard* (`.claude/hooks/content_guard.py`),
+  arquivo de jogo/dado pessoal fora da allowlist e e-mail pessoal nos commits do PR.
+- **`coverage`:** roda o motor (runtime, validação, banco, skills) e exige **≥ 90%** de cobertura; duas vezes, uma por versão do Python.
+- **`windows`:** a mesma suíte no Windows, onde o projeto roda de verdade.
+- **`connector-*`:** testes de contrato por jogo, mais demo e template. O principal é o **round-trip**:
+  extrair e reinserir sem traduzir tem que devolver o arquivo **byte a byte idêntico**. Sem o arquivo do
+  jogo (que não vai ao repositório) esses testes se pulam; o sintético, montado em memória, roda sempre.
+- **`all-checks`:** o agregador que a proteção da `main` exige.
 
 ## 2. `quality.yml` — "O código está limpo e seguro?"
 
-São **4 conferências independentes** (jobs) que rodam ao mesmo tempo. Cada uma olha um
-aspecto diferente:
+Quatro conferências independentes:
 
-| Job | Ferramenta | O que faz (em miúdos) |
+| Job | Ferramenta | O que faz |
 |---|---|---|
-| **Lint** | `ruff` | Revisor de estilo e erros bobos: import que ninguém usa, variável esquecida, etc. |
-| **SAST** | `bandit` | Detetive de segurança: procura padrões perigosos no próprio código. |
-| **Secret scan** | `gitleaks` | Procura senha/chave/token esquecidos no código ou no histórico. |
-| **Dependências** | `pip-audit` | Confere se alguma biblioteca usada tem falha de segurança conhecida (CVE). |
+| Lint | `ruff` | Estilo e erros bobos (import sem uso, variável esquecida). |
+| SAST | `bandit` | Padrões perigosos no próprio código (inclui `projects/*/connector/`). |
+| Secret scan | `gitleaks` | Senha, chave ou token no código ou no histórico. |
+| Dependências | `pip-audit` | Biblioteca com falha de segurança conhecida (CVE). |
 
-> O **Lint** e o **SAST** olham as pastas `framework/` e `projects/` — os conectores de cada
-> jogo (`projects/*/connector/`) também passam por esse gate.
+## 3. Workflows agendados (domingo de manhã)
 
----
+- **`api-smoke.yml`:** uma chamada real à API (~US$ 0,002) para ver se ela ainda responde como esperado.
+  Precisa do segredo `ANTHROPIC_API_KEY`; sem ele, pula (verde, com aviso).
+- **`dep-audit-optional.yml`:** audita `requirements-kb.txt` e `requirements-ml.txt` (stacks opcionais, pesadas).
+  Se falhar, abre ou atualiza uma issue sozinho.
+- **`ml-coverage-optional.yml`:** instala a stack de ML de verdade e roda os testes de `embedder.py` e
+  `validate_model.py` sem pular nada (piso de 85%, `.coveragerc-ml`). Também é chamado por `test.yml`
+  (job `ml-coverage`), por isso é obrigatório em todo PR.
+- **`branch-hygiene.yml`:** apaga as branches já mergeadas além das 50 mais recentes. Nasce em *dry-run*
+  (só lista); nunca toca branch com trabalho não integrado.
 
-## 3. `api-smoke.yml` — "A API da Anthropic ainda responde?"
+## 4. `perf.yml` — "Alguma operação ficou mais lenta?"
 
-Um teste **opcional** que faz uma chamada **de verdade** na API (custa ~US$ 0,002) só
-para ver se ela ainda responde como esperado — útil para detectar mudanças que quebrem o
-fluxo antes de começar a traduzir um capítulo novo.
+Roda `framework/runtime/perf_bench.py` (`append_line`, `build_pack`, `state_index_tm`, em dados sintéticos)
+contra o baseline do runner. Mais de 2× vira aviso e o `perf.json` fica como artefato. **Não bloqueia**: tempo
+de CI é ruidoso e barrar PR por ruído ensina a ignorar o aviso. Quem falha de verdade é `test_perf_bench.py`.
 
-- **Não roda** a cada push (custaria dinheiro à toa). Só **todo domingo de manhã**
-  (agendado) ou quando alguém **manda rodar na mão**.
-- Precisa do segredo `ANTHROPIC_API_KEY` configurado no repositório.
-- **Se a chave não existir, ele pula** (fica verde, com um aviso) em vez de dar erro.
-  Para ativá-lo de verdade: *Settings → Secrets and variables → Actions → New secret*.
+## 5. `release.yml` — publica uma versão
 
----
+```mermaid
+flowchart LR
+  tag(["git tag v2.2.0 e push"]) --> v["Valida<br/>VERSION bate com a tag<br/>e test.yml verde no commit"]
+  v --> ok{{"aprovação manual<br/>environment: Production"}}
+  ok --> pub["Publica a Release<br/>notas dos PRs desde a última tag"]
+```
 
-## 3.5. `dep-audit-optional.yml` — CVE nas stacks opcionais (kb/ml)
+O número da versão (patch/minor/major) é decisão manual de quem tagueia
+([ADR 0013](../../docs/adr/0013-versionamento-semver-manual.md)).
 
-`requirements-kb.txt` (extração de PDF/DOCX) e `requirements-ml.txt` (torch +
-sentence-transformers) são **opcionais** — nunca instaladas em `test.yml`, e instalar torch do
-zero custava ~1min a cada push/PR só pra auditar código que a maioria das mudanças nem toca. Saíram
-do job `deps` de `quality.yml` (que continua auditando `requirements-dev.txt`, a stack que roda de
-verdade) e viraram checagem **semanal** aqui, mesmo padrão do `api-smoke.yml`: não roda a cada push,
-só todo domingo (agendado) ou sob demanda, e se falhar abre/atualiza uma issue automaticamente (sem
-issue, o cron falho passaria batido).
-
----
-
-## 3.6. `ml-coverage-optional.yml` — cobertura real de `embedder.py`/`validate_model.py`
-
-O job `coverage` de `test.yml` mede `framework/db` inteiro, mas **exclui de propósito**
-`embedder.py` (`setup.cfg`) — sem `sentence-transformers`/`sqlite-vec` instalados, os únicos
-testes que exercitam a lógica real de indexação/busca vetorial (não os que usam
-`_FakeEmbedder`) ficam pulados via `pytest.importorskip`. Resultado: uma regressão na busca
-semântica (ex.: inverter a métrica de distância) passava pela suíte inteira sem ninguém notar.
-
-Este workflow é reutilizável (`workflow_call`): `test.yml` o chama no job `ml-coverage`, que está no `needs` do agregador `All checks` — por isso é obrigatório sem mexer na branch protection. Ele instala a stack ML de verdade (`requirements-ml.txt`) e roda esses testes sem skip, com
-um piso de cobertura **específico** desses dois módulos (85%, `.coveragerc-ml` na raiz). Desde
-2026-10-17 roda em todo PR e push na `main` (pelo job de `test.yml`), para a busca semântica ser
-exercitada sempre; o agendamento de domingo ficou como rede de segurança. O custo é o da stack
-pesada (torch + sentence-transformers do zero, ~1 min+ por run).
+**Se uma release sair quebrada** (procedimento manual):
+- *Esconder:* `gh release delete vX.Y.Z` apaga a Release; a tag continua. Antes, `gh release edit` pode avisar nas notas.
+- *Hotfix:* `git checkout -b hotfix/descricao vX.Y.Z` (parte da tag, não da `main`), corrige, abre PR normal,
+  e depois do merge sobe o `VERSION` (patch) e cria a tag nova a partir da `main`.
 
 ---
 
-## 3.7. `perf.yml` — "Alguma operação ficou mais lenta?"
+## Como ler o resultado
 
-Roda `framework/runtime/perf_bench.py` (`append_line`, `build_pack` e `state_index_tm`, sobre dados
-sintéticos) e compara com o baseline do próprio runner (`perf_baseline_ci.json`; sem ele, cai no
-baseline local do Windows). Regressão de mais de 2× vira aviso na run, e o `perf.json` fica como
-artefato para acompanhar a tendência. **Não bloqueia** e fica fora do agregador de propósito: tempo de CI
-é ruidoso, e barrar PR por ruído ensina a ignorar o aviso. O teste que falha de verdade é o
-`framework/runtime/test_perf_bench.py`.
+- O **título** de cada execução é a mensagem do commit que a disparou. O que descreve o que roda são os
+  **nomes dos jobs**, definidos no `.yml`.
+- Clique no run e no passo vermelho para ver a mensagem de erro.
 
----
+## Arquivos relacionados
 
-## 4. `release.yml` — publica uma versão do framework
+- `.github/dependabot.yml`: abre PRs toda semana atualizando bibliotecas Python e versões de Actions.
+- `.pre-commit-config.yaml` (raiz): roda as mesmas conferências no seu PC, no `git commit`. Instale com `pip install pre-commit && pre-commit install`.
 
-Dispara só quando alguém cria e envia uma tag no formato `v1.2.3` (`git tag v1.2.3 && git push
---tags`). Duas etapas:
-
-1. **Valida** — confere que o arquivo `VERSION` na raiz bate com a tag enviada (se não bater,
-   você esqueceu de atualizar o `VERSION` antes de taguear) e que o `test.yml` está verde nesse
-   mesmo commit.
-2. **Publica** — cria a *Release* no GitHub (aba **Releases**), com notas geradas automaticamente
-   a partir dos PRs mergeados desde a última tag. Essa etapa **exige aprovação manual**
-   (`environment: Production`) — diferente do resto da esteira, aqui faz sentido parar pra
-   confirmar: publicar uma versão é raro e deliberado, não um clique repetido em todo merge.
-
-Escolher o número da versão (patch/minor/major) é decisão manual de quem tagueia — sem ferramenta,
-sem enforcement de formato de commit. Critério e motivo em `docs/adr/0013-versionamento-semver-manual.md`.
-
-### Se uma release sair quebrada
-
-Não existe automação pra isso — é um procedimento manual, de baixa frequência:
-
-- **Yank (esconder a release ruim)**: `gh release delete vX.Y.Z` apaga a Release do GitHub (a tag
-  git continua existindo, só a Release na aba **Releases** some). Se quiser manter a tag mas deixar
-  claro que não deve ser usada, edite a Release antes de decidir apagar (`gh release edit vX.Y.Z
-  --notes "..."`) avisando no topo das notas.
-- **Hotfix**: `git checkout -b hotfix/descricao vX.Y.Z` — branch a partir da tag ruim, não de
-  `main` (main pode já ter avançado com outras mudanças que você não quer no hotfix). Corrige, abre
-  PR pra `main` normalmente (mesmos gates de sempre). Depois de mergear, bump de `VERSION` (patch) e
-  tag nova a partir de `main` — mesmo fluxo de qualquer release.
-
----
-
-## 5. `branch-hygiene.yml` — limpeza semanal de branches
-
-Toda semana (e sob demanda) confere quantas branches já **mergeadas** em `main`
-existem além das 50 mais recentes, e apaga as mais antigas — nunca toca branch com
-trabalho ainda não integrado. Roda em **modo dry-run por padrão**: lista o que
-apagaria sem apagar de fato (veja o log da run pra conferir antes de mudar isso).
-
----
-
-## Como ler o resultado (aba Actions)
-
-- 🟢 **verde** = passou tudo. 🔴 **vermelho** = algo falhou — clique no run e depois no
-  passo vermelho para ver a mensagem.
-- O **título** de cada execução é a **mensagem do commit** que a disparou (não descreve o
-  workflow). Quem descreve o que roda são os **nomes dos jobs** (ex.: *"Lint (ruff) —
-  estilo e bugs no framework"*), definidos dentro do `.yml`.
-
----
-
-## Arquivos relacionados (fora desta pasta)
-
-- **`.github/dependabot.yml`** — robô que, **toda semana**, abre PRs atualizando
-  bibliotecas Python e versões de Actions que ficaram desatualizadas.
-- **`.pre-commit-config.yaml`** (na raiz) — roda **as mesmas conferências no seu próprio
-  PC**, na hora do `git commit`, para pegar problema cedo (antes de subir). Instalar uma
-  vez com: `pip install pre-commit && pre-commit install`.
-
----
-
-## Detalhe técnico: por que as Actions têm um código gigante?
-
-Linhas como `uses: actions/checkout@3d3c42e... # v7.0.1` usam um **identificador fixo
-(SHA)** da ferramenta em vez de só `@v7`. É uma boa prática de segurança: garante que
-estamos usando *exatamente* aquela versão revisada, e não uma futura que alguém possa
-ter adulterado. O comentário `# v7.0.1` diz a versão legível, e o Dependabot mantém isso
-atualizado sozinho.
+*Por que `uses: actions/checkout@3d3c42e… # v7.0.1`?* O SHA fixo garante exatamente a versão revisada (e não uma
+futura adulterada); o comentário diz a versão legível e o Dependabot mantém os dois em dia.
